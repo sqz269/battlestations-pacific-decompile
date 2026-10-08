@@ -1,0 +1,4086 @@
+{
+  "packet": "cc11_health_unit_group_set_leader",
+  "status": "whole_raw_Source_strict_Win32_and_one_connected_guarded_native_family_passed",
+  "utc": "2026-10-08T02:34:24.596914+00:00",
+  "worker_base_revision": "92d03f4996802d300a59b49a263d8098940d4d45",
+  "function": {
+    "address": "0070D0C0",
+    "end_exclusive": "0070D0E4",
+    "bytes": 36,
+    "hex_bytes": "0x24",
+    "instructions": 16,
+    "symbol": "bsp::set_native_unit_group_leader_0070d0c0",
+    "name_qualification": "Descriptive hypothesis, not a recovered symbol.",
+    "source": "src/native_unit_group_set_leader.cpp",
+    "header": "include/bsp/native_unit_group_set_leader.hpp",
+    "sha256": "c8663953b174916475ec8175c41d653c92f494f2ea3ec42768d762cdab158787"
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "frozen": "local/cc11_unit_group_set_leader_20261007_a/original_image.bin",
+    "unchanged_after": true
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "process_receipt": "local/cc11_unit_group_set_leader_20261007_a/ghidra_process_identity.json",
+    "whole_live_bytes_equal_PE_for_all_six_raw_bodies": true,
+    "actual_CF4888_live_bytes_equal_PE": true,
+    "writes": 0
+  },
+  "primary_readiness_audit": {
+    "path": "J:/PROG/battlestations-pacific-decompile/local/cc11_primary_set_leader_audit/audit.json",
+    "sha256": "07f769f9f87ac0399aad287e8978531f714771822358e42ef9e198fb579b524b",
+    "unchanged": true,
+    "source_TU_note": "Registered task adds genuine Source group-constructor setup to the earlier audit plan:8freshTUs instead of7."
+  },
+  "native_calls": [
+    {
+      "address": "0070D0D7",
+      "native": "00815E20",
+      "function": "0070D0C0",
+      "role": "actual whole graph direct call"
+    },
+    {
+      "address": "00815E50",
+      "native": "00414DB0",
+      "function": "00815E20",
+      "role": "actual whole graph direct call"
+    },
+    {
+      "address": "00815E60",
+      "native": "00414DB0",
+      "function": "00815E20",
+      "role": "actual whole graph direct call"
+    },
+    {
+      "address": "00815EAA",
+      "native": "00815680",
+      "function": "00815E20",
+      "role": "actual whole graph direct call"
+    },
+    {
+      "address": "00414DC6",
+      "native": "00414DB0",
+      "function": "00414DB0",
+      "role": "actual whole graph direct call"
+    },
+    {
+      "address": "00414DE0",
+      "native": "00413920",
+      "function": "00414DB0",
+      "role": "actual whole graph direct call"
+    },
+    {
+      "address": "00414DF1",
+      "native": "004134F0",
+      "function": "00414DB0",
+      "role": "actual whole graph direct call"
+    }
+  ],
+  "caller_witnesses": [
+    {
+      "address": "0077BE40",
+      "native": "0070D0C0",
+      "function": "0077BD70",
+      "role": "separate actual external caller witness; whole caller not executed"
+    }
+  ],
+  "call_row_qualification": "Seven actual raw-graph native calls plus one static external caller witness. Full0077BD70 is not executed. The new-interface Source constructor is shared fixture setup and is not counted as a Native constructor call.",
+  "caller_verification": "J:\\PROG\\battlestations-pacific-decompile-cc11_health_guard\\local\\cc11_unit_group_set_leader_20261007_a\\native_calls.json: 8 call rows checked, 0 failed",
+  "native_contract": {
+    "entry": "ECX=actual group, unused EDX, stacked next and previous, RET8; no semantic return value.",
+    "argument_comparison": "Capture previous in EAX and next in ESI; compare ARGUMENTS, never group14. Equal returns without touching group storage or invoking wake, including a third stored leader.",
+    "different_previous_null": "Skip wake, publish actual next into group14; preserve entry EDX and group ECX; EAX0.",
+    "different_previous_nonnull": "Call complete canonical raw00815E20 at0070D0D7 with ECXnext and previous on stack, then publish next into actual group14 after return. No next-null default, service, callback or guard.",
+    "wake_dependencies": "Complete raw182 handoff,89 pose,874 multiply,103 matrix copy and456 ring copy; all canonical and actually connected.",
+    "floating_admission": "Reached parent multiply requires EMPTY x87 tagFFFF/all8 slots free; empty TOP may be nonzero. Other wake paths need one free slot. Production does not reset FP state.",
+    "volatile_exits": {
+      "equal": "EAX=previous=next,ECX=group,EDX=entryEDX",
+      "different_previous_null": "EAX0,ECX=group,EDX=entryEDX",
+      "wake": "EAX=nextF9C,ECX0,EDX=previousFA4"
+    },
+    "saved_registers_stack": "EBX,ESI,EDI,EBP preserved; exact native RET8 balance; actual caller arguments and physical frame retained.",
+    "last_x87_on_wake": "Actual handoff entry+A9 final FSTP, data pointer nextFA8; group publication preserves its x87 state and native volatile exits.",
+    "flags": "EFLAGS246 no-wake and206 wake observed for this physical stack. Each same-callsite Original/Source comparison matches; wake flags are not an intrinsic function constant.",
+    "inline_alias": "Actual ring unitBD0+3D0/3D4/3D8 is the same physical unitFA0/FA4/FA8 residual storage.",
+    "no_wake_state": "All108 x87 bytes, all128 XMM0 bits, MXCSR and unit/ancestor backing untouched."
+  },
+  "source_coff": {
+    "symbol": "?set_native_unit_group_leader_0070d0c0@bsp@@YIXPAX000@Z",
+    "machine": "I386",
+    "section": 3,
+    "symbol_value": 0,
+    "bytes": 36,
+    "sha256": "b35de2a7f8b9951c4be1b377bb90e2338025bc81326002a854da03821447e161",
+    "relocations": [
+      {
+        "operand_offset": "18",
+        "coff_kind": "0014",
+        "symbol": "?handoff_native_unit_wake_00815e20@bsp@@YIXPAX00@Z"
+      }
+    ],
+    "instruction_count": 16,
+    "disassembly": [
+      "00: mov eax, dword ptr [esp + 8]",
+      "04: push esi",
+      "05: mov esi, dword ptr [esp + 8]",
+      "09: cmp esi, eax",
+      "0B: push edi",
+      "0C: mov edi, ecx",
+      "0E: je 0x1f",
+      "10: test eax, eax",
+      "12: je 0x1c",
+      "14: push eax",
+      "15: mov ecx, esi",
+      "17: call 0x1c",
+      "1C: mov dword ptr [edi + 0x14], esi",
+      "1F: pop edi",
+      "20: pop esi",
+      "21: ret 8"
+    ],
+    "address": "0070D0C0",
+    "original_sha256": "c8663953b174916475ec8175c41d653c92f494f2ea3ec42768d762cdab158787",
+    "fixed_original_bytes": 32,
+    "linked_address": "00401000",
+    "linked_sha256": "232f149c1b58300605f0503498214e41349f5ac0068b116b9f3e736a481a41a7",
+    "whole_body_fixed_bytes_equal": true
+  },
+  "complete_dependency_coff": [
+    {
+      "symbol": "?handoff_native_unit_wake_00815e20@bsp@@YIXPAX00@Z",
+      "machine": "I386",
+      "section": 3,
+      "symbol_value": 0,
+      "bytes": 182,
+      "sha256": "40ed41e0fd4e0e122c703a1d6798c05a9af22b4f129f3e1a88c080baae481f00",
+      "relocations": [
+        {
+          "operand_offset": "31",
+          "coff_kind": "0014",
+          "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+        },
+        {
+          "operand_offset": "41",
+          "coff_kind": "0014",
+          "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+        },
+        {
+          "operand_offset": "8B",
+          "coff_kind": "0014",
+          "symbol": "?copy_native_unit_wake_00815680@bsp@@YIXPAX0PBX@Z"
+        }
+      ],
+      "instruction_count": 42,
+      "disassembly": [
+        "00: sub esp, 0x18",
+        "03: push esi",
+        "04: push edi",
+        "05: mov edi, dword ptr [esp + 0x24]",
+        "09: movss xmm0, dword ptr [edi + 0xfa0]",
+        "11: mov esi, ecx",
+        "13: cmp byte ptr [esi + 0xc8], 0",
+        "1A: movss dword ptr [esp + 8], xmm0",
+        "20: movss xmm0, dword ptr [edi + 0xfa8]",
+        "28: movss dword ptr [esp + 0x10], xmm0",
+        "2E: jne 0x35",
+        "30: call 0x35",
+        "35: cmp byte ptr [edi + 0xc8], 0",
+        "3C: jne 0x45",
+        "3E: mov ecx, edi",
+        "40: call 0x45",
+        "45: fld dword ptr [edi + 0xfc]",
+        "4B: add edi, 0xbd0",
+        "51: fsub dword ptr [esi + 0xfc]",
+        "57: push edi",
+        "58: lea ecx, [esi + 0xbd0]",
+        "5E: fstp dword ptr [esp + 0x18]",
+        "62: fld dword ptr [edi - 0xacc]",
+        "68: fsub dword ptr [esi + 0x104]",
+        "6E: fstp dword ptr [esp + 0x20]",
+        "72: fld dword ptr [esp + 0x18]",
+        "76: fadd dword ptr [esp + 0xc]",
+        "7A: fstp dword ptr [esp + 0xc]",
+        "7E: fld dword ptr [esp + 0x20]",
+        "82: fadd dword ptr [esp + 0x14]",
+        "86: fstp dword ptr [esp + 0x14]",
+        "8A: call 0x8f",
+        "8F: fld dword ptr [esp + 8]",
+        "93: xorps xmm0, xmm0",
+        "96: fstp dword ptr [esi + 0xfa0]",
+        "9C: pop edi",
+        "9D: fld dword ptr [esp + 0xc]",
+        "A1: movss dword ptr [esi + 0xfa4], xmm0",
+        "A9: fstp dword ptr [esi + 0xfa8]",
+        "AF: pop esi",
+        "B0: add esp, 0x18",
+        "B3: ret 4"
+      ],
+      "address": "00815E20",
+      "original_sha256": "e4929517cb6a00c4c7bbf62bb0127159641c5a26194246e75b0b4cfd89266e90",
+      "fixed_original_bytes": 170,
+      "linked_address": "00401030",
+      "linked_sha256": "a2cfebad9f1095d0ab41ee036e1731f8d2dc18ac18365b36085c92a241f1c751",
+      "whole_body_fixed_bytes_equal": true
+    },
+    {
+      "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z",
+      "machine": "I386",
+      "section": 3,
+      "symbol_value": 0,
+      "bytes": 89,
+      "sha256": "b0b6156c245037d3c8ff7508ddba31f8545509519f0ee5a818d52ad713ad3536",
+      "relocations": [
+        {
+          "operand_offset": "17",
+          "coff_kind": "0014",
+          "symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z"
+        },
+        {
+          "operand_offset": "31",
+          "coff_kind": "0014",
+          "symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z"
+        },
+        {
+          "operand_offset": "42",
+          "coff_kind": "0014",
+          "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z"
+        }
+      ],
+      "instruction_count": 28,
+      "disassembly": [
+        "00: sub esp, 0x40",
+        "03: push esi",
+        "04: mov esi, ecx",
+        "06: cmp byte ptr [esi + 0xc8], 0",
+        "0D: jne 0x54",
+        "0F: mov ecx, dword ptr [esi + 0x3c]",
+        "12: test ecx, ecx",
+        "14: je 0x1b",
+        "16: call 0x1b",
+        "1B: mov eax, dword ptr [esi + 0x3c]",
+        "1E: test eax, eax",
+        "20: je 0x37",
+        "22: add eax, 0xcc",
+        "27: push eax",
+        "28: lea eax, [esp + 8]",
+        "2C: push eax",
+        "2D: lea ecx, [esi + 0x74]",
+        "30: call 0x35",
+        "35: jmp 0x3a",
+        "37: lea eax, [esi + 0x74]",
+        "3A: push eax",
+        "3B: lea ecx, [esi + 0xcc]",
+        "41: call 0x46",
+        "46: mov byte ptr [esi + 0xc8], 1",
+        "4D: mov byte ptr [esi + 0x10c], 0",
+        "54: pop esi",
+        "55: add esp, 0x40",
+        "58: ret "
+      ],
+      "address": "00414DB0",
+      "original_sha256": "ca7360fd4d5ae3ae386c44374188b3b807eb8a1bb039f508d47f0da2116ab175",
+      "fixed_original_bytes": 77,
+      "linked_address": "004010F0",
+      "linked_sha256": "6ac876fda9e7b4a1c0b55853798e421b6b99cfe74d392d78ec70763e452c8165",
+      "whole_body_fixed_bytes_equal": true
+    },
+    {
+      "symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+      "machine": "I386",
+      "section": 6,
+      "symbol_value": 0,
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+      "relocations": [],
+      "instruction_count": 290,
+      "disassembly": [
+        "00: sub esp, 0x40",
+        "03: mov edx, dword ptr [esp + 0x48]",
+        "07: fld dword ptr [edx + 0x10]",
+        "0A: mov eax, dword ptr [esp + 0x44]",
+        "0E: fstp dword ptr [esp + 0x30]",
+        "12: fld dword ptr [ecx + 4]",
+        "15: fstp dword ptr [esp + 0x3c]",
+        "19: fld dword ptr [edx]",
+        "1B: fstp dword ptr [esp + 0x28]",
+        "1F: fld dword ptr [ecx]",
+        "21: fstp dword ptr [esp + 0x2c]",
+        "25: fld dword ptr [edx + 0x20]",
+        "28: fstp dword ptr [esp + 0x34]",
+        "2C: fld dword ptr [ecx + 8]",
+        "2F: fstp dword ptr [esp + 0x24]",
+        "33: fld dword ptr [edx + 0x30]",
+        "36: fstp dword ptr [esp + 0x38]",
+        "3A: fld dword ptr [ecx + 0xc]",
+        "3D: fstp dword ptr [esp + 0x48]",
+        "41: fld dword ptr [esp + 0x3c]",
+        "45: fld st(0)",
+        "47: fld dword ptr [esp + 0x30]",
+        "4B: fld st(0)",
+        "4D: fmulp st(2)",
+        "4F: fld dword ptr [esp + 0x2c]",
+        "53: fld st(0)",
+        "55: fld dword ptr [esp + 0x28]",
+        "59: fld st(0)",
+        "5B: fmulp st(2)",
+        "5D: fxch st(4)",
+        "5F: faddp st(1)",
+        "61: fld dword ptr [esp + 0x24]",
+        "65: fld st(0)",
+        "67: fmul dword ptr [esp + 0x34]",
+        "6B: faddp st(2)",
+        "6D: fld dword ptr [esp + 0x48]",
+        "71: fmul dword ptr [esp + 0x38]",
+        "75: faddp st(2)",
+        "77: fxch st(1)",
+        "79: fstp dword ptr [eax]",
+        "7B: fld dword ptr [edx + 0x14]",
+        "7E: fstp dword ptr [esp + 8]",
+        "82: fld dword ptr [edx + 4]",
+        "85: fstp dword ptr [esp + 0x3c]",
+        "89: fld dword ptr [edx + 0x24]",
+        "8C: fstp dword ptr [esp + 0xc]",
+        "90: fld dword ptr [edx + 0x34]",
+        "93: fstp dword ptr [esp + 0x10]",
+        "97: fld dword ptr [esp + 0x3c]",
+        "9B: fmul st(2)",
+        "9D: fld dword ptr [esp + 8]",
+        "A1: fmul st(6)",
+        "A3: faddp st(1)",
+        "A5: fld dword ptr [esp + 0xc]",
+        "A9: fmul st(2)",
+        "AB: faddp st(1)",
+        "AD: fld dword ptr [esp + 0x10]",
+        "B1: fmul dword ptr [esp + 0x48]",
+        "B5: faddp st(1)",
+        "B7: fstp dword ptr [eax + 4]",
+        "BA: fld dword ptr [edx + 0x18]",
+        "BD: fstp dword ptr [esp + 0x18]",
+        "C1: fld dword ptr [edx + 8]",
+        "C4: fstp dword ptr [esp + 0x14]",
+        "C8: fld dword ptr [edx + 0x28]",
+        "CB: fstp dword ptr [esp + 0x1c]",
+        "CF: fld dword ptr [edx + 0x38]",
+        "D2: fstp dword ptr [esp + 0x20]",
+        "D6: fld dword ptr [esp + 0x14]",
+        "DA: fmul st(2)",
+        "DC: fld dword ptr [esp + 0x18]",
+        "E0: fmul st(6)",
+        "E2: faddp st(1)",
+        "E4: fld dword ptr [esp + 0x1c]",
+        "E8: fmul st(2)",
+        "EA: faddp st(1)",
+        "EC: fld dword ptr [esp + 0x20]",
+        "F0: fmul dword ptr [esp + 0x48]",
+        "F4: faddp st(1)",
+        "F6: fstp dword ptr [eax + 8]",
+        "F9: fld dword ptr [edx + 0x1c]",
+        "FC: fstp dword ptr [esp + 0x28]",
+        "100: fld dword ptr [edx + 0xc]",
+        "103: fstp dword ptr [esp + 0x24]",
+        "107: fld dword ptr [edx + 0x2c]",
+        "10A: fstp dword ptr [esp + 0x2c]",
+        "10E: fld dword ptr [edx + 0x3c]",
+        "111: fstp dword ptr [esp + 0x30]",
+        "115: fld dword ptr [esp + 0x24]",
+        "119: fmulp st(2)",
+        "11B: fld dword ptr [esp + 0x28]",
+        "11F: fmulp st(5)",
+        "121: fxch st(1)",
+        "123: faddp st(4)",
+        "125: fmul dword ptr [esp + 0x2c]",
+        "129: faddp st(3)",
+        "12B: fld dword ptr [esp + 0x30]",
+        "12F: fmul dword ptr [esp + 0x48]",
+        "133: faddp st(3)",
+        "135: fxch st(2)",
+        "137: fstp dword ptr [eax + 0xc]",
+        "13A: fld dword ptr [ecx + 0x14]",
+        "13D: fstp dword ptr [esp + 0x48]",
+        "141: fld dword ptr [ecx + 0x10]",
+        "144: fstp dword ptr [esp + 4]",
+        "148: fld dword ptr [ecx + 0x18]",
+        "14B: fstp dword ptr [esp + 0x44]",
+        "14F: fld dword ptr [ecx + 0x1c]",
+        "152: fstp dword ptr [esp]",
+        "155: fld dword ptr [esp + 4]",
+        "159: fld st(0)",
+        "15B: fmul st(2)",
+        "15D: fld dword ptr [esp + 0x48]",
+        "161: fmul st(4)",
+        "163: faddp st(1)",
+        "165: fld dword ptr [esp + 0x44]",
+        "169: fld dword ptr [esp + 0x34]",
+        "16D: fld st(0)",
+        "16F: fmulp st(2)",
+        "171: fxch st(2)",
+        "173: faddp st(1)",
+        "175: fld dword ptr [esp]",
+        "178: fld dword ptr [esp + 0x38]",
+        "17C: fld st(0)",
+        "17E: fmulp st(2)",
+        "180: fxch st(2)",
+        "182: faddp st(1)",
+        "184: fstp dword ptr [eax + 0x10]",
+        "187: fld dword ptr [esp + 0x3c]",
+        "18B: fld st(0)",
+        "18D: fmulp st(4)",
+        "18F: fld dword ptr [esp + 0x48]",
+        "193: fmul dword ptr [esp + 8]",
+        "197: faddp st(4)",
+        "199: fld dword ptr [esp + 0x44]",
+        "19D: fmul dword ptr [esp + 0xc]",
+        "1A1: faddp st(4)",
+        "1A3: fld dword ptr [esp]",
+        "1A6: fmul dword ptr [esp + 0x10]",
+        "1AA: faddp st(4)",
+        "1AC: fxch st(3)",
+        "1AE: fstp dword ptr [eax + 0x14]",
+        "1B1: fld dword ptr [esp + 4]",
+        "1B5: fmul dword ptr [esp + 0x14]",
+        "1B9: fld dword ptr [esp + 0x48]",
+        "1BD: fmul dword ptr [esp + 0x18]",
+        "1C1: faddp st(1)",
+        "1C3: fld dword ptr [esp + 0x44]",
+        "1C7: fmul dword ptr [esp + 0x1c]",
+        "1CB: faddp st(1)",
+        "1CD: fld dword ptr [esp]",
+        "1D0: fmul dword ptr [esp + 0x20]",
+        "1D4: faddp st(1)",
+        "1D6: fstp dword ptr [eax + 0x18]",
+        "1D9: fld dword ptr [esp + 4]",
+        "1DD: fmul dword ptr [esp + 0x24]",
+        "1E1: fld dword ptr [esp + 0x48]",
+        "1E5: fmul dword ptr [esp + 0x28]",
+        "1E9: faddp st(1)",
+        "1EB: fld dword ptr [esp + 0x44]",
+        "1EF: fmul dword ptr [esp + 0x2c]",
+        "1F3: faddp st(1)",
+        "1F5: fld dword ptr [esp]",
+        "1F8: fmul dword ptr [esp + 0x30]",
+        "1FC: faddp st(1)",
+        "1FE: fstp dword ptr [eax + 0x1c]",
+        "201: fld dword ptr [ecx + 0x24]",
+        "204: fstp dword ptr [esp + 0x44]",
+        "208: fld dword ptr [ecx + 0x20]",
+        "20B: fstp dword ptr [esp + 0x48]",
+        "20F: fld dword ptr [ecx + 0x28]",
+        "212: fstp dword ptr [esp]",
+        "215: fld dword ptr [ecx + 0x2c]",
+        "218: fstp dword ptr [esp + 4]",
+        "21C: fld dword ptr [esp + 0x48]",
+        "220: fmul st(4)",
+        "222: fld dword ptr [esp + 0x44]",
+        "226: fmul st(6)",
+        "228: faddp st(1)",
+        "22A: fld dword ptr [esp]",
+        "22D: fmul st(3)",
+        "22F: faddp st(1)",
+        "231: fld dword ptr [esp + 4]",
+        "235: fmul st(2)",
+        "237: faddp st(1)",
+        "239: fstp dword ptr [eax + 0x20]",
+        "23C: fld dword ptr [esp + 0x48]",
+        "240: fmul st(3)",
+        "242: fld dword ptr [esp + 0x44]",
+        "246: fmul dword ptr [esp + 8]",
+        "24A: faddp st(1)",
+        "24C: fld dword ptr [esp]",
+        "24F: fmul dword ptr [esp + 0xc]",
+        "253: faddp st(1)",
+        "255: fld dword ptr [esp + 4]",
+        "259: fmul dword ptr [esp + 0x10]",
+        "25D: faddp st(1)",
+        "25F: fstp dword ptr [eax + 0x24]",
+        "262: fld dword ptr [esp + 0x48]",
+        "266: fmul dword ptr [esp + 0x14]",
+        "26A: fld dword ptr [esp + 0x44]",
+        "26E: fmul dword ptr [esp + 0x18]",
+        "272: faddp st(1)",
+        "274: fld dword ptr [esp]",
+        "277: fmul dword ptr [esp + 0x1c]",
+        "27B: faddp st(1)",
+        "27D: fld dword ptr [esp + 4]",
+        "281: fmul dword ptr [esp + 0x20]",
+        "285: faddp st(1)",
+        "287: fstp dword ptr [eax + 0x28]",
+        "28A: fld dword ptr [esp + 0x48]",
+        "28E: fmul dword ptr [esp + 0x24]",
+        "292: fld dword ptr [esp + 0x44]",
+        "296: fmul dword ptr [esp + 0x28]",
+        "29A: faddp st(1)",
+        "29C: fld dword ptr [esp]",
+        "29F: fmul dword ptr [esp + 0x2c]",
+        "2A3: faddp st(1)",
+        "2A5: fld dword ptr [esp + 4]",
+        "2A9: fmul dword ptr [esp + 0x30]",
+        "2AD: faddp st(1)",
+        "2AF: fstp dword ptr [eax + 0x2c]",
+        "2B2: fld dword ptr [ecx + 0x34]",
+        "2B5: fstp dword ptr [esp + 0x44]",
+        "2B9: fld dword ptr [ecx + 0x30]",
+        "2BC: fstp dword ptr [esp + 0x48]",
+        "2C0: fld dword ptr [ecx + 0x38]",
+        "2C3: fstp dword ptr [esp + 0x3c]",
+        "2C7: fld dword ptr [ecx + 0x3c]",
+        "2CA: fstp dword ptr [esp + 0x38]",
+        "2CE: fld dword ptr [esp + 0x48]",
+        "2D2: fld st(0)",
+        "2D4: fmulp st(5)",
+        "2D6: fld dword ptr [esp + 0x44]",
+        "2DA: fld st(0)",
+        "2DC: fmulp st(7)",
+        "2DE: fxch st(5)",
+        "2E0: faddp st(6)",
+        "2E2: fld dword ptr [esp + 0x3c]",
+        "2E6: fld st(0)",
+        "2E8: fmulp st(4)",
+        "2EA: fxch st(6)",
+        "2EC: faddp st(3)",
+        "2EE: fld dword ptr [esp + 0x38]",
+        "2F2: fld st(0)",
+        "2F4: fmulp st(3)",
+        "2F6: fxch st(3)",
+        "2F8: faddp st(2)",
+        "2FA: fxch st(1)",
+        "2FC: fstp dword ptr [eax + 0x30]",
+        "2FF: fld st(0)",
+        "301: fmulp st(3)",
+        "303: fld st(3)",
+        "305: fmul dword ptr [esp + 8]",
+        "309: faddp st(3)",
+        "30B: fld st(4)",
+        "30D: fmul dword ptr [esp + 0xc]",
+        "311: faddp st(3)",
+        "313: fld st(1)",
+        "315: fmul dword ptr [esp + 0x10]",
+        "319: faddp st(3)",
+        "31B: fxch st(2)",
+        "31D: fstp dword ptr [eax + 0x34]",
+        "320: fld st(1)",
+        "322: fmul dword ptr [esp + 0x14]",
+        "326: fld st(3)",
+        "328: fmul dword ptr [esp + 0x18]",
+        "32C: faddp st(1)",
+        "32E: fld st(4)",
+        "330: fmul dword ptr [esp + 0x1c]",
+        "334: faddp st(1)",
+        "336: fld st(1)",
+        "338: fmul dword ptr [esp + 0x20]",
+        "33C: faddp st(1)",
+        "33E: fstp dword ptr [eax + 0x38]",
+        "341: fld dword ptr [esp + 0x24]",
+        "345: fmulp st(2)",
+        "347: fld dword ptr [esp + 0x28]",
+        "34B: fmulp st(3)",
+        "34D: fxch st(1)",
+        "34F: faddp st(2)",
+        "351: fld dword ptr [esp + 0x2c]",
+        "355: fmulp st(3)",
+        "357: fxch st(1)",
+        "359: faddp st(2)",
+        "35B: fmul dword ptr [esp + 0x30]",
+        "35F: faddp st(1)",
+        "361: fstp dword ptr [eax + 0x3c]",
+        "364: add esp, 0x40",
+        "367: ret 8"
+      ],
+      "address": "00413920",
+      "original_sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+      "fixed_original_bytes": 874,
+      "linked_address": "00401150",
+      "linked_sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+      "whole_body_fixed_bytes_equal": true
+    },
+    {
+      "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z",
+      "machine": "I386",
+      "section": 3,
+      "symbol_value": 0,
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "relocations": [],
+      "instruction_count": 35,
+      "disassembly": [
+        "00: mov eax, ecx",
+        "02: mov ecx, dword ptr [esp + 4]",
+        "06: fld dword ptr [ecx]",
+        "08: fstp dword ptr [eax]",
+        "0A: fld dword ptr [ecx + 4]",
+        "0D: fstp dword ptr [eax + 4]",
+        "10: fld dword ptr [ecx + 8]",
+        "13: fstp dword ptr [eax + 8]",
+        "16: fld dword ptr [ecx + 0xc]",
+        "19: fstp dword ptr [eax + 0xc]",
+        "1C: fld dword ptr [ecx + 0x10]",
+        "1F: fstp dword ptr [eax + 0x10]",
+        "22: fld dword ptr [ecx + 0x14]",
+        "25: fstp dword ptr [eax + 0x14]",
+        "28: fld dword ptr [ecx + 0x18]",
+        "2B: fstp dword ptr [eax + 0x18]",
+        "2E: fld dword ptr [ecx + 0x1c]",
+        "31: fstp dword ptr [eax + 0x1c]",
+        "34: fld dword ptr [ecx + 0x20]",
+        "37: fstp dword ptr [eax + 0x20]",
+        "3A: fld dword ptr [ecx + 0x24]",
+        "3D: fstp dword ptr [eax + 0x24]",
+        "40: fld dword ptr [ecx + 0x28]",
+        "43: fstp dword ptr [eax + 0x28]",
+        "46: fld dword ptr [ecx + 0x2c]",
+        "49: fstp dword ptr [eax + 0x2c]",
+        "4C: fld dword ptr [ecx + 0x30]",
+        "4F: fstp dword ptr [eax + 0x30]",
+        "52: fld dword ptr [ecx + 0x34]",
+        "55: fstp dword ptr [eax + 0x34]",
+        "58: fld dword ptr [ecx + 0x38]",
+        "5B: fstp dword ptr [eax + 0x38]",
+        "5E: fld dword ptr [ecx + 0x3c]",
+        "61: fstp dword ptr [eax + 0x3c]",
+        "64: ret 4"
+      ],
+      "address": "004134F0",
+      "original_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "fixed_original_bytes": 103,
+      "linked_address": "004014C0",
+      "linked_sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+      "whole_body_fixed_bytes_equal": true
+    },
+    {
+      "symbol": "?copy_native_unit_wake_00815680@bsp@@YIXPAX0PBX@Z",
+      "machine": "I386",
+      "section": 3,
+      "symbol_value": 0,
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd",
+      "relocations": [],
+      "instruction_count": 135,
+      "disassembly": [
+        "00: push esi",
+        "01: mov esi, dword ptr [esp + 8]",
+        "05: mov eax, dword ptr [esi + 0x3c8]",
+        "0B: mov dword ptr [ecx + 0x3c8], eax",
+        "11: lea edx, [esi + 0x14]",
+        "14: lea eax, [ecx + 0xc]",
+        "17: sub esi, ecx",
+        "19: mov ecx, 4",
+        "1E: mov edi, edi",
+        "20: fld dword ptr [edx - 0xc]",
+        "23: fstp dword ptr [eax - 4]",
+        "26: fld dword ptr [esi + eax]",
+        "29: fstp dword ptr [eax]",
+        "2B: fld dword ptr [edx - 4]",
+        "2E: fstp dword ptr [eax + 4]",
+        "31: fld dword ptr [edx]",
+        "33: fstp dword ptr [eax + 8]",
+        "36: fld dword ptr [edx + 4]",
+        "39: fstp dword ptr [eax + 0xc]",
+        "3C: fld dword ptr [edx + 8]",
+        "3F: fstp dword ptr [eax + 0x10]",
+        "42: fld dword ptr [edx + 0xc]",
+        "45: fstp dword ptr [eax + 0x14]",
+        "48: fld dword ptr [edx + 0x10]",
+        "4B: fstp dword ptr [eax + 0x18]",
+        "4E: fld dword ptr [edx + 0x14]",
+        "51: fstp dword ptr [eax + 0x1c]",
+        "54: fld dword ptr [edx + 0x18]",
+        "57: fstp dword ptr [eax + 0x20]",
+        "5A: fld dword ptr [edx + 0x1c]",
+        "5D: fstp dword ptr [eax + 0x24]",
+        "60: fld dword ptr [edx + 0x20]",
+        "63: fstp dword ptr [eax + 0x28]",
+        "66: fld dword ptr [edx + 0x24]",
+        "69: fstp dword ptr [eax + 0x2c]",
+        "6C: fld dword ptr [edx + 0x28]",
+        "6F: fstp dword ptr [eax + 0x30]",
+        "72: fld dword ptr [edx + 0x2c]",
+        "75: fstp dword ptr [eax + 0x34]",
+        "78: fld dword ptr [edx + 0x30]",
+        "7B: fstp dword ptr [eax + 0x38]",
+        "7E: fld dword ptr [edx + 0x34]",
+        "81: fstp dword ptr [eax + 0x3c]",
+        "84: fld dword ptr [edx + 0x38]",
+        "87: fstp dword ptr [eax + 0x40]",
+        "8A: fld dword ptr [edx + 0x3c]",
+        "8D: fstp dword ptr [eax + 0x44]",
+        "90: fld dword ptr [edx + 0x40]",
+        "93: fstp dword ptr [eax + 0x48]",
+        "96: fld dword ptr [edx + 0x44]",
+        "99: fstp dword ptr [eax + 0x4c]",
+        "9C: fld dword ptr [edx + 0x48]",
+        "9F: fstp dword ptr [eax + 0x50]",
+        "A2: fld dword ptr [edx + 0x4c]",
+        "A5: fstp dword ptr [eax + 0x54]",
+        "A8: fld dword ptr [edx + 0x50]",
+        "AB: fstp dword ptr [eax + 0x58]",
+        "AE: fld dword ptr [edx + 0x54]",
+        "B1: fstp dword ptr [eax + 0x5c]",
+        "B4: fld dword ptr [edx + 0x58]",
+        "B7: fstp dword ptr [eax + 0x60]",
+        "BA: fld dword ptr [edx + 0x5c]",
+        "BD: fstp dword ptr [eax + 0x64]",
+        "C0: fld dword ptr [edx + 0x60]",
+        "C3: fstp dword ptr [eax + 0x68]",
+        "C6: fld dword ptr [edx + 0x64]",
+        "C9: fstp dword ptr [eax + 0x6c]",
+        "CC: fld dword ptr [edx + 0x68]",
+        "CF: fstp dword ptr [eax + 0x70]",
+        "D2: fld dword ptr [edx + 0x6c]",
+        "D5: fstp dword ptr [eax + 0x74]",
+        "D8: fld dword ptr [edx + 0x70]",
+        "DB: fstp dword ptr [eax + 0x78]",
+        "DE: fld dword ptr [edx + 0x74]",
+        "E1: fstp dword ptr [eax + 0x7c]",
+        "E4: fld dword ptr [edx + 0x78]",
+        "E7: fstp dword ptr [eax + 0x80]",
+        "ED: fld dword ptr [edx + 0x7c]",
+        "F0: fstp dword ptr [eax + 0x84]",
+        "F6: fld dword ptr [edx + 0x80]",
+        "FC: fstp dword ptr [eax + 0x88]",
+        "102: fld dword ptr [edx + 0x84]",
+        "108: fstp dword ptr [eax + 0x8c]",
+        "10E: fld dword ptr [edx + 0x88]",
+        "114: fstp dword ptr [eax + 0x90]",
+        "11A: fld dword ptr [edx + 0x8c]",
+        "120: fstp dword ptr [eax + 0x94]",
+        "126: fld dword ptr [edx + 0x90]",
+        "12C: fstp dword ptr [eax + 0x98]",
+        "132: fld dword ptr [edx + 0x94]",
+        "138: fstp dword ptr [eax + 0x9c]",
+        "13E: add edx, 0xf0",
+        "144: fld dword ptr [edx - 0x58]",
+        "147: add eax, 0xf0",
+        "14C: sub ecx, 1",
+        "14F: fstp dword ptr [eax - 0x50]",
+        "152: fld dword ptr [edx - 0x54]",
+        "155: fstp dword ptr [eax - 0x4c]",
+        "158: fld dword ptr [edx - 0x50]",
+        "15B: fstp dword ptr [eax - 0x48]",
+        "15E: fld dword ptr [edx - 0x4c]",
+        "161: fstp dword ptr [eax - 0x44]",
+        "164: fld dword ptr [edx - 0x48]",
+        "167: fstp dword ptr [eax - 0x40]",
+        "16A: fld dword ptr [edx - 0x44]",
+        "16D: fstp dword ptr [eax - 0x3c]",
+        "170: fld dword ptr [edx - 0x40]",
+        "173: fstp dword ptr [eax - 0x38]",
+        "176: fld dword ptr [edx - 0x3c]",
+        "179: fstp dword ptr [eax - 0x34]",
+        "17C: fld dword ptr [edx - 0x38]",
+        "17F: fstp dword ptr [eax - 0x30]",
+        "182: fld dword ptr [edx - 0x34]",
+        "185: fstp dword ptr [eax - 0x2c]",
+        "188: fld dword ptr [edx - 0x30]",
+        "18B: fstp dword ptr [eax - 0x28]",
+        "18E: fld dword ptr [edx - 0x2c]",
+        "191: fstp dword ptr [eax - 0x24]",
+        "194: fld dword ptr [edx - 0x28]",
+        "197: fstp dword ptr [eax - 0x20]",
+        "19A: fld dword ptr [edx - 0x24]",
+        "19D: fstp dword ptr [eax - 0x1c]",
+        "1A0: fld dword ptr [edx - 0x20]",
+        "1A3: fstp dword ptr [eax - 0x18]",
+        "1A6: fld dword ptr [edx - 0x1c]",
+        "1A9: fstp dword ptr [eax - 0x14]",
+        "1AC: fld dword ptr [edx - 0x18]",
+        "1AF: fstp dword ptr [eax - 0x10]",
+        "1B2: fld dword ptr [edx - 0x14]",
+        "1B5: fstp dword ptr [eax - 0xc]",
+        "1B8: fld dword ptr [edx - 0x10]",
+        "1BB: fstp dword ptr [eax - 8]",
+        "1BE: jne 0x20",
+        "1C4: pop esi",
+        "1C5: ret 4"
+      ],
+      "address": "00815680",
+      "original_sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd",
+      "fixed_original_bytes": 456,
+      "linked_address": "00401530",
+      "linked_sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd",
+      "whole_body_fixed_bytes_equal": true
+    }
+  ],
+  "genuine_Source_constructor_setup_coff": {
+    "symbol": "?construct_native_unit_group_0070dab0@bsp@@YAPAXPAXADI@Z",
+    "machine": "I386",
+    "section": 3,
+    "symbol_value": 0,
+    "bytes": 132,
+    "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e",
+    "relocations": [],
+    "instruction_count": 39,
+    "disassembly": [
+      "00: mov eax, dword ptr [esp + 8]",
+      "04: xor edx, edx",
+      "06: push ebx",
+      "07: mov ebx, dword ptr [esp + 8]",
+      "0B: push ebp",
+      "0C: mov ebp, dword ptr [eax]",
+      "0E: push esi",
+      "0F: mov dword ptr [ebx + 4], 0",
+      "16: mov dword ptr [ebx + 8], 0",
+      "1D: mov dword ptr [ebx + 0xc], 0",
+      "24: mov byte ptr [ebx + 0x10], 0",
+      "28: mov dword ptr [ebx], 0xcfd6f8",
+      "2E: push edi",
+      "2F: nop ",
+      "30: imul eax, edx, 0x34",
+      "33: mov ecx, 4",
+      "38: mov dword ptr [eax + ebx + 0x18], 0",
+      "40: lea esi, [eax + ebx]",
+      "43: mov dword ptr [eax + ebx + 0x48], ebp",
+      "47: lea edi, [eax + ebx]",
+      "4A: xor eax, eax",
+      "4C: nop dword ptr [eax]",
+      "50: mov dword ptr [eax + esi + 0x38], 0",
+      "58: lea eax, [eax + 4]",
+      "5B: mov dword ptr [eax + edi + 0x24], 0",
+      "63: sub ecx, 1",
+      "66: jne 0x50",
+      "68: inc edx",
+      "69: cmp edx, 0x18",
+      "6C: jne 0x30",
+      "6E: pop edi",
+      "6F: pop esi",
+      "70: mov dword ptr [ebx + 0x14], ecx",
+      "73: mov eax, ebx",
+      "75: mov dword ptr [ebx + 0x500], ecx",
+      "7B: pop ebp",
+      "7C: mov dword ptr [ebx + 0x4f8], ecx",
+      "82: pop ebx",
+      "83: ret "
+    ],
+    "linked_address": "00401700",
+    "linked_sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e",
+    "whole_COFF_linked_equal": true,
+    "qualification": "Current genuine Source constructor for shared setup only. Its new C++ interface is not a raw Native constructor ABI; Native constructor is not executed.",
+    "fixture_main_symbol_references": [
+      {
+        "operand_offset": "110",
+        "coff_kind": "0006",
+        "symbol": "?construct_native_unit_group_0070dab0@bsp@@YAPAXPAXADI@Z"
+      },
+      {
+        "operand_offset": "3DC",
+        "coff_kind": "0006",
+        "symbol": "?construct_native_unit_group_0070dab0@bsp@@YAPAXPAXADI@Z"
+      },
+      {
+        "operand_offset": "F74",
+        "coff_kind": "0014",
+        "symbol": "?construct_native_unit_group_0070dab0@bsp@@YAPAXPAXADI@Z"
+      }
+    ],
+    "fixture_main_call": {
+      "operand_offset": "F74",
+      "main_address": "00402910",
+      "linked_target": "00401700",
+      "actual_genuine_Source_constructor": true
+    }
+  },
+  "actual_native_constructor_constant": {
+    "address": "00CF4888",
+    "bytes": 4,
+    "bits": "4479C000",
+    "meaning": "999.0 float",
+    "sha256": "b438fd3a67fa223f053f24183a08ed2b94fd3d11d304e084199fe97ca190cf3d",
+    "PE_live_equal": true
+  },
+  "fixture_adapters_coff": [
+    {
+      "symbol": "?make_seed@@YAXPAUSeed@@III@Z",
+      "machine": "I386",
+      "section": 387,
+      "symbol_value": 0,
+      "bytes": 118,
+      "sha256": "95b61b1e88818c6e694b619763ef6bab097812d99078ebc1c7018faab50f6474",
+      "relocations": [],
+      "instruction_count": 32,
+      "disassembly": [
+        "00: push ebp",
+        "01: mov ebp, esp",
+        "03: sub esp, 0x74",
+        "06: mov dword ptr [ebp - 4], 0x3fa00000",
+        "0D: mov dword ptr [ebp - 8], 0xc0200000",
+        "14: lea eax, [ebp - 0x74]",
+        "17: fnsave dword ptr [eax]",
+        "19: fldcw word ptr [ebp + 0xc]",
+        "1C: cmp dword ptr [ebp + 0x10], 0",
+        "20: je 0x28",
+        "22: fld dword ptr [ebp - 4]",
+        "25: fld dword ptr [ebp - 8]",
+        "28: mov eax, dword ptr [ebp + 8]",
+        "2B: fnsave dword ptr [eax]",
+        "2D: lea eax, [ebp - 0x74]",
+        "30: frstor dword ptr [eax]",
+        "32: mov edx, dword ptr [ebp + 8]",
+        "35: mov eax, dword ptr [ebp + 0x14]",
+        "38: shl eax, 0xb",
+        "3B: mov ecx, dword ptr [edx + 4]",
+        "3E: and ecx, 0xffffc7ff",
+        "44: mov dword ptr [edx + 0x6c], 0x12345678",
+        "4B: or ecx, eax",
+        "4D: mov dword ptr [edx + 0x70], 0x87654321",
+        "54: or ecx, 0x4520",
+        "5A: mov dword ptr [edx + 0x74], 0xabcdef01",
+        "61: mov dword ptr [edx + 4], ecx",
+        "64: mov dword ptr [edx + 0x78], 0x10fedcba",
+        "6B: mov dword ptr [edx + 0x7c], 0x1fa0",
+        "72: mov esp, ebp",
+        "74: pop ebp",
+        "75: ret "
+      ]
+    },
+    {
+      "symbol": "?invoke_raw@@YAXPAX000PBUSeed@@PAUResult@@@Z",
+      "machine": "I386",
+      "section": 384,
+      "symbol_value": 0,
+      "bytes": 393,
+      "sha256": "e63f4991feb9ac59a4589c102111d9bc45742243c2fb525648b99881b61c3ee5",
+      "relocations": [],
+      "instruction_count": 92,
+      "disassembly": [
+        "00: push ebp",
+        "01: mov ebp, esp",
+        "03: push ebx",
+        "04: push esi",
+        "05: push edi",
+        "06: sub esp, 0xa0",
+        "0C: fnsave dword ptr [esp]",
+        "0F: stmxcsr dword ptr [esp + 0x6c]",
+        "14: movdqu xmmword ptr [esp + 0x70], xmm0",
+        "1A: mov dword ptr [esp + 0x80], 0x1234567",
+        "25: mov dword ptr [esp + 0x84], 0x89abcdef",
+        "30: mov dword ptr [esp + 0x88], 0xfedcba98",
+        "3B: mov dword ptr [esp + 0x8c], 0x76543210",
+        "46: mov dword ptr [esp + 0x90], 0xa55a5aa5",
+        "51: mov dword ptr [esp + 0x94], 0xdeadbeef",
+        "5C: mov dword ptr [esp + 0x98], 0x13572468",
+        "67: mov dword ptr [esp + 0x9c], 0x24681357",
+        "72: mov eax, dword ptr [ebp + 0x18]",
+        "75: frstor dword ptr [eax]",
+        "77: ldmxcsr dword ptr [eax + 0x7c]",
+        "7B: movdqu xmm0, xmmword ptr [eax + 0x6c]",
+        "80: mov ebx, 0xbadc0de",
+        "85: mov esi, 0x13579bdf",
+        "8A: mov edi, 0x2468ace0",
+        "8F: mov edx, 0xeded1122",
+        "94: cld ",
+        "95: push dword ptr [ebp + 0x14]",
+        "98: push dword ptr [ebp + 0x10]",
+        "9B: mov eax, dword ptr [ebp + 0x1c]",
+        "9E: lea ecx, [esp - 4]",
+        "A2: mov dword ptr [eax + 0xa8], ecx",
+        "A8: mov ecx, dword ptr [ebp + 0xc]",
+        "AB: mov eax, dword ptr [ebp + 8]",
+        "AE: call eax",
+        "B0: pushfd ",
+        "B1: pushal ",
+        "B2: mov edi, dword ptr [ebp + 0x1c]",
+        "B5: mov eax, dword ptr [esp + 0x1c]",
+        "B9: mov dword ptr [edi], eax",
+        "BB: mov eax, dword ptr [esp + 0x18]",
+        "BF: mov dword ptr [edi + 4], eax",
+        "C2: mov eax, dword ptr [esp + 0x14]",
+        "C6: mov dword ptr [edi + 8], eax",
+        "C9: mov eax, dword ptr [esp + 0x10]",
+        "CD: mov dword ptr [edi + 0xc], eax",
+        "D0: mov eax, dword ptr [esp + 4]",
+        "D4: mov dword ptr [edi + 0x10], eax",
+        "D7: mov eax, dword ptr [esp]",
+        "DA: mov dword ptr [edi + 0x14], eax",
+        "DD: mov eax, dword ptr [esp + 8]",
+        "E1: mov dword ptr [edi + 0x18], eax",
+        "E4: mov dword ptr [edi + 0x1c], ebp",
+        "E7: mov eax, dword ptr [esp + 0x20]",
+        "EB: mov dword ptr [edi + 0x20], eax",
+        "EE: lea eax, [esp + 0x24]",
+        "F2: lea edx, [ebp - 0xac]",
+        "F8: sub eax, edx",
+        "FA: mov dword ptr [edi + 0x24], eax",
+        "FD: fnsave dword ptr [edi + 0x28]",
+        "100: movdqu xmmword ptr [edi + 0x94], xmm0",
+        "108: stmxcsr dword ptr [edi + 0xa4]",
+        "10F: mov eax, dword ptr [ebp - 0x2c]",
+        "112: mov dword ptr [edi + 0xac], eax",
+        "118: mov eax, dword ptr [ebp - 0x28]",
+        "11B: mov dword ptr [edi + 0xb0], eax",
+        "121: mov eax, dword ptr [ebp - 0x24]",
+        "124: mov dword ptr [edi + 0xb4], eax",
+        "12A: mov eax, dword ptr [ebp - 0x20]",
+        "12D: mov dword ptr [edi + 0xb8], eax",
+        "133: mov eax, dword ptr [ebp - 0x1c]",
+        "136: mov dword ptr [edi + 0xbc], eax",
+        "13C: mov eax, dword ptr [ebp - 0x18]",
+        "13F: mov dword ptr [edi + 0xc0], eax",
+        "145: mov eax, dword ptr [ebp - 0x14]",
+        "148: mov dword ptr [edi + 0xc4], eax",
+        "14E: mov eax, dword ptr [ebp - 0x10]",
+        "151: mov dword ptr [edi + 0xc8], eax",
+        "157: mov eax, dword ptr [ebp + 0x10]",
+        "15A: mov dword ptr [edi + 0xcc], eax",
+        "160: mov eax, dword ptr [ebp + 0x14]",
+        "163: mov dword ptr [edi + 0xd0], eax",
+        "169: mov eax, dword ptr [ebp + 0xc]",
+        "16C: mov dword ptr [edi + 0xd4], eax",
+        "172: frstor dword ptr [ebp - 0xac]",
+        "178: ldmxcsr dword ptr [ebp - 0x40]",
+        "17C: movdqu xmm0, xmmword ptr [ebp - 0x3c]",
+        "181: lea esp, [ebp - 0xc]",
+        "184: pop edi",
+        "185: pop esi",
+        "186: pop ebx",
+        "187: pop ebp",
+        "188: ret "
+      ]
+    }
+  ],
+  "resolved_edges": [
+    {
+      "caller": "0070D0C0",
+      "operand_offset": "18",
+      "native_target": "00815E20",
+      "Source_target_symbol": "?handoff_native_unit_wake_00815e20@bsp@@YIXPAX00@Z",
+      "linked_target": "00401030",
+      "Original_displacement_unchanged": true
+    },
+    {
+      "caller": "00815E20",
+      "operand_offset": "31",
+      "native_target": "00414DB0",
+      "Source_target_symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z",
+      "linked_target": "004010F0",
+      "Original_displacement_unchanged": true
+    },
+    {
+      "caller": "00815E20",
+      "operand_offset": "41",
+      "native_target": "00414DB0",
+      "Source_target_symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z",
+      "linked_target": "004010F0",
+      "Original_displacement_unchanged": true
+    },
+    {
+      "caller": "00815E20",
+      "operand_offset": "8B",
+      "native_target": "00815680",
+      "Source_target_symbol": "?copy_native_unit_wake_00815680@bsp@@YIXPAX0PBX@Z",
+      "linked_target": "00401530",
+      "Original_displacement_unchanged": true
+    },
+    {
+      "caller": "00414DB0",
+      "operand_offset": "17",
+      "native_target": "00414DB0",
+      "Source_target_symbol": "?refresh_native_entity_pose_00414db0@bsp@@YIXPAX0@Z",
+      "linked_target": "004010F0",
+      "Original_displacement_unchanged": true
+    },
+    {
+      "caller": "00414DB0",
+      "operand_offset": "31",
+      "native_target": "00413920",
+      "Source_target_symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+      "linked_target": "00401150",
+      "Original_displacement_unchanged": true
+    },
+    {
+      "caller": "00414DB0",
+      "operand_offset": "42",
+      "native_target": "004134F0",
+      "Source_target_symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z",
+      "linked_target": "004014C0",
+      "Original_displacement_unchanged": true
+    }
+  ],
+  "byte_account": {
+    "Original_setter": 36,
+    "Source_setter": 36,
+    "setter_instructions": 16,
+    "setter_retained_nonrelocation_bytes": 32,
+    "natural_setter_CALL_operand_bytes": 4,
+    "setter_operand_offset": "18",
+    "Original_raw_graph_bodies": 6,
+    "Original_raw_graph_complete_code_bytes": 1740,
+    "Original_raw_graph_instructions": 546,
+    "Source_raw_graph_complete_code_bytes": 1740,
+    "additional_Source_constructor_setup_bytes": 132,
+    "additional_Source_constructor_setup_instructions": 39,
+    "Original_island_bytes": 4205030,
+    "Original_CALL_operand_patches": 0,
+    "all_seven_Original_edges_natural": true,
+    "all_seven_Source_edges_canonical_direct": true,
+    "all_live_PE_COFF_linked_fixed_bytes_equal": true,
+    "all_six_executed_raw_Original_and_Source_bodies_unchanged": true,
+    "Source_constructor_complete_linked_body_unchanged": true,
+    "Native_constructor_executed": false,
+    "matrix_copy_exact_extent": "103B35 instructions, excludes following CC padding"
+  },
+  "fixture": {
+    "status": "PASS",
+    "checks": 383,
+    "cases": [
+      {
+        "index": 0,
+        "name": "equal_nonnull_third_stored_leader",
+        "logged_values": {
+          "group": "0073F030",
+          "next": "0073CD30",
+          "previous": "0073CD30",
+          "stored_before": "0073DD30",
+          "stored_after": "0073DD30",
+          "CW": "037F",
+          "SW_before": "7520",
+          "SW_after": "7520",
+          "TOP": "6",
+          "TAG": "0FFF",
+          "EAX": "0073CD30",
+          "ECX": "0073F030",
+          "EDX": "EDED1122",
+          "EFLAGS": "00000246",
+          "ESPdelta": "0",
+          "entryESP": "0072E898",
+          "MXCSR": "00001FA0",
+          "XMM0": "seed_unchanged",
+          "X": "98734E29",
+          "Y": "2C07E2BD",
+          "Z": "C09B7651",
+          "FPIP_original": "00DE26C5",
+          "FPIP_source": "00DE26C5",
+          "backing": "10368_exact",
+          "frame": "32_exact"
+        },
+        "backing_bytes_equal": 10368,
+        "precise_allowed_write_bytes": 0,
+        "changed_backing_bytes": 0,
+        "constructor_setup_allowed_write_bytes": 989,
+        "all_constructor_storage_and_guards_verified": true,
+        "old_inline_ring_unchanged": true,
+        "saved_state_frame_argument_bytes": 216,
+        "stack_guard_bytes": 32,
+        "different_state_byte_offsets": [],
+        "only_natural_wake_FPIP_differs": false,
+        "no_wake_entire_x87_XMM0_preserved": true,
+        "all_80_x87_payload_bytes_equal": true,
+        "live_80bit_canaries_preserved": 2,
+        "empty_x87_stack_required": false,
+        "all_precise_writes_registers_stack_FP_SSE_checks_passed": true
+      },
+      {
+        "index": 1,
+        "name": "different_previous_NULL",
+        "logged_values": {
+          "group": "0073F030",
+          "next": "0073CD30",
+          "previous": "00000000",
+          "stored_before": "0073DD30",
+          "stored_after": "0073CD30",
+          "CW": "0A7F",
+          "SW_before": "7520",
+          "SW_after": "7520",
+          "TOP": "6",
+          "TAG": "0FFF",
+          "EAX": "00000000",
+          "ECX": "0073F030",
+          "EDX": "EDED1122",
+          "EFLAGS": "00000246",
+          "ESPdelta": "0",
+          "entryESP": "0072E898",
+          "MXCSR": "00001FA0",
+          "XMM0": "seed_unchanged",
+          "X": "AB86613C",
+          "Y": "3F1AF5D0",
+          "Z": "D3AE8964",
+          "FPIP_original": "00DE26C5",
+          "FPIP_source": "00DE26C5",
+          "backing": "10368_exact",
+          "frame": "32_exact"
+        },
+        "backing_bytes_equal": 10368,
+        "precise_allowed_write_bytes": 4,
+        "changed_backing_bytes": 1,
+        "constructor_setup_allowed_write_bytes": 989,
+        "all_constructor_storage_and_guards_verified": true,
+        "old_inline_ring_unchanged": true,
+        "saved_state_frame_argument_bytes": 216,
+        "stack_guard_bytes": 32,
+        "different_state_byte_offsets": [],
+        "only_natural_wake_FPIP_differs": false,
+        "no_wake_entire_x87_XMM0_preserved": true,
+        "all_80_x87_payload_bytes_equal": true,
+        "live_80bit_canaries_preserved": 2,
+        "empty_x87_stack_required": false,
+        "all_precise_writes_registers_stack_FP_SSE_checks_passed": true
+      },
+      {
+        "index": 2,
+        "name": "real_wake_dirty_roots",
+        "logged_values": {
+          "group": "0073F030",
+          "next": "0073CD30",
+          "previous": "0073DD30",
+          "stored_before": "0073DD30",
+          "stored_after": "0073CD30",
+          "CW": "027F",
+          "SW_before": "7520",
+          "SW_after": "7523",
+          "TOP": "6",
+          "TAG": "0FFF",
+          "EAX": "0073DCCC",
+          "ECX": "00000000",
+          "EDX": "0073ECD4",
+          "EFLAGS": "00000206",
+          "ESPdelta": "0",
+          "entryESP": "0072E898",
+          "MXCSR": "00001FA0",
+          "XMM0": "zero",
+          "X": "41400000",
+          "Y": "00000000",
+          "Z": "40800000",
+          "FPIP_original": "01EE29D9",
+          "FPIP_source": "00DE10D9",
+          "backing": "10368_exact",
+          "frame": "32_exact"
+        },
+        "backing_bytes_equal": 10368,
+        "precise_allowed_write_bytes": 1112,
+        "changed_backing_bytes": 972,
+        "constructor_setup_allowed_write_bytes": 989,
+        "all_constructor_storage_and_guards_verified": true,
+        "old_inline_ring_unchanged": true,
+        "saved_state_frame_argument_bytes": 216,
+        "stack_guard_bytes": 32,
+        "different_state_byte_offsets": [
+          53,
+          54,
+          55
+        ],
+        "only_natural_wake_FPIP_differs": true,
+        "no_wake_entire_x87_XMM0_preserved": false,
+        "all_80_x87_payload_bytes_equal": true,
+        "live_80bit_canaries_preserved": 2,
+        "empty_x87_stack_required": false,
+        "all_precise_writes_registers_stack_FP_SSE_checks_passed": true
+      },
+      {
+        "index": 3,
+        "name": "real_wake_next_parent_is_previous",
+        "logged_values": {
+          "group": "0073F030",
+          "next": "0073CD30",
+          "previous": "0073DD30",
+          "stored_before": "0073DD30",
+          "stored_after": "0073CD30",
+          "CW": "0A7F",
+          "SW_before": "5D20",
+          "SW_after": "5D23",
+          "TOP": "3",
+          "TAG": "FFFF",
+          "EAX": "0073DCCC",
+          "ECX": "00000000",
+          "EDX": "0073ECD4",
+          "EFLAGS": "00000206",
+          "ESPdelta": "0",
+          "entryESP": "0072E898",
+          "MXCSR": "00001FA0",
+          "XMM0": "zero",
+          "X": "40000000",
+          "Y": "00000000",
+          "Z": "C0400000",
+          "FPIP_original": "01EE29D9",
+          "FPIP_source": "00DE10D9",
+          "backing": "10368_exact",
+          "frame": "32_exact"
+        },
+        "backing_bytes_equal": 10368,
+        "precise_allowed_write_bytes": 1178,
+        "changed_backing_bytes": 987,
+        "constructor_setup_allowed_write_bytes": 989,
+        "all_constructor_storage_and_guards_verified": true,
+        "old_inline_ring_unchanged": true,
+        "saved_state_frame_argument_bytes": 216,
+        "stack_guard_bytes": 32,
+        "different_state_byte_offsets": [
+          53,
+          54,
+          55
+        ],
+        "only_natural_wake_FPIP_differs": true,
+        "no_wake_entire_x87_XMM0_preserved": false,
+        "all_80_x87_payload_bytes_equal": true,
+        "live_80bit_canaries_preserved": 0,
+        "empty_x87_stack_required": true,
+        "all_precise_writes_registers_stack_FP_SSE_checks_passed": true
+      }
+    ],
+    "case_count": 4,
+    "Original_Source_calls": 8,
+    "families": 1,
+    "failures": 0,
+    "check_count_qualification": "Includes fixture preconditions, artifact I/O, full-body/pointer/constructor/whole-storage, register/frame/argument and floating-state checks.",
+    "whole_body_preservation": [
+      {
+        "address": "0070D0C0",
+        "bytes": 36,
+        "Original_before_after_PE_exact": true,
+        "Source_before_after_linked_exact": true
+      },
+      {
+        "address": "00815E20",
+        "bytes": 182,
+        "Original_before_after_PE_exact": true,
+        "Source_before_after_linked_exact": true
+      },
+      {
+        "address": "00414DB0",
+        "bytes": 89,
+        "Original_before_after_PE_exact": true,
+        "Source_before_after_linked_exact": true
+      },
+      {
+        "address": "00413920",
+        "bytes": 874,
+        "Original_before_after_PE_exact": true,
+        "Source_before_after_linked_exact": true
+      },
+      {
+        "address": "004134F0",
+        "bytes": 103,
+        "Original_before_after_PE_exact": true,
+        "Source_before_after_linked_exact": true
+      },
+      {
+        "address": "00815680",
+        "bytes": 456,
+        "Original_before_after_PE_exact": true,
+        "Source_before_after_linked_exact": true
+      }
+    ],
+    "Source_constructor_setup": {
+      "calls": 4,
+      "native_constructor_calls": 0,
+      "whole_Source_bytes": 132,
+      "whole_Source_instructions": 39,
+      "whole_Source_before_after_linked_exact": true,
+      "constant_address": "00CF4888",
+      "actual_constant_bits": "4479C000",
+      "constant_and_guards_unchanged": true,
+      "native_vtable_stamp": "00CFD6F8",
+      "vtable_stamp_not_called": true
+    },
+    "preservation": {
+      "paths_checked": 581,
+      "all_current_paths_unchanged": true,
+      "previous_current318_paths_unchanged": true,
+      "previous_sealed159_handoff_artifacts_unchanged": true,
+      "published_handoff_changes_before_this_run": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/docs/CC11_UNIT_WAKE_HANDOFF.md",
+          "worker_sha256": "58f1e406c70196bacb7b95148ef4b567999a37404340b43188a5efdbc677fc44",
+          "published_sha256": "fa63418f3d5e77f00c86c73f3d190b75e36badc5d90076fe42f181dc7a28d41e",
+          "historical_frozen": "local/cc11_unit_group_set_leader_20261007_a/historical_prior/CC11_UNIT_WAKE_HANDOFF.md",
+          "reason": "Authorized sync to published main changed only primary integration documentation/report fields."
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/reports/cc11_unit_wake_handoff.json",
+          "worker_sha256": "3425ad373ca017119afae4fad73d0a3d19916615e76b96d8be7d5de06e624cfe",
+          "published_sha256": "5891ffbfe5118f6271a65740afd291f2e62f2fdf28d95dad57320d76cc0b3590",
+          "historical_frozen": "local/cc11_unit_group_set_leader_20261007_a/historical_prior/cc11_unit_wake_handoff.json",
+          "reason": "Authorized sync to published main changed only primary integration documentation/report fields."
+        }
+      ],
+      "both_historical_handoff_versions_preserved_in_new_receipt": true,
+      "older_copy_historical_changes_already_disclosed": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/docs/CC11_UNIT_WAKE_COPY.md",
+          "audit_sha256": "9931f77a08e2c5d1f0f04b4e60ce8e24fd5ef51d50d73135e9720ec80d8e9457",
+          "published_sha256": "eaa1a893a9e1934df98d1843207a806fef674956d4d036d9d19d4cccd9235d85",
+          "historical_frozen": "local/cc11_unit_wake_handoff_20261007_a/historical_prior/CC11_UNIT_WAKE_COPY.md",
+          "reason": "Authorized sync to published main added primary integration documentation/report fields."
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/reports/cc11_unit_wake_copy.json",
+          "audit_sha256": "a2c9784454a155a8905a7576e9f514f882cb16771f765c103845573d1a4efc06",
+          "published_sha256": "391c3f7f4390a66d33c40110d99afa2c774c18612808a1f1072cac7c61db3948",
+          "historical_frozen": "local/cc11_unit_wake_handoff_20261007_a/historical_prior/cc11_unit_wake_copy.json",
+          "reason": "Authorized sync to published main added primary integration documentation/report fields."
+        }
+      ],
+      "original_image_unchanged": true,
+      "actual_inputs_unchanged": 16,
+      "host_headers_unchanged": 266,
+      "system_libraries_unchanged": 7,
+      "selected_tools_unchanged": 3,
+      "native_execution_count": 1,
+      "old_fixture_executions": 0
+    },
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "physical_flags_qualification": "EFLAGS246 no-wake and206 wake observed for this physical stack. Each same-callsite Original/Source comparison matches; wake flags are not an intrinsic function constant.",
+    "failed_attempts": {
+      "preparation_command_failures": 1,
+      "pre_run_inspection_script_failures": 2,
+      "compile_failures": 0,
+      "native_execution_failures": 0,
+      "all_failed_scripts_and_failure_receipts_preserved": true,
+      "orientation_command_rejections": 1,
+      "orientation_receipt": "local/cc11_unit_group_set_leader_20261007_a/orientation_command_rejection.json"
+    },
+    "qualifier": "Conditional in-process borrowed storage and raw entry evidence; Source ctor supplies shared storage setup only, not Native class construction or lifetime. No full ABI, unmasked exception, concurrency, caller/type/speed/detach/world/game claim."
+  },
+  "build": {
+    "strict_MSVC_Win32": true,
+    "fresh_translation_units": 8,
+    "actual_frozen_inputs": 16,
+    "host_headers": 266,
+    "system_libraries_searched": 7,
+    "selected_tool_files": 3,
+    "embedded_manifest": "I386 PE32, asInvoker",
+    "flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /showIncludes",
+    "link_flags": "/MANIFEST:EMBED /OPT:REF /VERBOSE:LIB /MAP kernel32.lib",
+    "BSP_support_archives": [],
+    "main_core_sha_context_not_consumed": "5a27ed8f86caa5fe76affd2328f4d1e8cc1377a1c910c213752b91165cf629ae",
+    "prior_paths_pin_mutable_main_build_or_any_lib": false,
+    "source_only_compile_passed_first_attempt": true,
+    "connected_compile_passed_first_attempt": true,
+    "failed_attempts": {
+      "preparation_command_failures": 1,
+      "pre_run_inspection_script_failures": 2,
+      "compile_failures": 0,
+      "native_execution_failures": 0,
+      "all_failed_scripts_and_failure_receipts_preserved": true,
+      "orientation_command_rejections": 1,
+      "orientation_receipt": "local/cc11_unit_group_set_leader_20261007_a/orientation_command_rejection.json"
+    },
+    "native_family_executions": 1,
+    "full_repository_build_run": false,
+    "existing_CTests_run": false,
+    "tracked_tests_added": 0
+  },
+  "actual_inputs": {
+    "source_head": "92d03f4996802d300a59b49a263d8098940d4d45",
+    "files": [
+      {
+        "current": "src/native_unit_group_set_leader.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_set_leader.cpp",
+        "bytes": 1040,
+        "sha256": "0c73e1f7ea5bfa2e5da38d1b829fbae7b70ed45c2efb10cfed5367fc333dbf11"
+      },
+      {
+        "current": "include/bsp/native_unit_group_set_leader.hpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_group_set_leader.hpp",
+        "bytes": 1031,
+        "sha256": "6a318789cc27c2d98fa6c606cd5fb3a0f91c0381a77afcfc16abd976f38ce061"
+      },
+      {
+        "current": "src/native_unit_wake_handoff.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_handoff.cpp",
+        "bytes": 2028,
+        "sha256": "f50febf985dbc1f8956fdd534f49fd572498f4f73e1a81198d0cd4da9e73bdfa"
+      },
+      {
+        "current": "include/bsp/native_unit_wake_handoff.hpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_wake_handoff.hpp",
+        "bytes": 1393,
+        "sha256": "364eda6e48e166360fbe599f4c1cc99b52e5afda4e37cfec563b94fcd21d6a57"
+      },
+      {
+        "current": "src/native_entity_pose.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_entity_pose.cpp",
+        "bytes": 1322,
+        "sha256": "22746be40480d7f293b4dbaca80918eb68be2c1cfaf6c3eee4c6544146a1e94c"
+      },
+      {
+        "current": "include/bsp/native_entity_pose.hpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_entity_pose.hpp",
+        "bytes": 909,
+        "sha256": "5454b73171089506531269459093df4c79b64c4aedb3a7f25fd96e2d48560f15"
+      },
+      {
+        "current": "src/native_camera_matrix_math.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_math.cpp",
+        "bytes": 23218,
+        "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0"
+      },
+      {
+        "current": "include/bsp/native_camera_matrix_math.hpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_camera_matrix_math.hpp",
+        "bytes": 1803,
+        "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d"
+      },
+      {
+        "current": "src/native_camera_matrix_copy.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_copy.cpp",
+        "bytes": 1626,
+        "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+      },
+      {
+        "current": "include/bsp/native_camera_matrix_copy.hpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_camera_matrix_copy.hpp",
+        "bytes": 606,
+        "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+      },
+      {
+        "current": "src/native_unit_wake_copy.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_copy.cpp",
+        "bytes": 5408,
+        "sha256": "7cf79dad42ef00cb3adc803a569cc4fa0074ab35e01737a4f131ef2b9d8c630b"
+      },
+      {
+        "current": "include/bsp/native_unit_wake_copy.hpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_wake_copy.hpp",
+        "bytes": 1262,
+        "sha256": "29af72184bcd52d71ca0fc55f0d12c34575f71b5d35f5917a502f2c3651ba339"
+      },
+      {
+        "current": "src/native_unit_group_storage.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_storage.cpp",
+        "bytes": 1542,
+        "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+      },
+      {
+        "current": "include/bsp/native_unit_group_storage.hpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_group_storage.hpp",
+        "bytes": 930,
+        "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+      },
+      {
+        "current": "local/cc11_unit_group_set_leader_20261007_a/probe.cpp",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/probe/probe.cpp",
+        "bytes": 23038,
+        "sha256": "ad91b0c95536baa3f43d0145f66fc89cb637751705ba0eceaf07ee80c82a3b26"
+      },
+      {
+        "current": "local/cc11_unit_group_set_leader_20261007_a/pe_reader.inc",
+        "frozen": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/probe/pe_reader.inc",
+        "bytes": 2138,
+        "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96"
+      }
+    ],
+    "fresh_translation_units": [
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_set_leader.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_handoff.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_entity_pose.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_math.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_copy.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_copy.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_storage.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/probe/probe.cpp"
+    ],
+    "BSP_support_libraries": [],
+    "qualification": "Eight fresh TUs: six raw graph production bodies, current genuine Source group constructor for shared setup only, and new fixture. Native constructor is not executed.",
+    "actual_frozen_inputs": [
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_camera_matrix_copy.hpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_camera_matrix_math.hpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_entity_pose.hpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_group_set_leader.hpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_group_storage.hpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_wake_copy.hpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_wake_handoff.hpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/probe/pe_reader.inc",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/probe/probe.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_copy.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_math.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_entity_pose.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_set_leader.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_storage.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_copy.cpp",
+      "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_handoff.cpp"
+    ],
+    "host_headers": [
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_bit_utils.hpp",
+        "bytes": 15192,
+        "sha256": "16e211c59fcbcaf645edb613f7e50dfefb581073071f3e13b3e66ad8cabd197a"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_doom_core.hpp",
+        "bytes": 2756,
+        "sha256": "06f0d5fece0ff0c2b7c36346ae8471df661f07601fcb5501cf1f19f1c130ae63"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_filebuf.hpp",
+        "bytes": 27781,
+        "sha256": "281fa0b5e253bee79ebcf55c50000ff94614a0764e6b8c3863e92e817eed9a1f"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_iter_core.hpp",
+        "bytes": 19874,
+        "sha256": "31f6c29179177ad3aa6c3e930b5b785e6302fb817280749200ffe691cdc6d331"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_ostream.hpp",
+        "bytes": 37506,
+        "sha256": "8994a33650247fceb4eb5b531c82c00c7577d583edcb2ce0815007408b19165e"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_sanitizer_annotate_container.hpp",
+        "bytes": 11024,
+        "sha256": "061c14cd379f9b8fc6e764c0c32b83d019c06136794a9f7e7e53a38a599b18e6"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_string_view.hpp",
+        "bytes": 90494,
+        "sha256": "0f17b9360bd7f327e1a3910b2131c59a7c31b19b5e795780588e550d73e28851"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_system_error_abi.hpp",
+        "bytes": 1224,
+        "sha256": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_threads_core.hpp",
+        "bytes": 3281,
+        "sha256": "50430177a6bee373d83d0ef84658395909276403d6c29b5196619e5f2d5de5af"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_xlocinfo_types.hpp",
+        "bytes": 1207,
+        "sha256": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ammintrin.h",
+        "bytes": 16119,
+        "sha256": "d53a3e43803820ffe804f2f0266ce7a3166d6c7ae82b0dfba2a4ae2601eb059f"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/array",
+        "bytes": 28800,
+        "sha256": "823bff850876472cb1d3209ca745a0f1c4c9caf09a26720f096d7336cbe1d16f"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/atomic",
+        "bytes": 125169,
+        "sha256": "2f24fbb8dceb9dccc86f9a61493301ae3aa99ee572e2c4227428992a32e713f4"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cctype",
+        "bytes": 1113,
+        "sha256": "d764f74333f84776e778d936af9c78d9a9a21a0668dc1833fdd4a98e26a00f18"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cerrno",
+        "bytes": 314,
+        "sha256": "4c8b39febc5b11b08e7a1253dc363bd8c8acdbe0159855b1c15d21b604f71e74"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cfloat",
+        "bytes": 242,
+        "sha256": "615e244a422277b8362e591881df1bd701d7e0ad0467d1787cb04a89565b333c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/climits",
+        "bytes": 319,
+        "sha256": "dd0a6215a16748afdb3c6ad3f877e32ffab31326645b14dda13fdc76c2683da4"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/clocale",
+        "bytes": 744,
+        "sha256": "95cb0b228d1448969c55add911b4abe6d0108422c05ba27a71dd3ec7d4f61e38"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cmath",
+        "bytes": 72317,
+        "sha256": "b8d2e85a83f0b173863dc4dd56eae8b7b8dcd366d3ae103b429f51bf620449cd"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/concurrencysal.h",
+        "bytes": 17273,
+        "sha256": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/crtdefs.h",
+        "bytes": 2581,
+        "sha256": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstddef",
+        "bytes": 4015,
+        "sha256": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdint",
+        "bytes": 1697,
+        "sha256": "ce03526f2948c653a2ca8f68b9a8a8f0e13648243ab24068cdd473a52d4774c5"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdio",
+        "bytes": 2511,
+        "sha256": "d13434f976c70f1ea3f930ad63121bfd8cfb5c736cfc48a91f06a7608b1fbaa0"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdlib",
+        "bytes": 2532,
+        "sha256": "0a7edd2c3ba954e98aa26894f28c3eb7fb9b0ba748261ec6e568563ed17b2fc4"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstring",
+        "bytes": 1532,
+        "sha256": "6f16cc44e5505c1d46e0869b8a7cbabf0be1646203261ab6e885165faceb98a6"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ctime",
+        "bytes": 3296,
+        "sha256": "702d79a569a3c18256e7a1318691942c38fed334dd6339c9b91a2f92f4bb1f16"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cwchar",
+        "bytes": 3044,
+        "sha256": "6395a6c56a62c4b02e58f4f5bf6904f7baabd7b90d0de281148ee3c115e7291a"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/eh.h",
+        "bytes": 2206,
+        "sha256": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/emmintrin.h",
+        "bytes": 16130,
+        "sha256": "735efe76e3f5190c1b2c0c7aadcbec4a4bf1156f91cb12f7be3ed53ad1709a5a"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/exception",
+        "bytes": 13765,
+        "sha256": "49c3ebe69f8fd1947c6a05f7de89dd17fc962e4c229b8bf1a5b0d040e5dcb0cb"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/excpt.h",
+        "bytes": 2493,
+        "sha256": "9532b07eff7b34c062401b7155fe77494068e82bb7c2bef34cec5937e948cefc"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/fstream",
+        "bytes": 17853,
+        "sha256": "bc2581a3c62f9faacb06e7cf2d325caec8ab1668f60988e1ad1dd5a308c7a5d4"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/immintrin.h",
+        "bytes": 121509,
+        "sha256": "a23efe7eceb2bc98584124a8263bcff1ec7f273b6d1f58ec634ddee6bd63a466"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/initializer_list",
+        "bytes": 2113,
+        "sha256": "7d15e533e1453ef99e71156c470f7d3b7ece6b7c55527b8b15fe24dabedeb196"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin.h",
+        "bytes": 64899,
+        "sha256": "80919d795d8c0793dae4a3698a683bee8186f357ff46f0d72e05bb3309d06011"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin0.h",
+        "bytes": 543,
+        "sha256": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin0.inl.h",
+        "bytes": 20586,
+        "sha256": "6f044368f38ba290c9f40260d4d55bf7bc23e8edd0cbba9291d5a222a74f80f8"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ios",
+        "bytes": 10486,
+        "sha256": "3d0a96d6228a23c017afd63633359edbaddfce430ace5bd0b94031ade44c0186"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/iosfwd",
+        "bytes": 11546,
+        "sha256": "5bb1f37c08ab118972567c468f8f9e024046b7bd1f884571828a19006b3b4076"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/istream",
+        "bytes": 35008,
+        "sha256": "5cd13c4359146d0e1183cff78b5a7b03eea1d38073b6eb533c5238fe726f79a2"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/iterator",
+        "bytes": 56587,
+        "sha256": "cab4f393f89858e2f8ee63482b0f9a7fadd5978928aca30b01151b29c72934d3"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/limits",
+        "bytes": 27812,
+        "sha256": "dde4a73958faee94656e0fdc37d73a686aee75f8a5dc6dbc478bed56178f2f2a"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/limits.h",
+        "bytes": 1919,
+        "sha256": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/memory",
+        "bytes": 182088,
+        "sha256": "8955101828fe9d46c77e214e50415bac5b1e59697e0f59bc46fa145aa1e8ae4c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/mm3dnow.h",
+        "bytes": 3202,
+        "sha256": "da11304a505d7a70dacacba6dfa22be8d4dbcf44736682899ca8551eb03de4d1"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/mmintrin.h",
+        "bytes": 6634,
+        "sha256": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/new",
+        "bytes": 1991,
+        "sha256": "a88db84beaf4d5d201a7a8393d0a41d647072da207a0c7e2ffe0e9997aef0e2a"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/nmmintrin.h",
+        "bytes": 4632,
+        "sha256": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/pmmintrin.h",
+        "bytes": 3208,
+        "sha256": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/sal.h",
+        "bytes": 213957,
+        "sha256": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/setjmp.h",
+        "bytes": 3810,
+        "sha256": "7e4243ef92eee5f552fe66256e4b7d6f20b9050fbc034fcc9458cae39dcecf5e"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/smmintrin.h",
+        "bytes": 10000,
+        "sha256": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdarg.h",
+        "bytes": 554,
+        "sha256": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdexcept",
+        "bytes": 5213,
+        "sha256": "e677daf8465dd4b870f420df9010ee3a17cd80fb6f6f5655f2ad3dc6d8009ae1"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdint.h",
+        "bytes": 4114,
+        "sha256": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/streambuf",
+        "bytes": 15129,
+        "sha256": "b8bec573d0d281db12a779a161e0485d9b801fc8d7f040752909aa15cebb8478"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/string",
+        "bytes": 16455,
+        "sha256": "dafa5ec4d069f7e85001d6a03fdcac5bde1d18eb7412240aa5cc7e10c7cddf05"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/system_error",
+        "bytes": 29567,
+        "sha256": "d6d9b5c66e9aeae9e1297ef6cc682033b5d9eaf0f199ce6a103308afd38c5f85"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/tmmintrin.h",
+        "bytes": 4763,
+        "sha256": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/tuple",
+        "bytes": 70727,
+        "sha256": "dcabb4e66cfb39d4068fd92a8e181b96405d5cbdb946fbf6ae852b55cce86565"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/type_traits",
+        "bytes": 117009,
+        "sha256": "c04ca6a9f8e48aaa077714c8a34cb52f00216d5de9e0d05065642c19cf41c1d5"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/typeinfo",
+        "bytes": 2112,
+        "sha256": "9fe7fd18aaf6ea9714837a862d40d3bbaebdf57321a60f0951a0fafd157e25d2"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/use_ansi.h",
+        "bytes": 1330,
+        "sha256": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/utility",
+        "bytes": 47053,
+        "sha256": "70d85f5ad793a8b8891e02d13b7a348423ce195fa144ff612c0bf0755eea64e0"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vadefs.h",
+        "bytes": 7668,
+        "sha256": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime.h",
+        "bytes": 11444,
+        "sha256": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_exception.h",
+        "bytes": 3143,
+        "sha256": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_new.h",
+        "bytes": 5547,
+        "sha256": "5ee35f7b2db5dffa801c5fd2f6053ff03d9b09f06d5452b15e4b3d7d22e0b87d"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_new_debug.h",
+        "bytes": 1578,
+        "sha256": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_string.h",
+        "bytes": 2959,
+        "sha256": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_typeinfo.h",
+        "bytes": 5313,
+        "sha256": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vector",
+        "bytes": 169028,
+        "sha256": "b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/wmmintrin.h",
+        "bytes": 2615,
+        "sha256": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xatomic.h",
+        "bytes": 4862,
+        "sha256": "7e1abd2855dbb3a253581696f8e3f096309d84ef1f576908a8959ea473de7e12"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xcall_once.h",
+        "bytes": 3896,
+        "sha256": "1d209e2f8b71c3cf36253fee4d7e6edd8450c831f5bd7f33d7e2964ca4a13544"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xerrc.h",
+        "bytes": 6445,
+        "sha256": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xfacet",
+        "bytes": 1473,
+        "sha256": "71d7bd76e31f7aee31c2d22386e00bf508936cea4e510ed3a7cde20dc3ab8312"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xiosbase",
+        "bytes": 16541,
+        "sha256": "c065a4de2c93df21a3df510158cd0cd08a45bea61188867026491c35198476e0"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xkeycheck.h",
+        "bytes": 20754,
+        "sha256": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xlocale",
+        "bytes": 127795,
+        "sha256": "d9a25c7471ef2c304dee80b1567e385c58f6395901fcc8dddf31e7cf927c1676"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xlocinfo",
+        "bytes": 14513,
+        "sha256": "dbe56d1af1337f6c501e1fae84c6e0b5e7ed5758fd9480e538dbb992df04d82b"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xlocnum",
+        "bytes": 73151,
+        "sha256": "bc5d777f8743572e650852c78c8a46dab766462684e27953e3c982b05426659c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xmemory",
+        "bytes": 115075,
+        "sha256": "0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xmmintrin.h",
+        "bytes": 20078,
+        "sha256": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xpolymorphic_allocator.h",
+        "bytes": 17150,
+        "sha256": "5d2cce0665bd140efba9be3ac1fbf5cd2cdbadc68a0dce66b8de0bf88acab0e3"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xstring",
+        "bytes": 170303,
+        "sha256": "ab80a6b60196246d1c8653e6d55f78e3cbaaf4207860a37cf6996cdc833eea7a"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xthreads.h",
+        "bytes": 4138,
+        "sha256": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xtimec.h",
+        "bytes": 1755,
+        "sha256": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xtr1common",
+        "bytes": 8613,
+        "sha256": "cdffecba4f44c22fe4f809c6e4f6eeee628a7331a1b2e4ffd5dba32afcda2dcd"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xutility",
+        "bytes": 352139,
+        "sha256": "44344065c26095b03a7228d2c733d41532ae99a56bbadf052baba64d22e39a9d"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/yvals.h",
+        "bytes": 16953,
+        "sha256": "9a5c69cc397b3eb33601b0c165276e92d28def742876b8124622830dc3c3e1c6"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/yvals_core.h",
+        "bytes": 100570,
+        "sha256": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/zmmintrin.h",
+        "bytes": 501410,
+        "sha256": "12c732298b86162914cee68c5dfe2f83b5c1fe71602707eca695901443bdac01"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/apiset.h",
+        "bytes": 6423,
+        "sha256": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/apisetcconv.h",
+        "bytes": 2162,
+        "sha256": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/basetsd.h",
+        "bytes": 11448,
+        "sha256": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/bcrypt.h",
+        "bytes": 77717,
+        "sha256": "c979ee7490ec190779385d69a39026f9d79308eeb6aaada64ef0766c1e3e0376"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/cderr.h",
+        "bytes": 2242,
+        "sha256": "bf32afdc975ba03781b01dfc7b3a450787cc213257a3f4b7f53ec168ce07dd7c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/driverspecs.h",
+        "bytes": 41698,
+        "sha256": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/guiddef.h",
+        "bytes": 5083,
+        "sha256": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/inaddr.h",
+        "bytes": 1115,
+        "sha256": "a2ae281be066b6a2164ae5639dca411d8b03842ff91b216396203b1e62038572"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/kernelspecs.h",
+        "bytes": 11879,
+        "sha256": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/ktmtypes.h",
+        "bytes": 7849,
+        "sha256": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/minwindef.h",
+        "bytes": 6876,
+        "sha256": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+        "bytes": 1021,
+        "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack1.h",
+        "bytes": 918,
+        "sha256": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h",
+        "bytes": 918,
+        "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h",
+        "bytes": 918,
+        "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack8.h",
+        "bytes": 918,
+        "sha256": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/rpc.h",
+        "bytes": 5189,
+        "sha256": "063bd35df91c85b029064abe19d635d985e414c9733c60ee8ca8ce937c98d6d5"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/rpcasync.h",
+        "bytes": 19693,
+        "sha256": "5e91801cee17b175a397cc56ff08790783d4fcdbc8d52fe7bb7461ccfa369a85"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/rpcdce.h",
+        "bytes": 89430,
+        "sha256": "991883893134c8ecbe6af8335df0781bfb779c11684b3367def514136241b866"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/rpcdcep.h",
+        "bytes": 32196,
+        "sha256": "df032ed7952b84113857284d86e7365b158cc57f955a5c0580e57e96c6df5ba2"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/rpcndr.h",
+        "bytes": 81583,
+        "sha256": "7eeaaa2b4a5972b44a03086884eeb4338d2b0790e3dbc3cb858cbab5fa813978"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/rpcnterr.h",
+        "bytes": 17723,
+        "sha256": "9d94281cbd9272e02a39b51e19367df2a87f3756b85b5c848bee38828e0cdc23"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/rpcsal.h",
+        "bytes": 30696,
+        "sha256": "c15959eb632ab0f27d2bcb3b6873cd2873bdd5669069409d936ef993dcb1c108"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/sdkddkver.h",
+        "bytes": 11565,
+        "sha256": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/sdv_driverspecs.h",
+        "bytes": 554,
+        "sha256": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings.h",
+        "bytes": 48804,
+        "sha256": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings_strict.h",
+        "bytes": 67448,
+        "sha256": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings_undef.h",
+        "bytes": 13106,
+        "sha256": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/stralign.h",
+        "bytes": 16784,
+        "sha256": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/tvout.h",
+        "bytes": 4128,
+        "sha256": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winapifamily.h",
+        "bytes": 11292,
+        "sha256": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/windef.h",
+        "bytes": 7362,
+        "sha256": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winerror.h",
+        "bytes": 1622697,
+        "sha256": "607a0b5fb2ce91048147796f618cd1d408ffc603cfc3a34dc710be087e7d1a5c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winpackagefamily.h",
+        "bytes": 3699,
+        "sha256": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winsmcrd.h",
+        "bytes": 14216,
+        "sha256": "d692cc4fe3b409bbbf175df4ef4d648813d366001e479de06631650d548a517e"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/wnnc.h",
+        "bytes": 4001,
+        "sha256": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/wtypes.h",
+        "bytes": 23996,
+        "sha256": "71417094369493700ce385e32c63002ed651dd70b5d7f7d8a6f64c9e9a0939db"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/WTypesbase.h",
+        "bytes": 14187,
+        "sha256": "e5277f89186f786ae0923c9d7689a16d91dbeff7fad36a86b08671416e4b679d"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt.h",
+        "bytes": 127273,
+        "sha256": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_malloc.h",
+        "bytes": 7405,
+        "sha256": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_math.h",
+        "bytes": 39299,
+        "sha256": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_memcpy_s.h",
+        "bytes": 3692,
+        "sha256": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_memory.h",
+        "bytes": 3527,
+        "sha256": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_search.h",
+        "bytes": 10959,
+        "sha256": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_share.h",
+        "bytes": 1005,
+        "sha256": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_stdio_config.h",
+        "bytes": 5009,
+        "sha256": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_terminate.h",
+        "bytes": 1223,
+        "sha256": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wconio.h",
+        "bytes": 13310,
+        "sha256": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wctype.h",
+        "bytes": 10605,
+        "sha256": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wdirect.h",
+        "bytes": 1495,
+        "sha256": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wio.h",
+        "bytes": 7427,
+        "sha256": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wprocess.h",
+        "bytes": 3980,
+        "sha256": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstdio.h",
+        "bytes": 75265,
+        "sha256": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstdlib.h",
+        "bytes": 16790,
+        "sha256": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstring.h",
+        "bytes": 20015,
+        "sha256": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wtime.h",
+        "bytes": 7205,
+        "sha256": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/crtdbg.h",
+        "bytes": 32615,
+        "sha256": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/ctype.h",
+        "bytes": 12981,
+        "sha256": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/errno.h",
+        "bytes": 3835,
+        "sha256": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/float.h",
+        "bytes": 15397,
+        "sha256": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/locale.h",
+        "bytes": 5109,
+        "sha256": "877aa49e1f22814dd5634e785d305210d3c7ac0a1274e8552ce4f687a91ac4cb"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/malloc.h",
+        "bytes": 5079,
+        "sha256": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/math.h",
+        "bytes": 505,
+        "sha256": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/share.h",
+        "bytes": 312,
+        "sha256": "f706b5df86d1bdf22cfe8d86dc798b255ce1bd2719d5d25f8f491595075a2bc2"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stddef.h",
+        "bytes": 1413,
+        "sha256": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stdio.h",
+        "bytes": 81489,
+        "sha256": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stdlib.h",
+        "bytes": 43968,
+        "sha256": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/string.h",
+        "bytes": 17395,
+        "sha256": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/sys/stat.h",
+        "bytes": 6856,
+        "sha256": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/sys/types.h",
+        "bytes": 1280,
+        "sha256": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/time.h",
+        "bytes": 19166,
+        "sha256": "b775fe03a3288dfcd68a72caad43e8198283164eae94b665fdd3375a3baea44c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/wchar.h",
+        "bytes": 18447,
+        "sha256": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/apiquery2.h",
+        "bytes": 1549,
+        "sha256": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/cguid.h",
+        "bytes": 6063,
+        "sha256": "36eaed76fe65e7dc5382761439bc9f22a66701d0259001943bfbe35f257aa6e2"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/combaseapi.h",
+        "bytes": 42146,
+        "sha256": "4b33bdf8cad7d07a0bd2945b4b96436b21021c46eee900881d2531616ba4df5f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/coml2api.h",
+        "bytes": 6867,
+        "sha256": "73b81b7fefef903c28a3c2eab09cc52139ede97c38d8fe0e3f46faddb106a65e"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/commdlg.h",
+        "bytes": 47217,
+        "sha256": "8b98a194569e52ca87266b5a8d676ccba67538ce7851571003db8f7a606b0d2b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi.h",
+        "bytes": 8161,
+        "sha256": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi2.h",
+        "bytes": 11697,
+        "sha256": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi3.h",
+        "bytes": 8574,
+        "sha256": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/datetimeapi.h",
+        "bytes": 3964,
+        "sha256": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/dde.h",
+        "bytes": 5915,
+        "sha256": "dfa78b30d4c4a6bd7fc0db7e2df4041c589db7068b5c5020c5671b674416df11"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ddeml.h",
+        "bytes": 19365,
+        "sha256": "c97abab2627346d786459fc86a5da696f930c85c622a78732a71b7ad0790c1dc"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/debugapi.h",
+        "bytes": 3591,
+        "sha256": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/dlgs.h",
+        "bytes": 6347,
+        "sha256": "12b23d2256c80141d61044010c9fc16610a8ae0086c7dbe8376295d4b5f06f31"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/dpapi.h",
+        "bytes": 10565,
+        "sha256": "a98783da8086def831c97880296504468a043b01e7eb35e500a70198f33582bc"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/enclaveapi.h",
+        "bytes": 3502,
+        "sha256": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/errhandlingapi.h",
+        "bytes": 6566,
+        "sha256": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fibersapi.h",
+        "bytes": 2582,
+        "sha256": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fileapi.h",
+        "bytes": 40460,
+        "sha256": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fileapifromapp.h",
+        "bytes": 4111,
+        "sha256": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/handleapi.h",
+        "bytes": 2578,
+        "sha256": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/heapapi.h",
+        "bytes": 5317,
+        "sha256": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ime_cmodes.h",
+        "bytes": 833,
+        "sha256": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/imm.h",
+        "bytes": 28873,
+        "sha256": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/interlockedapi.h",
+        "bytes": 2604,
+        "sha256": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ioapiset.h",
+        "bytes": 4791,
+        "sha256": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/jobapi.h",
+        "bytes": 1307,
+        "sha256": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/jobapi2.h",
+        "bytes": 2976,
+        "sha256": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/joystickapi.h",
+        "bytes": 17546,
+        "sha256": "d87b7dd3517d2018478df501ba3ea578d7ecdc4dddf44720802c414376fb5734"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/libloaderapi.h",
+        "bytes": 15518,
+        "sha256": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/lzexpand.h",
+        "bytes": 2913,
+        "sha256": "55e2fe7b987a83eeb10466a2f38411f406480362accce187fdc222af36656061"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mciapi.h",
+        "bytes": 50310,
+        "sha256": "b1cf4890ae3d0153c3c998f6286df53969e106db2da08564a7c37acfdbf70dd8"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mcx.h",
+        "bytes": 24640,
+        "sha256": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/memoryapi.h",
+        "bytes": 33539,
+        "sha256": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/minwinbase.h",
+        "bytes": 13973,
+        "sha256": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mmeapi.h",
+        "bytes": 82509,
+        "sha256": "ee475f72ae76fea07ce189895a14a4c7dd345568f59884801e6aa4744e931c65"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mmiscapi.h",
+        "bytes": 18502,
+        "sha256": "c732d81ff59b188f570972cbeeedfd5bc3bc5d18cceb5475c41c4ab540358cf3"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mmiscapi2.h",
+        "bytes": 2248,
+        "sha256": "3cac85c113c9b56101d3e3d5c5eb51542400764af7ef49f641fcd215aed6b830"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mmsyscom.h",
+        "bytes": 11292,
+        "sha256": "e312d128602e8e6d51456f12229f81b0228ad1c8ea6c9ac438053966a7d20c8f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mmsystem.h",
+        "bytes": 4352,
+        "sha256": "86d1387337af7793c583262108c1d671413ea5d6eaff597e0161ad6b604e33e0"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/msxml.h",
+        "bytes": 447870,
+        "sha256": "001de8d9f111a4449dffbd9c2640f92eb329ff43fff9e6b46c1a10a6bcddc16b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/namedpipeapi.h",
+        "bytes": 5539,
+        "sha256": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/namespaceapi.h",
+        "bytes": 1974,
+        "sha256": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/nb30.h",
+        "bytes": 13204,
+        "sha256": "69759909f41583263f20cadfe1a013f023ba89a6a7752dccc16240b1e9b5fc1b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ncrypt.h",
+        "bytes": 67684,
+        "sha256": "73394e3733d959e5d4b3d37e53d454bddda81daf9ce48a5516db40cd1f117d55"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/oaidl.h",
+        "bytes": 215603,
+        "sha256": "6432dc84174c12d5d3764b83fb4a21c5aed38b6a839c968133eca2920ee702fb"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/objbase.h",
+        "bytes": 10226,
+        "sha256": "14d465a8f602f2394c5455f67f129756fc525b26ad9c3099d3f6d943cafb5007"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/objidl.h",
+        "bytes": 524407,
+        "sha256": "6728b27fad8860be3a481ee33ae5bb8bda6acd5d692f79646fb7ef0c4cb03f0b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/objidlbase.h",
+        "bytes": 277656,
+        "sha256": "677379339246e36e9dfa9325ae41fe790579ea474f4d05f688cde2e8ac521bd6"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ole2.h",
+        "bytes": 15440,
+        "sha256": "ff6645d2ba037df3835689ca7efa3fa4990c229bc98e195e500145a6b1344ce6"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/oleauto.h",
+        "bytes": 60118,
+        "sha256": "76a024c41b0778979c84466199d9c868fc767f1eaca8b2660d298798382137b4"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/oleidl.h",
+        "bytes": 149619,
+        "sha256": "d9e6028b3447ad94b01d0676047355d8eebf6ff11afa8529904dfc11b941359d"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/playsoundapi.h",
+        "bytes": 4263,
+        "sha256": "29fb73d46381a51143b05c0ba5603dad5dff3ec879bb7376dd20e4a271e2d818"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processenv.h",
+        "bytes": 7427,
+        "sha256": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processthreadsapi.h",
+        "bytes": 37180,
+        "sha256": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processtopologyapi.h",
+        "bytes": 2081,
+        "sha256": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/profileapi.h",
+        "bytes": 1413,
+        "sha256": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/PropIdl.h",
+        "bytes": 45197,
+        "sha256": "07200a21ea1247b97a91f2e28991c2de475b03cf890155a4de3d0990a2b70066"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/PropIdlBase.h",
+        "bytes": 39269,
+        "sha256": "637483de9f1d2d3d40c966e8daa9ed238a4469cb07fe168bac7c685e0cf1e1fd"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/prsht.h",
+        "bytes": 30335,
+        "sha256": "c894f54ac5e0584457f176f668b20b14577b06aa2ba5ce321e243c46248ea242"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/realtimeapiset.h",
+        "bytes": 3149,
+        "sha256": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/reason.h",
+        "bytes": 5042,
+        "sha256": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/rpcnsi.h",
+        "bytes": 15272,
+        "sha256": "f49466a31875d34a6e5c02f301d81b7a78f25cb947f3d6e6ea712ab356b42c8e"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/rpcnsip.h",
+        "bytes": 1563,
+        "sha256": "7c8138b43e028724e0fd143be29c40de5b5650a3e0f87356662a77dbad186712"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/securityappcontainer.h",
+        "bytes": 1470,
+        "sha256": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/securitybaseapi.h",
+        "bytes": 36514,
+        "sha256": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/servprov.h",
+        "bytes": 7998,
+        "sha256": "5f25310cfbfb07bfb737b37c04bb74cd6c713505fdb9c8c4954f76bccd86dea4"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/shellapi.h",
+        "bytes": 72397,
+        "sha256": "b3c7861e9d52972c87715b5a5e5517c342aa83a54c04e0b674bb80ff448c86f7"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/stringapiset.h",
+        "bytes": 3941,
+        "sha256": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/synchapi.h",
+        "bytes": 15696,
+        "sha256": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/sysinfoapi.h",
+        "bytes": 19345,
+        "sha256": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/systemtopologyapi.h",
+        "bytes": 2319,
+        "sha256": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/threadpoolapiset.h",
+        "bytes": 7148,
+        "sha256": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/threadpoollegacyapiset.h",
+        "bytes": 2824,
+        "sha256": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/timeapi.h",
+        "bytes": 2710,
+        "sha256": "0252981f62c9ed1ece53434c3863f4bf503c2ead70719adb2cfd38e3e21ab6da"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/timezoneapi.h",
+        "bytes": 5462,
+        "sha256": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/Unknwn.h",
+        "bytes": 17672,
+        "sha256": "d0bbc6a30fa025fa3e5c198c68c638dec855b27b3ec34c9d404a95f890dd6a53"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/Unknwnbase.h",
+        "bytes": 17732,
+        "sha256": "7fc28ae112c678a18567387fdbb43c615af6253429c9c1a8037cd0861f7568b6"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/urlmon.h",
+        "bytes": 410523,
+        "sha256": "a69ff621172bda7dcbd26b92f209e0bd7a7b00bad74e2ef375c2b6a8ec8b6f2f"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/utilapiset.h",
+        "bytes": 2482,
+        "sha256": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/verrsrc.h",
+        "bytes": 6705,
+        "sha256": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinBase.h",
+        "bytes": 271704,
+        "sha256": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wincon.h",
+        "bytes": 1129,
+        "sha256": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wincontypes.h",
+        "bytes": 4610,
+        "sha256": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wincrypt.h",
+        "bytes": 948030,
+        "sha256": "d73ba64946bbaad342447564676a837e15380041b37674639fcf659ee67f13e2"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/Windows.h",
+        "bytes": 7511,
+        "sha256": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winefs.h",
+        "bytes": 12301,
+        "sha256": "9db6c6c3188c7a4822f7484c554846795d859f498b7568f8014abad513437000"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wingdi.h",
+        "bytes": 244023,
+        "sha256": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winioctl.h",
+        "bytes": 575079,
+        "sha256": "e4f42e55b43604f34c8d7080c2435363845ba13484f4163b2d8ac5f730bd8fd2"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winnetwk.h",
+        "bytes": 27073,
+        "sha256": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinNls.h",
+        "bytes": 129219,
+        "sha256": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winnt.h",
+        "bytes": 876258,
+        "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winperf.h",
+        "bytes": 38242,
+        "sha256": "f73392e4535cbd70ef811b91d9de580a35e57930640a8a8b584507841006e20a"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winreg.h",
+        "bytes": 42295,
+        "sha256": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winscard.h",
+        "bytes": 55649,
+        "sha256": "ee43c5a32fd009da030047a0df19a66e02ed6387f54af0162ec9bd6f9854e845"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winsock.h",
+        "bytes": 38690,
+        "sha256": "f5d2165d8609daf35bfc796846f67c8f6129e47b4c6536aefba90f9488520737"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winspool.h",
+        "bytes": 119694,
+        "sha256": "c9954b0f6051bbac7dc550f92b88c9306c2d76ddd5cffdb224fee4de3c010f23"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winsvc.h",
+        "bytes": 59863,
+        "sha256": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinUser.h",
+        "bytes": 428754,
+        "sha256": "89910113eb8dfc9fad16e3b12abf5f52a5df70cc9ead30ba1be095462bb880b3"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winver.h",
+        "bytes": 8809,
+        "sha256": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wow64apiset.h",
+        "bytes": 5421,
+        "sha256": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda"
+      }
+    ],
+    "system_libraries_searched": [
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib",
+        "bytes": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcrt.lib",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/oldnames.lib",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/ucrt/x86/ucrt.lib",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/kernel32.Lib",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/Uuid.Lib",
+        "bytes": 8973686,
+        "sha256": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0"
+      }
+    ],
+    "selected_tools": [
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx86/x86/cl.exe",
+        "bytes": 830824,
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx86/x86/link.exe",
+        "bytes": 3208544,
+        "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvarsall.bat",
+        "bytes": 10163,
+        "sha256": "693b4a30c7379e84d2675101a8d47178cf62f45df2e2f09be5c206107e9c9ca2"
+      }
+    ],
+    "input_count": 16,
+    "host_header_count": 266,
+    "library_count": 7,
+    "compiler_flags": "/std:c++17 /EHsc /MD /O2 /Gy /W4 /WX /fp:strict /showIncludes",
+    "linker_flags": "/MANIFEST:EMBED /OPT:REF /VERBOSE:LIB /MAP kernel32.lib"
+  },
+  "raw_entry_ABI_checked": true,
+  "original_class_ABI_compatible": false,
+  "game_validated": false,
+  "verification_qualification": "Whole raw36 and its complete connected callee graph, strict fresh Win32 build, full byte/relocation inspection and one bounded4-case native family passed. Source constructor provides common borrowed-storage setup only; Native constructor never executed. Not full original class ABI, ownership/lifetime, startup or gameplay proof.",
+  "remaining_contracts": [
+    "Actual native class allocation, construction, destruction and owner lifetime",
+    "Valid actual FAC units and every reached ancestor with terminating dirty ancestry",
+    "Invalid next/previous/group pointers, cyclic ancestry, unmasked faults and asynchronous observation",
+    "Concurrent mutation and reentry",
+    "Full0077BD70 caller class/type filtering, full detach, speed producer and observer/world/game integration"
+  ],
+  "prior_preservation": {
+    "paths_checked": 581,
+    "all_current_paths_unchanged": true,
+    "previous_current318_paths_unchanged": true,
+    "previous_sealed159_handoff_artifacts_unchanged": true,
+    "published_handoff_changes_before_this_run": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/docs/CC11_UNIT_WAKE_HANDOFF.md",
+        "worker_sha256": "58f1e406c70196bacb7b95148ef4b567999a37404340b43188a5efdbc677fc44",
+        "published_sha256": "fa63418f3d5e77f00c86c73f3d190b75e36badc5d90076fe42f181dc7a28d41e",
+        "historical_frozen": "local/cc11_unit_group_set_leader_20261007_a/historical_prior/CC11_UNIT_WAKE_HANDOFF.md",
+        "reason": "Authorized sync to published main changed only primary integration documentation/report fields."
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/reports/cc11_unit_wake_handoff.json",
+        "worker_sha256": "3425ad373ca017119afae4fad73d0a3d19916615e76b96d8be7d5de06e624cfe",
+        "published_sha256": "5891ffbfe5118f6271a65740afd291f2e62f2fdf28d95dad57320d76cc0b3590",
+        "historical_frozen": "local/cc11_unit_group_set_leader_20261007_a/historical_prior/cc11_unit_wake_handoff.json",
+        "reason": "Authorized sync to published main changed only primary integration documentation/report fields."
+      }
+    ],
+    "both_historical_handoff_versions_preserved_in_new_receipt": true,
+    "older_copy_historical_changes_already_disclosed": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/docs/CC11_UNIT_WAKE_COPY.md",
+        "audit_sha256": "9931f77a08e2c5d1f0f04b4e60ce8e24fd5ef51d50d73135e9720ec80d8e9457",
+        "published_sha256": "eaa1a893a9e1934df98d1843207a806fef674956d4d036d9d19d4cccd9235d85",
+        "historical_frozen": "local/cc11_unit_wake_handoff_20261007_a/historical_prior/CC11_UNIT_WAKE_COPY.md",
+        "reason": "Authorized sync to published main added primary integration documentation/report fields."
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc11_health_guard/reports/cc11_unit_wake_copy.json",
+        "audit_sha256": "a2c9784454a155a8905a7576e9f514f882cb16771f765c103845573d1a4efc06",
+        "published_sha256": "391c3f7f4390a66d33c40110d99afa2c774c18612808a1f1072cac7c61db3948",
+        "historical_frozen": "local/cc11_unit_wake_handoff_20261007_a/historical_prior/cc11_unit_wake_copy.json",
+        "reason": "Authorized sync to published main added primary integration documentation/report fields."
+      }
+    ],
+    "original_image_unchanged": true,
+    "actual_inputs_unchanged": 16,
+    "host_headers_unchanged": 266,
+    "system_libraries_unchanged": 7,
+    "selected_tools_unchanged": 3,
+    "native_execution_count": 1,
+    "old_fixture_executions": 0
+  },
+  "primary_published_source_note": "All581 current prior paths and all159 sealed handoff artifacts unchanged. Two handoff documentation/report paths had already changed during authorized publication sync; exact worker versions newly frozen here. Older two wake-copy publication changes remain separately disclosed. No old fixture replay.",
+  "source_hashes": [
+    {
+      "path": "include/bsp/native_unit_group_set_leader.hpp",
+      "bytes": 1031,
+      "sha256": "6a318789cc27c2d98fa6c606cd5fb3a0f91c0381a77afcfc16abd976f38ce061"
+    },
+    {
+      "path": "src/native_unit_group_set_leader.cpp",
+      "bytes": 1040,
+      "sha256": "0c73e1f7ea5bfa2e5da38d1b829fbae7b70ed45c2efb10cfed5367fc333dbf11"
+    },
+    {
+      "path": "docs/CC11_UNIT_GROUP_SET_LEADER.md",
+      "bytes": 10585,
+      "sha256": "4283c0109205beee9b0cd649e5d84f88f759d0d52b05e40269bf326d2e87a89d"
+    }
+  ],
+  "sealed_recipe": "local/cc11_unit_group_set_leader_20261007_a/recipe.json",
+  "sealed_manifest": "local/cc11_unit_group_set_leader_20261007_a/artifact_manifest.json",
+  "sealed_manifest_sha256": "4f244a530bd32c1188a17a4d52715377cdad98cf031d0fdb192647368dd5c821",
+  "artifact_directory": "local/cc11_unit_group_set_leader_20261007_a",
+  "artifact_count": 203,
+  "artifact_bytes": 14477390,
+  "artifact_hashes": [
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/004134f0_live_build_bytes.txt",
+      "bytes": 496,
+      "sha256": "07a64ff627d126ded299718a593731727c9364e91fba17e70d818dabba117183"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/004134f0_original.asm",
+      "bytes": 1250,
+      "sha256": "31c12c83d93130f86ac41670a211152c10b1da30356c47b51ad93a65c7780f59"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/004134f0_original.bin",
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/004134f0_source_coff.asm",
+      "bytes": 1040,
+      "sha256": "513193e9976b122ae31efb4db438ca4370919e7fd86df6e8686ac662aa48f1c6"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/004134f0_source_coff.bin",
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/004134f0_source_linked.bin",
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00413920_live_build_bytes.txt",
+      "bytes": 4156,
+      "sha256": "6dd70d0897de69eafd5c75adb119445f03437bc49b75023855685de85e1d7421"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00413920_original.asm",
+      "bytes": 8884,
+      "sha256": "37de55f6298f09dfcc0417eadcc40df7bf2324c2028e29bec7c69bad546813f8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00413920_original.bin",
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00413920_source_coff.asm",
+      "bytes": 7352,
+      "sha256": "b16f938dc3da96a03cdfee0731141e96435ca716671eb982682bc091db335d90"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00413920_source_coff.bin",
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00413920_source_linked.bin",
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00414db0_live_build_bytes.txt",
+      "bytes": 428,
+      "sha256": "725ed6f20f7dc5c6391272c9cdaf3adc6981ce0d158429eaaf5755cc964e304f"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00414db0_original.asm",
+      "bytes": 741,
+      "sha256": "145596fecff10ef8f3148fe559145e7ea56ecdc6bbe24674ad7a24dfff73acc0"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00414db0_original.bin",
+      "bytes": 89,
+      "sha256": "ca7360fd4d5ae3ae386c44374188b3b807eb8a1bb039f508d47f0da2116ab175"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00414db0_source_coff.asm",
+      "bytes": 545,
+      "sha256": "49f5d8c81f7564ff033bcfc584382b603aed5b6bed1c36be36bcdaf94c7244c1"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00414db0_source_coff.bin",
+      "bytes": 89,
+      "sha256": "b0b6156c245037d3c8ff7508ddba31f8545509519f0ee5a818d52ad713ad3536"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00414db0_source_linked.bin",
+      "bytes": 89,
+      "sha256": "6ac876fda9e7b4a1c0b55853798e421b6b99cfe74d392d78ec70763e452c8165"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/0070d0c0_live_build_bytes.txt",
+      "bytes": 180,
+      "sha256": "bec53b7e8e7122fea19722a735531f52d3d7246f024f86bf9206b87f908ca720"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/0070d0c0_live_bytes.txt",
+      "bytes": 180,
+      "sha256": "bec53b7e8e7122fea19722a735531f52d3d7246f024f86bf9206b87f908ca720"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/0070d0c0_original.asm",
+      "bytes": 390,
+      "sha256": "ace0999b4a6be07e93b9474ba02900e9b2298e5f0f7f8142bfee7116a1626ae4"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/0070d0c0_original.bin",
+      "bytes": 36,
+      "sha256": "c8663953b174916475ec8175c41d653c92f494f2ea3ec42768d762cdab158787"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/0070d0c0_source_coff.asm",
+      "bytes": 282,
+      "sha256": "36e495b550414d4fbd2026af845c5856b56800083918543bc01948dbb784cf58"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/0070d0c0_source_coff.bin",
+      "bytes": 36,
+      "sha256": "b35de2a7f8b9951c4be1b377bb90e2338025bc81326002a854da03821447e161"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/0070d0c0_source_linked.bin",
+      "bytes": 36,
+      "sha256": "232f149c1b58300605f0503498214e41349f5ac0068b116b9f3e736a481a41a7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815680_live_build_bytes.txt",
+      "bytes": 2172,
+      "sha256": "56243157d167f47565888cf4305f400c1943f1d816605d6871faefd5a8532ed8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815680_original.asm",
+      "bytes": 4860,
+      "sha256": "b8f2043fbd5f626200dcfa4a11a042713802f27a93f2701527146df826eb1349"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815680_original.bin",
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815680_source_coff.asm",
+      "bytes": 4100,
+      "sha256": "cfa2f7fa3a959deb580410f5a04eceed5e6d898893b08234e71030bdc7a8a652"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815680_source_coff.bin",
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815680_source_linked.bin",
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815e20_live_build_bytes.txt",
+      "bytes": 872,
+      "sha256": "0ce3de76731f96035a509475ef820bd05c7893d9039c4e4bd40a55983dacb326"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815e20_original.asm",
+      "bytes": 1351,
+      "sha256": "ebcd68d642eadf13b660eaaee025f23cbab35a41f1d8f296f385db56f2bb7581"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815e20_original.bin",
+      "bytes": 182,
+      "sha256": "e4929517cb6a00c4c7bbf62bb0127159641c5a26194246e75b0b4cfd89266e90"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815e20_source_coff.asm",
+      "bytes": 1079,
+      "sha256": "e940269b9caf90ba16e4200247cc3d0e117d4fef602fb7b31be03c7e3590caf5"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815e20_source_coff.bin",
+      "bytes": 182,
+      "sha256": "40ed41e0fd4e0e122c703a1d6798c05a9af22b4f129f3e1a88c080baae481f00"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00815e20_source_linked.bin",
+      "bytes": 182,
+      "sha256": "a2cfebad9f1095d0ab41ee036e1731f8d2dc18ac18365b36085c92a241f1c751"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00cf4888_live_bytes.txt",
+      "bytes": 28,
+      "sha256": "e04d10a44da04896bd56b6c9fd49274c570e0ac8d7add000342d5a97aa5d6094"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/00cf4888_original.bin",
+      "bytes": 4,
+      "sha256": "b438fd3a67fa223f053f24183a08ed2b94fd3d11d304e084199fe97ca190cf3d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/__pycache__/coff_utils.cpython-313.pyc",
+      "bytes": 3823,
+      "sha256": "b071ea557e31ec678a169a026397f9effe5e4ae8819fcc9bc4184e487cc6b2ca"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/native_camera_matrix_copy.asm",
+      "bytes": 3530,
+      "sha256": "7e87379a51f83cbc6f2a87ecc7f685cbe76b4f3486a252ba480f8f7e0550deac"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/native_camera_matrix_math.asm",
+      "bytes": 45946,
+      "sha256": "ed4a318a5ef8e2ac7d4a52f6b73a103ee915a120ed0be29f13d6048ef2e862e9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/native_entity_pose.asm",
+      "bytes": 3361,
+      "sha256": "123d32cbc96dc7ddcf2e4a28535e3f68f274592e2230d33dedfa0d6a8a2fedf9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/native_unit_group_set_leader.asm",
+      "bytes": 2196,
+      "sha256": "16bf645b31b32efc92a96e6a0fc7505f099f33fcf9544066525b14aa3065d236"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/native_unit_group_storage.asm",
+      "bytes": 6514,
+      "sha256": "d622b8143997081217791ab2ce286d8998e2a8cbb87df41b9fac598d1de3309e"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/native_unit_wake_copy.asm",
+      "bytes": 10906,
+      "sha256": "43a9037da3c69655683772d04b1d4eae188c1c17805243e1aa81061503e57b68"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/native_unit_wake_handoff.asm",
+      "bytes": 4491,
+      "sha256": "a2362f0eae6715e1a2a4705489fc215bd4f53f499ce3a7ca0b8c64be7bfd9214"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/asm/probe.asm",
+      "bytes": 874900,
+      "sha256": "3dfa0f738a3afc2e520011e2aebb3b930a1c074e078dea4aaf7a86569fd9e096"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/build.cmd",
+      "bytes": 1450,
+      "sha256": "17e35251e75dd14511624fee123b8681f2faf065cd6b6b47e815ca2933f6565c"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/build.log",
+      "bytes": 46952,
+      "sha256": "88b2b18068a72a76befe061d56c5a1d3defcdef609caeef9de1632374ddff65b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/coff_before_run.json",
+      "bytes": 36798,
+      "sha256": "07162ef2217bfee43ea6a08b0f5e13469f2146bd0fd1ebd5221c2fc7ca26d031"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/coff_utils.py",
+      "bytes": 1717,
+      "sha256": "97743a36a14308b3864257f8a93a2d2993b72a3e48e39423b5ca2e71eeca2c73"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/commit_message.txt",
+      "bytes": 426,
+      "sha256": "c15963306da63379905a276ecd9fb10f33264848449283acc49991c07d71d16b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/constructor_source_coff.asm",
+      "bytes": 905,
+      "sha256": "2a0c4cf744960ffb1baa93791386794ebfd6ceb167cd1316837f6e6873f73f73"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/constructor_source_coff.bin",
+      "bytes": 132,
+      "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/constructor_source_linked.bin",
+      "bytes": 132,
+      "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/embedded_manifest.xml",
+      "bytes": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/entry_adapter_coff.asm",
+      "bytes": 2896,
+      "sha256": "8503a386e5eafeaba3cc27ea28bf16e5a71846a837b87abe31d1cdfc22735088"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/entry_adapter_coff.bin",
+      "bytes": 393,
+      "sha256": "e63f4991feb9ac59a4589c102111d9bc45742243c2fb525648b99881b61c3ee5"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/execute_once.py",
+      "bytes": 1982,
+      "sha256": "93730c92a5822d74a944773cd336c642b3407dea10c386fff7982abf93b3b592"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/execution_after.json",
+      "bytes": 144,
+      "sha256": "3528903812cf2f7ad73e0ec82745ce5491c45c3b4ed0dbe56e936c44ce753e71"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/execution_before.json",
+      "bytes": 783,
+      "sha256": "96b1ace8f1117b0d199ba104e19684d91933ba8e02fedba80bbdb6d779e3712c"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/freeze_fixture.py",
+      "bytes": 2006,
+      "sha256": "a58780594dcb74fda2c5932ac739be75988c27104704c65c13d5483be0434fd1"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/freeze_production.py",
+      "bytes": 1544,
+      "sha256": "bc8c19e344095df8d68ea4fee8ab71c1cccd9c19e13f808920b2975e41adbe0d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/ghidra_process_identity.json",
+      "bytes": 800,
+      "sha256": "24eb16836c29b84f9317cee463802b513fea1fec3da283293cc46b52f142c706"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/historical_prior/cc11_unit_wake_handoff.json",
+      "bytes": 132006,
+      "sha256": "3425ad373ca017119afae4fad73d0a3d19916615e76b96d8be7d5de06e624cfe"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/historical_prior/CC11_UNIT_WAKE_HANDOFF.md",
+      "bytes": 10086,
+      "sha256": "58f1e406c70196bacb7b95148ef4b567999a37404340b43188a5efdbc677fc44"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_camera_matrix_copy.hpp",
+      "bytes": 606,
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_camera_matrix_math.hpp",
+      "bytes": 1803,
+      "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_entity_pose.hpp",
+      "bytes": 909,
+      "sha256": "5454b73171089506531269459093df4c79b64c4aedb3a7f25fd96e2d48560f15"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_group_set_leader.hpp",
+      "bytes": 1031,
+      "sha256": "6a318789cc27c2d98fa6c606cd5fb3a0f91c0381a77afcfc16abd976f38ce061"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_group_storage.hpp",
+      "bytes": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_wake_copy.hpp",
+      "bytes": 1262,
+      "sha256": "29af72184bcd52d71ca0fc55f0d12c34575f71b5d35f5917a502f2c3651ba339"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/include/bsp/native_unit_wake_handoff.hpp",
+      "bytes": 1393,
+      "sha256": "364eda6e48e166360fbe599f4c1cc99b52e5afda4e37cfec563b94fcd21d6a57"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/probe/pe_reader.inc",
+      "bytes": 2138,
+      "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/probe/probe.cpp",
+      "bytes": 23038,
+      "sha256": "ad91b0c95536baa3f43d0145f66fc89cb637751705ba0eceaf07ee80c82a3b26"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_copy.cpp",
+      "bytes": 1626,
+      "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_camera_matrix_math.cpp",
+      "bytes": 23218,
+      "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_entity_pose.cpp",
+      "bytes": 1322,
+      "sha256": "22746be40480d7f293b4dbaca80918eb68be2c1cfaf6c3eee4c6544146a1e94c"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_set_leader.cpp",
+      "bytes": 1040,
+      "sha256": "0c73e1f7ea5bfa2e5da38d1b829fbae7b70ed45c2efb10cfed5367fc333dbf11"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_group_storage.cpp",
+      "bytes": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_copy.cpp",
+      "bytes": 5408,
+      "sha256": "7cf79dad42ef00cb3adc803a569cc4fa0074ab35e01737a4f131ef2b9d8c630b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_01/src/native_unit_wake_handoff.cpp",
+      "bytes": 2028,
+      "sha256": "f50febf985dbc1f8956fdd534f49fd572498f4f73e1a81198d0cd4da9e73bdfa"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_after_link.json",
+      "bytes": 68024,
+      "sha256": "dcb3d31e054df545d2f87cd65107bb8cf9493bb91648c527a73286e4376e9879"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inputs_before_link.json",
+      "bytes": 5604,
+      "sha256": "9b234458ceac1c9145c3eb7362e7edb8d018bf4dbfd07e019e1fb0dd02a6552d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inspect_build.py",
+      "bytes": 10452,
+      "sha256": "b24baf926a90e2fdbfa32ac0f49908fc05db1d8cfafbbd9e1f26aa8d08423ae8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inspect_build_02.py",
+      "bytes": 11043,
+      "sha256": "4d634b0ace81acc42bbf464834fdead3f4f2e03b514826a4a45b74e0e85180c8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inspect_build_03.py",
+      "bytes": 11044,
+      "sha256": "1876195b6ce145e5ad10b38615ebc40a4d1b1041b63a574cd82515108ac11212"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inspect_run.py",
+      "bytes": 10847,
+      "sha256": "76bc3aae77cc7e6643d8c3a0ef0d1c73491b09927345394b69b49f41c7bc457d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inspect_source_only.py",
+      "bytes": 941,
+      "sha256": "5ea439d989c6521beae60bcdb18567dd54d88ae4ef6639ee80fb11f0a4439ee4"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inspection_attempt_01_failure.json",
+      "bytes": 941,
+      "sha256": "13419c27c9d960a6050a42afc49f33932300b50c5fc2692f8d2f7d72271a66b5"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/inspection_attempt_02_failure.json",
+      "bytes": 385,
+      "sha256": "101d18719c1ddf3c4def0cb39a01d3b4ae23ac2c62f3033006951462a197d45b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/live_proto.txt",
+      "bytes": 1242,
+      "sha256": "bc6c3f4fc8305afbda814ee95f0982722b477d004b6dbafa045d67e64ac708ad"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/live_proto_resume.txt",
+      "bytes": 1242,
+      "sha256": "bc6c3f4fc8305afbda814ee95f0982722b477d004b6dbafa045d67e64ac708ad"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/native_calls.json",
+      "bytes": 1267,
+      "sha256": "bd5487101f71aa229a0eed8d2a6bb898504a8d679cce9aa6a1bc8e5df628ef99"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/native_calls_verification.log",
+      "bytes": 152,
+      "sha256": "440a6c7eac97af22102b103064c755bc220f642f809dd235d76954216bcb4f35"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/native_camera_matrix_copy.obj",
+      "bytes": 840,
+      "sha256": "a95bf639c6d729215f71df1cf7f7d7a5d30efd8535768d5a6a4837e8ff377c17"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/native_camera_matrix_math.obj",
+      "bytes": 3037,
+      "sha256": "492f8b93e15679344c673b66254fefccc212be68eaca585353698d1e06e935c7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/native_entity_pose.obj",
+      "bytes": 999,
+      "sha256": "0c90abb3665c3b37814d5834d8c6412df41ac4e6d2852b487b7cf583d302c160"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/native_unit_group_set_leader.obj",
+      "bytes": 852,
+      "sha256": "534aecaf010b8c509689cda1688c2df80c34b14076354228a75b983379b3125b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/native_unit_group_storage.obj",
+      "bytes": 1243,
+      "sha256": "79a3d027e2996b4e977849288d632dbe47b294183b85199f52abb01d84ebc45c"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/native_unit_wake_copy.obj",
+      "bytes": 1183,
+      "sha256": "28389091523e116e9d56e9dca2984f6a8f241a006ae89d70b7a75b85ed47c6d8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/native_unit_wake_handoff.obj",
+      "bytes": 1078,
+      "sha256": "fa1b82eea240075b9dfd86b48c0e34d8dca31dc2c78151f6b7b5084c1baf177a"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/obj/probe.obj",
+      "bytes": 130865,
+      "sha256": "7e5402e125e28690542e190cfadc7da41c89df7e90e51b03b56771bd2945af4c"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/orientation_command_rejection.json",
+      "bytes": 552,
+      "sha256": "bf6842cf1add8cbe76d4ecb0af4cf4446173f2d9f5730013c27f1682b8a18de5"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/original_image.bin",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/pe_reader.inc",
+      "bytes": 2138,
+      "sha256": "c4b324ec3e99069afe178346cdabd1cefee617c9dfa22b0d8575b4ce28989b96"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/preparation.json",
+      "bytes": 3420,
+      "sha256": "9a8e1153b71f94a06848d75b647a86ecc5fdcc04d05884b66b9ce9cedc841b71"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/preparation_attempt_01_failure.json",
+      "bytes": 561,
+      "sha256": "b6bc8bfc9cea79d5cc0aa796d03388f699ec99e261b235e1a81d5a53e336ff81"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/prepare.py",
+      "bytes": 6723,
+      "sha256": "2ee75ff120dc18cec37a35e294d10a3a0eb242c6932369068945c3d7106f279d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/prepare_inspection_retry.py",
+      "bytes": 2570,
+      "sha256": "87dae8997b369e0a4e9c5a00298bff985a1edc0a94a7cd1fdfbcf4a6a8eb4301"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/prepare_inspection_retry_03.py",
+      "bytes": 876,
+      "sha256": "4e55208f268c56c953a79911d30f6ecedcd7a8092460cc26e996455d71fe22a1"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/prior_after.json",
+      "bytes": 2706,
+      "sha256": "7c22c55febeedcfe620213643708707a4cd4456cd3335d276158e5243a5b6060"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/prior_before.json",
+      "bytes": 144701,
+      "sha256": "5eb8bb7aadd919556143f68cd1ac87319c428f68c451b2a78679a50993299cf3"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/probe.cpp",
+      "bytes": 23038,
+      "sha256": "ad91b0c95536baa3f43d0145f66fc89cb637751705ba0eceaf07ee80c82a3b26"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/probe.exe",
+      "bytes": 40960,
+      "sha256": "834a64d5ef16d1980248fb4f466fa5d20613b9865185ddba348c564e36c3f743"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/probe.log",
+      "bytes": 2024,
+      "sha256": "4e0330b83183c60d0e7dcfbca2e65de06f1ede8d04bc0f253b68116fae86360a"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/probe.map",
+      "bytes": 53154,
+      "sha256": "b29f0e32ed5fae7deb95ade8812f2e7d44a6f7260a30a1a1dcd18814cf0d7b9c"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/probe_pe_imports.json",
+      "bytes": 2199,
+      "sha256": "03207069c369e1d99684fb6b7992571040a86ff1b4c317562abf8f6192c12c19"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/production_inputs_before.json",
+      "bytes": 3801,
+      "sha256": "39403788cac8f97dfcdc20d08668fda306bed1a72455465c12677892b77f694f"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/recipe.json",
+      "bytes": 7106,
+      "sha256": "0b0261bf54a6d35b43e44263d7cfb5b07cf9ce13d9bab6444ab04b4a574e0c08"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/resume_preparation.py",
+      "bytes": 3840,
+      "sha256": "380851b86ea2fb211064c1deb633bb3073fdadc154839d35742dfe972835babc"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/run_evidence.json",
+      "bytes": 11423,
+      "sha256": "6e3e58056c7162b66d5aa3ecdffe56bbd2c6e31b4f664a16063dcb6af09e437a"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "3b8b40b17f089bb594741d74ef45006e9f7bdbf1e4c59306cbaceeb5a29285c3"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "f4d46ee4f1afffd98d72f3e0accdc7ea568d352c572c3778f41fe69a0bc4357b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_constructor_after_storage.bin",
+      "bytes": 10368,
+      "sha256": "b5dfd3ddb0bae5b20ffc0959f3441e13c9189cd37d41a975eb5275d1d55619f3"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_constructor_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "57cdcddecd7e17b8d40bacbcf13e4d0c0a331b9f2bd9274680488f1d147e0dd4"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_constructor_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "e714b013f65336bca530b754d2d648a1dd93fc9411aa830a13203861a77a186b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_original_result.bin",
+      "bytes": 216,
+      "sha256": "efc19dda02d3eaf8a511824729c86ffa35657d528f228bf9ce0422b6fb908506"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_original_storage.bin",
+      "bytes": 10368,
+      "sha256": "f4d46ee4f1afffd98d72f3e0accdc7ea568d352c572c3778f41fe69a0bc4357b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_seed.bin",
+      "bytes": 128,
+      "sha256": "49e78c5c20a6201b4268df9b91b964749a21bc9516f33c661ad61f03ccbaedbc"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_source_result.bin",
+      "bytes": 216,
+      "sha256": "efc19dda02d3eaf8a511824729c86ffa35657d528f228bf9ce0422b6fb908506"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/0_equal_nonnull_third_stored_leader_source_storage.bin",
+      "bytes": 10368,
+      "sha256": "f4d46ee4f1afffd98d72f3e0accdc7ea568d352c572c3778f41fe69a0bc4357b"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "d3105c5a29e519f74679df74d5546a0d2fd9f58349a9aefd4d23de3cc1753ec8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "45593c34130a251b9d49f35d33824b4bf5a02d6a0c6381781dd846db6a8a05a0"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_constructor_after_storage.bin",
+      "bytes": 10368,
+      "sha256": "94fbbdb4f9a1f08e61c1e9186665441e54badeef88f8166fd330110bd9bb13e2"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_constructor_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "57cdcddecd7e17b8d40bacbcf13e4d0c0a331b9f2bd9274680488f1d147e0dd4"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_constructor_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "8598b515d4dbfafb1ba5ac2e1e9a46b3370cc4426843faa28d8e8a11f78a86ca"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_original_result.bin",
+      "bytes": 216,
+      "sha256": "a4aca25ab18527675bfdb406dcdd74d860ecbc6927a29674340e9f093f8a31ee"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_original_storage.bin",
+      "bytes": 10368,
+      "sha256": "252bd8cb40a0f6a713bd77e69f32f259efe2e5b9e430d919f9203c96aab712e1"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_seed.bin",
+      "bytes": 128,
+      "sha256": "de8fc27b29ec6693eaec299b0fc425e4f97fa9c8f0a261bef0fa5114ee45b7dd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_source_result.bin",
+      "bytes": 216,
+      "sha256": "a4aca25ab18527675bfdb406dcdd74d860ecbc6927a29674340e9f093f8a31ee"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/1_different_previous_NULL_source_storage.bin",
+      "bytes": 10368,
+      "sha256": "252bd8cb40a0f6a713bd77e69f32f259efe2e5b9e430d919f9203c96aab712e1"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "cf26118a1b5240fdfa03dbbcbf88f5cc75e061d49ada2bc200d7b1daec79d318"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "b1fd8ca6c0ee7ee9c9b31855646fbc0dd6363e7f7a0755496b2e7971225f1e97"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_constructor_after_storage.bin",
+      "bytes": 10368,
+      "sha256": "692b6ef2131e6405f31b8703223c7140e0da2173141290f311151063b16d1d19"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_constructor_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "57cdcddecd7e17b8d40bacbcf13e4d0c0a331b9f2bd9274680488f1d147e0dd4"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_constructor_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "77891b0de3165e8e1591288e00d80751c3cf3f8ee39052f9a69946bfea9dd711"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_original_result.bin",
+      "bytes": 216,
+      "sha256": "1eb5696acdceb73a27b899c58d8a409178638cdc481e33d7f848fc752c317958"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_original_storage.bin",
+      "bytes": 10368,
+      "sha256": "2706c0d8c15bc2896e70ea992a923ae66f9cd6bc3cff28a0d08775e2042ed4c7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_seed.bin",
+      "bytes": 128,
+      "sha256": "75c7f3105ccf292c739db6d2033c64db0fd0249e769e1757bd49f6b37d77f63d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_source_result.bin",
+      "bytes": 216,
+      "sha256": "b5df5f6d28763c4c260e0d2551e33f0afc5e03fcc6269983798eb33b13cb8f7d"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/2_real_wake_dirty_roots_source_storage.bin",
+      "bytes": 10368,
+      "sha256": "2706c0d8c15bc2896e70ea992a923ae66f9cd6bc3cff28a0d08775e2042ed4c7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "979e3c3fafb6ffbb29bfbeebfcc1dac25a21130ce99a70e6c55b2d73c33308a7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "a79116553789dd75ec72813f27999082403d06c023a013a6408085a89ebac3a0"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_constructor_after_storage.bin",
+      "bytes": 10368,
+      "sha256": "4cec13cc0d6f7c8497d02362ec661f624918072a958a2d590b85f29b6019ffc8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_constructor_allowed_writes.bin",
+      "bytes": 10368,
+      "sha256": "57cdcddecd7e17b8d40bacbcf13e4d0c0a331b9f2bd9274680488f1d147e0dd4"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_constructor_before_storage.bin",
+      "bytes": 10368,
+      "sha256": "c890d75d0347f3bcc1942afb57ef3599b2a7c482605a481081dea27b123ebc70"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_original_result.bin",
+      "bytes": 216,
+      "sha256": "512210ad33bcb21b2da82845b7212777abd5d158731656c08f7a083cd86dc800"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_original_storage.bin",
+      "bytes": 10368,
+      "sha256": "cfa8e84b46226bbacccc2f97c43139a4d02ce9974bf992a412ce8ff403ffb831"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_seed.bin",
+      "bytes": 128,
+      "sha256": "2a3e21d5d901b47452af9bbf1383ac9487385451fb39daede219f066376f95c8"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_source_result.bin",
+      "bytes": 216,
+      "sha256": "b7928d70f8dc36f144bf19b1141d56e95e471f213e428813eba399ba8f5886d6"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/3_real_wake_next_parent_is_previous_source_storage.bin",
+      "bytes": 10368,
+      "sha256": "cfa8e84b46226bbacccc2f97c43139a4d02ce9974bf992a412ce8ff403ffb831"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/constructor_constant_after.bin",
+      "bytes": 12,
+      "sha256": "97d5d8df681056d22fc09d6b3341356df880d4b3f088686c06b43295b128cde9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/constructor_constant_before.bin",
+      "bytes": 12,
+      "sha256": "97d5d8df681056d22fc09d6b3341356df880d4b3f088686c06b43295b128cde9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_4273392_after.bin",
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_4273392_before.bin",
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_4274464_after.bin",
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_4274464_before.bin",
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_4279728_after.bin",
+      "bytes": 89,
+      "sha256": "ca7360fd4d5ae3ae386c44374188b3b807eb8a1bb039f508d47f0da2116ab175"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_4279728_before.bin",
+      "bytes": 89,
+      "sha256": "ca7360fd4d5ae3ae386c44374188b3b807eb8a1bb039f508d47f0da2116ab175"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_7393472_after.bin",
+      "bytes": 36,
+      "sha256": "c8663953b174916475ec8175c41d653c92f494f2ea3ec42768d762cdab158787"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_7393472_before.bin",
+      "bytes": 36,
+      "sha256": "c8663953b174916475ec8175c41d653c92f494f2ea3ec42768d762cdab158787"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_8476288_after.bin",
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_8476288_before.bin",
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_8478240_after.bin",
+      "bytes": 182,
+      "sha256": "e4929517cb6a00c4c7bbf62bb0127159641c5a26194246e75b0b4cfd89266e90"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/original_8478240_before.bin",
+      "bytes": 182,
+      "sha256": "e4929517cb6a00c4c7bbf62bb0127159641c5a26194246e75b0b4cfd89266e90"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_4273392_after.bin",
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_4273392_before.bin",
+      "bytes": 103,
+      "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_4274464_after.bin",
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_4274464_before.bin",
+      "bytes": 874,
+      "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_4279728_after.bin",
+      "bytes": 89,
+      "sha256": "6ac876fda9e7b4a1c0b55853798e421b6b99cfe74d392d78ec70763e452c8165"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_4279728_before.bin",
+      "bytes": 89,
+      "sha256": "6ac876fda9e7b4a1c0b55853798e421b6b99cfe74d392d78ec70763e452c8165"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_7393472_after.bin",
+      "bytes": 36,
+      "sha256": "232f149c1b58300605f0503498214e41349f5ac0068b116b9f3e736a481a41a7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_7393472_before.bin",
+      "bytes": 36,
+      "sha256": "232f149c1b58300605f0503498214e41349f5ac0068b116b9f3e736a481a41a7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_8476288_after.bin",
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_8476288_before.bin",
+      "bytes": 456,
+      "sha256": "a262b08eda2774d3f406cd56fa1f9a44f6447ae96d10e3d7efec9d3bf6859ecd"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_8478240_after.bin",
+      "bytes": 182,
+      "sha256": "a2cfebad9f1095d0ab41ee036e1731f8d2dc18ac18365b36085c92a241f1c751"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_8478240_before.bin",
+      "bytes": 182,
+      "sha256": "a2cfebad9f1095d0ab41ee036e1731f8d2dc18ac18365b36085c92a241f1c751"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_constructor_after.bin",
+      "bytes": 132,
+      "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/runtime/source_constructor_before.bin",
+      "bytes": 132,
+      "sha256": "cc195aa9f77f61c070ce1d558dafe1a2b0edf6b9d89084ad0a24d87dc53c362e"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/seed_adapter_coff.asm",
+      "bytes": 887,
+      "sha256": "a957abc18b349bb7c31c2c23708b251e66e5a6edb242f1f173acc8abaefe6a42"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/seed_adapter_coff.bin",
+      "bytes": 118,
+      "sha256": "95b61b1e88818c6e694b619763ef6bab097812d99078ebc1c7018faab50f6474"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/source_only.asm",
+      "bytes": 2175,
+      "sha256": "054e671dc023379502f7fe7f70ad440ab019c50893f6c46a55c31f8369544321"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/source_only.cmd",
+      "bytes": 517,
+      "sha256": "76c933536a571bc534196aaf02a125cc8b1c45f42b771f93be7f9431b01eafe7"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/source_only.log",
+      "bytes": 34,
+      "sha256": "e807e8cd405028881fc339a8cc14c4207d372701b8325c5de9d4d4542d4b491c"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/source_only.obj",
+      "bytes": 832,
+      "sha256": "1f76ed1dd1b3166452c108f9b12ba17e26e50964514c3c7e80b6988fbea39f38"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/source_only_body.bin",
+      "bytes": 36,
+      "sha256": "b35de2a7f8b9951c4be1b377bb90e2338025bc81326002a854da03821447e161"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/source_only_coff.json",
+      "bytes": 833,
+      "sha256": "069a53b5fa469bee19111b5762d42219b0effd629c440dae86471a8b53d29354"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/toolchain_resolution.log",
+      "bytes": 210,
+      "sha256": "a5f29707ea22b942e5a5200430599449c03ea69ad41db7bdab00719f1d593bfa"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/whole_graph_live_proto.txt",
+      "bytes": 3935,
+      "sha256": "087b61a46c1b16144e07ed0ad84221065be3cf16d86215443b81791e4734c02a"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/write_report.py",
+      "bytes": 13398,
+      "sha256": "4e02153787c1a7e6e6bc7c753adb8d948099a54d331d7c2393c7d15c0b782e34"
+    },
+    {
+      "path": "local/cc11_unit_group_set_leader_20261007_a/artifact_manifest.json",
+      "bytes": 43694,
+      "sha256": "4f244a530bd32c1188a17a4d52715377cdad98cf031d0fdb192647368dd5c821"
+    }
+  ],
+  "worker_scope": "Exactly four registered new owned paths. No shared CMake/ledger/registry/Ghidra mutations or full repository build. Root owns annotation, registration, integration and broader validation."
+}
