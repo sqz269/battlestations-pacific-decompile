@@ -33788,6 +33788,32 @@
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_raw_handle_slot_initializer_00415680",
+      "worker": "primary",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00415680"
+      ],
+      "output_files": [
+        "include/bsp/native_ref_counted_handle_initialize.hpp",
+        "src/native_ref_counted_handle_initialize.cpp",
+        "docs/CC12_RAW_REF_COUNTED_HANDLE_INITIALIZE.md",
+        "reports/cc12_raw_ref_counted_handle_initialize.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "whole_raw_ECX_plain_RET_body_static_COFF_archive_and_normal_Win32_build_checked",
+      "contract": {
+        "new_Original_function_records": 1,
+        "original_bytes": 9,
+        "native_or_Source_entry_execution": false,
+        "new_tests": 0,
+        "existing_CTests_passed": 3,
+        "owner_class_game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
