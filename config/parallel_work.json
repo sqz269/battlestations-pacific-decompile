@@ -33119,6 +33119,32 @@
         "raw_substream_composition_admitted": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_online_nonnull_startup_fragment",
+      "worker": "group_membership",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0073DC70"
+      ],
+      "output_files": [
+        "include/bsp/native_online_manager_lifetime.hpp",
+        "src/native_online_manager_lifetime.cpp",
+        "docs/CC12_ONLINE_NONNULL_STARTUP_FRAGMENT.md",
+        "reports/cc12_online_nonnull_startup_fragment.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "complete_interior_nonnull_startup_fragment_Source_build_checked",
+      "worker_commit": "ff27402fab",
+      "contract": {
+        "new_Original_functions": 0,
+        "complete_fragment_bytes": 30,
+        "parent_complete": false,
+        "owner_activation": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {

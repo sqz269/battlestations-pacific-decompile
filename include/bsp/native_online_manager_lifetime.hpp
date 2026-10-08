@@ -23,7 +23,8 @@ struct NativeOnlineManagerLifetimeContext final {
 // the native parent reads its version even after a failed/partial SDK write.
 struct NativeOnlineManagerStartupContext final {
     NativeOnlineManagerLifetimeContext& lifetime;
-    void* volatile& current_renderer_00f8d394;
+    // Borrow the renderer's canonical publication cell; this context only reads it.
+    void* const volatile& current_renderer_00f8d394;
     NativeOnlineStartupSdkCalls& sdk;
     NativeOnlineInitializeInfo1c& initialize_info;
     NativeOnlineWsadata400& wsadata;
