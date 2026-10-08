@@ -163,6 +163,47 @@ std::uint64_t origin_native_adopted_substream_00bf10b0(
     const void* owner, std::uint32_t origin) noexcept {
     return wide(owner, origin == 0 ? 0x10u : origin == 1 ? 0x20u : 0x18u);
 }
+__declspec(naked) std::uint64_t __fastcall raw_position_native_adopted_substream_00bf1080(
+    const void*, std::uint32_t) noexcept {
+    __asm {
+        mov eax, dword ptr [ecx + 20h]
+        sub eax, dword ptr [ecx + 10h]
+        mov edx, dword ptr [ecx + 24h]
+        sbb edx, dword ptr [ecx + 14h]
+        ret
+    }
+}
+__declspec(naked) std::uint64_t __fastcall raw_length_native_adopted_substream_00bf10a0(
+    const void*, std::uint32_t) noexcept {
+    __asm {
+        mov eax, dword ptr [ecx + 18h]
+        sub eax, dword ptr [ecx + 10h]
+        mov edx, dword ptr [ecx + 1ch]
+        sbb edx, dword ptr [ecx + 14h]
+        ret
+    }
+}
+__declspec(naked) std::uint64_t __fastcall raw_origin_native_adopted_substream_00bf10b0(
+    const void*, std::uint32_t, std::uint32_t) noexcept {
+    __asm {
+        mov eax, dword ptr [esp + 4]
+        test eax, eax
+        jnz raw_origin_nonzero
+        mov eax, dword ptr [ecx + 10h]
+        mov edx, dword ptr [ecx + 14h]
+        ret 4
+    raw_origin_nonzero:
+        cmp eax, 1
+        jnz raw_origin_end
+        mov eax, dword ptr [ecx + 20h]
+        mov edx, dword ptr [ecx + 24h]
+        ret 4
+    raw_origin_end:
+        mov eax, dword ptr [ecx + 18h]
+        mov edx, dword ptr [ecx + 1ch]
+        ret 4
+    }
+}
 std::uint8_t open_native_adopted_substream_00bf1090(
     void* owner, NativeAdoptedSubstreamDispatch& dispatch) {
     auto* const source = pointer(word(owner, 8));

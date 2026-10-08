@@ -59,6 +59,20 @@ std::uint64_t length_native_adopted_substream_00bf10a0(const void*) noexcept;
 // Origin0 -> start;1 -> current; EVERY other value -> end.
 std::uint64_t origin_native_adopted_substream_00bf10b0(
     const void*, std::uint32_t origin) noexcept;
+
+// Complete original-register-ABI leaves, distinct from the C++ facades above.
+// MSVC Win32: actual backing in ECX, unused incoming EDX, EDX:EAX result.
+// Position/length RET; origin is the third (stack) argument and uses RET4.
+// Admission: stable actual >=28h backing with live aligned DWORDs at
+// +10/+14/+18/+1C/+20/+24. No profile, source, vtable or lifetime admission.
+// No concurrent mutation/fault equivalence; every call freshly reads backing.
+std::uint64_t __fastcall raw_position_native_adopted_substream_00bf1080(
+    const void* actual_backing, std::uint32_t unused_edx) noexcept;
+std::uint64_t __fastcall raw_length_native_adopted_substream_00bf10a0(
+    const void* actual_backing, std::uint32_t unused_edx) noexcept;
+std::uint64_t __fastcall raw_origin_native_adopted_substream_00bf10b0(
+    const void* actual_backing, std::uint32_t unused_edx, std::uint32_t origin) noexcept;
+
 // BF1090: ECX owner -> current source+8/slot18 tail dispatch, AL open result.
 std::uint8_t open_native_adopted_substream_00bf1090(
     void*, NativeAdoptedSubstreamDispatch&);
@@ -77,6 +91,7 @@ void destroy_native_adopted_substream_00bf11c0(void*, NativeAdoptedSubstreamDisp
 void* delete_native_adopted_substream_00bf1240(
     void*, std::uint32_t flags, NativeAdoptedSubstreamDispatch&);
 
-// Complete actual-storage bodies with new C++ interfaces. Native CRT/FH3
+// The ordinary bodies retain their C++ interfaces; only the three explicitly
+// raw queries above expose original register entry ABIs. Native CRT/FH3
 // identity, archive construction and numeric-profile dispatch are separate.
 } // namespace bsp

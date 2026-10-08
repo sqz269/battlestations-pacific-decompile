@@ -6,11 +6,16 @@ member identity and an observer relation; it does not produce the member's
 callable type profile, class pointer, linked-unit pointer, or speed tuning.
 No Source, native fixture, or gameplay execution was added or performed.
 
-Evidence is pinned to worker commit `d02cf80822c487c2593696d6e1e0cf1b221c56a5`.
+Evidence is pinned to Source base `d02cf80822c487c2593696d6e1e0cf1b221c56a5`.
 The companion [report](../reports/cc12_group_member_admission_audit.json) retains
 the complete bytes, installed-PE hashes, five direct call rows, Source hashes,
 and verification limits. Ghidra was the existing `C:/Users/sqz269/bsp.gpr`,
 program `/battlestationspacific.exe`; all queries were read-only.
+
+The integrator independently read the complete live listing, rehashed the PE,
+whole body and 22 current Source inputs, and decoded all five direct call
+targets plus the sentinel again. The call verifier checked ten serialized rows
+with zero failures. These checks preserve the static readiness limits below.
 
 | Routine | Coverage | Evidence |
 | --- | --- | --- |

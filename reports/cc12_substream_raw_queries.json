@@ -1,0 +1,393 @@
+{
+  "packet": "cc12_substream_raw_queries",
+  "created_utc": "2026-10-08T05:37:12.819722+00:00",
+  "tested_base_commit": "5ba71b5f99ce2052cd54a506e163e07065910fd6",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256_pre": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha256_post": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00bf1080",
+      "name": "raw_position_native_adopted_substream_00bf1080",
+      "source": "src/native_adopted_substream.cpp",
+      "coverage": "complete",
+      "status": "complete_raw_entry_memory_domain_original_ABI_qualified",
+      "original_abi": "ECX actual backing; unused incoming EDX; EDX:EAX result; RET; no stack arguments",
+      "name_is_hypothesis": true,
+      "native_bytes": 13,
+      "source_COFF_bytes": 13,
+      "literal_source_hex": "8b41202b41108b51241b5114c3",
+      "original_sha256": "af8d2c80b9dabfd96faf72f2c55b2b6fadae59b37cd2b9f294d0ff3cd254946e",
+      "source_COFF_sha256": "af8d2c80b9dabfd96faf72f2c55b2b6fadae59b37cd2b9f294d0ff3cd254946e",
+      "relocations": [],
+      "no_calls": true,
+      "no_globals": true,
+      "complete_decode": true,
+      "instruction_count": 5,
+      "original_equals_whole_COFF_equals_whole_linked": true,
+      "unique_linked_image_occurrences": 1,
+      "decorated_symbol": "?raw_position_native_adopted_substream_00bf1080@bsp@@YI_KPBXI@Z",
+      "linked_membership": {
+        "address": 536876896,
+        "origin": "f   native_adopted_substream.obj",
+        "hex": "8b41202b41108b51241b5114c3"
+      },
+      "evidence": [
+        "docs/CC12_SUBSTREAM_RAW_QUERY_ENTRIES.md",
+        "local/cc12_substream_raw_queries_20261008a/fresh06/whole_bytes.json",
+        "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF1080.assembly.log"
+      ]
+    },
+    {
+      "address": "00bf10a0",
+      "name": "raw_length_native_adopted_substream_00bf10a0",
+      "source": "src/native_adopted_substream.cpp",
+      "coverage": "complete",
+      "status": "complete_raw_entry_memory_domain_original_ABI_qualified",
+      "original_abi": "ECX actual backing; unused incoming EDX; EDX:EAX result; RET; no stack arguments",
+      "name_is_hypothesis": true,
+      "native_bytes": 13,
+      "source_COFF_bytes": 13,
+      "literal_source_hex": "8b41182b41108b511c1b5114c3",
+      "original_sha256": "0602a776d9f09253da058e64d8646987ad434c750832c83098996bc3629814e0",
+      "source_COFF_sha256": "0602a776d9f09253da058e64d8646987ad434c750832c83098996bc3629814e0",
+      "relocations": [],
+      "no_calls": true,
+      "no_globals": true,
+      "complete_decode": true,
+      "instruction_count": 5,
+      "original_equals_whole_COFF_equals_whole_linked": true,
+      "unique_linked_image_occurrences": 1,
+      "decorated_symbol": "?raw_length_native_adopted_substream_00bf10a0@bsp@@YI_KPBXI@Z",
+      "linked_membership": {
+        "address": 536876832,
+        "origin": "f   native_adopted_substream.obj",
+        "hex": "8b41182b41108b511c1b5114c3"
+      },
+      "evidence": [
+        "docs/CC12_SUBSTREAM_RAW_QUERY_ENTRIES.md",
+        "local/cc12_substream_raw_queries_20261008a/fresh06/whole_bytes.json",
+        "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10A0.assembly.log"
+      ]
+    },
+    {
+      "address": "00bf10b0",
+      "name": "raw_origin_native_adopted_substream_00bf10b0",
+      "source": "src/native_adopted_substream.cpp",
+      "coverage": "complete",
+      "status": "complete_raw_entry_memory_domain_original_ABI_qualified",
+      "original_abi": "ECX actual backing; unused incoming EDX; EDX:EAX result; one stack origin DWORD; RET4",
+      "name_is_hypothesis": true,
+      "native_bytes": 40,
+      "source_COFF_bytes": 40,
+      "literal_source_hex": "8b44240485c075098b41108b5114c2040083f80175098b41208b5124c204008b41188b511cc20400",
+      "original_sha256": "8bc0350da9d6f248add0d45a9973715895069d3abf54bea5df317f4da8f8c3ae",
+      "source_COFF_sha256": "8bc0350da9d6f248add0d45a9973715895069d3abf54bea5df317f4da8f8c3ae",
+      "relocations": [],
+      "no_calls": true,
+      "no_globals": true,
+      "complete_decode": true,
+      "instruction_count": 14,
+      "original_equals_whole_COFF_equals_whole_linked": true,
+      "unique_linked_image_occurrences": 1,
+      "decorated_symbol": "?raw_origin_native_adopted_substream_00bf10b0@bsp@@YI_KPBXII@Z",
+      "linked_membership": {
+        "address": 536876848,
+        "origin": "f   native_adopted_substream.obj",
+        "hex": "8b44240485c075098b41108b5114c2040083f80175098b41208b5124c204008b41188b511cc20400"
+      },
+      "evidence": [
+        "docs/CC12_SUBSTREAM_RAW_QUERY_ENTRIES.md",
+        "local/cc12_substream_raw_queries_20261008a/fresh06/whole_bytes.json",
+        "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10B0.assembly.log"
+      ]
+    }
+  ],
+  "host_steps": [],
+  "corrections": [
+    {
+      "was": "Only ordinary C++ position/length/origin facades; the native ABI comments did not turn their signatures into original ECX/EDX:EAX entry points.",
+      "is": "Three distinct explicit raw naked fastcall entries preserve complete original bodies and register/stack ABI while retaining every existing facade.",
+      "evidence": "Whole 13/13/40-byte COFF and unique linked-image equality plus fresh native ABI comparisons."
+    }
+  ],
+  "admission": {
+    "required_storage": "Stable actual backing >=0x28 bytes, with genuinely live aligned DWORDs at +10/+14/+18/+1C/+20/+24.",
+    "reads": "Fresh fields on every call; no cached result or default caller bits.",
+    "fixture_storage": "alignas(4) typed Backing, 10 live uint32_t fields, sizeof 0x28; inside a 0x48 Guarded object with before/after 0x10 guards.",
+    "prefix_words": "Arbitrary ignored sentinels; no profile or vtable semantics.",
+    "source_constructor_executed": false,
+    "original_constructor_executed": false,
+    "dispatcher_supplied": false,
+    "class_profile_owner_lifetime_admission": false,
+    "drop_in_class_compatibility": false,
+    "excluded": [
+      "fault equivalence",
+      "concurrent mutation",
+      "Original object construction and lifetime",
+      "Original vtable or class-profile compatibility",
+      "archive manager/startup composition",
+      "gameplay/world validation"
+    ]
+  },
+  "validation": {
+    "ordinary_source_interfaces_preserved": true,
+    "normal_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "exit_code": 0,
+      "log": "local/cc12_substream_raw_queries_20261008a/build_three_ctests.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "initial_build_log": "local/cc12_substream_raw_queries_20261008a/build.log",
+      "initial_build_and_two_registered_tests_passed": true,
+      "native_reference_setup": "Fresh worktree initially lacked local/seed_reference.hpp. Read-only verify-seeds checked 8 existing live/disk spans, wrote evidence only inside this ignored family plus the worktree-local generated header; then normal incremental build registered all three existing tests."
+    },
+    "fresh_component": {
+      "family": "local/cc12_substream_raw_queries_20261008a",
+      "successful_attempt": "fresh06",
+      "successful_manifest": "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/manifest.json",
+      "translation_units": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_adopted_substream.cpp",
+          "sha256_pre": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_substream_raw_queries_20261008a\\fresh06\\inputs\\frozen\\a880eb6cba27984e30a0f0c359c3dd998c363316d64e8ec1f90500486a351951\\native_adopted_substream.cpp",
+          "sha256_copy": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+          "sha256_post": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\singleton_lifetime.cpp",
+          "sha256_pre": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_substream_raw_queries_20261008a\\fresh06\\inputs\\frozen\\a2e4b23d16836212d22f6201631b1170bad39437b852048cddcbed00a1f43b5c\\singleton_lifetime.cpp",
+          "sha256_copy": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+          "sha256_post": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_substream_raw_queries_20261008a\\probe.cpp",
+          "sha256_pre": "3f1b874939d3c097ab85006ba41d74199569d115fb55c5ca19989000d6fd4bc5",
+          "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_substream_raw_queries_20261008a\\fresh06\\inputs\\frozen\\5f7e2ad985089e7adfef97736ccadcf023d54dafbe4434ed6930b1107520a7f3\\probe.cpp",
+          "sha256_copy": "3f1b874939d3c097ab85006ba41d74199569d115fb55c5ca19989000d6fd4bc5",
+          "sha256_post": "3f1b874939d3c097ab85006ba41d74199569d115fb55c5ca19989000d6fd4bc5"
+        }
+      ],
+      "BSP_archives_linked": 0,
+      "fixture_execution_exit": 0,
+      "complete_whole_byte_proof_exit": 0,
+      "total_Original_bytes": 66,
+      "byte_patches_or_relocation_masking": false,
+      "whole_proof_completed_utc": "2026-10-08T05:30:59.247842+00:00",
+      "probe_process_started_utc": "2026-10-08T05:30:59.249420+00:00",
+      "all_loaded_source_bodies_checked_before_any_Original_call": true,
+      "Original_Source_pairs": 28,
+      "instrumented_raw_calls": 56,
+      "Original_leaf_calls": 28,
+      "instrumented_Source_leaf_calls": 28,
+      "additional_typed_Source_calls": 12,
+      "states_same_live_backing": 4,
+      "origin_values": [
+        "00000000",
+        "00000001",
+        "00000002",
+        "ffffffff",
+        "80000000"
+      ],
+      "checks": [
+        "low-word borrow and unsigned 64-bit wrap",
+        "high-bit words",
+        "fresh in-place field mutation",
+        "real ECX receiver",
+        "EDX:EAX result",
+        "ESP and RET/RET4 cleanup",
+        "EBX/ESI/EDI/EBP preservation",
+        "unchanged complete 28h backing and both guards",
+        "unchanged executable spans"
+      ],
+      "actual_consumed_headers": 217,
+      "actual_project_headers": 8,
+      "compiler_linker_backend_pins": 45,
+      "recipe_evidence_tool_pins": 14,
+      "actual_searched_system_libraries": 6,
+      "all_pre_post_pins_equal": true,
+      "embedded_asInvoker_manifest": true,
+      "genuine_current_singleton_TU_linked": true,
+      "singleton_allocation_free_runtime_qualification_claimed": false
+    },
+    "pre_execution_failed_attempts": [
+      {
+        "attempt": "fresh01",
+        "reason": "Before compilation: old 98-case family was absent from main local; located in orch2 worktree.",
+        "Original_leaf_executed": false,
+        "retained": true
+      },
+      {
+        "attempt": "fresh02",
+        "reason": "After compilation: pre-compile catalog omitted extensionless standard headers such as cstddef.",
+        "Original_leaf_executed": false,
+        "retained": true
+      },
+      {
+        "attempt": "fresh03",
+        "reason": "After linking: parser treated repeated discarded section pseudo-symbols as duplicate real functions.",
+        "Original_leaf_executed": false,
+        "retained": true
+      },
+      {
+        "attempt": "fresh04",
+        "reason": "After linking: PE parser mmap needed conversion to bytes for occurrence counting.",
+        "Original_leaf_executed": false,
+        "retained": true
+      },
+      {
+        "attempt": "fresh05",
+        "reason": "At probe initial gate: Windows text mode emitted CRLF; required marker now uses write_bytes.",
+        "Original_leaf_executed": false,
+        "retained": true
+      }
+    ],
+    "historical_98_family": {
+      "root": "J:/PROG/battlestations-pacific-decompile-orch2-20260910/local/native-adopted-substream",
+      "preserved_report_listed_artifacts": 74,
+      "all_pre_post_hashes_equal": true,
+      "replayed": false,
+      "overwritten": false
+    },
+    "report_call_check": {
+      "command": "python tools/verify_report_calls.py reports/cc12_substream_raw_queries.json",
+      "checked_call_rows": 0,
+      "failed": 0,
+      "reason": "The three complete leaves contain no calls.",
+      "log": "local/cc12_substream_raw_queries_20261008a/report_calls.log"
+    },
+    "new_tracked_tests": 0,
+    "game_validation_performed": false
+  },
+  "source_sha256": {
+    "include/bsp/native_adopted_substream.hpp": "c64950d42cf17d3c4da39fa7f99931e3e74b4ad3d968d00b8c25f1ddb0c0a8dd",
+    "src/native_adopted_substream.cpp": "53d9dbf526516cedc063269deb23ce144add399bb54bb2aa7f693ced3d8767be",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "owned_tracked_files": [
+    "include/bsp/native_adopted_substream.hpp",
+    "src/native_adopted_substream.cpp",
+    "docs/CC12_SUBSTREAM_RAW_QUERY_ENTRIES.md",
+    "reports/cc12_substream_raw_queries.json"
+  ],
+  "shared_changes": {
+    "CMake": false,
+    "ledgers": false,
+    "Ghidra_mutations": false,
+    "existing_fixtures": false
+  },
+  "artifacts_sha256": {
+    "local/cc12_substream_raw_queries_20261008a/build.log": "edf9d366c21e8e45fcc1f430d57725ebe579686d09fe1d3805ccfbb6670a4c69",
+    "local/cc12_substream_raw_queries_20261008a/build_three_ctests.log": "76860aafbf50d1946ebb9a1ec7f235fb9e587a7d5e15f2950554595e88b253a9",
+    "local/cc12_substream_raw_queries_20261008a/coff_reader.py": "d6dba11d4b6eb96d7fdab4e1ebb0588857ec3c242c7ae23d16cf2a79ead47d49",
+    "local/cc12_substream_raw_queries_20261008a/commit_message.txt": "ecc5d5116531f0cb3ec4a30cd60b10a43fdf40dd112b9994d9778131ea43f7bb",
+    "local/cc12_substream_raw_queries_20261008a/driver.log": "c499dbeb62f530729abe90d6dfe9eab8b71879706dd0d400f00b28c368ccff19",
+    "local/cc12_substream_raw_queries_20261008a/driver_fresh02.log": "0230f7eee5229048081da623a9e0210db15ad3b7714451472410437d04925edb",
+    "local/cc12_substream_raw_queries_20261008a/driver_fresh03.log": "f9d128ddd40f70466333206aff91d81e750d45044f3c7afb9e83bed15146c785",
+    "local/cc12_substream_raw_queries_20261008a/driver_fresh04.log": "f9e81af9d28c1ab2d713559af8cbde9c0659de9942c0699759f9834d2cedcb49",
+    "local/cc12_substream_raw_queries_20261008a/driver_fresh05.log": "abe73fe6a92cb855312b32a2574cc91c4101268111876e3ba4afb62e4d6a3eac",
+    "local/cc12_substream_raw_queries_20261008a/driver_fresh06.log": "e5dbe3b295c07f6c4c06acd295577cd38fa40f6a487449fbd9777618a2797c86",
+    "local/cc12_substream_raw_queries_20261008a/finalize_report.py": "eea4a1987e10c2ad22699afe905d140cf047d9aa065c9e9eadaa70472f0064ce",
+    "local/cc12_substream_raw_queries_20261008a/fresh02/inputs/manifest.json": "3247500d11f82ecf54c08d9fec829369bedc163464a4d64ee0965ac138dc5beb",
+    "local/cc12_substream_raw_queries_20261008a/fresh03/inputs/manifest.json": "bc689645528d628c9163f8e6fefc02399debffeea677879ca4fd2fd7fe8c7e64",
+    "local/cc12_substream_raw_queries_20261008a/fresh03/whole_bytes.log": "0cec4d19db500a61d77ff084675d7efdf0b5f1be58c23aa6523176ee139d6d7a",
+    "local/cc12_substream_raw_queries_20261008a/fresh04/inputs/manifest.json": "d98e9b19cdd74353d420c92a5e98c7c2fdb34cdb96de7a3833a3b1ceee5f4bef",
+    "local/cc12_substream_raw_queries_20261008a/fresh04/whole_bytes.log": "efe45f658ee4498ea0dc3d5b571c37e0b6cad59c9842e7a1592f44a04ad4121c",
+    "local/cc12_substream_raw_queries_20261008a/fresh05/execution.log": "2af8ffff36b07f1712ceee7f27784570de6cb84d3dddded609596b3c7b2a5bce",
+    "local/cc12_substream_raw_queries_20261008a/fresh05/inputs/manifest.json": "c4203ace168e49f3c8f109bf5ac9d085b0919d5f885f221b2a55a04b73462a97",
+    "local/cc12_substream_raw_queries_20261008a/fresh05/whole_bytes.log": "1b252f1dd67092189ca11b18972da0125a1e24825e4bfe103a04d2ae775ae2a9",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/embedded_manifest.xml": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/execution.log": "c8d38a97f19303b6ef1d91911d97f80e004b3f73f738296e9574ba38a1a483cc",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF1080.assembly.log": "1b7b127204d3b6f343c470cac7277f78d3c4692cd752764b596ae4ce02a21cba",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF1080.bin": "af8d2c80b9dabfd96faf72f2c55b2b6fadae59b37cd2b9f294d0ff3cd254946e",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF1080.bytes.log": "39bc3f0faddf734bab262f8092fa57b42793641ba6591e21f9a917200ec97d82",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10A0.assembly.log": "8a0fe367b861f14f346407ff965ec75110519da961993a282d4f2bf6e8efff27",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10A0.bin": "0602a776d9f09253da058e64d8646987ad434c750832c83098996bc3629814e0",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10A0.bytes.log": "0bec83d5e2b300917f16fa1a35d505c9136d8a5199702899eb33d06638fe51ba",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10B0.assembly.log": "f49a4cdf4d035873eabc84d85cf030c373a47e4943f75bb5a19bb9c2bc1bb587",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10B0.bin": "8bc0350da9d6f248add0d45a9973715895069d3abf54bea5df317f4da8f8c3ae",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/00BF10B0.bytes.log": "5d5758d51d8eab1bcc9e624054cc9f078979c7faef7f97b9542d12600e883f6d",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/manifest.json": "9ee3e55e76a6a641e817c64e1424f8197db449c61fc06f531292c580bd86689e",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/target_proto.log": "fa1b2f003e3989298bd5ed9f7a6071e858cc9b455e1cdc3b38f8b3fc5a5f9a94",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/inputs/target_status.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/link.cmd": "37cbc96f8a47da50d41ee52c4226deac19f7222cb591e8c222e2784eea5570a7",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/link.log": "eca0634a3e3b82e6160ae50d2abc4665b7c3fbff1f4b76779f7a49404529eeb3",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/link.rsp": "5e982e294d03eff3937a826cf3c040bf3e356696517582e872121a83ecdab2c1",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/manifest_extract.cmd": "fbb5ebbd1ba6d10ca6a6b411b6af47bb7fd0fb39a87adef78fadae9b5793b162",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/manifest_extract.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/native_adopted_substream.compile.cmd": "245671df73d66204cbd1cda1a5326cfb07d6de2ee55817d524124c0a0d40670c",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/native_adopted_substream.compile.log": "b157c590c7e20e6ef59c9fa39ebee10d2b1561a507797d6db2dd575d413d2919",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/native_adopted_substream.compile.rsp": "13c2294f005e37ca414683f7611628cf0254cff61a525a7a2ce3e4f9cd8cc168",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/native_adopted_substream.obj": "d99d0e29eb2b2c11d2d7f4d90e0b4268b67eead83edff91065c811a2bf797d72",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/probe.compile.cmd": "4249da457eb848ae8381693fddd23a305511f113310749f43dd6dc026f537799",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/probe.compile.log": "2cd5755d6d7e407e92547165def913a66db52722e7b1fd4f908df77624eba382",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/probe.compile.rsp": "d703c42dc733e20c18268a0c8b07ddb690cc311148d6d0e54312bba2f7822149",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/probe.obj": "414474c3b4342c78992e92c1e68499fdb7fa5772616ad9e311b435e7d9ee3e51",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/singleton_lifetime.compile.cmd": "0ff3fd3a080bbbd64785d272c7d625b165f9f92b89949d9786dd8041b9b14818",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/singleton_lifetime.compile.log": "cd046195a65a9a2cc7824ea981e39e65ac9e222e194971e5a92f5448d13f8d4e",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/singleton_lifetime.compile.rsp": "575786cffd1a64a632a75653c821e50eb0c0848f01ed790e849b0bd5ca9e3e7f",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/singleton_lifetime.obj": "220ca16a29bbdb5b68c688d817c3bc105f6845da36edc75cf9cd10f973c44d07",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/substream_probe.exe": "92c407fc4d5bcd95c203276cd9d7811532697329ed917fb78393c2dc96365da9",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/substream_probe.map": "05ea351bcafdf4a14eda4ce760f54bd2d15681fa773a78efeba1a92dbaa9b93e",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/toolchain_env.cmd": "ddcf48d45929f3fb1b96f6fb25cedeee46c028746a8943be62b5b487117bebf2",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/toolchain_env.log": "928b67e3d3f528c971d7f3f012230537f0cb1a78b1af23f7b99aa09e83c4cf81",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/whole_bytes.json": "5f6267025b2b6801d10461414e5fcddfdefc01a82858dbe77709dd0ca8bc74c7",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/whole_bytes.log": "1b252f1dd67092189ca11b18972da0125a1e24825e4bfe103a04d2ae775ae2a9",
+    "local/cc12_substream_raw_queries_20261008a/fresh06/whole_bytes_gate.txt": "42a849676da12b4d6e66a391ebe887dd4731d713a796e71dd2a26580b7aad37e",
+    "local/cc12_substream_raw_queries_20261008a/inspect_bytes.py": "cf767d2dc6e693826989b2823fee38acad30e2da54182e1d46a086bbee222e27",
+    "local/cc12_substream_raw_queries_20261008a/probe.cpp": "3f1b874939d3c097ab85006ba41d74199569d115fb55c5ca19989000d6fd4bc5",
+    "local/cc12_substream_raw_queries_20261008a/report_calls.log": "df75801ba911849e60e242667086f874f90c1dbc17a02027a21ff341244dd822",
+    "local/cc12_substream_raw_queries_20261008a/run_probe.py": "21c87fa0480324c62eb0441eb98eaaf914e72c2b8f3294bcc19530130294fd0b",
+    "local/cc12_substream_raw_queries_20261008a/seed_verification/seed_byte_comparison.json": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+    "local/cc12_substream_raw_queries_20261008a/verify_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/seed_reference.hpp": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+  },
+  "limits": "Complete three memory-domain raw leaf entry ABIs only; no class, lifetime, fault, concurrency, startup or game equivalence claim.",
+  "primary_integration_review": {
+    "worker_commit": "aceb0c0e18b77f4d0e47ce5e190b2f96e918c5ce",
+    "integration_base": "9b57fbeb4",
+    "complete_live_assembly_independently_read": true,
+    "whole_worker_COFF_and_unique_linked_Original_bytes_rechecked": 66,
+    "unchanged_actual_input_pins_rehashed": 359,
+    "worker_artifacts_rehashed": 64,
+    "current_integration_source_files_match_frozen_worker_inputs": true,
+    "historical_artifacts_preserved": 74,
+    "worker_native_pairs": 28,
+    "worker_instrumented_raw_calls": 56,
+    "worker_typed_Source_calls": 12,
+    "Root_fixture_replays": 0,
+    "new_Original_functions_reconstructed": 0,
+    "additional_complete_register_entry_interfaces": 3,
+    "qualification": "Complete register-entry leaves within stable actual28h live-word memory domain only; class, lifetime, fault, concurrency and gameplay remain unvalidated.",
+    "integration_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "passed_existing_ctests": 3,
+      "failed": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_substream_primary_build.txt",
+      "log_sha256": "43fc52c833e1ddfdfbbb2d5d4b726bb305f4a480a5f697dadf9bbb3d167a3af0",
+      "production_object": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_adopted_substream.obj",
+      "object_sha256": "3cb49997c81c2bb6a6df097098c5f27c32d66fc3a82ced2fd787488aac2b07b6",
+      "complete_production_COFF_original_bytes": 66,
+      "production_COFF_relocations": 0,
+      "native_seed_spans_verified": 8
+    }
+  }
+}
