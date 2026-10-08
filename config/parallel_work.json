@@ -33572,8 +33572,8 @@
     },
     {
       "id": "cc12_scene_property_record_type4_storage",
-      "done": true,
-      "state": "complete whole56B16 literal raw type4 storage Source integrated; independent complementary3TU/current-canonical fixture and merged-main Win32/all3 existing checks PASS",
+      "done": false,
+      "state": "validation_reopened_pending_all_retained_function_and_helper_gates",
       "function_addresses": [
         "008ef230"
       ],
@@ -33644,152 +33644,167 @@
       "original_private_CRT_EH_admission": false,
       "game_validated": false,
       "primary_integration": {
-        "source_revision": "d0146717ee8426ff21bde233837957f551fc0e69",
-        "worker_commit": "12560bbb99d823c3fe4625816ad9cc8fc42bb839",
-        "independent_family": "local/t4p2",
-        "independent_seal_sha256": "217505ab9fc25fcef8da9fa674a57e76f2d1409da0aeabb5f0cafe753012ca75",
-        "independent_inventory_artifacts": 341,
-        "independent_actual_files": 342,
-        "prior_artifacts_preserved": 11843,
-        "fresh_translation_units": 3,
-        "BSP_archives_consumed": 0,
-        "old_objects_consumed": 0,
-        "accepted_processes": 1,
-        "Source_entries": 1,
-        "Original_entries": 1,
-        "actual_allocations": 2,
-        "actual_free_dispositions": 2,
-        "complete_runtime_code_spans": 9,
-        "native_bytes": 56,
-        "native_instructions": 16,
-        "qualified_operand_bytes": 0,
-        "decoded_captures": [
-          {
-            "phase": "source",
-            "full56_storage_verified": true,
-            "raw_registers_stack_defined_flags_DF_and_ES_verified": true,
-            "dead_argument_words_verified_before_PUSHFD": true
-          },
-          {
-            "phase": "original",
-            "full56_storage_verified": true,
-            "raw_registers_stack_defined_flags_DF_and_ES_verified": true,
-            "dead_argument_words_verified_before_PUSHFD": true
-          }
-        ],
-        "full_main_existing_checks": "3/3 PASS",
-        "context": {
+        "passed": false,
+        "Source_admission_credit": 0,
+        "status": "validation_reopened_pending_all_retained_function_and_helper_gates",
+        "historical_family": "local/t4p2",
+        "missing_normal_fixture_bodies": 13,
+        "missing_cold_exception_bodies": 6,
+        "audit": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_property_record_published_code_gate_audit.json",
+        "audit_sha256": "08d39be64d1a4bce9b2a64acb72bc5a46160c7bc4f3505a1ae696782ae1ad5c7",
+        "historical_inventory_preserved": true,
+        "old_accepted_helpers_phases_objects_processes_replayed": 0,
+        "qualification": "Reopen the historical Type4 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 13 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted."
+      },
+      "primary_integration_history": [
+        {
           "source_revision": "d0146717ee8426ff21bde233837957f551fc0e69",
           "worker_commit": "12560bbb99d823c3fe4625816ad9cc8fc42bb839",
-          "full_main_build_log": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_source_primary\\final_after_main_merge\\build.txt",
-          "build_log_sha256": "aa208909d2bd688f45b0d37cef11687771049f4554505d57feeb13ec13f6b703",
-          "existing_checks": "3/3 PASS",
-          "combined_main_build_receipt": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_source_primary\\final_after_main_merge\\receipt.json",
-            "size": 4628,
-            "sha256": "bee57f7148a6c548987697f20f58a9bfb5a97f5facd9eddd029494b8417b2dfd"
-          },
-          "combined_main_CMake_sha256": "53000c977ffafd47c9a77cf63d0f4ba8d989023319ced29427ba6efb6a632c4e",
-          "prior_Root_type4_build_log": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type4_storage_integrated_build.log",
-            "size": 2886,
-            "sha256": "811e1fefc95a6d614adf1928ed12564890c85ce71f46780dfd6881dead31abd2"
-          },
-          "core_context_only": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
-            "sha256_at_capture": "0638b53876bc21d2d35155ee69e057cd10358ea6fd92b0c798e677306eb89ea5",
-            "consumed": false
-          },
-          "complementary_inputs": {
-            "prior_text_sources": [
-              {
-                "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\recipe.py",
-                "size": 19905,
-                "sha256": "52f9f9aea8bad19bfa212268e33a77650e7626695139cc9ccee49b2c8650414f"
+          "independent_family": "local/t4p2",
+          "independent_seal_sha256": "217505ab9fc25fcef8da9fa674a57e76f2d1409da0aeabb5f0cafe753012ca75",
+          "independent_inventory_artifacts": 341,
+          "independent_actual_files": 342,
+          "prior_artifacts_preserved": 11843,
+          "fresh_translation_units": 3,
+          "BSP_archives_consumed": 0,
+          "old_objects_consumed": 0,
+          "accepted_processes": 1,
+          "Source_entries": 1,
+          "Original_entries": 1,
+          "actual_allocations": 2,
+          "actual_free_dispositions": 2,
+          "complete_runtime_code_spans": 9,
+          "native_bytes": 56,
+          "native_instructions": 16,
+          "qualified_operand_bytes": 0,
+          "decoded_captures": [
+            {
+              "phase": "source",
+              "full56_storage_verified": true,
+              "raw_registers_stack_defined_flags_DF_and_ES_verified": true,
+              "dead_argument_words_verified_before_PUSHFD": true
+            },
+            {
+              "phase": "original",
+              "full56_storage_verified": true,
+              "raw_registers_stack_defined_flags_DF_and_ES_verified": true,
+              "dead_argument_words_verified_before_PUSHFD": true
+            }
+          ],
+          "full_main_existing_checks": "3/3 PASS",
+          "context": {
+            "source_revision": "d0146717ee8426ff21bde233837957f551fc0e69",
+            "worker_commit": "12560bbb99d823c3fe4625816ad9cc8fc42bb839",
+            "full_main_build_log": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_source_primary\\final_after_main_merge\\build.txt",
+            "build_log_sha256": "aa208909d2bd688f45b0d37cef11687771049f4554505d57feeb13ec13f6b703",
+            "existing_checks": "3/3 PASS",
+            "combined_main_build_receipt": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_source_primary\\final_after_main_merge\\receipt.json",
+              "size": 4628,
+              "sha256": "bee57f7148a6c548987697f20f58a9bfb5a97f5facd9eddd029494b8417b2dfd"
+            },
+            "combined_main_CMake_sha256": "53000c977ffafd47c9a77cf63d0f4ba8d989023319ced29427ba6efb6a632c4e",
+            "prior_Root_type4_build_log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type4_storage_integrated_build.log",
+              "size": 2886,
+              "sha256": "811e1fefc95a6d614adf1928ed12564890c85ce71f46780dfd6881dead31abd2"
+            },
+            "core_context_only": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+              "sha256_at_capture": "0638b53876bc21d2d35155ee69e057cd10358ea6fd92b0c798e677306eb89ea5",
+              "consumed": false
+            },
+            "complementary_inputs": {
+              "prior_text_sources": [
+                {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\recipe.py",
+                  "size": 19905,
+                  "sha256": "52f9f9aea8bad19bfa212268e33a77650e7626695139cc9ccee49b2c8650414f"
+                },
+                {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\helpers.py",
+                  "size": 5990,
+                  "sha256": "3dd49024f028fb79f9d46120f2b33a51d0e75aa3348f195ddcea5a3cfd148d47"
+                },
+                {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\probe.cpp",
+                  "size": 22774,
+                  "sha256": "5e67db586eb07205bf754349de969bea139dcc8ee8544484cbc8dc025cacc05b"
+                },
+                {
+                  "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\stopped_inventory.json",
+                  "size": 67705,
+                  "sha256": "37912ebacb1314ccf02d17f99668e0a64f8d64e65b6982b0639a641bca7845cb"
+                }
+              ],
+              "Root_generator": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type4_primary_generate_p2.py",
+                "size": 4106,
+                "sha256": "467451942d29c3c0c4863e372e94836c5ee225afe87af55c318730b9915cdc61"
               },
-              {
-                "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\helpers.py",
-                "size": 5990,
-                "sha256": "3dd49024f028fb79f9d46120f2b33a51d0e75aa3348f195ddcea5a3cfd148d47"
+              "worker_family": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type4_storage\\local\\t4a\\seal.json",
+                "size": 83236,
+                "sha256": "423d4099036e20b3a318a2a960ea66cc5c94c1682fc7f8f96ce2a41090391534"
               },
-              {
-                "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\probe.cpp",
-                "size": 22774,
-                "sha256": "5e67db586eb07205bf754349de969bea139dcc8ee8544484cbc8dc025cacc05b"
-              },
-              {
+              "old_recipes_executed": false,
+              "complementary_identity_words": [
+                "13579BDF",
+                "ECA86420"
+              ],
+              "complementary_value_words": [
+                "FFFFFFFF",
+                "00000000"
+              ],
+              "DF": [
+                1,
+                0
+              ],
+              "root_poisons": [
+                "B6",
+                "C7"
+              ],
+              "incoming_EDX": "D5A193C7",
+              "new_nonvolatile_stack_and_capture_guards": true,
+              "historical_failed_primary": {
                 "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\stopped_inventory.json",
                 "size": 67705,
                 "sha256": "37912ebacb1314ccf02d17f99668e0a64f8d64e65b6982b0639a641bca7845cb"
-              }
-            ],
-            "Root_generator": {
-              "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type4_primary_generate_p2.py",
-              "size": 4106,
-              "sha256": "467451942d29c3c0c4863e372e94836c5ee225afe87af55c318730b9915cdc61"
+              },
+              "old_target_executions": 0,
+              "packet_ledger_is_frozen_historical_context": true
             },
-            "worker_family": {
-              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type4_storage\\local\\t4a\\seal.json",
-              "size": 83236,
-              "sha256": "423d4099036e20b3a318a2a960ea66cc5c94c1682fc7f8f96ce2a41090391534"
+            "dispatch_snapshot": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p2\\dispatch_context.json",
+              "size": 1677651,
+              "sha256": "5dabed81717f04ac7ebb6c1c4c60dc50c69dc5e93efe02821e5b662645d93d7c"
             },
-            "old_recipes_executed": false,
-            "complementary_identity_words": [
-              "13579BDF",
-              "ECA86420"
-            ],
-            "complementary_value_words": [
-              "FFFFFFFF",
-              "00000000"
-            ],
-            "DF": [
-              1,
-              0
-            ],
-            "root_poisons": [
-              "B6",
-              "C7"
-            ],
-            "incoming_EDX": "D5A193C7",
-            "new_nonvolatile_stack_and_capture_guards": true,
-            "historical_failed_primary": {
-              "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p1\\stopped_inventory.json",
-              "size": 67705,
-              "sha256": "37912ebacb1314ccf02d17f99668e0a64f8d64e65b6982b0639a641bca7845cb"
+            "dispatch_original_at_capture": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\config\\parallel_work.json",
+              "size": 1677651,
+              "sha256": "5dabed81717f04ac7ebb6c1c4c60dc50c69dc5e93efe02821e5b662645d93d7c"
             },
-            "old_target_executions": 0,
-            "packet_ledger_is_frozen_historical_context": true
+            "old_successful_families_reexecuted": false
           },
-          "dispatch_snapshot": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p2\\dispatch_context.json",
-            "size": 1677651,
-            "sha256": "5dabed81717f04ac7ebb6c1c4c60dc50c69dc5e93efe02821e5b662645d93d7c"
-          },
-          "dispatch_original_at_capture": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\config\\parallel_work.json",
-            "size": 1677651,
-            "sha256": "5dabed81717f04ac7ebb6c1c4c60dc50c69dc5e93efe02821e5b662645d93d7c"
-          },
-          "old_successful_families_reexecuted": false
-        },
-        "historical_failed_primary": "local/t4p1/stopped_inventory.json",
-        "historical_primary_process_entries": 0,
-        "old_recipes_replayed": false,
-        "Source_provider_glue_native_credit": 0,
-        "native_class_ABI_admitted": false,
-        "original_private_CRT_EH_admitted": false,
-        "game_validated": false,
-        "qualification": "Whole raw type4 storage[008EF230,008EF268),56B16,zeroCALL/relocations. Complete Source COFF/unique linked/runtime body literally equals live/installed Native SHA b6b40a5cbb0a523d345de24f97ac879a4e5a56c8d9a1f121f636fd33ce4dfd98. Physical ECX supplied fresh writable unowned56-byte current canonical heap storage disjoint from active frame; unused EDX explicit padding; two opaqueDWORDs at entryESP+4(identity bits)/+8(value bits), RET8. Firstword is read beforestores, stored+28; secondwordread occursafter+28store and isstored+C. No pointer dereference/numericconversion/FPoperation. Literal phase00CE89D4/tag4; sixzeroDWORD18/1C/20/24/30/34; byte1at2C.41written15preserved([8,C),[10,18),[2D,30)). EAXroot,ECX0,EDXvalue; nonvolatiles/DF/ES and definedXOR flags8C5 pass, AFundefinedexcluded. Phaseword is identityonly and cannotbe dispatchedas Source vtable. Worker fresh3TU/two56alloc/twofree and independent complementary current-main fresh3TU/two56alloc/twofree fixture each executeone Source/one unchangedRX Original. Independent Source13579BDF/FFFFFFFF/DF1/B6 and OriginalECA86420/00000000/DF0/C7, EDXD5A193C7, different stack/capture/nonvolatileguards pass. Root independentlydecodes124-bytecaptures/full56storage; bothdeadactualargumentwords capturedbeforePUSHFD, RET8 ESP/noRoot/capture/inputcanary damage. All9 complete code spans include whole173B64 rawcaller,22B6 ordinarycompiler caller and actualmap-owned14B4 cookie CMP/JNE/RET/failureJMP (distinct external failurebody excluded). Actual mapped I386 malloc/free/_callnewh IAT/export/module/physicalfile/fullSHA/prefix gates precede both fixture allocations and matchafterfrees.11843 priorpins and341sealedartifacts/exact342actualfiles unchanged. Prior primary t4p1 retains two unexecuted launch failures(reviewbasename and externallychanged mutable dispatchledger); zero process/targetentries there. New t4p2 freezesdispatch as historicalcontext, neverrepins oldreceipt or replays earlier successfulphase/process. Root type4 integrated Win32/all3 checks and current combined merged-main Win32/all3 checks pass. Rawcurrentcanonical storage only; identitysemanticlabelhypothesis, native enum/declaration/clone/owningclass/phase/privateCRT/EH/World/game unadmitted.",
-        "artifacts": {
-          "local/t4p2/seal.json": "217505ab9fc25fcef8da9fa674a57e76f2d1409da0aeabb5f0cafe753012ca75",
-          "local/t4p2/runtime.json": "4eb9b24427a5a1ba2f57798440bb3e2047883d1c7ad6d6f423bac152d47f3adc",
-          "local/t4p2/static_gate.json": "33a81aa44bd78797024ed8e192404504359da17dc599073b2fdc57cfdebf5ae3",
-          "local/t4p2/post.json": "e532c8789bb77e85bb9491271dc85b2a37d5712e0e8f026c0906be8e86e64e6b",
-          "local/t4p2/manual_static_review.json": "215fc962ffeee8bf4e6b7b2c4314d1293748d88681c4fb5a062e256acce1645e",
-          "local/t4p2/context.json": "9b0ee289b016960659ac597e1cd819205ed2516e3a26e363b4c12c9453d37970",
-          "local/t4p1/stopped_inventory.json": "37912ebacb1314ccf02d17f99668e0a64f8d64e65b6982b0639a641bca7845cb"
+          "historical_failed_primary": "local/t4p1/stopped_inventory.json",
+          "historical_primary_process_entries": 0,
+          "old_recipes_replayed": false,
+          "Source_provider_glue_native_credit": 0,
+          "native_class_ABI_admitted": false,
+          "original_private_CRT_EH_admitted": false,
+          "game_validated": false,
+          "qualification": "Whole raw type4 storage[008EF230,008EF268),56B16,zeroCALL/relocations. Complete Source COFF/unique linked/runtime body literally equals live/installed Native SHA b6b40a5cbb0a523d345de24f97ac879a4e5a56c8d9a1f121f636fd33ce4dfd98. Physical ECX supplied fresh writable unowned56-byte current canonical heap storage disjoint from active frame; unused EDX explicit padding; two opaqueDWORDs at entryESP+4(identity bits)/+8(value bits), RET8. Firstword is read beforestores, stored+28; secondwordread occursafter+28store and isstored+C. No pointer dereference/numericconversion/FPoperation. Literal phase00CE89D4/tag4; sixzeroDWORD18/1C/20/24/30/34; byte1at2C.41written15preserved([8,C),[10,18),[2D,30)). EAXroot,ECX0,EDXvalue; nonvolatiles/DF/ES and definedXOR flags8C5 pass, AFundefinedexcluded. Phaseword is identityonly and cannotbe dispatchedas Source vtable. Worker fresh3TU/two56alloc/twofree and independent complementary current-main fresh3TU/two56alloc/twofree fixture each executeone Source/one unchangedRX Original. Independent Source13579BDF/FFFFFFFF/DF1/B6 and OriginalECA86420/00000000/DF0/C7, EDXD5A193C7, different stack/capture/nonvolatileguards pass. Root independentlydecodes124-bytecaptures/full56storage; bothdeadactualargumentwords capturedbeforePUSHFD, RET8 ESP/noRoot/capture/inputcanary damage. All9 complete code spans include whole173B64 rawcaller,22B6 ordinarycompiler caller and actualmap-owned14B4 cookie CMP/JNE/RET/failureJMP (distinct external failurebody excluded). Actual mapped I386 malloc/free/_callnewh IAT/export/module/physicalfile/fullSHA/prefix gates precede both fixture allocations and matchafterfrees.11843 priorpins and341sealedartifacts/exact342actualfiles unchanged. Prior primary t4p1 retains two unexecuted launch failures(reviewbasename and externallychanged mutable dispatchledger); zero process/targetentries there. New t4p2 freezesdispatch as historicalcontext, neverrepins oldreceipt or replays earlier successfulphase/process. Root type4 integrated Win32/all3 checks and current combined merged-main Win32/all3 checks pass. Rawcurrentcanonical storage only; identitysemanticlabelhypothesis, native enum/declaration/clone/owningclass/phase/privateCRT/EH/World/game unadmitted.",
+          "artifacts": {
+            "local/t4p2/seal.json": "217505ab9fc25fcef8da9fa674a57e76f2d1409da0aeabb5f0cafe753012ca75",
+            "local/t4p2/runtime.json": "4eb9b24427a5a1ba2f57798440bb3e2047883d1c7ad6d6f423bac152d47f3adc",
+            "local/t4p2/static_gate.json": "33a81aa44bd78797024ed8e192404504359da17dc599073b2fdc57cfdebf5ae3",
+            "local/t4p2/post.json": "e532c8789bb77e85bb9491271dc85b2a37d5712e0e8f026c0906be8e86e64e6b",
+            "local/t4p2/manual_static_review.json": "215fc962ffeee8bf4e6b7b2c4314d1293748d88681c4fb5a062e256acce1645e",
+            "local/t4p2/context.json": "9b0ee289b016960659ac597e1cd819205ed2516e3a26e363b4c12c9453d37970",
+            "local/t4p1/stopped_inventory.json": "37912ebacb1314ccf02d17f99668e0a64f8d64e65b6982b0639a641bca7845cb"
+          }
         }
-      }
+      ]
     },
     {
       "id": "cc12_native_wake_decomposition",
@@ -34114,8 +34129,8 @@
     },
     {
       "id": "cc12_scene_property_record_type7_storage",
-      "done": true,
-      "state": "complete literal whole63B19 type7 raw three-word storage; independent complementary3TU/currentcanonical fixture and combined-main Win32/all3checksPASS",
+      "done": false,
+      "state": "validation_reopened_pending_all_retained_function_and_helper_gates",
       "function_addresses": [
         "008ef270"
       ],
@@ -34357,111 +34372,126 @@
       "original_private_CRT_EH_admission": false,
       "game_validated": false,
       "primary_integration": {
-        "passed": true,
-        "Source_admission_credit": 1,
-        "worker_commit": "f4a1d1a4ea7454a4d8e3ae2007149fce5c520039",
-        "independent_family": "local/t7p1",
-        "independent_seal_sha256": "057b226a157e25610aa8c85b99ccf3d77a2f8561f03eddc7c7be930721e1becf",
-        "independent_inventory_artifacts": 348,
-        "independent_actual_files": 349,
-        "prior_artifacts_preserved": 13481,
-        "fresh_translation_units": 3,
-        "BSP_archives_consumed": 0,
-        "old_objects_consumed": 0,
-        "accepted_processes": 1,
-        "Source_entries": 1,
-        "Original_entries": 1,
-        "actual_allocations": 2,
-        "actual_free_dispositions": 2,
-        "complete_runtime_code_spans": 9,
-        "native_bytes": 63,
-        "native_instructions": 19,
-        "qualified_operand_bytes": 0,
-        "decoded_captures": [
-          {
-            "phase": "source",
-            "full56_storage_45written11preserved": true,
-            "whole_guarded44_input_and12_raw_words_verified": true,
-            "actual_pointer_stack_slot_before_PUSHFD": true,
-            "raw_nonvolatiles_ESP_defined_flags_DF_and_ES_verified": true,
-            "frame_receiver_and_borrowed_input_disjoint": true
-          },
-          {
-            "phase": "original",
-            "full56_storage_45written11preserved": true,
-            "whole_guarded44_input_and12_raw_words_verified": true,
-            "actual_pointer_stack_slot_before_PUSHFD": true,
-            "raw_nonvolatiles_ESP_defined_flags_DF_and_ES_verified": true,
-            "frame_receiver_and_borrowed_input_disjoint": true
-          }
-        ],
-        "full_main_existing_checks": "3/3 PASS",
-        "context": {
-          "source_revision": "7c79302e7276263fe41dc079c589920336c7a918",
+        "passed": false,
+        "Source_admission_credit": 0,
+        "status": "validation_reopened_pending_all_retained_function_and_helper_gates",
+        "historical_family": "local/t7p1",
+        "missing_normal_fixture_bodies": 17,
+        "missing_cold_exception_bodies": 6,
+        "audit": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_property_record_published_code_gate_audit.json",
+        "audit_sha256": "08d39be64d1a4bce9b2a64acb72bc5a46160c7bc4f3505a1ae696782ae1ad5c7",
+        "historical_inventory_preserved": true,
+        "old_accepted_helpers_phases_objects_processes_replayed": 0,
+        "qualification": "Reopen the historical Type7 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 17 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted."
+      },
+      "primary_integration_history": [
+        {
+          "passed": true,
+          "Source_admission_credit": 1,
           "worker_commit": "f4a1d1a4ea7454a4d8e3ae2007149fce5c520039",
-          "full_main_build_log": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type7_current_main_build.log",
-            "size": 3079,
-            "sha256": "3150739fdd9ab242774e9faa7566441ebd0c19ba5d14152dde8ce39ff2ffa5d6"
-          },
-          "checks": "3/3 PASS",
-          "actual_CMake": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
-            "size": 196977,
-            "sha256": "87060ba2ea1938427d451125decce705b50651981ef7445463399b86fc7afb81"
-          },
-          "core_context_only": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
-            "size": 73530396,
-            "sha256": "4ab7e2d71495ec6e6bb2ba226c80ab7c461be76a177b36fc452ef7659bc59105",
-            "consumed": false
-          },
-          "worker_family": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type7_storage\\local\\t7a\\seal.json",
-            "size": 84924,
-            "sha256": "0bb39bc58ae2e3591c1be0d15054d75a1477f6627b3f6f6e20efcdac773ac4dd"
-          },
-          "new_input_words": [
-            [
-              "13579BDF",
-              "FFFFFFFF",
-              "6BC82410"
+          "independent_family": "local/t7p1",
+          "independent_seal_sha256": "057b226a157e25610aa8c85b99ccf3d77a2f8561f03eddc7c7be930721e1becf",
+          "independent_inventory_artifacts": 348,
+          "independent_actual_files": 349,
+          "prior_artifacts_preserved": 13481,
+          "fresh_translation_units": 3,
+          "BSP_archives_consumed": 0,
+          "old_objects_consumed": 0,
+          "accepted_processes": 1,
+          "Source_entries": 1,
+          "Original_entries": 1,
+          "actual_allocations": 2,
+          "actual_free_dispositions": 2,
+          "complete_runtime_code_spans": 9,
+          "native_bytes": 63,
+          "native_instructions": 19,
+          "qualified_operand_bytes": 0,
+          "decoded_captures": [
+            {
+              "phase": "source",
+              "full56_storage_45written11preserved": true,
+              "whole_guarded44_input_and12_raw_words_verified": true,
+              "actual_pointer_stack_slot_before_PUSHFD": true,
+              "raw_nonvolatiles_ESP_defined_flags_DF_and_ES_verified": true,
+              "frame_receiver_and_borrowed_input_disjoint": true
+            },
+            {
+              "phase": "original",
+              "full56_storage_45written11preserved": true,
+              "whole_guarded44_input_and12_raw_words_verified": true,
+              "actual_pointer_stack_slot_before_PUSHFD": true,
+              "raw_nonvolatiles_ESP_defined_flags_DF_and_ES_verified": true,
+              "frame_receiver_and_borrowed_input_disjoint": true
+            }
+          ],
+          "full_main_existing_checks": "3/3 PASS",
+          "context": {
+            "source_revision": "7c79302e7276263fe41dc079c589920336c7a918",
+            "worker_commit": "f4a1d1a4ea7454a4d8e3ae2007149fce5c520039",
+            "full_main_build_log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type7_current_main_build.log",
+              "size": 3079,
+              "sha256": "3150739fdd9ab242774e9faa7566441ebd0c19ba5d14152dde8ce39ff2ffa5d6"
+            },
+            "checks": "3/3 PASS",
+            "actual_CMake": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+              "size": 196977,
+              "sha256": "87060ba2ea1938427d451125decce705b50651981ef7445463399b86fc7afb81"
+            },
+            "core_context_only": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+              "size": 73530396,
+              "sha256": "4ab7e2d71495ec6e6bb2ba226c80ab7c461be76a177b36fc452ef7659bc59105",
+              "consumed": false
+            },
+            "worker_family": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_type7_storage\\local\\t7a\\seal.json",
+              "size": 84924,
+              "sha256": "0bb39bc58ae2e3591c1be0d15054d75a1477f6627b3f6f6e20efcdac773ac4dd"
+            },
+            "new_input_words": [
+              [
+                "13579BDF",
+                "FFFFFFFF",
+                "6BC82410"
+              ],
+              [
+                "ECA86420",
+                "00000000",
+                "F00D55AA"
+              ]
             ],
-            [
-              "ECA86420",
-              "00000000",
-              "F00D55AA"
-            ]
-          ],
-          "new_DF": [
-            1,
-            0
-          ],
-          "new_poisons": [
-            "B6",
-            "C7"
-          ],
-          "dispatch_is_frozen_historical_context": true,
-          "old_recipes_executed": false
-        },
-        "historical_scaffolding_failed_before_target": true,
-        "old_recipes_replayed": false,
-        "Source_provider_glue_native_credit": 0,
-        "native_class_ABI_admitted": false,
-        "original_private_CRT_EH_admitted": false,
-        "game_validated": false,
-        "qualification": "Whole type7 raw storage[008EF270,008EF2AF),63B19,zeroCALL/relocations, all bytes literal original Native SHA9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872. Physical ECX actualfresh/unowned writable56-byte destination, unusedEDX explicitpadding, actual borrowed stable readable12-byte wordspan stackarg atentryESP+4, RET4/EAXroot. Receiver/input/activeframe disjoint. Literal phase00CE89D4/tag7 stores precede threeinterleaved rawDWORD loads/stores at+C/+10/+14; no numeric/FP operations, pointer not retained. SixzeroDWORD18/1C/20/24/30/34; byte1+2C.45written11preserved[8,C),[28,2C),[2D,30). ECX0/EDXsecondword; nonvolatiles/DF/ES unchanged and definedXOR8C5=44 excludes undefinedAF. Independent complementary3TU/currentcanonical fixture Source13579BDF/FFFFFFFF/6BC82410 DF1 B6, unchangedRXOriginalECA86420/0/F00D55AA DF0 C7, oneeachentry/twoactual56malloc/twocanonicalfree. All116-byte guardedcaptures/44-byte guardedinputs/56storage independently decoded, pointerargument capturedbeforePUSHFD,9completecodegates including156B59rawcaller/twoordinarycallers/full14-byte mapownedcookie; actualphysicalI386UCRT IAT/export/fullhash/fileidentity and code/Native/inputbookends pass. Exact348artifacts+seal349;13481olderpins intact. Fixture scaffolding oldimagebase and exclusiveCOFFwrite attempts stopped beforetarget; separate corrected static review retained COFF/build unchanged. No successfulprepare/build/native/post replay. Currentcombinedmain strictWin32/all3checksPASS. Rawstorage only: no livephase/vtable/class/vector/refcount/destructor/fullclone/privateCRT/EH/gameABI/gameplay admission.",
-        "artifacts": {
-          "local/t7p1/seal.json": "057b226a157e25610aa8c85b99ccf3d77a2f8561f03eddc7c7be930721e1becf",
-          "local/t7p1/runtime.json": "b399fb7e83090a7082b837cc71a33528ba29e729d762996e6bd2aa3873d2ed4b",
-          "local/t7p1/post.json": "fad85293524e91a1f9f880485bbdc1671a30363ea54fb5659616a857c608dc4b",
-          "local/t7p1/static_gate.json": "1d3f51a6b4bd7165128469d9b2ccdfd29ae6af8ef4a8bffca1b299e501784f65",
-          "local/t7p1/manual_static_review.json": "e01c7bcd48d72bdb6dfabbdb34abb76e1555e47690ea9cfd9289fa7099a3c9f9",
-          "local/t7p1/context.json": "ed43533f5b6e48d9d45f76a2351b51b468cf3fe460d7c5e2b3369f2ec21ddd2c",
-          "local/t7p1/static_recovery_inputs.json": "6866e20aa9bcaa2eb61a87d0a5ffb7a580ce779cdc3883fa83d81b79b63ef813",
-          "local/t7p1/static_complete_recovery_inputs.json": "c7e454d695a4ed45a56d75bdf03fb3e8ecf00bdc7e73db650d10a533d1729c3e"
+            "new_DF": [
+              1,
+              0
+            ],
+            "new_poisons": [
+              "B6",
+              "C7"
+            ],
+            "dispatch_is_frozen_historical_context": true,
+            "old_recipes_executed": false
+          },
+          "historical_scaffolding_failed_before_target": true,
+          "old_recipes_replayed": false,
+          "Source_provider_glue_native_credit": 0,
+          "native_class_ABI_admitted": false,
+          "original_private_CRT_EH_admitted": false,
+          "game_validated": false,
+          "qualification": "Whole type7 raw storage[008EF270,008EF2AF),63B19,zeroCALL/relocations, all bytes literal original Native SHA9010f6007c93fa311d1e2d7f6c89a06aa802af3575be8e5c22edd26aa36d6872. Physical ECX actualfresh/unowned writable56-byte destination, unusedEDX explicitpadding, actual borrowed stable readable12-byte wordspan stackarg atentryESP+4, RET4/EAXroot. Receiver/input/activeframe disjoint. Literal phase00CE89D4/tag7 stores precede threeinterleaved rawDWORD loads/stores at+C/+10/+14; no numeric/FP operations, pointer not retained. SixzeroDWORD18/1C/20/24/30/34; byte1+2C.45written11preserved[8,C),[28,2C),[2D,30). ECX0/EDXsecondword; nonvolatiles/DF/ES unchanged and definedXOR8C5=44 excludes undefinedAF. Independent complementary3TU/currentcanonical fixture Source13579BDF/FFFFFFFF/6BC82410 DF1 B6, unchangedRXOriginalECA86420/0/F00D55AA DF0 C7, oneeachentry/twoactual56malloc/twocanonicalfree. All116-byte guardedcaptures/44-byte guardedinputs/56storage independently decoded, pointerargument capturedbeforePUSHFD,9completecodegates including156B59rawcaller/twoordinarycallers/full14-byte mapownedcookie; actualphysicalI386UCRT IAT/export/fullhash/fileidentity and code/Native/inputbookends pass. Exact348artifacts+seal349;13481olderpins intact. Fixture scaffolding oldimagebase and exclusiveCOFFwrite attempts stopped beforetarget; separate corrected static review retained COFF/build unchanged. No successfulprepare/build/native/post replay. Currentcombinedmain strictWin32/all3checksPASS. Rawstorage only: no livephase/vtable/class/vector/refcount/destructor/fullclone/privateCRT/EH/gameABI/gameplay admission.",
+          "artifacts": {
+            "local/t7p1/seal.json": "057b226a157e25610aa8c85b99ccf3d77a2f8561f03eddc7c7be930721e1becf",
+            "local/t7p1/runtime.json": "b399fb7e83090a7082b837cc71a33528ba29e729d762996e6bd2aa3873d2ed4b",
+            "local/t7p1/post.json": "fad85293524e91a1f9f880485bbdc1671a30363ea54fb5659616a857c608dc4b",
+            "local/t7p1/static_gate.json": "1d3f51a6b4bd7165128469d9b2ccdfd29ae6af8ef4a8bffca1b299e501784f65",
+            "local/t7p1/manual_static_review.json": "e01c7bcd48d72bdb6dfabbdb34abb76e1555e47690ea9cfd9289fa7099a3c9f9",
+            "local/t7p1/context.json": "ed43533f5b6e48d9d45f76a2351b51b468cf3fe460d7c5e2b3369f2ec21ddd2c",
+            "local/t7p1/static_recovery_inputs.json": "6866e20aa9bcaa2eb61a87d0a5ffb7a580ce779cdc3883fa83d81b79b63ef813",
+            "local/t7p1/static_complete_recovery_inputs.json": "c7e454d695a4ed45a56d75bdf03fb3e8ecf00bdc7e73db650d10a533d1729c3e"
+          }
         }
-      }
+      ]
     },
     {
       "id": "cc12_native_wake_fill_Source",
@@ -34536,8 +34566,8 @@
     },
     {
       "id": "cc12_scene_property_record_type2_string_storage",
-      "done": true,
-      "state": "complete qualified whole60B20 type2 raw owned-string storage; independentcomplementary4TU/currentcanonical+VCRUNTIMEfixture and combinedmainWin32/all3checksPASS",
+      "done": false,
+      "state": "validation_reopened_pending_all_retained_function_and_helper_gates",
       "function_addresses": [
         "008ef1b0"
       ],
@@ -34597,146 +34627,161 @@
       "original_private_CRT_EH_admission": false,
       "game_validated": false,
       "primary_integration": {
-        "passed": true,
-        "Source_admission_credit": 1,
-        "worker_commit": "450078170541ad34d1d0e175fc8f4dcd04b6de17",
-        "independent_family": "local/t2p4",
-        "independent_seal_sha256": "ee861636cec5c124d35b8482f08d084a56814bcdaff850ac52336a42484823d0",
-        "independent_inventory_artifacts": 100,
-        "independent_actual_files": 101,
-        "prior_artifacts_preserved": 14122,
-        "fresh_translation_units": 4,
-        "BSP_archives_consumed": 0,
-        "old_objects_consumed": 0,
-        "accepted_processes": 1,
-        "target_entries": 5,
-        "returned_allocations": 3,
-        "canonical_frees": 3,
-        "complete_runtime_code_spans": 11,
-        "native_bytes": 60,
-        "native_instructions": 20,
-        "qualified_operand_bytes": 4,
-        "literal_bytes": 56,
-        "decoded_captures": [
-          {
-            "index": 0,
-            "phase": 0,
-            "null": true,
-            "actual_argument_and_RET4_T_plus4_verified": true,
-            "nested_defined_flags_independently_derived": true,
-            "nonvolatiles_verified": true,
-            "nonnull_ECX_EDX_volatile_unasserted": true
-          },
-          {
-            "index": 1,
-            "phase": 0,
-            "null": false,
-            "actual_argument_and_RET4_T_plus4_verified": true,
-            "nested_defined_flags_independently_derived": true,
-            "nonvolatiles_verified": true,
-            "nonnull_ECX_EDX_volatile_unasserted": true
-          },
-          {
-            "index": 2,
-            "phase": 1,
-            "null": true,
-            "actual_argument_and_RET4_T_plus4_verified": true,
-            "nested_defined_flags_independently_derived": true,
-            "nonvolatiles_verified": true,
-            "nonnull_ECX_EDX_volatile_unasserted": true
-          },
-          {
-            "index": 3,
-            "phase": 1,
-            "null": false,
-            "actual_argument_and_RET4_T_plus4_verified": true,
-            "nested_defined_flags_independently_derived": true,
-            "nonvolatiles_verified": true,
-            "nonnull_ECX_EDX_volatile_unasserted": true
-          }
-        ],
-        "full_main_existing_checks": "3/3 PASS",
-        "context": {
-          "source_revision": "92ca45788a7a8e84328e61296be7552a51849638",
+        "passed": false,
+        "Source_admission_credit": 0,
+        "status": "validation_reopened_pending_all_retained_function_and_helper_gates",
+        "historical_family": "local/t2p4",
+        "missing_normal_fixture_bodies": 16,
+        "missing_cold_exception_bodies": 6,
+        "audit": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_property_record_published_code_gate_audit.json",
+        "audit_sha256": "08d39be64d1a4bce9b2a64acb72bc5a46160c7bc4f3505a1ae696782ae1ad5c7",
+        "historical_inventory_preserved": true,
+        "old_accepted_helpers_phases_objects_processes_replayed": 0,
+        "qualification": "Reopen the historical Type2 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 16 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The entire Type2 main body3543B986 was omitted. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted."
+      },
+      "primary_integration_history": [
+        {
+          "passed": true,
+          "Source_admission_credit": 1,
           "worker_commit": "450078170541ad34d1d0e175fc8f4dcd04b6de17",
-          "full_main_build_log": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type2_current_main_build.log",
-            "size": 2954,
-            "sha256": "ad069c0d4ad6d563df16c9e812bd00f42493ae1c600d08dcaec97d1ab2711580"
-          },
-          "checks": "3/3 PASS",
-          "CMake": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
-            "size": 197225,
-            "sha256": "9ecbc0712a7ccfef04839dd717fc5a7c22f94600d30fd7e59e68b661b2d385ea"
-          },
-          "core_context_only": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
-            "size": 73532884,
-            "sha256": "d039f3d800c6525eefbc457029ad439f66f16802046562a80b4a07c25eb15b1b",
-            "consumed": false
-          },
-          "worker_manifest": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\artifact_manifest.json",
-            "size": 28370,
-            "sha256": "90303d385837259d5fc83bf9794eab8a260d12268b34c61e9e15adc7b8ce1423"
-          },
-          "new_text_hex": "8de723b46af159c200",
-          "new_text_bytes": 9,
-          "receiver_poison": "D8",
-          "borrowed_poison": "C7",
-          "incoming_EAX": "D1A2B3C4",
-          "incoming_EDX": "89ABCDEF",
-          "nonvolatiles": [
-            "7531A9BC",
-            "2E4C6A80",
-            "B6D8F193"
-          ],
-          "dispatch_is_frozen_historical_context": true,
-          "old_recipes_executed": false
-        },
-        "current_main_build_receipt": {
-          "source_revision": "f893a986f6298b9afae35ef12b5dbf8df579b209",
-          "CMake": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
-            "size": 197361,
-            "sha256": "6b519f09843ff3cd2310a2437f0eb79281f515ee22bf476825f66bf510f0311b"
-          },
-          "log": {
-            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type2_post_current_main_build.log",
-            "size": 2880,
-            "sha256": "b6bd88cd2ad1b79667a489ebcce9fa92b8e6ba26c3f744b011e5969ce8e84cba"
-          },
-          "checks": "3/3 PASS",
-          "old_dispatch_context_preserved": true,
-          "old_probe_process_replayed": false
-        },
-        "historical_p3_limited_observation": {
-          "family": "local/t2p3",
+          "independent_family": "local/t2p4",
+          "independent_seal_sha256": "ee861636cec5c124d35b8482f08d084a56814bcdaff850ac52336a42484823d0",
+          "independent_inventory_artifacts": 100,
+          "independent_actual_files": 101,
+          "prior_artifacts_preserved": 14122,
+          "fresh_translation_units": 4,
+          "BSP_archives_consumed": 0,
+          "old_objects_consumed": 0,
           "accepted_processes": 1,
           "target_entries": 5,
-          "captured_copy_bytes": 7,
-          "actual_copy_bytes": 9,
-          "Source_admission_credit": 0,
-          "seal_sha256": "d2b0b1b3d90e10ceaed1440f7a0d4807e2be2b551d83a5c21b56ad9274aa302e"
-        },
-        "historical_stopped_primary_families": [
-          "local/t2p1/stopped_inventory.json",
-          "local/t2p2/stopped_inventory.json"
-        ],
-        "historical_stopped_p1_p2_target_entries": 0,
-        "old_recipes_replayed": false,
-        "Source_provider_glue_native_credit": 0,
-        "native_class_ABI_admitted": false,
-        "original_private_CRT_EH_admitted": false,
-        "game_validated": false,
-        "qualification": "Whole type2 raw owned-string storage[008EF1B0,008EF1EC),60B20; soleCALL operand[39,43) binds same actual admitted physical ECX/RET0 duplicate57; other56bytes literal including00CE89D4 phaseidentity/tag2. ECXactualfreshunowned56-byte receiver, unusedEDX explicitpadding, oneactualnullableNULtext stackDWORD, RET4/EAXroot; disjointreceiver/borrowedtext/frame, nonwrapping readableNULdomain.37written19preserved[8,C),[10,18),[28,2C),[2D,30). SixzeroDWORD18/1C/20/24/30/34,+Cactualownedcopyor0,byte1+2Cevennull. Caller observes childlive, currentcanonical-free once before receiver reuse/disposal. Wholechild57B30/sizeadapter61B17/canonicalallocation90B34/free6B1/realVCRUNTIMEcopy; no legacyCDECL substitute. RawT isactualargument-slotESPbeforetargetCALL; copyreturnT-44/finalADD16=>T-28,childRET0=>T-12,outerRET4=>T+4. Null8C5=44 AFundefinedexcluded;nonnull8D5derivedactualADD AFdefined,ECXEDXvolatileunasserted/currentCRTDF0. Independentcomplementary4TU strictWin32 fixture guarded9-byte8DE723B46AF159C200,C7borrowed48/D8receiver96,newGPRsentinels:5entries/3realcopies/3canonicalfrees,full96receiver+48input+rawcaptures independentlydecoded,11completecodegates/full14cookie/imports,physicalUCRT+distinctVCRUNTIME IAT/export/NTpath/fileID/fullhash/code/Native/inputbookendsPASS. Exact100artifacts+seal101;14122olderpins preserved. TwohistoricalunexecutedRootfamilies retained: p1metadataNameError/precompilerbuildstop; p2successfulprepare/3freshTUobjects/newprobeMASMhexcompilefailure. Historical p3 had one passing five-entry process, but its capture contained only seven of nine copied bytes; its immutable seal remains unadmitted. Fresh p4 captures all nine bytes including NUL with different input. No old recipe, accepted stage, Native process or object was replayed or consumed. Strict p4 post stopped on concurrent unconsumed CMake drift; a new qualified post verifies every consumed pin and retains original before pins and failed console. A new current-main build passes all three checks. CombinedmainWin32/all3checksPASS. Rawstorage/currentownedcopydomainonly; originalprivateCRT/EH,livephase/vtable/class/destructor/fullclone/world/gameABI/gameplay unadmitted."
-      }
+          "returned_allocations": 3,
+          "canonical_frees": 3,
+          "complete_runtime_code_spans": 11,
+          "native_bytes": 60,
+          "native_instructions": 20,
+          "qualified_operand_bytes": 4,
+          "literal_bytes": 56,
+          "decoded_captures": [
+            {
+              "index": 0,
+              "phase": 0,
+              "null": true,
+              "actual_argument_and_RET4_T_plus4_verified": true,
+              "nested_defined_flags_independently_derived": true,
+              "nonvolatiles_verified": true,
+              "nonnull_ECX_EDX_volatile_unasserted": true
+            },
+            {
+              "index": 1,
+              "phase": 0,
+              "null": false,
+              "actual_argument_and_RET4_T_plus4_verified": true,
+              "nested_defined_flags_independently_derived": true,
+              "nonvolatiles_verified": true,
+              "nonnull_ECX_EDX_volatile_unasserted": true
+            },
+            {
+              "index": 2,
+              "phase": 1,
+              "null": true,
+              "actual_argument_and_RET4_T_plus4_verified": true,
+              "nested_defined_flags_independently_derived": true,
+              "nonvolatiles_verified": true,
+              "nonnull_ECX_EDX_volatile_unasserted": true
+            },
+            {
+              "index": 3,
+              "phase": 1,
+              "null": false,
+              "actual_argument_and_RET4_T_plus4_verified": true,
+              "nested_defined_flags_independently_derived": true,
+              "nonvolatiles_verified": true,
+              "nonnull_ECX_EDX_volatile_unasserted": true
+            }
+          ],
+          "full_main_existing_checks": "3/3 PASS",
+          "context": {
+            "source_revision": "92ca45788a7a8e84328e61296be7552a51849638",
+            "worker_commit": "450078170541ad34d1d0e175fc8f4dcd04b6de17",
+            "full_main_build_log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type2_current_main_build.log",
+              "size": 2954,
+              "sha256": "ad069c0d4ad6d563df16c9e812bd00f42493ae1c600d08dcaec97d1ab2711580"
+            },
+            "checks": "3/3 PASS",
+            "CMake": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+              "size": 197225,
+              "sha256": "9ecbc0712a7ccfef04839dd717fc5a7c22f94600d30fd7e59e68b661b2d385ea"
+            },
+            "core_context_only": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+              "size": 73532884,
+              "sha256": "d039f3d800c6525eefbc457029ad439f66f16802046562a80b4a07c25eb15b1b",
+              "consumed": false
+            },
+            "worker_manifest": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type2_string_storage_source\\local\\cc12_type2_string_storage_worker20261008a\\artifact_manifest.json",
+              "size": 28370,
+              "sha256": "90303d385837259d5fc83bf9794eab8a260d12268b34c61e9e15adc7b8ce1423"
+            },
+            "new_text_hex": "8de723b46af159c200",
+            "new_text_bytes": 9,
+            "receiver_poison": "D8",
+            "borrowed_poison": "C7",
+            "incoming_EAX": "D1A2B3C4",
+            "incoming_EDX": "89ABCDEF",
+            "nonvolatiles": [
+              "7531A9BC",
+              "2E4C6A80",
+              "B6D8F193"
+            ],
+            "dispatch_is_frozen_historical_context": true,
+            "old_recipes_executed": false
+          },
+          "current_main_build_receipt": {
+            "source_revision": "f893a986f6298b9afae35ef12b5dbf8df579b209",
+            "CMake": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+              "size": 197361,
+              "sha256": "6b519f09843ff3cd2310a2437f0eb79281f515ee22bf476825f66bf510f0311b"
+            },
+            "log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type2_post_current_main_build.log",
+              "size": 2880,
+              "sha256": "b6bd88cd2ad1b79667a489ebcce9fa92b8e6ba26c3f744b011e5969ce8e84cba"
+            },
+            "checks": "3/3 PASS",
+            "old_dispatch_context_preserved": true,
+            "old_probe_process_replayed": false
+          },
+          "historical_p3_limited_observation": {
+            "family": "local/t2p3",
+            "accepted_processes": 1,
+            "target_entries": 5,
+            "captured_copy_bytes": 7,
+            "actual_copy_bytes": 9,
+            "Source_admission_credit": 0,
+            "seal_sha256": "d2b0b1b3d90e10ceaed1440f7a0d4807e2be2b551d83a5c21b56ad9274aa302e"
+          },
+          "historical_stopped_primary_families": [
+            "local/t2p1/stopped_inventory.json",
+            "local/t2p2/stopped_inventory.json"
+          ],
+          "historical_stopped_p1_p2_target_entries": 0,
+          "old_recipes_replayed": false,
+          "Source_provider_glue_native_credit": 0,
+          "native_class_ABI_admitted": false,
+          "original_private_CRT_EH_admitted": false,
+          "game_validated": false,
+          "qualification": "Whole type2 raw owned-string storage[008EF1B0,008EF1EC),60B20; soleCALL operand[39,43) binds same actual admitted physical ECX/RET0 duplicate57; other56bytes literal including00CE89D4 phaseidentity/tag2. ECXactualfreshunowned56-byte receiver, unusedEDX explicitpadding, oneactualnullableNULtext stackDWORD, RET4/EAXroot; disjointreceiver/borrowedtext/frame, nonwrapping readableNULdomain.37written19preserved[8,C),[10,18),[28,2C),[2D,30). SixzeroDWORD18/1C/20/24/30/34,+Cactualownedcopyor0,byte1+2Cevennull. Caller observes childlive, currentcanonical-free once before receiver reuse/disposal. Wholechild57B30/sizeadapter61B17/canonicalallocation90B34/free6B1/realVCRUNTIMEcopy; no legacyCDECL substitute. RawT isactualargument-slotESPbeforetargetCALL; copyreturnT-44/finalADD16=>T-28,childRET0=>T-12,outerRET4=>T+4. Null8C5=44 AFundefinedexcluded;nonnull8D5derivedactualADD AFdefined,ECXEDXvolatileunasserted/currentCRTDF0. Independentcomplementary4TU strictWin32 fixture guarded9-byte8DE723B46AF159C200,C7borrowed48/D8receiver96,newGPRsentinels:5entries/3realcopies/3canonicalfrees,full96receiver+48input+rawcaptures independentlydecoded,11completecodegates/full14cookie/imports,physicalUCRT+distinctVCRUNTIME IAT/export/NTpath/fileID/fullhash/code/Native/inputbookendsPASS. Exact100artifacts+seal101;14122olderpins preserved. TwohistoricalunexecutedRootfamilies retained: p1metadataNameError/precompilerbuildstop; p2successfulprepare/3freshTUobjects/newprobeMASMhexcompilefailure. Historical p3 had one passing five-entry process, but its capture contained only seven of nine copied bytes; its immutable seal remains unadmitted. Fresh p4 captures all nine bytes including NUL with different input. No old recipe, accepted stage, Native process or object was replayed or consumed. Strict p4 post stopped on concurrent unconsumed CMake drift; a new qualified post verifies every consumed pin and retains original before pins and failed console. A new current-main build passes all three checks. CombinedmainWin32/all3checksPASS. Rawstorage/currentownedcopydomainonly; originalprivateCRT/EH,livephase/vtable/class/destructor/fullclone/world/gameABI/gameplay unadmitted."
+        }
+      ]
     },
     {
       "id": "cc12_scene_property_record_type5_storage",
-      "done": true,
-      "state": "complete qualified whole63B19 type5 raw owned-string/two-word storage; independent4TU and combinedMainWin32/all3checksPASS",
+      "done": false,
+      "state": "validation_reopened_pending_all_retained_function_and_helper_gates",
       "function_addresses": [
         "008ef2b0"
       ],
@@ -34961,72 +35006,87 @@
       "original_private_CRT_EH_admission": false,
       "game_validated": false,
       "primary_integration": {
-        "passed": true,
-        "Source_admission_credit": 1,
-        "worker_commit": "05dbaa244073de2c99b283df1c22276f9088904e",
-        "independent_family": "local/t5p2",
-        "independent_seal_sha256": "b7b34d6b5573664cbfdab4dcd103fd8c8fe57c17a17c829e5f28187ca26dab92",
-        "independent_inventory_artifacts": 361,
-        "independent_actual_files": 362,
-        "prior_artifacts_preserved": 15269,
-        "fresh_translation_units": 4,
-        "consumed_headers": 185,
-        "consumed_libraries": 7,
-        "BSP_archives_consumed": 0,
-        "old_objects_consumed": 0,
-        "accepted_processes": 1,
-        "target_entries": 2,
-        "actual_allocations": 4,
-        "actual_frees": 4,
-        "complete_code_spans": 14,
-        "native_bytes": 63,
-        "native_instructions": 19,
-        "qualified_CALL_operand_bytes": 4,
-        "literal_bytes": 59,
-        "independently_decoded": [
-          {
-            "kind": "Source",
-            "capture_bytes": 132,
-            "storage_bytes": 56,
-            "guarded_input_bytes": 40,
-            "copied_NUL_bytes": 6,
-            "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
-            "undefined_AF_excluded": true,
-            "volatile_ECX_EDX_unasserted": true
-          },
-          {
-            "kind": "Original",
-            "capture_bytes": 132,
-            "storage_bytes": 56,
-            "guarded_input_bytes": 40,
-            "copied_NUL_bytes": 6,
-            "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
-            "undefined_AF_excluded": true,
-            "volatile_ECX_EDX_unasserted": true
-          }
-        ],
-        "full_main_build": {
-          "context": {
-            "source_revision": "311e2fb701f7c097a679ea23f06d4cd0a2a60300",
-            "CMake": {
-              "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
-              "size": 197471,
-              "sha256": "39ddfa457e1b2777efe5b1e94d83942bf1aff5f9a5e296f37a0ef01a92ddfe2a"
+        "passed": false,
+        "Source_admission_credit": 0,
+        "status": "validation_reopened_pending_all_retained_function_and_helper_gates",
+        "historical_family": "local/t5p2",
+        "missing_normal_fixture_bodies": 18,
+        "missing_cold_exception_bodies": 6,
+        "audit": "J:\\PROG\\battlestations-pacific-decompile\\reports\\cc12_property_record_published_code_gate_audit.json",
+        "audit_sha256": "08d39be64d1a4bce9b2a64acb72bc5a46160c7bc4f3505a1ae696782ae1ad5c7",
+        "historical_inventory_preserved": true,
+        "old_accepted_helpers_phases_objects_processes_replayed": 0,
+        "qualification": "Reopen the historical Type5 Root fixture validation after independent raw COFF/map/linked-byte and gate.bin audit confirmed 18 normal-path emitted probe/gate/capture/serialization bodies outside its runtime code spans. The audit separately identifies six retained cold canonical exception-support bodies outside the old gates. A new complementary independent family must gate every retained fresh TU function, full main and required map-owned external helpers before and after its sole fresh execution. Historical sealed inventories, prior pins and publication receipts remain preserved; no accepted helper, phase, object or process is replayed. Source admission credit is zero pending the complete-gate validation. This finding concerns fixture code coverage; original-private-CRT/EH, class, native game ABI and gameplay remain unadmitted."
+      },
+      "primary_integration_history": [
+        {
+          "passed": true,
+          "Source_admission_credit": 1,
+          "worker_commit": "05dbaa244073de2c99b283df1c22276f9088904e",
+          "independent_family": "local/t5p2",
+          "independent_seal_sha256": "b7b34d6b5573664cbfdab4dcd103fd8c8fe57c17a17c829e5f28187ca26dab92",
+          "independent_inventory_artifacts": 361,
+          "independent_actual_files": 362,
+          "prior_artifacts_preserved": 15269,
+          "fresh_translation_units": 4,
+          "consumed_headers": 185,
+          "consumed_libraries": 7,
+          "BSP_archives_consumed": 0,
+          "old_objects_consumed": 0,
+          "accepted_processes": 1,
+          "target_entries": 2,
+          "actual_allocations": 4,
+          "actual_frees": 4,
+          "complete_code_spans": 14,
+          "native_bytes": 63,
+          "native_instructions": 19,
+          "qualified_CALL_operand_bytes": 4,
+          "literal_bytes": 59,
+          "independently_decoded": [
+            {
+              "kind": "Source",
+              "capture_bytes": 132,
+              "storage_bytes": 56,
+              "guarded_input_bytes": 40,
+              "copied_NUL_bytes": 6,
+              "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
+              "undefined_AF_excluded": true,
+              "volatile_ECX_EDX_unasserted": true
             },
-            "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type5_current_main_build.log"
+            {
+              "kind": "Original",
+              "capture_bytes": 132,
+              "storage_bytes": 56,
+              "guarded_input_bytes": 40,
+              "copied_NUL_bytes": 6,
+              "all_words_stack_slots_RET12_EAX_nonvolatiles_flags_guards_verified": true,
+              "undefined_AF_excluded": true,
+              "volatile_ECX_EDX_unasserted": true
+            }
+          ],
+          "full_main_build": {
+            "context": {
+              "source_revision": "311e2fb701f7c097a679ea23f06d4cd0a2a60300",
+              "CMake": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile\\cmake\\startup.cmake",
+                "size": 197471,
+                "sha256": "39ddfa457e1b2777efe5b1e94d83942bf1aff5f9a5e296f37a0ef01a92ddfe2a"
+              },
+              "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type5_current_main_build.log"
+            },
+            "log_sha256": "1c4ec0d749f5a02af14cbf738fcefff4d2d6024d1190b5bbc6e88c532baea9e5",
+            "checks": "3/3 PASS"
           },
-          "log_sha256": "1c4ec0d749f5a02af14cbf738fcefff4d2d6024d1190b5bbc6e88c532baea9e5",
-          "checks": "3/3 PASS"
-        },
-        "failed_primary_family": "local/t5p1/stopped_inventory.json",
-        "failed_primary_compilers_objects_processes_targets": 0,
-        "old_accepted_processes_replayed": 0,
-        "Source_provider_glue_native_credit": 0,
-        "native_class_ABI_admitted": false,
-        "original_private_CRT_EH_admitted": false,
-        "game_validated": false,
-        "qualification": "Whole type5 raw storage[008EF2B0,008EF2EF)63B19, paddedfastfastcall ECXactualfreshunowned56root/unusedEDX, threeactualstackwords nullabletext/rawword+18/rawword+08, RET12/EAXroot. SoleCALLoperand[35,39) same admittedphysical ECX/RET0duplicate57;59otherbytes literal. Phase00CE89D4/tag5/rawwords beforeprovider, actualchild+1C; finalXOR8C5=44 AFundefinedexcluded; zeros20/24/34,byte1+2C;33written23preserved incl+30. Whole57duplicate/61sizeadapter/90canonicalalloc/6free and genuineVCRUNTIMEcopy currentdomain only. Noexceptnotpromised; Source-onlyproviderglue Nativecredit0. Root complementary4freshTUs /185consumedheaders7libs/noBSParchivesoroldobjects: new6-byteA649E38CD500/3EF15B94C700 fullNUL copies, Sourcewords64F91AB7/FFFFFFFF vsOriginal9B06E548/0, rootpoisonsD3/6E and newGPRsentinels. Two real56roots+two real6-bytechildren=4actualalloc/frees, children observedlive andfreedoncebeforeroots;2rawentries and statically gated26B7/25B7ordinarycallers. All132captures/56storage/40guardedinput/6child independentlydecoded, genuine3stackDWORDslots beforePUSHFD/RET12/EAXroot/nonvols/definedflags/DF0 verified, ECXEDXproviderresidualunasserted. Full14codegates including whole4187B1123 main166relocs,raw181B65,cookie14B4/externalfailuretailJMP,chkstk48B24inclmapowned5INT3; fullphysicalI386UCRTmalloc/free/newhandler and distinctVCRUNTIMEcopy IAT/export/NTpath/ID/fullSHA/normalizedcode before0entries/after, Native/source/header/library/input/prior bookendsPASS. Exact361listed+seal362,15269olderpins preserved. FirstRootp1 metadata NameError retained beforeanycompiler/object/process/target; fresh correctedp2 noacceptedoldstage/recipe/helper/process replay. CurrentcombinedMainWin32/all3existingchecksPASS. Nullbranch is staticwholebody/admitteddup domain, minimal independentfixture invokes validnonnull only. No originalprivateCRT/EH/failure/unwind/phase/vtable/class/owner/destructor/fullclone/World/game ABI/gameplay admission."
-      }
+          "failed_primary_family": "local/t5p1/stopped_inventory.json",
+          "failed_primary_compilers_objects_processes_targets": 0,
+          "old_accepted_processes_replayed": 0,
+          "Source_provider_glue_native_credit": 0,
+          "native_class_ABI_admitted": false,
+          "original_private_CRT_EH_admitted": false,
+          "game_validated": false,
+          "qualification": "Whole type5 raw storage[008EF2B0,008EF2EF)63B19, paddedfastfastcall ECXactualfreshunowned56root/unusedEDX, threeactualstackwords nullabletext/rawword+18/rawword+08, RET12/EAXroot. SoleCALLoperand[35,39) same admittedphysical ECX/RET0duplicate57;59otherbytes literal. Phase00CE89D4/tag5/rawwords beforeprovider, actualchild+1C; finalXOR8C5=44 AFundefinedexcluded; zeros20/24/34,byte1+2C;33written23preserved incl+30. Whole57duplicate/61sizeadapter/90canonicalalloc/6free and genuineVCRUNTIMEcopy currentdomain only. Noexceptnotpromised; Source-onlyproviderglue Nativecredit0. Root complementary4freshTUs /185consumedheaders7libs/noBSParchivesoroldobjects: new6-byteA649E38CD500/3EF15B94C700 fullNUL copies, Sourcewords64F91AB7/FFFFFFFF vsOriginal9B06E548/0, rootpoisonsD3/6E and newGPRsentinels. Two real56roots+two real6-bytechildren=4actualalloc/frees, children observedlive andfreedoncebeforeroots;2rawentries and statically gated26B7/25B7ordinarycallers. All132captures/56storage/40guardedinput/6child independentlydecoded, genuine3stackDWORDslots beforePUSHFD/RET12/EAXroot/nonvols/definedflags/DF0 verified, ECXEDXproviderresidualunasserted. Full14codegates including whole4187B1123 main166relocs,raw181B65,cookie14B4/externalfailuretailJMP,chkstk48B24inclmapowned5INT3; fullphysicalI386UCRTmalloc/free/newhandler and distinctVCRUNTIMEcopy IAT/export/NTpath/ID/fullSHA/normalizedcode before0entries/after, Native/source/header/library/input/prior bookendsPASS. Exact361listed+seal362,15269olderpins preserved. FirstRootp1 metadata NameError retained beforeanycompiler/object/process/target; fresh correctedp2 noacceptedoldstage/recipe/helper/process replay. CurrentcombinedMainWin32/all3existingchecksPASS. Nullbranch is staticwholebody/admitteddup domain, minimal independentfixture invokes validnonnull only. No originalprivateCRT/EH/failure/unwind/phase/vtable/class/owner/destructor/fullclone/World/game ABI/gameplay admission."
+        }
+      ]
     },
     {
       "id": "cc12_native_wake_append_readiness",
@@ -35896,8 +35956,8 @@
     },
     {
       "id": "cc12_native_parent_header_clear",
-      "done": false,
-      "state": "ready qualified whole70 current-canonical-node raw clear; destructor5 prerequisite, Source0",
+      "done": true,
+      "state": "complete qualified whole70 raw parent header clear with independent five-TU all-retained code gates and current Main build",
       "function_addresses": [
         "004bf8e0"
       ],
@@ -35931,6 +35991,176 @@
         "contract": "Complete [004BF8E0,004BF926)70B29 naked MSVC Win32 padded-fastcall ECX actual coherent12 header/no stackargs/plainRET; unused EDX formal, ESI preserved. Sole CALL operand[56,60) binds actual current canonical free only; remaining66 native bytes/allbranches unchanged. Empty branch zero writes/frees and preserves volatile EAX/ECX/EDX; populated volatile outputs unpromised; terminalCMP mask8D5=44 includingAF0. Current CRT DF0 only. Genuine fresh current-canonical12 node bases produced by admitted physical Source append, whole finite coherent count/head/tail, payload borrowed/disjoint and never read/destroyed; each node freed once, no postfree reads, final root{0,0,0}. Complete qualified Original70 RX uses same real free binding. Minimal empty/populated Original/Source pairs plus ordinarySource, Source append/helper actual allocations gated. All fresh sourceTUs/no archives/old objects/process replay; full code/provider before0targets/after gates, capture whole12 roots/guards/borrowed live payloads, register/ESP/definedflags/DF and actual ownership counts. Preserve exact224 destructor audit+10190 older pins and Root admitted Header13 family134+16385 pins, deduplicated. Exact seals/all consumed headers/libs/tools. Original private heap,parent owner/iteratorEH/sentinel/class/World/game unadmitted. Callback5 may not be rebound until this physical raw70 is independently admitted. Root independent family/currentMainWin32/full3checks required before Sourcecredit.",
         "Source_admission_credit": 0,
         "registration_owner": "Root"
+      },
+      "primary_integration": {
+        "passed": true,
+        "Source_admission_credit": 1,
+        "worker_commit": "b632fb046d13beb212e86dd43bedd929bc145d24",
+        "independent_family": "local/cl70p2",
+        "independent_seal_sha256": "f1610498b9e36acf6193ea54b80e110350754b3843bf63f1ad6da54241fac630",
+        "independent_inventory_artifacts": 376,
+        "independent_actual_files": 377,
+        "prior_artifacts_preserved": 19194,
+        "fresh_translation_units": 5,
+        "consumed_headers": 186,
+        "consumed_libraries": 7,
+        "complete_code_spans": 32,
+        "all_retained_TU_function_bodies_gated": 30,
+        "all_probe_bodies_gated": 17,
+        "external_stack_helper_complete": true,
+        "accepted_processes": 1,
+        "clear_entries": 5,
+        "producer_entries": 7,
+        "actual_allocations_frees": 10,
+        "native_bytes": 70,
+        "native_instructions": 29,
+        "literal_bytes": 66,
+        "qualified_CALL_operand_bytes": 4,
+        "Root_independent_decode": {
+          "passed": true,
+          "full_five88_captures_and44_allocations": [
+            {
+              "case": "empty_source",
+              "full_capture88_fields_decoded": true,
+              "complete44_storage_and_guards_decoded": true,
+              "R": 1767836,
+              "target_entry_T": 1767832,
+              "ESP_plain_RET_nonvolatiles_DF0_all_six_CMP_flags_AF0_verified": true,
+              "empty_volatile_preservation_verified": true,
+              "populated_volatile_registers_unasserted": false,
+              "ES_observed": [
+                43,
+                43
+              ]
+            },
+            {
+              "case": "empty_original",
+              "full_capture88_fields_decoded": true,
+              "complete44_storage_and_guards_decoded": true,
+              "R": 1767836,
+              "target_entry_T": 1767832,
+              "ESP_plain_RET_nonvolatiles_DF0_all_six_CMP_flags_AF0_verified": true,
+              "empty_volatile_preservation_verified": true,
+              "populated_volatile_registers_unasserted": false,
+              "ES_observed": [
+                43,
+                43
+              ]
+            },
+            {
+              "case": "populated_source",
+              "full_capture88_fields_decoded": true,
+              "complete44_storage_and_guards_decoded": true,
+              "R": 1767836,
+              "target_entry_T": 1767832,
+              "ESP_plain_RET_nonvolatiles_DF0_all_six_CMP_flags_AF0_verified": true,
+              "empty_volatile_preservation_verified": false,
+              "populated_volatile_registers_unasserted": true,
+              "ES_observed": [
+                43,
+                43
+              ]
+            },
+            {
+              "case": "populated_original",
+              "full_capture88_fields_decoded": true,
+              "complete44_storage_and_guards_decoded": true,
+              "R": 1767836,
+              "target_entry_T": 1767832,
+              "ESP_plain_RET_nonvolatiles_DF0_all_six_CMP_flags_AF0_verified": true,
+              "empty_volatile_preservation_verified": false,
+              "populated_volatile_registers_unasserted": true,
+              "ES_observed": [
+                43,
+                43
+              ]
+            },
+            {
+              "case": "ordinary_source_singleton",
+              "full_capture88_fields_decoded": true,
+              "complete44_storage_and_guards_decoded": true,
+              "R": 1767836,
+              "target_entry_T": 1767832,
+              "ESP_plain_RET_nonvolatiles_DF0_all_six_CMP_flags_AF0_verified": true,
+              "empty_volatile_preservation_verified": false,
+              "populated_volatile_registers_unasserted": true,
+              "ES_observed": [
+                43,
+                43
+              ]
+            }
+          ],
+          "all7_genuine_producer_observations_decoded": true,
+          "borrowed_payload96_all_bytes_decoded": true,
+          "providers": [
+            {
+              "name": "malloc",
+              "actual_IAT_export_MEM_IMAGE_I386_NT_fileID_full_SHA_ASLR32_verified": true
+            },
+            {
+              "name": "free",
+              "actual_IAT_export_MEM_IMAGE_I386_NT_fileID_full_SHA_ASLR32_verified": true
+            },
+            {
+              "name": "_callnewh",
+              "actual_IAT_export_MEM_IMAGE_I386_NT_fileID_full_SHA_ASLR32_verified": true
+            }
+          ],
+          "complete_TU_bodies": 30,
+          "runtime_spans": 32,
+          "no_retired_node_read_or_global_address_uniqueness_claim": true,
+          "boxed_capture_outer_guards_checked_live_not_serialized": true,
+          "canonical_actual_allocations_frees": 10,
+          "old_phases_processes_replayed": 0
+        },
+        "full_main_build": {
+          "context": {
+            "source_revision": "8fea50a339b5eff0897f53f0fbb2e1d3bd82578c",
+            "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_parent_header_clear_after_concurrent_main_build.log",
+            "fresh_combined_main_build_after_concurrent_Cpp_merge": true,
+            "changed_cpp_headers_since_fixture_generation": [
+              "include/bsp/native_unit_wake_append_dependencies.hpp",
+              "src/native_unit_wake_append_dependencies.cpp"
+            ],
+            "fixture_generation_context": {
+              "source_revision": "a5a83fec0c97c400bd0eb067d67a7dcc10c82e46",
+              "build_revision": "3dd8832c5",
+              "no_cpp_headers_CMake_change_since_passed_combined_build": true,
+              "build_log": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_parent_header_clear_current_main_build.log",
+              "Source70": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_parent_header_clear.cpp",
+                "size": 1842,
+                "sha256": "8755aa1345bb5ad1897f5e6b7f77909a9a3bfd7f55977968e80a17edc1f28c4f"
+              },
+              "Header70": {
+                "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_parent_header_clear.hpp",
+                "size": 1141,
+                "sha256": "b67b449dec89b1298b3d330e36a7f628a1a523d8eb1f8d0aa9c78448f4c70dee"
+              }
+            },
+            "Source70": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_parent_header_clear.cpp",
+              "size": 1842,
+              "sha256": "8755aa1345bb5ad1897f5e6b7f77909a9a3bfd7f55977968e80a17edc1f28c4f"
+            },
+            "Header70": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_parent_header_clear.hpp",
+              "size": 1141,
+              "sha256": "b67b449dec89b1298b3d330e36a7f628a1a523d8eb1f8d0aa9c78448f4c70dee"
+            },
+            "no_fixture_phase_or_process_replay": true
+          },
+          "log_sha256": "7419dca78e24c51cac890c06b4cdec0ad71cacefae3747101e3ab0e55b79b631",
+          "checks": "3/3 PASS"
+        },
+        "stopped_prepare_only_family": "local/cl70p1",
+        "historical_inventory_preserved": true,
+        "old_accepted_stages_objects_processes_replayed": 0,
+        "BSP_archives_consumed": 0,
+        "original_private_heap_CRT_EH_admitted": false,
+        "abi_compatible": false,
+        "game_validated": false,
+        "qualification": "Whole [004BF8E0,004BF926)70B29 physical raw parent header clear, ECX coherent12 header/unusedEDX/no target stack arguments/plainRET. All66 non-CALL-operand bytes literal, only operand[56,60) rebound to unchanged actual current canonical free. Actual admitted header13 and append87 produce three real44 allocations with interior12 headers and seven real12 nodes; five new Root clear entries(empty Source/Original, populated three-node Source/Original, ordinary Source singleton) remove/relink head/tail/previous/next, decrement actualcount, free only actual node bases, preserve borrowedpayload+8 and end at three zero header words. Ten actual allocations/frees, no retired node reads or global address-uniqueness assumption. Root local/cl70p2 five fresh TUs, all30 retained function bodies including all17 probe and nine canonical functions, whole4613B1043 main, raw172B62, genuineordinary6B2 and producer16B5, plus complete cookie14B4 and external hash __chkstk48B24 form32 pre/post runtime code spans. Cold standard-exception bodies are byte-gated without EH execution. Root independently decoded all five88-byte capture fields, full44 storage including32 guard bytes, seven live producer observations, all96 borrowedpayload bytes and three physical I386 UCRT heap-provider IAT/export/MEM_IMAGE/NTfileID/fullSHA/actualASLR32 prefixes. Raw frame actualESP equal, nonvols and DF0 verified; empty EAX/ECX/EDX preserved, populated volatile residuals unasserted; final CMPcount0 defines all six flags mask8D5=44 includingAF0. Boxed capture outer guards were checked live and are not claimed independently serialized. Exact376 artifacts+seal377/19194 prior pins preserve worker417, callback113, audit46, Type8Root404 and all older records; prepare-only stopped cl70p1 retained before any compiler/target, no accepted phase/helper/object/process replay. Combined Main Win32/all3 existing checks pass, C++/headers/CMake unchanged since that build. R125 three-formal virtual-service shim does not provide this physical no-argument ABI. Original parent owner/privateheap/iterator/EH/sentinel/class/World/game ABI/gameplay remain unadmitted."
       }
     },
     {
@@ -36014,6 +36244,48 @@
         ],
         "public_API": "void* __fastcall construct_native_scene_property_record_type9_four_byte_array_storage_008ef360(void* root_ecx, void* unused_edx, std::uint32_t element_count_stack, const void* data_stack, std::uint32_t full_flag_word_stack);",
         "contract": "Whole [008EF360,008EF3D4)116B36 MSVCWin32 naked paddedfastcall ECX actualfresh/unowned56 root/unusedEDX/3actualstackDWORDs elementcount,data,fullflag/RET12/EAXroot. Preserve TWO native ADD EDI,EDI andstoreorder: firstADD,phase/tag9stores,secondADD,lowflagBYTECMP, zero18/1C/storecomputedbytecount24,JZ. Count opaquepositive4-byteelements n[1,3FFFFFFF], actualnonwrapping4*n inputbytes/fresh56/input/frame disjoint; no float numeric/x87 semantics, signedC++multiply or newguard inbody. 108literalbytes; onlyCALL operands[51,55)OWN actualCDECL sizeadapter{object,bytes,bytes} to unchangedcanonical/[66,70)actualVCRTmemcpy. No fabricatedexternaltype8privateadapter/refactor/NativeMpkgAllocator. BorrowretainsEXACTinputpointer20/nochildfree,ECXroot/EDXdata, CMP8D5=44 AFdefined0. Copyreads dataafteractualallocation,storesactualchild20BEFOREmemcpy; finalADD16 flags deriveactualTentry-24+16=T-8/all6definedflags8D5. Common29writes/27preservedincl30,byte2C1both NOTownershipindicator. DF0CRT/successfulcurrentrealproviderdomain only; no FP/ES/volatileECXEDX acrossproviders blanket. Source2+boundOriginal2 entries bothbranches,4actual56roots+2actualcopychildren=6alloc/frees childbeforeRoot; rawguardedOPAQUE4-byte-element bytes with zeros/highbits/fullcounts/fullflag high24 ignored onlylowBYTEdecision. Original116RX rebindsonly8operandbytes tosameREALSourceadapter/memcpy. THREEfreshTUs ownwhole116includingOWN adapter,canonical,newprobe/noBSParchives/oldobjects/acceptedhelpers/recipes/stages/process replay. PrecompileprelaunchEXACTbasename/key/structsizes/MASMhex/COFFexactsymbolfirst; Rpreargs/QpreCALL/Tentry separated,3actualdeadargumentDWORDs capturedbeforePUSHFD; allstorage56/livefullchild/guardedinputs/captures/GPR/ESP/definedflags/DFchecked. AllcompleteCOFF/map/main/callers/canonical/adapter/providers/cookie14inclfailuretailJMP/chkstkmapowned/importcodegates before0targets/alloc andafter, actualI386IAT/export/MEM_IMAGE/NTpath/fileID/fullSHA/ASLRcorrect32prefix. Preserve audit252+5765prior exact pluscurrentRootType8family381+17427prior, RootReference55family101+18016prior via dedupimmutableunion; metadataContextunconsumedfrozenonly. Exactrecursiveallfilessealsinclfailures/logs/pycache ROOTexclusionsonly. CurrentcombinedMainWin32/3checksPASS and Rootseparatefreshindependentfamily beforeSourcecredit. Actualarm/helper8EF7F0/null/default/EH/privateheap/phase/class/nativeownership/fullclone/World/game remainnamedunadmitted; no furtherlive oldclone/tag8/provider/class queries.",
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
+      }
+    },
+    {
+      "id": "cc12_native_parent_header_destructor_callback",
+      "done": false,
+      "state": "ready qualified whole5 raw header destructor tail after Root70 admission; Source0",
+      "function_addresses": [
+        "004c2d30"
+      ],
+      "output_files": [
+        "include/bsp/native_parent_header_destructor_callback.hpp",
+        "src/native_parent_header_destructor_callback.cpp",
+        "docs/NATIVE_PARENT_HEADER_DESTRUCTOR_CALLBACK_CC12.md",
+        "reports/native_parent_header_destructor_callback_cc12.json"
+      ],
+      "depends_on": [
+        "cc12_native_parent_header_clear"
+      ],
+      "readiness_document": "docs/CC12_PARENT_HEADER_DESTRUCTOR_CALLBACK_READINESS.md",
+      "readiness_report": "reports/cc12_parent_header_destructor_callback_readiness.json",
+      "Root_readiness_review": {
+        "passed": true,
+        "Root_qualified_clear70_Source_credit": 1,
+        "Root_clear_family": "local/cl70p2",
+        "Root_clear_seal": "f1610498b9e36acf6193ea54b80e110350754b3843bf63f1ad6da54241fac630",
+        "readiness_commit": "53ed63c75082400c71f841cee127717f9a043295",
+        "readiness_exact_files": 113,
+        "Source_admission_credit": 0,
+        "Root_live_single_JMP_verified": true,
+        "live_sha256": "386ca4d02c9880de486d26a27fb50a9c015cbf508b6c3d8e27cca7fa385c50d2"
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "exactly_four_owned_files": [
+          "include/bsp/native_parent_header_destructor_callback.hpp",
+          "src/native_parent_header_destructor_callback.cpp",
+          "docs/NATIVE_PARENT_HEADER_DESTRUCTOR_CALLBACK_CC12.md",
+          "reports/native_parent_header_destructor_callback_cc12.json"
+        ],
+        "contract": "Whole [004C2D30,004C2D35)5B1 E9 tail to independently admitted physical clear70. void __fastcall destroy_native_parent_header_004c2d30(void* actual_header, uint32_t unused_edx) noexcept; actual ECX coherent writable12 header, padded unusedEDX, zero target stack args/no CALL/prologue/frame/localRET. Source naked JMP only to clear_native_parent_header_004bf8e0, one actual REL32 operand[1,5); exact complete linked5/map symbol ownership/target check, do not use opcode-only E9 masked uniqueness. Qualified boundOriginal5 retargets its only JMP operand to same Source70, explicitly current-domain-bound. Underlying actual clear owns only genuine current-canonical nodes from admittedappend87 and preserves borrowedpayloads, emptiescount/head/tail and freesNODEBASEonly; header caller remains owned/live. Fresh connected six TUs(newwrapper5, rawclear70, header13, append87+adapter, unchangedcanonical, newignoredprobe), no BSParchives/oldobjects/helpers/stage/process replay. Five entries emptySource/Original,populated3-nodeSource/Original, ordinarySource singleton; three actual44 buffers/header12 interior16+16guards plus seven genuineappendnodes=ten real allocations/frees. Check all storage/node/payload/capture/other-live objects, no retiredreads or globaladdressunique rule. Every retained linked TU function including fullmain/normalprobe/capture/provider/coldcanonical bodies and required complete map-owned cookie/stack/import thunks must pass exactCOFF relocation coverage and beforezeroentries/afterruntime bytegates; coldEH bytegates confer noEH execution credit. Exact no-args/plainRET actualESP/nonvols/DF0, emptyEAX/ECX/EDX unchanged, populatedvolatile residuals unasserted; finalCMPcount0 allsixflags mask8D5=44 AF0. ActualphysicalI386UCRT malloc/free/_callnewh IAT/export/MEM_IMAGE/NTfileID/fullDLLSHA/ASLR32 before0allocations/targets andafterallfrees. Preserve audit113/17160prior, worker70exact417/16743 and Root70exact377/19194 incl stoppedcl70p1; frozen mutableMainmetadata copies preservehistoricalassociations. Only four owned publicfiles; workerSource0untilRoot independentfreshfamily/currentMainWin32all3checks/savedannotationintegration. R125 three-formalvirtualshim is not compatible. Originalowner126/privateheap/CRT/EH/iterator/sentinel/class/fullclone/World/nativegameABI/gameplay unadmitted. No extra NativeGhidra owner/provider/frontier queries.",
         "Source_admission_credit": 0,
         "registration_owner": "Root"
       }
