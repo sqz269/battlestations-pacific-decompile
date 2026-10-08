@@ -6,6 +6,7 @@
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/native_pending_entity_lock.hpp"
+#include "bsp/native_entity_registry_lifetime.hpp"
 #include "bsp/native_mission_entity_lock.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
@@ -453,6 +454,16 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         delete_native_mission_entity_lock_004c4890(
             static_cast<NativeMissionEntityLockOwner*>(owner), flags,
             process_native_mission_entity_lock_00f878fc());
+        return;
+    case 0x00d190c0:
+        delete_native_pending_init_lock_00925660(
+            static_cast<NativeEntityRegistryLockOwner*>(owner), flags,
+            native_entity_registry_process().pending_lock_00f899e4());
+        return;
+    case 0x00d19284:
+        delete_native_scene_registry_lock_009285f0(
+            static_cast<NativeEntityRegistryLockOwner*>(owner), flags,
+            native_entity_registry_process().scene_lock_00f899fc());
         return;
     case 0x00d190c4:
         // This profile belongs to the actual process F899E8 owner. Pass the
