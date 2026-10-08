@@ -1,0 +1,407 @@
+{
+  "packet": "cc12_property_clone_constructor_routing_readiness",
+  "Source_credit": 0,
+  "new_functions": 0,
+  "new_fragments": 0,
+  "new_names": 0,
+  "status": "bounded_readiness_only_no_clone_binding_or_execution_admission",
+  "claimed_address": "008f4f60",
+  "selected_arm_bytes": 390,
+  "selected_types": [
+    2,
+    4,
+    5,
+    7,
+    8,
+    9
+  ],
+  "constructor_entry_stack": "T is ESP on constructor entry, after CALL; args below correspond to T+4,T+8,T+C.",
+  "common_dispatch": {
+    "range": [
+      "008f4f60",
+      "008f4f8d"
+    ],
+    "contract": "ECX is a stable actual source record. ESI=ECX; unsigned tag from +4 must select a supported arm. No source-null check. Original ECX/no explicit stack arguments; normal final EAX is fresh root, plain RET; flags unspecified.",
+    "table_address": "008f52b8",
+    "table_targets_by_tag": [
+      "008f4ff9",
+      "008f4fc2",
+      "008f5075",
+      "008f4f8d",
+      "008f50b5",
+      "008f502d",
+      "008f50ed",
+      "008f5134",
+      "008f5168",
+      "008f51ae",
+      "008f51fa",
+      "008f5242"
+    ],
+    "out_of_range": "Unsigned tag>11 returns zero through 008F52A3; no allocation. This is distinct from allocation failure.",
+    "exception_frame": "Prologue installs FS frame with literal handler address00CA4B6D and state-1. Exact unwind handler/state cleanup is not recovered or admitted."
+  },
+  "routes": [
+    {
+      "type": 2,
+      "start": "008f5075",
+      "end_exclusive": "008f50b5",
+      "byte_count": 64,
+      "constructor": "008ef1b0",
+      "constructor_call": "008f5099",
+      "allocation_call": "008f5077",
+      "ordinal_store": "008f50a2",
+      "constructor_ret_bytes": 4,
+      "eh_state": 1,
+      "args": [
+        "actual nullable text pointer loaded from source+0C"
+      ],
+      "loads": [
+        "008f5093: load EDX from source+0C; push EDX"
+      ],
+      "root": "allocator EAX becomes constructor ECX",
+      "constructor_owner30": "zero",
+      "bounded_Source_credit": 1,
+      "full_helper_or_clone_credit": 0,
+      "domain": "Null or stable actual NUL-terminated borrowed text; successful current-domain duplicate child if nonnull.",
+      "selected_bytes_sha256": "40d28f87ff3c69aed9d357b26fa97dd28b9de109916475704cf026b171022ba7",
+      "byte_assertions": "PUSH38, allocation rel32, constructor rel32, MOV [EAX+34],EDX, final RET verified"
+    },
+    {
+      "type": 4,
+      "start": "008f50b5",
+      "end_exclusive": "008f50ed",
+      "byte_count": 56,
+      "constructor": "008ef230",
+      "constructor_call": "008f50d1",
+      "allocation_call": "008f50b7",
+      "ordinal_store": "008f50da",
+      "constructor_ret_bytes": 8,
+      "eh_state": null,
+      "args": [
+        "opaque DWORD loaded from source+28",
+        "opaque DWORD loaded from source+0C"
+      ],
+      "loads": [
+        "load source+0C to ECX, source+28 to EDX; push ECX then EDX"
+      ],
+      "root": "allocator EAX becomes constructor ECX",
+      "constructor_owner30": "zero",
+      "bounded_Source_credit": 1,
+      "full_helper_or_clone_credit": 0,
+      "domain": "Both inputs are uninterpreted DWORD bits. This arm and raw constructor do not dereference source+28.",
+      "selected_bytes_sha256": "41b8fa7b1488d9c33d1cb6705b4904d343cdfebb1fe6b9a9b0cb84675db781d8",
+      "byte_assertions": "PUSH38, allocation rel32, constructor rel32, MOV [EAX+34],EDX, final RET verified"
+    },
+    {
+      "type": 5,
+      "start": "008f502d",
+      "end_exclusive": "008f5075",
+      "byte_count": 72,
+      "constructor": "008ef2b0",
+      "constructor_call": "008f5059",
+      "allocation_call": "008f502f",
+      "ordinal_store": "008f5062",
+      "constructor_ret_bytes": 12,
+      "eh_state": 0,
+      "args": [
+        "actual nullable text pointer loaded from source+1C",
+        "opaque DWORD loaded from source+18",
+        "opaque DWORD loaded from source+08"
+      ],
+      "loads": [
+        "load source+08 and source+18, push word08, load source+1C, push word18, push text"
+      ],
+      "root": "allocator EAX becomes constructor ECX",
+      "constructor_owner30": "preserved allocation bytes",
+      "bounded_Source_credit": 0,
+      "full_helper_or_clone_credit": 0,
+      "domain": "Null or stable actual NUL-terminated borrowed text; opaque word18/word08; fresh primary complete-helper admission remains pending in frozen report.",
+      "selected_bytes_sha256": "df8ce7253fe1cc9792951e17c2ce57d7b88b02e3ec76462908ad2d4a8c14a881",
+      "byte_assertions": "PUSH38, allocation rel32, constructor rel32, MOV [EAX+34],EDX, final RET verified"
+    },
+    {
+      "type": 7,
+      "start": "008f5134",
+      "end_exclusive": "008f5168",
+      "byte_count": 52,
+      "constructor": "008ef270",
+      "constructor_call": "008f514c",
+      "allocation_call": "008f5136",
+      "ordinal_store": "008f5155",
+      "constructor_ret_bytes": 4,
+      "eh_state": null,
+      "args": [
+        "actual pointer source+0C, addressing twelve inline bytes"
+      ],
+      "loads": [
+        "LEA ECX,[ESI+0C]; PUSH ECX"
+      ],
+      "root": "allocator EAX becomes constructor ECX",
+      "constructor_owner30": "zero",
+      "bounded_Source_credit": 1,
+      "full_helper_or_clone_credit": 0,
+      "domain": "Stable readable twelve-byte source span; three raw DWORDs, without numeric float conversion or class admission.",
+      "selected_bytes_sha256": "727572ee7d84bb598612c231306aca65aad9ec181cb3d6ca4069a25452cae892",
+      "byte_assertions": "PUSH38, allocation rel32, constructor rel32, MOV [EAX+34],EDX, final RET verified"
+    },
+    {
+      "type": 8,
+      "start": "008f5168",
+      "end_exclusive": "008f51ae",
+      "byte_count": 70,
+      "constructor": "008ef2f0",
+      "constructor_call": "008f5192",
+      "allocation_call": "008f516a",
+      "ordinal_store": "008f519b",
+      "constructor_ret_bytes": 12,
+      "eh_state": 3,
+      "args": [
+        "actual pointer loaded from source+20",
+        "byte_count DWORD loaded from source+24",
+        "literal full DWORD 1"
+      ],
+      "loads": [
+        "load source+24 to EDX and source+20 to ECX; push 1, count, input"
+      ],
+      "root": "allocator EAX becomes constructor ECX",
+      "constructor_owner30": "preserved allocation bytes",
+      "bounded_Source_credit": 0,
+      "full_helper_or_clone_credit": 0,
+      "domain": "Stable actual positive byte_count input span; copy flag low byte is 1, so only constructor copy branch is reached; fresh primary complete-helper admission remains pending.",
+      "selected_bytes_sha256": "d5374472e122428d91b2bd7861a1ffe3cb1447eec25b6b4d8f45583a221472c1",
+      "byte_assertions": "PUSH38, allocation rel32, constructor rel32, MOV [EAX+34],EDX, final RET verified"
+    },
+    {
+      "type": 9,
+      "start": "008f51ae",
+      "end_exclusive": "008f51fa",
+      "byte_count": 76,
+      "constructor": "008ef360",
+      "constructor_call": "008f51de",
+      "allocation_call": "008f51b0",
+      "ordinal_store": "008f51e7",
+      "constructor_ret_bytes": 12,
+      "eh_state": 4,
+      "args": [
+        "count returned by 008EF7F0(source ECX)",
+        "actual pointer loaded from source+20",
+        "literal full DWORD 1"
+      ],
+      "loads": [
+        "save allocator EAX in EDI; push 1 then source+20; ECX=source; CALL 008EF7F0 at 008F51D6; push returned EAX count; ECX=EDI"
+      ],
+      "root": "allocator EAX saved in EDI becomes constructor ECX",
+      "constructor_owner30": "preserved allocation bytes",
+      "bounded_Source_credit": 1,
+      "full_helper_or_clone_credit": 0,
+      "domain": "Source tag9; byte_count=4*n with 1<=n<=0x3fffffff; stable readable actual input span of 4*n bytes. Native helper is unsigned source+24 >> 2 and does not validate zero or divisibility.",
+      "selected_bytes_sha256": "0856515378d5cccafc4934e298058a4d8a0a9448c5c6effcf695fd9468fa070c",
+      "byte_assertions": "PUSH38, allocation rel32, constructor rel32, MOV [EAX+34],EDX, final RET verified"
+    }
+  ],
+  "common_allocation": {
+    "native_allocator": "00bf681b",
+    "bytes": 56,
+    "root": "Actual successful fresh allocation, disjoint from source, all borrowed payload spans and active frame. Constructor ECX receives this pointer and EAX returns it.",
+    "eh_bookkeeping": "Type2/5/8 save EAX at caller ESP+8 and set ESP+14 states1/0/3; Type9 saves EDI and sets4. Type4/7 do not install a per-arm saved allocation/state. None establishes unwind equivalence.",
+    "null_path": "All selected allocation-null branches join008F528A: EDX=[source+34]; EAX=0; write [EAX+34]=EDX at008F5290. Normal null-return semantics must not be invented; successful nonnull allocation required.",
+    "provider_boundary": "Original operator_new/private malloc,new-handler,free and SEH identities are not interchangeable with current Source CRT. Current-domain Source constructor qualification is narrower."
+  },
+  "ordinal_and_owner": {
+    "ordinal": "Every selected successful constructor return is followed by a fresh source+34 read and store to returned root+34. The source must remain stable through all allocation/helper calls.",
+    "owner": "No selected clone arm reads/copies source+30 or writes destination+30. Type2/4/7 constructors zero it; Type5/8/9 preserve fresh-root bytes. Preserved bytes must remain unobserved as an owner before explicit publication.",
+    "insertion": "008F33F0 publishes destination bag pointer to record+30 at008F345F after key/map insertion. It tests ordinal+34 first; if zero, uses old bag+10C then increments counter; if nonzero, leaves ordinal and counter unchanged. Bag+110 is a different owner backlink.",
+    "zero_ordinal": "Zero is both the first assigned value and the unstamped sentinel. A cloned zero ordinal may be restamped; the model max(counter,ordinal+1) rule is not this raw insertion rule."
+  },
+  "callers": [
+    {
+      "entry": "008f41f0",
+      "clone_call": "008f4263",
+      "insertion_call": "008f426c",
+      "evidence": "Source iterator entry is checked nonnull; +8 supplies record ECX. Key is entry+4 or literal native fallback00F89450; clone EAX and key are passed to008F33F0 with destination EDI. No record/null-result guard is present in the inspected site.",
+      "unresolved": "Nonempty native bag clone, real key/map/iterator providers, fallback identity binding and owning cleanup are not supplied by current empty-bag producer."
+    },
+    {
+      "entry": "008f54f0",
+      "clone_call": "008f561d",
+      "insertion_call": "008f563b",
+      "evidence": "Lookup0043B8B0 result controls BL; TEST BL/JZ at008F55DA/55DC selects missing-entry arm008F5614. Clone receives source entry+8. Source ordinal is redundantly reread/restored at008F562E before key accessor00484D20 and insertion.",
+      "unresolved": "Absent-key path needs genuine source iterator, destination map/key ownership, insertion success and stable source. Existing-record assign008F0700 and recursive merge remain separate dependencies."
+    }
+  ],
+  "source_boundary": {
+    "frozen_bounded_Source_1_types": [
+      2,
+      4,
+      7,
+      9
+    ],
+    "frozen_pending_fresh_primary_types": [
+      5,
+      8
+    ],
+    "standalone_string_duplicate_00438e40_credit": 0,
+    "semantic_model": "scene_property_bag.cpp copies std::string/vector/value entries, recurses through integer bag indices and uses model ordinal rules. It neither creates the native56-byte root nor transports the constructor ABI/lifetimes.",
+    "host_merge": "scene_property_bag_merge.cpp calls abstract host.clone_record, then set ordinal and insert; header has a pure virtual declaration only. CopySpec describes intent and cannot establish an actual raw binding.",
+    "empty_type6": "Current Source has whole raw008EF780 and an ordinary empty-child selected-arm fragment plus an empty-only008F41F0 producer. It rejects nonzero source count after real output allocation/init. These do not establish nonempty recursive clone or Original whole-clone ABI."
+  },
+  "named_incomplete_dependencies": [
+    {
+      "name": "Other clone routes",
+      "entries": [
+        "008ef140",
+        "008ef170",
+        "008ef1f0",
+        "008ef780",
+        "008ef3e0",
+        "008ef460"
+      ],
+      "limit": "Types0/1/3/6/10/11 are named dependencies only in this audit; existing raw constructor Source credit, if any, is not whole-clone closure. Type10/11 bindings unqualified here."
+    },
+    {
+      "name": "Element count",
+      "entries": [
+        "008ef7f0"
+      ],
+      "limit": "Only exact Type9 shift result is used in the readiness contract; no new Source credit for complete mixed-type helper."
+    },
+    {
+      "name": "Allocation and exceptional cleanup",
+      "entries": [
+        "00bf681b",
+        "00bf9f1a",
+        "00c055b1",
+        "00bf65ac",
+        "00bf9dc8",
+        "00ca4b6d"
+      ],
+      "limit": "Normal current-domain allocator/constructor behavior cannot establish Original private CRT, native unwind states, OOM or exception transport. CA4B6D lies inside candidate Unwind@00CA4B62."
+    },
+    {
+      "name": "Insertion, key and iterator producers",
+      "entries": [
+        "008f33f0",
+        "008f28f0",
+        "0041e870",
+        "00419cc0",
+        "00bd1510",
+        "00480690",
+        "0047e480",
+        "00484d20",
+        "0043b8b0"
+      ],
+      "limit": "Inspected publication/caller statements do not establish complete connected map/key/node allocation and ownership transactions."
+    },
+    {
+      "name": "Recursive lifetime and Source class boundary",
+      "entries": [
+        "008f3f30",
+        "004e6730",
+        "008f0de0",
+        "008f0640",
+        "008f59e0",
+        "008f5410"
+      ],
+      "limit": "Existing context-bearing Source APIs require genuine producers, current CRT, canonical live pool/key owners and finite acyclic graphs. They do not validate this new clone route, Native class/vtables, FS/SEH or gameplay. CE89D4/D16504/D162C4 remain data identities."
+    }
+  ],
+  "next_contracts": [
+    {
+      "packet": "Selected successful current-domain clone fragments for admitted types2/4/7/9",
+      "readiness": "Contract-ready for primary review; not implemented/admitted here.",
+      "contract": "Claim actual selected clone slices and disjoint new files. Use current canonical allocator, actual stable source produced by admitted raw constructor, exact root-allocation/argument/helper/ordinal order, and real disjoint payloads. Keep owner+30 unpublished until a separately bound insertion. Explicit child-before-root cleanup in same current CRT; no whole-clone/native ABI/unwind or game claim."
+    },
+    {
+      "packet": "Fresh Type5 and Type8 constructor complete-helper qualifications",
+      "readiness": "Separate ongoing primary packets; no worker access or admission here.",
+      "contract": "Use fresh independent primary fixtures with complete retained helper/provider gates. Update readiness only from accepted frozen report evidence; standalone57 remains its own packet."
+    },
+    {
+      "packet": "Raw insertion/owner publication connection",
+      "readiness": "Independent dependency audit can claim008F33F0 and separate files after lease check.",
+      "contract": "Recover actual key/node/map insertion and failure/order requirements, owner publication at345F and zero-sentinel ordinal behavior; require canonical key/pool provenance before executing any connected clone-to-bag path."
+    },
+    {
+      "packet": "Type10/11 array constructor readiness",
+      "readiness": "Independent bounded read-only slices008EF3E0 and008EF460, subject to live lease checks.",
+      "contract": "Recover exact count/stride/multiplication/copy/partial-store/provider contracts; do not extrapolate from Type9 or floating type names."
+    },
+    {
+      "packet": "Nonempty Type6/whole recursive clone and owning cleanup",
+      "readiness": "Blocked on connected genuine producer/key/map/node/provider lifetime proof, not supplied by this Source0 audit.",
+      "contract": "Preserve real record-child roots/backlinks, recurse over actual entries, publish owners through proven insertion, prove disposal and exceptional boundaries separately; empty-only producer is insufficient."
+    }
+  ],
+  "performed": {
+    "static_live_Ghidra_read_queries": true,
+    "frozen_Source_and_report_inspection": true,
+    "Source_API_execution": false,
+    "Native_target_execution": false,
+    "compiler_or_build": false,
+    "Root_fixture_access": false,
+    "Ghidra_mutation": false,
+    "ledger_mutation": false
+  },
+  "current_Main_context": "Source hashes are strict end-bookend pins. Main reports/config/docs are historical frozen copies, not forever pins of mutable Main metadata.",
+  "analysis_checks": "Six PUSH38/allocation/constructor/store/RET byte checks, exact12-entry switch table, and null-tail opcodes. Read-only analysis, not execution or Source qualification.",
+  "document": "docs/CC12_PROPERTY_CLONE_CONSTRUCTOR_ROUTING_READINESS.md",
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting",
+  "evidence_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting\\all_files_manifest.json",
+    "size": 44944,
+    "sha256": "9e886996a297c4ffc9b69d89e3ddf03b9adda8faf595b6b5cb8ca0acdd14aafc",
+    "member_count": 248,
+    "self_excluded": true
+  },
+  "evidence_bookend_summary": {
+    "strict_current_Source_files": 24,
+    "frozen_files": 40,
+    "native_byte_slices": 13,
+    "native_byte_total": 698,
+    "all_equal": true,
+    "Native_query_failures": 0,
+    "local_lease_check_argument_failure_retained_and_corrected": true
+  },
+  "key_artifacts": {
+    "readiness_core.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting\\readiness_core.json",
+      "size": 16819,
+      "sha256": "f6c2a35596499bac2bb76e0ea6c8518b6f49e1d6601cef95606ca8f982d470dc"
+    },
+    "input_provenance.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting\\input_provenance.json",
+      "size": 32136,
+      "sha256": "910bb473f3cca29bcc81bd1e74ff535a2ed7c755e2676bc519084fb8f8fc89d7"
+    },
+    "verification_bookends.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting\\verification_bookends.json",
+      "size": 18632,
+      "sha256": "45aaa4e080ddaf926e3ca2d3f82b0273e1acfe7521745b09a13ecdcecc99f33d"
+    },
+    "Source_inputs_before.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting\\Source_inputs_before.json",
+      "size": 5259,
+      "sha256": "62d618a590fb18ee335aba706c4ada84e02cbcd4710c5adf59d980cba5798593"
+    },
+    "Source_inputs_after.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting\\Source_inputs_after.json",
+      "size": 5259,
+      "sha256": "62d618a590fb18ee335aba706c4ada84e02cbcd4710c5adf59d980cba5798593"
+    },
+    "current_Main_raw_binding_search.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_clone_constructor_routing_readiness\\local\\clonerouting\\current_Main_raw_binding_search.json",
+      "size": 601,
+      "sha256": "ac32d10a92d037980fb53743176738d26238ce5054b5b2539bf1826b7f7af853"
+    }
+  },
+  "lease_scope": {
+    "address": "008f4f60",
+    "files": [
+      "docs/CC12_PROPERTY_CLONE_CONSTRUCTOR_ROUTING_READINESS.md",
+      "reports/cc12_property_clone_constructor_routing_readiness.json"
+    ],
+    "checked_before_metadata_write": true,
+    "other_addresses": "read-only dependency evidence; no exclusive ownership or mutation claimed"
+  },
+  "credit_field_scope": "All new/full-helper/clone credit fields in this readiness artifact mean credit awarded by THIS audit, always zero. Existing frozen constructor Source credit is reported separately by bounded_Source_credit and is not revoked or broadened."
+}
