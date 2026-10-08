@@ -28318,6 +28318,101 @@
       "state": "sealed whole88B22 ordinary and254B75 record-clear ownership audit; actualE175B0 pool; missing38h scalar/type/value lifetime providers; ZERO Source closure",
       "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_bag_ordinary_record_map_audit\\receipt.json",
       "audit_receipt_sha256": "adefbc1b4326a6b36e7a66220200d0425942414f17a075cf8eebbbfec2d8490c"
+    },
+    {
+      "id": "cc11_property_record_release_readiness_audit",
+      "worker": "enum_registry_scalar",
+      "function_addresses": [
+        "008f0640",
+        "008f03f0"
+      ],
+      "output_files": [
+        "reports/native_property_record_release_readiness_cc11.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "work_kind": "read_only_evidence_audit",
+      "Source_implementation_ready": {
+        "008f0640": false,
+        "008f03f0": true
+      },
+      "state": "sealed exact type158B63/array39B13; three saved returning-gap repairs; ZERO Source; missing nested lifetime retained",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_record_release_audit\\receipt.json",
+      "audit_receipt_sha256": "8090f79775e2d7320cbc41b3b7995a55e468edd56ba61b829fbe661a1e35ff87"
+    },
+    {
+      "id": "cc11_scene_property_array_block_release",
+      "worker": "enum_registry_scalar",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "008f03f0"
+      ],
+      "output_files": [
+        "include/bsp/native_scene_property_array_block_release.hpp",
+        "src/native_scene_property_array_block_release.cpp",
+        "docs/NATIVE_SCENE_PROPERTY_ARRAY_BLOCK_RELEASE_CC11.md",
+        "reports/native_scene_property_array_block_release_cc11.json"
+      ],
+      "depends_on": [],
+      "done": false,
+      "state": "ready independently audited whole39B13 currentheap array-header release",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_record_release_audit\\proposal.json",
+      "audit_receipt_sha256": "53b5d3a4187e00c1a36ac6b062fc80300f3d736f4709bbb51aa4c0d9d4ee6e27",
+      "contract": {
+        "target": {
+          "entry": "008F03F0",
+          "inclusive_end": "008F0416",
+          "exclusive_end": "008F0417",
+          "bytes": 39,
+          "role": "ONLY expanded actual direct missing provider: whole raw array-block release",
+          "sha256": "b6615f8cb4171cc292957a1bd5a4e0b15695a6f6aafde4775c33b68b143b9c37",
+          "live_PE_image_equal": true,
+          "raw_decoded_instructions": 13
+        },
+        "proposal": {
+          "packet": "cc11_scene_property_array_block_release",
+          "addresses": [
+            "008F03F0"
+          ],
+          "files": [
+            "include/bsp/native_scene_property_array_block_release.hpp",
+            "src/native_scene_property_array_block_release.cpp",
+            "docs/NATIVE_SCENE_PROPERTY_ARRAY_BLOCK_RELEASE_CC11.md",
+            "reports/native_scene_property_array_block_release_cc11.json"
+          ],
+          "scope": "One distinct complete39B13 raw array-header release, directly calling canonical current singleton_lifetime_free; all native pointer/byteSize write order retained.",
+          "native_Source_ABI": "Win32 single-ECX receiver/no stack args/plainRET; directcdeclfree followedADDESP4; preserveESI. Naked raw Source39 may be admitted after Root currentprovider/COFF gate; no callback/free adapter.",
+          "one_new_connected_family": {
+            "TUs": [
+              "new src/native_scene_property_array_block_release.cpp",
+              "current src/singleton_lifetime.cpp",
+              "one new ignored probe.cpp"
+            ],
+            "TU_count": 3,
+            "admitted_storage": "Real current-CRT owned byte allocations from genuine allocator with native byteSize semantics; actual8B header at+20 in separately allocated0x38 raw record storage. Only leaf storage contract; no fake completed record constructor/profile/type lifetime.",
+            "checks": [
+              "two actual owned byte buffers with full header/root guards before leaf call",
+              "complete field writes and adjacent untouched bytes after call; no freeddata access",
+              "same connected family includes genuine empty/repeated-release path",
+              "explicit release of raw storage only after all checks; no record scalar/type destructor invocation",
+              "freeze current built supports plus actual source/headers/compiler/backends/system libraries before/after",
+              "whole SourceCOFF/linked bytes and exact directfree binding/order, manifest/import targets and actual consumed TU/link evidence"
+            ],
+            "Original_execution": "Not performed or authorized here. Any relocated Original39 differential requires Root separate exact ECX/cdecl-free/ESP/preserved-register admission and explicit patched CALL operand/currentheap qualification; historical Original free is not bound."
+          },
+          "exclusions": [
+            "Whole158B type release",
+            "record scalar/thunk",
+            "nested114h bag lifecycle",
+            "whole byte-array constructor/clone/assignment",
+            "historicalCRT/EH/class/factory/world/game"
+          ],
+          "registration_required": true,
+          "implementation_assigned": false
+        },
+        "Root_differential_admission": "One new connected fresh3TU family may execute qualified Original39 with ONLY rel32 CALL operand at original3FA patched to genuine same current linked singleton_lifetime_free, after complete COFF/linked/operand binding and actual malloc/free IAT gate. Preserve every other Original instruction; explicitly historical Original heap unbound. Compare raw ECX/ESP/nonvolatile registers and actual8B header/record guards, never freed data; volatile EAX/ECX/EDX and flags after free are unspecified. No Original constructor/scalar/type dispatcher/world. Two genuine current-CRT owned buffers plus empty/repeated path and explicit storage release after checks. No callback/free adapter, fabricated class/producer/dispatch or BSP archives. Source-only alternative if exact ABI/heap gate cannot be established; no native execution without gate."
+      }
     }
   ],
   "snapshot_after_analysis": {

@@ -1,0 +1,313 @@
+{
+  "status": "Whole type-release remains unready; distinct array39B13 independently Source-ready; Root repaired three returning-flow gaps",
+  "Source_functions_added": 0,
+  "Source_fragments_added": 0,
+  "native_or_Source_execution": false,
+  "old_families_replayed": false,
+  "readiness": {
+    "008F0640": "NOT_READY",
+    "008F03F0": "READY_FOR_INDEPENDENT_CONTEXTUAL_SOURCE_REGISTRATION"
+  },
+  "native_bodies": {
+    "record_value_release": {
+      "entry": "008F0640",
+      "inclusive_end": "008F06DD",
+      "exclusive_end": "008F06DE",
+      "bytes": 158,
+      "role": "whole actual record per-type release code; switch DATA pinned separately",
+      "sha256": "a04fa16e42a48885b025ec9be4ec3683b50db6cac380047a8ae0db44cc590026",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 63
+    },
+    "array_block_release": {
+      "entry": "008F03F0",
+      "inclusive_end": "008F0416",
+      "exclusive_end": "008F0417",
+      "bytes": 39,
+      "role": "ONLY expanded actual direct missing provider: whole raw array-block release",
+      "sha256": "b6615f8cb4171cc292957a1bd5a4e0b15695a6f6aafde4775c33b68b143b9c37",
+      "live_PE_image_equal": true,
+      "raw_decoded_instructions": 13
+    }
+  },
+  "sealed_worker_audit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_enum_registry_scalar\\local\\cc11_property_record_release_audit",
+    "proposal_sha256": "53b5d3a4187e00c1a36ac6b062fc80300f3d736f4709bbb51aa4c0d9d4ee6e27",
+    "receipt_sha256": "8090f79775e2d7320cbc41b3b7995a55e468edd56ba61b829fbe661a1e35ff87",
+    "artifact_manifest_sha256": "482530ddde46e1e439de9d4c9b5172c14b1c04409f9fd176e945198ad647c3f5",
+    "historical_files_unchanged": 5916
+  },
+  "native_class_ABI_compatible": false,
+  "game_validated": false,
+  "actual_switch_DATA": {
+    "entry": "008F06E0",
+    "inclusive_end": "008F06FD",
+    "exclusive_end": "008F06FE",
+    "bytes": 30,
+    "role": "actual five DWORD jump targets plus ten byte selectors",
+    "sha256": "456584beedf03b4858e0c32f2b9019ab62f11af7173e2281be8aca774ead2d0f",
+    "live_PE_image_equal": true,
+    "jump_targets": [
+      "008F065F",
+      "008F0681",
+      "008F06A6",
+      "008F06C7",
+      "008F06CF"
+    ],
+    "selectors_for_type2_through_B": [
+      0,
+      4,
+      4,
+      1,
+      2,
+      4,
+      3,
+      3,
+      3,
+      3
+    ]
+  },
+  "listing_gaps": [
+    {
+      "body": "008F0640",
+      "start": "008F066C",
+      "inclusive_end": "008F0680",
+      "exclusive_end": "008F0681",
+      "bytes": 21,
+      "instructions": 9,
+      "sha256": "2d02fb263b598da1433f88a81ea81c2d83ad66090a6caaa506acfc4578f6f032",
+      "disassembly": [
+        "008F066C: mov dword ptr [esi + 0xc], edi",
+        "008F066F: add esp, 4",
+        "008F0672: mov dword ptr [esi + 4], edi",
+        "008F0675: mov dword ptr [esi + 0xc], edi",
+        "008F0678: mov dword ptr [esi + 0x28], edi",
+        "008F067B: mov dword ptr [esi + 8], edi",
+        "008F067E: pop edi",
+        "008F067F: pop esi",
+        "008F0680: ret"
+      ]
+    },
+    {
+      "body": "008F0640",
+      "start": "008F068E",
+      "inclusive_end": "008F0693",
+      "exclusive_end": "008F0694",
+      "bytes": 6,
+      "instructions": 2,
+      "sha256": "4d9fb987770d29229ac0ad07448a223403725b6c93794e5fb26eab4937ddf89d",
+      "disassembly": [
+        "008F068E: add esp, 4",
+        "008F0691: mov dword ptr [esi + 0x1c], edi"
+      ]
+    },
+    {
+      "body": "008F03F0",
+      "start": "008F03FF",
+      "inclusive_end": "008F0407",
+      "exclusive_end": "008F0408",
+      "bytes": 9,
+      "instructions": 2,
+      "sha256": "8893b7bb6ae8bb7375494625ea87413f414764a1b2845403cc6b7b58468e3f94",
+      "disassembly": [
+        "008F03FF: add esp, 4",
+        "008F0402: mov dword ptr [esi], 0"
+      ]
+    }
+  ],
+  "record_release_contract": {
+    "native_ABI": "Single ECX actual0x38 record; no stack parameters; plainRET; ESI holds receiver; EDI=0; both saved/restored. EAX/ECX/EDX unspecified; no SEH frame or vtable/phase writes in this leaf.",
+    "dispatch": "Actual record+4 type. uint32(type-2)>9 branches shared tail; otherwise byte selector at008F06F4 indexes exact five-target DWORD table008F06E0. DATA pinned, no generated/default table.",
+    "type2_nonnull_schedule": [
+      "load owned string+C",
+      "PUSH pointer; CALLBF6989 at008F0667",
+      "write+C=0 at008F066C BEFORE ADDESP4 at008F066F",
+      "write+4=0,+C=0,+28=0,+8=0; restoreESI/EDI; RET"
+    ],
+    "type2_null": "Shared tail zeroes+4,+C,+28,+8; no free.",
+    "type5_schedule": [
+      "load owned reference target+1C",
+      "if nonnull PUSH/CALLBF6989 at008F0689",
+      "ADDESP4 at008F068E then write+1C=0 at008F0691",
+      "for both paths zero+18,+4,+C,+28,+8; restoreESI/EDI; RET"
+    ],
+    "type6_schedule": [
+      "load nested payload+C",
+      "if nonnull load its actual profile and slot0",
+      "PUSH1/CALL EAX at008F06B3",
+      "after return zero+C at008F06B5",
+      "zero+4,+C,+28,+8; restoreESI/EDI; RET"
+    ],
+    "types8_B_schedule": [
+      "LEA ECX,record+20 at008F06C7",
+      "directCALL008F03F0 at008F06CA",
+      "after return shared tail zero+4,+C,+28,+8"
+    ],
+    "nonowning_types": "0,1,3,4,7 and out-of-range tags enter common field-reset tail; this is actual native switch evidence, not a proposed subset closure.",
+    "retained_fields": [
+      "profile+0",
+      "vector tail+10/+14",
+      "owner+30",
+      "ordinal+34",
+      "all other fields not explicitly listed"
+    ],
+    "shared_declaration28": "Pointer is zeroed by tail but never freed by this whole body.",
+    "whole_blocker": "Real type6 dynamic nested destruction has no genuine complete raw current Source lifetime chain. No null-only subset, semantic ScenePropertyValue facade, opaque cleanup callback, or substitute CEnum19C/bag114 destructor."
+  },
+  "array_release_contract": {
+    "native_ABI": "ECX actual eight-byte array header (record+20 pointer,record+24 byteSize); no stack arguments; ESI preserved; plainRET; flags/EAX/ECX/EDX unspecified.",
+    "complete_schedule": [
+      "load pointer at header+0",
+      "if nonzero PUSHptr/CALLBF6989 at008F03FA",
+      "ADDESP4 at008F03FF",
+      "write ptr=0 at008F0402",
+      "for both paths write byteSize=0 at008F0408 then ptr=0 at008F040F",
+      "restoreESI; plainRET"
+    ],
+    "never_reads_freed_allocation": true,
+    "only_header_fields_written": [
+      "pointer+0",
+      "byteSize+4"
+    ],
+    "allocation_admission": {
+      "producer": "008EF2F0 remains named and unexpanded; only44-byte allocation/field witness pinned",
+      "actual_source_size": "EDI from stack byteSize at008EF306; storedrecord+24 at008EF318",
+      "owned_copy_path": "copy!=0: PUSHsameEDI at008EF31D/CALLBF55BE at008EF31E; returnedEAX storedrecord+20 at008EF32A before directmemcpy008EF32D",
+      "allocation_thunk": "BF55BE exactJMPBF681B; existing genuine singleton_lifetime_allocate models currentmalloc/new-handler/retry contract",
+      "free_thunk": "BF6989 exactJMPBF65AC; current Source singleton_lifetime_free directly std::free",
+      "size_unit": "Bytes; no element destructor or type-specific dispatch in39-byte leaf.",
+      "domain_limit": "Owned current-CRT allocation matching native owned-copy domain; no borrowed/nonowned buffer free. Constructor clone/copy setters remain unexpanded and are not implemented by this audit."
+    }
+  },
+  "existing_genuine_current_Source": {
+    "whole_heap": [
+      "singleton_lifetime_allocate(SingletonAllocationRequest)",
+      "singleton_lifetime_free(void*) noexcept"
+    ],
+    "heap_evidence": "Actual current source inspected; preserved prior constructor3TU receipt includes full90B allocator/6B free COFF+linked code and malloc/free heap-IAT gate. Prior run unchanged and not replayed.",
+    "other_record_primitives": "duplicate_00438e40 + release_duplicate_00438e40 are current raw malloc/copy/free Source, verified Source ledger; they do not close type6.",
+    "missing_raw_Source": "No whole raw008F0640/008F03F0 in current Source; scene_property_bag/merge are semantic host containers/specs and are not destructor providers."
+  },
+  "ready_followup": {
+    "packet": "cc11_scene_property_array_block_release",
+    "addresses": [
+      "008F03F0"
+    ],
+    "files": [
+      "include/bsp/native_scene_property_array_block_release.hpp",
+      "src/native_scene_property_array_block_release.cpp",
+      "docs/NATIVE_SCENE_PROPERTY_ARRAY_BLOCK_RELEASE_CC11.md",
+      "reports/native_scene_property_array_block_release_cc11.json"
+    ],
+    "scope": "One distinct complete39B13 raw array-header release, directly calling canonical current singleton_lifetime_free; all native pointer/byteSize write order retained.",
+    "native_Source_ABI": "Win32 single-ECX receiver/no stack args/plainRET; directcdeclfree followedADDESP4; preserveESI. Naked raw Source39 may be admitted after Root currentprovider/COFF gate; no callback/free adapter.",
+    "one_new_connected_family": {
+      "TUs": [
+        "new src/native_scene_property_array_block_release.cpp",
+        "current src/singleton_lifetime.cpp",
+        "one new ignored probe.cpp"
+      ],
+      "TU_count": 3,
+      "admitted_storage": "Real current-CRT owned byte allocations from genuine allocator with native byteSize semantics; actual8B header at+20 in separately allocated0x38 raw record storage. Only leaf storage contract; no fake completed record constructor/profile/type lifetime.",
+      "checks": [
+        "two actual owned byte buffers with full header/root guards before leaf call",
+        "complete field writes and adjacent untouched bytes after call; no freeddata access",
+        "same connected family includes genuine empty/repeated-release path",
+        "explicit release of raw storage only after all checks; no record scalar/type destructor invocation",
+        "freeze current built supports plus actual source/headers/compiler/backends/system libraries before/after",
+        "whole SourceCOFF/linked bytes and exact directfree binding/order, manifest/import targets and actual consumed TU/link evidence"
+      ],
+      "Original_execution": "Not performed or authorized here. Any relocated Original39 differential requires Root separate exact ECX/cdecl-free/ESP/preserved-register admission and explicit patched CALL operand/currentheap qualification; historical Original free is not bound."
+    },
+    "exclusions": [
+      "Whole158B type release",
+      "record scalar/thunk",
+      "nested114h bag lifecycle",
+      "whole byte-array constructor/clone/assignment",
+      "historicalCRT/EH/class/factory/world/game"
+    ],
+    "registration_required": true,
+    "implementation_assigned": false
+  },
+  "named_UNEXPANDED_dependencies": [
+    "008F59E0 actualD16504 bag scalar profile candidate; type6 dynamic payload binding still needs real producer admission",
+    "008F5410 ordinary114h bag ->008F3F30 record map clear",
+    "004E6730 record scalar ->008F0DE0 ->008F0640; recursive owned tree remains unclosed",
+    "008F41A0 raw114h constructor",
+    "008F41F0/008EF780 nested bag clone/producer routing from priordocs",
+    "008EF2F0 byte-array constructor",
+    "008F03B0 array assignment"
+  ],
+  "smallest_unready_dependency": "type6 actual nested payload scalar lifetime after verified profile/producer binding; current actualD16504 slot0=008F59E0 is prior bag evidence, not an invented type dispatcher.",
+  "host_steps": [
+    {
+      "address": "008F0667",
+      "native": "00BF6989",
+      "function": "008F0640",
+      "description": "ownedtype2 free; omitted returning path follows"
+    },
+    {
+      "address": "008F0689",
+      "native": "00BF6989",
+      "function": "008F0640",
+      "description": "ownedtype5 targetname free; omitted cleanup follows"
+    },
+    {
+      "address": "008F06B3",
+      "function": "008F0640",
+      "description": "CALL EAX to actual nested profile slot0; no invented statictarget or scalar execution"
+    },
+    {
+      "address": "008F06CA",
+      "native": "008F03F0",
+      "function": "008F0640",
+      "description": "verified directarray-provider call permitting sole missingbody expansion"
+    },
+    {
+      "address": "008F03FA",
+      "native": "00BF6989",
+      "function": "008F03F0",
+      "description": "realarray data free; omitted cleanup/pointerreset follows"
+    },
+    {
+      "address": "008EF31E",
+      "native": "00BF55BE",
+      "function": "008EF2F0",
+      "description": "bounded actualownedcopy byteSize allocation"
+    },
+    {
+      "address": "008EF32D",
+      "native": "00BF7680",
+      "function": "008EF2F0",
+      "description": "bounded sameallocation publication before memcpy"
+    }
+  ],
+  "qualification": "Static/native raw/Source provider readiness only; no new body executed, compiled, class-closed or game-validated. Array39 readiness does not close record release158 or recounted prior constructor/map/ordinary/clear fragments.",
+  "call_verification_qualification": {
+    "defined_callsite_rows": 7,
+    "direct_rows_submitted_to_supported_verifier": 6,
+    "raw_indirect_callsite": "008F06B3",
+    "indirect_qualification": "Observed in complete raw and live body as CALL EAX. Dynamic nested profile is deliberately unresolved, carries no native target, and is not submitted to target-call verifier."
+  },
+  "primary_saved_listing_repairs": {
+    "local/cc11_property_record_release_flow_repair.json": "454a41749d832e91fae027d15ad8a0ec7f372378e968765e8fa18c3e8ef5c1c3",
+    "local/cc11_property_record_release_definition.json": "305f636c1d450260705fd7ac17138935e9b7f8eebccbd16f3b6cdbded687bbeb",
+    "local/cc11_property_array_release_definition.json": "6daf52a4bc69ec67dad108b92a0448ab9ccf5632525017dc6c0b78e0c75fad00"
+  },
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_tools": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T044212Z.json",
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "Source_added": 0,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T044212Z.json": "c8c969fd2135bea3f768e77631df1a9510de3812d93a8cfc7d4efb048004e3d7",
+      "local/cc11_property_record_release_annotations.log": "cfd9dffcac3acc53496a0165d8dce75501589aab1ff0ef1f2a3a9f7a00cca18a",
+      "local/cc11_property_record_release_exports.log": "2941074e6e3c020e2fa405e61c2365d76517c94b6e26b1e63b4273b53724ace4",
+      "local/cc11_property_record_release_snapshot.log": "81857f4e6939a4789c3666ce07230b85c39849c347faa427409fad949505ed12"
+    }
+  }
+}
