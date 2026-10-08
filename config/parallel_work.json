@@ -29357,6 +29357,129 @@
         },
         "scope": "Four owned NEW files, literal whole116B36 CALL0/no invented globals/providers; actual508h group/34h records/count/identity and writable12-byte output. ECX+two stackwords/RET8/EAX output, sequential FLD/FSTP alias semantics. Production requires actual readableF87574/78/7C and creates no mapping/default/provider; unique ignored fixture may map exact qualified PE LOADER snapshot at exactVAs with full data/protection bookends. One fresh connected4TU newleaf/currentSourceCtor/currentSourceLookup/probe, zeroBSP archives, wholeCOFF/linked byte gate BEFOREsoleexecution, full physical x87/caller effects. Native mutable globals/class/world/game unbound. No old replay, new tracked tests or shared/Ghidra writes. Root CMake/full build/independent fixture/metadata/analysis/integration."
       }
+    },
+    {
+      "id": "cc12_raw_command_target_initialize_004f1830",
+      "worker": "command_target_initialize",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "004f1830"
+      ],
+      "output_files": [
+        "include/bsp/native_command_target_initialize.hpp",
+        "src/native_command_target_initialize.cpp",
+        "docs/NATIVE_COMMAND_TARGET_INITIALIZE_CC12.md",
+        "reports/native_command_target_initialize_cc12.json"
+      ],
+      "depends_on": [],
+      "done": false,
+      "state": "ready conditional whole64B15 raw native-memory initializer; actual DATA and runtime globals remain caller prerequisites",
+      "audit_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_adjacent_4f18_leaf_audit20261008a\\audit.json",
+      "audit_receipt_sha256": "2623f4f1be4c908c1ac4f978b338997e9a70fabd6a866bbf67aebcdd476fa989",
+      "context_reuse_exception": "Common-stream 6.1-sol worker sealed the audit; this Source packet follows the applicable Astra register/SSE ABI evidence policy. A fresh Astra thread receives the complete small audit handoff.",
+      "contract": {
+        "proposal": {
+          "addresses": [
+            "004f1830"
+          ],
+          "end_exclusive": "004f1870",
+          "bytes": 64,
+          "instructions": 15,
+          "sha256": "d63a15a125ffd391d4da60d40c27c914a8b8cd8c571f6fe0abdae1a582c723f0",
+          "whole_body_hex": "f30f10057475f8008bc1f30f114008f30f10057875f800f30f11400cf30f10057c75f800f30f1140100f57c033c9668908894804880866894802f30f114014c3",
+          "source_symbol": "initialize_native_command_target_004f1830",
+          "native_contract": {
+            "actual_input": "Actual ECX is writable stable aligned caller-owned >=18h raw backing; EDX unused; no consumed stacked operands; production also requires genuinely readable actual native DATA at absolute F87574/F87578/F8757C.",
+            "exact_native_sequence": [
+              "4F1830 read actual F87574 into XMM0",
+              "4F1838 EAX=actualECX",
+              "4F183A store to actual receiver+8",
+              "4F183F fresh actual F87578 read",
+              "4F1847 store actual receiver+C",
+              "4F184C fresh actual F8757C read",
+              "4F1854 store actual receiver+10",
+              "4F1859 XORPS XMM0,XMM0",
+              "4F185C XOR ECX,ECX",
+              "4F185E WORD[receiver+0]=0",
+              "4F1861 DWORD[receiver+4]=0",
+              "4F1864 BYTE[receiver+0]=0 (preserve overlap/order)",
+              "4F1866 WORD[receiver+2]=0",
+              "4F186A DWORD[receiver+14]=raw zero XMM0",
+              "4F186F RET"
+            ],
+            "exact_output_extent": "All18h bytes written with original widths/order, including redundant overlapping header stores. No field/object/class identity inferred.",
+            "alias_order": "Three actual global loads are interleaved with their output stores; do not pre-capture/cache/default the vector. Caller storage may alias DATA in a separately admitted raw-memory fixture; preserve subsequent read-after-store behavior exactly.",
+            "physical_ABI": "EAX=SAME actual ECX entry address; final ECX=0; EDX/EBX/ESI/EDI/EBP/ESP preserved by entire CALL0 body; RET0; final all128 XMM0 bits=0, other XMM registers untouched; XOR ECX defines CF=0/PF=1/ZF=1/SF=0/OF=0, AF undefined. No x87 operations.",
+            "CALL_count": 0,
+            "absolute_native_DATA_reads": 3,
+            "native_code_relocations": 0,
+            "native_callees": [],
+            "formal_Source_candidate": "void* __fastcall initialize_native_command_target_004f1830(void* actual_ecx, void* unused_edx), literal naked MSVC Win32 body; new interface name hypothetical.",
+            "production_DATA_limit": "Do not create/map/default/replace any F87574/78/7C global, delegate to hostmake_command_target, manufacture a class or adapt copied vector values in production."
+          },
+          "required_native_DATA": [
+            {
+              "address": "00f87574",
+              "width": 4,
+              "saved_program_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+              "loader_zero_initial_hex": "00000000",
+              "mapping": {
+                "section": {
+                  "name": ".data",
+                  "virtual_size": 2719452,
+                  "virtual_address": 10518528,
+                  "size_of_raw_data": 65536,
+                  "pointer_to_raw_data": 10518528,
+                  "characteristics": "c0000040"
+                },
+                "section_offset": 1570164,
+                "actual_file_byte_count": 0,
+                "loader_zero_fill_byte_count": 4
+              }
+            },
+            {
+              "address": "00f87578",
+              "width": 4,
+              "saved_program_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+              "loader_zero_initial_hex": "00000000",
+              "mapping": {
+                "section": {
+                  "name": ".data",
+                  "virtual_size": 2719452,
+                  "virtual_address": 10518528,
+                  "size_of_raw_data": 65536,
+                  "pointer_to_raw_data": 10518528,
+                  "characteristics": "c0000040"
+                },
+                "section_offset": 1570168,
+                "actual_file_byte_count": 0,
+                "loader_zero_fill_byte_count": 4
+              }
+            },
+            {
+              "address": "00f8757c",
+              "width": 4,
+              "saved_program_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+              "loader_zero_initial_hex": "00000000",
+              "mapping": {
+                "section": {
+                  "name": ".data",
+                  "virtual_size": 2719452,
+                  "virtual_address": 10518528,
+                  "size_of_raw_data": 65536,
+                  "pointer_to_raw_data": 10518528,
+                  "characteristics": "c0000040"
+                },
+                "section_offset": 1570172,
+                "actual_file_byte_count": 0,
+                "loader_zero_fill_byte_count": 4
+              }
+            }
+          ]
+        },
+        "scope": "Four new files; whole literal64B15 CALL0/no relocations, actual caller-owned18h storage, exact interleaved MOVSS loads/stores/overlapping header widths, EAX receiver/ECX0/EDX preserved/XMM0 all128zero/RET0. Production requires actual nativeF87574/78/7C and creates no mapping/default/provider. One unique fresh2TU Source plus ignored actual-caller-buffer probe, qualified readonly exact-VA PE LOADER snapshot only, zeroBSP archives. Wholebytes/caller/physical register/SSE gate BEFORE soleexecution; live24-byte output and real adjacent caller guards, no heap/class facade. Alias order proven by whole identical code; mutable global alias runtime remains unbound unless separately admitted. No old replay/new tracked tests/shared metadata/Ghidra writes. Root CMake/fullbuild/independent fixture/metadata/saved analysis/integration."
+      }
     }
   ],
   "snapshot_after_analysis": {
