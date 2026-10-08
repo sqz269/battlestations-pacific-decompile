@@ -1,0 +1,302 @@
+{
+  "schema": "bsp.cc12.type8.fresh_prelaunch_code_peer_report.v1",
+  "Source_credit": 0,
+  "status": "STATIC_PEER_NO_BLOCKING_MISMATCH",
+  "approval_or_launch_authorization": false,
+  "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a",
+  "recursive_files_including_seal": 210,
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\seal.json",
+    "size": 34121,
+    "sha256": "a99d36e5818112ba9790c2c880760facf8e006987425e1eff6cf2120d0a4b5c2"
+  },
+  "stable_readout_pins": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\stable_readout_pins.json",
+    "size": 3040,
+    "sha256": "ced106cd0ec2d6312c64c8ed77aec9d70b4bdf81724133ec015aac69d9c010d6"
+  },
+  "stable_readouts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\attempt_a03\\raw_summary.json",
+      "size": 9273,
+      "sha256": "45d0cec9fba40b1fc6299fef51cd9cb35ffc5b201d6fde2d20af9564ba753757"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\attempt_a03\\raw_gate.json",
+      "size": 30561,
+      "sha256": "70c83042ca5dae385db93bccab1e919087c18d1308ca46081009dcacc70775b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\attempt_a03\\raw_relocations.json",
+      "size": 274828,
+      "sha256": "c647aaa4a9e9438c83d37ba0173306c65a5f6ed3a37d27b4e5f2f86b2a2f2fb9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\attempt_a03\\raw_CFG.json",
+      "size": 713693,
+      "sha256": "f7887575ee238b2d26bde8b9a46fe286e1c82dabad3782cc6cbb86c724944216"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\attempt_a03\\formal_target_bindings.json",
+      "size": 5197,
+      "sha256": "859e617adcb663dde59fae0171e48e9e180f7a9ba8439c3a92a56da1052eaec0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\attempt_a03\\native112_binding.json",
+      "size": 2611,
+      "sha256": "ed83a644de5002b8b07313637bb7648d74cec9052739a672cb5eba29ed0f6fea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\attempt_a03\\frozen_provider_gate_binding.json",
+      "size": 3577,
+      "sha256": "493a76c60e64f1a3b4772c095668dd015dc02f1830402b7f29fc3880d4c13d5c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\inputs_before.json",
+      "size": 23236,
+      "sha256": "afb04bf59f552006a2d747ec1522fd97ecc4564aad0e7c61a67da0c2c4454ca8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\manual_main_and_frame_review.json",
+      "size": 56088,
+      "sha256": "d129a83a83dbf7152262b63729e8d62d1a9414f9c60362eddc4b0410229c1466"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\prelaunch_static_peer_summary.json",
+      "size": 6692,
+      "sha256": "bd347ae03108029ecae8732b1cf67e678a6602fbde40cddbbc2b136a395c3e3f"
+    }
+  ],
+  "selection_scope": "Exactly current_review_bindings recipe22 originals, frozen actual GAME/UCRT/VCR selected from frozen_inputs.json, and seven current readouts/metadata. Root was unlaunched/unsealed at selection; final Root inventory never inferred.",
+  "selected_file_count": 32,
+  "recipe22_files": 22,
+  "frozen_GAME_UCRT_VCR": 3,
+  "current_readouts_and_metadata": 7,
+  "actual_EXE": {
+    "size": 23552,
+    "sha256": "12e3d6c3220efe6614aea42e521db8cb89cd8bc65c2bbf7f14e3912de398301b"
+  },
+  "actual_Gate": {
+    "size": 11284,
+    "sha256": "fa1624f831f8501ab236ecf07cab8f5a7b93217437e51842cd54b587ae089b31"
+  },
+  "actual_counts": {
+    "logical_TU_bodies": 32,
+    "physical_TU_bodies": 30,
+    "logical_relocations": 287,
+    "physical_relocation_operands": 281,
+    "alias_rechecks": 6,
+    "packed_spans": 48,
+    "helper_bodies": 18,
+    "mapped_EH_handlers": []
+  },
+  "whole_Main": {
+    "address": "49002160",
+    "bytes": 5715,
+    "instructions": 1456,
+    "whole_listing_manually_reviewed": true,
+    "dominance_pairs": 28,
+    "guard_failure_edges": 78
+  },
+  "ABI_and_frame": {
+    "raw_bytes": 191,
+    "raw_instructions": 68,
+    "raw_outer_entry": "O",
+    "raw_saved_EBP": "O-4",
+    "R_observed_before_target_arguments": "O-24",
+    "Q_observed_before_CALL": "R-12",
+    "T_independently_formed_and_captured": "Q-4",
+    "target_stack_order": [
+      "DATA=T+4",
+      "COUNT=T+8",
+      "FLAG=T+12"
+    ],
+    "target_return": "RET12 restores raw ESP to R; raw itself plain RET; Main releases six raw-wrapper arguments with ADD ESP24.",
+    "dead_argument_snapshots": "All three slot addresses and words recorded before post-target PUSHFD can overwrite FLAG.",
+    "Capture": {
+      "total": 140,
+      "pre_words": 4,
+      "register_bytes": 108,
+      "register_offset": 16,
+      "post_offset": 124,
+      "post_words": 4
+    },
+    "caller_canaries": [
+      "78C43A6F",
+      "D2B795E1"
+    ],
+    "nonvolatile_poison": {
+      "EBX": "D93A61E7",
+      "EDI": "B74C28F5"
+    },
+    "EDX_input_poison": "E6A9523B",
+    "machine_predicate": "EAX=root; ESP/EBX/ESI/EDI/EBP preserve; before/after DF0; root disjoint from [T,EBP_before+32); input address >= that frame end.",
+    "retained_registers": "ECX=root, EDX=data asserted only for low BYTE(flag)==0.",
+    "copy_registers": "ECX/EDX residuals observed but unasserted after providers.",
+    "flags": "Mask8D5 includes AF: retained CMP0,0 gives44; copy final ADD computes add_flags(T-24,16).",
+    "ES": "Captured before/after at Capture+76/+80 but no machine_ok ES equality branch.",
+    "ordinary_Source": {
+      "address": 1224751072,
+      "bytes": 26,
+      "instructions": 7,
+      "dynamic_calls": 0
+    },
+    "ordinary_Original": {
+      "address": 1224751040,
+      "bytes": 25,
+      "instructions": 7,
+      "dynamic_calls": 0
+    },
+    "ordinary_scope": "Static cdecl-to-fastcall stack/formal translation only; no ordinary wrapper was selected by Main."
+  },
+  "case_loop": {
+    "dispatch_site": 1224747555,
+    "raw_callback_site": 1224751238,
+    "entry_counter_initialization": 1224745352,
+    "entry_increment": 1224747440,
+    "loop_back": 1224748595,
+    "targets_stack_slots": [
+      96,
+      100,
+      104,
+      108
+    ],
+    "Original_RX_stack_slot": 40,
+    "case_order": [
+      "Source_retained",
+      "Original_retained",
+      "Source_copy",
+      "Original_copy"
+    ],
+    "successful_path_targets": 4,
+    "Source_calls": 2,
+    "Original_calls": 2,
+    "counts": [
+      7,
+      11,
+      11,
+      7
+    ],
+    "flag_words": [
+      "D6B23900",
+      "7C48E100",
+      "A53D6C80",
+      "2E917F02"
+    ],
+    "selection_reads_low_BYTE": true,
+    "DF_inputs": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "dynamic_observation": false,
+    "failure_path_entries": "May exit before any or after a partial prefix; only successful full loop implies four."
+  },
+  "root_child_domain": {
+    "root_allocations": 4,
+    "root_bytes_each": 56,
+    "owned_children": 2,
+    "child_bytes": [
+      11,
+      7
+    ],
+    "allocator_route": "Source/RX allocation CALL -> actual size adapter -> current canonical -> gated UCRT malloc",
+    "root_writes": {
+      "0x00_0x03": "00CE89D4 phase word",
+      "0x04_0x07": "tag8",
+      "0x18_0x1F": "zero8",
+      "0x20_0x23": "actual retained or allocated child pointer",
+      "0x24_0x27": "count",
+      "0x2C": "one BYTE",
+      "0x34_0x37": "zero4"
+    },
+    "written_bytes": 29,
+    "poison_preserved_bytes": 27,
+    "retained_inputs_never_enter_child_free_array": true,
+    "all_live_checks": "After each target: machine/capture guards, entire inputs96 vs baseline, all four roots56 vs appropriate expected bytes, three noncurrent captures140 vs before, and every prior/live owned child for exact selected count.",
+    "snapshots": "Four capture140 + four root56, two guarded inputs48, both child byte spans11/7, bound Original112; all before any child/root free.",
+    "free_order": "Two owned children through canonical_free then four roots through canonical_free; root slots cleared; VirtualFree RX afterwards.",
+    "no_freed_storage_read_on_success_path": true,
+    "counts_are_static_success_path_requirements_not_observed_process_totals": true
+  },
+  "actual_adapter": {
+    "address": 1224740864,
+    "bytes": 61,
+    "instructions": 17,
+    "symbol": "?allocate_native_byte_array_bytes@?A0x71adab9d@bsp@@YAPAXI@Z",
+    "derivation": "Actual source.obj relocation at Source+47; not a guessed decorated suffix.",
+    "route": "Incoming cdecl actual_bytes at entry ESP+4 becomes request.kind=3, logical_size=actual_bytes, allocator_size=actual_bytes; calls canonical singleton_lifetime_allocate@490011B0."
+  },
+  "provider_pre_post": {
+    "pre": {
+      "verify_module": 1224744320,
+      "loop_call": 1224745517,
+      "before_roots": true,
+      "checks": [
+        "IAT value -> HMODULE",
+        "VirtualQuery MEM_IMAGE and AllocationBase",
+        "mapped NT versus physical file NT",
+        "held read-only file handle FileID/size",
+        "whole physical SHA256",
+        "physical and live machine/timestamp/image size",
+        "physical export RVA and GetProcAddress versus IAT",
+        "expected relocated raw prefix compared live"
+      ]
+    },
+    "post": {
+      "inlined_Main_range": [
+        1224749327,
+        1224749628
+      ],
+      "after_child_root_frees_and_RX_release": true,
+      "checks": [
+        "same IAT value",
+        "held-handle FileID/size",
+        "full physical SHA256",
+        "expected relocated physical prefix compared live"
+      ],
+      "does_not_repeat": [
+        "MEM_IMAGE query",
+        "mapped NT path",
+        "file NT discovery",
+        "GetProcAddress",
+        "live PE headers"
+      ],
+      "standalone_module_unchanged_body": false
+    },
+    "normalized_live_prefix": "Serialized bytes are expected physical export bytes adjusted by loaded-minus-preferred-base HIGHLOW relocations, compared to live bytes; not a separately captured live dump.",
+    "four_bindings": "malloc/free/_callnewh from one recorded UCRT module; memcpy from separate recorded VCR module; future loaded bases and identity remain process observations.",
+    "worker_scope": "Only selected frozen GAME/UCRT/VCR PE files read; no installed provider or Native queries."
+  },
+  "validation": {
+    "raw_PE_COFF_MAP_Gate_parser": "Own independent bounded file decoder with cached frozen input bytes.",
+    "raw_CFG": "All48 full spans and relocations; register-IAT joins/kills, complete helper bounds, bound CxxThrow guard, internal/trailing padding and both formal sites accounted.",
+    "Native112": "Frozen GAME actual bytes equal original112; Source104 literal positions match with only CALL operands47..50 and62..65 rebound.",
+    "input_bookends": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\inputs_after.json",
+      "size": 224,
+      "sha256": "a4120b41aa8277a0b81fe67aa7bafa389d02bc2399aff860292a10888d8de963"
+    },
+    "selected32_and_Source4_unchanged": true,
+    "Root_tools_or_target_executions": 0,
+    "runtime_files_read": 0,
+    "installed_provider_Native_Ghidra_queries": 0,
+    "Source_changes": 0,
+    "new_tests": 0
+  },
+  "scope_limits": [
+    "Source0/static peer only; no approval or process observation.",
+    "Ordinary wrappers are statically reviewed but dynamically uncalled.",
+    "AF is included in Type8 mask8D5. ES is captured but no machine_ok equality branch; no blanket ES/FPU/MXCSR preservation through providers.",
+    "Post-free provider checks do not repeat MEM_IMAGE, mapped/file NT discovery, GetProcAddress or live PE headers.",
+    "Serialized normalized_live_prefix is expected relocated raw bytes compared live, not an independent live dump.",
+    "Cold EH/OOM/GS/class ownership/private CRT/game behavior remains unadmitted."
+  ],
+  "failure_history": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_fresh_prelaunch_code_audit\\local\\t8preaudit20261008a\\review_history.json",
+    "size": 1637,
+    "sha256": "12a1072eff8ce6f7954def2c271c94bf052abad224bf47c5517f7d61b102f145"
+  },
+  "utilities_and_failures_included_in_seal": true
+}

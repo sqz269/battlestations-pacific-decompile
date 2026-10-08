@@ -1,7 +1,7 @@
 {
   "schema": "bsp.cc12.native-scene-property-record-type8-byte-array-storage.worker.v1",
   "packet": "cc12_scene_property_record_type8_byte_array_storage",
-  "status": "worker_implementation_and_qualified_fixture_passed_independent_root_admission_pending",
+  "status": "bounded_current_raw_byte_array_storage_Source_admitted_full_helper_fixture_build_tested",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_type8_byte_array_storage_source",
   "branch": "agent/cc12_type8_byte_array_storage_source",
   "baseline_commit": "b26d9e9900d20e4a9df4c29683e1275336b5820d",
@@ -32,9 +32,9 @@
   ],
   "admission": {
     "worker_source_credit": 0,
-    "Root_independent_validation": false,
-    "Root_main_build": false,
-    "Root_Ghidra_publication": false,
+    "Root_independent_validation": true,
+    "Root_main_build": true,
+    "Root_Ghidra_publication": true,
     "startup_validated": false,
     "game_validated": false,
     "original_private_CRT_EH": false,
@@ -42,7 +42,8 @@
     "phase_vtable_dispatch": false,
     "class_ownership": false,
     "World": false,
-    "adapter_native_credit": 0
+    "adapter_native_credit": 0,
+    "current_bounded_Source_credit": 1
   },
   "native": {
     "whole_begin": "008EF2F0",
@@ -5329,27 +5330,83 @@
       "sha256": "eeec359434899d3fd4c7d1de8661c75580464ea07ded53b833fa5cc71641c3a1"
     }
   ],
-  "next_owner": "Root: independently inspect and execute a fresh qualified fixture if admitted, register and run full main build, own ledger/packet/Ghidra annotation/save/exports, integrate and publish. Worker claims no Source credit before that acceptance.",
+  "next_owner": "Root saved-analysis publication and metadata integration; bounded Source already admitted, class/game boundaries remain separate.",
   "primary_integration": {
-    "passed": false,
-    "Source_admission_credit": 0,
-    "status": "reconstructed whole native body; standalone complete-helper fixture admission reopened after library-edge audit",
-    "Root_audit_reviewed": true,
-    "audit_report": "reports/cc12_type8_complete_helper_library_edge_audit.json",
-    "historical_independent_family": "local/t8p2",
-    "historical_seal_sha256": "edae817c0fbc4d710e620dd54f02a547aca71f3e269ebc8ee5319360c0c241d7",
-    "historical_artifacts_preserved": true,
+    "passed": true,
+    "Source_admission_credit": 1,
+    "status": "bounded_current_raw_byte_array_storage_Source_admitted_full_helper_fixture_build_tested",
+    "qualification": "Qualified whole008EF2F0..008EF360 raw tag8 initializer112B34,104literal bytes and only CALL operands47..50/62..65 rebound to current size adapter/memcpy. ECX actual fresh unowned56 root, unusedEDX, stack DATA/COUNT/fullFLAG atT+4/+8/+C, RET12/fullEAXroot. LowBYTE flag chooses retain/copy; fulluint32 positive byte count unscaled.29written27preserved including owner+30; +2C1 in both branches is not ownership. RetainedECXroot/EDXdata,8D5=44 includes AF0; copy finalADD(T-24,16), ECX/EDX provider residuals unasserted. DF0/currentCRT; ES captured without blanket preservation contract. Fresh3TUs,184headers7libs,32logical30physicalTU bodies,287logical281physical operands+6aliases,48whole spans including18complete helpers; normal imports/cookie14/stack43/delete16->5->free6/std thunks complete, GSfailure namedunexpanded. Main5715B1456 manually read,28dominance pairs/78failures; independent peer agrees. Sole process four raw entries Source/Original each retain+copy, four56 roots/two11-and7-byte children/six pairs; fullCapture140/root56/input48/children independently frozen-only decoded. Four current UCRT/VCRT provider bindings with precise distinct pre/post identity/code checks. Exact499-file fresh family/prior25438 pins/34exact families unchanged. CurrentMain4041 actualSource/header/CMake inputs byte-identical to passed Win32/all3existing checks. No oldhelper/stage/object/process replay. No Original privateCRT/EH/GS/OOM/zero-size/invalidspan/class/vtable/wholeclone/nativegameABI/startup/gameplay admission.",
+    "independent_family": "local/t8p3",
+    "independent_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\seal.json",
+      "size": 108174,
+      "sha256": "3bc2d040c041ffada7b3f77f8873763d61941b86f9d599ced9ec844265bd85b7"
+    },
+    "independent_actual_files": 499,
+    "prior_immutable_files": 25438,
+    "exact_prior_families": 34,
+    "fresh_TUs": 3,
+    "consumed_headers": 184,
+    "consumed_libraries": 7,
+    "logical_retained_symbols": 32,
+    "physical_TU_bodies": 30,
+    "complete_external_helpers": 18,
+    "symbol_relocation_checks": 287,
+    "physical_relocation_operands": 281,
+    "alias_rechecks": 6,
+    "complete_runtime_code_spans": 48,
+    "whole_Main_bytes": 5715,
+    "whole_Main_instructions": 1456,
+    "Root_native_processes": 1,
+    "target_entries": 4,
+    "ordinary_dynamic_entries": 0,
+    "actual_root_allocations": 4,
+    "actual_root_frees": 4,
+    "owned_child_allocations": 2,
+    "owned_child_frees": 2,
+    "Capture_bytes": 140,
+    "Registers_bytes": 108,
+    "Capture_post_offset": 124,
+    "root_bytes": 56,
+    "guarded_input_bytes": 48,
+    "input_payload_bytes": 16,
+    "raw_caller_bytes": 191,
+    "raw_caller_instructions": 68,
+    "ordinary_Source_bytes": 26,
+    "ordinary_Original_bytes": 25,
+    "mapped_EH_handlers": 0,
+    "DF": 0,
+    "written_bytes": 29,
+    "preserved_bytes": 27,
+    "recorded_decode": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\type8_recorded_capture_readout.json",
+      "size": 21798,
+      "sha256": "87553014c2176b41e3f446005dc7fd6f6afbf824076219c259c67dabf61ca7b6"
+    },
+    "Root_manual_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\Root_Main_control_review.json",
+      "size": 14293,
+      "sha256": "815eac473c62c75a60fa10310bc9fbe7e8f462b56d8916a4d8e6ac3436260cad"
+    },
+    "Root_peer_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\Root_peer_prelaunch_review.json",
+      "size": 7353,
+      "sha256": "e4dd52a2b308555274e021c6876eeab559952608425a32f8b120c916286ef370"
+    },
+    "current_Main_build_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\Root_current_Main_build_review.json",
+      "size": 876465,
+      "sha256": "25bee8ae317548b29dd576af15dc6b7bf7bcc800b1a0d6c8937ee55a7c6c2aeb"
+    },
+    "all_current_4041_inputs_rechecked_before_admission": true,
     "source_body_unchanged": true,
-    "recorded_behavior_retained": true,
-    "fresh_complete_helper_validation_pending": true,
-    "no_blanket_consumer_family_propagation": true,
-    "qualification": "Root reviewed the independent Type8 library-edge audit: all31 retained symbol proofs/29 distinct TU bodies and whole112B34 storage body are gated, but nine normal import thunks are absent at17 physical direct operands. Three cold direct helper destinations at7 physical operands plus the unsized-delete/free-thunk continuation are also absent; GS failure/EH execution remain unadmitted. Counts are286 symbol-level relocation checks/280 distinct physical operands, with six alias rechecks and actual mode-1 fallback selection. Standalone complete-helper Source admission is reopened to0 pending a fresh complementary normal-helper gate. Historical four entries/full140-byte captures/full56-byte roots/guarded inputs and borrow/copy observations remain evidence; DATA/COUNT/FLAG stack order and unsigned low-byte flag semantics are unchanged. No Source edits or blanket later family propagation; no old process/stage replay or fresh Native/provider queries.",
-    "game_validated": false
+    "game_validated": false,
+    "abi_compatible": false
   },
-  "Source_admission_credit": 0,
+  "Source_admission_credit": 1,
   "worker_Source_admission_credit": 0,
-  "primary_source_status": "reconstructed whole native body; standalone complete-helper fixture admission reopened after library-edge audit",
-  "Root_independent_validation_pending": true,
+  "primary_source_status": "bounded_current_raw_byte_array_storage_Source_admitted_full_helper_fixture_build_tested",
+  "Root_independent_validation_pending": false,
   "main_build_pending": false,
   "saved_analysis_publication": {
     "project_file": "C:/Users/sqz269/bsp.gpr",
@@ -5607,27 +5664,7 @@
       "original_private_CRT_EH_admitted": false,
       "game_validated": false,
       "qualification": "Whole [008EF2F0,008EF360)112B34 raw byte-array record storage in the qualified successful current heap/copy domain. Only CALL operands[47,51)/[62,66) rebound to the genuine Source-only size adapter/current canonical allocation and physical VCRUNTIME memcpy;104 literal bytes. Fresh Root local/t8p2 corrects historical local/t8p1 helper coverage: all29 retained function bodies from three new compiler TUs, including all18 probe bodies and nine canonical functions, plus four complete cookie/stack/import spans are mechanically resolved and runtime gated before zero target entries and after execution/frees. Cold exception support is gated as code only, without EH execution or admission. One fresh process/four entries, borrow5/8 and copy8/5 bytes with embedded NUL, four actual56 roots/two children/six allocations-frees; full140 captures,56 roots,96 guarded input bytes and all copied bytes independently decoded. Actual R/Q/T/RET12/EAXroot/nonvolatiles/DF0 and branch-specific defined flags verified; borrow CMP mask8D5=44 includes AF0, copy ADD flags derive actual T-24+16. Child+20 stored before actual memcpy; +2C1 is not an ownership discriminator. Four actual I386 heap/copy providers independently checked by IAT/export/MEM_IMAGE/NT identity/full DLL SHA and ASLR-adjusted32-byte prefix before/after. Exact403 artifacts+seal404 and18537 prior pins preserved, including the historical incomplete family and stopped attempts; no old helper, stage, object or process replay. Current Main unchanged C++/headers/CMake since the combined Win32 build passing all3 existing checks. Original private CRT/heap/EH/failure/owner/class/World/fullclone/native game ABI/gameplay remain unadmitted."
-    }
-  ],
-  "complete_linked_helper_validation_pending": true,
-  "complete_helper_saved_analysis_publication": {
-    "project_file": "C:/Users/sqz269/bsp.gpr",
-    "program": "/battlestationspacific.exe",
-    "supported_locked_annotation": true,
-    "saved": true,
-    "prior_values": "local/ghidra-annotations-20261008T161816Z.json",
-    "exports_refreshed": true,
-    "index_rebuilt": true,
-    "artifacts": {
-      "local/cc12_type8_complete_helper_final_annotations.log": "1ccd0553524265a2744d1af9a261d65ce17bdd146eca393aa8f5b10382581ebb",
-      "local/cc12_type8_complete_helper_final_exports.log": "c928ba16f868dac9037c1cd7f5f5544460ef92a73e58619c41fdd5f9fdd6d359",
-      "local/cc12_type8_complete_helper_final_snapshot.log": "629a712684034815ce7cfe43e4532b341a2e49089e5a5787dfc2289ce82cb9ed",
-      "local/ghidra-annotations-20261008T161816Z.json": "90d0d0b2091f01321b98fd6320a05f4ebbf436e6d2a782047e8a8aaa6fb51d48"
     },
-    "old_publication_retained": true
-  },
-  "saved_analysis_publication_pending": false,
-  "evidence_holds": [
     {
       "passed": false,
       "Source_admission_credit": 0,
@@ -5645,6 +5682,25 @@
       "game_validated": false
     }
   ],
+  "complete_linked_helper_validation_pending": false,
+  "complete_helper_saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation": true,
+    "saved": true,
+    "prior_values": "local/ghidra-annotations-20261008T161816Z.json",
+    "exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/cc12_type8_complete_helper_final_annotations.log": "1ccd0553524265a2744d1af9a261d65ce17bdd146eca393aa8f5b10382581ebb",
+      "local/cc12_type8_complete_helper_final_exports.log": "c928ba16f868dac9037c1cd7f5f5544460ef92a73e58619c41fdd5f9fdd6d359",
+      "local/cc12_type8_complete_helper_final_snapshot.log": "629a712684034815ce7cfe43e4532b341a2e49089e5a5787dfc2289ce82cb9ed",
+      "local/ghidra-annotations-20261008T161816Z.json": "90d0d0b2091f01321b98fd6320a05f4ebbf436e6d2a782047e8a8aaa6fb51d48"
+    },
+    "old_publication_retained": true
+  },
+  "saved_analysis_publication_pending": false,
+  "evidence_holds": [],
   "coverage_hold_saved_analysis_publication": {
     "passed": true,
     "addresses": [
@@ -5683,5 +5739,263 @@
       }
     ],
     "Source_admission_credit": 0
+  },
+  "Root_complete_helper_fresh_qualification": {
+    "passed": true,
+    "Source_admission_credit": 1,
+    "status": "bounded_current_raw_byte_array_storage_Source_admitted_full_helper_fixture_build_tested",
+    "qualification": "Qualified whole008EF2F0..008EF360 raw tag8 initializer112B34,104literal bytes and only CALL operands47..50/62..65 rebound to current size adapter/memcpy. ECX actual fresh unowned56 root, unusedEDX, stack DATA/COUNT/fullFLAG atT+4/+8/+C, RET12/fullEAXroot. LowBYTE flag chooses retain/copy; fulluint32 positive byte count unscaled.29written27preserved including owner+30; +2C1 in both branches is not ownership. RetainedECXroot/EDXdata,8D5=44 includes AF0; copy finalADD(T-24,16), ECX/EDX provider residuals unasserted. DF0/currentCRT; ES captured without blanket preservation contract. Fresh3TUs,184headers7libs,32logical30physicalTU bodies,287logical281physical operands+6aliases,48whole spans including18complete helpers; normal imports/cookie14/stack43/delete16->5->free6/std thunks complete, GSfailure namedunexpanded. Main5715B1456 manually read,28dominance pairs/78failures; independent peer agrees. Sole process four raw entries Source/Original each retain+copy, four56 roots/two11-and7-byte children/six pairs; fullCapture140/root56/input48/children independently frozen-only decoded. Four current UCRT/VCRT provider bindings with precise distinct pre/post identity/code checks. Exact499-file fresh family/prior25438 pins/34exact families unchanged. CurrentMain4041 actualSource/header/CMake inputs byte-identical to passed Win32/all3existing checks. No oldhelper/stage/object/process replay. No Original privateCRT/EH/GS/OOM/zero-size/invalidspan/class/vtable/wholeclone/nativegameABI/startup/gameplay admission.",
+    "independent_family": "local/t8p3",
+    "independent_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\seal.json",
+      "size": 108174,
+      "sha256": "3bc2d040c041ffada7b3f77f8873763d61941b86f9d599ced9ec844265bd85b7"
+    },
+    "independent_actual_files": 499,
+    "prior_immutable_files": 25438,
+    "exact_prior_families": 34,
+    "fresh_TUs": 3,
+    "consumed_headers": 184,
+    "consumed_libraries": 7,
+    "logical_retained_symbols": 32,
+    "physical_TU_bodies": 30,
+    "complete_external_helpers": 18,
+    "symbol_relocation_checks": 287,
+    "physical_relocation_operands": 281,
+    "alias_rechecks": 6,
+    "complete_runtime_code_spans": 48,
+    "whole_Main_bytes": 5715,
+    "whole_Main_instructions": 1456,
+    "Root_native_processes": 1,
+    "target_entries": 4,
+    "ordinary_dynamic_entries": 0,
+    "actual_root_allocations": 4,
+    "actual_root_frees": 4,
+    "owned_child_allocations": 2,
+    "owned_child_frees": 2,
+    "Capture_bytes": 140,
+    "Registers_bytes": 108,
+    "Capture_post_offset": 124,
+    "root_bytes": 56,
+    "guarded_input_bytes": 48,
+    "input_payload_bytes": 16,
+    "raw_caller_bytes": 191,
+    "raw_caller_instructions": 68,
+    "ordinary_Source_bytes": 26,
+    "ordinary_Original_bytes": 25,
+    "mapped_EH_handlers": 0,
+    "DF": 0,
+    "written_bytes": 29,
+    "preserved_bytes": 27,
+    "recorded_decode": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\type8_recorded_capture_readout.json",
+      "size": 21798,
+      "sha256": "87553014c2176b41e3f446005dc7fd6f6afbf824076219c259c67dabf61ca7b6"
+    },
+    "Root_manual_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\Root_Main_control_review.json",
+      "size": 14293,
+      "sha256": "815eac473c62c75a60fa10310bc9fbe7e8f462b56d8916a4d8e6ac3436260cad"
+    },
+    "Root_peer_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\Root_peer_prelaunch_review.json",
+      "size": 7353,
+      "sha256": "e4dd52a2b308555274e021c6876eeab559952608425a32f8b120c916286ef370"
+    },
+    "current_Main_build_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\Root_current_Main_build_review.json",
+      "size": 876465,
+      "sha256": "25bee8ae317548b29dd576af15dc6b7bf7bcc800b1a0d6c8937ee55a7c6c2aeb"
+    },
+    "all_current_4041_inputs_rechecked_before_admission": true,
+    "source_body_unchanged": true,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "historical_report_before_current_qualification": {
+    "original": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_scene_property_record_type8_byte_array_storage_cc12.json",
+      "size": 205582,
+      "sha256": "6e11c79592adf98bd6e18f9d7a2148f82c041616c29857c639b0ee3327c71912"
+    },
+    "frozen_copy": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t8p3\\metadata_at_generation\\06_native_scene_property_record_type8_byte_array_storage_cc12.json",
+      "size": 205582,
+      "sha256": "6e11c79592adf98bd6e18f9d7a2148f82c041616c29857c639b0ee3327c71912"
+    },
+    "old_Source_credit": 0,
+    "old_sealed_family": "local/t8p2",
+    "old_accepted_helper_stage_object_process_replays": 0
+  },
+  "saved_analysis_publication_history": [
+    {
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "supported_locked_annotation_tool": true,
+      "saved_project": true,
+      "prior_values_recorded_in": "local/ghidra-annotations-20261008T152010Z.json",
+      "affected_exports_refreshed": true,
+      "index_rebuilt": true,
+      "artifacts": {
+        "local/ghidra-annotations-20261008T152010Z.json": "aabd27ea692dbe6c98bbf7e81c19e0ada8a102575c151c0de7c0ce5c954e5119",
+        "local/cc12_type8_source_final_annotations.log": "73514113368ba5bee9d758940f66afb25437efa79cfce2e894a6c2dae87585f8",
+        "local/cc12_type8_source_final_exports.log": "c928ba16f868dac9037c1cd7f5f5544460ef92a73e58619c41fdd5f9fdd6d359",
+        "local/cc12_type8_source_final_snapshot.log": "d9696a72d5d770778525f98613f8649ca52e8d37f30b12131b8e5b7a8b993d72"
+      },
+      "name_is_raw_storage_hypothesis": true
+    },
+    {
+      "passed": true,
+      "addresses": [
+        "008ef2f0",
+        "004bf8e0"
+      ],
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved_supported_annotations": true,
+      "forced_affected_exports": true,
+      "logs": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_clear70_holds_live_program.log",
+          "size": 40,
+          "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_clear70_holds_annotations.log",
+          "size": 240,
+          "sha256": "7fa93425bc641676bfcbf2264535fef336aea096a3fca110eeeb807ae7de6e3e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_clear70_holds_exports.log",
+          "size": 46,
+          "sha256": "9cbfebd6efd003aa2a71dd62c0121db76da877bd2dde06ba40b91b25c907a7e3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_clear70_holds_snapshot.log",
+          "size": 295,
+          "sha256": "198206baec1c80c409f487c1ea732eae0974429db826e3768731f5ce4986c2bb"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_clear70_holds_index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        }
+      ],
+      "Source_admission_credit": 0
+    }
+  ],
+  "Root_current_source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type8_byte_array_storage.cpp",
+      "size": 2114,
+      "sha256": "df70adea720ea5b5eb6f4dbbfe3d35168741639685adabe014171a6a9364cbab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type8_byte_array_storage.hpp",
+      "size": 2584,
+      "sha256": "ff2f8d5842e61a5aa09c94f9e1d6c3f5277acccf727333a7ccb64d5f8f31ac91"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+      "size": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "admission_before_current_qualification": {
+    "worker_source_credit": 0,
+    "Root_independent_validation": false,
+    "Root_main_build": false,
+    "Root_Ghidra_publication": false,
+    "startup_validated": false,
+    "game_validated": false,
+    "original_private_CRT_EH": false,
+    "whole_clone": false,
+    "phase_vtable_dispatch": false,
+    "class_ownership": false,
+    "World": false,
+    "adapter_native_credit": 0
+  },
+  "evidence_hold_history": [
+    {
+      "passed": false,
+      "Source_admission_credit": 0,
+      "status": "reconstructed whole native body; standalone complete-helper fixture admission reopened after library-edge audit",
+      "Root_audit_reviewed": true,
+      "audit_report": "reports/cc12_type8_complete_helper_library_edge_audit.json",
+      "historical_independent_family": "local/t8p2",
+      "historical_seal_sha256": "edae817c0fbc4d710e620dd54f02a547aca71f3e269ebc8ee5319360c0c241d7",
+      "historical_artifacts_preserved": true,
+      "source_body_unchanged": true,
+      "recorded_behavior_retained": true,
+      "fresh_complete_helper_validation_pending": true,
+      "no_blanket_consumer_family_propagation": true,
+      "qualification": "Root reviewed the independent Type8 library-edge audit: all31 retained symbol proofs/29 distinct TU bodies and whole112B34 storage body are gated, but nine normal import thunks are absent at17 physical direct operands. Three cold direct helper destinations at7 physical operands plus the unsized-delete/free-thunk continuation are also absent; GS failure/EH execution remain unadmitted. Counts are286 symbol-level relocation checks/280 distinct physical operands, with six alias rechecks and actual mode-1 fallback selection. Standalone complete-helper Source admission is reopened to0 pending a fresh complementary normal-helper gate. Historical four entries/full140-byte captures/full56-byte roots/guarded inputs and borrow/copy observations remain evidence; DATA/COUNT/FLAG stack order and unsigned low-byte flag semantics are unchanged. No Source edits or blanket later family propagation; no old process/stage replay or fresh Native/provider queries.",
+      "game_validated": false
+    }
+  ],
+  "unadmitted_boundaries": [
+    "Original private CRT and allocation/copy provider equivalence",
+    "Cold EH/OOM/GS failure execution",
+    "Zero-size, invalid, overlapping or failed-allocation domains",
+    "Arbitrary owner+30 publication and tag lifecycle outside the actual producer/context contract",
+    "Phase word/vtable dispatch/class ownership/whole clone",
+    "Drop-in native game ABI, game startup and gameplay"
+  ],
+  "historical_worker_evidence_sections": [
+    "source_and_document",
+    "fresh_build",
+    "static",
+    "fixture",
+    "preservation",
+    "failures_and_corrections",
+    "artifacts"
+  ],
+  "Root_complete_helper_saved_analysis_publication": {
+    "passed": true,
+    "Source_admission_credit": 1,
+    "saved_provisional_name_and_evidence": true,
+    "preserving_old_name_and_comments": true,
+    "previous_values_record": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20261008T231021Z.json",
+      "size": 18044,
+      "sha256": "a7b7ffbd19309a982e326144a0fb7044d55e1f050b0adac5ecc53f3b481ac56b"
+    },
+    "forced_affected_export": true,
+    "program": "/battlestationspacific.exe",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "logs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_fresh_primary_live_program.log",
+        "size": 40,
+        "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_fresh_primary_annotations.log",
+        "size": 190,
+        "sha256": "77a7b2111e9c3104b4bc54dcc4812b557b8cc4bc94e70f669853c5f8a90512c2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_fresh_primary_exports.log",
+        "size": 23,
+        "sha256": "c928ba16f868dac9037c1cd7f5f5544460ef92a73e58619c41fdd5f9fdd6d359"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_fresh_primary_snapshot.log",
+        "size": 295,
+        "sha256": "062a78e08d729db03607303ecc416a9c8496c42f37afd926bfbea778c80bcf89"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type8_fresh_primary_index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      }
+    ]
   }
 }

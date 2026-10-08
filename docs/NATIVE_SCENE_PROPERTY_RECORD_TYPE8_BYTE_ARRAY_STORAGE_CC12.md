@@ -1,187 +1,84 @@
-# Qualified native type-8 byte-array storage
+# Native property-record Type8 byte-array storage, CC12
 
-Worker implementation for `cc12_scene_property_record_type8_byte_array_storage`.
-The complete `[008EF2F0,008EF360)` constructor is reconstructed as an MSVC Win32
-raw-storage API. Its 112 bytes and 34 instructions include both branches. Only
-the two CALL operands bind genuine current allocation and copying providers;
-the other 104 bytes match the installed Original exactly.
+Source admission is **1 for the bounded current-provider raw retain/copy domain**.
+The unchanged initializer `[008EF2F0,008EF360)` is 112 bytes/34 instructions;
+104 literal bytes remain exact. Only two CALL operand DWORDs bind the current
+allocation adapter and memcpy. The existing CPP/HPP remain unchanged. The provisional raw-storage name and
+evidence are saved in the configured Ghidra project; the affected export is refreshed.
 
-Worker Source credit remains **0 pending Root's independent validation,
-main-build registration, metadata/Ghidra publication and integration**. This
-fixture proves a qualified successful current-provider domain. It does not
-establish private Original CRT/EH, class ownership, a drop-in class replacement,
-World behavior, startup or gameplay.
+ECX supplies an actual fresh writable unowned 56-byte root; EDX is padding.
+Stack words DATA/COUNT/full FLAG occur at `T+4/+8/+C`; `RET 12` returns the
+root in full EAX. The predicate uses only the flag's low byte. COUNT is the
+unscaled unsigned byte count. Successful positive, readable, disjoint inputs
+are the qualified domain. Both branches set marker byte `+2C=1`, which does
+not establish ownership. The body writes 29 bytes and preserves 27, including
+owner `+30`. The copied pointer at `+20` is stored before memcpy.
 
-## Native evidence and interface
+The retained branch keeps the caller-managed input pointer, ECX=root and
+EDX=input. Defined flags satisfy `flags & 8D5 = 44`, including defined AF0.
+Copy-branch flags derive from the actual final `ADD ESP,16`: `(T-24)+16`.
+Copied ECX/EDX provider residuals are observed and unasserted. DF0 is required
+around the current CRT bindings. ES is captured; the probe does not assert ES
+equality and the Source contract gives no blanket ES/FPU/MXCSR preservation.
 
-Native SHA256:
-`4c3786af3a642703dc38315ae63d9dee0468552f47a03bc1405fc0e90ab5c928`.
-The installed PE SHA256 is
-`b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`.
-Before and after the accepted process, the batch verified the configured
-`C:/Users/sqz269/bsp.gpr`, actual `/battlestationspacific.exe`, installed PE,
-all 112 bytes and all 34 live listing instruction starts. No Ghidra mutation
-was made. The earlier remaining-readiness audit supplies the one genuine
-clone caller and bounded dependency graph; this packet does not re-expand it.
+## Complete code and sole-process evidence
 
-`construct_native_scene_property_record_type8_byte_array_storage_008ef2f0`
-uses `void* __fastcall` with root in ECX, an unused EDX padding argument, then
-actual byte pointer, positive byte count and full flag DWORD on the stack.
-The three stack words are at entry `T+4`, `T+8`, `T+C`; both branches return
-root in EAX with `RET0C`. The descriptive name is a hypothesis.
+Root generated three fresh TUs in `local/t8p3`, consuming 184 headers and seven
+libraries. All 32 logical symbols/30 physical TU bodies, 287 logical relocation
+checks over 281 physical operands, and six alias rechecks are validated.
+**48 complete gated code spans** cover all 18 external helpers, normal import
+thunks, cookie14, stack43, cold delete16 -> delete5 -> free6 and std thunks.
+Alignment bytes remain raw PE context; proven helper alignment is excluded
+from runtime helper spans. The named GS-failure frontier is unexpanded.
+Cold/EH/OOM coverage is static evidence; those paths were not executed.
 
-Supply fresh, unowned writable 56-byte root storage and a valid stable readable
-positive-length byte span. Root, input and active call frame are disjoint and
-ranges do not wrap. Require DF clear for the genuine current CRT. The API
-does not scan for NUL and makes no `noexcept` promise.
+Root read all 1,456 instructions in the 5,715-byte Main, with 28 dominance pairs
+and 78 failure guards. An independent peer reproduced the code, formal-target,
+frame, provider and whole-Main review. The 191-byte/68-instruction raw caller
+captures R, Q and T, all three dead argument words before PUSHFD, full registers,
+canaries and guards. The 26-byte Source and 25-byte Original ordinary wrappers
+are retained and statically reviewed, with no dynamic ordinary calls or mapped
+EH handler. Root approval pinned all 22 artifacts before one process.
 
-The initial `CMP byte [T+C],0` precedes all root writes. Only that low byte
-selects the branch; the upper 24 bits do not matter. Phase/tag stores precede
-the byte-count load. The constructor writes 29 bytes and preserves 27:
+That process made four raw entries: Source retain, Original retain, Source
+copy, Original copy. Full flag words were D6B23900/7C48E100/A53D6C80/2E917F02;
+counts were 7/11/11/7. Opaque byte arrays include NULs; copying does not scan.
+Four actual canonical 56-byte roots and two copied children of 11/7 bytes
+give six explicit allocation/free pairs. All complete roots, both guarded
+48-byte inputs, captures and live children are checked after every call.
+Thirteen blobs are saved while live, then two children are freed before four
+roots and Original RX is released. Borrowed pointers are never child-freed.
 
-| Root range | Effect |
-| --- | --- |
-| `00..07` | Phase token `00CE89D4`, tag 8 |
-| `08..17` | Preserved |
-| `18..1F` | Zero |
-| `20..23` | Actual borrowed or newly allocated pointer |
-| `24..27` | Exact input byte count |
-| `28..2B` | Preserved |
-| `2C` | Byte 1 in both branches |
-| `2D..33` | Preserved, including the DWORD at `+30` |
-| `34..37` | Zero |
+The independent recorded-only decoder passed all four full Capture140/root56
+cases, both inputs and both children, fullword EAX/RET12/stack transport,
+defined branch flags and disjointness. It only opened frozen artifacts.
+The exact all-files seal includes all pycache, retained stops and helper logs:
+**499 files**, SHA-256 `3bc2d040c041ffada7b3f77f8873763d61941b86f9d599ced9ec844265bd85b7`. Its Source0 summary is immutable
+history preceding this external Source1 decision. All 25,438 prior pins and
+34 exact prior families remained unchanged. No accepted helper, object, stage
+or process was replayed.
 
-For a zero low flag byte, `+20` retains the exact input pointer. There is no
-allocation or provider call. The input remains caller-managed while that
-pointer is used; it must not be freed as a newly allocated child. ECX returns
-root and EDX input. CMP defines all six arithmetic flags: `EFLAGS & 8D5 = 44`,
-including AF zero.
+## Provider, build and lifecycle boundary
 
-For a nonzero low byte, Original CALL `008EF31E` uses a genuine private CDECL
-size adapter that forwards `object, native_bytes=n, host_bytes=n` to the
-unchanged canonical allocator. The adapter earns no native reconstruction
-credit. The actual returned allocation is stored at `+20` before Original
-CALL `008EF32D` copies exactly `n` bytes through genuine `VCRUNTIME140 memcpy`.
-Observe the owned child while live, free it exactly once through the matched
-canonical free, then dispose the root separately. Byte `+2C=1` in both branches
-does not establish a class ownership rule.
+Four current bindings are malloc/free/_callnewh from UCRT and memcpy from
+VCRUNTIME140. Pre-root checks establish MEM_IMAGE/AllocationBase, mapped/held
+NT paths, held-handle FileID/size, full physical SHA, physical/live PE tuple,
+named export/GetProcAddress/IAT and adjusted raw prefixes compared with memory.
+Inlined post-free checks repeat IAT, held-handle FileID/size, full mapped-file
+SHA and adjusted-prefix equality. They do not repeat MEM_IMAGE, mapped NT path,
+GetProcAddress or live PE headers. Serialized prefixes are expected relocated
+raw bytes compared live, not a separately captured live-memory dump. The
+decoder creates no current live provider/FileID attestation.
 
-The allocation argument remains at `T-12`; memcpy enters at `T-28`. After
-memcpy returns, the final `ADD ESP,10h` uses `(T-24)+16=T-8` and defines all six
-arithmetic flags. Copied ECX/EDX are actual provider residuals and are recorded
-without guessed assertions. ESI/EDI are saved/restored, and EBX/EBP follow
-the providers' ordinary ABI. No blanket ES/DF/FPU/MXCSR preservation through
-providers is claimed. Initial stores can survive a provider failure; zero
-size, failure, invalid spans, aliasing, reentry and unwind are excluded.
+Main's Win32 build and all three existing checks passed with 4,041 actual
+Source/header/CMake inputs. Root freshly rechecked every input: all remain
+byte-identical to that build. Intervening commits were metadata-only. No new
+tests were added. The earlier library-edge hold is closed for this bounded
+standalone Source domain; its old seals and evidence remain preserved.
+Independent consumer admissions are not changed by this decision.
 
-## Fresh build and static gates
-
-The accepted ignored family is `local/t8b`, based on private worktree baseline
-`b26d9e9900d20e4a9df4c29683e1275336b5820d`, descended from Root registration
-`f2dc5f4352e0b5e1905bb097dbd0aaf5b16d773a`. Three fresh translation units build
-the constructor/adapter, unchanged canonical allocation/free, and new probe.
-No BSP archive, prior object or prior process is reused. The x86 MSVC 14.51
-build uses `/O2 /MD /W4 /WX /fp:strict /permissive- /EHsc /Gy /GL-`, Source
-`/Oi-`, and an embedded as-invoker manifest. The probe has a safe filename,
-fixed preferred image base `25000000` with `/DYNAMICBASE:NO`; imported provider
-ASLR is resolved from the actual mapped modules.
-
-Thirteen whole spans pass COFF-to-linked relocation and byte gates: 112-byte
-Source, 61-byte size adapter, 90-byte canonical allocator, 6-byte matched free,
-both ordinary ABI callers, 191-byte raw caller, 24-byte bad_alloc constructor,
-6083-byte main with 192 individually resolved relocations, complete 14-byte
-normal cookie helper, memcpy import thunk, cold throw import thunk, and the
-48-byte map-owned stack helper. The named cookie-failure tail and private EH
-are outside execution scope. The unique linked constructor masks only
-`[47,51)` and `[62,66)`. Ordinary callers are static ABI checks, not extra
-target entries. Main's critical call, comparison, ownership and cleanup paths
-were reviewed before the first entry. The exact required
-`manual_static_review.json` / `passed` contract was checked before compilation.
-
-## Sole accepted fixture
-
-One accepted process executes Source and bound Original once per branch:
-
-| Case | Count | Full flag DWORD | Stored pointer | Flags `& 8D5` |
-| --- | ---: | --- | --- | --- |
-| Source retained | 9 | `B931CA00` | Exact input | `044` |
-| Original retained | 13 | `7C5EE100` | Exact input | `044` |
-| Source copied | 13 | `D746A501` | New owned allocation | `004` |
-| Original copied | 9 | `29BC0080` | New owned allocation | `004` |
-
-All calls use real objects. Four fresh 56-byte roots and two positive-size
-children produce six allocations and six matching frees. The two guarded
-16-byte payloads contain embedded NULs and non-ASCII bytes. Their full 96
-guarded bytes remain unchanged. Full root bytes, every other live capture and
-every live child are checked after each call. Child buffers are disjoint from
-roots, inputs and capture storage. Children are observed and saved before
-their two frees; the four roots are then freed. Retained inputs are never
-freed as copied children.
-
-The raw caller saves 27 register/stack DWORDs inside a guarded 140-byte capture.
-It independently records `R=001891EC` before pushes, `Q=001891E0` immediately
-before CALL and `T=001891DC` at target entry. Return ESP equals R. All three
-dead argument words are captured before PUSHFD. EAX, nonvolatiles, stack and
-capture guards pass. Copied flags derive from `001891C4 + 10 = 001891D4`,
-giving `004`; the retained CMP gives `044`. Copied residuals were ECX zero,
-EDX `916D00E4` and `A95600D3`, with no assertion on those residual values.
-An offline decode independently rechecked all four captures, full roots,
-guarded inputs, 13/9-byte children and the bound Original's exact 104 literal
-bytes without launching another target process.
-
-The bound Original is a fresh 112-byte RW-to-RX allocation. Its only changes
-are the two CALL operands, targeting the same fresh size adapter and actual
-copy import as Source. The 13 code spans and all four actual provider exports
-are attested before zero entries and after all frees. Heap functions resolve
-the same mapped I386 `SysWOW64/ucrtbase.dll`; memcpy resolves the distinct
-mapped I386 `SysWOW64/vcruntime140.dll`. File identity, NT path, full-file
-SHA256, IAT/export identity and normalized 32-byte export prefixes agree.
-
-## Evidence preservation and remaining integration
-
-The first `local/t8a` attempt preserves a draft generator SyntaxError and a
-probe compile error `C3861: open_module` (the genuine helper is `verify_module`).
-It had no linked probe or target execution. Its 300 artifacts plus seal remain
-immutable. The corrected `t8b` family builds all three units afresh; preparation,
-build, static gate, sole launch and post each pass once. A read-only review
-command initially used `whole9.asm`; the actual `whole_9.asm` was then read.
-That path typo caused no file change or process execution.
-
-Terminal post verifies all 50 strict inputs, 184 consumed headers (including
-extensionless files), seven consumed libraries and 5239 prior artifacts:
-4640 older pins, 298 remaining-readiness artifacts and the failed family's
-301. Ten unconsumed metadata snapshots are frozen copies; moving main CMake
-is not incorrectly treated as a consumed strict input. The accepted family
-contains 382 artifacts plus its seal, SHA256
-`5fe68aab22202b981eb5b30fa3e8bacd229cdba770bdbefb37a3b53782bf1aa5`.
-No accepted stage, old recipe or prior target process was replayed.
-
-The machine-readable report links the complete artifact inventory, command
-outputs, COFF/link maps, native bookends, manual review, capture decode and
-physical provider evidence. This worker changes only header, implementation,
-this document and its report. Root owns independent validation, CMake/main
-build, shared metadata and Ghidra publication. No startup or gameplay claim
-follows from the fixture.
-
-A post-seal read-only report-verifier draft had an `IndentationError` before
-execution. Its separate receipt is linked by the report; a new complete
-verifier checks public references. The sealed families and target process
-were not changed or replayed.
-
-## Primary integration
-
-Whole [008EF2F0,008EF360)112B34 raw byte-array record storage; 104 literal bytes, only CALL operands[47,51) real size-to-currentcanonical allocation adapter and[62,66) actual VCRUNTIME memcpy rebound. Fullfast ECX actualfresh56/unusedEDX/threeactualstackDWORDs input,count,fullflag/RET12/EAXroot. Initial CMP BYTE lowflag beforestores, borrow preserves actualpointer/nochildfree and CMP8D5=44 includingAF0; copy stores genuinechild+20 before actualmemcpy, final ADD actualT-24+16 derives all6definedflags8D5. Both paths +2C1 is not an ownership discriminator. Qualified positive actual byte-span/fresh/disjoint/nonwrapping domain; embedded NUL treated as bytes. Root complementary3TU oneprocess4entries/6realallocations-frees, four140captures/all56roots/96guardedinputbytes/full16+11copies independently decoded; Rpreargs,QpreCALL,Tentry separated, three deadargument slots beforePUSHFD/nonvols/ESP/DF0 verified. Full13 codegates including6083B1549 main,191B68raw,cookie14B4/failuretailJMP,chkstk48B24; actualI386UCRT heap and distinctVCRT memcpy IAT/export/MEM_IMAGE/NTpath/fileID/fullSHA/normalizedcode beforezeroentries/after. Exact380listed+seal381/17427priorpins stable; currentcombinedMainWin32/all3checksPASS. No oldacceptedhelpers/stages/objects/process replay. Original privateheap/CRT/EH/failure/owner/class/fullclone/World/gameABI/gameplay remain unadmitted.
-
-Independent seal `686c226f85185bd77f5bf4bc3e56037a63c99d9c07cde367aa4539fd7cddbf20`.
-
-## Complete helper coverage correction
-
-Independent metadata review found 14 separately emitted probe helpers and six retained canonical exception-support bodies outside the historical 13 runtime code spans. Reopen validation with Source credit zero until a new independent fresh three-TU family gates every retained linked function before and after execution. Historical family local/t8p1, its complete sealed inventory and prior pins remain preserved; no accepted phase or process is replayed. This is a fixture coverage correction and does not establish failure/EH, original-private-CRT, class or game behavior.
-
-## Complete helper coverage independently validated
-
-Whole [008EF2F0,008EF360)112B34 raw byte-array record storage in the qualified successful current heap/copy domain. Only CALL operands[47,51)/[62,66) rebound to the genuine Source-only size adapter/current canonical allocation and physical VCRUNTIME memcpy;104 literal bytes. Fresh Root local/t8p2 corrects historical local/t8p1 helper coverage: all29 retained function bodies from three new compiler TUs, including all18 probe bodies and nine canonical functions, plus four complete cookie/stack/import spans are mechanically resolved and runtime gated before zero target entries and after execution/frees. Cold exception support is gated as code only, without EH execution or admission. One fresh process/four entries, borrow5/8 and copy8/5 bytes with embedded NUL, four actual56 roots/two children/six allocations-frees; full140 captures,56 roots,96 guarded input bytes and all copied bytes independently decoded. Actual R/Q/T/RET12/EAXroot/nonvolatiles/DF0 and branch-specific defined flags verified; borrow CMP mask8D5=44 includes AF0, copy ADD flags derive actual T-24+16. Child+20 stored before actual memcpy; +2C1 is not an ownership discriminator. Four actual I386 heap/copy providers independently checked by IAT/export/MEM_IMAGE/NT identity/full DLL SHA and ASLR-adjusted32-byte prefix before/after. Exact403 artifacts+seal404 and18537 prior pins preserved, including the historical incomplete family and stopped attempts; no old helper, stage, object or process replay. Current Main unchanged C++/headers/CMake since the combined Win32 build passing all3 existing checks. Original private CRT/heap/EH/failure/owner/class/World/fullclone/native game ABI/gameplay remain unadmitted.
-
-## Standalone fixture normal-helper coverage reopened
-
-Root reviewed the independent Type8 library-edge audit: all31 retained symbol proofs/29 distinct TU bodies and whole112B34 storage body are gated, but nine normal import thunks are absent at17 physical direct operands. Three cold direct helper destinations at7 physical operands plus the unsized-delete/free-thunk continuation are also absent; GS failure/EH execution remain unadmitted. Counts are286 symbol-level relocation checks/280 distinct physical operands, with six alias rechecks and actual mode-1 fallback selection. Standalone complete-helper Source admission is reopened to0 pending a fresh complementary normal-helper gate. Historical four entries/full140-byte captures/full56-byte roots/guarded inputs and borrow/copy observations remain evidence; DATA/COUNT/FLAG stack order and unsigned low-byte flag semantics are unchanged. No Source edits or blanket later family propagation; no old process/stage replay or fresh Native/provider queries.
+Actual recursive release/publication still requires the established producer,
+context, canonical allocator and lifetime contract; marker `+2C` alone does
+not authorize freeing retained storage. Original private CRT/EH, cold/OOM/GS,
+zero-size/failure/overlap, phase/vtable/class/whole-clone behavior, drop-in native
+game ABI, startup and gameplay remain unadmitted.
