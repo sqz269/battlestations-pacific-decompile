@@ -35401,6 +35401,45 @@
         "Source_admission_credit": 0,
         "registration_owner": "Root"
       }
+    },
+    {
+      "id": "cc12_native_parent_header_clear",
+      "done": false,
+      "state": "ready qualified whole70 current-canonical-node raw clear; destructor5 prerequisite, Source0",
+      "function_addresses": [
+        "004bf8e0"
+      ],
+      "output_files": [
+        "include/bsp/native_parent_header_clear.hpp",
+        "src/native_parent_header_clear.cpp",
+        "docs/NATIVE_PARENT_HEADER_CLEAR_CC12.md",
+        "reports/native_parent_header_clear_cc12.json"
+      ],
+      "depends_on": [],
+      "readiness_document": "docs/CC12_PARENT_HEADER_DESTRUCTOR_READINESS.md",
+      "readiness_report": "reports/cc12_parent_header_destructor_readiness.json",
+      "Root_readiness_review": {
+        "passed": true,
+        "worker_commit": "4b67cccdf31a5d2c97a959d55f6164851bc921d0",
+        "exact_actual_files": 224,
+        "manifest_sha256": "11f95ac16f4c348115d9e4645573fe8381da5126b509105940e3c7d54033b86d",
+        "whole70_root_exported_listing_and_installed_PE_reviewed": true,
+        "whole5_callback_PE_verified": true,
+        "Source_admission_credit": 0
+      },
+      "fixture_requirements": {
+        "enabled": true,
+        "exactly_four_owned_files": [
+          "include/bsp/native_parent_header_clear.hpp",
+          "src/native_parent_header_clear.cpp",
+          "docs/NATIVE_PARENT_HEADER_CLEAR_CC12.md",
+          "reports/native_parent_header_clear_cc12.json"
+        ],
+        "public_API": "void __fastcall clear_native_parent_header_004bf8e0(void* actual_header, std::uint32_t unused_edx) noexcept;",
+        "contract": "Complete [004BF8E0,004BF926)70B29 naked MSVC Win32 padded-fastcall ECX actual coherent12 header/no stackargs/plainRET; unused EDX formal, ESI preserved. Sole CALL operand[56,60) binds actual current canonical free only; remaining66 native bytes/allbranches unchanged. Empty branch zero writes/frees and preserves volatile EAX/ECX/EDX; populated volatile outputs unpromised; terminalCMP mask8D5=44 includingAF0. Current CRT DF0 only. Genuine fresh current-canonical12 node bases produced by admitted physical Source append, whole finite coherent count/head/tail, payload borrowed/disjoint and never read/destroyed; each node freed once, no postfree reads, final root{0,0,0}. Complete qualified Original70 RX uses same real free binding. Minimal empty/populated Original/Source pairs plus ordinarySource, Source append/helper actual allocations gated. All fresh sourceTUs/no archives/old objects/process replay; full code/provider before0targets/after gates, capture whole12 roots/guards/borrowed live payloads, register/ESP/definedflags/DF and actual ownership counts. Preserve exact224 destructor audit+10190 older pins and Root admitted Header13 family134+16385 pins, deduplicated. Exact seals/all consumed headers/libs/tools. Original private heap,parent owner/iteratorEH/sentinel/class/World/game unadmitted. Callback5 may not be rebound until this physical raw70 is independently admitted. Root independent family/currentMainWin32/full3checks required before Sourcecredit.",
+        "Source_admission_credit": 0,
+        "registration_owner": "Root"
+      }
     }
   ],
   "snapshot_after_analysis": {
