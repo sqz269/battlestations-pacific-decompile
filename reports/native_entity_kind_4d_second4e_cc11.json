@@ -1,0 +1,1738 @@
+{
+  "packet": "cc11_entity_kind_4d_second4e_leaves",
+  "status": "worker complete literal83B28 reconstruction; one fresh4TU163-check family sealed; root integration pending",
+  "project": "bsp",
+  "program": "battlestationspacific.exe",
+  "source_baseline": "ffbf1e69b7d61ef758489c5e0c4deee8008215e8",
+  "files": [
+    "include/bsp/native_entity_kind_4d_second4e.hpp",
+    "src/native_entity_kind_4d_second4e.cpp",
+    "docs/NATIVE_ENTITY_KIND_4D_SECOND4E_CC11.md",
+    "reports/native_entity_kind_4d_second4e_cc11.json"
+  ],
+  "functions": [
+    {
+      "address": "004f1800",
+      "end_exclusive": "004f182c",
+      "coverage": "complete literal raw ordinary leaf",
+      "bytes": 44,
+      "instructions": 15,
+      "sha256": "10a6aeefe2cd33b09ab4f82ab91f5234946c50b4ffda9600af9a7966332c2d9c",
+      "body_hex": "8b44240483f84d741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "fixed_words": [
+        "4d",
+        "02",
+        "01",
+        "00"
+      ],
+      "only_dynamic_read": {
+        "address": "004f1817",
+        "base": "ecx",
+        "offset": 196,
+        "width": 4
+      },
+      "native_protocol": "Actual ECX receiver, unused EDX, stacked DWORD, full EAX0/1, RET4",
+      "source_symbol": "native_entity_is_kind_004f1800",
+      "name_and_proto_limit": "Existing descriptive names are hypotheses; SpawnPoint is a census hint only. Existing undefined(void) signatures omit recovered register/stack ABI. No worker Ghidra writes.",
+      "profile_DATA_bindings": [
+        {
+          "raw_profile": "00cea218",
+          "plus5c_cell": "00cea274",
+          "target": "004f1800",
+          "four_DATA_bytes": "00184f00",
+          "sha256": "e554e7cacb9b8c212455802ffedb07661a266ebf440e4de4206be86d4c6c1b43",
+          "PE_live_match": true,
+          "live_receipt": "00cea274  00 18 4f 00  ..O.\n",
+          "profile_xrefs": "From 004f1647 in FUN_004f1610 [DATA]\n",
+          "admission": "Raw UNCALLABLE Source DATA; no constructor/profile/class/group-member/virtual/lifetime admission."
+        }
+      ],
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0
+    },
+    {
+      "address": "00435360",
+      "end_exclusive": "00435387",
+      "coverage": "complete literal raw ordinary leaf",
+      "bytes": 39,
+      "instructions": 13,
+      "sha256": "48695efda27df0acbfbec29bf6cae901286eaf5528792381eb79a9318b85c1f4",
+      "body_hex": "8b44240483f84e741683f84c741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "fixed_words": [
+        "4e",
+        "4c",
+        "00"
+      ],
+      "only_dynamic_read": {
+        "address": "00435372",
+        "base": "ecx",
+        "offset": 196,
+        "width": 4
+      },
+      "native_protocol": "Actual ECX receiver, unused EDX, stacked DWORD, full EAX0/1, RET4",
+      "source_symbol": "native_entity_is_kind_00435360",
+      "name_and_proto_limit": "Existing descriptive names are hypotheses; SpawnPoint is a census hint only. Existing undefined(void) signatures omit recovered register/stack ABI. No worker Ghidra writes.",
+      "profile_DATA_bindings": [
+        {
+          "raw_profile": "00ce3fd0",
+          "plus5c_cell": "00ce402c",
+          "target": "00435360",
+          "four_DATA_bytes": "60534300",
+          "sha256": "433a6a3fa602f8d032f278599b26fff0c57750157d551e8bd2ac84ce3b8b3102",
+          "PE_live_match": true,
+          "live_receipt": "00ce402c  60 53 43 00  `SC.\n",
+          "profile_xrefs": "From 004352ac in FUN_00435280 [DATA]\n",
+          "admission": "Raw UNCALLABLE Source DATA; no constructor/profile/class/group-member/virtual/lifetime admission."
+        }
+      ],
+      "calls": 0,
+      "globals": 0,
+      "relocations": 0
+    }
+  ],
+  "totals": {
+    "functions": 2,
+    "whole_bytes": 83,
+    "instructions": 28,
+    "CALL_count": 0,
+    "globals": 0,
+    "relocations": 0
+  },
+  "complete_Source_COFF": [
+    {
+      "symbol": "?native_entity_is_kind_004f1800@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 44,
+      "bytes": "8b44240483f84d741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "004f1800",
+      "end_exclusive": "004f182c",
+      "sha256": "10a6aeefe2cd33b09ab4f82ab91f5234946c50b4ffda9600af9a7966332c2d9c",
+      "instruction_count": 15,
+      "instructions": [
+        {
+          "address": "004f1800",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "004f1804",
+          "bytes": "83f84d",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x4d"
+        },
+        {
+          "address": "004f1807",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x4f1824"
+        },
+        {
+          "address": "004f1809",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "004f180c",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x4f1824"
+        },
+        {
+          "address": "004f180e",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "004f1811",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x4f1824"
+        },
+        {
+          "address": "004f1813",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "004f1815",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x4f1824"
+        },
+        {
+          "address": "004f1817",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "004f181d",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x4f1824"
+        },
+        {
+          "address": "004f181f",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "004f1821",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "004f1824",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "004f1829",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "memory_operands": [
+        {
+          "instruction_address": "004f1800",
+          "base": "esp",
+          "index": null,
+          "offset": 4,
+          "width": 4
+        },
+        {
+          "instruction_address": "004f1817",
+          "base": "ecx",
+          "index": null,
+          "offset": 196,
+          "width": 4
+        }
+      ],
+      "CALL_count": 0,
+      "globals": 0,
+      "RET4_count": 2,
+      "linked_text_exact_unique_match": true,
+      "linked_Source_VA": "00401030",
+      "fixed_words": [
+        "4d",
+        "02",
+        "01",
+        "00"
+      ]
+    },
+    {
+      "symbol": "?native_entity_is_kind_00435360@bsp@@YIIPBXPAXI@Z",
+      "symbol_offset": 0,
+      "section_size": 39,
+      "bytes": "8b44240483f84e741683f84c741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "relocation_count": 0,
+      "address": "00435360",
+      "end_exclusive": "00435387",
+      "sha256": "48695efda27df0acbfbec29bf6cae901286eaf5528792381eb79a9318b85c1f4",
+      "instruction_count": 13,
+      "instructions": [
+        {
+          "address": "00435360",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00435364",
+          "bytes": "83f84e",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x4e"
+        },
+        {
+          "address": "00435367",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x43537f"
+        },
+        {
+          "address": "00435369",
+          "bytes": "83f84c",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x4c"
+        },
+        {
+          "address": "0043536c",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x43537f"
+        },
+        {
+          "address": "0043536e",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00435370",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x43537f"
+        },
+        {
+          "address": "00435372",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "00435378",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x43537f"
+        },
+        {
+          "address": "0043537a",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0043537c",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "0043537f",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00435384",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "memory_operands": [
+        {
+          "instruction_address": "00435360",
+          "base": "esp",
+          "index": null,
+          "offset": 4,
+          "width": 4
+        },
+        {
+          "instruction_address": "00435372",
+          "base": "ecx",
+          "index": null,
+          "offset": 196,
+          "width": 4
+        }
+      ],
+      "CALL_count": 0,
+      "globals": 0,
+      "RET4_count": 2,
+      "linked_text_exact_unique_match": true,
+      "linked_Source_VA": "00401000",
+      "fixed_words": [
+        "4e",
+        "4c",
+        "00"
+      ]
+    }
+  ],
+  "all_COFF_and_unique_linked_entries_equal_Original": true,
+  "complete_bytes_verified_before_execution": true,
+  "static_before_execution": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\static_before_execution.json",
+    "size": 7643,
+    "sha256": "bf2b8f0799ad8f3da47e2081138fe0a3e7f96d67cd551a50aa974927bde4fbe0"
+  },
+  "sealed_audit": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\audit.json",
+    "size": 22048,
+    "sha256": "df2058e78b24bb1254b24e565e68c8d6c4a2f79f3abb6f2272a3cc511a982ba2"
+  },
+  "native_PE_live": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\native_before.json",
+    "size": 7796,
+    "sha256": "92cabd3f9781aaf671ae4b733333c2587567d2ef0c3d4a3dca51ab895999b60f"
+  },
+  "native_after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\native_after.json",
+    "size": 7796,
+    "sha256": "92cabd3f9781aaf671ae4b733333c2587567d2ef0c3d4a3dca51ab895999b60f"
+  },
+  "native_PE_live_bookends_equal": true,
+  "original_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "PE_live_MATCH_rows": 6,
+  "candidate_and_required_DATA_MATCH_rows": 5,
+  "excluded_rel32_operand_MATCH_rows": 1,
+  "excluded_PE_word_coincidence": {
+    "target_word_match": "004f1800",
+    "word_address": "00705e7c",
+    "instruction_address": "00705e7b",
+    "instruction_bytes": "e800184f00",
+    "relative_CALL_target": "00bf7680",
+    "PE_live_match": true,
+    "live_receipt": "00705e7b  e8 00 18 4f 00  ...O.\n",
+    "qualification": "Unrelated rel32 operand equals the searched integer; not an absolute pointer/profile/4D caller. No callee/body adoption or new provider dependency."
+  },
+  "native_call_rows": [],
+  "call_free_body_checks": [
+    {
+      "address": "004f1800",
+      "whole_bytes": 44,
+      "instructions": 15,
+      "calls": 0
+    },
+    {
+      "address": "00435360",
+      "whole_bytes": 39,
+      "instructions": 13,
+      "calls": 0
+    }
+  ],
+  "native_call_verification": {
+    "native_call_sites": 0,
+    "whole_body_rows": 2,
+    "failures": 0,
+    "basis": "Both complete whole byte bodies/COFF/linked instructions and two named live functions prove CALL0. Generic call-row verifier not run by worker; zero rows alone not closure."
+  },
+  "admission": "Caller supplies stable nonnull actual backing>=C8h with a genuine live aligned uint32 exactly+C4; fixed branches do not read receiver; dynamic common normal domain only.",
+  "profile_admission": "Actual two profile+5C cells and groupCFD6F8 are raw UNCALLABLE Source DATA.",
+  "source_dependencies": {
+    "leaf_callees": [],
+    "connected_fixture": [
+      "construct_native_unit_group_0070dab0",
+      "native_unit_group_member_index_0070d030",
+      "native_unit_group_member_record_0070d080"
+    ],
+    "group_scalar_0070d260": "already complete/not called"
+  },
+  "fixture": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\manifest.json",
+      "size": 205150,
+      "sha256": "bdd7482e033cf7491faf94c79807ec76334f1f7c1d4a8b58481a23b8ee0ede4f"
+    },
+    "schema": "bsp.focused_fixture_manifest.v1",
+    "fresh_TUs": [
+      "src\\native_entity_kind_4d_second4e.cpp",
+      "src\\native_unit_group_storage.cpp",
+      "src\\native_unit_group_lookup.cpp",
+      "local\\cc11_entity_kind_4d_second4e_fresh20261008a\\probe.cpp"
+    ],
+    "TU_count": 4,
+    "family_count": 1,
+    "checks": 163,
+    "failures": 0,
+    "queries_per_backend": 15,
+    "backend_observations": 30,
+    "fixed_queries_per_backend": 7,
+    "other_queries_per_backend": 8,
+    "source_group_constructions": 1,
+    "actual_storage": {
+      "group": "Caller-owned aligned508h live uint32 storage/24 actual34h records; real Source ctor; count1.",
+      "receiver": "Caller-owned C8h with genuine live aligned uint32+C4.",
+      "record": "Actual group+18 identity DWORD; real current Source getters return index0/SAME record then SAME receiver."
+    },
+    "Original": "Only two unchanged/unrelocated whole original leaf RX bodies; no Original constructor/group/profile dispatch.",
+    "register_and_storage_checks": "Immediate ECX/EDX/EBX/ESI/EDI/EBP, full EAX, ESP/RET4, defined CF/PF/ZF/SF/OF; entire group/receiver backing and guards unchanged for each backend.",
+    "observations": [
+      "observation target=004f1800 query=0000004d expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=004f1800 query=00000002 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=004f1800 query=00000001 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=004f1800 query=00000000 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=004f1800 query=12345678 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=004f1800 query=2468abcd expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=004f1800 query=f13579bd expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=004f1800 query=12345678 expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=00435360 query=0000004e expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=00435360 query=0000004c expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=00435360 query=00000000 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=00435360 query=12345678 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=00435360 query=2468abcd expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=00435360 query=f13579bd expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1",
+      "observation target=00435360 query=12345678 expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1"
+    ],
+    "run": "identity group=00D6F7A8 actual_record=00D6F7C0 recovered_receiver=00D6F6C0 actual_C4=00D6F784\nobservation target=004f1800 query=0000004d expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=004f1800 query=00000002 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=004f1800 query=00000001 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=004f1800 query=00000000 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=004f1800 query=12345678 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=004f1800 query=2468abcd expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=004f1800 query=f13579bd expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=004f1800 query=12345678 expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\ntarget 004f1800 original_bytes=44 fixed=4 PASS\nobservation target=00435360 query=0000004e expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=00435360 query=0000004c expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=00435360 query=00000000 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=00435360 query=12345678 expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=00435360 query=2468abcd expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=00435360 query=f13579bd expected=1 Source_eax=00000001 Original_eax=00000001 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\nobservation target=00435360 query=12345678 expected=0 Source_eax=00000000 Original_eax=00000000 Source_esp=0 Original_esp=0 Source_flags=044 Original_flags=044 Source_regs=1 Original_regs=1\ntarget 00435360 original_bytes=39 fixed=3 PASS\n163 checks, 0 failures; 15 queries, 30 backend observations; 1 Source group construction; 2 targets",
+    "qualification": "One genuine current Source group constructor, publication at real record18/count1, current Source index0/SAME record getter, SAME actual receiver/live+C4. Caller provides stable aligned live storage. In-pass Source memory domain only; native class/profile/virtual/group membership/constructor/lifetime/privateEH/world/game unproved. First4E4351E0 excluded; no old family replay."
+  },
+  "compiler": {
+    "flags": "/std:c++17 /EHsc /permissive- /W4 /WX /fp:strict /O2 /MD /Gy /showIncludes",
+    "fresh_compile": true,
+    "inputs_before_equal_after": true,
+    "input_count": 426,
+    "observed_include_paths": 158,
+    "observed_project_headers": 3,
+    "Hostx86_tools": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\dumpbin.exe"
+    ],
+    "compiler_backends": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c1xx.dll",
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\c2.dll"
+    ],
+    "actual_searched_system_libraries": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcrt.lib",
+        "size": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\msvcprt.lib",
+        "size": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\oldnames.lib",
+        "size": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x86\\kernel32.Lib",
+        "size": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x86\\vcruntime.lib",
+        "size": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x86\\ucrt.lib",
+        "size": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      }
+    ],
+    "BSP_archives": []
+  },
+  "embedded_manifest": {
+    "resource_type": 24,
+    "resource_name": 1,
+    "language": 1033,
+    "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+    "requested_execution_level": "asInvoker",
+    "resource_bytes": 381
+  },
+  "historical_input_mapping": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\historical_input_mapping.json",
+    "size": 4651,
+    "sha256": "b0e10c9e9929db0a4c496f83b8d246b68659ace3db5eea2622f69782f5d3b6ea"
+  },
+  "input_bookends": {
+    "before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\inputs_before.json",
+      "size": 177395,
+      "sha256": "db3dde8bbb5ebe649ab30b9d7109bd04846e84b560c0740fdf1897bfa2e67ae3"
+    },
+    "after": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\inputs_after.json",
+      "size": 108644,
+      "sha256": "19ba4083b96dbc3b0187993f6d8500e1dbf03bf8e7e4f27ebfb75291385ee500"
+    },
+    "equal": true
+  },
+  "artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\build.cmd",
+      "size": 2766,
+      "sha256": "32325f9c95784c99721500481708fbfbed3933f77037733b1f9c8b81924ca8b5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\compile.txt",
+      "size": 23698,
+      "sha256": "2c18650740f6ea7a52de979749e8d9efbb0e3005068bbf88b8055410edb7b036"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\consumed_snapshots\\include\\bsp\\native_entity_kind_4d_second4e.hpp",
+      "size": 1187,
+      "sha256": "bc9404b1b2cb7e121560877d275ec59845fb86459d4b9f5ad0308a4ddc995835"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_lookup.hpp",
+      "size": 1069,
+      "sha256": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_storage.hpp",
+      "size": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\consumed_snapshots\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\probe.cpp",
+      "size": 9139,
+      "sha256": "330d13a8d81d40876cf737f1d78f9db881c9c239195fae111a402f1e6c36a904"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\consumed_snapshots\\src\\native_entity_kind_4d_second4e.cpp",
+      "size": 1353,
+      "sha256": "f385fba6a1f88a0414ab4d20c227c405c0eda40adea6720bc582851151c838b4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\consumed_snapshots\\src\\native_unit_group_lookup.cpp",
+      "size": 1495,
+      "sha256": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\consumed_snapshots\\src\\native_unit_group_storage.cpp",
+      "size": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\derived_coff.txt",
+      "size": 4836,
+      "sha256": "a83ce06b1c74da372cbd6be0f929bdb0a815b14207de5015e17dd3fa289f4b16"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\embedded_manifest.xml",
+      "size": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\historical_input_mapping.json",
+      "size": 4651,
+      "sha256": "b0e10c9e9929db0a4c496f83b8d246b68659ace3db5eea2622f69782f5d3b6ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\inputs_after.json",
+      "size": 108644,
+      "sha256": "19ba4083b96dbc3b0187993f6d8500e1dbf03bf8e7e4f27ebfb75291385ee500"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\inputs_before.json",
+      "size": 177395,
+      "sha256": "db3dde8bbb5ebe649ab30b9d7109bd04846e84b560c0740fdf1897bfa2e67ae3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\link.txt",
+      "size": 4085,
+      "sha256": "04b36ceb25b95e1440aa67a2f7eed3c2786480690183494aa9cd0f6ea12b7f44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\obj\\native_entity_kind_4d_second4e.obj",
+      "size": 990,
+      "sha256": "925e82df896fa28d16877c875420b6b004e6991d5459b03664fe5cfbc37422dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\obj\\native_unit_group_lookup.obj",
+      "size": 1772,
+      "sha256": "9ad5fc1abcd2cf133c4b571ca829b79634f4c81b5b0860c187472ec850e9349a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\obj\\native_unit_group_storage.obj",
+      "size": 1263,
+      "sha256": "77e74fdc2530f546742a370982043c382a53c55dee2e2d80c54839c7275f8e6a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\obj\\probe.obj",
+      "size": 18005,
+      "sha256": "da23910a9e294f5a7d3e87d1611671468561752d1471e70c03860b5a0b14694e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\pre_includes.txt",
+      "size": 24778,
+      "sha256": "5f818cda639ab6e6d40ed4f7dc398a432e8be327f04fb6c73f0b8b7164bbd892"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\probe.exe",
+      "size": 13824,
+      "sha256": "767250a96abef54a9e8f9e853a9880b1c0019cdd7b379b2e817c12a8e6217d74"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\run.txt",
+      "size": 3157,
+      "sha256": "ad927deaf48b7ccf4597b35dde1253e0472e9bf210a2449af95b8e5e3ea3f641"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\seal.py",
+      "size": 15473,
+      "sha256": "d8fb1f3beae3aa3ad842d820cd4be5a3e4b8cd3983e3d26f27e7c119606b7ae9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\seal_post_v2.py",
+      "size": 16070,
+      "sha256": "8bc5ae1403011b2ff38ef0d67ca7e84bfda1c8368934e481cd460660e7c02023"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\sealing_failure.json",
+      "size": 1469,
+      "sha256": "a9a55ddfd0498aa8de61e0949e1e4bf9d2c38f598c027233ced5cf26b5bb4865"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\static_before_execution.json",
+      "size": 7643,
+      "sha256": "bf2b8f0799ad8f3da47e2081138fe0a3e7f96d67cd551a50aa974927bde4fbe0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\capture_native.py",
+      "size": 4160,
+      "sha256": "92cacfe9c8ac28b17519e20758ba8fc70b745c78fe53b18b43c702674e9a74f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\native_after.json",
+      "size": 7796,
+      "sha256": "92cabd3f9781aaf671ae4b733333c2587567d2ef0c3d4a3dca51ab895999b60f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\native_before.json",
+      "size": 7796,
+      "sha256": "92cabd3f9781aaf671ae4b733333c2587567d2ef0c3d4a3dca51ab895999b60f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\prepare.py",
+      "size": 2091,
+      "sha256": "691aa5483170504be6d5b1710e3a7d63a86b39f6d932fd9c8b11fa9aa6cc515e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\prepare_post_recovery.py",
+      "size": 1393,
+      "sha256": "879bfcd96d90750680cfe5ee56fe84d0e8e88e056ca42258dbded5991fe7a042"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\probe.cpp",
+      "size": 9139,
+      "sha256": "330d13a8d81d40876cf737f1d78f9db881c9c239195fae111a402f1e6c36a904"
+    }
+  ],
+  "failed_attempts": {
+    "compile": 0,
+    "link": 0,
+    "pre_execution_gate": 0,
+    "native_execution": 0,
+    "post_execution_seal": 1,
+    "preserved": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\sealing_failure.json",
+      "size": 1469,
+      "sha256": "a9a55ddfd0498aa8de61e0949e1e4bf9d2c38f598c027233ced5cf26b5bb4865"
+    },
+    "post_only_recovery": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_kind_4d_second4e\\local\\cc11_entity_kind_4d_second4e_fresh20261008a\\attempt01\\seal_post_v2.py",
+      "size": 16070,
+      "sha256": "8bc5ae1403011b2ff38ef0d67ca7e84bfda1c8368934e481cd460660e7c02023"
+    },
+    "recovery_qualification": "Normalize actual logged Windows library spelling and verify exact six searched resolved paths; unchanged Original recipe and pins; no rebuild/native replay."
+  },
+  "repeat_fixture_execution": false,
+  "prior_sealed_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\config\\target.json",
+      "size": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\docs\\ENTITY_CLASS_IDS.md",
+      "size": 19471,
+      "sha256": "9ec090703fda8b688cc5e36e64499bec1cc08b4baceb06664f3a501aefa29ec3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\docs\\UNIT_KIND_QUERY.md",
+      "size": 31214,
+      "sha256": "427295baddd36dd8dee9e89830798ed11045ec29fa405126b76386c6b55b3b30"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\include\\bsp\\entity_class_ids.hpp",
+      "size": 5189,
+      "sha256": "b58204173ffefa9027aa20ed1672c84433f20148587b28bdfa1eed9a13546738"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\include\\bsp\\native_entity_kind_4c_4e.hpp",
+      "size": 1144,
+      "sha256": "b0f9a56688aa62aa1dca104c362a573b84efa9d9ae651a68f58efb4559aa1d7b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\include\\bsp\\native_unit_group_lookup.hpp",
+      "size": 1069,
+      "sha256": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\include\\bsp\\native_unit_group_storage.hpp",
+      "size": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\include\\bsp\\unit_kind_query.hpp",
+      "size": 8624,
+      "sha256": "e25daedfd0b6af8627426c4b3f0f3bd43f0e8e5ce147230f662ec76859f39b9c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\build.cmd",
+      "size": 2208,
+      "sha256": "80637ca26a44a34f4933bafef43ac4f87ecffb6aee5fdf85923cf628012b7184"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\call_row_verifier.txt",
+      "size": 185,
+      "sha256": "e00ecd917e4a211e56d9f1da6b9126151280ab17312325d9ee0bb5cde8621bd9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\compile.txt",
+      "size": 23677,
+      "sha256": "8afd0365d0b77883c32b96b0533aa9b81e7523663ebf1428283a18080bd9fde5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\derived_coff.txt",
+      "size": 6492,
+      "sha256": "43875a9d260151e7ff65e612de14715ecc0edefb2caaa0941b3eb2176221b990"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\inputs_before.json",
+      "size": 62163,
+      "sha256": "4aeb1f34ddaede7b0e45c64baaf66136e5d978a8e4f95cae5145291c0d7453d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\link.txt",
+      "size": 4085,
+      "sha256": "04b36ceb25b95e1440aa67a2f7eed3c2786480690183494aa9cd0f6ea12b7f44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\manifest.json",
+      "size": 76422,
+      "sha256": "9b3eb2868e17a5c74e7e49d04dbefd79d7cdd2d050d692d815cc4512304b78e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\obj\\native_entity_base_kind.obj",
+      "size": 1182,
+      "sha256": "ff3c7a85cf3e4daa2d7cf2c8f0798e4dea3c90a6c2528c0cb5222f8d2e7e8f38"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\obj\\native_unit_group_lookup.obj",
+      "size": 1756,
+      "sha256": "f75c6bca529a1b7c55e741dba23229c2e1321ea8e5c028b0200a2580b05bda99"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\obj\\native_unit_group_storage.obj",
+      "size": 1247,
+      "sha256": "75927bdc908887b67f847c4e24d085b7c5cd756fab378348cd99ba1713268d34"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\obj\\probe.obj",
+      "size": 16774,
+      "sha256": "af9ac648de28820c2c7f9f5fe65cd462b775db418e24c68524a633bacccf6c9e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\pre_includes.txt",
+      "size": 24757,
+      "sha256": "f8e3a77f48533a8e8618940d6c49d6e2b9a553d4daeff6d4c4a326fe3fc2d6d0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\probe.exe",
+      "size": 13312,
+      "sha256": "16513a0569530b38c61282a6e3b736723661205692297d77cc6c7323913e1d6a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\run.txt",
+      "size": 340,
+      "sha256": "8087f40ddf1f30f694e89201f794a7931f4c0d275a9a9dccc7e52d33e9ff4131"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\seal.py",
+      "size": 7275,
+      "sha256": "f99f34361d19c2a1eb5f00e987b7fc9587c94be668ef0377e70c1f3c77dccbf7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\static_receipts.json",
+      "size": 4952,
+      "sha256": "0312b0f3fddaf4eb7e16dde157a31afd772c2abd485af754959f2c47c2f6a6ca"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\attempt01\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\commit_message.txt",
+      "size": 297,
+      "sha256": "42d9ffb8752b424c2085d746f24f23d8bc4e032ccda5aa6a691c43db3e1e06bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\handoff.json",
+      "size": 7300,
+      "sha256": "5422deb12b9ec27c4d9db129c49506eff9feba0a8112d5df6fc4cfb0eaa56c9f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_base_kind_leaves\\probe.cpp",
+      "size": 8038,
+      "sha256": "764d664eaf9a790a85f3c559de92076abd33c333cf8a4df96a12e40e1c63e542"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\build.cmd",
+      "size": 2335,
+      "sha256": "78230052d92540affaf980d24b41eba2a1b2bef5db205ccb8ad0223206445a68"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\compile.txt",
+      "size": 23686,
+      "sha256": "00887d9b6fefe038c5291c161ff3e2979eb48023499c14bd3e64d33b46962a15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\consumed_snapshots\\include\\bsp\\native_entity_class03_kind.hpp",
+      "size": 964,
+      "sha256": "2ea8232ae4205e94c87c13456978bf9b7342f92b8984f4eb295c5a5cea9a78fc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_lookup.hpp",
+      "size": 1069,
+      "sha256": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_storage.hpp",
+      "size": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\consumed_snapshots\\local\\cc11_entity_class03_kind_leaf\\probe.cpp",
+      "size": 8157,
+      "sha256": "72e2d45cce8f035ed12f71b4662d87c922b1e36be92119c90c5bbdebfff0c3b7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\consumed_snapshots\\src\\native_entity_class03_kind.cpp",
+      "size": 724,
+      "sha256": "ab4ed350b3fec3a1006d1d63117b0be45b9e65dd689809a01ef86a07f78b094e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\consumed_snapshots\\src\\native_unit_group_lookup.cpp",
+      "size": 1495,
+      "sha256": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\consumed_snapshots\\src\\native_unit_group_storage.cpp",
+      "size": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\derived_coff.txt",
+      "size": 3323,
+      "sha256": "35af3d5cfeac1cf907556f365ad36009e6b56a5bf47b6c08e22897ec004a5556"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\embedded_manifest.xml",
+      "size": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\historical_input_mapping.json",
+      "size": 4393,
+      "sha256": "7031f6ec42060819faa09454e20b527810b7557bbd939127d9ac0c6c3e0a65ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\inputs_before.json",
+      "size": 68647,
+      "sha256": "5787eb6fe0be952967d88d2d0c2efdcada5be96d7a77cfdf5cc61cffe658c9a5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\link.txt",
+      "size": 4085,
+      "sha256": "04b36ceb25b95e1440aa67a2f7eed3c2786480690183494aa9cd0f6ea12b7f44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\manifest.json",
+      "size": 81023,
+      "sha256": "eb09b157ee56cbe7e1dbb5098e6111a4dde428a6838d6d9d67fa4402d5e888e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\obj\\native_entity_class03_kind.obj",
+      "size": 782,
+      "sha256": "fba8b4084e1643a17ac4e6ef4a7f0914b2600af811689be6a6d245b78aa6d3d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\obj\\native_unit_group_lookup.obj",
+      "size": 1760,
+      "sha256": "f45d913b507851c41b926690bcddded65edddf2dc0df3d4585654b54cf1140a7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\obj\\native_unit_group_storage.obj",
+      "size": 1247,
+      "sha256": "81068ada3a82ea56fae0f8b0c3e837a752aadabf0b2ec5b972e04d6f9a903e46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\obj\\probe.obj",
+      "size": 17195,
+      "sha256": "227751cdcfc8afb5174d33860786a962d1f71ddd1befdc13e56e659590c382ac"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\pre_includes.txt",
+      "size": 24766,
+      "sha256": "6419ff98c71ffb309bc454efd8be43512cca2c8d55927c1322df0b36c1a6cdcd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\probe.exe",
+      "size": 13824,
+      "sha256": "af1998dcfd20fd1a15c070ed7aeb36d38abad309a61f7393b3cc159c291c24cb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\run.txt",
+      "size": 241,
+      "sha256": "4afdf417a027a271b03d54c7dcca36134421e3762629167bf5659285c59bd391"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\seal.py",
+      "size": 11610,
+      "sha256": "f660f017bd109b4af6d3ead0add38abbab0d624d63d57f286c8d7e59303d43b4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\static_before_execution.json",
+      "size": 3530,
+      "sha256": "f852afc9acdec2153b111b7b2a2101cd01e5a9984f1680f26efd49d434596bf0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\attempt01\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\capture_native.py",
+      "size": 3480,
+      "sha256": "1f8a62772c5219b5ecf44e55a783ec0ff7b77e9718d06f37082e0ebe4a50e70f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\commit_message.txt",
+      "size": 361,
+      "sha256": "52e03f710b439d02aee1e83b3297ac090f491d6564026f8b5ce64b1d93c22f39"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\handoff.json",
+      "size": 23197,
+      "sha256": "98f72c429eb08625ccc1a72f2bd86bb64c7ad9c45cacdf751be0ad562cfc4a4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\native_receipt.json",
+      "size": 3400,
+      "sha256": "b81a682df127f1d72261aeceef58fc936478bb0542bc915c8228ccad88fb41e6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\probe.cpp",
+      "size": 8157,
+      "sha256": "72e2d45cce8f035ed12f71b4662d87c922b1e36be92119c90c5bbdebfff0c3b7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_class03_kind_leaf\\write_reports.py",
+      "size": 12654,
+      "sha256": "63308091398043e8104cb216e47e542838df42874556e320a05734bd707ff058"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_audit\\audit.json",
+      "size": 20783,
+      "sha256": "5557456cf15b3751d70a306eddd2e70504b1023b33b9443f838a62875cadb800"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_audit\\audit_readonly.py",
+      "size": 11497,
+      "sha256": "b4c6038002e31ae155c8a2e19e43f9ab5cf77b66d836ecaddc31a8064c5f1ab8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_audit\\inputs_after.json",
+      "size": 7586,
+      "sha256": "62ee5b0a8e1481917b48d32b28a59f651a51f9a4bf30e7ba8d2604f15802df36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_audit\\inputs_before.json",
+      "size": 7556,
+      "sha256": "0e4edb677d4898cb08a3e5ac0081b29746dd31c5e9976dcf0e09ee3af793585c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_audit\\read_attempts.json",
+      "size": 11658,
+      "sha256": "23c696a2b2f3363528f6ac30c341085f856e5a42da2071dbf89cff57019c0ec0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_audit\\seal.json",
+      "size": 6094,
+      "sha256": "94348be296bf97952c98eac57a5487a285d805e552c29117a39ae90e798a714b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\build.cmd",
+      "size": 2327,
+      "sha256": "b4bcaf6d8b34d57a59d3d8a9eb18e47605e1e077bbe4ea4b0bd1f1a784b6dee9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\compile.txt",
+      "size": 23680,
+      "sha256": "582bcb186ee8a9a1c8bc1ed0fea2f4a89f4d12f0cf742cb8d6206ca5e6a0206e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\consumed_snapshots\\include\\bsp\\native_entity_kind_4c_4e.hpp",
+      "size": 1144,
+      "sha256": "b0f9a56688aa62aa1dca104c362a573b84efa9d9ae651a68f58efb4559aa1d7b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_lookup.hpp",
+      "size": 1069,
+      "sha256": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_storage.hpp",
+      "size": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\consumed_snapshots\\local\\cc11_entity_kind_4c_4e_leaves\\probe.cpp",
+      "size": 8482,
+      "sha256": "a16a3c6e50010dea9350977612e105222cf0f00563eef06dab324bd3d82276a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\consumed_snapshots\\src\\native_entity_kind_4c_4e.cpp",
+      "size": 1219,
+      "sha256": "a19dc222006fdc94b8ff563423c2e7c247260d4778009088b1bfd7722b3b367c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\consumed_snapshots\\src\\native_unit_group_lookup.cpp",
+      "size": 1495,
+      "sha256": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\consumed_snapshots\\src\\native_unit_group_storage.cpp",
+      "size": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\derived_coff.txt",
+      "size": 4610,
+      "sha256": "cfb4819823e4ada577012fd2e8b763b0b2ea93578f566d82d636c1cccf682606"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\embedded_manifest.xml",
+      "size": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\historical_input_mapping.json",
+      "size": 4389,
+      "sha256": "09694947050424d7056774b0454907857b000da9ff64e230814dd2c7dd072d1e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\inputs_before.json",
+      "size": 71051,
+      "sha256": "6e486e779802eb0d25edf8439c7a7b3ca8c8d6162b6a196e9483df65ef352ac1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\link.txt",
+      "size": 4085,
+      "sha256": "04b36ceb25b95e1440aa67a2f7eed3c2786480690183494aa9cd0f6ea12b7f44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\manifest.json",
+      "size": 85777,
+      "sha256": "c530239e8a8663dd5052938d2c994cf02ef9034a3d87f7cda3dadeefd2ddad59"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\obj\\native_entity_kind_4c_4e.obj",
+      "size": 960,
+      "sha256": "1c7f356cb8684e0c24b86842c18d92ce9eb2e922087ed2a0c79934e4b8386d48"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\obj\\native_unit_group_lookup.obj",
+      "size": 1760,
+      "sha256": "ba9f6c8ad3cbf9367d3738a65f65e548fda3f08712a8c0935d1ffa1f4f5f78af"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\obj\\native_unit_group_storage.obj",
+      "size": 1247,
+      "sha256": "22e5fbadb4cc38819d27db8aedf6527f979f041ffd2b083c09ab2d3bf4f820a3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\obj\\probe.obj",
+      "size": 17548,
+      "sha256": "2544b4d9b85b220e504e6e409454da222c90bce717c28979828946be00fc83fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\pre_includes.txt",
+      "size": 24760,
+      "sha256": "9980beddbb490d9429ecce458839b19a89dcb368d0dd3567f38d23d83bcf9cfb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\probe.exe",
+      "size": 13824,
+      "sha256": "07b9613288e1a5bf9a0d70baaf9afa44e753661bf81a97544d20dd6c12b11197"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\run.txt",
+      "size": 292,
+      "sha256": "659129a051e908190c60db870e66e384a8ba5f92b8bb7375b69aac307d4650fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\seal.py",
+      "size": 11944,
+      "sha256": "2f4b81b88f27b663b50c5e074a96e9420702de3ae587f3ff264a0e8367fc7c5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\static_before_execution.json",
+      "size": 5744,
+      "sha256": "ffca37b2648a325fd237b8c024cbe8fd1a6461375c6e42a3c288721af833afec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\attempt01\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\capture_native.py",
+      "size": 3478,
+      "sha256": "0bdc2775f22bf4b1fad710cf10bfde1f76cb11be9882a5e152531ce31b8c3943"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\commit_message.txt",
+      "size": 340,
+      "sha256": "aa87370ac5dcb27de31448dcb0dc6dd9f4729d159a6f20087da778266add1180"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\handoff.json",
+      "size": 25994,
+      "sha256": "9c1318cdd51bf15540f5b1509bc40820483c09b040f1e4af387b2ba6b7389e4f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\native_receipt.json",
+      "size": 6528,
+      "sha256": "e69dbc5faacb426444019d1d53c6ab19692d019b2dad7eb3d2be395fa0684018"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\probe.cpp",
+      "size": 8482,
+      "sha256": "a16a3c6e50010dea9350977612e105222cf0f00563eef06dab324bd3d82276a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4c_4e_leaves\\write_reports.py",
+      "size": 13255,
+      "sha256": "5e22baf2dce3da97acb894b62df80fbc97cc13a6bd46114f130fc210b34050d0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\PE_target_DWORD_occurrences.json",
+      "size": 524,
+      "sha256": "cf97de0856a1e6db776af0de5329afa04a889dc0c53d20a60505d46467a2d080"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\attempt01\\audit_readonly.py",
+      "size": 11736,
+      "sha256": "fe65f7c3a5c45c6dfdcd4096717079e35f8aedc5c5e66882403b32e2344e687d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\attempt01\\failure.json",
+      "size": 391,
+      "sha256": "06d604a9a6dbb336b7017e820a7a12cc7b47b33f4524a2894f45c50f9c266362"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\attempt01\\read_attempts.json",
+      "size": 4255,
+      "sha256": "1e054119526fe9913b3dc75abdccf20d89f45748907d3d4427d98ef3e55562d8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\attempt02\\audit_draft.json",
+      "size": 21209,
+      "sha256": "4ee3862cb36cf8a69af4fd21c5fe81b263dcde3eee098e52dbd43c97bf6fbd98"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\audit.json",
+      "size": 22048,
+      "sha256": "df2058e78b24bb1254b24e565e68c8d6c4a2f79f3abb6f2272a3cc511a982ba2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\audit_readonly.py",
+      "size": 12702,
+      "sha256": "66e4413d3d0c69a8ec6a8a8ab42aae6fec05f445aee70951021fa1d51cbe3ab4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\inputs_after.json",
+      "size": 8645,
+      "sha256": "5fcd70d4308b5189d4245f9cab445d15b140220854ebad2bab76b6ec2c2ba986"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\inputs_before.json",
+      "size": 8615,
+      "sha256": "53043cefe3008343a6ea5b08b03278f9196971caba6f3aaac46d3d32e048c985"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\read_attempts.json",
+      "size": 10783,
+      "sha256": "8e3fc81af2441e4fc6a0d66623b5b20235863b6cfbdd91ef97b35bd9fdbb7c11"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_kind_4d_second4e_audit\\seal.json",
+      "size": 8016,
+      "sha256": "24b2bdfac10cdc4b086c9748de87a21d8b07356e8c7a25217c55c96b98c6853b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\build.cmd",
+      "size": 2208,
+      "sha256": "418322b57c90a0a9fdd79c675e3f1921d7def18835bd469a0d7ae4c0e2bad054"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\compile.txt",
+      "size": 23677,
+      "sha256": "6ec749298e2df7db9e7c7f5ab4a2fe495466d7e88965ec8747e902b0ff918499"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\consumed_snapshots\\include\\bsp\\native_entity_root_kind.hpp",
+      "size": 1109,
+      "sha256": "3af43f96079f46fcf858787a4afd611ad86d3e45df8c8a4e0535cc3a89040378"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_lookup.hpp",
+      "size": 1069,
+      "sha256": "b0f12581708e75757200a7074a7ef5b7d705413dde5577a6a83319082fa3bffe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\consumed_snapshots\\include\\bsp\\native_unit_group_storage.hpp",
+      "size": 930,
+      "sha256": "1c98c64e59f460fd0499b4571144fdb98dec60baf53e37dadd27b586d3a7a5be"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\consumed_snapshots\\local\\cc11_entity_root_kind_leaves\\probe.cpp",
+      "size": 8429,
+      "sha256": "17026a9df3e0a61dc8c3dd78b276d98ce2764ec9b1c6ff12d269132f0f90ccc3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\consumed_snapshots\\src\\native_entity_root_kind.cpp",
+      "size": 1106,
+      "sha256": "281545a2b384a5d9d618111bf0c46165dbc3f424413b839b7302d0f0e6b0ee9e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\consumed_snapshots\\src\\native_unit_group_lookup.cpp",
+      "size": 1495,
+      "sha256": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\consumed_snapshots\\src\\native_unit_group_storage.cpp",
+      "size": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\derived_coff.txt",
+      "size": 4436,
+      "sha256": "41ac3d9c31c0470fa4561c4c6b3b490960de4a8c36161438cc73cdcffc482bc2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\embedded_manifest.xml",
+      "size": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\historical_input_mapping.json",
+      "size": 4376,
+      "sha256": "52d22c492534e4f5911b4852c65bdfb9133ccad2ef517a1a31a4cbd6e1911e68"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\inputs_before.json",
+      "size": 66505,
+      "sha256": "affc0bffb0c1cef0b88a81120d39a4f8272ab6e3b919625e017cd43457aa8f77"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\link.txt",
+      "size": 4085,
+      "sha256": "04b36ceb25b95e1440aa67a2f7eed3c2786480690183494aa9cd0f6ea12b7f44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\manifest.json",
+      "size": 79923,
+      "sha256": "4edbd73fa6dfc500a73b37caea969627c5908eed567a3a9a8f35405f1941b899"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\obj\\native_entity_root_kind.obj",
+      "size": 956,
+      "sha256": "09d0ac7fa87c3070788bace7d9bb68bb0cbb373585b8b60cd4b2d8992751c119"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\obj\\native_unit_group_lookup.obj",
+      "size": 1756,
+      "sha256": "5abdd7fd7e19c34efbd6a05b86be3f2d5c8aca99451422ea1f974603a510cb2c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\obj\\native_unit_group_storage.obj",
+      "size": 1247,
+      "sha256": "7cf6bdf04f504ffe7f892fbb730045053ff9367eea99b68fe36f6225176eaa70"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\obj\\probe.obj",
+      "size": 17550,
+      "sha256": "3fc091653f6560725ddfdbe8985c205c15ee929b24638213d1cf1eff132e456b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\pre_includes.txt",
+      "size": 24757,
+      "sha256": "1df40acf4d05b7db77fdcc22dcc90ae72a032c5a4560f777027b6037e09a5f2e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\probe.exe",
+      "size": 13824,
+      "sha256": "6ec20c294de8ba593a2313d14892a58f61c9a9a158e4cf85e5253c96753429aa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\run.txt",
+      "size": 292,
+      "sha256": "e721cdd0876c262a082d6bb74989c85e702edc36e657cd58c64519aa489f5e85"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\seal.py",
+      "size": 10160,
+      "sha256": "2bce7b8349d3a2ad71466831bec2e1004ae4f5a6c74d9aad9d7080e73176b5bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\attempt01\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\capture_native.py",
+      "size": 3476,
+      "sha256": "b36b96523c5176250ab378b1bd1746765dfde0884b0b6377dc60b356b5389e12"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\commit_message.txt",
+      "size": 378,
+      "sha256": "469128faa40ed64c462440b2b4dde724d45457d26f7547f192df0de1f22e8689"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\handoff.json",
+      "size": 24410,
+      "sha256": "96dac0ec19b615968a7f89b320f85fef8b844140b06adc25bc7d719b2fa13550"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\native_receipt.json",
+      "size": 6385,
+      "sha256": "c2172363758b3b5cec60485fed37a1fb0891f96fb0386177d452d370cfab9207"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\probe.cpp",
+      "size": 8429,
+      "sha256": "17026a9df3e0a61dc8c3dd78b276d98ce2764ec9b1c6ff12d269132f0f90ccc3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_entity_root_kind_leaves\\write_reports.py",
+      "size": 13373,
+      "sha256": "ab8f87205ecf521eb6f222d28fbfb24e747fdb3063fa76c57f998301b07b922f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_audit.json",
+      "size": 55267,
+      "sha256": "4c353a25541ba899f4e1516d5d64491eca2d622abe5638a8b638222acde79c2a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\compile.txt",
+      "size": 64897,
+      "sha256": "10814dc05b29aca5b0dc437dd4f64f4fb22e4f86f65cd5e2779004cc7b7f52dd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\derived_coff.txt",
+      "size": 16979,
+      "sha256": "3a4bb9772d5475f35b4598ddb42f92663397619ee87ecf8f5e225a63ea3deaa2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\inputs_before.json",
+      "size": 81404,
+      "sha256": "ca150651c938f5ee2bf2004a85abf5b3addc8ae786d16fef0d5a488b6cf87d0a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\link.txt",
+      "size": 4085,
+      "sha256": "04b36ceb25b95e1440aa67a2f7eed3c2786480690183494aa9cd0f6ea12b7f44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\obj\\native_plane_derived_kind.obj",
+      "size": 2337,
+      "sha256": "408dcc7e9f0008af5bcf137d203e2171238f34ff9ea8eca92e721d8b788cb485"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\obj\\native_plane_squadron_first_plane.obj",
+      "size": 8269,
+      "sha256": "f8a0babf8d62f092ab24f59c4a3bf7267ed63de27cc1fa4705e72b17009e370b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\obj\\native_plane_squadron_insert.obj",
+      "size": 10954,
+      "sha256": "814aef0cb143329e7bac9476f4f34a493c6a7266cb1b75eb3bdc1a4a74713126"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\obj\\probe.obj",
+      "size": 26976,
+      "sha256": "9d877d4df130d167dbc2c552597b0812fa1e6f5ec53c259055a9f00609279465"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\pre_includes.txt",
+      "size": 65977,
+      "sha256": "9b2d975e50d9c0b188ebf0fc6b76647e2fd0cc94a93e7f485b0d4451beebb52e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\probe.exe",
+      "size": 16384,
+      "sha256": "d8d7ec43d496d67caa7fc12bb2a19c4530694bde55cb6dd23770d77bf6b9cb0c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\run.txt",
+      "size": 576,
+      "sha256": "defbdd272f43cfa565f23419298a5106a21a930664a9a39f0d8ad7e7a576e5a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt01\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\build.cmd",
+      "size": 2315,
+      "sha256": "d7c80f3cc7191adbc95b1c0a7a682ace6f8853059953ef2256a6d540a5be0605"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\pre_includes.txt",
+      "size": 66240,
+      "sha256": "d170a53387a842c2209408e1d327ce0473d0a1c701dc459e81a9fe5bb714e47a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\probe_failed.cpp",
+      "size": 12203,
+      "sha256": "bce7ef8e09cc8ba511f3b7829593a97bdc95c123f17cbc44a9008fcbbc0926a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\seal.py",
+      "size": 6988,
+      "sha256": "0e01a9e54c5f26f2d254a6ea992f3d8e502e4077b01fd5d65f51abe0825896cb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt02\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\build.cmd",
+      "size": 2315,
+      "sha256": "467422dfec031d77de4ebb40cf5384967c182a6b23e6020aba851aaf5c864430"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\call_row_verifier.txt",
+      "size": 179,
+      "sha256": "942bfa2f032aad152305b565ae804df5fbed525671fc0e871e4c1e2c4c9fa042"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\compile.txt",
+      "size": 64897,
+      "sha256": "10814dc05b29aca5b0dc437dd4f64f4fb22e4f86f65cd5e2779004cc7b7f52dd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\derived_coff.txt",
+      "size": 16979,
+      "sha256": "fcdf1292c6937970b63939f6a2573c58161b512ca59fc9742fd5c7378858ca6c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\inputs_before.json",
+      "size": 81698,
+      "sha256": "240d45ffc1f3a69f399c23022006b653b169db53f7da37eceb9365a105166320"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\lib_environment.txt",
+      "size": 850,
+      "sha256": "060712e1c363501cb4108c6b16d3bb0be05086ce3b6b6416307613aa1c9fd4b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\link.txt",
+      "size": 4085,
+      "sha256": "04b36ceb25b95e1440aa67a2f7eed3c2786480690183494aa9cd0f6ea12b7f44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\manifest.json",
+      "size": 125379,
+      "sha256": "32c91a987ef0d691514388112de3d0c9e6765aa7dd0193e09f79ace866b730e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\obj\\native_plane_derived_kind.obj",
+      "size": 2337,
+      "sha256": "d559ec5d2dd8fda1eb432086f8b5067ceefd56192cfe258ef5e6fe6857b79f41"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\obj\\native_plane_squadron_first_plane.obj",
+      "size": 8269,
+      "sha256": "5d2c98c38a7ddaa3da3c0fe70814890ad06acacdec91ac8e0e230a43509887d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\obj\\native_plane_squadron_insert.obj",
+      "size": 10954,
+      "sha256": "34d7cb22d852eb5c198808271839d14963b4ce8e61655dae43c54cf027a4154f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\obj\\probe.obj",
+      "size": 26652,
+      "sha256": "0fefb9dd13342275cdf9226bf523d78bdc91463b0341a1d4ec1e041aa69cefc7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\pre_includes.txt",
+      "size": 65977,
+      "sha256": "9b2d975e50d9c0b188ebf0fc6b76647e2fd0cc94a93e7f485b0d4451beebb52e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\probe.exe",
+      "size": 16384,
+      "sha256": "49b3a6986b30dbbfb67921bcf9dccc14534ffbf068cd584a88d907c36364fa65"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\resource_tree_check.txt",
+      "size": 79,
+      "sha256": "f8d5371b17c47963cdc27d21e605f7334049276f37ce93c35b3af6fa9038e61b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\run.txt",
+      "size": 576,
+      "sha256": "58447f42308f624e30d7d72ef17ee4b7e0101413e85fb58440c52db872fe87d1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\seal.py",
+      "size": 6988,
+      "sha256": "25172a5c0d9361fc18e2be1b0a8fd96fe898125a407ec5fc6a7c057b38dd7468"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\static_receipts.json",
+      "size": 16165,
+      "sha256": "96db02ad76680e0fb8e880e27282be3135e9a661782c204ad5b402e595e7bdbb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\attempt03\\tools.txt",
+      "size": 319,
+      "sha256": "fbc1742994cf60022d100e0e3504f5b5c41e7e4655972ff369d3a221e92414a0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\build.cmd",
+      "size": 2295,
+      "sha256": "91b460be74eb5409ce1d56c8507998f4c0f1e7f32936c2b6e01b601396915431"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\commit_message.txt",
+      "size": 278,
+      "sha256": "eb241d84dde505d19e9e6479568286162b073338489692c79ccb7a290f01482e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\first_success_source\\probe.cpp",
+      "size": 12010,
+      "sha256": "259e3e53f73508d9c7868fc9a339afaf66c95011eae559b9f5561c9e6976d78e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\handoff.json",
+      "size": 8296,
+      "sha256": "2cf19a815b81afb9c8f26dde076d049276fe953eb5f1a9430e3d81b1ac9adb0e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\historical_input_mapping.json",
+      "size": 1620,
+      "sha256": "000a39be2eee188f190645a4178251cf40c6ae211ad6e8707e859041dfb15d20"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\manifest.json",
+      "size": 118877,
+      "sha256": "3bf558c2f7c09b911d46c8178b127bb8ed2a126b808113b4a24e52506c0e2a72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\probe.cpp",
+      "size": 11653,
+      "sha256": "839c9f29d380f749983d2a7a3a8e90900feb7db30cbe7eb02d07859cffebf002"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\seal.py",
+      "size": 6948,
+      "sha256": "c111c04440ba63a3e07769aa12e0ad49ec1c2972c6976c560a698dfd3d1adafa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\local\\cc11_plane_derived_kind_leaves\\static_receipts.json",
+      "size": 16005,
+      "sha256": "924cd4166955b2170b0ec73d3fb63509ec0e64ec564a0c2a43b89ab8c5be3c9e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\src\\entity_class_ids.cpp",
+      "size": 8081,
+      "sha256": "4b3e20e49ea673d1ad28ce3d26a4f210c0540a95aa875fe48b8e42d4d4e4f2c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\src\\native_entity_kind_4c_4e.cpp",
+      "size": 1219,
+      "sha256": "a19dc222006fdc94b8ff563423c2e7c247260d4778009088b1bfd7722b3b367c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\src\\native_unit_group_lookup.cpp",
+      "size": 1495,
+      "sha256": "2fc891cf369dc3e56d1d7df0775bff3645fb1249d4d0647339d7615afa579f4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\src\\native_unit_group_storage.cpp",
+      "size": 1542,
+      "sha256": "cb24c9b3f486315d759f2ff66febadea23c33512a22d634b7f706c8190309215"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc11_land_retirement\\src\\unit_kind_query.cpp",
+      "size": 16876,
+      "sha256": "235beae3267d6a79aa2409453ac4042287426e7987768d5a2660d7c3cb503498"
+    }
+  ],
+  "prior_historical_path_count": 194,
+  "no_prior_family_execution": true,
+  "limits": [
+    "Caller supplies stable nonnull actual backing>=C8h with a genuine live aligned uint32 exactly+C4; fixed branches do not read receiver; dynamic common normal domain only.",
+    "Invalid/fault/concurrency/object-lifetime/privateEH paths outside admission unvalidated.",
+    "Native original class/profile/virtual/group membership/construction/allocation/lifetime/world/game binding unproved.",
+    "Actual two profile+5C cells and groupCFD6F8 are raw UNCALLABLE Source DATA.",
+    "Closed first4E4351E0 provider is excluded and never reused/delegated/collapsed/executed by resemblance.",
+    "PE705E7C match is a rel32 CALL operand, not absolute4D pointer/profile/caller.",
+    "Explicit raw Source/Original choice, SAME in-pass actual record/receiver/liveC4 only; no cross-pass equal-address claim.",
+    "No Original class/group constructor/dispatch, scalar70D260/speed/detach/InitAll/class/arena/world promotion.",
+    "No worker shared metadata/CMake/Ghidra mutations/full repository build/push/new tracked tests/old family replay."
+  ],
+  "validation": {
+    "strict_four_fresh_TUs": "PASS",
+    "full83B28_byte_equivalence_before_execution": "PASS",
+    "sole_whole_Original_connected_family": "163 checks/0 failures",
+    "PE_live": "5 required +1 excluded-rel32 MATCH rows; before/after equal",
+    "pre_post_consumed_inputs": "426 unchanged including194 historical paths",
+    "actual_asInvoker_resource": "PASS RT_MANIFEST24/1/1033",
+    "actual_searched_system_libraries": "exact6 normalized logged paths equal pinned pre/post files",
+    "git_diff_check": "PASS working and exact four-owned-file staged diff",
+    "worker_full_build": "not run; root-owned",
+    "native_class_profile_group_world_game": "unbound"
+  },
+  "primary_integration": "pending root-owned independent fresh family/fullbuild/metadata/annotation/integration"
+}
