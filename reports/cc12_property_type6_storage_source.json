@@ -1,0 +1,1172 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_property_type6_storage_source",
+  "UTC": "2026-10-08T18:50:17.786575+00:00",
+  "status": "PRIMARY_ACCEPTED_NORMAL_WIN32_AND_STATIC_PRODUCTION_QUALIFIED_NOT_ENTRY_OR_GAME_EXECUTED",
+  "baseline": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
+  "readiness_commit": "07a14df5cace343a34ecdf8b3985ab8e506b288f",
+  "readiness_primary_main": "27f2c7ec27d4c654755c76b2ccd56b7f4563a195",
+  "readiness_primary_receipt": {
+    "path": "local/cc12_property_type6_storage_source/pre/receipts/primary_acceptance.json",
+    "bytes": 27154,
+    "sha256": "ca1d7af3fb75be1418c524c2aca250fbf9e6709dbde31ff1f4710461378557e3"
+  },
+  "owned_versioned_files": [
+    "src/native_scene_property_bag_storage.cpp",
+    "include/bsp/native_scene_property_record_type6_storage.hpp",
+    "docs/CC12_PROPERTY_TYPE6_STORAGE_SOURCE.md",
+    "reports/cc12_property_type6_storage_source.json"
+  ],
+  "proposed_registration": {
+    "whole_functions": 1,
+    "whole_function_addresses": [
+      "008EF780"
+    ],
+    "fragments": 1,
+    "fragment_address": "008F50ED",
+    "fragment_parent": "008F4F60",
+    "Source_public_functions_added": 2,
+    "compiler_generated_EH_extents": 2,
+    "metadata_or_function_credit_added": 0
+  },
+  "final_compile_inputs": [
+    {
+      "path": "src/native_scene_property_bag_storage.cpp",
+      "bytes": 5830,
+      "sha256": "214912b8a82ad193b2a6d7afa0cc20bac2bc31881ad39e34f704bb210fd0c203"
+    },
+    {
+      "path": "include/bsp/native_scene_property_record_type6_storage.hpp",
+      "bytes": 2915,
+      "sha256": "b7cb92a00e9071a74407de89d41533820c94052fe89c90de0356220ab74e7fe8"
+    }
+  ],
+  "qualification": {
+    "UTC": "2026-10-08T18:50:17.785774+00:00",
+    "checks": {
+      "raw58_equals_whole_installed_Native": true,
+      "raw58_no_relocations_16instructions": true,
+      "raw_abi_register_stack_flags_store_order_preserved_by_exact_bytes": true,
+      "ordinary146B_48instructions_actual_allocator_child_ctor_calls": true,
+      "actual_source_child_load_after38_allocation": true,
+      "actual_returned_child_pushed_to_ctor": true,
+      "fresh_source_ordinal_load_after_ctor": true,
+      "catch_uses_only_saved_unattached_root_and_real_free": true,
+      "existing_raw61_and_clone126_whole_bodies_unchanged": true,
+      "all15_old_same_TU_bodies_and_relocations_literal": true,
+      "all138_existing_provider_bodies_and_ordered_relocations_preserved": true,
+      "other_TU_path_salts_have_explicit_bijections": true,
+      "all285_consumed_inputs_frozen_before_final_compile": true,
+      "final_source_and_header_match_precompile_inputs": true,
+      "three_unique_current_archive_members_equal_whole_objects": true,
+      "actual_current_I386_CRT_import_and_export_roles": true,
+      "normal_final_build_all3_existing_checks_passed": true,
+      "no_CMake_or_Ghidra_or_ledger_changes": true,
+      "no_new_test_or_selected_entry_execution": true
+    },
+    "ordinary_instruction_rows": [
+      {
+        "offset": 0,
+        "hex": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "offset": 1,
+        "hex": "8bec",
+        "mnemonic": "mov",
+        "operands": "ebp, esp"
+      },
+      {
+        "offset": 3,
+        "hex": "6aff",
+        "mnemonic": "push",
+        "operands": "-1"
+      },
+      {
+        "offset": 5,
+        "hex": "6800000000",
+        "mnemonic": "push",
+        "operands": "0"
+      },
+      {
+        "offset": 10,
+        "hex": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]"
+      },
+      {
+        "offset": 16,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "offset": 17,
+        "hex": "83ec18",
+        "mnemonic": "sub",
+        "operands": "esp, 0x18"
+      },
+      {
+        "offset": 20,
+        "hex": "a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [0]"
+      },
+      {
+        "offset": 25,
+        "hex": "33c5",
+        "mnemonic": "xor",
+        "operands": "eax, ebp"
+      },
+      {
+        "offset": 27,
+        "hex": "8945ec",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x14], eax"
+      },
+      {
+        "offset": 30,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "offset": 31,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "offset": 32,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "offset": 33,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "offset": 34,
+        "hex": "8d45f4",
+        "mnemonic": "lea",
+        "operands": "eax, [ebp - 0xc]"
+      },
+      {
+        "offset": 37,
+        "hex": "64a300000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], eax"
+      },
+      {
+        "offset": 43,
+        "hex": "8965f0",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x10], esp"
+      },
+      {
+        "offset": 46,
+        "hex": "8b7d08",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [ebp + 8]"
+      },
+      {
+        "offset": 49,
+        "hex": "8d45e0",
+        "mnemonic": "lea",
+        "operands": "eax, [ebp - 0x20]"
+      },
+      {
+        "offset": 52,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "offset": 53,
+        "hex": "c745e003000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x20], 3"
+      },
+      {
+        "offset": 60,
+        "hex": "c745e438000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x1c], 0x38"
+      },
+      {
+        "offset": 67,
+        "hex": "c745e838000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x18], 0x38"
+      },
+      {
+        "offset": 74,
+        "hex": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x4f"
+      },
+      {
+        "offset": 79,
+        "hex": "ff770c",
+        "mnemonic": "push",
+        "operands": "dword ptr [edi + 0xc]"
+      },
+      {
+        "offset": 82,
+        "hex": "8bf0",
+        "mnemonic": "mov",
+        "operands": "esi, eax"
+      },
+      {
+        "offset": 84,
+        "hex": "c745fc00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 4], 0"
+      },
+      {
+        "offset": 91,
+        "hex": "8975dc",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ebp - 0x24], esi"
+      },
+      {
+        "offset": 94,
+        "hex": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x63"
+      },
+      {
+        "offset": 99,
+        "hex": "83c408",
+        "mnemonic": "add",
+        "operands": "esp, 8"
+      },
+      {
+        "offset": 102,
+        "hex": "33d2",
+        "mnemonic": "xor",
+        "operands": "edx, edx"
+      },
+      {
+        "offset": 104,
+        "hex": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "offset": 106,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "offset": 107,
+        "hex": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x70"
+      },
+      {
+        "offset": 112,
+        "hex": "8b4f34",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [edi + 0x34]"
+      },
+      {
+        "offset": 115,
+        "hex": "894834",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x34], ecx"
+      },
+      {
+        "offset": 118,
+        "hex": "8b4df4",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0xc]"
+      },
+      {
+        "offset": 121,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx"
+      },
+      {
+        "offset": 128,
+        "hex": "59",
+        "mnemonic": "pop",
+        "operands": "ecx"
+      },
+      {
+        "offset": 129,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "offset": 130,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "offset": 131,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "offset": 132,
+        "hex": "8b4dec",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x14]"
+      },
+      {
+        "offset": 135,
+        "hex": "33cd",
+        "mnemonic": "xor",
+        "operands": "ecx, ebp"
+      },
+      {
+        "offset": 137,
+        "hex": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x8e"
+      },
+      {
+        "offset": 142,
+        "hex": "8be5",
+        "mnemonic": "mov",
+        "operands": "esp, ebp"
+      },
+      {
+        "offset": 144,
+        "hex": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "offset": 145,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "Source_ctor": {
+      "symbol": "?construct_native_scene_property_record_type6_storage_008ef780@bsp@@YIPAXPAXI0@Z",
+      "bytes": 58,
+      "sha256": "6ecd8cb72e2e8d06bf1f3f5c53f442d88c3b3606ffc3dacdc6a98f9c5a2f0450",
+      "relocations": [],
+      "section": 22,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 58,
+      "section_bytes": 58,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "body_path": "local/cc12_property_type6_storage_source/post_qualified/COFF/native_scene_property_bag_storage/002.bin",
+      "instructions": 16
+    },
+    "Source_ordinary_fragment": {
+      "symbol": "?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z",
+      "bytes": 146,
+      "sha256": "5fe9ee14289db3595f17d29bea94e8d598a9d3d08132a524ac0f661fb62508be",
+      "relocations": [
+        {
+          "operand_offset": 6,
+          "kind": "0006",
+          "symbol": "__ehhandler$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z"
+        },
+        {
+          "operand_offset": 21,
+          "kind": "0006",
+          "symbol": "___security_cookie"
+        },
+        {
+          "operand_offset": 75,
+          "kind": "0014",
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "operand_offset": 95,
+          "kind": "0014",
+          "symbol": "?clone_empty_native_scene_property_bag_008f41f0_fragment@bsp@@YAPAXPBX@Z"
+        },
+        {
+          "operand_offset": 108,
+          "kind": "0014",
+          "symbol": "?construct_native_scene_property_record_type6_storage_008ef780@bsp@@YIPAXPAXI0@Z"
+        },
+        {
+          "operand_offset": 138,
+          "kind": "0014",
+          "symbol": "@__security_check_cookie@4"
+        }
+      ],
+      "section": 19,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 146,
+      "section_bytes": 172,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "body_path": "local/cc12_property_type6_storage_source/post_qualified/COFF/native_scene_property_bag_storage/003.bin",
+      "instructions": 48
+    },
+    "Source_catch": {
+      "symbol": "__catch$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z$0",
+      "bytes": 26,
+      "sha256": "8bbab7fdeffb51da7a02233adcf47967a5933e72c2f42b669f824ed2ebf9041b",
+      "relocations": [
+        {
+          "operand_offset": 4,
+          "kind": "0014",
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        },
+        {
+          "operand_offset": 16,
+          "kind": "0014",
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "section": 19,
+      "symbol_offset": 146,
+      "exclusive_end_offset": 172,
+      "section_bytes": 172,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "body_path": "local/cc12_property_type6_storage_source/post_qualified/COFF/native_scene_property_bag_storage/018.bin",
+      "instructions": 12
+    },
+    "Source_handler": {
+      "symbol": "__ehhandler$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z",
+      "bytes": 39,
+      "sha256": "635816cf282338596cdaa588b151786c5fece61405a9bb4b96e4f46749522a95",
+      "relocations": [
+        {
+          "operand_offset": 15,
+          "kind": "0014",
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "operand_offset": 25,
+          "kind": "0014",
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "operand_offset": 30,
+          "kind": "0006",
+          "symbol": "__ehfuncinfo$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z"
+        },
+        {
+          "operand_offset": 35,
+          "kind": "0014",
+          "symbol": "___CxxFrameHandler3"
+        }
+      ],
+      "section": 20,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 39,
+      "section_bytes": 39,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "body_path": "local/cc12_property_type6_storage_source/post_qualified/COFF/native_scene_property_bag_storage/017.bin",
+      "instructions": 12
+    },
+    "accepted_empty_bag": {
+      "symbol": "?clone_empty_native_scene_property_bag_008f41f0_fragment@bsp@@YAPAXPBX@Z",
+      "bytes": 126,
+      "sha256": "0356311e87488c74210d7be01313f249d79a9102db72e2eb7418422d41a1844e",
+      "relocations": [
+        {
+          "operand_offset": 7,
+          "kind": "0006",
+          "symbol": "___security_cookie"
+        },
+        {
+          "operand_offset": 43,
+          "kind": "0014",
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "operand_offset": 59,
+          "kind": "0014",
+          "symbol": "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z"
+        },
+        {
+          "operand_offset": 81,
+          "kind": "0014",
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "operand_offset": 91,
+          "kind": "0014",
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        },
+        {
+          "operand_offset": 102,
+          "kind": "0006",
+          "symbol": "??_C@_0DE@HMCEBJD@empty?5property?5bag?5clone?5require@"
+        },
+        {
+          "operand_offset": 107,
+          "kind": "0014",
+          "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "operand_offset": 112,
+          "kind": "0006",
+          "symbol": "__TI3?AVinvalid_argument@std@@"
+        },
+        {
+          "operand_offset": 121,
+          "kind": "0014",
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "section": 21,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 126,
+      "section_bytes": 126,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "body_path": "local/cc12_property_type6_storage_source/post_qualified/COFF/native_scene_property_bag_storage/001.bin",
+      "instructions": 41
+    },
+    "accepted_raw61": {
+      "symbol": "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z",
+      "bytes": 61,
+      "sha256": "4d8da1738a25d34afd2e5cba2773ad15e2642ae2ae55831e304751ac62b43420",
+      "relocations": [],
+      "section": 23,
+      "symbol_offset": 0,
+      "exclusive_end_offset": 61,
+      "section_bytes": 61,
+      "extent_method": "next distinct function-symbol offset or section end",
+      "body_path": "local/cc12_property_type6_storage_source/post_qualified/COFF/native_scene_property_bag_storage/000.bin",
+      "instructions": 15
+    },
+    "runtime_roles": {
+      "ucrtbase.dll": {
+        "path": "local/cc12_property_type6_storage_source/post_qualified/CRT/ucrtbase.dll",
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "machine": "014C",
+        "roles": {
+          "_callnewh": {
+            "rva": 569344,
+            "ordinal": 207,
+            "forwarder": null
+          },
+          "free": {
+            "rva": 196768,
+            "ordinal": 2279,
+            "forwarder": null
+          },
+          "malloc": {
+            "rva": 196896,
+            "ordinal": 2362,
+            "forwarder": null
+          }
+        }
+      },
+      "vcruntime140.dll": {
+        "path": "local/cc12_property_type6_storage_source/post_qualified/CRT/vcruntime140.dll",
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "machine": "014C",
+        "roles": {
+          "_CxxThrowException": {
+            "rva": 19776,
+            "ordinal": 2,
+            "forwarder": null
+          },
+          "__CxxFrameHandler3": {
+            "rva": 88176,
+            "ordinal": 17,
+            "forwarder": null
+          }
+        }
+      }
+    },
+    "supplementary_physical_inputs": [
+      {
+        "path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "frozen_path": "local/cc12_property_type6_storage_source/methods/python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\__init__.py",
+        "frozen_path": "local/cc12_property_type6_storage_source/methods/capstone_init.py",
+        "bytes": 43729,
+        "sha256": "0417ae554252be8e8d03e328054fad4c3cec6cf4895deecec637078380840f8b"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\pefile.py",
+        "frozen_path": "local/cc12_property_type6_storage_source/methods/pefile.py",
+        "bytes": 301767,
+        "sha256": "0d0eb68f0f169182613dc64b3ab50b20855508c1c1d2faafe8fccf23edb6a345"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type6_source_readiness_ast\\local\\seed_reference.hpp",
+        "frozen_path": "local/cc12_property_type6_storage_source/methods/seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\Python\\Python313\\site-packages\\capstone\\lib\\capstone.dll",
+        "frozen_path": "local/cc12_property_type6_storage_source/methods/capstone.dll",
+        "bytes": 7572480,
+        "sha256": "46b7c385efe50db4def8aa99aa351c44ea28b1f3c2ccbc4ca41dbb2a02340e39"
+      }
+    ],
+    "noinline_call_site_scope": {
+      "matched_command_blocks": 1,
+      "GL_enabled": false,
+      "only_repo_cpp_call_site": "new type6 fragment; header declaration and producer definition are not call sites"
+    }
+  },
+  "raw_ctor_contract": {
+    "ECX": "actual new38h record",
+    "EDX": "incoming ignored; returned actual child",
+    "stack_ESP_plus_4": "actual new114h child",
+    "return_EAX": "same actual record",
+    "return_stack": "RET4; entry ESP+8",
+    "preserved_GPR": [
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP"
+    ],
+    "preserved_state": [
+      "DF",
+      "x87",
+      "SSE",
+      "MXCSR"
+    ],
+    "return_flags": "XOR ECX,ECX: CF OF SF0; ZF PF1; AF undefined",
+    "writes_41_record_bytes": [
+      "[00,10)",
+      "[18,28)",
+      "[2C,2D)",
+      "[30,38)"
+    ],
+    "preserves_15_record_bytes": [
+      "[10,18)",
+      "[28,2C)",
+      "[2D,30)"
+    ],
+    "extra_write": "child+110=actual record BEFORE record+34, byte+2C and final+8",
+    "profiles": "literal native DATA, no Source dispatch",
+    "allocations": "none in raw58; caller supplies actual malloc-domain record and accepted ordinary-clone actual child",
+    "no_null_only_admission": true
+  },
+  "ordinary_contract": {
+    "ABI": "ordinary C++ CDECL const void* source on stack, pointer result, plain RET; no Native parent ABI equivalence",
+    "domain": "actual whole-ctor-produced Source record tag6/childC/ordinal34; child stable valid raw61-produced empty domain count8=0 and64zero heads; DF0, distinct roots/frame, no concurrent mutation/reentry",
+    "order": [
+      "genuine38 allocation",
+      "actual source+C read",
+      "accepted actual ordinary126B empty-bag producer",
+      "whole58 with exact returned child",
+      "fresh source+34 load and rawDWORD copy through returned root",
+      "return actual root"
+    ],
+    "cleanup": "only own fresh unattached raw record via real canonical free when child production throws; no fake destructor",
+    "unsupported": "nonnull populated child, Native null/failure/state2/CA4B6D cleanup, Original class/lifetime/profile execution"
+  },
+  "dependencies": [
+    {
+      "role": "record38 allocation",
+      "Source": "singleton_lifetime_allocate",
+      "Native_role": "00BF681B current-domain boundary",
+      "COFF_bytes": 90
+    },
+    {
+      "role": "actual child114 producer",
+      "Source": "?clone_empty_native_scene_property_bag_008f41f0_fragment@bsp@@YAPAXPBX@Z",
+      "COFF_bytes": 126,
+      "instructions": 41,
+      "noinline": true,
+      "old_body_unchanged": true
+    },
+    {
+      "role": "actual raw114 initialization",
+      "Source": "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z",
+      "Native": "008F41A0",
+      "COFF_bytes": 61,
+      "old_body_unchanged": true
+    },
+    {
+      "role": "actual record/backlink constructor",
+      "Source": "?construct_native_scene_property_record_type6_storage_008ef780@bsp@@YIPAXPAXI0@Z",
+      "Native": "008EF780",
+      "whole_original_byte_equal": true
+    },
+    {
+      "role": "fresh unattached Source error free",
+      "Source": "singleton_lifetime_free",
+      "COFF_bytes": 6,
+      "actual_import": "__imp__free"
+    },
+    {
+      "role": "real current normal compiler/runtime",
+      "Source": [
+        "___security_cookie",
+        "@__security_check_cookie@4",
+        "___CxxFrameHandler3",
+        "__CxxThrowException@8",
+        "std::bad_alloc",
+        "std::invalid_argument"
+      ],
+      "Original_EH_equivalence": false
+    },
+    {
+      "role": "actual profile words",
+      "Native": [
+        "CE89D4->004E6730",
+        "D16504->008F59E0",
+        "D162C4->008F4170"
+      ],
+      "Source_code_domain_admission": false
+    },
+    {
+      "role": "canonical E175B0/E188B4 context",
+      "status": "existing full provider body preserved; no node allocation is needed for empty-child path"
+    }
+  ],
+  "unchanged_provider_comparison": {
+    "native_scene_property_bag_storage": {
+      "old": 15,
+      "new": 19,
+      "missing": [],
+      "changed": [],
+      "added": [
+        "?construct_native_scene_property_record_type6_storage_008ef780@bsp@@YIPAXPAXI0@Z",
+        "?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z",
+        "__ehhandler$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z",
+        "__catch$?clone_empty_child_native_scene_property_record_type6_008f50ed_fragment@bsp@@YAPAXPBX@Z$0"
+      ],
+      "literal_symbol_comparison": true,
+      "symbol_correspondence": {
+        "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z": "?initialize_native_scene_property_bag_storage_008f41a0@bsp@@YIPAXPAXII@Z",
+        "?clone_empty_native_scene_property_bag_008f41f0_fragment@bsp@@YAPAXPBX@Z": "?clone_empty_native_scene_property_bag_008f41f0_fragment@bsp@@YAPAXPBX@Z",
+        "??0exception@std@@QAE@QBD@Z": "??0exception@std@@QAE@QBD@Z",
+        "??0exception@std@@QAE@ABV01@@Z": "??0exception@std@@QAE@ABV01@@Z",
+        "??1exception@std@@UAE@XZ": "??1exception@std@@UAE@XZ",
+        "?what@exception@std@@UBEPBDXZ": "?what@exception@std@@UBEPBDXZ",
+        "??_Gexception@std@@UAEPAXI@Z": "??_Gexception@std@@UAEPAXI@Z",
+        "??0logic_error@std@@QAE@PBD@Z": "??0logic_error@std@@QAE@PBD@Z",
+        "??1logic_error@std@@UAE@XZ": "??1logic_error@std@@UAE@XZ",
+        "??0logic_error@std@@QAE@ABV01@@Z": "??0logic_error@std@@QAE@ABV01@@Z",
+        "??_Glogic_error@std@@UAEPAXI@Z": "??_Glogic_error@std@@UAEPAXI@Z",
+        "??0invalid_argument@std@@QAE@PBD@Z": "??0invalid_argument@std@@QAE@PBD@Z",
+        "??1invalid_argument@std@@UAE@XZ": "??1invalid_argument@std@@UAE@XZ",
+        "??0invalid_argument@std@@QAE@ABV01@@Z": "??0invalid_argument@std@@QAE@ABV01@@Z",
+        "??_Ginvalid_argument@std@@UAEPAXI@Z": "??_Ginvalid_argument@std@@UAEPAXI@Z"
+      },
+      "verified_bijective_compiler_path_salts": {}
+    },
+    "singleton_lifetime": {
+      "old": 67,
+      "new": 67,
+      "missing": [],
+      "changed": [],
+      "added": [],
+      "literal_symbol_comparison": false,
+      "symbol_correspondence": {
+        "??1SingletonLifetimeManager@bsp@@UAE@XZ": "??1SingletonLifetimeManager@bsp@@UAE@XZ",
+        "??0SingletonLifetimeManager@bsp@@QAE@XZ": "??0SingletonLifetimeManager@bsp@@QAE@XZ",
+        "??_GSingletonLifetimeManager@bsp@@UAEPAXI@Z": "??_GSingletonLifetimeManager@bsp@@UAEPAXI@Z",
+        "??2@YAPAXIPAX@Z": "??2@YAPAXIPAX@Z",
+        "_memmove_s": "_memmove_s",
+        "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "?singleton_enter_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z": "?singleton_enter_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z",
+        "?singleton_leave_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z": "?singleton_leave_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z",
+        "??1ConcreteSingletonLifetimeManager@bsp@@UAE@XZ": "??1ConcreteSingletonLifetimeManager@bsp@@UAE@XZ",
+        "?lock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ": "?lock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ",
+        "?unlock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ": "?unlock@ConcreteSingletonLifetimeManager@bsp@@UAEXXZ",
+        "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z": "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z",
+        "?unregister_object@ConcreteSingletonLifetimeManager@bsp@@QAEXPAX@Z": "?unregister_object@ConcreteSingletonLifetimeManager@bsp@@QAEXPAX@Z",
+        "?move_object_after_00bd0d70@ConcreteSingletonLifetimeManager@bsp@@QAEXPAX0@Z": "?move_object_after_00bd0d70@ConcreteSingletonLifetimeManager@bsp@@QAEXPAX0@Z",
+        "?append_pointer_00bd0bc0@ConcreteSingletonLifetimeManager@bsp@@QAEXPBQAX@Z": "?append_pointer_00bd0bc0@ConcreteSingletonLifetimeManager@bsp@@QAEXPBQAX@Z",
+        "?count_00bcf910@ConcreteSingletonLifetimeManager@bsp@@QBEIXZ": "?count_00bcf910@ConcreteSingletonLifetimeManager@bsp@@QBEIXZ",
+        "?capacity@ConcreteSingletonLifetimeManager@bsp@@QBEIXZ": "?capacity@ConcreteSingletonLifetimeManager@bsp@@QBEIXZ",
+        "??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z": "??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+        "?destroy_00bd0400@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ": "?destroy_00bd0400@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ",
+        "?destroy_owned_section_0041cc80@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ": "?destroy_owned_section_0041cc80@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ",
+        "?invalid_parameter@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ": "?invalid_parameter@ConcreteSingletonLifetimeManager@bsp@@AAEXXZ",
+        "?insert_pointer_at_checked_00bd08d0@ConcreteSingletonLifetimeManager@bsp@@AAEXPAPAXPBQAX@Z": "?insert_pointer_at_checked_00bd08d0@ConcreteSingletonLifetimeManager@bsp@@AAEXPAPAXPBQAX@Z",
+        "??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z": "??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z",
+        "??0SingletonLifetimeDomain@bsp@@QAE@USingletonLifetimeCallbacks@1@@Z": "??0SingletonLifetimeDomain@bsp@@QAE@USingletonLifetimeCallbacks@1@@Z",
+        "??1SingletonLifetimeDomain@bsp@@QAE@XZ": "??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+        "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ": "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+        "?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ": "?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ",
+        "??0exception@std@@QAE@QBD@Z": "??0exception@std@@QAE@QBD@Z",
+        "??0exception@std@@QAE@QBDH@Z": "??0exception@std@@QAE@QBDH@Z",
+        "??0exception@std@@QAE@ABV01@@Z": "??0exception@std@@QAE@ABV01@@Z",
+        "??1exception@std@@UAE@XZ": "??1exception@std@@UAE@XZ",
+        "?what@exception@std@@UBEPBDXZ": "?what@exception@std@@UBEPBDXZ",
+        "??_Gexception@std@@UAEPAXI@Z": "??_Gexception@std@@UAEPAXI@Z",
+        "??0bad_alloc@std@@QAE@XZ": "??0bad_alloc@std@@QAE@XZ",
+        "??1bad_alloc@std@@UAE@XZ": "??1bad_alloc@std@@UAE@XZ",
+        "??0bad_alloc@std@@QAE@ABV01@@Z": "??0bad_alloc@std@@QAE@ABV01@@Z",
+        "??_Gbad_alloc@std@@UAEPAXI@Z": "??_Gbad_alloc@std@@UAEPAXI@Z",
+        "??0logic_error@std@@QAE@PBD@Z": "??0logic_error@std@@QAE@PBD@Z",
+        "??1logic_error@std@@UAE@XZ": "??1logic_error@std@@UAE@XZ",
+        "??0logic_error@std@@QAE@ABV01@@Z": "??0logic_error@std@@QAE@ABV01@@Z",
+        "??_Glogic_error@std@@UAEPAXI@Z": "??_Glogic_error@std@@UAEPAXI@Z",
+        "??0invalid_argument@std@@QAE@PBD@Z": "??0invalid_argument@std@@QAE@PBD@Z",
+        "??1invalid_argument@std@@UAE@XZ": "??1invalid_argument@std@@UAE@XZ",
+        "??0invalid_argument@std@@QAE@ABV01@@Z": "??0invalid_argument@std@@QAE@ABV01@@Z",
+        "??_Ginvalid_argument@std@@UAEPAXI@Z": "??_Ginvalid_argument@std@@UAEPAXI@Z",
+        "??0length_error@std@@QAE@PBD@Z": "??0length_error@std@@QAE@PBD@Z",
+        "??1length_error@std@@UAE@XZ": "??1length_error@std@@UAE@XZ",
+        "??0length_error@std@@QAE@ABV01@@Z": "??0length_error@std@@QAE@ABV01@@Z",
+        "??_Glength_error@std@@UAEPAXI@Z": "??_Glength_error@std@@UAEPAXI@Z",
+        "?address@?A0x0fa88b29@bsp@@YAIPBX@Z": "?address@?A0xe49f34f6@bsp@@YAIPBX@Z",
+        "?distance@?A0x0fa88b29@bsp@@YAIPBQAX0@Z": "?distance@?A0xe49f34f6@bsp@@YAIPBQAX0@Z",
+        "?offset@?A0x0fa88b29@bsp@@YAPAPAXPAPAXI@Z": "?offset@?A0xe49f34f6@bsp@@YAPAPAXPAPAXI@Z",
+        "?copy_slots@?A0x0fa88b29@bsp@@YAXPAPAX00@Z": "?copy_slots@?A0xe49f34f6@bsp@@YAXPAPAX00@Z",
+        "?allocate_slots@?A0x0fa88b29@bsp@@YAPAPAXI@Z": "?allocate_slots@?A0xe49f34f6@bsp@@YAPAPAXI@Z",
+        "??0OwnedCriticalSection@ConcreteSingletonLifetimeManager@bsp@@QAE@XZ": "??0OwnedCriticalSection@ConcreteSingletonLifetimeManager@bsp@@QAE@XZ",
+        "??R<lambda_f866a27c2ac0c818ff66be4fdb26f1ce>@@QBE@PAX@Z": "??R<lambda_7286e8492d72c51082bdd3f87182133b>@@QBE@PAX@Z",
+        "??0<lambda_f866a27c2ac0c818ff66be4fdb26f1ce>@@QAE@PAVConcreteSingletonLifetimeManager@bsp@@@Z": "??0<lambda_7286e8492d72c51082bdd3f87182133b>@@QAE@PAVConcreteSingletonLifetimeManager@bsp@@@Z",
+        "__ehhandler$??1ConcreteSingletonLifetimeManager@bsp@@UAE@XZ": "__ehhandler$??1ConcreteSingletonLifetimeManager@bsp@@UAE@XZ",
+        "__ehhandler$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z": "__ehhandler$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z",
+        "__catch$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$0": "__catch$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$0",
+        "__unwindfunclet$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$2": "__unwindfunclet$??0ConcreteSingletonLifetimeManager@bsp@@AAE@USingletonLifetimeCallbacks@1@@Z$2",
+        "__ehhandler$??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z": "__ehhandler$??_GConcreteSingletonLifetimeManager@bsp@@UAEPAXI@Z",
+        "__ehhandler$??1SingletonLifetimeDomain@bsp@@QAE@XZ": "__ehhandler$??1SingletonLifetimeDomain@bsp@@QAE@XZ",
+        "__ehhandler$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ": "__ehhandler$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+        "__catch$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ$0": "__catch$?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ$0",
+        "__ehhandler$?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ": "__ehhandler$?shutdown@SingletonLifetimeDomain@bsp@@QAEXXZ"
+      },
+      "verified_bijective_compiler_path_salts": {
+        "?A0x0fa88b29": "?A0xe49f34f6",
+        "<lambda_f866a27c2ac0c818ff66be4fdb26f1ce>": "<lambda_7286e8492d72c51082bdd3f87182133b>"
+      }
+    },
+    "game_native_physical_pool": {
+      "old": 56,
+      "new": 56,
+      "missing": [],
+      "changed": [],
+      "added": [],
+      "literal_symbol_comparison": false,
+      "symbol_correspondence": {
+        "??0exception@std@@QAE@QBD@Z": "??0exception@std@@QAE@QBD@Z",
+        "??0exception@std@@QAE@ABV01@@Z": "??0exception@std@@QAE@ABV01@@Z",
+        "??1exception@std@@UAE@XZ": "??1exception@std@@UAE@XZ",
+        "?what@exception@std@@UBEPBDXZ": "?what@exception@std@@UBEPBDXZ",
+        "??_Gexception@std@@UAEPAXI@Z": "??_Gexception@std@@UAEPAXI@Z",
+        "?_Adjust_manually_vector_aligned@std@@YAXAAPAXAAI@Z": "?_Adjust_manually_vector_aligned@std@@YAXAAPAXAAI@Z",
+        "?_Orphan_all@_Container_base0@std@@QAEXXZ": "?_Orphan_all@_Container_base0@std@@QAEXXZ",
+        "?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@2@QAU?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@2@I@Z": "?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@2@QAU?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@2@I@Z",
+        "??1?$list@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@2@@std@@QAE@XZ": "??1?$list@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@2@@std@@QAE@XZ",
+        "?_Tidy@?$list@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@2@@std@@AAEXXZ": "?_Tidy@?$list@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@2@@std@@AAEXXZ",
+        "?_Getal@?$list@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@2@@std@@AAEAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@2@XZ": "?_Getal@?$list@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@2@@std@@AAEAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@2@XZ",
+        "?_Get_first@?$_Compressed_pair@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@2@$00@std@@QAEAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@2@XZ": "?_Get_first@?$_Compressed_pair@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@2@$00@std@@QAEAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@2@XZ",
+        "?deallocate@?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@QAEXQAV?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@2@I@Z": "?deallocate@?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@QAEXQAV?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@2@I@Z",
+        "?capacity@?$_Hash_vec@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@std@@QBEIXZ": "?capacity@?$_Hash_vec@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@std@@QBEIXZ",
+        "?_Tidy@?$_Hash_vec@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@std@@QAEXXZ": "?_Tidy@?$_Hash_vec@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@std@@QAEXXZ",
+        "??1?$_Hash_vec@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@std@@QAE@XZ": "??1?$_Hash_vec@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@std@@QAE@XZ",
+        "?_Get_first@?$_Compressed_pair@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@V?$_Vector_val@U?$_Simple_types@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@2@$00@std@@QAEAAV?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@2@XZ": "?_Get_first@?$_Compressed_pair@V?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@V?$_Vector_val@U?$_Simple_types@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@std@@@2@$00@std@@QAEAAV?$allocator@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@@2@XZ",
+        "??1?$_Hash@V?$_Umap_traits@PAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@V?$_Uhash_compare@PAUAllocatorListElement@bsp@@U?$hash@PAUAllocatorListElement@bsp@@@std@@U?$equal_to@PAUAllocatorListElement@bsp@@@4@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@5@$0A@@std@@@std@@QAE@XZ": "??1?$_Hash@V?$_Umap_traits@PAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@V?$_Uhash_compare@PAUAllocatorListElement@bsp@@U?$hash@PAUAllocatorListElement@bsp@@@std@@U?$equal_to@PAUAllocatorListElement@bsp@@@4@@std@@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@5@$0A@@std@@@std@@QAE@XZ",
+        "??1?$unordered_map@PAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@U?$hash@PAUAllocatorListElement@bsp@@@std@@U?$equal_to@PAUAllocatorListElement@bsp@@@5@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@5@@std@@QAE@XZ": "??1?$unordered_map@PAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@U?$hash@PAUAllocatorListElement@bsp@@@std@@U?$equal_to@PAUAllocatorListElement@bsp@@@5@V?$allocator@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@5@@std@@QAE@XZ",
+        "??1AllocatorListDomain@bsp@@QAE@XZ": "??1AllocatorListDomain@bsp@@QAE@XZ",
+        "??0logic_error@std@@QAE@PBD@Z": "??0logic_error@std@@QAE@PBD@Z",
+        "??1logic_error@std@@UAE@XZ": "??1logic_error@std@@UAE@XZ",
+        "??0logic_error@std@@QAE@ABV01@@Z": "??0logic_error@std@@QAE@ABV01@@Z",
+        "??_Glogic_error@std@@UAEPAXI@Z": "??_Glogic_error@std@@UAEPAXI@Z",
+        "??0_Mutex_base@std@@QAE@H@Z": "??0_Mutex_base@std@@QAE@H@Z",
+        "?lock@_Mutex_base@std@@QAEXXZ": "?lock@_Mutex_base@std@@QAEXXZ",
+        "?unlock@_Mutex_base@std@@QAEXXZ": "?unlock@_Mutex_base@std@@QAEXXZ",
+        "?_Verify_ownership_levels@_Mutex_base@std@@IAE_NXZ": "?_Verify_ownership_levels@_Mutex_base@std@@IAE_NXZ",
+        "?_Mymtx@_Mutex_base@std@@AAEPAU_Mtx_internal_imp_t@@XZ": "?_Mymtx@_Mutex_base@std@@AAEPAU_Mtx_internal_imp_t@@XZ",
+        "??0mutex@std@@QAE@XZ": "??0mutex@std@@QAE@XZ",
+        "??0?$lock_guard@Vmutex@std@@@std@@QAE@AAVmutex@1@@Z": "??0?$lock_guard@Vmutex@std@@@std@@QAE@AAVmutex@1@@Z",
+        "??1?$lock_guard@Vmutex@std@@@std@@QAE@XZ": "??1?$lock_guard@Vmutex@std@@@std@@QAE@XZ",
+        "?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ": "?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ",
+        "?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ": "?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ",
+        "?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ": "?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ",
+        "?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ": "?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ",
+        "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ": "?game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ",
+        "??0GameNativePhysicalPoolProcess@game@bsp@@AAE@XZ": "??0GameNativePhysicalPoolProcess@game@bsp@@AAE@XZ",
+        "??1GameNativePhysicalPoolProcess@game@bsp@@AAE@XZ": "??1GameNativePhysicalPoolProcess@game@bsp@@AAE@XZ",
+        "??__Fprocess@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ@YAXXZ": "??__Fprocess@?1??game_native_physical_pool_process@game@bsp@@YAAAVGameNativePhysicalPoolProcess@12@XZ@YAXXZ",
+        "??$_Destroy_range@PAV?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@PAV12@@std@@YAXPAV?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@0@QAV10@@Z": "??$_Destroy_range@PAV?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@std@@PAV12@@std@@YAXPAV?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@@std@@@0@QAV10@@Z",
+        "??$_Free_non_head@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@PAU01@@Z": "??$_Free_non_head@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@PAU01@@Z",
+        "??$_Freenode0@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@PAU01@@Z": "??$_Freenode0@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@PAU01@@Z",
+        "??$_Freenode@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@PAU01@@Z": "??$_Freenode@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@PAU01@@Z",
+        "??$_Destroy_in_place@PAU?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@YAXAAPAU?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@0@@Z": "??$_Destroy_in_place@PAU?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@YAXAAPAU?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@0@@Z",
+        "??$_Deallocate@$07@std@@YAXPAXI@Z": "??$_Deallocate@$07@std@@YAXPAXI@Z",
+        "??$addressof@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@YAPAU?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@0@AAU10@@Z": "??$addressof@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@std@@YAPAU?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@0@AAU10@@Z",
+        "??$destroy@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@QAU?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@1@@Z": "??$destroy@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@std@@@std@@SAXAAV?$allocator@U?$_List_node@U?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@std@@PAX@std@@@1@QAU?$pair@QAUAllocatorListElement@bsp@@UAllocatorListVirtual0Binding@2@@1@@Z",
+        "__ehhandler$?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ": "__ehhandler$?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ",
+        "__unwindfunclet$?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ$0": "__unwindfunclet$?initialize_once_00cd9010@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ$0",
+        "__ehhandler$?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ": "__ehhandler$?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ",
+        "__unwindfunclet$?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ$0": "__unwindfunclet$?physical_provider_pool_context_0109dbf0@GameNativePhysicalPoolProcess@game@bsp@@QAEAAUNativePhysicalProviderPoolContext@3@XZ$0",
+        "__ehhandler$?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ": "__ehhandler$?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ",
+        "__unwindfunclet$?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ$0": "__unwindfunclet$?initialize_property_node_pool_once_00cc8a30@GameNativePhysicalPoolProcess@game@bsp@@QAEHXZ$0",
+        "__ehhandler$?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ": "__ehhandler$?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ",
+        "__unwindfunclet$?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ$0": "__unwindfunclet$?property_node_pool_storage_00e175b0@GameNativePhysicalPoolProcess@game@bsp@@QAEPAXXZ$0"
+      },
+      "verified_bijective_compiler_path_salts": {}
+    }
+  },
+  "production": {
+    "complete_final_object_paths": {
+      "native_scene_property_bag_storage": "local/cc12_property_type6_storage_source/post_qualified/objects/native_scene_property_bag_storage.obj",
+      "singleton_lifetime": "local/cc12_property_type6_storage_source/post_qualified/objects/singleton_lifetime.obj",
+      "game_native_physical_pool": "local/cc12_property_type6_storage_source/post_qualified/objects/game_native_physical_pool.obj"
+    },
+    "whole_archive": "local/cc12_property_type6_storage_source/post_qualified/archive/bsp_core.lib",
+    "exact_unique_archive_members": [
+      {
+        "name": "bsp_core.dir\\Release\\native_scene_property_bag_storage.obj",
+        "header_offset": 57454620,
+        "bytes": 11700,
+        "sha256": "2bf81dfd2f333e050fe6749f8e03ca5b94430aba2bcfb023252536869fded192",
+        "path": "local/cc12_property_type6_storage_source/post_qualified/archive_members/native_scene_property_bag_storage.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "header_offset": 67744388,
+        "bytes": 32983,
+        "sha256": "d7cb5e1b1c747ee900a2ea70f488bff61ceb1d54696aa2dcceb01c4efcb6fc89",
+        "path": "local/cc12_property_type6_storage_source/post_qualified/archive_members/singleton_lifetime.obj",
+        "unique": true,
+        "whole_object_equal": true
+      },
+      {
+        "name": "bsp_core.dir\\Release\\game_native_physical_pool.obj",
+        "header_offset": 61609052,
+        "bytes": 30116,
+        "sha256": "b06852ee89565a532217912d6d87e5cc9181010727cc2793fdd9b7e0bbefbd67",
+        "path": "local/cc12_property_type6_storage_source/post_qualified/archive_members/game_native_physical_pool.obj",
+        "unique": true,
+        "whole_object_equal": true
+      }
+    ],
+    "complete_old_functions": 138,
+    "complete_final_functions": 142,
+    "complete_old_same_TU_functions": 15,
+    "no_new_Application_COMDAT_link_or_runtime_claim": true
+  },
+  "evidence_receipts": {
+    "pre.json": {
+      "path": "local/cc12_property_type6_storage_source/pre.json",
+      "bytes": 181737,
+      "sha256": "c3cd78cfae00f63b3dcea067d5f29731224408e62e6ef86bb596e40b79d1cbd0"
+    },
+    "freeze.json": {
+      "path": "local/cc12_property_type6_storage_source/freeze.json",
+      "bytes": 136560,
+      "sha256": "c023023a7829cab2a4d3d098d41f0a8800d6e6136ab8bd61e3d8e002619e772d"
+    },
+    "post_initial.json": {
+      "path": "local/cc12_property_type6_storage_source/post_initial.json",
+      "bytes": 321393,
+      "sha256": "7e0d2501e812477cab003386933828c1558b2479fb8550fd95b1375a4044f526"
+    },
+    "second_build_preserved.json": {
+      "path": "local/cc12_property_type6_storage_source/second_build_preserved.json",
+      "bytes": 4843,
+      "sha256": "17d67ee4d92a04364ab7ff6228a08b6ee52baba1b0ecef934bb635129c9dfbbe"
+    },
+    "freeze_final.json": {
+      "path": "local/cc12_property_type6_storage_source/freeze_final.json",
+      "bytes": 139605,
+      "sha256": "82448e24e249da1ef32a0cf12fa55de34f93ce2ed834d6550db400677ece452c"
+    },
+    "freeze_qualified.json": {
+      "path": "local/cc12_property_type6_storage_source/freeze_qualified.json",
+      "bytes": 142147,
+      "sha256": "05b8449592945beda9bc92ec68ee59fc9cc8666ce37107e90d179872133aebb7"
+    },
+    "post_qualified.json": {
+      "path": "local/cc12_property_type6_storage_source/post_qualified.json",
+      "bytes": 322593,
+      "sha256": "0c08220a04287447227689d3ba1b521825a14d9a2d88ee44f57a960a098ae5dc"
+    },
+    "qualification.json": {
+      "path": "local/cc12_property_type6_storage_source/qualification.json",
+      "bytes": 16619,
+      "sha256": "ebccfd6eef98f10e14eb3c2459cfd7f5c28eee1ff8feb43022aec8deb63e7c39"
+    },
+    "post_qualified_dependency_membership.json": {
+      "path": "local/cc12_property_type6_storage_source/post_qualified_dependency_membership.json",
+      "bytes": 63,
+      "sha256": "e1602c0241f36bdf6eff092fb5ae805fc23e215a6bb64bacfedd5c0803fb7faf"
+    },
+    "call_site_scope.json": {
+      "path": "local/cc12_property_type6_storage_source/call_site_scope.json",
+      "bytes": 176,
+      "sha256": "72bc232fe8c8f6e74d25db4595fded82878ea9588c7ba460931acecf085bfce7"
+    },
+    "call_site_search.txt": {
+      "path": "local/cc12_property_type6_storage_source/call_site_search.txt",
+      "bytes": 521,
+      "sha256": "7fa72862bd29f4db994781481e7edf38e791c93c57f2ad666d97552e18b52f97"
+    }
+  },
+  "builds": {
+    "initial": {
+      "start_utc": "2026-10-08T18:14:22.4908095Z",
+      "finish_utc": "2026-10-08T18:28:12.5738057Z",
+      "elapsed_seconds": 830.0802792,
+      "status": "PASS",
+      "command": "./scripts/build.ps1",
+      "selected_new_entry_execution": false,
+      "checks_passed": 2,
+      "test_seconds": 8.35,
+      "reason_for_followup": "force direct accepted producer call and enable existing native differential test"
+    },
+    "second": {
+      "start_utc": "2026-10-08T18:32:08.3395988Z",
+      "finish_utc": "2026-10-08T18:32:27.6859420Z",
+      "elapsed_seconds": 19.3410844,
+      "status": "PASS",
+      "command": "./scripts/build.ps1",
+      "selected_new_entry_execution": false,
+      "checks_passed": 3,
+      "test_seconds": 8.16,
+      "reason_for_followup": "three actual compiler resources were missing from prefreeze"
+    },
+    "qualified_final": {
+      "start_utc": "2026-10-08T18:34:36.8880494Z",
+      "finish_utc": "2026-10-08T18:34:54.2432818Z",
+      "elapsed_seconds": 17.3525067,
+      "status": "PASS",
+      "command": "./scripts/build.ps1",
+      "selected_new_entry_execution": false,
+      "forced_recompile": "owned Source timestamp only, content unchanged",
+      "checks_passed": 3,
+      "test_seconds": 8.54,
+      "actual_consumed_provider_inputs": 285,
+      "all_precompiler_copies_equal": true
+    }
+  },
+  "preserved_iterations": [
+    {
+      "role": "first actual Source/compiler choice",
+      "path": "local\\cc12_property_type6_storage_source\\post_initial.json",
+      "detail": "accepted Source child producer inlined into new196B main extent; all15oldsameTU bodies unchanged; full artifacts retained"
+    },
+    {
+      "role": "missing optional tlog",
+      "path": "local\\cc12_property_type6_storage_source\\pre_missing_optional_log_preserved.txt",
+      "detail": "initial capture expected absent Lib.read.1.tlog; optional log handling fixed, no Source/build failure"
+    },
+    {
+      "role": "worktree symbol salts",
+      "path": "local\\cc12_property_type6_storage_source\\post_initial_symbol_salt_failure_preserved.txt",
+      "detail": "literal cross-worktree internal names differ; explicit bijective namespace/lambda mapping closes all138 full bodies and ordered relocations, bag15 remains literal"
+    },
+    {
+      "role": "actual compiler inputs",
+      "path": "local\\cc12_property_type6_storage_source\\post_final_missing_runtime_inputs_preserved.txt",
+      "detail": "CLUI.DLL, SORTDEFAULT.NLS, TZRES.DLL found after second successful build; final prefrozen and forced normal recompilation"
+    },
+    {
+      "role": "report generator syntax",
+      "path": "local\\cc12_property_type6_storage_source\\qualify_initial_syntax_error_preserved.txt",
+      "detail": "initial reporting script failed to parse before executing; corrected delimiter, initial exact script retained; no Source or build failure"
+    }
+  ],
+  "Original": {
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "whole_copy": false
+    },
+    "selected_whole_ctor_and_arm_spans": [
+      {
+        "entry": "008EF780",
+        "bytes": 58,
+        "instructions": 16,
+        "sha256": "6ecd8cb72e2e8d06bf1f3f5c53f442d88c3b3606ffc3dacdc6a98f9c5a2f0450",
+        "path": "local/cc12_property_type6_storage_source/pre/Original/008ef780_58.bin",
+        "file_offset": 5175168,
+        "live_PE_equal": true
+      },
+      {
+        "entry": "008F50ED",
+        "bytes": 71,
+        "instructions": 21,
+        "sha256": "e13774b4eac8a8c1f666445c908ad604d586777101dac0eec941639a0d0d44c6",
+        "path": "local/cc12_property_type6_storage_source/pre/Original/008f50ed_71.bin",
+        "file_offset": 5198061,
+        "live_PE_equal": true
+      }
+    ],
+    "selected_new_entries_executed": false,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_queries": "bsp.py verified target before each owned-byte batch; standard verify-seeds verified target before existing8-math-reference batch",
+    "Ghidra_writes": false,
+    "shared_exports_writes": false
+  },
+  "excluded": [
+    "six-body recursive lifetime and Source code-domain closure",
+    "whole populated8F41F0/whole8F4F60",
+    "replacement/insertion wrapper owner/ordinal publication",
+    "Original null/EH/failure/class equivalence",
+    "new API execution/gameplay"
+  ],
+  "validation": {
+    "raw58_equals_whole_installed_Native": true,
+    "raw58_no_relocations_16instructions": true,
+    "raw_abi_register_stack_flags_store_order_preserved_by_exact_bytes": true,
+    "ordinary146B_48instructions_actual_allocator_child_ctor_calls": true,
+    "actual_source_child_load_after38_allocation": true,
+    "actual_returned_child_pushed_to_ctor": true,
+    "fresh_source_ordinal_load_after_ctor": true,
+    "catch_uses_only_saved_unattached_root_and_real_free": true,
+    "existing_raw61_and_clone126_whole_bodies_unchanged": true,
+    "all15_old_same_TU_bodies_and_relocations_literal": true,
+    "all138_existing_provider_bodies_and_ordered_relocations_preserved": true,
+    "other_TU_path_salts_have_explicit_bijections": true,
+    "all285_consumed_inputs_frozen_before_final_compile": true,
+    "final_source_and_header_match_precompile_inputs": true,
+    "three_unique_current_archive_members_equal_whole_objects": true,
+    "actual_current_I386_CRT_import_and_export_roles": true,
+    "normal_final_build_all3_existing_checks_passed": true,
+    "no_CMake_or_Ghidra_or_ledger_changes": true,
+    "no_new_test_or_selected_entry_execution": true
+  },
+  "document": {
+    "path": "docs/CC12_PROPERTY_TYPE6_STORAGE_SOURCE.md",
+    "bytes": 8485,
+    "sha256": "88c9b7ff46162f95b0e48155f19194195b5c871d69b5646a77472ed2980ba20c"
+  },
+  "artifact_manifest": {
+    "path": "local/cc12_property_type6_storage_source/artifact_manifest.json",
+    "bytes": 474275,
+    "sha256": "b6eb0c27579671d8569ac76fc94559a55b0faa2d16de76e6db88dd5cdb2bb953",
+    "count": 2097
+  },
+  "final_seal": {
+    "UTC": "2026-10-08T18:50:22.888081+00:00",
+    "status": "PASS",
+    "all_artifacts_rehashed": true,
+    "Source_current_matches_final_frozen_inputs": true,
+    "functions_proposed_not_credited": 1,
+    "fragments_proposed_not_credited": 1,
+    "selected_new_entry_execution": false
+  },
+  "primary_review": {
+    "receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_type6_storage_primary_review\\receipt.json",
+    "sha256": "d234fe672c72e9baec7c175ae82b7edfe144a39175265b36fad2ff72f894bbd6",
+    "worker_artifacts_rehashed": 2097,
+    "pre_frozen_current_inputs": 294,
+    "actual_current_TU_inputs": 285,
+    "current_whole_objects": 3,
+    "current_complete_extents": 142,
+    "old_complete_extents_unchanged": 138,
+    "old_same_TU_extents_unchanged": 15,
+    "whole_function_registered": 1,
+    "fragment_registered": 1,
+    "new_entry_execution": false,
+    "startup_or_gameplay": false
+  }
+}
