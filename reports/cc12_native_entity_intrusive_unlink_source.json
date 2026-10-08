@@ -1,0 +1,397 @@
+{
+  "schema": "bsp.cc12.native_entity_intrusive_unlink_source.v1",
+  "packet": "cc12_native_entity_intrusive_unlink_source",
+  "UTC": "2026-10-08T22:48:52.003326+00:00",
+  "status": "Complete raw Source, one normal build and whole Native/COFF/unique-core-member proof; pending Root independent admission",
+  "baseline": "4cf096d4617d3f79ab3066597d7b9554346808fb",
+  "Root_registration_commit": "4cf096d4617d3f79ab3066597d7b9554346808fb",
+  "Root_readiness_receipt_sha256": "9672e0b1f3f80c8f6ac2321e7b6c8b2861c1c4b01e901138997ad8f607283cbd",
+  "counts": {
+    "new_raw_Source_definitions": 2,
+    "new_original_function_ledger_credit": 0,
+    "Root_deduplication_pending": true,
+    "Native_bytes": 166,
+    "Source_bytes": 166,
+    "instructions": 58,
+    "code_relocations": 0,
+    "new_tests": 0,
+    "normal_build_invocations": 1,
+    "existing_checks_passed": 3,
+    "packet_entry_execution": 0,
+    "game_execution": 0,
+    "production_callers_added": 0,
+    "production_World_owner_admission": 0
+  },
+  "Source": [
+    {
+      "path": "include/bsp/native_entity_intrusive_unlink.hpp",
+      "bytes": 1614,
+      "sha256": "a7de3cc8ac55091e7af314f932a012f3cd670febd6edcc3bde87015e69ecb8fc",
+      "before_build": "pre_build/source/include/bsp/native_entity_intrusive_unlink.hpp",
+      "after_build": "post_build/source/include/bsp/native_entity_intrusive_unlink.hpp"
+    },
+    {
+      "path": "src/native_entity_intrusive_unlink.cpp",
+      "bytes": 2988,
+      "sha256": "5f918b5807cb78086d9d0e107a9d45bd1e665ba65735fdc6ec439bb40bb7aa8e",
+      "before_build": "pre_build/source/src/native_entity_intrusive_unlink.cpp",
+      "after_build": "post_build/source/src/native_entity_intrusive_unlink.cpp"
+    }
+  ],
+  "build": {
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast",
+    "argv": [
+      "powershell",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\scripts\\build.ps1"
+    ],
+    "started_utc": "2026-10-08T22:38:56.858560+00:00",
+    "preimages": "pre_build/pins.json",
+    "all_prefrozen_inputs_rehashed_before_invocation": true,
+    "returncode": 0,
+    "finished_utc": "2026-10-08T22:39:29.491715+00:00"
+  },
+  "input_closure": {
+    "module": "native_entity_intrusive_unlink",
+    "command": [
+      "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-cc12_wake_append_source_ast/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\SRC\\NATIVE_ENTITY_INTRUSIVE_UNLINK.CPP"
+    ],
+    "write_record_batch_key": "j:\\prog\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\entity_lifecycle_tails.cpp|j:\\prog\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\game_native_input_settings_process.cpp|j:\\prog\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\game_native_settings_application.cpp|j:\\prog\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\game_native_settings_process.cpp|j:\\prog\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\native_entity_intrusive_unlink.cpp|j:\\prog\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\native_scene_property_bag_storage.cpp",
+    "written_outputs": [
+      "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\ENTITY_LIFECYCLE_TAILS.OBJ",
+      "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\GAME_NATIVE_SETTINGS_APPLICATION.OBJ",
+      "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\GAME_NATIVE_SETTINGS_PROCESS.OBJ",
+      "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\NATIVE_SCENE_PROPERTY_BAG_STORAGE.OBJ",
+      "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\GAME_NATIVE_INPUT_SETTINGS_PROCESS.OBJ",
+      "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\NATIVE_ENTITY_INTRUSIVE_UNLINK.OBJ"
+    ],
+    "actual_dependency_count": 14,
+    "actual_dependencies": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\native_entity_intrusive_unlink.cpp",
+        "origin": "Source compilation key",
+        "sha256": "5f918b5807cb78086d9d0e107a9d45bd1e665ba65735fdc6ec439bb40bb7aa8e",
+        "bytes": 2988,
+        "pre_build": "pre_build/source/src/native_entity_intrusive_unlink.cpp",
+        "post_build": "post_build/source/src/native_entity_intrusive_unlink.cpp"
+      },
+      {
+        "path": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_WAKE_APPEND_SOURCE_AST\\INCLUDE\\BSP\\NATIVE_ENTITY_INTRUSIVE_UNLINK.HPP",
+        "origin": "CL.read dependency row",
+        "sha256": "a7de3cc8ac55091e7af314f932a012f3cd670febd6edcc3bde87015e69ecb8fc",
+        "bytes": 1614,
+        "pre_build": "pre_build/source/include/bsp/native_entity_intrusive_unlink.hpp",
+        "post_build": "post_build/source/include/bsp/native_entity_intrusive_unlink.hpp"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDDEF",
+        "origin": "CL.read dependency row",
+        "sha256": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc",
+        "bytes": 4015,
+        "pre_build": "pre_build/external/0251_CSTDDEF",
+        "post_build": "post_build/external/0251_CSTDDEF"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\YVALS_CORE.H",
+        "origin": "CL.read dependency row",
+        "sha256": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684",
+        "bytes": 100570,
+        "pre_build": "pre_build/external/0356_YVALS_CORE.H",
+        "post_build": "post_build/external/0356_YVALS_CORE.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME.H",
+        "origin": "CL.read dependency row",
+        "sha256": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f",
+        "bytes": 11444,
+        "pre_build": "pre_build/external/0315_VCRUNTIME.H",
+        "post_build": "post_build/external/0315_VCRUNTIME.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\SAL.H",
+        "origin": "CL.read dependency row",
+        "sha256": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+        "bytes": 213957,
+        "pre_build": "pre_build/external/0292_SAL.H",
+        "post_build": "post_build/external/0292_SAL.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CONCURRENCYSAL.H",
+        "origin": "CL.read dependency row",
+        "sha256": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+        "bytes": 17273,
+        "pre_build": "pre_build/external/0248_CONCURRENCYSAL.H",
+        "post_build": "post_build/external/0248_CONCURRENCYSAL.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VADEFS.H",
+        "origin": "CL.read dependency row",
+        "sha256": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01",
+        "bytes": 7668,
+        "pre_build": "pre_build/external/0313_VADEFS.H",
+        "post_build": "post_build/external/0313_VADEFS.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XKEYCHECK.H",
+        "origin": "CL.read dependency row",
+        "sha256": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+        "bytes": 20754,
+        "pre_build": "pre_build/external/0336_XKEYCHECK.H",
+        "post_build": "post_build/external/0336_XKEYCHECK.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDDEF.H",
+        "origin": "CL.read dependency row",
+        "sha256": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c",
+        "bytes": 1413,
+        "pre_build": "pre_build/external/0075_STDDEF.H",
+        "post_build": "post_build/external/0075_STDDEF.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT.H",
+        "origin": "CL.read dependency row",
+        "sha256": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc",
+        "bytes": 127273,
+        "pre_build": "pre_build/external/0045_CORECRT.H",
+        "post_build": "post_build/external/0045_CORECRT.H"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XTR1COMMON",
+        "origin": "CL.read dependency row",
+        "sha256": "cdffecba4f44c22fe4f809c6e4f6eeee628a7331a1b2e4ffd5dba32afcda2dcd",
+        "bytes": 8613,
+        "pre_build": "pre_build/external/0352_XTR1COMMON",
+        "post_build": "post_build/external/0352_XTR1COMMON"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDINT",
+        "origin": "CL.read dependency row",
+        "sha256": "ce03526f2948c653a2ca8f68b9a8a8f0e13648243ab24068cdd473a52d4774c5",
+        "bytes": 1697,
+        "pre_build": "pre_build/external/0252_CSTDINT",
+        "post_build": "post_build/external/0252_CSTDINT"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\STDINT.H",
+        "origin": "CL.read dependency row",
+        "sha256": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+        "bytes": 4114,
+        "pre_build": "pre_build/external/0299_STDINT.H",
+        "post_build": "post_build/external/0299_STDINT.H"
+      }
+    ],
+    "all_actual_inputs_prefrozen": true,
+    "pre_to_post_inputs_identical": true,
+    "physical_tools": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c1xx.dll",
+        "bytes": 13321528,
+        "sha256": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\c2.dll",
+        "bytes": 10542392,
+        "sha256": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b"
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
+        "bytes": 387856,
+        "sha256": "b21235a7b75630114ed923dfb881e60f501000dd996a09c25dd1f73f0bbde220"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe",
+        "bytes": 469456,
+        "sha256": "c54f3b7c9164ea9a0db8641e81ecdda80c2664ef5a47c4191406f848cc07c662"
+      }
+    ],
+    "recipe_registration": "Root staging 4cf096d4617d3f79ab3066597d7b9554346808fb CMakeLists.txt single target_sources",
+    "generated_project_unique_ClCompile_item": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\native_entity_intrusive_unlink.cpp",
+    "normal_build_invocations": 1,
+    "new_Source_compile_log_occurrences": 1,
+    "existing_checks_passed": 3,
+    "new_tests": 0
+  },
+  "complete_physical_proof": {
+    "object_sha256": "375265be3c3543c9bd1bf74ec7e00b810fd4c0251c9066676379418c6c52f506",
+    "object_bytes": 1073,
+    "complete_object_sections": 5,
+    "complete_nonempty_executable_sections": 2,
+    "all_executable_bytes": 166,
+    "functions": [
+      {
+        "Native_entry": "00903f30",
+        "Source_symbol": "?unlink_native_entity_world_chain_00903f30@bsp@@YIPAXPAXI0@Z",
+        "Native_bytes": 83,
+        "Source_bytes": 83,
+        "complete_instruction_count": 29,
+        "sha256": "1eb60de632316963b95f9385620d97fe53bb5188cd20ac3cc593f988489e4dc4",
+        "whole_byte_identity": true,
+        "all_instruction_starts_and_encodings_equal": true,
+        "relocation_count": 0,
+        "CALLs": 0,
+        "external_data": 0,
+        "section": 4,
+        "section_offset": 0
+      },
+      {
+        "Native_entry": "00924710",
+        "Source_symbol": "?unlink_native_entity_sibling_chain_00924710@bsp@@YIPAXPAXI0@Z",
+        "Native_bytes": 83,
+        "Source_bytes": 83,
+        "complete_instruction_count": 29,
+        "sha256": "5662da33dd4d146824cdadff4440b6b95f0c20d14d1293674b9bff17bfbe6d31",
+        "whole_byte_identity": true,
+        "all_instruction_starts_and_encodings_equal": true,
+        "relocation_count": 0,
+        "CALLs": 0,
+        "external_data": 0,
+        "section": 3,
+        "section_offset": 0
+      }
+    ],
+    "physical_unique_core_member": {
+      "name": "bsp_core.dir\\Release\\native_entity_intrusive_unlink.obj",
+      "header_offset": 63742304,
+      "payload_file_offset": 63742364,
+      "bytes": 1073,
+      "sha256": "375265be3c3543c9bd1bf74ec7e00b810fd4c0251c9066676379418c6c52f506"
+    },
+    "actual_symbol_definition_owners": {
+      "?unlink_native_entity_world_chain_00903f30@bsp@@YIPAXPAXI0@Z": [
+        {
+          "member_name": "bsp_core.dir\\Release\\native_entity_intrusive_unlink.obj",
+          "member_payload_file_offset": 63742364,
+          "member_sha256": "375265be3c3543c9bd1bf74ec7e00b810fd4c0251c9066676379418c6c52f506",
+          "symbol_section": 4,
+          "symbol_value": 0
+        }
+      ],
+      "?unlink_native_entity_sibling_chain_00924710@bsp@@YIPAXPAXI0@Z": [
+        {
+          "member_name": "bsp_core.dir\\Release\\native_entity_intrusive_unlink.obj",
+          "member_payload_file_offset": 63742364,
+          "member_sha256": "375265be3c3543c9bd1bf74ec7e00b810fd4c0251c9066676379418c6c52f506",
+          "symbol_section": 3,
+          "symbol_value": 0
+        }
+      ]
+    },
+    "all_object_bytes_equal_archive_member": true,
+    "archive_bytes": 73670972,
+    "archive_sha256": "b84e7d1c9c28e4a4bca3a2155dc2cbea8416735543ba20dff6b900c77bde0eda",
+    "game_map_has_new_functions": false,
+    "game_map_has_new_member": false,
+    "production_callers_added": 0,
+    "entry_execution": 0
+  },
+  "boundaries": {
+    "actual_header_bytes": 12,
+    "actual_header_hex_bytes": "0x0C",
+    "layout": "DWORD first+0,last+4,count+8",
+    "ABI": "MSVC Win32 fastcall facade: ECX actual header, unused EDX padding formal, actual entity at entry ESP+4, RET4; EAX original entity, ECX and all nonvolatiles preserved, EDX volatile",
+    "first_links": "entity+34 previous / +38 next",
+    "second_links": "entity+40 previous / +44 next",
+    "skip": "Only when both entity links are zero and signed header.count > 1; final flags from CMP count,1",
+    "mutation": "Original fresh memory reload/overlap schedule, prior-next or header-first update, next-prior or header-last update, clear entity next before previous, ADD count DWORD,-1 preserving wrapping and ADD flags",
+    "floating_DF": "No x87/SSE/DF instruction or change; full emitted code bytes equal Native",
+    "ownership": "Borrowed physical memory for accesses actually reached. No allocation, membership validation, entity/World creation, class profile, stable lifetime, or publication is supplied.",
+    "runtime": "No packet Source/Native entry, ad hoc probe or game executed. Existing normal build checks ran. No game caller or link inclusion added.",
+    "ledger": "00903F30 already has the semantic chain_unlink_00903f30 function record. Root deduplicates and enriches it, then independently decides whether 00924710 adds a previously absent record. This worker awards zero ledger-function credit and edits no names/ledgers/Ghidra."
+  },
+  "existing_Ghidra_names_preserved": [
+    "BSP_World_UnlinkFromUpdateChain",
+    "BSP_Entity_UnlinkFromSiblingChain"
+  ],
+  "verification": {
+    "status": "PASS_STATIC_SOURCE_NATIVE_COMPLETE_BYTE_IDENTITY_AND_UNIQUE_CORE_MEMBER",
+    "utc": "2026-10-08T22:44:45.260902+00:00",
+    "functions": 2,
+    "Native_bytes": 166,
+    "Source_bytes": 166,
+    "instructions": 58,
+    "relocations": 0,
+    "actual_prefrozen_compiler_inputs": 14,
+    "complete_core_member_count": 1,
+    "normal_build_invocations": 1,
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "packet_Native_or_Source_entry_execution": 0,
+    "World_owner_ready": false
+  },
+  "callsite_scan": [
+    {
+      "path": "src/native_entity_intrusive_unlink.cpp",
+      "line": 10,
+      "text": "__declspec(naked) void* __fastcall unlink_native_entity_world_chain_00903f30("
+    },
+    {
+      "path": "src/native_entity_intrusive_unlink.cpp",
+      "line": 53,
+      "text": "__declspec(naked) void* __fastcall unlink_native_entity_sibling_chain_00924710("
+    },
+    {
+      "path": "include/bsp/native_entity_intrusive_unlink.hpp",
+      "line": 29,
+      "text": "void* __fastcall unlink_native_entity_world_chain_00903f30("
+    },
+    {
+      "path": "include/bsp/native_entity_intrusive_unlink.hpp",
+      "line": 33,
+      "text": "void* __fastcall unlink_native_entity_sibling_chain_00924710("
+    }
+  ],
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_entity_intrusive_unlink_source_evidence.zip",
+    "bytes": 126217913,
+    "sha256": "4f48ded34799e0de881d108c34b69883e21e65ae38233f2e260747450e9caae4",
+    "manifest_files": 8940,
+    "zip_entries": 8941,
+    "manifest_sha256": "464217858677436e56961f3fe57d1044d82e844f955ef4dc9aa89f8444743719",
+    "every_payload_rehashed": true,
+    "ZIP_CRC_all_pass": true
+  },
+  "validation_parser_failures_retained": [
+    {
+      "record": "verification_attempt_01_failure.json",
+      "cause": "CL.write uses a pipe-delimited batch key, unlike per-TU command/read keys"
+    },
+    {
+      "record": "verification_attempt_02.log",
+      "context": "verification_attempt_02_context.json",
+      "cause": "CL.read records headers under the Source key without repeating the Cpp row"
+    }
+  ],
+  "final_validation_log": "verification_attempt_03.log",
+  "seal_inventory_correction": "seal_attempt01_failure.json; failed first ZIP retained separately by path and hash",
+  "Source_changed_after_single_build": false,
+  "build_retried": false,
+  "limits": "Static byte/ABI-schedule evidence and a unique core member, not a game-linked caller, executed ABI test, class/World construction or runtime integration. All 14 new-TU compiler inputs were prefrozen; this does not claim independently closed inputs for every unrelated target rebuilt by the normal script."
+}
