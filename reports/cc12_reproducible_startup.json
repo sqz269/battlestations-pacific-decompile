@@ -129,7 +129,8 @@
     {
       "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
       "bytes": 5042176,
-      "sha256": "cb346fc3918014f20dfd57d22525ed3d1dd6e9aa8a3406cf4e7183044f17989a"
+      "sha256": "cb346fc3918014f20dfd57d22525ed3d1dd6e9aa8a3406cf4e7183044f17989a",
+      "qualification": "Historical capture hash at a mutable build path; that binary was not retained at this path. Do not treat it as a current pin."
     },
     {
       "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_startup_exit_capture.json",
@@ -251,5 +252,89 @@
       "bytes": 178631776,
       "sha256": "82b3088d0af4bad22bf8058659fb80654040fbafdccbd0fc8df996153f597217"
     }
-  ]
+  ],
+  "latest_frozen_startup_capture": {
+    "utc": "2026-10-08T09:51:58.103339+00:00",
+    "source_revision_at_capture": "ac01035b480613a124b4b51495a925aac6f0d278",
+    "build_log": "local/cc12_property_pool_primary_build.txt",
+    "current_Win32_build_all3_CTests_passed": true,
+    "argv": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\bsp_game.exe",
+      "--game-root",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+      "--frames",
+      "3",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\game.log",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\personal",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\runtime\\msidcrl40.dll",
+      "--window-monitor",
+      "smallest",
+      "--window-resolution",
+      "fit",
+      "--present-interval",
+      "immediate",
+      "--screenshot",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\frame1.png",
+      "--screenshot-frame",
+      "1"
+    ],
+    "actual_process_exit_code": 0,
+    "elapsed_seconds": 6.066930999979377,
+    "frozen_exe_sha256": "eae233dd002584e779d77df107d8ba86f289ba7181e761aed787f5bc59c0c474",
+    "frozen_runtime_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\runtime\\xlive.dll",
+        "bytes": 14303392,
+        "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\runtime\\msidcrl40.dll",
+        "bytes": 1089440,
+        "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\runtime\\ppcrlconfig.dll",
+        "bytes": 21408,
+        "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\runtime\\xlivefnt.dll",
+        "bytes": 13643936,
+        "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\bsp_game.exe",
+        "bytes": 5043712,
+        "sha256": "eae233dd002584e779d77df107d8ba86f289ba7181e761aed787f5bc59c0c474"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\game.log",
+        "bytes": 49471,
+        "sha256": "b3a61276db4e75a28d5a6f9752a3dd7fa8b67f32719cb84440b579970eb603aa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\frame1.png",
+        "bytes": 1610206,
+        "sha256": "eb98c40e953e48980472a72c239ae881e78e16f56912c6097a1fb3563ad0f52d"
+      }
+    ],
+    "stdout": "",
+    "stderr": "",
+    "original_install_exe_pre_post_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "Original_install_written": false,
+    "scope": "Finite three-frame startup, real D3D9 presentation and screenshot only; no online-owner/sign-in/account/menu/gameplay or complete runtime acceptance.",
+    "receipt_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_frozen_startup_20261008a\\receipt.json",
+    "receipt_sha256": "12c351be4e829b0a3a042364ef093e232ad8af5676a3911cf559ccea1fd092c7",
+    "receipt_bytes": 4064,
+    "three_frames_passed": true,
+    "screenshot_visually_reviewed": true,
+    "visible_content": "Original title/logo, map background, MAIN MENU banner and LOG INTO ALTERBSP THEN PRESS ENTER TO CONTINUE prompt; no interactive menu or sign-in progress verified."
+  }
 }

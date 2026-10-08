@@ -33206,6 +33206,35 @@
         "class_table_lifetime_admitted": false,
         "game_validated": false
       }
+    },
+    {
+      "id": "cc12_property_pool_static_source",
+      "worker": "property_payload",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "00CC8A30",
+        "00CD9260"
+      ],
+      "output_files": [
+        "include/bsp/native_enum_node_pool.hpp",
+        "src/native_enum_node_pool.cpp",
+        "docs/CC12_PROPERTY_RECORD_POOL_STATIC_SOURCE.md",
+        "reports/cc12_property_record_pool_static_source.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "whole_Source_bookends_build_and_real_CRT_exit_checked",
+      "worker_commit": "f1a1cda7f5ab4db615d419ef11b4bc0f1efc8b5f",
+      "contract": {
+        "new_Original_function_ports": 2,
+        "host_role_bindings": 1,
+        "Original_ABI": false,
+        "Source_real_atexit_witness": true,
+        "application_wiring": false,
+        "populated_map_record_lifetime": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {

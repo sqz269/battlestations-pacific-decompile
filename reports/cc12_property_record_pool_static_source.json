@@ -1723,7 +1723,8 @@
         "bytes": 13257,
         "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
       }
-    ]
+    ],
+    "physical_copy_qualification": "Worker entries are unchanged pre/post byte-identity snapshots. Primary now retains physical copies of actual selected nonlibrary inputs and actually searched libraries; unconsumed candidates remain hash pins only."
   },
   "retained_limits": [
     "Original register/class/vtable/EH/CRT-failure/static-dispatcher ABI",
@@ -2745,5 +2746,76 @@
     "six_existing_Source_bodies_and_header_comments": "UNCHANGED",
     "witness": "PASS_PROCESS_EXIT_0",
     "Original_wrapper_or_game_execution": false
+  },
+  "primary_review": {
+    "status": "PASS",
+    "evidence_artifacts_rehashed": 66,
+    "input_identity_snapshots_pre_post_checked": 783,
+    "primary_retained_physical_input_copies": 248,
+    "physical_copy_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_pool_primary\\inputs_manifest.json",
+    "unconsumed_library_candidates_have_identity_pins_only": 535,
+    "historical_concurrent_input_differences": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_payload\\cmake\\startup.cmake",
+        "sha256_at_witness": "7e14714437c5eac75d80c37586d3f660ca45dcb5235e88d56d8e853f3105a9d4",
+        "current_sha256": "df3549a1bed845a47f2e53807ae443eb15260fc69647e5617bde9f582f6f8027",
+        "historical_bytes_recovered_from_exact_worker_commit": true
+      }
+    ],
+    "whole_Original_startup_callback_bytes_checked": 32,
+    "complete_worker_primary_function_sections_checked": 11,
+    "selected_code_bytes_unchanged_across_worktrees": true,
+    "private_namespace_relocation_differences": [
+      {
+        "operand_offset": 41,
+        "old_symbol": "?invoke_trim@?A0x621e8b62@bsp@@YAXPAX@Z",
+        "primary_symbol": "?invoke_trim@?A0x815c0011@bsp@@YAXPAX@Z"
+      },
+      {
+        "operand_offset": 60,
+        "old_symbol": "?actual_static_property_record_pool_00e175b0@?A0x621e8b62@bsp@@3PAXA",
+        "primary_symbol": "?actual_static_property_record_pool_00e175b0@?A0x815c0011@bsp@@3PAXA"
+      },
+      {
+        "operand_offset": 67,
+        "old_symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x621e8b62@bsp@@3PAVAllocatorListDomain@2@A",
+        "primary_symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x815c0011@bsp@@3PAVAllocatorListDomain@2@A"
+      },
+      {
+        "operand_offset": 18,
+        "old_symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x621e8b62@bsp@@3PAVAllocatorListDomain@2@A",
+        "primary_symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x815c0011@bsp@@3PAVAllocatorListDomain@2@A"
+      },
+      {
+        "operand_offset": 25,
+        "old_symbol": "?actual_static_property_record_pool_00e175b0@?A0x621e8b62@bsp@@3PAXA",
+        "primary_symbol": "?actual_static_property_record_pool_00e175b0@?A0x815c0011@bsp@@3PAXA"
+      },
+      {
+        "operand_offset": 7,
+        "old_symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x621e8b62@bsp@@3PAVAllocatorListDomain@2@A",
+        "primary_symbol": "?actual_static_property_record_pool_list_00e188b4@?A0x815c0011@bsp@@3PAVAllocatorListDomain@2@A"
+      },
+      {
+        "operand_offset": 14,
+        "old_symbol": "?actual_static_property_record_pool_00e175b0@?A0x621e8b62@bsp@@3PAXA",
+        "primary_symbol": "?actual_static_property_record_pool_00e175b0@?A0x815c0011@bsp@@3PAXA"
+      },
+      {
+        "operand_offset": 34,
+        "old_symbol": "?invoke_trim@?A0x621e8b62@bsp@@YAXPAX@Z",
+        "primary_symbol": "?invoke_trim@?A0x815c0011@bsp@@YAXPAX@Z"
+      }
+    ],
+    "worker_object_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_pool_primary\\worker_native_enum_node_pool.obj",
+    "worker_object_sha256": "7bbdedbd0b675a5bfa709e647d8a610fbd3a09726e9385f61717e6b6773aac91",
+    "primary_object_frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_pool_primary\\native_enum_node_pool.obj",
+    "primary_object_sha256": "b9a7bd169e019db8fbbd0ef9bfbec3a929dd644829d0f3ef9e847dc9df1a3169",
+    "primary_exact_archive_members": 1,
+    "Win32_build_log": "local/cc12_property_pool_primary_build.txt",
+    "existing_CTests_passed": 3,
+    "Source_real_atexit_process_exit_witness": "PASS_PROCESS_EXIT_0",
+    "Original_wrapper_execution": false,
+    "Original_ABI_application_wiring_populated_map_record_lifetime_gameplay_admitted": false
   }
 }
