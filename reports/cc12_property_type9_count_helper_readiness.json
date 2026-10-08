@@ -1,0 +1,673 @@
+{
+  "schema": "cc12_property_type9_count_helper_readiness_v1",
+  "packet": "cc12_property_type9_count_helper_readiness",
+  "Source_credit": 0,
+  "new_Source_bodies": 0,
+  "Source_packet_registered_by_this_audit": false,
+  "readiness": {
+    "whole_Native_integer_leaf_and_physical_contract_evidenced": true,
+    "proposal_for_Root_independent_review_only": true,
+    "connected_clone_or_class_ownership_admitted": false,
+    "new_fixture_or_build_or_game_validation": false
+  },
+  "context": {
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness",
+    "branch": "agent/cc12_property_type9_count_helper_readiness",
+    "baseline_commit": "6bc5aa26a6205ef603ef94b2e6965966cfa64704",
+    "Main_generation_commit": "4f21df543211402d96f1c27dd8751ff63070909b",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "query_verification": "Every supported bsp.py ghidra query calls Client.verify(): project_name bsp, program_path, language, image_base; exact configuredgpr and savedProgramManager identity frozen as corroboration"
+  },
+  "project_identity": {
+    "supported_each_query_live_Client_verify": "project_name bsp; program /battlestationspacific.exe; x86:LE:32:default; image base00400000",
+    "physical_project_location_corroboration": "Configured C:/Users/sqz269/bsp.gpr and frozen saved ProgramManager LOCATION_0/PROJECT_NAME_0/PATHNAME_0; live CLI verification does not print a physical project locator.",
+    "live_function_count_before_after": 64728,
+    "saved_program_manager_identity_after": {
+      "LOCATION_0": "/C:/Users/sqz269/",
+      "PROJECT_NAME_0": "bsp",
+      "PATHNAME_0": "/battlestationspacific.exe"
+    }
+  },
+  "binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "014C",
+    "image_base": "00400000"
+  },
+  "whole_Native": {
+    "begin": "008EF7F0",
+    "end_exclusive": "008EF81A",
+    "bytes": 42,
+    "instructions": 17,
+    "hex": "8b410483e809741b83e801741683e801740333c0c3b8abaaaaaaf761248bc2c1e803c38b4124c1e802c3",
+    "sha256": "e84a191988638f684ec2d81e68f96fae767f4035f8d21a2ae736501afbeb8ce7",
+    "instruction_starts": [
+      "008EF7F0",
+      "008EF7F3",
+      "008EF7F6",
+      "008EF7F8",
+      "008EF7FB",
+      "008EF7FD",
+      "008EF800",
+      "008EF802",
+      "008EF804",
+      "008EF805",
+      "008EF80A",
+      "008EF80D",
+      "008EF80F",
+      "008EF812",
+      "008EF813",
+      "008EF816",
+      "008EF819"
+    ],
+    "live_disk_whole_equal": true,
+    "CALLs": 0,
+    "RET_starts": [
+      "008EF804",
+      "008EF812",
+      "008EF819"
+    ]
+  },
+  "current_Ghidra_name_hypothesis": "BSP_SceneProperty_ArrayElementCount",
+  "physical_ABI": {
+    "receiver": "ECX actual readable record root; not record+20 or a child/data pointer",
+    "incoming_EDX": "unused",
+    "stack_arguments": 0,
+    "RET": "plain RET at008EF804/008EF812/008EF819; caller's already queued constructor arguments remain on stack",
+    "EAX": "unsigned DWORD element count",
+    "ECX": "unchanged",
+    "EDX": "unchanged on default/tag9/tag10; tag11 returns high32(uint64(byte_size)*AAAAAAAB) in EDX",
+    "nonvolatiles": "EBX/ESI/EDI/EBP unchanged",
+    "ESP": "ordinary CALL/RET return-address pair only; zero argument cleanup",
+    "DF_ES": "unchanged; no string/segment operation or CLD",
+    "FP_SIMD_state": "no x87/SIMD/FPU-control operation in this integer-only body"
+  },
+  "storage": {
+    "always_read": "DWORD [root+04,root+08): tag",
+    "recognized_tags_read": "DWORD [root+24,root+28): unsigned byte size for9/10/11 only",
+    "writes": 0,
+    "does_not_read": [
+      "data pointer+20",
+      "marker byte+2C",
+      "owner+30",
+      "ordinal+34",
+      "child bytes",
+      "phase/dispatch pointer+00"
+    ],
+    "minimal_readability": "Root+04 DWORD always; root+24 DWORD only for recognized tags. Caller keeps accessed storage live/stable. This does not establish a complete owning class or allocation.",
+    "heap_calls_globals_or_external_dependencies_in_body": 0
+  },
+  "unsigned_semantics": {
+    "tags9_10": "uint32(byte_size)>>2 == floor(byte_size/4), maximum3FFFFFFF",
+    "tag11": "high32(uint64(byte_size)*AAAAAAAB)>>3 == floor(byte_size/12), maximum15555555",
+    "default": "zero for every other tag, including8; byte size not read",
+    "tag11_exact_proof": "AAAAAAAB=(2^35+4)/12. Product>>35 floors B/12+B/(3*2^35). For unsigned B<=2^32-1 the extra is<1/24; remainder<=11/12, so no quotient carry. No signed conversion.",
+    "guards": "No positivity, divisibility, signed-negative, saturation or overflow guard",
+    "examples": [
+      {
+        "byte_size_hex": "00000000",
+        "tags9_10_result_hex": "00000000",
+        "tag11_result_hex": "00000000"
+      },
+      {
+        "byte_size_hex": "00000001",
+        "tags9_10_result_hex": "00000000",
+        "tag11_result_hex": "00000000"
+      },
+      {
+        "byte_size_hex": "00000003",
+        "tags9_10_result_hex": "00000000",
+        "tag11_result_hex": "00000000"
+      },
+      {
+        "byte_size_hex": "00000004",
+        "tags9_10_result_hex": "00000001",
+        "tag11_result_hex": "00000000"
+      },
+      {
+        "byte_size_hex": "00000007",
+        "tags9_10_result_hex": "00000001",
+        "tag11_result_hex": "00000000"
+      },
+      {
+        "byte_size_hex": "0000000B",
+        "tags9_10_result_hex": "00000002",
+        "tag11_result_hex": "00000000"
+      },
+      {
+        "byte_size_hex": "0000000C",
+        "tags9_10_result_hex": "00000003",
+        "tag11_result_hex": "00000001"
+      },
+      {
+        "byte_size_hex": "7FFFFFFF",
+        "tags9_10_result_hex": "1FFFFFFF",
+        "tag11_result_hex": "0AAAAAAA"
+      },
+      {
+        "byte_size_hex": "80000000",
+        "tags9_10_result_hex": "20000000",
+        "tag11_result_hex": "0AAAAAAA"
+      },
+      {
+        "byte_size_hex": "FFFFFFFC",
+        "tags9_10_result_hex": "3FFFFFFF",
+        "tag11_result_hex": "15555555"
+      },
+      {
+        "byte_size_hex": "FFFFFFFF",
+        "tags9_10_result_hex": "3FFFFFFF",
+        "tag11_result_hex": "15555555"
+      }
+    ],
+    "examples_are": "Integer derivations from complete bytes; not native execution observations"
+  },
+  "terminal_flags": {
+    "default_XOR": {
+      "defined_mask": "000008C5",
+      "expected": "00000044",
+      "AF": "undefined/excluded"
+    },
+    "tags9_10_SHR2": {
+      "defined_mask": "000000C5",
+      "CF": "byte_size bit1",
+      "PF": "even parity of low8 result",
+      "ZF": "result==0",
+      "SF": 0,
+      "AF_OF": "undefined/excluded"
+    },
+    "tag11_SHR3": {
+      "defined_mask": "000000C5",
+      "CF": "MUL-high DWORD bit2",
+      "PF": "even parity of low8 result",
+      "ZF": "result==0",
+      "SF": 0,
+      "AF_OF": "undefined/excluded"
+    },
+    "qualification": "Arithmetic/body-derived contract only. No blanket flags or floating-point guarantee across caller bodies."
+  },
+  "all_narrow_callers": {
+    "function_nodes_including_helper": 5,
+    "incoming_edges_and_distinct_physical_CALL_operands": 20,
+    "functions": [
+      {
+        "entry": "008F4F60",
+        "name_hypothesis": "BSP_SceneProperty_Clone",
+        "CALLs": [
+          "008F51D6",
+          "008F521E",
+          "008F5266"
+        ],
+        "bounded_observation": "Type9 branch allocation/count/constructor/ordinal witness; whole clone, null/common path and EH unexpanded."
+      },
+      {
+        "entry": "00468600",
+        "name_hypothesis": "FUN_00468600",
+        "CALLs": [
+          "0046860D",
+          "0046864F"
+        ],
+        "bounded_observation": "ECX incoming root saved in EBX; initial TEST-zero branch and unsigned index/count loop; custom caller ABI/output ownership unexpanded."
+      },
+      {
+        "entry": "008F0E20",
+        "name_hypothesis": "FUN_008F0E20",
+        "CALLs": [
+          "008F0EED",
+          "008F0EFA",
+          "008F0F07"
+        ],
+        "bounded_observation": "Actual table indices9/10/11 jump directly to these CALLs; ECX remains record. Other arms include x87 and are unexpanded."
+      },
+      {
+        "entry": "008F1CA0",
+        "name_hypothesis": "FUN_008F1CA0",
+        "CALLs": [
+          "008F1FD8",
+          "008F1FE7",
+          "008F2014",
+          "008F2065",
+          "008F2083",
+          "008F2092",
+          "008F20BF",
+          "008F210F",
+          "008F212D",
+          "008F213C",
+          "008F216B",
+          "008F21E1"
+        ],
+        "bounded_observation": "Receiver restored from EDI; count used for zero tests, output argument and unsigned loop bounds; serialization/class body unexpanded."
+      }
+    ],
+    "exact_CALL_bytes_and_operand_ranges": [
+      {
+        "address": "008F51D6",
+        "caller": "BSP_SceneProperty_Clone",
+        "bytes": "e815a6ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F51D7",
+          "008F51DB"
+        ]
+      },
+      {
+        "address": "008F521E",
+        "caller": "BSP_SceneProperty_Clone",
+        "bytes": "e8cda5ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F521F",
+          "008F5223"
+        ]
+      },
+      {
+        "address": "008F5266",
+        "caller": "BSP_SceneProperty_Clone",
+        "bytes": "e885a5ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F5267",
+          "008F526B"
+        ]
+      },
+      {
+        "address": "0046860D",
+        "caller": "FUN_00468600",
+        "bytes": "e8de714800",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "0046860E",
+          "00468612"
+        ]
+      },
+      {
+        "address": "0046864F",
+        "caller": "FUN_00468600",
+        "bytes": "e89c714800",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "00468650",
+          "00468654"
+        ]
+      },
+      {
+        "address": "008F1FD8",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e813d8ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F1FD9",
+          "008F1FDD"
+        ]
+      },
+      {
+        "address": "008F1FE7",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e804d8ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F1FE8",
+          "008F1FEC"
+        ]
+      },
+      {
+        "address": "008F2014",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e8d7d7ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F2015",
+          "008F2019"
+        ]
+      },
+      {
+        "address": "008F2065",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e886d7ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F2066",
+          "008F206A"
+        ]
+      },
+      {
+        "address": "008F2083",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e868d7ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F2084",
+          "008F2088"
+        ]
+      },
+      {
+        "address": "008F2092",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e859d7ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F2093",
+          "008F2097"
+        ]
+      },
+      {
+        "address": "008F20BF",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e82cd7ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F20C0",
+          "008F20C4"
+        ]
+      },
+      {
+        "address": "008F210F",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e8dcd6ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F2110",
+          "008F2114"
+        ]
+      },
+      {
+        "address": "008F212D",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e8bed6ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F212E",
+          "008F2132"
+        ]
+      },
+      {
+        "address": "008F213C",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e8afd6ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F213D",
+          "008F2141"
+        ]
+      },
+      {
+        "address": "008F216B",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e880d6ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F216C",
+          "008F2170"
+        ]
+      },
+      {
+        "address": "008F21E1",
+        "caller": "FUN_008f1ca0",
+        "bytes": "e80ad6ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F21E2",
+          "008F21E6"
+        ]
+      },
+      {
+        "address": "008F0EED",
+        "caller": "FUN_008f0e20",
+        "bytes": "e8fee8ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F0EEE",
+          "008F0EF2"
+        ]
+      },
+      {
+        "address": "008F0EFA",
+        "caller": "FUN_008f0e20",
+        "bytes": "e8f1e8ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F0EFB",
+          "008F0EFF"
+        ]
+      },
+      {
+        "address": "008F0F07",
+        "caller": "FUN_008f0e20",
+        "bytes": "e8e4e8ffff",
+        "target": "008EF7F0",
+        "physical_CALL_operand_range": [
+          "008F0F08",
+          "008F0F0C"
+        ]
+      }
+    ],
+    "before_after_context_file": "caller_context_before_r01.json / caller_context_after_r01.json",
+    "stale_comment": "Saved comment asserting clone-only callers is contradicted by four live caller functions; historical comment preserved, no mutation.",
+    "no_whole_caller_reconstruction_credit": true
+  },
+  "Type9_clone_witness": {
+    "Native_branch_fragment": {
+      "begin": "008F51AE",
+      "end_exclusive": "008F51FA",
+      "bytes": 76,
+      "instructions": 24,
+      "hex": "6a38e8661630008bf883c404897c240885ffc7442414040000000f84bc0000008b46206a01508bcee815a6ffff508bcfe87da1ffff8b56345f8950345e8b4c240464890d0000000083c410c3",
+      "sha256": "0856515378d5cccafc4934e298058a4d8a0a9448c5c6effcf695fd9468fa070c",
+      "whole_clone_credit": 0,
+      "allocation_CALL": "008F51B0 -> 00BF681B",
+      "helper_CALL": "008F51D6 -> 008EF7F0",
+      "constructor_CALL": "008F51DE -> 008EF360",
+      "branch_to_null_common": "008F51C8 -> 008F528A unexpanded"
+    },
+    "source_receiver_origin": "Clone entry008F4F60; MOV ESI,ECX at008F4F77. Witness is branch fragment, not a whole clone body.",
+    "actual_allocation": "PUSH38 at008F51AE; CALL00BF681B at008F51B0; fresh EAX into EDI; ADD ESP4 at008F51B7",
+    "boundary_correction": "008F51BA is an actual MOV instruction inside the branch, not clone entry or helper CALL",
+    "queued_then_helper": "MOV EAX,[ESI+20] at51CE; PUSH1 at51D1; PUSH EAX at51D3; MOV ECX,ESI at51D4; CALL helper at51D6",
+    "constructor": "PUSH helper EAX at51DB; MOV ECX,EDI at51DC; CALL008EF360 at51DE. Physical ctor stack+4=count,+8=data,+C=flags; RET12 in separate current Source contract.",
+    "ordinal": "MOV EDX,[ESI+34] at51E3; MOV [EAX+34],EDX at51E7",
+    "external_frontiers": [
+      "00BF681B native private allocation/EH",
+      "null/common branch008F528A",
+      "whole clone class/dispatch/owner/publication/lifetime",
+      "008EF3E0/008EF460 external Type10/11 constructors: bodies not queried"
+    ]
+  },
+  "Source_comparison": {
+    "semantic_rule": {
+      "path": "src/scene_property_bag_merge.cpp",
+      "lines": [
+        139,
+        151
+      ],
+      "header": "include/bsp/scene_property_bag_merge.hpp",
+      "header_lines": [
+        88,
+        95
+      ],
+      "symbol": "bsp::scene_property_array_elements",
+      "interface": "ordinary two-value type/byte_size arithmetic; no physical ECX-record reads/register/flag contract",
+      "arithmetic_matches": true,
+      "raw_ABI_substitute": false
+    },
+    "tag_labels": {
+      "path": "include/bsp/scene_property_bag.hpp",
+      "lines": [
+        31,
+        33
+      ],
+      "qualification": "Source labels FloatArray9/IntArray10/Vector3Array11; numeric payload or floating-point semantics not recovered here"
+    },
+    "admitted_separate_Type9_constructor": {
+      "path": "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+      "header": "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+      "header_lines": [
+        17,
+        32
+      ],
+      "address": "008EF360",
+      "raw_byte_contract": "Count doubled twice as DWORD; scaled bytes stored+24; data+20; marker+2C=1 in both branches",
+      "Source_positive_domain": "element_count in[1,3FFFFFFF], exactly4N readable bytes, nonwrapping/disjoint spans, successful current-provider DF0 domain"
+    },
+    "faithful_Type9_round_trip_predicate": "Stable tag9 record with B=4N, 1<=N<=3FFFFFFF; bytes+20 readable for B and permitted lifetime/current-provider copy domain independently established. B must be positive and divisible by4 for byte-count preservation.",
+    "zero_nonmultiple": "B0..3 producesN0 outside separate Source ctor positive domain; B mod4!=0 truncates bytes. Helper itself admits arithmetic for all unsigned B and inserts no guards.",
+    "count_overflow": "For arbitrary original ctor N, two DWORD doublings yield B=(4N) mod2^32; helper returns N&3FFFFFFF and cannot restore lost upper bits. Outside qualified Source constructor positive/nonoverflow domain.",
+    "ownership": "Helper ignores DATA and marker+2C. Neither count inversion nor marker1 establishes child/root/class ownership, release permission, or clone publication.",
+    "no_existing_Source_domains_changed": true
+  },
+  "bounded_frontiers": [
+    {
+      "name": "possible raw integer leaf",
+      "next": "Root independent review/registration; whole literal42-byte physical implementation and a separately authorized minimal fresh fixture if registered"
+    },
+    {
+      "name": "clone Type9 connected admission",
+      "next": "Genuine record/root/child lifetime, native allocator and constructor routing/EH/null/ordinal/publication domains; pure helper readiness is insufficient"
+    },
+    {
+      "name": "Type10/11 producers",
+      "next": "External worker's independently evidenced constructor/body/ABI/ownership domain; no constructor body queried here"
+    },
+    {
+      "name": "FUN_00468600",
+      "next": "Actual custom caller/output/loop ownership contract remains unexpanded"
+    },
+    {
+      "name": "FUN_008F0E20",
+      "next": "Actual common CALL004B7F70/output/global context unexpanded; unrelated x87 arms require Astra if whole closure requested"
+    },
+    {
+      "name": "FUN_008F1CA0",
+      "next": "Named0094FF10/00950050 consumers and serializer/class body remain unexpanded"
+    }
+  ],
+  "future_declaration_hypothesis_only": "std::uint32_t __fastcall count_native_scene_property_array_elements_008ef7f0(const void* actual_record_ecx) noexcept; no stack arguments; incoming EDX unused; retain physical branch effects if implemented naked",
+  "pins": {
+    "Source_count": 5,
+    "query_tool_count": 3,
+    "strict": [
+      {
+        "relative_path": "src/scene_property_bag_merge.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/scene_property_bag_merge.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/src/scene_property_bag_merge.cpp",
+        "frozen_path": "frozen/src/scene_property_bag_merge.cpp",
+        "bytes": 12335,
+        "sha256": "ebd2750c415b5a839a69395fa624683c2cf5545b21789d5881a3410be8af36d0",
+        "kind": "Source_cpp_hpp"
+      },
+      {
+        "relative_path": "include/bsp/scene_property_bag_merge.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/scene_property_bag_merge.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/include/bsp/scene_property_bag_merge.hpp",
+        "frozen_path": "frozen/include/bsp/scene_property_bag_merge.hpp",
+        "bytes": 10363,
+        "sha256": "39444b44c0a9b4dd0052a3cfcf3c7f655ba9566fa44c84245cfda7e762c34c8c",
+        "kind": "Source_cpp_hpp"
+      },
+      {
+        "relative_path": "src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+        "frozen_path": "frozen/src/native_scene_property_record_type9_four_byte_array_storage.cpp",
+        "bytes": 2190,
+        "sha256": "16fc191de1e1cbd856477ab9394572be4da589b657c7daeb09b4ea01532c293c",
+        "kind": "Source_cpp_hpp"
+      },
+      {
+        "relative_path": "include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+        "frozen_path": "frozen/include/bsp/native_scene_property_record_type9_four_byte_array_storage.hpp",
+        "bytes": 2752,
+        "sha256": "ba6731df386adb814165454ed1840344c97777764afbc2dbc35824df680143f8",
+        "kind": "Source_cpp_hpp"
+      },
+      {
+        "relative_path": "tools/bsp.py",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/tools/bsp.py",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/tools/bsp.py",
+        "frozen_path": "frozen/tools/bsp.py",
+        "bytes": 72606,
+        "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+        "kind": "supported_query_tool"
+      },
+      {
+        "relative_path": "tools/ghidra_export.py",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/tools/ghidra_export.py",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/tools/ghidra_export.py",
+        "frozen_path": "frozen/tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "kind": "supported_query_tool"
+      },
+      {
+        "relative_path": "tools/ghidra_launch.py",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/tools/ghidra_launch.py",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/tools/ghidra_launch.py",
+        "frozen_path": "frozen/tools/ghidra_launch.py",
+        "bytes": 15523,
+        "sha256": "36ba29c40be112e3e32d3106272e8681a9fdb09fbc1ce25c6c52db080a4f363e",
+        "kind": "supported_query_tool"
+      },
+      {
+        "relative_path": "include/bsp/scene_property_bag.hpp",
+        "original_path": "J:/PROG/battlestations-pacific-decompile/include/bsp/scene_property_bag.hpp",
+        "worktree_path": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/include/bsp/scene_property_bag.hpp",
+        "frozen_path": "frozen/include/bsp/scene_property_bag.hpp",
+        "bytes": 12832,
+        "sha256": "973b54dc7f9a18a66b6723dbcd1e08618209745f3df64dc168d77183bec67c88",
+        "kind": "Source_cpp_hpp",
+        "purpose": "actual ScenePropertyType enumerators9/10/11 for existing semantic count projection"
+      }
+    ],
+    "metadata_frozen": [
+      {
+        "original_path": "J:/PROG/battlestations-pacific-decompile/config/target.json",
+        "frozen_path": "frozen_context/target.json",
+        "bytes": 467,
+        "sha256": "83b26a388b77d3b817eafd6005f72a0d9b4137efc62ac8cbe17963ac18589533",
+        "mutable_original_generation_context_only": true
+      },
+      {
+        "original_path": "J:/PROG/battlestations-pacific-decompile/docs/CC12_PROPERTY_CLONE_CONSTRUCTOR_ROUTING_READINESS.md",
+        "frozen_path": "frozen_context/CC12_PROPERTY_CLONE_CONSTRUCTOR_ROUTING_READINESS.md",
+        "bytes": 10996,
+        "sha256": "75b3b2f5d6659fb725d6b9ab4c20dae428077ea15b79bf831258d56f8ce9a38c",
+        "mutable_original_generation_context_only": true
+      },
+      {
+        "original_path": "C:/Users/sqz269/bsp.rep/projectState",
+        "frozen_path": "frozen_context/projectState",
+        "bytes": 1275,
+        "sha256": "dcbc1ac32abf19207a0dbab10fcee3df7561ddfd2e3a3b2d0f30359fe139209d",
+        "mutable_original_generation_context_only": true
+      }
+    ],
+    "metadata_originals_generation_history_only": true
+  },
+  "bookends": {
+    "file": "Source_Native_bookends.json",
+    "sha256": "86c0bcd17cc2f3f999f5fa1c2b01a98d252d097740069ff444076ea7f72d8883",
+    "query_pairs": 10,
+    "whole_PE_body_fragment_CALLs_equal": true
+  },
+  "limits": {
+    "no_Source_implementation": true,
+    "no_Ghidra_mutation_or_flow_repair": true,
+    "no_compiler_fixture_runtime_provider_or_old_helper_execution": true,
+    "no_external_leased_constructor_body_queries": true,
+    "new_native_game_or_class_credit": 0
+  },
+  "artifact_handoff": {
+    "family": "J:/PROG/battlestations-pacific-decompile-cc12_property_type9_count_helper_readiness/local/t9count",
+    "receipt": "receipt.json",
+    "manifest": "artifact_manifest.json",
+    "manifest_schema": "cc12_exact_all_files_manifest_v1",
+    "exact_root_inventory_exclusions": [
+      "receipt.json",
+      "artifact_manifest.json"
+    ],
+    "all_other_recursive_files_included": true
+  }
+}
