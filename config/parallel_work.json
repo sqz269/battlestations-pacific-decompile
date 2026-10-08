@@ -34206,6 +34206,50 @@
       "native_class_ABI_admission": false,
       "original_private_CRT_EH_admission": false,
       "game_validated": false
+    },
+    {
+      "id": "cc12_native_wake_fill_Source",
+      "worker": "primary",
+      "function_addresses": [
+        "00810020"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_wake_fill.hpp",
+        "src/native_unit_wake_fill.cpp",
+        "docs/CC12_NATIVE_WAKE_FILL.md",
+        "reports/cc12_native_wake_fill.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_primary_reviewed_whole_raw_Source_build_and_three_saved_pairs_game_unvalidated",
+      "contract": {
+        "new_Original_function_records": 1,
+        "new_primary_execution": false,
+        "existing_CTests_passed": 3,
+        "owner_class_game_validated": false
+      }
+    },
+    {
+      "id": "cc12_property_new_node_publication_Source",
+      "worker": "primary",
+      "function_addresses": [
+        "008f2930"
+      ],
+      "output_files": [
+        "include/bsp/native_enum_dictionary_lookup.hpp",
+        "src/native_enum_dictionary_lookup.cpp",
+        "docs/CC12_PROPERTY_NEW_NODE_PUBLICATION_SOURCE.md",
+        "reports/cc12_property_new_node_publication_source.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "integrated_primary_reviewed_distinct_partial_miss_Source_static_build_qualified_parent_unready",
+      "contract": {
+        "new_Original_function_records": 0,
+        "new_primary_execution": false,
+        "existing_CTests_passed": 3,
+        "owner_class_game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
