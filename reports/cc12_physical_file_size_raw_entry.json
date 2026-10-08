@@ -1,0 +1,475 @@
+{
+  "packet": "cc12_physical_file_size_raw_entry",
+  "status": "whole_body_reconstructed_build_tested_three_pair_real_OS_fixture_passed",
+  "address": "00bf4fa0",
+  "descriptive_name": "raw_query_native_physical_file_size_00bf4fa0",
+  "original_function_extent": {
+    "first": "00bf4fa0",
+    "last_inclusive": "00bf4fba",
+    "bytes": 27,
+    "instructions": 9,
+    "sha256": "3b99fbb0a728f37801fc80c56d24686b0aa5c922fc050b59cd8e9264071f534e",
+    "hex": "518b49088d04245051c744240800000000ff151421ce0059c20400"
+  },
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "baseline": "2ba42e99b6894c9e58ec030ff467eae9cc69d487",
+  "new_interface": "distinct MSVC Win32 naked fastcall memory-domain entry; existing ordinary helper and prior raw entries retained",
+  "original_ABI": {
+    "ECX_input": "actual stable backing; HANDLE DWORD at +8h",
+    "EDX_input": "unused by entry; volatile after OS call",
+    "stack": "one unused DWORD; RET4",
+    "EAX": "GetFileSize low DWORD or FFFFFFFF on failure",
+    "ECX_output": "high-DWORD stack scratch initialized zero, then popped into ECX after real GetFileSize",
+    "EDX_EAX_64bit_return": false,
+    "backing_writes": false,
+    "cache_writes": false,
+    "OS_cursor_movement": false,
+    "CXX_return_exposes": "EAX low DWORD only",
+    "EFLAGS_and_other_volatile_state_qualified": false
+  },
+  "whole_body_evidence": {
+    "coverage": "complete",
+    "Original_executed_function_bytes": 27,
+    "COFF_size_entry_bytes": 27,
+    "linked_size_entry_bytes": 27,
+    "size_entry_instructions": 9,
+    "whole_production_COFF": {
+      "symbol": "?raw_query_native_physical_file_size_00bf4fa0@bsp@@YIIPBXII@Z",
+      "section": 44,
+      "offset": 0,
+      "bytes": 27,
+      "sha256": "b63d3082af5bc288bd6e8a77d7918d6ac2c308dbf40bbd0c55a83b0edae38534",
+      "hex": "518b49088d04245051c744240800000000ff150000000059c20400",
+      "relocations": [
+        {
+          "offset": 19,
+          "type": 6,
+          "target": "__imp__GetFileSize@8"
+        }
+      ],
+      "instruction_count": 9,
+      "complete_decode": true,
+      "disassembly": [
+        {
+          "offset": 0,
+          "bytes": "51",
+          "instruction": "push ecx"
+        },
+        {
+          "offset": 1,
+          "bytes": "8b4908",
+          "instruction": "mov ecx, dword ptr [ecx + 8]"
+        },
+        {
+          "offset": 4,
+          "bytes": "8d0424",
+          "instruction": "lea eax, [esp]"
+        },
+        {
+          "offset": 7,
+          "bytes": "50",
+          "instruction": "push eax"
+        },
+        {
+          "offset": 8,
+          "bytes": "51",
+          "instruction": "push ecx"
+        },
+        {
+          "offset": 9,
+          "bytes": "c744240800000000",
+          "instruction": "mov dword ptr [esp + 8], 0"
+        },
+        {
+          "offset": 17,
+          "bytes": "ff1500000000",
+          "instruction": "call dword ptr [0]"
+        },
+        {
+          "offset": 23,
+          "bytes": "59",
+          "instruction": "pop ecx"
+        },
+        {
+          "offset": 24,
+          "bytes": "c20400",
+          "instruction": "ret 4"
+        }
+      ],
+      "machine": "014C",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj"
+    },
+    "production_object_summary": {
+      "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj",
+      "sha256": "27ff55a448a2ab30e562ebb1c708d27d3823b47bf252bcce49547b7ae458a69b",
+      "machine": "014C",
+      "code_sections": 49,
+      "code_bytes": 3558,
+      "ordered_relocations": 134,
+      "functions": 49
+    },
+    "production_object_sha256": "27ff55a448a2ab30e562ebb1c708d27d3823b47bf252bcce49547b7ae458a69b",
+    "production_archive_sha256": "01ed747b15a2dcd1ff5868273d28214b0cb161d4109930b10e7216e5431416ef",
+    "exact_production_archive_membership": [
+      {
+        "member_header_offset": 57952722,
+        "member_size": 22092,
+        "raw_name": "/69743"
+      }
+    ],
+    "actual_link": {
+      "address": 536875056,
+      "origin": "f   native_physical_stream_open.obj",
+      "hex": "518b49088d04245051c744240800000000ff1518f0012059c20400",
+      "sha256": "bbc16d12e750b8fca90c54b0b469a969f6d6a1fd73c91cafedcfa79857b15917",
+      "unique_occurrences": 1
+    },
+    "only_normalized_operand": {
+      "offset": 19,
+      "bytes": 4,
+      "Original_IAT": "00ce2114",
+      "COFF_relocation": "__imp__GetFileSize@8",
+      "actual_Source_IAT": "2001f018",
+      "actual_PE_import": {
+        "dll": "KERNEL32.dll",
+        "name": "GetFileSize",
+        "iat": 536997912
+      }
+    },
+    "whole_Original_COFF_linked_equal_except_that_import_operand": true,
+    "current_Source_constructor_input": {
+      "complete_Original_COFF_linked_exact_equality": true,
+      "bytes": 43,
+      "instructions": 11,
+      "relocations": 0,
+      "normalizations": 0,
+      "whole_production_COFF": {
+        "symbol": "?raw_construct_native_physical_stream_00bf50d0@bsp@@YIPAXPAXI@Z",
+        "section": 43,
+        "offset": 0,
+        "bytes": 43,
+        "sha256": "9f0a1e587ebcc5e8f5a5447de34adc30be4a0d7bc3ffdcbb605769ed4eb28716",
+        "hex": "8bc133c9c70030b1ce00c7400401000000c700b091d600c74008ffffffff89481089481489481889481cc3",
+        "relocations": [],
+        "instruction_count": 11,
+        "complete_decode": true,
+        "disassembly": [
+          {
+            "offset": 0,
+            "bytes": "8bc1",
+            "instruction": "mov eax, ecx"
+          },
+          {
+            "offset": 2,
+            "bytes": "33c9",
+            "instruction": "xor ecx, ecx"
+          },
+          {
+            "offset": 4,
+            "bytes": "c70030b1ce00",
+            "instruction": "mov dword ptr [eax], 0xceb130"
+          },
+          {
+            "offset": 10,
+            "bytes": "c7400401000000",
+            "instruction": "mov dword ptr [eax + 4], 1"
+          },
+          {
+            "offset": 17,
+            "bytes": "c700b091d600",
+            "instruction": "mov dword ptr [eax], 0xd691b0"
+          },
+          {
+            "offset": 23,
+            "bytes": "c74008ffffffff",
+            "instruction": "mov dword ptr [eax + 8], 0xffffffff"
+          },
+          {
+            "offset": 30,
+            "bytes": "894810",
+            "instruction": "mov dword ptr [eax + 0x10], ecx"
+          },
+          {
+            "offset": 33,
+            "bytes": "894814",
+            "instruction": "mov dword ptr [eax + 0x14], ecx"
+          },
+          {
+            "offset": 36,
+            "bytes": "894818",
+            "instruction": "mov dword ptr [eax + 0x18], ecx"
+          },
+          {
+            "offset": 39,
+            "bytes": "89481c",
+            "instruction": "mov dword ptr [eax + 0x1c], ecx"
+          },
+          {
+            "offset": 42,
+            "bytes": "c3",
+            "instruction": "ret"
+          }
+        ],
+        "machine": "014C",
+        "object": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj"
+      },
+      "actual_link": {
+        "address": 536875008,
+        "origin": "f   native_physical_stream_open.obj",
+        "hex": "8bc133c9c70030b1ce00c7400401000000c700b091d600c74008ffffffff89481089481489481889481cc3",
+        "sha256": "9f0a1e587ebcc5e8f5a5447de34adc30be4a0d7bc3ffdcbb605769ed4eb28716",
+        "unique_occurrences": 1
+      },
+      "Source_owned_profile_or_class": false,
+      "Original_constructor_executed": false
+    },
+    "Source_executed_production_graph_bytes": 70,
+    "Original_executed_production_graph_bytes": 27,
+    "arbitrary_calls_globals_or_relocations": false,
+    "any_fixture_production_entry_execution_before_this_proof": false,
+    "BSP_archives_linked": 3,
+    "explicit_fixture_object_count": 2
+  },
+  "fresh_fixture": {
+    "family": "local/cc12_physical_file_size_raw_entry_20261008a",
+    "run": "run01",
+    "utc_pre": "2026-10-08T09:20:42.524492+00:00",
+    "whole_static_proof_completed_utc": "2026-10-08T09:21:39.251410+00:00",
+    "probe_started_utc": "2026-10-08T09:21:39.253684+00:00",
+    "utc_post": "2026-10-08T09:21:41.920987+00:00",
+    "whole_static_proof_before_execution": true,
+    "loaded_bytes_and_real_OS_IAT_backend_checked_before_production_entries": true,
+    "Original_query_body": "all27 bytes unchanged in private RX mapping; only actual import cell00ce2114 bound to real current OS GetFileSize in private read-only mapping",
+    "Source_backing_input": "3 current raw constructor43 calls, literal Original profile D691B0; real aligned 20h backing; actual CreateFileW HANDLE installed at+8; nonzero cache fields; both16-byte guards",
+    "source_class_or_vtable_fabricated": false,
+    "Original_constructor_calls": 0,
+    "Source_constructor_input_calls": 3,
+    "instrumented_Source_size_calls": 3,
+    "instrumented_Original_size_calls": 3,
+    "meaningful_pairs": 3,
+    "cases": [
+      {
+        "case": "small",
+        "EAX": "00000040",
+        "ECX": "00000000",
+        "Source_EDX_unqualified": "000ae690",
+        "Original_EDX_unqualified": "000ae690",
+        "Source_error": "23130",
+        "Original_error": "23130",
+        "cursor_before": "17",
+        "cursor_after": "17",
+        "backing64": "PASS",
+        "RET4": "PASS",
+        "nonvolatiles": "PASS"
+      },
+      {
+        "case": "sparse_above_4GiB",
+        "EAX": "00000023",
+        "ECX": "00000001",
+        "Source_EDX_unqualified": "000ae690",
+        "Original_EDX_unqualified": "000ae690",
+        "Source_error": "23130",
+        "Original_error": "23130",
+        "cursor_before": "29",
+        "cursor_after": "29",
+        "backing64": "PASS",
+        "RET4": "PASS",
+        "nonvolatiles": "PASS"
+      },
+      {
+        "case": "invalid_handle",
+        "EAX": "ffffffff",
+        "ECX": "00000000",
+        "Source_EDX_unqualified": "00000000",
+        "Original_EDX_unqualified": "00000000",
+        "Source_error": "6",
+        "Original_error": "6",
+        "cursor_before": "13",
+        "cursor_after": "13",
+        "backing64": "PASS",
+        "RET4": "PASS",
+        "nonvolatiles": "PASS"
+      }
+    ],
+    "sparse_file_length": "00000001:00000023",
+    "sparse_attribute_confirmed_before_extension": true,
+    "independent_GetFileSizeEx_confirmed_sizes_before_after": true,
+    "full_64byte_receiver_and_guards_unchanged": true,
+    "same_actual_backing_address_for_pairs": true,
+    "ESP_RET4_and_nonvolatile_registers": true,
+    "real_cursor_unchanged": true,
+    "EDX_observed_but_never_asserted_or_canonicalized": true,
+    "LastError": "real immediately captured observations; successful calls preserved seeded0x5a5a in this run only; invalid HANDLE observed error6 and ECX0, not a general API failure-high guarantee",
+    "actual_runtime_OS_modules": [
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      }
+    ],
+    "temporary_files_deleted_on_close": true,
+    "historical_fixture_replays": 0
+  },
+  "build_and_link": {
+    "command": "./scripts/build.ps1",
+    "normal_build_exit": 0,
+    "existing_CTests_passed": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "fixture_compile_exit": 0,
+    "minimal_zero_archive_link_exit": 1120,
+    "minimal_unresolved_external_count": 10,
+    "minimal_failure_preserved": {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/minimal_link.log",
+      "sha256": "65ff9da8c7fc14cbdbde2ebfc6158877079b619c91898bec01887a92bf8d62d5",
+      "bytes": 9444
+    },
+    "fallback_link_exit": 0,
+    "explicit_objects": 2,
+    "genuine_existing_BSP_archives": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_core.lib",
+        "sha256_pre": "01ed747b15a2dcd1ff5868273d28214b0cb161d4109930b10e7216e5431416ef",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_file_size_raw_entry_20261008a\\run01\\inputs\\frozen\\2b2e3f3dd713455bbdb2895a392ecf19992fced8987716e07b29d3f2e58f9b36\\bsp_core.lib",
+        "sha256_copy": "01ed747b15a2dcd1ff5868273d28214b0cb161d4109930b10e7216e5431416ef",
+        "sha256_post": "01ed747b15a2dcd1ff5868273d28214b0cb161d4109930b10e7216e5431416ef"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256_pre": "9f0a4b1bd84068ee136b5e49b9cc4217ad786b1d1b3b17c3f7c0148acb7c9127",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_file_size_raw_entry_20261008a\\run01\\inputs\\frozen\\a77a96d710c7da680ffbdaccbcd3a412c3d7b511d348898a6d3d6655162835f5\\bsp_lua511.lib",
+        "sha256_copy": "9f0a4b1bd84068ee136b5e49b9cc4217ad786b1d1b3b17c3f7c0148acb7c9127",
+        "sha256_post": "9f0a4b1bd84068ee136b5e49b9cc4217ad786b1d1b3b17c3f7c0148acb7c9127"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_zlib121.lib",
+        "sha256_pre": "f7ef727cd9d1d9530b0a80412b624c70025d0024c1c60d6883b27f394ac53654",
+        "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_file_size_raw_entry_20261008a\\run01\\inputs\\frozen\\c28520d876e3962383085cfa97ee965d2bd39ff2bb75e24d9211a6f6529a809c\\bsp_zlib121.lib",
+        "sha256_copy": "f7ef727cd9d1d9530b0a80412b624c70025d0024c1c60d6883b27f394ac53654",
+        "sha256_post": "f7ef727cd9d1d9530b0a80412b624c70025d0024c1c60d6883b27f394ac53654"
+      }
+    ],
+    "stub_or_adapter_added_to_link": false,
+    "ordinary_link_dependencies_executed_or_admitted": false,
+    "embedded_manifest": "asInvoker"
+  },
+  "input_pins": {
+    "all_recorded_pre_post_and_frozen_copy_hashes_equal": true,
+    "counts": {
+      "production_sources": 6,
+      "normal_production_module_inputs": 202,
+      "recipe_tools": 16,
+      "OS_libraries": 2,
+      "compiler_linker_backends": 46,
+      "actual_probe_consumed_headers": 165,
+      "actual_searched_libraries": 19,
+      "objects": 2,
+      "generated_recipes": 8
+    },
+    "manifest": {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/inputs/manifest.json",
+      "sha256": "6b55c56993b0e65e470af242074ba2f6a4b8064c2d172f993e6ec6c4c42fbd8b",
+      "bytes": 307784
+    },
+    "production_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\bsp_core.dir\\Release\\native_physical_stream_open.obj",
+      "sha256_pre": "27ff55a448a2ab30e562ebb1c708d27d3823b47bf252bcce49547b7ae458a69b",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_file_size_raw_entry_20261008a\\run01\\inputs\\frozen\\8df716015d2c4947bc3150bdba4821dcfa26fca0a6b20d9ad5b9c3107bcd876e\\native_physical_stream_open.obj",
+      "sha256_copy": "27ff55a448a2ab30e562ebb1c708d27d3823b47bf252bcce49547b7ae458a69b",
+      "sha256_post": "27ff55a448a2ab30e562ebb1c708d27d3823b47bf252bcce49547b7ae458a69b"
+    },
+    "production_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\build\\win32\\Release\\bsp_core.lib",
+      "sha256_pre": "01ed747b15a2dcd1ff5868273d28214b0cb161d4109930b10e7216e5431416ef",
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_physical_file_size_raw_entry_20261008a\\run01\\inputs\\frozen\\2b2e3f3dd713455bbdb2895a392ecf19992fced8987716e07b29d3f2e58f9b36\\bsp_core.lib",
+      "sha256_copy": "01ed747b15a2dcd1ff5868273d28214b0cb161d4109930b10e7216e5431416ef",
+      "sha256_post": "01ed747b15a2dcd1ff5868273d28214b0cb161d4109930b10e7216e5431416ef"
+    },
+    "fixture_exe_sha256_pre": "600b025b5b7407ca8d84c4c3224f8c7b62c051b17915adfe4e992184bfa26398",
+    "fixture_exe_sha256_post": "600b025b5b7407ca8d84c4c3224f8c7b62c051b17915adfe4e992184bfa26398",
+    "whole_original_input_bytes_and_original_image_frozen": true
+  },
+  "artifacts": [
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run.py",
+      "sha256": "88e384107543eaf322700e76970b7d6ba180b3668cfcd48ac11046bb7dcfc58e",
+      "bytes": 12508
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/inspect_size.py",
+      "sha256": "faf9566d2a5332220d01fb2c35e0c82953f97ce87cc903928e48a3f438fb966e",
+      "bytes": 5112
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/coff_reader.py",
+      "sha256": "d6dba11d4b6eb96d7fdab4e1ebb0588857ec3c242c7ae23d16cf2a79ead47d49",
+      "bytes": 3242
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/probe.cpp",
+      "sha256": "ceeeee2f0acac0c0633ef62710a20c7f55c4ab5280831f42c3c006458e26f25e",
+      "bytes": 13220
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/normal_build.log",
+      "sha256": "efb00c9af3b0d2a684c52b20d6b6370f8f5c794ade8d9ee0e2f131016b8e4dbd",
+      "bytes": 4477
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/probe.compile.log",
+      "sha256": "e64bf6e3729391cb38ac21111e62be28bcc6c247f2d387f894f83887c570521f",
+      "bytes": 24243
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/link.log",
+      "sha256": "251b539d28f0c367294cac0743030b036a4f2bae3be0211a5bc509757aab4a1c",
+      "bytes": 13947
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/whole_size_proof.json",
+      "sha256": "e2c650a16da7708748b673c406a9abe9c52453279acb66098a1188d82f572dab",
+      "bytes": 6380
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/whole_gate.txt",
+      "sha256": "bbd1c13cf19abcb3ce1bb4cd434eb88bb388e4bfcda12b55b7a7e1d8c22fd45b",
+      "bytes": 77
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/execution.log",
+      "sha256": "fae5f228a22c633b1f691353736d16a2481629f0775e5c530858c4ba58360734",
+      "bytes": 1112
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/file_size_probe.exe",
+      "sha256": "600b025b5b7407ca8d84c4c3224f8c7b62c051b17915adfe4e992184bfa26398",
+      "bytes": 207360
+    },
+    {
+      "path": "local/cc12_physical_file_size_raw_entry_20261008a/run01/embedded_manifest.xml",
+      "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+      "bytes": 406
+    }
+  ],
+  "limits": [
+    "Bounded live aligned backing and real Win32 HANDLE/API domain only.",
+    "Source class, source-owned tables, reference-count lifetime and raw substream dispatch remain unqualified.",
+    "The input constructor retains literal Original profile data; no Source profile/class is fabricated.",
+    "No EDX or EFLAGS/unspecified volatile equivalence claim; this entry does not return a uint64 in EDX:EAX.",
+    "No historical seek, constructor or open fixture replay; only current constructor43 input production in this new family.",
+    "No universal CPU/OS compatibility, game startup, gameplay, or complete physical-stream implementation claim.",
+    "Ghidra annotations and shared ledgers remain primary-owned."
+  ]
+}
