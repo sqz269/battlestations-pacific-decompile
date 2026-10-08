@@ -1,0 +1,788 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_property_fallback_owner_readiness",
+  "audit_UTC": "2026-10-08T08:51:34.838689+00:00",
+  "status": "NOT_READY",
+  "scope": {
+    "kind": "READ_ONLY_OWNER_READINESS_AUDIT",
+    "owned_addresses": [
+      "00E177E4",
+      "00E177D4",
+      "0043E4D0",
+      "0043B450",
+      "00E175B0",
+      "00CC8A30",
+      "00CD9260"
+    ],
+    "owned_files": [
+      "docs/CC12_PROPERTY_FALLBACK_OWNER_READINESS.md",
+      "reports/cc12_property_fallback_owner_readiness.json"
+    ],
+    "Ghidra_mutations": false,
+    "Source_changes": false,
+    "Source_or_native_execution": false,
+    "new_tests": false,
+    "build": "NOT_RUN_READ_ONLY_AUDIT",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_program_verification": "bsp.py Ghidra wrappers verify before each live query batch; the call-row verifier also calls Client.verify()",
+    "worker_input_HEAD": "9c61316c1b3a3979ce01ec2d3ce0a601005199a2",
+    "current_main_input_HEAD": "b7d4663c272bcddae6b9fe52e9d9fcc54ee96098",
+    "qualification": "Live means saved Ghidra database, not running process memory. Installed PE, original installation and saved analysis preserved."
+  },
+  "installed_PE": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "initial_image_and_whole_wrapper_ranges": [
+    {
+      "entry": "00E177E4",
+      "inclusive_end": "00E177E4",
+      "exclusive_end": "00E177E5",
+      "bytes": 1,
+      "role": "CString_initial_NUL_cell",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "PE_file_offset": 10581988,
+      "section": ".data",
+      "PE_storage": "raw_file_bytes",
+      "live_PE_initial_equal": true
+    },
+    {
+      "entry": "00E175B0",
+      "inclusive_end": "00E175E7",
+      "exclusive_end": "00E175E8",
+      "bytes": 56,
+      "role": "separate_actual14h_node_pool_owner_initial_image",
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+      "PE_file_offset": 10581424,
+      "section": ".data",
+      "PE_storage": "raw_file_bytes",
+      "live_PE_initial_equal": true
+    },
+    {
+      "entry": "00E177D4",
+      "inclusive_end": "00E177E3",
+      "exclusive_end": "00E177E4",
+      "bytes": 16,
+      "role": "adjacent_diagnostic_vector_initial_image",
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "PE_file_offset": 10581972,
+      "section": ".data",
+      "PE_storage": "raw_file_bytes",
+      "live_PE_initial_equal": true
+    },
+    {
+      "entry": "00CC8A30",
+      "inclusive_end": "00CC8A45",
+      "exclusive_end": "00CC8A46",
+      "bytes": 22,
+      "role": "whole_pool_startup_wrapper",
+      "sha256": "56d28734e8f445ca80ac66f19b480a6feda418430bd63c97f82f2166bbed94a8",
+      "PE_file_offset": 9210416,
+      "section": ".text",
+      "PE_storage": "raw_file_bytes",
+      "live_PE_initial_equal": true,
+      "instructions": 6,
+      "direct_calls": 2,
+      "tail_jumps": 0,
+      "disassembly": [
+        "00CC8A30: mov ecx, 0xe175b0",
+        "00CC8A35: call 0x411050",
+        "00CC8A3A: push 0xcd9260",
+        "00CC8A3F: call 0xbf6ff5",
+        "00CC8A44: pop ecx",
+        "00CC8A45: ret "
+      ]
+    },
+    {
+      "entry": "00CD9260",
+      "inclusive_end": "00CD9269",
+      "exclusive_end": "00CD926A",
+      "bytes": 10,
+      "role": "whole_pool_atexit_callback",
+      "sha256": "7bae871d18a24016fe4a25599cc71372c5ed50f287fd8b9653bc9b98c3b3599e",
+      "PE_file_offset": 9278048,
+      "section": ".text",
+      "PE_storage": "raw_file_bytes",
+      "live_PE_initial_equal": true,
+      "instructions": 2,
+      "direct_calls": 0,
+      "tail_jumps": 1,
+      "disassembly": [
+        "00CD9260: mov ecx, 0xe175b0",
+        "00CD9265: jmp 0x410a60"
+      ]
+    },
+    {
+      "entry": "00CE2748",
+      "inclusive_end": "00CE274B",
+      "exclusive_end": "00CE274C",
+      "bytes": 4,
+      "role": "actual_CPP_initializer_pointer_slot",
+      "sha256": "b2c4355725ed741b73a664991dbbf7345d14ca945348cd743d6578b9730a0e90",
+      "PE_file_offset": 9316168,
+      "section": ".rdata",
+      "PE_storage": "raw_file_bytes",
+      "live_PE_initial_equal": true
+    }
+  ],
+  "fallback": {
+    "address": "00E177E4",
+    "initial_byte_hex": "00",
+    "initial_PE_storage": ".data raw file byte",
+    "kind": "CString initial NUL byte; no actual8h header or actual38h property record established",
+    "indexed_direct_xrefs_complete": true,
+    "xref_rows": [
+      {
+        "site": "0043B8F3",
+        "consumer": "0043B8B0",
+        "kind": "DATA"
+      },
+      {
+        "site": "0043B4CF",
+        "consumer": "0043B450",
+        "kind": "DATA"
+      },
+      {
+        "site": "0043B784",
+        "consumer": "0043B760",
+        "kind": "READ"
+      },
+      {
+        "site": "0043B722",
+        "consumer": "0043B700",
+        "kind": "READ"
+      },
+      {
+        "site": "0043B4AA",
+        "consumer": "0043B450",
+        "kind": "DATA"
+      },
+      {
+        "site": "0043B717",
+        "consumer": "0043B700",
+        "kind": "DATA"
+      },
+      {
+        "site": "0043B779",
+        "consumer": "0043B760",
+        "kind": "DATA"
+      },
+      {
+        "site": "0043B8DB",
+        "consumer": "0043B8B0",
+        "kind": "DATA"
+      }
+    ],
+    "direct_writer_or_startup_initializer_found": false,
+    "qualification": "No indexed direct writer was found; this is not a proof against indirect writes or a running-game immutability claim.",
+    "current_Source": "The current whole hash service takes an explicit distinct actual_empty_00e177e4 borrowed role. No Source fallback owner/cell publication or property lookup binding exists.",
+    "empty_hash_limit": "Valid NULL-data/zero-length input performs no byte/CRT read; that subset cannot establish the genuine fallback binding needed by lookup."
+  },
+  "adjacent_storage_check": {
+    "range": "00E177D4..00E177E3",
+    "bytes": 16,
+    "initial_bytes": "all zero",
+    "role": "Diagnostic vector storage, separate from fallback byte and map-node pool",
+    "consumer_0043B450": "Diagnostic traversal with16-byte entries, begin00E177D8/end00E177DC; entry+0/+8 floating values and entry+C string pointer/fallback used in \"%f %s %f\" logging. Does not publish fallback or property records.",
+    "listing_limit": "0043B450 saved range0043B450..0043B4F5,58 instructions; six bypassed bytes0043B45A..0043B45F after JMP0043B458->0043B460 are LEA EBX,[EBX+0] alignment. No Ghidra repair performed.",
+    "consumer_0043E4D0": "Timer/formatting diagnostic consumer. Whole saved pseudocode paged through its end; x87/overlapping-global warnings prevent any stronger Source/ABI conclusion. Exact saved instruction0043E60C loads ECX=00E177D4 before CALL0043E61D->0043E440, which stays unexpanded.",
+    "not_inferred": [
+      "no fallback record/header",
+      "no default property record",
+      "no vector-to-pool ownership equivalence",
+      "no diagnostic ABI or lifetime closure"
+    ]
+  },
+  "pool_owner": {
+    "address": "00E175B0",
+    "owner_bytes": 56,
+    "node_bytes": 20,
+    "role": "Separate actual38h raw pool owner of actual14h map nodes; neither the fallback byte nor an actual38h property record",
+    "genuine_producer_binding": "008F28F0 has MOV ECX,00E175B0 at008F2930 before its raw node allocation path. Prior complete insertion audit preserves native real allocation/key/record/next/page-identity writes.",
+    "node_fields": {
+      "0": "owning raw key length",
+      "4": "owning raw key data",
+      "8": "mapped actual property-record pointer",
+      "C": "bucket next pointer",
+      "10": "allocator page identity"
+    },
+    "direct_xref_sites": [
+      "0043BFE7",
+      "0043CFC7",
+      "0043D30C",
+      "004F026F",
+      "008F2930",
+      "00CC8A30",
+      "00CD9260"
+    ],
+    "owner_fields": {
+      "0": "profile00CE37A4",
+      "4": "shared-list previous",
+      "8": "shared-list next",
+      "C": "OS recursive CRITICAL_SECTION",
+      "24": "captured lock depth",
+      "28": "page pointer table",
+      "2C": "page count",
+      "30": "page table capacity",
+      "34": "current/earliest-page cursor"
+    },
+    "Source_owner_publication": "MISSING",
+    "payload_lifetime": "Pool destruction releases pages/table and unlinks owner; it does not recursively destroy map keys or mapped property records. Required ordering is still unproved for this exact owner."
+  },
+  "startup_array": {
+    "begin": "00CE2734",
+    "end_exclusive": "00CE36E4",
+    "slot": "00CE2748",
+    "index": 5,
+    "pointer": "00CC8A30",
+    "bounds_source": "Existing verified GAME_PENDING_ENTITY_RUNTIME/OBSERVER_DISPATCH_OWNER CRT evidence; no new CRT-body expansion",
+    "entry_count": 1004,
+    "array_bytes": 4016,
+    "slot_bytes_hex": "30 8a cc 00",
+    "existing_CRT_evidence": "Original __cinit00BFBC47 loads begin/end at00BFBC90/00BFBC97, skips NULL, calls non-NULL at00BFBCA7, advances four bytes at00BFBCA9. Existing GAME_PENDING_ENTITY_RUNTIME evidence inspected; no new CRT body expansion.",
+    "bounds_direct_xrefs": [
+      "00BFBC90->00CE2734(DATA)",
+      "00BFBCA1->00CE2734(READ)",
+      "00BFBC97->00CE36E4(DATA)"
+    ],
+    "wrapper_entry_xref": "00CE2748->00CC8A30",
+    "callback_pointer_xref": "00CC8A3A->00CD9260",
+    "qualifier": "Real initial-image startup slot, not a fabricated table, manually called subset or gameplay execution."
+  },
+  "host_steps": [
+    {
+      "function": "00CC8A30",
+      "address": "00CC8A35",
+      "native": "00411050",
+      "kind": "direct_call",
+      "role": "Construct the exact 00E175B0 raw pool owner"
+    },
+    {
+      "function": "00CC8A30",
+      "address": "00CC8A3F",
+      "native": "00BF6FF5",
+      "kind": "direct_call",
+      "role": "Original _atexit, callback argument 00CD9260 pushed at 00CC8A3A"
+    },
+    {
+      "function": "00CD9260",
+      "address": "00CD9265",
+      "native": "00410A60",
+      "kind": "tail_jump",
+      "role": "Destroy the same exact 00E175B0 raw pool owner"
+    }
+  ],
+  "original_wrapper_contracts": [
+    {
+      "entry": "00CC8A30",
+      "inclusive_end": "00CC8A45",
+      "bytes": 22,
+      "instructions": 6,
+      "direct_calls": 2,
+      "indirect_calls": 0,
+      "instruction_gaps": 0,
+      "ABI": "No caller arguments read. Loads ECX=00E175B0 for00411050; PUSH00CD9260 supplies one cdecl _atexit argument; POP ECX consumes it; RET leaves _atexit EAX registration result unchanged.",
+      "behavior": "Always constructs exact owner then registers exact callback. No once guard, registration-failure retry, rollback or alternate pool; callee exceptions/lifetime requirements remain callee contracts."
+    },
+    {
+      "entry": "00CD9260",
+      "inclusive_end": "00CD9269",
+      "bytes": 10,
+      "instructions": 2,
+      "direct_calls": 0,
+      "tail_jumps": 1,
+      "indirect_calls": 0,
+      "instruction_gaps": 0,
+      "ABI": "Zero-argument atexit callback sets ECX=00E175B0 and tail-delegates original00410A60 method; no stack argument cleanup of its own and no separate result conversion.",
+      "behavior": "Exactly matching teardown owner, no guard or alternate storage."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00CC8A30",
+      "inclusive_end": "00CC8A45",
+      "bytes": 22
+    },
+    {
+      "entry": "00CD9260",
+      "inclusive_end": "00CD9269",
+      "bytes": 10
+    }
+  ],
+  "function_object_limitation": {
+    "status": "REPAIR_REQUIRED_BY_ROOT",
+    "evidence": "Live proto returns no function/body for both entries; every one of the eight instruction starts exists in the saved listing and whole bytes match installed PE.",
+    "required_work": "Root may claim both wrappers after lease release, create exact22B/10B function objects under Ghidra write lock, annotate verified roles, save/refresh affected exports and rerun caller/function containment validation.",
+    "not_done": "No worker Ghidra write, rename, prototype/body repair or shared export mutation."
+  },
+  "current_Source_dependencies": [
+    {
+      "original": "00411050",
+      "provider": "initialize_native_enum_node_pool_00411050(void*, AllocatorListDomain&)",
+      "status": "AVAILABLE_WHOLE_RAW_SOURCE",
+      "domain": "Actual writable38h owner; genuine initialized same00E188B4 borrowed list-domain head; CE37A4 real virtual0 binding supplied before construction/publication; placement base/list registration; real OS CRITICAL_SECTION; initial cursorFFFFFFFF; real singleton allocator80-byte initial page-pointer table/capacity32."
+    },
+    {
+      "original": "00410A60",
+      "provider": "destroy_native_enum_node_pool_00410a60(void*, AllocatorListDomain&) noexcept",
+      "status": "AVAILABLE_WHOLE_RAW_SOURCE",
+      "domain": "Same actual owner and same list domain; real page/table release, captured-depth unlock, DeleteCriticalSection and base unlink. Owner/domain must still be alive, no idempotence guarantee, no mapped-record/key recursive destruction."
+    },
+    {
+      "original": "00CE37A4 slot0/00410CD0",
+      "provider": "bind_native_enum_node_pool_virtual0_00ce37a4(void*, AllocatorListDomain&)",
+      "status": "AVAILABLE_EXPLICIT_REAL_BINDING",
+      "domain": "Binds real complete pool trim to its actual owner in the same list; does not authorize a generic foreign-profile callback or sibling owner substitution."
+    },
+    {
+      "original": "00E188B4 shared list",
+      "provider": "AllocatorListDomain(AllocatorListElement*& shared_head_00e188b4)",
+      "status": "AVAILABLE_BORROWED_DOMAIN_API_OWNER_BINDING_STILL_REQUIRED",
+      "domain": "Explicit shared-head reference, genuine lifetime/initialization and exact-owner prepend/unlink/trim bindings. No independent list manufactured for00E175B0."
+    },
+    {
+      "original": "allocator helper boundary",
+      "provider": "Current singleton_lifetime allocation/free services consumed by native_enum_node_pool",
+      "status": "AVAILABLE_CURRENT_GENUINE_SOURCE",
+      "domain": "Genuine current raw80-byte table and584h pool pages/64slots; production provider identities frozen, no additional allocator-body expansion or new execution."
+    },
+    {
+      "original": "00BF6FF5 _atexit",
+      "provider": "Real std::atexit boundary available in current Source; this exact raw-pool callback/owner is absent",
+      "status": "CRT_AVAILABLE_EXACT_OWNER_REGISTRATION_MISSING",
+      "domain": "Existing gameplay_effect_name_index invokes std::atexit but uses a semantic map/context and cannot stand in for the raw00E175B0 owner. No CRT shutdown/deletion-chain expansion."
+    },
+    {
+      "original": "0043B760",
+      "provider": "native_property_key_bucket_0043b760(const void*, const char*)",
+      "status": "AVAILABLE_WHOLE_ORDINARY_SOURCE",
+      "domain": "Actual borrowed8h key header, closed valid ASCII/C locale, explicit distinct property fallback role. Does not provide original stdcall/class/game ABI or this fallback/global map owner."
+    },
+    {
+      "original": "00E188B4 canonical shared-head role",
+      "provider": "GameNativePhysicalPoolProcess::allocator_list_domain_00e188b4()",
+      "status": "AVAILABLE_CURRENT_CANONICAL_PROCESS_DOMAIN",
+      "domain": "GameNativePhysicalPoolProcess constructor binds list_ to its zero-initialized list_head_00e188b4_; accessor is available before physical-pool startup. Keep every borrower within this process lifetime. No new shared head required for00E175B0."
+    }
+  ],
+  "smallest_missing_contracts": [
+    {
+      "priority": 1,
+      "role": "actual00E177E4 CString lifetime binding",
+      "missing": "Current Source producer/owner/publication for the exact Original initial-NUL role and valid image/process lifetime consumed by lookup; do not fabricate an8h header or38h record."
+    },
+    {
+      "priority": 2,
+      "role": "actual00E175B0 process owner and startup/callback pair",
+      "missing": "The distinct00E175B0 Source borrowed-owner binding/startup/callback pair is absent. The current canonical00E188B4 process domain and complete raw constructor/destructor/CE37A4 trim providers ARE available. Exact owner storage/publication and valid same-pool/domain callback lifetime must be admitted by this distinct role, with map/key/mapped-record teardown before page release. No fabricated global or sibling pool is needed for the borrowed interface."
+    },
+    {
+      "priority": 3,
+      "role": "function metadata admission",
+      "missing": "Ghidra wrapper function objects atCC8A30/CD9260 and their exact body/ABI declarations; instruction proof is sealed but normal function containment remains unavailable."
+    }
+  ],
+  "next_packet_recommendation": {
+    "implementation_ready": "INDEPENDENT_BORROWED_BOOKEND_CANDIDATE_READY_FOR_ROOT_REVIEW; current exact-owner Source publication still absent",
+    "bounded_next_review": "Root repairs the exact22B/10B function objects under lock, then authorizes a distinct borrowed00E175B0 binding/init/atexit interface in the existing registered native_enum_node_pool.hpp/cpp, following the genuine current hardware-pool static bookend pattern.",
+    "no_broad_expansion": [
+      "no deletion chain",
+      "no sibling pool substitution",
+      "no fabricated fallback/table/map",
+      "no partial fresh-key admission"
+    ],
+    "retained_unresolved": [
+      "actual populated map production/lookup linkage",
+      "replacement path full mapped-record profile/lifetime release",
+      "recursive property record/key destruction",
+      "constructor/class/EH/factory/world/game validation",
+      "Original ABI replacement"
+    ],
+    "candidate_files": [
+      "include/bsp/native_enum_node_pool.hpp",
+      "src/native_enum_node_pool.cpp"
+    ],
+    "candidate_interfaces_provisional": [
+      "void bind_static_native_property_node_pool_00e175b0(void* actual_pool, AllocatorListDomain& actual_list)",
+      "int initialize_static_native_property_node_pool_00cc8a30()",
+      "void destroy_static_native_property_node_pool_00cd9260() noexcept"
+    ],
+    "whole_contract": "Bind once to genuine aligned initially-unconstructed38h actual pool and the same current canonical00E188B4 domain. Establish the real CE37A4/00410CD0 trim binding before publishing borrowed pool/list pointers. Initializer always invokes whole00411050 then real std::atexit with matching callback, returns registration status, no once-guard or rollback. Matching callback invokes whole00410A60 on the same owner/list. Construction failure propagates before registration. Bound storage/list/bindings remain alive through callback; callback ordering must meet raw helper payload-before-pages preconditions. No guard/default global/table, no sibling-pool or semantic-container substitution, no arbitrary rebind/repeated lifecycle claim.",
+    "scope_limit": "Distinct whole ordinary Source borrowed bookend only; no actual game global/startup-table dispatcher, Original ABI, fallback NUL ownership, populated map, mapped-record recursive lifetime, class/EH/factory/world/game claim."
+  },
+  "frozen_Source_inputs": [
+    {
+      "path": "src/native_enum_node_pool.cpp",
+      "bytes": 10020,
+      "sha256": "9117dd514b21f149dafb1628ecc83af896b5dbf061d6e7e89beca9f4500b231c",
+      "worker_blob": "33aff1c0fb41d9d894028bb46d124694148fa533",
+      "main_blob": "33aff1c0fb41d9d894028bb46d124694148fa533",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_enum_node_pool.hpp",
+      "bytes": 2208,
+      "sha256": "39630618dfcc6585934ba70266955aa432e89cc935f513c3d9e12432020ac4cb",
+      "worker_blob": "a912078e471001d69e72faa49917dd6c84e61c5f",
+      "main_blob": "a912078e471001d69e72faa49917dd6c84e61c5f",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/allocator_list.cpp",
+      "bytes": 2682,
+      "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "worker_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "main_blob": "185d612496c4d9deb3b8233e565b1bc82a6f0e70",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/allocator_list.hpp",
+      "bytes": 2192,
+      "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "worker_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "main_blob": "e3cfca6ec4c44d5aa20ee8e6870a5c4f02cd784a",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "worker_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "main_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "worker_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "main_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_enum_dictionary_lookup.cpp",
+      "bytes": 3557,
+      "sha256": "e80908de5b392e28df6ebae92c5c7071c7d3a79d37ff79a04575f3800a95d7ad",
+      "worker_blob": "3c6543336801f259543c891fed1981075dd13e32",
+      "main_blob": "3c6543336801f259543c891fed1981075dd13e32",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_enum_dictionary_lookup.hpp",
+      "bytes": 2723,
+      "sha256": "89e7ca133274ead02c94445f2f3121ec30dadb331048a12ac6d8de3beee735c6",
+      "worker_blob": "b08cb8b70347e6e855d2bad56ca8373aadcf5d6f",
+      "main_blob": "b08cb8b70347e6e855d2bad56ca8373aadcf5d6f",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/gameplay_effect_name_index.cpp",
+      "bytes": 4439,
+      "sha256": "ac7c145419d33fb0f77528b7c77e76ded454ce8641b7801558672aed060736d3",
+      "worker_blob": "8cc8c16a4d9819bd2bdc6c70ed719d4bd878bfe3",
+      "main_blob": "8cc8c16a4d9819bd2bdc6c70ed719d4bd878bfe3",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/gameplay_effect_name_index.hpp",
+      "bytes": 2221,
+      "sha256": "9c0fd9ebb835b6e3ef9558bd8b00eb3d054418ca6354b1186586b8a875dc3349",
+      "worker_blob": "d16526f2e4007e9f01ab7ba3be6f45198dd2963e",
+      "main_blob": "d16526f2e4007e9f01ab7ba3be6f45198dd2963e",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "docs/NATIVE_ENUM_NODE_POOL_CC11.md",
+      "bytes": 8717,
+      "sha256": "474302aaa96e213424996453b6d1cce6fe89dc920ed59c5f0395f00c6bdd0e27",
+      "worker_blob": "5933f0b5f42810d5fb6e1a4535986d0580981b5a",
+      "main_blob": "5933f0b5f42810d5fb6e1a4535986d0580981b5a",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "reports/native_enum_node_pool_cc11.json",
+      "bytes": 42162,
+      "sha256": "4aef223ccd41cfceef3d1aee1ba092af6ecc16ec8cd7ef7947aa6dbb1006d633",
+      "worker_blob": "b5d76e1c56c69b4166f3637ebb1bc9c45bbe16fc",
+      "main_blob": "b5d76e1c56c69b4166f3637ebb1bc9c45bbe16fc",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "docs/GAME_PENDING_ENTITY_RUNTIME.md",
+      "bytes": 9004,
+      "sha256": "79b47583383c5ce1fa43e3b4176ae5051ed02e0097068064e97425e8ed34cdc1",
+      "worker_blob": "b9772b9cb1f97ef86e4cf3e8b3b994ee133b7d38",
+      "main_blob": "b9772b9cb1f97ef86e4cf3e8b3b994ee133b7d38",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "reports/game_pending_entity_runtime.json",
+      "bytes": 18693,
+      "sha256": "28d81ad831fe402db48e0fb55406085bf3e976e0cb65a9acf52f0692298d02c7",
+      "worker_blob": "a0484e433f53f0a0e78a0a39ffa19a0d1fddb8f3",
+      "main_blob": "a0484e433f53f0a0e78a0a39ffa19a0d1fddb8f3",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "reports/cc12_property_key_hash_source.json",
+      "bytes": 16723,
+      "sha256": "3bae46d7e4b6cf146017dea4930c72540b75ede1e5095c1581f313e32cde12df",
+      "worker_blob": "4eda5f7ef430529e11c1026ed709c71df5ca173b",
+      "main_blob": "4eda5f7ef430529e11c1026ed709c71df5ca173b",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/game_native_physical_pool.hpp",
+      "bytes": 2268,
+      "sha256": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e",
+      "worker_blob": "9046c5a7741cf3a99bca8a491c14528c4abf97f7",
+      "main_blob": "9046c5a7741cf3a99bca8a491c14528c4abf97f7",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/game_native_physical_pool.cpp",
+      "bytes": 1851,
+      "sha256": "2dde8e71367ee7b689f7ae620f62f545f0811dcf40979896cee990e97b323e7c",
+      "worker_blob": "4ab7c81a28c9965e31278e18a60f70c0221ecfd7",
+      "main_blob": "4ab7c81a28c9965e31278e18a60f70c0221ecfd7",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_pool_static.hpp",
+      "bytes": 1420,
+      "sha256": "0b7f41b71185460f5dec66f9029de7c27ccbde9b3a729b709dad6c2c7702faeb",
+      "worker_blob": "e1232b7affc6af7f44e492967cdeee44eb0a6fe5",
+      "main_blob": "e1232b7affc6af7f44e492967cdeee44eb0a6fe5",
+      "worker_equal_current_main": true
+    },
+    {
+      "path": "src/native_hardware_layout_pool_static.cpp",
+      "bytes": 1029,
+      "sha256": "c92e65c9c11cf95c3e69d57fdd14af078bf7eb2977887c17d788c92be990c213",
+      "worker_blob": "f1d981dc0a804e4e5f7f4846e625cf213ffbea8a",
+      "main_blob": "f1d981dc0a804e4e5f7f4846e625cf213ffbea8a",
+      "worker_equal_current_main": true
+    }
+  ],
+  "evidence_directory": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_fallback_owner_readiness",
+  "checks": {
+    "whole_native_bytes_listing": "PASS_EIGHT_INSTRUCTIONS_INSTALLED_PE_AND_LIVE",
+    "Source_inputs_current_main": "PASS_19_PINS_INCLUDING_CANONICAL_DOMAIN_AND_EXISTING_BOOKEND_PATTERN",
+    "normal_call_row_verifier": "EXPECTED_FAIL_3_CALLER_FUNCTION_OBJECTS_MISSING; genuine callee starts checked, no callee failure",
+    "Source_native_game_execution": "NOT_EXECUTED",
+    "selected_Source_and_installed_PE_pre_post": "PASS_19_SOURCE_PINS_6_NATIVE_RANGES_WHOLE_PE_SHA256",
+    "transfer_rows_saved_instruction_match": "PASS_3_DIRECT_TAIL_ROWS"
+  },
+  "evidence_artifacts": [
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00cc8a30.bin",
+      "bytes": 22,
+      "sha256": "56d28734e8f445ca80ac66f19b480a6feda418430bd63c97f82f2166bbed94a8"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00cc8a30_bytes.txt",
+      "bytes": 114,
+      "sha256": "12561f1e903dce0c74485c5b0c106fb739756f4695014c0e075cf43eb0a3fc2e"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00cc8a30_whole_disk_listing.txt",
+      "bytes": 139,
+      "sha256": "23e27a581c816c304b66c70b88314bfd555626da387ac4dd5181cda006619625"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00cd9260.bin",
+      "bytes": 10,
+      "sha256": "7bae871d18a24016fe4a25599cc71372c5ed50f287fd8b9653bc9b98c3b3599e"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00cd9260_bytes.txt",
+      "bytes": 53,
+      "sha256": "04af9995344f47c8f0d01479084282689904d90a329e24131c113ce6e329c5e9"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00cd9260_whole_disk_listing.txt",
+      "bytes": 53,
+      "sha256": "247cc837c1b4d6e9fb4b74ce067b7a38f089104f8ada2390e72fee5ee85497fe"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00ce2748.bin",
+      "bytes": 4,
+      "sha256": "b2c4355725ed741b73a664991dbbf7345d14ca945348cd743d6578b9730a0e90"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00ce2748_bytes.txt",
+      "bytes": 29,
+      "sha256": "8726ab16da4023eb83c73d98b794a7d2484a36600946108f48b0f135773b726a"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00e175b0.bin",
+      "bytes": 56,
+      "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00e175b0_bytes.txt",
+      "bytes": 276,
+      "sha256": "5b3ac34462aac59513b088b1c282cb01742a5358518c2bb1e91cc02a89a39789"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00e177d4.bin",
+      "bytes": 16,
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00e177d4_bytes.txt",
+      "bytes": 77,
+      "sha256": "84bf89d756487d26cc1ce0e4a7b8e4cdd5ddb000dcb25ef2552d05cabe97a1c5"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00e177e4.bin",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/00e177e4_bytes.txt",
+      "bytes": 17,
+      "sha256": "a9814a102aec544a4a21f2b27d744c32bdcdc9719461f159fe1939e16588353e"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/bounded_fallback_neighborhood_index_refs.json",
+      "bytes": 505,
+      "sha256": "74b7c4d463017484d6051f4bb4f0a265cae174e42d746026699a3114db45d4d0"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/byte_and_startup_receipt.json",
+      "bytes": 3773,
+      "sha256": "d2dbe89e01980b86c153f5b6acccc60eec4fbc6a55c5ded848c82da00fb2184d"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/call_row_validation.txt",
+      "bytes": 321,
+      "sha256": "3ffe0794b19a5d2f03fc571e3124d00d59306d054338b3ee48ffc6207a58edcd"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/callback_xrefs.txt",
+      "bytes": 22,
+      "sha256": "3c44f1a82a8e4dd063b480032c1176e388c2a4e9832464371a656f4880ad465b"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/canonical_domain_and_bookend_input_receipt.json",
+      "bytes": 1355,
+      "sha256": "0ca70e0a6875f35ad305e5512a49c425b62a9717334be12f2d67c636bf8f12d2"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/collect_evidence.py",
+      "bytes": 5251,
+      "sha256": "7175912cc8396a7916299a1bb5a3751f933b42bebc8c017e4dffc4efd56cc55f"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/current_Source_input_receipt.json",
+      "bytes": 5547,
+      "sha256": "01f6c6ce0893e9d4c418019f385ba353473fc567dd5dcf03c2e075878d05c05d"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/current_Source_owner_search.txt",
+      "bytes": 387,
+      "sha256": "b8c8c8dc011b54cd26bd64901732c870bceb86c524333fd3ea46a60f9c69f07a"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/diagnostic_vector_receiver_context.json",
+      "bytes": 365,
+      "sha256": "fc362b984238fff83fea74af7522c48bf99c4cd4a96a66a8771e730c7c2ed223"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/fallback_xrefs.txt",
+      "bytes": 338,
+      "sha256": "69f207dab49b8fb79417f9033e644fa592ee3155420ecd8f278fe7819aeb7dd4"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/final_validation_receipt.json",
+      "bytes": 561,
+      "sha256": "8a8d3d541f28fe7b91fc1cdd136ae9a705a2709ac465b34ec981da903ddbf876"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/finalize_audit.py",
+      "bytes": 3827,
+      "sha256": "19ea4f4742bc87d93163bd4b5285e4e513892a143158fea2736f83a4fa60fc5e"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/missing_function_objects.txt",
+      "bytes": 46,
+      "sha256": "41b5bd15084088ca098ac8d9400b9549800fc861b047830b54356d27c5c14e93"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/pool_xrefs.txt",
+      "bytes": 234,
+      "sha256": "3f8e792bcc7677c0e11af52c2eee41f7e575f3ac557013e2472027690f6c0a11"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/refine_shared_domain.py",
+      "bytes": 7897,
+      "sha256": "251fb187d3bbeb59d4e2c56f04e91b92cef1b8f414076b37bc274e6e9e5050fc"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/seal_inputs.py",
+      "bytes": 2315,
+      "sha256": "7e7a79ff4669220f6e4a4f04a607eb0e4e77b20865524637515c289ffa91b7e4"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/startup_xrefs.txt",
+      "bytes": 22,
+      "sha256": "39fe1ce68b1dd58ffb56058908c1e729c3de13ba61578b4a35581595012710d9"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/whole_wrapper_instructions.json",
+      "bytes": 1245,
+      "sha256": "16db61a5fe48b003c6a873ace8d1724dbecc3ab990b583f106227561d375e1ce"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/wrapper_instruction_receipt.txt",
+      "bytes": 141,
+      "sha256": "0b236fd4a62b23b3c57022b13757e31ad1ac807b2d63a604c371619b25b63003"
+    },
+    {
+      "path": "local/cc12_property_fallback_owner_readiness/write_audit.py",
+      "bytes": 23203,
+      "sha256": "033e16728dab3b876a2f1553f9fa4ee55e64f6ad035688be7cd9756746c6169f"
+    }
+  ],
+  "final_validation": {
+    "UTC": "2026-10-08T08:55:12.921986+00:00",
+    "Source_pins_unchanged_pre_post": 19,
+    "current_main_postcheck": "632c59261397060f57cc65cb653f1eb7fff573e8",
+    "installed_PE_and_six_saved_ranges_unchanged": true,
+    "all_eight_saved_instruction_rows_accounted": true,
+    "three_transfer_rows_match_saved_instructions": true,
+    "normal_function_containment": "EXPECTED_LIMITATION_3_MISSING_CALLER_FUNCTION_OBJECTS",
+    "genuine_callee_function_start_checks": "PASS_00411050_00BF6FF5_00410A60",
+    "Ghidra_mutations_Source_native_game_execution": false
+  },
+  "primary_review": {
+    "status": "PASS",
+    "archive_artifacts_rehashed": 34,
+    "current_Source_and_git_blobs_checked": 19,
+    "whole_native_initializer_bytes": 22,
+    "whole_native_exit_callback_bytes": 10,
+    "initial_PE_ranges_checked": 6,
+    "fallback_role": "E177E4 initial NUL CString cell, no header or record publication",
+    "pool_role": "Distinct E175B0 actual38h pool; genuine411050/410A60/CE37A4 trim providers and canonical E188B4 domain available",
+    "function_boundary_repair_pending": false,
+    "Source_native_game_execution": false
+  },
+  "primary_Ghidra_boundary_repair": {
+    "record": "reports/cc12_property_pool_static_definition.json",
+    "functions_created": [
+      "00cc8a30",
+      "00cd9260"
+    ],
+    "function_count": 64724,
+    "live_whole_instruction_counts": [
+      6,
+      2
+    ],
+    "call_rows_checked_after_repair": 3,
+    "call_row_failures": 0,
+    "Source_functions_added": 0,
+    "Original_bytes_modified": false
+  }
+}

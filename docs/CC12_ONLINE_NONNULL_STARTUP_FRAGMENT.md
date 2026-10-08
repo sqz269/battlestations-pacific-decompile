@@ -10,7 +10,9 @@ The complete constructor Source remains unchanged, including SDK initialization,
 
 All inputs in [the owner-readiness audit](CC12_ONLINE_APPLICATION_OWNER_READINESS.md) must be real and ready before entering the fragment. They include the same allocated manager, canonical manager/renderer/game/string/clock publications, loaded SDK module, permanent IPC services and compatible actual peer, complete pump/notification/UI/storage/achievement contexts, defined raw preimages, matching CRT allocation/free entries and the raw deletion binding established before constructor registration. These objects and contexts must remain valid through constructor callbacks and the later shared scalar drain. This packet supplies no fabricated peer or preimage, copied publication cell, `const_cast`, or partial constructor substitute.
 
-The audit's unresolved application obligations remain: genuine IPC bootstrap, context/preimage producers, notification client/session ownership, faithful locale context selection and a read-only renderer borrowing interface. Missing-peer cleanup can terminate the process. No unconditional startup/menu wiring is admitted by the existence of this fragment.
+The primary review corrected `current_renderer_00f8d394` to `void* const volatile&`, matching `GameNativeRendererApplication::publication_00f8d394()`. The constructor only reads that actual publication cell; the pointee remains mutable for the existing device and present-parameter accesses. This admits borrowing the canonical cell without a detached copy or `const_cast`.
+
+The audit's unresolved application obligations remain: genuine IPC bootstrap, context/preimage producers, notification client/session ownership and faithful locale context selection. Missing-peer cleanup can terminate the process. No unconditional startup/menu wiring is admitted by the existence of this fragment.
 
 ## Evidence and validation
 
