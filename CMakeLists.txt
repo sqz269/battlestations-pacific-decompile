@@ -284,3 +284,5 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/local/camera_reference.hpp")
   target_include_directories(bsp_d3d9_probe PRIVATE local)
   target_compile_definitions(bsp_d3d9_probe PRIVATE BSP_HAS_CAMERA_REFERENCE=1)
 endif()
+
+target_sources(bsp_core PRIVATE src/native_entity_intrusive_unlink.cpp)
