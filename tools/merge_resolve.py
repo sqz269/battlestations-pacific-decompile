@@ -1,6 +1,6 @@
 """Mechanical resolution of worker-branch merge conflicts.
 
-Handles: cmake/startup.cmake (union of registration lines), config/names shards (union by address,
+Handles: cmake/startup.cmake (union of complete registration commands), config/names shards (union by address,
 incoming side wins for records it changed), and any text file where both sides inserted at the same
 spot relative to the merge base (independent test cases added before the same closing line, appends).
 Usage as CLI: python tools/merge_resolve.py <worktree>  -> resolves and stages what it can, reports the rest.
@@ -45,21 +45,61 @@ def same_spot_insertions(base, ours, theirs):
     return base[:p] + x + y + suffix
 
 
+def cmake_registration_blocks(text):
+    """Keep each deferred command whole, including its continuation lines.
+
+    Parentheses in quoted arguments and line comments do not close a command.
+    An incomplete command is refused rather than silently dropping its tail.
+    """
+    blocks = []
+    pending = []
+    depth = 0
+    quoted = False
+    escaped = False
+    for line in text.splitlines():
+        if not pending and not line.startswith('cmake_language('):
+            continue
+        pending.append(line)
+        for char in line:
+            if escaped:
+                escaped = False
+                continue
+            if char == '\\':
+                escaped = True
+                continue
+            if char == '"':
+                quoted = not quoted
+            elif not quoted:
+                if char == '#':
+                    break
+                if char == '(':
+                    depth += 1
+                elif char == ')':
+                    depth -= 1
+                    if depth < 0:
+                        return None
+        if depth == 0 and not quoted:
+            blocks.append('\n'.join(pending))
+            pending = []
+    return None if pending else blocks
+
+
 def resolve(worktree, path):
     worktree = Path(worktree)
     base, ours, theirs = (stage_text(worktree, path, i) for i in (1, 2, 3))
     if path == 'cmake/startup.cmake':
         lines = [l for l in ours.splitlines() if l.strip()]
         header = [l for l in lines if l.startswith('#') or l.startswith('cmake_minimum_required')]
-        regs = []
-        for l in ours.splitlines() + theirs.splitlines():
-            if l.startswith('cmake_language(') and l not in regs:
-                regs.append(l)
+        parsed = [cmake_registration_blocks(text) for text in (base, ours, theirs)]
+        if any(blocks is None for blocks in parsed):
+            return None
+        base_regs, our_regs, their_regs = parsed
+        regs = list(dict.fromkeys(our_regs + their_regs))
         # a target defined on both sides (add_executable/add_library with the same name) keeps the
         # incoming definition only: two definitions make CMake refuse the configure
         target_re = re.compile(r'CALL add_(?:executable|library) (\S+)')
         base_def = {}
-        for l in base.splitlines():
+        for l in base_regs:
             m = target_re.search(l)
             if m:
                 base_def[m.group(1)] = l

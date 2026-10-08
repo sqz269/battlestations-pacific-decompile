@@ -1,0 +1,327 @@
+{
+  "schema": "bsp.cc12.parent_relationship_frontier.report.v1",
+  "packet": "cc12_parent_relationship_frontier",
+  "baseline": "e5e9828543b83f2339e0063e2db179bcfcb56e11",
+  "status": "UNREADY: complete native publication frontier recovered; actual owner/storage/pose/registration contracts not admitted by current Source",
+  "Source_bodies": 0,
+  "Source_bytes": 0,
+  "ready_Source_packets": 0,
+  "selected_frontier": "Exactly one prior named subject+30 relationship writer:009258F0",
+  "owned_files": [
+    "docs/CC12_PARENT_RELATIONSHIP_FRONTIER.md",
+    "reports/cc12_parent_relationship_frontier.json"
+  ],
+  "whole": {
+    "entry": "009258F0",
+    "exclusive_end": "009259FB",
+    "bytes": 267,
+    "instructions": 88,
+    "SHA256": "887cc8a74fa4d6673d8b7019b7295d31e51728b5fb54b3188b7d3538c2b6e10a",
+    "hex": "53568bf133db389ebc0000000f85f40000008b4424108946308b400439580874088b4804897138eb0289308b5004895634897004b901000000895e380148088b44240c3bc389463c743039585074178b504c8972448b504c89564089704c895e44014850eb388b504c89704889564089704c895e44014850eb248b46308b400839580874088b5004897244eb0289308b5004895640897004895e440148088b86b80000003bc37508399eb4000000741b8b8eb400000051508bce899eb4000000899eb8000000e8e5ebffff8b44241457508d4e74e827dbaeff8b7e483bfb889ec8000000889e0c01000074128d6424008bcfe86993b0ff8b7f443bfb75f2c686bc000000015f5e5bc20c00",
+    "CALLs": [
+      {
+        "instruction": "009259B6",
+        "opcode_offset": 198,
+        "operand_half_open": [
+          199,
+          203
+        ],
+        "target": "009245A0"
+      },
+      {
+        "instruction": "009259C4",
+        "opcode_offset": 212,
+        "operand_half_open": [
+          213,
+          217
+        ],
+        "target": "004134F0"
+      },
+      {
+        "instruction": "009259E2",
+        "opcode_offset": 242,
+        "operand_half_open": [
+          243,
+          247
+        ],
+        "target": "0042ED50"
+      }
+    ],
+    "live_PE_before_after_equal": true,
+    "Source": 0
+  },
+  "caller": {
+    "entry": "009288CD",
+    "exclusive_end": "009288E1",
+    "bytes": 20,
+    "instructions": 10,
+    "SHA256": "bd2917e0cf4892c8253e335f0dbb91844dac553c279496d9f79c2452ccbaddb4",
+    "hex": "8b4c24285055518bcee815d0ffff5d84db5b7412",
+    "CALLs": [
+      {
+        "instruction": "009288D6",
+        "opcode_offset": 9,
+        "operand_half_open": [
+          10,
+          14
+        ],
+        "target": "009258F0"
+      }
+    ],
+    "live_PE_before_after_equal": true,
+    "Source": 0
+  },
+  "physical_ABI": {
+    "receiver": "ECX actual subject, copied to saved ESI",
+    "entry_stack": {
+      "plus4": "hierarchyParent actual pointer or zero",
+      "plus8": "worldNode actual non-null pointer on unlatched path",
+      "plus12": "actual local matrix pointer"
+    },
+    "entry_EDX": "no formal input; volatile scratch",
+    "saves": "PUSH EBX/PUSH ESI; EBX=0; unlatched path additionally PUSH EDI",
+    "return_contract": "RET0C at009259F8; consumes exactly three entryDWORDs; ordinary returnESP=entryESP+16",
+    "latch": {
+      "read": "subject+BC byte compared with zero at009258F6",
+      "nonzero_path": "JNZ009259F6 returns before world/hierarchy reads or writes; savedEBX/ESI restored; EAX/ECX/EDX otherwise remain entry values",
+      "zero_path": "relationship and chains published first; latch set to1 at009259EE only after cleanup/matrix/child work"
+    },
+    "flags": {
+      "latched": "CMP8 value-0:CF0/OF0/AF0/ZF0;PF/SF from original latch byte; ordinary flags only, no new execution",
+      "completed": "final CMP EDI,EBX with both0 defines CF0/PF1/AF0/ZF1/SF0/OF0; mask8D5=44; MOV latch/POPs/RET do not alter these flags"
+    },
+    "completed_EAX_ECX_EDX": "callee-defined/volatile; do not infer zero or a subject return from void pseudocode",
+    "FP_DF": "native x87 matrix and other callees unexpanded; no blanket FP/DF claims or replacement memcpy/provider"
+  },
+  "publication": {
+    "world_link": "00925906 stores entry worldNode into subject+30 before dereferencing worldNode+4; no unlatched nullworld guard",
+    "world_chain": "*worldNode+4 is a separate intrusive {head0,tail4,count8} header; subject itself uses prev+34/next+38",
+    "hierarchy_link": "00925935 stores entry hierarchyParent into subject+3C, distinct from worldNode+30",
+    "hierarchy_chain": "nonnull hierarchyParent uses embedded head+48/tail+4C/count+50 with subject prev+40/next+44; null hierarchyParent uses *worldNode+8 separate intrusive header",
+    "pair": "if subject+B4 or+B8 nonzero, clear both before native009245A0 with subjectECX and stack priorB8/priorB4",
+    "matrix": "native004134F0 gets subject+74 destinationECX and entrymatrix stackpointer; no callee/provider recovery",
+    "children": "start subject+48 child head; call0042ED50 perchildECX and follow actualchild+44; then set latch+BC1",
+    "validity": "directly clear bytes subject+C8 and+10C before child invalidation",
+    "category_root24": "No direct store initializes worldNode+24 count/head/tail. This body publishes intrusive subject chains, which differ from owned12-byte prev/next/payload records. Unexpanded callee side effects are not asserted.",
+    "registration_order": "Saved placement caller runs old-parent virtual134 before attach and virtual130 after attach under its own unadmitted lock/EH phase. Actual category1 root ownership/registrar targets remain separate."
+  },
+  "caller_limits": {
+    "site": "[009288CD,009288E1)20B10; only genuine009288D6 CALL is included",
+    "call_inputs": "MOV ECX,[callerESP+28]; PUSH EAX; PUSH EBP; PUSH ECX; MOV ECX,ESI. Target receives hierarchyValue from loaded ECX, worldValue from EBP and matrixValue from EAX.",
+    "not_recovered": "Origin/EH-frame ownership of EAX/EBP/ESI and complete caller stack/EH/lock/virtual behavior not separately admitted; historical forwarding comments remain context, not physical owner proof",
+    "other_callers_or_vtables": "preexisting comments/census are metadata hints only; no new caller/root census or second caller inspection"
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "009258F0",
+        "role": "selected whole relationship publication frontier",
+        "state": "267B88 complete live/PE physical evidence; Source0"
+      },
+      {
+        "id": "00928860",
+        "role": "single placement caller",
+        "state": "only20B10 publication/CALL witness byte-qualified; whole EH/lock/caller ABI unadmitted"
+      },
+      {
+        "id": "009245A0",
+        "role": "native pair cleanup dependency",
+        "state": "exact direct CALL, ECX subject/two stacked DWORDs; no callee recovery or current Source ownership binding"
+      },
+      {
+        "id": "004134F0",
+        "role": "native X87 matrix-copy dependency",
+        "state": "exact direct CALL, ECX subject+74/one matrix pointer stack; no x87 recovery, Source ABI substitution or provider invented"
+      },
+      {
+        "id": "0042ED50",
+        "role": "native child invalidation dependency",
+        "state": "exact direct CALL with actual child ECX; recursive subtree/pose closure unexpanded"
+      },
+      {
+        "id": "00928240",
+        "role": "placement lock-manager frontier",
+        "state": "named by bounded caller pseudocode/metadata; no body or allocation/lifetime recovery"
+      },
+      {
+        "id": "import:EnterCriticalSection",
+        "role": "placement native lock dependency",
+        "state": "named incomplete imported call; not read or Source-bound"
+      },
+      {
+        "id": "import:LeaveCriticalSection",
+        "role": "placement native lock dependency",
+        "state": "named incomplete imported call; not read or Source-bound"
+      },
+      {
+        "id": "virtual:+130",
+        "role": "placement registration frontier",
+        "state": "actual slot named by saved caller; targets not bound; category1+24 ownership/registration unadmitted"
+      },
+      {
+        "id": "virtual:+134",
+        "role": "placement old-parent detach frontier",
+        "state": "actual slot named by saved caller; old relationship/latch reset/teardown unadmitted"
+      },
+      {
+        "id": "004CB030",
+        "role": "owning world/parent constructor frontier",
+        "state": "current semantic Source layout does not initialize actual native storage/embedded category root"
+      },
+      {
+        "id": "009037F0",
+        "role": "world intrusive-header and owner post-construction frontier",
+        "state": "historical docs allocate world+4/+8 chain headers; ordinary ownership phase unadmitted"
+      }
+    ],
+    "edges": [
+      {
+        "origin": "00928860",
+        "target": "009258F0",
+        "kind": "one genuine CALL",
+        "evidence": "009288D6, exact witness three PUSH values and subjectECX"
+      },
+      {
+        "origin": "009258F0",
+        "target": "009245A0",
+        "kind": "actual conditional CALL",
+        "evidence": "009259B6: clear+B4/+B8 before dispatching prior pair"
+      },
+      {
+        "origin": "009258F0",
+        "target": "004134F0",
+        "kind": "actual CALL",
+        "evidence": "009259C4: copy supplied local matrix into+74 through native register/stack ABI"
+      },
+      {
+        "origin": "009258F0",
+        "target": "0042ED50",
+        "kind": "actual loop CALL",
+        "evidence": "009259E2: each actual child from+48 through+44"
+      },
+      {
+        "origin": "00928860",
+        "target": "00928240",
+        "kind": "named caller context frontier",
+        "evidence": "saved pseudocode/metadata only; no body expanded"
+      },
+      {
+        "origin": "00928860",
+        "target": "import:EnterCriticalSection",
+        "kind": "named caller context frontier",
+        "evidence": "saved pseudocode only; lock domain unadmitted"
+      },
+      {
+        "origin": "00928860",
+        "target": "import:LeaveCriticalSection",
+        "kind": "named caller context frontier",
+        "evidence": "saved pseudocode only; lock domain unadmitted"
+      },
+      {
+        "origin": "00928860",
+        "target": "virtual:+130",
+        "kind": "named registration frontier",
+        "evidence": "saved caller after attach, world relationship changed/non-null; not a specific target binding"
+      },
+      {
+        "origin": "00928860",
+        "target": "virtual:+134",
+        "kind": "named old relationship frontier",
+        "evidence": "saved caller before attach when old world relationship is non-null and changes"
+      },
+      {
+        "origin": "004CB030",
+        "target": "009258F0",
+        "kind": "actual owner phase prerequisite",
+        "evidence": "only historical docs/current semantic Source reviewed; no physical storage initializer admission"
+      },
+      {
+        "origin": "009037F0",
+        "target": "009258F0",
+        "kind": "actual chain-header prerequisite",
+        "evidence": "historical world+4/+8 intrusive header construction; no current canonical/native owner binding"
+      }
+    ],
+    "node_count": 12,
+    "edge_count": 11,
+    "total": 23,
+    "cap": 24,
+    "scope": "one whole native frontier plus one partial actual caller witness; no dependency bodies inspected"
+  },
+  "concrete_blockers": [
+    "Actual live native subject state and incoming world/hierarchy owner storage phase are unadmitted; latchBC and intrusive link/pair/pose fields cannot be supplied by a fabricated partial parent/subject buffer.",
+    "Actual world+4/world+8 intrusive headers and hierarchy+48/+4C/+50 child chain ownership/lifetime have no admitted current production Source binding.",
+    "The world/parent category1 embedded owned-node root+24 is not directly initialized here; genuine registration through virtual130 and owning parent construction remain unadmitted.",
+    "Native pair cleanup, matrix register/stack/x87 ABI and recursive invalidation need real independently ready production bindings; no provider or semantic substitution is authorized.",
+    "Placement old-parent detach, lock/EH/observer sequence and latch reset/lifetime remain unadmitted; static publication cannot establish game/world ownership."
+  ],
+  "next_prerequisites": [
+    "Inspect one separately authorized genuine parent owner/header initialization frontier to admit actual physical storage phase, without treating semantic WorldObjectLayout or host creation as native construction.",
+    "Establish actual subject owner/latch/pair/pose phase for this receiver and non-null worldNode+4/+8 intrusive headers; keep hierarchyParent+3C distinct from worldNode+30.",
+    "Independently recover/admit the exact pending-pair cleanup, native matrix ABI through an Astra/x87 packet and child invalidation contracts if whole267 Source is pursued.",
+    "Bound the real registration/detach virtual targets and category1 parent+24 owning-node publication; accepted raw append/erase alone do not provide it.",
+    "Root must accept genuine ownership readiness and register a Source packet before a new connected family. No partial inline prefix is proposed as a whole Source body."
+  ],
+  "Source_context": "Current world_construct returns typed WorldObjectLayout and delegates actual owner creation/postconstruct to a host. Existing semantic attachment/native-light contracts are distinct addresses and do not bind this whole267 or its subject/world/category-root fields.",
+  "preservation": {
+    "prior_actual_pins": 9150,
+    "prepared_inputs": 23,
+    "supplemental_Source_context_inputs": 4,
+    "prepared_historical_frozen_files": 15,
+    "supplemental_distinct_Source_frozen_files": 4,
+    "actual_frozen_files": 19,
+    "all_before_after_equal": true,
+    "old_original_path_Source_metadata": "historical/unconsumed associations preserved without repin",
+    "old_phase_or_Original_replays": 0
+  },
+  "audit_limits": {
+    "Source_changes": 0,
+    "compiles": 0,
+    "fixtures": 0,
+    "new_tests": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "shared_metadata_changes": 0,
+    "game_writes": 0
+  },
+  "failure_preserved": "propose.py reserved return keyword syntax failed before any phase; corrected new propose_v2.py only; no query/prepare/bookend/native replay",
+  "not_admitted": [
+    "actual native subject/world/hierarchy owner and storage phase",
+    "category1 owned-node root+24 producer ownership",
+    "Original private heap/CRT",
+    "native x87 callee binding and recursive pose closure",
+    "placement lock/EH/observer/virtual method closure",
+    "actual game runtime/gameplay"
+  ],
+  "sealed_family": {
+    "folder": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_relationship_frontier\\local\\pr30",
+    "inventory_count": 143,
+    "actual_files_with_seals": 145,
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_relationship_frontier\\local\\pr30\\proposal.json",
+      "SHA256": "488632235ed777eea0089fa5e4f1c61970c5f9b4b5cdd928c83b243b85c7cc86"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_relationship_frontier\\local\\pr30\\readiness_receipt.json",
+      "SHA256": "25632b2c425db3213a87b0da640cdf8dbc194dd9a48e54d86e530210918224f3"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_relationship_frontier\\local\\pr30\\artifact_manifest.json",
+      "SHA256": "e5841e384ad9365621792aef6672a440e328a8ba5a4e4362cecf41eecfc9efad"
+    },
+    "exact_path_exclusions": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_relationship_frontier\\local\\pr30\\artifact_manifest.json",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_relationship_frontier\\local\\pr30\\readiness_receipt.json"
+    ],
+    "helpers": [
+      "audit.py",
+      "physical.py",
+      "bookend.py",
+      "propose.py (failed, preserved)",
+      "create_proposal_v2.py",
+      "propose_v2.py",
+      "seal.py",
+      "write_report.py"
+    ]
+  }
+}
