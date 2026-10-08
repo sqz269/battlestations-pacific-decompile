@@ -722,5 +722,100 @@
     "Original native allocator/CRT/EH/static/class lifetime, whole factory/parser/clone/world/game runtime.",
     "Primary independent integration family and full main MSVC/CTest/Ghidra saved annotation are Root-owned follow-up."
   ],
-  "qualification": "One whole raw partial-storage45 primitive. Two actual56-byte currentheap supplied roots; all37 writes/19 untouched bytes and other live root/external canaries checked. DF0 and DF1 preserved; defined XOR flags checked, AF excluded. No adjacent heap red-zone proof, heap metadata reads, Source dispatch/class/destructor/pool/clear/factory/nested/world/game/original-heap/EH admission. Accepted earlier families unchanged and never replayed."
+  "qualification": "One whole raw partial-storage45 primitive. Two actual56-byte currentheap supplied roots; all37 writes/19 untouched bytes and other live root/external canaries checked. DF0 and DF1 preserved; defined XOR flags checked, AF excluded. No adjacent heap red-zone proof, heap metadata reads, Source dispatch/class/destructor/pool/clear/factory/nested/world/game/original-heap/EH admission. Accepted earlier families unchanged and never replayed.",
+  "primary_integration": {
+    "source_revision": "709e2098d425ebd989d30a53eebd87d920bf05f3",
+    "build_source_revision": "709e2098d425ebd989d30a53eebd87d920bf05f3",
+    "worker_commit": "570b1418882d24e567e9b98659aa93bdb09c0a65",
+    "full_MSVC_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "build_log": "local/cc12_property_record_type0_integrated_build_709e2098d.log",
+    "build_log_sha256": "509ed35c2c5960ece53ba7324a3b1e2d6e6dd7012553b4fa6d0332f496084d15",
+    "core_context_sha256": "0225c6fcfa0834cb73c274bed551679305fb252db0e51ac0e523e6d2d2fb29ae",
+    "independent_component_family": "local/cc12_property_record_type0_primary/run01",
+    "independent_receipt_sha256": "65f439c54ef0da89c212cee06fc0f71659f5b3a4120eb40ac87f3addf22dee3c",
+    "independent_artifact_manifest_sha256": "282eceb090ecc610f0559b5e166caa7c5891b0a4a0bddea3d37b6e7708da09c0",
+    "independent_component_manifest_sha256": "d11d0c69510dd71fc6482f251ffbddae357a5f6c54f8f5f7cd4c0774336e078d",
+    "independent_static_gate_sha256": "8f2f4e986cef4e24f77c8a6a017e6bffc72fd78825771b567caa36bc08bf7142",
+    "independent_observed_sha256": "ee910c31727d0326489a0051398f290aa723bca7ae740246edd44210c76ee537",
+    "fresh_translation_units": 3,
+    "BSP_archives_linked": 0,
+    "worker_objects_linked": 0,
+    "new_tracked_tests": 0,
+    "complementary_fixture_inputs": {
+      "Source": {
+        "value": "9ABCDEF0",
+        "DF": 1,
+        "poison": "B6"
+      },
+      "Original": {
+        "value": "12345678",
+        "DF": 0,
+        "poison": "72"
+      }
+    },
+    "original_raw_calls": 1,
+    "Source_raw_calls": 1,
+    "raw_entry_ABI_checked": true,
+    "original_class_ABI_compatible": false,
+    "game_validated": false,
+    "preserved_artifact_counts": {
+      "historical6209": 6209,
+      "prior341": 341,
+      "prior_array_consumed_inputs": 193,
+      "prior_array_frozen_supports": 3,
+      "audit_sealed_inputs": 23,
+      "old_attempts_immutable": 585,
+      "prior_frozen_Core_context": 2,
+      "accepted_worker_run04": 282,
+      "accepted_primary_run01": 282,
+      "current_Source_readonly_context": 10,
+      "readiness_audit": 182,
+      "accepted_type0_worker_run03": 300
+    },
+    "qualified_current_heap": {
+      "utc": "2026-10-08T07:48:43.5929974Z",
+      "process_bits": 32,
+      "actual_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+      "pinned_physical_path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+      "same_physical_file_identity": true,
+      "volume_serial": 3906787040,
+      "file_index_high": 327680,
+      "file_index_low": 2895862,
+      "bytes_sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "machine": "014C",
+      "optional_header_magic": "010B",
+      "exports": [
+        {
+          "name": "malloc",
+          "address": "0x767D0120",
+          "owner_is_ucrt": true
+        },
+        {
+          "name": "free",
+          "address": "0x767D00A0",
+          "owner_is_ucrt": true
+        }
+      ],
+      "BSP_allocations_or_constructors_executed": false
+    },
+    "old_families_replayed": false,
+    "qualification": "Whole raw supplied-storage initializer [008EF140,008EF16D), 45 bytes/14 instructions, zero CALLs/relocations; literal Original=Source COFF=unique linked body. Physical entry ECX is fresh unowned writable 56-byte root; one DWORD value at entry ESP+4; unused EDX fastcall padding formal; EAX root, ECX zero, EDX value, RET4. It writes 37 bytes and preserves 19, including exact native CE89D4 phase identity bits, tag0/value+C, owner+30 and ordinal+34 zero. Value is not owner. Native phase slot is not Source dispatch/class admission. Independent fresh three-TU main fixture swaps Source/Original value and DF cases and changes root poison; one Source and one unchanged RX Original execution. Complete byte, caller ABI and actual current malloc/free IAT/export/module/I386 same-physical-file gates precede allocations/construction. Full 56-byte results, other live root, external capture/stack canaries, registers, defined XOR flags and preserved DF/ES pass. Current canonical heap only; no adjacent allocation guard proof, private original CRT/EH, node pool, destructor, owning clear/insertion, clone whole body, class/world or game admission. Old families remain unchanged and are never replayed; no BSP archives or worker objects linked, no new tracked tests."
+  },
+  "primary_source_status": "complete whole45B14 raw partial-storage Source integrated; independent complementary3TU fixture and full Win32/all3 CTests PASS; native ownership/class/world/game qualified",
+  "saved_analysis_publication": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "supported_locked_annotation_tool": true,
+    "saved_project": true,
+    "prior_values_recorded_in": "local/ghidra-annotations-20261008T075149Z.json",
+    "affected_exports_refreshed": true,
+    "index_rebuilt": true,
+    "artifacts": {
+      "local/ghidra-annotations-20261008T075149Z.json": "d932a335ff4b22c386663e1e2b75e07aa2fd6f2fb6cd97151791575369e1eb5e",
+      "local/cc12_type0_source_annotations.log": "a9734337d6a8f7925fbd37f7918c2ee00071a962bc33304e9c65b24c374fa9cd",
+      "local/cc12_type0_source_exports.log": "6ab9211324dfc06840493f4ec3e6eb8a6dc95814eb6b8fbf09b3e987d955241b",
+      "local/cc12_type0_source_snapshot.log": "42a81976794a6089440be0701f7ebc87ce686aaab5bdafcbac884a59fd268d15"
+    }
+  }
 }
