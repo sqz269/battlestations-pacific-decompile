@@ -1,0 +1,1088 @@
+{
+  "schema": "bsp.cc12.property_record.published_code_gate_audit.v1",
+  "packet": "cc12_property_record_published_code_gate_audit",
+  "Source": 0,
+  "ready_registration": 0,
+  "baseline": "9daefe054fd3f82e76256b82d971118fe0372440",
+  "conclusion": "All four published Root fixtures have omitted retained normal-path probe bodies; production Source/provider bodies remain covered in these checked families. Root alone decides credit corrections and future fresh validation.",
+  "families": {
+    "Type2": {
+      "retained_symbols": 33,
+      "distinct_retained_bodies": 31,
+      "runtime_spans": 11,
+      "covered_distinct_bodies": 8,
+      "missing_normal_path_bodies": 16,
+      "missing_cold_canonical_exception_bodies": 6,
+      "missing_other_cold_bodies": 1,
+      "normal_missing_all_directly_reachable_from_main_without_failure_or_EH_edges": true,
+      "canonical_exception_distinct_bodies": 7,
+      "canonical_exception_covered_bodies": 1,
+      "covered_exception_symbols": [
+        "??0bad_alloc@std@@QAE@XZ"
+      ],
+      "actual_weak_alias_symbols": 2,
+      "diagnostic_count": 20,
+      "diagnostics": [
+        {
+          "symbol": "___local_stdio_printf_options",
+          "VA_hex": "2C002220",
+          "size": 6,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "___local_stdio_printf_options"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "_main",
+          "VA_hex": "2C002230",
+          "size": 3543,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "_main"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "_printf",
+          "VA_hex": "2C003030",
+          "size": 47,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "_printf"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?add_flags@@YAIII@Z",
+          "VA_hex": "2C001240",
+          "size": 113,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?add_flags@@YAIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?at_rva@@YAPBEABUModuleEvidence@@II@Z",
+          "VA_hex": "2C0012C0",
+          "size": 278,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?at_rva@@YAPBEABUModuleEvidence@@II@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?disjoint@@YA_NIIII@Z",
+          "VA_hex": "2C0013E0",
+          "size": 58,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?disjoint@@YA_NIIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z",
+          "VA_hex": "2C001420",
+          "size": 620,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "VA_hex": "2C0016C0",
+          "size": 337,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?hash_bytes@@YA_NPBEKQAE@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+          "VA_hex": "2C001820",
+          "size": 150,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?live_code_equal@@YA_NABUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z",
+          "VA_hex": "2C0018C0",
+          "size": 81,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?observe@@YA_NABUBorrowedText@@0ABUReceiver@@PBDPAXAAUObservation@@@Z",
+          "VA_hex": "2C001920",
+          "size": 488,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?observe@@YA_NABUBorrowedText@@0ABUReceiver@@PBDPAXAAUObservation@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?physical_export@@YAIABUModuleEvidence@@PBD@Z",
+          "VA_hex": "2C001B10",
+          "size": 389,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?physical_export@@YAIABUModuleEvidence@@PBD@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?read_bytes@@YA_NPAX0K@Z",
+          "VA_hex": "2C001CA0",
+          "size": 56,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?read_bytes@@YA_NPAX0K@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+          "VA_hex": "2C001CE0",
+          "size": 496,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?read_gate@@YA_NAAUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+          "VA_hex": "2C001ED0",
+          "size": 652,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?wide_json@@YAXPB_W@Z",
+          "VA_hex": "2C002160",
+          "size": 181,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?wide_json@@YAXPB_W@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+          "VA_hex": "2C0010C0",
+          "size": 48,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0bad_alloc@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??0exception@std@@QAE@ABV01@@Z",
+          "VA_hex": "2C001110",
+          "size": 42,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0exception@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??1bad_alloc@std@@UAE@XZ",
+          "VA_hex": "2C001140",
+          "size": 17,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??1bad_alloc@std@@UAE@XZ"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??_Ebad_alloc@std@@UAEPAXI@Z",
+          "VA_hex": "2C001160",
+          "size": 45,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??_Ebad_alloc@std@@UAEPAXI@Z",
+            "??_Gbad_alloc@std@@UAEPAXI@Z"
+          ],
+          "category": "cold_canonical_exception"
+        }
+      ],
+      "remaining_cold_diagnostics_only_in_complete_local_artifact": 2,
+      "artifact_coverage": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\Type2_coverage.json",
+        "size": 180450,
+        "sha256": "62d1ac09c8c9084cbce77f234a18fe4e75e158daff1eb7bd40cb607ecbbe71c6"
+      },
+      "old_independent_family": {
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t2p4\\seal.complete.json",
+          "size": 21397,
+          "sha256": "ee861636cec5c124d35b8482f08d084a56814bcdaff850ac52336a42484823d0"
+        },
+        "listed": 100,
+        "actual": 101,
+        "prior": 14122
+      }
+    },
+    "Type4": {
+      "retained_symbols": 31,
+      "distinct_retained_bodies": 29,
+      "runtime_spans": 9,
+      "covered_distinct_bodies": 8,
+      "missing_normal_path_bodies": 13,
+      "missing_cold_canonical_exception_bodies": 6,
+      "missing_other_cold_bodies": 2,
+      "normal_missing_all_directly_reachable_from_main_without_failure_or_EH_edges": true,
+      "canonical_exception_distinct_bodies": 7,
+      "canonical_exception_covered_bodies": 1,
+      "covered_exception_symbols": [
+        "??0bad_alloc@std@@QAE@XZ"
+      ],
+      "actual_weak_alias_symbols": 2,
+      "diagnostic_count": 19,
+      "diagnostics": [
+        {
+          "symbol": "___local_stdio_printf_options",
+          "VA_hex": "23002060",
+          "size": 6,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "___local_stdio_printf_options"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "_printf",
+          "VA_hex": "23002C50",
+          "size": 47,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "_printf"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?at_rva@@YAPBEABUModuleEvidence@@II@Z",
+          "VA_hex": "230011C0",
+          "size": 278,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?at_rva@@YAPBEABUModuleEvidence@@II@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?expected@@YA?AV?$array@E$0DI@@std@@EII@Z",
+          "VA_hex": "230012E0",
+          "size": 208,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?expected@@YA?AV?$array@E$0DI@@std@@EII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z",
+          "VA_hex": "230013B0",
+          "size": 620,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "VA_hex": "23001650",
+          "size": 337,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?hash_bytes@@YA_NPBEKQAE@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+          "VA_hex": "230017B0",
+          "size": 150,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?live_code_equal@@YA_NABUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?machine_ok@@YA_NABUCapture@@PAXIIII@Z",
+          "VA_hex": "23001850",
+          "size": 244,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?machine_ok@@YA_NABUCapture@@PAXIIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z",
+          "VA_hex": "23001950",
+          "size": 81,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?prepare_capture@@YAXAAUCapture@@I@Z",
+          "VA_hex": "230019B0",
+          "size": 101,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?prepare_capture@@YAXAAUCapture@@I@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+          "VA_hex": "23001A20",
+          "size": 496,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?read_gate@@YA_NAAUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+          "VA_hex": "23001C10",
+          "size": 117,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?save_blob@@YA_NPB_WPBXK@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+          "VA_hex": "23001C90",
+          "size": 972,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+          "VA_hex": "23001040",
+          "size": 48,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0bad_alloc@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??0exception@std@@QAE@ABV01@@Z",
+          "VA_hex": "23001090",
+          "size": 42,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0exception@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??1bad_alloc@std@@UAE@XZ",
+          "VA_hex": "230010C0",
+          "size": 17,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??1bad_alloc@std@@UAE@XZ"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??_Ebad_alloc@std@@UAEPAXI@Z",
+          "VA_hex": "230010E0",
+          "size": 45,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??_Ebad_alloc@std@@UAEPAXI@Z",
+            "??_Gbad_alloc@std@@UAEPAXI@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??_Eexception@std@@UAEPAXI@Z",
+          "VA_hex": "23001110",
+          "size": 45,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??_Eexception@std@@UAEPAXI@Z",
+            "??_Gexception@std@@UAEPAXI@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "?what@exception@std@@UBEPBDXZ",
+          "VA_hex": "230011B0",
+          "size": 14,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?what@exception@std@@UBEPBDXZ"
+          ],
+          "category": "cold_canonical_exception"
+        }
+      ],
+      "remaining_cold_diagnostics_only_in_complete_local_artifact": 0,
+      "artifact_coverage": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\Type4_coverage.json",
+        "size": 118807,
+        "sha256": "d69ca840951c0069721931255fda7c74e6765b5f13d68fc8289f4d0271860ac5"
+      },
+      "old_independent_family": {
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t4p2\\seal.json",
+          "size": 72884,
+          "sha256": "217505ab9fc25fcef8da9fa674a57e76f2d1409da0aeabb5f0cafe753012ca75"
+        },
+        "listed": 341,
+        "actual": 342,
+        "prior": 11843
+      }
+    },
+    "Type5": {
+      "retained_symbols": 37,
+      "distinct_retained_bodies": 35,
+      "runtime_spans": 14,
+      "covered_distinct_bodies": 10,
+      "missing_normal_path_bodies": 18,
+      "missing_cold_canonical_exception_bodies": 6,
+      "missing_other_cold_bodies": 1,
+      "normal_missing_all_directly_reachable_from_main_without_failure_or_EH_edges": true,
+      "canonical_exception_distinct_bodies": 7,
+      "canonical_exception_covered_bodies": 1,
+      "covered_exception_symbols": [
+        "??0bad_alloc@std@@QAE@XZ"
+      ],
+      "actual_weak_alias_symbols": 2,
+      "diagnostic_count": 20,
+      "diagnostics": [
+        {
+          "symbol": "___local_stdio_printf_options",
+          "VA_hex": "2D002300",
+          "size": 6,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "___local_stdio_printf_options"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "_printf",
+          "VA_hex": "2D0033B0",
+          "size": 47,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "_printf"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?at_rva@@YAPBEABUModuleEvidence@@II@Z",
+          "VA_hex": "2D001240",
+          "size": 278,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?at_rva@@YAPBEABUModuleEvidence@@II@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?close_module@@YAXAAUModuleEvidence@@@Z",
+          "VA_hex": "2D001360",
+          "size": 54,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?close_module@@YAXAAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?disjoint@@YA_NIIII@Z",
+          "VA_hex": "2D0013A0",
+          "size": 54,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?disjoint@@YA_NIIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?expected@@YA?AV?$array@E$0DI@@std@@EIII@Z",
+          "VA_hex": "2D0013E0",
+          "size": 177,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?expected@@YA?AV?$array@E$0DI@@std@@EIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z",
+          "VA_hex": "2D0014A0",
+          "size": 620,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "VA_hex": "2D001740",
+          "size": 337,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?hash_bytes@@YA_NPBEKQAE@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+          "VA_hex": "2D0018A0",
+          "size": 150,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?live_code_equal@@YA_NABUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?machine_ok@@YA_NABUCapture@@PAXPBDIII@Z",
+          "VA_hex": "2D001940",
+          "size": 274,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?machine_ok@@YA_NABUCapture@@PAXPBDIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?module_unchanged@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+          "VA_hex": "2D001A60",
+          "size": 244,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?module_unchanged@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z",
+          "VA_hex": "2D001B60",
+          "size": 81,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?prepare_capture@@YAXAAUCapture@@I@Z",
+          "VA_hex": "2D001BC0",
+          "size": 104,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?prepare_capture@@YAXAAUCapture@@I@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?read_bytes@@YA_NPAX0K@Z",
+          "VA_hex": "2D001C30",
+          "size": 56,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?read_bytes@@YA_NPAX0K@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+          "VA_hex": "2D001C70",
+          "size": 496,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?read_gate@@YA_NAAUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+          "VA_hex": "2D001E60",
+          "size": 117,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?save_blob@@YA_NPB_WPBXK@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+          "VA_hex": "2D001EE0",
+          "size": 972,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?wide_json@@YAXPB_W@Z",
+          "VA_hex": "2D0022B0",
+          "size": 73,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?wide_json@@YAXPB_W@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+          "VA_hex": "2D0010C0",
+          "size": 48,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0bad_alloc@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??0exception@std@@QAE@ABV01@@Z",
+          "VA_hex": "2D001110",
+          "size": 42,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0exception@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        }
+      ],
+      "remaining_cold_diagnostics_only_in_complete_local_artifact": 4,
+      "artifact_coverage": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\Type5_coverage.json",
+        "size": 147461,
+        "sha256": "4873e19b7403bdfce6cc49ada4b4c94c0f7ec5e0292259e698055f307a56cce3"
+      },
+      "old_independent_family": {
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t5p2\\seal.json",
+          "size": 76961,
+          "sha256": "b7b34d6b5573664cbfdab4dcd103fd8c8fe57c17a17c829e5f28187ca26dab92"
+        },
+        "listed": 361,
+        "actual": 362,
+        "prior": 15269
+      }
+    },
+    "Type7": {
+      "retained_symbols": 35,
+      "distinct_retained_bodies": 33,
+      "runtime_spans": 9,
+      "covered_distinct_bodies": 8,
+      "missing_normal_path_bodies": 17,
+      "missing_cold_canonical_exception_bodies": 6,
+      "missing_other_cold_bodies": 2,
+      "normal_missing_all_directly_reachable_from_main_without_failure_or_EH_edges": true,
+      "canonical_exception_distinct_bodies": 7,
+      "canonical_exception_covered_bodies": 1,
+      "covered_exception_symbols": [
+        "??0bad_alloc@std@@QAE@XZ"
+      ],
+      "actual_weak_alias_symbols": 2,
+      "diagnostic_count": 20,
+      "diagnostics": [
+        {
+          "symbol": "___local_stdio_printf_options",
+          "VA_hex": "29002240",
+          "size": 6,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "___local_stdio_printf_options"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "_printf",
+          "VA_hex": "29002FF0",
+          "size": 47,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "_printf"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?at_rva@@YAPBEABUModuleEvidence@@II@Z",
+          "VA_hex": "290011C0",
+          "size": 278,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?at_rva@@YAPBEABUModuleEvidence@@II@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?close_module@@YAXAAUModuleEvidence@@@Z",
+          "VA_hex": "290012E0",
+          "size": 54,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?close_module@@YAXAAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?disjoint@@YA_NIIII@Z",
+          "VA_hex": "29001320",
+          "size": 54,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?disjoint@@YA_NIIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?expected@@YA?AV?$array@E$0DI@@std@@EPBI@Z",
+          "VA_hex": "29001360",
+          "size": 170,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?expected@@YA?AV?$array@E$0DI@@std@@EPBI@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z",
+          "VA_hex": "29001410",
+          "size": 620,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?export_prefix_equal@@YA_NAAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?hash_bytes@@YA_NPBEKQAE@Z",
+          "VA_hex": "290016B0",
+          "size": 337,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?hash_bytes@@YA_NPBEKQAE@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?live_code_equal@@YA_NABUGate@@@Z",
+          "VA_hex": "29001810",
+          "size": 150,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?live_code_equal@@YA_NABUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?machine_ok@@YA_NABUCapture@@PAXPBIII@Z",
+          "VA_hex": "290018B0",
+          "size": 295,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?machine_ok@@YA_NABUCapture@@PAXPBIII@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?module_unchanged@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+          "VA_hex": "290019E0",
+          "size": 244,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?module_unchanged@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z",
+          "VA_hex": "29001AE0",
+          "size": 81,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?nt_headers@@YAPBU_IMAGE_NT_HEADERS@@ABUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?prepare_capture@@YAXAAUCapture@@I@Z",
+          "VA_hex": "29001B40",
+          "size": 101,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?prepare_capture@@YAXAAUCapture@@I@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?read_gate@@YA_NAAUGate@@@Z",
+          "VA_hex": "29001BB0",
+          "size": 496,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?read_gate@@YA_NAAUGate@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?save_blob@@YA_NPB_WPBXK@Z",
+          "VA_hex": "29001DA0",
+          "size": 117,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?save_blob@@YA_NPB_WPBXK@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z",
+          "VA_hex": "29001E20",
+          "size": 972,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?verify_module@@YA_NABUCrtSpec@@AAUModuleEvidence@@@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "?wide_json@@YAXPB_W@Z",
+          "VA_hex": "290021F0",
+          "size": 73,
+          "owner": "probe.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "?wide_json@@YAXPB_W@Z"
+          ],
+          "category": "normal_helper_or_main"
+        },
+        {
+          "symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+          "VA_hex": "29001040",
+          "size": 48,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0bad_alloc@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??0exception@std@@QAE@ABV01@@Z",
+          "VA_hex": "29001090",
+          "size": 42,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??0exception@std@@QAE@ABV01@@Z"
+          ],
+          "category": "cold_canonical_exception"
+        },
+        {
+          "symbol": "??1bad_alloc@std@@UAE@XZ",
+          "VA_hex": "290010C0",
+          "size": 17,
+          "owner": "canonical.obj",
+          "whole_body_in_runtime_gate": false,
+          "aliases": [
+            "??1bad_alloc@std@@UAE@XZ"
+          ],
+          "category": "cold_canonical_exception"
+        }
+      ],
+      "remaining_cold_diagnostics_only_in_complete_local_artifact": 3,
+      "artifact_coverage": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\Type7_coverage.json",
+        "size": 135238,
+        "sha256": "d5b641f4f46b57480dc5d93aee79670969f87de21fb44ce460b129b22c77aa1d"
+      },
+      "old_independent_family": {
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\t7p1\\seal.json",
+          "size": 74387,
+          "sha256": "057b226a157e25610aa8c85b99ccf3d77a2f8561f03eddc7c7be930721e1becf"
+        },
+        "listed": 348,
+        "actual": 349,
+        "prior": 13481
+      }
+    }
+  },
+  "complete_comparison_location": "Each sealed TypeN_coverage.json holds every symbol, actual alias, whole-body linked hash, relocation target and serialized gate comparison; TypeN_call_edges_and_relocation_evidence.json proves emitted normal helper reachability.",
+  "canonical_exceptions": "Each family retains nine stdexception symbols at seven bodies; only the default bad_alloc constructor is covered. Six other bodies are omitted and remain unexercised cold class/failure/EH evidence. Weak _E names resolve to actual _G bodies, not additional code.",
+  "other_cold_qualification": "fail returns error40; Type4 and Type7 also retain the ordinary_original_call compiler EH handler. These are separated from normal omissions and remain unexercised. No class/EH credit.",
+  "Type2_main": "Whole _main at 2C002230 is omitted: 3543 bytes, 986 gapless instructions. The 11 gate spans cover eight TU bodies, cookie14 and two six-byte import thunks; this is not a partial main span.",
+  "serialized_gate": "All 11/9/14/9 existing serialized code spans match their static JSON VA/size/full bytes and linked PE bytes. Relocation-only comparison of raw COFF was independent; no old parser/helper imported.",
+  "future_Root_plan": [
+    "Root decides existing validation-credit correction and authorizes each new complementary fresh family. Preserve every accepted inventory/receipt and historical Source hash association.",
+    "Enumerate every linker-map retained f function owned by every fresh TU; resolve raw I386 COFF function sections and actual weak aliases. Use complete function section extent, full linked bytes, actual relocation operands/targets and gapless decode.",
+    "Deduplicate actual same-VA/size/bytes alias bodies while retaining all exact symbols. Require coverage-set equality for all retained TU bodies, including normal probe/gate/capture/provider/serialization, fail/EH handlers and canonical stdexceptions. Byte coverage does not admit or exercise class/EH paths.",
+    "Gate complete actual map-owned cookie/stack/import helpers needed by the fresh family and physically matched loaded CRT exports/IAT/module-file identities before zero allocations/target entries and after disposals. Do not borrow old objects or invoke any accepted recipe/process.",
+    "Keep the already-qualified raw storage/caller domain and use new complementary values/poisons/canaries/borrowed inputs only after Root authorization. Do not invent object lifetimes, dispatch/vtables/World, CRT failure/exception execution or numeric semantics."
+  ],
+  "old_family_inventories_unchanged": true,
+  "deduplicated_prior_pins": 15677,
+  "hc70cov46": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_code_gate_audit\\local\\hc70cov\\artifact_manifest.json",
+      "size": 14042,
+      "sha256": "04bbdbfce45834c834de92e26161341414538641514287443ba904fb457c46c8"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_code_gate_audit\\local\\hc70cov\\readiness_receipt.json",
+      "size": 1757,
+      "sha256": "e0dfbb04798f59c8859c6a4f15c3473dade6d0d50e0e6d4350fa93c644bfd8e3"
+    },
+    "listed": 44,
+    "actual": 46
+  },
+  "bookend": {
+    "passed": true,
+    "deduplicated_prior_pins": 15677,
+    "inputs": 56,
+    "Source": 0,
+    "accepted_helper_phase_process_replays": 0,
+    "compiler_or_native_or_Ghidra_queries": 0,
+    "frozen_generation_metadata_not_live_metadata_assertion": true
+  },
+  "failure_history": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\read_only_failure_history.json",
+    "size": 663,
+    "sha256": "faaaef536863b5f00799241044bcd4c9cde406e7fa72885f346a375987c77240"
+  },
+  "frozen_generation_metadata_only": true,
+  "no_CPP_Source_ledger_credit_CMake_live_native_or_Ghidra_edits": true,
+  "no_compiler_runtime_accepted_helper_or_phase_replay": true,
+  "scope": "Artifact-only retained emitted functions from each of four actual Root families; no unrelated rejected Native address, owner/Class/World or broad system-library closure.",
+  "immutable_handoff": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov",
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\readiness_receipt.json",
+      "size": 4435,
+      "sha256": "24c5c16d0552e4b57cf2828675ea8fd15cf855753b8fedef1acd6d3c766a0e82"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\artifact_manifest.json",
+      "size": 36788,
+      "sha256": "748f6721d6dfabd0fd4d5aa40247636d825700a27a9a37e9dd10ac06fca160bd"
+    },
+    "classified_coverage": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_record_published_code_gate_audit\\local\\prcov\\classified_coverage.json",
+      "size": 263756,
+      "sha256": "b37495985db4f0e6e35d9c6e331b7edc9d191be1d7cb433d78e3f08bdf655dc3"
+    },
+    "listed": 106,
+    "actual": 108
+  }
+}

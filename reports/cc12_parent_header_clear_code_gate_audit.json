@@ -1,0 +1,271 @@
+{
+  "schema": "bsp.cc12.parent_header_clear.code_gate_coverage.v1",
+  "Source": 0,
+  "registered_ready": 0,
+  "Root_raw70_credit1_pending": true,
+  "conclusion": "No missing retained normal-path TU helper body: all32 retained5TU function symbols at30 unique code bodies are wholly gated; gate31 adds complete14-byte cookie helper. Two standard deleting-destructor aliases share already-covered bodies",
+  "complete_runtime_spans": 31,
+  "retained_function_symbols": 32,
+  "distinct_retained_TU_bodies": 30,
+  "all_unique_retained_bodies_in_gate": true,
+  "probe_retained_functions": 17,
+  "probe_missing": [],
+  "all_missing": [],
+  "missing_normal_path_count": 0,
+  "standard_exception_symbols": [
+    {
+      "symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+      "VA": 587206912,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 256,
+      "VA_hex": "23001100",
+      "size": 48,
+      "instructions": 16,
+      "COFF_function_symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+      "COFF_section": 14,
+      "gate_symbol": "??0bad_alloc@std@@QAE@ABV01@@Z",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "d33f72ad50799f362d21e56f35b80ec2bc11af0e805d2fcdee1a590d6d5a0173"
+    },
+    {
+      "symbol": "??0bad_alloc@std@@QAE@XZ",
+      "VA": 587206960,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 304,
+      "VA_hex": "23001130",
+      "size": 24,
+      "instructions": 6,
+      "COFF_function_symbol": "??0bad_alloc@std@@QAE@XZ",
+      "COFF_section": 16,
+      "gate_symbol": "??0bad_alloc@std@@QAE@XZ",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "6874945d66057e5f471dae729b3755aed415056372c67f05accb2951db5e27a3"
+    },
+    {
+      "symbol": "??0exception@std@@QAE@ABV01@@Z",
+      "VA": 587206992,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 336,
+      "VA_hex": "23001150",
+      "size": 42,
+      "instructions": 15,
+      "COFF_function_symbol": "??0exception@std@@QAE@ABV01@@Z",
+      "COFF_section": 18,
+      "gate_symbol": "??0exception@std@@QAE@ABV01@@Z",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "cb32dcb684799160d71def1d718bf4e7f05187904b5cac12869b9b721e03d71d"
+    },
+    {
+      "symbol": "??1bad_alloc@std@@UAE@XZ",
+      "VA": 587207040,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 384,
+      "VA_hex": "23001180",
+      "size": 17,
+      "instructions": 6,
+      "COFF_function_symbol": "??1bad_alloc@std@@UAE@XZ",
+      "COFF_section": 42,
+      "gate_symbol": "??1bad_alloc@std@@UAE@XZ",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "33533a3693e8ab10dc6d21232a724b45aba5f072922114cbaa529bc9356c6325"
+    },
+    {
+      "symbol": "??_Ebad_alloc@std@@UAEPAXI@Z",
+      "VA": 587207072,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 416,
+      "VA_hex": "230011A0",
+      "size": 45,
+      "instructions": 16,
+      "COFF_function_symbol": "??_Gbad_alloc@std@@UAEPAXI@Z",
+      "COFF_section": 60,
+      "gate_symbol": "??_Gbad_alloc@std@@UAEPAXI@Z",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "3db3209ea51125de9dfcce71ac5dc37fb57e5ffae90c8eb2845c3843327853d1",
+      "weak_alias": {
+        "tag_index": 298,
+        "search_characteristic": 1,
+        "target_symbol": "??_Gbad_alloc@std@@UAEPAXI@Z"
+      }
+    },
+    {
+      "symbol": "??_Gbad_alloc@std@@UAEPAXI@Z",
+      "VA": 587207072,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 416,
+      "VA_hex": "230011A0",
+      "size": 45,
+      "instructions": 16,
+      "COFF_function_symbol": "??_Gbad_alloc@std@@UAEPAXI@Z",
+      "COFF_section": 60,
+      "gate_symbol": "??_Gbad_alloc@std@@UAEPAXI@Z",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "3db3209ea51125de9dfcce71ac5dc37fb57e5ffae90c8eb2845c3843327853d1"
+    },
+    {
+      "symbol": "??_Eexception@std@@UAEPAXI@Z",
+      "VA": 587207120,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 464,
+      "VA_hex": "230011D0",
+      "size": 45,
+      "instructions": 16,
+      "COFF_function_symbol": "??_Gexception@std@@UAEPAXI@Z",
+      "COFF_section": 62,
+      "gate_symbol": "??_Gexception@std@@UAEPAXI@Z",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "366c9b7eda0a8c7ffbcda469a4658bfe232f5cc9f8bdfc9acd4b2486078ef322",
+      "weak_alias": {
+        "tag_index": 292,
+        "search_characteristic": 1,
+        "target_symbol": "??_Gexception@std@@UAEPAXI@Z"
+      }
+    },
+    {
+      "symbol": "??_Gexception@std@@UAEPAXI@Z",
+      "VA": 587207120,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 464,
+      "VA_hex": "230011D0",
+      "size": 45,
+      "instructions": 16,
+      "COFF_function_symbol": "??_Gexception@std@@UAEPAXI@Z",
+      "COFF_section": 62,
+      "gate_symbol": "??_Gexception@std@@UAEPAXI@Z",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "366c9b7eda0a8c7ffbcda469a4658bfe232f5cc9f8bdfc9acd4b2486078ef322"
+    },
+    {
+      "symbol": "?what@exception@std@@UBEPBDXZ",
+      "VA": 587207280,
+      "owner": "canonical.obj",
+      "section": 1,
+      "section_offset": 624,
+      "VA_hex": "23001270",
+      "size": 14,
+      "instructions": 5,
+      "COFF_function_symbol": "?what@exception@std@@UBEPBDXZ",
+      "COFF_section": 116,
+      "gate_symbol": "?what@exception@std@@UBEPBDXZ",
+      "complete_same_VA_same_extent_bytes": true,
+      "linked_SHA256": "365619e3675e6934ebfab18367e1ded1c363e498f3e336e4d4593b65c0b930c4"
+    }
+  ],
+  "standard_exception_distinct_bodies": 7,
+  "standard_exception_qualification": "Retained/gated functions are not normal-path exercised by the accepted clear run; no std class/EH failure or Original game class ownership admission. Symbol names are preserved. All successful normal allocations/clears reach no bad_alloc throw path; no exception fault injection or handler/throw test occurred",
+  "library_cookie": {
+    "symbol": "@__security_check_cookie@4",
+    "VA_hex": "23003400",
+    "size": 14,
+    "owner": "MSVCRT:secchk.obj",
+    "coverage": "complete CMP/JNE/RET and named external failure tail JMP; external gs_report body not admitted or executed"
+  },
+  "coverage_scope": "Every map f-function owned by leaf/header/append/canonical/probe objects, independently matched rawCOFF function or weak alias, exact full function section size and linked bytes with only actual relocation operands normalized. Data/RTTI/strings/alignments and external imported/library failure bodies are not TU helper functions",
+  "inlined_helpers": "Functions such as coherent/guards/raw_ok/capture_json/module_unchanged/close_module/read_bytes are not separately retained map bodies in this build; their emitted code is covered within complete retained functions. No clipped prefix is claimed as a full helper",
+  "future_Root_plan": "No worker regeneration or replay. Root upcoming fresh family should enumerate every retained map f-function across all fresh TUs, match exactCOFF/map/linked whole body extents, deduplicate by VA+size+bytes while recording weak alias names, and gate all normal helpers plus retained stdexceptions and actual cookie helper. Require coverage set equality as a pre-launch assertion, not a short selected list. Preserve stdlibrary names and no class/EH credit",
+  "old_family": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01",
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\artifact_manifest.json",
+      "size": 129970,
+      "sha256": "ccd33ccd8ca959b1fdd2fb3feae764f13464118298d863ecfd17872507b87f16"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\receipt.json",
+      "size": 11252,
+      "sha256": "0accf857b8237609280980b01be25c1a2be16f5cde89af979553a87e1aa1fabb"
+    },
+    "actual_files": 417,
+    "prior_actual_pins": 16743,
+    "all_unchanged": true
+  },
+  "callback_audit": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_destructor_callback_readiness\\local\\h5rd",
+    "actual_files": 113,
+    "Source": 0,
+    "all_unchanged": true
+  },
+  "no_original_runtime_rerun": true,
+  "no_Source_compiler_build_probe_live_native_Ghidra_or_owner_expansion": true,
+  "failed_stages": 0,
+  "complete32_symbol_comparison": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_code_gate_audit\\local\\hc70cov\\coverage.json",
+    "size": 27309,
+    "sha256": "a3e1604a1653542349f5fd06bb31d18888c47ea411e0f92ed36548640b207687"
+  },
+  "binary_gate_check": {
+    "passed": true,
+    "actual_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\gate.bin",
+      "size": 9577,
+      "sha256": "e55020f78e0dfcac315402e08c6517c78e8f87d101ab946355cbb7186905d119"
+    },
+    "static_gate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_native_parent_header_clear\\local\\hc70\\r01\\static_gate.json",
+      "size": 629363,
+      "sha256": "27022e44abb04a0428f215d455cf527b9bb904428bed71351576437d84b411e3"
+    },
+    "runtime_code_count": 31,
+    "all31_addresses_sizes_bytes_equal": true,
+    "CRT_specs": 3,
+    "header": [
+      3423751160,
+      1,
+      587202560,
+      577536,
+      587206656,
+      587207168,
+      587215648,
+      587210928,
+      31,
+      3
+    ],
+    "no_runtime_or_accepted_helper_execution": true
+  },
+  "diagnostic_symbols_count": 9,
+  "alias_note": "??_Ebad_alloc and??_Eexception weak-alias ??_G bodies at230011A0 and230011D0 respectively; both covered45bytes, no additional body omitted",
+  "bookend": {
+    "passed": true,
+    "prior_actual_pins": 17160,
+    "callback_actual_pins": 113,
+    "Source": 0,
+    "registered_ready": 0,
+    "live_queries": 0,
+    "compilers": 0,
+    "builds": 0,
+    "fixtures": 0,
+    "native_executions": 0,
+    "Ghidra_mutations": 0,
+    "accepted_old_recipe_helper_stage_or_process_replays": 0
+  },
+  "baseline": "0348b7badac173be2022545e92bb6c086d6f1b9f",
+  "immutable_handoff": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_code_gate_audit\\local\\hc70cov",
+    "coverage": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_code_gate_audit\\local\\hc70cov\\coverage.json",
+      "size": 27309,
+      "sha256": "a3e1604a1653542349f5fd06bb31d18888c47ea411e0f92ed36548640b207687"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_code_gate_audit\\local\\hc70cov\\readiness_receipt.json",
+      "size": 1757,
+      "sha256": "e0dfbb04798f59c8859c6a4f15c3473dade6d0d50e0e6d4350fa93c644bfd8e3"
+    },
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_parent_header_clear_code_gate_audit\\local\\hc70cov\\artifact_manifest.json",
+      "size": 14042,
+      "sha256": "04bbdbfce45834c834de92e26161341414538641514287443ba904fb457c46c8"
+    },
+    "listed": 44,
+    "actual": 46,
+    "exact_inventory_verified": true
+  }
+}
