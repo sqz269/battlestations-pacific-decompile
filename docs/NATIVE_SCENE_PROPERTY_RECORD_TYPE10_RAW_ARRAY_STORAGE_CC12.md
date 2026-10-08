@@ -33,3 +33,19 @@ The entire Root-verified readiness family was copied as data, including its all-
 The new evidence family is `local/t1011s/` in worktree `J:/PROG/battlestations-pacific-decompile-cc12_property_type10_type11_raw_storage_source`. Its exact all-file manifest includes new utilities, checks, all frozen input data and exact snapshots of all eight owned outputs. The manifest's independent hash is supplied in the handoff to avoid a hash cycle with these metadata snapshots.
 
 Root owns shared registration and later compilation/qualification. This packet changes no CMake, names, reconstruction ledger, parallel-work metadata or Ghidra state and adds no tests. Whole clone, insertion/owner publication, native private CRT/EH, recursive release, class lifetime and game behavior remain outside this raw-storage Source implementation.
+
+## Root production integration
+
+Root independently reviewed the complete Source CPP/HPP and native listing.
+The routine is registered in `bsp_core`; the fresh Win32 build and all three
+existing checks passed with 4,051 Source/header/CMake inputs unchanged.
+The actual I386 production COFF body is 116 bytes; 108 literal
+bytes match Native, with only the expected symbolic CALL operands excluded.
+Source admission remains **0**. Complete linked helpers, actual callers,
+provider/frame captures and the fresh single-process fixture still require
+primary qualification. Build/object evidence does not establish game ABI,
+class/lifetime behavior, startup or gameplay.
+
+The provisional raw-domain Ghidra name and evidence are saved in the configured
+project, with previous names/comments recorded and affected exports refreshed.
+This publication leaves Source admission at 0 and fixture/ABI qualification pending.
