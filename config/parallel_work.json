@@ -31616,6 +31616,72 @@
         "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE0_STORAGE_CC12.md",
         "reports/native_scene_property_record_type0_storage_cc12.json"
       ]
+    },
+    {
+      "id": "cc12_reproducible_startup",
+      "worker": "primary_integrator",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [],
+      "output_files": [
+        "scripts/run.ps1",
+        "tools/prepare_xlive_runtime.py",
+        "docs/CC12_REPRODUCIBLE_STARTUP.md",
+        "reports/cc12_reproducible_startup.json",
+        "docs/CC12_STARTUP_SOUND_BOUNDARY.md",
+        "reports/cc12_startup_sound_boundary.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "finite_source_title_startup_passed_genuine_private_sdk_launcher_integrated_gameplay_not_validated",
+      "worker_commit": "32094cc2e",
+      "audit_commit": "57e33064d9d7df6cbe1081d1d39b7af053ae813c",
+      "coverage": {
+        "fresh_offline_runtime_files_verified": 4,
+        "runtime_signatures_valid_microsoft": 4,
+        "title_run_frames": 3,
+        "title_presents": 2,
+        "menu_harness_frames": 30,
+        "menu_harness_presents": 29,
+        "audio_calls": 129,
+        "audio_errors": 0,
+        "startup_audit_artifacts_primary_rehashed": 50,
+        "startup_runtime_pins_primary_rehashed": 16,
+        "new_Original_functions": 0
+      },
+      "contract": {
+        "behavior": "Explicit genuine private Microsoft XLive and matching credential preload; supported fit display mode; actual GUI process exit code; extraction never executes installer.",
+        "limits": "Finite title startup and incomplete injected menu harness only. Full startup/shutdown, sign-in, scenario gameplay and save/load remain unvalidated."
+      }
+    },
+    {
+      "id": "cc12_property_lookup_readiness",
+      "worker": "property_payload",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "xhigh",
+      "function_addresses": [
+        "0043B8B0"
+      ],
+      "output_files": [
+        "docs/CC12_PROPERTY_LOOKUP_READINESS.md",
+        "reports/cc12_property_lookup_readiness.json"
+      ],
+      "depends_on": [],
+      "done": true,
+      "state": "whole_read_only_readiness_audit_complete_hash_and_populated_property_map_bindings_not_ready",
+      "worker_commit": "8a1476fdeb34cf62ec5a329d391b060e1a4c5e1e",
+      "coverage": {
+        "complete_Original_bytes": 105,
+        "instructions": 48,
+        "live_call_rows_primary_checked": 4,
+        "artifacts_primary_rehashed": 29,
+        "current_Source_contents_primary_compared": 17,
+        "new_Original_functions": 0
+      },
+      "contract": {
+        "behavior": "Hash always runs and publishes a bucket before head/chain lookup; borrowed node/null return, no mapped-record ownership.",
+        "limits": "First missing whole hash provider 0043B760 plus actual populated-map and E177E4 fallback binding. Replacement-record lifetime stays downstream; no fresh-key-only closure."
+      }
     }
   ],
   "snapshot_after_analysis": {
