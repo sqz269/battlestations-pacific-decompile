@@ -1,0 +1,347 @@
+{
+  "packet": "cc12_property_payload_binding",
+  "status": "Clone-produced type6 nested bag profile target established; all three owned bodies remain unready for whole raw current Source registration",
+  "UTC": "2026-10-08T05:17:10.553056+00:00",
+  "baseline_commit": "d02cf8082",
+  "project_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "per_batch": "bsp.py client() calls Client.verify(): project name, program path, language, image base. Config pins exact gpr. No import or analysis mutation."
+  },
+  "installed_PE": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "native_bodies": [
+    {
+      "entry": "008F59E0",
+      "inclusive_end": "008F59FD",
+      "exclusive_end": "008F59FE",
+      "bytes": 30,
+      "listed_instructions": 11,
+      "sha256": "7159629f199e9bd44df0f8cf7c56517ecd717d9f8ba0d8f390c043bd97df843d",
+      "PE_file_offset": 5200352,
+      "section": ".text",
+      "live_PE_image_equal": true,
+      "coverage": "complete",
+      "flow_gaps": 0
+    },
+    {
+      "entry": "008F41F0",
+      "inclusive_end": "008F4289",
+      "exclusive_end": "008F428A",
+      "bytes": 154,
+      "listed_instructions": 49,
+      "sha256": "2b8a332ed5807d4499150e6dfd5fd943c7d72c921c6cf3603c51dff2b4347157",
+      "PE_file_offset": 5194224,
+      "section": ".text",
+      "live_PE_image_equal": true,
+      "coverage": "complete",
+      "flow_gaps": 0
+    },
+    {
+      "entry": "008EF780",
+      "inclusive_end": "008EF7B9",
+      "exclusive_end": "008EF7BA",
+      "bytes": 58,
+      "listed_instructions": 16,
+      "sha256": "6ecd8cb72e2e8d06bf1f3f5c53f442d88c3b3606ffc3dacdc6a98f9c5a2f0450",
+      "PE_file_offset": 5175168,
+      "section": ".text",
+      "live_PE_image_equal": true,
+      "coverage": "complete",
+      "flow_gaps": 0
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "entry": "00D16504",
+      "inclusive_end": "00D16507",
+      "exclusive_end": "00D16508",
+      "bytes": 4,
+      "listed_instructions": null,
+      "sha256": "09be9d3a8e1c44b711c5e579561f83596d03ffbe028233eced23067de9bd7d1c",
+      "PE_file_offset": 9528580,
+      "section": ".rdata",
+      "live_PE_image_equal": true
+    },
+    {
+      "entry": "008F50ED",
+      "inclusive_end": "008F5133",
+      "exclusive_end": "008F5134",
+      "bytes": 71,
+      "sha256": "e13774b4eac8a8c1f666445c908ad604d586777101dac0eec941639a0d0d44c6",
+      "coverage": "partial supporting type6 arm of008F4F60",
+      "live_PE_image_equal": true
+    },
+    {
+      "entry": "00480690",
+      "inclusive_end": "004806D0",
+      "exclusive_end": "004806D1",
+      "bytes": 65,
+      "coverage": "complete saved listing read only to establish first missing clone-callee ABI; no new Source or PE hash claim"
+    },
+    {
+      "entry": "008F5410",
+      "inclusive_end": "008F5467",
+      "exclusive_end": "008F5468",
+      "bytes": 88,
+      "coverage": "complete native ordinary callee read; current raw Source absent; prior audit retained"
+    }
+  ],
+  "profile_binding": {
+    "coverage": "actual clone-produced nested type6 payload only",
+    "bag_allocation": "008F41F5 PUSH114h ->008F41FC CALL00BF681B; success EDX/EDI is actual new114h root",
+    "bag_publication": "008F420A writesD16504 to allocation+0;008F4212 writesD162C4 to+4; count+8=0;64heads+0C..+10B=0; ordinal+10C=0; owner+110=0",
+    "profile_slot0": {
+      "profile": "00D16504",
+      "value": "008F59E0",
+      "bytes": "e0598f00",
+      "live_PE_image_equal": true,
+      "sha256": "09be9d3a8e1c44b711c5e579561f83596d03ffbe028233eced23067de9bd7d1c"
+    },
+    "producer_admission": "008F4F60 type6 arm allocates38h at008F50EF;008F510D loads actual sourcechild+C intoECX;008F5110 calls008F41F0;008F5115 PUSH EAX;008F5116 MOV ECX,EDI;008F5118 calls008EF780;008F5121 carries source ordinal+34 to actual returned record",
+    "record_publication": "008EF788 storesCE89D4 at actual record+0;008EF78E stores6 at+4;008EF795 stores returned child at+C;008EF7A7 writes record backlink into that actual child+110",
+    "release_consumer": "008F0640 type6 branch reads record+C intoECX at008F06A6; loads profile and slot0 at008F06AD/AF; PUSH1 at008F06B1; CALL EAX at008F06B3; zero+C only after return at008F06B5",
+    "conclusion": "For this admitted actual clone/constructor path, the dynamic call reaches008F59E0 with flags1. Other producer families and other actual profiles remain unresolved. The general consumer stays indirect.",
+    "failure_boundary": "008F41F0 has a null-allocation branch but still enters source iteration; nonempty source with null new root is not made safe.008EF780 unconditionally writes child+110, so null child is not admitted. Fresh actual clone ownership established only on success; no arbitrary alias/cycle admission."
+  },
+  "scalar_contract": {
+    "native_ABI": "ECX actual114h bag; one stack flags argument, tested as byte&1 at[ESP+8] after PUSHESI; preservesESI; returns originalthis inEAX; RET4; ECX/EDX/flags unspecified",
+    "complete_order": [
+      "preserveESI=this",
+      "CALL ordinary008F5410 at008F59E3 unconditionally",
+      "test flags&1 only after ordinary return",
+      "if set PUSH actual root and CALL00BF65AC at008F59F0;ADD ESP4",
+      "return original root address; restoreESI;RET4"
+    ],
+    "first_missing_callee": {
+      "entry": "008F5410",
+      "native_ABI": "ECX actual114h bag; no stack args; plainRET; ESI preserved; x86 SEH linkage restored on ordinary path",
+      "native_contract": "writes outerD16504; passes actual embeddedmap=bag+4 to008F3F30 twice, writing innerD162C4 before second clear; no root/interior free",
+      "Source_ready": false,
+      "first_lifetime_dependency": "008F3F30 actual108h owning-record map clear, itself not complete current raw Source"
+    }
+  },
+  "clone_contract": {
+    "native_ABI": "ECX source actual114h bag; no stack args; plainRET; EAX newroot; ESI/EDI preserved; EAX/ECX/EDX/flags otherwise unspecified",
+    "complete_order": [
+      "allocate114h through genuine allocator",
+      "initialize actualD16504/D162C4 root and all empty map fields on success; retain null branch",
+      "iterator00480690 over actualsource+4",
+      "for each actual node: key=node+4 or00F89450; record=node+8; CALL008F4F60; CALL008F33F0 with actual new root,key,clone",
+      "advance0047E480; return actual new root"
+    ],
+    "first_missing_direct_raw_Source_callee": {
+      "entry": "00480690",
+      "site": "008F4247",
+      "native_ABI": "ECX actual0Ch iterator, iterator+0 points to actual108h map; no stack args; plainRET; EDI preserved; no calls",
+      "current_raw_Source": "absent; ScenePropertyMergeHost.iterator_open is an abstract host boundary, not a genuine raw provider"
+    },
+    "other_missing_callees": [
+      "0047E480 actual raw iterator advance",
+      "008F4F60 actual38h per-type recursive clone",
+      "008F33F0 actualraw keyed insertion and owner/ordinal publication"
+    ],
+    "allocator": "00BF681B genuine current Source singleton_lifetime_allocate exists; raw current-CRT allocation does not replace these producers or the recursive lifetimes"
+  },
+  "constructor_contract": {
+    "native_ABI": "ECX supplied actual38h record; one stack supplied child pointer; EAX=original record; RET4; EAX/ECX/EDX modified; EBX/ESI/EDI/EBP untouched; flags unspecified; no calls",
+    "writes": {
+      "record+00": "CE89D4",
+      "record+04": "6",
+      "record+08": "0",
+      "record+0C": "supplied actualchild",
+      "record+18": "0",
+      "record+1C": "0",
+      "record+20": "0",
+      "record+24": "0",
+      "record+2C_byte": "1",
+      "record+30": "0",
+      "record+34": "0",
+      "child+110": "actual suppliedrecord"
+    },
+    "preserved": [
+      "record+10 DWORD",
+      "record+14 DWORD",
+      "record+28 DWORD",
+      "record+2D..+2F bytes",
+      "all child fields except+110"
+    ],
+    "preconditions": "Writable actual38h record plus nonnull writable actual114h child with genuine initialized raw map/profile and admitted ownership. Native performs no pointer, size, alias, cycle or priorowner validation.",
+    "first_missing_ownership_producer": {
+      "entry": "008F41F0",
+      "native_ABI": "ECX actual source114h bag; no stack args; EAX actual new bag; plainRET",
+      "reason": "Only observed actual caller008F4F60 supplies this returned child; no complete current raw clone producer exists."
+    },
+    "alternative_missing_bag_initializer": {
+      "entry": "008F41A0",
+      "native_bounds": "008F41A0..008F41DC",
+      "native_ABI_from_prior_ledger": "ECX actual114h bag, one owner stack argument, RET4; return and saved-register details must be re-audited before Source registration",
+      "scope": "Named but not expanded; existing semantic bag model is not actual raw producer."
+    },
+    "initialization_body_complete": true,
+    "genuine_current_producer_admission": false,
+    "Source_ready": false,
+    "qualification": "Whole field body is established; it is not promoted to a partial or independently Source-ready initializer without genuine current ownership producers."
+  },
+  "current_Source": {
+    "proven_heap_services": [
+      "src/singleton_lifetime.cpp singleton_lifetime_allocate uses real std::malloc/_callnewh/bad_alloc",
+      "src/singleton_lifetime.cpp singleton_lifetime_free uses real std::free"
+    ],
+    "owned_raw_providers_found": [],
+    "checked_names": [
+      "008F59E0",
+      "008F41F0",
+      "008EF780",
+      "008F5410",
+      "008F3F30",
+      "008F41A0",
+      "00480690",
+      "0047E480",
+      "008F4F60",
+      "008F33F0"
+    ],
+    "semantic_surfaces": "scene_property_bag model and scene_property_bag_merge copy specs/host callbacks expose value semantics or abstract calls; neither supplies genuine raw38h/114h storage, native profiles or the owning lifetime chain.",
+    "array_status": "Distinct008F03F0 raw current heap leaf was already integrated/built on main at baseline d02cf8082. Its prior validation is not replayed; it does not close type6."
+  },
+  "readiness": {
+    "008F59E0": "NOT_READY first whole lifetime provider008F5410 absent",
+    "008F41F0": "NOT_READY first direct raw provider00480690 absent",
+    "008EF780": "NOT_READY genuine current raw child-bag producer absent",
+    "008F0640_type6": "Actual clone-produced scalar binding established, real raw Source lifetime remains NOT_READY"
+  },
+  "corrections": [
+    {
+      "was": "D16504slot0=008F59E0 was only a bag scalar profile candidate for dynamic type6",
+      "is": "For successful actual clone-producing008F41F0 ->008EF780 admission, payload profile and slot0 are established asD16504 ->008F59E0; general dispatcher remains indirect",
+      "evidence": "008F420A,008F5110,008F5115,008F5118,008EF795,008EF7A7,00D16504live/disk bytes,008F06AD..008F06B3"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008F59E3",
+      "native": "008F5410",
+      "function": "008F59E0",
+      "contract": "ECX actual114h bag; first ordinary lifetime provider, no stack argument"
+    },
+    {
+      "address": "008F59F0",
+      "native": "00BF65AC",
+      "function": "008F59E0",
+      "contract": "PUSH preserved actual root; cdecl current free service; ADD ESP,4 at008F59F5"
+    },
+    {
+      "address": "008F41FC",
+      "native": "00BF681B",
+      "function": "008F41F0",
+      "contract": "PUSH114h; cdecl current allocator service; ADD ESP,4 at008F4203"
+    },
+    {
+      "address": "008F4247",
+      "native": "00480690",
+      "function": "008F41F0",
+      "contract": "ECX actual0Ch iterator with+0=sourcebag+4; no stack args"
+    },
+    {
+      "address": "008F4263",
+      "native": "008F4F60",
+      "function": "008F41F0",
+      "contract": "ECX actual source node+8 record; returns actual new record inEAX"
+    },
+    {
+      "address": "008F426C",
+      "native": "008F33F0",
+      "function": "008F41F0",
+      "contract": "ECX actual allocated bag; PUSH clonedrecord then key; original RET8 per prior bag evidence"
+    },
+    {
+      "address": "008F4275",
+      "native": "0047E480",
+      "function": "008F41F0",
+      "contract": "ECX same actual0Ch iterator; no stack args; native callee not expanded by this audit"
+    },
+    {
+      "address": "008F50EF",
+      "native": "00BF681B",
+      "function": "008F4F60",
+      "contract": "PUSH38h; EDI=allocated record; ADD ESP,4 at008F50F6"
+    },
+    {
+      "address": "008F5110",
+      "native": "008F41F0",
+      "function": "008F4F60",
+      "contract": "ECX=source record+C; clone actual nested bag"
+    },
+    {
+      "address": "008F5118",
+      "native": "008EF780",
+      "function": "008F4F60",
+      "contract": "PUSH returned cloneEAX; ECX=actual newly allocated38h record; no intervening clone rewrite"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "008F06B3",
+      "function": "008F0640",
+      "instruction": "CALL EAX",
+      "resolution": "008F59E0 only for the admitted successful clone-producedD16504 payload",
+      "native_target_deliberately_omitted": true
+    }
+  ],
+  "call_verification": {
+    "direct_rows": 10,
+    "status": "PASS existing tools/verify_report_calls.py:10checked,0failed; no new tests",
+    "indirect_rows": 1,
+    "indirect_qualification": "General dynamicCALL EAX has no static native row and is not submitted to directtarget checker."
+  },
+  "required_Ghidra_repairs": [],
+  "ready_Source_followup": null,
+  "next_bounded_readonly_audit": {
+    "packet": "cc12_property_bag_raw_constructor_readiness",
+    "entry": "008F41A0",
+    "native_bounds": "008F41A0..008F41DC (61B)",
+    "goal": "Audit whole actual114h constructor and real current allocator admission independently; no clone/empty-only lifetime closure",
+    "contract_to_establish": "Actual rootD16504, embedded mapD162C4, count0,64zero bucket heads,+10Cordinal0,+110supplied owner; actual original register/stack/return ABI, exact PE hashes, and real current-CRT raw114h allocation preconditions. Do not claim raw map insertion, recursive destruction or game/class/ABI closure.",
+    "Source_readiness_not_yet_assigned": true
+  },
+  "named_UNEXPANDED_dependencies": [
+    "008F3F30 owning record map clear",
+    "004E6730 actualCE89D4 record scalar ->008F0DE0 ->008F0640",
+    "008F41A0 actualraw114h constructor",
+    "0047E480 actual raw iterator advance",
+    "008F4F60 whole recursive record clone beyond only the observed71Btype6 arm",
+    "008F33F0 actual raw map/owner insertion and its providers"
+  ],
+  "evidence_paths": {
+    "root": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding",
+    "byte_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/byte_receipt.json",
+    "artifact_manifest": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/artifact_manifest.json",
+    "artifact_manifest_sha256": "bf8f797300c025f0524042823bd025b11e0f96e9e178a162eef82780fecf385d",
+    "saved_owned_pseudocode_and_listing": [
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/008f59e0_decompiled.c",
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/008f59e0_assembly.txt",
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/008f41f0_decompiled.c",
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/008f41f0_assembly.txt",
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/008ef780_decompiled.c",
+      "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/008ef780_assembly.txt"
+    ],
+    "direct_call_instructions": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/direct_call_instructions.json",
+    "direct_call_body_ranges": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/direct_call_body_ranges.txt",
+    "binding_listing": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/type6_binding_listing.txt",
+    "indirect_release_listing": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/type6_release_indirect_listing.txt",
+    "Source_lookup_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/current_dependency_lookup.txt",
+    "call_verification_receipt": "J:/PROG/battlestations-pacific-decompile-cc12_property_payload/local/cc12_property_payload_binding/call_verification_receipt.json"
+  },
+  "Source_functions_added": 0,
+  "Source_fragments_added": 0,
+  "native_or_Source_execution": false,
+  "new_tests": 0,
+  "build_run": false,
+  "shared_Ghidra_mutation": false,
+  "shared_metadata_CMake_ledger_export_writes": false,
+  "native_class_ABI_compatible": false,
+  "game_validated": false,
+  "qualification": "Complete native evidence and current Source readiness audit only. Installed byte equality is not execution, class closure, binary replacement ABI or game validation."
+}
