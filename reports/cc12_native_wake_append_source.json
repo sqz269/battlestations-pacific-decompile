@@ -1,0 +1,1386 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_native_wake_append_Source",
+  "address": "00810190",
+  "status": "Source_complete_static_object_and_archive_verified_normal_build_all_three_existing_checks_pass_primary_review_pending",
+  "created_utc": "2026-10-08T16:02:34.853690+00:00",
+  "base_commit": "af102e64b",
+  "tracked_scope": [
+    "include/bsp/native_unit_wake_append_dependencies.hpp",
+    "src/native_unit_wake_append_dependencies.cpp",
+    "docs/CC12_NATIVE_WAKE_APPEND_SOURCE.md",
+    "reports/cc12_native_wake_append_source.json"
+  ],
+  "original": {
+    "bytes": 1183,
+    "instructions": 303,
+    "sha256": "519b5917d15156e6b524eed91ff450665daa5bcf4ee35dbf85fe6f0f336a1c55",
+    "range": "00810190..0081062E",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "Ghidra_export_identity": {
+      "address": "00810190",
+      "name": "BSP_UnitWake_AppendSample",
+      "isThunk": false,
+      "isExternal": false,
+      "name_source": "live get_function_by_address",
+      "project": "bsp",
+      "program_path": "/battlestationspacific.exe",
+      "utc": "2026-10-08T15:33:26.243966+00:00"
+    }
+  },
+  "Source_kernel": {
+    "symbol": "?append_kernel_00810190@?A0x10ac036b@bsp@@YIXPAXPBIPBMII@Z",
+    "bytes": 1175,
+    "instruction_count": 306,
+    "sha256": "f39f38f25a5b045334284f35fcf314b61181b04e3c3f1c8eebb36034629c03e5",
+    "relocations": [
+      {
+        "offset": 155,
+        "type": 6,
+        "symbol": "?append_distance_squared_00ce6454@?A0x10ac036b@bsp@@3MB",
+        "symbol_record": {
+          "name": "?append_distance_squared_00ce6454@?A0x10ac036b@bsp@@3MB",
+          "value": 8,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      {
+        "offset": 226,
+        "type": 20,
+        "symbol": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 239,
+        "type": 20,
+        "symbol": "__CIsqrt",
+        "symbol_record": {
+          "name": "__CIsqrt",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 253,
+        "type": 6,
+        "symbol": "?append_decay_00d7a348@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_decay_00d7a348@?A0x10ac036b@bsp@@3NB",
+          "value": 16,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      {
+        "offset": 639,
+        "type": 20,
+        "symbol": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 680,
+        "type": 20,
+        "symbol": "__CIatan2",
+        "symbol_record": {
+          "name": "__CIatan2",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 694,
+        "type": 6,
+        "symbol": "?append_half_pi_00ce3830@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_half_pi_00ce3830@?A0x10ac036b@bsp@@3NB",
+          "value": 24,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      {
+        "offset": 714,
+        "type": 6,
+        "symbol": "?append_two_pi_00ce3828@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_two_pi_00ce3828@?A0x10ac036b@bsp@@3NB",
+          "value": 32,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      {
+        "offset": 843,
+        "type": 20,
+        "symbol": "?raw_length_2d_00414c60@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?raw_length_2d_00414c60@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 857,
+        "type": 6,
+        "symbol": "?append_merge_span_00d09438@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_merge_span_00d09438@?A0x10ac036b@bsp@@3NB",
+          "value": 40,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      {
+        "offset": 975,
+        "type": 20,
+        "symbol": "?copy_native_unit_wake_sample_00810160@bsp@@YIPAXPAX0PBX@Z",
+        "symbol_record": {
+          "name": "?copy_native_unit_wake_sample_00810160@bsp@@YIPAXPAX0PBX@Z",
+          "value": 0,
+          "section": 7,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 1007,
+        "type": 6,
+        "symbol": "?append_advance_00ce3938@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_advance_00ce3938@?A0x10ac036b@bsp@@3NB",
+          "value": 48,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      }
+    ]
+  },
+  "complete_mapping": {
+    "Original_instructions": 303,
+    "Source_instructions": 306,
+    "Source_bytes": 1175,
+    "added_pointer_MOVs": [
+      {
+        "after_original": "00810190",
+        "source_offset": 3,
+        "hex": "89542428",
+        "instruction": "mov dword ptr [esp + 0x28], edx"
+      },
+      {
+        "before_original": "00810235",
+        "source_offset": 169,
+        "hex": "8b542434",
+        "instruction": "mov edx, dword ptr [esp + 0x34]"
+      },
+      {
+        "before_original": "008102a3",
+        "source_offset": 273,
+        "hex": "8b542434",
+        "instruction": "mov edx, dword ptr [esp + 0x34]"
+      }
+    ],
+    "original_instruction_classifications": {
+      "exact_bytes": 262,
+      "actual_readonly_DIR32": 6,
+      "branch_reencoding_to_mapped_target": 23,
+      "approved_live_reset_address_replacement": 6,
+      "actual_provider_REL32": 6
+    },
+    "all_Original_instructions_mapped": true,
+    "six_live_reset_operand_rewrites": true,
+    "all_branch_targets_mapped": true,
+    "all_other_Original_bytes_or_nonrelocated_operand_bytes_equal": true,
+    "Original_body_bit_identity_claimed": false,
+    "Original_binary_ABI_drop_in_claimed": false
+  },
+  "public_interface": "void bsp::append_native_unit_wake_00810190(void*, const float*, float heading, float yaw_rate, game::GameNativeGeometryGlobals&)",
+  "wrapper": {
+    "symbol": "?append_native_unit_wake_00810190@bsp@@YAXPAXPBMMMAAVGameNativeGeometryGlobals@game@1@@Z",
+    "sha256": "8c6ec8f24cd1bb5c7ff3382d4a8a83d8b573a626cc33c5971fce29edd23a50ba",
+    "full_body_bytes_verified": true,
+    "bytes": 25,
+    "instructions": 10,
+    "only_call": "actual local append_kernel_00810190",
+    "argument_operations": [
+      "PUSH [EBP+0x14] copies yaw bits with an integer stack operation",
+      "MOV EDX,[EBP+0x18] acquires the canonical reset-object/array address; does not load its cells",
+      "PUSH [EBP+0x10] copies heading bits with an integer stack operation",
+      "MOV ECX,[EBP+8] acquires borrowed raw wake",
+      "PUSH [EBP+0xC] supplies borrowed position pointer"
+    ],
+    "reset_accessor_complete_body": "MOV EAX,ECX; RET",
+    "array_data_complete_body": "MOV EAX,ECX; RET",
+    "no_reset_value_reads": true,
+    "no_floating_arithmetic_or_FP_environment_operations": true,
+    "no_EFLAGS_writing_instruction": true,
+    "private_kernel_three_stack_words_cleaned_by_RET12": true,
+    "ordinary_public_RET_no_callee_stack_argument_cleanup": true,
+    "qualification": "Ordinary C++ public ABI. The private borrowed-pointer kernel is not an Original binary entry replacement."
+  },
+  "preconditions": {
+    "storage": "Borrow actual valid native raw wake through +0x3DB (988 bytes), not manufactured temporary storage. 40 six-float records start +8 at stride0x18; actual head +0x3C8 remains 0..39 at every observation; full-byte flag +0x3CC; mutable residual +0x3D0.",
+    "position": "Actual three readable float cells; retain all repeated native observations.",
+    "geometry": "Actual canonical process GameNativeGeometryGlobals instance from game_native_geometry_globals(), stable mutable 12-byte storage, genuine address acquired through zero_vector_00f87574().data().",
+    "aliasing": "External wake, position and reset regions may alias when all accessed ranges remain valid. They must not overlap active public/private frames or formal argument slots. Scalar arguments are explicit ordinary by-value copies.",
+    "lifetime_and_synchronization": "Caller owns validity, lifetime and synchronization for all borrowed regions.",
+    "FP": "Four free local x87 slots excluding CRT interiors; no FP reset/normalization. Preserve local operation/status behavior with genuine current intrinsic ST0 contracts; no Original/current CRT interior or policy equivalence admitted."
+  },
+  "stack_and_register_proof": {
+    "Original_instructions_reached": 303,
+    "Source_instructions_reached": 306,
+    "all_mapped_ESP_and_x87_states_equal": true,
+    "saved_pointer_word_relative_entry_ESP": -20,
+    "save_after_SUB_ESP_3C_offset": 40,
+    "two_reload_offsets": 52,
+    "Original_indirect_vectors": [
+      {
+        "call": "00810416",
+        "entry_ESP_offset": -36,
+        "bytes": 12
+      },
+      {
+        "call": "008104E2",
+        "entry_ESP_offset": -60,
+        "bytes": 8
+      }
+    ],
+    "no_saved_word_overlap_with_original_direct_or_indirect_accesses": true,
+    "first_original_EDX_definition": "00810351 LEA EDX,[EAX+EAX*2]",
+    "native_copy_EDX_preserved": "Original PUSH EDX / LEA ECX / CALL retained; no invented dummy-argument clearing",
+    "return": "Private RET12; public ordinary RET. EBX/ESI/EDI/EBP preserved by original sequence. Public volatile registers/EFLAGS are not Original ABI guarantees.",
+    "max_local_x87_slots": 4
+  },
+  "call_sites": [
+    {
+      "original": "00810273",
+      "source_offset": 225,
+      "target": "native_unit_wake_length_0042b2f0",
+      "relocation": {
+        "offset": 226,
+        "type": 20,
+        "symbol": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    },
+    {
+      "original": "00810280",
+      "source_offset": 238,
+      "target": "_CIsqrt",
+      "relocation": {
+        "offset": 239,
+        "type": 20,
+        "symbol": "__CIsqrt",
+        "symbol_record": {
+          "name": "__CIsqrt",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    },
+    {
+      "original": "00810416",
+      "source_offset": 638,
+      "target": "native_unit_wake_length_0042b2f0",
+      "relocation": {
+        "offset": 639,
+        "type": 20,
+        "symbol": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    },
+    {
+      "original": "0081043f",
+      "source_offset": 679,
+      "target": "_CIatan2",
+      "relocation": {
+        "offset": 680,
+        "type": 20,
+        "symbol": "__CIatan2",
+        "symbol_record": {
+          "name": "__CIatan2",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    },
+    {
+      "original": "008104e2",
+      "source_offset": 842,
+      "target": "raw_length_2d_00414c60",
+      "relocation": {
+        "offset": 843,
+        "type": 20,
+        "symbol": "?raw_length_2d_00414c60@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?raw_length_2d_00414c60@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    },
+    {
+      "original": "00810566",
+      "source_offset": 974,
+      "target": "copy_native_unit_wake_sample_00810160",
+      "relocation": {
+        "offset": 975,
+        "type": 20,
+        "symbol": "?copy_native_unit_wake_sample_00810160@bsp@@YIPAXPAX0PBX@Z",
+        "symbol_record": {
+          "name": "?copy_native_unit_wake_sample_00810160@bsp@@YIPAXPAX0PBX@Z",
+          "value": 0,
+          "section": 7,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    }
+  ],
+  "actual_readonly_operands": [
+    {
+      "original": "00810225",
+      "native_address": "00ce6454",
+      "payload_hex": "00008041",
+      "relocation": {
+        "offset": 155,
+        "type": 6,
+        "symbol": "?append_distance_squared_00ce6454@?A0x10ac036b@bsp@@3MB",
+        "symbol_record": {
+          "name": "?append_distance_squared_00ce6454@?A0x10ac036b@bsp@@3MB",
+          "value": 8,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      "Source_section": 3,
+      "Source_writable": false,
+      "Original_writable": false
+    },
+    {
+      "original": "0081028d",
+      "native_address": "00d7a348",
+      "payload_hex": "000000000000d03f",
+      "relocation": {
+        "offset": 253,
+        "type": 6,
+        "symbol": "?append_decay_00d7a348@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_decay_00d7a348@?A0x10ac036b@bsp@@3NB",
+          "value": 16,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      "Source_section": 3,
+      "Source_writable": false,
+      "Original_writable": false
+    },
+    {
+      "original": "0081044c",
+      "native_address": "00ce3830",
+      "payload_hex": "00000060fb21f93f",
+      "relocation": {
+        "offset": 694,
+        "type": 6,
+        "symbol": "?append_half_pi_00ce3830@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_half_pi_00ce3830@?A0x10ac036b@bsp@@3NB",
+          "value": 24,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      "Source_section": 3,
+      "Source_writable": false,
+      "Original_writable": false
+    },
+    {
+      "original": "00810460",
+      "native_address": "00ce3828",
+      "payload_hex": "00000060fb211940",
+      "relocation": {
+        "offset": 714,
+        "type": 6,
+        "symbol": "?append_two_pi_00ce3828@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_two_pi_00ce3828@?A0x10ac036b@bsp@@3NB",
+          "value": 32,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      "Source_section": 3,
+      "Source_writable": false,
+      "Original_writable": false
+    },
+    {
+      "original": "008104ef",
+      "native_address": "00d09438",
+      "payload_hex": "0000000000804b40",
+      "relocation": {
+        "offset": 857,
+        "type": 6,
+        "symbol": "?append_merge_span_00d09438@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_merge_span_00d09438@?A0x10ac036b@bsp@@3NB",
+          "value": 40,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      "Source_section": 3,
+      "Source_writable": false,
+      "Original_writable": false
+    },
+    {
+      "original": "00810585",
+      "native_address": "00ce3938",
+      "payload_hex": "0000000000004940",
+      "relocation": {
+        "offset": 1007,
+        "type": 6,
+        "symbol": "?append_advance_00ce3938@?A0x10ac036b@bsp@@3NB",
+        "symbol_record": {
+          "name": "?append_advance_00ce3938@?A0x10ac036b@bsp@@3NB",
+          "value": 48,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        }
+      },
+      "Source_section": 3,
+      "Source_writable": false,
+      "Original_writable": false
+    }
+  ],
+  "raw_dependencies": [
+    {
+      "original": "0042b2f0",
+      "bytes": 77,
+      "instructions": 31,
+      "non_relocated_bytes_equal": 69,
+      "relocations": [
+        {
+          "offset": 30,
+          "type": 6,
+          "symbol": "?squared_length_cutoff_00ce3820@?A0x10ac036b@bsp@@3NB",
+          "symbol_record": {
+            "name": "?squared_length_cutoff_00ce3820@?A0x10ac036b@bsp@@3NB",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 3
+          }
+        },
+        {
+          "offset": 44,
+          "type": 20,
+          "symbol": "__CIsqrt",
+          "symbol_record": {
+            "name": "__CIsqrt",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2
+          }
+        }
+      ]
+    },
+    {
+      "original": "00810160",
+      "bytes": 43,
+      "instructions": 15,
+      "non_relocated_bytes_equal": 43,
+      "relocations": []
+    },
+    {
+      "original": "00414c60",
+      "bytes": 66,
+      "instructions": 26,
+      "non_relocated_bytes_equal": 58,
+      "relocations": [
+        {
+          "offset": 19,
+          "type": 6,
+          "symbol": "?squared_length_cutoff@?A0x48799a06@bsp@@3NB",
+          "symbol_record": {
+            "name": "?squared_length_cutoff@?A0x48799a06@bsp@@3NB",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 3
+          }
+        },
+        {
+          "offset": 33,
+          "type": 20,
+          "symbol": "__CIsqrt",
+          "symbol_record": {
+            "name": "__CIsqrt",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2
+          }
+        }
+      ]
+    }
+  ],
+  "raw2D_facade": {
+    "bytes": 5,
+    "instructions": 1,
+    "hex": "e900000000",
+    "relocations": [
+      {
+        "offset": 1,
+        "type": 20,
+        "symbol": "?length_kernel@?A0x48799a06@bsp@@YIMPBM@Z",
+        "symbol_record": {
+          "name": "?length_kernel@?A0x48799a06@bsp@@YIMPBM@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 3
+        }
+      }
+    ],
+    "private_target_bytes": 66,
+    "private_target_instructions": 26,
+    "existing_cdecl_bridge_bytes": 12,
+    "existing_cdecl_bridge_instructions": 5
+  },
+  "canonical_owner": {
+    "getter_bytes": 6,
+    "getter_instructions": 2,
+    "actual_cell_storage_bytes": 12,
+    "writable": true,
+    "uninitialized_loader_zero": true,
+    "local_COFF_storage_class": 3,
+    "parent_defines_new_reset_storage": false,
+    "getter_and_escaped_mutable_array_interface_unchanged": true
+  },
+  "SDK_header_existing_selectany_fallback": {
+    "analysis": [
+      {
+        "phase": "post_build",
+        "object": "native_unit_wake_append_dependencies",
+        "symbol": {
+          "name": "__Avx2WmemEnabledWeakValue",
+          "value": 0,
+          "section": 4,
+          "type": 0,
+          "storage": 2,
+          "aux_hex": ""
+        },
+        "section": {
+          "section": 4,
+          "name": ".bss",
+          "bytes": 4,
+          "raw_file_offset": 0,
+          "characteristics": "c0301080",
+          "executable": false,
+          "writable": true,
+          "uninitialized": true,
+          "physical_payload_hex": "",
+          "physical_payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "relocations": []
+        },
+        "section_aux_hex": "040000000000000000000000000002000000",
+        "COMDAT_selection": 2,
+        "selection_semantics": "IMAGE_COMDAT_SELECT_ANY; existing SDK fallback, not canonical geometry/reset storage"
+      },
+      {
+        "phase": "pre_edit",
+        "object": "vector_helpers",
+        "symbol": {
+          "name": "__Avx2WmemEnabledWeakValue",
+          "value": 0,
+          "section": 4,
+          "type": 0,
+          "storage": 2,
+          "aux_hex": ""
+        },
+        "section": {
+          "section": 4,
+          "name": ".bss",
+          "bytes": 4,
+          "raw_file_offset": 0,
+          "characteristics": "c0301080",
+          "executable": false,
+          "writable": true,
+          "uninitialized": true,
+          "physical_payload_hex": "",
+          "physical_payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "relocations": []
+        },
+        "section_aux_hex": "040000000000000000000000000002000000",
+        "COMDAT_selection": 2,
+        "selection_semantics": "IMAGE_COMDAT_SELECT_ANY; existing SDK fallback, not canonical geometry/reset storage"
+      },
+      {
+        "phase": "pre_edit",
+        "object": "game_native_geometry_globals",
+        "symbol": {
+          "name": "__Avx2WmemEnabledWeakValue",
+          "value": 0,
+          "section": 3,
+          "type": 0,
+          "storage": 2,
+          "aux_hex": ""
+        },
+        "section": {
+          "section": 3,
+          "name": ".bss",
+          "bytes": 4,
+          "raw_file_offset": 0,
+          "characteristics": "c0301080",
+          "executable": false,
+          "writable": true,
+          "uninitialized": true,
+          "physical_payload_hex": "",
+          "physical_payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "relocations": []
+        },
+        "section_aux_hex": "040000000000000000000000000002000000",
+        "COMDAT_selection": 2,
+        "selection_semantics": "IMAGE_COMDAT_SELECT_ANY; existing SDK fallback, not canonical geometry/reset storage"
+      },
+      {
+        "phase": "pre_edit",
+        "object": "camera_decomposition",
+        "symbol": {
+          "name": "__Avx2WmemEnabledWeakValue",
+          "value": 0,
+          "section": 4,
+          "type": 0,
+          "storage": 2,
+          "aux_hex": ""
+        },
+        "section": {
+          "section": 4,
+          "name": ".bss",
+          "bytes": 4,
+          "raw_file_offset": 0,
+          "characteristics": "c0301080",
+          "executable": false,
+          "writable": true,
+          "uninitialized": true,
+          "physical_payload_hex": "",
+          "physical_payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "relocations": []
+        },
+        "section_aux_hex": "040000000000000000000000000002000000",
+        "COMDAT_selection": 2,
+        "selection_semantics": "IMAGE_COMDAT_SELECT_ANY; existing SDK fallback, not canonical geometry/reset storage"
+      }
+    ],
+    "parent_function_references": 0,
+    "qualification": "Required canonical <array> include emits SDK wchar.h existing 4-byte __Avx2WmemEnabledWeakValue selectany fallback, already defined by each baseline vector/owner/camera object. This is not reset storage. No claim that the entire parent COFF has no writable section."
+  },
+  "preserved_old_whole_functions": [
+    {
+      "object": "native_unit_wake_append_dependencies",
+      "symbol": "?native_unit_wake_length_0042b2f0@bsp@@YIMPBM@Z",
+      "bytes": 77,
+      "instructions": 31,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "native_unit_wake_append_dependencies",
+      "symbol": "?copy_native_unit_wake_sample_00810160@bsp@@YIPAXPAX0PBX@Z",
+      "bytes": 43,
+      "instructions": 15,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "vector_helpers",
+      "symbol": "?length_2d_00414c60@bsp@@YAMABV?$array@M$01@std@@@Z",
+      "bytes": 12,
+      "instructions": 5,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "vector_helpers",
+      "symbol": "?raw_length_2d_00414c60@bsp@@YIMPBM@Z",
+      "bytes": 5,
+      "instructions": 1,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "vector_helpers",
+      "symbol": "?transform_point_copy_00414cd0@bsp@@YAXPAMABV?$array@M$02@std@@ABV?$array@M$0BA@@3@@Z",
+      "bytes": 70,
+      "instructions": 27,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "vector_helpers",
+      "symbol": "?length_kernel@<anonymous_namespace>@bsp@@YIMPBM@Z",
+      "bytes": 66,
+      "instructions": 26,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "vector_helpers",
+      "symbol": "?data@?$array@M$01@std@@QBEPBMXZ",
+      "bytes": 3,
+      "instructions": 2,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "vector_helpers",
+      "symbol": "?data@?$array@M$02@std@@QAEPAMXZ",
+      "bytes": 3,
+      "instructions": 2,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "game_native_geometry_globals",
+      "symbol": "?game_native_geometry_globals@game@bsp@@YAAAVGameNativeGeometryGlobals@12@XZ",
+      "bytes": 6,
+      "instructions": 2,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "camera_decomposition",
+      "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z",
+      "bytes": 38,
+      "instructions": 20,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "camera_decomposition",
+      "symbol": "?normalize_camera_basis_0042b260@bsp@@YIXAAV?$array@M$02@std@@@Z",
+      "bytes": 138,
+      "instructions": 47,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    },
+    {
+      "object": "camera_decomposition",
+      "symbol": "?extract_camera_matrix_angles_0042d2e0@bsp@@YIXABV?$array@M$0BA@@std@@AAM11@Z",
+      "bytes": 352,
+      "instructions": 95,
+      "whole_body_and_ordered_normalized_relocations_equal": true
+    }
+  ],
+  "whole_archive_snapshots": [
+    {
+      "phase": "pre_edit",
+      "bytes": 73543848,
+      "sha256": "4569af392e93a916349693732cba78aa506131d55bcb771a172e951d81f6a7d8",
+      "member_count": 1904,
+      "selected_members": [
+        {
+          "name": "bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+          "header_offset": 26186224,
+          "payload_file_offset": 26186284,
+          "bytes": 1188,
+          "sha256": "df9b98d54807d476f1f582d51e7310a95a2cc55238a0824501f7508779588fdc",
+          "retained_path": "pre_edit/archive/native_unit_wake_append_dependencies.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+          "header_offset": 18390228,
+          "payload_file_offset": 18390288,
+          "bytes": 2652,
+          "sha256": "4c490fc533f47e24da73021b6e9d8fb0ef47e4c6a35e7ef2dd181c4311561dc3",
+          "retained_path": "pre_edit/archive/vector_helpers.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+          "header_offset": 61903864,
+          "payload_file_offset": 61903924,
+          "bytes": 1438,
+          "sha256": "51b8e067cdb778638ca87214764585e6b9a12c9ea9c56041ec3964dd418fff80",
+          "retained_path": "pre_edit/archive/game_native_geometry_globals.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\camera_decomposition.obj",
+          "header_offset": 53612892,
+          "payload_file_offset": 53612952,
+          "bytes": 3490,
+          "sha256": "91d3ba7b1e8373e6d2173bc5b20654950fe0e8ad514f75013d57f5ea5040f63c",
+          "retained_path": "pre_edit/archive/camera_decomposition.archive_member",
+          "exact_unique_full_object_equal": true
+        }
+      ]
+    },
+    {
+      "phase": "pre_build",
+      "bytes": 73543848,
+      "sha256": "4569af392e93a916349693732cba78aa506131d55bcb771a172e951d81f6a7d8",
+      "member_count": 1904,
+      "selected_members": [
+        {
+          "name": "bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+          "header_offset": 26186224,
+          "payload_file_offset": 26186284,
+          "bytes": 1188,
+          "sha256": "df9b98d54807d476f1f582d51e7310a95a2cc55238a0824501f7508779588fdc",
+          "retained_path": "pre_build/archive/native_unit_wake_append_dependencies.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+          "header_offset": 18390228,
+          "payload_file_offset": 18390288,
+          "bytes": 2652,
+          "sha256": "4c490fc533f47e24da73021b6e9d8fb0ef47e4c6a35e7ef2dd181c4311561dc3",
+          "retained_path": "pre_build/archive/vector_helpers.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+          "header_offset": 61903864,
+          "payload_file_offset": 61903924,
+          "bytes": 1438,
+          "sha256": "51b8e067cdb778638ca87214764585e6b9a12c9ea9c56041ec3964dd418fff80",
+          "retained_path": "pre_build/archive/game_native_geometry_globals.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\camera_decomposition.obj",
+          "header_offset": 53612892,
+          "payload_file_offset": 53612952,
+          "bytes": 3490,
+          "sha256": "91d3ba7b1e8373e6d2173bc5b20654950fe0e8ad514f75013d57f5ea5040f63c",
+          "retained_path": "pre_build/archive/camera_decomposition.archive_member",
+          "exact_unique_full_object_equal": true
+        }
+      ]
+    },
+    {
+      "phase": "pre_build_final",
+      "bytes": 73543848,
+      "sha256": "4569af392e93a916349693732cba78aa506131d55bcb771a172e951d81f6a7d8",
+      "member_count": 1904,
+      "selected_members": [
+        {
+          "name": "bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+          "header_offset": 26186224,
+          "payload_file_offset": 26186284,
+          "bytes": 1188,
+          "sha256": "df9b98d54807d476f1f582d51e7310a95a2cc55238a0824501f7508779588fdc",
+          "retained_path": "pre_build_final/archive/native_unit_wake_append_dependencies.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+          "header_offset": 18390228,
+          "payload_file_offset": 18390288,
+          "bytes": 2652,
+          "sha256": "4c490fc533f47e24da73021b6e9d8fb0ef47e4c6a35e7ef2dd181c4311561dc3",
+          "retained_path": "pre_build_final/archive/vector_helpers.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+          "header_offset": 61903864,
+          "payload_file_offset": 61903924,
+          "bytes": 1438,
+          "sha256": "51b8e067cdb778638ca87214764585e6b9a12c9ea9c56041ec3964dd418fff80",
+          "retained_path": "pre_build_final/archive/game_native_geometry_globals.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\camera_decomposition.obj",
+          "header_offset": 53612892,
+          "payload_file_offset": 53612952,
+          "bytes": 3490,
+          "sha256": "91d3ba7b1e8373e6d2173bc5b20654950fe0e8ad514f75013d57f5ea5040f63c",
+          "retained_path": "pre_build_final/archive/camera_decomposition.archive_member",
+          "exact_unique_full_object_equal": true
+        }
+      ]
+    },
+    {
+      "phase": "post_build_initial",
+      "bytes": 73600584,
+      "sha256": "099bc5158e20fa9142eae0cd05688ab6286979c60e2b31b6d18001715019aff3",
+      "member_count": 1904,
+      "selected_members": [
+        {
+          "name": "bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+          "header_offset": 26195012,
+          "payload_file_offset": 26195072,
+          "bytes": 4364,
+          "sha256": "d229d97931e0c29a9e39c258f7b0d777af81881f3d72f9a4913ed02b1462320a",
+          "retained_path": "post_build_initial/archive/native_unit_wake_append_dependencies.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+          "header_offset": 18391876,
+          "payload_file_offset": 18391936,
+          "bytes": 2680,
+          "sha256": "f2d912ea63f8cd39354c08347cc3475697ef3a643aca9020339418a244afe6d2",
+          "retained_path": "post_build_initial/archive/vector_helpers.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+          "header_offset": 61950632,
+          "payload_file_offset": 61950692,
+          "bytes": 1466,
+          "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c",
+          "retained_path": "post_build_initial/archive/game_native_geometry_globals.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\camera_decomposition.obj",
+          "header_offset": 53648880,
+          "payload_file_offset": 53648940,
+          "bytes": 3518,
+          "sha256": "0f57ab47a63028bb32cfce2665f2698df43be072a403ef66d2570fc356f0c5ff",
+          "retained_path": "post_build_initial/archive/camera_decomposition.archive_member",
+          "exact_unique_full_object_equal": true
+        }
+      ]
+    },
+    {
+      "phase": "pre_build_checks",
+      "bytes": 73600584,
+      "sha256": "099bc5158e20fa9142eae0cd05688ab6286979c60e2b31b6d18001715019aff3",
+      "member_count": 1904,
+      "selected_members": [
+        {
+          "name": "bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+          "header_offset": 26195012,
+          "payload_file_offset": 26195072,
+          "bytes": 4364,
+          "sha256": "d229d97931e0c29a9e39c258f7b0d777af81881f3d72f9a4913ed02b1462320a",
+          "retained_path": "pre_build_checks/archive/native_unit_wake_append_dependencies.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+          "header_offset": 18391876,
+          "payload_file_offset": 18391936,
+          "bytes": 2680,
+          "sha256": "f2d912ea63f8cd39354c08347cc3475697ef3a643aca9020339418a244afe6d2",
+          "retained_path": "pre_build_checks/archive/vector_helpers.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+          "header_offset": 61950632,
+          "payload_file_offset": 61950692,
+          "bytes": 1466,
+          "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c",
+          "retained_path": "pre_build_checks/archive/game_native_geometry_globals.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\camera_decomposition.obj",
+          "header_offset": 53648880,
+          "payload_file_offset": 53648940,
+          "bytes": 3518,
+          "sha256": "0f57ab47a63028bb32cfce2665f2698df43be072a403ef66d2570fc356f0c5ff",
+          "retained_path": "pre_build_checks/archive/camera_decomposition.archive_member",
+          "exact_unique_full_object_equal": true
+        }
+      ]
+    },
+    {
+      "phase": "post_build",
+      "bytes": 73600584,
+      "sha256": "099bc5158e20fa9142eae0cd05688ab6286979c60e2b31b6d18001715019aff3",
+      "member_count": 1904,
+      "selected_members": [
+        {
+          "name": "bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+          "header_offset": 26195012,
+          "payload_file_offset": 26195072,
+          "bytes": 4364,
+          "sha256": "d229d97931e0c29a9e39c258f7b0d777af81881f3d72f9a4913ed02b1462320a",
+          "retained_path": "post_build/archive/native_unit_wake_append_dependencies.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\vector_helpers.obj",
+          "header_offset": 18391876,
+          "payload_file_offset": 18391936,
+          "bytes": 2680,
+          "sha256": "f2d912ea63f8cd39354c08347cc3475697ef3a643aca9020339418a244afe6d2",
+          "retained_path": "post_build/archive/vector_helpers.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+          "header_offset": 61950632,
+          "payload_file_offset": 61950692,
+          "bytes": 1466,
+          "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c",
+          "retained_path": "post_build/archive/game_native_geometry_globals.archive_member",
+          "exact_unique_full_object_equal": true
+        },
+        {
+          "name": "bsp_core.dir\\Release\\camera_decomposition.obj",
+          "header_offset": 53648880,
+          "payload_file_offset": 53648940,
+          "bytes": 3518,
+          "sha256": "0f57ab47a63028bb32cfce2665f2698df43be072a403ef66d2570fc356f0c5ff",
+          "retained_path": "post_build/archive/camera_decomposition.archive_member",
+          "exact_unique_full_object_equal": true
+        }
+      ]
+    }
+  ],
+  "actual_unique_SDK_import_members": [
+    {
+      "phase": "pre_build_final",
+      "symbol": "__CIsqrt",
+      "DLL_name": "_CIsqrt",
+      "DLL": "api-ms-win-crt-math-l1-1-0.dll",
+      "unique": true,
+      "whole_library_sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "name": "api-ms-win-crt-math-l1-1-0.dll",
+      "header_offset": 154070,
+      "payload_file_offset": 154130,
+      "bytes": 60,
+      "sha256": "f6842daed5ce4aea93723ef31e1ddd23c79c3ad3d86aa679240c3ea5603f5bf1",
+      "retained_path": "pre_build_final/backend/__CIsqrt.import_member"
+    },
+    {
+      "phase": "pre_build_final",
+      "symbol": "__CIatan2",
+      "DLL_name": "_CIatan2",
+      "DLL": "api-ms-win-crt-math-l1-1-0.dll",
+      "unique": true,
+      "whole_library_sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "name": "api-ms-win-crt-math-l1-1-0.dll",
+      "header_offset": 152866,
+      "payload_file_offset": 152926,
+      "bytes": 61,
+      "sha256": "663829145561fece0fa241ce1ee1037deb9bb68c1c2d4a8aa9f7cb9151e4083b",
+      "retained_path": "pre_build_final/backend/__CIatan2.import_member"
+    },
+    {
+      "phase": "post_build",
+      "symbol": "__CIsqrt",
+      "DLL_name": "_CIsqrt",
+      "DLL": "api-ms-win-crt-math-l1-1-0.dll",
+      "unique": true,
+      "whole_library_sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "name": "api-ms-win-crt-math-l1-1-0.dll",
+      "header_offset": 154070,
+      "payload_file_offset": 154130,
+      "bytes": 60,
+      "sha256": "f6842daed5ce4aea93723ef31e1ddd23c79c3ad3d86aa679240c3ea5603f5bf1",
+      "retained_path": "post_build/backend/__CIsqrt.import_member"
+    },
+    {
+      "phase": "post_build",
+      "symbol": "__CIatan2",
+      "DLL_name": "_CIatan2",
+      "DLL": "api-ms-win-crt-math-l1-1-0.dll",
+      "unique": true,
+      "whole_library_sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d",
+      "name": "api-ms-win-crt-math-l1-1-0.dll",
+      "header_offset": 152866,
+      "payload_file_offset": 152926,
+      "bytes": 61,
+      "sha256": "663829145561fece0fa241ce1ee1037deb9bb68c1c2d4a8aa9f7cb9151e4083b",
+      "retained_path": "post_build/backend/__CIatan2.import_member"
+    }
+  ],
+  "selected_post_build_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\src\\native_unit_wake_append_dependencies.cpp",
+      "retained_path": "post_build/source/src/native_unit_wake_append_dependencies.cpp",
+      "bytes": 19110,
+      "sha256": "a7c7ea2eaaaa96f82bdad9f5d9424c26f2c90f2029cc018cb1bfe0e3179aa044",
+      "role": "Selected current worktree Source/header"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\include\\bsp\\native_unit_wake_append_dependencies.hpp",
+      "retained_path": "post_build/source/include/bsp/native_unit_wake_append_dependencies.hpp",
+      "bytes": 3056,
+      "sha256": "db3233a9deed1c2a4cffb643e6515b22f8ff75c815f7f61f68b1477408d8f180",
+      "role": "Selected current worktree Source/header"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\build\\win32\\bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+      "retained_path": "post_build/objects/native_unit_wake_append_dependencies.obj",
+      "bytes": 4364,
+      "sha256": "d229d97931e0c29a9e39c258f7b0d777af81881f3d72f9a4913ed02b1462320a",
+      "role": "Complete current worktree output"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\build\\win32\\bsp_core.dir\\Release\\vector_helpers.obj",
+      "retained_path": "post_build/objects/vector_helpers.obj",
+      "bytes": 2680,
+      "sha256": "f2d912ea63f8cd39354c08347cc3475697ef3a643aca9020339418a244afe6d2",
+      "role": "Complete current worktree output"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\build\\win32\\bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+      "retained_path": "post_build/objects/game_native_geometry_globals.obj",
+      "bytes": 1466,
+      "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c",
+      "role": "Complete current worktree output"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\build\\win32\\bsp_core.dir\\Release\\camera_decomposition.obj",
+      "retained_path": "post_build/objects/camera_decomposition.obj",
+      "bytes": 3518,
+      "sha256": "0f57ab47a63028bb32cfce2665f2698df43be072a403ef66d2570fc356f0c5ff",
+      "role": "Complete current worktree output"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\build\\win32\\Release\\bsp_core.lib",
+      "retained_path": "post_build/archive/bsp_core.lib",
+      "bytes": 73600584,
+      "sha256": "099bc5158e20fa9142eae0cd05688ab6286979c60e2b31b6d18001715019aff3",
+      "role": "Complete worktree output"
+    }
+  ],
+  "builds": [
+    {
+      "invocation": {
+        "command": "./scripts/build.ps1",
+        "started_utc": "2026-10-08T15:38:49.0547070+00:00",
+        "finished_utc": "2026-10-08T15:52:41.4190739+00:00",
+        "exit_code": 0
+      },
+      "actual_checks": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "qualification": "Fresh worktree lacked seed_reference.hpp at initial configuration; two checks only."
+    },
+    {
+      "invocation": {
+        "command": "./scripts/build.ps1",
+        "started_utc": "2026-10-08T15:54:02.7616076+00:00",
+        "finished_utc": "2026-10-08T15:54:19.2273471+00:00",
+        "exit_code": 0
+      },
+      "actual_checks": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "qualification": "After standard verify-seeds generated local seed_reference.hpp; no Source change, no new test or parent API execution."
+    }
+  ],
+  "check_results": {
+    "reconstructed_math": "PASS 0.17s",
+    "native_math_differential": "PASS 0.04s",
+    "tool_tests": "PASS 8.37s",
+    "failed": 0,
+    "new_tests_added": 0,
+    "existing_warning": "LNK4006 duplicate spawn_request_id_matches"
+  },
+  "input_provenance": {
+    "actual_selected_closure_sizes": {
+      "native_unit_wake_append_dependencies": 77,
+      "vector_helpers": 75,
+      "game_native_geometry_globals": 73,
+      "camera_decomposition": 228
+    },
+    "all_selected_consumed_inputs_physically_captured_before_first_build": true,
+    "all_selected_consumed_inputs_unchanged_after_builds": true,
+    "selected_tool_and_library_input_pins_unchanged": 54,
+    "first_and_second_selected_whole_objects_equal": [
+      {
+        "object": "native_unit_wake_append_dependencies",
+        "bytes": 4364,
+        "sha256": "d229d97931e0c29a9e39c258f7b0d777af81881f3d72f9a4913ed02b1462320a",
+        "whole_object_equal_across_check_enablement": true
+      },
+      {
+        "object": "vector_helpers",
+        "bytes": 2680,
+        "sha256": "f2d912ea63f8cd39354c08347cc3475697ef3a643aca9020339418a244afe6d2",
+        "whole_object_equal_across_check_enablement": true
+      },
+      {
+        "object": "game_native_geometry_globals",
+        "bytes": 1466,
+        "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c",
+        "whole_object_equal_across_check_enablement": true
+      },
+      {
+        "object": "camera_decomposition",
+        "bytes": 3518,
+        "sha256": "0f57ab47a63028bb32cfce2665f2698df43be072a403ef66d2570fc356f0c5ff",
+        "whole_object_equal_across_check_enablement": true
+      }
+    ],
+    "first_and_second_complete_archive_equal": true,
+    "all_capture_ordering_verified": true,
+    "phase_times": {
+      "pre_edit": {
+        "started_utc": "2026-10-08T15:35:47.106839+00:00",
+        "finished_utc": "2026-10-08T15:36:03.757253+00:00"
+      },
+      "pre_build_final": {
+        "started_utc": "2026-10-08T15:38:23.566086+00:00",
+        "finished_utc": "2026-10-08T15:38:34.005996+00:00"
+      },
+      "post_build_initial": {
+        "started_utc": "2026-10-08T15:52:51.328980+00:00",
+        "finished_utc": "2026-10-08T15:53:02.155635+00:00"
+      },
+      "pre_build_checks": {
+        "started_utc": "2026-10-08T15:53:12.999145+00:00",
+        "finished_utc": "2026-10-08T15:53:23.222380+00:00"
+      },
+      "post_build": {
+        "started_utc": "2026-10-08T15:54:57.874842+00:00",
+        "finished_utc": "2026-10-08T15:55:08.331892+00:00"
+      }
+    },
+    "limitations": [
+      "First-worktree generated projects/cache/command/read records have no pre-configure preimage. They are explicitly post-only relative to first build.",
+      "Initial generated recipes and complete objects/archive retained before the second normal build; source and selected object bytes unchanged.",
+      "Selected external headers were captured from the union of recorded main core headers before first build, then checked against actual selected worktree consumption. This is a selected closure claim, not every project input or loaded compiler module.",
+      "Two misspelled optional typed-trail paths were absent in early snapshots. Actual typed-trail header existed in the pre-build repository header corpus; typed Source was not needed by these selected translation units. Later captures retain the actual typed-trail Source only as post-first-build context."
+    ],
+    "git_text_normalization": "Physical consumed Source/header copies retain their actual disk bytes. Git normalizes CRLF to LF in tracked blobs; this is separate from compiled-input physical hashes."
+  },
+  "scope_and_non_admissions": {
+    "Source_object_and_exact_unique_archive_member": true,
+    "new_Source_Parent_API_execution": false,
+    "Original_Parent_execution": false,
+    "new_probe_or_forced_link": false,
+    "application_COMDAT_map_PDB_full_body_qualification": false,
+    "application_consumption_or_entity_producer": false,
+    "ShipAiWakeTrail_reinterpretation_or_game_host_change": false,
+    "new_reset_owner_or_cells": false,
+    "Ghidra_mutations": false,
+    "shared_ledger_or_CMake_edits": false,
+    "Original_CRT_interior_dispatch_diagnostic_exception_policy_parity": false,
+    "whole_FP_environment_FIP_FDP_identity": false,
+    "startup_runtime_gameplay_validation": false,
+    "hardware_fault_or_resumption_equivalence": false
+  },
+  "evidence": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence",
+    "compact_artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\verified_static_analysis.json",
+        "relative_path": "verified_static_analysis.json",
+        "bytes": 86856,
+        "sha256": "b5191a029b41593a553db1e928b334168ff793d42d45e03a17069c7b2c7a20ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\complete_object_analysis.json",
+        "relative_path": "complete_object_analysis.json",
+        "bytes": 867862,
+        "sha256": "6f2c0d13e03db399cdbb2cbd479d8df9da54a647113a2c43c89e4ac4af4610c6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\complete_303_instruction_mapping.json",
+        "relative_path": "complete_303_instruction_mapping.json",
+        "bytes": 108143,
+        "sha256": "ec85fa0a1c2b7ab919d1530cb6b9c1f1dee238a6da6f828ca91f7acbb40a3d56"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\complete_CFG_and_stack_analysis.json",
+        "relative_path": "complete_CFG_and_stack_analysis.json",
+        "bytes": 96290,
+        "sha256": "8c40b3ef777192902b3dbf5c12beffd8519c283019f4a801ce54f323a1b5d22e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\complete_helper_CFG_analysis.json",
+        "relative_path": "complete_helper_CFG_analysis.json",
+        "bytes": 24628,
+        "sha256": "2119838e3b0cd64e424db44749f2b346fa48c5648b5ef6c8ac11f140de49c95f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\SDK_header_selectany_storage.json",
+        "relative_path": "SDK_header_selectany_storage.json",
+        "bytes": 3441,
+        "sha256": "60cb5101e52127277cfea88c12d65c2279c945e3aaba768ab938216d2a01b1a7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\verified_input_and_build_analysis.json",
+        "relative_path": "verified_input_and_build_analysis.json",
+        "bytes": 206051,
+        "sha256": "50f924d212fb113c0b1bfb831bcf2919d86954806a3fdd5e1f0e80028d58704f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\source_edit_and_build_events.json",
+        "relative_path": "source_edit_and_build_events.json",
+        "bytes": 1104,
+        "sha256": "9645ad3a76b1b3660db8e52b3af90423d24e695c1332384118472aec01dd821c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\normal_build.log",
+        "relative_path": "normal_build.log",
+        "bytes": 74611,
+        "sha256": "a56a15d85fdf3ba87d6467525b04ba7fb4b1841aedf9f203af778459cf124d8c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence\\normal_build_checks.log",
+        "relative_path": "normal_build_checks.log",
+        "bytes": 4435,
+        "sha256": "52d7e0bef158ed1ebac1964376fd34571c79beef8ba47526cea15c5b8f9100b4"
+      }
+    ],
+    "sealed_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_wake_append_source_evidence.zip",
+      "bytes": 354752372,
+      "sha256": "76919e51a3ffd340eaf1152941acb95b4c996e4ed5db1b27d6c0c8d80bdfa10d",
+      "archive_entries": 14552,
+      "artifact_manifest_sha256": "1722bedbec2da232bdaa37b415eac1b7b66f9307cf139124df805c654582d2f7",
+      "all_member_hashes_and_ZIP_CRC_verified": true,
+      "sealed_utc": "2026-10-08T16:05:52.401665+00:00",
+      "scope": "Contains all physical capture phases, complete objects/archives/providers, selected actual consumed inputs, full static analyses and exact verification scripts. compact_report_before_seal.json intentionally precedes this external seal record."
+    }
+  }
+}
