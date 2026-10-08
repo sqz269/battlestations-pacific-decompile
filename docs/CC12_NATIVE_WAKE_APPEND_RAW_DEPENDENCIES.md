@@ -8,7 +8,7 @@ The normal Win32 Release build and all three existing checks passed. **This is S
 
 | Source entry | Original contract retained |
 | --- | --- |
-| `float __fastcall native_unit_wake_length_0042b2f0(const float*) noexcept` | Actual vector in ECX; reads three float cells; ST0 return; PUSH/POP restores ECX; RET consumes no caller arguments. Four local x87 slots are required, excluding the CRT provider's private requirements. |
+| `float __fastcall native_unit_wake_length_0042b2f0(const float*) noexcept` | Actual vector in ECX; reads three float cells; ST0 return; PUSH ECX allocates scratch; POP ECX returns final float bits; RET consumes no caller arguments. Four local x87 slots are required, excluding the CRT provider's private requirements. |
 | `void* __fastcall copy_native_unit_wake_sample_00810160(void*, void* unused_edx, const void*) noexcept` | Destination in ECX, source at entry `[ESP+4]`, destination returned in EAX, source left in ECX, EDX untouched, RET4. The unused second parameter preserves the native stack position and is not an owner/context input. One free x87 slot is required. |
 
 These are deliberate raw calling interfaces, not ordinary cdecl wrappers. Their `__fastcall` spelling models the original register/stack arrangement; the inline assembly, including RET/RET4, is authoritative. Callers borrow actual live readable/writable storage and own lifetime, validity and synchronization. The functions do not validate pointers or clear the floating-point environment. Copy accepts real overlapping/self-aliasing storage and performs sequential accesses. Access faults and unmasked FP exception handling remain the caller/runtime's responsibility. No owner class, typed trail overlay, ring initialization or lifetime manager is introduced; descriptive names are reconstruction hypotheses.
@@ -17,7 +17,7 @@ These are deliberate raw calling interfaces, not ordinary cdecl wrappers. Their 
 
 0042B2F0 loads Y, X, Z, uses the original ST-register multiplication/addition order for `(Y*Y + X*X) + Z*Z`, then stores squared length to a float stack cell. It loads the exact immutable double at CE3820, loads the float squared value and uses `FCOMI ST0,ST1`. `FSTP ST1` removes the threshold without changing EFLAGS. `JBE` sends ordered <= and unordered results to the zero arm. That arm performs XORPS, drops the x87 input, MOVSS-stores positive zero and FLD-loads the result.
 
-The greater arm calls the genuine current CRT `_CIsqrt` with squared length in ST0. It retains both separate float store/reload pairs after the call. ECX is restored and the float-spilled result remains in ST0. No SSE predicate, ordinary stack-argument sqrt, combined expression, omitted spill, result normalizer or invented backend replaces this sequence.
+The greater arm calls the genuine current CRT `_CIsqrt` with squared length in ST0. It retains both separate float store/reload pairs after the call. ECX receives the final float result bits from the overwritten stack word, and that float-spilled result remains in ST0. No SSE predicate, ordinary stack-argument sqrt, combined expression, omitted spill, result normalizer or invented backend replaces this sequence.
 
 | Relocation in the complete 77-byte object body | Physical resolution |
 | --- | --- |

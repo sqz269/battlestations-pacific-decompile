@@ -17,7 +17,7 @@
     {
       "Original_address": "0042b2f0",
       "Source": "float __fastcall bsp::native_unit_wake_length_0042b2f0(const float*) noexcept",
-      "native_ABI": "ECX actual vector; ST0 float-spilled return; ECX restored; RET",
+      "native_ABI": "ECX actual vector; ST0 float-spilled return; ECX returns final float result bits from its overwritten stack scratch word; RET",
       "preconditions": "Three readable actual float cells, caller-owned lifetime/synchronization, four free local x87 slots plus external CRT preconditions; no pointer validation or FP reset",
       "complete_bytes": 77,
       "complete_instructions": 31,
@@ -14418,5 +14418,10 @@
     "new_Source_or_Original_entry_execution": false,
     "game_validated": false,
     "qualification": "Two whole raw Source entry bodies statically verified under actual borrowed memory and genuine current CRT contract. Length is an additional raw view of already-counted42B2F0; only810160 adds a distinct Original body. No new entry execution, app-linked COMDAT, Original CRT interior/exception/runtime ABI, parent append/reset/application or game qualification."
+  },
+  "primary_ABI_contract_correction": {
+    "created_utc": "2026-10-08T14:46:26.055785+00:00",
+    "receipt": "local/cc12_wake_length_abi_contract_correction/receipt.json",
+    "qualification": "Both exact raw length bodies allocate scratch with PUSH ECX, overwrite that word with their final float result, then POP ECX. ECX returns result bits on both branches. Executable Source, Original bytes and prior sealed evidence unchanged; prior contract prose is corrected here."
   }
 }

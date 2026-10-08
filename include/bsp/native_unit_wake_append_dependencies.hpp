@@ -3,7 +3,7 @@
 namespace bsp {
 
 // Raw 0042B2F0: ECX points at three readable float cells; ST0 returns the
-// float-spilled length, ECX is restored and RET consumes no stack arguments.
+// float-spilled length, ECX returns its raw float bits and RET consumes no stack arguments.
 // Preserve the actual Y/X/Z load order, x87 arithmetic, float spills and
 // FCOMI cutoff: squared length <= double 1e-10 or unordered returns +0.
 // The other arm calls the genuine current CRT _CIsqrt with its input in ST0.

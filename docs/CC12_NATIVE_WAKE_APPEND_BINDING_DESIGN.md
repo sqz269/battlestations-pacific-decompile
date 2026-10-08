@@ -57,7 +57,7 @@ Here K is the private raw kernel's entry ESP. All original surrounding instructi
 
 | Original call site | Selected target and inputs | Stack/x87 result |
 | --- | --- | --- |
-| 00810273 | Actual raw 77-byte `native_unit_wake_length_0042b2f0`; ECX=live residual at wake+0x3D0. | Pre-call ESP K−72; zero x87 inputs, one ST0 result; ECX restored; no argument cleanup. |
+| 00810273 | Actual raw 77-byte `native_unit_wake_length_0042b2f0`; ECX=live residual at wake+0x3D0. | Pre-call ESP K−72; zero x87 inputs, one ST0 result; ECX returns final float result bits; no argument cleanup. |
 | 00810280 | Genuine current intrinsic `_CIsqrt`; ST0=the float-spilled gate distance squared. | ESP K−72; one x87 input/result; no stack argument. Original result spill and double-quarter multiplication remain. |
 | 00810416 | The same raw 3D entry; ECX=K−36, three actual local cells `(dx,+0,dz)`. | ESP K−76; zero inputs/one ST0 result; no Y displacement introduced. |
 | 0081043F | Genuine current intrinsic `_CIatan2`; ST0=delta-X, ST1=delta-Z. | ESP K−76; two x87 inputs/one result. Keep float spills and pinned promoted-float pi constants. |

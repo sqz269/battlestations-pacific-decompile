@@ -50,7 +50,7 @@
       "x87_before": 0,
       "x87_after": 1,
       "caller_arg_cleanup": 0,
-      "ECX_exit": "preserved"
+      "ECX_exit": "raw bits of final float-spilled length"
     },
     {
       "address": "00810280",
@@ -71,7 +71,7 @@
       "x87_before": 0,
       "x87_after": 1,
       "caller_arg_cleanup": 0,
-      "ECX_exit": "preserved"
+      "ECX_exit": "raw bits of final float-spilled length"
     },
     {
       "address": "0081043f",
@@ -4402,5 +4402,10 @@
     "new_execution": false,
     "game_validated": false,
     "qualification": "READ_ONLY binding design accepted: same-TU public raw5B tail facade to existing raw2D kernel, canonical geometry owner borrowed pointer via integer-bit public bridge and privateECX/EDX/three-stack-word kernel. Three added MOVs in proved unused local slot plus six addressing replacements preserve observation/control/FP/flags schedule under borrowed-memory and no-active-frame-alias contracts. Future whole-body mapping and real current CRT provider/import/bridge proof required. Parent Source is not yet reconstructed, binary-identical, Original ABI, app/entity/CRT-interior/runtime or game admitted."
+  },
+  "primary_ABI_contract_correction": {
+    "created_utc": "2026-10-08T14:46:26.063570+00:00",
+    "receipt": "local/cc12_wake_length_abi_contract_correction/receipt.json",
+    "qualification": "Both exact raw length bodies allocate scratch with PUSH ECX, overwrite that word with their final float result, then POP ECX. ECX returns result bits on both branches. Executable Source, Original bytes and prior sealed evidence unchanged; prior contract prose is corrected here."
   }
 }

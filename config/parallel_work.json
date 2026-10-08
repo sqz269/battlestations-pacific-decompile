@@ -35325,6 +35325,31 @@
         "Source_admission_credit": 0,
         "registration_owner": "Root"
       }
+    },
+    {
+      "id": "cc12_wake_length_abi_contract_correction",
+      "worker": "primary",
+      "function_addresses": [
+        "0042b2f0"
+      ],
+      "output_files": [
+        "include/bsp/native_unit_wake_append_dependencies.hpp",
+        "docs/CC12_NATIVE_WAKE_APPEND_RAW_DEPENDENCIES.md",
+        "reports/cc12_native_wake_append_raw_dependencies.json",
+        "docs/CC12_NATIVE_WAKE_APPEND_BINDING_DESIGN.md",
+        "reports/cc12_native_wake_append_binding_design.json"
+      ],
+      "depends_on": [
+        "cc12_native_wake_append_raw_dependencies_Source"
+      ],
+      "done": true,
+      "state": "integrated_primary_whole_Original_ABI_contract_only_correction",
+      "contract": {
+        "Source_executable_bytes_changed": false,
+        "new_Original_function_records": 0,
+        "new_execution": false,
+        "game_validated": false
+      }
     }
   ],
   "snapshot_after_analysis": {
