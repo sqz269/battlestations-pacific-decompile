@@ -1124,5 +1124,19 @@
     "current_selected_extents": 646,
     "current_objects": 17,
     "current_unique_archive_members": 14
+  },
+  "after_incoming_main_qualification": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_unit_wake_owner_primary_review\\after_incoming_main\\receipt.json",
+      "sha256": "13df3cce8dcb506ae3e7591d773fa3e3d4de25748f293541ffc12dd99cb46eac"
+    },
+    "normal_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_wake_owner_after_incoming_main_build.txt",
+      "sha256": "c1003c0e29f9a6b136d659e6374226b6a6cab39ec9e56f1873e458901a0cceef"
+    },
+    "all646_selected_extents_still_identical": true,
+    "all14_unique_members_in_current_complete_archive": true,
+    "raw_owner_ready_packets": 0,
+    "reason": "Incoming main added a separately owned parent-header callback TU/deferred registration. Required normal rebuild passed; current selected wake/ownership Source is unchanged."
   }
 }
