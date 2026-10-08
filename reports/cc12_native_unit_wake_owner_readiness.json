@@ -1,0 +1,1118 @@
+{
+  "packet": "cc12_native_unit_wake_owner_readiness",
+  "status": "read_only_audit_complete_actual_Source_raw_wake_producer_missing",
+  "created_utc": "2026-10-08T18:28:08.898021+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast",
+  "observed_head": "4766106dd5608949b42ac099da7d42b1b724673e",
+  "merged_parent_requested_head": "27f2c7ec2",
+  "leased_Native_addresses": [
+    "0081ed40",
+    "00825f20"
+  ],
+  "owned_tracked_files": [
+    "docs/CC12_NATIVE_UNIT_WAKE_OWNER_READINESS.md",
+    "reports/cc12_native_unit_wake_owner_readiness.json"
+  ],
+  "admission": {
+    "new_Source_implementations": 0,
+    "ready_Source_owner_wiring_packets": 0,
+    "proposed_Source_packet": null,
+    "existing_raw_leaf_apis_available": true,
+    "genuine_current_Source_raw_wake_producer_found": false,
+    "persistent_semantic_application_owner_found": true,
+    "reason": "Actual scene instance callback records006FE590 as unimplemented and returns a scene metadata record. Application then constructs a separate GameUnitSlot containing ShipAiWakeTrail. Neither constructs Native988-byte storage or the wake owned section."
+  },
+  "Native": {
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "new_analysis_scope": [
+      "Whole0081ED40 constructor",
+      "Whole00825F20 physical bytes/listing and selected receiver provenance/prefix/append tail"
+    ],
+    "parents": [
+      {
+        "address": "0081ed40",
+        "end_inclusive": "0081f354",
+        "bytes": 1557,
+        "sha256": "69974fad341c50c74e71421bfc6ae574911f7392534a74be65fa282b68c65365",
+        "instruction_count": 277,
+        "all_instruction_starts_match_fresh_Ghidra_listing": true
+      },
+      {
+        "address": "00825f20",
+        "end_inclusive": "00826d6b",
+        "bytes": 3660,
+        "sha256": "cf493e0db233a96662fd50535a8e2a78aa6d0d9bfed775b5359d32c4e79f2f13",
+        "instruction_count": 946,
+        "all_instruction_starts_match_fresh_Ghidra_listing": true
+      }
+    ],
+    "facts": {
+      "constructor_esi_writes": [
+        {
+          "address": "0081ed63",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "0081f345",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        }
+      ],
+      "motion_edi_esi_writes": [
+        {
+          "address": "00825f2a",
+          "bytes": "8bf9",
+          "mnemonic": "mov",
+          "operands": "edi, ecx"
+        },
+        {
+          "address": "00825f32",
+          "bytes": "8db7f0fcffff",
+          "mnemonic": "lea",
+          "operands": "esi, [edi - 0x310]"
+        },
+        {
+          "address": "00826638",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00826639",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00826d5f",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00826d60",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        }
+      ],
+      "constructor_callsite": "0081f03d",
+      "constructor_receiver_lea": "0081f02a",
+      "unit_wake_offset": 3024,
+      "wake_bytes": 988,
+      "wake_end_exclusive": 4012,
+      "motion_incoming_receiver_offset": 784,
+      "motion_append_receiver_offset_from_incoming": 2240,
+      "normal_constructor_return": "original full-unit receiver in EAX; RET4",
+      "constructor_has_SEH_frame": true,
+      "SEH_handler_immediate": "00c9141d",
+      "unwind_handler_or_parent_destructor_analyzed_here": false,
+      "scope": "Whole bytes and instruction-start identity retained for both parents. Whole constructor reviewed; motion selected receiver-provenance/head/append/tail reviewed, not whole motion behavior or x87 equivalence."
+    },
+    "constructor_EH_observation": {
+      "handler_immediate": "00c9141d",
+      "before_wake_call_state_store": "0081f030:14h",
+      "before_next_tracked_subobject_state_store": "0081f15a:18h",
+      "handler_or_unwind_tables_read": false,
+      "failure_cleanup_closed": false
+    },
+    "enclosing_allocation": {
+      "constructor_borrows_full_unit_pointer": true,
+      "unit_allocation_inside_0081ed40": false,
+      "side_allocation_0081f200": {
+        "size": 44,
+        "destination_unit_offset": "073c",
+        "is_wake_or_unit_allocation": false
+      },
+      "historical_Destroyer_factory": "006fe590",
+      "historical_Destroyer_allocation_bytes": 4488,
+      "outer_factory_newly_analyzed": false,
+      "all_derived_class_sizes_closed": false
+    },
+    "wake_layout": {
+      "bytes": 988,
+      "unit_offset": "0bd0",
+      "unit_end_exclusive": "0fac",
+      "vptr_offset": 0,
+      "owned_section_offset": 4,
+      "samples_offset": 8,
+      "sample_count": 40,
+      "sample_stride": 24,
+      "head_offset": "03c8",
+      "flag_offset": "03cc",
+      "residual_offsets": [
+        "03d0",
+        "03d4",
+        "03d8"
+      ],
+      "canonical_seed_owner": "existing private-constructor process GameNativeGeometryGlobals"
+    },
+    "destruction": {
+      "plain_leaf": "00818100",
+      "leaf_contract_source": "Existing lifetime Source receipt; no new leaf review",
+      "plain_leaf_releases_owned_section_not_allocation_root": true,
+      "historical_parent": "0081f3a0",
+      "historical_inline_wake_cleanup": "0081f56c..0081f5a4",
+      "historical_scalar_deleting_wrapper": "00822700",
+      "parent_or_wrapper_new_Native_analysis": false,
+      "current_parent_Source": "UnitReleaseHost semantic plan without application implementation/caller",
+      "current_game_host_wake_section_release": false
+    }
+  },
+  "Source_ownership_trace": [
+    {
+      "file": "src/game_hosts_scene_contents.cpp",
+      "line": 889,
+      "role": "SceneUnitCreatorBinding::create_instance_from_descriptor",
+      "behavior": "Logs006FE590 unimplemented, sets entity_.created=true, returns &entity_",
+      "actual_Native_unit_producer": false
+    },
+    {
+      "file": "src/game_hosts_mission_frame.cpp",
+      "line": 2049,
+      "role": "mission creates GameUnitsHost then calls create_units(scene records)",
+      "actual_persistent_application_owner": true,
+      "raw_unit_layout_producer": false
+    },
+    {
+      "file": "src/game_hosts_units.cpp",
+      "line": 14604,
+      "role": "make_unique<GameUnitSlot>",
+      "actual_persistent_application_owner": true,
+      "raw_wake_producer": false
+    },
+    {
+      "file": "src/game_hosts_units.cpp",
+      "line": 1968,
+      "role": "GameUnitSlot::wake",
+      "type": "ShipAiWakeTrail",
+      "raw_wake_producer": false
+    },
+    {
+      "file": "src/game_hosts_units.cpp",
+      "line": 2720,
+      "role": "vector<unique_ptr<GameUnitSlot>>",
+      "stable_slot_allocation_lifetime": true
+    },
+    {
+      "file": "src/game_hosts_mission_frame.cpp",
+      "line": 219,
+      "role": "release_units withdraws outward borrowers then units.reset",
+      "raw_wake_teardown": false
+    },
+    {
+      "file": "src/game_hosts_units.cpp",
+      "line": 10630,
+      "role": "GameUnitsHost destructor resets gunnery and explicitly destroys observer endpoints",
+      "raw_wake_teardown": false
+    },
+    {
+      "file": "include/bsp/native_unit_observer_endpoint.hpp",
+      "line": 10,
+      "role": "Genuine20h observer prefix",
+      "provides_raw_wake_at_unit_plus_BD0": false
+    }
+  ],
+  "excluded_semantic_producers": [
+    {
+      "name": "ShipAiWakeTrail",
+      "source": "include/bsp/ship_ai_wake_trail.hpp:54",
+      "samples_offset": "0000",
+      "head_offset": "03c0",
+      "flag_offset": "03c4",
+      "residual_offset": "03c8",
+      "diagnostic_counters": 4,
+      "prefix_vptr_and_section": false,
+      "compiled_fill_confirms_head_and_flag_offsets": true
+    },
+    {
+      "name": "UnitPoseHistoryRing",
+      "source": "include/bsp/unit_instance_subobjects.hpp:175",
+      "declared_slot_float_count": 5,
+      "actual_slot_stride": 20,
+      "configured_layout_bytes": 828,
+      "head_offset": "0328",
+      "residual_offset": "0330",
+      "compiled_constructor_stride_and_residual_stores_confirmed": true
+    },
+    {
+      "name": "create_unit_instance",
+      "source": "src/unit_instance_layout.cpp:49",
+      "boundary": "Pure virtual UnitInstanceCreationHost allocation/subobject callbacks",
+      "application_implementation_or_caller_found": false
+    },
+    {
+      "name": "construct_unit_instance_sub_objects_0081ed40",
+      "source": "src/unit_instance_subobjects.cpp:158",
+      "boundary": "Semantic UnitInstanceSubObjects plus abstract UnitSubObjectHost",
+      "application_implementation_or_caller_found": false
+    },
+    {
+      "name": "run_unit_release_0081f3a0",
+      "source": "src/unit_destructor_levels.cpp:199",
+      "boundary": "Semantic plan/state and abstract UnitReleaseHost",
+      "application_implementation_or_caller_found": false
+    }
+  ],
+  "game_host_consumer_sites": {
+    "spawn_fill": [
+      14937
+    ],
+    "placement_fill": [
+      31838
+    ],
+    "append": [
+      8752,
+      31463
+    ],
+    "whole_semantic_assignment_handoff": [
+      2785
+    ],
+    "decomposition": [
+      3456,
+      32231
+    ],
+    "distance_sampling": [
+      32046
+    ],
+    "direct_head_sample_diagnostics": [
+      32251,
+      32262
+    ],
+    "trail_summary": [
+      34121
+    ]
+  },
+  "compiled_existing_application_factory": {
+    "symbol": "?create_instance_from_descriptor@SceneUnitCreatorBinding@?A0xffb39cf1@game@bsp@@UAEPAXPAX@Z",
+    "section": 3952,
+    "section_offset": 0,
+    "bytes": 40,
+    "sha256": "91f0f2e5002da6598a5d6ab88f1399af360111ec1f88defb54605b9afadb8f3a",
+    "instruction_count": 12,
+    "relocations": [
+      {
+        "offset": 4,
+        "type": 6,
+        "symbol": "??_C@_08MFMPBMJD@006fe590@",
+        "symbol_record": {
+          "name": "??_C@_08MFMPBMJD@006fe590@",
+          "value": 0,
+          "section": 4943,
+          "type": 0,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 9,
+        "type": 6,
+        "symbol": "??_C@_0CL@EIIIHNKB@SceneUnit?3?3create_instance_from_@",
+        "symbol_record": {
+          "name": "??_C@_0CL@EIIIHNKB@SceneUnit?3?3create_instance_from_@",
+          "value": 0,
+          "section": 4944,
+          "type": 0,
+          "storage": 2
+        }
+      },
+      {
+        "offset": 19,
+        "type": 20,
+        "symbol": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+        "symbol_record": {
+          "name": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    ]
+  },
+  "compiled_existing_game_host": {
+    "whole_object_bytes": 3203165,
+    "semantic_wake_relocations": [
+      {
+        "section": 6413,
+        "section_name": ".text$mn",
+        "executable": true,
+        "offset": 89,
+        "type": 20,
+        "symbol": "?ship_ai_wake_append_00810190@bsp@@YAXAAUShipAiWakeTrail@1@QBMMM@Z",
+        "symbol_record": {
+          "name": "?ship_ai_wake_append_00810190@bsp@@YAXAAUShipAiWakeTrail@1@QBMMM@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "section": 6672,
+        "section_name": ".text$mn",
+        "executable": true,
+        "offset": 3381,
+        "type": 20,
+        "symbol": "?ship_ai_wake_fill_00810020@bsp@@YAXAAUShipAiWakeTrail@1@QBMM@Z",
+        "symbol_record": {
+          "name": "?ship_ai_wake_fill_00810020@bsp@@YAXAAUShipAiWakeTrail@1@QBMM@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "section": 6813,
+        "section_name": ".text$mn",
+        "executable": true,
+        "offset": 137,
+        "type": 20,
+        "symbol": "?ship_ai_wake_decompose_00811180@bsp@@YA?AUShipAiWakeDecomposition@1@ABUShipAiWakeTrail@1@QBM@Z",
+        "symbol_record": {
+          "name": "?ship_ai_wake_decompose_00811180@bsp@@YA?AUShipAiWakeDecomposition@1@ABUShipAiWakeTrail@1@QBM@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "section": 6962,
+        "section_name": ".text$mn",
+        "executable": true,
+        "offset": 1768,
+        "type": 20,
+        "symbol": "?ship_ai_wake_decompose_00811180@bsp@@YA?AUShipAiWakeDecomposition@1@ABUShipAiWakeTrail@1@QBM@Z",
+        "symbol_record": {
+          "name": "?ship_ai_wake_decompose_00811180@bsp@@YA?AUShipAiWakeDecomposition@1@ABUShipAiWakeTrail@1@QBM@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "section": 6967,
+        "section_name": ".text$mn",
+        "executable": true,
+        "offset": 499,
+        "type": 20,
+        "symbol": "?ship_ai_wake_sample_at_distance_00810630@bsp@@YA?AUShipAiWakePoint@1@ABUShipAiWakeTrail@1@M@Z",
+        "symbol_record": {
+          "name": "?ship_ai_wake_sample_at_distance_00810630@bsp@@YA?AUShipAiWakePoint@1@ABUShipAiWakeTrail@1@M@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "section": 7474,
+        "section_name": ".text$mn",
+        "executable": true,
+        "offset": 308,
+        "type": 20,
+        "symbol": "?ship_ai_wake_fill_00810020@bsp@@YAXAAUShipAiWakeTrail@1@QBMM@Z",
+        "symbol_record": {
+          "name": "?ship_ai_wake_fill_00810020@bsp@@YAXAAUShipAiWakeTrail@1@QBMM@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      },
+      {
+        "section": 7659,
+        "section_name": ".text$mn",
+        "executable": true,
+        "offset": 11622,
+        "type": 20,
+        "symbol": "?ship_ai_wake_trail_length@bsp@@YAMABUShipAiWakeTrail@1@@Z",
+        "symbol_record": {
+          "name": "?ship_ai_wake_trail_length@bsp@@YAMABUShipAiWakeTrail@1@@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2
+        }
+      }
+    ],
+    "raw_wake_relocations": [],
+    "selected_functions": [
+      {
+        "symbol": "??1GameUnitsHost@game@bsp@@QAE@XZ",
+        "section": 4058,
+        "section_offset": 0,
+        "bytes": 296,
+        "sha256": "00db16107d7455cf27638603da3329d2c2d070ad32cf48f2f6c0ded07aca8b04",
+        "instruction_count": 97
+      },
+      {
+        "symbol": "?create_units@GameUnitsHost@game@bsp@@QAEXABV?$vector@UGameSceneEntityRecord@game@bsp@@V?$allocator@UGameSceneEntityRecord@game@bsp@@@std@@@std@@@Z",
+        "section": 6672,
+        "section_offset": 0,
+        "bytes": 10081,
+        "sha256": "76b4f6ce773a00d236237c2e556e7fdd51ec30d2fab97bbfb83724663efb45e1",
+        "instruction_count": 2108
+      },
+      {
+        "symbol": "?place_at_world_position_008193a0@GameUnitsHost@game@bsp@@QAE_NIQBM@Z",
+        "section": 7474,
+        "section_offset": 0,
+        "bytes": 504,
+        "sha256": "1c16234e066963f82a724d620105bfa65e3c586f54db3a7f18e0641229ddeb54",
+        "instruction_count": 158
+      },
+      {
+        "symbol": "?inherit_leader_wake_00815e20@Impl@GameUnitsHost@game@bsp@@QAEXII@Z",
+        "section": 7036,
+        "section_offset": 0,
+        "bytes": 258,
+        "sha256": "ddd8a53094f3400687152afbf3115ead0b8400fea88f543cd73adceedda559da",
+        "instruction_count": 77
+      },
+      {
+        "symbol": "?append_wake_sample_00810190@ShipMotionTailBinding@?A0xfffedd36@game@bsp@@UAEXABUOceanVec3@4@MM@Z",
+        "section": 6413,
+        "section_offset": 0,
+        "bytes": 153,
+        "sha256": "624a395669a023c02b576437b91ab5f6abd9754561bc61282cac22ec506def9f",
+        "instruction_count": 46
+      }
+    ],
+    "complete_function_relocation_evidence": "artifact_analysis.json and complete_objects_analysis.json",
+    "qualification": "Actual existing objects and archive membership only. Not a fresh compile, consumed-current-source identity, application EXE resolution, runtime invocation, Original ABI compatibility, or gameplay proof."
+  },
+  "artifact_scope": {
+    "whole_objects": 17,
+    "complete_selected_function_extents": 646,
+    "selected_application_methods": 10,
+    "core_unique_whole_matching_members": 14,
+    "application_direct_objects_absent_from_core": 3,
+    "complete_core_member_count": 1905,
+    "complete_core_sha256": "46b565d40915f9e1472d75d9b0157328ec5ee3cc003968c31555a0d8ee57c8e8",
+    "objects": [
+      {
+        "name": "game_hosts_mission_frame",
+        "bytes": 928431,
+        "sha256": "0f6970b02a4a367be2b5f3f512923000567412055aece557ddde5ce399df5d6f",
+        "selected_function_extents": 2,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Whole object and all symbols/sections; explicitly selected application owner functions"
+      },
+      {
+        "name": "game_hosts_scene_contents",
+        "bytes": 1668386,
+        "sha256": "38658b1843b919ca5e813f51e7c0764ccb601ba378a4536e1973f363c7d68d50",
+        "selected_function_extents": 3,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Whole object and all symbols/sections; explicitly selected application owner functions"
+      },
+      {
+        "name": "game_hosts_units",
+        "bytes": 3203165,
+        "sha256": "50573696799d3ff5261ec616c8fdc14070237d8a438a8e9ae472551a97d64a28",
+        "selected_function_extents": 5,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Whole object and all symbols/sections; explicitly selected application owner functions"
+      },
+      {
+        "name": "game_native_geometry_globals",
+        "bytes": 1466,
+        "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c",
+        "selected_function_extents": 1,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "native_unit_wake_append_dependencies",
+        "bytes": 4364,
+        "sha256": "d229d97931e0c29a9e39c258f7b0d777af81881f3d72f9a4913ed02b1462320a",
+        "selected_function_extents": 6,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "native_unit_wake_copy",
+        "bytes": 1175,
+        "sha256": "65e04b725f02bdc1d6a7398ecd24ad508bb566d90893950b3a4fcf215e2d0546",
+        "selected_function_extents": 1,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "native_unit_wake_decomposition",
+        "bytes": 3369,
+        "sha256": "a304cf8600ce703a6e1dbc6e395621460de11900a683702dbd32e08b9d0a1679",
+        "selected_function_extents": 2,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "native_unit_wake_fill",
+        "bytes": 3574,
+        "sha256": "fe7b3cddc0644aac407fdd800bf65f140c3dabfa04e40c255ffd606212c2b3ba",
+        "selected_function_extents": 7,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "native_unit_wake_handoff",
+        "bytes": 1074,
+        "sha256": "1dba0486a337f7fd9d8d346e032c646bdd306823ad1c709904cc98e373883c53",
+        "selected_function_extents": 1,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "scene_unit_creators",
+        "bytes": 152650,
+        "sha256": "12fd1dc87de5e6e92bf6110e383afa12b1d3c242d73514b59c9e97bf4a601354",
+        "selected_function_extents": 384,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "ship_ai_formation",
+        "bytes": 14223,
+        "sha256": "eac548391b0ea01082a82a4e940a1a06b76dfe4a0f13af22097e2256e633a455",
+        "selected_function_extents": 26,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "ship_ai_rudder_hop",
+        "bytes": 1846,
+        "sha256": "1e1a6b4693af4fd8b5e6ec9456b8a20eaf9ffd8175820640965cb3b8d7bd7efb",
+        "selected_function_extents": 4,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "ship_ai_wake_trail",
+        "bytes": 9730,
+        "sha256": "0859594008d2aadb46092daaf34fea3903d64c7e37785db1ed1f22c08963bbae",
+        "selected_function_extents": 19,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "ship_motion",
+        "bytes": 12358,
+        "sha256": "2831f1d4d00da56974f72fa2cebfff5b6a071820936aeebc1c09b79c4b988ad0",
+        "selected_function_extents": 18,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "unit_destructor_levels",
+        "bytes": 54814,
+        "sha256": "7b5fe290dc80e0f60fff94d8764f88069f12f87414ab58d8c8f47527b9762f84",
+        "selected_function_extents": 144,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "unit_instance_layout",
+        "bytes": 10516,
+        "sha256": "5a2bbc452e247da98a95835a8da4dff4cfd17b8250b81bf35582664036a5fb9d",
+        "selected_function_extents": 13,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      },
+      {
+        "name": "unit_instance_subobjects",
+        "bytes": 4581,
+        "sha256": "651c79479da6a6546c75c4f643d9b830bd0648bb97bd57a303b4eebdd0dfef7d",
+        "selected_function_extents": 10,
+        "complete_COFF_section_and_symbol_inventory": true,
+        "scope": "Complete provider functions"
+      }
+    ],
+    "archive_membership": [
+      {
+        "object": "game_hosts_mission_frame.obj",
+        "member_count": 0,
+        "equal_whole_member": false,
+        "members": [],
+        "qualification": "bsp_game direct object, correctly absent from bsp_core"
+      },
+      {
+        "object": "game_hosts_scene_contents.obj",
+        "member_count": 0,
+        "equal_whole_member": false,
+        "members": [],
+        "qualification": "bsp_game direct object, correctly absent from bsp_core"
+      },
+      {
+        "object": "game_hosts_units.obj",
+        "member_count": 0,
+        "equal_whole_member": false,
+        "members": [],
+        "qualification": "bsp_game direct object, correctly absent from bsp_core"
+      },
+      {
+        "object": "game_native_geometry_globals.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\game_native_geometry_globals.obj",
+            "header_offset": 61954342,
+            "payload_file_offset": 61954402,
+            "bytes": 1466,
+            "sha256": "18a2e39c0dfe8d345dc77c9fe513e1bb4bfe72046cc5d12732488fb17a26457c"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "native_unit_wake_append_dependencies.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\native_unit_wake_append_dependencies.obj",
+            "header_offset": 26195466,
+            "payload_file_offset": 26195526,
+            "bytes": 4364,
+            "sha256": "d229d97931e0c29a9e39c258f7b0d777af81881f3d72f9a4913ed02b1462320a"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "native_unit_wake_copy.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\native_unit_wake_copy.obj",
+            "header_offset": 56334642,
+            "payload_file_offset": 56334702,
+            "bytes": 1175,
+            "sha256": "65e04b725f02bdc1d6a7398ecd24ad508bb566d90893950b3a4fcf215e2d0546"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "native_unit_wake_decomposition.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\native_unit_wake_decomposition.obj",
+            "header_offset": 56331212,
+            "payload_file_offset": 56331272,
+            "bytes": 3369,
+            "sha256": "a304cf8600ce703a6e1dbc6e395621460de11900a683702dbd32e08b9d0a1679"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "native_unit_wake_fill.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\native_unit_wake_fill.obj",
+            "header_offset": 56327578,
+            "payload_file_offset": 56327638,
+            "bytes": 3574,
+            "sha256": "fe7b3cddc0644aac407fdd800bf65f140c3dabfa04e40c255ffd606212c2b3ba"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "native_unit_wake_handoff.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\native_unit_wake_handoff.obj",
+            "header_offset": 56326444,
+            "payload_file_offset": 56326504,
+            "bytes": 1074,
+            "sha256": "1dba0486a337f7fd9d8d346e032c646bdd306823ad1c709904cc98e373883c53"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "scene_unit_creators.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\scene_unit_creators.obj",
+            "header_offset": 21701184,
+            "payload_file_offset": 21701244,
+            "bytes": 152650,
+            "sha256": "12fd1dc87de5e6e92bf6110e383afa12b1d3c242d73514b59c9e97bf4a601354"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "ship_ai_formation.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\ship_ai_formation.obj",
+            "header_offset": 21059650,
+            "payload_file_offset": 21059710,
+            "bytes": 14223,
+            "sha256": "eac548391b0ea01082a82a4e940a1a06b76dfe4a0f13af22097e2256e633a455"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "ship_ai_rudder_hop.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\ship_ai_rudder_hop.obj",
+            "header_offset": 20791292,
+            "payload_file_offset": 20791352,
+            "bytes": 1846,
+            "sha256": "1e1a6b4693af4fd8b5e6ec9456b8a20eaf9ffd8175820640965cb3b8d7bd7efb"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "ship_ai_wake_trail.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\ship_ai_wake_trail.obj",
+            "header_offset": 20616616,
+            "payload_file_offset": 20616676,
+            "bytes": 9730,
+            "sha256": "0859594008d2aadb46092daaf34fea3903d64c7e37785db1ed1f22c08963bbae"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "ship_motion.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\ship_motion.obj",
+            "header_offset": 20171758,
+            "payload_file_offset": 20171818,
+            "bytes": 12358,
+            "sha256": "2831f1d4d00da56974f72fa2cebfff5b6a071820936aeebc1c09b79c4b988ad0"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "unit_destructor_levels.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\unit_destructor_levels.obj",
+            "header_offset": 18620866,
+            "payload_file_offset": 18620926,
+            "bytes": 54814,
+            "sha256": "7b5fe290dc80e0f60fff94d8764f88069f12f87414ab58d8c8f47527b9762f84"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "unit_instance_layout.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\unit_instance_layout.obj",
+            "header_offset": 18504952,
+            "payload_file_offset": 18505012,
+            "bytes": 10516,
+            "sha256": "5a2bbc452e247da98a95835a8da4dff4cfd17b8250b81bf35582664036a5fb9d"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      },
+      {
+        "object": "unit_instance_subobjects.obj",
+        "member_count": 1,
+        "equal_whole_member": true,
+        "members": [
+          {
+            "name": "bsp_core.dir\\Release\\unit_instance_subobjects.obj",
+            "header_offset": 18500310,
+            "payload_file_offset": 18500370,
+            "bytes": 4581,
+            "sha256": "651c79479da6a6546c75c4f643d9b830bd0648bb97bd57a303b4eebdd0dfef7d"
+          }
+        ],
+        "qualification": "Unique complete matching core member"
+      }
+    ],
+    "historical_compile_records": [
+      {
+        "name": "unit_instance_layout",
+        "project": "bsp_core",
+        "recorded_dependency_count": 13
+      },
+      {
+        "name": "unit_instance_subobjects",
+        "project": "bsp_core",
+        "recorded_dependency_count": 13
+      },
+      {
+        "name": "ship_ai_wake_trail",
+        "project": "bsp_core",
+        "recorded_dependency_count": 128
+      },
+      {
+        "name": "ship_ai_formation",
+        "project": "bsp_core",
+        "recorded_dependency_count": 137
+      },
+      {
+        "name": "ship_motion",
+        "project": "bsp_core",
+        "recorded_dependency_count": 254
+      },
+      {
+        "name": "ship_ai_rudder_hop",
+        "project": "bsp_core",
+        "recorded_dependency_count": 29
+      },
+      {
+        "name": "scene_unit_creators",
+        "project": "bsp_core",
+        "recorded_dependency_count": 107
+      },
+      {
+        "name": "native_unit_wake_fill",
+        "project": "bsp_core",
+        "recorded_dependency_count": 192
+      },
+      {
+        "name": "native_unit_wake_append_dependencies",
+        "project": "bsp_core",
+        "recorded_dependency_count": 77
+      },
+      {
+        "name": "native_unit_wake_copy",
+        "project": "bsp_core",
+        "recorded_dependency_count": 1
+      },
+      {
+        "name": "native_unit_wake_decomposition",
+        "project": "bsp_core",
+        "recorded_dependency_count": 75
+      },
+      {
+        "name": "native_unit_wake_handoff",
+        "project": "bsp_core",
+        "recorded_dependency_count": 3
+      },
+      {
+        "name": "game_native_geometry_globals",
+        "project": "bsp_core",
+        "recorded_dependency_count": 73
+      },
+      {
+        "name": "game_hosts_units",
+        "project": "bsp_game",
+        "recorded_dependency_count": 489
+      },
+      {
+        "name": "unit_destructor_levels",
+        "project": "bsp_core",
+        "recorded_dependency_count": 89
+      },
+      {
+        "name": "game_hosts_mission_frame",
+        "project": "bsp_game",
+        "recorded_dependency_count": 504
+      },
+      {
+        "name": "game_hosts_scene_contents",
+        "project": "bsp_game",
+        "recorded_dependency_count": 445
+      }
+    ]
+  },
+  "readiness_gates": [
+    "Actual producer of stable writable Native wake storage tied to an admitted unit allocation root and class/creator eligibility",
+    "Native preimage provenance; no invented zero988-byte reset block, typed-trail cast, projected copy or second shadow state",
+    "Construction publication and quiescent withdrawal/destruction of real owned critical section, plus allocation-root free ownership",
+    "Original parent cleanup/unwind evidence if exceptional construction/destruction enters the admitted domain",
+    "All current fill, append, leader handoff, decomposition, sampling and direct diagnostic consumers use one actual live state",
+    "Actual input/receiver identities and canonical mutable geometry context; leaf API presence alone supplies no owner"
+  ],
+  "next_readiness_dependency_candidates": {
+    "Source_boundaries": [
+      "src/game_hosts_scene_contents.cpp:889",
+      "src/game_hosts_mission_frame.cpp:2049",
+      "src/game_hosts_units.cpp:14604"
+    ],
+    "Native_identifiers_from_existing_records": [
+      "006fe590",
+      "006fe460",
+      "0081f3a0",
+      "00822700",
+      "00c9141d"
+    ],
+    "newly_analyzed_or_leased_here": false,
+    "implementation_packet_ready": false,
+    "scope_note": "Bound the actual allocation/lifetime admission first; do not expand this receipt into a whole vehicle-class ABI reconstruction."
+  },
+  "validation": {
+    "all_retained_physical_pins_match_current_files": 2732,
+    "all_scanned_Source_files_still_match": 4025,
+    "whole_existing_scene_factory": {
+      "symbol": "?create_instance_from_descriptor@SceneUnitCreatorBinding@?A0xffb39cf1@game@bsp@@UAEPAXPAX@Z",
+      "section": 3952,
+      "section_offset": 0,
+      "bytes": 40,
+      "sha256": "91f0f2e5002da6598a5d6ab88f1399af360111ec1f88defb54605b9afadb8f3a",
+      "instruction_count": 12,
+      "relocations": [
+        {
+          "offset": 4,
+          "type": 6,
+          "symbol": "??_C@_08MFMPBMJD@006fe590@",
+          "symbol_record": {
+            "name": "??_C@_08MFMPBMJD@006fe590@",
+            "value": 0,
+            "section": 4943,
+            "type": 0,
+            "storage": 2
+          }
+        },
+        {
+          "offset": 9,
+          "type": 6,
+          "symbol": "??_C@_0CL@EIIIHNKB@SceneUnit?3?3create_instance_from_@",
+          "symbol_record": {
+            "name": "??_C@_0CL@EIIIHNKB@SceneUnit?3?3create_instance_from_@",
+            "value": 0,
+            "section": 4944,
+            "type": 0,
+            "storage": 2
+          }
+        },
+        {
+          "offset": 19,
+          "type": 20,
+          "symbol": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+          "symbol_record": {
+            "name": "?unimplemented@GameHostLog@game@bsp@@QAEXPBD0@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2
+          }
+        }
+      ]
+    },
+    "old_ring_compiled_stride": "14h",
+    "old_ring_compiled_residual_offsets": [
+      "330h",
+      "334h",
+      "338h"
+    ],
+    "semantic_fill_compiled_head_offset": "3C0h",
+    "semantic_fill_compiled_flag_offset": "3C4h",
+    "selected_application_objects_raw_relocations": [
+      {
+        "object": "game_hosts_units",
+        "raw_wake_relocation_count": 0
+      },
+      {
+        "object": "game_hosts_mission_frame",
+        "raw_wake_relocation_count": 0
+      },
+      {
+        "object": "game_hosts_scene_contents",
+        "raw_wake_relocation_count": 0
+      }
+    ],
+    "new_Source_implementations": 0,
+    "ready_Source_packets": 0,
+    "new_build_runs": 0,
+    "new_tests": 0,
+    "new_entry_executions": 0,
+    "Ghidra_mutations": 0
+  },
+  "evidence": {
+    "physical_inputs.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\physical_inputs.json",
+      "bytes": 1649695,
+      "sha256": "183077e1dd7d51c00e59a956e32ce93f7f8d24ab639023895acb060c26a0c0a8"
+    },
+    "physical_supplement.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\physical_supplement.json",
+      "bytes": 913214,
+      "sha256": "32fd29b280539dd8d4fed541b04cd0a3571957c22a6372ca79fe40d2b69ff17c"
+    },
+    "native_parent_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\native_parent_analysis.json",
+      "bytes": 195403,
+      "sha256": "847b8b42a57110c4cd98f037ee43713fffe57ee767f49d77331f6a5a18d8f8e4"
+    },
+    "complete_objects_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\complete_objects_analysis.json",
+      "bytes": 39220482,
+      "sha256": "d5ad768b92f63671acdfef7cea6f82007dc02b027a9fe5f0711366e0d784be15"
+    },
+    "artifact_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\artifact_analysis.json",
+      "bytes": 108382,
+      "sha256": "c28cbfc7d1c25d5c0d70a1de356dfbda18d147a29d2fc533199d7c292460c7c0"
+    },
+    "source_search_analysis.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\source_search_analysis.json",
+      "bytes": 731702,
+      "sha256": "f785adb872a0e9ec7cc9a3df206f795baa38726cca95e385facc622eac9913ab"
+    },
+    "final_readiness_checks.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\final_readiness_checks.json",
+      "bytes": 2189,
+      "sha256": "a3f1a6610e600cb47a7c1a03a48e0dea5a834443574971ba3d1fd9004dfffc17"
+    }
+  },
+  "sealed_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence.zip",
+    "bytes": 57974042,
+    "sha256": "b7ca19357f5baf7cadf6fff9fa55312858dea919810f8a0ceb449938a862cb73",
+    "entries": 2748,
+    "all_CRC_and_member_hashes_verified": true,
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_unit_wake_owner_readiness_evidence\\MANIFEST.json",
+      "sha256": "d375abafa5f7e0069ce0078fb5ac73d2a6e573c1ba2f4931b57680d0b3744a05"
+    },
+    "sealed_utc": "2026-10-08T18:27:08.631287+00:00"
+  },
+  "limitations": [
+    "Readiness-only tracked documentation/report. No new Source implementation, build, test, API execution, Original execution, Ghidra mutation or gameplay validation.",
+    "Current physical inputs and existing compile/read records are pinned, but no fresh consumed-current-input provenance is claimed. Existing last-test logs are historical.",
+    "Whole Original bytes/listing identity for motion does not establish whole motion control-flow/x87 behavior. No new Original analysis outside the two leased parents.",
+    "Existing leaf lifetime receipts are reused, not re-reviewed or recounted here. Constructor parent handler/unwind and parent destruction remain external Native evidence dependencies.",
+    "Whole COFF and archive membership establish the stated physical artifacts only, not loaded EXE linkage, runtime invocation, ABI compatibility or game behavior.",
+    "The4025-file Source corpus is hash-inventoried; selected physical Source files and provider dependencies are copied. Absence search is scoped corroboration, not proof about arbitrary unknown allocations."
+  ]
+}
