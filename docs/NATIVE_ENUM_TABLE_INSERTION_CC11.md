@@ -113,3 +113,9 @@ native EH/fault/allocator/historical CRT/ABI, global startup, declaration
 identity, traffic and game execution are unclaimed. Actual table clear
 `004D0760` uses `E175E8`; `008F4C50` uses another pool and is not its substitute.
 The registry lifecycle `004D0760` / `008F4F00` / `004D2620` remains open.
+
+## Primary integration
+
+Whole 172-byte insertion/replacement bound to genuine uniquely owned current-CRT CEnum and null mapped payloads. Direct actual scalar flag1, post-delete node8 clear, new-pointer publication, fresh count; separate real E175E8 pool, owning disjoint current memcpy. One installed 28-symbol plus fresh 22-symbol replacement family restores 119 temporary prefixes and returns 50 symbol/four table slots. Original 172-byte execution, general virtual deletion, historical CRT/EH, registry destruction, namespace/startup/class/world/game are external.
+
+Main `5096df208` passed the full Win32 build and all three existing CTests. The independent primary recipe freshly compiled 15 TUs; its sealed receipt is `local/cc11_table_insert_current_primary/inputs_after.json`. Original class/world/game validation remains separate.

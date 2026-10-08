@@ -99,3 +99,9 @@ unit/group ownership, original CRT, faults, unmasked exception transport,
 concurrent mutation, world integration or game parity. Callback `0070ECA0`
 and detach `0070E4C0` still require their actual virtual+5C, wake-handoff and
 speed-refresh dependencies. No type-service work is included here.
+
+## Primary integration
+
+Whole 173-byte/62-instruction raw entry and Source are byte-identical, no calls or relocations. Genuine same actual group/unit addresses, native early leader/type18/count500 schedule, fresh signed count, exact x87 compare, pointer reload and RET4. One eight-case family passes 261 checks including complete guarded storage, EAX/ECX/ESP and x87 CW/SW/TOP/tags/80-byte payload. Native caller rows are structural; original class ownership, unmasked faults, wake/type/speed/callback/detach/world/game remain external.
+
+Main `5096df208` passed the full Win32 build and all three existing CTests. The independent primary recipe freshly compiled 3 TUs; its sealed receipt is `local/cc11_successor_current_primary_run02/inputs_after.json`. Original class/world/game validation remains separate.

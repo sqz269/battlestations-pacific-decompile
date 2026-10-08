@@ -113,3 +113,9 @@ complete `007F2FD0` Lua/world behavior, actual departing-plane fields through
 `+C41` and real pending-kill owners/access/lifetimes. No drain/death ordering,
 retired task ownership, observer/cache lifetime, arena, private EH/fault,
 concurrency, full construction/world/profile or gameplay binding is added.
+
+## Primary integration
+
+Whole 63-byte promotion: signed index guards, backward actual member stores, first-cell publication and direct raw277 Source on the same root. One 61-check count-four family connects actual sorted producer, selected BE receipt, ordinal/first-plane/leader consumers. Original63 executes with only its natural four-byte CALL operand relocated to raw Source; no extra bridge. Standalone Source tail-JMP and inlined BE Source CALL frames are distinct; original five-member caller-word/runtime/class/deferred-message/game contracts remain external.
+
+Main `5096df208` passed the full Win32 build and all three existing CTests. The independent primary recipe freshly compiled 6 TUs; its sealed receipt is `local/cc11_promotion_current_primary/inputs_after.json`. Original class/world/game validation remains separate.

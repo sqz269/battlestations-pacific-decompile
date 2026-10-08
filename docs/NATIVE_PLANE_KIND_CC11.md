@@ -50,3 +50,9 @@ predicate alone does not close that routine, detach, plane construction,
 class dispatch, original heap/lifetime, faults, world or gameplay. Primary
 integration adds the repository build, existing CTests and saved-analysis
 receipts separately.
+
+## Primary integration
+
+Whole54-byte/19-instruction raw type entry and Source are byte-identical, no calls/globals/relocations. Genuine actual DWORD+C4, constants0/1/2/4/5/15 before field observation; requested6 remains a dynamic C4 comparison. One 32-check/ten-query family executes all54 Original bytes unchanged and unrelocated, compares full EAX/RET4/backing. D05F20+5C and actual constructor stamp are DATA/structural only. Source input words are controlled borrowed actual storage, not constructor/profile/class, ship speed or game binding.
+
+Main `5096df208` passed the full Win32 build and all three existing CTests. The independent primary recipe freshly compiled 2 TUs; its sealed receipt is `local/cc11_primary_plane_kind_run01/inputs_after.json`. Original class/world/game validation remains separate.
