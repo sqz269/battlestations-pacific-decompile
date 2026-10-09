@@ -4,6 +4,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct GlobalConfigContext;
 struct NativeGameClassCleanupContext;
 struct NativeProfileHintsOwnerContext;
 struct NativePlatformFocusOwnersContext;
@@ -219,6 +220,11 @@ struct NativeSingletonDeletionBindings {
     // through manager drain; pass the popped owner even if publication changed.
     // CE7D24 is a secondary profile and is not admitted by this binding.
     NativeParticleClockShutdownContext* particle_clock{};
+    // CE3D98 -> 432710: actual2E8h GlobalConfig owner. Retain the SAME raw
+    // construction/publication, strings, effects and lifetime domain through
+    // drain. Pass the popped owner even when F878E4 changed. Payload callable
+    // method-table admission remains a separate requirement of the effects.
+    GlobalConfigContext* global_configuration{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -243,7 +249,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, native_media) == 164);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_gui) == 168);
 static_assert(offsetof(NativeSingletonDeletionBindings, shadow_depth_target) == 172);
 static_assert(offsetof(NativeSingletonDeletionBindings, particle_clock) == 176);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 180);
+static_assert(offsetof(NativeSingletonDeletionBindings, global_configuration) == 180);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 184);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
