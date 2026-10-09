@@ -109,3 +109,11 @@ The application still lacks the actual Application+14 and duplicate-cell produce
 composition and fully qualified Game construction/lifetime inputs identified in
 the prior audit. This reusable frame does not start a game, establish startup or
 gameplay parity, or make missing services safe by substituting defaults.
+
+## Primary integration and emitted review
+
+The integrator registered this retained glue in bsp_game. The normal MSVC Win32 build and all three existing checks passed. All 17 emitted methods/handlers and their ordered physical relocations were reviewed. Construction retains and zeroes the full 0x71A0 allocation, captures the current duplicated name, calls the real name and Game providers, publishes the exact returned pointer, sets parent -1, and attempts the name return once. The emitted scalar method retains the full flags and marks the allocation indeterminate before dispatch; free and diagnostic paths preserve their explicit guards. Both catch funclets only record failure and rethrow.
+
+The frame methods remain absent from the game map. This retained composition earns no additional Original function and supplies neither actual Application ownership nor a duplicated-name producer. Native parent EH/SEH/private-frame equivalence and live failure/recovery/application/gameplay execution remain open.
+
+Evidence: `reports/cc12_world_tick_reset_frame_primary_review.json`; complete retained artifacts under `local/cc12_world_tick_reset_frame_primary`.

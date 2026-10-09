@@ -49,7 +49,7 @@ __declspec(naked) void __fastcall reset_kernel(
         mov edx, dword ptr [esi + 0ch]
         mov dword ptr [edx], eax     // 0087466B: store low count word
         fild dword ptr [edx]         // 00874670: signed count,S,T
-        fmul st(1)                   // 00874676: count*S,S,T
+        fmul st(0), st(1)            // 00874676: count*S,S,T
         fsubp st(2), st(0)           // 00874678: S,T-count*S
         fxch st(1)                   // 0087467A: T-count*S,S
         mov edx, dword ptr [esi + 8]

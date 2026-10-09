@@ -154,3 +154,11 @@ execution probes ran. The integrator must register the pair, run the normal
 Win32 build, inspect both complete emitted bodies and every added adapter
 target/argument cleanup, and check the canonical address records before any
 Original-function admission. This packet adds no Original credit.
+
+## Primary integration and emitted review
+
+The integrator registered this unit in bsp_core. The normal MSVC Win32 build and all three existing checks passed. Complete emitted review compared all 351 native sites and all 426 written private-body instructions, every mapped internal branch and the complete stack graph, including the unreachable validation arm. The emitted matrix body is 1,801 bytes / 394 instructions; the outer is 74 bytes / 32 instructions. All context-word reads and 29/2 call cleanups agree with the private frame. Fourteen positive unique concrete target definitions were verified; the existing multiply is entirely PE-equal across 874 bytes. Both public wrappers, returning validator and current-operand Z adapter were completely inspected.
+
+The full matrix body is newly admitted as one 1,507-byte Original function. The outer is recorded as an actual-storage fragment because its address already had a counted projected-host function; that earlier record is preserved. These public roots remain absent from the game map. Current owner/table/service/lifetime qualifications and Native ABI/exception/runtime/gameplay proof remain open.
+
+Evidence: `reports/cc12_world_tick_reset_frame_primary_review.json`; complete retained artifacts under `local/cc12_world_tick_reset_frame_primary`.
