@@ -1,0 +1,494 @@
+{
+  "schema": "bsp.cc12.game_application_allocation_name_frame_readiness.v1",
+  "packet": "cc12_game_application_allocation_name_frame_readiness",
+  "status": "BOUNDED_NORMAL_FRAME_CONTRACT_VIABLE_WITH_REQUIRED_REAL_INPUTS_FULL_APPLICATION_COMPOSITION_NOT_READY",
+  "baseline_revision": "7fcdd0ca55de795d9755dddbab376d4f482cdcce",
+  "observed_utc": "2026-10-09T04:21:27.470874+00:00",
+  "fragment": {
+    "start": "0073E150",
+    "end_inclusive": "0073E1D9",
+    "next_instruction": "0073E1DA",
+    "bytes": 138,
+    "instructions": 39,
+    "enclosing_function": "0073D410",
+    "new_original_function": false,
+    "lease": "bounded interior range and dedicated two output files; enclosing entry/start checked unleased before claim",
+    "normal_schedule": [
+      {
+        "sites": "0073E150..E168",
+        "effect": "Allocate71A0 throughBF55BE; capture result; zero all71A0 throughBF79F0 with EDI0; clean four stacked words."
+      },
+      {
+        "sites": "0073E16B..E17C",
+        "effect": "Retain allocation in caller frame, compare against0 and set EH state27h."
+      },
+      {
+        "sites": "0073E17E..E188",
+        "effect": "Read current E1AE78 once and construct actual8-byte temporary through41E870."
+      },
+      {
+        "sites": "0073E18D..E1A1",
+        "effect": "Set name flagbit2; pass header address and ECX actual allocation; set EH state28h; call4DDB90."
+      },
+      {
+        "sites": "0073E1A6..E1B9",
+        "effect": "Select constructor return; test name flag; publish return to Application+14; reset parent EH state-1 before name cleanup."
+      },
+      {
+        "sites": "0073E1BB..E1D5",
+        "effect": "Capture nonnull name.data and length+1; resolve current419CC0 then return throughBD1510; leave header bytes unchanged."
+      }
+    ],
+    "null_comparison_after_memset": true,
+    "nullable_allocator_success_path_admitted": false
+  },
+  "register_and_frame_origins": {
+    "EDI": "Zeroed73D433; no further EDI writes in inspected complete caller listing before fragment; genuine callees preserve nonvolatile register.",
+    "EBX": "Restored to-1 at73D88D; unchanged before parent EH state reset.",
+    "EBP": "Second Init stack argument captured73D4C2; actual Application receiver restored73DBCD.",
+    "temporary_mask": "Initialized0 in prologue; earlier bit0 cleared; bit2 first set after this name constructor succeeds.",
+    "temporary_header": "Caller-normalized ESP+2C is length, +30 is data.41E870 initializes both before reads; no inferred old stack bytes required.",
+    "original_stack_layout_reproduced_in_source": false
+  },
+  "input_provenance": {
+    "global": "00E1AE78",
+    "producer": "0073D933..D94A: captured Init second stack argument ->00438E40 duplicate ->global publication ->0073CE20 parser",
+    "original_caller": "008F841E..842D supplies flags0 and CE8168",
+    "verified_original_literal": {
+      "address": "00CE8168",
+      "hex": "6361636865646c6f616400",
+      "text_without_NUL": "cachedload"
+    },
+    "current_source_caller": "src/winmain_startup.cpp kApplicationInitializeMode and application_initialize call",
+    "bounded_consumer_rule": "Reload actual current duplicate cell only at native name-construction point after allocation/wholezero; do not hardcode cachedload or invent a Game name.",
+    "duplicate_body_available": "duplicate_native_string_00438e40",
+    "duplicate_owned_by_this_fragment": false,
+    "later_duplicate_retirement": "0073E45C..E473: free throughBF6989 and clear global, outside fragment",
+    "current_GameStartupHost": "Validates nonnull mode and parses it directly; no retained raw duplicate/71A0/GameNativeGameRuntime composition found."
+  },
+  "available_genuine_source": {
+    "outer_storage": "NativeGameStorage exactly71A0, trivial default construction",
+    "outer_allocation": "singleton_lifetime_allocate({SingletonAllocationKind::object,0x71a0,0x71a0}) uses malloc/new-handler nonnull-or-throw loop",
+    "outer_lifetime_start": "Begin actual trivial object lifetime in canonical storage, then zero all71A0 before runtime.construct.",
+    "name_constructor": "construct_native_string_header_0041e870(actual8h, canonical raw pool context, captured current C string)",
+    "name_cleanup": "destroy_native_string_header_0041dd20(actual8h, canonical raw pool context); current getter/return, header unchanged, getter failures propagate",
+    "string_process": "game_native_string_process().raw_context() and .strings() share actual pool01090AA8, return gate01090AA4 and manager01090AA0",
+    "vfs_string_domain": "Existing VFS application raw context and ActualNativeStringPoolStorage borrow those same canonical cells; singleton host manager reference comes from game_native_string_process.",
+    "runtime": "GameNativeGameRuntime already retains construction/destruction operations and genuine Game Source table; outer71A0 remains externally owned."
+  },
+  "publication_boundary": {
+    "internal_game_global": {
+      "site": "004DE105",
+      "cell": "00E188A8",
+      "timing": "Inside Game constructor before Dyn initialization completes"
+    },
+    "application_result": {
+      "site": "0073E1AF",
+      "cell": "Application+14",
+      "timing": "After constructor returns and before normal name cleanup"
+    },
+    "early_allocation_publication_allowed": false,
+    "defer_internal_publication_until_return_allowed": false,
+    "unqualified_failure_rollback_allowed": false
+  },
+  "minimum_retained_provider": {
+    "borrowed_inputs": [
+      "Stable already-composed GameNativeGameRuntime&",
+      "Actual Application+14 publication cell",
+      "Current actual E1AE78-equivalent duplicated-input cell",
+      "Canonical NativeStringRawPoolContext over the same application string/manager cells"
+    ],
+    "frame_storage": [
+      "Actual allocation pointer",
+      "Stable actual8-byte name header",
+      "Name-construction-complete flag",
+      "Game-constructor-returned flag",
+      "Application-publication-written flag",
+      "Name-return-complete flag",
+      "Current stage and failed/retired status"
+    ],
+    "owns_duplicate_input": false,
+    "creates_method_table": false,
+    "new_generic_callback_required": false,
+    "can_run_without_full_qualified_Game_contexts": false,
+    "stable_borrow_lifetimes": "Runtime, frame, all contexts/services/owners/publications remain alive through actual teardown or explicit resolution of retained failure."
+  },
+  "outer_allocation_ownership": {
+    "final_scalar": "delete_native_game_004de270 invokes lifetime.calls.free_00bf6989 iff flags&1; current concrete default std::free matches canonical malloc allocation",
+    "foreign_free_override": "Requires separate pairing qualification",
+    "flags0": "Graph destroyed but allocation retained; runtime then forbids another scalar call, so raw retirement needs explicit owner action",
+    "returned_pointer_after_free": "Original pointer is returned even when freed; do not dereference it",
+    "implicit_frame_or_unique_ptr_delete_allowed": false,
+    "must_free_exactly_once": true
+  },
+  "full_context_limits": {
+    "construction_requirements": [
+      "Actual profile",
+      "Embedded and array constants",
+      "Live constant cells",
+      "Canonical Dyn owners",
+      "Unit/rank table context",
+      "Global config/load",
+      "Resource parsers",
+      "Grid context",
+      "Three genuine grid descriptor preimages"
+    ],
+    "lifetime_requirements": "Matching graph contexts, same actual call service, publications/owners and allocation domains",
+    "unit_frame_preimage": "GameNativeGameTables requires explicit opaque unit_frame_word_preimage; no default",
+    "grid_preimages": "NativeGameGridDescriptorPreimage.word20/word24 are explicit uninitialized-word inputs; zero is not inferred",
+    "actual_current_application_frame_composed": false,
+    "full_game_caller_ready": false
+  },
+  "failure_evidence": {
+    "FH3_info": "00DB609C",
+    "unwind_map": "00DB60C0",
+    "max_state_count": 49,
+    "relevant_rows": [
+      {
+        "state": "27h",
+        "to_state": "-1",
+        "row": "00DB61F8",
+        "action": "00C86C3A",
+        "effect": "Captured outer allocation ->0042B100 ->00BF6989"
+      },
+      {
+        "state": "28h",
+        "to_state": "27h",
+        "row": "00DB6200",
+        "action": "00C86C45",
+        "effect": "Test and clear temp-name bit2; tail41DD20 on actual frame header"
+      }
+    ],
+    "free_wrapper_listing_gap": "Saved Ghidra body42B100 ends at free call; installed/live bytes include POP ECX/RET at42B106..107. No repair performed.",
+    "parent_native_cleanup_order": "Name then outer allocation after the Game constructor own native unwind.",
+    "source_gap": "Current constructor/runtime retain failed partial graph and operations; copying only outer native free would invalidate retained Source ownership.",
+    "after_successful_constructor": "Application+14 written and parent state set-1 before normal pooled-name return; a getter failure here leaves a live published Game.",
+    "failure_retention": [
+      {
+        "stage": "allocation or name construction",
+        "rule": "Game runtime has not constructed graph; retain exact allocation/header stage for explicit resolution."
+      },
+      {
+        "stage": "Game constructor",
+        "rule": "Retain allocation, completed temporary, partial graph and all contexts/operations; Application+14 not written here, internal E188A8 may already be published."
+      },
+      {
+        "stage": "normal name cleanup",
+        "rule": "Game runtime remains live and Application+14 already published; retain pending name-return state, no constructor-failed relabeling or rollback."
+      }
+    ],
+    "native_FH3_SEH_equivalence": false,
+    "implicit_partial_graph_cleanup": false
+  },
+  "verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "target_verified_by_read_only_CLI": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "native_live_disk_bytes_equal": 356,
+    "native_live_disk_spans": [
+      {
+        "address": "0073E150",
+        "length": 138,
+        "purpose": "complete allocation/name/constructor/Application+14 publication/normal temporary-name return fragment",
+        "hex": "68a0710000e864744b0068a07100008bf05756e888984b0083c410897424103bf7c784244401000027000000742aa178aee100508d4c2430e8e306ceff834c2420028d4c242c518bcec684244801000028e8eaf9d9ffeb0233c0f644242002894514899c2444010000741f8b4c24303bcf74178b44242c6a0183c0015051e8edbacdff8bc8e836334900",
+        "sha256": "d81dc741f86b6c13de99ad7fd5f7c5a157ba2e3bd96532d83d31a94b0cbf555f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0073D431",
+        "length": 14,
+        "purpose": "EDI zero and initial caller temporary-mask zero with stack adjustment",
+        "hex": "6a1033ff6a1089742434897c2428",
+        "sha256": "bc768bbf3629649695684d0c63f0f7fb8402a6fc7d47934f59d3b43a31997910",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0073D4C2",
+        "length": 7,
+        "purpose": "second Init stack argument captured in EBP",
+        "hex": "8bac2450010000",
+        "sha256": "c2322eb691b8a3949a10490d6ac1ea7806b22b69feb30cdbbbbc3bc841d1a5b3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0073D88D",
+        "length": 3,
+        "purpose": "EBX restored to minus one before fragment",
+        "hex": "83cbff",
+        "sha256": "b2573311ea7475d44358defcfc27171a400912fc61738077b570640cb27ec5ec",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0073D933",
+        "length": 28,
+        "purpose": "argument duplication, E1AE78 publication and command-line parser call",
+        "hex": "8bcd899c2444010000e8ffb4cfff8b4c242ca378aee100e8d1f4ffff",
+        "sha256": "45fabd58352a107e73836e3e1e573b84a3ac927570c54ffecc216f108a9ab370",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0073DBCD",
+        "length": 4,
+        "purpose": "application receiver restored to EBP",
+        "hex": "8b6c242c",
+        "sha256": "b968e3eb6e8fcaec378f47f6ae6e10fe3a32fc8f1c380d2a95e6d8a2b5230dc8",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004DE105",
+        "length": 6,
+        "purpose": "constructor internal E188A8 Game publication before Dyn initialization",
+        "hex": "8935a888e100",
+        "sha256": "7cef87666f47dcb474ab243e947f456d5627edc86477ae16ea6bb0a23305b448",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00DB609C",
+        "length": 36,
+        "purpose": "Application FH3 function information and unwind-map address",
+        "hex": "2205931931000000c060db00000000000000000000000000000000000000000001000000",
+        "sha256": "14beb8044a80e1663ec517b799fbfc0a724a07100d6554125b0681dcd06ba5f3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00DB61F8",
+        "length": 16,
+        "purpose": "unwind states27 and28",
+        "hex": "ffffffff3a6cc80027000000456cc800",
+        "sha256": "5f0b0a4c8091f5e4b33a8a0087631bcfda5864d5a08acfd450cd3cc61cdcf777",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00C86C3A",
+        "length": 11,
+        "purpose": "state27 outer allocation release funclet",
+        "hex": "8b8dc8feffffe9bb447aff",
+        "sha256": "62370abab937fd1b5945d20c9fd058e889954b3afca5e8bae010e020d98fe3a4",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00C86C45",
+        "length": 34,
+        "purpose": "state28 test and clear name bit2 then header destruction",
+        "hex": "8b85d8feffff83e0020f841200000083a5d8fefffffd8d8de4feffffe9ba7079ffc3",
+        "sha256": "a6bfc02762741cbe5fc21a7443321293736bb3c79041ec40b02e0f59a42c81fd",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0042B100",
+        "length": 8,
+        "purpose": "ECX allocation free wrapper including saved-listing no-return gap",
+        "hex": "51e883b87c0059c3",
+        "sha256": "5299c2b31fab9e2663fa3abac703b1949741dea08807fb53d77c08dd44c1e7c3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0073E45C",
+        "length": 24,
+        "purpose": "later duplicated command-line free and global clear outside leased fragment",
+        "hex": "a178aee1003bc7740f50e81e854b0083c404893d78aee100",
+        "sha256": "130d72bfd9de997c3a679c2e63be2107fe69301b511661008598027a48eff3f3",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008F841E",
+        "length": 16,
+        "purpose": "WinMain passes flags0 and original cachedload literal to Application Init",
+        "hex": "686881ce006a008d4c2428e8e24fe4ff",
+        "sha256": "9bfd53b73221eb261e6e8abc93fe0cca7b236295d84e8f1bd6700c21f688818c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00CE8168",
+        "length": 11,
+        "purpose": "actual cachedload NUL-terminated literal consumed by native WinMain",
+        "hex": "6361636865646c6f616400",
+        "sha256": "c7fc43e3967083789627ad829de58e9ede017753d453895d098366344652f0af",
+        "live_disk_equal": true
+      }
+    ],
+    "json_source_and_native_pins": "passed: 26 physical/LF Source pins, 15 native span hashes totaling356 bytes, FH3 info/state27h/state28h decode",
+    "Source_credit": 0,
+    "Original_function_credit": 0,
+    "source_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "ghidra_mutations": 0,
+    "cmake_config_ledger_changes": 0
+  },
+  "admission": {
+    "bounded_normal_contract_ready": true,
+    "requires_real_external_inputs": true,
+    "new_source_implemented": false,
+    "full_Game_or_application_ready": false,
+    "startup_or_gameplay_validated": false
+  },
+  "owned_files": [
+    "docs/CC12_GAME_APPLICATION_ALLOCATION_NAME_FRAME_READINESS.md",
+    "reports/cc12_game_application_allocation_name_frame_readiness.json"
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "bytes": 7095,
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "lf_content_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e"
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "bytes": 14665,
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "lf_content_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e"
+    },
+    {
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "bytes": 2173,
+      "sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "lf_content_sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "bytes": 4780,
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "lf_content_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9292,
+      "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+      "lf_content_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "bytes": 21673,
+      "sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+      "lf_content_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d"
+    },
+    {
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "bytes": 2159,
+      "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+      "lf_content_sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46"
+    },
+    {
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "bytes": 1691,
+      "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+      "lf_content_sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "lf_content_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "lf_content_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "bytes": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "lf_content_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+    },
+    {
+      "path": "src/native_string_duplicate.cpp",
+      "bytes": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+      "lf_content_sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "lf_content_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "lf_content_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 2017,
+      "sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "lf_content_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "bytes": 471,
+      "sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "lf_content_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "lf_content_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "lf_content_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "bytes": 9565,
+      "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+      "lf_content_sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "lf_content_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "bytes": 7474,
+      "sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+      "lf_content_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "bytes": 6608,
+      "sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+      "lf_content_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "lf_content_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+    },
+    {
+      "path": "src/winmain_startup.cpp",
+      "bytes": 10209,
+      "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "lf_content_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113"
+    },
+    {
+      "path": "include/bsp/game_native_game_tables.hpp",
+      "bytes": 1612,
+      "sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb",
+      "lf_content_sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb"
+    },
+    {
+      "path": "include/bsp/native_game_grid.hpp",
+      "bytes": 5494,
+      "sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726",
+      "lf_content_sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726"
+    }
+  ]
+}
