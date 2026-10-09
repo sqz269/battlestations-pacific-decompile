@@ -1,0 +1,72 @@
+{
+  "schema": "bsp.cc12.mission_lua_payload_body_annotation_correction_primary.v1",
+  "created_utc": "2026-10-09T08:40:42.999320+00:00",
+  "address": "008876B0",
+  "kind": "corrected_existing_provisional_name_evidence_and_preserved_Ghidra_comments; no body repair",
+  "basis": [
+    {
+      "path": "reports/cc12_mission_lua_payload_body_extent_readiness.json",
+      "canonical_lf_sha256": "2c70250e3b68a9550fa2271add63bc6c4b6b7f7ca06f0dd3c277d5c9e790fc2c"
+    },
+    {
+      "path": "reports/cc12_mission_lua_payload_destructor_EH_readiness.json",
+      "canonical_lf_sha256": "9c4d0abc89ea109a1ab3ef15c78435354c845ffb3e76013dfce9a64fb1dab23e"
+    }
+  ],
+  "ledger": {
+    "path": "config/names/00880000.jsonl",
+    "before": {
+      "address": "008876b0",
+      "name": "BSP_MissionLuaDeferredCall_Destruct",
+      "evidence": "Hypothesis, not a recovered symbol. Packet cc2_named_call_args, read-only analysis; docs/MISSION_NAMED_CALL_ARGS.md. __thiscall(DeferredCall* this), body 008876b0-008876e9. The whole body is 006b88e0(this+10h, 0) then 00bf6989 free of that vector's buffer. It never releases the two NativeString buffers at +0h and +8h: no 0041dd20 and no 00419cc0/00bd1510 pair appears. Harmless at 008881fb, where the record is the empty temporary, but 00888230 calls it on the filled node before freeing it, so a deferred call appears to leak its name and self key. Static reading, no run-time evidence."
+    },
+    "after": {
+      "address": "008876b0",
+      "name": "BSP_MissionLuaDeferredCall_Destruct",
+      "evidence": "Hypothesis, not a recovered symbol. Packet cc2_named_call_args, read-only analysis; docs/MISSION_NAMED_CALL_ARGS.md. __thiscall(DeferredCall* this), body 008876b0-008876e9. The whole body is 006b88e0(this+10h, 0) then 00bf6989 free of that vector's buffer. It never releases the two NativeString buffers at +0h and +8h: no 0041dd20 and no 00419cc0/00bd1510 pair appears. Harmless at 008881fb, where the record is the empty temporary, but 00888230 calls it on the filled node before freeing it, so a deferred call appears to leak its name and self key. Static reading, no run-time evidence. | CORRECTION superseding the earlier whole-body/no-string-release interpretation: guarded live GPR and installed PE independently agree on complete physical ordinary body008876B0..00887743,148B/49ins;12CC padding tonext00887750. Saved Ghidra membership still58B throughordinaryCALLBF6989 at8876E5. Aftercurrentvectorchild6B88E0(request0) returns, freecurrentvectorbuffer; conditionalcurrentpayload+C and+4 bufferreturns use419CC0(noNativeargs),ECXreturnedpool,BD1510(stack block,size,unused1;RET12),wrappedcurrentlength+1; restoreFS/savedESI/EDI/ESP andplainRET. IndependentC97543/DC9AA4/DC9A94 encodedmap: state1 currentframepayload+8 string viaC97538/41DD20 ->state0 currentframepayload+0 viaC97530/41DD20 ->-1; conditionalhelperEBP=entryESP/dispatcher/normalchildreturn qualifications remain. See docs/CC12_MISSION_LUA_PAYLOAD_BODY_EXTENT_READINESS.md and docs/CC12_MISSION_LUA_PAYLOAD_DESTRUCTOR_EH_READINESS.md. Descriptive name remains provisional; no Source/NativeABI/gameplay credit; no body/flow/no-return repair."
+    },
+    "old_evidence_preserved": true,
+    "new_names": 0
+  },
+  "Ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "name_preserved": "BSP_MissionLuaDeferredCall_Destruct",
+    "before": {
+      "address": "008876b0",
+      "function_name": "BSP_MissionLuaDeferredCall_Destruct",
+      "comment": "[BSP reconstruction 008876b0]\nHypothesis, not a recovered symbol. Packet cc2_named_call_args, read-only analysis; docs/MISSION_NAMED_CALL_ARGS.md. __thiscall(DeferredCall* this), body 008876b0-008876e9. The whole body is 006b88e0(this+10h, 0) then 00bf6989 free of that vector's buffer. It never releases the two NativeString buffers at +0h and +8h: no 0041dd20 and no 00419cc0/00bd1510 pair appears. Harmless at 008881fb, where the record is the empty temporary, but 00888230 calls it on the filled node before freeing it, so a deferred call appears to leak its name and self key. Static reading, no run-time evidence."
+    },
+    "after": {
+      "address": "008876b0",
+      "function_name": "BSP_MissionLuaDeferredCall_Destruct",
+      "comment": "[BSP reconstruction 008876b0]\nHypothesis, not a recovered symbol. Packet cc2_named_call_args, read-only analysis; docs/MISSION_NAMED_CALL_ARGS.md. __thiscall(DeferredCall* this), body 008876b0-008876e9. The whole body is 006b88e0(this+10h, 0) then 00bf6989 free of that vector's buffer. It never releases the two NativeString buffers at +0h and +8h: no 0041dd20 and no 00419cc0/00bd1510 pair appears. Harmless at 008881fb, where the record is the empty temporary, but 00888230 calls it on the filled node before freeing it, so a deferred call appears to leak its name and self key. Static reading, no run-time evidence.\n\n[BSP reconstruction 008876b0] update\nHypothesis, not a recovered symbol. Packet cc2_named_call_args, read-only analysis; docs/MISSION_NAMED_CALL_ARGS.md. __thiscall(DeferredCall* this), body 008876b0-008876e9. The whole body is 006b88e0(this+10h, 0) then 00bf6989 free of that vector's buffer. It never releases the two NativeString buffers at +0h and +8h: no 0041dd20 and no 00419cc0/00bd1510 pair appears. Harmless at 008881fb, where the record is the empty temporary, but 00888230 calls it on the filled node before freeing it, so a deferred call appears to leak its name and self key. Static reading, no run-time evidence. | CORRECTION superseding the earlier whole-body/no-string-release interpretation: guarded live GPR and installed PE independently agree on complete physical ordinary body008876B0..00887743,148B/49ins;12CC padding tonext00887750. Saved Ghidra membership still58B throughordinaryCALLBF6989 at8876E5. Aftercurrentvectorchild6B88E0(request0) returns, freecurrentvectorbuffer; conditionalcurrentpayload+C and+4 bufferreturns use419CC0(noNativeargs),ECXreturnedpool,BD1510(stack block,size,unused1;RET12),wrappedcurrentlength+1; restoreFS/savedESI/EDI/ESP andplainRET. IndependentC97543/DC9AA4/DC9A94 encodedmap: state1 currentframepayload+8 string viaC97538/41DD20 ->state0 currentframepayload+0 viaC97530/41DD20 ->-1; conditionalhelperEBP=entryESP/dispatcher/normalchildreturn qualifications remain. See docs/CC12_MISSION_LUA_PAYLOAD_BODY_EXTENT_READINESS.md and docs/CC12_MISSION_LUA_PAYLOAD_DESTRUCTOR_EH_READINESS.md. Descriptive name remains provisional; no Source/NativeABI/gameplay credit; no body/flow/no-return repair."
+    },
+    "annotation_tool": "tools/ghidra_annotate.py --apply under shared write lock",
+    "prior_values_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\ghidra-annotations-20261009T084037Z.json",
+    "prior_values_receipt_sha256": "53a7a931d52304fb54322f5f503392b4c048c01f3102d08bdca7380f75429b50",
+    "project_saved": true,
+    "affected_export_refreshed": true,
+    "function_count_before_and_after": 64729,
+    "saved_body_unchanged": "008876B0..008876E9",
+    "flow_or_no_return_or_listing_mutations": 0
+  },
+  "validation": {
+    "body148B49ins_independent_live_PE_proof": true,
+    "two_direct_EH_actions_independent_proof": true,
+    "prior_name_and_comment_preserved": true,
+    "ledger_append_replayed": true,
+    "actual_post_comment_contains_correction": true,
+    "guarded_saved_export_complete": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Source": 0,
+    "new_fragments": 0,
+    "new_names": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "native_execution": 0,
+    "gameplay": 0
+  }
+}
