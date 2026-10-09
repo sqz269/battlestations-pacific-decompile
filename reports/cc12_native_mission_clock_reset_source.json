@@ -1,0 +1,456 @@
+{
+  "packet": "cc12_native_mission_clock_reset_source",
+  "status": "source_implemented_pending_primary_registration_build_and_emitted_kernel_review",
+  "baseline_commit": "12618f75a00d785a39467500fc952160bd859dc0",
+  "original_function_credit": 0,
+  "owned_files": [
+    "include/bsp/native_mission_clock_reset.hpp",
+    "src/native_mission_clock_reset.cpp",
+    "docs/CC12_NATIVE_MISSION_CLOCK_RESET_SOURCE.md",
+    "reports/cc12_native_mission_clock_reset_source.json"
+  ],
+  "owned_address": "00874640",
+  "source_interface": {
+    "signature": "void reset_native_mission_clock_00874640(std::uint32_t input_float_bits, const NativeMissionClockResetContext&);",
+    "context_fields": [
+      {
+        "type": "volatile float&",
+        "name": "clock_00f876a4"
+      },
+      {
+        "type": "volatile float&",
+        "name": "accumulated_00f876a8"
+      },
+      {
+        "type": "volatile float&",
+        "name": "remainder_00f876ac"
+      },
+      {
+        "type": "volatile std::uint32_t&",
+        "name": "step_count_00f876b0"
+      },
+      {
+        "type": "volatile float&",
+        "name": "interpolation_00f876b4"
+      },
+      {
+        "type": "const volatile double&",
+        "name": "step_00d7a270"
+      },
+      {
+        "type": "const volatile std::uint32_t&",
+        "name": "conversion_mode_0109eea4"
+      }
+    ],
+    "context_owns_storage": false,
+    "clock_owner_or_application_binding_created": false,
+    "target": "MSVC Win32; enforced by public header platform guard.",
+    "raw_input": "DWORD representation; the wrapper performs no C++ floating conversion before the first kernel FLD.",
+    "preconditions": [
+      "Five distinct actual writable cells belonging to the same admitted clock state.",
+      "Qualified actual binary64 step and current conversion-selector cell.",
+      "All seven references remain valid through the call.",
+      "Existing concrete raw converter and caller floating environment are available."
+    ]
+  },
+  "implementation": {
+    "private_address_layout": {
+      "name": "ResetAddresses",
+      "bytes": 28,
+      "offsets": {
+        "clock": 0,
+        "accumulated": 4,
+        "remainder": 8,
+        "step_count": 12,
+        "interpolation": 16,
+        "step": 20,
+        "conversion_mode": 24
+      },
+      "assertions": "Pointer, float, double, uint32_t, aggregate size and every member offset."
+    },
+    "public_wrapper": "Takes addresses of the seven references and forwards the uint32_t input to one private naked assembly kernel; no eager cell or mode values are read.",
+    "private_kernel": "reset_kernel(const ResetAddresses*, void*, std::uint32_t), __fastcall and __declspec(naked).",
+    "registers": "ECX receives the address block; EDX entry value is unused. ESI is saved, retains the block across the raw converter, and is restored. EDX supplies pointee addresses after the converter.",
+    "argument_slot": "The private kernel raw DWORD starts at ESP+4; push ESI moves the same slot to ESP+8 for both FLD and MOVSS reads.",
+    "callee": "Direct existing native_crt_truncate_st0_00bf7420 call after loading the supplied mode address into ECX; no new converter or callback.",
+    "callee_stack_contract": "The existing mode selector and full BF7456 fallback consume only the quotient and preserve S/T below it; ESI is preserved.",
+    "count": "Store raw EAX to the actual uint32_t cell, then signed FILD from the same DWORD memory. The fallback high EDX word is not consumed.",
+    "remainder": "FSTP binary32 to the actual remainder cell, then FSUB that stored memory from retained S before the final interpolation store.",
+    "private_return": "RET 4 cleans the kernel raw argument only. Public C++ call-site ABI is not Original RET4 admission.",
+    "source_kernel_instruction_count": 28,
+    "inherited_native_instruction_count": 18,
+    "integer_address_save_restore_instruction_count": 10,
+    "x87_instruction_count": 12,
+    "movss_instruction_count": 3,
+    "direct_converter_call_count": 1,
+    "source_kernel_instructions": [
+      "push esi",
+      "mov esi, ecx",
+      "fld dword ptr [esp + 8]",
+      "movss xmm0, dword ptr [esp + 8]",
+      "fld st(0)",
+      "mov edx, dword ptr [esi]",
+      "movss dword ptr [edx], xmm0",
+      "mov edx, dword ptr [esi + 14h]",
+      "fld qword ptr [edx]",
+      "mov edx, dword ptr [esi + 4]",
+      "movss dword ptr [edx], xmm0",
+      "fdiv st(1), st(0)",
+      "fxch st(1)",
+      "mov ecx, dword ptr [esi + 18h]",
+      "call native_crt_truncate_st0_00bf7420",
+      "mov edx, dword ptr [esi + 0ch]",
+      "mov dword ptr [edx], eax",
+      "fild dword ptr [edx]",
+      "fmul st(0), st(1)",
+      "fsubp st(2), st(0)",
+      "fxch st(1)",
+      "mov edx, dword ptr [esi + 8]",
+      "fstp dword ptr [edx]",
+      "fsub dword ptr [edx]",
+      "mov edx, dword ptr [esi + 10h]",
+      "fstp dword ptr [edx]",
+      "pop esi",
+      "ret 4"
+    ],
+    "native_to_source_operation_map": [
+      {
+        "native_address": "00874640",
+        "source_line": 36,
+        "source_assembly": "fld dword ptr [esp + 8]"
+      },
+      {
+        "native_address": "00874644",
+        "source_line": 37,
+        "source_assembly": "movss xmm0, dword ptr [esp + 8]"
+      },
+      {
+        "native_address": "0087464A",
+        "source_line": 38,
+        "source_assembly": "fld st(0)"
+      },
+      {
+        "native_address": "0087464C",
+        "source_line": 40,
+        "source_assembly": "movss dword ptr [edx], xmm0"
+      },
+      {
+        "native_address": "00874654",
+        "source_line": 42,
+        "source_assembly": "fld qword ptr [edx]"
+      },
+      {
+        "native_address": "0087465A",
+        "source_line": 44,
+        "source_assembly": "movss dword ptr [edx], xmm0"
+      },
+      {
+        "native_address": "00874662",
+        "source_line": 45,
+        "source_assembly": "fdiv st(1), st(0)"
+      },
+      {
+        "native_address": "00874664",
+        "source_line": 46,
+        "source_assembly": "fxch st(1)"
+      },
+      {
+        "native_address": "00874666",
+        "source_line": 48,
+        "source_assembly": "call native_crt_truncate_st0_00bf7420"
+      },
+      {
+        "native_address": "0087466B",
+        "source_line": 50,
+        "source_assembly": "mov dword ptr [edx], eax"
+      },
+      {
+        "native_address": "00874670",
+        "source_line": 51,
+        "source_assembly": "fild dword ptr [edx]"
+      },
+      {
+        "native_address": "00874676",
+        "source_line": 52,
+        "source_assembly": "fmul st(0), st(1)"
+      },
+      {
+        "native_address": "00874678",
+        "source_line": 53,
+        "source_assembly": "fsubp st(2), st(0)"
+      },
+      {
+        "native_address": "0087467A",
+        "source_line": 54,
+        "source_assembly": "fxch st(1)"
+      },
+      {
+        "native_address": "0087467C",
+        "source_line": 56,
+        "source_assembly": "fstp dword ptr [edx]"
+      },
+      {
+        "native_address": "00874682",
+        "source_line": 57,
+        "source_assembly": "fsub dword ptr [edx]"
+      },
+      {
+        "native_address": "00874688",
+        "source_line": 59,
+        "source_assembly": "fstp dword ptr [edx]"
+      },
+      {
+        "native_address": "0087468E",
+        "source_line": 61,
+        "source_assembly": "ret 4"
+      }
+    ],
+    "new_runtime_guards_catches_noexcept_or_controlword_changes": false,
+    "new_floating_spills_value_snapshots_or_private_timeline": false
+  },
+  "preserved_native_schedule": [
+    {
+      "at": "00874640",
+      "operation": "FLD input DWORD as float",
+      "stack": "T"
+    },
+    {
+      "at": "00874644",
+      "operation": "MOVSS original input bits to XMM0",
+      "stack": "T"
+    },
+    {
+      "at": "0087464A",
+      "operation": "FLD ST0",
+      "stack": "T,T"
+    },
+    {
+      "at": "0087464C",
+      "operation": "MOVSS XMM0 to actual F876A4",
+      "stack": "T,T"
+    },
+    {
+      "at": "00874654",
+      "operation": "FLD exact binary64 step D7A270",
+      "stack": "S,T,T"
+    },
+    {
+      "at": "0087465A",
+      "operation": "MOVSS XMM0 to actual F876A8",
+      "stack": "S,T,T"
+    },
+    {
+      "at": "00874662",
+      "operation": "FDIV ST1,ST0",
+      "stack": "S,Q,T"
+    },
+    {
+      "at": "00874664",
+      "operation": "FXCH",
+      "stack": "Q,S,T"
+    },
+    {
+      "at": "00874666",
+      "operation": "Direct call to existing raw BF7420 with actual mode address",
+      "stack": "S,T"
+    },
+    {
+      "at": "0087466B",
+      "operation": "Store EAX bits to actual F876B0",
+      "stack": "S,T"
+    },
+    {
+      "at": "00874670",
+      "operation": "Signed FILD DWORD from that same actual count cell",
+      "stack": "count,S,T"
+    },
+    {
+      "at": "00874676",
+      "operation": "FMUL ST1",
+      "stack": "count*S,S,T"
+    },
+    {
+      "at": "00874678",
+      "operation": "FSUBP ST2,ST0",
+      "stack": "S,T-count*S"
+    },
+    {
+      "at": "0087467A",
+      "operation": "FXCH",
+      "stack": "T-count*S,S"
+    },
+    {
+      "at": "0087467C",
+      "operation": "FSTP binary32 to actual remainder F876AC",
+      "stack": "S"
+    },
+    {
+      "at": "00874682",
+      "operation": "FSUB actual stored binary32 remainder",
+      "stack": "S-stored_remainder"
+    },
+    {
+      "at": "00874688",
+      "operation": "FSTP binary32 to actual interpolation F876B4",
+      "stack": "Incoming depth restored"
+    },
+    {
+      "at": "0087468E",
+      "operation": "Original RET 4",
+      "stack": "Incoming depth restored"
+    }
+  ],
+  "step_operand": {
+    "step_address": "00D7A270",
+    "binary64_hex_bytes": "000000a09999a93f",
+    "exact_hex_value": "0x1.99999a0000000p-5",
+    "value": 0.05000000074505806,
+    "cross_check_address": "00D0DE84",
+    "binary32_hex_bytes": "cdcc4c3d",
+    "promoted_binary32_equals_native_binary64": true,
+    "ordinary_binary64_literal_0_05_is_equal": false,
+    "provider_contract": "Borrow the qualified actual binary64 step; do not use a different literal or pre-rounded floating intermediate."
+  },
+  "inherited_dependency": {
+    "header": "include/bsp/native_render_batch_keys.hpp",
+    "source": "src/native_render_batch_keys.cpp",
+    "reused_unchanged": true,
+    "no_bf7456_queries_or_modifications": true,
+    "no_cpp_cast_zero_only_or_numeric_projection_substitution": true
+  },
+  "admission_limits": {
+    "shared_cells_owner_lifetime_and_reset_paths": "External, unchanged from the two preceding audits; a context does not join the current independent host clocks.",
+    "step_and_mode_identity": "Caller supplies qualified actual operands; no local double literal, cached selector or hardware-query substitution.",
+    "abi": "New C++ interface; no Original stack, scratch-register, returned EFLAGS, SEH or drop-in compatibility admission.",
+    "floating_environment": "Uses existing hardware kernels under caller x87/MXCSR state; no normalization, exception policy or cleanup is introduced.",
+    "volatile": "Explicit accesses only; no synchronization or storage ownership.",
+    "runtime": "No startup, Native execution, game or application validation."
+  },
+  "verification": {
+    "static_source_review": "All 28 kernel statements checked against the address-adapted Native sequence; 18 Native address annotations in order, 12 x87 operations, three MOVSS operations, one direct existing converter call and seven borrowed references.",
+    "source_and_evidence_pin_count": 6,
+    "checks": [
+      "Six physical and LF-normalized Source/evidence hashes match.",
+      "Inherited readiness report decoded; all four Native span lengths/hashes validated.",
+      "JSON decoding and git diff checks passed."
+    ],
+    "inherited_native_evidence": {
+      "report": "reports/cc12_mission_clock_reset_provider_readiness.json",
+      "baseline": "4652b343c640eb3f4f955f9323ae657e44752379",
+      "native_image": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "image_base": "00400000",
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "spans": [
+        {
+          "address": "00874640",
+          "length": 81,
+          "purpose": "complete reset body",
+          "hex": "d9442404f30f10442404d9c0f30f1105a476f800dd0570a2d700f30f1105a876f800dcf9d9c9e8b52d3800a3b076f800db05b076f800d8c9deead9c9d91dac76f800d825ac76f800d91db476f800c20400",
+          "sha256": "a0bef200fc1854e9df3faea97321b407d15d802b76dbbbcec80cfdcbc6759656",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00BF7420",
+          "length": 28,
+          "purpose": "complete selector/SSE2 body; tail transfer to existing BF7456",
+          "hex": "833da4ee090100742d558bec83ec0883e4f8dd1c24f20f2c0424c9c3",
+          "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00D7A270",
+          "length": 8,
+          "purpose": "exact reset step operand",
+          "hex": "000000a09999a93f",
+          "sha256": "f6695ce73944e91633628832ea0c0f88a3ea4f28087ed24fa862b40ffeec8154",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00D0DE84",
+          "length": 4,
+          "purpose": "promoted-float step cross-check",
+          "hex": "cdcc4c3d",
+          "sha256": "0b9d79ff0fc4d0a77ef398763bbe45c445501e826219f2b6a1aa709411ab631d",
+          "live_disk_equal": true
+        }
+      ],
+      "span_count": 4,
+      "bytes_equal": 121,
+      "fresh_captures_in_this_packet": 0
+    },
+    "build_tests_probes_or_execution": "Not performed; primary integrator owns compilation and complete emitted-kernel/callee review.",
+    "gpr_queries": 0,
+    "gpr_mutations": 0,
+    "source_registration_changed": false,
+    "ledger_changed": false
+  },
+  "primary_integration_remaining": [
+    "Register the new cpp in the build.",
+    "Run the normal MSVC Win32 build.",
+    "Review the complete emitted wrapper/kernel and the actual converter callees.",
+    "Decide any ledger/Original credit only after primary admission; shared-owner/application wiring remains separate."
+  ],
+  "source_and_evidence_pins": [
+    {
+      "path": "include/bsp/native_mission_clock_reset.hpp",
+      "bytes": 1540,
+      "sha256": "27d47cb37491d112eec0a4fb8b54c7beab88be1d86c92a75f5137a7728569a11",
+      "lf_content_sha256": "27d47cb37491d112eec0a4fb8b54c7beab88be1d86c92a75f5137a7728569a11"
+    },
+    {
+      "path": "src/native_mission_clock_reset.cpp",
+      "bytes": 3477,
+      "sha256": "7b19b589c9418edc8cf14c460a1bae1a6517afe377e6c335b946f253a8b9c075",
+      "lf_content_sha256": "7b19b589c9418edc8cf14c460a1bae1a6517afe377e6c335b946f253a8b9c075"
+    },
+    {
+      "path": "include/bsp/native_render_batch_keys.hpp",
+      "bytes": 1858,
+      "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "lf_content_sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "bytes": 5004,
+      "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "lf_content_sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+    },
+    {
+      "path": "reports/cc12_mission_clock_reset_provider_readiness.json",
+      "bytes": 17617,
+      "sha256": "419ba86d59a9fdbbf4ce0a1885d03772e0b65dfacfd347a89d53aeb7117225be",
+      "lf_content_sha256": "419ba86d59a9fdbbf4ce0a1885d03772e0b65dfacfd347a89d53aeb7117225be"
+    },
+    {
+      "path": "reports/cc12_world_mission_clock_owner_readiness.json",
+      "bytes": 21728,
+      "sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5",
+      "lf_content_sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5"
+    }
+  ],
+  "primary_msvc_syntax_correction": {
+    "old_source_pin": {
+      "path": "src/native_mission_clock_reset.cpp",
+      "bytes": 3477,
+      "sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6",
+      "lf_content_sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6"
+    },
+    "old_source_assembly": "fmul st(1)",
+    "current_source_assembly": "fmul st(0), st(1)",
+    "reason": "Normal MSVC Win32 build reported C2415 for single-operand form; equivalent explicit destination form encodes Native D8C9",
+    "first_failed_build_receipt": "local/cc12_world_tick_reset_frame_primary/first_failed_build_exit.json",
+    "emitted_encoding_verified": true,
+    "emitted_encoding": "d8c9"
+  },
+  "primary_emitted_review": {
+    "report": "reports/cc12_world_tick_reset_frame_primary_review.json",
+    "normal_build_passed": true,
+    "existing_checks_passed": 3,
+    "kernel_bytes": 74,
+    "kernel_instructions": 28,
+    "new_original_function_primary_admission": 1,
+    "native_binary_abi_or_runtime_proof": false
+  }
+}
