@@ -1,0 +1,569 @@
+{
+  "schema": "cc12_native_mission_entity_lua_self_refresh_Source_candidate_v1",
+  "created_utc": "2026-10-09T21:31:02.946117+00:00",
+  "packet": "cc12_native_mission_entity_lua_self_refresh",
+  "status": "prototype_Source_candidate_unregistered_unbuilt_awaiting_primary_compiler_emitted_cleanup_review_and_admission",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding",
+  "branch": "agent/cc12_unit_numbering_caller_receiver_binding",
+  "base_commit": "a44121db9dc9a936b323dc0004ad3ffaff0987e5",
+  "accepted_main_ancestor": "0514c5d525f323c07c06c00833070b4343abf47a",
+  "ancestor_verified": true,
+  "scope": {
+    "leased_addresses": [
+      "00928A00",
+      "00928B73"
+    ],
+    "Native_fragment": "00928B73..00928B9A",
+    "output_files": [
+      "include/bsp/native_mission_entity_lua_self_refresh.hpp",
+      "src/native_mission_entity_lua_self_refresh.cpp",
+      "docs/CC12_NATIVE_MISSION_ENTITY_LUA_SELF_REFRESH_SOURCE.md",
+      "reports/cc12_native_mission_entity_lua_self_refresh_source.json"
+    ],
+    "whole634_byte_parent_implemented": false,
+    "abstract_MissionEntityLuaAttachHost_changed": false,
+    "CMake_registration": false,
+    "application_consumer": false,
+    "build_tests_probes": false,
+    "ledger_Ghidra_GPR_mutation": false,
+    "no_new_Native_bodies": true,
+    "ordinary_Cpp_interface": true,
+    "descriptive_symbol_is_provisional": true
+  },
+  "evidence": {
+    "capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_native_mission_entity_lua_self_refresh\\capture.json",
+      "bytes": 150627,
+      "sha256": "ef33537febb33a0a6a8c55fc6f2a9aaf37265310a2c9a62158fc51116ddcf62f",
+      "canonical_lf_sha256": "ef33537febb33a0a6a8c55fc6f2a9aaf37265310a2c9a62158fc51116ddcf62f"
+    },
+    "capture_script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_native_mission_entity_lua_self_refresh\\capture.py",
+      "bytes": 5616,
+      "sha256": "4fbd9a165b975d0c65cd6278ff54bcf4b456f06b60617e12348294ce6b31f95b",
+      "canonical_lf_sha256": "4fbd9a165b975d0c65cd6278ff54bcf4b456f06b60617e12348294ce6b31f95b"
+    },
+    "accepted_readiness_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\reports\\cc12_unit_numbering_self_table_publication_readiness.json",
+      "bytes": 76062,
+      "sha256": "c6ca563337f2d636ea1640c3bd2f98f7c1f20bd8dddf5aca4994dbeb7397c097",
+      "canonical_lf_sha256": "c6ca563337f2d636ea1640c3bd2f98f7c1f20bd8dddf5aca4994dbeb7397c097"
+    },
+    "Root_acceptance": {
+      "worker_commit": "42dfe5efb148e5567cc33d6c01f00c47b5bf4530",
+      "immutable_worker_report_pin": {
+        "path": "reports/cc12_unit_numbering_self_table_publication_readiness.json",
+        "bytes": 73765,
+        "sha256": "3e10bc5c3e4fb3a3c97977c2a432c1c4ef871d3e62a090449795875895a99726"
+      },
+      "immutable_worker_doc_pin": {
+        "path": "docs/CC12_UNIT_NUMBERING_SELF_TABLE_PUBLICATION_READINESS.md",
+        "bytes": 10895,
+        "sha256": "52b61983a51b4498c54542ce41d0fad110596f96c070dfa2b7a8255d2afc23b8"
+      },
+      "Root_complete_doc_and_relevant_actual_Source_evidence_read": true,
+      "Root_complete_Native_gate_review": [
+        {
+          "address": "00928a00",
+          "bytes": 634,
+          "operations": 187,
+          "calls": 32,
+          "full_PE_SHA_independent_decode_saved_live_rows_and_all_starts_replayed": true,
+          "embedded40byte11op_refresh_verified": true
+        }
+      ],
+      "all_recursive_report_pin_rows_replayed": 62,
+      "only_worker_LF_CRLF_differences": [
+        "reports/cc12_pending_registry_tick_registration_constructor_readiness.json"
+      ],
+      "current_Source121_receipt_pin": {
+        "path": "reports/cc12_native_mlandfort_kind_primary_review.json",
+        "bytes": 94454,
+        "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+      },
+      "new_Source_build_Original_ABI_startup_gameplay_credit": 0,
+      "production_numbering_admission": "Source-held; concrete bounded provider prerequisites remain separate from actual receiver/model ownership.",
+      "current_doc_pin": {
+        "path": "docs/CC12_UNIT_NUMBERING_SELF_TABLE_PUBLICATION_READINESS.md",
+        "bytes": 11327,
+        "sha256": "c0031a6e1914d020ad0ff4da600a6665d0cc8f99f2e8ac427d4ad91a500a1b57"
+      },
+      "new_Cpp_CMake_tests_probes_consumers": false,
+      "Root_ledger_and_GPR_evidence_annotations": {
+        "saved_annotation_receipt": "local\\ghidra-annotations-20261009T211927Z.json",
+        "existing_names_and_comments_preserved": true,
+        "full_Native_bytes_all_starts_and_prototypes_unchanged": true,
+        "function_count_unchanged": true,
+        "forced_exports_refreshed": true,
+        "new_Source_ABI_startup_gameplay_credit": 0
+      },
+      "Source121_current121_Root_raw_inputs4_artifacts_and121_worker_LF_replayed": true
+    },
+    "Original_image_pin": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "parent_gate": {
+      "address": "00928a00",
+      "end_inclusive": "00928c79",
+      "bytes": 634,
+      "operation_count": 187,
+      "sha256": "301502221567c47d0e7a255a94b5beeefb5833d1eba33f21d60e9662fa970d00"
+    },
+    "fragment": {
+      "address": "00928B73",
+      "end_inclusive": "00928B9A",
+      "bytes": 40,
+      "operation_count": 11,
+      "hex": "8d542448528bcfe8c1efffff508d4c2424c644246806e802eb23008d4c2448885c2464e865eb2300",
+      "sha256": "e11e16a45648bc60d225be1933839bd360253224720e0ebf6281d8d764a382eb",
+      "instruction_rows": [
+        "00928b73: 8d542448 | lea edx, [esp + 0x48]",
+        "00928b77: 52 | push edx",
+        "00928b78: 8bcf | mov ecx, edi",
+        "00928b7a: e8c1efffff | call 0x927b40",
+        "00928b7f: 50 | push eax",
+        "00928b80: 8d4c2424 | lea ecx, [esp + 0x24]",
+        "00928b84: c644246806 | mov byte ptr [esp + 0x68], 6",
+        "00928b89: e802eb2300 | call 0xb67690",
+        "00928b8e: 8d4c2448 | lea ecx, [esp + 0x48]",
+        "00928b92: 885c2464 | mov byte ptr [esp + 0x64], bl",
+        "00928b96: e865eb2300 | call 0xb67700"
+      ]
+    },
+    "current_saved_export_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00928a00\\assembly.txt",
+        "bytes": 5285,
+        "sha256": "838359f9067ed72920934fd9042b0c8986d3ef00917be37439d03776220ae255",
+        "canonical_lf_sha256": "838359f9067ed72920934fd9042b0c8986d3ef00917be37439d03776220ae255"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00928a00\\decompiled.c",
+        "bytes": 11405,
+        "sha256": "efb7d0afdd3de0cae7f4232ae72d71a5b201ed927d1e3c3c2a8aa3d9318125e0",
+        "canonical_lf_sha256": "efb7d0afdd3de0cae7f4232ae72d71a5b201ed927d1e3c3c2a8aa3d9318125e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00928a00\\metadata.json",
+        "bytes": 283,
+        "sha256": "a33a8053a2b7d7d36bfb6ebed7c97b1937facbee752a689f1f93de302e9e6f98",
+        "canonical_lf_sha256": "a33a8053a2b7d7d36bfb6ebed7c97b1937facbee752a689f1f93de302e9e6f98"
+      }
+    ],
+    "current_all187_saved_starts_equal_accepted_gate": true,
+    "new_live_Ghidra_queries": false,
+    "Native_basis": "Existing accepted complete634-byte/187-operation/32-call parent gate, including fresh live bytes at readiness time. Current PE and saved starts replayed; no newly claimed live/body/ABI proof."
+  },
+  "candidate": {
+    "public_name": "bsp::refresh_native_mission_entity_lua_self_00928b73_fragment",
+    "header": "include/bsp/native_mission_entity_lua_self_refresh.hpp",
+    "source": "src/native_mission_entity_lua_self_refresh.cpp",
+    "signature": "void refresh_native_mission_entity_lua_self_00928b73_fragment(const NativeString& actual_entity_key_178, NativeLuaObjectStorage& persistent_self, void* volatile& actual_world_publication_00e188a8)",
+    "pins": [
+      {
+        "path": "include/bsp/native_mission_entity_lua_self_refresh.hpp",
+        "bytes": 1680,
+        "sha256": "18b33629242e174e50f430d68685d5b48d40094dc3333602089c08ff2f0a468c",
+        "canonical_lf_sha256": "18b33629242e174e50f430d68685d5b48d40094dc3333602089c08ff2f0a468c"
+      },
+      {
+        "path": "src/native_mission_entity_lua_self_refresh.cpp",
+        "bytes": 1212,
+        "sha256": "a9f90059b1cc41980cc87d275359e17133b296e62e3823255b1e1c386fd8dd7f",
+        "canonical_lf_sha256": "a9f90059b1cc41980cc87d275359e17133b296e62e3823255b1e1c386fd8dd7f"
+      },
+      {
+        "path": "docs/CC12_NATIVE_MISSION_ENTITY_LUA_SELF_REFRESH_SOURCE.md",
+        "bytes": 7899,
+        "sha256": "85e823a4dde9246b7d70bfe35251f524791b91d991f27a5ecb78e12be9d0a5fd",
+        "canonical_lf_sha256": "85e823a4dde9246b7d70bfe35251f524791b91d991f27a5ecb78e12be9d0a5fd"
+      }
+    ],
+    "normal_schedule": [
+      {
+        "Native": "00928B73..00928B7A",
+        "Source": "Declare distinct NativeLuaObjectStorage temporary without blanket initialization; pass same actual key and actual publication-cell reference to construct_native_mission_entity_lua_self_00927b40. Retain only its returned actual pointer."
+      },
+      {
+        "Native": "00928B7F..00928B89",
+        "Source": "assign_native_lua_object_00b67690(persistent_self, *returned). The real provider releases bound destination before late source owner/kind/index/tracked reads and actual registration."
+      },
+      {
+        "Native": "00928B8E..00928B96",
+        "Source": "destroy_native_lua_object_00b67700(temporary) before return. Later ID at00928BA5 is outside this function and must use persistent_self current fields."
+      }
+    ],
+    "native_context": "Entered only after normal-path fresh-table creation and preceding table/global temporary destruction. Kind3 skip does not call this fragment. Original persistent self is S+20 and distinct temporary S+48; offsets hexadecimal.",
+    "Source_static_calls": {
+      "getter": 1,
+      "assignment": 1,
+      "destruction": 2,
+      "explanation": "One destruction call is the normal path; one is the C++ assignment-exception path. Exactly one is attempted after a completed getter for each reached path. No generated-code claim before primary build."
+    },
+    "no_callbacks_or_field_copies": true,
+    "no_cached_owner_index_count_world_or_source_fields": true,
+    "no_numbering_or_model_operations": true,
+    "no_receiver_ownership_provided": true
+  },
+  "admission_contract": {
+    "actual_inputs": [
+      "Same actual R+178 NativeString header, not a copied key or semantic wrapper.",
+      "Actual current E188A8 publication cell passed by volatile reference; getter captures current world for THIS invocation.",
+      "Already constructed persistent14h NativeLuaObjectStorage at a stable address. Its actual current owner/state/tracking metadata is valid.",
+      "Distinct fresh14h temporary storage owned locally by this function; getter constructs it. No alias with persistent storage, actual key or publication cell."
+    ],
+    "lifetime": [
+      "Actual old/new owners, states, key storage, Lua stack, object addresses and tracking domains remain valid through lookup/metamethods, destination release, registration and temporary destruction.",
+      "Old persistent owner and current getter world owner are not presumed identical; existing assignment releases old owner then reads/copies actual source owner.",
+      "Native50-slot/five-reference capacity contracts remain required; no added guard, fake owner, registry-ref translation, allocation substitute or semantic-unit cast.",
+      "After return, any ID/Dead/Ptr work must read the persistent object current fields. It is still borrowed by this fragment and requires its eventual real caller cleanup."
+    ],
+    "pointer_count_refresh": [
+      "Getter temporary cleanup may change output index before return.",
+      "Destination release may remove a lower stack entry and move source index. Existing assignment reads source only after that release and registers actual persistent address.",
+      "Temporary destruction may update actual tracking and current indices. No index, pointer/count or high-water snapshot is replayed."
+    ],
+    "excluded": [
+      "Whole attach preparation, first lookup, key formatting/cache, nil/newtable/ID/Dead/Ptr work and parent cleanup.",
+      "Original saved-stack/register ABI and Native FH3/SEH handler/table equivalence.",
+      "Lua longjmp/nonlocal errors, hardware-fault cleanup, invalid storage and arbitrary stack aliases.",
+      "Production receiver R0/C4/35C/360 backing/profile/lifetime, executable query5C binding, current model and real numbering services."
+    ]
+  },
+  "Cpp_exception_contract": {
+    "getter_failure": "Getter runs before assignment try block. Its existing qualified provider owns completed-output cleanup if it throws; this fragment makes no destruction attempt on an output whose construction did not return.",
+    "assignment_failure": "After getter returns, catch any C++ assignment exception, attempt actual temporary destruction once, then rethrow the original assignment exception if cleanup returns.",
+    "cleanup_failure_during_assignment_catch": "If temporary destruction itself throws, its cleanup exception replaces the original C++ assignment exception. There is no consumed flag, retry or extra destruction attempt.",
+    "normal_cleanup_failure": "Normal destruction is outside the assignment catch. Its exception propagates after that single attempt; the assignment cleanup path is not entered.",
+    "partial_effects": "Destination release, source reads, registration and Lua effects already completed remain visible. No rollback, restoration or operation replay is introduced.",
+    "Native_EH_equivalence": false,
+    "exception_tested": false,
+    "interpretation": "Explicit new C++ exception policy over existing qualified providers; not an implementation or execution proof of the original parent handler."
+  },
+  "actual_dependencies": {
+    "direct_callables": [
+      {
+        "name": "construct_native_mission_entity_lua_self_00927b40",
+        "header": "include/bsp/native_mission_entity_lua_self.hpp:16",
+        "source": "src/native_mission_entity_lua_self.cpp:31",
+        "interface": "NativeLuaObjectStorage* (const NativeString&, NativeLuaObjectStorage&, void* volatile&)",
+        "contract": "Capture current world, actual embedded owner+1A0C, real globals/thisTable/current-key lookup, real temporary cleanup and exact returned output; completed-output C++ cleanup remains in provider."
+      },
+      {
+        "name": "assign_native_lua_object_00b67690",
+        "header": "include/bsp/native_lua_objects.hpp:101",
+        "source": "src/native_lua_objects.cpp:150",
+        "interface": "NativeLuaObjectStorage* (NativeLuaObjectStorage&, const NativeLuaObjectStorage&)",
+        "contract": "Release destination before current source reads; preserve destination opaque0C/padding; register actual address without a self-copy guard."
+      },
+      {
+        "name": "destroy_native_lua_object_00b67700",
+        "header": "include/bsp/native_lua_objects.hpp:96",
+        "source": "src/native_lua_objects.cpp:146",
+        "interface": "void (NativeLuaObjectStorage&)",
+        "contract": "Kind0 skip; otherwise actual current owner/index/tracked release followed by clearing current kind. Actual tracking can move other live indices."
+      }
+    ],
+    "existing_state_domain": "NativeLuaObjectStorage14h, NativeLuaStateStorage4C8h, actual owner+1A0C, real Lua5.1.1 and native tracked-slot helpers remain existing dependencies. No new Lua/library port or owner implementation.",
+    "inspected_provider_files_unchanged_from_accepted_readiness": true,
+    "file_pins": [
+      {
+        "path": "include/bsp/native_mission_entity_lua_self.hpp",
+        "worker": {
+          "path": "include/bsp/native_mission_entity_lua_self.hpp",
+          "bytes": 1373,
+          "sha256": "689988bb69730f42d376ad30767a5fa7cce731305374b73867bd8162568c0274",
+          "canonical_lf_sha256": "689988bb69730f42d376ad30767a5fa7cce731305374b73867bd8162568c0274"
+        },
+        "Root": {
+          "path": "include/bsp/native_mission_entity_lua_self.hpp",
+          "bytes": 1373,
+          "sha256": "689988bb69730f42d376ad30767a5fa7cce731305374b73867bd8162568c0274",
+          "canonical_lf_sha256": "689988bb69730f42d376ad30767a5fa7cce731305374b73867bd8162568c0274"
+        },
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "src/native_mission_entity_lua_self.cpp",
+        "worker": {
+          "path": "src/native_mission_entity_lua_self.cpp",
+          "bytes": 2331,
+          "sha256": "dd1febf4cdda2a4d10efeb0d780fd2ca84d91940118e7a5fc174f140e433306c",
+          "canonical_lf_sha256": "dd1febf4cdda2a4d10efeb0d780fd2ca84d91940118e7a5fc174f140e433306c"
+        },
+        "Root": {
+          "path": "src/native_mission_entity_lua_self.cpp",
+          "bytes": 2331,
+          "sha256": "dd1febf4cdda2a4d10efeb0d780fd2ca84d91940118e7a5fc174f140e433306c",
+          "canonical_lf_sha256": "dd1febf4cdda2a4d10efeb0d780fd2ca84d91940118e7a5fc174f140e433306c"
+        },
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_lua_objects.hpp",
+        "worker": {
+          "path": "include/bsp/native_lua_objects.hpp",
+          "bytes": 10058,
+          "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+          "canonical_lf_sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+        },
+        "Root": {
+          "path": "include/bsp/native_lua_objects.hpp",
+          "bytes": 10058,
+          "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+          "canonical_lf_sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+        },
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "src/native_lua_objects.cpp",
+        "worker": {
+          "path": "src/native_lua_objects.cpp",
+          "bytes": 17434,
+          "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+          "canonical_lf_sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
+        },
+        "Root": {
+          "path": "src/native_lua_objects.cpp",
+          "bytes": 17434,
+          "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+          "canonical_lf_sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
+        },
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "worker": {
+          "path": "include/bsp/native_string.hpp",
+          "bytes": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+          "canonical_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        "Root": {
+          "path": "include/bsp/native_string.hpp",
+          "bytes": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+          "canonical_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "worker": {
+          "path": "include/bsp/storage_pool.hpp",
+          "bytes": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+          "canonical_lf_sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        "Root": {
+          "path": "include/bsp/storage_pool.hpp",
+          "bytes": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+          "canonical_lf_sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/lua_numeric.hpp",
+        "worker": {
+          "path": "include/bsp/lua_numeric.hpp",
+          "bytes": 1086,
+          "sha256": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+          "canonical_lf_sha256": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60"
+        },
+        "Root": {
+          "path": "include/bsp/lua_numeric.hpp",
+          "bytes": 1086,
+          "sha256": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+          "canonical_lf_sha256": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60"
+        },
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/gui_lua_reader.hpp",
+        "worker": {
+          "path": "include/bsp/gui_lua_reader.hpp",
+          "bytes": 23275,
+          "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+          "canonical_lf_sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+        },
+        "Root": {
+          "path": "include/bsp/gui_lua_reader.hpp",
+          "bytes": 23275,
+          "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+          "canonical_lf_sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+        },
+        "Root_worker_LF_equal": true
+      }
+    ],
+    "pin_scope": "Direct callable provider sources and project interface/include dependencies are pinned; Root Source121 compiler inputs and artifacts are separately replayed. These are not new compiler-consumed candidate dependency or emitted-object pins."
+  },
+  "minimal_focused_validation_design": {
+    "execution": "Not performed; no new test or probe file.",
+    "setup": "One real-Lua5.1.1 case with canonically constructed actual owner/tracked objects, same actual NativeString key and current world cell. Construct a persistent reference to the old table, retain old table for observation, then replace actual globals.thisTable[key] with a new table.",
+    "movement": "Place persistent self below fresh getter output in the same tracked stack so assignment destination release must move source index. Do not substitute a mock host or copied registry handles.",
+    "invoke": "Call the candidate once on the admitted existing storage.",
+    "inspect": [
+      "Persistent current owner/index identifies the new table.",
+      "Persistent address appears exactly once in the actual tracked reference set; temporary address no longer appears.",
+      "Current counts, indices and stack shape are valid after temporary destruction; destination opaque0C/padding remain unchanged.",
+      "Use one existing real setter through current persistent self: only the new table receives the marker; retained old table remains unchanged."
+    ],
+    "bounded_claim": "Refresh identity and tracking only. Does not execute the later Native ID setter, establish production receiver ownership, exercise arbitrary aliases or prove exception/Native ABI paths.",
+    "inherited_fixture_availability": "Accepted readiness report records getter/setter historical fixtures, whose named local source/runner paths were absent in checked old worktree/main/PrimaryRoot. No prior result is relabelled as candidate validation."
+  },
+  "Source121_context_replay": {
+    "capture_utc": "2026-10-09T21:29:31.032597+00:00",
+    "primary_report_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_native_mlandfort_kind_primary_review.json",
+      "bytes": 94454,
+      "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d",
+      "canonical_lf_sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 103464,
+      "start_utc": "2026-10-09T20:46:26.766022+00:00",
+      "finish_utc": "2026-10-09T20:46:43.654990+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 121
+    },
+    "Root_raw_inputs_equal": 121,
+    "worker_LF_inputs_equal": 121,
+    "worker_raw_differences": [
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "Root_actual": {
+          "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "bytes": 18326,
+          "sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+          "canonical_lf_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+        },
+        "worker_actual": {
+          "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "bytes": 17789,
+          "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+          "canonical_lf_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+        },
+        "classification": "LF_CRLF_only"
+      }
+    ],
+    "Root_artifacts": [
+      {
+        "expected": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73781594,
+          "sha256": "b0d5120be850c18391097da87ca49d0b814e845189b8cae55c07709e4ed91366"
+        },
+        "actual": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73781594,
+          "sha256": "b0d5120be850c18391097da87ca49d0b814e845189b8cae55c07709e4ed91366"
+        },
+        "raw_equal": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39"
+        },
+        "actual": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39"
+        },
+        "raw_equal": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "29ca7b93292cf99c5789ccc0a74604a89efc51553a65679b7f465d41ff36e656"
+        },
+        "actual": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "29ca7b93292cf99c5789ccc0a74604a89efc51553a65679b7f465d41ff36e656",
+          "canonical_lf_sha256": "fb81494bb4b3a0a275935ce9d6546435b2b02b884842973a2b880a35bf3d37cc"
+        },
+        "raw_equal": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "e222d06f94c4a165466a467e34b7741461e54e60fd048135231156425cc5ab42"
+        },
+        "actual": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "e222d06f94c4a165466a467e34b7741461e54e60fd048135231156425cc5ab42",
+          "canonical_lf_sha256": "61abbaa17945eff50cedfe26cb454c5c70d3d77c632d7ae06e287b3ad43f79bb"
+        },
+        "raw_equal": true
+      }
+    ],
+    "existing_checks_passed": 3,
+    "whole_objects_captured_or_replayed": 37,
+    "positive_Core_definitions": 41,
+    "all35_prior_objects_unchanged": 35,
+    "full121_checks": "evidence.capture_pin -> Source121_context_replay.inputs",
+    "candidate_in_that_build": false,
+    "new_build": false
+  },
+  "separate_startup_context": {
+    "report_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\reports\\cc12_production_startup_receiver_audit.json",
+      "bytes": 33349,
+      "sha256": "58557146a04a1b0688c6f33c430b9eb8a2551ae09dde5dc2b18d3f8579d242aa",
+      "canonical_lf_sha256": "58557146a04a1b0688c6f33c430b9eb8a2551ae09dde5dc2b18d3f8579d242aa"
+    },
+    "summary": {
+      "window_created": true,
+      "device_created": true,
+      "device_hr": "00000000",
+      "back_buffer": "640x480",
+      "frames_presented": 2,
+      "presents_skipped": 1,
+      "loop_finished": true,
+      "exit_code": 0,
+      "mission_frames": 0,
+      "frontend_step": "PressStartPoll"
+    },
+    "candidate_executed": false,
+    "receiver_model_ownership_proved": false
+  },
+  "primary_next_steps": [
+    "Review complete four-file candidate and exception contract.",
+    "Own CMake registration and MSVC Win32 build; inspect emitted normal/cleanup schedule before Source admission.",
+    "If admitted for validation, use the single real-Lua tracking case rather than a new broad test suite.",
+    "Keep Source fragment evidence distinct from whole634-byte parent, original ABI and production receiver/model ownership."
+  ],
+  "credits": {
+    "Source": 0,
+    "build": 0,
+    "fixture": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0,
+    "runtime": 0,
+    "prototype_candidate": 1
+  },
+  "review": {
+    "Native_fragment_rows_reused_and_PE_replayed": true,
+    "all_owned_files_only": true,
+    "complete_header_CPP_doc_report_read": true,
+    "final_mechanical_pin_checks": 276,
+    "exact40_byte11_operation_fragment_PE_decode_equal": true
+  }
+}
