@@ -1,0 +1,2183 @@
+{
+  "schema": "bsp.cc12.observer_member_cleanup_EH_readiness.v1",
+  "packet": "cc12_observer_member_cleanup_EH_readiness",
+  "kind": "readonly_selected_EH_handler_descriptor_map_action_audit",
+  "created_utc": "2026-10-09T17:13:39.697359+00:00",
+  "worker_baseline": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+  "published_main_at_sync": "9b624342e14ef3a89c59e9a204a42491dcb0c29b",
+  "owner": "agent/cc12_lua_variant_copy_child_abi",
+  "owned_files": [
+    "docs/CC12_OBSERVER_MEMBER_CLEANUP_EH_READINESS.md",
+    "reports/cc12_observer_member_cleanup_EH_readiness.json"
+  ],
+  "owned_code_entries": [
+    "00C7AF48",
+    "00C7AF40"
+  ],
+  "owned_data_windows": [
+    {
+      "start": "00DA7B14",
+      "end_inclusive": "00DA7B37",
+      "bytes": 36
+    },
+    {
+      "start": "00DA7B0C",
+      "end_inclusive": "00DA7B13",
+      "bytes": 8
+    }
+  ],
+  "conclusion": "One selected action reloads ECX from currentEBP-10h and tail-jumps to00695870. Cleanup88 full state0/FFFFFFFF order supports an explicitly qualified Source armed phase around unregister, disarmed before normal destruction. Interpreter frame/dispatch/exactly-once and failure-during-unwind semantics remain unopened.",
+  "credit": {
+    "Source": 0,
+    "Original_ABI": 0,
+    "runtime": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "native_evidence": {
+    "captured_utc": "2026-10-09T17:07:16.078760+00:00",
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "configured_GPR_exists": true,
+    "each_CLI_verifies_project_program_language_and_imagebase": true,
+    "stronger_server_absolute_GPR_path_claim": false,
+    "count": "live function count 64729; snapshot 64729; same",
+    "Original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "00400000"
+    },
+    "handler": {
+      "address": "00C7AF48",
+      "end_inclusive": "00C7AF51",
+      "bytes": 10,
+      "rva": "0087AF48",
+      "file_offset": 8892232,
+      "hex": "b8147bda00e9f1bbf7ff",
+      "sha256": "d3ded63692c174109e0260f1b748a29576ef68e663c575c94f169e6211887bf5",
+      "live_PE_equal": true,
+      "kind": "code",
+      "instructions": [
+        {
+          "address": "00C7AF48",
+          "bytes": "b8147bda00",
+          "size": 5,
+          "mnemonic": "mov",
+          "operands": "eax, 0xda7b14"
+        },
+        {
+          "address": "00C7AF4D",
+          "bytes": "e9f1bbf7ff",
+          "size": 5,
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        }
+      ],
+      "all_instruction_starts_saved": true,
+      "saved_instruction_contexts": {
+        "00C7AF48": {
+          "address": "00c7af48",
+          "instruction": "MOV EAX,0xda7b14",
+          "context_before": [],
+          "context_after": [],
+          "mnemonic": "MOV",
+          "patterns_detected": [
+            "data_access"
+          ]
+        },
+        "00C7AF4D": {
+          "address": "00c7af4d",
+          "instruction": "JMP 0x00bf6b43",
+          "context_before": [],
+          "context_after": [],
+          "mnemonic": "JMP",
+          "patterns_detected": [
+            "control_flow"
+          ]
+        }
+      }
+    },
+    "descriptor": {
+      "address": "00DA7B14",
+      "end_inclusive": "00DA7B37",
+      "bytes": 36,
+      "rva": "009A7B14",
+      "file_offset": 10124052,
+      "hex": "22059319010000000c7bda00000000000000000000000000000000000000000001000000",
+      "sha256": "3c4f51d51ffcf7fe6170fbf331ba132c0281e2c997fe79ccc40a4235750320cd",
+      "live_PE_equal": true,
+      "kind": "data",
+      "DWORDs": [
+        "19930522",
+        "00000001",
+        "00DA7B0C",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    "unwind_map": {
+      "address": "00DA7B0C",
+      "end_inclusive": "00DA7B13",
+      "bytes": 8,
+      "rva": "009A7B0C",
+      "file_offset": 10124044,
+      "hex": "ffffffff40afc700",
+      "sha256": "deb098016dc9b536c89d502a7752e37d39a88ef7cf862684f2df7fd5f1fc9313",
+      "live_PE_equal": true,
+      "kind": "data",
+      "DWORDs": [
+        "FFFFFFFF",
+        "00C7AF40"
+      ]
+    },
+    "action": {
+      "address": "00C7AF40",
+      "end_inclusive": "00C7AF47",
+      "bytes": 8,
+      "rva": "0087AF40",
+      "file_offset": 8892224,
+      "hex": "8b4df0e928a9a1ff",
+      "sha256": "a8f148e7a6b2fbed593b2b5a3c9fdf83eab352dac4df37190216db28602ad8a0",
+      "live_PE_equal": true,
+      "kind": "code",
+      "instructions": [
+        {
+          "address": "00C7AF40",
+          "bytes": "8b4df0",
+          "size": 3,
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "address": "00C7AF43",
+          "bytes": "e928a9a1ff",
+          "size": 5,
+          "mnemonic": "jmp",
+          "operands": "0x695870"
+        }
+      ],
+      "all_instruction_starts_saved": true,
+      "saved_instruction_contexts": {
+        "00C7AF40": {
+          "address": "00c7af40",
+          "instruction": "MOV ECX,dword ptr [EBP + -0x10]",
+          "context_before": [],
+          "context_after": [],
+          "mnemonic": "MOV",
+          "patterns_detected": [
+            "data_access"
+          ]
+        },
+        "00C7AF43": {
+          "address": "00c7af43",
+          "instruction": "JMP 0x00695870",
+          "context_before": [],
+          "context_after": [],
+          "mnemonic": "JMP",
+          "patterns_detected": [
+            "control_flow"
+          ]
+        }
+      }
+    },
+    "handler_saved_metadata": {
+      "proto_result": "No function found for 00c7af48\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00c7af48'})\n",
+      "saved_function_at_entry": false,
+      "both_instructions_saved": true,
+      "function_creation_or_listing_repair": false
+    },
+    "action_saved_metadata": {
+      "proto_result": "Function: Unwind@00c7af40 at 00c7af40\nSignature: undefined Unwind@00c7af40(void)\nEntry: 00c7af40\nBody: 00c7af40 - 00c7af47\n{\n \"function_name\": \"Unwind@00c7af40\",\n \"address\": \"00c7af40\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_CallbackOwner_Destroy\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"593c3b3c6bb251bc97f855421405daa3fdaa4ddc982e6ed29f3b3c48f981120f\"\n ]\n}\n",
+      "metadata": {
+        "function_name": "Unwind@00c7af40",
+        "address": "00c7af40",
+        "program": "battlestationspacific.exe",
+        "instruction_count": 2,
+        "basic_block_count": 1,
+        "edge_count": 0,
+        "call_count": 1,
+        "string_ref_count": 0,
+        "param_count": 0,
+        "cyclomatic_complexity": 1,
+        "prologue_stripped": false,
+        "epilogue_stripped": false,
+        "callee_names": [
+          "BSP_CallbackOwner_Destroy"
+        ],
+        "string_constants": [],
+        "immediate_values": [],
+        "basic_block_hashes": [
+          "593c3b3c6bb251bc97f855421405daa3fdaa4ddc982e6ed29f3b3c48f981120f"
+        ]
+      },
+      "pseudocode_renders_tail_as_call_then_return": true,
+      "physical_CALL_count": 0,
+      "physical_RET_count": 0,
+      "physical_tail_JMP_count": 1
+    },
+    "scope": {
+      "Native_code_bytes_read": 18,
+      "Native_code_instructions": 4,
+      "selected_data_bytes_read": 44,
+      "lease_expansion_sequence": [
+        "initial handler00C7AF48",
+        "Root-approved descriptor00DA7B14..37",
+        "descriptor-selected map00DA7B0C..13",
+        "map-selected action00C7AF40..47"
+      ],
+      "subordinate_BF6B43_C07991_695870_6952A0_or_653390_bodies_opened": false,
+      "other_EH_bodies_or_data_opened": false,
+      "GPR_mutations": false,
+      "scripts_enabled": false
+    },
+    "decoder": {
+      "capstone": "5.0.7",
+      "pefile": "2024.8.26"
+    },
+    "capture_directory": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\cc12_observer_member_cleanup_EH_readiness"
+  },
+  "physical_descriptor_action_edge": {
+    "handler_hidden_EAX_descriptor": "00DA7B14",
+    "handler_tail_target": "00BF6B43",
+    "descriptor_raw_DWORDs": [
+      "19930522",
+      "00000001",
+      "00DA7B0C",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "selected_record_count": 1,
+    "map_pointer": "00DA7B0C",
+    "selected_record": {
+      "index": 0,
+      "raw_first_DWORD": "FFFFFFFF",
+      "signed_first_word_for_readability": -1,
+      "action": "00C7AF40"
+    },
+    "action_receiver_expression": "DWORD[current EBP-10h]",
+    "action_tail_target": "00695870",
+    "map_index_as_state0_and_first_word_as_next_state": "Interpretation supported by accepted descriptor convention plus owner fullDWORD0/FFFFFFFF stores; no interpreter dispatch proof.",
+    "descriptor_other_zero_words_or_final1_given_unverified_semantic_types": false
+  },
+  "handler_contract": {
+    "entry_ESP": "H",
+    "code_bytes": 10,
+    "instructions": 2,
+    "EAX_out": "00DA7B14",
+    "ESP_EBP_ECX_EDX_EBX_ESI_EDI": "unchanged by MOV/JMP",
+    "flags": "all unchanged by owned MOV/JMP",
+    "stack_arguments_or_return_address_added": false,
+    "local_frame_or_FS_access": false,
+    "physical_CALLs": 0,
+    "physical_RETs": 0,
+    "physical_tail_JMPs": 1,
+    "x87_SSE": false,
+    "existing_caller_words": "positions unchanged into accepted adapter; values/backing may be changed by providers",
+    "saved_function_at_entry": false,
+    "both_instruction_starts_saved": true
+  },
+  "action_contract": {
+    "entry_ESP": "A",
+    "entry_EBP": "U",
+    "receiver": "ECX=currentDWORD[U-10h]",
+    "read_width": 4,
+    "code_bytes": 8,
+    "instructions": 2,
+    "normal_ESI_used_as_receiver": false,
+    "ESP": "unchanged A into00695870",
+    "EBP_EAX_EDX_EBX_ESI_EDI": "unchanged by owned MOV/JMP",
+    "flags": "all unchanged by owned MOV/JMP",
+    "null_guard_or_adjustment_or_fallback": false,
+    "physical_CALLs": 0,
+    "physical_RETs": 0,
+    "physical_tail_JMPs": 1,
+    "x87_SSE_or_FS_access": false,
+    "required_target_return": "Compatible plainRET uses current[A], finalESP=A+4; no action-owned argument cleanup",
+    "target_nonvol_stack_receiver_backing_lifetime_or_policy_proved_here": false,
+    "saved_name_retained": "Unwind@00c7af40",
+    "saved_pseudocode_call_then_return_is_physical_schedule": false,
+    "action_writes_owner_state_or_advances_map": false,
+    "Native_exactly_once_unwind_or_retry_policy_proved": false
+  },
+  "cleanup88_state_and_frame_composition": {
+    "owner_contract_inherited": {
+      "receipt": "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json",
+      "bytes": 88,
+      "sha256": "83a09c9e3d3c3f6006cf2d3aab805129a3f0d58cb21584f49c720c963dc737ea",
+      "contract": {
+        "symbols": "S=entryESP; M=entryECX capturedESI; E=late currentDWORD[M+14h] capturedECX after frame and root-profile stores.",
+        "frame": {
+          "state_S_minus4": "PUSHFFFFFFFF, later fullDWORD0, finally fullDWORDFFFFFFFF",
+          "handler_S_minus8": "00C7AF48 immediate only; target unopened",
+          "saved_chain_S_minusC": "initialFS0 read intoEAX, pushed, thenFS0 published asS-0Ch",
+          "local_this_S_minus10": "entryECX pushed then rewritten currentESI",
+          "saved_ESI_S_minus14": "incomingESI"
+        },
+        "ordered_schedule": [
+          {
+            "site": "006533AD",
+            "effect": "DWORD[M+0]=00CF6494 before endpoint read and both children; sole explicit member-field store."
+          },
+          {
+            "site": "006533B3",
+            "effect": "ECX=E=currentDWORD[ESI+14h]."
+          },
+          {
+            "site": "006533B6",
+            "effect": "TEST capturedECX,ECX."
+          },
+          {
+            "site": "006533B8",
+            "effect": "FullDWORD[S-4]=0; preservesTEST flags intoJZ, even when state write aliases endpoint backing."
+          },
+          {
+            "site": "006533C0",
+            "effect": "If capturedE==0, skip only unregister call; no endpoint reload."
+          },
+          {
+            "site": "006533C2",
+            "effect": "On nonzero arm EDX=currentESI, thenCALL6952A0 atC4 withECX=capturedE and no pushed arguments."
+          },
+          {
+            "site": "006533C9",
+            "effect": "Both arms capture currentESI intoECX before fullDWORDstateFFFFFFFF atCB."
+          },
+          {
+            "site": "006533D3",
+            "effect": "AlwaysCALL695870 with capturedECX, no pushed arguments."
+          }
+        ],
+        "unregister_boundary": {
+          "target": "006952A0",
+          "condition": "capturedE!=0",
+          "ECX": "capturedE",
+          "EDX": "currentESI, normallyM",
+          "ESI": "M under required preservation",
+          "EAX": "initial priorFS0 capture before any child",
+          "arithmetic_flags": "TESTE: CF=OF=0, AF undefined, ZF=0; SF/PF fromE.",
+          "metadata_only": {
+            "name": "BSP_Observer_UnregisterPair",
+            "end": "006953BF",
+            "bytes": 288,
+            "instructions": 92,
+            "blocks": 26,
+            "edges": 37,
+            "call_count_metric": 10
+          },
+          "Native_body_opened": false
+        },
+        "destroy_boundary": {
+          "target": "00695870",
+          "condition": "both normal branches",
+          "ECX": "currentESI captured before stateFFFFFFFF",
+          "EAX_EDX_flags": "Unregister-child residuals on nonzero arm; initialFS capture/incomingEDX and TESTzero flags on zero arm. InterveningMOVs preserve flags.",
+          "metadata_only": {
+            "name": "BSP_CallbackOwner_Destroy",
+            "end": "00695930",
+            "bytes": 193,
+            "instructions": 60,
+            "blocks": 13,
+            "edges": 18,
+            "call_count_metric": 4
+          },
+          "Native_body_opened": false
+        },
+        "common_child_requirements": {
+          "stack": "CallerESP S-14h, childentry S-18h, requirednormalreturn S-14h; no pushed arguments and zero argument cleanup.",
+          "nonvolatile": "ESI=M needed for later operations;EBX/EDI/EBP preservation required. Own body saves/restoresESI only and owns noEBX/EDI/EBP writes.",
+          "hidden_inputs_and_effects": "No exclusion of hidden input, alias, lifetime, side effect, reentrancy, faults or nonnormal control from names/metadata."
+        },
+        "normal_tail": "D8 reads current[S-0Ch] intoECX beforeDC POPESI fromcurrent[S-14h]; DD restoresFS0 fromcapturedECX; E4 ADDESP10h reachesS; E7 plainRET leavesS+4.",
+        "normal_result": "All normal paths call695870. No ownedEAX write after initialFS read: finalEAX andEDX are last-child residuals; ECX is late saved-chain capture. No guaranteed returnedM pointer or common semantic result.",
+        "final_arithmetic_flags": {
+          "input": "x=32-bit ESP immediately beforeADD, normallyS-10h; r=(x+10h) modulo2^32, normallyS.",
+          "CF": "x >= FFFFFFF0h",
+          "OF": "7FFFFFF0h <= x <= 7FFFFFFFh",
+          "AF": "0 because immediate low nibble is0",
+          "ZF": "r==0",
+          "SF": "bit31(r)",
+          "PF": "even parity of low8(r)",
+          "RET": "preserves these arithmetic flags; other flags are not assigned a new semantic contract."
+        },
+        "direct_member_extent": {
+          "write": {
+            "offset": 0,
+            "width": 4,
+            "value": "00CF6494"
+          },
+          "read": {
+            "offset": 20,
+            "width": 4
+          },
+          "selected_extent_bytes": 24,
+          "allocation_or_full_class_proved": false,
+          "member10_flag_read": false,
+          "endpoint_zeroed_by_owned_body": false,
+          "final_member_profile_proved": false,
+          "qualification": "Last owned profile precedes both children; they may overwrite profile/fields. No idempotence or endpoint lifetime proof."
+        },
+        "state_alias_EH": "Full state0 andFFFFFFFF stores both occur after their receiver captures. Current savedFS/ESI/control words can differ after aliases/children. NativeC7AF48 handler/funclets remain unopened; no recovery of cleanup action from state labels and no native noexcept/rollback claim."
+      },
+      "body_reopened": false
+    },
+    "S": "00653390 entryESP",
+    "M": "entryowner captured inESI",
+    "frame_slots": {
+      "S-4": "full stateDWORD",
+      "S-8": "handler00C7AF48",
+      "S-0C": "savedpriorFS, publishedregistrationaddress",
+      "S-10": "entryECX pushed then rewritten currentESI before profile/endpoint operations",
+      "S-14": "savedentryESI"
+    },
+    "ordered_state_windows": [
+      {
+        "phase": "before state0 completion",
+        "state": "FFFFFFFF",
+        "width": 4,
+        "operations": "profileDWORD00CF6494 write, lateendpoint capture and TEST happen before state0"
+      },
+      {
+        "phase": "armed region",
+        "state": "00000000",
+        "width": 4,
+        "write_site": "006533B8",
+        "operations": "state write after endpointECX capture preserves TEST flags; conditional unregister at006533C4 receivesECX=endpoint/EDX=currentESI"
+      },
+      {
+        "phase": "normal destructor handoff",
+        "state": "FFFFFFFF",
+        "width": 4,
+        "write_site": "006533CB",
+        "operations": "capture currentESI intoECX at006533C9 BEFORE disarming fullDWORD store; call00695870 at006533D3"
+      }
+    ],
+    "owner_state_byte_stores": false,
+    "required_action_frame_relation": "U=S for action[U-10h] to select owner saved[S-10h]",
+    "FS_registration_relation": "registration addressS-0C; distinct from required actionEBP=S",
+    "adapter_frame_relation": "accepted BF6B43 creates its own EBP=its entryESP-4; this is not proof of actionEBP=S",
+    "interpreter_establishing_action_EBP_reopened_or_proved": false,
+    "current_alias_dependency": "Action reloads actual current savedDWORD; aliases/children can make it differ from normalESI or a previously captured owner.",
+    "normal_FS_restoration": "accepted owner reloads current savedpriorFS; action has noFS restore",
+    "unwind_selection_on_any_exception_guaranteed": false
+  },
+  "accepted_shared_adapter54_context": {
+    "receipt": "reports/cc12_squadron_launch_task_EH_handler_readiness.json",
+    "address": "00bf6b43",
+    "bytes": 54,
+    "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+    "physical_instructions": 27,
+    "nested_capture_Root_Astra_whole_body_gate_retained": false,
+    "top_level_full_Root_Astra_assembly_read": true,
+    "interpretation": "Accepted complete54-byte adapter follows the report top-level validation and document; nested capture flag remains false and is not rewritten or promoted.",
+    "body_reopened": false,
+    "Native_interpreter_body_opened": false
+  },
+  "shared_adapter_physical_interface_inherited": {
+    "hidden_input": "EAX descriptor",
+    "physical_caller_stack_words": 4,
+    "internal_call_target": "00C07991",
+    "internal_argument_order": "four late caller words, descriptor, zero, zero, zero",
+    "internal_body_opened": false,
+    "actual_semantic_argument_names_inferred": false,
+    "normal_return": "Requires compatible InternalRET0; adapter removes32bytecallargs, restores savedframe, plainRET leaves four original caller-word positions",
+    "descriptor_state_action_semantics_follow_from_adapter_alone": false
+  },
+  "future_qualified_Source_cleanup88_design": {
+    "implemented_by_this_packet": false,
+    "inputs": "actual owner reference, actual volatile endpoint-cell reference, real retained NativeObserverLifetime service",
+    "ordering": "Publish profile/capture endpoint, arm around unregister phase, disarm before normal destroy.",
+    "unregister_exception": "An armed Source guard can invoke owner destruction once during SourceC++ unwinding.",
+    "normal_destroy_exception": "Guard already disarmed; it does not retry that normal destruction.",
+    "public_noexcept_promised": false,
+    "nonthrowing_guard_destructor_failure": "CurrentC++ termination on a throwing destruction during unwind must be explicitly qualified, not represented as NativeFH3 proof.",
+    "explicit_owner_reference_models_arbitrary_Native_saved_frame_aliases": false,
+    "Native_actual_handler_search_unwind_failure_or_double_exception_equivalence": false,
+    "binary_binding_or_production_registration_supplied": false
+  },
+  "actual_current_Source_context": {
+    "captured_utc": "2026-10-09T17:09:42.591843+00:00",
+    "provider_context": {
+      "storage": {
+        "NativeObserverOwnerStorage": "16bytes: volatileDWORDprofile,+4edge pointer,+8count,+Ccapacity",
+        "NativeObserverEdgeStorage": "16bytes: volatileDWORDtable,+4first,+8callback,+Creferences",
+        "NativeObserverDispatchStorage": "16bytes; observed begin/end at+4/+8, no owned capacity access",
+        "TrackedCriticalSection": "Source CRITICAL_SECTION plus int32depth at+18, sizeof1C asserted",
+        "actual_owner_is_not_NativeObserverLifetime_service_object": true
+      },
+      "retained_service": {
+        "class": "NativeObserverLifetime",
+        "constructor": "SoundLifetimeAccess, mutable lock publication reference, mutable dispatch publication reference, ObserverLifetimeServices&",
+        "ownership": "Borrowed actual lifetime/manager and mutable cells; no fake endpoint-as-service cast justified",
+        "GameObserverRuntime": "owns cells and lifetime; constructor binds lifetime to GameSingletonHost",
+        "selected_raw_task_member_endpoint_to_retained_domain_proved": false
+      },
+      "unregister_normal_sequence": "Captured section guard; nested find; selected-edge early return; captured/current dispatch checks with returning validation; modulo32 decrement; capture both endpoints; erase twice; reload table.",
+      "unregister_policy_difference": "Source CF7E64 table special-case directly calls concrete Source delete helper; otherwise virtual service. GameObserverRuntime rejects unsupported profiles with logic_error. Native always loads current slot0 and calls it; no Native table word/target audited.",
+      "destroy_normal_sequence": "Stamp callback profile; outer guard plus independently captured nested guard; capture count before inner unlock; optionaldetach; outerunlock; reload/free current array; no local pointer/count/capacity clearing.",
+      "destroy_EH_difference": "Source catch frees current array and rethrows; RAII lock release exists, but Native handler00C7EAA3/body/table remains unopened.",
+      "allocation_policy": "Source free_slots conditionally calls singleton_lifetime_free -> std::free; Native _free body unopened.",
+      "validation_policy": "Existing GameObserverRuntime naked helper JMPs _invalid_parameter_noinfo. Newly admitted Source17 wrapper remains separate/unbound; neither closes Native36 handler/global/tail selection.",
+      "Source_member_API_is_raw_Native_register_entry": false,
+      "Source_bytes_or_member_ABI_recompiled_or_parsed_here": false,
+      "minimal_future_binding_readiness": "Actual storage and retained service can support an explicitly qualified Source composition; physical Native provider/EH/virtual-target equivalence is not established and no binding is implemented."
+    },
+    "bounded_search": {
+      "argv": [
+        "rg",
+        "-n",
+        "--glob",
+        "*.hpp",
+        "--glob",
+        "*.cpp",
+        "00653390|00c7af40|00c7af48|cleanup_native_observer",
+        "include",
+        "src"
+      ],
+      "returncode": 0,
+      "lines": [
+        "src\\native_observer_endpoint_live_count_cleanup.cpp:13:__declspec(naked) void __fastcall cleanup_native_observer_endpoint_live_count_007ee620(",
+        "include\\bsp\\native_observer_endpoint_live_count_cleanup.hpp:45:void __fastcall cleanup_native_observer_endpoint_live_count_007ee620("
+      ],
+      "interpretation": "This address/name search finds the existing007EE620 endpoint Source entry, no653390 or owned EH entry definition. Actual retained NativeObserverLifetime providers remain present and hash-matched; no broad no-provider claim."
+    },
+    "Source7_current_pins": [
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+        "bytes": 7290,
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+        "physical_bytes": 7290,
+        "physical_sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_matches_canonical_LF": true,
+        "matches_published_pair_owner_audit": true
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+        "bytes": 14092,
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+        "physical_bytes": 14092,
+        "physical_sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_matches_canonical_LF": true,
+        "matches_published_pair_owner_audit": true
+      },
+      {
+        "path": "include/bsp/game_observer_runtime.hpp",
+        "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+        "bytes": 1967,
+        "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+        "physical_bytes": 1967,
+        "physical_sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_matches_canonical_LF": true,
+        "matches_published_pair_owner_audit": true
+      },
+      {
+        "path": "src/game_observer_runtime.cpp",
+        "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+        "bytes": 2390,
+        "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+        "physical_bytes": 2390,
+        "physical_sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_matches_canonical_LF": true,
+        "matches_published_pair_owner_audit": true
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+        "bytes": 6831,
+        "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "physical_bytes": 6831,
+        "physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_matches_canonical_LF": true,
+        "matches_published_pair_owner_audit": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "physical_bytes": 1446,
+        "physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_matches_canonical_LF": true,
+        "matches_published_pair_owner_audit": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "physical_bytes": 13257,
+        "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_matches_canonical_LF": true,
+        "matches_published_pair_owner_audit": true
+      }
+    ],
+    "SDK_and_project": {
+      "project_pin": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_core.vcxproj",
+        "bytes": 302256,
+        "sha256": "53985f91cc106a7f9764eb7f329435026c2bd7300d616578edbd2b5829d1dc06"
+      },
+      "SDK": "10.0.26100.0",
+      "toolset": "v145",
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "ExceptionHandling": "Sync",
+      "SDK_header_pin": {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt.h",
+        "bytes": 127273,
+        "sha256": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc"
+      },
+      "declaration": "_ACRTIMP_ALT void __cdecl _invalid_parameter_noinfo(void);",
+      "declaration_line": 371
+    },
+    "current_Source17_UCRT_domain": {
+      "compiled_mapping_inherited": [
+        {
+          "Source_index": 0,
+          "Source_offset": 0,
+          "Source_bytes": "33c0",
+          "Source_instruction": "xor eax, eax",
+          "Native_address": "00BF6713",
+          "Native_bytes": "33c0",
+          "mapped": true
+        },
+        {
+          "Source_index": 1,
+          "Source_offset": 2,
+          "Source_bytes": "50",
+          "Source_instruction": "push eax",
+          "Native_address": "00BF6715",
+          "Native_bytes": "50",
+          "mapped": true
+        },
+        {
+          "Source_index": 2,
+          "Source_offset": 3,
+          "Source_bytes": "50",
+          "Source_instruction": "push eax",
+          "Native_address": "00BF6716",
+          "Native_bytes": "50",
+          "mapped": true
+        },
+        {
+          "Source_index": 3,
+          "Source_offset": 4,
+          "Source_bytes": "50",
+          "Source_instruction": "push eax",
+          "Native_address": "00BF6717",
+          "Native_bytes": "50",
+          "mapped": true
+        },
+        {
+          "Source_index": 4,
+          "Source_offset": 5,
+          "Source_bytes": "50",
+          "Source_instruction": "push eax",
+          "Native_address": "00BF6718",
+          "Native_bytes": "50",
+          "mapped": true
+        },
+        {
+          "Source_index": 5,
+          "Source_offset": 6,
+          "Source_bytes": "50",
+          "Source_instruction": "push eax",
+          "Native_address": "00BF6719",
+          "Native_bytes": "50",
+          "mapped": true
+        },
+        {
+          "Source_index": 6,
+          "Source_offset": 7,
+          "Source_bytes": "ff1500000000",
+          "Source_instruction": "call dword ptr [0]",
+          "Native_address": "00BF671A",
+          "Native_bytes": "e8d0ffffff",
+          "mapped": true
+        },
+        {
+          "Source_index": 7,
+          "Source_offset": 13,
+          "Source_bytes": "83c414",
+          "Source_instruction": "add esp, 0x14",
+          "Native_address": "00BF671F",
+          "Native_bytes": "83c414",
+          "mapped": true
+        },
+        {
+          "Source_index": 8,
+          "Source_offset": 16,
+          "Source_bytes": "c3",
+          "Source_instruction": "ret ",
+          "Native_address": "00BF6722",
+          "Native_bytes": "c3",
+          "mapped": true
+        }
+      ],
+      "actual_UCRT_imports_inherited": [
+        {
+          "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+          "name": "free",
+          "IAT_address": "103cc4f4"
+        },
+        {
+          "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "name": "_invalid_parameter_noinfo",
+          "IAT_address": "103cc620"
+        }
+      ],
+      "new_entry_absent_map_inherited": true,
+      "new_Source17_does_not_bind_observer_service_or_close_Native36_policy": true
+    },
+    "fresh_object_graph_import_or_Native_child_body_parse": false
+  },
+  "Source80_build_domain": {
+    "capture_utc": "2026-10-09T17:09:42.591843+00:00",
+    "input_count": 80,
+    "normal_build_inherited": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 117692,
+      "start_utc": "2026-10-09T16:28:10.509150+00:00",
+      "finish_utc": "2026-10-09T16:28:29.144081+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 80
+    },
+    "existing_checks_inherited": 3,
+    "whole_objects_and_public_roots_inherited": [
+      16,
+      18
+    ],
+    "artifact_pins_replayed_at_capture": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "bytes": 73746412,
+        "sha256": "59555cbad775a5189da8e649e21dde69851a677af5e6d8bc2464dc231f465433",
+        "matches_recorded_Source80_artifact": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "e2e2e8c560a4728b14bf8127482da550dba46de57ef2ed2473e9743e0f99464e",
+        "matches_recorded_Source80_artifact": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "0c0af55a0d1fe6821ea9020ce6b2fc385598f85ac9a464e75c7dcbe06501dbd8",
+        "matches_recorded_Source80_artifact": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "e18462de64ee4e3dd1db97d4885e08f455ff98f8cfa353e5ec3613ce715584b5",
+        "matches_recorded_Source80_artifact": true
+      }
+    ],
+    "later_builds_reinterpreted_as_Source80": false,
+    "new_build_test_probe_or_execution": false
+  },
+  "accepted_receipt_document_pins": [
+    {
+      "path": "reports/cc12_native_invalid_parameter_noinfo_call_primary_review.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 506065,
+      "sha256": "8643f78fb1d34a84a212c1a70425a79910b4e83bc71744b60cb2d7e6829a9fd5",
+      "physical_bytes": 506065,
+      "physical_sha256": "8643f78fb1d34a84a212c1a70425a79910b4e83bc71744b60cb2d7e6829a9fd5",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_INVALID_PARAMETER_NOINFO_CALL_SOURCE.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 11630,
+      "sha256": "e4ac528601ba3c1cba3c3dfd4f15ea514903fad37257a683892fd1b05fe6e491",
+      "physical_bytes": 11630,
+      "physical_sha256": "e4ac528601ba3c1cba3c3dfd4f15ea514903fad37257a683892fd1b05fe6e491",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_EH_handler_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 48363,
+      "sha256": "5b41939d6300e92174497cc179b3edf5d4f9c4f13f78d97713196d05d533175e",
+      "physical_bytes": 48363,
+      "physical_sha256": "5b41939d6300e92174497cc179b3edf5d4f9c4f13f78d97713196d05d533175e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_EH_HANDLER_READINESS.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 6159,
+      "sha256": "1376d6ce624faf050ede980676b2dbebf10edfa4227b0ca24fb66a8c80b2e060",
+      "physical_bytes": 6159,
+      "physical_sha256": "1376d6ce624faf050ede980676b2dbebf10edfa4227b0ca24fb66a8c80b2e060",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 120141,
+      "sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca",
+      "physical_bytes": 120141,
+      "physical_sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_ENDPOINT_CLEANUP_ABI_READINESS.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 14414,
+      "sha256": "dd30a9311015a7d83f222dd9b5be1805fc55a30118865a80524ae200ebe27e67",
+      "physical_bytes": 14414,
+      "physical_sha256": "dd30a9311015a7d83f222dd9b5be1805fc55a30118865a80524ae200ebe27e67",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_pair_release_owner_ABI_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 277380,
+      "sha256": "484f92b6bd71a8413e9675a362c26ad9d3088d785f6c8e73353e36cc9f2021cb",
+      "physical_bytes": 277380,
+      "physical_sha256": "484f92b6bd71a8413e9675a362c26ad9d3088d785f6c8e73353e36cc9f2021cb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_PAIR_RELEASE_OWNER_ABI_READINESS.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 14335,
+      "sha256": "590ad1ca928524d75385eb60b207e1d130432fe4255b11135e84d595c54f666f",
+      "physical_bytes": 14335,
+      "physical_sha256": "590ad1ca928524d75385eb60b207e1d130432fe4255b11135e84d595c54f666f",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    }
+  ],
+  "current_repository_input_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 19025,
+      "sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+      "physical_bytes": 19025,
+      "physical_sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 19025,
+      "receipt_physical_sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 198705,
+      "receipt_physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "physical_bytes": 11448,
+      "physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 11448,
+      "receipt_physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160"
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "physical_bytes": 11060,
+      "physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 11060,
+      "receipt_physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 7776,
+      "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "physical_bytes": 7776,
+      "physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 7776,
+      "receipt_physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2363,
+      "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "physical_bytes": 2363,
+      "physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2363,
+      "receipt_physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_cleanup.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1632,
+      "sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "physical_bytes": 1632,
+      "physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1632,
+      "receipt_physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2013,
+      "sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "physical_bytes": 2013,
+      "physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2013,
+      "receipt_physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_default_constructor.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1412,
+      "sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "physical_bytes": 1412,
+      "physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1412,
+      "receipt_physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1770,
+      "sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "physical_bytes": 1770,
+      "physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1770,
+      "receipt_physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008"
+    },
+    {
+      "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1698,
+      "sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "physical_bytes": 1698,
+      "physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1698,
+      "receipt_physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01"
+    },
+    {
+      "path": "include/bsp/native_allocator_owned_message_constructor.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1938,
+      "sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+      "physical_bytes": 1938,
+      "physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1938,
+      "receipt_physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "physical_bytes": 2257,
+      "physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2257,
+      "receipt_physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "physical_bytes": 1471,
+      "physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1471,
+      "receipt_physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "physical_bytes": 3232,
+      "physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3232,
+      "receipt_physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2957,
+      "sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "physical_bytes": 2957,
+      "physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2957,
+      "receipt_physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2260,
+      "sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "physical_bytes": 2260,
+      "physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2260,
+      "receipt_physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6"
+    },
+    {
+      "path": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2600,
+      "sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+      "physical_bytes": 2600,
+      "physical_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2600,
+      "receipt_physical_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_lock.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3445,
+      "sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+      "physical_bytes": 3445,
+      "physical_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3445,
+      "receipt_physical_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_owners.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2876,
+      "sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+      "physical_bytes": 2876,
+      "physical_sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2876,
+      "receipt_physical_sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_producers.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3874,
+      "sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+      "physical_bytes": 3874,
+      "physical_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3874,
+      "receipt_physical_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 843,
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "physical_bytes": 843,
+      "physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 843,
+      "receipt_physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_constructor.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 761,
+      "sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "physical_bytes": 761,
+      "physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 761,
+      "receipt_physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "physical_bytes": 963,
+      "physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 963,
+      "receipt_physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "include/bsp/native_pending_tick_group_initialization.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1448,
+      "sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+      "physical_bytes": 1448,
+      "physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1448,
+      "receipt_physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "physical_bytes": 2361,
+      "physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2361,
+      "receipt_physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "physical_bytes": 2431,
+      "physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2431,
+      "receipt_physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 18086,
+      "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "physical_bytes": 18086,
+      "physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 18086,
+      "receipt_physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "physical_bytes": 2293,
+      "physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2293,
+      "receipt_physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "physical_bytes": 2373,
+      "physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2373,
+      "receipt_physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "physical_bytes": 1845,
+      "physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1845,
+      "receipt_physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1247,
+      "sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "physical_bytes": 1247,
+      "physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1247,
+      "receipt_physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee"
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "physical_bytes": 1882,
+      "physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1882,
+      "receipt_physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2315,
+      "sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "physical_bytes": 2315,
+      "physical_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2315,
+      "receipt_physical_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_scalar_deletion.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2017,
+      "sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a",
+      "physical_bytes": 2017,
+      "physical_sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2017,
+      "receipt_physical_sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "physical_bytes": 2322,
+      "physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2322,
+      "receipt_physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2"
+    },
+    {
+      "path": "include/bsp/plane_squadron.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 15252,
+      "sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "physical_bytes": 15252,
+      "physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 15252,
+      "receipt_physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "physical_bytes": 1446,
+      "physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1446,
+      "receipt_physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 4372,
+      "receipt_physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 18720,
+      "sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "physical_bytes": 18720,
+      "physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 18720,
+      "receipt_physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54"
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 18412,
+      "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "physical_bytes": 18412,
+      "physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 18412,
+      "receipt_physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+    },
+    {
+      "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+      "physical_bytes": 51122,
+      "physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 51122,
+      "receipt_physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+      "physical_bytes": 17789,
+      "physical_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 18326,
+      "receipt_physical_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "physical_bytes": 1820,
+      "physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1820,
+      "receipt_physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "physical_bytes": 23671,
+      "physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 23671,
+      "receipt_physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "physical_bytes": 6831,
+      "physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 6831,
+      "receipt_physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 593,
+      "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "physical_bytes": 593,
+      "physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 593,
+      "receipt_physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e"
+    },
+    {
+      "path": "src/native_allocator_base_cleanup.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 894,
+      "sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "physical_bytes": 894,
+      "physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 894,
+      "receipt_physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968"
+    },
+    {
+      "path": "src/native_allocator_base_copy_constructor.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2951,
+      "sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "physical_bytes": 2951,
+      "physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2951,
+      "receipt_physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee"
+    },
+    {
+      "path": "src/native_allocator_base_default_constructor.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 755,
+      "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "physical_bytes": 755,
+      "physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 755,
+      "receipt_physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908"
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 979,
+      "sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "physical_bytes": 979,
+      "physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 979,
+      "receipt_physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe"
+    },
+    {
+      "path": "src/native_allocator_failure_object_constructor.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 764,
+      "sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "physical_bytes": 764,
+      "physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 764,
+      "receipt_physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed"
+    },
+    {
+      "path": "src/native_allocator_owned_message_constructor.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2638,
+      "sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+      "physical_bytes": 2638,
+      "physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2638,
+      "receipt_physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "physical_bytes": 5460,
+      "physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 5460,
+      "receipt_physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "physical_bytes": 1089,
+      "physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1089,
+      "receipt_physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 4352,
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "physical_bytes": 4352,
+      "physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 4352,
+      "receipt_physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+    },
+    {
+      "path": "src/native_lua_variant_link_repair_helpers.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 4367,
+      "sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+      "physical_bytes": 4367,
+      "physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 4367,
+      "receipt_physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da"
+    },
+    {
+      "path": "src/native_lua_variant_small_link_helpers.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2266,
+      "sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+      "physical_bytes": 2266,
+      "physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2266,
+      "receipt_physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571"
+    },
+    {
+      "path": "src/native_observer_endpoint_live_count_cleanup.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2755,
+      "sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+      "physical_bytes": 2755,
+      "physical_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2755,
+      "receipt_physical_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a"
+    },
+    {
+      "path": "src/native_pending_entity_lock.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3613,
+      "sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+      "physical_bytes": 3613,
+      "physical_sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3613,
+      "receipt_physical_sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb"
+    },
+    {
+      "path": "src/native_pending_entity_owners.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1636,
+      "sha256": "14f68daf67f3458581777eb14908df01ad1b6da7329af979396e6f623231b8d8",
+      "physical_bytes": 1636,
+      "physical_sha256": "14f68daf67f3458581777eb14908df01ad1b6da7329af979396e6f623231b8d8",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1636,
+      "receipt_physical_sha256": "14f68daf67f3458581777eb14908df01ad1b6da7329af979396e6f623231b8d8"
+    },
+    {
+      "path": "src/native_pending_entity_producers.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 4026,
+      "sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+      "physical_bytes": 4026,
+      "physical_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 4026,
+      "receipt_physical_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc"
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 403,
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "physical_bytes": 403,
+      "physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 403,
+      "receipt_physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597"
+    },
+    {
+      "path": "src/native_pending_registry_constructor.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 997,
+      "sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "physical_bytes": 997,
+      "physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 997,
+      "receipt_physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "physical_bytes": 3449,
+      "physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3449,
+      "receipt_physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "src/native_pending_tick_group_initialization.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2898,
+      "sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+      "physical_bytes": 2898,
+      "physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2898,
+      "receipt_physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "physical_bytes": 4563,
+      "physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 4563,
+      "receipt_physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "physical_bytes": 6911,
+      "physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 6911,
+      "receipt_physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "physical_bytes": 4127,
+      "physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 4127,
+      "receipt_physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "physical_bytes": 4283,
+      "physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 4283,
+      "receipt_physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "physical_bytes": 3731,
+      "physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3731,
+      "receipt_physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3108,
+      "sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "physical_bytes": 3108,
+      "physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3108,
+      "receipt_physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a"
+    },
+    {
+      "path": "src/native_tick_sublist_unlink.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2257,
+      "sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "physical_bytes": 2257,
+      "physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2257,
+      "receipt_physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2"
+    },
+    {
+      "path": "src/native_tick_subnode_base_cleanup.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 3164,
+      "sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "physical_bytes": 3164,
+      "physical_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 3164,
+      "receipt_physical_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3"
+    },
+    {
+      "path": "src/native_tick_subnode_scalar_deletion.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1687,
+      "sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb",
+      "physical_bytes": 1687,
+      "physical_sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 1687,
+      "receipt_physical_sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb"
+    },
+    {
+      "path": "src/native_tick_subnode_unlink_caller.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2743,
+      "sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "physical_bytes": 2743,
+      "physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 2743,
+      "receipt_physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9"
+    },
+    {
+      "path": "src/plane_squadron.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 6796,
+      "sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "physical_bytes": 6796,
+      "physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 6796,
+      "receipt_physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 13257,
+      "receipt_physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 12785,
+      "sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "physical_bytes": 12785,
+      "physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 12785,
+      "receipt_physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17"
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 10576,
+      "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "physical_bytes": 10576,
+      "physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_Source80_canonical_LF": true,
+      "receipt_physical_bytes": 10576,
+      "receipt_physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 7290,
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "physical_bytes": 7290,
+      "physical_sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_published_pair_owner_audit": true
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 14092,
+      "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+      "physical_bytes": 14092,
+      "physical_sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_published_pair_owner_audit": true
+    },
+    {
+      "path": "include/bsp/game_observer_runtime.hpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 1967,
+      "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+      "physical_bytes": 1967,
+      "physical_sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_published_pair_owner_audit": true
+    },
+    {
+      "path": "src/game_observer_runtime.cpp",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 2390,
+      "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+      "physical_bytes": 2390,
+      "physical_sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true,
+      "matches_published_pair_owner_audit": true
+    },
+    {
+      "path": "reports/cc12_native_invalid_parameter_noinfo_call_primary_review.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 506065,
+      "sha256": "8643f78fb1d34a84a212c1a70425a79910b4e83bc71744b60cb2d7e6829a9fd5",
+      "physical_bytes": 506065,
+      "physical_sha256": "8643f78fb1d34a84a212c1a70425a79910b4e83bc71744b60cb2d7e6829a9fd5",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_INVALID_PARAMETER_NOINFO_CALL_SOURCE.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 11630,
+      "sha256": "e4ac528601ba3c1cba3c3dfd4f15ea514903fad37257a683892fd1b05fe6e491",
+      "physical_bytes": 11630,
+      "physical_sha256": "e4ac528601ba3c1cba3c3dfd4f15ea514903fad37257a683892fd1b05fe6e491",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_EH_handler_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 48363,
+      "sha256": "5b41939d6300e92174497cc179b3edf5d4f9c4f13f78d97713196d05d533175e",
+      "physical_bytes": 48363,
+      "physical_sha256": "5b41939d6300e92174497cc179b3edf5d4f9c4f13f78d97713196d05d533175e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_EH_HANDLER_READINESS.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 6159,
+      "sha256": "1376d6ce624faf050ede980676b2dbebf10edfa4227b0ca24fb66a8c80b2e060",
+      "physical_bytes": 6159,
+      "physical_sha256": "1376d6ce624faf050ede980676b2dbebf10edfa4227b0ca24fb66a8c80b2e060",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 120141,
+      "sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca",
+      "physical_bytes": 120141,
+      "physical_sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_ENDPOINT_CLEANUP_ABI_READINESS.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 14414,
+      "sha256": "dd30a9311015a7d83f222dd9b5be1805fc55a30118865a80524ae200ebe27e67",
+      "physical_bytes": 14414,
+      "physical_sha256": "dd30a9311015a7d83f222dd9b5be1805fc55a30118865a80524ae200ebe27e67",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_pair_release_owner_ABI_readiness.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 277380,
+      "sha256": "484f92b6bd71a8413e9675a362c26ad9d3088d785f6c8e73353e36cc9f2021cb",
+      "physical_bytes": 277380,
+      "physical_sha256": "484f92b6bd71a8413e9675a362c26ad9d3088d785f6c8e73353e36cc9f2021cb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_PAIR_RELEASE_OWNER_ABI_READINESS.md",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 14335,
+      "sha256": "590ad1ca928524d75385eb60b207e1d130432fe4255b11135e84d595c54f666f",
+      "physical_bytes": 14335,
+      "physical_sha256": "590ad1ca928524d75385eb60b207e1d130432fe4255b11135e84d595c54f666f",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    },
+    {
+      "path": "config/target.json",
+      "revision": "2bfbdf4753a8230078d2140ebd68221bc6f51f59",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_matches_canonical_LF": true
+    }
+  ],
+  "capture_artifact_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_observer_member_cleanup_EH/capture.py",
+      "bytes": 5852,
+      "sha256": "f8b004a28cc492bacfcfaf2bd2e90d951cb550073dc969815d19c783d8c8ea61"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_observer_member_cleanup_EH/native_evidence.json",
+      "bytes": 7042,
+      "sha256": "bbff4e9a68c363538ea4595ea48e158ed174dc24387e7ec33a9dab631ab0ad12"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_observer_member_cleanup_EH/saved_instruction_context.json",
+      "bytes": 650,
+      "sha256": "944c68d3e29ebf75a9c955b66af4117be40e462f292bcd217e3b62a4fa4737d5"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_observer_member_cleanup_EH/source_context.py",
+      "bytes": 6879,
+      "sha256": "bd47cb88635342c405e7031993f4c8328cfb79b8f2ecab948f21b7f0e86b9040"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_observer_member_cleanup_EH/Source_context.json",
+      "bytes": 74108,
+      "sha256": "8eba346b9648f03be1e2b2fd67953b7c01aa3fe9ff2319694dc87cea8b37452f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_observer_member_cleanup_EH/write_report.py",
+      "bytes": 10457,
+      "sha256": "edb5b563747eb4e3dc67e713c4e8982e7e45a95e9a451b7c54351ca6f23f363b"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF40_bytes.txt",
+      "bytes": 44,
+      "sha256": "051e01eb731972492178970f406c1bffa5a6a639a53383aaecf6728a77bbd819"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF40_independent_PE_decode.txt",
+      "bytes": 81,
+      "sha256": "b0a68b7fe0dcde5a45cc83006a3a3c78391591a8df60496421545090dfea47af"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF40_listing.txt",
+      "bytes": 69,
+      "sha256": "89528ca3b7795c1a81ea50c3035a4aa7fc50912d6c87aaae2a42c8a210aab1d8"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF40_proto.txt",
+      "bytes": 645,
+      "sha256": "c77422daac6c48f22357e8a5d26a731606b66eba91bd3364d88ef7fd3170d3f2"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF40_pseudocode.txt",
+      "bytes": 75,
+      "sha256": "133f588637a372c3d408b583697d9cfa86176db5af71573b2ceb12c8cda592dc"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF48_bytes.txt",
+      "bytes": 52,
+      "sha256": "0fd196927997ea3be2304a365f807cc05b54bb10ddfb4bbb52692e0211081cb8"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF48_independent_PE_decode.txt",
+      "bytes": 71,
+      "sha256": "4095dc4c4f422ee3cd472cf56d489e379510c502bf0875d7510772fd2fa22da1"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00C7AF48_proto.txt",
+      "bytes": 126,
+      "sha256": "ed1148f1a70e00e54adea7d5090a94717db1e3d96eca3652dcb2be67a8df7221"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00DA7B0C_bytes.txt",
+      "bytes": 44,
+      "sha256": "2e089879f89b2f9f04b8b5f0acd77e6853e7bd84293b290c3ada52e76690d081"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/00DA7B14_bytes.txt",
+      "bytes": 180,
+      "sha256": "c84205f9432c19cd3b94b13a0a0375c200314f620333d7a4f1741ebff92a38f8"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/count.txt",
+      "bytes": 48,
+      "sha256": "0dcc9505a25152f2ef95f84a7726f9f4a373be045caffd949f5f33181c4ca478"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_observer_member_cleanup_EH_readiness/saved_instruction_context_receipt.txt",
+      "bytes": 132,
+      "sha256": "6bae1a2c58d15b6504026279908484d690f6adfabcd40a46662194c3d61fa89f"
+    }
+  ],
+  "owned_doc_pin": {
+    "path": "docs/CC12_OBSERVER_MEMBER_CLEANUP_EH_READINESS.md",
+    "bytes": 10868,
+    "sha256": "7dc0435e8ab67d7e389f06f08af15c2fe2fedf04a0f9870230721f9571d2621f"
+  },
+  "validation": {
+    "all18_code_and44_data_bytes_live_PE_equal": true,
+    "all4_decoded_instruction_starts_saved": true,
+    "exact_descriptor_selected_map_and_action_leased_before_reads": true,
+    "eight_byte_action_matches_saved_extent": true,
+    "handler_no_function_creation_or_repair": true,
+    "current80_source_inputs_fourartifacts_sevenproviders_eightreceipt_docs_pinned": true,
+    "no_Source_GPR_ledger_CMake_build_tests_probes_or_credit": true
+  },
+  "limits": [
+    "No Native InternalC07991, BF6B43 adapter, cleanup88 owner,6952A0,695870 or other EH body was reopened.",
+    "The one map record and owner state stores support the proposed Source phase boundary, not proof of interpreter selection or Native exactly-once destruction.",
+    "Action receiver is the current frame word and requires the unproved interpreter-supplied EBP relation; explicit Source owner references are a qualified interface.",
+    "Public Source exception behavior and nonthrowing guard double-exception termination remain currentC++ policy.",
+    "No Original ABI/runtime/startup/gameplay equivalence is admitted."
+  ]
+}
