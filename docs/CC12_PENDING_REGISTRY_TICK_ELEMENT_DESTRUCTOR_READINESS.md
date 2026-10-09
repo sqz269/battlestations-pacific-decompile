@@ -137,3 +137,13 @@ comparison/decoding, tail arithmetic, access/register review, current Source
 searches, accepted getter pins, JSON and whitespace checks passed. No Source,
 CMake, ledger or Ghidra mutation; no build, probe, test, new annotation,
 production activation or reconstruction credit was added.
+
+## Primary evidence correction
+
+The primary independently replayed all32 bytes/nine instructions and the sole
+physical tail, then appended these corrected bounds and zero-CALL facts to
+the existing name ledger and saved Ghidra evidence comment. Prior comments and
+the provisional descriptive name were preserved; the affected export was
+refreshed. Function count stayed64729 and body/prototype/flow were unchanged.
+The old indexed getter edge remains qualified as cached metadata, not an
+owned direct call. This annotation adds no Source, ABI or gameplay credit.
