@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "audit_id": "cc12_type5_current_dependency_TEXT_selection",
+  "kind": "current dependency snapshot and proposed guard TEXT with current-header drift hold",
+  "Source_credit": 0,
+  "Root_acceptance": false,
+  "process_ready_approval": false,
+  "address_count": 0,
+  "ownership_context_only_address": "008EF2B0",
+  "baseline": "3875f327feda5063b4b3ca4697d83c95f1feba5d",
+  "result": "TEXT dependency snapshot and unexecuted guard proposal complete; current execution withheld because original Main include selection drifted",
+  "local_evidence": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps",
+    "exact_recursive_files": 10194,
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\seal.json",
+      "size": 1966066,
+      "sha256": "8574e2529d3fb7d173fe657656d7e9de859b4f42f844c57fbc04608af0395f75"
+    },
+    "conclusions": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\analysis_conclusions.json",
+      "size": 24549,
+      "sha256": "2d40f4666ae57bd05340df033e821e5aa129eaa0e19cfebe6e8d21c7c9d79e16"
+    },
+    "before_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\before_inventory.json",
+      "size": 6060250,
+      "sha256": "bd56b33a6d65701011559484b77ff7115c4d262ce5c11b02ac37c4dc6dbb1b3c"
+    },
+    "after_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\after_inventory.json",
+      "size": 6060250,
+      "sha256": "a8d90b0a89cdb33595d1aa3c5caa2ceb14a7860250e78bcffaa0db3e978c7f72"
+    },
+    "preservation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\preservation_receipt.json",
+      "size": 6150,
+      "sha256": "5d548bb1f3634da83aa2436616497d1cd4e6df7665d93978c48b376fe0eee9a9"
+    },
+    "first_stop": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\bookend_first_stop.json",
+      "size": 347,
+      "sha256": "67ce26a92cc292634776b3f7897b5291e1ddf565340d35185799314a837c56fd"
+    },
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\proposed_recipe_dependency_guard_v4.py.txt",
+      "size": 42186,
+      "sha256": "74f10c43fbc1da35f75325a737f9c36281f2caa4b6e479e556b9b7cf4eae9ad7"
+    },
+    "proposal_delta": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\proposed_recipe_dependency_guard_v4.diff.txt",
+      "size": 11049,
+      "sha256": "dbf1b2a09714ebed326f727a798fc36e42cd88363efa43324fe5ba0083ea7158"
+    },
+    "external_guard_proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\proposed_external_preinterpreter_guard.ps1.txt",
+      "size": 5814,
+      "sha256": "16993564796a144196fd54df98242e64ec2ba12093002e1b1cdc95ce3b45c76f"
+    }
+  },
+  "counts": {
+    "frozen_unique_files": 10154,
+    "initial_memberships": 10157,
+    "after_memberships": 10158,
+    "scopes": 31,
+    "unchanged_scopes": 30,
+    "unchanged_originals": 10152,
+    "unchanged_frozen": 10154,
+    "AST_files": 822,
+    "AST_errors": 0,
+    "raw_PE_files": 409,
+    "raw_PE_errors": 0,
+    "PE_edges": 2613,
+    "tools_py": 46,
+    "selected_TEXT_files": 13,
+    "preserved_original_assertions": 108,
+    "planned_header_memberships": 7135,
+    "planned_library_candidates": 540
+  },
+  "chosen_families": [
+    {
+      "family": "guard41",
+      "files": 41,
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\frozen\\guard41\\seal.json",
+        "bytes": 6856,
+        "sha256": "da41e9a1c047ee82be1230c79e2ed801c613d84c6449a6916affdebc1e67e989"
+      },
+      "exact_membership": true
+    },
+    {
+      "family": "reader53",
+      "files": 53,
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\frozen\\reader53\\seal.json",
+        "bytes": 14996,
+        "sha256": "265818c807869a75e0268eaf4dd7b65f812cf5f6813bf8fa77b04af823a1c5b4"
+      },
+      "exact_membership": true
+    },
+    {
+      "family": "schema53",
+      "files": 53,
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\frozen\\schema53\\artifact_manifest.json",
+        "bytes": 16758,
+        "sha256": "bad4f9a3b6bec8d778395eb7a947eccb6c71ce179d582542b4468c5794bcb087"
+      },
+      "exact_membership": true
+    }
+  ],
+  "selected_recipe_probe_helper": [
+    {
+      "name": "recipe.py.txt",
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\proposed_recipe_v3.py.txt",
+        "size": 34894,
+        "sha256": "1441eda8af500a16c89885ef1c7f752cfde0e35b2eaa506c437e4ace8c809151"
+      },
+      "fresh_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\frozen\\schema53\\frozen_TEXT\\recipe.py.txt",
+        "bytes": 34894,
+        "sha256": "1441eda8af500a16c89885ef1c7f752cfde0e35b2eaa506c437e4ace8c809151"
+      },
+      "exact": true
+    },
+    {
+      "name": "probe.cpp.txt",
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\00_probe_text.txt",
+        "size": 27488,
+        "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+      },
+      "fresh_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\frozen\\schema53\\frozen_TEXT\\probe.cpp.txt",
+        "bytes": 27488,
+        "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+      },
+      "exact": true
+    },
+    {
+      "name": "helpers.py.txt",
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\18_helpers_text.txt",
+        "size": 18589,
+        "sha256": "e9f7ab383de95f183656be4bf8bcac0e3e0077fc6e7fde350ad3512c317c18e7"
+      },
+      "fresh_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\frozen\\schema53\\frozen_TEXT\\helpers.py.txt",
+        "bytes": 18589,
+        "sha256": "e9f7ab383de95f183656be4bf8bcac0e3e0077fc6e7fde350ad3512c317c18e7"
+      },
+      "exact": true
+    }
+  ],
+  "source_header_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type5_storage.cpp",
+      "bytes": 1388,
+      "sha256": "bf0267a1f2362148b39599a3b9c3ae9ddefd01b6d26c6da0ede9e410f91407ce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_duplicate.cpp",
+      "bytes": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type5_storage.hpp",
+      "bytes": 2382,
+      "sha256": "e013cde2dbb55bed44deba372d6fd7ed7162c5f770d0ef561a8dee0a047677e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_duplicate.hpp",
+      "bytes": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    }
+  ],
+  "current_header_hold": {
+    "original_content_changes": [
+      {
+        "category": "Main_include",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_native_settings_application.hpp",
+          "bytes": 2059,
+          "sha256": "c9e496a96a1dc6b0b681239f94006ef771bb243b90627a1889c6f3ca268a0587"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_native_settings_application.hpp",
+          "bytes": 2280,
+          "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760"
+        }
+      },
+      {
+        "category": "Main_include",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_game_settings_owner.hpp",
+          "bytes": 4855,
+          "sha256": "f34fc7f768b785334a2c1432f1fe0a235aa6c2edb7c9c84a83b0a08a049b88f5"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        }
+      }
+    ],
+    "membership_changes": [
+      {
+        "category": "Main_include",
+        "members": 2012,
+        "exact_before_after": false,
+        "differences": [
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_world_parent_headers.hpp",
+            "SideIndicator": "=>"
+          }
+        ]
+      }
+    ],
+    "after_content_pins": [
+      {
+        "change": "content_changed",
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_native_settings_application.hpp",
+          "bytes": 2280,
+          "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760"
+        },
+        "frozen_after_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\after_drift_copies\\game_native_settings_application.hpp",
+        "adopted_into_original_selection": false
+      },
+      {
+        "change": "content_changed",
+        "original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        },
+        "frozen_after_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\after_drift_copies\\native_game_settings_owner.hpp",
+        "adopted_into_original_selection": false
+      },
+      {
+        "change": "membership_added",
+        "original": {
+          "path": "J:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_world_parent_headers.hpp",
+          "bytes": 1906,
+          "sha256": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba"
+        },
+        "frozen_after_copy": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\after_drift_copies\\native_world_parent_headers.hpp",
+        "adopted_into_original_selection": false
+      }
+    ],
+    "original_selection_preserved": true,
+    "repinned": false,
+    "future_execution_requires_new_selection": true
+  },
+  "duplicate_prerequisite": {
+    "old_frozen_generation": {
+      "report": "reports/native_string_duplicate_cc12.json",
+      "field": "primary_integration.Source_admission_credit",
+      "required": 1,
+      "observed_at_generation": 0,
+      "met": false
+    },
+    "current_Main_report_only": {
+      "Source_admission_credit": 1,
+      "qualified_family": "local/dup57p2",
+      "exact_family_files": 130,
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\seal.json",
+        "size": 28672,
+        "sha256": "63e41c374d57d2c333f235fab6a403e74377b0a6ed221bf1b5ec7eb4c473e206"
+      },
+      "runtime_family_opened_or_replayed": false,
+      "old_generation_credit_0_rebound": false
+    },
+    "does_not_rebind_old_Source_associations": true
+  },
+  "proposal": {
+    "recipe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_current_dependency_TEXT_selection\\local\\t5deps\\proposed_recipe_dependency_guard_v4.py.txt",
+      "size": 42186,
+      "sha256": "74f10c43fbc1da35f75325a737f9c36281f2caa4b6e479e556b9b7cf4eae9ad7"
+    },
+    "only_AST_parsed": true,
+    "selected_three_basenames": [
+      "recipe.py",
+      "probe.cpp",
+      "helpers.py"
+    ],
+    "preserved_original_assertions": 108,
+    "changed_original_functions": [
+      "env",
+      "native_bookend",
+      "run"
+    ],
+    "new_external_preinterpreter_guard_required": true,
+    "flags": [
+      "-B",
+      "-E",
+      "-S",
+      "-X pycache_prefix=<reviewed empty directory>"
+    ],
+    "four_Native_subprocess_call_sites_corrected_as_TEXT": true,
+    "complete_private_child_environment_pin_missing_by_design": true,
+    "Root_receipt_or_executable_adoption": false
+  },
+  "issues": [
+    {
+      "id": "startup_and_assertions",
+      "evidence": "selected recipe lines 2-6,48-62,357-359",
+      "finding": "stdlib/ctypes and capstone/pefile load before the helper guard; 108 assert nodes can be stripped by optimization",
+      "proposal": "external independent pre-interpreter hash/membership check; first explicit optimization/flags failure; -B -E -S; three-basename guard remains before helper exec; packages moved behind dependency guard"
+    },
+    {
+      "id": "bytecode_reading",
+      "evidence": "current stdlib/package caches inventoried; broad tools guard selects 46 .py files",
+      "finding": "-B disables writes, not reads; a tools source-only guard alone does not cover cached bytecode",
+      "proposal": "-X pycache_prefix set to a reviewed empty directory; require it remains empty; preserve package/stdlib cache inventory; apply flags to all four Native child call sites"
+    },
+    {
+      "id": "site_and_environment",
+      "evidence": "five .pth files and their selected startup roots frozen; selected env() copies the process environment",
+      "finding": "normal startup enables _distutils_hack and pywin32 bootstrap plus three editable project paths; -E does not disable site or scrub CL/_CL_/LINK/LIBPATH/LIBCAPSTONE_PATH",
+      "proposal": "-S and exact-module finder; separately reviewed private sanitized child ENV; reject override keys; keep complete original/after ENV private"
+    },
+    {
+      "id": "package_closure",
+      "evidence": "95 Capstone files, pefile.py plus cache, 8 ordlookup files, both dist-info trees",
+      "finding": "original toolpaths inventory pins only capstone.__file__, package DLLs and pefile.__file__ after package import; Capstone imports architecture siblings and loads a native DLL; pefile imports ordlookup and its three mapping modules",
+      "proposal": "pin exact package membership and every loader/module/cache before import; select only capstone/pefile/ordlookup module paths without adding whole user site; verify requested and actual loaded Capstone DLL path during future approved execution"
+    },
+    {
+      "id": "tools_route",
+      "evidence": "fresh 46 tools .py inventory and AST; bsp.py client and ghidra_export.py Client use urllib HTTP",
+      "finding": "selected count/proto/bytes/disasm route needs branch_sync/coordination/ledger/workspace/ghidra_export; ghidra_launch is conditional; ghidra_flow_repair is a broad guard member, not a selected call",
+      "proposal": "guard all 46; use the supported urllib route; set BSP_GHIDRA_AUTOSTART=0 to fail closed; no ghidra_bridge/jfx package claim or present Native query"
+    },
+    {
+      "id": "include_and_library_contract",
+      "evidence": "seven include roots contain 7135 initial memberships; three x86 library roots contain 540 candidates",
+      "finding": "these are planned candidates; /sourceDependencies and /VERBOSE:LIB consumption records do not exist for this packet",
+      "proposal": "preserve existing exact source-input, candidate-subset and consumed-copy checks; freeze current candidates before future compiler use; do not label planned headers/libraries as consumed"
+    },
+    {
+      "id": "native_dependency_limits",
+      "evidence": "409 raw PE files parsed without imports/execution; 2613 import/delay edges",
+      "finding": "1457 edges have frozen basename candidates; 1156 retain OS/API-set or unfrozen external resolution boundaries; candidates do not establish loaded physical identity",
+      "proposal": "Root must separately review actual loader/provider observations in an authorized future process; no Native/provider/system-target identity is claimed here"
+    },
+    {
+      "id": "current_header_hold",
+      "evidence": "preservation_receipt.json, bookend_first_stop.json, drift_after_content_pins.json",
+      "finding": "two current Main headers changed and one Main include membership was added during concurrent work",
+      "proposal": "retain initial pins and separate after-content evidence; current dependency selection fails its bookend and must not authorize execution; a later independent selection is required"
+    }
+  ],
+  "PE_dependency_limit": {
+    "files": 409,
+    "parse_errors": 0,
+    "import_and_delay_edges": 2613,
+    "frozen_basename_candidate_edges": 1457,
+    "external_resolution_boundary_edges": 1156,
+    "actual_loaded_dependency_identity_proven": false
+  },
+  "type5_contract": {
+    "address": "008EF2B0",
+    "Native_bytes": 63,
+    "Native_instructions": 19,
+    "RET_bytes": 12,
+    "stack_arguments": [
+      "text",
+      "word18",
+      "word08"
+    ],
+    "Source_calls": 1,
+    "Original_calls": 1,
+    "root_count": 2,
+    "root_bytes": 56,
+    "child_count": 2,
+    "child_bytes": 6,
+    "allocations": 4,
+    "frees": 4,
+    "Capture132": {
+      "bytes": 132,
+      "pre_bytes": 16,
+      "Registers_bytes": 100,
+      "Registers_offset": 16,
+      "post_offset": 116,
+      "post_bytes": 16,
+      "little_endian_DWORD_count": 33,
+      "register_fields_in_order": [
+        "esp_before",
+        "esp_after",
+        "eax_after",
+        "ecx_after",
+        "edx_after",
+        "ebx_before",
+        "esi_before",
+        "edi_before",
+        "ebp_before",
+        "ebx_after",
+        "esi_after",
+        "edi_after",
+        "ebp_after",
+        "flags_before",
+        "flags_after",
+        "es_before",
+        "es_after",
+        "stack_guard0",
+        "stack_guard1",
+        "text_slot",
+        "text_word",
+        "word18_slot",
+        "word18_word",
+        "word08_slot",
+        "word08_word"
+      ],
+      "R_Q_T_named_fields": false
+    },
+    "runtime_fields": 31,
+    "provider_fields": 9,
+    "contract_preserved_as_TEXT_only": true
+  },
+  "boundaries": {
+    "Native_Ghidra_provider_original_game_PE_target_accesses": 0,
+    "compiler_linker_invocations": 0,
+    "selected_helper_imports_or_executions": 0,
+    "prior_runtime_replays": 0,
+    "Main_local_writes": 0,
+    "future_Main_local_type5p1_absent": true,
+    "Root_receipts_authored": 0,
+    "current_execution_admission": false,
+    "startup_gameplay_ABI_proof": false
+  },
+  "Root_remaining": [
+    "Review this original frozen selection and its drift hold; do not treat it as current execution permission.",
+    "Create a separate current dependency selection after Main include work settles; never rewrite this snapshot or old seals.",
+    "Independently select exact new recipe/guard/dependency/private ENV pins and preserve all three original basename requirements; author any Root receipts yourself.",
+    "Keep future linked-code manual review, exclusive attempts, one-process stop, independent recorded reader, actual provider bookends and final packaging gates.",
+    "Establish actual consumed compiler inputs and loaded dependencies only in separately authorized future work. No Type5 compiler, linked gate, process, ABI or game qualification was performed here."
+  ]
+}
