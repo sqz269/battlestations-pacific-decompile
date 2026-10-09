@@ -1,0 +1,428 @@
+{
+  "schema": 1,
+  "packet": "cc12_pending_group_initializer_entry_readiness",
+  "created_utc": "2026-10-09T12:42:25.078603+00:00",
+  "baseline": "63f6de61cabb88766a98effb8f3377cd960ae0b3",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Project-aware bsp.py ghidra CLI before each query",
+    "count": 64729
+  },
+  "diagnostic_scope": {
+    "first_window": "00CD27C0..00CD27FF",
+    "Root_Astra_expansion": "00CD27B0..00CD28FF; selected diagnostic bytes, not a claimed function body",
+    "entire_window": {
+      "address": "00CD27B0",
+      "bytes": 336,
+      "sha256": "a7e3b60db20e2ee7031d6ea38c28657246ad902ece5ccf37f34ae8ca0f2bd817",
+      "hex": "4148f2ff59c3cccccccccccccccccccc33c0a3c476f800c705c876f800f476f800a3fc76f800c705f876f800c076f800a32c77f800c7053077f8005c77f800a36477f800c7056077f8002877f800a39477f800c7059877f800c477f800a3cc77f800c705c877f8009077f800a3fc77f800c7050078f8002c78f800a33478f800c7053078f800f877f800a36478f800c7056878f8009478f800a39c78f800c7059878f8006078f800c3ccccccccccccccb9e875e100e8e6e773ff68f0ebcd00e88147f2ff59c3ccccccccccccccccccccb9b075e100e8c6e773ff68c0ebcd00e86147f2ff59c3ccccccccccccccccccccb97875e100e8a6e773ff68e0ebcd00e84147f2ff59c3ccccccccccccccccccccb94075e100e886e773ff68d0ebcd00e82147f2ff59c3ccccccccccccccccccccb9e875e100e866e773ff6830eccd00e80147f2ff59c3cccccccccccccccccccc"
+    },
+    "outside_candidate_bytes": "Preserved diagnostic context; starting alignment at27B0 is unproved and adjacent functions are not reconstructed or classified.",
+    "adjacent_bytes_reconstructed": false
+  },
+  "candidate": {
+    "address": "00CD27C0",
+    "bytes": 153,
+    "sha256": "ef403713f0319a915381e64216765bf0c561637508f0519db8e3cea0031649c2",
+    "hex": "33c0a3c476f800c705c876f800f476f800a3fc76f800c705f876f800c076f800a32c77f800c7053077f8005c77f800a36477f800c7056077f8002877f800a39477f800c7059877f800c477f800a3cc77f800c705c877f8009077f800a3fc77f800c7050078f8002c78f800a33478f800c7053078f800f877f800a36478f800c7056878f8009478f800a39c78f800c7059878f8006078f800c3",
+    "end_inclusive": "00CD2858",
+    "instructions": [
+      {
+        "address": "00CD27C0",
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "00CD27C2",
+        "bytes": "a3c476f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf876c4], eax"
+      },
+      {
+        "address": "00CD27C7",
+        "bytes": "c705c876f800f476f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf876c8], 0xf876f4"
+      },
+      {
+        "address": "00CD27D1",
+        "bytes": "a3fc76f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf876fc], eax"
+      },
+      {
+        "address": "00CD27D6",
+        "bytes": "c705f876f800c076f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf876f8], 0xf876c0"
+      },
+      {
+        "address": "00CD27E0",
+        "bytes": "a32c77f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf8772c], eax"
+      },
+      {
+        "address": "00CD27E5",
+        "bytes": "c7053077f8005c77f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87730], 0xf8775c"
+      },
+      {
+        "address": "00CD27EF",
+        "bytes": "a36477f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87764], eax"
+      },
+      {
+        "address": "00CD27F4",
+        "bytes": "c7056077f8002877f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87760], 0xf87728"
+      },
+      {
+        "address": "00CD27FE",
+        "bytes": "a39477f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87794], eax"
+      },
+      {
+        "address": "00CD2803",
+        "bytes": "c7059877f800c477f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87798], 0xf877c4"
+      },
+      {
+        "address": "00CD280D",
+        "bytes": "a3cc77f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf877cc], eax"
+      },
+      {
+        "address": "00CD2812",
+        "bytes": "c705c877f8009077f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf877c8], 0xf87790"
+      },
+      {
+        "address": "00CD281C",
+        "bytes": "a3fc77f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf877fc], eax"
+      },
+      {
+        "address": "00CD2821",
+        "bytes": "c7050078f8002c78f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87800], 0xf8782c"
+      },
+      {
+        "address": "00CD282B",
+        "bytes": "a33478f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87834], eax"
+      },
+      {
+        "address": "00CD2830",
+        "bytes": "c7053078f800f877f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87830], 0xf877f8"
+      },
+      {
+        "address": "00CD283A",
+        "bytes": "a36478f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87864], eax"
+      },
+      {
+        "address": "00CD283F",
+        "bytes": "c7056878f8009478f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87868], 0xf87894"
+      },
+      {
+        "address": "00CD2849",
+        "bytes": "a39c78f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf8789c], eax"
+      },
+      {
+        "address": "00CD284E",
+        "bytes": "c7059878f8006078f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf87898], 0xf87860"
+      },
+      {
+        "address": "00CD2858",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "instruction_count": 22,
+    "unconditional_linear_normal_path": true,
+    "calls": 0,
+    "plain_RET": "00CD2858",
+    "incoming_EAX_killed": true,
+    "ECX_EDX_and_nonvolatile_registers_untouched": true,
+    "ordinary_ESP_delta": 4,
+    "final_arithmetic_flags": "XOR EAX,EAX: CF/OF/SF=0, ZF/PF=1, AF undefined; MOV/RET preserve",
+    "Ghidra_function_or_listing_exists_at_entry_or_return": false,
+    "Ghidra_AddressSet_or_listing_changed": false
+  },
+  "groups": [
+    {
+      "index": 0,
+      "head": "00F876C0",
+      "tail": "00F876F4",
+      "exact_order": [
+        {
+          "instruction": "00CD27C2",
+          "operation": "dword ptr [0xf876c4], eax"
+        },
+        {
+          "instruction": "00CD27C7",
+          "operation": "dword ptr [0xf876c8], 0xf876f4"
+        },
+        {
+          "instruction": "00CD27D1",
+          "operation": "dword ptr [0xf876fc], eax"
+        },
+        {
+          "instruction": "00CD27D6",
+          "operation": "dword ptr [0xf876f8], 0xf876c0"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "head": "00F87728",
+      "tail": "00F8775C",
+      "exact_order": [
+        {
+          "instruction": "00CD27E0",
+          "operation": "dword ptr [0xf8772c], eax"
+        },
+        {
+          "instruction": "00CD27E5",
+          "operation": "dword ptr [0xf87730], 0xf8775c"
+        },
+        {
+          "instruction": "00CD27EF",
+          "operation": "dword ptr [0xf87764], eax"
+        },
+        {
+          "instruction": "00CD27F4",
+          "operation": "dword ptr [0xf87760], 0xf87728"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "head": "00F87790",
+      "tail": "00F877C4",
+      "exact_order": [
+        {
+          "instruction": "00CD27FE",
+          "operation": "dword ptr [0xf87794], eax"
+        },
+        {
+          "instruction": "00CD2803",
+          "operation": "dword ptr [0xf87798], 0xf877c4"
+        },
+        {
+          "instruction": "00CD280D",
+          "operation": "dword ptr [0xf877cc], eax"
+        },
+        {
+          "instruction": "00CD2812",
+          "operation": "dword ptr [0xf877c8], 0xf87790"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "head": "00F877F8",
+      "tail": "00F8782C",
+      "exact_order": [
+        {
+          "instruction": "00CD281C",
+          "operation": "dword ptr [0xf877fc], eax"
+        },
+        {
+          "instruction": "00CD2821",
+          "operation": "dword ptr [0xf87800], 0xf8782c"
+        },
+        {
+          "instruction": "00CD282B",
+          "operation": "dword ptr [0xf87834], eax"
+        },
+        {
+          "instruction": "00CD2830",
+          "operation": "dword ptr [0xf87830], 0xf877f8"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "head": "00F87860",
+      "tail": "00F87894",
+      "exact_order": [
+        {
+          "instruction": "00CD283A",
+          "operation": "dword ptr [0xf87864], eax"
+        },
+        {
+          "instruction": "00CD283F",
+          "operation": "dword ptr [0xf87868], 0xf87894"
+        },
+        {
+          "instruction": "00CD2849",
+          "operation": "dword ptr [0xf8789c], eax"
+        },
+        {
+          "instruction": "00CD284E",
+          "operation": "dword ptr [0xf87898], 0xf87860"
+        }
+      ]
+    }
+  ],
+  "group_backing_section_metadata": {
+    "name": ".data",
+    "rva": 10518528,
+    "virtual_size": 2719452,
+    "raw_size": 65536,
+    "characteristics": "C0000040",
+    "requested_address": "00F876C0",
+    "offset_in_section": 1570496,
+    "outside_raw_backing": true
+  },
+  "minimum_written_address_span": "00F876C4..00F8789F; maximum direct write ends9F, not complete five-group size proof",
+  "field_qualification": "Exactly four DWORD writes per pair: head+4=0, head+8=tail, tail+8=0, tail+4=head. No profile/count/all-other-field stores or general zero-fill performed by this body.",
+  "entry_word": {
+    "address": "00CE3020",
+    "bytes": 4,
+    "sha256": "00f71b1bd5e5e394ce2c0501d5978bbb7d0e8bf6c34e736eace8c623f37f211f",
+    "hex": "c027cd00",
+    "value": "00CD27C0",
+    "section": {
+      "name": ".rdata",
+      "rva": 9314304,
+      "virtual_size": 1202980,
+      "raw_size": 1204224,
+      "characteristics": "40000040",
+      "requested_address": "00CE3020",
+      "offset_in_section": 4128,
+      "outside_raw_backing": false
+    },
+    "live_PE_equal": true,
+    "role": "Concrete pointer to candidate code. CRT initializer-table membership/start/end/walker/startup invocation remain unproved; no adjacent table words read."
+  },
+  "entry_xrefs": "No references found to address: 00cd27c0\n",
+  "older_lookup_qualification": "Nearest indexed00CCFFE0 ends00CD002C and does not contain00CD27D6. Lookup predecessor is not enclosing AddressSet proof.",
+  "image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "repository_input_pins": [
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "revision": "63f6de61cabb88766a98effb8f3377cd960ae0b3"
+    },
+    {
+      "path": "tools/bsp.py",
+      "physical_bytes": 72606,
+      "physical_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "canonical_lf_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "revision": "63f6de61cabb88766a98effb8f3377cd960ae0b3"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "revision": "63f6de61cabb88766a98effb8f3377cd960ae0b3"
+    },
+    {
+      "path": "reports/cc12_pending_tick_global_storage_binding_readiness.json",
+      "physical_bytes": 15774,
+      "physical_sha256": "d490dac61f1b29c1f8c0b3dfe35d91d1e7160ae5e8389bc0c29c2843ef9faff8",
+      "canonical_lf_sha256": "d490dac61f1b29c1f8c0b3dfe35d91d1e7160ae5e8389bc0c29c2843ef9faff8",
+      "revision": "63f6de61cabb88766a98effb8f3377cd960ae0b3"
+    },
+    {
+      "path": "docs/CC12_PENDING_TICK_GLOBAL_STORAGE_BINDING_READINESS.md",
+      "physical_bytes": 4194,
+      "physical_sha256": "c5b069d947342ff0121f9f4ad08603c5d0bb2f6f2c2cb09bf1e1ea47f879f2f8",
+      "canonical_lf_sha256": "c5b069d947342ff0121f9f4ad08603c5d0bb2f6f2c2cb09bf1e1ea47f879f2f8",
+      "revision": "63f6de61cabb88766a98effb8f3377cd960ae0b3"
+    },
+    {
+      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
+      "physical_bytes": 106009,
+      "physical_sha256": "0cb39719c22c5d0a93f77353ca05c9e6e793f370f81c01b9ee2ed70e4932817e",
+      "canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
+      "revision": "63f6de61cabb88766a98effb8f3377cd960ae0b3"
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
+      "physical_bytes": 8451,
+      "physical_sha256": "7383167321e0ddd90161e84a77823adcc1f70bc02eaeba8f60d0945e0e20a07f",
+      "canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
+      "revision": "63f6de61cabb88766a98effb8f3377cd960ae0b3"
+    }
+  ],
+  "capture_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_initializer_entry_primary\\count.txt",
+      "bytes": 49,
+      "sha256": "64f4f9be166172342d092bf0cd71435b6499bdc159a7f8a34c738d7db792a246"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_initializer_entry_primary\\diagnostic_bytes.txt",
+      "bytes": 1617,
+      "sha256": "c885626ad4736097697f9c5579fa5337ea00bc4c52295aae12a2c6c26a1ea20d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_initializer_entry_primary\\entry_word_bytes.txt",
+      "bytes": 29,
+      "sha256": "db8392fbf4910e451daea5cb9378d4aa0d8a675c161408171a8a362c9b1ccf23"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_initializer_entry_primary\\entry_xrefs.txt",
+      "bytes": 42,
+      "sha256": "fd9f6b0c8ffcd4acabf35d3ff0426815082ea5895ae29aaf73703a9d421718b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_initializer_entry_primary\\metadata.txt",
+      "bytes": 256,
+      "sha256": "36312cc310924f835271cf0d46d4a24bb59aef57bf8f9ef344ee81a8eda44b42"
+    }
+  ],
+  "credit": {
+    "readonly": true,
+    "Source_functions": 0,
+    "Source_bytes": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0,
+    "Ghidra_changes": 0,
+    "builds_or_tests": 0
+  },
+  "next_dependencies": [
+    "Bounded actual CRT initializer table extent and walker/startup route",
+    "Source mutable group backing and production lifecycle construction",
+    "Separate pending global head/tail actual backing identity; no substitution from these groups"
+  ],
+  "document_pin": {
+    "path": "docs/CC12_PENDING_GROUP_INITIALIZER_ENTRY_READINESS.md",
+    "bytes": 4209,
+    "sha256": "73c7850733c79938f88f96b651c9eea669b8030622ea3a07219e50ee49fbc963"
+  }
+}
