@@ -1,0 +1,866 @@
+{
+  "schema": "bsp.cc12.pending_entity_registration_producer_readiness.v1",
+  "packet": "cc12_pending_entity_registration_producer_readiness",
+  "kind": "read_only_complete_producer_and_binding_contract",
+  "created_utc": "2026-10-09T06:12:30.260826+00:00",
+  "baseline_commit": "141f7a16360139a982382b9c5f8bfecc67d202e6",
+  "synced_main": "141f7a16360139a982382b9c5f8bfecc67d202e6",
+  "claimed_address": "00875890",
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "complete_ordinary_store_publication_schedule_established": true,
+    "production_Source_binding_ready": false,
+    "admitted_Source_API": false,
+    "held_dependencies": [
+      "actual875280 ordinary contract and same-owner service",
+      "common actual pending tail/last-cell/registration-node ownership",
+      "callable Source base profile",
+      "separate group bootstrap/common owner and producer-consumer phase"
+    ],
+    "minimum_boundary": "Actual node,payload,raw group; borrowed actual pending tail object, retained current operand, qualified callable base profile and actual getter/section service; no synthetic owner or unqualified default."
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Target-verified tools/bsp.py ghidra disasm/bytes; full body and two data windows equal installed PE.",
+    "fresh_spans": [
+      {
+        "address": "00875890",
+        "bytes": 139,
+        "purpose": "complete registration producer",
+        "hex": "8b4424085333db568bf18b4c240cc706c8ded000894614885e18885e19895e20895e1c895e2457894e28e8c1f9ffff8b78043bfb740b57ff151822ce00834718013bfb8b1508b7e0000f57c0895604c7460804b7e000a108b7e000897008893508b7e000f30f11462cf30f100560a2d700f30f114630740b834718ff57ff151022ce005f8bc65e5bc20800",
+        "sha256": "d17e4ff8218fd03c637068901fbb7d034c7990dde9ff6ebd0b462df652f3aa1e",
+        "live_GPR_PE_equal": true
+      },
+      {
+        "address": "00D7A260",
+        "bytes": 4,
+        "purpose": "current late copied float operand",
+        "hex": "000080bf",
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+        "live_GPR_PE_equal": true
+      },
+      {
+        "address": "00D0DEC8",
+        "bytes": 24,
+        "purpose": "base method-table identity data only; targets not expanded",
+        "hex": "2059870070bb420080bb420090bb4200a0bb4200b0bb4200",
+        "sha256": "e411d3855e66292155e01e61e271eedc44d7bd99b49a32d78de36875bbe25cbc",
+        "live_GPR_PE_equal": true
+      }
+    ],
+    "fresh_bytes": 167,
+    "body_bytes": 139,
+    "instruction_count": 42,
+    "physical_CALL_count": 3,
+    "instructions": [
+      {
+        "address": "00875890",
+        "bytes": 4,
+        "hex": "8b442408",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 8]"
+      },
+      {
+        "address": "00875894",
+        "bytes": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00875895",
+        "bytes": 2,
+        "hex": "33db",
+        "mnemonic": "xor",
+        "operands": "ebx, ebx"
+      },
+      {
+        "address": "00875897",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00875898",
+        "bytes": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "0087589A",
+        "bytes": 4,
+        "hex": "8b4c240c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "0087589E",
+        "bytes": 6,
+        "hex": "c706c8ded000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xd0dec8"
+      },
+      {
+        "address": "008758A4",
+        "bytes": 3,
+        "hex": "894614",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x14], eax"
+      },
+      {
+        "address": "008758A7",
+        "bytes": 3,
+        "hex": "885e18",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x18], bl"
+      },
+      {
+        "address": "008758AA",
+        "bytes": 3,
+        "hex": "885e19",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x19], bl"
+      },
+      {
+        "address": "008758AD",
+        "bytes": 3,
+        "hex": "895e20",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x20], ebx"
+      },
+      {
+        "address": "008758B0",
+        "bytes": 3,
+        "hex": "895e1c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x1c], ebx"
+      },
+      {
+        "address": "008758B3",
+        "bytes": 3,
+        "hex": "895e24",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x24], ebx"
+      },
+      {
+        "address": "008758B6",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "008758B7",
+        "bytes": 3,
+        "hex": "894e28",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x28], ecx"
+      },
+      {
+        "address": "008758BA",
+        "bytes": 5,
+        "hex": "e8c1f9ffff",
+        "mnemonic": "call",
+        "operands": "0x875280"
+      },
+      {
+        "address": "008758BF",
+        "bytes": 3,
+        "hex": "8b7804",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [eax + 4]"
+      },
+      {
+        "address": "008758C2",
+        "bytes": 2,
+        "hex": "3bfb",
+        "mnemonic": "cmp",
+        "operands": "edi, ebx"
+      },
+      {
+        "address": "008758C4",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x8758d1"
+      },
+      {
+        "address": "008758C6",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "008758C7",
+        "bytes": 6,
+        "hex": "ff151822ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "008758CD",
+        "bytes": 4,
+        "hex": "83471801",
+        "mnemonic": "add",
+        "operands": "dword ptr [edi + 0x18], 1"
+      },
+      {
+        "address": "008758D1",
+        "bytes": 2,
+        "hex": "3bfb",
+        "mnemonic": "cmp",
+        "operands": "edi, ebx"
+      },
+      {
+        "address": "008758D3",
+        "bytes": 6,
+        "hex": "8b1508b7e000",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [0xe0b708]"
+      },
+      {
+        "address": "008758D9",
+        "bytes": 3,
+        "hex": "0f57c0",
+        "mnemonic": "xorps",
+        "operands": "xmm0, xmm0"
+      },
+      {
+        "address": "008758DC",
+        "bytes": 3,
+        "hex": "895604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], edx"
+      },
+      {
+        "address": "008758DF",
+        "bytes": 7,
+        "hex": "c7460804b7e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], 0xe0b704"
+      },
+      {
+        "address": "008758E6",
+        "bytes": 5,
+        "hex": "a108b7e000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [0xe0b708]"
+      },
+      {
+        "address": "008758EB",
+        "bytes": 3,
+        "hex": "897008",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], esi"
+      },
+      {
+        "address": "008758EE",
+        "bytes": 6,
+        "hex": "893508b7e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xe0b708], esi"
+      },
+      {
+        "address": "008758F4",
+        "bytes": 5,
+        "hex": "f30f11462c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esi + 0x2c], xmm0"
+      },
+      {
+        "address": "008758F9",
+        "bytes": 8,
+        "hex": "f30f100560a2d700",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [0xd7a260]"
+      },
+      {
+        "address": "00875901",
+        "bytes": 5,
+        "hex": "f30f114630",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esi + 0x30], xmm0"
+      },
+      {
+        "address": "00875906",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x875913"
+      },
+      {
+        "address": "00875908",
+        "bytes": 4,
+        "hex": "834718ff",
+        "mnemonic": "add",
+        "operands": "dword ptr [edi + 0x18], -1"
+      },
+      {
+        "address": "0087590C",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "0087590D",
+        "bytes": 6,
+        "hex": "ff151022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2210]"
+      },
+      {
+        "address": "00875913",
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "00875914",
+        "bytes": 2,
+        "hex": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "00875916",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00875917",
+        "bytes": 1,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "00875918",
+        "bytes": 3,
+        "hex": "c20800",
+        "mnemonic": "ret",
+        "operands": "8"
+      }
+    ],
+    "calls": [
+      {
+        "address": "008758BA",
+        "bytes": 5,
+        "hex": "e8c1f9ffff",
+        "mnemonic": "call",
+        "operands": "0x875280"
+      },
+      {
+        "address": "008758C7",
+        "bytes": 6,
+        "hex": "ff151822ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "0087590D",
+        "bytes": 6,
+        "hex": "ff151022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2210]"
+      }
+    ],
+    "PE_imports": [
+      {
+        "iat": "00CE2210",
+        "dll": "KERNEL32.dll",
+        "symbol": "LeaveCriticalSection"
+      },
+      {
+        "iat": "00CE2218",
+        "dll": "KERNEL32.dll",
+        "symbol": "EnterCriticalSection"
+      }
+    ],
+    "previous_append_span_equal": true
+  },
+  "native_ABI": {
+    "receiver": "ECX actual34h-byte node",
+    "stack_arg1": "payload pointer at original ESP+4",
+    "stack_arg2": "raw group DWORD at original ESP+8",
+    "return": "EAX same actual node; RET8 at00875918",
+    "preserved": [
+      "EBX",
+      "ESI",
+      "EDI"
+    ],
+    "payload_dereferenced_or_retain_counted": false,
+    "group_validation": false,
+    "input_receiver_null_guard": false,
+    "no_Original_ABI_implementation_admitted": true,
+    "node_allocation_or_free": false,
+    "getter_internal_allocation_effects": "External and not expanded."
+  },
+  "ordered_node_stores": [
+    {
+      "site": "0087589E",
+      "offset": 0,
+      "bytes": 4,
+      "value": "base profileD0DEC8"
+    },
+    {
+      "site": "008758A4",
+      "offset": 20,
+      "bytes": 4,
+      "value": "raw group input bits"
+    },
+    {
+      "site": "008758A7",
+      "offset": 24,
+      "bytes": 1,
+      "value": "zero"
+    },
+    {
+      "site": "008758AA",
+      "offset": 25,
+      "bytes": 1,
+      "value": "zero"
+    },
+    {
+      "site": "008758AD",
+      "offset": 32,
+      "bytes": 4,
+      "value": "zero"
+    },
+    {
+      "site": "008758B0",
+      "offset": 28,
+      "bytes": 4,
+      "value": "zero"
+    },
+    {
+      "site": "008758B3",
+      "offset": 36,
+      "bytes": 4,
+      "value": "zero"
+    },
+    {
+      "site": "008758B7",
+      "offset": 40,
+      "bytes": 4,
+      "value": "payload pointer"
+    },
+    {
+      "site": "008758DC",
+      "offset": 4,
+      "bytes": 4,
+      "value": "first current pending tail.prev"
+    },
+    {
+      "site": "008758DF",
+      "offset": 8,
+      "bytes": 4,
+      "value": "actual pending tailE0B704"
+    },
+    {
+      "site": "008758F4",
+      "offset": 44,
+      "bytes": 4,
+      "value": "positive-zero MOVSS bits"
+    },
+    {
+      "site": "00875901",
+      "offset": 48,
+      "bytes": 4,
+      "value": "fresh D7A260 MOVSS bits"
+    }
+  ],
+  "node_byte_coverage": {
+    "node_bytes": 52,
+    "written_unique_bytes": 42,
+    "preserved_ranges": [
+      {
+        "start": 12,
+        "end_exclusive": 20,
+        "bytes": 8
+      },
+      {
+        "start": 26,
+        "end_exclusive": 28,
+        "bytes": 2
+      }
+    ],
+    "zeroing_entire_node_is_native": false,
+    "byte18_and19_are_separate_writes": true,
+    "prev_next_remain_preimage_until_append": true,
+    "plus2c_plus30_remain_preimage_until_after_publication": true
+  },
+  "getter_boundary": {
+    "target": "00875280",
+    "site": "008758BA",
+    "kept_external": true,
+    "body_or_descendants_expanded": false,
+    "callsite_ECX": "payload pointer",
+    "callsite_EAX": "raw group bits",
+    "complete_getter_input_ABI_established": false,
+    "no_argument_inference_from_empty_Ghidra_proto": true,
+    "result": "EAX actual owner; caller unconditionally reads DWORD owner+4 exactly once at008758BF intoEDI",
+    "null_owner_fallback": false,
+    "nullable_section": true,
+    "same_captured_section_used_through_leave": true,
+    "required_lifetime": "owner readable for capture; nonnull section initialized/live through real Leave; no substitution of a different same-layout lock owner"
+  },
+  "lock_schedule": [
+    {
+      "site": "008758C7",
+      "operation": "If captured section nonnull, real KERNEL32 EnterCriticalSection via IAT00CE2218 on its native0 member."
+    },
+    {
+      "site": "008758CD",
+      "operation": "After normal Enter return, DWORD[section+18]+=1 modulo2^32."
+    },
+    {
+      "site": "008758D1",
+      "operation": "CMP captured section,0; its flags survive MOV/MOVSS/XORPS until00875906."
+    },
+    {
+      "site": "00875908",
+      "operation": "For same nonnull captured section, DWORD[section+18]+=-1 modulo2^32 before Leave."
+    },
+    {
+      "site": "0087590D",
+      "operation": "Real KERNEL32 LeaveCriticalSection via IAT00CE2210 on same captured section."
+    }
+  ],
+  "publication_schedule": [
+    {
+      "site": "008758D3",
+      "operation": "Read current actual pending tail.prev E0B708 once."
+    },
+    {
+      "site": "008758DC",
+      "operation": "Store that first value to node.prev+4."
+    },
+    {
+      "site": "008758DF",
+      "operation": "Store actual pending tail E0B704 into node.next+8."
+    },
+    {
+      "site": "008758E6",
+      "operation": "Reload the SAME pending last cell E0B708."
+    },
+    {
+      "site": "008758EB",
+      "operation": "Write current old_last.next=node; alias is H.next only when old_last equals head."
+    },
+    {
+      "site": "008758EE",
+      "operation": "Publish SAME pending tail.prev=node."
+    },
+    {
+      "site": "008758F4",
+      "operation": "After both publications, MOVSS node+2C from XORPS positivezero."
+    },
+    {
+      "site": "008758F9",
+      "operation": "Fresh MOVSS load of actual D7A260; no earlier cached numeric constant."
+    },
+    {
+      "site": "00875901",
+      "operation": "MOVSS exact bits to node+30 before leave."
+    }
+  ],
+  "floating_data": {
+    "address": "00D7A260",
+    "bits": "BF800000",
+    "bytes": "000080bf",
+    "current_value": -1.0,
+    "node_plus2c_bits": "00000000",
+    "instructions": "XORPS and MOVSS only; no x87 or arithmetic evaluation; raw bits preserved.",
+    "semantic_field_names": "Existing time-scale interpretation remains descriptive; this audit establishes offsets/bits/order."
+  },
+  "profile_data": {
+    "native_profile": "00D0DEC8",
+    "slot_words": [
+      "00875920",
+      "0042BB70",
+      "0042BB80",
+      "0042BB90",
+      "0042BBA0",
+      "0042BBB0"
+    ],
+    "targets_expanded": false,
+    "Source_catalog_is_callable_table": false,
+    "required": "Qualified real Source profile for actual node consumers; original numeric code addresses are not callable Source targets.",
+    "catalog_Complete_meaning": "Every overriding slot body read end to end, per TickElementCoverage comment; not constructor/table implementation credit."
+  },
+  "failure_and_concurrency": {
+    "native_EH_frame": false,
+    "native_owned_cleanup_guard": false,
+    "native_rollback": false,
+    "early_effects": "Getter failure occurs after profile/group/flags/sub-list/payload stores; links and late floats retain preimages if append not reached.",
+    "post_enter": "No added automatic unlock/unlink/destruction for hardware/OS faults; ordinary leave decrements depth before API.",
+    "Source_RAII_reuse_admitted": false,
+    "qualified_phase_required": "Producer lock does not prove consumer874C90 synchronization; the consumer acquires no lock. Preserve actual same owner and lifetime contracts.",
+    "section_counter": "Raw DWORD wrapping ADD, not checked/saturating arithmetic or C++ signed overflow."
+  },
+  "existing_Source_reuse": [
+    {
+      "component": "TrackedCriticalSection inrandom_threads.hpp",
+      "usable": "Actual Win32 CRITICAL_SECTION0, depth+18, size1C assertions",
+      "limit": "Existing private RandomThreads guard adds RAII cleanup and is not the registration owner."
+    },
+    {
+      "component": "NativeObserverLockOwner inobserver_lifetime.hpp",
+      "usable": "Raw8 owner shape with actual section pointer+4",
+      "limit": "Shape does not establish identity equivalence to875280; pending F899E8/observer owner is not a substitute."
+    },
+    {
+      "component": "real Windows imports",
+      "usable": "EnterCriticalSection and LeaveCriticalSection are available actual operations",
+      "limit": "Caller must supply correct initialized captured section and retain its lifetime."
+    },
+    {
+      "component": "CapturedPendingSection innative_pending_entity_producers.cpp",
+      "usable": "Evidence for DWORD-bit wrapping depth updates and real Win32 calls",
+      "limit": "Private RAII destructor adds C++ unwind cleanup absent from this body; not a reusable whole guard contract."
+    },
+    {
+      "component": "GameNativeReadOnlyData",
+      "usable": "Can expose actual retained D7A260 constant from qualified read-only band",
+      "limit": "Does not own mutable pending registry; numeric table mapping does not make code addresses callable."
+    },
+    {
+      "component": "fixed-step/unit layout andtick-element catalogs",
+      "usable": "Offsets, abstract construction hook and address metadata",
+      "limit": "No actual875890 constructor, common mutable registry owner or callable base Source table demonstrated."
+    }
+  ],
+  "required_minimal_future_binding": {
+    "ordinary_inputs": [
+      "actual writable34h node",
+      "borrowed payload pointer",
+      "raw32bit group"
+    ],
+    "borrowed_dependencies": [
+      "actual pending tail objectE0B704 with its own+4 currentlastcellE0B708 shared byproducer/consumer",
+      "actual875280 service and result-owner+4 contract, not a cached unrelated section",
+      "qualified actual callable base profile corresponding toD0DEC8",
+      "retained actual D7A260 operand"
+    ],
+    "avoid_independent_alias_mismatch": "Borrow the tail object and derive/read its own+4 cell, not unrelated tail and last snapshots.",
+    "owned_resources": [],
+    "signature_or_Source_packet_admitted": false,
+    "reason_for_hold": "Concrete getter/profile/common-owner identities are not established by the complete caller body alone."
+  },
+  "independent_group_owner_hold": {
+    "producer_accesses_group_array": false,
+    "producer_initializes_group_array": false,
+    "prior_audit_commit": "81eb1eb2efff4fa234597df77accde17b5fc9b2a",
+    "bootstrap_or_caller_sweep_performed": false,
+    "same_owner_and_phase_still_required": true
+  },
+  "inherited_evidence": {
+    "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+    "spans": [
+      {
+        "address": "00E0B6D0",
+        "bytes": 12,
+        "purpose": "pending head initial image prefix",
+        "hex": "000000000000000004b7e000",
+        "sha256": "0836a45f4cf885f04aafd07fead7691b215c6f053c2a239c6952fb6b0d541fc2",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 12,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "00E0B704",
+        "bytes": 12,
+        "purpose": "pending tail initial image prefix",
+        "hex": "00000000d0b6e00000000000",
+        "sha256": "b2e49bc8d81a5a3902d6c26ff6a4ebfd86ba3e965c2597da141b31f10816238e",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 12,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "00F876C0",
+        "bytes": 12,
+        "purpose": "group0 head initial image prefix",
+        "hex": "000000000000000000000000",
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 12
+      },
+      {
+        "address": "00F876F4",
+        "bytes": 12,
+        "purpose": "group0 tail initial image prefix",
+        "hex": "000000000000000000000000",
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 12
+      },
+      {
+        "address": "00CD27D6",
+        "bytes": 10,
+        "purpose": "bounded startup store of group0 tail.prev=head; not a complete initializer",
+        "hex": "c705f876f800c076f800",
+        "sha256": "a7f85ab8f9ff402536fbe7446e71335050695e03401736a66069dec4f39ab012",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 10,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "008758D3",
+        "bytes": 33,
+        "purpose": "bounded producer append boundary; complete producer not expanded",
+        "hex": "8b1508b7e0000f57c0895604c7460804b7e000a108b7e000897008893508b7e000",
+        "sha256": "07b1c6c942711800a0f7c0a3dd092d4ee0d6f0b99544612fd9285d8fd050bf1c",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 33,
+        "virtual_zero_fill_bytes": 0,
+        "live_capture_command": "python tools/bsp.py ghidra bytes 008758D3 --length 33"
+      }
+    ],
+    "fresh_requery": false,
+    "append_cross_check": "Fresh whole producer bytes at offset43h reproduce inherited33-byte append exactly.",
+    "bootstrap_limit": "Only existing10-byte CD27D6 group0 tail.prev initialization store; no complete initializer or function-boundary admission."
+  },
+  "Source_and_prior_evidence_pins": [
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "src/random_threads.cpp",
+      "bytes": 2902,
+      "sha256": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d",
+      "lf_sha256": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "bytes": 7290,
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "lf_sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+    },
+    {
+      "path": "src/native_pending_entity_producers.cpp",
+      "bytes": 4026,
+      "sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+      "lf_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_producers.hpp",
+      "bytes": 3874,
+      "sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+      "lf_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_lock.hpp",
+      "bytes": 3445,
+      "sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+      "lf_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6"
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "bytes": 18720,
+      "sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54"
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "bytes": 12785,
+      "sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17"
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "include/bsp/game_hosts_fixed_step.hpp",
+      "bytes": 18004,
+      "sha256": "cd47c5dd49d9e618461768cdff3a0a26541a9457168094234b531699b103c0b2",
+      "lf_sha256": "cd47c5dd49d9e618461768cdff3a0a26541a9457168094234b531699b103c0b2"
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "bytes": 18412,
+      "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "lf_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_SPLICE_READINESS.md",
+      "bytes": 8156,
+      "sha256": "18310573ebe042411e2fbf2168c7a97318af0a384d6f45c5d15e1c5897c52c53",
+      "lf_sha256": "18310573ebe042411e2fbf2168c7a97318af0a384d6f45c5d15e1c5897c52c53"
+    },
+    {
+      "path": "reports/cc12_pending_entity_registration_splice_readiness.json",
+      "bytes": 25496,
+      "sha256": "be854387995a78d3d0344291245e9ca6f0d09d426db079e470b2d4b671576840",
+      "lf_sha256": "894016d4ca5cceaae4be56cdfa95cf0c85172a06f29b15d320c9ab95dab1eebd"
+    }
+  ],
+  "validation": {
+    "fresh_windows": 3,
+    "fresh_GPR_PE_bytes": 167,
+    "body_instructions": 42,
+    "physical_calls": 3,
+    "source_and_prior_pins": 15,
+    "node_written_bytes": 42,
+    "node_preserved_bytes": 10,
+    "JSON_parse": true,
+    "Source_edits": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_CMake_mutations": 0,
+    "getter_descendant_expansions": 0,
+    "nine_caller_sweeps": 0,
+    "group_bootstrap_sweeps": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "new_Original_credit": 0,
+    "runtime_runs": 0,
+    "pin_recompute": true,
+    "independent_body_decode": true,
+    "inherited_append_identity": true
+  },
+  "limits": [
+    "Complete ordinary producer evidence only",
+    "Required borrowed binding boundary, not admitted production API",
+    "No native exception/register ABI equivalence, Source table or owner construction",
+    "No group bootstrap, World shutdown, application or gameplay closure"
+  ]
+}
