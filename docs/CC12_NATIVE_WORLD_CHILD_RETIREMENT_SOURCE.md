@@ -94,3 +94,29 @@ admission. No worker CMake, ledger, Ghidra, build, test, or probe changes occur.
 This qualified leaf can remove the direct-service prerequisite for a separately
 authorized actual-pointer `00903610` implementation only after that admission;
 the full World and virtual-retirement production graph remains open.
+
+## Primary registration and complete emitted review
+
+The integrator registered this source in bsp_core. The normal MSVC Win32 build
+and all three existing checks passed. The whole emitted function is 42 bytes /
+16 instructions. The only relocation, operand20, targets the same physical
+symbol index8, section3, value0. Rebinding it to `E8 FF FF FF` (-24) makes all
+42 bytes equal the installed PE and accepted live capture, including both
+branches and the seven-byte LEA ESP. One complete matching core member and
+one positive public definition establish that physical self binding.
+
+The final indirect operation is CALL EDX followed by POP ESI and plain RET.
+Current parent gate/head reloads follow the entire recursive call; no returned
+child or own post-virtual receiver dereference was inserted. The counted
+projected function is preserved; admission adds one actual-storage fragment
+and zero new Original functions or bytes. Its existing Ghidra name/comments
+are retained with appended evidence and a refreshed export.
+
+The qualified direct Source service for the separately reviewed 903610 pass
+is now available. That caller's implementation and production ownership graph
+are not admitted here. This root is absent from the game map. Actual slot-zero
+methods, argument cleanup, parent lifetimes, hierarchy progress, Native fault /
+exception behavior and gameplay remain open. Complete evidence and artifacts:
+`reports/cc12_native_world_child_retirement_primary_review.json` and
+`local/cc12_world_child_retirement_primary`. Worker document pins precede this
+primary appendix and remain historical.
