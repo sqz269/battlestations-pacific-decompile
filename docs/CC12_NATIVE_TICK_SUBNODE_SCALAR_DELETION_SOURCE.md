@@ -1,5 +1,15 @@
 # CC12 tick subnode scalar deletion Source candidate
 
+Current Source is registered and build-tested. The complete Native30/11 wrapper maps to39 Source bytes /13 operations with actual publication forwarding, late flags and explicit RET0C. Original ABI and allocator policy remain unproved.
+
+## Integrator compiled review
+
+Root replayed the candidate Native/Source mapping, actual declarations, repository/dependency pins and relevant excerpts before registration. The normal MSVC Win32 build passed all three existing checks. Root reviewed every emitted operation, complete COFF object and indexed relocation graph, actual Core definition and current map/import context. All twelve prior whole objects remain byte-identical, including Legacy20 code/relocations and eight EH payload/relocation contracts. The existing pending-entity provider whole object, its twelve functions and two44-byte EH sections are also unchanged. No new test, probe, storage, caller, production binding or forced retention was added. The immutable worker report below records its candidate stage; current admission is recorded in the primary report.
+
+Current evidence: `reports/cc12_native_tick_subnode_scalar_deletion_primary_review.json`.
+
+## Worker candidate snapshot
+
 This packet adds only `scalar_delete_native_tick_subnode_0071c4d0`, a new
 MSVC Win32 naked fastcall Source interface for the complete 30-byte wrapper
 at `0071C4D0..0071C4ED`. It is a candidate awaiting the integrator's CMake

@@ -1,5 +1,15 @@
 # CC12 native observer endpoint live-count cleanup Source candidate
 
+Current Source is registered and build-tested. The complete Native70/24 schedule maps to84 Source bytes /28 operations, preserving the live signed-count reload and final byte-store order. Explicit owner/access arguments and RET8 differ from Native ABI.
+
+## Integrator compiled review
+
+Root replayed the candidate Native/Source mapping, actual declarations, repository/dependency pins and relevant excerpts before registration. The normal MSVC Win32 build passed all three existing checks. Root reviewed every emitted operation, complete COFF object and indexed relocation graph, actual Core definition and current map/import context. All twelve prior whole objects remain byte-identical, including Legacy20 code/relocations and eight EH payload/relocation contracts. The existing pending-entity provider whole object, its twelve functions and two44-byte EH sections are also unchanged. No new test, probe, storage, caller, production binding or forced retention was added. The immutable worker report below records its candidate stage; current admission is recorded in the primary report.
+
+Current evidence: `reports/cc12_native_observer_endpoint_live_count_cleanup_primary_review.json`.
+
+## Worker candidate snapshot
+
 This candidate reconstructs the complete ordered schedule of
 `007EE620..007EE665` (70 bytes, 24 instructions) through a new naked MSVC Win32
 fastcall interface. It retains the raw receiver and selected entity pointer,

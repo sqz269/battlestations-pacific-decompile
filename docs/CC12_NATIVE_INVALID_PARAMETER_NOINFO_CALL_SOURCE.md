@@ -1,5 +1,15 @@
 # Native invalid-parameter no-information call: qualified Source candidate
 
+Current Source is registered and build-tested. All nine Native operations map to the17-byte Source body, with a six-byte real UCRT import call. Its five pushed zero words are Source padding; Native handler policy and Original ABI remain unproved.
+
+## Integrator compiled review
+
+Root replayed the candidate Native/Source mapping, actual declarations, repository/dependency pins and relevant excerpts before registration. The normal MSVC Win32 build passed all three existing checks. Root reviewed every emitted operation, complete COFF object and indexed relocation graph, actual Core definition and current map/import context. All twelve prior whole objects remain byte-identical, including Legacy20 code/relocations and eight EH payload/relocation contracts. The existing pending-entity provider whole object, its twelve functions and two44-byte EH sections are also unchanged. No new test, probe, storage, caller, production binding or forced retention was added. The immutable worker report below records its candidate stage; current admission is recorded in the primary report.
+
+Current evidence: `reports/cc12_native_invalid_parameter_noinfo_call_primary_review.json`.
+
+## Worker candidate snapshot
+
 This packet adds the standalone MSVC Win32 entry
 `bsp::invoke_native_invalid_parameter_00bf6713()`. Its naked body preserves the
 complete nine-operation schedule at Native `00BF6713..00BF6722`, while replacing
