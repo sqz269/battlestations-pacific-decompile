@@ -1,0 +1,511 @@
+{
+  "schema": 1,
+  "packet": "cc12_fmod_current_startup_failure",
+  "status": "current_environment_prerequisite_identified_no_fix_applied",
+  "observed_utc": "2026-10-09T23:52:49.267499+00:00",
+  "scope": "Source/provider inspection and real installed FMOD/Windows audio diagnostics only. No new original game body/data/handler/GPR reads or writes; no original game execution; no C++ repository/build/test changes; no service restart, persistent configuration change or game installation change. One parent-authorized Win32 FMOD process probe used existing startup parameters.",
+  "finding": "Windows returns no default render endpoint for any role; the installed FMOD4.18.04 runtime independently sees zero drivers and fails EventSystem_Init with61 after autodetection selects WASAPI. This is a concrete missing current prerequisite consistent with both executable failures; selecting/restoring a usable default playback endpoint and rerunning unchanged executables is required before claiming resolution.",
+  "runtime_attempts": [
+    {
+      "label": "Source581 current normal build",
+      "exit_record": {
+        "command": [
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+          "--frames",
+          "3",
+          "--log",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\startup_three_ticks.log",
+          "--game-root",
+          "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+          "--settings-personal-root",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\personal_windowed",
+          "--xlive-dll",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+        "pid": 110544,
+        "start_utc": "2026-10-09T23:42:50.625024+00:00",
+        "window_hide_requested": true,
+        "visual_observation": false,
+        "exe_sha256": "2c4a6f9a4251c5a7c944722d774786fb84bf2280ffb970d0f176b73a0fba3c21",
+        "options_sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+        "purpose": "Source581 production model pool and registered Comment build, same genuine bundled SDK and ordinary isolated windowed settings. Three ticks exercise normal startup, device creation/Present and empty-layout drain; no injected input, menu or mission.",
+        "finish_utc": "2026-10-09T23:42:50.792656+00:00",
+        "exit_code": 1,
+        "exit_u32_hex": "00000001",
+        "terminal": true,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "exit_record_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_exit.json",
+        "bytes": 1992,
+        "sha256": "41022a2e8a286644bec49df0700c168252a5a26aef8e1c82209ed61276e59f6e"
+      },
+      "log_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_three_ticks.log",
+        "bytes": 11848,
+        "sha256": "e9c1bef722862f01bf0806ec87a2e87ad4e3571bf6800b4311d4ec8e54fc03cb"
+      },
+      "relevant_log_lines": [
+        {
+          "line": 21,
+          "text": "native model pools initialized: model_atexit=0 model_base_atexit=0 storage=process_actual38h/actual38h"
+        },
+        {
+          "line": 82,
+          "text": "sound startup FMOD failure: _FMOD_EventSystem_Init@20 result=61"
+        },
+        {
+          "line": 83,
+          "text": "sound startup FMOD failure: FMOD_System_CreateSound result=78"
+        },
+        {
+          "line": 84,
+          "text": "sound startup FMOD failure: FMOD_Sound_GetLength result=37"
+        },
+        {
+          "line": 85,
+          "text": "startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0"
+        },
+        {
+          "line": 86,
+          "text": "summary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0 frames_presented=0 presents_skipped=0 loop_finished=0 exit_code=1"
+        }
+      ]
+    },
+    {
+      "label": "Frozen Source539 executable control",
+      "exit_record": {
+        "command": [
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_atlas_mesh_Source_primary\\Source539_frozen\\build\\win32\\Release\\bsp_game.exe",
+          "--frames",
+          "3",
+          "--log",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_Source539.log",
+          "--game-root",
+          "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+          "--settings-personal-root",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\personal_windowed",
+          "--xlive-dll",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+        "pid": 73660,
+        "start_utc": "2026-10-09T23:43:42.570471+00:00",
+        "window_hide_requested": true,
+        "visual_observation": false,
+        "exe_sha256": "24641511eb4a6721ec2f2118524b1caef93244bac591dcd2e5c70e353e6c86dd",
+        "options_sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+        "purpose": "Frozen Source539 executable control for FMOD startup failure, same genuine bundled SDK and ordinary isolated windowed settings. Three ticks exercise normal startup, device creation/Present and empty-layout drain; no injected input, menu or mission.",
+        "finish_utc": "2026-10-09T23:43:42.869104+00:00",
+        "exit_code": 1,
+        "exit_u32_hex": "00000001",
+        "terminal": true,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "exit_record_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_exit.json",
+        "bytes": 2046,
+        "sha256": "877de0d184a60ee88449676966ed668a5f3d74758149d39496b91b4495a4c964"
+      },
+      "log_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_Source539.log",
+        "bytes": 11795,
+        "sha256": "4e62700e5e59ce2749723989c84ab297ad0642b79642756ab1a61a934d86ead7"
+      },
+      "relevant_log_lines": [
+        {
+          "line": 81,
+          "text": "sound startup FMOD failure: _FMOD_EventSystem_Init@20 result=61"
+        },
+        {
+          "line": 82,
+          "text": "sound startup FMOD failure: FMOD_System_CreateSound result=78"
+        },
+        {
+          "line": 83,
+          "text": "sound startup FMOD failure: FMOD_Sound_GetLength result=37"
+        },
+        {
+          "line": 84,
+          "text": "startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0"
+        },
+        {
+          "line": 85,
+          "text": "summary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0 frames_presented=0 presents_skipped=0 loop_finished=0 exit_code=1"
+        }
+      ]
+    }
+  ],
+  "raw_error_chain": {
+    "ordered_calls": [
+      {
+        "call": "_FMOD_EventSystem_Init@20",
+        "result": 61,
+        "local_4_18_name": "FMOD_ERR_OUTPUT_INIT"
+      },
+      {
+        "call": "FMOD_System_CreateSound",
+        "result": 78,
+        "local_4_18_name": "FMOD_ERR_UNINITIALIZED"
+      },
+      {
+        "call": "FMOD_Sound_GetLength",
+        "result": 37,
+        "local_4_18_name": "FMOD_ERR_INVALID_PARAM"
+      }
+    ],
+    "bank_path": "sound/gui/error.fsb",
+    "file_bytes": 2688,
+    "mode_decimal": 2634,
+    "mode_hex": "0x0a4a",
+    "bank_returned": false,
+    "raw_length_output_consumed": false,
+    "interpretation": "Initialization is the first logged failure; CreateSound rejects an uninitialized system. The subsequent GetLength receives the null bank and fails invalid parameter. The resource guard stops before consuming its unwritten length. This evidence does not diagnose corrupted FSB bytes."
+  },
+  "source_current_readonly": {
+    "pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\audio_online_startup.cpp",
+        "bytes": 17786,
+        "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\fmod_configuration_library.cpp",
+        "bytes": 24627,
+        "sha256": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\fmod_configuration_library.hpp",
+        "bytes": 10053,
+        "sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\sound_resource_asset.cpp",
+        "bytes": 11484,
+        "sha256": "0c651691506dff63690ca237c4f8f88d172c4fd6ee8a0a398e5a53f77b945782"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_hosts.cpp",
+        "bytes": 123312,
+        "sha256": "8be6cb7ede7b4c99c313264ad25184eb492682dc0d12b5048cb167009fab8bce"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_main.cpp",
+        "bytes": 73196,
+        "sha256": "ff10ae1118c386de4ee04533d25d13ca7559fa555333dafa45df45d763bbb414"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_sound_runtime.cpp",
+        "bytes": 20484,
+        "sha256": "fd9efd3561f2d4d6f57e497f5ed13f19c9ad6d9daf34535d66fe79d06b627d56"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\sound_startup.cpp",
+        "bytes": 2269,
+        "sha256": "bc4d830bf30d3173d59fd696850cb3e4d08e596d36ebbe8eff7543a850164aee"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\config\\fmod_ex_types.json",
+        "bytes": 56459,
+        "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103"
+      }
+    ],
+    "selected_Source581_artifacts_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\complete_artifacts.json",
+      "bytes": 29712916,
+      "sha256": "5fcbd4d6d30a7c4ee38139e00b209f8098009f0b41eabe2547d67a290c01f511"
+    },
+    "selected_Source581_project_input_count": 581,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "start_utc": "2026-10-09T23:41:25.766818+00:00",
+      "end_utc": "2026-10-09T23:41:46.327817+00:00",
+      "exit_code": 0
+    },
+    "existing_checks_passed": 3,
+    "runtime_boundary": "Build and existing check success do not establish current startup success. Current provider inspection pins are distinct from the selected581 input closure.",
+    "fragment_init_arguments": {
+      "max_channels": 512,
+      "init_flags": 16,
+      "init_flags_local_name": "FMOD_INIT_SOFTWARE_HRTF",
+      "extra_driver_data": null,
+      "event_init_flags": 0
+    },
+    "source_policy": "Enabled audio scans driver caps from count-1 down to0, seeds requested speaker mode1, sets resulting mode, uses output AUTODETECT (no SetDriver and no SetOutput on enabled path), then calls EventSystem_Init. Non-memory errors are recorded and execution continues. File callbacks and3D settings follow initialization. Resource creation preserves CreateSound, MemoryGetStats, GetLength order and the existing guard.",
+    "selected_dll_paths": "game_main sets process current directory to --game-root before providers; selected_library_path uses filesystem absolute fmodex.dll/fmod_event.dll when overrides absent. Both attempts omit FMOD overrides.",
+    "enum_provenance": "config/fmod_ex_types.json FMOD_RESULT is the prior established4.18 numbering, not newer4.24 numbering; OUTPUTTYPE and INITFLAGS are localSDK4.24.16 derived metadata. No Native tables re-read."
+  },
+  "installed_dlls": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+      "bytes": 350544,
+      "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+      "file_version": "4.18.4"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+      "bytes": 238936,
+      "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+      "file_version": "4.18.4"
+    }
+  ],
+  "windows_readonly": {
+    "observed_utc": "2026-10-09T23:52:49.267499+00:00",
+    "operating_system": {
+      "caption": "Microsoft Windows 11 Pro",
+      "version": "10.0.26200",
+      "build_number": "26200"
+    },
+    "session": {
+      "name": "Console",
+      "id": 1
+    },
+    "service_query": "Get-Service -Name Audiosrv,AudioEndpointBuilder,MMCSS",
+    "services": [
+      {
+        "name": "AudioEndpointBuilder",
+        "status": "Running",
+        "start_type": "Automatic"
+      },
+      {
+        "name": "Audiosrv",
+        "status": "Running",
+        "start_type": "Automatic"
+      },
+      {
+        "name": "MMCSS",
+        "status": "Running",
+        "start_type": "Automatic"
+      }
+    ],
+    "sound_device_query": "Get-CimInstance Win32_SoundDevice",
+    "sound_device_summary": "Eight enumerated devices; every Status=OK and ConfigManagerErrorCode=0. This is PnP evidence, not proof of a playback default.",
+    "default_endpoint_query": "CoCreateInstance(MMDeviceEnumerator); GetDefaultAudioEndpoint(eRender, eConsole/eMultimedia/eCommunications), read only; release COM interfaces",
+    "enumerator_create_hresult": "00000000",
+    "default_render_endpoints": [
+      {
+        "role": "console",
+        "hresult": "80070490",
+        "endpoint_returned": false
+      },
+      {
+        "role": "multimedia",
+        "hresult": "80070490",
+        "endpoint_returned": false
+      },
+      {
+        "role": "communications",
+        "hresult": "80070490",
+        "endpoint_returned": false
+      }
+    ],
+    "active_render_enum_hresult": "00000000",
+    "active_render_endpoint_ids": [],
+    "active_render_registry_labels": [
+      {
+        "id": "{2f54fe01-a0d9-4d72-b9b1-e364f690f18e}",
+        "description": "Speakers",
+        "device": "HyperX Cloud Alpha S Game"
+      },
+      {
+        "id": "{343d241b-de68-4623-9496-3804d526ea36}",
+        "description": "Speakers",
+        "device": "Steam Streaming Speakers"
+      },
+      {
+        "id": "{9f9583c3-b2e7-46db-9e98-b21396b54483}",
+        "description": "Realtek Digital Output",
+        "device": "Realtek USB Audio"
+      },
+      {
+        "id": "{bf4d71b0-9352-44bb-9aaa-544b742be02d}",
+        "description": "Speakers",
+        "device": "Steam Streaming Microphone"
+      }
+    ],
+    "earlier_default_query_utc": "2026-10-09T23:47:36.915419+00:00",
+    "earlier_default_query_same_results": true,
+    "hresult_interpretation": "0x80070490 = HRESULT_FROM_WIN32(ERROR_NOT_FOUND=1168); no default endpoint returned."
+  },
+  "isolated_fmod_probe": {
+    "qualification": "Standalone SDK API diagnostic; independent of reconstructed model/base pools, Comment registration, VFS/FSB data and renderer. It reproduces the Source sequence through EventSystem_Init with extra read-only SDK queries; it does not claim full reconstructed startup or Native ABI/game parity. Exit0 means the diagnostic completed; EventSystem_Init itself failed61. Driver-info/caps methods were resolved but no calls were issued because driver count0.",
+    "result": {
+      "start_utc": "2026-10-09T23:50:02.991881+00:00",
+      "finish_utc": "2026-10-09T23:50:03.068955+00:00",
+      "pid": 120852,
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe.exe"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic",
+      "exit_code": 0,
+      "exe_sha256": "9f05bd759f5656457d2abbf0b4cd722ca3f64d2baf935f95a413fb151172b241",
+      "machine": "0x14c",
+      "manifest_resources": [
+        "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n"
+      ],
+      "source_sha256": "3cb3c44da44e86c16eb59e2923d741bf4be1d86f25d4b8932133899a7d0be3eb",
+      "compile_command": "cl /nologo /std:c++17 /EHsc /W4 /MD /O2 /Fe:fmod_probe.exe /Fo:fmod_probe.obj fmod_probe.cpp /link /MANIFEST:EMBED",
+      "build_driver": "build_probe.cmd; vcvarsall.bat x86; Visual Studio18.6.1",
+      "stderr_bytes": 0,
+      "rows": [
+        {
+          "step": "process",
+          "pid": 120852,
+          "pointer_bits": 32,
+          "actual_core": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+          "actual_event": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll"
+        },
+        {
+          "step": "EventSystem_Create",
+          "result": 0,
+          "object_returned": true
+        },
+        {
+          "step": "EventSystem_GetSystemObject",
+          "result": 0,
+          "object_returned": true
+        },
+        {
+          "step": "System_GetVersion",
+          "result": 0,
+          "output_valid": true,
+          "observed": 268292
+        },
+        {
+          "step": "System_GetOutput_before_init",
+          "result": 0,
+          "output_valid": true,
+          "observed": 0
+        },
+        {
+          "step": "System_GetNumDrivers",
+          "result": 0,
+          "output_valid": true,
+          "observed": 0
+        },
+        {
+          "step": "System_SetSpeakerMode",
+          "argument": 1,
+          "result": 0
+        },
+        {
+          "step": "EventSystem_Init",
+          "max_channels": 512,
+          "init_flags": 16,
+          "extra_driver_data": null,
+          "event_init_flags": 0,
+          "result": 61
+        },
+        {
+          "step": "System_GetDriver_after_init",
+          "result": 0,
+          "output_valid": true,
+          "observed": 0
+        },
+        {
+          "step": "System_GetOutput_after_init",
+          "result": 0,
+          "output_valid": true,
+          "observed": 9
+        },
+        {
+          "step": "System_GetSpeakerMode_after_init",
+          "result": 0,
+          "output_valid": true,
+          "observed": 1
+        },
+        {
+          "step": "EventSystem_Release_owns_core_system",
+          "result": 0
+        }
+      ]
+    },
+    "result_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe_result.json",
+      "bytes": 2954,
+      "sha256": "4234b06f139bac336408984d2b01a6bd967a997d8edbbb01b11ab1f443f02e1b"
+    },
+    "stdout_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe_stdout.jsonl",
+      "bytes": 1109,
+      "sha256": "fd256621243ef26f54015ce010161eb01e901929c11a84d771d636d7115b8bd6"
+    },
+    "source_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe.cpp",
+      "bytes": 5835,
+      "sha256": "3cb3c44da44e86c16eb59e2923d741bf4be1d86f25d4b8932133899a7d0be3eb"
+    },
+    "source_text": "#define WIN32_LEAN_AND_MEAN\n#define NOMINMAX\n#include <windows.h>\n#include <cstdio>\n#include <cstdint>\n#include <cstring>\n#include <string>\n#include <stdexcept>\n\nstd::string quote(const char* text) {\n    std::string value = \"\\\"\";\n    for (const unsigned char* p = reinterpret_cast<const unsigned char*>(text); *p; ++p) {\n        if (*p == '\\\\' || *p == '\"') value += '\\\\';\n        if (*p >= 32) value += static_cast<char>(*p);\n        else value += '?';\n    }\n    return value + '\"';\n}\ntemplate<class... Args>\nstd::uint32_t call(HMODULE module, const char* name, Args... args) {\n    using Function = std::uint32_t (__stdcall*)(Args...);\n    const auto address = GetProcAddress(module, name);\n    if (!address) throw std::runtime_error(std::string(\"Missing installed FMOD export: \") + name);\n    Function function;\n    std::memcpy(&function, &address, sizeof function);\n    return function(args...);\n}\nint main() {\n    static_assert(sizeof(void*) == 4);\n    const wchar_t* core_path = L\"I:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Battlestations Pacific\\\\fmodex.dll\";\n    const wchar_t* event_path = L\"I:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Battlestations Pacific\\\\fmod_event.dll\";\n    HMODULE core = LoadLibraryExW(core_path, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);\n    HMODULE events = LoadLibraryExW(event_path, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);\n    if (!core || !events) { std::printf(\"{\\\"load_error\\\":%lu}\\n\", GetLastError()); return 2; }\n    char actual_core[MAX_PATH]{}, actual_events[MAX_PATH]{};\n    GetModuleFileNameA(core, actual_core, MAX_PATH);\n    GetModuleFileNameA(events, actual_events, MAX_PATH);\n    std::printf(\"{\\\"step\\\":\\\"process\\\",\\\"pid\\\":%lu,\\\"pointer_bits\\\":32,\\\"actual_core\\\":%s,\\\"actual_event\\\":%s}\\n\",\n        GetCurrentProcessId(), quote(actual_core).c_str(), quote(actual_events).c_str());\n    void* event = nullptr;\n    void* system = nullptr;\n    auto result = call(events, \"_FMOD_EventSystem_Create@4\", &event);\n    std::printf(\"{\\\"step\\\":\\\"EventSystem_Create\\\",\\\"result\\\":%u,\\\"object_returned\\\":%s}\\n\", result, event ? \"true\" : \"false\");\n    if (result || !event) return 3;\n    result = call(events, \"_FMOD_EventSystem_GetSystemObject@8\", event, &system);\n    std::printf(\"{\\\"step\\\":\\\"EventSystem_GetSystemObject\\\",\\\"result\\\":%u,\\\"object_returned\\\":%s}\\n\", result, system ? \"true\" : \"false\");\n    if (!result && system) {\n        unsigned version = 0xffffffffu;\n        result = call(core, \"FMOD_System_GetVersion\", system, &version);\n        std::printf(\"{\\\"step\\\":\\\"System_GetVersion\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%u}\\n\", result, result ? \"false\" : \"true\", version);\n        int output = -1;\n        result = call(core, \"FMOD_System_GetOutput\", system, &output);\n        std::printf(\"{\\\"step\\\":\\\"System_GetOutput_before_init\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%d}\\n\", result, result ? \"false\" : \"true\", output);\n        int count = 0;\n        result = call(core, \"FMOD_System_GetNumDrivers\", system, &count);\n        std::printf(\"{\\\"step\\\":\\\"System_GetNumDrivers\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%d}\\n\", result, result ? \"false\" : \"true\", count);\n        int minimum = 0, maximum = 0, speaker = 1;\n        if (count >= 0 && count <= 256) {\n            for (int index = count - 1; index >= 0; --index) {\n                char name[1024]{};\n                GUID driver_guid{};\n                const auto name_result = call(core, \"FMOD_System_GetDriverInfo\", system, index, name, int(sizeof name), &driver_guid);\n                name[sizeof name - 1] = 0;\n                std::printf(\"{\\\"step\\\":\\\"System_GetDriverInfo_diagnostic\\\",\\\"index\\\":%d,\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"name\\\":%s}\\n\",\n                    index, name_result, name_result ? \"false\" : \"true\", name_result ? \"null\" : quote(name).c_str());\n                unsigned caps = 0;\n                result = call(core, \"FMOD_System_GetDriverCaps\", system, index, &caps, &minimum, &maximum, &speaker);\n                std::printf(\"{\\\"step\\\":\\\"System_GetDriverCaps\\\",\\\"index\\\":%d,\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"caps_observed\\\":%u,\\\"min_frequency_observed\\\":%d,\\\"max_frequency_observed\\\":%d,\\\"speaker_observed\\\":%d}\\n\",\n                    index, result, result ? \"false\" : \"true\", caps, minimum, maximum, speaker);\n            }\n            result = call(core, \"FMOD_System_SetSpeakerMode\", system, speaker);\n            std::printf(\"{\\\"step\\\":\\\"System_SetSpeakerMode\\\",\\\"argument\\\":%d,\\\"result\\\":%u}\\n\", speaker, result);\n            result = call(events, \"_FMOD_EventSystem_Init@20\", event, int(512), unsigned(16), static_cast<void*>(nullptr), unsigned(0));\n            std::printf(\"{\\\"step\\\":\\\"EventSystem_Init\\\",\\\"max_channels\\\":512,\\\"init_flags\\\":16,\\\"extra_driver_data\\\":null,\\\"event_init_flags\\\":0,\\\"result\\\":%u}\\n\", result);\n            int driver = -1;\n            result = call(core, \"FMOD_System_GetDriver\", system, &driver);\n            std::printf(\"{\\\"step\\\":\\\"System_GetDriver_after_init\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%d}\\n\", result, result ? \"false\" : \"true\", driver);\n            output = -1;\n            result = call(core, \"FMOD_System_GetOutput\", system, &output);\n            std::printf(\"{\\\"step\\\":\\\"System_GetOutput_after_init\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%d}\\n\", result, result ? \"false\" : \"true\", output);\n            speaker = -1;\n            result = call(core, \"FMOD_System_GetSpeakerMode\", system, &speaker);\n            std::printf(\"{\\\"step\\\":\\\"System_GetSpeakerMode_after_init\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%d}\\n\", result, result ? \"false\" : \"true\", speaker);\n        }\n    }\n    result = call(events, \"_FMOD_EventSystem_Release@4\", event);\n    std::printf(\"{\\\"step\\\":\\\"EventSystem_Release_owns_core_system\\\",\\\"result\\\":%u}\\n\", result);\n    FreeLibrary(events);\n    FreeLibrary(core);\n    return 0;\n}\n",
+    "build_driver_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\build_probe.cmd",
+      "bytes": 253,
+      "sha256": "eab5d967e572ceec3800f5ceeb074c173d585ca30967c66e744c7cee9e5aafcf"
+    },
+    "build_driver_text": "@call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86\n@if errorlevel 1 exit /b %errorlevel%\n@cl /nologo /std:c++17 /EHsc /W4 /MD /O2 /Fe:fmod_probe.exe /Fo:fmod_probe.obj fmod_probe.cpp /link /MANIFEST:EMBED\n",
+    "compiled_architecture": "MSVC Win32 PE machine0x14c; sizeof(void*)=4; embedded manifest asInvoker",
+    "installed_GetDriverInfo_signature_evidence": "DLL export name ?getDriverInfo@System@FMOD@@QAG?AW4FMOD_RESULT@@HPADHPAUFMOD_GUID@@@Z establishes stdcall explicitSystem*, int id, char*name, int namelen, FMOD_GUID*; only export metadata read.",
+    "source_init_arg_match": true,
+    "core_runtime_version_hex": "0x00041804",
+    "output_before": {
+      "value": 0,
+      "local_name": "FMOD_OUTPUTTYPE_AUTODETECT"
+    },
+    "output_after_failed_init": {
+      "value": 9,
+      "local_name": "FMOD_OUTPUTTYPE_WASAPI"
+    },
+    "release": "FMOD_EventSystem_Release result0 releases the event-owned actual coreSystem; no separate double release."
+  },
+  "historical_success_boundary": {
+    "parent_reported": "Root Source534 run had2Presents around22:59UTC; it is historical, not current proof. Exact pin to be supplied by Root integration if needed.",
+    "independently_checked_earlier_smoke": {
+      "exit_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_three_exit.json",
+        "bytes": 1939,
+        "sha256": "41a4fb2743701c4c091dc392559e04e8ab32e1c20e2bef3f462e46ee2ac80720"
+      },
+      "log_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_windowed_three.log",
+        "bytes": 48782,
+        "sha256": "492eb1caa5b96ea5fc878df7c1ff241eea942b3a65bc25f705b96fb7116135a8"
+      },
+      "pid": 118072,
+      "start_utc": "2026-10-09T21:11:44.919902+00:00",
+      "exit_code": 0,
+      "frames_presented": 2,
+      "fmod_errors": 0,
+      "qualification": "A different earlier executable hash; not evidence that current Source581 or frozen539 startup succeeds now."
+    }
+  },
+  "minimal_next_action": {
+    "kind": "real Windows audio prerequisite; Root reviewed and not applied",
+    "action": "Select or restore a functioning Windows default playback/render device, with the ordinary Console/Multimedia roles visible to the same interactive process session; then repeat the read-only endpoint/driver query and unchanged frozenSource539 and currentSource581 smoke with identical genuine DLLs/settings.",
+    "success_evidence_required": [
+      "GetDefaultAudioEndpoint(eRender,eConsole/eMultimedia) returnsS_OK and a real endpoint",
+      "InstalledFMOD GetNumDrivers returns a positive count with result0",
+      "Unchanged executable EventSystem_Init returns0 and no rawlength-output failure; actual window/device/Present summary is recorded separately"
+    ],
+    "source_change_proposed": null,
+    "risk_boundary": "Changing the default playback device is a persistent user setting and may affect other applications; this worker makes no such change. No forced NOSOUND, fabricated outputs, length fallback, driver override or success bypass."
+  }
+}
