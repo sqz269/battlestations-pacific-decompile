@@ -1,0 +1,567 @@
+{
+  "schema": "CC12_qualified_Source_candidate_v1",
+  "packet": "cc12_observer_member_initializer_Source",
+  "status": "qualified_Source_candidate_pending_independent_Root_registration_build_and_admission",
+  "captured_utc": "2026-10-09T18:24:00.575438+00:00",
+  "baseline_commit": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+  "owned_address": "007F0F80",
+  "owned_files": [
+    "include/bsp/native_observer_member_initializer.hpp",
+    "src/native_observer_member_initializer.cpp",
+    "docs/CC12_NATIVE_OBSERVER_MEMBER_INITIALIZER_SOURCE.md",
+    "reports/cc12_native_observer_member_initializer_source.json"
+  ],
+  "Source_public": "bsp::initialize_native_observer_member_007f0f80",
+  "Source_candidate": {
+    "functions": 1,
+    "Original_bytes": 92,
+    "compiled": false,
+    "admitted": false
+  },
+  "credits": {
+    "Source_admitted": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0,
+    "fixture": 0
+  },
+  "native_gate": {
+    "capture_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_launch_scalar_and_member_initializer_primary/capture.json",
+      "bytes": 9726,
+      "sha256": "e95c0b61cd58a7ecc7b43c9b10d50c4eb1e05313d2edb1ceb9d55e55d933ca6e"
+    },
+    "approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_launch_scalar_and_member_initializer_primary/Root_Astra_gate_approval.json",
+      "bytes": 792,
+      "sha256": "6a36d7f1e890eb463d8bd256dda97cb479db45e825926153e00de7f27d028649"
+    },
+    "Root_accepted": true,
+    "owned_record": {
+      "address": "007f0f80",
+      "bytes": 92,
+      "operations": 28,
+      "sha256": "733be1e59ad190e42f0a18c88b426e879a2c3c13b562c12c59c449b0ad33cd88",
+      "saved_instruction_count": 28,
+      "missing_saved_starts": []
+    },
+    "current_PE_live_match_recorded_by_Root": true,
+    "all28_raw_and_saved_instructions_read_by_worker": true,
+    "scalar_deletion_record_not_owned_or_reconstructed_here": true,
+    "worker_live_Ghidra_or_PE_reread": false,
+    "Ghidra_listing_flow_or_prototype_mutation": false
+  },
+  "native_owned_body": {
+    "address": "007f0f80",
+    "end_inclusive": "007f0fdb",
+    "bytes": 92,
+    "operations": 28,
+    "sha256": "733be1e59ad190e42f0a18c88b426e879a2c3c13b562c12c59c449b0ad33cd88",
+    "hex": "6aff6898f3c80064a10000000050648925000000005133c0568bf18974240489460489460889460c8b4c24183bc889442410c7069464cf00894e14c646100174078bd6e8983aeaff8b4c24088bc65e64890d0000000083c410c20400",
+    "raw_instructions": [
+      {
+        "address": "007f0f80",
+        "bytes": "6aff",
+        "mnemonic": "push",
+        "operands": "-1"
+      },
+      {
+        "address": "007f0f82",
+        "bytes": "6898f3c800",
+        "mnemonic": "push",
+        "operands": "0xc8f398"
+      },
+      {
+        "address": "007f0f87",
+        "bytes": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "007f0f8d",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "007f0f8e",
+        "bytes": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp"
+      },
+      {
+        "address": "007f0f95",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "007f0f96",
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "007f0f98",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "007f0f99",
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "007f0f9b",
+        "bytes": "89742404",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 4], esi"
+      },
+      {
+        "address": "007f0f9f",
+        "bytes": "894604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], eax"
+      },
+      {
+        "address": "007f0fa2",
+        "bytes": "894608",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], eax"
+      },
+      {
+        "address": "007f0fa5",
+        "bytes": "89460c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0xc], eax"
+      },
+      {
+        "address": "007f0fa8",
+        "bytes": "8b4c2418",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x18]"
+      },
+      {
+        "address": "007f0fac",
+        "bytes": "3bc8",
+        "mnemonic": "cmp",
+        "operands": "ecx, eax"
+      },
+      {
+        "address": "007f0fae",
+        "bytes": "89442410",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x10], eax"
+      },
+      {
+        "address": "007f0fb2",
+        "bytes": "c7069464cf00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xcf6494"
+      },
+      {
+        "address": "007f0fb8",
+        "bytes": "894e14",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x14], ecx"
+      },
+      {
+        "address": "007f0fbb",
+        "bytes": "c6461001",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x10], 1"
+      },
+      {
+        "address": "007f0fbf",
+        "bytes": "7407",
+        "mnemonic": "je",
+        "operands": "0x7f0fc8"
+      },
+      {
+        "address": "007f0fc1",
+        "bytes": "8bd6",
+        "mnemonic": "mov",
+        "operands": "edx, esi"
+      },
+      {
+        "address": "007f0fc3",
+        "bytes": "e8983aeaff",
+        "mnemonic": "call",
+        "operands": "0x694a60"
+      },
+      {
+        "address": "007f0fc8",
+        "bytes": "8b4c2408",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 8]"
+      },
+      {
+        "address": "007f0fcc",
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "007f0fce",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "007f0fcf",
+        "bytes": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "007f0fd6",
+        "bytes": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10"
+      },
+      {
+        "address": "007f0fd9",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "saved_instruction_count": 28,
+    "missing_saved_starts": []
+  },
+  "Native_ABI_context": {
+    "entry": "ECX actual member M; one incoming endpoint DWORD at entry ESP+4.",
+    "frame": "FS:[0] chain publication; saved ESI; owner snapshot at current-frame word; full DWORD state0 after endpoint CMP.",
+    "late_read": "007F0FA8 reads current stack endpoint after zeros at 007F0F9F/A2/A5.",
+    "ordered_publication": "007F0FB2 DWORD[M]=CF6494; 007F0FB8 DWORD[M+14h]=captured A; 007F0FBB BYTE[M+10h]=1.",
+    "branch": "CMP captured A,0 at 007F0FAC; subsequent MOVs preserve flags through JZ 007F0FBF.",
+    "register_call": "007F0FC3 CALL00694A60 with ECX=captured A, EDX=M, no pushed arguments, child plainRET.",
+    "normal_result": "Under compatible child/stack premises EAX=M; restore current saved ESI/FS words, ADD ESP10h, RET4.",
+    "not_a_Source_ABI_equivalence": true
+  },
+  "actual_Source_interface": {
+    "owner": "Reference to existing NativeObserverOwnerStorage actual16B prefix at M; no new18h member type.",
+    "flag": "volatile uint8_t& actual BYTE M+10h.",
+    "endpoint": "NativeObserverOwnerStorage* volatile& actual DWORD pointer cell M+14h.",
+    "incoming": "NativeObserverOwnerStorage* const volatile& to actual incoming cell; no eager value copy.",
+    "lifetime": "NativeObserverLifetime& retained through all normal/failure provider calls.",
+    "return": "Reference identity actual_owner; public may throw.",
+    "binding_requirements": "All references identify actual live same-member parts/cell and valid C++ typed storage; no runtime binding validation.",
+    "native_offsets_not_derived_by_new_cast": true
+  },
+  "Source_ordered_schedule": [
+    "Bind volatile view of existing edges_04; no owner copy or allocation.",
+    "Store pointer nullptr at M+4, uint32 zero at M+8, uint32 zero at M+Ch as separate volatile DWORD writes.",
+    "Read actual volatile incoming pointer cell once into captured_endpoint.",
+    "Construct nonthrowing private guard retaining actual_owner and retained_lifetime, armed true.",
+    "Store volatile profile DWORD CF6494 at M.",
+    "Store captured_endpoint to actual volatile DWORD M+14h.",
+    "Store volatile BYTE1 at M+10h; no M+11h..13h write.",
+    "If captured_endpoint nonnull, call actual FREE FUNCTION register_observer_pair_00694a60(*captured_endpoint, actual_owner, retained_lifetime).",
+    "Disarm private guard, then return actual owner reference."
+  ],
+  "failure_policy": {
+    "guard_armed_after": "All three zero stores and incoming pointer capture.",
+    "guard_armed_before": "Profile, endpoint and flag stores; possible registration call.",
+    "only_cleanup_call": "retained_lifetime.destroy_callback_owner_00695870(actual_owner)",
+    "guard_destructor": "explicit noexcept; a cleanup throw during unwind terminates under current C++ policy.",
+    "provider_body": "Current actual provider writes CE3CD4, gets outer/nested current section, reads currentcount, detaches if nonzero, late-frees backing after callbacks/unlock; catch free then rethrow.",
+    "effects": "Prior member writes and partial registration/provider effects are preserved for cleanup; no automatic rollback or repair.",
+    "no_added_operations": [
+      "unregister_pair",
+      "normal member cleanup wrapper",
+      "full backing zero",
+      "allocation repair",
+      "retry",
+      "replacement service cell",
+      "fake callback"
+    ],
+    "fault_boundary": "No SEH-to-C++ conversion or Original fault/interpreter proof."
+  },
+  "accepted_EH_selection_context": {
+    "source_report": "reports/cc12_squadron_launch_task_EH_handler_readiness.json",
+    "owner": "007F0F80",
+    "handler": "00C8F398",
+    "descriptor": "00DBFDC8",
+    "map": "00DBFDC0",
+    "record_index": 0,
+    "previous_state_raw": "FFFFFFFF",
+    "action": "00C8F390",
+    "action_input": "ECX late current DWORD[EBP-10h]",
+    "tail_target": "00695870",
+    "limit": "Accepted metadata/action selection under compatible current-frame premises only; no Original FH3 interpreter or C++ captured-reference equality proof.",
+    "Native_EH_body_reopened_by_this_packet": false
+  },
+  "actual_provider_contracts": {
+    "registration": "Existing register_observer_pair_00694a60 free function, not NativeObserverLifetime member; outer lock plus independent nested find/create; same-endpoint and partial append effects retained.",
+    "cleanup": "Existing NativeObserverLifetime::destroy_callback_owner_00695870 method, owner not freed.",
+    "retention": "Actual owner/endpoint backing, SoundLifetimeAccess, observer domain, actual publication/lock/dispatch cells, services and callback targets must remain valid throughout reached calls.",
+    "current_Source_retention_available": "GameObserverRuntime with GameSingletonHost retention; not proof of selected initializer caller/binding.",
+    "Original_global_address_binding": false,
+    "source_pins": [
+      {
+        "path": "include/bsp/observer_edges.hpp",
+        "bytes": 2548,
+        "sha256": "7c6ec51a0a98a3e1033d32ab1b88d1ab03987088025b6343575093c752e7d3fe",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "bytes": 4203,
+        "sha256": "95f2700be5f8621b620b3a4df6b7e0cd708e0a358b73d2ebde7660b41ddfd225",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "bytes": 7290,
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "bytes": 14092,
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "include/bsp/game_observer_runtime.hpp",
+        "bytes": 1967,
+        "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "src/game_observer_runtime.cpp",
+        "bytes": 2390,
+        "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "bytes": 6831,
+        "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "bytes": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 198705,
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "matches_accepted_registration_audit": true
+      },
+      {
+        "path": "config/target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "matches_accepted_registration_audit": true
+      }
+    ],
+    "registration_object_prior_evidence": {
+      "artifact_pin": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "bytes": 73760118,
+        "sha256": "84ad4366435f91988d8953eb063b2bf9ad98496ecd17d27f0ba5515510902d27"
+      },
+      "matches_current_Source97_library_artifact": true,
+      "matching_members": [
+        {
+          "name": "bsp_core.dir\\Release\\observer_edges.obj",
+          "archive_header_offset": 25588466,
+          "payload_offset": 25588526,
+          "bytes": 7776,
+          "sha256": "95b7c531e24e4985348de31a74973aedc45fc49ca4cab069dd93228db103d275",
+          "identical_to_current_object": true
+        }
+      ],
+      "whole_archive_or_other_objects_decoded": false,
+      "application_link_map_or_runtime_checked": false
+    },
+    "cleanup_Core_definition_from_current_shared_receipt": {
+      "member": {
+        "name": "bsp_core.dir\\Release\\observer_lifetime.obj",
+        "header_offset": 25557750,
+        "payload_file_offset": 25557810,
+        "bytes": 25331,
+        "sha256": "0eb56751e193021f4d15922a38e0acfba155917517e0c52714daa469cd16f8e1"
+      },
+      "definition": {
+        "name": "?destroy_callback_owner_00695870@NativeObserverLifetime@bsp@@QAEXAAUNativeObserverOwnerStorage@2@@Z",
+        "symbol_index": 142,
+        "symbol_record_file_offset": 13372,
+        "section": 37,
+        "value": 0,
+        "type": 32
+      }
+    },
+    "object_bodies_redecoded_in_this_packet": false
+  },
+  "current_accepted_Source97_context_at_capture": {
+    "shared_report": "reports/cc12_native_squadron_launch_task_cleanup_primary_review.json",
+    "shared_via_report": "reports/cc12_native_lua_variant_string_fields_cleanup_primary_review.json",
+    "build_receipt_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_string_fields_and_launch_cleanup_primary/build_exit.json",
+      "bytes": 368,
+      "sha256": "b41cbbbd8ca92fb589313529bf32e82257ac07edd19affc7e0062e8f76f89e0f"
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 112244,
+      "start_utc": "2026-10-09T17:59:46.563985+00:00",
+      "finish_utc": "2026-10-09T18:00:05.036630+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 97
+    },
+    "existing_checks_passed": 3,
+    "input_count": 97,
+    "whole_object_count": 23,
+    "positive_public_Core_definition_count": 27,
+    "Core_artifact_pin_replayed": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+      "bytes": 73760118,
+      "sha256": "84ad4366435f91988d8953eb063b2bf9ad98496ecd17d27f0ba5515510902d27"
+    },
+    "selected_matching_input_pins": [
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 19331,
+        "sha256": "66a200cdfe10a17043f73a79839299e579b9632e8e8f9fb09345c86de03b9bb1"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 198705,
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      },
+      {
+        "path": "include/bsp/game_observer_runtime.hpp",
+        "bytes": 1967,
+        "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6"
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "bytes": 7290,
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "bytes": 6831,
+        "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+      },
+      {
+        "path": "src/game_observer_runtime.cpp",
+        "bytes": 2390,
+        "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1"
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "bytes": 14092,
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "entire97_input_or23_object_graph_replayed": false,
+    "registration_object_outside_whole23_review": true,
+    "prior_Source88_is_historical": true,
+    "this_candidate_not_built_by_prior_receipt": true
+  },
+  "accepted_context_pins": [
+    {
+      "path": "reports/cc12_observer_pair_registration_abi_readiness.json",
+      "bytes": 97822,
+      "sha256": "9ace9c16a1eb099395700eab6b77e9dec0abe262e731be3fa0893327041a4e7e"
+    },
+    {
+      "path": "reports/cc12_native_squadron_launch_task_cleanup_primary_review.json",
+      "bytes": 372268,
+      "sha256": "1a56cf831cd7f39868bc39b04c38e1c6b8fe14448d8ca116df5cce803fdebb01"
+    },
+    {
+      "path": "reports/cc12_native_lua_variant_string_fields_cleanup_primary_review.json",
+      "bytes": 59439,
+      "sha256": "4a9cba407cac454c511bded70d0ab4f467580a22547d18697123cfb0b4b006b9"
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_EH_handler_readiness.json",
+      "bytes": 48363,
+      "sha256": "5b41939d6300e92174497cc179b3edf5d4f9c4f13f78d97713196d05d533175e"
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_member_constructor_ABI_readiness.json",
+      "bytes": 63369,
+      "sha256": "af092f8ccaf7bc0ec423c1c5fb56b230150c8eb2da350e91744486ac0b4fa9da"
+    },
+    {
+      "path": "reports/cc12_observer_pair_release_owner_ABI_readiness.json",
+      "bytes": 277380,
+      "sha256": "484f92b6bd71a8413e9675a362c26ad9d3088d785f6c8e73353e36cc9f2021cb"
+    }
+  ],
+  "candidate_Source_doc_pins": [
+    {
+      "path": "include/bsp/native_observer_member_initializer.hpp",
+      "bytes": 2293,
+      "sha256": "27853758014b031137bffb7d16375e90e8e48eeaeba501e00b56f10be1929643"
+    },
+    {
+      "path": "src/native_observer_member_initializer.cpp",
+      "bytes": 2020,
+      "sha256": "bc39c6c585798eba2f379776a79284546380a436dd4c75338c6d05f6a98c54ec"
+    },
+    {
+      "path": "docs/CC12_NATIVE_OBSERVER_MEMBER_INITIALIZER_SOURCE.md",
+      "bytes": 6802,
+      "sha256": "90783b5f0aa9748dd3bcdb3d6aa3584a74f300bcf879145cef4ee20368129690"
+    }
+  ],
+  "validation": {
+    "all_owned_native28_instructions_read": true,
+    "owned92_byte_hash_and_Root_capture_pin_checked": true,
+    "actual_Source_provider_declarations_and_selected_bodies_checked": true,
+    "accepted_provider_file_pins_replayed": true,
+    "current_shared_Source97_selected_pins_and_Core_artifact_replayed": true,
+    "new_build_test_probe_or_fixture_run": false,
+    "CMake_ledger_Ghidra_consumer_changes": false,
+    "independent_Root_compile_and_admission": "required and pending"
+  },
+  "unproved": [
+    "Native FS/frame/stack-alias/current-save-word/register/flags equivalence",
+    "Original FH3 interpreter and CRT exception identity/policy",
+    "selected production caller and retained lifetime/member/endpoint cell binding",
+    "Native ABI or binary replacement",
+    "startup",
+    "gameplay"
+  ]
+}
