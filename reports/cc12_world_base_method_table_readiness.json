@@ -1,0 +1,296 @@
+{
+  "schema": "bsp.cc12.world_base_method_table_readiness.v1",
+  "packet": "cc12_world_base_method_table_readiness",
+  "status": "READ_ONLY_TABLE_UNREADY_CONSTANT_BYTE_SLOT_IS_FIRST_INDEPENDENT_SOURCE_CANDIDATE",
+  "table": {
+    "native_address": "00CE7784",
+    "directly_evidenced_prefix_bytes": 16,
+    "constructor_store": "004CB04C World+0=CE7784 before root/array construction",
+    "destructor_store": "00904C5F World+0=CE7784",
+    "current_live_data_xrefs": [
+      "004CB04C",
+      "00904C5F"
+    ],
+    "constructor_external_owned_contract": "004CB030 leased by integrator; no competing constructor analysis/write in this packet",
+    "preceding_dword_00ce7780": 0,
+    "recovered_rtti_locator": false,
+    "next_cell": {
+      "address": "00CE7794",
+      "value": "004CB370",
+      "independent_participant_table_stores": [
+        "004D6BBE",
+        "004CB30D"
+      ],
+      "admitted_as_world_fifth_slot": false
+    },
+    "current_source_token": "include/bsp/world_construct.hpp kWorldVTable uint32_t=CE7784; layout metadata only",
+    "real_source_table_present": false,
+    "minimum_real_entries": 4
+  },
+  "entries": [
+    {
+      "offset": 0,
+      "native": "004CB0B0",
+      "bytes": 30,
+      "instructions": 11,
+      "hypothetical_role": "World scalar deleting destructor",
+      "abi": "ECXWorld, stacked flags word, RET4, EAX original World pointer even after conditional free",
+      "schedule": [
+        "invoke00904C40 unconditionally",
+        "test low flags bit0",
+        "if set free same World through00BF6989",
+        "return original pointer"
+      ],
+      "actual_source_entry_present": false,
+      "first_unready_dependency": "00904C40 actual normal World lifetime",
+      "known_matching_free_domain_sufficient": false
+    },
+    {
+      "offset": 4,
+      "native": "00904390",
+      "bytes": 8,
+      "instructions": 2,
+      "hypothetical_role": "destroy all entities through World+4 header",
+      "abi": "ECXWorld, MOVECX,[ECX+4], tail009041A0, no stack args",
+      "actual_source_entry_present": false,
+      "current_source": "include/bsp/world_deferred_destroy.hpp documents adapter; src/world_deferred_destroy.cpp uses projected header and abstract host with extra stalled exit",
+      "first_unready_dependency": "009041A0 on actual header/entities with real entity vslot0(1) lifetime",
+      "category_clear70_is_substitute": false
+    },
+    {
+      "offset": 8,
+      "native": "009035D0",
+      "bytes": 3,
+      "instructions": 2,
+      "hex": "b001c3",
+      "hypothetical_role": "constant-byte result method; semantic predicate name unknown",
+      "abi": "no input reads/no stack args; AL1, upperEAX/otherGPR/flags unchanged; plainRET",
+      "actual_source_entry_present": false,
+      "ghidra_function_at_entry": false,
+      "live_xrefs": [
+        "00CE778C DATA"
+      ],
+      "reads_world_active_or_ready": false,
+      "callees": [],
+      "bounded_source_candidate_ready": true,
+      "full_return_type_or_dynamic_caller_meaning_recovered": false
+    },
+    {
+      "offset": 12,
+      "native": "00904BF0",
+      "bytes": 69,
+      "hypothetical_role": "World entity update",
+      "abi": "ECXWorld, one stacked float, RET4; x87 FLD/FSTP argument transfers",
+      "schedule": [
+        "dereference[[World+4]]",
+        "walk entity+38",
+        "test entityBYTE+5C",
+        "call actual entity vslotDC(delta) when active",
+        "read next after callback",
+        "always call00904600(delta)"
+      ],
+      "actual_source_entry_present": false,
+      "current_source": "src/unit_instance.cpp vector<bool>/WorldEntityUpdateHost; src/game_hosts_world.cpp index vectors and matrix-record vector",
+      "first_unready_dependency": "actual chain/entity vslotDC profile and actual00904600 storage/lifetime",
+      "sentinel_source_alone_sufficient": false,
+      "instructions": 28
+    }
+  ],
+  "drain_dependency_contract": {
+    "address": "009041A0",
+    "bytes": 100,
+    "header_layout": [
+      "first+0",
+      "last+4",
+      "count+8"
+    ],
+    "node_links": [
+      "prev+34",
+      "next+38"
+    ],
+    "loop_guard": "count nonzero, head reread each iteration",
+    "unlink_condition": "prev nonnull OR next nonnull OR signed count<=1",
+    "after_optional_unlink": "actual entity vslot0(1)",
+    "native_stalled_exit": false,
+    "projected_source_stalled_exit": true,
+    "actual_entity_class_lifetime_bound": false,
+    "instructions": 43
+  },
+  "first_implementable_dependency": {
+    "address": "009035D0",
+    "provisional_name": "world_base_slot8_value_009035d0",
+    "scope": "constant byte result1, ignored receiver, no calls/ownership/table",
+    "ordinary_cpp_interface_must_be_qualified_separately": true,
+    "native_compatible_binding_additionally_requires": [
+      "receiver/no-stack-argument call profile",
+      "plainRET",
+      "AL-only result with upperEAX preserved",
+      "unchanged registers and flags"
+    ],
+    "not_a_32_bit_integer1_machine_contract": true,
+    "source_or_table_implemented_here": false,
+    "would_make_table_or_owner_ready": false
+  },
+  "admission": {
+    "real_table_requires_all_four_genuine_methods": true,
+    "integer_tokens_null_slots_noops_or_throwing_placeholders_allowed": false,
+    "base_only_world_safe_for_nonconstant_methods": false,
+    "constructor_failure_cleanup_may_use_vslot0": false,
+    "table_ready": false,
+    "full_world_lifetime_ready": false,
+    "startup_or_game_ready": false
+  },
+  "verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "live_target_verified_by_each_cli_request": true,
+    "writes": [
+      "docs/CC12_WORLD_BASE_METHOD_TABLE_READINESS.md",
+      "reports/cc12_world_base_method_table_readiness.json"
+    ],
+    "Source_credit": 0,
+    "source_changes": 0,
+    "table_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "ghidra_mutations": 0,
+    "shared_metadata_changes": 0,
+    "normal_destructor_gap_repairs": 0,
+    "observed_utc": "2026-10-09T02:57:20.523649+00:00",
+    "native_live_disk_bytes_equal": 246,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "baseline_revision": "336bb24b2aacadf5dee0094881d0822759544733",
+  "native_live_disk_spans": [
+    {
+      "address": "00CE7780",
+      "bytes": 24,
+      "hex": "00000000b0b04c0090439000d0359000f04b900070b34c00",
+      "sha256": "e762f0ee86c950396ebc2b193a42fa982a1daa5b0c1e2b5e6cbf0613c5560f74",
+      "live_disk_equal": true
+    },
+    {
+      "address": "004CB0B0",
+      "bytes": 30,
+      "hex": "568bf1e8889b4300f644240801740956e8c4b8720083c4048bc65ec20400",
+      "sha256": "a3eabadfac2d373943f420ec51831729d2a8a861dfcacac7632896b4243592a3",
+      "live_disk_equal": true,
+      "instructions": 11
+    },
+    {
+      "address": "00904390",
+      "bytes": 8,
+      "hex": "8b4904e908feffff",
+      "sha256": "b5b9af4dac292b2e2cf26d401fec8ead78ff71fba517dbb94da4891d02f07257",
+      "live_disk_equal": true,
+      "instructions": 2
+    },
+    {
+      "address": "009035D0",
+      "bytes": 3,
+      "hex": "b001c3",
+      "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+      "live_disk_equal": true,
+      "instructions": 2
+    },
+    {
+      "address": "00904BF0",
+      "bytes": 69,
+      "hex": "56578bf98b47048b3085f674248d4900807e5c0074148b16d944240c8b82dc000000518bced91c24ffd08b763885f675dfd944240c518bcfd91c24e8d0f9ffff5f5ec20400",
+      "sha256": "dc4734515d458b164c823c7c362f7fd650e204e179d1d6cfeb0498b927a8cb8f",
+      "live_disk_equal": true,
+      "instructions": 28
+    },
+    {
+      "address": "009041A0",
+      "bytes": 100,
+      "hex": "56578bf133ff397e087456eb038d49008b0e8b41343bc7750f3979387506837e08017f303bc774088b5138895038eb058b413889068b41383bc774088b5134895034eb068b4134894604897938897934834608ff8b118b026a01ffd0397e0875af5f5ec3",
+      "sha256": "c11521d998a283dcf66326d6fc80325835474ecca7a24637fa796f676d5aa73a",
+      "live_disk_equal": true,
+      "instructions": 43
+    },
+    {
+      "address": "004D6BBE",
+      "bytes": 6,
+      "hex": "c7069477ce00",
+      "sha256": "97b75e817f3aa727ec456efbf0211501dfdae37ba559fb4f2dbf45adf7a48532",
+      "live_disk_equal": true,
+      "instructions": 1
+    },
+    {
+      "address": "004CB30D",
+      "bytes": 6,
+      "hex": "c7069477ce00",
+      "sha256": "97b75e817f3aa727ec456efbf0211501dfdae37ba559fb4f2dbf45adf7a48532",
+      "live_disk_equal": true,
+      "instructions": 1
+    }
+  ],
+  "current_source_pins": [
+    {
+      "path": "include/bsp/world_construct.hpp",
+      "bytes": 17992,
+      "sha256": "5f5d9bf8b44c53237fc33cd448919c80eee4731db0b9cd7dbf10a4d0ba3193dc"
+    },
+    {
+      "path": "src/world_construct.cpp",
+      "bytes": 7150,
+      "sha256": "aa51c816692e0f65139969653706410e6343eb42eb202a293f763254b7b8b37a"
+    },
+    {
+      "path": "include/bsp/world_deferred_destroy.hpp",
+      "bytes": 4764,
+      "sha256": "2e0a97f8f7180ef5eb782227814c4803a45968ffdac1909971bc292da869ee90"
+    },
+    {
+      "path": "src/world_deferred_destroy.cpp",
+      "bytes": 2313,
+      "sha256": "969483b6e8a651298578ec5f16532997c68d4f696542f0525ef54f2823566534"
+    },
+    {
+      "path": "include/bsp/unit_instance.hpp",
+      "bytes": 17160,
+      "sha256": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42"
+    },
+    {
+      "path": "src/unit_instance.cpp",
+      "bytes": 12133,
+      "sha256": "7357739720e090d1c139195f089cbb9f4e3aa740467fe5d430b8ff96f083f769"
+    },
+    {
+      "path": "include/bsp/world_entity_update.hpp",
+      "bytes": 9841,
+      "sha256": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf"
+    },
+    {
+      "path": "src/world_entity_update.cpp",
+      "bytes": 7274,
+      "sha256": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f"
+    },
+    {
+      "path": "src/game_hosts_world.cpp",
+      "bytes": 22955,
+      "sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829"
+    },
+    {
+      "path": "src/native_game_array_elements.cpp",
+      "bytes": 6467,
+      "sha256": "95747768f853969303dc9a03c2b4e733328307cb0253583d3c00871f7d4033f9"
+    }
+  ],
+  "header13_current_status_snapshot": {
+    "path": "reports/native_parent_list_header_storage_cc12.json",
+    "sha256": "cb6877a8ecab12e5ab41a6ad1276ba6603615000c6c5d7cb101cb931bac6093e",
+    "Source_admission_credit": 1,
+    "primary_source_status": "bounded fresh raw12 header Source qualified by fresh complete-helper fixture, independent readers and current combined-main build",
+    "complete_linked_helper_validation_pending": false,
+    "Root_independent_validation_pending": false
+  }
+}
