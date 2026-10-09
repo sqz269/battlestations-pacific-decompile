@@ -545,5 +545,94 @@
     "fresh_saved_listing_provenance_explicit": true,
     "all_Source_comparison_claims_bounded": true,
     "full_doc_report_review_before_commit": true
+  },
+  "primary_review": {
+    "reviewer": "Root",
+    "Native_bytes": 49,
+    "physical_ops": 20,
+    "fresh_PE_live_match": true,
+    "all_control_instructions_reviewed": true,
+    "worker_report_preimage_sha256": "1a59d28860dba874413bb59bd62269d61308440e84c9207cfdebfab9c856819e",
+    "scope": "No children/data read; no implementation, ABI, startup, gameplay or fault admission. Exact typed flow overrides not exposed.",
+    "verified_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_cli_capture.json",
+        "bytes": 11618,
+        "sha256": "b838fcd6f04c7e3890b5828576e5c723271f4889fe118bb67bfa161926ecddb8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_all_starts.json",
+        "bytes": 3168,
+        "sha256": "fc548f024e5c540c20de910072f16e4b63286838e23ab842988bf9fb058251a8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_function_documentation.json",
+        "bytes": 891,
+        "sha256": "8c4cb8aaa02ec65ab96befec0d041faf1efb20741eb979cf7e41881d97e83096"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_saved_listing.txt",
+        "bytes": 511,
+        "sha256": "fad31fe58cd87a65babf3cce6b6b415734289a5f69e314a9f21c9796e241c55c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_original.bin",
+        "bytes": 49,
+        "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_complete_capture.json",
+        "bytes": 10227,
+        "sha256": "f365b2954db4f03bb6552b169b85392f45282a4fc51ddef76135ce6bb75507e1"
+      },
+      {
+        "Root_path": "include\\bsp\\native_crt_canonical_unlock.hpp",
+        "canonical_lf_sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf"
+      },
+      {
+        "Root_path": "src\\native_crt_canonical_unlock.cpp",
+        "canonical_lf_sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097"
+      },
+      {
+        "Root_path": "include\\bsp\\native_crt_free_unlock_helper.hpp",
+        "canonical_lf_sha256": "9cb0f84c8a7c4c08947f85c9cd2d354ee380135d35ef29be8cc842eb9b7b8753"
+      },
+      {
+        "Root_path": "src\\native_crt_free_unlock_helper.cpp",
+        "canonical_lf_sha256": "d61d134fc001427249f89fa6fa7842bff991e2afea83c2ad000a7483c4753b1b"
+      },
+      {
+        "Root_path": "include\\bsp\\native_crt_critical_section_primitives.hpp",
+        "canonical_lf_sha256": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326"
+      },
+      {
+        "Root_path": "src\\native_crt_critical_section_primitives.cpp",
+        "canonical_lf_sha256": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6"
+      },
+      {
+        "Root_path": "include\\bsp\\game_native_renderer_scalars.hpp",
+        "canonical_lf_sha256": "78bcb9c10d5c241d912f15bed8afdb256fea81b11cc77077cab6fc3101185a0d"
+      },
+      {
+        "Root_path": "src\\game_native_renderer_scalars.cpp",
+        "canonical_lf_sha256": "52c24974e77f28cfd9a5a2e6790b96f6082a741d421f8fb213614ca1f0341458"
+      },
+      {
+        "Root_path": "include\\bsp\\native_renderer_worker_lifetime.hpp",
+        "canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+      },
+      {
+        "Root_path": "src\\native_renderer_worker_lifetime.cpp",
+        "canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+      },
+      {
+        "Root_path": "include\\bsp\\native_invalid_parameter_noinfo_call.hpp",
+        "canonical_lf_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+      },
+      {
+        "Root_path": "include\\bsp\\game_native_mutable_crt_data.hpp",
+        "canonical_lf_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+      }
+    ]
   }
 }
