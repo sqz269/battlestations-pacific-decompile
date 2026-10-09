@@ -1,0 +1,1598 @@
+{
+  "schema": "bsp.cc12.native_allocator_failure_object_constructor_source.v1",
+  "status": "complete_Source_candidate_static_composition_passed_registration_compile_emitted_Core_and_admission_pending",
+  "created_utc": "2026-10-09T10:07:43.893542+00:00",
+  "base_commit": "a6b846ecce1f780962154003f1d30c7f4933870f",
+  "requested_published_main": "a6b846ecce1f780962154003f1d30c7f4933870f",
+  "scope": {
+    "packet": "cc12_allocator_failure_object_constructor_source",
+    "leased_addresses": [
+      "00bf6802"
+    ],
+    "owned_files": [
+      "include/bsp/native_allocator_failure_object_constructor.hpp",
+      "src/native_allocator_failure_object_constructor.cpp",
+      "docs/CC12_NATIVE_ALLOCATOR_FAILURE_OBJECT_CONSTRUCTOR_SOURCE.md",
+      "reports/cc12_native_allocator_failure_object_constructor_source.json"
+    ],
+    "new_Source_candidate_functions": 1,
+    "accepted_wrapper_bytes_rechecked": 25,
+    "accepted_child_bytes_rechecked": 24,
+    "additional_Native_bodies_static_data_slots_strings_profiles_RTTI_ThrowInfo_callers_read": 0,
+    "Ghidra_queries_or_mutations": 0,
+    "ledger_edits": 0,
+    "CMake_edits": 0,
+    "new_tests": 0,
+    "ad_hoc_compiler_probes": 0
+  },
+  "accepted_metadata": {
+    "wrapper_report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+    "child_report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+    "child_primary_review": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "wrapper_name": "bad_alloc",
+    "wrapper_prototype": "undefined __thiscall bad_alloc(bad_alloc * this)",
+    "child_name": "exception",
+    "metadata_is_inherited": true,
+    "no_saved_names_prototypes_or_comments_changed": true
+  },
+  "Original_evidence": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "wrapper": {
+      "address": "00bf6802",
+      "end_inclusive": "00bf681a",
+      "bytes": 25,
+      "hex": "566a0168b454e1008bf1e87dfbffffc7063c92d6008bc65ec3",
+      "sha256": "7d11d73b61068786e29ac218765bbf3774791e6571ee7fb76a0c07853edc26e3",
+      "instructions": [
+        {
+          "address": "00bf6802",
+          "size": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00bf6803",
+          "size": 2,
+          "hex": "6a01",
+          "text": "push 1"
+        },
+        {
+          "address": "00bf6805",
+          "size": 5,
+          "hex": "68b454e100",
+          "text": "push 0xe154b4"
+        },
+        {
+          "address": "00bf680a",
+          "size": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00bf680c",
+          "size": 5,
+          "hex": "e87dfbffff",
+          "text": "call 0xbf638e"
+        },
+        {
+          "address": "00bf6811",
+          "size": 6,
+          "hex": "c7063c92d600",
+          "text": "mov dword ptr [esi], 0xd6923c"
+        },
+        {
+          "address": "00bf6817",
+          "size": 2,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00bf6819",
+          "size": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00bf681a",
+          "size": 1,
+          "hex": "c3",
+          "text": "ret"
+        }
+      ],
+      "all_bytes_equal_accepted_report_and_current_PE": true,
+      "full_independent_decode_matches_accepted_listing": true
+    },
+    "admitted_child": {
+      "address": "00bf638e",
+      "end_inclusive": "00bf63a5",
+      "bytes": 24,
+      "hex": "8bc18b4c2404c7007093d6008b0983600800894804c20800",
+      "sha256": "ccfccad13f993683d876dfcc066242c5f2fbfe2c04f9db3cb593bfba81fc70b8",
+      "instructions": [
+        {
+          "address": "00bf638e",
+          "size": 2,
+          "hex": "8bc1",
+          "text": "mov eax, ecx"
+        },
+        {
+          "address": "00bf6390",
+          "size": 4,
+          "hex": "8b4c2404",
+          "text": "mov ecx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00bf6394",
+          "size": 6,
+          "hex": "c7007093d600",
+          "text": "mov dword ptr [eax], 0xd69370"
+        },
+        {
+          "address": "00bf639a",
+          "size": 2,
+          "hex": "8b09",
+          "text": "mov ecx, dword ptr [ecx]"
+        },
+        {
+          "address": "00bf639c",
+          "size": 4,
+          "hex": "83600800",
+          "text": "and dword ptr [eax + 8], 0"
+        },
+        {
+          "address": "00bf63a0",
+          "size": 3,
+          "hex": "894804",
+          "text": "mov dword ptr [eax + 4], ecx"
+        },
+        {
+          "address": "00bf63a3",
+          "size": 3,
+          "hex": "c20800",
+          "text": "ret 8"
+        }
+      ],
+      "all_bytes_equal_accepted_report_and_current_PE": true,
+      "full_independent_decode_matches_accepted_listing": true
+    },
+    "wrapper_direct_call": "00bf680c -> 00bf638e",
+    "wrapper_entry": "ECX receiver, no explicit stack arguments, plain RET",
+    "child_entry": "ECX receiver, two stack DWORDs, RET 8",
+    "child_DWORD_RMW_operand_access": 3
+  },
+  "child_admission": {
+    "inherited_report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+    "status": "source_admitted_whole24B_Original_match_unique_Core_normal_build_passed_original_ABI_and_gameplay_unproved",
+    "build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 87088,
+      "start_utc": "2026-10-09T09:53:26.587893+00:00",
+      "finish_utc": "2026-10-09T09:54:05.206191+00:00",
+      "exit_code": 0,
+      "success": true
+    },
+    "existing_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "complete_review": [
+      "Entire24B/7 instructions match unchanged Original PE; no relocations, children, EH frame or extra instructions. Actual DWORD RMW and RET8 retained.",
+      "ECX receiver, explicit unused EDX argument, two original stack DWORDs; source slot address captured before profile store, contents read afterward, then full DWORD RMW at+8, final captured slot-word store at+4, returned receiver EAX.",
+      "All12 receiver bytes covered. EDX/nonvolatiles and final AND flags are untouched thereafter by complete body. Raw numeric profile is not callable Source table or Source exception identity."
+    ],
+    "Source_credit": {
+      "new_Original_functions": 1,
+      "Original_bytes": 24,
+      "Native_ABI_credit": 0,
+      "gameplay_credit": 0
+    },
+    "body_matches_current_PE": true,
+    "all_current_primary_Source_and_doc_pins_match": true,
+    "worker_did_not_rerun_child_build_or_read_emitted_artifacts": true,
+    "Original_ABI_compatible": false,
+    "gameplay_validated": false
+  },
+  "Source_interface": {
+    "symbol": "bsp::construct_native_allocator_failure_object_00bf6802",
+    "descriptive_name_provisional": true,
+    "target": "MSVC Win32 only",
+    "ABI": "new ordinary C++ two-argument API; not the Native ECX/plain-RET entry",
+    "arguments": [
+      {
+        "name": "actual_raw12_receiver",
+        "type": "void*",
+        "meaning": "actual live raw 12-byte backing"
+      },
+      {
+        "name": "actual_pointer_slot_address",
+        "type": "const void*",
+        "meaning": "borrowed actual readable four-byte slot address"
+      }
+    ],
+    "native_fixed_slot_address": "00e154b4",
+    "fixed_slot_substitution": "Caller-supplied actual slot address replaces Native immediate binding; no actual cell producer or fixed-address global is supplied.",
+    "actual_native_slot_producer_or_static_throw_object_owner_claimed": false,
+    "native_wrapper_register_or_flags_ABI_claimed": false
+  },
+  "complete_composition": {
+    "capture_original_receiver": true,
+    "real_child_symbol": "bsp::construct_native_allocator_base_message_00bf638e",
+    "child_call_arguments": [
+      "captured_receiver",
+      "unused EDX word 0",
+      "actual_pointer_slot_address",
+      "ignored numeric word 1"
+    ],
+    "child_return_value_ignored": true,
+    "child_memory_order": [
+      "capture actual slot address",
+      "store raw 00d69370 at receiver+0",
+      "read DWORD slot value",
+      "AND DWORD [receiver+8],0 with actual RMW",
+      "store captured slot value at receiver+4"
+    ],
+    "child_RMW_access_width_bytes": 4,
+    "child_RMW_access_read_and_write": true,
+    "wrapper_after_normal_child_return": "unconditional volatile DWORD 00d6923c store at captured receiver+0",
+    "return_value": "captured original receiver",
+    "receiver_write_offsets_in_order": [
+      0,
+      8,
+      4,
+      0
+    ],
+    "receiver_write_widths": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "total_receiver_extent_bytes": 12,
+    "receiver_coverage": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "prior_wrapper_transitive_footprint_uncertainty_resolved_by_complete_child": true,
+    "slot_at_receiver_zero_observes_child_profile_before_wrapper_overwrite": true,
+    "slot_at_receiver_eight_is_read_before_child_clear": true,
+    "null_copied_word_allowed": true,
+    "pointee_access": false,
+    "null_receiver_or_slot_check": false,
+    "catch_or_noexcept": false,
+    "allocation_free_cleanup_or_ownership_transfer": false,
+    "larger_0x28_owner_cast_or_Source_allocation_policy_replacement": false,
+    "raw_profiles_are_not_callable_Source_vtables_RTTI_or_std_bad_alloc_identity": true,
+    "exceptional_or_faulting_path": "No added handling; final wrapper store requires normal child return; earlier effects may remain."
+  },
+  "static_source_validation": {
+    "header_guard": true,
+    "pointer_and_uint32_size_guards": true,
+    "exact_public_argument_signature": true,
+    "ordinary_Cpp_API": true,
+    "complete_body_statements": [
+      "void* const captured_receiver = actual_raw12_receiver",
+      "construct_native_allocator_base_message_00bf638e( captured_receiver, 0u, actual_pointer_slot_address, 1u)",
+      "*static_cast<volatile std::uint32_t*>(captured_receiver) = 0x00d6923cu",
+      "return captured_receiver"
+    ],
+    "real_admitted_child_call": true,
+    "explicit_volatile_DWORD_final_store": true,
+    "no_extra_branch_helper_or_allocation": true,
+    "actual_emission_verified": false
+  },
+  "build_boundary": {
+    "wrapper_unregistered_at_worker_base": true,
+    "registration_search_exit": 1,
+    "wildcard_registration_search_exit": 1,
+    "existing_child_registration": "307:target_sources(bsp_core PRIVATE src/native_allocator_base_message_constructor.cpp)",
+    "worker_build_run": false,
+    "reason": "Primary owns registration and required relevant normal MSVC Win32 build; unregistered worker build explicitly excluded.",
+    "primary_required": [
+      "CMake registration",
+      "scripts/build.ps1 normal MSVC Win32 build",
+      "whole emitted wrapper and real child-call review",
+      "Core validation",
+      "final ledger/Ghidra admission"
+    ],
+    "compile_verified": false,
+    "build_verified": false,
+    "emitted_body_verified": false,
+    "fixture_tested": false,
+    "ABI_admitted": false,
+    "game_validated": false
+  },
+  "candidate_output_pins": [
+    {
+      "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+      "physical_bytes": 1698,
+      "physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "canonical_lf_bytes": 1698,
+      "canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "physical_crlf_count": 0,
+      "git_blob_oid": "de362405bd34b5c6fcacf1ef876ea676031398fb"
+    },
+    {
+      "path": "src/native_allocator_failure_object_constructor.cpp",
+      "physical_bytes": 764,
+      "physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "canonical_lf_bytes": 764,
+      "canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "physical_crlf_count": 0,
+      "git_blob_oid": "affdf0d9f4998423e5a0637d3052e23325202ede"
+    },
+    {
+      "path": "docs/CC12_NATIVE_ALLOCATOR_FAILURE_OBJECT_CONSTRUCTOR_SOURCE.md",
+      "physical_bytes": 6228,
+      "physical_sha256": "e0098edd6a21627190700c9885acfc74a81403066908c43b658e49e41e7b3f44",
+      "canonical_lf_bytes": 6228,
+      "canonical_lf_sha256": "e0098edd6a21627190700c9885acfc74a81403066908c43b658e49e41e7b3f44",
+      "physical_crlf_count": 0,
+      "git_blob_oid": "9bf855ba96ff5d741987e9e4f58e471a0bc1a4c9"
+    }
+  ],
+  "current_repository_input_pins": [
+    {
+      "path": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+      "physical_bytes": 44589,
+      "physical_sha256": "5a7dba47549d7e0ea060f1f7d1e5b60203fc7b29451912329bde9d60ce9e192f",
+      "canonical_lf_bytes": 43852,
+      "canonical_lf_sha256": "290f246bd87732239d0b1ebedfdc9e6e6573f328a883960661cfb7bd4128ead0",
+      "physical_crlf_count": 737,
+      "matches_base_blob": true,
+      "git_blob_oid": "339581d16c9d34e63f97613a9d67960d669ccca6"
+    },
+    {
+      "path": "docs/CC12_ALLOCATOR_FAILURE_OBJECT_CONSTRUCTOR_READINESS.md",
+      "physical_bytes": 8011,
+      "physical_sha256": "f787600072bfb134e530a59093ecfc5f423fd0dba5a380b5f8c65cea913c3f2f",
+      "canonical_lf_bytes": 8011,
+      "canonical_lf_sha256": "f787600072bfb134e530a59093ecfc5f423fd0dba5a380b5f8c65cea913c3f2f",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "fd5f34d166d6974c67d883f8891b042bcf769b4c"
+    },
+    {
+      "path": "reports/cc12_allocator_base_message_constructor_readiness.json",
+      "physical_bytes": 46191,
+      "physical_sha256": "7ded1b7979db0c1bc341bcbe6c92b53f1039d282cac9858b536b07db565985c1",
+      "canonical_lf_bytes": 45371,
+      "canonical_lf_sha256": "db5dfe4fd193a7e02ff41f9ec5f260792ece3de7226417eb1cc6cc15e2a82278",
+      "physical_crlf_count": 820,
+      "matches_base_blob": true,
+      "git_blob_oid": "c201b57e34b220cd3fdb800f807a30aab962b317"
+    },
+    {
+      "path": "docs/CC12_ALLOCATOR_BASE_MESSAGE_CONSTRUCTOR_READINESS.md",
+      "physical_bytes": 8319,
+      "physical_sha256": "6dbff58e4e69a41b2a0e0144255a96a34b2bfd72306f05d6529deeff03ffe2fe",
+      "canonical_lf_bytes": 8319,
+      "canonical_lf_sha256": "6dbff58e4e69a41b2a0e0144255a96a34b2bfd72306f05d6529deeff03ffe2fe",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "458f29f2d13910da871e62de7ecec9f077e1c901"
+    },
+    {
+      "path": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+      "physical_bytes": 15444,
+      "physical_sha256": "ff2b4f5c44b9407fc42c5d26086a1e12c5a17f67f4c89a46fb5ac94f71791521",
+      "canonical_lf_bytes": 15444,
+      "canonical_lf_sha256": "ff2b4f5c44b9407fc42c5d26086a1e12c5a17f67f4c89a46fb5ac94f71791521",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "b4a1096f30a1ea0ef62e3bdf9694d83b83f7d1b8"
+    },
+    {
+      "path": "docs/CC12_NATIVE_ALLOCATOR_BASE_MESSAGE_CONSTRUCTOR_SOURCE.md",
+      "physical_bytes": 6323,
+      "physical_sha256": "4f6282d8bf277716d1e0fe98f9e7b0cadadbeed4e65c5dbfdfc8216e217dc566",
+      "canonical_lf_bytes": 6323,
+      "canonical_lf_sha256": "4f6282d8bf277716d1e0fe98f9e7b0cadadbeed4e65c5dbfdfc8216e217dc566",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "f9934c0ba71c9087db92cb7df7a848df9483d910"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "physical_bytes": 1770,
+      "physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "canonical_lf_bytes": 1770,
+      "canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "c74d0c68429b8d42bbcb4e21400a5e34fc95a5ef"
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "physical_bytes": 979,
+      "physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "canonical_lf_bytes": 979,
+      "canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "be962845b578261c4154cba939f730d7d4e6c031"
+    },
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_bytes": 455,
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "physical_bytes": 17774,
+      "physical_sha256": "93b14eff2073b3947f0afe917da807a260aaa121fb666e66300171c151ef8313",
+      "canonical_lf_bytes": 17774,
+      "canonical_lf_sha256": "93b14eff2073b3947f0afe917da807a260aaa121fb666e66300171c151ef8313",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "ae068b6c47bfbaea71d0b0736329ba3b0fd61aa9"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "canonical_lf_bytes": 198705,
+      "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "ae693a5b7378ce5702009489852d942a3d03419d"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "physical_bytes": 1820,
+      "physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "canonical_lf_bytes": 1820,
+      "canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01"
+    }
+  ],
+  "inherited_pin_replay_groups": [
+    {
+      "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+      "field": "current_repository_input_pins",
+      "references": 9,
+      "excerpts": 11,
+      "all_match": true
+    },
+    {
+      "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+      "field": "inherited_canonical_pin_replays",
+      "references": 40,
+      "excerpts": 0,
+      "all_match": true
+    },
+    {
+      "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+      "field": "current_repository_input_pins",
+      "references": 9,
+      "excerpts": 9,
+      "all_match": true
+    },
+    {
+      "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+      "field": "inherited_canonical_pin_replays",
+      "references": 49,
+      "excerpts": 0,
+      "all_match": true
+    },
+    {
+      "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+      "field": "source_input_pins",
+      "references": 25,
+      "excerpts": 0,
+      "all_match": true
+    },
+    {
+      "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+      "field": "doc_pin",
+      "references": 1,
+      "excerpts": 0,
+      "all_match": true
+    }
+  ],
+  "inherited_unique_pin_replays": [
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "expected_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "actual_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            0
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            5
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            0
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            0,
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "expected_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "actual_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            1
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            6
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            1
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            1,
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            2
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            0,
+            17
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            5
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            2,
+            9,
+            26
+          ]
+        },
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "actual_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            3
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            1,
+            18
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            3,
+            10,
+            27
+          ]
+        },
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "expected_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "actual_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            4
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            2,
+            15
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            4,
+            11,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            5
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            3,
+            11,
+            24,
+            34
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            5,
+            12,
+            20,
+            33,
+            43
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_application_allocator_policy_readiness.json",
+      "expected_canonical_lf_sha256": "8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9",
+      "actual_canonical_lf_sha256": "8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            6
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            7
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            9,
+            22,
+            28,
+            36
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            7
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            7,
+            18,
+            31,
+            37,
+            45
+          ]
+        }
+      ]
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            8
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            10,
+            23,
+            29,
+            37
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            8
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            8,
+            19,
+            32,
+            38,
+            46
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            4,
+            12,
+            25,
+            35
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            13,
+            21,
+            34,
+            44
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_application_pointer_vector_crt_boundary_readiness.json",
+      "expected_canonical_lf_sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+      "actual_canonical_lf_sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            7
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/singleton_lifetime_audit.json",
+      "expected_canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "actual_canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            8
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "expected_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "actual_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            13
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_renderer_shaders.inc",
+      "expected_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "actual_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            14
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "expected_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "actual_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            16
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            25
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            19,
+            26,
+            32
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            28,
+            35,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            20,
+            27,
+            33
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            29,
+            36,
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+      "expected_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "actual_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            21
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_native_application_pointer_vector_resize_primary_review.json",
+      "expected_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "actual_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            30
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/native_shader_preload_r99.json",
+      "expected_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "actual_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            31
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_readiness.json",
+      "expected_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "actual_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            38
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            47
+          ]
+        }
+      ]
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "expected_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "actual_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            39
+          ]
+        },
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "inherited_canonical_pin_replays",
+          "indices": [
+            48
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "expected_canonical_lf_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "actual_canonical_lf_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/system_camera_axes.hpp",
+      "expected_canonical_lf_sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+      "actual_canonical_lf_sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_crt_libm_error_support.hpp",
+      "expected_canonical_lf_sha256": "351b5db188bea468f861b1d55b8cde492aa0908852831c939ca6cfaa1f78c1c9",
+      "actual_canonical_lf_sha256": "351b5db188bea468f861b1d55b8cde492aa0908852831c939ca6cfaa1f78c1c9",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+      "expected_canonical_lf_sha256": "290f246bd87732239d0b1ebedfdc9e6e6573f328a883960661cfb7bd4128ead0",
+      "actual_canonical_lf_sha256": "290f246bd87732239d0b1ebedfdc9e6e6573f328a883960661cfb7bd4128ead0",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+          "field": "current_repository_input_pins",
+          "indices": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "path": "CMakeLists.txt",
+      "expected_canonical_lf_sha256": "93b14eff2073b3947f0afe917da807a260aaa121fb666e66300171c151ef8313",
+      "actual_canonical_lf_sha256": "93b14eff2073b3947f0afe917da807a260aaa121fb666e66300171c151ef8313",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "expected_canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "actual_canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/build.ps1",
+      "expected_canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "actual_canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "expected_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "actual_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "expected_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "actual_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_pending_registry_constructor.hpp",
+      "expected_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "actual_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_pending_registry_constructor.cpp",
+      "expected_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "actual_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_pending_registry_scalar_retirement.hpp",
+      "expected_canonical_lf_sha256": "75c80c339b5d09c0cb032a5fb976273a01800f2fe2fa585b5aafec67d9a94119",
+      "actual_canonical_lf_sha256": "75c80c339b5d09c0cb032a5fb976273a01800f2fe2fa585b5aafec67d9a94119",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_pending_registry_scalar_retirement.cpp",
+      "expected_canonical_lf_sha256": "15b383a71149806a1befcdd1c584624339b0dcc33ef53897521e546b9031c0f3",
+      "actual_canonical_lf_sha256": "15b383a71149806a1befcdd1c584624339b0dcc33ef53897521e546b9031c0f3",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "expected_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "actual_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "expected_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "actual_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_tracked_critical_section_release.hpp",
+      "expected_canonical_lf_sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+      "actual_canonical_lf_sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            11
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_tracked_critical_section_release.cpp",
+      "expected_canonical_lf_sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+      "actual_canonical_lf_sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "expected_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "actual_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "expected_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "actual_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "expected_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "actual_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            17
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "expected_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "actual_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "expected_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "actual_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            19
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "expected_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "actual_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            20
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "expected_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "actual_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            21
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "expected_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "actual_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_allocator_base_message_constructor_readiness.json",
+      "expected_canonical_lf_sha256": "db5dfe4fd193a7e02ff41f9ec5f260792ece3de7226417eb1cc6cc15e2a82278",
+      "actual_canonical_lf_sha256": "db5dfe4fd193a7e02ff41f9ec5f260792ece3de7226417eb1cc6cc15e2a82278",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            23
+          ]
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_constructor_primary_review.json",
+      "expected_canonical_lf_sha256": "4fe3b7d81e2df84e619409baaeaea66edf9939adfc23c00998bbd8ec2303f445",
+      "actual_canonical_lf_sha256": "4fe3b7d81e2df84e619409baaeaea66edf9939adfc23c00998bbd8ec2303f445",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "source_input_pins",
+          "indices": [
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "path": "docs/CC12_NATIVE_ALLOCATOR_BASE_MESSAGE_CONSTRUCTOR_SOURCE.md",
+      "expected_canonical_lf_sha256": "4f6282d8bf277716d1e0fe98f9e7b0cadadbeed4e65c5dbfdfc8216e217dc566",
+      "actual_canonical_lf_sha256": "4f6282d8bf277716d1e0fe98f9e7b0cadadbeed4e65c5dbfdfc8216e217dc566",
+      "matches": true,
+      "claims": [
+        {
+          "report": "reports/cc12_native_allocator_base_message_constructor_primary_review.json",
+          "field": "doc_pin",
+          "indices": [
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "inherited_reference_count": 133,
+    "inherited_unique_paths": 50,
+    "inherited_excerpt_replays": 20,
+    "all_inherited_pins_match": true,
+    "all_current_base_pins_match": true,
+    "independent_checker_passed": true,
+    "staged_scope_checked": true,
+    "staged_diff_check_passed": true
+  },
+  "credit": {
+    "actual_applied_Original_functions": 0,
+    "actual_applied_Original_bytes": 0,
+    "actual_applied_Source_admission_functions": 0,
+    "proposed_Original_functions": 1,
+    "proposed_Original_bytes": 25,
+    "already_admitted_child_functions_counted_again": 0,
+    "already_admitted_child_bytes_counted_again": 0,
+    "proposal_conditional_on_primary_registration_build_emission_Core_and_final_review": true,
+    "no_wider_allocator_CRT_exception_static_throw_object_startup_ABI_or_runtime_credit": true
+  }
+}
