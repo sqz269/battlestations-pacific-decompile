@@ -1,0 +1,3089 @@
+{
+  "schema": 1,
+  "packet": "cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness",
+  "kind": "complete_owned_raw_provider_and_current_Source_read_only_ABI_readiness",
+  "created_utc": "2026-10-09T15:24:18.999742+00:00",
+  "worker_and_published_baseline": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+  "owner": "agent/cc12_lua_variant_copy_child_abi",
+  "owned_addresses": [
+    "00BF6713"
+  ],
+  "owned_outputs": [
+    "docs/CC12_MISSION_LUA_VARIANT_INVALID_PARAMETER_PROVIDER_ABI_READINESS.md",
+    "reports/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness.json"
+  ],
+  "conclusion": "The complete16-byte wrapper has no explicit caller arguments or receiver access: XOR EAX; five PUSH zero; direct CALL00BF66EF; ADD ESP14; plainRET. Local stack/flag/forwarded-register behavior is proved from all9 instructions, subject to an unopened provider returning compatibly. Existing typed Source member has an object API; current free cdecl noinfo Source UCRT import permits a later explicit rawzeroarg borrower with external handler policy. No raw Source adapter or Native policy/ABI is established here.",
+  "credit": {
+    "new_Source_functions": 0,
+    "new_Source_bytes": 0,
+    "Original_ABI": 0,
+    "runtime": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "scope": {
+    "complete_owned_Native_span": "00BF6713..00BF6722",
+    "Native_owned_bytes": 16,
+    "Native_direct_child_metadata_only": "00BF66EF",
+    "Native_subordinate_body_handler_caller_data_IAT_or_padding_windows": false,
+    "Source_PE_import_metadata_and_map_read": true,
+    "Source_import_is_not_Native_IAT_or_data_window": true,
+    "required_external_or_gap_scope_expansion": false,
+    "GPR_mutation_or_rename": false,
+    "Source_CMake_ledger_changes": false,
+    "build_test_probe_or_runtime_execution": false
+  },
+  "target_verification": {
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "configured_GPR_exists": true,
+    "per_CLI_project_program_language_imagebase_verification": true,
+    "stronger_server_absolute_GPR_path_claim": false,
+    "count": "live function count 64729; snapshot 64729; same"
+  },
+  "native_evidence": {
+    "captured_utc": "2026-10-09T15:14:59.578607+00:00",
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "configured_GPR_exists": true,
+    "CLI_verifies_project_program_language_imagebase_each_batch": true,
+    "stronger_server_absolute_GPR_path_claim": false,
+    "count": "live function count 64729; snapshot 64729; same",
+    "owned_body": {
+      "address": "00BF6713",
+      "end_inclusive": "00BF6722",
+      "bytes": 16,
+      "rva": "007F6713",
+      "file_offset": 8349459,
+      "hex": "33c05050505050e8d0ffffff83c414c3",
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "live_PE_equal": true,
+      "instructions": [
+        {
+          "address": "00BF6713",
+          "bytes": "33c0",
+          "size": 2,
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00BF6715",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BF6716",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BF6717",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BF6718",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BF6719",
+          "bytes": "50",
+          "size": 1,
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BF671A",
+          "bytes": "e8d0ffffff",
+          "size": 5,
+          "mnemonic": "call",
+          "operands": "0xbf66ef"
+        },
+        {
+          "address": "00BF671F",
+          "bytes": "83c414",
+          "size": 3,
+          "mnemonic": "add",
+          "operands": "esp, 0x14"
+        },
+        {
+          "address": "00BF6722",
+          "bytes": "c3",
+          "size": 1,
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "every_raw_instruction_listed": true,
+      "listing_missing_instructions": [],
+      "saved_metadata": {
+        "function_name": "LIBCRT_unmatched_00bf6713",
+        "address": "00bf6713",
+        "program": "battlestationspacific.exe",
+        "instruction_count": 9,
+        "basic_block_count": 1,
+        "edge_count": 0,
+        "call_count": 1,
+        "string_ref_count": 0,
+        "param_count": 0,
+        "cyclomatic_complexity": 1,
+        "prologue_stripped": false,
+        "epilogue_stripped": false,
+        "callee_names": [
+          "LIBCRT_unmatched_00bf66ef"
+        ],
+        "string_constants": [],
+        "immediate_values": [
+          20
+        ],
+        "basic_block_hashes": [
+          "201d295d0d054a1a2c83fe27c91f158d0da072f49f05af689ea96127790b417c"
+        ]
+      },
+      "saved_prototype_and_extent": "Function: LIBCRT_unmatched_00bf6713 at 00bf6713\nSignature: undefined LIBCRT_unmatched_00bf6713(void)\nEntry: 00bf6713\nBody: 00bf6713 - 00bf6722\n{\n \"function_name\": \"LIBCRT_unmatched_00bf6713\",\n \"address\": \"00bf6713\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 9,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"LIBCRT_unmatched_00bf66ef\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  20\n ],\n \"basic_block_hashes\": [\n  \"201d295d0d054a1a2c83fe27c91f158d0da072f49f05af689ea96127790b417c\"\n ]\n}\n",
+      "no_external_body_opened": true
+    },
+    "direct_child_metadata_only": {
+      "address": "00BF66EF",
+      "query": "proto only",
+      "body_or_bytes_decompiled_disassembled_read": false,
+      "metadata": {
+        "function_name": "LIBCRT_unmatched_00bf66ef",
+        "address": "00bf66ef",
+        "program": "battlestationspacific.exe",
+        "instruction_count": 14,
+        "basic_block_count": 3,
+        "edge_count": 2,
+        "call_count": 3,
+        "string_ref_count": 0,
+        "param_count": 0,
+        "cyclomatic_complexity": 1,
+        "prologue_stripped": false,
+        "epilogue_stripped": false,
+        "callee_names": [
+          "__invoke_watson",
+          "BSP_CRT_DecodePointerCurrentState",
+          "BSP_Crt_ClearDebuggerHookState"
+        ],
+        "string_constants": [],
+        "immediate_values": [
+          2
+        ],
+        "basic_block_hashes": [
+          "c0f5a5c1d05b231d987129a2db9e1f18b2d1e14deb44c3b382e4c19acf1555d0",
+          "3a690bc3a2e6683771f98c4988605e4a65a6d6bb8eb1d357144dacf013e7575a",
+          "616e455f1337807c049d1dd02dd9f578dd294f72a49bee3fc4b8f0f6a1c958bc"
+        ]
+      },
+      "saved_prototype_and_extent": "Function: LIBCRT_unmatched_00bf66ef at 00bf66ef\nSignature: undefined LIBCRT_unmatched_00bf66ef(void)\nEntry: 00bf66ef\nBody: 00bf66ef - 00bf6712\n{\n \"function_name\": \"LIBCRT_unmatched_00bf66ef\",\n \"address\": \"00bf66ef\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 14,\n \"basic_block_count\": 3,\n \"edge_count\": 2,\n \"call_count\": 3,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"__invoke_watson\",\n  \"BSP_CRT_DecodePointerCurrentState\",\n  \"BSP_Crt_ClearDebuggerHookState\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  2\n ],\n \"basic_block_hashes\": [\n  \"c0f5a5c1d05b231d987129a2db9e1f18b2d1e14deb44c3b382e4c19acf1555d0\",\n  \"3a690bc3a2e6683771f98c4988605e4a65a6d6bb8eb1d357144dacf013e7575a\",\n  \"616e455f1337807c049d1dd02dd9f578dd294f72a49bee3fc4b8f0f6a1c958bc\"\n ]\n}\n",
+      "names_are_metadata_not_a_body_or_failure_policy_proof": true
+    },
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "00400000"
+    },
+    "decoder": {
+      "capstone": "5.0.7",
+      "pefile": "2024.8.26"
+    },
+    "capture_directory": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness",
+    "scope": {
+      "Native_owned_bytes_opened": 16,
+      "outside_owned_Native_bodies_opened": false,
+      "Native_callers_handlers_CRT_children_data_or_padding_opened": false,
+      "whole_PE_hash_is_not_outside_body_analysis": true,
+      "GPR_names_comments_prototypes_flow_noReturn_body_AddressSet_mutated": false
+    }
+  },
+  "whole_body_readiness_gate": {
+    "saved_extent_verified_before_capture": true,
+    "live_PE_bytes_equal": 16,
+    "independent_decode_instructions": 9,
+    "all_saved_instruction_starts_equal_independent_decode": true,
+    "listing_gaps_or_unowned_required_continuation": [],
+    "all_owned_reachable_under_compatible_provider_return": true,
+    "concrete_Native_provider_return_or_nonreturn_proved": false,
+    "function_count_unchanged": true,
+    "metadata_names_or_param_count_do_not_replace_physical_delivery": true
+  },
+  "complete_instruction_frame_and_flow_contract": {
+    "notation": {
+      "S": "ESP at owned00BF6713 entry",
+      "T": "subordinate00BF66EF entry ESP=S-24",
+      "P": "actual ESP immediately after subordinate return",
+      "R": "(P+0x14) mod2^32"
+    },
+    "instruction_states": [
+      {
+        "address": "00BF6713",
+        "bytes": "33c0",
+        "operation": "xor eax, eax",
+        "entry_ESP_relative_to_S_on_compatible_return_path": 0,
+        "register_effect": "EAX=0, discarding incoming EAX",
+        "arithmetic_flags": "CF=OF=SF=0, ZF=PF=1, AF undefined",
+        "exit_ESP_relative_to_S_on_compatible_return_path": 0
+      },
+      {
+        "address": "00BF6715",
+        "bytes": "50",
+        "operation": "push eax",
+        "entry_ESP_relative_to_S_on_compatible_return_path": 0,
+        "direct_stack_write": {
+          "offset_from_S": -4,
+          "bytes": 4,
+          "value": 0
+        },
+        "outgoing_argument_position": 5,
+        "arithmetic_flags": "unchanged",
+        "exit_ESP_relative_to_S_on_compatible_return_path": -4
+      },
+      {
+        "address": "00BF6716",
+        "bytes": "50",
+        "operation": "push eax",
+        "entry_ESP_relative_to_S_on_compatible_return_path": -4,
+        "direct_stack_write": {
+          "offset_from_S": -8,
+          "bytes": 4,
+          "value": 0
+        },
+        "outgoing_argument_position": 4,
+        "arithmetic_flags": "unchanged",
+        "exit_ESP_relative_to_S_on_compatible_return_path": -8
+      },
+      {
+        "address": "00BF6717",
+        "bytes": "50",
+        "operation": "push eax",
+        "entry_ESP_relative_to_S_on_compatible_return_path": -8,
+        "direct_stack_write": {
+          "offset_from_S": -12,
+          "bytes": 4,
+          "value": 0
+        },
+        "outgoing_argument_position": 3,
+        "arithmetic_flags": "unchanged",
+        "exit_ESP_relative_to_S_on_compatible_return_path": -12
+      },
+      {
+        "address": "00BF6718",
+        "bytes": "50",
+        "operation": "push eax",
+        "entry_ESP_relative_to_S_on_compatible_return_path": -12,
+        "direct_stack_write": {
+          "offset_from_S": -16,
+          "bytes": 4,
+          "value": 0
+        },
+        "outgoing_argument_position": 2,
+        "arithmetic_flags": "unchanged",
+        "exit_ESP_relative_to_S_on_compatible_return_path": -16
+      },
+      {
+        "address": "00BF6719",
+        "bytes": "50",
+        "operation": "push eax",
+        "entry_ESP_relative_to_S_on_compatible_return_path": -16,
+        "direct_stack_write": {
+          "offset_from_S": -20,
+          "bytes": 4,
+          "value": 0
+        },
+        "outgoing_argument_position": 1,
+        "arithmetic_flags": "unchanged",
+        "exit_ESP_relative_to_S_on_compatible_return_path": -20
+      },
+      {
+        "address": "00BF671A",
+        "bytes": "e8d0ffffff",
+        "operation": "call 0xbf66ef",
+        "entry_ESP_relative_to_S_on_compatible_return_path": -20,
+        "direct_target": "00BF66EF",
+        "target_entry_ESP_relative_to_S": -24,
+        "direct_stack_write": {
+          "offset_from_S": -24,
+          "bytes": 4,
+          "value": "00BF671F owned continuation"
+        },
+        "normal_fallthrough": "00BF671F only if provider returns normally",
+        "normal_provider_stack_requirement": "ESP=S-20 after provider RET",
+        "callee_register_memory_flags_and_failure_effects": "unproved; metadata only",
+        "exit_ESP_relative_to_S_on_compatible_return_path": -20
+      },
+      {
+        "address": "00BF671F",
+        "bytes": "83c414",
+        "operation": "add esp, 0x14",
+        "entry_ESP_relative_to_S_on_compatible_return_path": -20,
+        "arithmetic_flags": "ADD result R=(provider-return ESP+0x14) mod2^32; all six arithmetic flags recomputed",
+        "normal_provider_precondition": "For the compatible path provider-return ESP=S-20 and R=S",
+        "exit_ESP_relative_to_S_on_compatible_return_path": 0
+      },
+      {
+        "address": "00BF6722",
+        "bytes": "c3",
+        "operation": "ret ",
+        "entry_ESP_relative_to_S_on_compatible_return_path": 0,
+        "return_read": "current DWORD[S] on compatible path",
+        "arithmetic_flags": "unchanged from final ADD",
+        "EAX_ECX_EDX_EBX_ESI_EDI_EBP": "unchanged from provider-return state",
+        "exit_ESP_relative_to_S_on_compatible_return_path": 4
+      }
+    ],
+    "flow_model": {
+      "internal_edges": [
+        {
+          "from": "00BF6713",
+          "to": "00BF6715",
+          "condition": "ordinary fallthrough"
+        },
+        {
+          "from": "00BF6715",
+          "to": "00BF6716",
+          "condition": "ordinary fallthrough"
+        },
+        {
+          "from": "00BF6716",
+          "to": "00BF6717",
+          "condition": "ordinary fallthrough"
+        },
+        {
+          "from": "00BF6717",
+          "to": "00BF6718",
+          "condition": "ordinary fallthrough"
+        },
+        {
+          "from": "00BF6718",
+          "to": "00BF6719",
+          "condition": "ordinary fallthrough"
+        },
+        {
+          "from": "00BF6719",
+          "to": "00BF671A",
+          "condition": "ordinary fallthrough"
+        },
+        {
+          "from": "00BF671A",
+          "to": "00BF671F",
+          "condition": "subordinate provider returns to owned continuation"
+        },
+        {
+          "from": "00BF671F",
+          "to": "00BF6722",
+          "condition": "ordinary fallthrough"
+        }
+      ],
+      "external_edges": [
+        {
+          "from": "00BF671A",
+          "kind": "direct CALL",
+          "target": "00BF66EF"
+        }
+      ],
+      "ordinary_prefix_through_CALL_with_usable_stack": {
+        "bytes": 12,
+        "instructions": 7
+      },
+      "conditional_returning_continuation": {
+        "address": "00BF671F",
+        "bytes": 4,
+        "instructions": 2
+      },
+      "all_owned_reachable_if_provider_returns": {
+        "bytes": 16,
+        "instructions": 9
+      },
+      "loops_conditional_branches_or_indirect_transfers": 0,
+      "listing_gaps": [],
+      "provider_return_possible_in_Native_execution_proved": false,
+      "provider_nonreturn_possible_in_Native_execution_proved": false
+    },
+    "entry_contract": {
+      "public_stack_arguments_read": 0,
+      "explicit_receiver_or_pointee_access": false,
+      "incoming_EAX": "discarded by XOR before use",
+      "incoming_ECX_EDX_EBX_ESI_EDI_EBP": "not read as owned data inputs or modified before CALL; values forwarded to subordinate unchanged",
+      "incoming_registers_irrelevant_to_subordinate_proved": false,
+      "incoming_ESP": "must supply writable outgoing stack and usable eventual return backing",
+      "incoming_arithmetic_flags_consumed": false,
+      "inferred_whole_provider_receiver_free_ABI": "No explicit receiver or caller argument consumed by owned wrapper; transitive requirements remain subordinate contract."
+    },
+    "subordinate_delivery": {
+      "direct_call_site": "00BF671A",
+      "direct_target": "00BF66EF",
+      "return_site": "00BF671F",
+      "entry_stack": [
+        {
+          "offset_from_T": 0,
+          "value": "00BF671F"
+        },
+        {
+          "offset_from_T": 4,
+          "value": 0,
+          "argument_position": 1
+        },
+        {
+          "offset_from_T": 8,
+          "value": 0,
+          "argument_position": 2
+        },
+        {
+          "offset_from_T": 12,
+          "value": 0,
+          "argument_position": 3
+        },
+        {
+          "offset_from_T": 16,
+          "value": 0,
+          "argument_position": 4
+        },
+        {
+          "offset_from_T": 20,
+          "value": 0,
+          "argument_position": 5
+        },
+        {
+          "offset_from_T": 24,
+          "value": "current outer return address at[S]"
+        }
+      ],
+      "EAX": 0,
+      "ECX_EDX_EBX_ESI_EDI_EBP": "incoming owned-entry values",
+      "arithmetic_flags": "CF=OF=SF=0,ZF=PF=1,AF undefined from XOR; PUSH/CALL do not replace these flags",
+      "formal_meanings_of_five_zero_words": "not recovered from this body; do not invent expression/function/file/line/reserved names",
+      "saved_subordinate_param_count": 0,
+      "saved_prototype_is_not_a_physical_delivery_contract": true
+    },
+    "normal_return": {
+      "provider_return_assumption": "Returns to00BF671F with ESP=S-20 and usable current[S]",
+      "local_caller_cleanup_bytes": 20,
+      "final_ESP": "S+4",
+      "RET_immediate_bytes": 0,
+      "EAX": "subordinate result/residue; not forced zero and no semantic return type established",
+      "ECX_EDX_EBX_ESI_EDI_EBP": "subordinate values; not restored or protected locally",
+      "nonvolatile_preservation_requirement": "Exact Native preservation remains unproved because subordinate body is unopened.",
+      "arithmetic_flags": "CF/PF/AF/ZF/SF/OF from final ADD ESP,14h; depend on provider-return ESP. For balanced return the arithmetic result is S.",
+      "other_flags": "not restored by owned code; subordinate policy remains unproved",
+      "incorrect_provider_stack_cleanup": "No repair or validation; ADD20/RET use whatever ESP is returned."
+    },
+    "backing_alias_and_failure": {
+      "owned_outgoing_argument_writes": "five DWORD zero stores at[S-4],[S-8],[S-12],[S-16],[S-20]",
+      "owned_CALL_return_write": "DWORD00BF671F at[S-24]",
+      "minimum_outgoing_stack_write_extent": "24 bytes below S including CALL return word",
+      "normal_outer_return_read": "current DWORD[S]",
+      "other_owned_data_accesses": "none; no global/IAT/object/pointer-slot loads in owned body",
+      "stack_data_aliases": "These stack stores remain observable through aliases; child may observe or change stack/other memory. No preservation or rollback invented.",
+      "argument_or_pointer_validation": "none",
+      "local_EH_x87_or_cleanup_objects": "none in owned instructions",
+      "provider_handler_lifetime_failure_throw_return_policy": "unproved and unsupplied",
+      "Source_noexcept_or_Native_noReturn_claim": false
+    },
+    "accepted_pair99_delivery": {
+      "report": "reports/cc12_mission_lua_variant_pair_advance_child_ABI_readiness.json",
+      "Native_body_reopened": false,
+      "accepted_sites": [
+        {
+          "site": "006EDA28",
+          "target": "00BF6713",
+          "physical_kind": "CALL",
+          "guard": "DWORD[B+0]==0",
+          "pushed_arguments": [],
+          "ECX": "B",
+          "ESI": "B",
+          "EAX": "incoming EAX unchanged locally",
+          "EDX": "incoming EDX unchanged locally",
+          "EBX_EDI_EBP": "incoming locally unchanged",
+          "ESP_before_transfer": "S-4",
+          "child_entry_ESP": "S-8",
+          "return_address": "006EDA2D",
+          "if_returns": "Read current[B+4] viaESI; no[B+0] recheck. Child can change either pair word and reachable state.",
+          "no_return_proved": false
+        },
+        {
+          "site": "006EDA37",
+          "target": "00BF6713",
+          "physical_kind": "external tail JMP",
+          "guard": "s(N)!=0 after freshN=[B+4]",
+          "pushed_arguments": [],
+          "ECX": "incomingB or first-child result; no owned reassignment beforetail",
+          "ESI": "restored from current[S-4]",
+          "EAX": "freshN",
+          "EDX": "incoming or first-child result; no owned definition beforetail",
+          "EBX_EDI_EBP": "locally unchanged, subject to first-child behavior",
+          "ESP_at_transfer": "S",
+          "return_address": "original[S]",
+          "if_returns": "Compatible no-argument child returns directly tooriginal caller; no local continuation",
+          "no_return_proved": false
+        }
+      ],
+      "composition": [
+        {
+          "site": "006EDA28",
+          "kind": "CALL",
+          "pair_entry_ESP": "Q",
+          "wrapper_entry_ESP": "S=Q-8",
+          "wrapper_return_word": "006EDA2D",
+          "wrapper_zero_writes_relative_to_Q": [
+            -12,
+            -16,
+            -20,
+            -24,
+            -28
+          ],
+          "subordinate_entry_ESP": "Q-32",
+          "subordinate_return_word": "00BF671F",
+          "pair_saved_ESI_word": "[Q-4], outside owned outgoing writes",
+          "pair_return_word": "[Q], outside owned outgoing writes",
+          "return_requirement": "balanced provider return plus ESI retaining actual pair B for pair continuation; neither enforced locally",
+          "continuation": "pair reloads current[B+4] without rechecking[B+0]"
+        },
+        {
+          "site": "006EDA37",
+          "kind": "tail JMP",
+          "pair_entry_ESP": "Q",
+          "wrapper_entry_ESP": "S=Q after prior POP ESI",
+          "wrapper_return_word": "original pair caller return at[Q]",
+          "wrapper_zero_writes_relative_to_Q": [
+            -4,
+            -8,
+            -12,
+            -16,
+            -20
+          ],
+          "former_saved_ESI_word": "[Q-4] is overwritten by first zero PUSH after its prior POP; no pair local continuation remains",
+          "subordinate_entry_ESP": "Q-24",
+          "subordinate_return_word": "00BF671F",
+          "return_requirement": "balanced provider return and current outer return backing; returns directly to pair caller"
+        }
+      ]
+    },
+    "accepted_parent691_context": {
+      "report": "reports/cc12_mission_lua_variant_tag5_loop_child_ABI_readiness.json",
+      "Native_body_reopened": false,
+      "accepted_site": {
+        "site": "006EE64E",
+        "target": "006EDA20",
+        "condition": "zero initial flag, or unproved compatible return from throw path",
+        "ECX": "S+8 address of adjacent F/N argument words",
+        "EAX": "N0 on initial zero-flag path",
+        "EDX": "incoming value unchanged by owned instructions on zero-flag path",
+        "nonvolatile_values": "EBX=N0; EBP=R; ESI/EDI incoming values retained locally on zero-flag path",
+        "pushed_arguments": [],
+        "cleanup_requirement": "no-argument balance",
+        "normal_result": "EAX immediately overwritten by[N0+0]; later current N stack word controls I!=N0 branch",
+        "Source_or_child_mutation_width_proved": false
+      },
+      "accepted_span": {
+        "saved_bytes": 637,
+        "continuation_candidate_bytes": 54,
+        "combined_candidate_bytes": 691,
+        "combined_instructions": 234,
+        "post_return_INT3_bytes_separate": 13
+      },
+      "effect_of_current_audit": "Local rawzeroarg stack shape now established for BF6713; subordinate effects and raw Source bridge remain unclosed."
+    },
+    "validation_domain": "Static decoded-instruction/frame composition with explicitly conditional child return; no Native or Source execution."
+  },
+  "direct_child_boundary": {
+    "physical_call_site": "00BF671A",
+    "target": "00BF66EF",
+    "outgoing_stack_argument_words": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "current_saved_name": "LIBCRT_unmatched_00bf66ef",
+    "metadata_reported_callee_labels": [
+      "__invoke_watson",
+      "BSP_CRT_DecodePointerCurrentState",
+      "BSP_Crt_ClearDebuggerHookState"
+    ],
+    "library_names_preserved": true,
+    "metadata_subordinate_zero_param_prototype_accepted_as_raw_ABI": false,
+    "five_argument_semantic_field_names_recovered": false,
+    "body_or_handler_opened": false,
+    "Source_name_invalid_parameter_is_Not_a_recovered_Native_symbol": true,
+    "Native_register_stack_return_throw_handler_type_or_library_equivalence": false
+  },
+  "current_Source_and_receipt_version_context": {
+    "created_utc": "2026-10-09T15:19:48.183943+00:00",
+    "current_revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+    "accepted99_and_parent691_receipt_domains": [
+      {
+        "report": "reports/cc12_mission_lua_variant_pair_advance_child_ABI_readiness.json",
+        "commit": "94fa080a0ad57fa94c418f805240dbb827b61f64",
+        "commit_is_current_ancestor": true,
+        "recorded_audit_baseline": "cf257e747e130480f385233b5d4b2abcaebbb0ec",
+        "current_report_pin": {
+          "path": "reports/cc12_mission_lua_variant_pair_advance_child_ABI_readiness.json",
+          "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+          "canonical_bytes": 145262,
+          "canonical_sha256": "7ea8a04e012f0589fa64f25e564ff62f76494599e8f013c0f3af41f970755648",
+          "physical_bytes": 145262,
+          "physical_sha256": "7ea8a04e012f0589fa64f25e564ff62f76494599e8f013c0f3af41f970755648"
+        },
+        "current_document_pin": {
+          "path": "docs/CC12_MISSION_LUA_VARIANT_PAIR_ADVANCE_CHILD_ABI_READINESS.md",
+          "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+          "canonical_bytes": 14713,
+          "canonical_sha256": "62ff3a3bbd2fe290348d1c8c93af5c5e869d1e1daa01313a83b465f35530e159",
+          "physical_bytes": 14713,
+          "physical_sha256": "62ff3a3bbd2fe290348d1c8c93af5c5e869d1e1daa01313a83b465f35530e159"
+        },
+        "accepted_report_and_document_unchanged": true,
+        "older_whole_pin_set_replayed_here": false,
+        "old_pin_set_qualified_as_its_recorded_audit_baseline": true
+      },
+      {
+        "report": "reports/cc12_mission_lua_variant_tag5_loop_child_ABI_readiness.json",
+        "commit": "034e0fd4f9aaccd6b63977cad2885b723e9d6b30",
+        "commit_is_current_ancestor": true,
+        "recorded_audit_baseline": "96791d7c7a27eae29d58f1df60adbf954e1c3b4f",
+        "current_report_pin": {
+          "path": "reports/cc12_mission_lua_variant_tag5_loop_child_ABI_readiness.json",
+          "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+          "canonical_bytes": 256182,
+          "canonical_sha256": "922dfa75d8cec63511b4d65a409f5538205460e6da6d230410da0a6f3ab469e9",
+          "physical_bytes": 256182,
+          "physical_sha256": "922dfa75d8cec63511b4d65a409f5538205460e6da6d230410da0a6f3ab469e9"
+        },
+        "current_document_pin": {
+          "path": "docs/CC12_MISSION_LUA_VARIANT_TAG5_LOOP_CHILD_ABI_READINESS.md",
+          "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+          "canonical_bytes": 20726,
+          "canonical_sha256": "ae23eecce2278c48e31f39255e791d366f85a1555c4ba59cc9ddd5cb75cadd3a",
+          "physical_bytes": 20726,
+          "physical_sha256": "ae23eecce2278c48e31f39255e791d366f85a1555c4ba59cc9ddd5cb75cadd3a"
+        },
+        "accepted_report_and_document_unchanged": true,
+        "older_whole_pin_set_replayed_here": false,
+        "old_pin_set_qualified_as_its_recorded_audit_baseline": true
+      }
+    ],
+    "accepted99_raw_provider_finding": {
+      "ledger_function": "NativeInputDeviceRuntime::invalid_parameter_00bf6713",
+      "cpp": "src/native_input_device_runtime.cpp",
+      "hpp": "include/bsp/native_input_device_runtime.hpp",
+      "interface": "include/bsp/native_input_enumeration.hpp: NativeInputEnumerationCalls virtualvoidinvalid_parameter_00bf6713()",
+      "actual_body": "void NativeInputDeviceRuntime::invalid_parameter_00bf6713() { _invalid_parameter_noinfo(); }",
+      "noreturn_attribute": false,
+      "noexcept_attribute": false,
+      "actual_receiver": "Source runtime object; not rawNativepair receiver",
+      "Native_thunk_or_layout_ABI_bridge": false,
+      "provider_policy": "current Source CRT/registeredhandler behavior; mayreturn; Native body and providerABI unopened"
+    },
+    "input_runtime_historical_receipt_inherited": {
+      "path": "reports/native_input_device_runtime.json",
+      "validation_utc": "2026-09-12T21:45:57.045871+00:00",
+      "code_revision": "c2b1437830ed15b33570a84b84ea73438b8a882f",
+      "aggregate_source_tree_sha256": "8f52238bde8f521565900aa92240f310def320c07849cd7c567b89798b0eee3d",
+      "aggregate_replayed_as_current": false,
+      "historical_Source_snapshots": [
+        {
+          "receipt": "reports/native_input_device_runtime.json",
+          "path": "include/bsp/native_input_device_runtime.hpp",
+          "historical_revision": "c2b1437830ed15b33570a84b84ea73438b8a882f",
+          "historical_bytes": 5868,
+          "historical_sha256": "bfa91f77ac0d6298e0c014b9b72b56a3f7de16d230ea926c1cab7befa340b357",
+          "current_revision": "cf257e747e130480f385233b5d4b2abcaebbb0ec",
+          "current_bytes": 7289,
+          "current_sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+          "changed": true,
+          "hash_domain": "Derived exact canonical snapshots; receipt aggregate is not an individual Source hash"
+        },
+        {
+          "receipt": "reports/native_input_device_runtime.json",
+          "path": "src/native_input_device_runtime.cpp",
+          "historical_revision": "c2b1437830ed15b33570a84b84ea73438b8a882f",
+          "historical_bytes": 12790,
+          "historical_sha256": "d9adc91f750e3eb688f00279031b249e17160926f7068a2b0712b943bb64306f",
+          "current_revision": "cf257e747e130480f385233b5d4b2abcaebbb0ec",
+          "current_bytes": 13772,
+          "current_sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+          "changed": true,
+          "hash_domain": "Derived exact canonical snapshots; receipt aggregate is not an individual Source hash"
+        }
+      ],
+      "fixture_and_build_artifacts_replayed": false
+    },
+    "historical_runtime_fixture_or_aggregate_replayed_as_current": false,
+    "older_source_receipts_reopened": false,
+    "actual_current_Source_provider_files": [
+      {
+        "path": "include/bsp/native_input_enumeration.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2814,
+        "canonical_sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+        "physical_bytes": 2814,
+        "physical_sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+        "accepted99_baseline": "cf257e747e130480f385233b5d4b2abcaebbb0ec",
+        "accepted99_bytes": 2814,
+        "accepted99_sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+        "changed_since_accepted99": false,
+        "is_one_of_latest65_repository_inputs": false
+      },
+      {
+        "path": "include/bsp/native_input_device_runtime.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 7289,
+        "canonical_sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+        "physical_bytes": 7289,
+        "physical_sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+        "accepted99_baseline": "cf257e747e130480f385233b5d4b2abcaebbb0ec",
+        "accepted99_bytes": 7289,
+        "accepted99_sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+        "changed_since_accepted99": false,
+        "is_one_of_latest65_repository_inputs": false
+      },
+      {
+        "path": "src/native_input_device_runtime.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 13772,
+        "canonical_sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+        "physical_bytes": 13772,
+        "physical_sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+        "accepted99_baseline": "cf257e747e130480f385233b5d4b2abcaebbb0ec",
+        "accepted99_bytes": 13772,
+        "accepted99_sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+        "changed_since_accepted99": false,
+        "is_one_of_latest65_repository_inputs": false
+      }
+    ],
+    "actual_current_Source_provider": {
+      "interface": "bsp::NativeInputEnumerationCalls virtual void invalid_parameter_00bf6713()",
+      "interface_path": "include/bsp/native_input_enumeration.hpp",
+      "interface_line": 29,
+      "concrete_method": "bsp::NativeInputDeviceRuntime::invalid_parameter_00bf6713()",
+      "declaration_path": "include/bsp/native_input_device_runtime.hpp",
+      "declaration_line": 82,
+      "definition_path": "src/native_input_device_runtime.cpp",
+      "definition_line": 97,
+      "definition": "void NativeInputDeviceRuntime::invalid_parameter_00bf6713() { _invalid_parameter_noinfo(); }",
+      "explicit_method_arguments": 0,
+      "actual_Source_receiver_required_by_member_API": true,
+      "method_body_reads_receiver_fields": false,
+      "noreturn_annotation": false,
+      "noexcept_annotation": false,
+      "catch_or_return_status_translation": false,
+      "runtime_ownership_context": "Existing constructor requires actual borrowed runtime services and live polymorphic object; no fake pair-as-runtime cast or dummy runtime owner is justified.",
+      "standalone_raw_zeroarg_Source_entry_supplied_by_this_member": false,
+      "compiled_member_bytes_or_relocations_reparsed_here": false
+    },
+    "current_Source_CRT_declaration": {
+      "header_pin": {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt.h",
+        "bytes": 127273,
+        "sha256": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc"
+      },
+      "declaration": "_ACRTIMP_ALT void __cdecl _invalid_parameter_noinfo(void);",
+      "line": 371,
+      "SDK_from_existing_project": "10.0.26100.0",
+      "toolset": "v145",
+      "project_pin": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_core.vcxproj",
+        "bytes": 301702,
+        "sha256": "f37a3408dfd8e9aa7e5651a969e105282e818233356bf5ae67f9c992a16a08a8"
+      },
+      "cdecl": true,
+      "arguments": 0,
+      "return_type": "void",
+      "noreturn_annotation": false,
+      "noexcept_annotation": false,
+      "other_noreturn_API_not_selected_by_method": "_invalid_parameter_noinfo_noreturn"
+    },
+    "current_Source_library_selection": {
+      "map_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.map",
+      "selected_map_lines": [
+        {
+          "line": 1888,
+          "text": " 0001:0002b9a0       ?invalid_parameter_00bf6713@NativeInputDeviceRuntime@bsp@@UAEXXZ 1002c9a0 f   bsp_core:native_input_device_runtime.obj"
+        },
+        {
+          "line": 11409,
+          "text": " 0002:00000620       __imp___invalid_parameter_noinfo 103cc620     ucrt:api-ms-win-crt-runtime-l1-1-0.dll"
+        }
+      ],
+      "Source_PE_import_metadata": [
+        {
+          "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "name": "_invalid_parameter_noinfo",
+          "Source_IAT_address": "103CC620",
+          "Source_image_base": "10000000"
+        }
+      ],
+      "Source_PE_import_target_executed_or_provider_body_opened": false,
+      "specific_compiled_member_call_operand_verified": false,
+      "qualification": "Source text calls this API; map and Source PE import metadata prove current selected symbol/library availability. No Native provider identity, Source method machine-body analysis or runtime handler policy follows."
+    },
+    "minimal_later_Source_borrower": {
+      "illustrative_declaration": "void __cdecl invoke_native_invalid_parameter_00bf6713();",
+      "declaration_is_candidate_only": true,
+      "explicit_receiver_context_or_stack_parameters": 0,
+      "Source_provider": "existing current Source _invalid_parameter_noinfo(void) import",
+      "noexcept_or_noreturn_required": false,
+      "owns_installs_replaces_handler_or_creates_runtime_object": false,
+      "borrowed_policy": "Current CRT/process/thread handler state and its lifetime, reentrancy, return/failure/throw behavior remain external provider contracts; no Native policy identity is claimed.",
+      "raw_entry_vs_typed_method": "An explicit free cdecl zeroarg adapter avoids the C++ runtime receiver requirement, but none is implemented by this packet.",
+      "Native16_schedule_boundary": "Directly borrowing current Source noinfo is a qualified provider substitution, not proof of exact five-zero Native00BF66EF call schedule, final ADD flags or Original ABI. Exact-schedule implementation would need a separately qualified subordinate edge.",
+      "EAX": "Native subordinate residue is untyped; accepted parent overwrites result. Candidate void API adds no semantic return value."
+    },
+    "latest_primary_reports": [
+      "reports/cc12_native_lua_variant_small_link_helpers_primary_review.json",
+      "reports/cc12_native_pending_tick_group_initialization_primary_review.json"
+    ],
+    "latest65_repository_pin_replays": [
+      {
+        "path": "CMakeLists.txt",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 18711,
+        "canonical_sha256": "06e96153a208adbe8c8feee6ca32b8263aa33411ed8ef2d3b0d5d6b933f51d18",
+        "physical_bytes": 18711,
+        "physical_sha256": "06e96153a208adbe8c8feee6ca32b8263aa33411ed8ef2d3b0d5d6b933f51d18",
+        "recorded_bytes": 18711,
+        "recorded_sha256": "06e96153a208adbe8c8feee6ca32b8263aa33411ed8ef2d3b0d5d6b933f51d18",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 198705,
+        "canonical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "physical_bytes": 198705,
+        "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "recorded_bytes": 198705,
+        "recorded_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/fixed_step_job_waves.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 11060,
+        "canonical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+        "physical_bytes": 11060,
+        "physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+        "recorded_bytes": 11060,
+        "recorded_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 7776,
+        "canonical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "physical_bytes": 7776,
+        "physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "recorded_bytes": 7776,
+        "recorded_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2363,
+        "canonical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+        "physical_bytes": 2363,
+        "physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+        "recorded_bytes": 2363,
+        "recorded_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_cleanup.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1632,
+        "canonical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "physical_bytes": 1632,
+        "physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "recorded_bytes": 1632,
+        "recorded_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2013,
+        "canonical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "physical_bytes": 2013,
+        "physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "recorded_bytes": 2013,
+        "recorded_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_default_constructor.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1412,
+        "canonical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "physical_bytes": 1412,
+        "physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "recorded_bytes": 1412,
+        "recorded_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1770,
+        "canonical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+        "physical_bytes": 1770,
+        "physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+        "recorded_bytes": 1770,
+        "recorded_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1698,
+        "canonical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+        "physical_bytes": 1698,
+        "physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+        "recorded_bytes": 1698,
+        "recorded_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_allocator_owned_message_constructor.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1938,
+        "canonical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+        "physical_bytes": 1938,
+        "physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+        "recorded_bytes": 1938,
+        "recorded_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2257,
+        "canonical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "physical_bytes": 2257,
+        "physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "recorded_bytes": 2257,
+        "recorded_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_legacy_exception_owner.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 3232,
+        "canonical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "physical_bytes": 3232,
+        "physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "recorded_bytes": 3232,
+        "recorded_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2957,
+        "canonical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+        "physical_bytes": 2957,
+        "physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+        "recorded_bytes": 2957,
+        "recorded_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2260,
+        "canonical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+        "physical_bytes": 2260,
+        "physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+        "recorded_bytes": 2260,
+        "recorded_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 843,
+        "canonical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+        "physical_bytes": 843,
+        "physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+        "recorded_bytes": 843,
+        "recorded_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_constructor.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 761,
+        "canonical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+        "physical_bytes": 761,
+        "physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+        "recorded_bytes": 761,
+        "recorded_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_getter.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 963,
+        "canonical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "physical_bytes": 963,
+        "physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "recorded_bytes": 963,
+        "recorded_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_pending_tick_group_initialization.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1448,
+        "canonical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+        "physical_bytes": 1448,
+        "physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+        "recorded_bytes": 1448,
+        "recorded_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2361,
+        "canonical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "physical_bytes": 2361,
+        "physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "recorded_bytes": 2361,
+        "recorded_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2431,
+        "canonical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "physical_bytes": 2431,
+        "physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "recorded_bytes": 2431,
+        "recorded_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 18086,
+        "canonical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "physical_bytes": 18086,
+        "physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "recorded_bytes": 18086,
+        "recorded_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2293,
+        "canonical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "physical_bytes": 2293,
+        "physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "recorded_bytes": 2293,
+        "recorded_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2373,
+        "canonical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "physical_bytes": 2373,
+        "physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "recorded_bytes": 2373,
+        "recorded_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1845,
+        "canonical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "physical_bytes": 1845,
+        "physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "recorded_bytes": 1845,
+        "recorded_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_tick_registration_constructor.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1247,
+        "canonical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+        "physical_bytes": 1247,
+        "physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+        "recorded_bytes": 1247,
+        "recorded_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_tick_sublist_unlink.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1882,
+        "canonical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+        "physical_bytes": 1882,
+        "physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+        "recorded_bytes": 1882,
+        "recorded_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2322,
+        "canonical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+        "physical_bytes": 2322,
+        "physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+        "recorded_bytes": 2322,
+        "recorded_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/plane_squadron.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 15252,
+        "canonical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+        "physical_bytes": 15252,
+        "physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+        "recorded_bytes": 15252,
+        "recorded_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1446,
+        "canonical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "physical_bytes": 1446,
+        "physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "recorded_bytes": 1446,
+        "recorded_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 4372,
+        "canonical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "physical_bytes": 4372,
+        "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "recorded_bytes": 4372,
+        "recorded_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/tick_element_overrides.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 18720,
+        "canonical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+        "physical_bytes": 18720,
+        "physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+        "recorded_bytes": 18720,
+        "recorded_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "include/bsp/unit_instance_layout.hpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 18412,
+        "canonical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+        "physical_bytes": 18412,
+        "physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+        "recorded_bytes": 18412,
+        "recorded_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 51122,
+        "canonical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "physical_bytes": 51122,
+        "physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "recorded_bytes": 51122,
+        "recorded_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 17789,
+        "canonical_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "physical_bytes": 17789,
+        "physical_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "recorded_bytes": 18326,
+        "recorded_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "recorded_form_replayed": "historical physical CRLF form of current canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "scripts/build.ps1",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 1820,
+        "canonical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "physical_bytes": 1820,
+        "physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "recorded_bytes": 1820,
+        "recorded_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/game_hosts_fixed_step.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 23671,
+        "canonical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+        "physical_bytes": 23671,
+        "physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+        "recorded_bytes": 23671,
+        "recorded_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 6831,
+        "canonical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "physical_bytes": 6831,
+        "physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "recorded_bytes": 6831,
+        "recorded_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/game_native_string_process.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 593,
+        "canonical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+        "physical_bytes": 593,
+        "physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+        "recorded_bytes": 593,
+        "recorded_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_allocator_base_cleanup.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 894,
+        "canonical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "physical_bytes": 894,
+        "physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "recorded_bytes": 894,
+        "recorded_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_allocator_base_copy_constructor.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2951,
+        "canonical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "physical_bytes": 2951,
+        "physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "recorded_bytes": 2951,
+        "recorded_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_allocator_base_default_constructor.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 755,
+        "canonical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "physical_bytes": 755,
+        "physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "recorded_bytes": 755,
+        "recorded_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_allocator_base_message_constructor.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 979,
+        "canonical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+        "physical_bytes": 979,
+        "physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+        "recorded_bytes": 979,
+        "recorded_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_allocator_failure_object_constructor.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 764,
+        "canonical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+        "physical_bytes": 764,
+        "physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+        "recorded_bytes": 764,
+        "recorded_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_allocator_owned_message_constructor.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2638,
+        "canonical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+        "physical_bytes": 2638,
+        "physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+        "recorded_bytes": 2638,
+        "recorded_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 5460,
+        "canonical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "physical_bytes": 5460,
+        "physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "recorded_bytes": 5460,
+        "recorded_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_legacy_exception_owner.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 4352,
+        "canonical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "physical_bytes": 4352,
+        "physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "recorded_bytes": 4352,
+        "recorded_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_lua_variant_link_repair_helpers.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 4367,
+        "canonical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+        "physical_bytes": 4367,
+        "physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+        "recorded_bytes": 4367,
+        "recorded_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_lua_variant_small_link_helpers.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2266,
+        "canonical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+        "physical_bytes": 2266,
+        "physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+        "recorded_bytes": 2266,
+        "recorded_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_pending_registry_base_cleanup.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 403,
+        "canonical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+        "physical_bytes": 403,
+        "physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+        "recorded_bytes": 403,
+        "recorded_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_pending_registry_constructor.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 997,
+        "canonical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+        "physical_bytes": 997,
+        "physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+        "recorded_bytes": 997,
+        "recorded_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_pending_registry_getter.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 3449,
+        "canonical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "physical_bytes": 3449,
+        "physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "recorded_bytes": 3449,
+        "recorded_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_pending_tick_group_initialization.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2898,
+        "canonical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+        "physical_bytes": 2898,
+        "physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+        "recorded_bytes": 2898,
+        "recorded_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 4563,
+        "canonical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+        "physical_bytes": 4563,
+        "physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+        "recorded_bytes": 4563,
+        "recorded_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 6911,
+        "canonical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "physical_bytes": 6911,
+        "physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "recorded_bytes": 6911,
+        "recorded_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 4127,
+        "canonical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "physical_bytes": 4127,
+        "physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "recorded_bytes": 4127,
+        "recorded_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 4283,
+        "canonical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "physical_bytes": 4283,
+        "physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "recorded_bytes": 4283,
+        "recorded_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_singleton_vector_reserve_construct.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 3731,
+        "canonical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "physical_bytes": 3731,
+        "physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "recorded_bytes": 3731,
+        "recorded_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_tick_registration_constructor.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 3108,
+        "canonical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+        "physical_bytes": 3108,
+        "physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+        "recorded_bytes": 3108,
+        "recorded_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_tick_sublist_unlink.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2257,
+        "canonical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+        "physical_bytes": 2257,
+        "physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+        "recorded_bytes": 2257,
+        "recorded_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/native_tick_subnode_unlink_caller.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 2743,
+        "canonical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+        "physical_bytes": 2743,
+        "physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+        "recorded_bytes": 2743,
+        "recorded_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/plane_squadron.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 6796,
+        "canonical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+        "physical_bytes": 6796,
+        "physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+        "recorded_bytes": 6796,
+        "recorded_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 13257,
+        "canonical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "physical_bytes": 13257,
+        "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "recorded_bytes": 13257,
+        "recorded_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/tick_element_overrides.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 12785,
+        "canonical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+        "physical_bytes": 12785,
+        "physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+        "recorded_bytes": 12785,
+        "recorded_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      },
+      {
+        "path": "src/unit_instance_layout.cpp",
+        "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+        "canonical_bytes": 10576,
+        "canonical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+        "physical_bytes": 10576,
+        "physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+        "recorded_bytes": 10576,
+        "recorded_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+        "recorded_form_replayed": "canonical LF bytes",
+        "current_canonical_match": true
+      }
+    ],
+    "latest4_artifact_hash_replays": [
+      {
+        "recorded_path": "build/win32/Release/bsp_core.lib",
+        "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_core.lib",
+        "recorded_bytes": 73740924,
+        "recorded_sha256": "73963a72bd4053957c8b3f65dbdf840283bfb08c3f5b9435197d8b06d1d4ce3f",
+        "current_bytes": 73740924,
+        "current_sha256": "73963a72bd4053957c8b3f65dbdf840283bfb08c3f5b9435197d8b06d1d4ce3f",
+        "matches_receipt": true,
+        "stable_during_read": true,
+        "build_test_or_execution_repeated": false
+      },
+      {
+        "recorded_path": "build/win32/Release/bsp_game.exe",
+        "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+        "recorded_bytes": 5080576,
+        "recorded_sha256": "0f488bd637310fe05d84a3cd1856db20ec3110aa15b1aaaf8b40f388efff5403",
+        "current_bytes": 5080576,
+        "current_sha256": "0f488bd637310fe05d84a3cd1856db20ec3110aa15b1aaaf8b40f388efff5403",
+        "matches_receipt": true,
+        "stable_during_read": true,
+        "build_test_or_execution_repeated": false
+      },
+      {
+        "recorded_path": "build/win32/bsp_game.map",
+        "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_game.map",
+        "recorded_bytes": 7502887,
+        "recorded_sha256": "0050c3dad0d33f2a29f9d4de9a0c58b9058108a0c7bfe73d64bb73b6bceef363",
+        "current_bytes": 7502887,
+        "current_sha256": "0050c3dad0d33f2a29f9d4de9a0c58b9058108a0c7bfe73d64bb73b6bceef363",
+        "matches_receipt": true,
+        "stable_during_read": true,
+        "build_test_or_execution_repeated": false
+      },
+      {
+        "recorded_path": "build/win32/Testing/Temporary/LastTest.log",
+        "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Testing\\Temporary\\LastTest.log",
+        "recorded_bytes": 2448,
+        "recorded_sha256": "2b3c9d94d22f25cf416f6c1ba6729dbc970e7381c4e085564c54ce6a0c3d74c8",
+        "current_bytes": 2448,
+        "current_sha256": "2b3c9d94d22f25cf416f6c1ba6729dbc970e7381c4e085564c54ce6a0c3d74c8",
+        "matches_receipt": true,
+        "stable_during_read": true,
+        "build_test_or_execution_repeated": false
+      }
+    ],
+    "latest_current_primary_document_replays": [
+      {
+        "primary_report": "reports/cc12_native_lua_variant_small_link_helpers_primary_review.json",
+        "current_doc_pin": {
+          "path": "docs/CC12_NATIVE_LUA_VARIANT_SMALL_LINK_HELPERS_SOURCE.md",
+          "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+          "canonical_bytes": 10392,
+          "canonical_sha256": "52373bb5d61f4bbe5f529eb169730e8051d95df605f7f5c310369fc1d7679479",
+          "physical_bytes": 10392,
+          "physical_sha256": "52373bb5d61f4bbe5f529eb169730e8051d95df605f7f5c310369fc1d7679479"
+        },
+        "current_match": true
+      },
+      {
+        "primary_report": "reports/cc12_native_pending_tick_group_initialization_primary_review.json",
+        "current_doc_pin": {
+          "path": "docs/CC12_NATIVE_PENDING_TICK_GROUP_INITIALIZATION_SOURCE.md",
+          "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+          "canonical_bytes": 11686,
+          "canonical_sha256": "33687a388f8f797813b40867b69309bfe13c2941003a3d0bae1c6b0c9e9983fb",
+          "physical_bytes": 11686,
+          "physical_sha256": "33687a388f8f797813b40867b69309bfe13c2941003a3d0bae1c6b0c9e9983fb"
+        },
+        "current_match": true
+      }
+    ],
+    "latest_build_inherited": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 42728,
+      "start_utc": "2026-10-09T14:48:26.568925+00:00",
+      "finish_utc": "2026-10-09T14:48:44.264855+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 65
+    },
+    "latest_existing_checks_inherited": 3,
+    "latest_source55_functions_inherited": [
+      {
+        "Original_address": "006ed9d0",
+        "Original_bytes": 28,
+        "Original_raw_ops": 11,
+        "Source_symbol": "?follow_native_lua_variant_links_006ed9d0@bsp@@YIPAXPAX@Z",
+        "Source_bytes": 28,
+        "Source_sha256": "ee04b97e773723b563e7d596fdf33d6845f5ea3c1ed6c9749abf22bcdc7612f7",
+        "all_bytes_equal_Original": true,
+        "relocations": 0
+      },
+      {
+        "Original_address": "006ed9f0",
+        "Original_bytes": 27,
+        "Original_raw_ops": 10,
+        "Source_symbol": "?follow_native_lua_variant_links_006ed9f0@bsp@@YIPAXPAX@Z",
+        "Source_bytes": 27,
+        "Source_sha256": "dc6c4ac378bb555bc0e54cf1e9e9175b202005683c502c7f171c9086305a050e",
+        "all_bytes_equal_Original": true,
+        "relocations": 0
+      }
+    ],
+    "latest_pending153_fragment_inherited": {
+      "Original_address": "00cd27c0",
+      "Original_bytes": 153,
+      "Original_raw_ops": 22,
+      "Source_symbol": "?initialize_native_pending_tick_group_sentinels_00cd27c0@bsp@@YIXPAX@Z",
+      "Source_bytes": 155,
+      "Source_raw_ops": 32,
+      "Source_sha256": "decb529555a7b674c6191709372eb49f67f086a49e7f2f8833688b0e67133d7c",
+      "Native_store_schedule_relocated_exactly": true,
+      "actual_base_Input": "ECX actual_first_group_head",
+      "EDX_scratch_final": "base+0x1a0",
+      "EAX_final": 0,
+      "flags": "Only XOR EAX,EAX writes arithmetic flags; MOV/LEA/RET retain them.",
+      "plain_RET": true,
+      "minimum_selected_write_span": 480,
+      "full_520B_object_proved": false,
+      "Native_saved_entry_function_created": false,
+      "Native_listing_context_omissions_retained": true
+    },
+    "latest_Source_selection_inherited": {
+      "new_three_public_roots_unique_positive_Core_definitions": true,
+      "new_three_roots_absent_application_map": true,
+      "forced_retention_or_production_caller_added": false
+    },
+    "latest_compiled_context_counts_inherited": {
+      "complete_owned_objects": 11,
+      "actual_Core_members": 11,
+      "positive_Core_roots": 13,
+      "prior_nine_objects_identical": 9
+    },
+    "latest_prior_nine_whole_objects_byte_identical_inherited": [
+      {
+        "stem": "native_lua_variant_link_repair_helpers",
+        "whole_bytes": 1063,
+        "whole_sha256": "8c89abbdea8f0a1239d6065adb89abb5e23d3aff1bddf06befcc51b7359e796b",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_allocator_owned_message_constructor",
+        "whole_bytes": 950,
+        "whole_sha256": "a2d37a5c9274af95668fa21c3b8268176283162db9eaf4b227730374adefe7e4",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_legacy_exception_owner",
+        "whole_bytes": 10071,
+        "whole_sha256": "7019ec2d8a61caba7231ca895df5efd08a95635c2edfb11922abdf85a17478ae",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_allocator_base_default_constructor",
+        "whole_bytes": 769,
+        "whole_sha256": "dcaa160405efdcba05e6adbdad4b1c9059afa7de56bff8867522eb690fadc37f",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_tick_subnode_unlink_caller",
+        "whole_bytes": 1107,
+        "whole_sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_pending_registry_getter",
+        "whole_bytes": 3703,
+        "whole_sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_tick_sublist_unlink",
+        "whole_bytes": 812,
+        "whole_sha256": "21e75aea9d833fb7d262adfa954140168f43c66efe400528ef9f959178d56f59",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_allocator_base_cleanup",
+        "whole_bytes": 791,
+        "whole_sha256": "52b164f8c64a37a87a54e78b3b1eaed1cf5875fe3320473f047f197e88eac0f3",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      },
+      {
+        "stem": "native_allocator_base_copy_constructor",
+        "whole_bytes": 952,
+        "whole_sha256": "e3cf2b2f1abde55f92d6c0fcc8b7a26852ed6ca1957e96ddec1c64b14f9eb8a6",
+        "all_function_code_and_relocations_identical": true,
+        "all_section_payloads_and_relocations_identical": true
+      }
+    ],
+    "latest_legacy20_and_EH8_unchanged_inherited": {
+      "functions": 20,
+      "EH_sections": [
+        {
+          "section": 22,
+          "bytes": 60,
+          "sha256": "0fe15e8ca8157bab16c3d85b47f2c6f9f4b664fac91c7a6328989d996ed73cf5",
+          "relocations": [
+            {
+              "record_file_offset": 3507,
+              "raw_record_hex": "040000002b0000000600",
+              "offset": 4,
+              "type": 6,
+              "symbol_index": 43,
+              "symbol": "___std_terminate",
+              "symbol_record": {
+                "index": 43,
+                "record_file_offset": 4959,
+                "raw_record_hex": "000000001f00000000000000000020000200",
+                "name": "___std_terminate",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3451,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            },
+            {
+              "record_file_offset": 3517,
+              "raw_record_hex": "0c000000400000000600",
+              "offset": 12,
+              "type": 6,
+              "symbol_index": 64,
+              "symbol": "__unwindfunclet$?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z$0",
+              "symbol_record": {
+                "index": 64,
+                "record_file_offset": 5337,
+                "raw_record_hex": "00000000a505000000000000090020000300",
+                "name": "__unwindfunclet$?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z$0",
+                "value": 0,
+                "section": 9,
+                "type": 32,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3459,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            },
+            {
+              "record_file_offset": 3527,
+              "raw_record_hex": "200000004d0000000600",
+              "offset": 32,
+              "type": 6,
+              "symbol_index": 77,
+              "symbol": "__unwindtable$?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z",
+              "symbol_record": {
+                "index": 77,
+                "record_file_offset": 5571,
+                "raw_record_hex": "00000000440a000000000000160000000300",
+                "name": "__unwindtable$?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z",
+                "value": 0,
+                "section": 22,
+                "type": 0,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3479,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            }
+          ]
+        },
+        {
+          "section": 23,
+          "bytes": 44,
+          "sha256": "e99f80157e03fbdd9656bc6fa678fed585c28565d21243637abd0ffb2e9b50cd",
+          "relocations": [
+            {
+              "record_file_offset": 3581,
+              "raw_record_hex": "040000002b0000000600",
+              "offset": 4,
+              "type": 6,
+              "symbol_index": 43,
+              "symbol": "___std_terminate",
+              "symbol_record": {
+                "index": 43,
+                "record_file_offset": 4959,
+                "raw_record_hex": "000000001f00000000000000000020000200",
+                "name": "___std_terminate",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3541,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            },
+            {
+              "record_file_offset": 3591,
+              "raw_record_hex": "10000000510000000600",
+              "offset": 16,
+              "type": 6,
+              "symbol_index": 81,
+              "symbol": "__unwindtable$?destroy_native_legacy_logic_error_00411780@bsp@@YAXAAUNativeLegacyExceptionStorage@1@@Z",
+              "symbol_record": {
+                "index": 81,
+                "record_file_offset": 5643,
+                "raw_record_hex": "000000003a0b000000000000170000000300",
+                "name": "__unwindtable$?destroy_native_legacy_logic_error_00411780@bsp@@YAXAAUNativeLegacyExceptionStorage@1@@Z",
+                "value": 0,
+                "section": 23,
+                "type": 0,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3553,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            }
+          ]
+        },
+        {
+          "section": 24,
+          "bytes": 44,
+          "sha256": "e99f80157e03fbdd9656bc6fa678fed585c28565d21243637abd0ffb2e9b50cd",
+          "relocations": [
+            {
+              "record_file_offset": 3645,
+              "raw_record_hex": "040000002b0000000600",
+              "offset": 4,
+              "type": 6,
+              "symbol_index": 43,
+              "symbol": "___std_terminate",
+              "symbol_record": {
+                "index": 43,
+                "record_file_offset": 4959,
+                "raw_record_hex": "000000001f00000000000000000020000200",
+                "name": "___std_terminate",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3605,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            },
+            {
+              "record_file_offset": 3655,
+              "raw_record_hex": "10000000550000000600",
+              "offset": 16,
+              "type": 6,
+              "symbol_index": 85,
+              "symbol": "__unwindtable$?scalar_delete_native_legacy_logic_error_004117c0@bsp@@YAPAUNativeLegacyExceptionStorage@1@AAU21@I@Z",
+              "symbol_record": {
+                "index": 85,
+                "record_file_offset": 5715,
+                "raw_record_hex": "00000000130c000000000000180000000300",
+                "name": "__unwindtable$?scalar_delete_native_legacy_logic_error_004117c0@bsp@@YAPAUNativeLegacyExceptionStorage@1@AAU21@I@Z",
+                "value": 0,
+                "section": 24,
+                "type": 0,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3617,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            }
+          ]
+        },
+        {
+          "section": 25,
+          "bytes": 52,
+          "sha256": "b6c38bb8b90ff50f2417de885ac8482cfa9141cef5146c67fe939adb5316228b",
+          "relocations": [
+            {
+              "record_file_offset": 3717,
+              "raw_record_hex": "04000000440000000600",
+              "offset": 4,
+              "type": 6,
+              "symbol_index": 68,
+              "symbol": "__unwindfunclet$?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z$0",
+              "symbol_record": {
+                "index": 68,
+                "record_file_offset": 5409,
+                "raw_record_hex": "000000007c070000000000000e0020000300",
+                "name": "__unwindfunclet$?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z$0",
+                "value": 0,
+                "section": 14,
+                "type": 32,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3669,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            },
+            {
+              "record_file_offset": 3727,
+              "raw_record_hex": "18000000590000000600",
+              "offset": 24,
+              "type": 6,
+              "symbol_index": 89,
+              "symbol": "__unwindtable$?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+              "symbol_record": {
+                "index": 89,
+                "record_file_offset": 5787,
+                "raw_record_hex": "00000000f40c000000000000190000000300",
+                "name": "__unwindtable$?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+                "value": 0,
+                "section": 25,
+                "type": 0,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3689,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            }
+          ]
+        },
+        {
+          "section": 26,
+          "bytes": 52,
+          "sha256": "b6c38bb8b90ff50f2417de885ac8482cfa9141cef5146c67fe939adb5316228b",
+          "relocations": [
+            {
+              "record_file_offset": 3789,
+              "raw_record_hex": "04000000460000000600",
+              "offset": 4,
+              "type": 6,
+              "symbol_index": 70,
+              "symbol": "__unwindfunclet$?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z$0",
+              "symbol_record": {
+                "index": 70,
+                "record_file_offset": 5445,
+                "raw_record_hex": "000000005d080000000000000c0020000300",
+                "name": "__unwindfunclet$?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z$0",
+                "value": 0,
+                "section": 12,
+                "type": 32,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3741,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            },
+            {
+              "record_file_offset": 3799,
+              "raw_record_hex": "180000005d0000000600",
+              "offset": 24,
+              "type": 6,
+              "symbol_index": 93,
+              "symbol": "__unwindtable$?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+              "symbol_record": {
+                "index": 93,
+                "record_file_offset": 5859,
+                "raw_record_hex": "00000000d20d0000000000001a0000000300",
+                "name": "__unwindtable$?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+                "value": 0,
+                "section": 26,
+                "type": 0,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3761,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            }
+          ]
+        },
+        {
+          "section": 27,
+          "bytes": 36,
+          "sha256": "deefb3473c3645d1b0e64473dc4d9122bd804dbeee0601d27662e64da29238e5",
+          "relocations": []
+        },
+        {
+          "section": 28,
+          "bytes": 36,
+          "sha256": "deefb3473c3645d1b0e64473dc4d9122bd804dbeee0601d27662e64da29238e5",
+          "relocations": []
+        },
+        {
+          "section": 29,
+          "bytes": 44,
+          "sha256": "e99f80157e03fbdd9656bc6fa678fed585c28565d21243637abd0ffb2e9b50cd",
+          "relocations": [
+            {
+              "record_file_offset": 3925,
+              "raw_record_hex": "040000002b0000000600",
+              "offset": 4,
+              "type": 6,
+              "symbol_index": 43,
+              "symbol": "___std_terminate",
+              "symbol_record": {
+                "index": 43,
+                "record_file_offset": 4959,
+                "raw_record_hex": "000000001f00000000000000000020000200",
+                "name": "___std_terminate",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3885,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            },
+            {
+              "record_file_offset": 3935,
+              "raw_record_hex": "10000000670000000600",
+              "offset": 16,
+              "type": 6,
+              "symbol_index": 103,
+              "symbol": "__unwindtable$??1BaseUnwindCleanup@?A0x48aa704d@bsp@@QAE@XZ",
+              "symbol_record": {
+                "index": 103,
+                "record_file_offset": 6039,
+                "raw_record_hex": "00000000290f0000000000001d0000000300",
+                "name": "__unwindtable$??1BaseUnwindCleanup@?A0x48aa704d@bsp@@QAE@XZ",
+                "value": 0,
+                "section": 29,
+                "type": 0,
+                "storage": 3,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 3897,
+              "operand_hex": "00000000",
+              "operand_u32": 0
+            }
+          ]
+        }
+      ]
+    },
+    "compiled_context_reparsed_or_new_build_test_probe_run": false,
+    "current_Source_import_and_map_inspection_is_not_Native_data_window": true
+  },
+  "current_provider_comparison": {
+    "Native_wrapper_public_arguments": 0,
+    "Native_direct_subordinate_arguments": 5,
+    "Native_receiver_or_pointee_access_in_owned_body": false,
+    "Native_pass_through_register_requirements_in_subordinate": "unproved",
+    "actual_Source_member": "NativeInputDeviceRuntime::invalid_parameter_00bf6713",
+    "actual_Source_interface": "NativeInputEnumerationCalls",
+    "actual_Source_member_object_API": true,
+    "actual_Source_member_reads_this_fields": false,
+    "actual_Source_member_parameters_other_than_object": 0,
+    "actual_Source_CRT_free_API": "_invalid_parameter_noinfo(void), void __cdecl",
+    "Source_CRT_current_import": "api-ms-win-crt-runtime-l1-1-0.dll",
+    "Source_CRT_has_explicit_receiver_or_context_parameter": false,
+    "Source_CRT_provider_state_lifetime_failure_policy": "borrowed; not established by name/declaration/map/import or these Native wrapper bytes",
+    "Source_raw_BSP_entry_admitted_by_this_audit": false
+  },
+  "candidate_interface_readiness": {
+    "illustrative_declaration": "void __cdecl invoke_native_invalid_parameter_00bf6713();",
+    "declaration_is_candidate_only": true,
+    "explicit_receiver_context_or_stack_parameters": 0,
+    "Source_provider": "existing current Source _invalid_parameter_noinfo(void) import",
+    "noexcept_or_noreturn_required": false,
+    "owns_installs_replaces_handler_or_creates_runtime_object": false,
+    "borrowed_policy": "Current CRT/process/thread handler state and its lifetime, reentrancy, return/failure/throw behavior remain external provider contracts; no Native policy identity is claimed.",
+    "raw_entry_vs_typed_method": "An explicit free cdecl zeroarg adapter avoids the C++ runtime receiver requirement, but none is implemented by this packet.",
+    "Native16_schedule_boundary": "Directly borrowing current Source noinfo is a qualified provider substitution, not proof of exact five-zero Native00BF66EF call schedule, final ADD flags or Original ABI. Exact-schedule implementation would need a separately qualified subordinate edge.",
+    "EAX": "Native subordinate residue is untyped; accepted parent overwrites result. Candidate void API adds no semantic return value."
+  },
+  "accepted99_findings_updated_only_with_owned_evidence": {
+    "previous_unopened_wrapper_body_gap": "Closed for the exact16-byte local wrapper schedule.",
+    "previous_no_raw_Source_provider_finding": "Still no BSP raw adapter supplied; an available free SourceCRT zeroarg import is now identified for a separately scoped candidate.",
+    "nonvolatile_and_provider_policy_gap": "Still open at direct subordinate00BF66EF.",
+    "no_Native_caller_or_parent_migration": true
+  },
+  "remaining_boundaries": [
+    "Native00BF66EF body and exact register preservation/stack cleanup/handler dispatch/failure/throw/return/type policy.",
+    "Separately scoped explicit zeroarg Source borrower and its provider choice, borrowed state/lifetime and failure contract.",
+    "Exact Native five-zero delivery and finalADDflags are not proved by direct substitution of current Source noinfo API.",
+    "Accepted99 helper and691 parent implementation, Original caller placement, backing/aliases/lifetime and production storage.",
+    "Native EH, runtime, startup and gameplay equivalence."
+  ],
+  "current_canonical_repository_input_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 18711,
+      "sha256": "06e96153a208adbe8c8feee6ca32b8263aa33411ed8ef2d3b0d5d6b933f51d18",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18711,
+      "physical_sha256": "06e96153a208adbe8c8feee6ca32b8263aa33411ed8ef2d3b0d5d6b933f51d18"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 11060,
+      "physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 7776,
+      "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 7776,
+      "physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2363,
+      "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2363,
+      "physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_cleanup.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1632,
+      "sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1632,
+      "physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2013,
+      "sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2013,
+      "physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_default_constructor.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1412,
+      "sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1412,
+      "physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1"
+    },
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1770,
+      "sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1770,
+      "physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008"
+    },
+    {
+      "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1698,
+      "sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1698,
+      "physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01"
+    },
+    {
+      "path": "include/bsp/native_allocator_owned_message_constructor.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1938,
+      "sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1938,
+      "physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2257,
+      "physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3232,
+      "physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2957,
+      "sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2957,
+      "physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2260,
+      "sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2260,
+      "physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 843,
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 843,
+      "physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_constructor.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 761,
+      "sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 761,
+      "physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 963,
+      "physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "include/bsp/native_pending_tick_group_initialization.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1448,
+      "sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1448,
+      "physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2361,
+      "physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2431,
+      "physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 18086,
+      "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18086,
+      "physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2293,
+      "physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2373,
+      "physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1845,
+      "physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1247,
+      "sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1247,
+      "physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee"
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1882,
+      "physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2322,
+      "physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2"
+    },
+    {
+      "path": "include/bsp/plane_squadron.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 15252,
+      "sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 15252,
+      "physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1446,
+      "physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 18720,
+      "sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18720,
+      "physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54"
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 18412,
+      "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18412,
+      "physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+    },
+    {
+      "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 51122,
+      "physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 17789,
+      "physical_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1820,
+      "physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 23671,
+      "physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 6831,
+      "physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 593,
+      "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 593,
+      "physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e"
+    },
+    {
+      "path": "src/native_allocator_base_cleanup.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 894,
+      "sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 894,
+      "physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968"
+    },
+    {
+      "path": "src/native_allocator_base_copy_constructor.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2951,
+      "sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2951,
+      "physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee"
+    },
+    {
+      "path": "src/native_allocator_base_default_constructor.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 755,
+      "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 755,
+      "physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908"
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 979,
+      "sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 979,
+      "physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe"
+    },
+    {
+      "path": "src/native_allocator_failure_object_constructor.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 764,
+      "sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 764,
+      "physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed"
+    },
+    {
+      "path": "src/native_allocator_owned_message_constructor.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2638,
+      "sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2638,
+      "physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 5460,
+      "physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 4352,
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4352,
+      "physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+    },
+    {
+      "path": "src/native_lua_variant_link_repair_helpers.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 4367,
+      "sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4367,
+      "physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da"
+    },
+    {
+      "path": "src/native_lua_variant_small_link_helpers.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2266,
+      "sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2266,
+      "physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571"
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 403,
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 403,
+      "physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597"
+    },
+    {
+      "path": "src/native_pending_registry_constructor.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 997,
+      "sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 997,
+      "physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3449,
+      "physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "src/native_pending_tick_group_initialization.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2898,
+      "sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2898,
+      "physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4563,
+      "physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 6911,
+      "physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4127,
+      "physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4283,
+      "physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3731,
+      "physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 3108,
+      "sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3108,
+      "physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a"
+    },
+    {
+      "path": "src/native_tick_sublist_unlink.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2257,
+      "sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2257,
+      "physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2"
+    },
+    {
+      "path": "src/native_tick_subnode_unlink_caller.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2743,
+      "sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2743,
+      "physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9"
+    },
+    {
+      "path": "src/plane_squadron.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 6796,
+      "sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 6796,
+      "physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 12785,
+      "sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 12785,
+      "physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17"
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 10576,
+      "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 10576,
+      "physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+    },
+    {
+      "path": "reports/cc12_mission_lua_variant_pair_advance_child_ABI_readiness.json",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 145262,
+      "sha256": "7ea8a04e012f0589fa64f25e564ff62f76494599e8f013c0f3af41f970755648",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 145262,
+      "physical_sha256": "7ea8a04e012f0589fa64f25e564ff62f76494599e8f013c0f3af41f970755648"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_PAIR_ADVANCE_CHILD_ABI_READINESS.md",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 14713,
+      "sha256": "62ff3a3bbd2fe290348d1c8c93af5c5e869d1e1daa01313a83b465f35530e159",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 14713,
+      "physical_sha256": "62ff3a3bbd2fe290348d1c8c93af5c5e869d1e1daa01313a83b465f35530e159"
+    },
+    {
+      "path": "reports/cc12_mission_lua_variant_tag5_loop_child_ABI_readiness.json",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 256182,
+      "sha256": "922dfa75d8cec63511b4d65a409f5538205460e6da6d230410da0a6f3ab469e9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 256182,
+      "physical_sha256": "922dfa75d8cec63511b4d65a409f5538205460e6da6d230410da0a6f3ab469e9"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_TAG5_LOOP_CHILD_ABI_READINESS.md",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 20726,
+      "sha256": "ae23eecce2278c48e31f39255e791d366f85a1555c4ba59cc9ddd5cb75cadd3a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 20726,
+      "physical_sha256": "ae23eecce2278c48e31f39255e791d366f85a1555c4ba59cc9ddd5cb75cadd3a"
+    },
+    {
+      "path": "include/bsp/native_input_enumeration.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 2814,
+      "sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2814,
+      "physical_sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde"
+    },
+    {
+      "path": "include/bsp/native_input_device_runtime.hpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 7289,
+      "sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 7289,
+      "physical_sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9"
+    },
+    {
+      "path": "src/native_input_device_runtime.cpp",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 13772,
+      "sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 13772,
+      "physical_sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9"
+    },
+    {
+      "path": "reports/cc12_native_lua_variant_small_link_helpers_primary_review.json",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 105697,
+      "sha256": "52aa9faa6b9fb8618a9aeed0cd5d42d3e505e67b1bc37be8f637209654279527",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 105697,
+      "physical_sha256": "52aa9faa6b9fb8618a9aeed0cd5d42d3e505e67b1bc37be8f637209654279527"
+    },
+    {
+      "path": "reports/cc12_native_pending_tick_group_initialization_primary_review.json",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 113607,
+      "sha256": "25dce96270aae25f8638c686da9fc205e7db7098dab767f4e39ec4bb54e5d897",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 113607,
+      "physical_sha256": "25dce96270aae25f8638c686da9fc205e7db7098dab767f4e39ec4bb54e5d897"
+    },
+    {
+      "path": "docs/CC12_NATIVE_LUA_VARIANT_SMALL_LINK_HELPERS_SOURCE.md",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 10392,
+      "sha256": "52373bb5d61f4bbe5f529eb169730e8051d95df605f7f5c310369fc1d7679479",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 10392,
+      "physical_sha256": "52373bb5d61f4bbe5f529eb169730e8051d95df605f7f5c310369fc1d7679479"
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_TICK_GROUP_INITIALIZATION_SOURCE.md",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 11686,
+      "sha256": "33687a388f8f797813b40867b69309bfe13c2941003a3d0bae1c6b0c9e9983fb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 11686,
+      "physical_sha256": "33687a388f8f797813b40867b69309bfe13c2941003a3d0bae1c6b0c9e9983fb"
+    },
+    {
+      "path": "tools/bsp.py",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 72606,
+      "physical_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "e1a33b79838f2b0c6778851a0c97411cb4cd8ac8",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  ],
+  "capture_artifact_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness/00BF66EF_metadata_only.txt",
+      "bytes": 887,
+      "sha256": "db5948ef10d69c7c79494ed6de64914effa5b0886c3d4ffb7178c11e65fee928"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness/00BF6713_bytes.txt",
+      "bytes": 76,
+      "sha256": "20afacdeb51707448c77c2400bb6fe1bea56ad7584a19123c29f5455d3153ee7"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness/00BF6713_independent_PE_decode.txt",
+      "bytes": 325,
+      "sha256": "6226552bd655298c4b440d3cc4039594da7499bfc23ef2f1e2d1cb932a270de3"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness/00BF6713_listing.txt",
+      "bytes": 189,
+      "sha256": "227a5149ed035cfb61d37f5753551324787a532a603533d3a25fb53ebdcbd57f"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness/00BF6713_proto.txt",
+      "bytes": 682,
+      "sha256": "bcb91e35f0e34f1b95d8e1f0ebb01686970cbe7a7f791f8b5de74f0ac4a1645e"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness/00BF6713_pseudocode.txt",
+      "bytes": 293,
+      "sha256": "cc215af18ebb035d00e55adc4379be3164d06e69082f7eae0e73930275d367a6"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness/count.txt",
+      "bytes": 48,
+      "sha256": "0dcc9505a25152f2ef95f84a7726f9f4a373be045caffd949f5f33181c4ca478"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/capture.py",
+      "bytes": 5204,
+      "sha256": "55adf5893d85eea4edcdf2068e2f65397443867beef8e38bf33bfda66b75ff9d"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/contracts.json",
+      "bytes": 13856,
+      "sha256": "dc08d9d5706fd2e72efcceceb94ea10763d5dc5bcdb225c342e8fca8512b0b01"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/contracts.py",
+      "bytes": 9975,
+      "sha256": "bf784a8f79dcba787e2e7f54cc1321544d5b3a1f12df53b309f476f577d29e5f"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/current_Source_context.json",
+      "bytes": 73373,
+      "sha256": "f78a03fb28b7bd8504abef18dfacef7095f176840a754b1f12a5f0a87506d6c7"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/current_Source_CRT_declaration.txt",
+      "bytes": 138,
+      "sha256": "b3b1b7a44a6dac1668db6ec215b7d32ab44b6a7d6a94731ea7ffcd45d33a22da"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/current_Source_selected_map_lines.txt",
+      "bytes": 259,
+      "sha256": "5d05495eaf2c625636c45852ad571805c841ffda4c7354ad629070a968491b9e"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/native_evidence.json",
+      "bytes": 6935,
+      "sha256": "f64f092ba786c2748d67647a2365f96bad11ab000540d3c4c42f674e42d3da8e"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/source_context.py",
+      "bytes": 13742,
+      "sha256": "52bbc2c38a99d8c1c131c7f3b972f01929a46204e7f0ae20bb2f9892edff573c"
+    },
+    {
+      "path": "local/cc12_mission_lua_variant_invalid_parameter_provider/write_report.py",
+      "bytes": 10568,
+      "sha256": "0725bb3204b7b80fdc6bca1bb155f563537516834a2c88f237f1b416fed4a3cf"
+    }
+  ],
+  "owned_doc_pin": {
+    "path": "docs/CC12_MISSION_LUA_VARIANT_INVALID_PARAMETER_PROVIDER_ABI_READINESS.md",
+    "bytes": 12045,
+    "sha256": "054d4064972525ac981930aba0b3f5b096a7047aac94cf06581becf7d9d63512"
+  },
+  "validation": {
+    "Native_owned_complete_bytes": 16,
+    "Native_owned_raw_and_saved_instructions": 9,
+    "Native_direct_calls": 1,
+    "Native_direct_call_target": "00BF66EF",
+    "Native_outgoing_zero_words": 5,
+    "Native_local_cleanup_bytes": 20,
+    "Native_outgoing_stack_write_bytes_including_CALL": 24,
+    "Native_plain_RET_count": 1,
+    "Native_conditional_or_indirect_branches": 0,
+    "Native_final_arithmetic_flags": "ADD ESP,14h",
+    "accepted99_and_parent691_docs_reports_unchanged": true,
+    "actual3_Source_provider_files_unchanged_since_accepted99": true,
+    "actual3_Source_provider_files_are_outside_latest65_input_set": true,
+    "latest65_inputs_replayed": true,
+    "latest2_primary_docs_replayed": true,
+    "latest4_artifacts_hash_equal_stable": true,
+    "Source_map_and_PE_import_agree_on_noinfo_runtime_API": true,
+    "Source_selected_SDK_declaration_is_zeroarg_cdecl_without_noreturn": true,
+    "current_repository_input_pins": 79,
+    "old_whole_audit_input_sets_replayed_or_upgraded_to_current": false,
+    "existing_historical_fixture_repeated": false,
+    "Source_objects_or_core_graphs_reparsed": false,
+    "new_tests_probes_builds_or_execution": false
+  },
+  "limits": [
+    "Exactly two tracked read-only evidence outputs; no Source, CMake, ledger, Ghidra, build, probe or test changes.",
+    "No subordinate Native body/data/handler/caller expansion; direct child only function metadata.",
+    "Metadata library labels and a syntactic RET do not establish actual Native handler return/nonreturn/throw behavior.",
+    "Latest65 Source build pins exclude the three actual runtime provider files, which have separate current pins.",
+    "Accepted99 and691 receipts remain historical-baseline domains with their unchanged report/doc pins; older fixture/tree-hash evidence is not current.",
+    "Current Source import availability and SDK ABI do not establish Native provider identity or an admitted raw adapter."
+  ]
+}
