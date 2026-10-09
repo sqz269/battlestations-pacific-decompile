@@ -1,6 +1,18 @@
 # Type10/11 isolated Root execution selection
 
-Root's sole selected metadata prepare completed its root child but failed the supervisor's strict no-residual predicate. The failed fixture and namespace are closed and sealed, and no later phase is admitted. All thirteen dependency fields were selected for prepare only; Source admission remains0. Native tools, compiler, providers and constructors have not executed in this family. The exact selected-route result and seals are recorded below.
+Root's fresh Type10/11 metadata preparation closed successfully in `local/type1011p3`, with an immutable prepare selection and a separate post-prepare selection in `local/type1011select02`. Source admission remains zero. Root has verified the actual process closure and all prepared files; Native, compilation and constructor execution still require the later reviews and receipts. The earlier failed F2/D01 case remains sealed and is retained below.
+
+## Fresh closed metadata preparation and selection transition
+
+The sole fresh prepare returned zero through the external PowerShell guard, owned Job supervisor and Root caller, without timeout. The caller retained 127.697 seconds. Initial root-exit accounting showed active1/total2, but the subsequent identity PID list was already empty. Natural shutdown reached actual active0 within the original absolute deadline (513,056 ms remained at the successful poll). Actual accounting remained zero before mandatory TerminateJob and after cleanup; every retained observed process handle signalled, the Job handle closed, and content/membership bookends passed. Only the root PID was retained, so the extra lifetime association's identity and cause remain unproven. These calls form separate observations, not an atomic snapshot.
+
+Root independently verified all 1,482 prepared files, all 1,481 staged pins, 1,453 original/frozen dependency pairs and 14 external Source/helper/config pins. The immutable prepare selection is 9,865,340 bytes, SHA256 `3a5c785a41e59bfe45db36bc299402fd4ca69ba300eeb253394f889ba9f203d7`, with 11,738 files, 14,879 memberships, 56 scopes, 42 package modules and 8 code pins. The separate post-prepare selection is 11,627,047 bytes, SHA256 `6f62e5c1ccc55d60d4ad45ff013de30cf387f05857de515e2cc4135d953d7a26`, with 13,239 files, 16,380 memberships, 58 scopes and 13 code pins. All prepare originals/copies were rechecked unchanged. The added F scope lists 1,482 stable files explicitly and permits later outputs without a mutable umbrella inventory. The independent peer checked the actual closure and transition as DATA.
+
+Fresh own-role observations retained complete external 15/root 11/effective 13 maps and 70 Python module origins per Python role, with actual image/argv/cwd and file bookends verified. The new PowerShell host observation retained 124 native resident files and passed current file checks. Full environment values remain private. The fresh 123-file draft retains117 byte-identical files, changes five payloads, and regenerates one manifest; all 121 listed pins and the seven path corrections passed independent review. The supervisor's suspended-proof guard, original quoting/creation flags, no-residual predicates and 540/560+20/600-second bounds are preserved.
+
+No Root fixture TEXT or linked receipt has been issued at this boundary. No Native, compiler, provider, PE target or constructor execution occurred. This is metadata and process-control evidence only; current C++ interfaces, ownership, private CRT/EH, OOM, drop-in ABI, startup and gameplay limits remain unchanged.
+
+## Historical F2/D01 observations and failed prepare
 
 ## Retained own-role and preselection evidence
 
