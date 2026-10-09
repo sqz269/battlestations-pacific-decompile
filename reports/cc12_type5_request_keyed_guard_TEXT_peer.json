@@ -1,0 +1,755 @@
+{
+  "schema": "cc12_type5_request_keyed_guard_TEXT_peer_v1",
+  "Source_credit": 0,
+  "result": "PASS_BOUNDED_REQUEST_KEYED_TEXT_CORRECTION_ONLY",
+  "peer_author": "/root/command_target_initialize",
+  "packet": "cc12_type5_request_keyed_guard_TEXT_peer",
+  "owned_addresses": [],
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT",
+  "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer",
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\seal.json",
+    "bytes": 2496035,
+    "sha256": "4aef569abf0c8c5ec47d6d0b3e1e76d877f747291d7b051b040e81cc7ab785a8"
+  },
+  "exact_recursive_files": 12641,
+  "listed_artifacts": 12640,
+  "root_verified": {
+    "Source_credit": 0,
+    "root_family": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01",
+    "root_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\seal.json",
+      "bytes": 2056797,
+      "sha256": "31ca9132e17e1c1c3fda24bd4dca34bc333346ee84737f6c9454027ebca01241"
+    },
+    "verified_artifacts": 11689,
+    "exact_recursive_files": 11690,
+    "all_bytes_and_hashes_match": true,
+    "exact_membership": true,
+    "Root_adoption": false,
+    "selected_execution": false,
+    "future_family_absent": true,
+    "UTC": "2026-10-09T05:45:04.0869701Z"
+  },
+  "original_V2_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5guardTEXT\\seal.json",
+    "bytes": 3170169,
+    "sha256": "79e6ae93b5fb430f8e8f54358b2a15260e5646089753ea3e1e194e061444fa00"
+  },
+  "original_V2_exact_files": 10473,
+  "own_fresh_closure": {
+    "files": 2102,
+    "memberships": 3588,
+    "scopes": 16,
+    "loaded_file_origins": 46,
+    "before_optional_imports": true,
+    "Root_full_family_copied": false,
+    "selected_Root_inputs_copied": true
+  },
+  "conclusion": {
+    "Source_credit": 0,
+    "result": "PASS_BOUNDED_REQUEST_KEYED_TEXT_CORRECTION_ONLY",
+    "Root_V4_adopted": false,
+    "root_exact_sealed_files": 11690,
+    "old_V2_exact_sealed_files": 10473,
+    "own_fresh_analysis_files": 2102,
+    "own_fresh_analysis_memberships": 3588,
+    "own_fresh_analysis_scopes": 16,
+    "own_loaded_file_origins": 46,
+    "payloads": 12,
+    "byte_identical_payloads": 10,
+    "changed_payloads": [
+      "complete_guard.py",
+      "external_dispatch.ps1"
+    ],
+    "changed_python_functions": [
+      "request",
+      "snapshot"
+    ],
+    "recipe_assertions_preserved": 108,
+    "helper_assertions_preserved": 62,
+    "all_other_reader_payloads_raw_equal": true,
+    "probe_raw_bytes_equal": true,
+    "ordinal_PowerShell_AST_review": {
+      "Source_credit": 0,
+      "method": "Own PowerShell parser and passive AST predicates only",
+      "passed": true,
+      "programs": [
+        {
+          "program": "external_dispatch.ps1",
+          "syntax_errors": 0,
+          "mandatory_params_exact": true,
+          "old_throw_sequence_exact": true,
+          "throws": 57,
+          "old_pin_call_sequence_exact": true,
+          "Assert_Pin_calls": 17,
+          "Compare_Object_commands_before": 3,
+          "Compare_Object_commands_after": 0,
+          "ordinal_equality_calls": 3,
+          "ordinal_helper_definitions": 1,
+          "selected_code_or_functions_executed": false
+        },
+        {
+          "program": "materializer",
+          "syntax_errors": 0,
+          "mandatory_params_exact": true,
+          "old_throw_sequence_exact": true,
+          "throws": 29,
+          "old_pin_call_sequence_exact": true,
+          "Assert_Pin_calls": 11,
+          "Compare_Object_commands_before": 5,
+          "Compare_Object_commands_after": 0,
+          "ordinal_equality_calls": 6,
+          "ordinal_helper_definitions": 1,
+          "selected_code_or_functions_executed": false
+        }
+      ]
+    },
+    "independently_calculated_filename_pairs": 27,
+    "active_request_identity_validated_before_filename_use": true,
+    "write_once_exclusivity_preserved": true,
+    "length_framing_removes_delimiter_ambiguity": true,
+    "pure_string_pair_injectivity_scope": "Exact strings; Windows case-only request variants cannot both pass exclusive request creation; reviewed fixed labels lowercase ASCII.",
+    "Root_receipt_three_basenames": [
+      "recipe.py",
+      "probe.cpp",
+      "helpers.py"
+    ],
+    "required_twelve_payload_and_three_Root_supplied_sets_exact": true,
+    "final_Main_CMake": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\CMakeLists.txt",
+      "bytes": 16858,
+      "sha256": "6d71cd127f3d80d9079899213e07175d6b4c6eb2c6e6be86c963ed727000709a"
+    },
+    "final_Main_include_count": 2021,
+    "execution_hold_retained": true,
+    "historical_or_Root_selection_repinned": false,
+    "own_optional_analysis_imports_after_fresh_freeze": true,
+    "selected_code_imported_or_executed": false,
+    "selected_functions_or_AST_evaluated": false,
+    "compiler_invocations": 0,
+    "Native_Ghidra_queries": 0,
+    "provider_runs": 0,
+    "original_PE_runs": 0,
+    "target_runs": 0,
+    "Main_writes": 0,
+    "Root_receipts_authored": 0,
+    "future_type5p1_materializations": 0,
+    "future_type5p1_absent": true,
+    "fresh_native_OR_OS_mapping_identity_claimed": false,
+    "Cpp_or_test_changes": 0,
+    "UTC": "2026-10-09T05:49:42.179842Z"
+  },
+  "AST_acceptance_review": {
+    "Source_credit": 0,
+    "selected_execution": false,
+    "programs": [
+      {
+        "basename": "caller_frames.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\caller_frames.py.txt",
+          "bytes": 8387,
+          "sha256": "382ea442210026172aa976139bff2bc23e9a748d98090f55ae639c8fbd96d0e4"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\caller_frames.py.txt",
+          "bytes": 8387,
+          "sha256": "382ea442210026172aa976139bff2bc23e9a748d98090f55ae639c8fbd96d0e4"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 0,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "code_gate.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\code_gate.py.txt",
+          "bytes": 32552,
+          "sha256": "dfe90b2fdf2d610f1bc50a8b1ff3be826172aea93eef1a3da8987a7b62faaec5"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\code_gate.py.txt",
+          "bytes": 32552,
+          "sha256": "dfe90b2fdf2d610f1bc50a8b1ff3be826172aea93eef1a3da8987a7b62faaec5"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 0,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "complete_guard.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\complete_guard.py.txt",
+          "bytes": 15008,
+          "sha256": "3f9e2e9ae7a6dd11a10fc314fa41ba712ae2dd6a56c0d4cd834c49ee83621be7"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\complete_guard.py.txt",
+          "bytes": 15554,
+          "sha256": "1acb590887b70bb34bb6049d85d46da51e295ff3eec2a13485977aed40cfb21d"
+        },
+        "byte_identical": false,
+        "AST_identical": false,
+        "assertions": 0,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "external_dispatch.ps1",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\external_dispatch.ps1.txt",
+          "bytes": 20949,
+          "sha256": "cac66be14e0e37138b7be9e9a68e4893a51ef7a1ba3ab085a19b21f9a9ed536a"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\external_dispatch.ps1.txt",
+          "bytes": 21168,
+          "sha256": "9fa1205eff2c99eb8b840943bc8065f2182698c5dea1864f9eacc2c7a0ec1edc"
+        },
+        "byte_identical": false
+      },
+      {
+        "basename": "guarded_tool_entry.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\guarded_tool_entry.py.txt",
+          "bytes": 4660,
+          "sha256": "c797a96f326e42ebc4ff6c24d3fda768c8f14f130fcc08eaedc57eabc3376653"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\guarded_tool_entry.py.txt",
+          "bytes": 4660,
+          "sha256": "c797a96f326e42ebc4ff6c24d3fda768c8f14f130fcc08eaedc57eabc3376653"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 0,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "helpers.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\helpers.py.txt",
+          "bytes": 19357,
+          "sha256": "40a616be33d0fb19d52abb8779a2c1a47785215e3b1b9a7f5952eae794388437"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\helpers.py.txt",
+          "bytes": 19357,
+          "sha256": "40a616be33d0fb19d52abb8779a2c1a47785215e3b1b9a7f5952eae794388437"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 62,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "observations.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\observations.py.txt",
+          "bytes": 19910,
+          "sha256": "a5e635532e63bdc977af08b872f0d0d4608b512f6879e3806d96ab8f447c17ed"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\observations.py.txt",
+          "bytes": 19910,
+          "sha256": "a5e635532e63bdc977af08b872f0d0d4608b512f6879e3806d96ab8f447c17ed"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 0,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "probe.cpp",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\probe.cpp.txt",
+          "bytes": 27488,
+          "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\probe.cpp.txt",
+          "bytes": 27488,
+          "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+        },
+        "byte_identical": true
+      },
+      {
+        "basename": "protocol_review.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\protocol_review.py.txt",
+          "bytes": 11427,
+          "sha256": "3137a43e826448df61d7e2545ba6b190c23f11ecc1187281a435f3375ce66b8f"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\protocol_review.py.txt",
+          "bytes": 11427,
+          "sha256": "3137a43e826448df61d7e2545ba6b190c23f11ecc1187281a435f3375ce66b8f"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 0,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "raw_formats.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\raw_formats.py.txt",
+          "bytes": 17605,
+          "sha256": "d25d8b201e26a39949026c8b14f2cd7e989b7ddd625b022bbbe7236dc6cd5e5a"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\raw_formats.py.txt",
+          "bytes": 17605,
+          "sha256": "d25d8b201e26a39949026c8b14f2cd7e989b7ddd625b022bbbe7236dc6cd5e5a"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 0,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "recipe.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\recipe.py.txt",
+          "bytes": 46053,
+          "sha256": "34b29ff57f4440c24e576c3fb095b7fbead5af31666e12441c2e31dfd76be11b"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\recipe.py.txt",
+          "bytes": 46053,
+          "sha256": "34b29ff57f4440c24e576c3fb095b7fbead5af31666e12441c2e31dfd76be11b"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 108,
+        "all_assertions_exact": true
+      },
+      {
+        "basename": "register_imports.py",
+        "before": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\v2_frozen\\candidate_TEXT_v2\\register_imports.py.txt",
+          "bytes": 10763,
+          "sha256": "5e16629a6c6afcaec4130e20e7f8eebd4f86e1e74b28ca5b5a98ee96af4eb0c7"
+        },
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\register_imports.py.txt",
+          "bytes": 10763,
+          "sha256": "5e16629a6c6afcaec4130e20e7f8eebd4f86e1e74b28ca5b5a98ee96af4eb0c7"
+        },
+        "byte_identical": true,
+        "AST_identical": true,
+        "assertions": 0,
+        "all_assertions_exact": true
+      }
+    ],
+    "changed_guard_functions": [
+      "request",
+      "snapshot"
+    ],
+    "guard_request_old_need_calls_exact_preserved": true,
+    "guard_request_new_need_calls": 2,
+    "guard_snapshot_only_label_validation_and_write_name_changed": true,
+    "recipe_all_108_assertions_exact": true,
+    "helper_all_62_assertions_exact": true,
+    "all_ten_unchanged_payloads_raw_bytes_equal": true,
+    "selection_payload_pins_match_all_twelve": true,
+    "selection_unadopted_and_held": true,
+    "Root_receipts_or_adoption_authored": false
+  },
+  "filename_framing_review": {
+    "Source_credit": 0,
+    "selected_execution": false,
+    "independently_written_string_calculation": true,
+    "selected_code_or_AST_evaluation": false,
+    "pairs": 27,
+    "all_distinct": true,
+    "all_roundtrips": true,
+    "V3_underscore_counterexample": true,
+    "V4_boundary_argument": "Decimal ASCII request-name length identifies the exact name boundary, after which double underscore precedes the full label.",
+    "same_request_same_label_remains_exclusive": true,
+    "Windows_case_note": "Admitted request filenames use exclusive creation; case-only variants cannot both be created on the Windows family. Fixed reviewed callsite labels are lowercase ASCII.",
+    "records": [
+      {
+        "name": "a__b",
+        "label": "c",
+        "filename": "guard_4_a__b__c.json"
+      },
+      {
+        "name": "a",
+        "label": "b__c",
+        "filename": "guard_1_a__b__c.json"
+      },
+      {
+        "name": "recipe_prepare",
+        "label": "entry_recipe_py",
+        "filename": "guard_14_recipe_prepare__entry_recipe_py.json"
+      },
+      {
+        "name": "recipe_build",
+        "label": "entry_recipe_py",
+        "filename": "guard_12_recipe_build__entry_recipe_py.json"
+      },
+      {
+        "name": "recipe_static_gate",
+        "label": "entry_recipe_py",
+        "filename": "guard_18_recipe_static_gate__entry_recipe_py.json"
+      },
+      {
+        "name": "recipe_launch",
+        "label": "entry_recipe_py",
+        "filename": "guard_13_recipe_launch__entry_recipe_py.json"
+      },
+      {
+        "name": "recipe_post",
+        "label": "entry_recipe_py",
+        "filename": "guard_11_recipe_post__entry_recipe_py.json"
+      },
+      {
+        "name": "native_before_count",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_19_native_before_count__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_before_count",
+        "label": "tool_route_closed",
+        "filename": "guard_19_native_before_count__tool_route_closed.json"
+      },
+      {
+        "name": "native_before_program",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_21_native_before_program__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_before_program",
+        "label": "tool_route_closed",
+        "filename": "guard_21_native_before_program__tool_route_closed.json"
+      },
+      {
+        "name": "native_before_bytes",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_19_native_before_bytes__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_before_bytes",
+        "label": "tool_route_closed",
+        "filename": "guard_19_native_before_bytes__tool_route_closed.json"
+      },
+      {
+        "name": "native_before_listing",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_21_native_before_listing__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_before_listing",
+        "label": "tool_route_closed",
+        "filename": "guard_21_native_before_listing__tool_route_closed.json"
+      },
+      {
+        "name": "native_after_count",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_18_native_after_count__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_after_count",
+        "label": "tool_route_closed",
+        "filename": "guard_18_native_after_count__tool_route_closed.json"
+      },
+      {
+        "name": "native_after_program",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_20_native_after_program__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_after_program",
+        "label": "tool_route_closed",
+        "filename": "guard_20_native_after_program__tool_route_closed.json"
+      },
+      {
+        "name": "native_after_bytes",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_18_native_after_bytes__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_after_bytes",
+        "label": "tool_route_closed",
+        "filename": "guard_18_native_after_bytes__tool_route_closed.json"
+      },
+      {
+        "name": "native_after_listing",
+        "label": "entry_guarded_tool_entry_py",
+        "filename": "guard_20_native_after_listing__entry_guarded_tool_entry_py.json"
+      },
+      {
+        "name": "native_after_listing",
+        "label": "tool_route_closed",
+        "filename": "guard_20_native_after_listing__tool_route_closed.json"
+      },
+      {
+        "name": "_",
+        "label": "_",
+        "filename": "guard_1_____.json"
+      },
+      {
+        "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "label": "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+        "filename": "guard_80_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA__ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ.json"
+      },
+      {
+        "name": "0_1__2",
+        "label": "__3_4",
+        "filename": "guard_6_0_1__2____3_4.json"
+      },
+      {
+        "name": "9",
+        "label": "9",
+        "filename": "guard_1_9__9.json"
+      }
+    ]
+  },
+  "live_Main_hold": {
+    "Source_credit": 0,
+    "kind": "fresh_Main_observation_keeps_execution_hold",
+    "CMake_before": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\CMakeLists.txt",
+      "bytes": 16589,
+      "sha256": "72a927c4d9a08e5d1f6dfe96a8ac12605f7b957aa6100aa9d0f922af343bbcfd"
+    },
+    "CMake_now": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\CMakeLists.txt",
+      "bytes": 16858,
+      "sha256": "6d71cd127f3d80d9079899213e07175d6b4c6eb2c6e6be86c963ed727000709a"
+    },
+    "Main_include_before_count": 2018,
+    "Main_include_now_count": 2021,
+    "membership_delta": [
+      {
+        "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\game_native_game_application_frame.hpp",
+        "SideIndicator": "=>"
+      },
+      {
+        "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_mission_clock_reset.hpp",
+        "SideIndicator": "=>"
+      },
+      {
+        "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_world_current_tick.hpp",
+        "SideIndicator": "=>"
+      }
+    ],
+    "selection_repinned": false,
+    "execution_admitted": false
+  },
+  "own_review_corrections": {
+    "Source_credit": 0,
+    "selected_text_modified": false,
+    "first_python_attempt": {
+      "utility": "own_ast_review.py",
+      "returncode": 1,
+      "reason": "Own review incorrectly assumed V2 already validated snapshot labels; V4 adds one new label check.",
+      "post_bookend_passed": true,
+      "replacement": "own_ast_review2.py",
+      "replacement_returncode": 0
+    },
+    "first_PowerShell_attempt": {
+      "utility": "own_powershell_ast.ps1",
+      "returncode": 1,
+      "reason": "Own count assumption omitted the materializer new exact twelve-basename set gate.",
+      "replacement": "own_powershell_ast2.ps1",
+      "replacement_returncode": 0
+    },
+    "originals_overwritten": false
+  },
+  "independent_attempt_closed": {
+    "Source_credit": 0,
+    "returncode": 0,
+    "failure": null,
+    "post_failure": null,
+    "selected_execution": false,
+    "Root_writes": 0,
+    "successful": true,
+    "UTC": "2026-10-09T05:47:36.0283743Z"
+  },
+  "final_bookend": {
+    "Source_credit": 0,
+    "checked_original_and_frozen_pairs": 12603,
+    "own_analysis_scopes": 16,
+    "v2_exact_files": 10473,
+    "unchanged": true,
+    "full_private_environment_unchanged": true,
+    "future_family_absent": true,
+    "UTC": "2026-10-09T05:49:42.1451059Z"
+  },
+  "reviewed_Root_selected_identities": [
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\caller_frames.py.txt",
+        "bytes": 8387,
+        "sha256": "382ea442210026172aa976139bff2bc23e9a748d98090f55ae639c8fbd96d0e4"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\caller_frames.py.txt",
+        "bytes": 8387,
+        "sha256": "382ea442210026172aa976139bff2bc23e9a748d98090f55ae639c8fbd96d0e4"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\code_gate.py.txt",
+        "bytes": 32552,
+        "sha256": "dfe90b2fdf2d610f1bc50a8b1ff3be826172aea93eef1a3da8987a7b62faaec5"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\code_gate.py.txt",
+        "bytes": 32552,
+        "sha256": "dfe90b2fdf2d610f1bc50a8b1ff3be826172aea93eef1a3da8987a7b62faaec5"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\complete_guard.py.txt",
+        "bytes": 15554,
+        "sha256": "1acb590887b70bb34bb6049d85d46da51e295ff3eec2a13485977aed40cfb21d"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\complete_guard.py.txt",
+        "bytes": 15554,
+        "sha256": "1acb590887b70bb34bb6049d85d46da51e295ff3eec2a13485977aed40cfb21d"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\external_dispatch.ps1.txt",
+        "bytes": 21168,
+        "sha256": "9fa1205eff2c99eb8b840943bc8065f2182698c5dea1864f9eacc2c7a0ec1edc"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\external_dispatch.ps1.txt",
+        "bytes": 21168,
+        "sha256": "9fa1205eff2c99eb8b840943bc8065f2182698c5dea1864f9eacc2c7a0ec1edc"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\guarded_tool_entry.py.txt",
+        "bytes": 4660,
+        "sha256": "c797a96f326e42ebc4ff6c24d3fda768c8f14f130fcc08eaedc57eabc3376653"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\guarded_tool_entry.py.txt",
+        "bytes": 4660,
+        "sha256": "c797a96f326e42ebc4ff6c24d3fda768c8f14f130fcc08eaedc57eabc3376653"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\helpers.py.txt",
+        "bytes": 19357,
+        "sha256": "40a616be33d0fb19d52abb8779a2c1a47785215e3b1b9a7f5952eae794388437"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\helpers.py.txt",
+        "bytes": 19357,
+        "sha256": "40a616be33d0fb19d52abb8779a2c1a47785215e3b1b9a7f5952eae794388437"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\observations.py.txt",
+        "bytes": 19910,
+        "sha256": "a5e635532e63bdc977af08b872f0d0d4608b512f6879e3806d96ab8f447c17ed"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\observations.py.txt",
+        "bytes": 19910,
+        "sha256": "a5e635532e63bdc977af08b872f0d0d4608b512f6879e3806d96ab8f447c17ed"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\probe.cpp.txt",
+        "bytes": 27488,
+        "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\probe.cpp.txt",
+        "bytes": 27488,
+        "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\protocol_review.py.txt",
+        "bytes": 11427,
+        "sha256": "3137a43e826448df61d7e2545ba6b190c23f11ecc1187281a435f3375ce66b8f"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\protocol_review.py.txt",
+        "bytes": 11427,
+        "sha256": "3137a43e826448df61d7e2545ba6b190c23f11ecc1187281a435f3375ce66b8f"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\raw_formats.py.txt",
+        "bytes": 17605,
+        "sha256": "d25d8b201e26a39949026c8b14f2cd7e989b7ddd625b022bbbe7236dc6cd5e5a"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\raw_formats.py.txt",
+        "bytes": 17605,
+        "sha256": "d25d8b201e26a39949026c8b14f2cd7e989b7ddd625b022bbbe7236dc6cd5e5a"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\recipe.py.txt",
+        "bytes": 46053,
+        "sha256": "34b29ff57f4440c24e576c3fb095b7fbead5af31666e12441c2e31dfd76be11b"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\recipe.py.txt",
+        "bytes": 46053,
+        "sha256": "34b29ff57f4440c24e576c3fb095b7fbead5af31666e12441c2e31dfd76be11b"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\candidate_TEXT_v4\\register_imports.py.txt",
+        "bytes": 10763,
+        "sha256": "5e16629a6c6afcaec4130e20e7f8eebd4f86e1e74b28ca5b5a98ee96af4eb0c7"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\candidate_TEXT_v4\\register_imports.py.txt",
+        "bytes": 10763,
+        "sha256": "5e16629a6c6afcaec4130e20e7f8eebd4f86e1e74b28ca5b5a98ee96af4eb0c7"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\proposed_complete_selection_v4.json",
+        "bytes": 9754225,
+        "sha256": "bb6e9e903a49bfdf985b775510263f1f00672c4978e0ef6d6ce4ec0cd0485e97"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\proposed_complete_selection_v4.json",
+        "bytes": 9754225,
+        "sha256": "bb6e9e903a49bfdf985b775510263f1f00672c4978e0ef6d6ce4ec0cd0485e97"
+      }
+    },
+    {
+      "original": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type5guardReview01\\proposed_materialize_v3.ps1.txt",
+        "bytes": 12293,
+        "sha256": "4b717a0b1e34cac2383056e8cb6e98bbcc668f56407c9f80d4a8a9668a668a74"
+      },
+      "frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5requestpeer\\root_selected\\proposed_materialize_v3.ps1.txt",
+        "bytes": 12293,
+        "sha256": "4b717a0b1e34cac2383056e8cb6e98bbcc668f56407c9f80d4a8a9668a668a74"
+      }
+    }
+  ],
+  "Root_adopted": false,
+  "execution_admitted": false,
+  "source_or_test_changes": false
+}
