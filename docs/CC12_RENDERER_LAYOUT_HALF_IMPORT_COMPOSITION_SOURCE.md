@@ -1,5 +1,7 @@
 # Renderer layout and half-float service composition
 
+Root admitted the bounded Source change after the fresh 509-input Win32 build and emitted review. Current validation and limits are in docs/CC12_SELF_REFRESH_RENDERER_SOURCE_PRIMARY_REVIEW.md and its JSON receipt. The worker candidate statements below describe its earlier unregistered/unbuilt capture. Whole receiver/model, Native ABI/EH and gameplay admission remain separate.
+
 The renderer application now retains the existing concrete section-layout service
 and half-float reader in the same ownership graph as its live renderer, geometry,
 declarations, pools and strings. Ready-only accessors borrow those persistent

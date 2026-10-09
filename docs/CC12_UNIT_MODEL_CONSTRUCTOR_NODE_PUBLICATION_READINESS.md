@@ -1,5 +1,7 @@
 # Unit-part constructor and model-root publication readiness
 
+Root reviewed this bounded packet and replayed its retained Source/capture pins. It adds no implementation or new runtime credit. The current Root build authority is the separate 509-input primary review; historical Source121 and reported Source507 context remain scoped to their captures.
+
 `007135C0` already has a complete Source constructor. This review identifies
 no new Source-ready ownership composition within that one-body boundary.
 The constructor receives its selected set, stores it at `model+160`, and

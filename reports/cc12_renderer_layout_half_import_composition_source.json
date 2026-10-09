@@ -470,5 +470,85 @@
     "faithful_startup_credit": false,
     "gameplay_or_visual_numbering_credit": false,
     "reason": "This creates genuine retained startup prerequisites only. Actual unit model/atlas/type/current-node dispatch and full numbering-operation ownership remain separate producers."
+  },
+  "Root_primary_acceptance": {
+    "worker_commit": "705b9d10beb94891822178c1bd9c3676c0ac34df",
+    "immutable_worker_report_pin": {
+      "path": "reports\\cc12_renderer_layout_half_import_composition_source.json",
+      "bytes": 20807,
+      "sha256": "4a5e0225a7b55a66a3c78651e9980e34222fabd14b82f2b4913ea710a426f4fa",
+      "canonical_lf_sha256": "4a5e0225a7b55a66a3c78651e9980e34222fabd14b82f2b4913ea710a426f4fa"
+    },
+    "primary_review_report": "reports/cc12_self_refresh_renderer_source_primary_review.json",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 114548,
+      "start_utc": "2026-10-09T21:49:52.089258+00:00",
+      "finish_utc": "2026-10-09T21:50:09.256552+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 509,
+      "pin_scope": "Source121 plus recursively included project files for eight explicit changed/new/provider translation units; not the entire build"
+    },
+    "current_input_pins": 509,
+    "current_artifact_pins": 4,
+    "selected_whole_Core_objects": 43,
+    "selected_application_whole_objects": 1,
+    "selected_positive_Core_definitions": 51,
+    "existing_checks_passed": 3,
+    "bounded_startup_smoke": true,
+    "faithful_startup_gameplay_credit": 0,
+    "current_doc_pin": {
+      "path": "docs\\CC12_RENDERER_LAYOUT_HALF_IMPORT_COMPOSITION_SOURCE.md",
+      "bytes": 8177,
+      "sha256": "fa2cc77b7e2f978801ed2fa9818dc11bd2aea2a81f1ce2e56362498a260085ad",
+      "canonical_lf_sha256": "fa2cc77b7e2f978801ed2fa9818dc11bd2aea2a81f1ce2e56362498a260085ad"
+    },
+    "Source_composition_admitted": true,
+    "retained_services": true,
+    "same_domain_source_arguments_and_member_order_reviewed": true,
+    "new_accessor_ready_checks_and_pending_guard_emission_reviewed": true,
+    "surviving_live_companions_block_drain": true,
+    "successful_live_companions_do_not_block_accessor_reuse": true,
+    "existing_layout_function_code_and_resolved_relocations_unchanged": 204,
+    "new_live_query": {
+      "bytes": 11,
+      "operations": 4,
+      "relocations": 0
+    },
+    "application_ctor": {
+      "bytes": 3406,
+      "operations": 798,
+      "two_real_provider_constructor_edges_indexed": true
+    },
+    "application_dtor": {
+      "bytes": 443,
+      "operations": 127,
+      "layout_service_before_geometry_device_owners": true
+    },
+    "application_accessors": [
+      {
+        "bytes": 83,
+        "operations": 29
+      },
+      {
+        "bytes": 83,
+        "operations": 29
+      }
+    ],
+    "retention_method": {
+      "bytes": 123,
+      "operations": 40
+    },
+    "normal_empty_layout_drain_smoke_passed": true,
+    "layout_acquisition_nonempty_and_failure_paths_runtime_tested": false,
+    "half_conversion_runtime_tested": false,
+    "Original_ABI_or_model_numbering_admitted": false
   }
 }

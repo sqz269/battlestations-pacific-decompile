@@ -1,5 +1,7 @@
 # Native mission self-object refresh: qualified Source candidate
 
+Root admitted the bounded Source change after the fresh 509-input Win32 build and emitted review. Current validation and limits are in docs/CC12_SELF_REFRESH_RENDERER_SOURCE_PRIMARY_REVIEW.md and its JSON receipt. The worker candidate statements below describe its earlier unregistered/unbuilt capture. Whole receiver/model, Native ABI/EH and gameplay admission remain separate.
+
 This unregistered, unbuilt candidate implements only `00928B73..00928B9A`,
 the **40-byte / 11-operation** refresh inside `00928A00`. It uses the existing
 real getter, tracked-object assignment and destructor. It does not implement

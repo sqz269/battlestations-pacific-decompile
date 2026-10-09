@@ -1,5 +1,7 @@
 # Native unit gunnery category header constructor candidate
 
+Root admitted the bounded Source change after the fresh 509-input Win32 build and emitted review. Current validation and limits are in docs/CC12_SELF_REFRESH_RENDERER_SOURCE_PRIMARY_REVIEW.md and its JSON receipt. The worker candidate statements below describe its earlier unregistered/unbuilt capture. Whole receiver/model, Native ABI/EH and gameplay admission remain separate.
+
 Packet: `cc12_native_unit_gunnery_category_header_constructor`.
 
 The candidate supplies the complete `00952640..0095264C` leaf through `construct_native_unit_gunnery_category_header_00952640`. It writes three actual DWORD fields at offsets 0/4/8 and preserves the observed register behavior. It is not yet registered, built, emitted-code reviewed or admitted. Root owns those steps.

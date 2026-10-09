@@ -565,5 +565,60 @@
     "complete_header_CPP_doc_report_read": true,
     "final_mechanical_pin_checks": 276,
     "exact40_byte11_operation_fragment_PE_decode_equal": true
+  },
+  "Root_primary_acceptance": {
+    "worker_commit": "6a181249404feaabd5bdcf239376eeaa8d97fb6c",
+    "immutable_worker_report_pin": {
+      "path": "reports\\cc12_native_mission_entity_lua_self_refresh_source.json",
+      "bytes": 29479,
+      "sha256": "6e121378653e94c3b2d787e23aa9eb636d5c34b93b61f7e300e8a26eab5b4f5a",
+      "canonical_lf_sha256": "6e121378653e94c3b2d787e23aa9eb636d5c34b93b61f7e300e8a26eab5b4f5a"
+    },
+    "primary_review_report": "reports/cc12_self_refresh_renderer_source_primary_review.json",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 114548,
+      "start_utc": "2026-10-09T21:49:52.089258+00:00",
+      "finish_utc": "2026-10-09T21:50:09.256552+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 509,
+      "pin_scope": "Source121 plus recursively included project files for eight explicit changed/new/provider translation units; not the entire build"
+    },
+    "current_input_pins": 509,
+    "current_artifact_pins": 4,
+    "selected_whole_Core_objects": 43,
+    "selected_application_whole_objects": 1,
+    "selected_positive_Core_definitions": 51,
+    "existing_checks_passed": 3,
+    "bounded_startup_smoke": true,
+    "faithful_startup_gameplay_credit": 0,
+    "current_doc_pin": {
+      "path": "docs\\CC12_NATIVE_MISSION_ENTITY_LUA_SELF_REFRESH_SOURCE.md",
+      "bytes": 8279,
+      "sha256": "dc8599fccd322f2d2f6641efeb602af19cddd6231b27f3d51e6aaa6580a1ae09",
+      "canonical_lf_sha256": "dc8599fccd322f2d2f6641efeb602af19cddd6231b27f3d51e6aaa6580a1ae09"
+    },
+    "Source_fragment_admitted": true,
+    "Original_fragment_bytes": 40,
+    "ordinary_Cpp_interface": true,
+    "Original_ABI_admitted": false,
+    "whole634_parent_or_production_attach_admitted": false,
+    "real_Lua_fixture_passed": true,
+    "Cpp_exception_paths_runtime_tested": false,
+    "emitted_root": {
+      "symbol": "?refresh_native_mission_entity_lua_self_00928b73_fragment@bsp@@YAXABVNativeString@1@AAUNativeLuaObjectStorage@1@ACRAX@Z",
+      "symbol_index": 15,
+      "section": 4,
+      "bytes": 130,
+      "instruction_count": 47,
+      "sha256": "ca0a87d085279e81a439b8e610f7822f244e6d887487ab4063901cb44d2d7793"
+    }
   }
 }

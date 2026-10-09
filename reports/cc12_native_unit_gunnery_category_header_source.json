@@ -347,5 +347,59 @@
     "bytes": 4977,
     "sha256": "12e082801e1de572330b4bc5b57683a756ed8ca3637f9c026a6286323a37b82d",
     "canonical_lf_sha256": "12e082801e1de572330b4bc5b57683a756ed8ca3637f9c026a6286323a37b82d"
+  },
+  "Root_primary_acceptance": {
+    "worker_commit": "279a803a167ea43f53a90de2b35831de291fc55b",
+    "immutable_worker_report_pin": {
+      "path": "reports\\cc12_native_unit_gunnery_category_header_source.json",
+      "bytes": 14183,
+      "sha256": "966f0f2946fa76252d918d899e66face6fe6343bf9ee7e871644132b278976f3",
+      "canonical_lf_sha256": "966f0f2946fa76252d918d899e66face6fe6343bf9ee7e871644132b278976f3"
+    },
+    "primary_review_report": "reports/cc12_self_refresh_renderer_source_primary_review.json",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 114548,
+      "start_utc": "2026-10-09T21:49:52.089258+00:00",
+      "finish_utc": "2026-10-09T21:50:09.256552+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 509,
+      "pin_scope": "Source121 plus recursively included project files for eight explicit changed/new/provider translation units; not the entire build"
+    },
+    "current_input_pins": 509,
+    "current_artifact_pins": 4,
+    "selected_whole_Core_objects": 43,
+    "selected_application_whole_objects": 1,
+    "selected_positive_Core_definitions": 51,
+    "existing_checks_passed": 3,
+    "bounded_startup_smoke": true,
+    "faithful_startup_gameplay_credit": 0,
+    "current_doc_pin": {
+      "path": "docs\\CC12_NATIVE_UNIT_GUNNERY_CATEGORY_HEADER_SOURCE.md",
+      "bytes": 5357,
+      "sha256": "84641ccae609323a8146443859c1ccbd8f8d829a944e0e79582b15449aab02e4",
+      "canonical_lf_sha256": "84641ccae609323a8146443859c1ccbd8f8d829a944e0e79582b15449aab02e4"
+    },
+    "Source_complete_function_admitted": true,
+    "Original_bytes": 13,
+    "emitted_original_bytes_equal": true,
+    "Original_ABI_admitted": false,
+    "no_new_test_needed_zero_call_exact_leaf": true,
+    "GPR_function_defined_saved_named": true,
+    "emitted_root": {
+      "symbol": "?construct_native_unit_gunnery_category_header_00952640@bsp@@YIPAUNativeUnitGunneryCategoryHeaderStorage@1@PAU21@@Z",
+      "symbol_index": 8,
+      "section": 3,
+      "bytes": 13,
+      "instruction_count": 6,
+      "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d"
+    }
   }
 }
