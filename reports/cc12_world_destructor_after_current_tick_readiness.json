@@ -1,0 +1,1015 @@
+{
+  "schema": "bsp.cc12.world_destructor_after_current_tick_readiness.v1",
+  "packet": "cc12_world_destructor_after_current_tick_readiness",
+  "kind": "bounded_read_only_native_and_current_source_readiness",
+  "created_utc": "2026-10-09T05:29:25.720381+00:00",
+  "target_address": "00904C40",
+  "worker_baseline": "cd932543e1331ee505c81434dc82b4cd7be0d362",
+  "requested_published_baseline": "12618f75a00d785a39467500fc952160bd859dc0",
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "ordinary_body_footprint_established": true,
+    "Source_destructor_ready": false,
+    "Source_world_table_ready": false,
+    "pending_tick_dependency": "Concrete candidate exists at pinned commit; Root registration, combined build and full emitted-body acceptance are outside this worker audit.",
+    "minimum_next_packet": "Read-only actual-storage 00922FD0 contract, complete known 66-byte body; no implementation before the whole contract is qualified.",
+    "independent_holds": [
+      "actual 922FD0 teardown body",
+      "actual 874D00 CL=0 current-gate services",
+      "actual common E0AF20 byte binding",
+      "actual pending owners, entity field/lock/virtual providers",
+      "actual matrix/clock/record/entity lifetimes",
+      "callable World table context/ABI adapters and scalar allocation lifetime",
+      "destructor EH graph outside ordinary-body inspection",
+      "Ghidra listing gaps remain unrepaired",
+      "held 14/43 versus reported 16/48 support-body discrepancy remains unresolved"
+    ]
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Target-verified tools/bsp.py ghidra read-only requests; current live whole-span bytes equal installed PE.",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span": {
+      "address": "00904C40",
+      "end_exclusive": "00904E4A",
+      "bytes": 522,
+      "sha256": "99e96902a47b83e3f58f5252fecde21135f4da4e4cfe6770fb58fe3552c6af8e",
+      "hex": "6aff68cf54ca0064a10000000050648925000000005153568bf1578974240cc7068477ce0033db889eac040000881d20afe0008b46088b383bfbc74424180200000074106a078bcfe8032102008b7f443bfb75f032c9e86500f7ff8b46048b383bfb7424385f5e7418395f6c75138b473c3bc3740538585e75078bcfe80fe301008b7f383bfb75dc32c9e83100f7ff8b4e048b393bfb741e385f5c74128b17d9ee8b82dc000000518bcfd91c24ffd08b7f383bfb75e2d9ee518bced91c24e8fdf8ffff32c9e8f6fff6ff8b4e048b393bfb741e385f5c74128b17d9ee8b82dc000000518bcfd91c24ffd08b7f383bfb75e2d9ee518bced91c24e8c2f8ffff32c9e8bbfff6ff8b4e048b393bfb74208bff385f5c74128b17d9ee8b82dc000000518bcfd91c24ffd08b7f383bfb75e2d9ee518bced91c24e885f8ffff32c9e87efff6ff8b46083bc3740c50e81d182f0083c404895e088b46043bc3740c50e80a182f0083c404895e048bbea80400003bfb741c8d4f0451ff152022ce0085c075088b178b028bcfffd0899ea80400008b8eb40400008b0189098b8eb40400008949043b86b4040000899eb80400007416908b3850e8b4172f0083c4043bbeb40400008bc775eb8b86b404000050e89b172f0083c40468302d4c006a616a0c8d4e1851899eb4040000885c2428e83e2e2f008d4e0ce8a8aabbff8b4c24105f5e5b64890d0000000083c410c3",
+      "live_disk_equal": true
+    },
+    "encoded_instructions": 182,
+    "current_ghidra_starts_count": 156,
+    "current_ghidra_starts": [
+      "00904C40",
+      "00904C42",
+      "00904C47",
+      "00904C4D",
+      "00904C4E",
+      "00904C55",
+      "00904C56",
+      "00904C57",
+      "00904C58",
+      "00904C5A",
+      "00904C5B",
+      "00904C5F",
+      "00904C65",
+      "00904C67",
+      "00904C6D",
+      "00904C73",
+      "00904C76",
+      "00904C78",
+      "00904C7A",
+      "00904C82",
+      "00904C84",
+      "00904C86",
+      "00904C88",
+      "00904C8D",
+      "00904C90",
+      "00904C92",
+      "00904C94",
+      "00904C96",
+      "00904C9B",
+      "00904C9E",
+      "00904CA0",
+      "00904CA2",
+      "00904CA4",
+      "00904CA7",
+      "00904CA9",
+      "00904CAC",
+      "00904CAE",
+      "00904CB1",
+      "00904CB3",
+      "00904CB5",
+      "00904CB8",
+      "00904CBA",
+      "00904CBC",
+      "00904CC1",
+      "00904CC4",
+      "00904CC6",
+      "00904CC8",
+      "00904CCA",
+      "00904CCF",
+      "00904CD2",
+      "00904CD4",
+      "00904CD6",
+      "00904CD8",
+      "00904CDB",
+      "00904CDD",
+      "00904CDF",
+      "00904CE1",
+      "00904CE7",
+      "00904CE8",
+      "00904CEA",
+      "00904CED",
+      "00904CEF",
+      "00904CF2",
+      "00904CF4",
+      "00904CF6",
+      "00904CF8",
+      "00904CF9",
+      "00904CFB",
+      "00904CFE",
+      "00904D03",
+      "00904D05",
+      "00904D0A",
+      "00904D0D",
+      "00904D0F",
+      "00904D11",
+      "00904D13",
+      "00904D16",
+      "00904D18",
+      "00904D1A",
+      "00904D1C",
+      "00904D22",
+      "00904D23",
+      "00904D25",
+      "00904D28",
+      "00904D2A",
+      "00904D2D",
+      "00904D2F",
+      "00904D31",
+      "00904D33",
+      "00904D34",
+      "00904D36",
+      "00904D39",
+      "00904D3E",
+      "00904D40",
+      "00904D45",
+      "00904D48",
+      "00904D4A",
+      "00904D4C",
+      "00904D4E",
+      "00904D50",
+      "00904D53",
+      "00904D55",
+      "00904D57",
+      "00904D59",
+      "00904D5F",
+      "00904D60",
+      "00904D62",
+      "00904D65",
+      "00904D67",
+      "00904D6A",
+      "00904D6C",
+      "00904D6E",
+      "00904D70",
+      "00904D71",
+      "00904D73",
+      "00904D76",
+      "00904D7B",
+      "00904D7D",
+      "00904D82",
+      "00904D85",
+      "00904D87",
+      "00904D89",
+      "00904D8A",
+      "00904D95",
+      "00904D98",
+      "00904D9A",
+      "00904D9C",
+      "00904D9D",
+      "00904DA8",
+      "00904DAE",
+      "00904DB0",
+      "00904DB2",
+      "00904DB5",
+      "00904DB6",
+      "00904DBC",
+      "00904DBE",
+      "00904DC0",
+      "00904DC2",
+      "00904DC4",
+      "00904DC6",
+      "00904DC8",
+      "00904DCE",
+      "00904DD4",
+      "00904DD6",
+      "00904DD8",
+      "00904DDE",
+      "00904DE1",
+      "00904DE7",
+      "00904DED",
+      "00904DEF",
+      "00904DF0",
+      "00904DF2",
+      "00904DF3",
+      "00904E05",
+      "00904E0B",
+      "00904E0C"
+    ],
+    "missing_starts_count": 26,
+    "missing_bytes": 82,
+    "gaps": [
+      {
+        "start": "00904D8F",
+        "end_exclusive": "00904D95",
+        "instructions": 2,
+        "bytes": 6
+      },
+      {
+        "start": "00904DA2",
+        "end_exclusive": "00904DA8",
+        "instructions": 2,
+        "bytes": 6
+      },
+      {
+        "start": "00904DF8",
+        "end_exclusive": "00904E05",
+        "instructions": 4,
+        "bytes": 13
+      },
+      {
+        "start": "00904E11",
+        "end_exclusive": "00904E4A",
+        "instructions": 18,
+        "bytes": 57
+      }
+    ],
+    "missing_instructions": [
+      {
+        "address": "00904D8F",
+        "size": 3,
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "00904D92",
+        "size": 3,
+        "hex": "895e08",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], ebx"
+      },
+      {
+        "address": "00904DA2",
+        "size": 3,
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "00904DA5",
+        "size": 3,
+        "hex": "895e04",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], ebx"
+      },
+      {
+        "address": "00904DF8",
+        "size": 3,
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "00904DFB",
+        "size": 6,
+        "hex": "3bbeb4040000",
+        "mnemonic": "cmp",
+        "operands": "edi, dword ptr [esi + 0x4b4]"
+      },
+      {
+        "address": "00904E01",
+        "size": 2,
+        "hex": "8bc7",
+        "mnemonic": "mov",
+        "operands": "eax, edi"
+      },
+      {
+        "address": "00904E03",
+        "size": 2,
+        "hex": "75eb",
+        "mnemonic": "jne",
+        "operands": "0x904df0"
+      },
+      {
+        "address": "00904E11",
+        "size": 3,
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "00904E14",
+        "size": 5,
+        "hex": "68302d4c00",
+        "mnemonic": "push",
+        "operands": "0x4c2d30"
+      },
+      {
+        "address": "00904E19",
+        "size": 2,
+        "hex": "6a61",
+        "mnemonic": "push",
+        "operands": "0x61"
+      },
+      {
+        "address": "00904E1B",
+        "size": 2,
+        "hex": "6a0c",
+        "mnemonic": "push",
+        "operands": "0xc"
+      },
+      {
+        "address": "00904E1D",
+        "size": 3,
+        "hex": "8d4e18",
+        "mnemonic": "lea",
+        "operands": "ecx, [esi + 0x18]"
+      },
+      {
+        "address": "00904E20",
+        "size": 1,
+        "hex": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00904E21",
+        "size": 6,
+        "hex": "899eb4040000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x4b4], ebx"
+      },
+      {
+        "address": "00904E27",
+        "size": 4,
+        "hex": "885c2428",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esp + 0x28], bl"
+      },
+      {
+        "address": "00904E2B",
+        "size": 5,
+        "hex": "e83e2e2f00",
+        "mnemonic": "call",
+        "operands": "0xbf7c6e"
+      },
+      {
+        "address": "00904E30",
+        "size": 3,
+        "hex": "8d4e0c",
+        "mnemonic": "lea",
+        "operands": "ecx, [esi + 0xc]"
+      },
+      {
+        "address": "00904E33",
+        "size": 5,
+        "hex": "e8a8aabbff",
+        "mnemonic": "call",
+        "operands": "0x4bf8e0"
+      },
+      {
+        "address": "00904E38",
+        "size": 4,
+        "hex": "8b4c2410",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00904E3C",
+        "size": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "00904E3D",
+        "size": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00904E3E",
+        "size": 1,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "00904E3F",
+        "size": 7,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "00904E46",
+        "size": 3,
+        "hex": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10"
+      },
+      {
+        "address": "00904E49",
+        "size": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "physical_call_count": 21,
+    "physical_calls": [
+      {
+        "address": "00904C88",
+        "size": 5,
+        "hex": "e803210200",
+        "mnemonic": "call",
+        "operands": "0x926d90"
+      },
+      {
+        "address": "00904C96",
+        "size": 5,
+        "hex": "e86500f7ff",
+        "mnemonic": "call",
+        "operands": "0x874d00"
+      },
+      {
+        "address": "00904CBC",
+        "size": 5,
+        "hex": "e80fe30100",
+        "mnemonic": "call",
+        "operands": "0x922fd0"
+      },
+      {
+        "address": "00904CCA",
+        "size": 5,
+        "hex": "e83100f7ff",
+        "mnemonic": "call",
+        "operands": "0x874d00"
+      },
+      {
+        "address": "00904CED",
+        "size": 2,
+        "hex": "ffd0",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904CFE",
+        "size": 5,
+        "hex": "e8fdf8ffff",
+        "mnemonic": "call",
+        "operands": "0x904600"
+      },
+      {
+        "address": "00904D05",
+        "size": 5,
+        "hex": "e8f6fff6ff",
+        "mnemonic": "call",
+        "operands": "0x874d00"
+      },
+      {
+        "address": "00904D28",
+        "size": 2,
+        "hex": "ffd0",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904D39",
+        "size": 5,
+        "hex": "e8c2f8ffff",
+        "mnemonic": "call",
+        "operands": "0x904600"
+      },
+      {
+        "address": "00904D40",
+        "size": 5,
+        "hex": "e8bbfff6ff",
+        "mnemonic": "call",
+        "operands": "0x874d00"
+      },
+      {
+        "address": "00904D65",
+        "size": 2,
+        "hex": "ffd0",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904D76",
+        "size": 5,
+        "hex": "e885f8ffff",
+        "mnemonic": "call",
+        "operands": "0x904600"
+      },
+      {
+        "address": "00904D7D",
+        "size": 5,
+        "hex": "e87efff6ff",
+        "mnemonic": "call",
+        "operands": "0x874d00"
+      },
+      {
+        "address": "00904D8A",
+        "size": 5,
+        "hex": "e81d182f00",
+        "mnemonic": "call",
+        "operands": "0xbf65ac"
+      },
+      {
+        "address": "00904D9D",
+        "size": 5,
+        "hex": "e80a182f00",
+        "mnemonic": "call",
+        "operands": "0xbf65ac"
+      },
+      {
+        "address": "00904DB6",
+        "size": 6,
+        "hex": "ff152022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2220]"
+      },
+      {
+        "address": "00904DC6",
+        "size": 2,
+        "hex": "ffd0",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904DF3",
+        "size": 5,
+        "hex": "e8b4172f00",
+        "mnemonic": "call",
+        "operands": "0xbf65ac"
+      },
+      {
+        "address": "00904E0C",
+        "size": 5,
+        "hex": "e89b172f00",
+        "mnemonic": "call",
+        "operands": "0xbf65ac"
+      },
+      {
+        "address": "00904E2B",
+        "size": 5,
+        "hex": "e83e2e2f00",
+        "mnemonic": "call",
+        "operands": "0xbf7c6e"
+      },
+      {
+        "address": "00904E33",
+        "size": 5,
+        "hex": "e8a8aabbff",
+        "mnemonic": "call",
+        "operands": "0x4bf8e0"
+      }
+    ],
+    "native_abi": {
+      "receiver": "ECX actual World",
+      "stack_arguments": 0,
+      "ordinary_return": "00904E49 C3 plain RET",
+      "saved_registers": [
+        "EBX",
+        "ESI",
+        "EDI"
+      ],
+      "exception_registration": "00CA54CF installed through FS:[0]; FS chain restored on ordinary return",
+      "return_value": "No semantic return established",
+      "unwind_graph_recovered": false
+    },
+    "import_verified_from_installed_PE": {
+      "iat_address": "00CE2220",
+      "dll": "KERNEL32.dll",
+      "symbol": "InterlockedDecrement"
+    },
+    "no_cookie_or_chkstk_direct_call_in_21_physical_calls": true
+  },
+  "ordered_phases": [
+    {
+      "range": "00904C40..00904C72",
+      "action": "Set EH frame, retain World, write base profile CE7784, clear actual World+4AC and shared E0AF20."
+    },
+    {
+      "range": "00904C73..00904C9A",
+      "action": "Dereference actual World+8 header first; each entity ->926D90(raw cause7), then reload entity+44; call874D00 CL0."
+    },
+    {
+      "range": "00904C9B..00904CCE",
+      "action": "Current World+4 first; if entity byte5E nonzero, DWORD6C zero, and parent3C absent or parent byte5E zero, call922FD0; reload entity+38; call874D00 CL0."
+    },
+    {
+      "range": "00904CCF..00904D81",
+      "action": "Three repetitions: current World+4 chain, byte5C gate, fresh entity vslotDC with x87 FLDZ/FSTP stack0, postcall entity+38; unconditional matrix904600(World,0); extra874D00 CL0.",
+      "entity_virtual_sites": [
+        "00904CED",
+        "00904D28",
+        "00904D65"
+      ],
+      "matrix_sites": [
+        "00904CFE",
+        "00904D39",
+        "00904D76"
+      ],
+      "all_extra_step_sites": [
+        "00904C96",
+        "00904CCA",
+        "00904D05",
+        "00904D40",
+        "00904D7D"
+      ]
+    },
+    {
+      "range": "00904D82..00904DA7",
+      "action": "Conditionally free World+8 then World+4 via BF65AC; clear each field after return."
+    },
+    {
+      "range": "00904DA8..00904DCD",
+      "action": "Capture World+4A8, if nonnull InterlockedDecrement(owner+4); if zero fresh current table slot0 with actual owner ECX and no stack arg; clear World+4A8 after return."
+    },
+    {
+      "range": "00904DCE..00904E26",
+      "action": "Capture sentinel next, self-link next; reload current World+4B4 and self-link previous; compare saved next/current head; zero count4B8; each node captures next before BF65AC and compares after free against current head; free current sentinel and clear field."
+    },
+    {
+      "range": "00904E27..00904E49",
+      "action": "State0, BF7C6E(World+18,stride12,count97,callback4C2D30); root4BF8E0(World+C); restore FS/registers and plain RET; no World outer free."
+    }
+  ],
+  "current_Source_dependency_matrix": [
+    {
+      "boundary": "926D90",
+      "status": "actual recursive Source with external providers",
+      "entry": "native_pending_entity_kill_00926d90",
+      "required": "Actual NativePendingEntityOwners, resolver for real fields, actual9248D0 lock owner, current child v78/entity v70, coherent canonical list nodes; raw cause7 must be passed; entity must remain readable for caller post-call+44."
+    },
+    {
+      "boundary": "922FD0",
+      "status": "projected Source incomplete",
+      "entry": "scene_node_kill_00922fd0(SceneNodeFlags&)",
+      "missing": "Actual +6C write, recursive current children, actual current v84 dispatch and receiver/lifetime contract. Existing three boolean writes and reconstructed ledger label do not close the body."
+    },
+    {
+      "boundary": "874D00 CL0",
+      "status": "current host gate is cached projection",
+      "entry": "GameFixedStepHost::run_extra_fixed_step_00874d00",
+      "missing": "Real current Game/World+4AC gate and actual queued/think/deferred/queue/tail providers. World+4AC was already cleared; closed gate does not remove CL0 outside-gate work."
+    },
+    {
+      "boundary": "904600",
+      "status": "pending concrete Source candidate, pinned separately",
+      "entry": "run_native_world_matrix_pass_00904600",
+      "required": "Root acceptance plus real borrowed clock/reset/writer cells, constants, returning validator, actual records/current entity tables/lifetimes; no replacement clock or token identity."
+    },
+    {
+      "boundary": "World+4/+8 headers",
+      "status": "actual producer and canonical paired free exist",
+      "entry": "allocate_native_world_chain_headers_009037f0",
+      "required": "Same producer/free domain, completed construction and shutdown progress; payload entities are separate lifetimes."
+    },
+    {
+      "boundary": "World+4A8 decrement and zero terminal",
+      "status": "real reusable operations with external receiver lifetime",
+      "entries": [
+        "NativeGameLifetimeCalls::interlocked_decrement",
+        "NativeGameCurrentVirtualCalls::virtual_terminal"
+      ],
+      "required": "Actual owner/count/current callable table and no extra decrement, no post-call owner access; clear field only after return."
+    },
+    {
+      "boundary": "matrix nodes and sentinel",
+      "status": "sentinel producer and canonical paired free exist; final teardown not implemented",
+      "entry": "create_native_world_matrix_sentinel_004c3080",
+      "required": "Real record producers/domain, coherent actual list, exact current-sentinel reload and capture-before-free schedule."
+    },
+    {
+      "boundary": "97 headers plus root",
+      "status": "real reusable normal clear under existing narrow contract",
+      "entry": "clear_native_world_parent_headers",
+      "required": "All98 initialized coherent headers; canonical owned12-byte nodes and borrowed payloads; DF0. Constructor cleanup composition and noexcept helper do not supply normal destructor FH3/SEH."
+    },
+    {
+      "boundary": "E0AF20",
+      "status": "common actual-cell provider not demonstrated",
+      "observed": [
+        "MissionSceneLoadState::scene_resident projection",
+        "abstract unit-damage destroy_broadcast_enabled"
+      ],
+      "required": "Actual shared mutable byte, same identity and lifetime used by its writers/readers; no private substitute."
+    },
+    {
+      "boundary": "World four-slot table",
+      "status": "incomplete actual methods and adapters",
+      "slots": {
+        "00": "004CB0B0 scalar",
+        "04": "00904390 drain",
+        "08": "009035D0 constant byte",
+        "0C": "00904BF0 update"
+      },
+      "required": "Callable real table with receiver/context/ABI adapters, actual scalar/normal destruction, actual drain wrapper, qualified tick. CE7794 is adjacent different profile."
+    }
+  ],
+  "allocation_and_exception_boundaries": {
+    "header_and_sentinel_Source_domain": "singleton_lifetime_allocate -> std::malloc/new-handler; paired singleton_lifetime_free -> std::free",
+    "other_free_Service": "NativeGameLifetimeCalls::free_00bf65ac uses ::operator delete; it does not qualify arbitrary foreign Source allocations.",
+    "normal_body_does_not_free_World": true,
+    "scalar_outer_free": "Separate 004CB0B0 flags path, not admitted here.",
+    "no_cleanup_rollback_or_vector_substitution_added": true,
+    "native_post_callback_reads_require_storage_alive": true,
+    "callback_failure_and_native_EH_graph": "Not recovered by this ordinary-body audit; existing constructor cleanup is not a general destructor unwind protocol."
+  },
+  "listing_hold": {
+    "matches_existing_design_522_182_26_82": true,
+    "direct_flow_override_and_fallthrough_properties": "Not independently verified; previous disabled-script gate is not retried.",
+    "repair_attempted": false,
+    "shared_free_metadata_changed": false,
+    "no_return_inference_is_not_mutation_authority": true
+  },
+  "held_support_supplement": {
+    "commit": "0166b106e1f5adc6bb50d841283246423b2348b8",
+    "old_description": "cookie14 plus2 padding; stack43 plus5 padding",
+    "current_parent_review": "16/48-byte support bodies; not independently revalidated in this packet",
+    "discrepancy": "14/43 versus16/48 remains explicit; no padding/boundary reconciliation or support closure inferred.",
+    "imported_or_applied": false,
+    "old_cookie_chkstk_hypothesis_retried": false,
+    "pins": [
+      {
+        "commit": "0166b106e1f5adc6bb50d841283246423b2348b8",
+        "path": "docs/CC12_RAW_STRING_DUPLICATE_GRAPH_SUPPLEMENT.md",
+        "bytes": 9548,
+        "git_blob_sha256": "65d677c0536ef4bb3f0345d39eb219a97c2ecdffc997c48bb2dedaf8c1e3b43f",
+        "lf_sha256": "65d677c0536ef4bb3f0345d39eb219a97c2ecdffc997c48bb2dedaf8c1e3b43f"
+      },
+      {
+        "commit": "0166b106e1f5adc6bb50d841283246423b2348b8",
+        "path": "reports/cc12_raw_string_duplicate_graph_supplement.json",
+        "bytes": 12806,
+        "git_blob_sha256": "c3aa04e65ef8c83faacc06a3201efbd1128e75a807100e3b34dfa97ad4d79ea2",
+        "lf_sha256": "c3aa04e65ef8c83faacc06a3201efbd1128e75a807100e3b34dfa97ad4d79ea2"
+      }
+    ]
+  },
+  "pending_tick_candidate": {
+    "commit": "b0d645f6b2dbc8dad866032a5c652e7a92d32b0c",
+    "worker_acceptance": "Interface and bounded dependency review only; Source exists, Root build/emitted full-body review pending at this snapshot.",
+    "pins": [
+      {
+        "commit": "b0d645f6b2dbc8dad866032a5c652e7a92d32b0c",
+        "path": "include/bsp/native_world_current_tick.hpp",
+        "bytes": 2417,
+        "git_blob_sha256": "d4bf7f829180eddb17e9286dfef9007e6ead92560944cb9f80e519bdca597f1b",
+        "lf_sha256": "d4bf7f829180eddb17e9286dfef9007e6ead92560944cb9f80e519bdca597f1b"
+      },
+      {
+        "commit": "b0d645f6b2dbc8dad866032a5c652e7a92d32b0c",
+        "path": "src/native_world_current_tick.cpp",
+        "bytes": 23987,
+        "git_blob_sha256": "d18ae4a7e134e55f7c7d2b35b4d1eddeaf44a8058b4a9cc12cdcf866b6ce7a5b",
+        "lf_sha256": "d18ae4a7e134e55f7c7d2b35b4d1eddeaf44a8058b4a9cc12cdcf866b6ce7a5b"
+      },
+      {
+        "commit": "b0d645f6b2dbc8dad866032a5c652e7a92d32b0c",
+        "path": "docs/CC12_NATIVE_WORLD_CURRENT_TICK_SOURCE.md",
+        "bytes": 9848,
+        "git_blob_sha256": "c4eeab227a45b30b8a9bf7d98c9cbd2ef41bd27851887a78372c2d389b39ec1f",
+        "lf_sha256": "c4eeab227a45b30b8a9bf7d98c9cbd2ef41bd27851887a78372c2d389b39ec1f"
+      },
+      {
+        "commit": "b0d645f6b2dbc8dad866032a5c652e7a92d32b0c",
+        "path": "reports/cc12_native_world_current_tick_source.json",
+        "bytes": 32794,
+        "git_blob_sha256": "fe7777c16ca346193cb85f69b979381944cce1a77e218d3d85b2104bbcccd64a",
+        "lf_sha256": "fe7777c16ca346193cb85f69b979381944cce1a77e218d3d85b2104bbcccd64a"
+      }
+    ]
+  },
+  "minimum_next_packet": {
+    "address": "00922FD0",
+    "end_inclusive": "00923011",
+    "bytes": 66,
+    "mode": "read_only_contract",
+    "known_scope_basis": "Current capped address lookup and existing Native contract identify whole66-byte body; current Source inspected at hit_narrowphase.cpp291..296 lacks concrete operations.",
+    "questions": [
+      "Exact current child-link traversal/reload schedule",
+      "Actual +5C/+5D/+5E/+6C writes and order",
+      "Recursive receiver lifetime",
+      "Current vslot84 ABI and existing genuine provider reuse"
+    ],
+    "not_authorized_here": [
+      "Source implementation",
+      "874D00 wholecallee sweep",
+      "listing or metadata repair",
+      "World/application admission"
+    ]
+  },
+  "source_and_prior_evidence_pins": [
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "lf_sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "src/native_world_chain_headers.cpp",
+      "bytes": 2305,
+      "sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383",
+      "lf_sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383"
+    },
+    {
+      "path": "include/bsp/native_world_parent_headers.hpp",
+      "bytes": 1906,
+      "sha256": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba",
+      "lf_sha256": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba"
+    },
+    {
+      "path": "src/native_world_parent_headers.cpp",
+      "bytes": 1819,
+      "sha256": "15c7dbf48d091d94e46f8ed9174e02a2f3338fcd43410d0a980415eaf5807685",
+      "lf_sha256": "15c7dbf48d091d94e46f8ed9174e02a2f3338fcd43410d0a980415eaf5807685"
+    },
+    {
+      "path": "include/bsp/native_world_matrix_sentinel.hpp",
+      "bytes": 392,
+      "sha256": "71fa406a7c9da9ee40077db67480b20a6feb80256c76db01f523a3b478717793",
+      "lf_sha256": "71fa406a7c9da9ee40077db67480b20a6feb80256c76db01f523a3b478717793"
+    },
+    {
+      "path": "include/bsp/native_parent_header_clear.hpp",
+      "bytes": 1141,
+      "sha256": "b67b449dec89b1298b3d330e36a7f628a1a523d8eb1f8d0aa9c78448f4c70dee",
+      "lf_sha256": "b67b449dec89b1298b3d330e36a7f628a1a523d8eb1f8d0aa9c78448f4c70dee"
+    },
+    {
+      "path": "include/bsp/native_parent_header_destructor_callback.hpp",
+      "bytes": 493,
+      "sha256": "6169d09c5cd644250bda3407eb4c023e081f114ffd8a055c4dcd0afcaadfd600",
+      "lf_sha256": "6169d09c5cd644250bda3407eb4c023e081f114ffd8a055c4dcd0afcaadfd600"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_producers.hpp",
+      "bytes": 3874,
+      "sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+      "lf_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be"
+    },
+    {
+      "path": "src/native_pending_entity_producers.cpp",
+      "bytes": 4026,
+      "sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+      "lf_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc"
+    },
+    {
+      "path": "include/bsp/native_projectile_pending_entity_services.hpp",
+      "bytes": 1600,
+      "sha256": "fe1ba011c59be98f72faff6755f61782fc42071c2227ba23a6f217e94260fa49",
+      "lf_sha256": "fe1ba011c59be98f72faff6755f61782fc42071c2227ba23a6f217e94260fa49"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9292,
+      "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+      "lf_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "bytes": 21673,
+      "sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+      "lf_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d"
+    },
+    {
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "bytes": 2159,
+      "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+      "lf_sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46"
+    },
+    {
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "bytes": 1691,
+      "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+      "lf_sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "src/hit_narrowphase.cpp",
+      "bytes": 17499,
+      "sha256": "bbc069a4ece1c8a840ba284796f909c0b78d04282565909e64368aba50b510ef",
+      "lf_sha256": "bbc069a4ece1c8a840ba284796f909c0b78d04282565909e64368aba50b510ef"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "include/bsp/game_hosts_fixed_step.hpp",
+      "bytes": 18004,
+      "sha256": "cd47c5dd49d9e618461768cdff3a0a26541a9457168094234b531699b103c0b2",
+      "lf_sha256": "cd47c5dd49d9e618461768cdff3a0a26541a9457168094234b531699b103c0b2"
+    },
+    {
+      "path": "include/bsp/mission_scene_load.hpp",
+      "bytes": 17753,
+      "sha256": "5d00a69e1e5d3f878640aef78c21a3ae569b5fd1b30167a510f61bac35759207",
+      "lf_sha256": "5d00a69e1e5d3f878640aef78c21a3ae569b5fd1b30167a510f61bac35759207"
+    },
+    {
+      "path": "include/bsp/unit_damage.hpp",
+      "bytes": 24800,
+      "sha256": "e1ae844d15f78de9641e01c7d0996d637c27f274efb384ed882432c0334eb2e9",
+      "lf_sha256": "e1ae844d15f78de9641e01c7d0996d637c27f274efb384ed882432c0334eb2e9"
+    },
+    {
+      "path": "include/bsp/native_world_entity_chain_drain.hpp",
+      "bytes": 1531,
+      "sha256": "7c0e39fdb69fb1ddcefb83b16a03e52821e7520461f2c1459e2a960d1165068c",
+      "lf_sha256": "7c0e39fdb69fb1ddcefb83b16a03e52821e7520461f2c1459e2a960d1165068c"
+    },
+    {
+      "path": "src/native_world_entity_chain_drain.cpp",
+      "bytes": 3278,
+      "sha256": "cdb95aa2c88aea1f494bb8330ce357ee50bf4228315d8c8c8cdc076d32c777bb",
+      "lf_sha256": "cdb95aa2c88aea1f494bb8330ce357ee50bf4228315d8c8c8cdc076d32c777bb"
+    },
+    {
+      "path": "include/bsp/native_world_constant_byte.hpp",
+      "bytes": 842,
+      "sha256": "2f0665c29c2b0aced9e37ace905b4b573839e172de9e8a35af5a88a0c725c014",
+      "lf_sha256": "2f0665c29c2b0aced9e37ace905b4b573839e172de9e8a35af5a88a0c725c014"
+    },
+    {
+      "path": "src/native_world_constant_byte.cpp",
+      "bytes": 289,
+      "sha256": "2ecbde35c2f5eb1614b199897e6ca20949a44ed23b71758b57449e756b8e8c54",
+      "lf_sha256": "2ecbde35c2f5eb1614b199897e6ca20949a44ed23b71758b57449e756b8e8c54"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 16589,
+      "sha256": "72a927c4d9a08e5d1f6dfe96a8ac12605f7b957aa6100aa9d0f922af343bbcfd",
+      "lf_sha256": "72a927c4d9a08e5d1f6dfe96a8ac12605f7b957aa6100aa9d0f922af343bbcfd"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "docs/CC12_WORLD_BASE_METHOD_TABLE_READINESS.md",
+      "bytes": 8208,
+      "sha256": "ac236e4eaaaab9297fc579d14e29bb068ab5b9000f4b80f700bfd2e0054fa00a",
+      "lf_sha256": "ac236e4eaaaab9297fc579d14e29bb068ab5b9000f4b80f700bfd2e0054fa00a"
+    },
+    {
+      "path": "reports/cc12_world_base_method_table_readiness.json",
+      "bytes": 11145,
+      "sha256": "e3956dc70c73bcb7a219a474fceceb7e5728b19e6c3059bc763d4bb0d1ab04e9",
+      "lf_sha256": "9c40424f4ddde7ccc5638e359de4cb709783151bbd34c8e478bc581be14120de"
+    },
+    {
+      "path": "docs/CC12_WORLD_DESTRUCTOR_LISTING_REPAIR_DESIGN.md",
+      "bytes": 9886,
+      "sha256": "d39fe1327ac5a1482b867021798f60f25f25f38fb6d7abac0b50ba4889bb873f",
+      "lf_sha256": "d39fe1327ac5a1482b867021798f60f25f25f38fb6d7abac0b50ba4889bb873f"
+    },
+    {
+      "path": "reports/cc12_world_destructor_listing_repair_design.json",
+      "bytes": 34524,
+      "sha256": "5e5542a78f5c84ff49114d9a833f00b5d20a38c7dd0c58213cfe4c86ad040c15",
+      "lf_sha256": "5e5542a78f5c84ff49114d9a833f00b5d20a38c7dd0c58213cfe4c86ad040c15"
+    }
+  ],
+  "validation": {
+    "fresh_live_PE_equal_bytes": 522,
+    "encoded_instruction_count": 182,
+    "physical_calls": 21,
+    "current_listing_starts": 156,
+    "missing_starts": 26,
+    "missing_bytes": 82,
+    "source_and_prior_pin_count": 31,
+    "immutable_commit_blob_pins": 6,
+    "JSON_parse": true,
+    "pin_recompute": true,
+    "Source_edits": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_CMake_mutations": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Read-only normal-body and dependency readiness only",
+    "No whole native exception/support graph or ABI closure",
+    "No World source owner, method table, application or gameplay readiness"
+  ]
+}
