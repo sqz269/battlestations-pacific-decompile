@@ -1,0 +1,2004 @@
+{
+  "schema": "cc12-mission-lua-variant-owned-cleanup-ABI-readiness-v1",
+  "status": "Read-only Native owned-body and current Source provider audit; implementation and Original ABI admission held",
+  "generated_utc": "2026-10-09T16:56:21.541027+00:00",
+  "baseline_revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+  "address": "006EE040",
+  "provisional_role": "Owned-field cleanup for a selected mission Lua variant receiver",
+  "role_limits": "Cleanup, ownership, field types and containing class are descriptive hypotheses. This is not a copy provider claim.",
+  "scope": {
+    "owned_files": [
+      "docs/CC12_MISSION_LUA_VARIANT_OWNED_CLEANUP_ABI_READINESS.md",
+      "reports/cc12_mission_lua_variant_owned_cleanup_ABI_readiness.json"
+    ],
+    "owned_Native_range": [
+      "006EE040",
+      "006EE0A1"
+    ],
+    "Root_Astra_gate": "Root read all 29 original instructions / 98 bytes before delegating the Source contract audit.",
+    "unopened_Native_bodies": [
+      "00884AF0",
+      "00419CC0",
+      "00BD1510"
+    ],
+    "unopened_handler": "00C82FE8",
+    "unopened_other_Native_evidence": [
+      "callers",
+      "neighbors",
+      "globals",
+      "pool storage contents"
+    ],
+    "subordinate_queries": "Metadata only; no subordinate body, listing or bytes opened.",
+    "Source_edits": false,
+    "Ghidra_mutations": false,
+    "ledger_edits": false,
+    "CMake_edits": false,
+    "new_build_test_probe_or_consumer": false,
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "gameplay_credit": 0
+  },
+  "Native_evidence": {
+    "address": "006EE040",
+    "end_inclusive": "006EE0A1",
+    "bytes": 98,
+    "sha256": "329d7b7b6a88be900256ee4dc587853dae8370b8c9cf05d39ba36070edb30f7a",
+    "hex": "6aff68e82fc80064a100000000506489250000000051568bf1897424048d4e10c744241000000000e8836a19008b4e0885c9c7442410ffffffff74168b46046a0183c0015051e835bcd2ff8bc8e87e344e008b4c24085e64890d0000000083c410c3",
+    "live_equal_PE_equal_Root": true,
+    "PE_RVA": "002EE040",
+    "PE_file_offset": 3072064,
+    "PE_section": ".text",
+    "all_file_backed": true,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verified_program": "/battlestationspacific.exe",
+    "count": "live function count 64729; snapshot 64729; same\n",
+    "instruction_count": 29,
+    "instructions": [
+      {
+        "address": "006EE040",
+        "size": 2,
+        "hex": "6aff",
+        "mnemonic": "push",
+        "operands": "-1",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": -4,
+        "implicit_stack": {
+          "write_S_offset": -4,
+          "width": 4,
+          "value": "-1"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE042"
+        ]
+      },
+      {
+        "address": "006EE042",
+        "size": 5,
+        "hex": "68e82fc800",
+        "mnemonic": "push",
+        "operands": "0xc82fe8",
+        "ESP_before_S_offset": -4,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": {
+          "write_S_offset": -8,
+          "width": 4,
+          "value": "0xc82fe8"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE047"
+        ]
+      },
+      {
+        "address": "006EE047",
+        "size": 6,
+        "hex": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": true,
+            "access_write": false,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE04D"
+        ]
+      },
+      {
+        "address": "006EE04D",
+        "size": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": {
+          "write_S_offset": -12,
+          "width": 4,
+          "value": "eax"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE04E"
+        ]
+      },
+      {
+        "address": "006EE04E",
+        "size": 7,
+        "hex": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": false,
+            "access_write": true,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE055"
+        ]
+      },
+      {
+        "address": "006EE055",
+        "size": 1,
+        "hex": "51",
+        "mnemonic": "push",
+        "operands": "ecx",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": {
+          "write_S_offset": -16,
+          "width": 4,
+          "value": "ecx"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE056"
+        ]
+      },
+      {
+        "address": "006EE056",
+        "size": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": {
+          "write_S_offset": -20,
+          "width": 4,
+          "value": "esi"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE057"
+        ]
+      },
+      {
+        "address": "006EE057",
+        "size": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE059"
+        ]
+      },
+      {
+        "address": "006EE059",
+        "size": 4,
+        "hex": "89742404",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 4], esi",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 4,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE05D"
+        ]
+      },
+      {
+        "address": "006EE05D",
+        "size": 3,
+        "hex": "8d4e10",
+        "mnemonic": "lea",
+        "operands": "ecx, [esi + 0x10]",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "address_calculation_only": true
+          }
+        ],
+        "normal_successors": [
+          "006EE060"
+        ]
+      },
+      {
+        "address": "006EE060",
+        "size": 8,
+        "hex": "c744241000000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x10], 0",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE068"
+        ]
+      },
+      {
+        "address": "006EE068",
+        "size": 5,
+        "hex": "e8836a1900",
+        "mnemonic": "call",
+        "operands": "0x884af0",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE06D"
+        ]
+      },
+      {
+        "address": "006EE06D",
+        "size": 3,
+        "hex": "8b4e08",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esi + 8]",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 8,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE070"
+        ]
+      },
+      {
+        "address": "006EE070",
+        "size": 2,
+        "hex": "85c9",
+        "mnemonic": "test",
+        "operands": "ecx, ecx",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE072"
+        ]
+      },
+      {
+        "address": "006EE072",
+        "size": 8,
+        "hex": "c7442410ffffffff",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x10], 0xffffffff",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE07A"
+        ]
+      },
+      {
+        "address": "006EE07A",
+        "size": 2,
+        "hex": "7416",
+        "mnemonic": "je",
+        "operands": "0x6ee092",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE092",
+          "006EE07C"
+        ]
+      },
+      {
+        "address": "006EE07C",
+        "size": 3,
+        "hex": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 4,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE07F"
+        ]
+      },
+      {
+        "address": "006EE07F",
+        "size": 2,
+        "hex": "6a01",
+        "mnemonic": "push",
+        "operands": "1",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": {
+          "write_S_offset": -24,
+          "width": 4,
+          "value": "1"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE081"
+        ]
+      },
+      {
+        "address": "006EE081",
+        "size": 3,
+        "hex": "83c001",
+        "mnemonic": "add",
+        "operands": "eax, 1",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE084"
+        ]
+      },
+      {
+        "address": "006EE084",
+        "size": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": {
+          "write_S_offset": -28,
+          "width": 4,
+          "value": "eax"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE085"
+        ]
+      },
+      {
+        "address": "006EE085",
+        "size": 1,
+        "hex": "51",
+        "mnemonic": "push",
+        "operands": "ecx",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": {
+          "write_S_offset": -32,
+          "width": 4,
+          "value": "ecx"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE086"
+        ]
+      },
+      {
+        "address": "006EE086",
+        "size": 5,
+        "hex": "e835bcd2ff",
+        "mnemonic": "call",
+        "operands": "0x419cc0",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE08B"
+        ]
+      },
+      {
+        "address": "006EE08B",
+        "size": 2,
+        "hex": "8bc8",
+        "mnemonic": "mov",
+        "operands": "ecx, eax",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE08D"
+        ]
+      },
+      {
+        "address": "006EE08D",
+        "size": 5,
+        "hex": "e87e344e00",
+        "mnemonic": "call",
+        "operands": "0xbd1510",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE092"
+        ]
+      },
+      {
+        "address": "006EE092",
+        "size": 4,
+        "hex": "8b4c2408",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 8]",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 8,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE096"
+        ]
+      },
+      {
+        "address": "006EE096",
+        "size": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": {
+          "read_S_offset": -20,
+          "width": 4,
+          "register": "esi"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE097"
+        ]
+      },
+      {
+        "address": "006EE097",
+        "size": 7,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": false,
+            "access_write": true,
+            "address_calculation_only": false
+          }
+        ],
+        "normal_successors": [
+          "006EE09E"
+        ]
+      },
+      {
+        "address": "006EE09E",
+        "size": 3,
+        "hex": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": 0,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "006EE0A1"
+        ]
+      },
+      {
+        "address": "006EE0A1",
+        "size": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": "",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": 4,
+        "implicit_stack": {
+          "return_address_read_S_offset": 0,
+          "argument_cleanup_bytes": 0
+        },
+        "memory_operands": [],
+        "normal_successors": []
+      }
+    ],
+    "basic_block_count": 3,
+    "basic_blocks": [
+      {
+        "start": "006EE040",
+        "end_inclusive": "006EE07B",
+        "instructions": 16,
+        "successors": [
+          "006EE092",
+          "006EE07C"
+        ]
+      },
+      {
+        "start": "006EE07C",
+        "end_inclusive": "006EE091",
+        "instructions": 8,
+        "successors": [
+          "006EE092"
+        ]
+      },
+      {
+        "start": "006EE092",
+        "end_inclusive": "006EE0A1",
+        "instructions": 5,
+        "successors": []
+      }
+    ],
+    "block_edges": 3,
+    "call_count": 3,
+    "calls": [
+      {
+        "site": "006EE068",
+        "target": "00884AF0",
+        "caller_ESP_before_S_offset": -20,
+        "child_entry_ESP_S_offset": -24,
+        "assumed_argument_cleanup_bytes": 0,
+        "return_ESP_S_offset_under_assumption": -20,
+        "return_address": "006EE06D",
+        "assumption_source": "Owned normal-frame requirement",
+        "Native_child_body_opened": false
+      },
+      {
+        "site": "006EE086",
+        "target": "00419CC0",
+        "caller_ESP_before_S_offset": -32,
+        "child_entry_ESP_S_offset": -36,
+        "assumed_argument_cleanup_bytes": 0,
+        "return_ESP_S_offset_under_assumption": -32,
+        "return_address": "006EE08B",
+        "assumption_source": "Inherited Source header Native contract; not fresh child Native ABI proof",
+        "Native_child_body_opened": false
+      },
+      {
+        "site": "006EE08D",
+        "target": "00BD1510",
+        "caller_ESP_before_S_offset": -32,
+        "child_entry_ESP_S_offset": -36,
+        "assumed_argument_cleanup_bytes": 12,
+        "return_ESP_S_offset_under_assumption": -20,
+        "return_address": "006EE092",
+        "assumption_source": "Inherited Source header Native contract; not fresh child Native ABI proof",
+        "Native_child_body_opened": false
+      }
+    ],
+    "plain_RET_count": 1,
+    "padding_or_unclassified_bytes": 0,
+    "direct_receiver_memory_operands": [
+      {
+        "site": "006EE05D",
+        "width": 4,
+        "base": "esi",
+        "index": null,
+        "scale": 1,
+        "displacement": 16,
+        "segment": null,
+        "access_read": true,
+        "access_write": false,
+        "address_calculation_only": true
+      },
+      {
+        "site": "006EE06D",
+        "width": 4,
+        "base": "esi",
+        "index": null,
+        "scale": 1,
+        "displacement": 8,
+        "segment": null,
+        "access_read": true,
+        "access_write": false,
+        "address_calculation_only": false
+      },
+      {
+        "site": "006EE07C",
+        "width": 4,
+        "base": "esi",
+        "index": null,
+        "scale": 1,
+        "displacement": 4,
+        "segment": null,
+        "access_read": true,
+        "access_write": false,
+        "address_calculation_only": false
+      }
+    ],
+    "explicit_receiver_stores": 0,
+    "stack_validation": {
+      "all29_instruction_positions_and_branch_merge": true,
+      "merge_006EE092_S_offset": -20,
+      "before_final_ADD_S_offset": -16,
+      "before_RET_S_offset": 0,
+      "after_RET_S_offset": 4,
+      "minimum_balance": "Assume first child returns with no argument cleanup. On nonzero branch, getter and return-block argument cleanup totals12; current inherited split is0+12.",
+      "three_pending_word_addresses_S_offsets": [
+        -32,
+        -28,
+        -24
+      ],
+      "getter_and_return_block_child_entry_S_offset_under_inherited_split": -36,
+      "universal_child_ABI_or_execution_proved": false
+    },
+    "Root_owned_gate": {
+      "address": "006ee040",
+      "bytes": 98,
+      "raw_ops": 29,
+      "sha256": "329d7b7b6a88be900256ee4dc587853dae8370b8c9cf05d39ba36070edb30f7a",
+      "contract": "ECX receiver capturedESI/NativeFS handlerC82FE8/localThis; ECXcurrentESI10/state0 before884AF0(noargs). LateECXcurrentN8/test thenfullstate-1 preservingTESTintoJE. Nonzero lateEAXcurrentN4 thenPUSH1/ADDEAX1/PUSHEAX/PUSHcurrentECX before419CC0; MOVEAXreturnedpool intoECX beforeBD1510. Physicalthreepushedwords areliveacrossgetter/returnblock sequence; childRET0/RET0C balance needsseparateverificationnotdeclaredsemantictypes. PriorFSreadESP8 beforePOPSI,restoreFS/ADDesp10/plainRET. No ownedNfieldwrites; current savedwords/nonvols/controlstack andNativeEH/childpool/lifetime policy remainunproved."
+    },
+    "Root_owned_metadata": "Function: FUN_006ee040 at 006ee040\nSignature: undefined FUN_006ee040(void)\nEntry: 006ee040\nBody: 006ee040 - 006ee0a1\n{\n \"function_name\": \"FUN_006ee040\",\n \"address\": \"006ee040\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 29,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 3,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_SizedStoragePool_GetSingleton\",\n  \"BSP_SizedStoragePool_ReturnBlock\",\n  \"FUN_00884af0\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  16,\n  1\n ],\n \"basic_block_hashes\": [\n  \"53b321e72b3f836efd10c52d6c3a98c5286e2edabc82d468bfb3c284798e6473\",\n  \"ff25e1ef8ee1c6f243c2734be6cc20747cd0aa86808386ee8a20eab58b2d8cea\",\n  \"cf82d49fde8048019e91089bd383573b0389bff933bc3f1ae5296d9b0bc7fa7f\"\n ]\n}\n",
+    "Root_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_lua_variant_copy_target_primary\\capture.json",
+      "bytes": 7703,
+      "sha256": "216003568fb95aabdd8e0ce5cd6dce9387c96e1e20487893e4fe4fcf76d5047e"
+    },
+    "Root_approval_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_lua_variant_copy_target_primary\\Root_Astra_gate_approval.json",
+      "bytes": 940,
+      "sha256": "5518c80cdb0673221805cfaab6c876de539fd9e9d067d386d1e9963711f6c883"
+    },
+    "qualification": "Static owned-body replay only. Stack offsets after calls explicitly depend on normal child returns and inherited provider assumptions; child bodies/handler/data remain unopened."
+  },
+  "entry_and_frame": {
+    "symbols": "S = entry ESP; N = entry ECX captured into ESI; arithmetic and addresses are modulo 2^32.",
+    "external_stack_arguments": "No owned stack-argument loads; final plain RET removes only the return address.",
+    "frame_schedule": [
+      "006EE040 pushes full -1 at S-4; 006EE042 pushes handler address 00C82FE8 at S-8.",
+      "006EE047 captures current FS:[0] into EAX; 006EE04D pushes it at S-0C; 006EE04E publishes ESP=S-0C to FS:[0].",
+      "006EE055 pushes incoming ECX at S-10; 006EE056 saves incoming ESI at S-14.",
+      "006EE057 captures incoming ECX in ESI; 006EE059 rewrites current [S-10] with ESI.",
+      "006EE05D forms ECX = current ESI+10h before the full DWORD state-zero store at 006EE060 into [ESP+10h]=[S-4].",
+      "006EE068 always calls 00884AF0; caller ESP=S-14 and child entry ESP=S-18 under the entry frame."
+    ],
+    "first_child_boundary": {
+      "ECX": "N+10h modulo 2^32, assuming ESI is unchanged within the owned prefix",
+      "EAX": "Prior FS:[0] value captured at 006EE047",
+      "EDX": "Incoming EDX, never assigned by the owned prefix",
+      "arithmetic_FLAGS": "Incoming arithmetic flags; PUSH, MOV and LEA in this prefix preserve them",
+      "argument_pushes": 0,
+      "required_normal_argument_cleanup_bytes": 0,
+      "qualification": "No Native child body or exception contract established; require ordinary return and compatible preservation."
+    },
+    "nonvolatiles": "Owned code saves/restores ESI. Correct N-based reads require children to preserve ESI; EBX, EDI and EBP are not locally saved and require compatible child preservation.",
+    "FS_and_state_aliases": "Frame and FS stores may alias receiver or provider-visible storage. Formed ECX survives a subsequent aliasing state store; backing memory need not.",
+    "EH": "Local registration and full state -1 -> 0 -> -1 are visible. Handler 00C82FE8 remains unopened; no cleanup map, rethrow, termination, fault rollback or Original EH identity is inferred."
+  },
+  "late_owned_field_schedule": {
+    "006EE06D": "After the first child returns, capture current DWORD [ESI+8] as P in ECX. It is not an entry snapshot.",
+    "006EE070": "TEST captured P, P.",
+    "006EE072": "Store full DWORD FFFFFFFF into current [ESP+10h]. This MOV preserves the TEST flags used by JE at 006EE07A.",
+    "006EE07A": "P==0 goes directly to 006EE092; the first child was still called.",
+    "006EE07C": "Only on P!=0, capture current DWORD [ESI+4] as L into EAX, after the full state-reset store.",
+    "006EE07F_006EE081": "Push literal 1 before ADD EAX,1. Even if the push aliases backing [N+4], ADD uses captured L. Z=(L+1) modulo 2^32.",
+    "006EE084_006EE086": "Push Z, then captured P, then call 00419CC0. No overflow, signedness, length, type or null-pool guard is added.",
+    "006EE08B_006EE08D": "Capture getter return EAX into ECX and call 00BD1510. There are no new parent argument pushes or stack adjustments between these calls.",
+    "explicit_receiver_stores": 0,
+    "selected_direct_read_prefix_bytes": 12,
+    "read_set": "DWORD N+8..N+0B after first child; conditional DWORD N+4..N+7 after state reset. LEA N+10 is an address calculation, not a receiver-field load.",
+    "limits": "The 12-byte read prefix is not allocation size or complete class layout; first child may access beyond it. No length/pointer clearing, idempotence, semantic string type or ownership success follows from the owned body."
+  },
+  "stack_and_child_boundaries": {
+    "minimum_frame_balance": "For the conventional shared frame, first child must return with zero argument cleanup. On P!=0, total cleanup by getter plus return helper must be 12 bytes before join at S-14.",
+    "inherited_provider_split": "Current Source headers describe getter plain RET and return helper RET 0Ch. This audit uses 0+12 conditionally; the owned body alone cannot determine each child pop count.",
+    "pending_slots": [
+      {
+        "address": "S-18",
+        "written_at": "006EE07F",
+        "value_when_written": "1"
+      },
+      {
+        "address": "S-1C",
+        "written_at": "006EE084",
+        "value_when_written": "Z=(L+1) mod 2^32"
+      },
+      {
+        "address": "S-20",
+        "written_at": "006EE085",
+        "value_when_written": "captured P"
+      }
+    ],
+    "getter_entry": {
+      "child_ESP": "S-24",
+      "physical_plus4_plus8_plusC_when_parent_written": [
+        "P",
+        "Z",
+        "1"
+      ],
+      "ECX": "P",
+      "EAX": "Z",
+      "EDX": "First-child residual",
+      "FLAGS": {
+        "CF": "L==FFFFFFFF",
+        "OF": "L==7FFFFFFF",
+        "AF": "(L&0F)==0F",
+        "ZF": "Z==0",
+        "SF": "bit31(Z)",
+        "PF": "Even parity of low byte of Z"
+      },
+      "semantic_arguments": "The inherited Native getter has no Native parameters. Physical pending stack words do not become getter parameters."
+    },
+    "return_helper_entry_under_inherited_split": {
+      "child_ESP": "S-24",
+      "ECX": "G = EAX returned by getter",
+      "EAX": "G unchanged by owned MOV ECX,EAX",
+      "EDX_and_FLAGS": "Getter residuals; owned MOV and CALL do not define them",
+      "physical_word_locations": "Same S-20 / S-1C / S-18 addresses as before getter; return-address slot S-24 is reused with a different return address.",
+      "late_values": "Getter may mutate those pending words through aliases. The parent does not refresh them; return helper sees their then-current values.",
+      "inherited_semantics": "Current Source Native-contract comment describes ECX pool and stack block,size,unused with RET 0Ch. The literal third word is not the fourth Source API parameter, which is an explicit live gate reference."
+    },
+    "universal_ABI_claim": false,
+    "qualification": "If the unopened getter has a different pop count, second-call word positions change. Net balance cannot identify individual conventions or semantic parameter meanings."
+  },
+  "normal_epilogue": {
+    "006EE092": "Capture current [ESP+8]=[S-0C] into ECX under the balanced frame. This occurs before the ESI pop.",
+    "006EE096": "POP ESI from current [S-14], moving ESP to S-10.",
+    "006EE097": "Restore FS:[0] from the captured ECX. Do not replace this with an assumed unchanged original FS word.",
+    "006EE09E_006EE0A1": "ADD ESP,10h reaches S; plain RET consumes current return address at S and leaves caller ESP=S+4.",
+    "EAX": "Zero branch retains first-child residual; nonzero branch retains return-helper residual. No common semantic receiver/result guarantee.",
+    "EDX": "Corresponding last child residual; no owned EDX assignments.",
+    "ECX": "Late saved-chain value captured by epilogue, not a guaranteed pointer or pool result.",
+    "final_arithmetic_FLAGS": {
+      "operation": "ADD x,10h with x=(S-10h) modulo 2^32 and result r=S modulo 2^32",
+      "CF": "x>=FFFFFFF0",
+      "OF": "7FFFFFF0<=x<=7FFFFFFF",
+      "AF": 0,
+      "ZF": "r==0",
+      "SF": "bit31(r)",
+      "PF": "Even parity of low byte of r",
+      "RET": "Preserves these arithmetic flags"
+    },
+    "conditions": "Normal child returns, required nonvolatile preservation, live writable frame and compatible stack cleanup; no fault or exceptional-path behavior is established."
+  },
+  "current_Source_providers": {
+    "getter_00419CC0": {
+      "header": "include/bsp/native_string_pool_owner.hpp",
+      "implementation": "src/native_string_pool_owner.cpp",
+      "available": true,
+      "Source_registration": "Current cmake/startup.cmake registers native_string_pool_owner.cpp.",
+      "current_interfaces": "Two ordinary C++ overloads: actual publication reference plus either SingletonLifetimeDomain reference or actual raw manager-slot reference.",
+      "provider_schedule": "Published nonnull fast return; otherwise current lifetime manager and lock capture, double-check, allocation and construction, publication, current registration-manager lookup, registration, finally release, then publication reload.",
+      "Source_EH": "Current __try/__finally source frees allocation while its construction state remains active and releases captured lock/depth; this does not establish unopened Native getter or owned handler behavior.",
+      "required_binding": "Actual canonical reconstructed publication and lifetime-manager domain, including compatible registration and deletion policy. Explicit Source references cannot be synthesized from the three pending Native words.",
+      "Original_ABI_admitted_here": false
+    },
+    "return_00BD1510": {
+      "header": "include/bsp/native_string_pool_storage.hpp",
+      "implementation": "src/native_string_pool_storage.cpp",
+      "available": true,
+      "Source_registration": "Current cmake/startup.cmake registers native_string_pool_storage.cpp.",
+      "Source_signature": "void return_native_string_pool_00bd1510(NativeStringPoolStorage* actual_pool, void* block, uint32_t size, volatile uint32_t& actual_small_returns_disabled_01090aa4) noexcept",
+      "Source_schedule": "size>=150 calls current std::free without pool/gate read; smaller sizes first read the live gate and may return, otherwise use captured pool critical section, depth increment, raw small return, depth decrement and leave.",
+      "gate_binding": "Fourth Source argument is the actual live gate reference. It is neither the literal Native stack word 1 nor a host callback or copied flag.",
+      "policy_boundary": "Current Source CRT, Win32 synchronization and noexcept are implementation policies; no Original CRT, Native child ABI or exception equivalence is newly established.",
+      "getter_order": "The owned nonzero branch calls getter before return helper even for a large size or disabled small returns; no optimization may skip the getter using the return-helper branch.",
+      "Original_ABI_admitted_here": false
+    },
+    "borrowed_bridge": {
+      "type": "ActualNativeStringPoolStorage",
+      "bindings": "Borrows actual publication and gate references plus either semantic lifetime domain or raw manager slot.",
+      "release_order": "get_pool() precedes return_native_string_pool_00bd1510(...).",
+      "exception_boundary": "release is noexcept through the existing Source storage interface; a C++ getter failure can terminate. This is not a recovered Native EH contract."
+    },
+    "production_storage": {
+      "available_other_domain": "GameNativeStringProcess owns reconstructed publication, gate and raw manager slots; raw context and storage bridge borrow those same slots. A static heap process object is intentionally retained until termination.",
+      "available_other_consumer": "TitleFileBlock::return_caller_name captures data, checks null, computes uint32 length+1, calls raw getter then return helper with the actual live gate, and does not reset the header.",
+      "selected_variant_binding": "No currently admitted Source owner/provider ties this selected N and embedded N+10 object to that canonical process domain, allocation backing, registration, deletion and exception lifetime.",
+      "original_globals_opened": false,
+      "limits": "Named Source references and reconstructed fields do not establish Original physical-global address identity or selected variant storage."
+    },
+    "variant_container": {
+      "exact_current_source_search": {
+        "roots": [
+          "src",
+          "include"
+        ],
+        "tracked_files_considered": 4124,
+        "case_insensitive_addresses": [
+          "006EE040",
+          "00884AF0"
+        ],
+        "complete_matches": []
+      },
+      "owned_entry_provider_present": false,
+      "embedded_child_provider_present": false,
+      "existing_partial_providers": "008849B0 initializer writes a 20-byte backing prefix; raw link-repair and small-link providers expose separate narrow interfaces.",
+      "composition_gap": "Those providers do not establish the selected allocation or complete variant class, embedded cleanup at N+10, teardown ordering, actual pool-domain lifetime, unwind contract, or an ABI-compatible replacement.",
+      "no_new_type_or_adapter": true
+    },
+    "historical_report_correction": "native_string_pool_owner.json still says its CMake registration was pending. Current cmake/startup.cmake is the registration authority; the old report is provenance, not current absence evidence."
+  },
+  "accepted_context_only": {
+    "selected_parent_691": {
+      "report": "reports/cc12_mission_lua_variant_tag5_loop_child_ABI_readiness.json",
+      "historical_baseline": "96791d7c7a27eae29d58f1df60adbf954e1c3b4f",
+      "accepted_extent": "637 saved bytes / 215 operations plus 54 selected continuation bytes / 19 operations = 691 bytes / 234 operations; no extent mutation or Source/ABI admission.",
+      "accepted_retirement_excerpt": {
+        "payload_call": "006EE837 reloadscurrentZ intoECX,ADD0Ch,call006EE040. Noargpush; footprint/cleanupunopened.",
+        "free_call": "006EE843 reloadscurrentZ againafterpayloadchild;pushfreshvalue;call00BF65AC. Do notsubstitutefrozenoriginalN0 orfirstpayloadbase.",
+        "continuation_candidate_schedule": [
+          "006EE84D readscurrent[R+8]afterfreeandbeforeargumentcleanup.",
+          "006EE850 ADDESP4, TESTEAXEAX, POPEDI, POPEBX. POPs preserveTESTflags.",
+          "006EE857 JBE hasCF=0fromTEST, so onlyzero skips. NonzeroDWORDdecrementsby1 andstoresR+8 at006EE85C beforeargumentloads.",
+          "006EE85F loadsF fromS+8;006EE863 loadsO fromS+4;006EE867 loadsN fromS+0Ch.",
+          "006EE86B storescapturedFto[O];006EE86D loads currentsavedFS word atS-0Ch;006EE871 POPESI.",
+          "006EE872 storescapturedNto[O+4];006EE875 POPEBP;006EE876 restoresFS fromcapturedword;006EE87D ADDESP54h;006EE880 RET0Ch."
+        ],
+        "output_width": 8,
+        "output_prior_read": false,
+        "output_null_or_overlap_guard": false,
+        "normal_EAX": "lateO, unchangedfrom006EE863throughRET",
+        "final_ESP_relative_to_entry": 16,
+        "capture_order_effect": "BothF/NandO capturedbeforefirstoutputstore. SavedFSreadisafterfirststore,ESIpopbeforesecond,EBPpopaftersecond. Countwriteprecedesargumentloads;EDI/EBXrestoredbeforecountwrite.",
+        "qualification": "Local normalboundary undercompatiblechildren andcurrentframe storage. Rcanaliasfreednode; count/output/restorescanfaultafterfree. No NativeABIruntimeproof."
+      },
+      "relevant_boundary": "Accepted parent reloads current Z, forms receiver Z+0Ch, then calls 006EE040 without arguments. It reloads current Z again after return before outer free; neither receiver nor free target may be frozen across this child.",
+      "not_reopened": "No caller bytes/listing, free-child body, continuation or historical 74-input array replayed in this packet.",
+      "scope_limit": "The new child audit does not migrate or admit the selected parent or supply its other contracts."
+    },
+    "assertion_pair_99": {
+      "report": "reports/cc12_mission_lua_variant_pair_advance_child_ABI_readiness.json",
+      "accepted_shape": "99 bytes / 38 operations; full DWORD pair guard, late pair+4 accesses, one call and a restored-frame external tail jump; assertion may return.",
+      "scope_limit": "Inherited accepted context only. No pair-body reopening, former 82-input replay, returnability upgrade or Source/ABI migration.",
+      "current_caveat": "Prior Source-absence statements from that report are historical. The current 80-input receipt includes later providers; their presence does not establish the selected raw-pair or parent production binding."
+    }
+  },
+  "latest_accepted_Source_build_context": {
+    "receipt": "reports/cc12_native_observer_endpoint_live_count_cleanup_primary_review.json",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 117692,
+      "start_utc": "2026-10-09T16:28:10.509150+00:00",
+      "finish_utc": "2026-10-09T16:28:29.144081+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 80
+    },
+    "source_inputs_replayed_current": [
+      {
+        "path": "CMakeLists.txt",
+        "canonical_lf_bytes": 19025,
+        "canonical_lf_sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+        "prior_receipt_physical_bytes": 19025,
+        "prior_receipt_physical_sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "canonical_lf_bytes": 198705,
+        "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "prior_receipt_physical_bytes": 198705,
+        "prior_receipt_physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/entity_event_queues.hpp",
+        "canonical_lf_bytes": 11448,
+        "canonical_lf_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+        "prior_receipt_physical_bytes": 11448,
+        "prior_receipt_physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/fixed_step_job_waves.hpp",
+        "canonical_lf_bytes": 11060,
+        "canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+        "prior_receipt_physical_bytes": 11060,
+        "prior_receipt_physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "canonical_lf_bytes": 7776,
+        "canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "prior_receipt_physical_bytes": 7776,
+        "prior_receipt_physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "canonical_lf_bytes": 2363,
+        "canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+        "prior_receipt_physical_bytes": 2363,
+        "prior_receipt_physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_cleanup.hpp",
+        "canonical_lf_bytes": 1632,
+        "canonical_lf_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "prior_receipt_physical_bytes": 1632,
+        "prior_receipt_physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+        "canonical_lf_bytes": 2013,
+        "canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "prior_receipt_physical_bytes": 2013,
+        "prior_receipt_physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_default_constructor.hpp",
+        "canonical_lf_bytes": 1412,
+        "canonical_lf_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "prior_receipt_physical_bytes": 1412,
+        "prior_receipt_physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+        "canonical_lf_bytes": 1770,
+        "canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+        "prior_receipt_physical_bytes": 1770,
+        "prior_receipt_physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+        "canonical_lf_bytes": 1698,
+        "canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+        "prior_receipt_physical_bytes": 1698,
+        "prior_receipt_physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_allocator_owned_message_constructor.hpp",
+        "canonical_lf_bytes": 1938,
+        "canonical_lf_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+        "prior_receipt_physical_bytes": 1938,
+        "prior_receipt_physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "canonical_lf_bytes": 2257,
+        "canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "prior_receipt_physical_bytes": 2257,
+        "prior_receipt_physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "canonical_lf_bytes": 1471,
+        "canonical_lf_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "prior_receipt_physical_bytes": 1471,
+        "prior_receipt_physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_legacy_exception_owner.hpp",
+        "canonical_lf_bytes": 3232,
+        "canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "prior_receipt_physical_bytes": 3232,
+        "prior_receipt_physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+        "canonical_lf_bytes": 2957,
+        "canonical_lf_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+        "prior_receipt_physical_bytes": 2957,
+        "prior_receipt_physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+        "canonical_lf_bytes": 2260,
+        "canonical_lf_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+        "prior_receipt_physical_bytes": 2260,
+        "prior_receipt_physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+        "canonical_lf_bytes": 2600,
+        "canonical_lf_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+        "prior_receipt_physical_bytes": 2600,
+        "prior_receipt_physical_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_lock.hpp",
+        "canonical_lf_bytes": 3445,
+        "canonical_lf_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+        "prior_receipt_physical_bytes": 3445,
+        "prior_receipt_physical_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_owners.hpp",
+        "canonical_lf_bytes": 2876,
+        "canonical_lf_sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+        "prior_receipt_physical_bytes": 2876,
+        "prior_receipt_physical_sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_producers.hpp",
+        "canonical_lf_bytes": 3874,
+        "canonical_lf_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+        "prior_receipt_physical_bytes": 3874,
+        "prior_receipt_physical_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+        "canonical_lf_bytes": 843,
+        "canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+        "prior_receipt_physical_bytes": 843,
+        "prior_receipt_physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_constructor.hpp",
+        "canonical_lf_bytes": 761,
+        "canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+        "prior_receipt_physical_bytes": 761,
+        "prior_receipt_physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_getter.hpp",
+        "canonical_lf_bytes": 963,
+        "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "prior_receipt_physical_bytes": 963,
+        "prior_receipt_physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_pending_tick_group_initialization.hpp",
+        "canonical_lf_bytes": 1448,
+        "canonical_lf_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+        "prior_receipt_physical_bytes": 1448,
+        "prior_receipt_physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "canonical_lf_bytes": 2361,
+        "canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "prior_receipt_physical_bytes": 2361,
+        "prior_receipt_physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "canonical_lf_bytes": 2431,
+        "canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "prior_receipt_physical_bytes": 2431,
+        "prior_receipt_physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "canonical_lf_bytes": 18086,
+        "canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "prior_receipt_physical_bytes": 18086,
+        "prior_receipt_physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "canonical_lf_bytes": 2293,
+        "canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "prior_receipt_physical_bytes": 2293,
+        "prior_receipt_physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "canonical_lf_bytes": 2373,
+        "canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "prior_receipt_physical_bytes": 2373,
+        "prior_receipt_physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+        "canonical_lf_bytes": 1845,
+        "canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "prior_receipt_physical_bytes": 1845,
+        "prior_receipt_physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_tick_registration_constructor.hpp",
+        "canonical_lf_bytes": 1247,
+        "canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+        "prior_receipt_physical_bytes": 1247,
+        "prior_receipt_physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_tick_sublist_unlink.hpp",
+        "canonical_lf_bytes": 1882,
+        "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+        "prior_receipt_physical_bytes": 1882,
+        "prior_receipt_physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+        "canonical_lf_bytes": 2315,
+        "canonical_lf_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+        "prior_receipt_physical_bytes": 2315,
+        "prior_receipt_physical_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_scalar_deletion.hpp",
+        "canonical_lf_bytes": 2017,
+        "canonical_lf_sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a",
+        "prior_receipt_physical_bytes": 2017,
+        "prior_receipt_physical_sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+        "canonical_lf_bytes": 2322,
+        "canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+        "prior_receipt_physical_bytes": 2322,
+        "prior_receipt_physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/plane_squadron.hpp",
+        "canonical_lf_bytes": 15252,
+        "canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+        "prior_receipt_physical_bytes": 15252,
+        "prior_receipt_physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "canonical_lf_bytes": 1446,
+        "canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "prior_receipt_physical_bytes": 1446,
+        "prior_receipt_physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "canonical_lf_bytes": 4372,
+        "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "prior_receipt_physical_bytes": 4372,
+        "prior_receipt_physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/tick_element_overrides.hpp",
+        "canonical_lf_bytes": 18720,
+        "canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+        "prior_receipt_physical_bytes": 18720,
+        "prior_receipt_physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "include/bsp/unit_instance_layout.hpp",
+        "canonical_lf_bytes": 18412,
+        "canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+        "prior_receipt_physical_bytes": 18412,
+        "prior_receipt_physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "canonical_lf_bytes": 51122,
+        "canonical_lf_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "prior_receipt_physical_bytes": 51122,
+        "prior_receipt_physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "canonical_lf_bytes": 17789,
+        "canonical_lf_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "prior_receipt_physical_bytes": 18326,
+        "prior_receipt_physical_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "scripts/build.ps1",
+        "canonical_lf_bytes": 1820,
+        "canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "prior_receipt_physical_bytes": 1820,
+        "prior_receipt_physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/game_hosts_fixed_step.cpp",
+        "canonical_lf_bytes": 23671,
+        "canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+        "prior_receipt_physical_bytes": 23671,
+        "prior_receipt_physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "canonical_lf_bytes": 6831,
+        "canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "prior_receipt_physical_bytes": 6831,
+        "prior_receipt_physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/game_native_string_process.cpp",
+        "canonical_lf_bytes": 593,
+        "canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+        "prior_receipt_physical_bytes": 593,
+        "prior_receipt_physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_allocator_base_cleanup.cpp",
+        "canonical_lf_bytes": 894,
+        "canonical_lf_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "prior_receipt_physical_bytes": 894,
+        "prior_receipt_physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_allocator_base_copy_constructor.cpp",
+        "canonical_lf_bytes": 2951,
+        "canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "prior_receipt_physical_bytes": 2951,
+        "prior_receipt_physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_allocator_base_default_constructor.cpp",
+        "canonical_lf_bytes": 755,
+        "canonical_lf_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "prior_receipt_physical_bytes": 755,
+        "prior_receipt_physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_allocator_base_message_constructor.cpp",
+        "canonical_lf_bytes": 979,
+        "canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+        "prior_receipt_physical_bytes": 979,
+        "prior_receipt_physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_allocator_failure_object_constructor.cpp",
+        "canonical_lf_bytes": 764,
+        "canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+        "prior_receipt_physical_bytes": 764,
+        "prior_receipt_physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_allocator_owned_message_constructor.cpp",
+        "canonical_lf_bytes": 2638,
+        "canonical_lf_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+        "prior_receipt_physical_bytes": 2638,
+        "prior_receipt_physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "canonical_lf_bytes": 5460,
+        "canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "prior_receipt_physical_bytes": 5460,
+        "prior_receipt_physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_invalid_parameter_noinfo_call.cpp",
+        "canonical_lf_bytes": 1089,
+        "canonical_lf_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+        "prior_receipt_physical_bytes": 1089,
+        "prior_receipt_physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_legacy_exception_owner.cpp",
+        "canonical_lf_bytes": 4352,
+        "canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "prior_receipt_physical_bytes": 4352,
+        "prior_receipt_physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_lua_variant_link_repair_helpers.cpp",
+        "canonical_lf_bytes": 4367,
+        "canonical_lf_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+        "prior_receipt_physical_bytes": 4367,
+        "prior_receipt_physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_lua_variant_small_link_helpers.cpp",
+        "canonical_lf_bytes": 2266,
+        "canonical_lf_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+        "prior_receipt_physical_bytes": 2266,
+        "prior_receipt_physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_observer_endpoint_live_count_cleanup.cpp",
+        "canonical_lf_bytes": 2755,
+        "canonical_lf_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+        "prior_receipt_physical_bytes": 2755,
+        "prior_receipt_physical_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_pending_entity_lock.cpp",
+        "canonical_lf_bytes": 3613,
+        "canonical_lf_sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+        "prior_receipt_physical_bytes": 3613,
+        "prior_receipt_physical_sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_pending_entity_owners.cpp",
+        "canonical_lf_bytes": 1636,
+        "canonical_lf_sha256": "14f68daf67f3458581777eb14908df01ad1b6da7329af979396e6f623231b8d8",
+        "prior_receipt_physical_bytes": 1636,
+        "prior_receipt_physical_sha256": "14f68daf67f3458581777eb14908df01ad1b6da7329af979396e6f623231b8d8",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_pending_entity_producers.cpp",
+        "canonical_lf_bytes": 4026,
+        "canonical_lf_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+        "prior_receipt_physical_bytes": 4026,
+        "prior_receipt_physical_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_pending_registry_base_cleanup.cpp",
+        "canonical_lf_bytes": 403,
+        "canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+        "prior_receipt_physical_bytes": 403,
+        "prior_receipt_physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_pending_registry_constructor.cpp",
+        "canonical_lf_bytes": 997,
+        "canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+        "prior_receipt_physical_bytes": 997,
+        "prior_receipt_physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_pending_registry_getter.cpp",
+        "canonical_lf_bytes": 3449,
+        "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "prior_receipt_physical_bytes": 3449,
+        "prior_receipt_physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_pending_tick_group_initialization.cpp",
+        "canonical_lf_bytes": 2898,
+        "canonical_lf_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+        "prior_receipt_physical_bytes": 2898,
+        "prior_receipt_physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "canonical_lf_bytes": 4563,
+        "canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+        "prior_receipt_physical_bytes": 4563,
+        "prior_receipt_physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "canonical_lf_bytes": 6911,
+        "canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "prior_receipt_physical_bytes": 6911,
+        "prior_receipt_physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "canonical_lf_bytes": 4127,
+        "canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "prior_receipt_physical_bytes": 4127,
+        "prior_receipt_physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "canonical_lf_bytes": 4283,
+        "canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "prior_receipt_physical_bytes": 4283,
+        "prior_receipt_physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_singleton_vector_reserve_construct.cpp",
+        "canonical_lf_bytes": 3731,
+        "canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "prior_receipt_physical_bytes": 3731,
+        "prior_receipt_physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_tick_registration_constructor.cpp",
+        "canonical_lf_bytes": 3108,
+        "canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+        "prior_receipt_physical_bytes": 3108,
+        "prior_receipt_physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_tick_sublist_unlink.cpp",
+        "canonical_lf_bytes": 2257,
+        "canonical_lf_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+        "prior_receipt_physical_bytes": 2257,
+        "prior_receipt_physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_tick_subnode_base_cleanup.cpp",
+        "canonical_lf_bytes": 3164,
+        "canonical_lf_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+        "prior_receipt_physical_bytes": 3164,
+        "prior_receipt_physical_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_tick_subnode_scalar_deletion.cpp",
+        "canonical_lf_bytes": 1687,
+        "canonical_lf_sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb",
+        "prior_receipt_physical_bytes": 1687,
+        "prior_receipt_physical_sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/native_tick_subnode_unlink_caller.cpp",
+        "canonical_lf_bytes": 2743,
+        "canonical_lf_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+        "prior_receipt_physical_bytes": 2743,
+        "prior_receipt_physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/plane_squadron.cpp",
+        "canonical_lf_bytes": 6796,
+        "canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+        "prior_receipt_physical_bytes": 6796,
+        "prior_receipt_physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "canonical_lf_bytes": 13257,
+        "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "prior_receipt_physical_bytes": 13257,
+        "prior_receipt_physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/tick_element_overrides.cpp",
+        "canonical_lf_bytes": 12785,
+        "canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+        "prior_receipt_physical_bytes": 12785,
+        "prior_receipt_physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      },
+      {
+        "path": "src/unit_instance_layout.cpp",
+        "canonical_lf_bytes": 10576,
+        "canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+        "prior_receipt_physical_bytes": 10576,
+        "prior_receipt_physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+        "primary_receipt_equal_current_Git_and_normalized_physical": true
+      }
+    ],
+    "existing_checks_passed": 3,
+    "whole_objects_captured": 16,
+    "positive_public_Core_roots": 18,
+    "provider_boundary": "Pending-entity provider receipt has 12 functions, 18 sections and 6063 bytes, including exactly two 44-byte EH sections. The separate eight EH payloads belong to the Legacy object.",
+    "not_replayed_here": "Compiled artifacts, whole object graphs, historical fixtures and application execution were not regenerated or recaptured. Only all 80 current Source input identities were replayed.",
+    "credit": "Historical normal Source build and existing checks only; no new Original ABI or gameplay evidence."
+  },
+  "current_canonical_input_pins": [
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "physical_bytes": 2805,
+      "physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "physical_bytes": 5103,
+      "physical_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "physical_bytes": 5893,
+      "physical_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "physical_bytes": 8443,
+      "physical_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 2363,
+      "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "physical_bytes": 2363,
+      "physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 593,
+      "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "physical_bytes": 593,
+      "physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "physical_bytes": 8771,
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 21158,
+      "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24",
+      "physical_bytes": 21158,
+      "physical_sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_mission_lua_variant_initializer.hpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 776,
+      "sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "physical_bytes": 776,
+      "physical_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_mission_lua_variant_initializer.cpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 1022,
+      "sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "physical_bytes": 1022,
+      "physical_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 2957,
+      "sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "physical_bytes": 2957,
+      "physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 2260,
+      "sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "physical_bytes": 2260,
+      "physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_observer_endpoint_live_count_cleanup_primary_review.json",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 521711,
+      "sha256": "a5c1533ad44f69fc49115c0b1b0dfe8ab5121506d652f600d59fdf49e527007b",
+      "physical_bytes": 521711,
+      "physical_sha256": "a5c1533ad44f69fc49115c0b1b0dfe8ab5121506d652f600d59fdf49e527007b",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_mission_lua_variant_tag5_loop_child_ABI_readiness.json",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 256182,
+      "sha256": "922dfa75d8cec63511b4d65a409f5538205460e6da6d230410da0a6f3ab469e9",
+      "physical_bytes": 256182,
+      "physical_sha256": "922dfa75d8cec63511b4d65a409f5538205460e6da6d230410da0a6f3ab469e9",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_TAG5_LOOP_CHILD_ABI_READINESS.md",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 20726,
+      "sha256": "ae23eecce2278c48e31f39255e791d366f85a1555c4ba59cc9ddd5cb75cadd3a",
+      "physical_bytes": 20726,
+      "physical_sha256": "ae23eecce2278c48e31f39255e791d366f85a1555c4ba59cc9ddd5cb75cadd3a",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_mission_lua_variant_pair_advance_child_ABI_readiness.json",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 145262,
+      "sha256": "7ea8a04e012f0589fa64f25e564ff62f76494599e8f013c0f3af41f970755648",
+      "physical_bytes": 145262,
+      "physical_sha256": "7ea8a04e012f0589fa64f25e564ff62f76494599e8f013c0f3af41f970755648",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_PAIR_ADVANCE_CHILD_ABI_READINESS.md",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 14713,
+      "sha256": "62ff3a3bbd2fe290348d1c8c93af5c5e869d1e1daa01313a83b465f35530e159",
+      "physical_bytes": 14713,
+      "physical_sha256": "62ff3a3bbd2fe290348d1c8c93af5c5e869d1e1daa01313a83b465f35530e159",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/native_string_pool_owner.json",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 6358,
+      "sha256": "33b72b01cd30c79b5a7f7e769188edae440073533214dd49eba71920931a1552",
+      "physical_bytes": 6358,
+      "physical_sha256": "33b72b01cd30c79b5a7f7e769188edae440073533214dd49eba71920931a1552",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/NATIVE_STRING_POOL_OWNER.md",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 9346,
+      "sha256": "3058cdbe250eea16d07a566f13748c1a0f4a1592c037f69277c2e9941c5b8e35",
+      "physical_bytes": 9346,
+      "physical_sha256": "3058cdbe250eea16d07a566f13748c1a0f4a1592c037f69277c2e9941c5b8e35",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/native_string_pool_storage.json",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 4060,
+      "sha256": "59f3fc0653f31b5dc5a273a99bbb184ea5c41a363259e051b302c30a09541e69",
+      "physical_bytes": 4060,
+      "physical_sha256": "59f3fc0653f31b5dc5a273a99bbb184ea5c41a363259e051b302c30a09541e69",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/NATIVE_STRING_POOL_STORAGE.md",
+      "revision": "572b6612cf6c2c8092922f75a8b104d408a8e374",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 6057,
+      "sha256": "973ed75867279c5255a602344029fcf46d775ec3737004918093e7003ed51ed5",
+      "physical_bytes": 6057,
+      "physical_sha256": "973ed75867279c5255a602344029fcf46d775ec3737004918093e7003ed51ed5",
+      "physical_equal_canonical_after_CRLF_to_LF": true
+    }
+  ],
+  "current_source_excerpts": [
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "first_line": 1,
+      "last_line": 56,
+      "canonical_excerpt_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "purpose": "Current return-helper Native contract and borrowed Source bridge",
+      "text": "#pragma once\n\n#include \"bsp/native_string.hpp\"\n#include \"bsp/native_string_pool_owner.hpp\"\n\nnamespace bsp {\n\n// Complete BD1120. Native ECX pool, stack (size, unused), RET8; EAX block.\n// size>=150 calls current CRT malloc (nullable), without dereferencing pool.\n// Small requests require the constructed actual owner; exact-size ring or\n// unchecked DWORD bump into embedded arena. Zero size neither advances nor\n// aligns the bump. No arena bounds or ring-capacity policy is added.\nvoid* allocate_native_string_pool_00bd1120(NativeStringPoolStorage* actual_pool,\n    std::uint32_t size);\n\n// Complete BD12A0. Native ECX ring, stack (address of block, size_class), RET8.\n// Caller guarantees class<150 and valid native ring indices. Capture *block\n// before the first ring write, including when block aliases a slot. No lock.\nvoid return_native_string_pool_small_00bd12a0(NativeStringPoolRingStorage&,\n    void* const* block, std::uint32_t size_class) noexcept;\n\n// Complete BD1510. Native ECX pool, stack (block, size, unused), RET0C.\n// Large requests free without reading pool or the real01090AA4 gate. Small\n// returns read that live gate first; a nonzero value does not touch the owner.\nvoid return_native_string_pool_00bd1510(NativeStringPoolStorage* actual_pool,\n    void* block, std::uint32_t size,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept;\n\n// Borrow the application's one publication slot, real shutdown gate and\n// canonical lifetime domain. Semantic domains use NativeStringPoolLifetimeBinding;\n// raw publications require the explicit pool deletion binding. EVERY operation\n// calls00419CC0, even large\n// allocations/frees and disabled small returns: do not cache the pool here.\n// NativeStringStorage::release is noexcept: its returning-getter domain is\n// covered; C++ failure while lazily recreating a pool terminates under that\n// pre-existing interface. This bridge does not claim native EH/SEH ABI parity.\nclass ActualNativeStringPoolStorage final : public NativeStringStorage {\npublic:\n    ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,\n        volatile std::uint32_t& returns_disabled,\n        SingletonLifetimeDomain& lifetime) noexcept;\n    ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,\n        volatile std::uint32_t& returns_disabled,\n        void* volatile& actual_manager_publication_01090aa0) noexcept;\n    char* allocate(std::uint32_t size) override;\n    void release(char* block, std::uint32_t size) noexcept override;\n\nprivate:\n    NativeStringPoolStorage* volatile& publication_;\n    volatile std::uint32_t& returns_disabled_;\n    NativeStringPoolStorage* get_pool();\n    SingletonLifetimeDomain* lifetime_{};\n    void* volatile* actual_manager_{};\n};\n\n} // namespace bsp\n"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "first_line": 80,
+      "last_line": 95,
+      "canonical_excerpt_sha256": "faea4a365a6ed86cd5fbf38f29707414dbfb5aed387d833b31dfb38fb905f75b",
+      "purpose": "Return helper large/small policy and current gate timing",
+      "text": "void return_native_string_pool_00bd1510(NativeStringPoolStorage* pool,\n    void* block, std::uint32_t size,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept {\n    if (size >= class_count) {\n        std::free(block);\n        return;\n    }\n    if (actual_small_returns_disabled_01090aa4 != 0) return;\n    auto* const captured_section = section(*pool);\n    EnterCriticalSection(captured_section);\n    volatile auto& actual = *pool;\n    actual.recursion_8ad49c = actual.recursion_8ad49c + 1u;\n    return_native_string_pool_small_00bd12a0(pool->ring_6acfcc, &block, size);\n    actual.recursion_8ad49c = actual.recursion_8ad49c - 1u;\n    LeaveCriticalSection(captured_section);\n}\n"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "first_line": 97,
+      "last_line": 125,
+      "canonical_excerpt_sha256": "c183dd76fa64664388a291bb32c495c34141418adbaee19c9fd341a95cb6b6dd",
+      "purpose": "Borrowed bridge and getter-before-return ordering",
+      "text": "ActualNativeStringPoolStorage::ActualNativeStringPoolStorage(\n    NativeStringPoolStorage* volatile& publication,\n    volatile std::uint32_t& returns_disabled,\n    SingletonLifetimeDomain& lifetime) noexcept\n    : publication_(publication), returns_disabled_(returns_disabled), lifetime_(&lifetime) {}\n\nActualNativeStringPoolStorage::ActualNativeStringPoolStorage(\n    NativeStringPoolStorage* volatile& publication,\n    volatile std::uint32_t& returns_disabled,\n    void* volatile& actual_manager_publication_01090aa0) noexcept\n    : publication_(publication), returns_disabled_(returns_disabled),\n      actual_manager_(&actual_manager_publication_01090aa0) {}\n\nNativeStringPoolStorage* ActualNativeStringPoolStorage::get_pool() {\n    if (actual_manager_) {\n        return native_string_pool_get_or_create_00419cc0(publication_, *actual_manager_);\n    }\n    return native_string_pool_get_or_create_00419cc0(publication_, *lifetime_);\n}\n\nchar* ActualNativeStringPoolStorage::allocate(std::uint32_t size) {\n    auto* const owner = get_pool();\n    return static_cast<char*>(allocate_native_string_pool_00bd1120(owner, size));\n}\n\nvoid ActualNativeStringPoolStorage::release(char* block, std::uint32_t size) noexcept {\n    auto* const owner = get_pool();\n    return_native_string_pool_00bd1510(owner, block, size, returns_disabled_);\n}\n"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "first_line": 57,
+      "last_line": 72,
+      "canonical_excerpt_sha256": "7934755bcfdf03e2a1efc5893d2689bc054f3fcb6d5c9e9c8e773898ca4ce656",
+      "purpose": "Inherited Native getter contract and explicit Source overload parameters",
+      "text": "\n// 00419CC0..00419D7F, no native arguments, EAX published owner, RET. References\n// must be the application's one 01090AA8 slot and canonical01090AA0 domain.\n// Install a real D68200/00BD1730 binding in that domain before first use (the\n// binding below composes it with the application's other registered owners).\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    SingletonLifetimeDomain& actual_lifetime);\n\n// Same complete getter schedule using the application's actual raw14h manager\n// publication. Borrows the same01090AA0 cell used by SoundLifetimeAccess and\n// NativePhysicalFactoryContext; no semantic domain is allocated. Raw manager\n// shutdown requires the pool's explicit native deletion binding.\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    void* volatile& actual_manager_publication_01090aa0);\n"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "first_line": 56,
+      "last_line": 91,
+      "canonical_excerpt_sha256": "aa67f4acb78610a847a0d0787c99811b66583c837d8bba81f79c15a11cad327e",
+      "purpose": "Current semantic lifetime-domain singleton getter",
+      "text": "NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    SingletonLifetimeDomain& actual_lifetime) {\n    if (auto* const owner = actual_published_01090aa8) return owner;\n    auto* const captured_section = actual_lifetime.get_manager_00415350()\n        ->system_owner().section_10;\n    if (captured_section) {\n        singleton_enter_critical_section(*captured_section);\n        ++captured_section->recursion_18;\n    }\n    void* allocation = nullptr;\n    unsigned unwind_state = 0;\n    // FuncInfo D841EC: state1 frees raw storage (C5E118), then state0 releases\n    // the captured section (C5E110 -> 00411EE0). Registration is in state0.\n    // __finally preserves cleanup for both C++ and Win32 unwinding.\n    __try {\n        if (!actual_published_01090aa8) {\n            allocation = singleton_lifetime_allocate({SingletonAllocationKind::object,\n                0x8ad4a0, sizeof(NativeStringPoolStorage)});\n            unwind_state = 1;\n            auto* const owner = allocation\n                ? construct_native_string_pool_00bd1480(allocation) : nullptr;\n            unwind_state = 0;\n            actual_published_01090aa8 = owner;\n            auto* const registration_manager = actual_lifetime.get_manager_00415350();\n            registration_manager->register_object(actual_published_01090aa8);\n        }\n    } __finally {\n        if (unwind_state == 1) singleton_lifetime_free(allocation);\n        if (captured_section) {\n            --captured_section->recursion_18;\n            singleton_leave_critical_section(*captured_section);\n        }\n    }\n    return actual_published_01090aa8; // Reload AFTER unlocking.\n}\n"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "first_line": 93,
+      "last_line": 134,
+      "canonical_excerpt_sha256": "389902034a41d3e815140db3e2768608008e25470bc0a1d1b54f412e4e41ddce",
+      "purpose": "Current raw-manager singleton getter",
+      "text": "NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    void* volatile& actual_manager_publication_01090aa0) {\n    if (auto* const owner = actual_published_01090aa8) return owner;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        actual_manager_publication_01090aa0);\n    auto* const captured_section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    auto* const depth = reinterpret_cast<volatile std::uint32_t*>(\n        reinterpret_cast<std::uintptr_t>(captured_section) + 0x18);\n    if (captured_section) {\n        EnterCriticalSection(captured_section);\n        *depth = *depth + 1u;\n    }\n    void* allocation = nullptr;\n    unsigned unwind_state = 0;\n    // Preserve the existing source __finally boundary and native state1 raw\n    // allocation cleanup. State0 retains the first manager's actual section.\n    __try {\n        if (!actual_published_01090aa8) {\n            allocation = singleton_lifetime_allocate({SingletonAllocationKind::object,\n                0x8ad4a0, sizeof(NativeStringPoolStorage)});\n            unwind_state = 1;\n            auto* const owner = allocation\n                ? construct_native_string_pool_00bd1480(allocation) : nullptr;\n            unwind_state = 0;\n            actual_published_01090aa8 = owner;\n            void* const registration_manager = get_native_singleton_manager_00415350(\n                actual_manager_publication_01090aa0);\n            // Native419D49 resolves manager BEFORE419D4E reloads pool argument.\n            register_native_singleton_object_00bd0c30(registration_manager, nullptr,\n                actual_published_01090aa8);\n        }\n    } __finally {\n        if (unwind_state == 1) singleton_lifetime_free(allocation);\n        if (captured_section) {\n            *depth = *depth - 1u;\n            LeaveCriticalSection(captured_section);\n        }\n    }\n    return actual_published_01090aa8;\n}\n"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "first_line": 1,
+      "last_line": 44,
+      "canonical_excerpt_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "purpose": "Actual reconstructed process domain owns its publication, gate and manager slots",
+      "text": "#pragma once\n#include \"bsp/native_string_pool_storage.hpp\"\n\nnamespace bsp::game {\n\n// Original loader-zero publications outlive the application and every CRT\n// callback, including a late 00419CC0 that recreates the manager/string pool.\n// This owns cells and source bindings only; getters create the native owners.\nclass GameNativeStringProcess final {\npublic:\n    GameNativeStringProcess(const GameNativeStringProcess&) = delete;\n    GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;\n    void* volatile& manager_01090aa0() noexcept { return manager_; }\n    // Actual pending-registry publication shares this retained process lifetime.\n    // Accessing the cell does not construct or register a registry owner.\n    void* volatile& pending_registry_00f878cc() noexcept;\n    NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }\n    volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }\n    NativeStringRawPoolContext& raw_context() noexcept { return raw_; }\n    ActualNativeStringPoolStorage& strings() noexcept { return strings_; }\n    // Distinct permanent Source authorities for the two Original initial-NUL\n    // roles. Only const pointers escape; Original's writable .data is not\n    // claimed universally immutable. Shader E17654 borrowers use this SAME byte.\n    const char* property_empty_00e177e4() const noexcept;\n    const char* query_empty_00e17654() const noexcept;\nprivate:\n    friend GameNativeStringProcess& game_native_string_process();\n    GameNativeStringProcess() noexcept = default;\n    void* volatile manager_{};\n    NativeStringPoolStorage* volatile pool_{};\n    volatile std::uint32_t disabled_{};\n    NativeStringRawPoolContext raw_{pool_, disabled_, manager_};\n    ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};\n    // Append after every established publication/context/storage field.\n    const char property_empty_00e177e4_{};\n    const char query_empty_00e17654_{};\n    // Append after every established authority; do not reuse another raw8 owner.\n    void* volatile pending_registry_00f878cc_{};\n};\n\n// Intentionally retained through process termination. No C++ exit destructor\n// may invalidate the cells/bindings before another native CRT callback.\nGameNativeStringProcess& game_native_string_process();\n} // namespace bsp::game\n"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "first_line": 1,
+      "last_line": 20,
+      "canonical_excerpt_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "purpose": "Process domain retained until process termination",
+      "text": "#include \"bsp/game_native_string_process.hpp\"\n\nnamespace bsp::game {\nvoid* volatile& GameNativeStringProcess::pending_registry_00f878cc() noexcept {\n    return pending_registry_00f878cc_;\n}\n\nconst char* GameNativeStringProcess::property_empty_00e177e4() const noexcept {\n    return &property_empty_00e177e4_;\n}\n\nconst char* GameNativeStringProcess::query_empty_00e17654() const noexcept {\n    return &query_empty_00e17654_;\n}\n\nGameNativeStringProcess& game_native_string_process() {\n    static auto* const process = new GameNativeStringProcess;\n    return *process;\n}\n} // namespace bsp::game\n"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "first_line": 24,
+      "last_line": 51,
+      "canonical_excerpt_sha256": "53f0b489b801ed35b9c7eb15d8337fe405b2bd0149a92611a691c1ddae458fea",
+      "purpose": "Explicit borrowed raw pool context and separate semantic storage interface",
+      "text": "class NativeStringStorage {\npublic:\n    virtual ~NativeStringStorage() = default;\n    virtual char* allocate(std::uint32_t size) = 0;\n    virtual void release(char* block, std::uint32_t size) noexcept = 0;\n};\n\nstruct NativeStringPoolStorage;\n// Actual publication cells shared with the native string-pool getter and raw\n// singleton manager. This context owns no storage and adds no host callback.\nstruct NativeStringRawPoolContext {\n    NativeStringPoolStorage* volatile& actual_published_01090aa8;\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4;\n    void* volatile& actual_manager_publication_01090aa0;\n};\n\n// Semantic SizedStoragePool projection; not the actual 00419cc0 owner layout.\nclass PooledStringStorage final : public NativeStringStorage {\npublic:\n    explicit PooledStringStorage(SizedStoragePool& pool) noexcept : pool_(&pool) {}\n    char* allocate(std::uint32_t size) override;\n    void release(char* block, std::uint32_t size) noexcept override;\n\nprivate:\n    SizedStoragePool* pool_;\n};\n\n// std::malloc / std::free for hosts that do not stand a pool up.\n"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "first_line": 50,
+      "last_line": 64,
+      "canonical_excerpt_sha256": "f49cb709949c95115d32bd1fa599f364605672d1eb2d2a0d427bead0473e6d4a",
+      "purpose": "Existing other consumer returns length plus one without header reset",
+      "text": "    TitleFileBlock(const TitleFileBlock&) = delete;\n    TitleFileBlock& operator=(const TitleFileBlock&) = delete;\n    void return_caller_name() {\n        // 004C9AD6..004C9AF5 returns the caller's temporary only after BE0A30.\n        // Capture before the possibly throwing getter and keep the frame alive.\n        returned_name_data = name.data();\n        if (!returned_name_data) return;\n        returned_name_bytes = name.length() + 1u;\n        return_pool = native_string_pool_get_or_create_00419cc0(\n            context.raw_pool.actual_published_01090aa8,\n            context.raw_pool.actual_manager_publication_01090aa0);\n        return_native_string_pool_00bd1510(return_pool, returned_name_data,\n            returned_name_bytes, context.raw_pool.actual_small_returns_disabled_01090aa4);\n        // Native leaves this temporary header unchanged after its normal return.\n    }\n"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_variant_initializer.hpp",
+      "first_line": 1,
+      "last_line": 16,
+      "canonical_excerpt_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "purpose": "Partial initializer provider does not establish this destructor/container lifetime",
+      "text": "#pragma once\n\nnamespace bsp {\n\n// Complete raw entry 008849B0..008849CA: ECX receiver, no stack arguments,\n// plain RET, EAX returns receiver. Caller supplies live writable 20-byte backing.\n// Writes five DWORDs in order: 00D0E6F4h, FFFFFFFFh, 0, 0, 0. No null guard,\n// allocation, prior-value reads or cleanup. No bytes within those 20 are retained;\n// bytes outside that footprint are untouched by the five stores.\n// The first word is an exact Native numerical profile identity; this leaf does\n// not provide or validate a callable Source profile at that address. Descriptive\n// name is provisional; no larger object layout or usable virtual owner is claimed.\nvoid* __fastcall initialize_native_mission_lua_variant_008849b0(\n    void* actual_element);\n\n} // namespace bsp\n"
+    },
+    {
+      "path": "src/native_mission_lua_variant_initializer.cpp",
+      "first_line": 1,
+      "last_line": 26,
+      "canonical_excerpt_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "purpose": "Current exact initializer leaf only",
+      "text": "#include \"bsp/native_mission_lua_variant_initializer.hpp\"\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native mission Lua variant initializer requires MSVC Win32.\n#endif\n\nnamespace bsp {\n\n// 008849B0..008849CA, all 27 bytes / 8 instructions. Preserve raw DWORD stores,\n// their order, full EAX receiver return and ECX zeroing without a typed owner.\n// 00D0E6F4h is deliberately an immediate, not a Source function/table binding.\n__declspec(naked) void* __fastcall\ninitialize_native_mission_lua_variant_008849b0(void*) {\n    __asm {\n        mov eax, ecx                         // 008849B0\n        xor ecx, ecx                         // 008849B2\n        mov dword ptr [eax], 00d0e6f4h       // 008849B4\n        mov dword ptr [eax + 4], 0ffffffffh  // 008849BA\n        mov dword ptr [eax + 8], ecx         // 008849C1\n        mov dword ptr [eax + 0ch], ecx       // 008849C4\n        mov dword ptr [eax + 10h], ecx       // 008849C7\n        ret                                 // 008849CA\n    }\n}\n\n} // namespace bsp\n"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+      "first_line": 1,
+      "last_line": 55,
+      "canonical_excerpt_sha256": "d554177d75910e15945e909c2e3aa0c41ed8877375e3704133dde59a62a5129f",
+      "purpose": "Raw link repair providers have separate narrow contracts",
+      "text": "#pragma once\n\n#include <cstdint>\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native Lua variant link repair helpers require MSVC Win32.\n#endif\n\nnamespace bsp {\n\n// Provisional descriptive Source names for the complete 006EDC80..006EDCCD\n// and 006EDCD0..006EDD21 schedules. No recovered tree type or semantic API.\n// Naked fastcall places actual_receiver in ECX and the unused DWORD in EDX;\n// actual_pivot is the first stack word. Each body captures that word in EDX\n// and its selected neighbor in EAX BEFORE saving ESI, then uses RET4 on all\n// three exits. The Source void* result exposes the physical surviving EAX;\n// it does not establish a recovered Native return-value contract.\n//\n// Raw backing, with X=pivot, Q=selected neighbor, H=current receiver+4:\n// - Receiver and H: readable DWORD+4; H+4 writable on the root branch (8-byte\n//   address span). The receiver's +0 and +8 are not accessed directly.\n// - 006EDC80: X has readable/writable DWORDs+4/+8 (12-byte span); Q has\n//   readable/writable DWORD+0 and writable DWORD+4 (8-byte span).\n// - 006EDCD0: X has readable/writable DWORDs+0/+4 (8-byte span); Q has\n//   readable/writable DWORD+8 and writable DWORD+4 (12-byte span).\n// - The reloaded moved node has readable byte+31h and, only when it is zero,\n//   writable DWORD+4. Its 50-byte highest-address span is not an object size.\n// - A nonroot parent supplies the tested +0/+8 DWORD and selected writable\n//   +0/+8 DWORD (up to 12 bytes, depending on the body and branch).\n// No null, alignment, membership, capacity, lifetime or ownership guard.\n//\n// Repeated reads and ordered stores are retained for raw aliases: reload the\n// moved link after the pivot-link store, read pivot.parent after the optional\n// moved-parent store, load receiver+4 after the Q-parent store, and reload\n// pivot.parent again on the nonroot branch. The current ESI save word is\n// popped BEFORE root/parent attachment stores. EBX/BL, EDI and EBP are not\n// touched; EDX returns captured X, EAX returns captured Q, and ECX returns H\n// or the freshly loaded nonroot parent. Final CMP arithmetic flags survive.\n//\n// Caller supplies usable stack, saved-ESI and return backing. Data aliases\n// can corrupt the save/return slots; PUSH ESI can affect a later aliased read.\n// Preserving the incoming ESI value requires its save slot to survive until\n// POP. Completed stores are not rolled back if a later access faults.\n// No raw noexcept promise, allocation, callback, owner, default storage,\n// callable profile, vtable or Native type is introduced. Original placement,\n// caller ABI, flags/fault/runtime/EH and gameplay parity remain unproved.\nvoid* __fastcall repair_native_lua_variant_links_006edc80(\n    void* actual_receiver,\n    std::uint32_t unused_edx,\n    void* actual_pivot);\n\nvoid* __fastcall repair_native_lua_variant_links_006edcd0(\n    void* actual_receiver,\n    std::uint32_t unused_edx,\n    void* actual_pivot);\n"
+    },
+    {
+      "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+      "first_line": 1,
+      "last_line": 38,
+      "canonical_excerpt_sha256": "4d45ef6908cf3295c021fdad74a1c7dc7c2e9231c1919f0040b4e390b4b6be9e",
+      "purpose": "Raw small link providers have separate narrow contracts",
+      "text": "#pragma once\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native Lua variant small link helpers require MSVC Win32.\n#endif\n\nnamespace bsp {\n\n// Provisional descriptive Source names for complete 006ED9D0..006ED9EB\n// (28 bytes) and 006ED9F0..006EDA0A (27 bytes). No recovered tree type.\n// One fastcall pointer occupies ECX; no dummy EDX or public stack argument.\n// Read the current node's DWORD link (+8 for 006ED9D0, +0 for 006ED9F0),\n// then the linked child's byte+31h. Any nonzero flag ends traversal. A zero\n// flag selects that child and repeats the same ordered reads. The initial\n// node's own flag is never tested. On return, EAX is the predecessor of the\n// stopping child and EDX contains that child; ECX remains the initial node.\n// Plain RET consumes only the return address (entry ESP+4 after return).\n//\n// No pointed-data writes, calls, pushes, pops or stack adjustment. EBX's\n// value, ESI, EDI and EBP are preserved. The second body's six-byte identity\n// LEA reads/writes EBX once on initial-zero traversal, without dereferencing\n// EBX or changing flags. The first body's skipped three-byte identity LEA\n// remains physically present. Last nonzero byte CMP flags survive RET:\n// ZF=CF=OF=0, with SF/PF following the tested byte.\n//\n// Initial backing supplies a readable DWORD+8 (12-byte highest-address\n// span) or DWORD+0 (4-byte span). Each tested child supplies readable byte\n// +31h (50-byte span); a zero-flag child also supplies the next link DWORD.\n// These are accessed spans, not object sizes, ownership or initialization.\n// Reads may alias other backing, including the stack. The helper makes no\n// writes to such aliases. Caller supplies a usable current return address.\n// No null, cycle, alignment, type, tree, membership, lifetime or range guard.\n// Zero-flag cycles can hang; invalid reads can fault. No concurrent-mutation\n// consistency, fault recovery, allocation, owner, provider or raw noexcept\n// promise is introduced. Source placement and the physical EAX result do\n// not prove Original ABI, EH, runtime or gameplay equivalence.\nvoid* __fastcall follow_native_lua_variant_links_006ed9d0(void* actual_node);\n\n"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "first_line": 1273,
+      "last_line": 1279,
+      "canonical_excerpt_sha256": "0a0677e97660f4769a9fef8932f3103b45fe2debeaa30d754871200ce8eb53b4",
+      "purpose": "Current pool source registration",
+      "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_append.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_compare.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_pool_owner.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_pool_storage.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_vector.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_vector_lookup.cpp)\n"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "first_line": 1654,
+      "last_line": 1660,
+      "canonical_excerpt_sha256": "0be4e82381e5aec3da56f60c96089647a97a10f1a853cfe9dbc620bc19a4d81c",
+      "purpose": "Current game process-domain source registration",
+      "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_lua_services.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_material_process.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_shader_process.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_string_process.cpp src/game_native_lua_globals.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_vertex_declarations.cpp src/game_native_renderer_application.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_native_vfs_application.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_observer_runtime.cpp)\n"
+    }
+  ],
+  "remaining_admission_requirements": [
+    "Establish embedded child 00884AF0 body, actual register/stack/returnability/nonvolatile contract and cleanup effects under a separate owned packet.",
+    "Establish actual selected variant backing and production ownership/lifetime domain; preserve late field reads, stack aliases, live gate and getter-before-return order.",
+    "Separately establish or admit Native getter and return-helper ABI and exceptional behavior. Current Source signatures are explicit-parameter interfaces, not raw Native entry points.",
+    "Inspect owned handler only under a separately authorized Native/EH packet; visible state stores do not prove an unwind action map.",
+    "Review all named-but-incomplete selected-parent and pair dependencies before attempting Source composition. No local static audit supplies game execution proof."
+  ],
+  "validation": {
+    "whole_98_bytes_29_ops_checked": true,
+    "complete_owned_instruction_classification": true,
+    "conditional_stack_accounting_checked": true,
+    "current_Source_80_pin_replay": true,
+    "exact_current_Source_excerpt_count": 16,
+    "new_test_or_probe": false
+  },
+  "documentation": "docs/CC12_MISSION_LUA_VARIANT_OWNED_CLEANUP_ABI_READINESS.md",
+  "documentation_pin": {
+    "path": "docs/CC12_MISSION_LUA_VARIANT_OWNED_CLEANUP_ABI_READINESS.md",
+    "bytes": 12301,
+    "sha256": "7a9b7ef2e0e33d5d668fb2b91d3340211113a7109159400c2396c0124000c33b"
+  }
+}
