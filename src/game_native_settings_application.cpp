@@ -53,7 +53,7 @@ void copy_native_game_settings_read_view(const NativeGameSettingsStorage& storag
     o.unknown_tokens.clear();g.imperial_08=flag(p,8);g.subtitle_09=flag(p,9);g.hints_0c=read<int>(p,0xc);
     g.camera_shake_10=flag(p,0x10);g.target_indicator_4a=flag(p,0x4a);g.water_drops_7c=flag(p,0x7c);
     g.marker_alpha_80=read<float>(p,0x80);g.cockpit_mode_b2=flag(p,0xb2);g.show_safe_area_b1=flag(p,0xb1);
-    g.clan_text_b4=raw_text(storage.bytes+0xb4);
+    g.clan_text_b4=raw_text(storage.data()+0xb4);
     a.master_20=read<float>(p,0x20);a.enabled_24=flag(p,0x24);a.music_28=read<float>(p,0x28);
     a.effects_2c=read<float>(p,0x2c);a.speech_30=read<float>(p,0x30);
     c.rumble_off_40=flag(p,0x40);c.swap_sticks_41=flag(p,0x41);c.invert_camera_y_42=flag(p,0x42);
@@ -137,6 +137,9 @@ std::uint32_t GameNativeSettingsApplication::failure_site() const noexcept{retur
 void GameNativeSettingsApplication::copy_read_view(GameSettingsBlock& view) const{
     if(impl_->phase!=Impl::Phase::ready)throw std::logic_error("native settings read view requires completed load");
     copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);
+}
+const volatile float& GameNativeSettingsApplication::fov_divisor_00f889b4() const{
+    return impl_->process.settings().fov_divisor_34;
 }
 const std::vector<LanguageEntry>& GameNativeSettingsApplication::language_catalog() const noexcept{return impl_->languages;}
 VfsLocaleRuntime& GameNativeSettingsApplication::locale_source() noexcept{return impl_->locale;}

@@ -10,9 +10,28 @@ namespace bsp {
 // F88980..F88A3B / the options screen's actual BCh copy. Opaque bytes and
 // padding are not initialized by the constructor. The static owner starts zero
 // through loader storage; ordinary copies must supply their own preimage.
-struct alignas(4) NativeGameSettingsStorage { std::byte bytes[0xbc]; };
+struct alignas(4) NativeGameSettingsStorage {
+    std::byte opaque_00[0x34];
+    //008D7865 stores CE7D20 bits here;0087EC29/0087EC79 read this live float.
+    //No initializer: ordinary owners retain their supplied byte preimage.
+    float fov_divisor_34;
+    std::byte opaque_38[0x84];
+    //The complete object representation, including the typed cell. Do not
+    //derive whole-owner byte access from either opaque subarray.
+    std::byte* data() noexcept {return reinterpret_cast<std::byte*>(this);}
+    const std::byte* data() const noexcept {return reinterpret_cast<const std::byte*>(this);}
+};
+static_assert(sizeof(float)==4);
 static_assert(sizeof(NativeGameSettingsStorage)==0xbc);
+static_assert(alignof(NativeGameSettingsStorage)==4);
+static_assert(std::is_standard_layout_v<NativeGameSettingsStorage>);
+static_assert(offsetof(NativeGameSettingsStorage,opaque_00)==0);
+static_assert(offsetof(NativeGameSettingsStorage,fov_divisor_34)==0x34);
+static_assert(offsetof(NativeGameSettingsStorage,opaque_38)==0x38);
 static_assert(std::is_trivially_default_constructible_v<NativeGameSettingsStorage>);
+static_assert(std::is_trivially_copyable_v<NativeGameSettingsStorage>);
+static_assert(std::is_trivially_copy_constructible_v<NativeGameSettingsStorage>);
+static_assert(std::is_trivially_copy_assignable_v<NativeGameSettingsStorage>);
 struct NativeGameSettingsCalls : NativeProfileCollectionCalls {
     virtual std::uint32_t online_state_00a3e500(NativeOnlineManagerStorage*);
     virtual std::uint8_t selected_user_00a3e510(NativeOnlineManagerStorage*);

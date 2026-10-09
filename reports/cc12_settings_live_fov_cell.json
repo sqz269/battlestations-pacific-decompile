@@ -1,0 +1,232 @@
+{
+  "packet": "cc12_settings_live_fov_cell",
+  "status": "source_binding_implemented_integrator_build_pending",
+  "base_commit": "0b2eede1007b74f45a1a85622f359a288a4fbd89",
+  "new_original_function_credit": 0,
+  "source_files_changed": [
+    "include/bsp/native_game_settings_owner.hpp",
+    "include/bsp/game_native_settings_application.hpp",
+    "src/game_native_settings_application.cpp"
+  ],
+  "storage": {
+    "native_base": "00F88980",
+    "size": "0xBC",
+    "alignment": 4,
+    "opaque_prefix": {
+      "offset": "0x00",
+      "size": "0x34"
+    },
+    "live_member": {
+      "name": "fov_divisor_34",
+      "type": "float",
+      "offset": "0x34",
+      "size": 4,
+      "native_address": "00F889B4"
+    },
+    "opaque_suffix": {
+      "offset": "0x38",
+      "size": "0x84"
+    },
+    "accessor": "const volatile float& GameNativeSettingsApplication::fov_divisor_00f889b4() const",
+    "accessor_body": "return impl_->process.settings().fov_divisor_34;",
+    "lifetime": "Real float subobject of canonical process Impl settings; process is retained for CRT lifetime.",
+    "guard": "Existing GameNativeSettingsProcess::settings() requires Phase::ready.",
+    "initialization": "No new member initializer or constructor. Ordinary default initialization preserves uninitialized preimages; unchanged process settings{} supplies its initial zero preimage.",
+    "copy_policy": "Implicit trivial copy operations remain available. Full object-representation memcpy remains supported by trivial copyability, preserving opaque bytes and exact float bits.",
+    "byte_api": "const/nonconst data() casts this to std::byte* over the complete object representation; all native void* contracts remain unchanged.",
+    "no_value_copy_cache_or_reset": true,
+    "new_compile_time_contracts": [
+      "sizeof(float)==4",
+      "sizeof(NativeGameSettingsStorage)==0xbc",
+      "alignof(NativeGameSettingsStorage)==4",
+      "standard_layout",
+      "opaque_00 offset 0",
+      "fov_divisor_34 offset 0x34",
+      "opaque_38 offset 0x38",
+      "trivially_default_constructible",
+      "trivially_copyable",
+      "trivially_copy_constructible",
+      "trivially_copy_assignable"
+    ]
+  },
+  "existing_native_evidence": [
+    {
+      "function": "008D7710",
+      "original_abi": "ECX actual BCh owner, EAX same owner, RET",
+      "producer": [
+        {
+          "site": "008D77D8",
+          "instruction": "MOVSS XMM0,dword ptr [0x00ce7d20]"
+        },
+        {
+          "site": "008D7865",
+          "instruction": "MOVSS dword ptr [ESI + 0x34],XMM0"
+        }
+      ],
+      "unchanged_source": "construct_native_game_settings_008d7710 captures video_bits_00ce7d20 and writes exact uint32 bits with memcpy at +0x34."
+    },
+    {
+      "function": "0087D7B0",
+      "original_abi": "ECX GlobalConfig owner, no stack arguments, RET",
+      "consumers": [
+        {
+          "site": "0087EC29",
+          "instruction": "FDIV float ptr [0x00f889b4]",
+          "following_store": "0087EC2F FSTP float ptr [ESI + 0xf8]",
+          "field": "Ship"
+        },
+        {
+          "site": "0087EC79",
+          "instruction": "FDIV float ptr [0x00f889b4]",
+          "following_store": "0087EC7F FSTP float ptr [ESI + 0xfc]",
+          "field": "Plane"
+        }
+      ],
+      "unchanged_source": "fov(float,const volatile float&) issues x87 FDIV through the live address separately for each Ship/Plane number call."
+    }
+  ],
+  "tracked_client_census": {
+    "query": "git grep -n -e NativeGameSettingsStorage -e fov_divisor_00f889b4 -- :!docs :!reports :!config",
+    "storage_type_files": [
+      "include/bsp/native_game_settings_owner.hpp",
+      "src/native_game_settings_owner.cpp",
+      "include/bsp/game_native_settings_process.hpp",
+      "src/game_native_settings_process.cpp",
+      "include/bsp/game_native_settings_application.hpp",
+      "src/game_native_settings_application.cpp"
+    ],
+    "direct_bytes_clients": [
+      {
+        "file": "src/game_native_settings_application.cpp",
+        "operation": "copy_native_game_settings_read_view clan_text_b4",
+        "before": "storage.bytes+0xb4",
+        "after": "storage.data()+0xb4"
+      }
+    ],
+    "unchanged_consumer_context_files": [
+      "include/bsp/native_global_config_load.hpp",
+      "src/native_global_config_load.cpp"
+    ],
+    "tracked_tests_or_tools_using_storage_type": 0
+  },
+  "evidence_qualification": {
+    "method": "Current Source census/diff plus bounded inspection of existing export assembly and metadata.",
+    "export_project": "bsp",
+    "export_program": "/battlestationspacific.exe",
+    "constructor_export_utc": "2026-09-18T19:27:34.535160+00:00",
+    "loader_export_utc": "2026-09-18T00:51:27.803308+00:00",
+    "live_ghidra_queries": false,
+    "gpr_mutations": false,
+    "new_exports": false
+  },
+  "validation": {
+    "diff_check": "passed",
+    "source_diff_review": "passed",
+    "json_parse": "passed",
+    "win32_build": "not_run_worker_contract_integrator_owned",
+    "assertions_compiled": false,
+    "new_tests": 0,
+    "probes_run": 0,
+    "game_validation": false,
+    "original_binary_abi_validation": false
+  },
+  "remaining_scope": "Integrate and run the normal Win32 build. A retained application GlobalConfig context still requires its other providers and construction route; this packet supplies only its genuine live FOV field.",
+  "checked_input_hashes": [
+    {
+      "kind": "source",
+      "path": "include/bsp/native_game_settings_owner.hpp",
+      "bytes": 5980,
+      "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+    },
+    {
+      "kind": "source",
+      "path": "src/native_game_settings_owner.cpp",
+      "bytes": 7785,
+      "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+    },
+    {
+      "kind": "source",
+      "path": "include/bsp/game_native_settings_process.hpp",
+      "bytes": 2203,
+      "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6"
+    },
+    {
+      "kind": "source",
+      "path": "src/game_native_settings_process.cpp",
+      "bytes": 7791,
+      "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+    },
+    {
+      "kind": "source",
+      "path": "include/bsp/game_native_settings_application.hpp",
+      "bytes": 2280,
+      "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760"
+    },
+    {
+      "kind": "source",
+      "path": "src/game_native_settings_application.cpp",
+      "bytes": 11456,
+      "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a"
+    },
+    {
+      "kind": "source",
+      "path": "include/bsp/native_global_config_load.hpp",
+      "bytes": 2693,
+      "sha256": "ee56688b89c34e85b12718de2c308c1d574fcb739c7d44e7d874ae1f12d079dd"
+    },
+    {
+      "kind": "source",
+      "path": "src/native_global_config_load.cpp",
+      "bytes": 20907,
+      "sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b"
+    },
+    {
+      "kind": "source",
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 38481,
+      "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+    },
+    {
+      "kind": "source",
+      "path": "src/game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+    },
+    {
+      "kind": "existing_export",
+      "path": "exports/bsp/functions/008d7710/metadata.json",
+      "bytes": 273,
+      "sha256": "05205e075d984948a1743e713c600eaa39132d59c4f624e18a96b22baad8afd4"
+    },
+    {
+      "kind": "existing_export",
+      "path": "exports/bsp/functions/008d7710/decompiled.c",
+      "bytes": 4500,
+      "sha256": "d991029a2d432dd1eb5e5c0a9a23112debff33a92bef822ae3d7a0bc13c53731"
+    },
+    {
+      "kind": "existing_export",
+      "path": "exports/bsp/functions/008d7710/assembly.txt",
+      "bytes": 3711,
+      "sha256": "6547462224706adb5d559b0809ab82043f61675bc9e98d480469c95aea51dea7"
+    },
+    {
+      "kind": "existing_export",
+      "path": "exports/bsp/functions/0087d7b0/metadata.json",
+      "bytes": 282,
+      "sha256": "1be96c05c0487d2a8e00d655b926619db7570846308ea1d80ca4f9906318254a"
+    },
+    {
+      "kind": "existing_export",
+      "path": "exports/bsp/functions/0087d7b0/decompiled.c",
+      "bytes": 44279,
+      "sha256": "9f245eb7e358700e84de3a960ab5a75cd6486a934c44e78b230b5fc45acb0eab"
+    },
+    {
+      "kind": "existing_export",
+      "path": "exports/bsp/functions/0087d7b0/assembly.txt",
+      "bytes": 66535,
+      "sha256": "c4e0466995bc612cf4325da1280d2f9b2c6e03b189d62d7dab9d0c828f37569b"
+    }
+  ]
+}

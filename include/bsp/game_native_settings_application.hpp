@@ -32,6 +32,9 @@ public:
     bool requires_process_retention() const noexcept;
     std::uint32_t failure_site() const noexcept;
     void copy_read_view(GameSettingsBlock&) const;
+    //The actual process-retained settings +34h cell, after static initialization.
+    //Borrow this for NativeGlobalConfigLoadContext; no projected read-view copy.
+    const volatile float& fov_divisor_00f889b4() const;
     const std::vector<LanguageEntry>& language_catalog() const noexcept;
     VfsLocaleRuntime& locale_source() noexcept;
     IDirect3D9& renderer_api() const;
