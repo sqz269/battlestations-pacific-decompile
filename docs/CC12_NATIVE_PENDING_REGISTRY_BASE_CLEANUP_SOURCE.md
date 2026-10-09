@@ -100,3 +100,32 @@ fixture, Native ABI or gameplay evidence. No CMake, ledger or Ghidra changes,
 builds, tests or probes were performed by the worker. Primary review must inspect
 the entire emitted leaf and actual child, establish Core linkage and run the
 required MSVC Win32 build before any admission.
+
+## Primary registration and whole Source review
+
+The integrator registered the leaf in bsp_core and completed the normal
+MSVC Win32 build with all three existing checks passing. The entire emitted
+ordinary C++ leaf is 25 bytes/nine instructions: cdecl frame setup, load the
+borrowed cell address, push the captured receiver argument, clear the cell,
+call the actual profile helper, clean four argument bytes, restore EBP and RET.
+The clear occurs before that helper call.
+
+The actual helper's complete current body is 14 bytes/six instructions with
+one volatile DWORD CE3818 receiver store and no section+4 access or descendant.
+The sole external REL32 operand16 resolves to its physical symbol. Both complete
+objects occur exactly once in Core, with two unique positive public definitions.
+This Source call is not an Original Native call; the Native body remains 17
+bytes/three instructions and no calls. No identical ABI/bytes/flags are claimed.
+
+The previously uncounted Original address receives one complete ordinary
+storage-schedule reconstruction covering 17 Original bytes. Its Ghidra name is
+provisional, old comments are preserved, and the export is refreshed. This root
+is absent from the game map. A genuine cell producer, owner/table/lifetime and
+constructor/getter/retirement composition remain open, as do Native FH3/fault/
+runtime/startup/gameplay qualifications.
+
+Primary evidence is in
+`reports/cc12_native_pending_registry_base_cleanup_primary_review.json` and
+`local/cc12_registry_base_cleanup_primary/whole_objects_and_actual_profile_store_binding.json`.
+Source/build inputs, complete objects/library, game map/executable and test log
+are retained in that local directory. Worker document pins precede this appendix.
