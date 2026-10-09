@@ -1,0 +1,892 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_global_config_sample_zero_adapter_readiness",
+  "generated_at_utc": "2026-10-09T04:20:52.026255+00:00",
+  "base_commit": "1694bac894b9335bf60f09f51e377650527df8a8",
+  "evidence_kind": "read_only_current_source_pins_and_bounded_existing_native_evidence_replay",
+  "verdict": {
+    "existing_post_zero_sample_route": true,
+    "route": "GameSoundRuntime::samples().zero_references_slot_00(actual_sample) -> scalar_delete_sound_sample_00a82e80(actual_sample,1,sample_)",
+    "same_sample_second_decrement": false,
+    "domain_qualified_adapter_viable": true,
+    "adapter_implemented": false,
+    "automatic_type_or_domain_admission": false,
+    "global_application_ready": false,
+    "additional_original_functions": 0
+  },
+  "actual_source_producer": {
+    "loader": "native_global_config_load.cpp ObjectiveSounds passes owner+2C0 and an unchecked incrementing signed index to assign_global_config_sound_008dbe90.",
+    "assignment": "Acquire through context.current_cache_00f8bbe8 and context.cache; capture old after acquire; if old!=next publish next, atomically retain next+4, release old; finally release temporary once. The retained first slot must be one of indices 0..2. There is no index guard in Source.",
+    "cache_hit": "D5B460 canonical cache scans name keys, atomically increments captured sample+4 and reloads the current map sample for output.",
+    "cache_miss": "D5B460 maps factory slot4 to create_sound_sample_00a85440; allocate actual 0x7C with singleton_lifetime_allocate, invoke the bound constructor and return its actual result. Unknown cache profile calls a mandatory host that SoundSampleRuntime rejects.",
+    "construction": "SoundSampleRuntime delegates to construct_sound_sample_00a84d70 with its retained sample_ context: raw+0 CEB130 then D5B074, raw+4 count 1, real strings/array headers, resource+78 and optional event group+68.",
+    "weak_cache": "Unique name->raw sample insertion is weak: no cache ownership retain. Miss returns fresh even on a reentrant duplicate. Cache membership at deletion is neither necessary proof of provenance nor an ownership reference.",
+    "allocation": "Sample and its raw arrays use singleton_lifetime_allocate/free (matching Source malloc/free). Canonical map/cache C++ projection allocation is a different object and must not be passed to the sample scalar."
+  },
+  "public_routes": [
+    {
+      "api": "SoundSampleRuntime::zero_references_slot_00(void*)",
+      "available": true,
+      "post_zero": true,
+      "body": "Fresh raw+0 profile check requires D5B074; calls scalar_delete_sound_sample_00a82e80(sample,1,sample_). No raw+4 read/write/decrement, retain or slot clearing.",
+      "defaults": "No fallback/default/no-op: unknown profile throws logic_error; the method is not noexcept.",
+      "use": "Preferred existing sample branch of a future domain-qualified effects adapter."
+    },
+    {
+      "api": "SoundSampleRuntime::sample_context() -> scalar_delete_sound_sample_00a82e80",
+      "available": true,
+      "post_zero": true,
+      "use": "Public lower-level route exists; requires the same known sample/context/allocator contract and bypasses the useful profile guard. It is not needed to add another scalar."
+    },
+    {
+      "api": "GameSoundRuntime::samples()",
+      "available": true,
+      "post_zero": false,
+      "use": "Returns retained Impl.samples by reference, without checking started(). Caller must retain the runtime and live current cache/owner/providers; the accessor does not establish their readiness."
+    },
+    {
+      "api": "GameSoundRuntime::delete_registered",
+      "available": true,
+      "post_zero": false,
+      "use": "Wrong route for payload samples: accepts identities of manager, cache, query lock and alternate singleton only; foreign samples enter logic_error then terminate."
+    },
+    {
+      "api": "SoundRetainedShutdownRuntime::release_retained_80_reference / SoundChannelRuntime::release_reference",
+      "available": true,
+      "post_zero": false,
+      "use": "Both perform a decrement before their own final-release path. The former would decrement the sample twice; the latter operates projected channel storage and is not an actual-sample adapter."
+    }
+  ],
+  "native_profile_contract": {
+    "table": "00D5B074",
+    "slot_00": "00BD30E0: if ECX non-null read CURRENT table+4, push flags1, call that method, RET; no decrement.",
+    "slot_04": "00A82E80: ECX actual sample, stack flags DWORD, destructor00A82C60 then optional free00BF65AC for flags&1, returns captured address, RET4; no decrement.",
+    "slot_08": "0x6F6F4C0A is the following literal bytes 0A 4C 6F 6F, not a sound stop method.",
+    "source_mapping": "Numeric D5B074 is a dispatch identity for the retained Source sample runtime. It is not a callable current-process vtable and does not prove the pointer has sample layout or ownership."
+  },
+  "destruction_schedule": [
+    "Write D5B074; if group+68 exists, two FreeEventData(null,1) calls, memory stats, update current resource+78 size.",
+    "Reload the runtime current sample-cache publication; remove the first weak entry whose sample pointer matches. Canonical D5B460 erases its pooled key without releasing the sample.",
+    "Release the owned resource+78 through SoundResourceRuntime, then clear +78. Any resource counter decrement belongs to the distinct owned resource, not to this sample+4.",
+    "Resource final destruction can require the same live current sound owner/resource cache, FMOD objects/library, accounting word and string storage.",
+    "Destroy pointer array+6C, strings+60/+58/+50, parameter array+44, stamp base CEB130; scalar flags1 frees the original sample allocation.",
+    "Returning paths leave no sample read for the proposed adapter. Throwing paths are outside the required GlobalConfig nonthrowing callback contract; do not swallow them into success."
+  ],
+  "canonical_retention": {
+    "composition": "GameSoundRuntime::Impl binds samples and resources to the same current_owner/current_cache publications, library, services.strings, words.resource_bytes and writable null bytes. Its instance and retained-shutdown contexts already borrow this same samples object.",
+    "cache_creation": "Startup creates/registers the canonical auxiliary owner, stamps D5B460 and constructs its map; shared lifetime global_00f8bbe8 identifies that cache. The manager is moved after the cache for the existing shutdown schedule.",
+    "public_input_binding": "A caller can form NativeGlobalConfigSoundContext from core.lifetime_bindings().global_00f8bbe8, core.samples().sample_cache_context(), and core.samples(); these public services are already available. No such new binding was constructed in this packet.",
+    "lifetime": "Retain the SAME core/sample runtime, current cache publication and live cache, strings, current sound owner/resource owner, resource runtime, FMOD library/handles, accounting/null words and associated service domain through the last GlobalConfig sample release. No substitute cache/runtime/CRT string pool is acceptable.",
+    "shutdown": "GameSoundRuntime header requires external sample/channel references released before shutdown. shutdown destroys manager then cache; samples() remaining callable as a C++ accessor does not make destroyed publications/resources usable. Manager ordering relative to GlobalConfig must be established by full application wiring."
+  },
+  "suggested_adapter_contract": {
+    "status": "Design readiness only; no Source implementation authorized or added.",
+    "binding": "Borrow exactly the proven canonical SoundSampleRuntime and the existing NativeGlobalConfigCurrentDispatch for independently admitted raw payloads. Retain both through GlobalConfig drain.",
+    "zero": "After the caller already decremented actual+4 to zero: a provenance-admitted sample with current D5B074 calls samples.zero_references_slot_00(p); an independently admitted raw object calls current.zero_references_slot_00(p). Re-read the current dispatch state for the actual passed object; no cached table/identity, extra decrement, new retain, slot clear or post-call object access.",
+    "admission": "The containing domain must establish that every pointer routed by numeric D5B074 is the complete base of a valid 0x7C sample returned by this exact canonical factory/cache and still owned under this runtime. The numeric check alone is insufficient; this is not a general arbitrary-pointer adapter or a new claim that cache membership proves ownership.",
+    "stop": "Always preserve a genuine fresh current-table+8 call for an admitted non-null second-domain object, with the unmodified flag. Never route a sample through stop, synthesize a sample stop, drop the callback or assume the second array is empty.",
+    "unknowns": "A foreign/unknown numeric stamp is not automatically a raw callable table. Unknown producer/domain admission stays open. Indices >=3 of the unchecked ObjectiveSounds assignment can place sample pointers into stop-bearing slots; that input is not made compatible by a sample zero adapter.",
+    "noexcept": "GlobalConfigEffects methods and aggregate are noexcept, while existing sample runtime/scalar helpers can throw. Use requires a concrete nonthrowing valid-service domain; neither suppressed exceptions nor general native EH/SEH equivalence is supplied."
+  },
+  "rejected_shortcuts": [
+    "Calling the actual-table provider on numeric D5B074 as if it were a live source table.",
+    "Inferring sample type, allocation base, ownership or runtime/cache identity from raw+0 alone.",
+    "Admitting sample+8 options, sample subobjects, projected SoundInstance/SoundLevelEntry, SoundOwnedResource or the cache owner itself as a sample.",
+    "Calling a release helper that performs another sample+4 decrement.",
+    "Using GameSoundRuntime::delete_registered to delete sample payloads.",
+    "Copying Original table words into raw objects, installing fake tables, routing a literal sample v8 to stop, or treating any unsupported path as successful no-op.",
+    "Rebinding an independent sample runtime/cache or choosing the default CRT string pool instead of the producer domain.",
+    "Assuming non-null second-array payloads have been recovered or arrays remain empty."
+  ],
+  "native_evidence": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "refresh": "No fresh native export or live Ghidra byte query. Existing recorded live spans and full-body hash records were replayed against the current installed PE; cached scalar assembly was inspected via bsp.py show --asm.",
+    "spans": [
+      {
+        "address": "00BD30E0",
+        "size": 14,
+        "hex": "85c974098b018b50046a01ffd2c3",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "origin_report": "reports/cc12_global_config_second_array_payload.json",
+        "origin_key": "native_code_evidence",
+        "original_record_had_live_installed_match": true,
+        "fresh_live_query": false,
+        "current_installed_pe_match": true,
+        "instruction_count": 7,
+        "instructions": [
+          "00BD30E0: test ecx, ecx",
+          "00BD30E2: je 0xbd30ed",
+          "00BD30E4: mov eax, dword ptr [ecx]",
+          "00BD30E6: mov edx, dword ptr [eax + 4]",
+          "00BD30E9: push 1",
+          "00BD30EB: call edx",
+          "00BD30ED: ret"
+        ]
+      },
+      {
+        "address": "008DBE90",
+        "size": 171,
+        "hex": "64a1000000006aff68d833ca0050648925000000008b4424145356578bf1508d4c2424518b0de8bbf800e811811a008b4c241c8b008b3c8e3bf88b1d2022ce00c744241400000000742785c089048e740a83c00450ff151c22ce0085ff74128d570452ffd385c075088b078b108bcfffd28b44242085c0c7442414ffffffff74148bf083c00450ffd385c075088b068b108bceffd28b4c240c5f5eb00164890d000000005b83c40cc20800",
+        "sha256": "54a68663294e161beddc6695a1e4b099a68c703006eb0b8133dddf08ece3e709",
+        "origin_report": "reports/cc12_global_config_second_array_payload.json",
+        "origin_key": "native_code_evidence",
+        "original_record_had_live_installed_match": true,
+        "fresh_live_query": false,
+        "current_installed_pe_match": true,
+        "instruction_count": 61,
+        "instructions": [
+          "008DBE90: mov eax, dword ptr fs:[0]",
+          "008DBE96: push -1",
+          "008DBE98: push 0xca33d8",
+          "008DBE9D: push eax",
+          "008DBE9E: mov dword ptr fs:[0], esp",
+          "008DBEA5: mov eax, dword ptr [esp + 0x14]",
+          "008DBEA9: push ebx",
+          "008DBEAA: push esi",
+          "008DBEAB: push edi",
+          "008DBEAC: mov esi, ecx",
+          "008DBEAE: push eax",
+          "008DBEAF: lea ecx, [esp + 0x24]",
+          "008DBEB3: push ecx",
+          "008DBEB4: mov ecx, dword ptr [0xf8bbe8]",
+          "008DBEBA: call 0xa83fd0",
+          "008DBEBF: mov ecx, dword ptr [esp + 0x1c]",
+          "008DBEC3: mov eax, dword ptr [eax]",
+          "008DBEC5: mov edi, dword ptr [esi + ecx*4]",
+          "008DBEC8: cmp edi, eax",
+          "008DBECA: mov ebx, dword ptr [0xce2220]",
+          "008DBED0: mov dword ptr [esp + 0x14], 0",
+          "008DBED8: je 0x8dbf01",
+          "008DBEDA: test eax, eax",
+          "008DBEDC: mov dword ptr [esi + ecx*4], eax",
+          "008DBEDF: je 0x8dbeeb",
+          "008DBEE1: add eax, 4",
+          "008DBEE4: push eax",
+          "008DBEE5: call dword ptr [0xce221c]",
+          "008DBEEB: test edi, edi",
+          "008DBEED: je 0x8dbf01",
+          "008DBEEF: lea edx, [edi + 4]",
+          "008DBEF2: push edx",
+          "008DBEF3: call ebx",
+          "008DBEF5: test eax, eax",
+          "008DBEF7: jne 0x8dbf01",
+          "008DBEF9: mov eax, dword ptr [edi]",
+          "008DBEFB: mov edx, dword ptr [eax]",
+          "008DBEFD: mov ecx, edi",
+          "008DBEFF: call edx",
+          "008DBF01: mov eax, dword ptr [esp + 0x20]",
+          "008DBF05: test eax, eax",
+          "008DBF07: mov dword ptr [esp + 0x14], 0xffffffff",
+          "008DBF0F: je 0x8dbf25",
+          "008DBF11: mov esi, eax",
+          "008DBF13: add eax, 4",
+          "008DBF16: push eax",
+          "008DBF17: call ebx",
+          "008DBF19: test eax, eax",
+          "008DBF1B: jne 0x8dbf25",
+          "008DBF1D: mov eax, dword ptr [esi]",
+          "008DBF1F: mov edx, dword ptr [eax]",
+          "008DBF21: mov ecx, esi",
+          "008DBF23: call edx",
+          "008DBF25: mov ecx, dword ptr [esp + 0xc]",
+          "008DBF29: pop edi",
+          "008DBF2A: pop esi",
+          "008DBF2B: mov al, 1",
+          "008DBF2D: mov dword ptr fs:[0], ecx",
+          "008DBF34: pop ebx",
+          "008DBF35: add esp, 0xc",
+          "008DBF38: ret 8"
+        ]
+      },
+      {
+        "address": "008DBDB0",
+        "size": 218,
+        "hex": "6aff68b933ca0064a10000000050648925000000005153555657894c2410c744241c010000008d710cbd0300000033db8b0e8bc1f7d81bc0a91193e10074288b118b420853ffd08b3e3bfb74188d4f0451ff152022ce0085c075088b178b028bcfffd0891e891e8b7ef43bfb74198d4f0451ff152022ce0085c075088b178b028bcfffd0895ef4895ef483c60483ed01759e8b44241068804152006a036a0483c00c50885c242ce812be31008b4c24106810384c006a036a0451c744242cffffffffe8f7bd31008b4c24145f5e5d5b64890d0000000083c410c3",
+        "sha256": "0155c5076841ab7188f054415599a7c04d507e7c137f04c9184363c4ca2badc2",
+        "origin_report": "reports/cc12_global_config_second_array_payload.json",
+        "origin_key": "native_code_evidence",
+        "original_record_had_live_installed_match": true,
+        "fresh_live_query": false,
+        "current_installed_pe_match": true,
+        "instruction_count": 79,
+        "instructions": [
+          "008DBDB0: push -1",
+          "008DBDB2: push 0xca33b9",
+          "008DBDB7: mov eax, dword ptr fs:[0]",
+          "008DBDBD: push eax",
+          "008DBDBE: mov dword ptr fs:[0], esp",
+          "008DBDC5: push ecx",
+          "008DBDC6: push ebx",
+          "008DBDC7: push ebp",
+          "008DBDC8: push esi",
+          "008DBDC9: push edi",
+          "008DBDCA: mov dword ptr [esp + 0x10], ecx",
+          "008DBDCE: mov dword ptr [esp + 0x1c], 1",
+          "008DBDD6: lea esi, [ecx + 0xc]",
+          "008DBDD9: mov ebp, 3",
+          "008DBDDE: xor ebx, ebx",
+          "008DBDE0: mov ecx, dword ptr [esi]",
+          "008DBDE2: mov eax, ecx",
+          "008DBDE4: neg eax",
+          "008DBDE6: sbb eax, eax",
+          "008DBDE8: test eax, 0xe19311",
+          "008DBDED: je 0x8dbe17",
+          "008DBDEF: mov edx, dword ptr [ecx]",
+          "008DBDF1: mov eax, dword ptr [edx + 8]",
+          "008DBDF4: push ebx",
+          "008DBDF5: call eax",
+          "008DBDF7: mov edi, dword ptr [esi]",
+          "008DBDF9: cmp edi, ebx",
+          "008DBDFB: je 0x8dbe15",
+          "008DBDFD: lea ecx, [edi + 4]",
+          "008DBE00: push ecx",
+          "008DBE01: call dword ptr [0xce2220]",
+          "008DBE07: test eax, eax",
+          "008DBE09: jne 0x8dbe13",
+          "008DBE0B: mov edx, dword ptr [edi]",
+          "008DBE0D: mov eax, dword ptr [edx]",
+          "008DBE0F: mov ecx, edi",
+          "008DBE11: call eax",
+          "008DBE13: mov dword ptr [esi], ebx",
+          "008DBE15: mov dword ptr [esi], ebx",
+          "008DBE17: mov edi, dword ptr [esi - 0xc]",
+          "008DBE1A: cmp edi, ebx",
+          "008DBE1C: je 0x8dbe37",
+          "008DBE1E: lea ecx, [edi + 4]",
+          "008DBE21: push ecx",
+          "008DBE22: call dword ptr [0xce2220]",
+          "008DBE28: test eax, eax",
+          "008DBE2A: jne 0x8dbe34",
+          "008DBE2C: mov edx, dword ptr [edi]",
+          "008DBE2E: mov eax, dword ptr [edx]",
+          "008DBE30: mov ecx, edi",
+          "008DBE32: call eax",
+          "008DBE34: mov dword ptr [esi - 0xc], ebx",
+          "008DBE37: mov dword ptr [esi - 0xc], ebx",
+          "008DBE3A: add esi, 4",
+          "008DBE3D: sub ebp, 1",
+          "008DBE40: jne 0x8dbde0",
+          "008DBE42: mov eax, dword ptr [esp + 0x10]",
+          "008DBE46: push 0x524180",
+          "008DBE4B: push 3",
+          "008DBE4D: push 4",
+          "008DBE4F: add eax, 0xc",
+          "008DBE52: push eax",
+          "008DBE53: mov byte ptr [esp + 0x2c], bl",
+          "008DBE57: call 0xbf7c6e",
+          "008DBE5C: mov ecx, dword ptr [esp + 0x10]",
+          "008DBE60: push 0x4c3810",
+          "008DBE65: push 3",
+          "008DBE67: push 4",
+          "008DBE69: push ecx",
+          "008DBE6A: mov dword ptr [esp + 0x2c], 0xffffffff",
+          "008DBE72: call 0xbf7c6e",
+          "008DBE77: mov ecx, dword ptr [esp + 0x14]",
+          "008DBE7B: pop edi",
+          "008DBE7C: pop esi",
+          "008DBE7D: pop ebp",
+          "008DBE7E: pop ebx",
+          "008DBE7F: mov dword ptr fs:[0], ecx",
+          "008DBE86: add esp, 0x10",
+          "008DBE89: ret"
+        ]
+      },
+      {
+        "address": "00D5B074",
+        "size": 16,
+        "hex": "e030bd00802ea8000a4c6f6f70506f69",
+        "sha256": "aa2c2cb8f28c8cc9a195bc517a0af00f8a3585d8c4d6c4692ba5197cf224b43b",
+        "origin_report": "reports/cc12_global_config_second_array_payload.json",
+        "origin_key": "native_data_evidence",
+        "original_record_had_live_installed_match": true,
+        "fresh_live_query": false,
+        "current_installed_pe_match": true,
+        "instruction_count": 0,
+        "instructions": []
+      },
+      {
+        "address": "00A82E80",
+        "size": 30,
+        "hex": "568bf1e8d8fdfffff644240801740956e81737170083c4048bc65ec20400",
+        "sha256": "10be2b3b6aefd6e5d26795dd6c4c3eb62ad2b5b930d3073013d85af56db60714",
+        "origin_report": "reports/sound_sample.json",
+        "origin_key": "functions[address=00a82e80]",
+        "original_record_had_live_installed_match": true,
+        "fresh_live_query": false,
+        "current_installed_pe_match": true,
+        "instruction_count": 11,
+        "instructions": [
+          "00A82E80: push esi",
+          "00A82E81: mov esi, ecx",
+          "00A82E83: call 0xa82c60",
+          "00A82E88: test byte ptr [esp + 8], 1",
+          "00A82E8D: je 0xa82e98",
+          "00A82E8F: push esi",
+          "00A82E90: call 0xbf65ac",
+          "00A82E95: add esp, 4",
+          "00A82E98: mov eax, esi",
+          "00A82E9A: pop esi",
+          "00A82E9B: ret 4"
+        ]
+      }
+    ],
+    "full_body_hash_record_replays": [
+      {
+        "path": "reports/sound_sample.json",
+        "address": "00A84D70",
+        "byte_span": 1731,
+        "sha256": "9444d417b506dbec0c8bd301ff5fa58ff4f21106b00ae64e9340d83d2d0a27e3",
+        "abi": "ECX actual sample, stack name, EAX sample, RET4.",
+        "current_installed_pe_hash_matches_retained_record": true,
+        "fresh_decompile_or_live_query": false
+      },
+      {
+        "path": "reports/sound_sample.json",
+        "address": "00A82C60",
+        "byte_span": 439,
+        "sha256": "4f2194b629ef045d5d4af0734337f5077718b9a6d8d56fa1727aa7013f84cad2",
+        "abi": "ECX actual owner/scanner, RET.",
+        "current_installed_pe_hash_matches_retained_record": true,
+        "fresh_decompile_or_live_query": false
+      },
+      {
+        "path": "reports/sound_sample_cache.json",
+        "address": "00A85440",
+        "byte_span": 95,
+        "sha256": "f8b8e275e2bbf692f4514c3c103af61b337ad397576ad249578e62333d5a3f10",
+        "abi": "ECX unused; stack name; EAX sample; RET4.",
+        "current_installed_pe_hash_matches_retained_record": true,
+        "fresh_decompile_or_live_query": false
+      },
+      {
+        "path": "reports/sound_sample_cache.json",
+        "address": "00A83FD0",
+        "byte_span": 688,
+        "sha256": "3e5267885241937601ce918e99728346e1f5a52c7b80c8150d6086d2baae8677",
+        "abi": "ECX cache; stack output/name pointers; EAX output; RET8.",
+        "current_installed_pe_hash_matches_retained_record": true,
+        "fresh_decompile_or_live_query": false
+      }
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/sound_sample.hpp",
+      "physical_sha256": "43cdd558fa7135ed708b468e79f1104fc87e58ecfbe122d0cea94e5ae461f117",
+      "physical_bytes": 4384,
+      "normalized_lf_sha256": "43cdd558fa7135ed708b468e79f1104fc87e58ecfbe122d0cea94e5ae461f117",
+      "normalized_lf_bytes": 4384,
+      "git_blob_oid": "abbfe14ea47117463aa80515dacc4f83bb6f0d6b",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 11,
+          "text": "struct GameplayEffectComponentLifetime;\n// Actual 7Ch sample storage, including the intrusive count at4 and actual\n// pooled string/array headers. Unwritten bytes are preserved by construction.\nstruct SoundSampleStorage { alignas(4) std::array<std::byte, 0x7c> bytes; };"
+        },
+        {
+          "start_line": 44,
+          "end_line": 68,
+          "text": "    virtual ~SoundSampleHost() = default;\n    virtual bool resolve_name_00bdf4c0(NativeString&) = 0;\n    virtual std::unique_ptr<SoundSampleScanner> open_scanner_00bef2e0(const NativeString&) = 0;\n    virtual SoundResourceOwner& current_resource_owner_00a79910() = 0;\n    // Options point into the current actual sample+8 record. Runtime adapts\n    // its fields into the existing resource-loader projection at this boundary.\n    virtual SoundOwnedResource* load_resource_00a84740(SoundResourceOwner&,\n        const NativeString&, void* actual_options, bool clone, bool load_if_missing) = 0;\n    virtual void* current_event_system_00f8bbd8_48() = 0;\n    virtual SoundAuxiliaryTreeOwner& current_sample_cache_00f8bbe8() = 0;\n    virtual SoundSampleCacheContext& sample_cache_context() = 0;\n    virtual void release_resource_00a854e0(SoundOwnedResource&) = 0;\n};\nstruct SoundSampleContext {\n    NativeStringStorage& strings;\n    SoundSampleHost& host;\n    SoundSampleFmodHost& fmod;\n    const char* null_data_00f8bbec; // Required live writable storage.\n};\n\nvoid* construct_sound_sample_00a84d70(void*, const NativeString&, SoundSampleContext&);\nvoid load_sound_sample_event_group_00a83850(void*, SoundSampleContext&);\nvoid read_sound_sample_event_parameters_00a828b0(void*, SoundSampleContext&);\nvoid destroy_sound_sample_00a82c60(void*, SoundSampleContext&);\nvoid* scalar_delete_sound_sample_00a82e80(void*, std::uint32_t, SoundSampleContext&);"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_sample_runtime.hpp",
+      "physical_sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123",
+      "physical_bytes": 2285,
+      "normalized_lf_sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123",
+      "normalized_lf_bytes": 2285,
+      "git_blob_oid": "1630dbb61c3d0eb956fa559f8a9ad50eba48b1f9",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 42,
+          "text": "// Concrete VFS/FMOD/resource-loader composition for D5B460 sample factories\n// and D5B074 sample final release. Bind the canonical current sound owner,\n// matching sound-system state, current sample cache and shared accounting word.\nclass SoundSampleRuntime final : public SoundSampleCacheHost, public SoundSampleHost,\n    public GameplayEffectComponentLifetime {\npublic:\n    SoundSampleRuntime(SoundSystemOwner* volatile&,\n        SoundAuxiliaryTreeOwner* volatile&, std::uint32_t& actual_resource_bytes,\n        VfsMountContext&, const VfsCandidateRegistrations&, SoundResourceRuntime&,\n        FmodConfigurationLibrary&, NativeStringStorage&, const char* live_e17bf0,\n        const char* live_f8bbec);\n    SoundSampleCacheContext& sample_cache_context() override { return cache_; }\n    SoundSampleContext& sample_context() noexcept { return sample_; }\n    void* construct_sample_00a84d70(void*, const NativeString&) override;\n    void* unknown_cache_create_slot_04(SoundAuxiliaryTreeOwner&, NativeString&) override;\n    void unknown_cache_erase_slot_08(SoundAuxiliaryTreeOwner&, SoundAuxiliaryTreeOwner::Tree::iterator) override;\n    void zero_references_slot_00(void*) override;\n    bool resolve_name_00bdf4c0(NativeString&) override;\n    std::unique_ptr<SoundSampleScanner> open_scanner_00bef2e0(const NativeString&) override;\n    SoundResourceOwner& current_resource_owner_00a79910() override;\n    SoundOwnedResource* load_resource_00a84740(SoundResourceOwner&, const NativeString&,\n        void* actual_options, bool clone, bool load_if_missing) override;\n    void* current_event_system_00f8bbd8_48() override;\n    SoundAuxiliaryTreeOwner& current_sample_cache_00f8bbe8() override;\n    void release_resource_00a854e0(SoundOwnedResource&) override;\nprivate:\n    SoundSystemOwner* volatile& current_owner_;\n    SoundAuxiliaryTreeOwner* volatile& current_cache_;\n    VfsMountContext& mounts_;\n    const VfsCandidateRegistrations& registrations_;\n    SoundResourceRuntime& resources_;\n    NativeStringStorage& strings_;\n    SoundSampleCacheContext cache_;\n    SoundSampleContext sample_;\n};"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_sample_runtime.cpp",
+      "physical_sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837",
+      "physical_bytes": 6059,
+      "normalized_lf_sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837",
+      "normalized_lf_bytes": 6059,
+      "git_blob_oid": "2720f31f8c84398c504fbda6ab9b51edb49670fc",
+      "excerpts": [
+        {
+          "start_line": 39,
+          "end_line": 59,
+          "text": "SoundSampleRuntime::SoundSampleRuntime(SoundSystemOwner* volatile& owner,\n    SoundAuxiliaryTreeOwner* volatile& current_cache, std::uint32_t& bytes, VfsMountContext& mounts,\n    const VfsCandidateRegistrations& registrations, SoundResourceRuntime& resources,\n    FmodConfigurationLibrary& fmod, NativeStringStorage& strings, const char* null_pattern, const char* null_data)\n    : current_owner_(owner), current_cache_(current_cache), mounts_(mounts),\n      registrations_(registrations), resources_(resources), strings_(strings),\n      cache_{strings, *this, bytes, null_pattern, null_data}, sample_{strings, *this, fmod, null_data} {}\nvoid* SoundSampleRuntime::construct_sample_00a84d70(void* sample, const NativeString& name) {\n    return construct_sound_sample_00a84d70(sample, name, sample_);\n}\nvoid* SoundSampleRuntime::unknown_cache_create_slot_04(SoundAuxiliaryTreeOwner&, NativeString&) {\n    throw std::logic_error(\"Sample runtime requires the recovered D5B460 cache profile\");\n}\nvoid SoundSampleRuntime::unknown_cache_erase_slot_08(SoundAuxiliaryTreeOwner&, SoundAuxiliaryTreeOwner::Tree::iterator) {\n    throw std::logic_error(\"Sample runtime requires the recovered D5B460 cache profile\");\n}\nvoid SoundSampleRuntime::zero_references_slot_00(void* sample) {\n    if (get<std::uint32_t>(sample, 0) != 0x00d5b074)\n        throw std::logic_error(\"Sample final release requires the recovered D5B074 profile\");\n    scalar_delete_sound_sample_00a82e80(sample, 1, sample_);\n}"
+        },
+        {
+          "start_line": 85,
+          "end_line": 107,
+          "text": "SoundResourceOwner& SoundSampleRuntime::current_resource_owner_00a79910() {\n    auto* owner = current_owner_;\n    if (!owner || !owner->resource_owner_54) throw std::logic_error(\"Sample load requires the current resource owner\");\n    return *owner->resource_owner_54;\n}\nSoundOwnedResource* SoundSampleRuntime::load_resource_00a84740(SoundResourceOwner& owner,\n    const NativeString& path, void* actual_options, bool clone, bool load_if_missing) {\n    auto options = project_options(actual_options);\n    return resources_.load_00a84740(owner, path, options, clone, load_if_missing);\n}\nvoid* SoundSampleRuntime::current_event_system_00f8bbd8_48() {\n    auto* owner = current_owner_;\n    if (!owner) throw std::logic_error(\"Sample parameter query requires the current sound owner\");\n    return owner->system.event_system;\n}\nSoundAuxiliaryTreeOwner& SoundSampleRuntime::current_sample_cache_00f8bbe8() {\n    auto* cache = current_cache_;\n    if (!cache) throw std::logic_error(\"Sample destruction requires the current sample cache\");\n    return *cache;\n}\nvoid SoundSampleRuntime::release_resource_00a854e0(SoundOwnedResource& resource) {\n    resources_.release_resource(resource);\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_sample_cache.hpp",
+      "physical_sha256": "2fbe6d92bbfa4d04c2ed03124fb5e739bb883568547be174a112f0b9c17213e2",
+      "physical_bytes": 2596,
+      "normalized_lf_sha256": "2fbe6d92bbfa4d04c2ed03124fb5e739bb883568547be174a112f0b9c17213e2",
+      "normalized_lf_bytes": 2596,
+      "git_blob_oid": "56d27eec8437a43e2f10a73769bc751b948523e9",
+      "excerpts": [
+        {
+          "start_line": 5,
+          "end_line": 21,
+          "text": "struct SoundSampleCacheHost {\n    virtual ~SoundSampleCacheHost() = default;\n    // Required constructor frontier. Actual7Ch allocation, stack native name;\n    // return the constructor's EAX. No fabricated sample or FMOD resource.\n    virtual void* construct_sample_00a84d70(void*, const NativeString&) = 0;\n    virtual void* unknown_cache_create_slot_04(SoundAuxiliaryTreeOwner&, NativeString&) = 0;\n    virtual void unknown_cache_erase_slot_08(SoundAuxiliaryTreeOwner&,\n        SoundAuxiliaryTreeOwner::Tree::iterator) = 0;\n};\nstruct SoundSampleCacheContext {\n    NativeStringStorage& strings;\n    SoundSampleCacheHost& host;\n    std::uint32_t& reset_word_00f8bbe4;\n    // Live writable image storage, not immutable empty strings.\n    const char* null_pattern_00e17bf0;\n    const char* null_longer_data_00f8bbec;\n};"
+        },
+        {
+          "start_line": 25,
+          "end_line": 35,
+          "text": "//00A85440: native ECX unused, stack name, EAX sample, RET4. Actual7Ch\n// allocation invokes required00A84D70 constructor. No payload reconstruction.\nvoid* create_sound_sample_00a85440(const NativeString&, SoundSampleCacheHost&);\n//00A83FD0: ECX cache, stack out/name, EAX out, RET8. Linear inorder scan;\n// equal lengths use CRT casefold, differing lengths allow case-sensitive\n// path-component suffixes in either direction. Hits retain. Misses create\n// through current slot4, uniquely insert a weak key/value, and return the fresh\n// pointer even on a reentrant duplicate. Input and output may change in calls.\nvoid** acquire_sound_sample_00a83fd0(SoundAuxiliaryTreeOwner&, void*& out,\n    const NativeString&, SoundSampleCacheContext&);\n//00A83E80: ECX cache, stack iterator address, RET4. Unlink node, destroy its"
+        },
+        {
+          "start_line": 39,
+          "end_line": 48,
+          "text": "    SoundAuxiliaryTreeOwner::Tree::iterator, NativeStringStorage&);\n//00A82C00: repeatedly erase CURRENT begin through CURRENT slot8; then write\n// DWORD00F8BBE4=0. Header/head remain live; payload pointers are weak.\nvoid clear_sound_sample_cache_00a82c00(SoundAuxiliaryTreeOwner&, SoundSampleCacheContext&);\n// Host std::map supplies native STL mechanics. Valid live tree/iterators and\n// nonnull samples on hits are preconditions; no native layout/SEH/ABI claim.\n} // namespace bsp"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_sample_cache.cpp",
+      "physical_sha256": "2050d68340afef08411e483c65f637917c81c301b17314d9d2e1f8e21d0bf364",
+      "physical_bytes": 5900,
+      "normalized_lf_sha256": "2050d68340afef08411e483c65f637917c81c301b17314d9d2e1f8e21d0bf364",
+      "normalized_lf_bytes": 5900,
+      "git_blob_oid": "07de91a05a3dbdcd393f9fb59d0315e9005c01e8",
+      "excerpts": [
+        {
+          "start_line": 40,
+          "end_line": 50,
+          "text": "void insert_weak(SoundAuxiliaryTreeOwner& owner, const NativeString& name,\n    void* sample, NativeStringStorage& strings) {\n    auto& tree = *owner.tree_04;\n    const auto position = tree.lower_bound(name);\n    if (position != tree.end() && !tree.key_comp()(name, position->first)) return;\n    //00A83C90 checks the native count only after unique-insertion lookup.\n    if (owner.count_0c > 0x15555553u) throw std::length_error(\"map/set<T> too long\");\n    ScopedName key{strings, {}};\n    key.value.copy_from_00be0a30_fragment(strings, name);\n    tree.emplace_hint(position, std::move(key.value), SoundAuxiliaryTreeValue{sample});\n    ++owner.count_0c;"
+        },
+        {
+          "start_line": 61,
+          "end_line": 94,
+          "text": "void* create_sound_sample_00a85440(const NativeString& name, SoundSampleCacheHost& host) {\n    void* const allocated = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x7c, 0x7c});\n    if (!allocated) return nullptr;\n    try { return host.construct_sample_00a84d70(allocated, name); }\n    catch (...) { singleton_lifetime_free(allocated); throw; }\n}\nvoid** acquire_sound_sample_00a83fd0(SoundAuxiliaryTreeOwner& owner, void*& out,\n    const NativeString& name, SoundSampleCacheContext& context) {\n    ScopedName creator_name{context.strings, {}};\n    creator_name.value.copy_from_00be0a30_fragment(context.strings, name);\n    // The scan uses the current original argument; the first copy is only\n    // the argument to the creator and stays alive through output publication.\n    for (auto it = owner.tree_04->begin(); it != owner.tree_04->end(); ++it) {\n        if (!matches(it->first, name, context)) continue;\n        void* const captured = it->second.sample_14;\n        InterlockedIncrement(reinterpret_cast<volatile LONG*>(static_cast<unsigned char*>(captured) + 4));\n        out = it->second.sample_14;\n        return &out;\n    }\n    void* const fresh = owner.native_vtable_00 == 0x00d5b460\n        ? create_sound_sample_00a85440(creator_name.value, context.host)\n        : context.host.unknown_cache_create_slot_04(owner, creator_name.value);\n    {\n        InputCopy input{context.strings, {}, 0};\n        input.value.copy_from_00be0a30_fragment(context.strings, name);\n        input.captured_length = input.value.length();\n        PairName pair{context.strings, {}, nullptr};\n        pair.value.resize_0041dd40(context.strings, input.captured_length, true);\n        pair.captured_data = pair.value.data();\n        if (input.captured_length != 0)\n            std::memcpy(pair.captured_data, input.value.data(), pair.value.length());\n        insert_weak(owner, pair.value, fresh, context.strings);\n    }\n    out = fresh; // Discard duplicate-insertion status; never retain the map value here."
+        },
+        {
+          "start_line": 95,
+          "end_line": 105,
+          "text": "    return &out;\n}\nvoid erase_sound_sample_iterator_00a83e80(SoundAuxiliaryTreeOwner& owner,\n    SoundAuxiliaryTreeOwner::Tree::iterator position, NativeStringStorage& strings) {\n    auto& tree = *owner.tree_04;\n    if (position == tree.end()) throw std::out_of_range(\"invalid map/set<T> iterator\");\n    {\n        auto node = tree.extract(position); // Topology changes before pooled-key release.\n        destroy_native_string_header_0041dd20(&node.key(), strings);\n    }\n    if (owner.count_0c != 0) --owner.count_0c; // After key/node destruction, preserving a callback's zero."
+        }
+      ]
+    },
+    {
+      "path": "src/sound_sample.cpp",
+      "physical_sha256": "e804f9109d495ce292680d899da4b704241198ced6e4d441f977a29ed490099f",
+      "physical_bytes": 17934,
+      "normalized_lf_sha256": "e804f9109d495ce292680d899da4b704241198ced6e4d441f977a29ed490099f",
+      "normalized_lf_bytes": 17934,
+      "git_blob_oid": "44daaa5840eeb9da5987ffe80692b2f28f18e443",
+      "excerpts": [
+        {
+          "start_line": 104,
+          "end_line": 108,
+          "text": "SoundOwnedResource* load_resource(void* sample, const NativeString& path, SoundSampleContext& context) {\n    auto& owner = context.host.current_resource_owner_00a79910();\n    auto* resource = context.host.load_resource_00a84740(owner, path, at(sample, 8), false, true);\n    put(sample, 0x78, resource);\n    return resource;"
+        },
+        {
+          "start_line": 119,
+          "end_line": 129,
+          "text": "void destroy_members(void* sample, NativeStringStorage& strings) {\n    // Constructor EH states5..0 at DEBF50 and destructor member sequence.\n    // Resource78 is a raw pointer, not an owning subobject in this unwind map.\n    resize_sound_sample_pointers_00a7b3d0(at(sample, 0x6c), 0);\n    singleton_lifetime_free(get<void*>(sample, 0x6c));\n    for (auto offset : {0x60u, 0x58u, 0x50u}) destroy_native_string_header_0041dd20(at(sample, offset), strings);\n    resize_sound_sample_parameters_0093f950(at(sample, 0x44), 0);\n    singleton_lifetime_free(get<void*>(sample, 0x44));\n    put<std::uint32_t>(sample, 0, 0x00ceb130);\n}\n}"
+        },
+        {
+          "start_line": 143,
+          "end_line": 160,
+          "text": "void* construct_sound_sample_00a84d70(void* sample, const NativeString& input, SoundSampleContext& context) {\n    put<std::uint32_t>(sample, 0, 0x00ceb130); put<std::uint32_t>(sample, 4, 1);\n    put<std::uint32_t>(sample, 0, 0x00d5b074);\n    for (auto offset : {0x44u, 0x48u, 0x4cu}) put<std::uint32_t>(sample, offset, 0);\n    put(sample, 0xc, 1.0f); put(sample, 0x10, 1.0f);\n    put(sample, 0x14, 10.0f); put(sample, 0x18, 1000000000.0f);\n    put<std::uint32_t>(sample, 8, 0);\n    for (auto offset : {0x1du, 0x1eu, 0x1cu}) put<std::uint8_t>(sample, offset, 0);\n    put(sample, 0x24, 0.0f); put(sample, 0x20, 0.0f);\n    put<std::uint32_t>(sample, 0x2c, 0xffffffffu);\n    for (auto offset : {0x40u, 0x29u, 0x2au, 0x28u}) put<std::uint8_t>(sample, offset, 0);\n    put(sample, 0x38, 0.0f); put(sample, 0x3c, 0.0f);\n    for (auto offset : {0x50u, 0x58u, 0x60u}) new(at(sample, offset)) NativeString();\n    for (auto offset : {0x6cu, 0x70u, 0x74u}) put<std::uint32_t>(sample, offset, 0);\n    try {\n    name(sample, 0x58).copy_from_00be0a30_fragment(context.strings, input);\n    put<std::uint32_t>(sample, 0x68, 0);\n    auto& requested = name(sample, 0x58);"
+        },
+        {
+          "start_line": 265,
+          "end_line": 301,
+          "text": "void remove_sound_sample_by_pointer_00a82b70(SoundAuxiliaryTreeOwner& owner, void* sample,\n    SoundSampleCacheContext& context) {\n    for (auto i = owner.tree_04->begin(); i != owner.tree_04->end(); ++i) {\n        if (i->second.sample_14 != sample) continue;\n        if (owner.native_vtable_00 == 0x00d5b460) erase_sound_sample_iterator_00a83e80(owner, i, context.strings);\n        else context.host.unknown_cache_erase_slot_08(owner, i);\n        return;\n    }\n}\nvoid destroy_sound_sample_00a82c60(void* sample, SoundSampleContext& context) {\n    put<std::uint32_t>(sample, 0, 0x00d5b074);\n    try {\n    if (get<void*>(sample, 0x68)) {\n        std::int32_t before{}, after{};\n        context.fmod.memory_get_stats(&before, nullptr);\n        memory_result(context.fmod.event_group_free_event_data(get<void*>(sample, 0x68), nullptr, 1), context);\n        memory_result(context.fmod.event_group_free_event_data(get<void*>(sample, 0x68), nullptr, 1), context);\n        context.fmod.memory_get_stats(&after, nullptr);\n        get<SoundOwnedResource*>(sample, 0x78)->size_28 += static_cast<std::uint32_t>(after) - static_cast<std::uint32_t>(before);\n    }\n    auto& cache = context.host.current_sample_cache_00f8bbe8();\n    remove_sound_sample_by_pointer_00a82b70(cache, sample, context.host.sample_cache_context());\n    if (auto* resource = get<SoundOwnedResource*>(sample, 0x78)) {\n        context.host.release_resource_00a854e0(*resource);\n        put<void*>(sample, 0x78, nullptr);\n    }\n    } catch (...) {\n        destroy_members(sample, context.strings);\n        throw;\n    }\n    destroy_members(sample, context.strings);\n}\nvoid* scalar_delete_sound_sample_00a82e80(void* sample, std::uint32_t flags, SoundSampleContext& context) {\n    destroy_sound_sample_00a82c60(sample, context);\n    if (flags & 1u) singleton_lifetime_free(sample);\n    return sample;\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_global_config_fields.hpp",
+      "physical_sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803",
+      "physical_bytes": 1473,
+      "normalized_lf_sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803",
+      "normalized_lf_bytes": 1473,
+      "git_blob_oid": "9d47937ea57c05a4742f6ae2d37dfa16e3aa9e8c",
+      "excerpts": [
+        {
+          "start_line": 6,
+          "end_line": 19,
+          "text": "struct NativeGlobalConfigSoundContext {\n    SoundAuxiliaryTreeOwner* volatile& current_cache_00f8bbe8;\n    SoundSampleCacheContext& cache;\n    GameplayEffectComponentLifetime& lifetime;\n};\n// Full008DBE90..008DBF3A[171]. ECX embedded GlobalConfig+2C0 storage,\n// stack signed index/name, AL1, RET8. The index is unchecked DWORD arithmetic.\n// Capture old slot AFTER acquisition, publish new before retain/release, then\n// release the CURRENT temporary. Existing source cache supplies its real\n// lookup/creation contract; its host-map layout is not native STL storage.\n// Supported C++ unwind from assignment releases the temporary; acquisition\n// failure does not. No drop-in original FH3/SEH or register-ABI claim.\nbool assign_global_config_sound_008dbe90(void* actual_effects, std::int32_t index,\n    const NativeString& name, NativeGlobalConfigSoundContext&);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_global_config_fields.cpp",
+      "physical_sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+      "physical_bytes": 1898,
+      "normalized_lf_sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+      "normalized_lf_bytes": 1898,
+      "git_blob_oid": "781de7128109686318b8cc9f08be63688f150141",
+      "excerpts": [
+        {
+          "start_line": 13,
+          "end_line": 44,
+          "text": "void release(void* value, GameplayEffectComponentLifetime& lifetime) {\n    if (value && InterlockedDecrement(reinterpret_cast<volatile LONG*>(\n        static_cast<unsigned char*>(value) + 4)) == 0)\n        lifetime.zero_references_slot_00(value);\n}\n} // namespace\n\nbool assign_global_config_sound_008dbe90(void* effects, std::int32_t index,\n    const NativeString& name, NativeGlobalConfigSoundContext& context) {\n    void* temporary;\n    auto** const result = acquire_sound_sample_00a83fd0(\n        *context.current_cache_00f8bbe8, temporary, name, context.cache);\n    void* const next = *result;\n    auto* const slot = reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(effects)\n        + static_cast<std::uint32_t>(index) * 4u);\n    void* const old = read<void*>(slot);\n    try {\n        if (old != next) {\n            std::memcpy(slot, &next, sizeof(next));\n            if (next) InterlockedIncrement(reinterpret_cast<volatile LONG*>(\n                static_cast<unsigned char*>(next) + 4));\n            release(old, context.lifetime);\n        }\n    } catch (...) {\n        // Native state0 -> CA33D0 ->4C3810 cleans the actual local pointer.\n        release(temporary, context.lifetime);\n        temporary = nullptr;\n        throw;\n    }\n    // Native disarms state0 before this final release; do not retry it on throw.\n    release(temporary, context.lifetime);\n    return true;"
+        }
+      ]
+    },
+    {
+      "path": "src/native_global_config_load.cpp",
+      "physical_sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b",
+      "physical_bytes": 20907,
+      "normalized_lf_sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b",
+      "normalized_lf_bytes": 20907,
+      "git_blob_oid": "42f6c44fdd60659d4096a64a7c6b2d3b8709120e",
+      "excerpts": [
+        {
+          "start_line": 271,
+          "end_line": 277,
+          "text": "        s.select(f_ChatColors);s.color_array(11,0x208,0x0087f57a,0x0087f58e,0x0087f608);\n        s.select(f_ObjectiveSounds);s.site=0x0087f66b;native_lua_iterate_first_00b67080(s.object(0x4c),s.object(0x88),s.object(0x9c));index=0;\n        while(!native_lua_is_unbound_00b66420(s.object(0x88))){\n            s.site=0x0087f697;const char* text=native_lua_string_00b662b0(s.object(0x9c));s.make_temporary(text,0x0087f6c2);\n            s.site=0x0087f6f9;assign_global_config_sound_008dbe90(s.field(0x2c0),index,s.temporary(),context.sound);s.release_temporary();\n            s.site=0x0087f738;native_lua_iterate_next_00b67190(s.object(0x4c),s.object(0x88),s.object(0x9c));index=increment(index);\n        }"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/global_config.hpp",
+      "physical_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "physical_bytes": 4312,
+      "normalized_lf_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "normalized_lf_bytes": 4312,
+      "git_blob_oid": "ecd627f026e2821bfe6dc87583f99fd3d04f9283",
+      "excerpts": [
+        {
+          "start_line": 19,
+          "end_line": 42,
+          "text": "struct GlobalConfigEffects {\n    virtual ~GlobalConfigEffects() = default;\n    // CURRENT vtable+8, ECX=actual object, one stack argument0. The callback\n    //may replace its owner's effect slot;008DBDB0 reloads it before release.\n    virtual void stop_slot_08(void* actual_object, std::uint32_t flag) noexcept = 0;\n    // CURRENT vtable+0, ECX=actual object, no stack arguments; called only\n    //after a real InterlockedDecrement(object+4) reaches zero.\n    virtual void zero_references_slot_00(void* actual_object) noexcept = 0;\n};\n// Actual raw objects must expose callable current-process method tables and\n// nonthrowing callbacks. Numeric profile identities and Sound projections do\n// not satisfy this contract. The caller owns the object+4 decrement and slots.\nclass NativeGlobalConfigCurrentDispatch final : public GlobalConfigEffects {\npublic:\n    void stop_slot_08(void* actual_object, std::uint32_t flag) noexcept override;\n    void zero_references_slot_00(void* actual_object) noexcept override;\n};\nstruct GlobalConfigContext {\n    // Same01090AA0 lifetime domain as every other startup singleton.\n    SoundLifetimeAccess lifetime;\n    GlobalConfigOwner* volatile& singleton_00f878e4;\n    NativeStringStorage& strings;\n    GlobalConfigEffects& effects;\n};"
+        }
+      ]
+    },
+    {
+      "path": "src/global_config.cpp",
+      "physical_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "physical_bytes": 7970,
+      "normalized_lf_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "normalized_lf_bytes": 7970,
+      "git_blob_oid": "551550917f25cf96ba756cebc77815424062d29c",
+      "excerpts": [
+        {
+          "start_line": 19,
+          "end_line": 49,
+          "text": "void release(void* object, GlobalConfigEffects& effects) noexcept {\n    if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(\n            static_cast<std::byte*>(object) + 4)) == 0)\n        effects.zero_references_slot_00(object);\n}\nvoid destroy_slot(void* slot, GlobalConfigEffects& effects) noexcept {\n    void* const captured = read<void*>(slot, 0);\n    if (captured) {\n        release(captured, effects);\n        write<void*>(slot, 0, nullptr);\n    }\n}\n} // namespace\n\nvoid NativeGlobalConfigCurrentDispatch::stop_slot_08(void* actual_object,\n    std::uint32_t flag) noexcept {\n    using Method = void (__thiscall*)(void*, std::uint32_t);\n    static_assert(sizeof(Method) == 4 && sizeof(void*) == 4);\n    void* const table = read<void*>(actual_object, 0);\n    const auto method = read<Method>(table, 8);\n    method(actual_object, flag);\n}\nvoid NativeGlobalConfigCurrentDispatch::zero_references_slot_00(\n    void* actual_object) noexcept {\n    using Method = void (__thiscall*)(void*);\n    static_assert(sizeof(Method) == 4 && sizeof(void*) == 4);\n    void* const table = read<void*>(actual_object, 0);\n    const auto method = read<Method>(table, 0);\n    method(actual_object);\n}\n"
+        },
+        {
+          "start_line": 69,
+          "end_line": 91,
+          "text": "void destroy_global_config_effects_008dbdb0(void* storage,\n    GlobalConfigEffects& effects) noexcept {\n    for (std::size_t i = 0; i != 3; ++i) {\n        auto* second = static_cast<std::byte*>(storage) + 0xc + i * 4;\n        void* const captured = read<void*>(second, 0);\n        if (captured) {\n            effects.stop_slot_08(captured, 0);\n            destroy_slot(second, effects); // CURRENT slot after virtual+8\n            write<void*>(second, 0, nullptr);\n        }\n        auto* first = second - 0xc;\n        destroy_slot(first, effects);\n        write<void*>(first, 0, nullptr);\n    }\n    // Earlier callbacks can repopulate slots already visited. The native EH\n    //iterator destructors therefore remain observable even after the loop.\n    for (std::size_t i = 3; i != 0; --i)\n        destroy_global_config_pointer_slot_00524180(\n            static_cast<std::byte*>(storage) + 0xc + (i - 1) * 4, effects);\n    for (std::size_t i = 3; i != 0; --i)\n        destroy_global_config_pointer_slot_004c3810(\n            static_cast<std::byte*>(storage) + (i - 1) * 4, effects);\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_sound_runtime.hpp",
+      "physical_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+      "physical_bytes": 5374,
+      "normalized_lf_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+      "normalized_lf_bytes": 5374,
+      "git_blob_oid": "82568ef1384e93785a93eba2a220d5084bba348b",
+      "excerpts": [
+        {
+          "start_line": 36,
+          "end_line": 59,
+          "text": "\n// Borrowed application services, all alive through explicit shutdown and the\n// destruction of the runtime. Bind this runtime in the raw manager's concrete\n// deletion bindings, or route the semantic fixture's deleting callback through\n// owns_registered()/delete_registered(). No private VFS, clock,\n// Lua runtime, singleton domain or alternate-engine implementation is supplied.\nstruct GameSoundRuntimeServices {\n    VfsMountContext& mounts;\n    const VfsCandidateRegistrations& registrations;\n    VfsLuaScriptFiles& script_files;\n    LuaScriptRuntime& script_runtime;\n    const LuaRuntimeGlobals& script_globals;\n    // Additive semantic/raw borrowed binding. Field order and existing aggregate\n    // initializers remain valid; this changes source aggregate size, not a game ABI.\n    SoundClockBinding clock;\n    NativeStringStorage& strings;\n    ResourceLoadEventHost& load_events;\n    SoundLifetimeAccess lifetime;\n    const CameraAxesCrtAccess& crt;\n    SoundAlternateShutdownHost& alternate_shutdown;\n    // Required when an alternate pointer is published. An empty function is\n    // allowed only while that word is null; a live unbound call is an error.\n    std::function<void(void*, float)> update_alternate;\n    void* volatile* alternate_word = nullptr;"
+        },
+        {
+          "start_line": 82,
+          "end_line": 94,
+          "text": "};\n\n// Application composition of recovered routines, not a native object/ABI.\n// Calls and owner mutations are serialized by the game thread. Exactly one\n// runtime may hold the process-global FMOD file binding. External sample and\n// channel references must be released before shutdown. Startup is one-shot.\nclass GameSoundRuntime final {\npublic:\n    GameSoundRuntime(GameSoundRuntimeServices, const std::wstring& fmod_dll,\n        const std::wstring& event_dll = {});\n    ~GameSoundRuntime();\n    GameSoundRuntime(const GameSoundRuntime&) = delete;\n    GameSoundRuntime& operator=(const GameSoundRuntime&) = delete;"
+        },
+        {
+          "start_line": 100,
+          "end_line": 121,
+          "text": "    bool started() const noexcept;\n    GameSoundRuntimeSummary summary() const noexcept;\n    SoundSystemOwner& owner();\n    FmodConfigurationLibrary& fmod() noexcept;\n    SoundResourceRuntime& resources() noexcept;\n    SoundSampleRuntime& samples() noexcept;\n    SoundChannelRuntime& channels() noexcept;\n    SoundInstanceContext& instance_context() noexcept;\n    SoundSystemUpdateContext& update_context() noexcept;\n    SoundOwnerLifetimeBindings& lifetime_bindings() noexcept;\n    SoundEventQueryLockBindings& event_query_lifetime() noexcept;\n    GameSoundRuntimeWords& words() noexcept;\n    void* volatile& current_alternate() noexcept;\n\n    // Manager/cache dispatch uses allocation identity, independently of the\n    // current publication used by native unregister. Query/alternate owners\n    // remain externally created: their publication must retain their identity\n    // until their actual deleting routine clears it.\n    bool owns_registered(void*) const noexcept;\n    // Receives native deleting flags. Bit0 releases the separately allocated\n    // projection after its recovered destructor. Never shuts the shared domain.\n    void delete_registered(void*, std::uint32_t flags) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "src/game_sound_runtime.cpp",
+      "physical_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+      "physical_bytes": 20101,
+      "normalized_lf_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+      "normalized_lf_bytes": 20101,
+      "git_blob_oid": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c",
+      "excerpts": [
+        {
+          "start_line": 19,
+          "end_line": 44,
+          "text": "    static std::atomic<Impl*> callback_owner;\n    GameSoundRuntimeServices services;\n    GameSoundRuntimeWords words;\n    void* volatile own_alternate{};\n    void* volatile& alternate;\n    SoundSystemOwner* volatile current_owner{};\n    SoundAuxiliaryTreeOwner* volatile current_cache{};\n    SoundEventQueryLock* volatile current_query_lock{};\n    SoundOwnerLifetimeBindings lifetime;\n    SoundEventQueryLockBindings query_lifetime;\n    SoundSystemState system;\n    SoundConfigurationState configuration;\n    SoundManagerLevels levels;\n    SoundClassOwnership classes;\n    std::unique_ptr<SoundSystemOwner> manager;\n    std::unique_ptr<SoundAuxiliaryTreeOwner> cache;\n    // Declared before its users and destroyed after all explicit FMOD cleanup.\n    FmodConfigurationLibrary library;\n    SoundResourceRuntime resources;\n    SoundSampleRuntime samples;\n    BankSoundChannelVirtuals bank_virtuals;\n    SoundInstanceContext instance;\n    SoundSpatialChannelContext spatial;\n    SpatialSoundEventVirtuals event_virtuals;\n    SoundEventInstanceContext event;\n    SoundChannelRuntime channels;"
+        },
+        {
+          "start_line": 60,
+          "end_line": 80,
+          "text": "\n    Impl(GameSoundRuntimeServices input, const std::wstring& core, const std::wstring& events)\n        : services(std::move(input)), alternate(services.alternate_word ? *services.alternate_word : own_alternate),\n          lifetime{services.lifetime, current_owner, current_cache},\n          query_lifetime{services.lifetime, current_query_lock}, configuration(services.strings), classes(levels),\n          manager(std::make_unique<SoundSystemOwner>(system, configuration, levels, classes)),\n          library(core, events.empty() ? (std::filesystem::path(core).parent_path() / L\"fmod_event.dll\").wstring() : events,\n              {open_callback, close_callback, read_callback, seek_callback}),\n          resources(system, current_owner, words.resource_bytes_00f8bbe4, services.mounts,\n              services.registrations, services.load_events, library, services.strings),\n          samples(current_owner, current_cache, words.resource_bytes_00f8bbe4, services.mounts,\n              services.registrations, resources, library, services.strings,\n              &words.null_pattern_00e17bf0, words.null_data_00f8bbec.data()),\n          instance{current_owner, words.next_id_00f8bbd4, services.strings, samples, library, bank_virtuals},\n          spatial{instance, library, library, services.crt},\n          event{instance, library, library, services.crt, words.null_data_00f8bbec.data() + 3, event_virtuals},\n          channels(spatial, event), update{*this, library, channels},\n          retained(channels, samples, services.alternate_shutdown),\n          shutdown_context{lifetime, retained, update, resources, *this, alternate, services.strings},\n          clock(services.clock), lua(services.script_files, services.script_runtime, services.script_globals),\n          files{services.strings, this, resolve_file, open_file} {"
+        },
+        {
+          "start_line": 235,
+          "end_line": 243,
+          "text": "    }\n    void destroy_cache(std::uint32_t flags) {\n        if (!cache || cache_destroyed) return;\n        auto* object = cache.get();\n        cache_destroyed = true;\n        if (flags & 1u) cache.release();\n        scalar_delete_sound_sample_cache_00a88750(object, flags, samples.sample_cache_context(), lifetime);\n    }\n    void destroy_query(std::uint32_t flags) {"
+        },
+        {
+          "start_line": 290,
+          "end_line": 306,
+          "text": "    void shutdown() {\n        if (cleanup_failed)\n            throw std::logic_error(\"Sound teardown failed; live FMOD ownership cannot be discarded\");\n        if (running) destroy_manager(0);\n        destroy_cache(0);\n        destroy_query(1);\n        unbind_files();\n    }\n};\nstd::atomic<GameSoundRuntime::Impl*> GameSoundRuntime::Impl::callback_owner{};\n\nGameSoundRuntime::GameSoundRuntime(GameSoundRuntimeServices services,\n    const std::wstring& core, const std::wstring& events)\n    : impl_(std::make_unique<Impl>(std::move(services), core, events)) {}\nGameSoundRuntime::~GameSoundRuntime() {\n    try { impl_->shutdown(); } catch (...) { std::terminate(); }\n}"
+        },
+        {
+          "start_line": 355,
+          "end_line": 381,
+          "text": "    if (!impl_->running) throw std::logic_error(\"Game sound owner is not running\");\n    return *impl_->manager;\n}\nFmodConfigurationLibrary& GameSoundRuntime::fmod() noexcept { return impl_->library; }\nSoundResourceRuntime& GameSoundRuntime::resources() noexcept { return impl_->resources; }\nSoundSampleRuntime& GameSoundRuntime::samples() noexcept { return impl_->samples; }\nSoundChannelRuntime& GameSoundRuntime::channels() noexcept { return impl_->channels; }\nSoundInstanceContext& GameSoundRuntime::instance_context() noexcept { return impl_->instance; }\nSoundSystemUpdateContext& GameSoundRuntime::update_context() noexcept { return impl_->update; }\nSoundOwnerLifetimeBindings& GameSoundRuntime::lifetime_bindings() noexcept { return impl_->lifetime; }\nSoundEventQueryLockBindings& GameSoundRuntime::event_query_lifetime() noexcept { return impl_->query_lifetime; }\nGameSoundRuntimeWords& GameSoundRuntime::words() noexcept { return impl_->words; }\nvoid* volatile& GameSoundRuntime::current_alternate() noexcept { return impl_->alternate; }\nbool GameSoundRuntime::owns_registered(void* object) const noexcept {\n    return object && ((!impl_->manager_destroyed && object == impl_->manager.get()) ||\n        (!impl_->cache_destroyed && object == impl_->cache.get()) ||\n        object == impl_->current_query_lock || object == impl_->alternate);\n}\nvoid GameSoundRuntime::delete_registered(void* object, std::uint32_t flags) noexcept {\n    try {\n        if (object && !impl_->manager_destroyed && object == impl_->manager.get()) impl_->destroy_manager(flags);\n        else if (object && !impl_->cache_destroyed && object == impl_->cache.get()) impl_->destroy_cache(flags);\n        else if (object && object == impl_->current_query_lock) impl_->destroy_query(flags);\n        else if (object && object == impl_->alternate) impl_->services.alternate_shutdown.delete_alternate_slot00(object, flags);\n        else throw std::logic_error(\"Foreign singleton passed to game sound deleting dispatcher\");\n    } catch (...) { std::terminate(); }\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_system_owner.hpp",
+      "physical_sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215",
+      "physical_bytes": 9465,
+      "normalized_lf_sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215",
+      "normalized_lf_bytes": 9465,
+      "git_blob_oid": "31094e55e31ba307184980116b8abd90e66ebe09",
+      "excerpts": [
+        {
+          "start_line": 183,
+          "end_line": 187,
+          "text": "struct SoundOwnerLifetimeBindings {\n    SoundLifetimeAccess domain;\n    SoundSystemOwner* volatile& global_00f8bbd8;\n    SoundAuxiliaryTreeOwner* volatile& global_00f8bbe8;\n};"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_system_owner.cpp",
+      "physical_sha256": "12e542bf188c8fed05436ebfcee955504bef2317b5eb922b0844b1fb709a507b",
+      "physical_bytes": 7279,
+      "normalized_lf_sha256": "12e542bf188c8fed05436ebfcee955504bef2317b5eb922b0844b1fb709a507b",
+      "normalized_lf_bytes": 7279,
+      "git_blob_oid": "88e87370a2d7e64b8dc6d53b395752b7b68864ee",
+      "excerpts": [
+        {
+          "start_line": 50,
+          "end_line": 62,
+          "text": "void register_sound_auxiliary_tree_owner_00a880e0(SoundAuxiliaryTreeOwner& owner,\n    SoundOwnerLifetimeBindings& lifetime) {\n    owner.native_vtable_00 = 0x00d5b448u;\n    try {\n        CapturedSoundSection section(lifetime.domain);\n        lifetime.global_00f8bbe8 = &owner;\n        lifetime.domain.get_manager_00415350()->register_object(lifetime.global_00f8bbe8);\n    } catch (...) {\n        // DEC36C has the same guard/root-base unwind via CB6208/CB6200.\n        owner.native_vtable_00 = 0x00ce3818u;\n        throw;\n    }\n}"
+        },
+        {
+          "start_line": 117,
+          "end_line": 134,
+          "text": "std::unique_ptr<SoundAuxiliaryTreeOwner>\ncreate_sound_auxiliary_tree_owner_00a88650(SoundOwnerLifetimeBindings& lifetime) {\n    auto owner = std::make_unique<SoundAuxiliaryTreeOwner>();\n    register_sound_auxiliary_tree_owner_00a880e0(*owner, lifetime);\n    owner->native_vtable_00 = 0x00d5b460u;\n    // 00A88270 allocates a black node (isnil=0); the caller turns it into the\n    // self-linked isnil=1 head, then writes count=0. Project its empty invariant.\n    try {\n        owner->tree_04 = std::make_unique<SoundAuxiliaryTreeOwner::Tree>();\n    } catch (...) {\n        // FuncInfo DEC408 -> unwind map DEC400 -> CB6260 calls A88180\n        // when construction of the tree head throws after base publication.\n        unregister_sound_auxiliary_tree_owner_00a88180(*owner, lifetime);\n        throw;\n    }\n    return owner;\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_startup.cpp",
+      "physical_sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+      "physical_bytes": 2221,
+      "normalized_lf_sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+      "normalized_lf_bytes": 2221,
+      "git_blob_oid": "21801a5d338081a3c31daf77014fd8753b6384a4",
+      "excerpts": [
+        {
+          "start_line": 20,
+          "end_line": 45,
+          "text": "SoundSystemOwner& construct_sound_system_00a88770(SoundSystemOwner& owner,\n    SoundOwnerLifetimeBindings& lifetime,\n    std::unique_ptr<SoundAuxiliaryTreeOwner>& auxiliary_owner,\n    bool sound_disabled, std::uint32_t, std::uint32_t,\n    SoundStartupClockHost& clock, SoundResourceLoadHost& resources,\n    FmodStartupHost& fmod_startup, SoundConfigurationFmodHost& fmod_configuration,\n    SoundConfigurationLuaOwner& lua, SoundSystemShutdownContext& shutdown,\n    NativeStringStorage& strings)\n{\n    construct_sound_system_owner_00a81480(owner, lifetime); // 00A88791\n    SoundStartupBaseUnwind unwind{owner, shutdown}; // state 0 only after base returns\n    owner.native_vtable_00 = 0x00d5b44c;\n    owner.system.field_174 = 0;\n    owner.system.sound_enabled = !sound_disabled;\n    auxiliary_owner = create_sound_auxiliary_tree_owner_00a88650(lifetime);\n    // Both constructors already registered their owners. This call changes the\n    // destruction ordering; it does not register the sound manager a second time.\n    auto* auxiliary = lifetime.global_00f8bbe8; // capture before getter,00A887D0\n    lifetime.domain.get_manager_00415350()->move_object_after_00bd0d70(&owner, auxiliary);\n    owner.time_118 = clock.sample_time_14(); // four literal word copies\n    initialize_sound_library_00a8881e_fragment(fmod_startup, owner.system);\n    owner.resource_owner_54 = create_sound_resource_owner_00a858f0(resources, strings);\n    initialize_sound_configuration_00a7ff80(owner.system, owner.configuration,\n        owner.classes, fmod_configuration, lua, strings);\n    unwind.armed = false;\n    return owner;"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_sample_cache_shutdown.cpp",
+      "physical_sha256": "ef763412066de4f8cbb887f20833a3c14ac970e99ad8efdc429114c0a0f3f34c",
+      "physical_bytes": 2348,
+      "normalized_lf_sha256": "ef763412066de4f8cbb887f20833a3c14ac970e99ad8efdc429114c0a0f3f34c",
+      "normalized_lf_bytes": 2348,
+      "git_blob_oid": "9515495f4126f3d804c554ce619a54b6f154a9b3",
+      "excerpts": [
+        {
+          "start_line": 42,
+          "end_line": 63,
+          "text": "    owner.native_vtable_00 = 0x00d5b460u;\n    AuxiliaryBaseCleanupOnUnwind base{owner, lifetime};\n    {\n        // DEC434 state1 -> 0 destroys owner+4 before the singleton base.\n        AuxiliaryTreeStorageCleanup tree{owner, cache.strings};\n        clear_sound_sample_cache_00a82c00(owner, cache);\n    }\n    base.armed = false; // A8872C stores EH state=-1 BEFORE the base call.\n    unregister_sound_auxiliary_tree_owner_00a88180(owner, lifetime);\n}\n\nSoundAuxiliaryTreeOwner* scalar_delete_sound_sample_cache_00a88750(\n    SoundAuxiliaryTreeOwner* owner, std::uint32_t flags,\n    SoundSampleCacheContext& cache, SoundOwnerLifetimeBindings& lifetime) {\n    destroy_sound_sample_cache_00a886c0(*owner, cache, lifetime);\n    if (flags & 1u) delete owner;\n    return owner;\n}\n\n} // namespace bsp"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_resource_runtime.hpp",
+      "physical_sha256": "1d47b5b5d1f9c908ec481dfac76ec53b4b82ced579f7eb9a5ec983a1fb282529",
+      "physical_bytes": 5195,
+      "normalized_lf_sha256": "1d47b5b5d1f9c908ec481dfac76ec53b4b82ced579f7eb9a5ec983a1fb282529",
+      "normalized_lf_bytes": 5195,
+      "git_blob_oid": "d96015e9981241f49ea6d6625d2be0e5243d2f03",
+      "excerpts": [
+        {
+          "start_line": 34,
+          "end_line": 47,
+          "text": "// Composition of recovered game routines and actual VFS/FMOD services. All\n// references outlive this adapter and all retained resources. Calls are\n// serialized on the owning game thread; mount/provider callbacks are stable.\n// The application's actual platform focus/XLive policy remains required.\nclass SoundResourceRuntime final : public SoundResourceLoadHost,\n    public SoundResourceCacheHost, public SoundResourceAssetLifetimeHost,\n    public SoundResourceCacheRemovalHost {\npublic:\n    SoundResourceRuntime(SoundSystemState&, SoundSystemOwner* volatile& current_owner,\n        volatile std::uint32_t& actual_resource_bytes, VfsMountContext&,\n        const VfsCandidateRegistrations&, ResourceLoadEventHost&,\n        FmodConfigurationLibrary&, NativeStringStorage& = crt_string_storage());\n    SoundOwnedResource* load_00a84740(SoundResourceOwner&, const NativeString&,\n        SoundResourceLoadOptions&, bool clone, bool load_if_missing) override;"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_resource_runtime.cpp",
+      "physical_sha256": "701461386a7667940f6f88a78dc2d794355f4e5452668682c797b1e883606058",
+      "physical_bytes": 5587,
+      "normalized_lf_sha256": "701461386a7667940f6f88a78dc2d794355f4e5452668682c797b1e883606058",
+      "normalized_lf_bytes": 5587,
+      "git_blob_oid": "14ecfb176b06807d68483568c3bf199d4d6831d6",
+      "excerpts": [
+        {
+          "start_line": 7,
+          "end_line": 14,
+          "text": "SoundResourceRuntime::SoundResourceRuntime(SoundSystemState& system,\n    SoundSystemOwner* volatile& current_owner, volatile std::uint32_t& actual_bytes,\n    VfsMountContext& mounts, const VfsCandidateRegistrations& registrations,\n    ResourceLoadEventHost& events, FmodConfigurationLibrary& library,\n    NativeStringStorage& strings)\n    : system_(system), current_owner_(current_owner), mounts_(mounts),\n      registrations_(registrations), events_(events), library_(library),\n      strings_(strings), cleanup_{strings, actual_bytes, library, *this} {}"
+        },
+        {
+          "start_line": 28,
+          "end_line": 30,
+          "text": "void SoundResourceRuntime::release_resource(SoundOwnedResource& resource) {\n    release_sound_resource_00a854e0(resource, cleanup_);\n}"
+        },
+        {
+          "start_line": 54,
+          "end_line": 66,
+          "text": "}\nvoid SoundResourceRuntime::delete_resource_00a85ac0(SoundOwnedResource& resource,\n    std::uint32_t flags) {\n    delete_sound_resource_00a85ac0(&resource, flags, cleanup_);\n}\nvoid SoundResourceRuntime::remove_from_current_cache(const NativeString& name) {\n    auto* current = current_owner_; // native destructor reloads the singleton\n    auto* owner = current ? get_sound_resource_owner_00a79910(*current) : nullptr;\n    if (!owner)\n        throw std::logic_error(\"Sound cleanup requires the current resource cache owner\");\n    remove_sound_resource_cache_entry_00a85560(*owner, name, *this, strings_);\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_resource_cleanup.cpp",
+      "physical_sha256": "97933fd4cefc38f72212fc573a545d0364d0077315c7cb20d3cf9d45678b9d94",
+      "physical_bytes": 5960,
+      "normalized_lf_sha256": "97933fd4cefc38f72212fc573a545d0364d0077315c7cb20d3cf9d45678b9d94",
+      "normalized_lf_bytes": 5960,
+      "git_blob_oid": "c82409895c7a64d72af1700b3751a6c56eac5b98",
+      "excerpts": [
+        {
+          "start_line": 61,
+          "end_line": 65,
+          "text": "void release_sound_resource_00a854e0(SoundOwnedResource& resource,\n    SoundResourceCleanupContext& context) {\n    if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(&resource.references_04)) == 0)\n        delete_sound_resource_00a85ac0(&resource, 1, context);\n}"
+        },
+        {
+          "start_line": 71,
+          "end_line": 100,
+          "text": "void destroy_sound_resource_00a85790(SoundOwnedResource& resource,\n    SoundResourceCleanupContext& context) {\n    resource.native_vtable_00 = 0x00d5b118u;\n    ResourceNameAndBaseCleanup cleanup{resource, context.strings};\n    if (resource.fsb_bank_0c) {\n        std::int32_t before{}, after{};\n        context.fmod.memory_get_stats(&before, nullptr);\n        checkpoint(context.fmod.release_sound(resource.fsb_bank_0c), context.fmod);\n        context.fmod.memory_get_stats(&after, nullptr);\n        // Native 004254B0 is exactly RET. Its log arguments are unused.\n    }\n    if (resource.event_project_08) {\n        std::int32_t before{}, after{};\n        context.fmod.memory_get_stats(&before, nullptr);\n        checkpoint(context.fmod.release_event_project(resource.event_project_08), context.fmod);\n        context.fmod.memory_get_stats(&after, nullptr);\n    }\n    context.cache.remove_from_current_cache(resource.name_14);\n    const auto size = resource.size_28; // Native reads before handle clearing.\n    resource.event_project_08 = nullptr;\n    resource.fsb_bank_0c = nullptr;\n    resource.fsb_subsound_10 = nullptr;\n    context.actual_resource_bytes_00f8bbe4 = context.actual_resource_bytes_00f8bbe4 - size;\n}\n\nSoundOwnedResource* delete_sound_resource_00a85ac0(SoundOwnedResource* resource,\n    std::uint32_t flags, SoundResourceCleanupContext& context) {\n    destroy_sound_resource_00a85790(*resource, context);\n    if (flags & 1u) delete resource;\n    return resource;"
+        }
+      ]
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_bytes": 13257,
+      "normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "normalized_lf_bytes": 13257,
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "excerpts": [
+        {
+          "start_line": 51,
+          "end_line": 67,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}"
+        }
+      ]
+    },
+    {
+      "path": "src/game_sound_dialog_runtime.cpp",
+      "physical_sha256": "f440574dac1cd16f00b89f9062ecfab370eb9b47160dda708ad24797c77edf45",
+      "physical_bytes": 10044,
+      "normalized_lf_sha256": "f440574dac1cd16f00b89f9062ecfab370eb9b47160dda708ad24797c77edf45",
+      "normalized_lf_bytes": 10044,
+      "git_blob_oid": "2257038781ddd8757a8436d0d0841c89e24bfd05",
+      "excerpts": [
+        {
+          "start_line": 106,
+          "end_line": 123,
+          "text": "    void zero_references_slot_00(void* object) override {\n        // Caller already performed InterlockedDecrement(actual+4). These are\n        // current native profiles, never cached at construction or ref capture.\n        switch (profile(object)) {\n        case 0x00d5b360:\n            scalar_delete_sound_stream_00a87b30(object, 1, bound().stream_owner);\n            return;\n        case 0x00d58f80:\n            scalar_delete_sound_alternate_table_00a796f0(object, 1, bound().table.strings);\n            return;\n        case 0x00d5b074:\n            core->samples().zero_references_slot_00(object);\n            return;\n        default:\n            throw std::logic_error(\"Dialog reference has an unreconstructed current profile\");\n        }\n    }\n    void destroy(void* object, std::uint32_t flags) {"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_instance.hpp",
+      "physical_sha256": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948",
+      "physical_bytes": 5323,
+      "normalized_lf_sha256": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948",
+      "normalized_lf_bytes": 5323,
+      "git_blob_oid": "c507ddae58017f82a77c516683f8ccf58f77209b",
+      "excerpts": [
+        {
+          "start_line": 9,
+          "end_line": 21,
+          "text": "// Behavioral projection of native52h base and5Ch channel objects. The inherited\n// fields are the canonical fields used by manager walkers and voice start.\n// These are NOT native layouts; never use raw object+4 reference operations here.\n// Names are hypotheses. Explicit recovered destruction owns sample/class/name.\nstruct SoundInstance : SoundLevelEntry, VoiceSoundStartFields {\n    std::uint32_t native_vtable_00{}, references_04{}, id_08{};\n    NativeString name_0c;\n    std::uint8_t stopped_15{}, paused_1c{};\n    std::uint32_t updates_18{};\n    float frequency_scale_20{}, volume_24{}, scale_28{}, fade_2c{}, target_30{}, rate_34{}, pan_level_40{};\n    std::uint32_t type_48{};\n    void* sample_4c{}; // actual7Ch SoundSampleStorage, not SoundOwnedResource\n    std::uint8_t flag_50{}, stop_requested_51{};"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_channel_runtime.cpp",
+      "physical_sha256": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57",
+      "physical_bytes": 8827,
+      "normalized_lf_sha256": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57",
+      "normalized_lf_bytes": 8827,
+      "git_blob_oid": "0a50a79c9d9ab6e4f078179b97055f0e5ace8953",
+      "excerpts": [
+        {
+          "start_line": 49,
+          "end_line": 69,
+          "text": "void SoundChannelRuntime::release_reference(void* canonical_entry) noexcept {\n    // Native slot teardown is a nonthrowing callback contract. Missing FMOD\n    // symbols or an unsupported profile cannot be converted into a fake release.\n    try {\n        auto& s = checked(static_cast<SoundLevelEntry*>(canonical_entry));\n        if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(&s.references_04)) == 0) {\n            if (s.native_vtable_00 == 0x00d5b4c8)\n                scalar_delete_spatial_sound_event_00a89ee0(static_cast<SpatialSoundEventInstance*>(&s), 1, *events_);\n            else if (s.native_vtable_00 == 0x00d5b510)\n                scalar_delete_spatial_sound_channel_00a8a460(static_cast<SpatialSoundChannelInstance*>(&s), 1, *spatial_);\n            else if (s.native_vtable_00 == 0x00d5ad58)\n                scalar_delete_retained_sound_channel_00a7db20(static_cast<RetainedSoundChannelInstance*>(&s), 1, context_);\n            else if (s.native_vtable_00 == 0x00d5ada0)\n                scalar_delete_scaled_retained_sound_channel_00a7dc70(static_cast<ScaledRetainedSoundChannelInstance*>(&s), 1, context_);\n            else if (s.native_vtable_00 == 0x00d5ade8)\n                scalar_delete_underwater_retained_sound_channel_00a7ddb0(static_cast<RetainedSoundChannelInstance*>(&s), 1, context_);\n            else scalar_delete_sound_channel_00a7d5a0(static_cast<SoundChannelInstance*>(&s), 1, context_);\n        }\n    } catch (...) { std::terminate(); }\n}\nSoundLevelEntry* SoundChannelRuntime::create_spatial(SoundSystemOwner& owner, void* sample,"
+        }
+      ]
+    },
+    {
+      "path": "src/sound_shutdown.cpp",
+      "physical_sha256": "145f36ad339a500cf9445b0e5810ca214221d27fb22025e2e25302757b7cf26b",
+      "physical_bytes": 8722,
+      "normalized_lf_sha256": "145f36ad339a500cf9445b0e5810ca214221d27fb22025e2e25302757b7cf26b",
+      "normalized_lf_bytes": 8722,
+      "git_blob_oid": "9961de655c61b7cb1640d12c83583efb4f6d27a4",
+      "excerpts": [
+        {
+          "start_line": 92,
+          "end_line": 107,
+          "text": "SoundRetainedShutdownRuntime::SoundRetainedShutdownRuntime(SoundChannelRuntime& channels,\n    GameplayEffectComponentLifetime& samples, SoundAlternateShutdownHost& alternate) noexcept\n    : channels_(channels), samples_(samples), alternate_(alternate) {}\nvoid SoundRetainedShutdownRuntime::stop_retained_74_slot08(void* entry, std::uint32_t flag) {\n    channels_.stop_slot08(static_cast<SoundLevelEntry*>(entry), static_cast<std::uint8_t>(flag));\n}\nvoid SoundRetainedShutdownRuntime::release_retained_74_reference(void* entry) noexcept {\n    channels_.release_reference(entry);\n}\nvoid SoundRetainedShutdownRuntime::release_retained_80_reference(void* sample) noexcept {\n    try {\n        if (sample && InterlockedDecrement(reinterpret_cast<volatile LONG*>(static_cast<unsigned char*>(sample) + 4)) == 0)\n            samples_.zero_references_slot_00(sample);\n    } catch (...) { std::terminate(); }\n}\nvoid SoundRetainedShutdownRuntime::delete_alternate_slot00(void* alternate, std::uint32_t flags) {"
+        }
+      ]
+    }
+  ],
+  "reference_pins": [
+    {
+      "path": "reports/cc12_global_config_second_array_payload.json",
+      "physical_sha256": "4af722c3a181ccbb876f40a3c0f388c79da2d8791765ba935c7a4dfe5f9b799b",
+      "normalized_lf_sha256": "4af722c3a181ccbb876f40a3c0f388c79da2d8791765ba935c7a4dfe5f9b799b",
+      "git_blob_oid": "9ff12e21ba2927bb151651f5d770e1803f29d759"
+    },
+    {
+      "path": "reports/sound_sample.json",
+      "physical_sha256": "a640d004d90e9dc5a044b660ba07935cbfcbb4139410e7082e20812e38e92c35",
+      "normalized_lf_sha256": "a640d004d90e9dc5a044b660ba07935cbfcbb4139410e7082e20812e38e92c35",
+      "git_blob_oid": "f00a4e39b0cab4d08df27da139043c871fc8abf8"
+    },
+    {
+      "path": "reports/sound_sample_cache.json",
+      "physical_sha256": "bcbcac4b0697e48e619d22ddf8308b49e22def17c0645657fb664b7b4180606d",
+      "normalized_lf_sha256": "bcbcac4b0697e48e619d22ddf8308b49e22def17c0645657fb664b7b4180606d",
+      "git_blob_oid": "dbd47b97a03561560de6127876c6eec240842161"
+    },
+    {
+      "path": "reports/cc12_global_config_current_dispatch_provider_readiness.json",
+      "physical_sha256": "c3854e3344cf9dbe4ee94122a4955c1756f9991044417392b8cbc50bbf33b2cc",
+      "normalized_lf_sha256": "a46e27e8e3a47a0f7245e165291d08319247938f9ceaf18c10983cf5c2b56106",
+      "git_blob_oid": "63dc7ea48440cd5b12441e2af9202cbb059b2f4b"
+    }
+  ],
+  "validation": {
+    "source_files": 25,
+    "source_excerpts": 45,
+    "exact_native_spans": 5,
+    "exact_native_bytes": 449,
+    "full_body_hash_record_replays": 4,
+    "source_files_changed": false,
+    "builds_tests_probes_run": false,
+    "ghidra_or_ledger_mutated": false,
+    "native_code_executed": false,
+    "adapter_implemented": false,
+    "game_validated": false
+  }
+}
