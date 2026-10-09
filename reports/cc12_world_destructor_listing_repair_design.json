@@ -1,0 +1,741 @@
+{
+  "packet": "cc12_world_destructor_listing_repair_design",
+  "status": "read_only_design_complete; concrete mutation pending exact direct preimages and independently approved callable route",
+  "captured_utc": "2026-10-09T01:00:26.194344+00:00",
+  "worker_head_before_document_commit": "3995ab9e08d36f79fbf6663ff5cf6b44787c745b",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "scope": {
+    "tracked_outputs": [
+      "docs/CC12_WORLD_DESTRUCTOR_LISTING_REPAIR_DESIGN.md",
+      "reports/cc12_world_destructor_listing_repair_design.json"
+    ],
+    "GPR_writes": 0,
+    "Source_edits": 0,
+    "CMake_edits": 0,
+    "ledger_changes": 0,
+    "function_or_name_credit": 0,
+    "builds": 0,
+    "probes_or_fixtures": 0,
+    "game_execution": 0,
+    "source_admission": false,
+    "world_readiness": "unready"
+  },
+  "current_stored_function": {
+    "name": "CG_vector_deleting_dtor_00904c40",
+    "signature": "undefined CG_vector_deleting_dtor_00904c40(void)",
+    "calling_convention": "unknown",
+    "reported_min": "00904c40",
+    "reported_max": "00904e10",
+    "full_body_ranges": "not exposed by current read endpoint; required before mutation",
+    "listed_instructions": 156,
+    "plate_comment": null,
+    "inline_EOL_PRE_comments": [],
+    "existing_labels": 20,
+    "documentation_export": "current_documentation.json",
+    "name_is_preserved_without_new_semantic_credit": true
+  },
+  "Native_whole_body": {
+    "bytes": 522,
+    "instruction_count": 182,
+    "sha256": "99e96902a47b83e3f58f5252fecde21135f4da4e4cfe6770fb58fe3552c6af8e",
+    "current_listing_starts": 156,
+    "missing_starts": [
+      "00904d8f",
+      "00904d92",
+      "00904da2",
+      "00904da5",
+      "00904df8",
+      "00904dfb",
+      "00904e01",
+      "00904e03",
+      "00904e11",
+      "00904e14",
+      "00904e19",
+      "00904e1b",
+      "00904e1d",
+      "00904e20",
+      "00904e21",
+      "00904e27",
+      "00904e2b",
+      "00904e30",
+      "00904e33",
+      "00904e38",
+      "00904e3c",
+      "00904e3d",
+      "00904e3e",
+      "00904e3f",
+      "00904e46",
+      "00904e49"
+    ],
+    "control_transfers": [
+      {
+        "address": "00904c82",
+        "mnemonic": "je",
+        "operands": "0x904c94",
+        "direct_target": "00904c94",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904c88",
+        "mnemonic": "call",
+        "operands": "0x926d90",
+        "direct_target": "00926d90"
+      },
+      {
+        "address": "00904c92",
+        "mnemonic": "jne",
+        "operands": "0x904c84",
+        "direct_target": "00904c84",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904c96",
+        "mnemonic": "call",
+        "operands": "0x874d00",
+        "direct_target": "00874d00"
+      },
+      {
+        "address": "00904ca2",
+        "mnemonic": "je",
+        "operands": "0x904cc8",
+        "direct_target": "00904cc8",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904ca7",
+        "mnemonic": "je",
+        "operands": "0x904cc1",
+        "direct_target": "00904cc1",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904cac",
+        "mnemonic": "jne",
+        "operands": "0x904cc1",
+        "direct_target": "00904cc1",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904cb3",
+        "mnemonic": "je",
+        "operands": "0x904cba",
+        "direct_target": "00904cba",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904cb8",
+        "mnemonic": "jne",
+        "operands": "0x904cc1",
+        "direct_target": "00904cc1",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904cbc",
+        "mnemonic": "call",
+        "operands": "0x922fd0",
+        "direct_target": "00922fd0"
+      },
+      {
+        "address": "00904cc6",
+        "mnemonic": "jne",
+        "operands": "0x904ca4",
+        "direct_target": "00904ca4",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904cca",
+        "mnemonic": "call",
+        "operands": "0x874d00",
+        "direct_target": "00874d00"
+      },
+      {
+        "address": "00904cd6",
+        "mnemonic": "je",
+        "operands": "0x904cf6",
+        "direct_target": "00904cf6",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904cdb",
+        "mnemonic": "je",
+        "operands": "0x904cef",
+        "direct_target": "00904cef",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904ced",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904cf4",
+        "mnemonic": "jne",
+        "operands": "0x904cd8",
+        "direct_target": "00904cd8",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904cfe",
+        "mnemonic": "call",
+        "operands": "0x904600",
+        "direct_target": "00904600"
+      },
+      {
+        "address": "00904d05",
+        "mnemonic": "call",
+        "operands": "0x874d00",
+        "direct_target": "00874d00"
+      },
+      {
+        "address": "00904d11",
+        "mnemonic": "je",
+        "operands": "0x904d31",
+        "direct_target": "00904d31",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d16",
+        "mnemonic": "je",
+        "operands": "0x904d2a",
+        "direct_target": "00904d2a",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d28",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904d2f",
+        "mnemonic": "jne",
+        "operands": "0x904d13",
+        "direct_target": "00904d13",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d39",
+        "mnemonic": "call",
+        "operands": "0x904600",
+        "direct_target": "00904600"
+      },
+      {
+        "address": "00904d40",
+        "mnemonic": "call",
+        "operands": "0x874d00",
+        "direct_target": "00874d00"
+      },
+      {
+        "address": "00904d4c",
+        "mnemonic": "je",
+        "operands": "0x904d6e",
+        "direct_target": "00904d6e",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d53",
+        "mnemonic": "je",
+        "operands": "0x904d67",
+        "direct_target": "00904d67",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d65",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904d6c",
+        "mnemonic": "jne",
+        "operands": "0x904d50",
+        "direct_target": "00904d50",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d76",
+        "mnemonic": "call",
+        "operands": "0x904600",
+        "direct_target": "00904600"
+      },
+      {
+        "address": "00904d7d",
+        "mnemonic": "call",
+        "operands": "0x874d00",
+        "direct_target": "00874d00"
+      },
+      {
+        "address": "00904d87",
+        "mnemonic": "je",
+        "operands": "0x904d95",
+        "direct_target": "00904d95",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d8a",
+        "mnemonic": "call",
+        "operands": "0xbf65ac",
+        "direct_target": "00bf65ac"
+      },
+      {
+        "address": "00904d9a",
+        "mnemonic": "je",
+        "operands": "0x904da8",
+        "direct_target": "00904da8",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904d9d",
+        "mnemonic": "call",
+        "operands": "0xbf65ac",
+        "direct_target": "00bf65ac"
+      },
+      {
+        "address": "00904db0",
+        "mnemonic": "je",
+        "operands": "0x904dce",
+        "direct_target": "00904dce",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904db6",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2220]"
+      },
+      {
+        "address": "00904dbe",
+        "mnemonic": "jne",
+        "operands": "0x904dc8",
+        "direct_target": "00904dc8",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904dc6",
+        "mnemonic": "call",
+        "operands": "eax"
+      },
+      {
+        "address": "00904ded",
+        "mnemonic": "je",
+        "operands": "0x904e05",
+        "direct_target": "00904e05",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904df3",
+        "mnemonic": "call",
+        "operands": "0xbf65ac",
+        "direct_target": "00bf65ac"
+      },
+      {
+        "address": "00904e03",
+        "mnemonic": "jne",
+        "operands": "0x904df0",
+        "direct_target": "00904df0",
+        "local_target_is_instruction_start": true
+      },
+      {
+        "address": "00904e0c",
+        "mnemonic": "call",
+        "operands": "0xbf65ac",
+        "direct_target": "00bf65ac"
+      },
+      {
+        "address": "00904e2b",
+        "mnemonic": "call",
+        "operands": "0xbf7c6e",
+        "direct_target": "00bf7c6e"
+      },
+      {
+        "address": "00904e33",
+        "mnemonic": "call",
+        "operands": "0x4bf8e0",
+        "direct_target": "004bf8e0"
+      }
+    ],
+    "padding_hex": "cccccccccccc",
+    "next_routine_prefix_hex": "64a1000000008b5424046aff68e854ca",
+    "live_matches_installed_and_prior": true
+  },
+  "gaps": [
+    {
+      "call_site": "00904d8a",
+      "target": "00bf65ac",
+      "start": "00904d8f",
+      "end_exclusive": "00904d95",
+      "bytes": 6,
+      "instruction_count": 2,
+      "instructions": [
+        {
+          "address": "00904d8f",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00904d92",
+          "bytes": "895e08",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], ebx"
+        }
+      ]
+    },
+    {
+      "call_site": "00904d9d",
+      "target": "00bf65ac",
+      "start": "00904da2",
+      "end_exclusive": "00904da8",
+      "bytes": 6,
+      "instruction_count": 2,
+      "instructions": [
+        {
+          "address": "00904da2",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00904da5",
+          "bytes": "895e04",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], ebx"
+        }
+      ]
+    },
+    {
+      "call_site": "00904df3",
+      "target": "00bf65ac",
+      "start": "00904df8",
+      "end_exclusive": "00904e05",
+      "bytes": 13,
+      "instruction_count": 4,
+      "instructions": [
+        {
+          "address": "00904df8",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00904dfb",
+          "bytes": "3bbeb4040000",
+          "mnemonic": "cmp",
+          "operands": "edi, dword ptr [esi + 0x4b4]"
+        },
+        {
+          "address": "00904e01",
+          "bytes": "8bc7",
+          "mnemonic": "mov",
+          "operands": "eax, edi"
+        },
+        {
+          "address": "00904e03",
+          "bytes": "75eb",
+          "mnemonic": "jne",
+          "operands": "0x904df0"
+        }
+      ]
+    },
+    {
+      "call_site": "00904e0c",
+      "target": "00bf65ac",
+      "start": "00904e11",
+      "end_exclusive": "00904e4a",
+      "bytes": 57,
+      "instruction_count": 18,
+      "instructions": [
+        {
+          "address": "00904e11",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "00904e14",
+          "bytes": "68302d4c00",
+          "mnemonic": "push",
+          "operands": "0x4c2d30"
+        },
+        {
+          "address": "00904e19",
+          "bytes": "6a61",
+          "mnemonic": "push",
+          "operands": "0x61"
+        },
+        {
+          "address": "00904e1b",
+          "bytes": "6a0c",
+          "mnemonic": "push",
+          "operands": "0xc"
+        },
+        {
+          "address": "00904e1d",
+          "bytes": "8d4e18",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0x18]"
+        },
+        {
+          "address": "00904e20",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00904e21",
+          "bytes": "899eb4040000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x4b4], ebx"
+        },
+        {
+          "address": "00904e27",
+          "bytes": "885c2428",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x28], bl"
+        },
+        {
+          "address": "00904e2b",
+          "bytes": "e83e2e2f00",
+          "mnemonic": "call",
+          "operands": "0xbf7c6e"
+        },
+        {
+          "address": "00904e30",
+          "bytes": "8d4e0c",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0xc]"
+        },
+        {
+          "address": "00904e33",
+          "bytes": "e8a8aabbff",
+          "mnemonic": "call",
+          "operands": "0x4bf8e0"
+        },
+        {
+          "address": "00904e38",
+          "bytes": "8b4c2410",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00904e3c",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00904e3d",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00904e3e",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00904e3f",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00904e46",
+          "bytes": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "00904e49",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    }
+  ],
+  "false_noreturn_source": {
+    "actual_call_sites": [
+      "00904d8a",
+      "00904d9d",
+      "00904df3",
+      "00904e0c"
+    ],
+    "target_chain": [
+      "00bf65ac -> JMP00bf9dc8",
+      "00bf6989 -> JMP00bf65ac (other-callers alias)"
+    ],
+    "historical_source": "Current BF9DC8 plate comments explicitly identify its original incorrect noreturn void __cdecl _free(void*) signature and prior corrections; later caller gaps can persist.",
+    "retained_current_plate_comments": {
+      "00904c40": null,
+      "00bf65ac": "[BSP reconstruction 00bf65ac]\nRetain correct library name; actual matching host std::free service, not a no-op. Original ABI: cdecl pointer on stack; JMP CRT free body. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: host_crt_service_boundary; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+      "00bf6989": null,
+      "00bf9dc8": "CRT free implementation. Corrected incorrect noreturn flag during BSP reconstruction: null input and normal HeapFree paths return; thunks 00bf65ac and 00bf6989 inherit this. Original annotated signature was noreturn void __cdecl _free(void*). This flag previously truncated callers; function bodies may still need fallthrough recovery.\n\n[BSP reconstruction 00bf9dc8]\nOriginal library name preserved. Returning cdeclfree, complete00bf9dc8..00bf9e55 includes null-input and heap-release return paths through SEH epilog. Later analysis reinstated incorrect noreturn flag; primary corrected it and bounded audited CALL_RETURN sites. docs/LIFETIME_EFFECT_CACHE_INTEGRATION.md; reports/lifetime_effect_cache_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nPreserve correct library name. Actual CRT free returns through00bf9e55. Repaired incorrect no-return plus bounded call-site CALL_RETURN overrides and seven truncated definitions in structured/resource/loader audits; no blanket caller change. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect CRT library name preserved. Actual free returns; four mesh/sized-pool function definitions and five reviewed call-site flows repaired after restoring all verified continuation bytes. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.\n\n[BSP reconstruction 00bf9dc8] update\nCorrect returning CRT free remains named _free. Five verified continuations and definitions repaired at00b22d10,00b4ae80,00b7f730,00b7f790,00b454e0; all five CALL_RETURN overrides cleared after restoring bytes; source game binary unchanged. Evidence: docs/MESH_MATERIAL_INTEGRATION.md; reports/mesh_material_annotations.json. Original ABI unchanged; no gameplay validation.\n\n[BSP reconstruction 00bf9dc8] update\nReturning CRT free is preserved. Three complete PE/live-matched caller continuations00b1c500,00b1c660,00b51b50 restored, falseCALL_RETURN overrides cleared, definitions rebuilt only after verifying unknown signatures and preserving comments; two concrete rendererhook functions created; saved under machineglobal Ghidra write lock. Evidence: docs/INSTANCE_INTEGRATION.md; reports/instance_integration_annotations.json. Original library ABI unchanged; no game validation."
+    },
+    "current_signature": "void __cdecl _free(void * _Memory) at all three entries, without noreturn prefix",
+    "returning_metadata_inference": "Current get_function_by_address uses Function.getSignature(). Local installed 12.0.4 FunctionDB builds FunctionDefinitionDataType copying function.hasNoReturn; toString uses getPrototypeString(true), which prints the noreturn marker when set. Absence therefore supports already-returning metadata, but the loaded bridge binary is not hash-attested here and direct flag query remains missing.",
+    "direct_flags_status": "Unavailable: HTTP 200 contains Script execution disabled; properties=null. Exact local FlowOverride/fallthrough flags were not observed, so do not call CALL_RETURN confirmed or assert the shared flag is currently true.",
+    "CRT_return_evidence": {
+      "bytes": 142,
+      "instructions": 48,
+      "sha256": "d5bec1353d11880b9ac19e7aa0648037b7000906a0c9ba7754084429d0735955",
+      "live_equals_PE": true,
+      "returns": [
+        "00bf9e26",
+        "00bf9e55"
+      ],
+      "PE_imports": {
+        "00ce20fc": {
+          "dll": "KERNEL32.dll",
+          "name": "HeapFree"
+        },
+        "00ce2258": {
+          "dll": "KERNEL32.dll",
+          "name": "GetLastError"
+        }
+      },
+      "scope": "Actual whole CRT free bytes used only to confirm ordinary-return control flow; callees/heap/SEH semantics are not reconstructed or Source admitted."
+    },
+    "bounded_conclusion": "Historic shared CRT no-return is identified. Current four gaps are confirmed. The exact surviving local metadata defect remains a preflight gate; no blanket shared-free reset is justified."
+  },
+  "other_callers": {
+    "00904C40": {
+      "xref_count": 1,
+      "xref_types": {
+        "UNCONDITIONAL_CALL": 1
+      },
+      "unique_direct_caller_functions": 1
+    },
+    "00BF65AC": {
+      "xref_count": 6884,
+      "xref_types": {
+        "UNCONDITIONAL_CALL": 6883,
+        "UNCONDITIONAL_JUMP": 1
+      },
+      "unique_direct_caller_functions": 5631
+    },
+    "00BF6989": {
+      "xref_count": 2086,
+      "xref_types": {
+        "UNCONDITIONAL_CALL": 2086
+      },
+      "unique_direct_caller_functions": 1711
+    },
+    "00BF9DC8": {
+      "xref_count": 130,
+      "xref_types": {
+        "UNCONDITIONAL_JUMP": 1,
+        "UNCONDITIONAL_CALL": 127,
+        "DATA": 2
+      },
+      "unique_direct_caller_functions": 64
+    },
+    "union_direct_caller_functions_across_three_free_entries": 7189
+  },
+  "other_callers_scope": "Current complete Ghidra xrefs/caller entries, capped request 100000 but all returned rows retained. Calls with missing owner can contribute xrefs without a caller function. Counts do not mean every caller is broken; existing unrecognized code or absent references can hide additional calls. Mutation impact could include thunk/analysis users beyond this present baseline.",
+  "existing_tools_and_primary_API": {
+    "tools/ghidra_flow_repair.py": "Read-only report correctly locates four gaps with explicit tail. --apply verifies bytes and uses the write lock, but blindly clears local flow overrides, does not capture separate fallthrough flags, performs multiple independent write requests, never calls Function.setBody and may finish with an incomplete stored tail. Not sufficient unchanged for this packet.",
+    "bridge/FunctionService.java:1589-1650": "clearInstructionFlowOverride reads old flow override then immediately writes NONE. It is a mutator, not a read-only probe; does not call clearFallThroughOverride.",
+    "bridge/FunctionService.java:2349-2363": "disassemble_bytes treats provided end_address as exclusive and subtracts 1 before creating AddressSet; current helper end arguments are correct.",
+    "bridge/FunctionService.java:2408-2421": "Constructs DisassembleCommand(addressSet,null,restrictToExecuteMemory). Installed API interprets argument 3 as followFlow and null restrictedSet as unrestricted. The default true option can follow beyond the requested seed range; setSeedContext(null)/setInitialContext(null) are not analysis suppression.",
+    "Ghidra/ghidra/app/cmd/disassemble/DisassembleCommand.java:54-94": "Use explicit startSet, restrictedSet and followFlow=false in the reviewed route. No broad disassembly or clearing current listing.",
+    "Ghidra/ghidra/program/database/code/InstructionDB.java:707-801": "FlowOverride and fallthrough override are distinct. setFallThrough(null) removes fallthrough; clearFallThroughOverride resets its own flag/reference state. Preserve exact preimages.",
+    "Ghidra/ghidra/app/cmd/function/CreateFunctionCmd.java:613-626": "getFunctionBody is a candidate calculation; includeOtherFunctions=false. Validate candidate before setting the existing function body.",
+    "Ghidra/ghidra/app/cmd/function/CreateFunctionCmd.java:658-704": "fixupFunctionBody may resolve a thunk or subtract overlapping bodies; avoid this broad convenience method.",
+    "Ghidra/ghidra/program/model/listing/Function.java:560-568": "setBody retains the existing Function and throws OverlappingFunctionException for other owners. It is the narrow supported primitive, not an exposed typed bridge endpoint currently.",
+    "Ghidra/ghidra/program/database/function/FunctionDB.java:2153-2176": "setNoReturn forwards to thunkedFunction when present, so shared CRT metadata mutation is not necessarily limited to the selected alias.",
+    "tools/ghidra_scripts/RepairListingDefects.java": "Existing script demonstrates disassembly/setBody primitives, but carries unrelated hardcoded ranges, clears broad code/overrides, and can remove/create functions. Do not execute it unchanged.",
+    "Ghidra/ghidra/app/script/GhidraScript.java:168-186,604-618": "Reviewed future script can select AnalysisMode.DISABLED and work on currentProgram only; this describes a future authorized route, not a bypass of the present disabled remote-script gate.",
+    "Ghidra/ghidra/app/plugin/core/analysis/AutoAnalysisManager.java:1304-1340": "scheduleWorker(analyzeChanges=false) runs with analysis inactive; preserve the documented modal/thread constraints. setIgnoreChanges alone is ineffective outside the analysis thread.",
+    "bridge/FunctionService.java:2199-2229": "create_function_at_address rejects an existing entry and uses CreateFunctionCmd for a new function. Deleting/recreating this function to use that endpoint would discard identity/metadata and is not proposed."
+  },
+  "preflight": [
+    "Independently approve this design and a concrete callable, reviewed mutation route. Current remote script gate is disabled; do not change security settings, try older endpoints, or treat a disabled-script response as authorization to use another script route.",
+    "Refresh exclusive leases for 00904C40, all code units in the four gaps, and owned output files; check any additional implicated callee owner before extending scope. Acquire coordination.ghidra_lock and retain it through validation, commit/save, readback, and failure recovery.",
+    "Reverify saved C:/Users/sqz269/bsp.gpr, project bsp, /battlestationspacific.exe, x86 LE32, base00400000 before each batch. Recheck installed PE and 522 live bytes against the sealed digest; reject drift rather than using stale addresses.",
+    "Use the approved read-only property route to capture the exact current four call-site flow overrides, default/effective flow types, fallthrough override flag and default/effective targets, all references with operand/source/primary attributes, and callee hasNoReturn/thunk-target chain. This missing direct preimage is a hard gate.",
+    "Capture Function object identity/symbol ID, entry, namespace, complete discontiguous body ranges, signature source, ABI/storage/parameters/locals, tags, flags, labels, and all five comment kinds at every byte of the 522-byte proposed body plus padding/neighbor. Existing documentation export is partial: plate plus EOL/PRE within the old body, no complete range/ID or all comment types.",
+    "Check every proposed byte is unowned or owned by the same function and currently undefined in the gaps, with no conflicting data definitions or mid-instruction references. The current API reports no owning function at all 26 missing instruction starts, but that is not a full-byte ownership preimage.",
+    "Prepare a consistent recoverable saved-program checkpoint through supported Ghidra save/version/backup facilities; a .gpr file alone is not a project/database backup. Record exact save/version/transaction identity; do not copy an open database naively.",
+    "Run one approved Ghidra transaction while an analysis worker keeps auto-analysis inactive and analyzeChanges=false (or a reviewed script with AnalysisMode.DISABLED). Preserve its previous state. Merely setting seed/initial context to null does not disable analysis. The coordination file lock alone does not suspend Ghidra analysis or GUI edits."
+  ],
+  "minimal_conditional_mutation": [
+    {
+      "step": 1,
+      "operation": "Conditional local flow restoration only",
+      "rule": "If exact preimages show a false CALL_RETURN at one of the four identified free calls, set only that site to FlowOverride.NONE. If a separate removed fallthrough override exists, clear only that verified override with clearFallThroughOverride(). Preserve already-correct properties and any unrelated override. If evidence shows a different flow cause, stop and amend the reviewed design."
+    },
+    {
+      "step": 2,
+      "operation": "Do not reset shared free metadata by default",
+      "rule": "Current signatures and installed signature-rendering source indicate returning metadata; current comments name the historical false no-return source 00BF9DC8. If direct preflight instead reveals a true shared hasNoReturn flag, stop this packet and acquire leases plus independent approval for the real thunk target and affected callers. FunctionDB.setNoReturn can forward through thunkedFunction; a seemingly local alias change may modify shared CRT free."
+    },
+    {
+      "step": 3,
+      "operation": "Decode exactly the four gaps without following external flow",
+      "rule": "Use verified starts and explicit allowed AddressSet ranges, with DisassembleCommand(startSet, allowedGapSet, false). Preserve the 156 existing instructions; do not clearCodeUnits or replace current bodies/functions. Compare all 26 new instructions and bytes with this artifact before continuing. Native padding 904E4A..904E4F and next entry904E50 remain outside scope."
+    },
+    {
+      "step": 4,
+      "operation": "Repair the same existing Function body only",
+      "rule": "After local flow restoration and complete bounded decoding, compute a candidate with CreateFunctionCmd.getFunctionBody(program, entry, false, monitor), which follows function flow without including other functions. Require exact expected 522-byte coverage and182 instruction starts, valid local targets, no overlapping owner, and no extra range. Call existingFunction.setBody(candidate) once. Reject candidates that differ; do not force a guessed contiguous union, delete/recreate, or call broad fixupFunctionBody."
+    },
+    {
+      "step": 5,
+      "operation": "Validate before committing the transaction",
+      "rule": "Require all acceptance assertions below before endTransaction(tx,true). On any discrepancy or exception, endTransaction(tx,false), flush relevant caches, and compare exact preimages. Preserve prior failure output. The existing multi-request flow helper does not supply this atomic transaction/rollback contract."
+    }
+  ],
+  "acceptance_and_rollback": [
+    "All 522 live bytes unchanged; full 182 starts and per-instruction bytes match independent installed-PE decoding; four continuations and26 restored starts owned by00904C40; no gaps.",
+    "The existing function has exactly the validated body ending 904E49;21 Native CALL instructions including newly visible 904E2B->BF7C6E and904E33->4BF8E0. Readable decompilation reaches the reverse 97-by-12 category cleanup, root cleanup, FS-chain restore, register/stack restore and ordinary RET. Do not equate decompilation appearance with Source or runtime correctness.",
+    "Original Function identity, old name CG_vector_deleting_dtor_00904c40, namespace, stored unknown/undefined(void) signature, storage, comments, tags and existing labels preserved; do not rename or correct ABI in this packet. Keep function count unchanged from the immediate locked preimage. Reference deltas must be limited to justified fallthrough and references for the 26 newly decoded instructions; pre-existing target/reference data must persist.",
+    "Shared BF65AC/BF6989/BF9DC8 names, flags, prototypes, bodies, comments, thunk targets and reference baseline remain unchanged in this local packet. No automatic analysis or other caller repair. Sample known scalar caller 004CB0B0 stays unchanged; its separate post-free listing gap remains a distinct future packet.",
+    "Neighbor904E50 and padding 904E4A..904E4F unchanged; no new function, no raw-binary write, no Source/CMake/ledger admission, no build/probe/game execution.",
+    "After transaction commit, save the same verified program through the supported save endpoint and retain success plus saved domain-file/version state. Force fresh affected exports and check every182 listing starts against the sealed Native bytes, then reopen/read the saved program under the lock or use equivalent saved-state verification. Exporting alone is not proof the project was saved.",
+    "If persistence/readback fails after commit, stop before accepting the artifact; use only the owned transaction undo/checkpoint restore while still serialized, restore exact metadata, save/read back the rollback, and retain the failure. Never undo unrelated intervening work.",
+    "Record only listing/body-repair evidence, refresh affected exports/index as needed (no forced global snapshot merely for a body change), and retain pre/post hashes, manifest and save receipt. Separate later normal-World/constructor/destructor Source qualification from this repair."
+  ],
+  "expanding_only_this_function": {
+    "valid_if": "Real local flow and all 182 instruction starts are restored; a recomputed nonoverlapping candidate equals the 522-byte body, same Function object and metadata preserved. The neighboring904E50 routine and EH funclets remain separate.",
+    "invalid_if": "Only max address/contiguous union is forced while calls remain nonreturning or26 starts remain undecoded; blindly deleting/recreating or applying broad fixup may change unrelated metadata. Cannot use body expansion as evidence that any World owner, constructor, cleanup provider or Source ABI is implemented."
+  },
+  "pending_direct_observations": [
+    "four call-site FlowOverride/default/effective flow/fallthrough flags",
+    "callee direct hasNoReturn and exact thunk chain flags",
+    "full current body AddressSet and Function ID",
+    "all-byte ownership and complete metadata/comment/reference preimages",
+    "approved callable mutation route with atomic rollback and analysis suppression"
+  ],
+  "retained_attempts": [
+    {
+      "file": "current_flow.json",
+      "result": "Read-only property query blocked by existing disabled-script gate; no bypass or mutation fallback attempted"
+    },
+    {
+      "file": "unsupported_cli_option_attempt01.txt",
+      "result": "Initial read-only bsp flow invocation rejected --tail-end; corrected to existing direct read-only helper. No build or Native/Source execution attempt."
+    }
+  ],
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_world_destructor_listing_repair_design_evidence",
+  "physical_pin_count": 25,
+  "limitations": [
+    "Local Ghidra/bridge source guides the plan but is not a hash attestation of the loaded Java classes.",
+    "No complete atomic mutation preimage was possible through the available read API.",
+    "No Ghidra repair, Source implementation, new function/name credit, ABI or runtime validation occurs in this packet."
+  ],
+  "evidence_seal": {
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_world_destructor_listing_repair_design_evidence.zip",
+    "bytes": 16465498,
+    "sha256": "28338ca3af240b3867cc3109280f2507ba551de81a76af5f9b197189ef548bf7",
+    "manifest_sha256": "5230b475827106038b855f52f5ad9897c595baaddf7200a1fe90d2e480fbe24c",
+    "manifest_files": 86,
+    "ZIP_entries": 87,
+    "all_payload_SHA256_and_CRC": "PASS"
+  }
+}
