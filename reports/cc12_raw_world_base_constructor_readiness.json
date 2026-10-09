@@ -1,0 +1,594 @@
+{
+  "packet": "cc12_raw_world_base_constructor_readiness",
+  "status": "read_only_complete_actual_Raw_World_constructor_Source_UNREADY",
+  "utc": "2026-10-09T00:34:47.847258+00:00",
+  "summary": {
+    "status": "PASS_READ_ONLY_CONTRACT_AUDIT_SOURCE_UNREADY",
+    "utc": "2026-10-09T00:31:58.003801+00:00",
+    "physical_pins_rehashed": 120,
+    "fresh_whole_Native_bodies": 15,
+    "fresh_whole_Native_bytes": 1033,
+    "fresh_whole_Native_instructions": 335,
+    "accepted_caller_bytes": 5357,
+    "accepted_caller_instructions": 1370,
+    "constructor_bytes": 126,
+    "constructor_instructions": 39,
+    "real_array": {
+      "base_offset": 24,
+      "count": 97,
+      "stride": 12,
+      "exclusive_end": 1188
+    },
+    "normal_destructor_corrected_Raw_bytes": 522,
+    "normal_destructor_Raw_instructions": 182,
+    "existing_whole_Source_objects": 8,
+    "existing_unique_core_members": 8,
+    "actual_constructor_Source_ready": false,
+    "new_Source_implementations": 0,
+    "new_function_or_fragment_credit": 0,
+    "new_Original_credit": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "Ghidra_writes": 0,
+    "target_execution": 0,
+    "World_ready": false,
+    "full_game_ready": false,
+    "startup_ready": false
+  },
+  "field_contracts": [
+    {
+      "range": "+00..+03",
+      "constructor": "Store Original World vptr00CE7784",
+      "requirement": "A genuine current Source method table and its actual methods, not an address-valued metadata projection."
+    },
+    {
+      "range": "+04..+0B",
+      "constructor": "Untouched; zero only from caller memset",
+      "requirement": "9037F0 later publishes two distinct real0C-byte hierarchy headers. Normal World destruction dereferences these."
+    },
+    {
+      "range": "+0C..+17",
+      "constructor": "Three zero DWORDs at57/5A/5D; root header",
+      "requirement": "Caller-owned12-byte root; state0 cleanup via actual4C2D30/4BF8E0."
+    },
+    {
+      "range": "+18..+4A3",
+      "constructor": "97 elements, stride12, actual4B7EC0 callback",
+      "requirement": "Fresh/unowned writable storage; actual constructor callback and reverse cleanup callback semantics."
+    },
+    {
+      "range": "+4A4..+4AB",
+      "constructor": "Untouched",
+      "requirement": "Subsequent9037 writes first argument BYTE+4A4 and zero DWORD+4A8; this is not a separate4A8 allocation."
+    },
+    {
+      "range": "+4AC",
+      "constructor": "Ready BYTE1 only after successful sentinel return/publication",
+      "requirement": "This base-ready byte does not establish post-initialized hierarchy headers or safe full destruction."
+    },
+    {
+      "range": "+4AD..+4B3",
+      "constructor": "Untouched, including iterator word+4B0",
+      "requirement": "Caller memset establishes skipped bytes; sentinel receives ECX=World+4B0 but ignores it."
+    },
+    {
+      "range": "+4B4..+4B7",
+      "constructor": "Store actual pointer returned by004C3080",
+      "requirement": "Real108-byte allocation with only first two self-links initialized; sentinel1 metadata is insufficient."
+    },
+    {
+      "range": "+4B8..+4BB",
+      "constructor": "DWORD0 count",
+      "requirement": "Last word ends at actual4BC owner boundary."
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "Raw header constructor004B7EC0",
+      "current": "Complete13B/6 Source and current physical unique core member; no allocation. Main owns its lease. Ledger explicitly reopens standalone complete-helper fixture admission.",
+      "readiness": "Existing physical primitive; independent gate still pending. This packet adds no admission credit."
+    },
+    {
+      "name": "Header destructor004C2D30\u2192clear004BF8E0",
+      "current": "Complete5B/1 tail and70B/29 raw clear with direct current canonical free. Both physical members and positive symbol-index edges retained. Ledger callback final admission awaits standalone clear70 regate.",
+      "readiness": "Existing physical cleanup primitive; named gate remains pending."
+    },
+    {
+      "name": "Actual BF7CD1/BF7C6E/ArrayUnwind protocol",
+      "current": "Complete Raw77/22 constructor loop +24/8 finally,75/20 destructor loop +24/8 finally,94/27 ArrayUnwind including filter/termination bytes. Existing Source game-array drivers reject the World callback pair and intentionally retain failure progress.",
+      "readiness": "No compatible concrete current World array driver/unwind binding. General Source-looking interface is not sufficient."
+    },
+    {
+      "name": "Constructor EH frame/state actions",
+      "current": "FuncInfo36B and two8B unwind-map entries, handler10B/2, state0 action11B/3 and state1 action22B/8 closed as bounded Raw evidence. Full Native CxxFrameHandler3 and SEH prologue/epilogue internals remain external.",
+      "readiness": "Needs a concrete Source cleanup strategy preserving these ordinary C++ exception effects. No Native FH3 binary-ABI equivalence is established."
+    },
+    {
+      "name": "Sentinel004C3080/current adapter",
+      "current": "Whole Source26B/11 plus real58B/20 adapter, allocator27-section/9-function graph and all actual CRT origins retained from preceding sealed worker normal-build proof; current physical object unchanged. Root/worker Source differs only LF/CRLF.",
+      "readiness": "Bounded raw allocation leaf exists; preceding worker report still requires independent primary admission. No World method table or ownership supplied by this helper."
+    },
+    {
+      "name": "Actual World method table",
+      "current": "Native prefix16 bytes points to4CB0B0,904390,9035D0,904BF0. First destructor30B/11 and body522B/182 inspected; slot+8 raw3B/2 returns true in AL. Current Source contains address constants, abstract drain/update contracts and projection; no actual World table.",
+      "readiness": "Missing real current table and complete lifetime/method providers. AdjacentCE7794 must not be treated as another World slot solely by code-pointer adjacency."
+    },
+    {
+      "name": "Normal World lifetime00904C40",
+      "current": "Whole522B Raw through RET904E49 recovered without modifying Ghidra. Sets ready/global bytes0, invokes entity callbacks and zero-delta updates, frees post-init headers, releases refcounted+4A8, frees matrix nodes/sentinel, destroys97 categories then root+0C.",
+      "readiness": "Full Source normal lifetime absent; actual entity, matrix, virtual-terminal, global flush and destructor EH dependencies remain named and incomplete."
+    },
+    {
+      "name": "4BC owner allocation/producer/caller",
+      "current": "Whole accepted5357B/1370 caller proves same EDI allocation\u2192constructor EAX\u2192Game+19CC\u21929037ECX. BF55BE and BF6989 are whole5B jumps to existing BF681B/BF65AC domains. Current create_world and world_post_construct are pure virtual; finite production scans find no concrete WorldConstructHost implementation.",
+      "readiness": "No production raw owner/publication/post-init/cleanup route. Actual Game/Dyn storage elsewhere is a separate owner and is not denied."
+    }
+  ],
+  "normal_destructor_named_frontiers": [
+    {
+      "target": "00926D90",
+      "site": "00904C88",
+      "actual_inputs": "Each entity from headerWorld+8, argument7; walks entity+44",
+      "status": "Named actual entity-state callback; full Source binding not admitted here."
+    },
+    {
+      "target": "00874D00",
+      "sites": [
+        "00904C96",
+        "00904CCA",
+        "00904D05",
+        "00904D40",
+        "00904D7D"
+      ],
+      "actual_inputs": "CL=0",
+      "status": "Global flush/provider semantics remain external."
+    },
+    {
+      "target": "00922FD0",
+      "site": "00904CBC",
+      "actual_inputs": "Entity selected fromWorld+4 with actual5E/6C/3C field tests",
+      "status": "Actual retirement callback/provider unclosed."
+    },
+    {
+      "target": "entity vslot+DC",
+      "sites": [
+        "00904CED",
+        "00904D28",
+        "00904D65"
+      ],
+      "actual_inputs": "ECX actual entity; float0 stack argument produced with x87",
+      "status": "Dynamic implementations and side effects unclosed."
+    },
+    {
+      "target": "00904600",
+      "sites": [
+        "00904CFE",
+        "00904D39",
+        "00904D76"
+      ],
+      "actual_inputs": "ECX sameWorld; float0",
+      "status": "Actual matrix-interpolator nodes/owner/callback contract required; semantic projected host does not supply raw lifetime."
+    },
+    {
+      "target": "InterlockedDecrement and captured object vslot0",
+      "sites": [
+        "00904DB6",
+        "00904DC6"
+      ],
+      "actual_inputs": "World+4A8 pointer, reference word+4; terminal when count becomes0",
+      "status": "IATCE2220 positively identifies Kernel32 InterlockedDecrement; actual object terminal/lifetime remains external."
+    },
+    {
+      "target": "00CA54CF",
+      "site": "00904C42 handler push",
+      "status": "Normal destructor exception-state cleanup is named but not expanded; construction FuncInfo proof is not destructor EH proof."
+    },
+    {
+      "target": "00C671A0",
+      "site": "004DE618 handler push in accepted complete caller",
+      "status": "Whole caller EH/provider semantics remain separately unclosed; no caller-failure cleanup is invented."
+    }
+  ],
+  "conditional_design": {
+    "admission": "NOT READY. No concrete Source constructor proposal is admitted for implementation in this packet.",
+    "required_input": "An actual aligned, writable, fresh4BC-byte owner supplied by a real producer; the Native constructor itself does not allocate or memset it. Caller zeros the whole allocation first.",
+    "ordinary_schedule": [
+      "Install genuine current World vptr.",
+      "Zero actual root words+0C/+10/+14.",
+      "Enter state0 and construct97 actual headers in forward order from+18, stride12.",
+      "After successful array completion enter state1.",
+      "Call real sentinel allocation leaf; write returned pointer+4B4, zero count+4B8, then write ready BYTE+4AC=1.",
+      "Return the same owner pointer. Caller publishes Game+19CC and performs9037 post-initialization separately."
+    ],
+    "exception_schedule": [
+      "If an element constructor fails, destroy only completed prefix in reverse before the root+0C cleanup.",
+      "If sentinel allocation throws after all97 headers succeed, run reverse97 cleanup, then root+0C; propagate.",
+      "Do not invoke the full World destructor for either constructor failure or a merely base-constructed World. It immediately dereferencesWorld+8, which is still null until9037 post-initialization.",
+      "Do not synthesize rollback for9037 second-header failure or ordinary caller cleanup; those remain original caller contracts to establish."
+    ],
+    "concrete_next_work": [
+      "Finish independent admission of the actual header13/clear70/callback5 providers.",
+      "Bind an actual World table and normal lifetime, including named entity/matrix/refcount/caller dependencies.",
+      "Design an actual fixed97 callback loop plus construction cleanup over these concrete providers; existing general game-array drivers cannot be reused by changing only stride/count.",
+      "Only then admit the full borrowed-storage constructor and the separate actual Game owner/publication route."
+    ],
+    "forbidden_shortcuts": [
+      "No hardcoded Original function-pointer table in the current process.",
+      "No fake sentinel1, no vector-only substitute for actual headers, no invented callbacks or default data.",
+      "No generic full-World destructor on partial construction.",
+      "No new Original/Source ready credit, compile, probe, fixture or target execution from this audit."
+    ]
+  },
+  "tracked_document_audit": {
+    "examined_commit": "add42746b7ec0b52862756d42866d5eb309c1217",
+    "specific_count_or_base_error_present": false,
+    "correct_evidence": [
+      "docs/CC12_NATIVE_GAME_WORLD_OWNER_CONTEXT_READINESS.md:25",
+      "docs/CC12_NATIVE_WORLD_HIERARCHY_OWNER_SOURCE_READINESS.md:49",
+      "reports/cc12_native_game_world_owner_context_readiness.json:140",
+      "docs/GAME_WORLD_CONSTRUCT.md:206",
+      "docs/GAME_WORLD_CONSTRUCT.md:213"
+    ],
+    "historical_callback_reversal": "GAME_WORLD_CONSTRUCT.md original table reverses callbacks; explicit correction already exists at348. No shared file changed.",
+    "correction_scope": "Initial packet brief alone had18-count/+390. Actual and tracked contract remains97 at+18 with stride0C."
+  },
+  "Source_host_storage_qualification": "GameUnitsHost owns97 coherent12-byte headers and stable nodes as its own C++ member, explicitly not a raw4BC World. GameWorldHost uses projected index chains. Existing actual Game/Dyn ownership is a distinct contract; this audit does not claim all real storage is absent.",
+  "accepted_caller_identity": "Same4BC World, not a separate4A8 base. Original BF55BE allocation, memset and4CB030 same-pointer return precede Game19CC and9037 publication.",
+  "Native_bodies": {
+    "004cb030": {
+      "bytes": 126,
+      "sha256": "2294a34491aee760a23d8f05b80e88bc1cbcab4445b2a85978d1ad7265ac6028",
+      "instruction_count": 39,
+      "exclusive_end": "004cb0ae",
+      "exported_Ghidra_starts": 39,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "00bf7cd1": {
+      "bytes": 77,
+      "sha256": "df3c3d7d942712d00f42e5566f4329673df0a12a6e6893d6cb06a4ddb766f5fc",
+      "instruction_count": 22,
+      "exclusive_end": "00bf7d1e",
+      "exported_Ghidra_starts": 22,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "00bf7d1e": {
+      "bytes": 24,
+      "sha256": "e56ad8fee3c15f6af4a20a74b9ef9fa92929fbc75edcfba0bdd6667aff5cd97e",
+      "instruction_count": 8,
+      "exclusive_end": "00bf7d36",
+      "exported_Ghidra_starts": 8,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "00bf7c6e": {
+      "bytes": 75,
+      "sha256": "e17d277fcf76c86ca7bbd9efd9cd4320b80da6c94ca29539e6ae9ddc27ad5b59",
+      "instruction_count": 20,
+      "exclusive_end": "00bf7cb9",
+      "exported_Ghidra_starts": 20,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "00bf7cb9": {
+      "bytes": 24,
+      "sha256": "517d4263f48e5a86fc4a0b59a1946ed6eb5266a29658d974d9f149196d80cd76",
+      "instruction_count": 8,
+      "exclusive_end": "00bf7cd1",
+      "exported_Ghidra_starts": 8,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "00bf7c10": {
+      "bytes": 94,
+      "sha256": "38f062912d5ab25f59b3575e852e2859060b9ef893cbf4de542a50a72a004da2",
+      "instruction_count": 27,
+      "exclusive_end": "00bf7c6e",
+      "exported_Ghidra_starts": 14,
+      "missing_listing_starts": [
+        "00bf7c33",
+        "00bf7c36",
+        "00bf7c39",
+        "00bf7c3c",
+        "00bf7c3e",
+        "00bf7c41",
+        "00bf7c44",
+        "00bf7c4a",
+        "00bf7c4c",
+        "00bf7c53",
+        "00bf7c56",
+        "00bf7c57",
+        "00bf7c5c"
+      ],
+      "listing_is_complete": false
+    },
+    "004c2d30": {
+      "bytes": 5,
+      "sha256": "fcd4639035646b9e7bc377f6227d569bf4315202717b7b3298d19d59a6ad1f57",
+      "instruction_count": 1,
+      "exclusive_end": "004c2d35",
+      "exported_Ghidra_starts": 1,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "00c65630": {
+      "bytes": 11,
+      "sha256": "48d0cb9ee76c4f31e236aec42814fcc22cc830400cab9d1a4485f9eae4d5838f",
+      "instruction_count": 3,
+      "exclusive_end": "00c6563b",
+      "exported_Ghidra_starts": 0,
+      "missing_listing_starts": [
+        "00c65630",
+        "00c65633",
+        "00c65636"
+      ],
+      "listing_is_complete": false
+    },
+    "00c6563b": {
+      "bytes": 22,
+      "sha256": "1fdc2f94a73f7c3a94753e588dd914b359ac4ac6b7e5f51efd030259e5dd546f",
+      "instruction_count": 8,
+      "exclusive_end": "00c65651",
+      "exported_Ghidra_starts": 0,
+      "missing_listing_starts": [
+        "00c6563b",
+        "00c65640",
+        "00c65642",
+        "00c65644",
+        "00c65647",
+        "00c6564a",
+        "00c6564b",
+        "00c65650"
+      ],
+      "listing_is_complete": false
+    },
+    "00c65651": {
+      "bytes": 10,
+      "sha256": "2a000b804720b70981dd20e0cb742ab7f79997f284d62657f8c122275158cd7b",
+      "instruction_count": 2,
+      "exclusive_end": "00c6565b",
+      "exported_Ghidra_starts": 0,
+      "missing_listing_starts": [
+        "00c65651",
+        "00c65656"
+      ],
+      "listing_is_complete": false
+    },
+    "004cb0b0": {
+      "bytes": 30,
+      "sha256": "a3eabadfac2d373943f420ec51831729d2a8a861dfcacac7632896b4243592a3",
+      "instruction_count": 11,
+      "exclusive_end": "004cb0ce",
+      "exported_Ghidra_starts": 10,
+      "missing_listing_starts": [
+        "004cb0c5"
+      ],
+      "listing_is_complete": false
+    },
+    "00904c40": {
+      "bytes": 522,
+      "sha256": "99e96902a47b83e3f58f5252fecde21135f4da4e4cfe6770fb58fe3552c6af8e",
+      "instruction_count": 182,
+      "exclusive_end": "00904e4a",
+      "exported_Ghidra_starts": 156,
+      "missing_listing_starts": [
+        "00904d8f",
+        "00904d92",
+        "00904da2",
+        "00904da5",
+        "00904df8",
+        "00904dfb",
+        "00904e01",
+        "00904e03",
+        "00904e11",
+        "00904e14",
+        "00904e19",
+        "00904e1b",
+        "00904e1d",
+        "00904e20",
+        "00904e21",
+        "00904e27",
+        "00904e2b",
+        "00904e30",
+        "00904e33",
+        "00904e38",
+        "00904e3c",
+        "00904e3d",
+        "00904e3e",
+        "00904e3f",
+        "00904e46",
+        "00904e49"
+      ],
+      "listing_is_complete": false
+    },
+    "00bf55be": {
+      "bytes": 5,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "instruction_count": 1,
+      "exclusive_end": "00bf55c3",
+      "exported_Ghidra_starts": 1,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "00bf6989": {
+      "bytes": 5,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "instruction_count": 1,
+      "exclusive_end": "00bf698e",
+      "exported_Ghidra_starts": 1,
+      "missing_listing_starts": [],
+      "listing_is_complete": true
+    },
+    "009035d0": {
+      "bytes": 3,
+      "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+      "instruction_count": 2,
+      "exclusive_end": "009035d3",
+      "exported_Ghidra_starts": 0,
+      "missing_listing_starts": [
+        "009035d0",
+        "009035d2"
+      ],
+      "listing_is_complete": false
+    }
+  },
+  "physical_Source_bodies": {
+    "native_parent_list_header_storage": [
+      {
+        "symbol": "?initialize_native_parent_list_header_storage_004b7ec0@bsp@@YIPAXPAXI@Z",
+        "symbol_index": 8,
+        "section": 3,
+        "section_value": 0,
+        "physical_file_offset": 447,
+        "bytes": 13,
+        "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+        "instruction_count": 6
+      }
+    ],
+    "native_parent_header_destructor_callback": [
+      {
+        "symbol": "?destroy_native_parent_header_004c2d30@bsp@@YIXPAXI@Z",
+        "symbol_index": 8,
+        "section": 3,
+        "section_value": 0,
+        "physical_file_offset": 455,
+        "bytes": 5,
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "instruction_count": 1
+      }
+    ],
+    "native_parent_header_clear": [
+      {
+        "symbol": "?clear_native_parent_header_004bf8e0@bsp@@YIXPAXI@Z",
+        "symbol_index": 11,
+        "section": 4,
+        "section_value": 0,
+        "physical_file_offset": 741,
+        "bytes": 70,
+        "sha256": "6c25baf6532cbd0f4d066eacb4b13f70b06245bbd24c94d6e1b49b96e0b38d81",
+        "instruction_count": 29
+      }
+    ],
+    "native_world_matrix_sentinel": [
+      {
+        "symbol": "?create_native_world_matrix_sentinel_004c3080@bsp@@YAPAXXZ",
+        "symbol_index": 13,
+        "section": 5,
+        "section_value": 0,
+        "physical_file_offset": 869,
+        "bytes": 26,
+        "sha256": "c580f1f74454ad9bfd7f316c7e6304b1a647b182aac0e3872498cd7d46504a9c",
+        "instruction_count": 11
+      },
+      {
+        "symbol": "?allocate_sentinel_storage@?A0xe595f91c@bsp@@YAPAXI@Z",
+        "symbol_index": 15,
+        "section": 4,
+        "section_value": 0,
+        "physical_file_offset": 781,
+        "bytes": 58,
+        "sha256": "7b121d1cbda959af3f6bfc76d0e9390da02b20036100aa2023f449029e9c915c",
+        "instruction_count": 20
+      }
+    ],
+    "singleton_lifetime": [
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "symbol_index": 184,
+        "section": 76,
+        "section_value": 0,
+        "physical_file_offset": 12429,
+        "bytes": 90,
+        "sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+        "instruction_count": 37
+      },
+      {
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "symbol_index": 185,
+        "section": 77,
+        "section_value": 0,
+        "physical_file_offset": 12569,
+        "bytes": 6,
+        "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+        "instruction_count": 1
+      }
+    ],
+    "native_game_array_elements": [
+      {
+        "symbol": "?construct_native_game_array_00bf7cd1@bsp@@YAXPAXIIIIABUNativeGameArrayConstants@1@AAUNativeGameArrayCalls@1@AAUNativeGameArrayOperation@1@@Z",
+        "symbol_index": 116,
+        "section": 39,
+        "section_value": 0,
+        "physical_file_offset": 5740,
+        "bytes": 1023,
+        "sha256": "dd26ddb95d8d338a7e057b14b8a58e0a6c0e0e57c1377c7012ad3bc9f46c4701",
+        "instruction_count": 259
+      }
+    ],
+    "native_game_array_lifetime": [
+      {
+        "symbol": "?destroy_native_game_array_00bf7c6e@bsp@@YAXPAXIIIAAUNativeGameArrayLifetimeContext@1@AAUNativeGameArrayLifetimeOperation@1@@Z",
+        "symbol_index": 93,
+        "section": 24,
+        "section_value": 0,
+        "physical_file_offset": 4474,
+        "bytes": 711,
+        "sha256": "2a17d3ffe52ce22ccbba792f9b16b13c9cab4cfea686e562e0191cfa94bdef76",
+        "instruction_count": 210
+      }
+    ],
+    "world_construct": [
+      {
+        "symbol": "?construct_world_object_004cb030@bsp@@YA?AUWorldObjectLayout@1@XZ",
+        "symbol_index": 280,
+        "section": 96,
+        "section_value": 0,
+        "physical_file_offset": 11013,
+        "bytes": 74,
+        "sha256": "81d3d7d3fdb6519843e15a206349a1fe5f6b11c67156b2ae07c36f13f2350af4",
+        "instruction_count": 15
+      }
+    ]
+  },
+  "scope": {
+    "Source_changes": 0,
+    "CMake_changes": 0,
+    "ledger_changes": 0,
+    "Ghidra_program_changes": 0,
+    "new_Original_credit": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "game_execution": 0,
+    "full_World_ready": false,
+    "startup_ready": false
+  },
+  "evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_raw_world_base_constructor_readiness_evidence.zip",
+    "bytes": 35420204,
+    "sha256": "ae9d6e3a35c7d4ca810a4b489f92118400f28e0ad50a73ff1d34d46c91777389",
+    "manifest_sha256": "ee673e4b79e8d00501571cf62dd9c412201b1448af1c2db8587c3df235eaa439",
+    "manifest_files": 216,
+    "ZIP_entries": 217,
+    "all_payload_SHA_and_CRC_verified": true
+  },
+  "evidence_root": "local/cc12_raw_world_base_constructor_readiness_evidence",
+  "review_files": [
+    "constructor_EH_contract.json",
+    "vector_SEH_scope_tables.json",
+    "World_vtable_prefix_contract.json",
+    "whole_Native_bodies.json",
+    "whole_Native_data.json",
+    "selected_complete_Source_functions.json",
+    "selected_Source_INDEX_graphs.json",
+    "raw_leaf_cross_member_edges.json",
+    "historical_core_member_origins.json",
+    "current_dependency_whole_byte_comparisons.json",
+    "Root_worker_sentinel_newline_identity.json",
+    "physical_inputs.json",
+    "accepted_caller/Root_primary_receipt.json",
+    "tracked_World_identity_followup_diff.txt"
+  ]
+}
