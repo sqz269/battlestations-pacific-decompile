@@ -1,0 +1,320 @@
+{
+  "schema": "bsp.cc12.registry_application_prerequisites_primary_review.v1",
+  "status": "two_bounded_readonly_contracts_and_current_Source_reuse_reviewed",
+  "utc": "2026-10-09T06:01:54.778072+00:00",
+  "published_entity_refinement": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+  "entity_primary_evidence": "reports/cc12_entity_destroy_state_primary_review.json",
+  "worker_commits": [
+    "81eb1eb2efff4fa234597df77accde17b5fc9b2a",
+    "d02b25aa298c961b6b20ccb654237ee89e752680"
+  ],
+  "reviewed_reports": [
+    {
+      "path": "reports/cc12_pending_entity_registration_splice_readiness.json",
+      "canonical_lf_sha256": "894016d4ca5cceaae4be56cdfa95cf0c85172a06f29b15d320c9ab95dab1eebd"
+    },
+    {
+      "path": "reports/cc12_application_manager_registration_readiness.json",
+      "canonical_lf_sha256": "29fd4a887b1e12fb36ab1f9a22a1d5d253dcda2b0f01ff22c389740782ef158f"
+    }
+  ],
+  "current_input_pins": [
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "canonical_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "canonical_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "canonical_lf_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "canonical_lf_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "canonical_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "canonical_lf_sha256": "a1b7233f61544b51628af292801286e2cc9296a232fc71d923d170e28a2c1638"
+    },
+    {
+      "path": "config/target.json",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+      "canonical_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1"
+    },
+    {
+      "path": "reports/cc12_global_config_lifetime_owner_escape.json",
+      "canonical_lf_sha256": "21a2d8ab3341face61f2f74ec58783c0057e1dd3f828d02e31f0f6fcb380f1b3"
+    },
+    {
+      "path": "reports/native_singleton_vector_registration_wrappers_audit.json",
+      "canonical_lf_sha256": "5e96a52f22dab73796c2b7e25e108aba772bfa91171e30dbe2b1a02cb69cd3d1"
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "include/bsp/game_hosts_fixed_step.hpp",
+      "canonical_lf_sha256": "cd47c5dd49d9e618461768cdff3a0a26541a9457168094234b531699b103c0b2"
+    },
+    {
+      "path": "include/bsp/fixed_step_fanout.hpp",
+      "canonical_lf_sha256": "aef3d72096ecb17571c628250fa13a32c44032aacd045d0bb48cac498341bae3"
+    },
+    {
+      "path": "src/fixed_step_fanout.cpp",
+      "canonical_lf_sha256": "8819c6d3f05c4c41574ac780f5042763092ab3dfe5d66c54da8f3a0fb29c4ae9"
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "canonical_lf_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "canonical_lf_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "canonical_lf_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+    },
+    {
+      "path": "docs/FIXED_STEP_JOB_WAVES.md",
+      "canonical_lf_sha256": "0a468e71090f5367fbfb6bc208fe4074949303b54ba8adb450dcb8072bc3dcea"
+    },
+    {
+      "path": "docs/CC12_WORLD_CURRENT_SHUTDOWN_STEP_READINESS.md",
+      "canonical_lf_sha256": "c2b4333c0d2e3288f6363c1496437158911fa7fd54290d7591fa094132c3c4ce"
+    },
+    {
+      "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "canonical_lf_sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f"
+    },
+    {
+      "path": "include/bsp/game_pending_entity_runtime.hpp",
+      "canonical_lf_sha256": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303"
+    }
+  ],
+  "native_windows": [
+    {
+      "address": "00BD0C30",
+      "bytes": 39,
+      "sha256": "cd39b3d75a0ef04a9d9debfad5958c9464abb74a44bf4ff92f7e32d7aae5b402",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 14
+    },
+    {
+      "address": "00bea83e",
+      "bytes": 8,
+      "sha256": "a83224f7053752c15d0f5443c4e6953157afa775d59fd633acecb6a5f35ec335",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 2
+    },
+    {
+      "address": "00bea866",
+      "bytes": 25,
+      "sha256": "e7d1956446330387918fd822300cbe3ffa801030c0eff772f19c975bba3f97d5",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 6
+    },
+    {
+      "address": "00bea87f",
+      "bytes": 15,
+      "sha256": "6107b57b8084320717fddf2a57e39027053156cae46866caf442fc4f628975cd",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 5
+    },
+    {
+      "address": "00874C90",
+      "bytes": 111,
+      "sha256": "20d76aa83478f647278e9739557d3521cbe5067bf3a8ba7becceea26848bffa8",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 31
+    },
+    {
+      "address": "00E0B6D0",
+      "bytes": 12,
+      "sha256": "0836a45f4cf885f04aafd07fead7691b215c6f053c2a239c6952fb6b0d541fc2",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 6
+    },
+    {
+      "address": "00E0B704",
+      "bytes": 12,
+      "sha256": "b2e49bc8d81a5a3902d6c26ff6a4ebfd86ba3e965c2597da141b31f10816238e",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 4
+    },
+    {
+      "address": "00F876C0",
+      "bytes": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "raw_PE_match": false,
+      "qualified_static_virtual_zero": true,
+      "instructions": 0
+    },
+    {
+      "address": "00F876F4",
+      "bytes": 12,
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "raw_PE_match": false,
+      "qualified_static_virtual_zero": true,
+      "instructions": 0
+    },
+    {
+      "address": "00CD27D6",
+      "bytes": 10,
+      "sha256": "a7f85ab8f9ff402536fbe7446e71335050695e03401736a66069dec4f39ab012",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 1
+    },
+    {
+      "address": "008758D3",
+      "bytes": 33,
+      "sha256": "07b1c6c942711800a0f7c0a3dd092d4ee0d6f0b99544612fd9285d8fd050bf1c",
+      "raw_PE_match": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": 7
+    }
+  ],
+  "frozen_wrapper_source_identity_replayed": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\manifest.json",
+      "bytes": 81427,
+      "sha256": "9eeeb7ed8aa8a1b056a1b7aac34126ddcd736548c4adcc613c1a960edcfd83a3"
+    },
+    "files": [
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "current_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "matches_frozen_build_inputs": true,
+        "frozen_records": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\src\\native_singleton_vector_registration_wrappers.cpp",
+            "bytes": 4283,
+            "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\compiler_inputs\\workspace\\SRC\\NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.CPP",
+            "bytes": 4283,
+            "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "current_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "matches_frozen_build_inputs": true,
+        "frozen_records": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+            "bytes": 2373,
+            "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\compiler_inputs\\workspace\\INCLUDE\\BSP\\NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.HPP",
+            "bytes": 2373,
+            "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+          }
+        ]
+      }
+    ]
+  },
+  "complete_contract_findings": [
+    "00874C90 complete111B/31ins/zeroCALL splices existing34h intrusive nodes from two pending sentinels into68h group slots. Preserve capturednext, unlinkreloads, DWORDindex*68h wrapping, append order and four endpoint resets. No count updates/guards/allocations/callbacks. Saved-image pending links are realfilebacked; group0 links are virtualzero and one laterbootstrapstore does not qualify commonactualowner. Sourceconsumer remains held on875890 producer and actualgroupbootstrap/ownership.",
+    "00BD0C30 complete39B/14ins already has a real raw Source wrapper. Validatebegin/end BEFOREcurrentstackobjectnulltest, then pass address of that same argumentword to actualappend. Current SDK invalid-handler domain remains distinct from Native CRT globals/Watson. Same canonicalrawmanagerprocesscell and existing B1B730 publish/getagain/currentpubreload/register precedent are reusable. Typedmanageraddress is not raw14hstorage. No duplicatewrapper needed.",
+    "BEA810 reusedcaller48B confirms capturedfirstmanagerlock, E1AE90publication, secondgetter/currentApplicationreload, registration, then releaseoriginalcapturedlock. Registration itself supplies neither actualApplicationowner/table/retirement nor corresponding shutdown-dispatch profile."
+  ],
+  "verification": {
+    "current_source_target_prior_pins": 33,
+    "frozen_source_copies": 4,
+    "frozen_manifest": 1,
+    "native_and_reused_windows": 11,
+    "raw_PE_bytes": 265,
+    "qualified_static_virtual_zero_bytes": 24,
+    "wholebounded_docs_reviewed": 2,
+    "new_primary_GPR_capture": false,
+    "newbuilds_tests_probes": 0
+  },
+  "next_bounded_readonly": [
+    "00875890 complete139B pending registrationproducer;875280 lockboundary retained withoutdescendantsweep.",
+    "00BEA990 actualApplicationretirement shell reachedbyexisting7379A0;startsize/ledgerandretain300Bbound."
+  ],
+  "credit": {
+    "new_Source": 0,
+    "Original_functions": 0,
+    "GPR_mutations": 0,
+    "application_wiring": 0,
+    "runtime_gameplay": 0
+  },
+  "limits": [
+    "StaticPE data/virtualzero is not a live game value or coherent Sourceowner.",
+    "Existing wrapper frozenSource/historicalemission proof is reused; no newNativewrapperexecution.",
+    "OverallactualApplication/World teardown, startup and gameplay qualification remain open."
+  ]
+}
