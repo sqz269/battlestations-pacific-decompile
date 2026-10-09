@@ -1,0 +1,92 @@
+{
+  "schema": "bsp.cc12.world_application_readiness_primary_review.v1",
+  "utc": "2026-10-09T05:46:55.837524+00:00",
+  "status": "four_readonly_audits_whole_contract_and_input_replay_reviewed",
+  "published_source_batch": "4b8c9780ad27ad881ff99528c79d1168d712086e",
+  "source_batch_evidence": "reports/cc12_world_tick_reset_frame_primary_review.json",
+  "audits": [
+    {
+      "worker_commit": "f50917e86d6f36192a75f1146e4a2c5c14f68016",
+      "report": "reports/cc12_entity_destroy_state_current_storage_readiness.json",
+      "report_canonical_sha256": "1a6cc838016a78d4509d543d6676bc26b2f47c1762c6784ed2f686da76aa3aef",
+      "input_pins_checked": 18,
+      "explicit_historical_pins": 0,
+      "fresh_worker_capture_windows": 1,
+      "fresh_capture_bytes": 66,
+      "cached_comparison_rows_replayed": 1,
+      "all_cached_raw_PE_or_loader_zero_comparisons_passed": true
+    },
+    {
+      "worker_commit": "c7ee5bed9094aab82478609893968fa4ef7e5ffd",
+      "report": "reports/cc12_game_application_name_cell_producer_readiness.json",
+      "report_canonical_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+      "input_pins_checked": 25,
+      "explicit_historical_pins": 0,
+      "fresh_worker_capture_windows": 14,
+      "fresh_capture_bytes": 496,
+      "cached_comparison_rows_replayed": 14,
+      "all_cached_raw_PE_or_loader_zero_comparisons_passed": true
+    },
+    {
+      "worker_commit": "0476fcefcf9f0041f90e1900e46006884829c134",
+      "report": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "report_canonical_sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f",
+      "input_pins_checked": 29,
+      "explicit_historical_pins": 0,
+      "fresh_worker_capture_windows": 4,
+      "fresh_capture_bytes": 243,
+      "cached_comparison_rows_replayed": 73,
+      "all_cached_raw_PE_or_loader_zero_comparisons_passed": true
+    },
+    {
+      "worker_commit": "18203a7f5be5c0882af2c09404acb91d5378629b",
+      "report": "reports/cc12_world_destructor_after_current_tick_readiness.json",
+      "report_canonical_sha256": "1952956148e4d86c067acba61eff1c5f22a116e1103e454d00a12674a70a0e18",
+      "input_pins_checked": 37,
+      "explicit_historical_pins": 4,
+      "fresh_worker_capture_windows": 1,
+      "fresh_capture_bytes": 522,
+      "cached_comparison_rows_replayed": 1,
+      "all_cached_raw_PE_or_loader_zero_comparisons_passed": true
+    }
+  ],
+  "primary_findings": [
+    "00922FD0 complete66B/25ins raw actual-storage leaf is feasible. Existing counted projected function is preserved; follow-up earns refinement only. Caller currenttable84, hierarchy and post-return44/World38 lifetimes remain qualified.",
+    "00904C40 complete522B/182ins/21calls still has26 current Ghidra starts/82B gaps. Tick dependency is now primary-reviewed and published, superseding snapshot pending status. Actual922FD0, current874D00 service, sharedE0AF20 owner, real callable table/scalar/destructor/lifetime closure remain open. Held14/43 versus16/48 support discrepancy is not resolved or imported.",
+    "00874D00 complete216B/59ins reloads currentGame four times. Lua/think precede currentWorldready read, so cleared destructorWorld4AC is only conditionally the later gate. Even skipped middle block leaves queuedLua/think/deferred/pending/currentWorldexpiry. OutboundSETZDL/PUSHEDX establishes onlylow8, while76FFC0 reads and forwards the whole DWORD. No canonical fullword0/1 substitute is admitted.",
+    "Native Application is same WinMain stackslot through construction/init/loop/shutdown/destruction; Source host and12B vector subobject do not supply actual containing owner/+14. Complete constructor stores leave padding preimages open; E1AE90 publication and manager registration are required before finaltables/fields.",
+    "Name duplication/free primitives are real and qualified, but startup has no sole currentcell producer. E1AE78/E1AE90 zeros are staticPE virtual-tail loader zero, not four raw-file bytes or live runtime values. An unused new namecell does not establish startupwiring; no combined Gameframe factory is admitted."
+  ],
+  "next_bounded_work": {
+    "entity_leaf": "Source implementation of complete00922FD0 with one real self relocation and direct currentterminal JMP, without new owner/table/context.",
+    "pending_registration": "Read-only whole00874C90 actual shared sentinel/group storage/producer contract.",
+    "application_registration": "Read-only bounded00BD0C30 manager registration prerequisite."
+  },
+  "verification": {
+    "worker_input_pins_replayed": 109,
+    "full_worker_fresh_capture_bytes": 1327,
+    "raw_PE_bytes": 1319,
+    "qualified_static_loader_zero_bytes": 8,
+    "complete_docs_reviewed": 4,
+    "whole_native_body_and_decoded_contract_reviewed": [
+      "00922FD0",
+      "00904C40",
+      "00874D00"
+    ],
+    "no_new_live_capture_by_primary": true,
+    "no_build_repeat_for_readonly_docs": true,
+    "durable_local_replay": "local/cc12_world_tick_reset_frame_primary/readonly_audits_primary_replay.json",
+    "local_replay_sha256": "1560a1d7055601eb8846045609edc5fe98b1f61a746417dd76aa128341042259"
+  },
+  "credit": {
+    "new_Source": 0,
+    "Original_functions": 0,
+    "GPR_writes": 0,
+    "Native_ABI_runtime_gameplay": 0
+  },
+  "limits": [
+    "Read-only code/owner contract evidence; no actual Application/World/current virtual production graph admission.",
+    "Historical snapshot pins retain their explicit revisions; Source tick primary acceptance is recorded separately.",
+    "No cookie/chkstk/flow repair, fabricated empty services, automatic cleanup/defaultcells or startup/gameplay completion."
+  ]
+}
