@@ -1,7 +1,7 @@
 {
   "schema": "cc12_type5_complete_guard_primary_review_root_v1",
   "packet": "cc12_type5_complete_guard_primary_review_ROOT",
-  "state": "exclusive_entry_filename_blocker_corrected_passive_TEXT_verified_execution_held",
+  "state": "exclusive_entry_filename_blocker_corrected_independently_reviewed_TEXT_execution_held",
   "Source_credit": 0,
   "Source_admission_credit": 0,
   "Root_author": "/root",
@@ -325,8 +325,7 @@
   },
   "execution_holds": [
     "Fresh unchanged final Root selection is required after current Main drift",
-    "Concrete context/private profiles/host/tool pins/timeouts and all Root acceptance receipts remain unfilled",
-    "Independent V4 peer packet is ongoing"
+    "Concrete context/private profiles/host/tool pins/timeouts and all Root acceptance receipts remain unfilled"
   ],
   "preserved_contract": {
     "Native_address": "008EF2B0",
@@ -375,5 +374,35 @@
     "new_tests": 0,
     "CXX_builds": 0
   },
-  "next": "Integrate the reused-worker independent V4 peer; then independently select fresh final inputs and concrete Root profiles/receipts before any guarded Type5 execution."
+  "next": "Independently select fresh final inputs and concrete Root profiles/context/tool pins/timeouts; complete the exact required Root receipts before any guarded Type5 execution.",
+  "independent_Type5_peer_integration": {
+    "worker_commit": "3dcd05082dbc9b5d88a9eb098145a3bc88811ecb",
+    "Main_merge": "dd4c06f882a8465d7f96a96298fe99258b639264",
+    "Source_credit": 0,
+    "bounded_passive_review_passed": true,
+    "Root_execution_acceptance": false,
+    "execution_admission": false,
+    "exact_peer_artifacts": 12640,
+    "exact_peer_family_files": 12641,
+    "peer_seal_bytes": 2496035,
+    "peer_seal_sha256": "4aef569abf0c8c5ec47d6d0b3e1e76d877f747291d7b051b040e81cc7ab785a8",
+    "Root_full_peer_doc_read": true,
+    "Root_independent_all_hashes_and_exact_membership_verified": true,
+    "primary_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_type5_request_keyed_guard_primary_verification.json",
+      "bytes": 551,
+      "sha256": "e3236ad5e90a9a34ee996cd9ae6e3d8f802ccb5d987e0a5c0c001db6c669548c"
+    },
+    "two_failed_own_review_assumptions_disclosed_and_corrected_without_selected_changes": true,
+    "recipe_assertions_preserved": 108,
+    "helper_assertions_preserved": 62,
+    "driver_throws_preserved": 57,
+    "materializer_throws_preserved": 29,
+    "driver_Assert_Pin_calls_preserved": 17,
+    "materializer_Assert_Pin_calls_preserved": 11,
+    "PowerShell_syntax_errors": 0,
+    "filename_pairs_independently_checked": 27,
+    "Root_sealed_family_modified": false,
+    "execution_holds_retained": true
+  }
 }

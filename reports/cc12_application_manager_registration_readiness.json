@@ -1,0 +1,793 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_application_manager_registration_readiness",
+  "generated_at_utc": "2026-10-09T05:54:30.112417+00:00",
+  "base_commit": "7c69586d7b0f3621b77004cadebdd7466c850fd4",
+  "requested_published_main": "4b8c9780ad27ad881ff99528c79d1168d712086e",
+  "preserved_producer_audit": "c7ee5bed9094aab82478609893968fa4ef7e5ffd",
+  "verdict": {
+    "matching_genuine_raw_source_registration_exists": true,
+    "new_registration_source_needed": false,
+    "canonical_manager_cell_already_available": true,
+    "typed_manager_cast_compatible": false,
+    "actual_application_owner_or_factory_ready": false,
+    "source_credit": 0,
+    "original_credit": 0
+  },
+  "scope": {
+    "owned_outputs": [
+      "docs/CC12_APPLICATION_MANAGER_REGISTRATION_READINESS.md",
+      "reports/cc12_application_manager_registration_readiness.json"
+    ],
+    "only_claimed_native_address": "00BD0C30",
+    "maximum_new_body_bytes": 300,
+    "new_body_bytes": 39,
+    "parent_evidence": "Reused BEA810 from c7ee producer report; no new whole-parent read/decompile/listing/byte query.",
+    "excluded": [
+      "descendant native body sweep",
+      "Source/CMake/ledger/GPR changes",
+      "builds/tests/probes",
+      "combined frame factory",
+      "default or parallel manager cells"
+    ]
+  },
+  "target": {
+    "expected_gpr": "C:/Users/sqz269/bsp.gpr",
+    "guarded_project": "bsp",
+    "guarded_program_path": "/battlestationspacific.exe",
+    "guarded_language": "x86:LE:32:default",
+    "guarded_image_base": "00400000",
+    "queries": [
+      "bsp.py ghidra ensure --status",
+      "bsp.py ghidra proto00BD0C30",
+      "bsp.py ghidra bytes00BD0C30 --length39"
+    ],
+    "prototype_limit": "Current Ghidra signature undefined Register(void) and param_count0 are placeholders. Complete assembly establishes ECX/one-stack-word/RET4.",
+    "guard_source": "GhidraClient.verify checks project name, current program path, language and image base against current target config before analysis."
+  },
+  "native_contract": {
+    "abi": "ECX actual manager/container; EDX unconsumed; one actual object pointer stack word; preserveESI; RET4; no semantic EAX result.",
+    "receiver": "Live raw manager, readable begin+4/end+8 even for null object; same four-byte-slot vector storage/domain expected by existing append/growth providers. Raw manager factory allocates14h, with captured caller lock at+10.",
+    "schedule": [
+      "capture ECX inESI and current end inEAX",
+      "unsigned compare current begin<=captured end",
+      "on failure callBF6713; continue if it returns",
+      "test CURRENT object argument atESP+8 only after validation",
+      "nonnull: pass ADDRESS of that actual word toBD0BC0 with captured managerESI",
+      "restoreESI andRET4"
+    ],
+    "owner_input": "May be null after validation; nonnull is a pointer value to retain through append, not an owner-layout or deleting-dispatch qualification. This39B body never dereferences the object.",
+    "services": "Original BF6713 and BD0BC0 are the two direct edges. Current Source binds fixed actual SDK invalid-parameter service and existing raw append with its current canonical storage providers.",
+    "not_present": [
+      "non-stack writes in this body",
+      "internal lock",
+      "deduplication",
+      "AddRef/owner retain method",
+      "local exception/rollback frame",
+      "owner method-table check",
+      "registered-owner destruction qualification"
+    ],
+    "returning_handler": "Actual argument word is tested after the handler. Captured manager remains receiver; no early null guard, semantic copied argument or substituted manager is admitted."
+  },
+  "application_caller_contract": {
+    "original_receiver": "Application A captured by BEA810; already published before registration",
+    "first_manager": "BEA83E getter thenBEA843 captures its section+10; caller owns this captured lock obligation",
+    "publication": "BEA866 storesA toE1AE90",
+    "second_manager": "BEA86C getter result becomes registration ECX; do not substitute first manager",
+    "registered_value": "BEA871 reloads CURRENT E1AE90 after second getter, pushedBEA877; do not substitute initially capturedA",
+    "call": "BEA878 ECX=second getterEAX; BEA87A CALL BD0C30",
+    "release": "BEA87F..BEA888 releases first captured section when nonnull. Registration neither manages nor reselects this lock.",
+    "failure_limit": "Published owner/global services remain observable. No automatic rollback, full Application EH or lifetime closure follows from append."
+  },
+  "source_reuse": {
+    "raw_entry": "register_native_singleton_object_00bd0c30(actual_manager, nullptr /* unused EDX */, current_object)",
+    "abi": "Naked MSVC Win32 fastcall with explicit unusedEDX reproduces native one-stack-word shape and actual stack-slot address.",
+    "invalid_service": "Fixed noinline cdecl adapter calls actual _invalid_parameter_noinfo; returning handler allowed. Current UCRT thread-local/global ownership differs from original encoded109DD64/Watson/privateCRT identity.",
+    "manager_provider": "get_native_singleton_manager_00415350 borrows actual mutable manager cell; captures first current value, or allocatesraw14h, constructsBD0960, publishes/returns result. No default/parallel manager cell.",
+    "manager_constructor": "Current Source BD0960 zeros+4/+8/+C, reserves real slots, creates actual tracked section, publishes+10; preserves+0 and old+10 until observed stores. Native descendants not re-audited.",
+    "canonical_cell": "GameSingletonHost manager_publication_01090aa0_ references game_native_string_process().manager_01090aa0(). Function retains one heap process owner and stable cell/string bindings through process termination.",
+    "concrete_precedent": "B1B730 Source publishes registry, calls second actual manager getter, reloads current registry publication and calls same raw register entry.",
+    "typed_boundary": "ConcreteSingletonLifetimeManager uses callbacks_/slots_ C++ members and a configurable callback domain; its object address is not raw manager storage.",
+    "retirement_boundary": "Current raw shutdown dispatch requires actual recovered profile bindings. No address-labelled D68BC4/D68BC8/CFEAB0 binding found in dispatcher/header; unknown profile/binding throws. Registration does not establish Application retirement."
+  },
+  "native_evidence": {
+    "address": "00BD0C30",
+    "size": 39,
+    "hex": "568bf18b46083946047605e8d35a0200837c240800740c8d442408508bcee86dffffff5ec20400",
+    "sha256": "cd39b3d75a0ef04a9d9debfad5958c9464abb74a44bf4ff92f7e32d7aae5b402",
+    "live_and_pe_and_prior_equal": true,
+    "instructions": [
+      {
+        "address": "00bd0c30",
+        "text": "push esi",
+        "hex": "56",
+        "size": 1
+      },
+      {
+        "address": "00bd0c31",
+        "text": "mov esi, ecx",
+        "hex": "8bf1",
+        "size": 2
+      },
+      {
+        "address": "00bd0c33",
+        "text": "mov eax, dword ptr [esi + 8]",
+        "hex": "8b4608",
+        "size": 3
+      },
+      {
+        "address": "00bd0c36",
+        "text": "cmp dword ptr [esi + 4], eax",
+        "hex": "394604",
+        "size": 3
+      },
+      {
+        "address": "00bd0c39",
+        "text": "jbe 0xbd0c40",
+        "hex": "7605",
+        "size": 2
+      },
+      {
+        "address": "00bd0c3b",
+        "text": "call 0xbf6713",
+        "hex": "e8d35a0200",
+        "size": 5
+      },
+      {
+        "address": "00bd0c40",
+        "text": "cmp dword ptr [esp + 8], 0",
+        "hex": "837c240800",
+        "size": 5
+      },
+      {
+        "address": "00bd0c45",
+        "text": "je 0xbd0c53",
+        "hex": "740c",
+        "size": 2
+      },
+      {
+        "address": "00bd0c47",
+        "text": "lea eax, [esp + 8]",
+        "hex": "8d442408",
+        "size": 4
+      },
+      {
+        "address": "00bd0c4b",
+        "text": "push eax",
+        "hex": "50",
+        "size": 1
+      },
+      {
+        "address": "00bd0c4c",
+        "text": "mov ecx, esi",
+        "hex": "8bce",
+        "size": 2
+      },
+      {
+        "address": "00bd0c4e",
+        "text": "call 0xbd0bc0",
+        "hex": "e86dffffff",
+        "size": 5
+      },
+      {
+        "address": "00bd0c53",
+        "text": "pop esi",
+        "hex": "5e",
+        "size": 1
+      },
+      {
+        "address": "00bd0c54",
+        "text": "ret 4",
+        "hex": "c20400",
+        "size": 3
+      }
+    ],
+    "caller_parent_sha256": "7cf5ea564272d231a6fa4ad3d8f88f1439d3370d31a5310132241cc9fc4eeee2",
+    "caller_slices": [
+      {
+        "address": "00bea83e",
+        "length": 8,
+        "hex": "e80dab82ff8b7010",
+        "sha256": "a83224f7053752c15d0f5443c4e6953157afa775d59fd633acecb6a5f35ec335",
+        "instructions": [
+          {
+            "address": "00bea83e",
+            "text": "call 0x415350",
+            "hex": "e80dab82ff"
+          },
+          {
+            "address": "00bea843",
+            "text": "mov esi, dword ptr [eax + 0x10]",
+            "hex": "8b7010"
+          }
+        ],
+        "origin": "reused prior BEA810 capture; no new parent query"
+      },
+      {
+        "address": "00bea866",
+        "length": 25,
+        "hex": "893d90aee100e8dfaa82ff8b0d90aee100518bc8e8b163feff",
+        "sha256": "e7d1956446330387918fd822300cbe3ffa801030c0eff772f19c975bba3f97d5",
+        "instructions": [
+          {
+            "address": "00bea866",
+            "text": "mov dword ptr [0xe1ae90], edi",
+            "hex": "893d90aee100"
+          },
+          {
+            "address": "00bea86c",
+            "text": "call 0x415350",
+            "hex": "e8dfaa82ff"
+          },
+          {
+            "address": "00bea871",
+            "text": "mov ecx, dword ptr [0xe1ae90]",
+            "hex": "8b0d90aee100"
+          },
+          {
+            "address": "00bea877",
+            "text": "push ecx",
+            "hex": "51"
+          },
+          {
+            "address": "00bea878",
+            "text": "mov ecx, eax",
+            "hex": "8bc8"
+          },
+          {
+            "address": "00bea87a",
+            "text": "call 0xbd0c30",
+            "hex": "e8b163feff"
+          }
+        ],
+        "origin": "reused prior BEA810 capture; no new parent query"
+      },
+      {
+        "address": "00bea87f",
+        "length": 15,
+        "hex": "85f6740b834618ff56ff151022ce00",
+        "sha256": "6107b57b8084320717fddf2a57e39027053156cae46866caf442fc4f628975cd",
+        "instructions": [
+          {
+            "address": "00bea87f",
+            "text": "test esi, esi",
+            "hex": "85f6"
+          },
+          {
+            "address": "00bea881",
+            "text": "je 0xbea88e",
+            "hex": "740b"
+          },
+          {
+            "address": "00bea883",
+            "text": "add dword ptr [esi + 0x18], -1",
+            "hex": "834618ff"
+          },
+          {
+            "address": "00bea887",
+            "text": "push esi",
+            "hex": "56"
+          },
+          {
+            "address": "00bea888",
+            "text": "call dword ptr [0xce2210]",
+            "hex": "ff151022ce00"
+          }
+        ],
+        "origin": "reused prior BEA810 capture; no new parent query"
+      }
+    ]
+  },
+  "source_instruction_schedule": [
+    "push esi",
+    "mov esi, ecx",
+    "mov eax, dword ptr [esi + 8]",
+    "cmp dword ptr [esi + 4], eax",
+    "jbe test_current_object",
+    "call current_crt_invalid_parameter",
+    "cmp dword ptr [esp + 8], 0",
+    "je finished",
+    "lea eax, [esp + 8]",
+    "push eax",
+    "mov ecx, esi",
+    "call append_native_singleton_slot_00bd0bc0",
+    "pop esi",
+    "ret 4"
+  ],
+  "frozen_wrapper_source_identity": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\manifest.json",
+      "bytes": 81427,
+      "sha256": "9eeeb7ed8aa8a1b056a1b7aac34126ddcd736548c4adcc613c1a960edcfd83a3"
+    },
+    "files": [
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "current_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "matches_frozen_build_inputs": true,
+        "frozen_records": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\src\\native_singleton_vector_registration_wrappers.cpp",
+            "bytes": 4283,
+            "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\compiler_inputs\\workspace\\SRC\\NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.CPP",
+            "bytes": 4283,
+            "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "current_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "matches_frozen_build_inputs": true,
+        "frozen_records": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+            "bytes": 2373,
+            "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\compiler_inputs\\workspace\\INCLUDE\\BSP\\NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.HPP",
+            "bytes": 2373,
+            "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+          }
+        ]
+      }
+    ]
+  },
+  "recorded_prior_registration_proof": {
+    "address": "00bd0c30",
+    "symbol": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+    "object": "native_singleton_vector_registration_wrappers",
+    "native_bytes": 39,
+    "emitted_bytes": 39,
+    "instructions": 14,
+    "nonrelocation_bytes": 31,
+    "complete_bytes_match_except_named_call_targets": true,
+    "ret_immediates": [
+      "4"
+    ],
+    "calls": [
+      {
+        "native_site": "00bd0c3b",
+        "native_target": "00bf6713",
+        "relocation": {
+          "offset": 12,
+          "symbol": "?current_crt_invalid_parameter@?A0x8e28de2a@bsp@@YAXXZ",
+          "type": 20
+        },
+        "actual_provider": {
+          "object": "native_singleton_vector_registration_wrappers",
+          "section": 4,
+          "value": 0,
+          "bytes": 6
+        }
+      },
+      {
+        "native_site": "00bd0c4e",
+        "native_target": "00bd0bc0",
+        "relocation": {
+          "offset": 31,
+          "symbol": "?append_native_singleton_slot_00bd0bc0@bsp@@YIXPAX0PBX@Z",
+          "type": 20
+        },
+        "actual_provider": {
+          "object": "native_singleton_vector_registration_wrappers",
+          "section": 3,
+          "value": 0,
+          "bytes": 105
+        }
+      }
+    ],
+    "ghidra_name": "BSP_SingletonLifetime_Register",
+    "source_symbol": "register_native_singleton_object_00bd0c30",
+    "original_abi": "ECX owner; EDX unconsumed; one stack object pointer; RET4, no semantic result.",
+    "source_abi": "Full naked MSVC Win32 raw argument/register schedule with actual source CRT allocation/copy/free/invalid-handler and source C++ exception contracts.",
+    "behavior": "Validate current bounds before current object argument null test. Nonnull passes the address of the actual invocation argument to append. No lock, duplicate check, retain or local exception frame. Registered-owner destruction remains separate.",
+    "native_end_exclusive": "00bd0c57"
+  },
+  "historical_proof_limit": "Prior main archive/full-body proof and frozen inputs are recorded and source identity is refreshed. No new emitted-code, executable, handler-path or runtime test is claimed.",
+  "source_pins": [
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "physical_bytes": 4283,
+      "physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 4283,
+      "normalized_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "matches_base_blob": true,
+      "git_blob_oid": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+      "excerpts": [
+        {
+          "start_line": 10,
+          "end_line": 14,
+          "text": "// Fixed actual SDK service. The no-argument source call has the same five-byte\n// CALL site width as BF6713; its current CRT owns the handler and fatal path.\n__declspec(noinline) void __cdecl current_crt_invalid_parameter() {\n    _invalid_parameter_noinfo();\n}"
+        },
+        {
+          "start_line": 143,
+          "end_line": 163,
+          "text": "__declspec(naked) void __fastcall register_native_singleton_object_00bd0c30(\n    void*, void*, void*) {\n    __asm {\n        push esi\n        mov esi, ecx\n        mov eax, dword ptr [esi + 8]\n        cmp dword ptr [esi + 4], eax\n        jbe test_current_object\n        call current_crt_invalid_parameter\n    test_current_object:\n        cmp dword ptr [esp + 8], 0\n        je finished\n        lea eax, [esp + 8]\n        push eax\n        mov ecx, esi\n        call append_native_singleton_slot_00bd0bc0\n    finished:\n        pop esi\n        ret 4\n    }\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "physical_bytes": 2373,
+      "physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 2373,
+      "normalized_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "matches_base_blob": true,
+      "git_blob_oid": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+      "excerpts": [
+        {
+          "start_line": 19,
+          "end_line": 42,
+          "text": "// Complete BD0BC0[105]. ECX actual container, EDX unconsumed, one stack\n// value-slot pointer, RET4. The capacity path loads the current DWORD value\n// into captured end, then publishes that end+4. Growth passes captured end\n// and an actual eight-byte stack result buffer to the checked insertion.\nvoid __fastcall append_native_singleton_slot_00bd0bc0(\n    void* owner, void* unused_edx, const void* value_slot);\n\n// Complete BD0C30[39]. ECX actual manager/container, EDX unconsumed, one stack\n// object pointer, RET4. Validate bounds before testing the current argument\n// for null. A nonnull argument is passed by its actual stack-slot address.\n// No lock, duplicate check, retain operation or exception frame is installed.\nvoid __fastcall register_native_singleton_object_00bd0c30(\n    void* owner, void* unused_edx, void* object);\n\n// All entries preserve raw32 arithmetic, actual argument/result slots and the\n// captured/current read schedule. Native BF6713 calls use a fixed real SDK\n// _invalid_parameter_noinfo shim and its current source-CRT handler domain.\n// It can return; no noop/fatal/throw callback is substituted. Original encoded\n// global109DD64, Watson internals and service register/exception identities\n// remain explicit boundaries. Source BD0700 and its allocation/exception\n// providers are required; these wrappers do not create another owner domain.\n// Append/register have no semantic EAX result. No native lock or cleanup frame\n// exists in these three bodies, and none is invented in the source entries.\n} // namespace bsp"
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "physical_bytes": 4127,
+      "physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 4127,
+      "normalized_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "matches_base_blob": true,
+      "git_blob_oid": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8",
+      "excerpts": [
+        {
+          "start_line": 35,
+          "end_line": 56,
+          "text": "__declspec(noinline) void* get_native_singleton_manager_00415350(\n    void* volatile& actual_manager_publication_01090aa0) {\n    void* const initial = actual_manager_publication_01090aa0;\n    if (initial) {\n        return initial;\n    }\n\n    // Allocation occurs before native state0 is armed. The saved allocation\n    // remains the cleanup target even if construction changes publication.\n    void* const allocation = singleton_lifetime_allocate({\n        SingletonAllocationKind::manager, 0x14, 0x14});\n    try {\n        void* const result = allocation\n            ? construct_native_singleton_manager_00bd0960(allocation, nullptr)\n            : nullptr;\n        actual_manager_publication_01090aa0 = result;\n        return result;\n    } catch (...) {\n        singleton_lifetime_free(allocation);\n        throw;\n    }\n}"
+        },
+        {
+          "start_line": 95,
+          "end_line": 101,
+          "text": "            actual_registry_publication_00f8d41c = allocation;\n            void* const current_manager = get_native_singleton_manager_00415350(\n                actual_manager_publication_01090aa0);\n            void* const current_registry = actual_registry_publication_00f8d41c;\n            register_native_singleton_object_00bd0c30(\n                current_manager, nullptr, current_registry);\n        }"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "physical_bytes": 2293,
+      "physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 2293,
+      "normalized_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "matches_base_blob": true,
+      "git_blob_oid": "efb55fd128088fa594c8f4c71a26017b9023c5ce",
+      "excerpts": [
+        {
+          "start_line": 9,
+          "end_line": 26,
+          "text": "// Complete source behavior of 00415350[105]. Native entry consumes no input,\n// returns EAX, plain RET. This source interface adds a stable reference to the\n// actual mutable 01090AA0 publication cell. Capture its first read; if absent,\n// allocate raw14h, construct through BD0960, publish and return the result.\n// There is no publication lock or final reload. Constructor failure frees the\n// captured allocation after the constructor's own cleanup, then rethrows.\nvoid* get_native_singleton_manager_00415350(\n    void* volatile& actual_manager_publication_01090aa0);\n\n// Complete source behavior of 00B1B730[200]. Native entry consumes no input,\n// returns EAX, plain RET. Borrow distinct actual native publication cells;\n// these bindings remain stable while their volatile values may change.\n// Capture the first manager's raw section+10, enter/increment once, recheck\n// the registry, allocate raw10h and call B1AA70 before storing D5E59C. Publish,\n// look up the manager again, then reread the registry and register through\n// BD0C30. Keep the original captured section through release; the slow return\n// rereads the registry after LeaveCriticalSection. The fast return is captured.\n// Constructor failure frees its raw allocation. Registration failure retains"
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "physical_bytes": 3731,
+      "physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 3731,
+      "normalized_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "matches_base_blob": true,
+      "git_blob_oid": "e1e3c2b5e4c1eca61f6a3033a649eab2b85e0ff6",
+      "excerpts": [
+        {
+          "start_line": 112,
+          "end_line": 127,
+          "text": "void* __fastcall construct_native_singleton_manager_00bd0960(\n    void* owner, void*) {\n    store_word(owner, 4, 0);\n    store_word(owner, 8, 0);\n    store_word(owner, 0x0c, 0);\n    try {\n        reserve_native_singleton_slots_00bd0600(owner, nullptr, 256);\n        auto* const section = create_native_tracked_critical_section_00bd1860();\n        store_word(owner, 0x10, reinterpret_cast<std::uint32_t>(section));\n    } catch (...) {\n        // Native state0 reloads the captured owner, clears slots, propagates.\n        clear_native_singleton_storage_00bd0220(owner, nullptr);\n        throw;\n    }\n    return owner;\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "physical_bytes": 1845,
+      "physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 1845,
+      "normalized_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "matches_base_blob": true,
+      "git_blob_oid": "658de06b21b30d7733ba2c4836371a05c44c377a",
+      "excerpts": [
+        {
+          "start_line": 15,
+          "end_line": 33,
+          "text": "// Full BD0960[80]: ECX actual raw 14h manager, EDX unused, EAX same owner,\n// plain RET. Zero +4/+8/+0C, reserve256, create actual raw tracked section,\n// then publish +10. Preserve +0 and old +10 until the final publication.\n// Native state0 -> CC5490 -> BD0220 is expressed by C++ catch/cleanup/rethrow.\n// Synchronous source C++ failures from reserve/section creation clear storage;\n// native FH3/SEH metadata, arbitrary unwind-spill aliases and hardware faults\n// are not this ABI. The original section allocator gains no rollback.\nvoid* __fastcall construct_native_singleton_manager_00bd0960(\n    void* owner, void* unused_edx);\n\n// MSVC Win32 only. Fixed actual source CRT allocation/free/memmove_s and\n// _invalid_parameter_noinfo services are used, with their current ownership.\n// A returning installed invalid handler is allowed to mutate raw owner state;\n// it must obey the actual source CRT calling/exception contract. UCRT chooses\n// thread-local then global handlers, unlike original global-only 109DD64.\n// Original BF6713/BF66EF/encoded-handler/Watson internals and RTTI/throw identity\n// are not reconstructed. Raw storage must belong to these concrete providers;\n// no C++ typed-manager projection or original binary replacement is implied.\n} // namespace bsp"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "physical_bytes": 2017,
+      "physical_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 2017,
+      "normalized_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "matches_base_blob": true,
+      "git_blob_oid": "84af7f1cd0a9a64323bcc3c1c4fbab783f941299",
+      "excerpts": [
+        {
+          "start_line": 6,
+          "end_line": 16,
+          "text": "// Original loader-zero publications outlive the application and every CRT\n// callback, including a late 00419CC0 that recreates the manager/string pool.\n// This owns cells and source bindings only; getters create the native owners.\nclass GameNativeStringProcess final {\npublic:\n    GameNativeStringProcess(const GameNativeStringProcess&) = delete;\n    GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;\n    void* volatile& manager_01090aa0() noexcept { return manager_; }\n    NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }\n    volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }\n    NativeStringRawPoolContext& raw_context() noexcept { return raw_; }"
+        },
+        {
+          "start_line": 23,
+          "end_line": 38,
+          "text": "private:\n    friend GameNativeStringProcess& game_native_string_process();\n    GameNativeStringProcess() noexcept = default;\n    void* volatile manager_{};\n    NativeStringPoolStorage* volatile pool_{};\n    volatile std::uint32_t disabled_{};\n    NativeStringRawPoolContext raw_{pool_, disabled_, manager_};\n    ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};\n    // Append after every established publication/context/storage field.\n    const char property_empty_00e177e4_{};\n    const char query_empty_00e17654_{};\n};\n\n// Intentionally retained through process termination. No C++ exit destructor\n// may invalidate the cells/bindings before another native CRT callback.\nGameNativeStringProcess& game_native_string_process();"
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "physical_bytes": 471,
+      "physical_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 471,
+      "normalized_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "matches_base_blob": true,
+      "git_blob_oid": "eabbb65685dc6f301fed0b7bba7e52d2c9c188da",
+      "excerpts": [
+        {
+          "start_line": 12,
+          "end_line": 16,
+          "text": "GameNativeStringProcess& game_native_string_process() {\n    static auto* const process = new GameNativeStringProcess;\n    return *process;\n}\n} // namespace bsp::game"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "physical_bytes": 7474,
+      "physical_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 7474,
+      "normalized_lf_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+      "matches_base_blob": true,
+      "git_blob_oid": "2fa69f0a256c502018731554aa36fa449c63020f",
+      "excerpts": [
+        {
+          "start_line": 75,
+          "end_line": 84,
+          "text": "    void* volatile& input_settings_publication_00e198e8() noexcept {\n        return input_settings_publication_00e198e8_;\n    }\n    void* volatile& manager_publication_01090aa0() noexcept {\n        return manager_publication_01090aa0_;\n    }\n    // Lazy diagnostic access and physical Lock contexts borrow this one cell\n    // with sound_lifetime(). Its deletion binding outlives the raw drain.\n    NativeDiagnosticSinkStorage* volatile& diagnostic_publication_0109cf14() noexcept {\n        return diagnostic_publication_0109cf14_;"
+        }
+      ]
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "physical_bytes": 6608,
+      "physical_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 6608,
+      "normalized_lf_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+      "matches_base_blob": true,
+      "git_blob_oid": "04fa246ee6a08551a7b70cf62ace9db7b91ec7ec",
+      "excerpts": [
+        {
+          "start_line": 17,
+          "end_line": 25,
+          "text": "GameSingletonHost::GameSingletonHost(GameHostLog& log)\n    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),\n      input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),\n      deletion_bindings_{&effect_publication_00f87664_, nullptr},\n      observers_(std::make_unique<GameObserverRuntime>(*this, log)) {\n    // Admit factory+4 before startup can register that exact subobject.\n    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;\n    deletion_bindings_.resource_support = &resource_support_context_;\n    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;"
+        },
+        {
+          "start_line": 116,
+          "end_line": 128,
+          "text": "void GameSingletonHost::shutdown() {\n    void* const manager = manager_publication_01090aa0_;\n    if (manager == nullptr) {\n        retire_vfs_after_drain();\n        return;\n    }\n    const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);\n    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);\n    retire_vfs_after_drain();\n    observers_->record_after_singleton_drain();\n    singleton_lifetime_free(manager);\n    manager_publication_01090aa0_ = nullptr;\n    log_.notef(\"singleton lifetime drained: registered_slots=%u effect_publication=%s \""
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 4372,
+      "normalized_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches_base_blob": true,
+      "git_blob_oid": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "excerpts": [
+        {
+          "start_line": 22,
+          "end_line": 28,
+          "text": "struct SingletonLifetimeCallbacks {\n    void* context;\n    // The actual registered pointer is the owner. Dispatch its deleting\n    // destructor, including its unregister/free behavior, with native flag 1.\n    void (*destroy_registered)(void* context, void* owner, std::uint32_t flags) noexcept;\n    // 00BF6713 can return. Validation sites continue after this call returns.\n    void (*invalid_parameter)(void* context);"
+        },
+        {
+          "start_line": 68,
+          "end_line": 83,
+          "text": "    void destroy_00bd0400();\n    void destroy_owned_section_0041cc80() noexcept;\n    void invalid_parameter();\n    void insert_pointer_at_checked_00bd08d0(void** position, void* const* value);\n\n    SingletonLifetimeCallbacks callbacks_;\n    SingletonPointerSlots slots_{};\n    struct OwnedCriticalSection;\n    OwnedCriticalSection* owned_section_ = nullptr;\n    SystemSingletonCriticalSection* section_10_ = nullptr;\n    SystemSingletonLifetimeOwner owner_{this, section_10_};\n};\n\n// One instance is one native global 01090AA0 lifetime domain. Startup and all\n// singleton adapters must share it. The native getter has no publication lock.\nclass SingletonLifetimeDomain final {"
+        }
+      ]
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 13257,
+      "normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches_base_blob": true,
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "excerpts": [
+        {
+          "start_line": 119,
+          "end_line": 137,
+          "text": "void ConcreteSingletonLifetimeManager::invalid_parameter() {\n    callbacks_.invalid_parameter(callbacks_.context);\n}\nstd::uint32_t ConcreteSingletonLifetimeManager::count_00bcf910() const noexcept {\n    return slots_.begin ? distance(slots_.begin, slots_.end) : 0;\n}\nstd::uint32_t ConcreteSingletonLifetimeManager::capacity() const noexcept {\n    return slots_.begin ? distance(slots_.begin, slots_.capacity_end) : 0;\n}\n\nvoid ConcreteSingletonLifetimeManager::register_object(void* object) {\n    if (address(slots_.end) < address(slots_.begin)) {\n        invalid_parameter();\n    }\n    if (object != nullptr) {\n        append_pointer_00bd0bc0(&object);\n    }\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "physical_bytes": 25062,
+      "physical_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 25062,
+      "normalized_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+      "matches_base_blob": true,
+      "git_blob_oid": "d1e9bb6f5e839b66741571814d06aec9d63117a3",
+      "excerpts": [
+        {
+          "start_line": 525,
+          "end_line": 528,
+          "text": "        return;\n    }\n    throw std::logic_error(\"raw singleton deletion requires a recovered profile and its actual bindings\");\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "physical_bytes": 17746,
+      "physical_sha256": "a1b7233f61544b51628af292801286e2cc9296a232fc71d923d170e28a2c1638",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 17746,
+      "normalized_lf_sha256": "a1b7233f61544b51628af292801286e2cc9296a232fc71d923d170e28a2c1638",
+      "matches_base_blob": true,
+      "git_blob_oid": "cb6a755140c8e72de9d35d5bbbd9f0e1615ef1bd"
+    }
+  ],
+  "target_guard_pins": [
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 455,
+      "normalized_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 14411,
+      "normalized_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches_base_blob": true,
+      "git_blob_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+      "excerpts": [
+        {
+          "start_line": 101,
+          "end_line": 110,
+          "text": "    def verify(self):\n        project = self.get('list_project_files', folder='/')\n        info = self.get('get_current_program_info')\n        expected = self.config\n        if project['project_name'] != expected['project']:\n            raise RuntimeError(f\"Wrong Ghidra project: {project['project_name']}\")\n        for key, actual in [('program_path', info['path']), ('language', info['language']), ('image_base', info['image_base'])]:\n            if actual != expected[key]:\n                raise RuntimeError(f'Wrong target {key}: {actual}')\n        return project, info"
+        }
+      ]
+    }
+  ],
+  "prior_report_pins": [
+    {
+      "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+      "physical_bytes": 92258,
+      "physical_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 92258,
+      "normalized_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+      "matches_base_blob": true,
+      "git_blob_oid": "564df6292574b373cbe4d07f35042d20041f6276"
+    },
+    {
+      "path": "reports/cc12_global_config_lifetime_owner_escape.json",
+      "physical_bytes": 103128,
+      "physical_sha256": "45ca95868bc77804d9c0bbddbe0bd722c2e44ceecf345d694d9368c7b6fc497d",
+      "physical_crlf_count": 2865,
+      "normalized_lf_bytes": 100263,
+      "normalized_lf_sha256": "21a2d8ab3341face61f2f74ec58783c0057e1dd3f828d02e31f0f6fcb380f1b3",
+      "matches_base_blob": true,
+      "git_blob_oid": "16f358f2fd7ed6b4fbbada77d4341ed34d0d5ee5"
+    },
+    {
+      "path": "reports/native_singleton_vector_registration_wrappers_audit.json",
+      "physical_bytes": 16295,
+      "physical_sha256": "5e96a52f22dab73796c2b7e25e108aba772bfa91171e30dbe2b1a02cb69cd3d1",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 16295,
+      "normalized_lf_sha256": "5e96a52f22dab73796c2b7e25e108aba772bfa91171e30dbe2b1a02cb69cd3d1",
+      "matches_base_blob": true,
+      "git_blob_oid": "bf4a45a49595b5f99dfe7748e71f393739ce71e7"
+    }
+  ],
+  "next_bounded_check": {
+    "address": "00BEA990",
+    "kind": "read-only ledger/size first; inspect only if bounded at roughly300B or less",
+    "evidence": {
+      "address": "007379e7",
+      "size": 5,
+      "hex": "e8a42f4b00",
+      "text": "call 0xbea990"
+    },
+    "caller": "Actual Application direct destructor7379A0 retained by c7ee producer audit",
+    "current_source_address_search": "rg -n -i 00bea990|bea990 src include --glob*.cpp --glob*.hpp returned no matches",
+    "reason": "Direct registered-Application retirement dependency, not another registration wrapper or unused name cell.",
+    "not_established": [
+      "callee body size",
+      "callee behavior",
+      "Source readiness",
+      "child closure"
+    ]
+  },
+  "static_checks": [
+    {
+      "check": "bounded complete body",
+      "passed": true
+    },
+    {
+      "check": "complete body ret4",
+      "passed": true
+    },
+    {
+      "check": "current Source exact14 instruction schedule",
+      "passed": true
+    },
+    {
+      "check": "live PE and prior native identity",
+      "passed": true
+    },
+    {
+      "check": "wrapper and header match frozen build inputs",
+      "passed": true
+    },
+    {
+      "check": "only48 parent caller bytes reused",
+      "passed": true
+    },
+    {
+      "check": "Application retirement next-call anchor",
+      "passed": true
+    },
+    {
+      "check": "no Application profile labels in current dispatcher/header",
+      "passed": true
+    },
+    {
+      "check": "all current Source pins match base",
+      "passed": true
+    }
+  ],
+  "verification": {
+    "new_native_body_bytes": 39,
+    "new_native_instructions": 14,
+    "reused_caller_bytes": 48,
+    "reused_caller_instructions": 13,
+    "new_parent_queries": 0,
+    "new_descendant_queries": 0,
+    "source_files_pinned": 14,
+    "source_excerpts": 18,
+    "target_guard_pins": 2,
+    "prior_report_pins": 3,
+    "current_wrapper_files_match_frozen_inputs": 2,
+    "frozen_source_and_compiler_copies_verified": 4,
+    "frozen_manifest_hash_verified": true,
+    "static_assertions_passed": 9,
+    "native_execution": false,
+    "builds_tests_probes": 0,
+    "Source_changes": 0,
+    "Original_credit": 0,
+    "GPR_or_ledger_mutations": 0,
+    "git_diff_cached_check_passed": true,
+    "exact_two_owned_staged_paths_verified": true,
+    "all_source_target_and_prior_pins_revalidated": true,
+    "native_body_and_reused_caller_slices_replayed_against_PE": true
+  }
+}
