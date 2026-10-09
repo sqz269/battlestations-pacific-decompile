@@ -1,0 +1,33 @@
+# CC12 raw string duplicate packet closure audit
+
+The current reopened state is justified. `cc12_raw_native_string_duplicate_00438e40` already has unchanged Source, but its standalone complete-helper fixture admission remains **done=false, credit0**. A ready listing is a remaining validation obligation. The older passed integration history does not establish the effective current admission. This audit adds **0 Source and 0 Native credit**.
+
+Audited on 2026-10-08 at source revision `a6ce44464a6894c9ec43d37cd90968b3ce1f7c6f` in the dedicated `cc12_raw_duplicate_packet_audit` worktree. The [report](../reports/cc12_raw_string_duplicate_packet_closure_audit.json) records full dated evidence and limits.
+
+| Evidence stage | Result |
+| --- | --- |
+| Existing Source | Body 1554 B/header 933 B/canonical 13257 B retain fixture hashes; exact raw ECX/plain RET0 interface already implemented |
+| Original/static identity | Installed whole 57-byte SHA `28510a4c8a423997dfca7d8e257c1b250a7bb9e79cce177fc9c501e7b64735c4`; COFF has exactly two REL32 operands at 34/44; other 49 bytes match Source and recorded bound Original |
+| Immutable fixture | Exact 95 artifacts plus seal, 96 files rehashed; seal `7a759f86390ca916952a15c7c3bb2508204472e6c2bfb346c68f453f4d85c852`; all 13113 prior pins preserved |
+| Complete helper gate | **Missing**: 28 physical TU bodies/30 logical symbols/233 relocation operands, but 10 packed spans gate only 7 TU bodies |
+| Retained runtime | Five observations, two null and three exact `93fe716da4c28000` copies; recorded three frees and four provider records remain consistent; no fresh runtime claim |
+| Combined build | Both retained Win32 logs hash-match and record 3/3 checks; current combined build was not run by this audit |
+| Original ABI/game | Private providers/EH, owner/class/destructor/vtable, game ABI/startup/gameplay remain unadmitted |
+
+The fresh independent parser reads raw COFF, map, PE and the entire packed gate without importing old recipes. It confirms the [published coverage audit](CC12_NATIVE_STRING_DUPLICATE_PUBLISHED_CODE_GATE_AUDIT.md): the gate omits 21 retained TU bodies (15 probe and six cold canonical), the actual 43-byte stack helper, and 11 six-byte import thunks (nine normal and two cold). The missing probe code includes the whole 3679-byte/1004-instruction `main` and verifier/observer/reporting support. Gate byte equality is established for all ten spans, but those spans do not cover the surrounding helper graph. Cold sized-delete and GS-failure frontiers remain separately unadmitted.
+
+All 95 sealed artifacts, 13113 historical pins, 184 consumed headers and seven consumed libraries still hash-match. The peer audit's 66 artifacts plus seal and the later separate `t2p5` 127 artifacts plus seal / `ref48p2` 119 plus seal also match. The hash pass covered 13750 distinct physical files. Only two old explicit context pins drift: `CMakeLists.txt` and `cmake/startup.cmake`. Their current hashes are dated in the report. Those files were ordinary mutable context, so this drift does not corrupt the sealed fixture or establish a current combined-build result.
+
+The effective fields in the packet and tracked report already record `primary_integration.passed=false`, `Source_admission_credit=0` and fresh complete-helper validation pending. Initial worker wording, readiness proposals and the passed history retain their capture-time meaning. The two existing function ledger records at 00438E40 remain distinct descriptions of the legacy CDECL source and the physical raw source; this audit creates no third record or extra function credit. The coverage hold's saved-analysis publication is recorded complete; it was not queried live here.
+
+The readiness graph names incomplete Original boundaries even though the packet's scheduling dependency array is empty: the 5-byte 00BF55BE jump does not close 00BF681B; original 00BF7680 private copy is incomplete; historical 00BF9DC8 release is unqueried; and the 008EF1B0 pointer-storage witness does not establish owner lifetime. These are not prerequisites for the explicitly qualified current-provider fixture. The current real providers and complete probe/verifier/observer graph are the concrete remaining gate obligations. Later independently gated Type 2/reference domains are preserved and receive no blanket propagation from this standalone hold.
+
+Root should retain the reopened state and assign a bounded **Astra complementary complete-helper fixture**. Keep the existing source identities; use a new unique local family with fresh three-TU strict MSVC Win32 compilation, exact COFF/PE/map extent and relocation review, all normal helpers/thunks and selected cold support in preentry/post code gates, and explicit cold-frontier limits. Reuse the minimal contract of null plus one guarded high-bit NUL string: four raw Original/Source routes and one ordinary Source call, five entries/three current-owned copies/three single frees. Attest the actual future-process IATs/exports/modules/physical files before zero target entries, then bookend code/providers/inputs/prior immutable artifacts. Preserve failed attempts and seal the new family; do not replay accepted old stages.
+
+After whole fresh evidence passes, Root can review admission, update effective metadata and locked saved-analysis publication, integrate, and run relevant combined Win32/existing checks. New raw-register ABI or generated helper control-flow recovery requires Astra. No completion-state correction or Source reimplementation is justified by this audit.
+
+This audit compiled/linked/executed nothing, loaded or queried no provider, performed no Ghidra batch, and changed only its two new tracked outputs plus ignored local evidence. It establishes retained artifact identity and static coverage accounting. It does not establish original private CRT/FH3/EH, forced failure/reentry, naked-frame unwind, blanket FP/MXCSR/segment/DF preservation, class ownership, startup or gameplay.
+
+## Primary read-only review
+
+Root replayed the read-only artifact and coverage readers into a separate output directory:13,750 physical files were rehashed and the7-of28 gate coverage hold reproduced. Only the two already identified mutable CMake context pins differ. The subsequently selected four-TU design supersedes the earlier three-TU fixture recommendation; generation, compilation and execution are still unapproved. No Source reimplementation or additional Original credit follows.

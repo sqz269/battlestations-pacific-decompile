@@ -58,3 +58,7 @@ The scoped audit of commit `add42746b7ec0b52862756d42866d5eb309c1217` and all fi
 Evidence retains15 bounded Raw bodies (1,033 bytes /335 instructions), six complete data blocks, accepted whole-caller authority, whole current Source files, eight complete physical objects and their eight unique historical core members. Existing objects are historical artifacts, not a new compilation or fixture. Root/worker sentinel Source compares equal after newline normalization; LF/CRLF differences are not semantic edits.
 
 Archive: `local/cc12_raw_world_base_constructor_readiness_evidence.zip`, 35,420,204 bytes, SHA-256 `ae9d6e3a35c7d4ca810a4b489f92118400f28e0ad50a73ff1d34d46c91777389`. Manifest SHA-256 `ee673e4b79e8d00501571cf62dd9c412201b1448af1c2db8587c3df235eaa439`. All 216 payload hashes and 217 ZIP entries/CRCs passed. Tracked summaries remain outside the archive to avoid a checksum cycle. The capture, physical-artifact and verification scripts passed on their first invocations. No Source, CMake, ledger, Ghidra-program mutation, build, test, probe or game execution occurred.
+
+## Primary read-only review
+
+Root independently rehashed all216 retained payloads and217 ZIP entries and decoded all15 complete Native bodies (1,033 bytes/335 instructions) from the current installed PE.119 current physical pins match exactly; one mutable sentinel audit report only gains its already accepted Root status/primary review. Its retained capture is unchanged. Constructor Source and full World ownership remain unready.
