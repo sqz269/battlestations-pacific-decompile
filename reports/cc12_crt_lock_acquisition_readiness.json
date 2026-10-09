@@ -1,0 +1,549 @@
+{
+  "schema": "bsp.cc12.crt_lock_acquisition_readiness.v1",
+  "created_utc": "2026-10-09T23:15:16.439481+00:00",
+  "status": "complete49B20op_static_gate_Source_held_on_canonical_initializer_and_failure_child",
+  "scope": {
+    "packet": "cc12_crt_lock_acquisition_readiness",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi",
+    "branch": "agent/cc12_unit_numbering_virtual_query_abi",
+    "base_commit": "4abacea00284480297303147ba6916a4b9ba8ae7",
+    "owned_native_addresses": [
+      "00C11C21"
+    ],
+    "owned_files": [
+      "docs/CC12_CRT_LOCK_ACQUISITION_READINESS.md",
+      "reports/cc12_crt_lock_acquisition_readiness.json"
+    ],
+    "other_Native_bodies_or_data_opened": 0,
+    "GPR_mutations": 0,
+    "Source_changes": 0,
+    "CMake_changes": 0,
+    "ledger_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0
+  },
+  "program": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "Native_gate": {
+    "address": "00C11C21",
+    "library_name": "__lock",
+    "end": "00C11C51",
+    "bytes": 49,
+    "instructions": 20,
+    "raw_hex": "558bec8b4508568d34c57864e100833e00751350e824ffffff85c05975086a11e8c39dfeff59ff36ff151822ce005e5dc3",
+    "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+    "PE_equals_live": true,
+    "live_exact_instruction_starts_match": true,
+    "fresh_saved_listing_matches": true,
+    "historical_shared_export_exists": false,
+    "saved_listing_qualification": "Fresh local copy of verified live listing; no pre-existing shared historical export existed and no new shared export/GPR mutation was made.",
+    "ops": [
+      {
+        "address": "00C11C21",
+        "size": 1,
+        "bytes": "55",
+        "asm": "push ebp",
+        "live": "PUSH EBP"
+      },
+      {
+        "address": "00C11C22",
+        "size": 2,
+        "bytes": "8bec",
+        "asm": "mov ebp, esp",
+        "live": "MOV EBP,ESP"
+      },
+      {
+        "address": "00C11C24",
+        "size": 3,
+        "bytes": "8b4508",
+        "asm": "mov eax, dword ptr [ebp + 8]",
+        "live": "MOV EAX,dword ptr [EBP + 0x8]"
+      },
+      {
+        "address": "00C11C27",
+        "size": 1,
+        "bytes": "56",
+        "asm": "push esi",
+        "live": "PUSH ESI"
+      },
+      {
+        "address": "00C11C28",
+        "size": 7,
+        "bytes": "8d34c57864e100",
+        "asm": "lea esi, [eax*8 + 0xe16478]",
+        "live": "LEA ESI,[EAX*0x8 + 0xe16478]"
+      },
+      {
+        "address": "00C11C2F",
+        "size": 3,
+        "bytes": "833e00",
+        "asm": "cmp dword ptr [esi], 0",
+        "live": "CMP dword ptr [ESI],0x0"
+      },
+      {
+        "address": "00C11C32",
+        "size": 2,
+        "bytes": "7513",
+        "asm": "jne 0xc11c47",
+        "live": "JNZ 0x00c11c47"
+      },
+      {
+        "address": "00C11C34",
+        "size": 1,
+        "bytes": "50",
+        "asm": "push eax",
+        "live": "PUSH EAX"
+      },
+      {
+        "address": "00C11C35",
+        "size": 5,
+        "bytes": "e824ffffff",
+        "asm": "call 0xc11b5e",
+        "live": "CALL 0x00c11b5e"
+      },
+      {
+        "address": "00C11C3A",
+        "size": 2,
+        "bytes": "85c0",
+        "asm": "test eax, eax",
+        "live": "TEST EAX,EAX"
+      },
+      {
+        "address": "00C11C3C",
+        "size": 1,
+        "bytes": "59",
+        "asm": "pop ecx",
+        "live": "POP ECX"
+      },
+      {
+        "address": "00C11C3D",
+        "size": 2,
+        "bytes": "7508",
+        "asm": "jne 0xc11c47",
+        "live": "JNZ 0x00c11c47"
+      },
+      {
+        "address": "00C11C3F",
+        "size": 2,
+        "bytes": "6a11",
+        "asm": "push 0x11",
+        "live": "PUSH 0x11"
+      },
+      {
+        "address": "00C11C41",
+        "size": 5,
+        "bytes": "e8c39dfeff",
+        "asm": "call 0xbfba09",
+        "live": "CALL 0x00bfba09"
+      },
+      {
+        "address": "00C11C46",
+        "size": 1,
+        "bytes": "59",
+        "asm": "pop ecx",
+        "live": "POP ECX"
+      },
+      {
+        "address": "00C11C47",
+        "size": 2,
+        "bytes": "ff36",
+        "asm": "push dword ptr [esi]",
+        "live": "PUSH dword ptr [ESI]"
+      },
+      {
+        "address": "00C11C49",
+        "size": 6,
+        "bytes": "ff151822ce00",
+        "asm": "call dword ptr [0xce2218]",
+        "live": "CALL dword ptr [0x00ce2218]"
+      },
+      {
+        "address": "00C11C4F",
+        "size": 1,
+        "bytes": "5e",
+        "asm": "pop esi",
+        "live": "POP ESI"
+      },
+      {
+        "address": "00C11C50",
+        "size": 1,
+        "bytes": "5d",
+        "asm": "pop ebp",
+        "live": "POP EBP"
+      },
+      {
+        "address": "00C11C51",
+        "size": 1,
+        "bytes": "c3",
+        "asm": "ret ",
+        "live": "RET"
+      }
+    ]
+  },
+  "library_identity": {
+    "name": "__lock",
+    "live_signature": "void __cdecl __lock(int _File)",
+    "existing_comment": "Library Function - Single Match; Library: Visual Studio 2005 Release",
+    "policy": "Preserve correct library name; _File is existing metadata spelling, not a claim that the numeric index is a game file identifier."
+  },
+  "physical_control_flow": {
+    "normal_return": "00C11C51 RET",
+    "branches": [
+      {
+        "site": "00C11C32",
+        "condition": "Initial current descriptor DWORD !=0",
+        "target": "00C11C47"
+      },
+      {
+        "site": "00C11C3D",
+        "condition": "Initializer EAX !=0, using TEST flags across POP ECX",
+        "target": "00C11C47"
+      }
+    ],
+    "calls": [
+      {
+        "site": "00C11C35",
+        "target": "00C11B5E",
+        "kind": "direct"
+      },
+      {
+        "site": "00C11C41",
+        "target": "00BFBA09",
+        "kind": "direct"
+      },
+      {
+        "site": "00C11C49",
+        "target": "DWORD[00CE2218]",
+        "kind": "indirect"
+      }
+    ],
+    "physical_call_count": 3,
+    "direct_call_count": 2,
+    "own_loops": 0,
+    "gaps": 0,
+    "metadata_qualification": "Live signature lists20 instructions and2 direct calls. Exact no-return/flow-override properties were not exposed by the typed flow check and are not asserted. Lookup also lists BF66EF/BFFB8B, but neither is a physical direct target in this body; their relationship is not inferred."
+  },
+  "original_ABI": {
+    "entry": "One raw32-bit index word at entry ESP+4, library cdecl int parameter; no register inputs",
+    "prolog": "PUSH EBP; MOV EBP,ESP; MOV EAX,[EBP+8]; PUSH ESI; LEA ESI,[EAX*8+00E16478]",
+    "index_semantics": "Captured once before any child; x86 address arithmetic wraps modulo2^32, with no index-range or sign guard. The descriptor null check is separate. No table-size or valid index range inferred.",
+    "nonvolatiles": "ESI and EBP saved/restored by own body. EBX/EDI untouched by own body; genuine children/import must honor their preservation contracts.",
+    "return": "Plain RET, caller removes one4-byte index. No meaningful EAX return. EAX/ECX/EDX and arithmetic flags retain final import residuals after flag-preserving POP ESI/POP EBP/RET.",
+    "callee_cleanup": "Initializer and failure child are caller-cleaned one-word calls; TEST EAX occurs before initializer POP ECX. Final API route expects callee cleanup of one pointer word before local register pops.",
+    "own_EH": "No own SEH frame, exception translation, cookie, catch, cleanup handler or failure rollback in these49bytes."
+  },
+  "ordered_behavior": [
+    "Capture raw index once, compute descriptor address once and retain it in ESI across children.",
+    "Compare current DWORD[ESI] with0. Nonzero branches to acquisition without initialization.",
+    "For zero, PUSH captured index and CALL00C11B5E. TEST returned EAX immediately, POP ECX to remove argument without changing those flags, then JNZ acquisition.",
+    "If initializer returned0, PUSH0x11 and CALL existing-name __amsg_exit at00BFBA09. The inspected parent contains POP ECX and acquisition continuation if it returns normally; no child no-return claim is made.",
+    "At the join, PUSH CURRENT DWORD[ESI] and CALL DWORD[00CE2218], labelled EnterCriticalSection. This is a second descriptor load even on the initial-nonzero route and must not reuse the compared pointer.",
+    "POP ESI; POP EBP; RET. No new status value or failure-result conversion."
+  ],
+  "path_consequences": [
+    "Initial descriptor nonzero skips both direct children but still reloads the descriptor for the API.",
+    "Initializer nonzero suppresses failure child even if current descriptor is still0; parent performs no second non-null validation.",
+    "Initializer zero invokes failure child even if it published a nonzero descriptor; parent tests the returned EAX, not reread pointer, for this decision.",
+    "If the failure child returns, acquisition uses current descriptor unconditionally, even if0. Its actual return/termination behavior remains unresolved.",
+    "Mutating the original index argument after entry cannot select a different descriptor: ESI already captured the address. Mutating the descriptor through child/API/shared state can affect the later read.",
+    "No own writes to either descriptor DWORD, no direct replacement lock or allocator use, and no retry/spin loop. No extra callback dispatch is visible beyond the two direct children and one IAT call. Any initializer/failure callbacks, lazy publication race policy and child partial side effects remain unopened."
+  ],
+  "named_but_incomplete_dependencies": [
+    {
+      "address": "00C11B5E",
+      "kind": "direct child",
+      "site": "00C11C35",
+      "name": "LIBCRT_unmatched_00c11b5e; indexed lazy-initialization role is a caller-derived hypothesis",
+      "caller_contract": "Push original captured raw index; caller pops4 with POP ECX after TEST EAX. Zero result calls failure child; any nonzero skips it. Child must preserve ESI captured descriptor address. Parent reloads current [ESI] afterward.",
+      "Source_availability": "No matching implementation/declaration found by address/name search in current src/include.",
+      "not_established": "Complete body/ABI, synchronization, allocation domain, descriptor publication, callback resolution, initialization lifetime and failure details; unopened."
+    },
+    {
+      "address": "00BFBA09",
+      "kind": "direct child",
+      "site": "00C11C41",
+      "name": "__amsg_exit (existing library name retained)",
+      "caller_contract": "PUSH17; CALL; physical continuation POP ECX then current-descriptor acquisition. Do not assume this child returns or never returns without its own gate.",
+      "Source_availability": "No matching implementation/declaration found by address/name search in current src/include.",
+      "not_established": "Failure reporting/termination/callback order, exact no-return property, dynamic callback owner and normal/exceptional behavior; unopened."
+    },
+    {
+      "address": "00CE2218",
+      "kind": "indirect import operand",
+      "site": "00C11C49",
+      "name": "EnterCriticalSection (existing decompiler label; Source actual import provider exists)",
+      "caller_contract": "One current descriptor-pointer argument; own caller requires callee to consume4 before POP ESI/POP EBP/RET.",
+      "Source_availability": "Real Windows API directly used by existing Source and resolved in renderer import owner.",
+      "not_established": "Original IAT cell contents/live binding, OS fault behavior and actual CRT section owner; cell/API body unopened."
+    },
+    {
+      "address": "00E16478 + 8*index (mod2^32)",
+      "kind": "canonical data dependency",
+      "site": "00C11C28,00C11C2F,00C11C47",
+      "name": "First DWORD of eight-byte indexed descriptor; second DWORD meaning unknown here",
+      "caller_contract": "Capture computed address once in ESI. Read its DWORD for zero/nonzero gate, then reread for API argument after reached child calls.",
+      "Source_availability": "Current canonical unlock consumes the same fixed base; no indexed initialization owner found in reviewed Source.",
+      "not_established": "Table extent, current contents, initialization/preimages, concurrency/lifetime, flags/+4 meaning; no data read."
+    }
+  ],
+  "current_Source_provider_comparison": [
+    {
+      "name": "Canonical CRT unlock and admitted free unlock helper",
+      "files": [
+        "include/bsp/native_crt_canonical_unlock.hpp",
+        "src/native_crt_canonical_unlock.cpp",
+        "include/bsp/native_crt_free_unlock_helper.hpp",
+        "src/native_crt_free_unlock_helper.cpp"
+      ],
+      "current_facts": "Real fixed-descriptor C11B31 release provider and nine-byte BF9E1E helper call real LeaveCriticalSection; actual initialized already-acquired section required.",
+      "gap": "Neither initializes/publishes/acquires CRT descriptor index4 or implements __lock. Prior Source534 admission is an inherited code-leaf fact, not lock-owner proof."
+    },
+    {
+      "name": "C17643 Win32 initializer and C17639 encoded-word store",
+      "files": [
+        "include/bsp/native_crt_critical_section_primitives.hpp",
+        "src/native_crt_critical_section_primitives.cpp"
+      ],
+      "current_facts": "C17643 calls real InitializeCriticalSection on supplied storage, XOR/INC produces1 after normal return, RET8; C17639 stores supplied already-encoded word into borrowed actual0109E454.",
+      "gap": "No index-to-canonical-descriptor mapping, allocation, current descriptor publication, C11B5E implementation, failure policy or lifetime owner."
+    },
+    {
+      "name": "Genuine EnterCriticalSection Source import cell",
+      "files": [
+        "include/bsp/game_native_renderer_scalars.hpp",
+        "src/game_native_renderer_scalars.cpp"
+      ],
+      "current_facts": "Renderer scalar process resolves actual kernel32 EnterCriticalSection with GetProcAddress and exposes a stable borrowed current stdcall(void*) cell identified as00CE2218.",
+      "gap": "Actual API provider exists, but renderer Source-owned cell is not proof of original fixed IAT contents or a canonical CRT lock/storage owner. No C11B5E/__amsg_exit replacement."
+    },
+    {
+      "name": "Tracked renderer lock factory00BD1860",
+      "files": [
+        "include/bsp/native_renderer_worker_lifetime.hpp",
+        "src/native_renderer_worker_lifetime.cpp"
+      ],
+      "current_facts": "Existing normal Source no-argument factory allocates1Ch through BF681B host service, calls InitializeCriticalSection, writes depth+18h=0 and returns actual tracked lock or allocation-null.",
+      "gap": "Separate tracked renderer allocation/layout/domain. It has no observed E16478 indexed descriptor publication and is not a demonstrated C11B5E provider."
+    },
+    {
+      "name": "BF6713 invalid-parameter Source policy",
+      "files": [
+        "include/bsp/native_invalid_parameter_noinfo_call.hpp"
+      ],
+      "current_facts": "Qualified Source leaf calls current SDK _invalid_parameter_noinfo with explicit host-policy limits.",
+      "gap": "Not BFBA09 __amsg_exit(17); does not reconstruct original BF66EF handler/encoded-global/debugger behavior. Do not substitute this or host abort for the unopened failure child."
+    },
+    {
+      "name": "Canonical mutable CRT page owner",
+      "files": [
+        "include/bsp/game_native_mutable_crt_data.hpp"
+      ],
+      "current_facts": "Public contract distinguishes mapped image data/recovered cells from initialized callable CRT state.",
+      "gap": "Mapping alone proves neither valid descriptor contents, CRITICAL_SECTION initialization/acquisition, callback policy nor lifetime."
+    }
+  ],
+  "current_Source_facts": {
+    "captured_utc": "2026-10-09T23:13:30.717250+00:00",
+    "files": [
+      {
+        "path": "include/bsp/native_crt_canonical_unlock.hpp",
+        "bytes": 876,
+        "sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "src/native_crt_canonical_unlock.cpp",
+        "bytes": 760,
+        "sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "include/bsp/native_crt_free_unlock_helper.hpp",
+        "bytes": 864,
+        "sha256": "9cb0f84c8a7c4c08947f85c9cd2d354ee380135d35ef29be8cc842eb9b7b8753",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "src/native_crt_free_unlock_helper.cpp",
+        "bytes": 619,
+        "sha256": "d61d134fc001427249f89fa6fa7842bff991e2afea83c2ad000a7483c4753b1b",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "include/bsp/native_crt_critical_section_primitives.hpp",
+        "bytes": 1154,
+        "sha256": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "src/native_crt_critical_section_primitives.cpp",
+        "bytes": 1449,
+        "sha256": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "include/bsp/game_native_renderer_scalars.hpp",
+        "bytes": 3859,
+        "sha256": "78bcb9c10d5c241d912f15bed8afdb256fea81b11cc77077cab6fc3101185a0d",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "src/game_native_renderer_scalars.cpp",
+        "bytes": 3123,
+        "sha256": "52c24974e77f28cfd9a5a2e6790b96f6082a741d421f8fb213614ca1f0341458",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "bytes": 2431,
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "bytes": 6911,
+        "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "bytes": 1471,
+        "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "integrator_current_LF_match": true
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "bytes": 3200,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+        "integrator_current_LF_match": true
+      }
+    ],
+    "integrator_LF_matches": 12,
+    "scope": "Current inspected Source contracts and targeted src/include address/name searches. No provider build/runtime replay and no broad absence claim beyond these searches."
+  },
+  "smallest_genuine_next_prerequisite": {
+    "packet": "cc12_crt_canonical_lock_initializer_readiness",
+    "addresses": [
+      "00C11B5E"
+    ],
+    "files": [
+      "docs/CC12_CRT_CANONICAL_LOCK_INITIALIZER_READINESS.md",
+      "reports/cc12_crt_canonical_lock_initializer_readiness.json"
+    ],
+    "kind": "Next bounded read-only prerequisite, not Source-ready implementation",
+    "entry_contract_from_parent": "Actual original raw index one stack word, caller cleanup4; EAX zero/nonzero drives failure branch, ESI descriptor address must survive. Establish the full body, current canonical descriptor publication, real allocation/initialization/callback ownership, ordering and return/failure semantics before proposing Source.",
+    "do_not_assume": [
+      "Body size or thunk status before its own metadata/gate",
+      "Tracked renderer locks are the CRT indexed descriptor domain",
+      "Current host initializer/error APIs replicate original child policy",
+      "Parent can be admitted by stubbing the absent child or restricting to nonzero descriptors"
+    ],
+    "remaining_separate_dependency": "00BFBA09 __amsg_exit failure child remains required for complete __lock even after initializer closure; no external body opened now",
+    "new_Source_ready_functions": 0
+  },
+  "historical_Source534_context": {
+    "worker_receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\reports\\cc12_model_class_unlock_source_primary_review.json",
+      "bytes": 236728,
+      "sha256": "9fc3a11764a53ed6c100471213d97509b47f510617d6bea9c32f39c5b4c7f218"
+    },
+    "Root_receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_model_class_unlock_source_primary_review.json",
+      "bytes": 236728,
+      "sha256": "9fc3a11764a53ed6c100471213d97509b47f510617d6bea9c32f39c5b4c7f218"
+    },
+    "selected_project_inputs": 534,
+    "selected_input_scope": "Selected project-input union of Source511, model descriptor project include closure and vehicle/child project dependencies; not entire build/compiler/SDK dependency closure.",
+    "Core_objects": 56,
+    "App_objects": 2,
+    "positive_Core_definitions": 85,
+    "checks": 3,
+    "normal_build": {
+      "command": "./scripts/build.ps1",
+      "start_utc": "2026-10-09T22:50:47.603655+00:00",
+      "end_utc": "2026-10-09T22:51:08.134682+00:00",
+      "exit_code": 0
+    },
+    "startup_summary": {
+      "terminal_exit": 0,
+      "frames": 3,
+      "presents": 2,
+      "PressStartPoll_state": 2,
+      "mission_frames": 0,
+      "UNIMPLEMENTED_rows": 88
+    },
+    "credit": {
+      "new_ordinary_Source_functions": 2,
+      "production_model_descriptor_composition": 1,
+      "build_checks": 3,
+      "bounded_startup_smoke": true,
+      "new_parent_or_helper_runtime": 0,
+      "original_ABI": 0,
+      "faithful_startup": 0,
+      "gameplay": 0,
+      "visual_observation": false
+    },
+    "qualification": "Historical accepted Root Source534 snapshot only. No artifact, full Source-input, object or runtime replay here; current Source files pinned separately."
+  },
+  "admission_limits": {
+    "new_Source_functions": 0,
+    "new_Source_fragments": 0,
+    "Original_ABI": 0,
+    "lock_owner_or_initialization_closure": 0,
+    "full_free_or_gunnery_destructor": 0,
+    "runtime_or_fault": 0,
+    "faithful_startup": 0,
+    "gameplay": 0
+  },
+  "local_evidence": {
+    "complete_capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_complete_capture.json",
+      "bytes": 10227,
+      "sha256": "f365b2954db4f03bb6552b169b85392f45282a4fc51ddef76135ce6bb75507e1"
+    },
+    "artifacts": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_cli_capture.json",
+        "bytes": 11618,
+        "sha256": "b838fcd6f04c7e3890b5828576e5c723271f4889fe118bb67bfa161926ecddb8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_all_starts.json",
+        "bytes": 3168,
+        "sha256": "fc548f024e5c540c20de910072f16e4b63286838e23ab842988bf9fb058251a8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_function_documentation.json",
+        "bytes": 891,
+        "sha256": "8c4cb8aaa02ec65ab96befec0d041faf1efb20741eb979cf7e41881d97e83096"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_saved_listing.txt",
+        "bytes": 511,
+        "sha256": "fad31fe58cd87a65babf3cce6b6b415734289a5f69e314a9f21c9796e241c55c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_acquisition_original.bin",
+        "bytes": 49,
+        "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798"
+      }
+    ]
+  },
+  "review": {
+    "all49bytes_and20physical_instructions_reviewed": true,
+    "all_three_calls_two_branches_and_return_reviewed": true,
+    "fresh_saved_listing_provenance_explicit": true,
+    "all_Source_comparison_claims_bounded": true,
+    "full_doc_report_review_before_commit": true
+  }
+}
