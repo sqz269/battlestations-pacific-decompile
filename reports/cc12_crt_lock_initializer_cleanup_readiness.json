@@ -1,0 +1,675 @@
+{
+  "packet": "cc12_crt_lock_initializer_cleanup_readiness",
+  "generated_utc": "2026-10-09T23:42:42.974530+00:00",
+  "worker_branch": "agent/cc12_unit_numbering_virtual_query_abi",
+  "base_commit": "17d228e353fe40f72fd80727395830f992e7e3f9",
+  "status": "COMPLETE_ORDINARY_SOURCE_CANDIDATE_FOCUSED_COMPILE_PASSED_UNREGISTERED",
+  "scope": {
+    "only_Native_body": "00C11C18",
+    "owned_files": [
+      "docs/CC12_CRT_LOCK_INITIALIZER_CLEANUP_READINESS.md",
+      "reports/cc12_crt_lock_initializer_cleanup_readiness.json",
+      "include/bsp/native_crt_lock10_unlock_helper.hpp",
+      "src/native_crt_lock10_unlock_helper.cpp"
+    ],
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_bsp_wrappers_used": true,
+    "callee_Native_bodies_opened": false,
+    "fixed_data_contents_opened": false,
+    "handlers_opened": false,
+    "GPR_mutated": false,
+    "CMake_ledger_modified": false,
+    "new_tests_or_runtime_probes": false
+  },
+  "name_policy": {
+    "existing_label": "LIBCRT_unmatched_00c11c18",
+    "existing_metadata_prototype": "undefined LIBCRT_unmatched_00c11c18(void)",
+    "interpretation": "No-argument helper that releases canonical acquired lock 10; descriptive Source symbol, not a recovered name.",
+    "correct_child_library_name": "__unlock",
+    "Ghidra_names_comments_preserved": true
+  },
+  "whole_Native_gate": {
+    "captured_utc": "2026-10-09T23:39:16.301193+00:00",
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "0x400000"
+    },
+    "start": "00C11C18",
+    "end": "00C11C20",
+    "size": 9,
+    "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042",
+    "bytes": "6a0ae812ffffff59c3",
+    "ops": [
+      {
+        "address": "00C11C18",
+        "bytes": "6a0a",
+        "size": 2,
+        "asm": "push 0xa",
+        "live_instruction": "PUSH 0xa"
+      },
+      {
+        "address": "00C11C1A",
+        "bytes": "e812ffffff",
+        "size": 5,
+        "asm": "call 0xc11b31",
+        "live_instruction": "CALL 0x00c11b31"
+      },
+      {
+        "address": "00C11C1F",
+        "bytes": "59",
+        "size": 1,
+        "asm": "pop ecx",
+        "live_instruction": "POP ECX"
+      },
+      {
+        "address": "00C11C20",
+        "bytes": "c3",
+        "size": 1,
+        "asm": "ret ",
+        "live_instruction": "RET"
+      }
+    ],
+    "all_PE_live_bytes_and_four_live_starts_match": true,
+    "fresh_saved_listing_matches_all_four_live_starts": true,
+    "historical_export_exists": false
+  },
+  "contract": {
+    "public_Source_symbol": "void __cdecl bsp::unlock_native_crt_initializer_lock10_00c11c18()",
+    "normal_schedule": [
+      "PUSH signed immediate 10.",
+      "CALL actual canonical __unlock at 00C11B31 with one caller-owned DWORD.",
+      "POP ECX removes that argument and establishes ECX=10.",
+      "Plain RET returns to the original caller."
+    ],
+    "stack": "No explicit incoming argument, own prolog, own local allocation, implicit parent-EBP access, FS access, conditional path or own EH region. CALL supplies a child return address; the helper balances the pushed argument before RET.",
+    "callee_provider": "Actual existing bsp::unlock_native_crt_canonical_00c11b31(std::int32_t), declared by its real header and defined in the reviewed normal-build provider object. No stand-in, unresolved declaration or child function-pointer parameter.",
+    "actual_owner_precondition": "Caller supplies readable canonical DWORD descriptor at 00E16478 + 10*8 = 00E164C8, containing a valid initialized Win32 critical section acquired by the current thread and alive throughout the child call. The helper does not allocate, map, seed, initialize, acquire or replace it. Fixed contents and ownership were not inferred from page storage.",
+    "result_register_flags": "No meaningful return value. On normal child return, POP/RET preserve child residual EAX, EDX and arithmetic flags while POP sets ECX=10. Nonvolatile preservation is the actual provider/API contract; no host policy or noexcept conversion.",
+    "placement": "Only the child call operand relocates to the genuine Source provider; exact PUSH/CALL/POP/RET schedule retained. Source has a separate naked MSVC x86 entry. It does not recreate original fault PCs or prove an SEH registration-table entry.",
+    "parent_boundary": "This proves the ordinary cleanup child. It does not repair the parent listing, close initializer allocation/init/errno/free/diagnostics/prolog, establish canonical heap or bootstrap ownership, or admit the original parent ABI/unwind behavior."
+  },
+  "current_Source_inputs": {
+    "selected_files": [
+      {
+        "path": "include/bsp/native_crt_lock10_unlock_helper.hpp",
+        "bytes": 885,
+        "sha256": "df2d76d1a2846f2af9bfac6c23548c9c1828d61eff29aa599d2709b6a3dd939b"
+      },
+      {
+        "path": "src/native_crt_lock10_unlock_helper.cpp",
+        "bytes": 628,
+        "sha256": "cab75f96d04559ee880d6465a723412a29ea1b82c4558d1967851b9b6bc13f2f"
+      },
+      {
+        "path": "include/bsp/native_crt_canonical_unlock.hpp",
+        "bytes": 876,
+        "sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/native_crt_canonical_unlock.cpp",
+        "bytes": 760,
+        "sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/native_crt_free_unlock_helper.hpp",
+        "bytes": 864,
+        "sha256": "9cb0f84c8a7c4c08947f85c9cd2d354ee380135d35ef29be8cc842eb9b7b8753",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/native_crt_free_unlock_helper.cpp",
+        "bytes": 619,
+        "sha256": "d61d134fc001427249f89fa6fa7842bff991e2afea83c2ad000a7483c4753b1b",
+        "Root_LF_matches": true
+      }
+    ],
+    "new_files": [
+      "include/bsp/native_crt_lock10_unlock_helper.hpp",
+      "src/native_crt_lock10_unlock_helper.cpp"
+    ],
+    "existing_contracts_match_Root_LF": true,
+    "normal_build_registration_search": {
+      "command": "rg -n --fixed-strings native_crt_lock10_unlock_helper CMakeLists.txt cmake",
+      "exit_code": 1,
+      "matches": 0,
+      "meaning": "Worker source is currently unregistered; no normal project build/link claim for this helper."
+    }
+  },
+  "focused_compile": {
+    "command": "cmd.exe /d /c local\\cc12_lock10_unlock_compile.cmd",
+    "exit_code": 0,
+    "target": "MSVC Win32 x86 object only",
+    "tool_environment": "Visual Studio 18 Community VsDevCmd -arch=x86 -host_arch=x64",
+    "object_compiler_metadata_version": "19.51.36244.0",
+    "flags": "/c /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D_MBCS /DWIN32 /D_WINDOWS /DNDEBUG /EHsc /MD /fp:strict /std:c++17 /external:W0 /TP /analyze-",
+    "scripts_and_log": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_lock10_unlock_compile.cmd",
+        "bytes": 276,
+        "sha256": "f3662f952616c621b59512ad95f8edb6014ffbf88bf649e3d87137511f7f4aef"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_lock10_unlock_compile.rsp",
+        "bytes": 490,
+        "sha256": "8bd1b0cb6f726030aea786b959ca478a416e7999647efb95135e1ac2866cbf76"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_lock10_unlock_compile.log",
+        "bytes": 37,
+        "sha256": "9ec99063236197999f90a4ef45659018297aecfb0a899a51a85daa68a2540944"
+      }
+    ],
+    "executable_created": false,
+    "normal_CMake_build_run_by_worker": false
+  },
+  "complete_indexed_COFF": {
+    "captured_utc": "2026-10-09T23:41:03.580536+00:00",
+    "helper": {
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\native_crt_lock10_unlock_helper.obj",
+        "bytes": 810,
+        "sha256": "c4df257103a3be9fea2b78169e1566e733bd3305572bd666ef3759c5aaacabf5"
+      },
+      "machine": "0x14c",
+      "declared_symbol_records_including_aux": 12,
+      "primary_symbol_record_count": 8,
+      "sections": [
+        {
+          "index": 1,
+          "name": ".drectve",
+          "raw_size": 47,
+          "characteristics": "0x100a00",
+          "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+          "raw_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+          "relocations": []
+        },
+        {
+          "index": 2,
+          "name": ".debug$S",
+          "raw_size": 204,
+          "characteristics": "0x42100040",
+          "sha256": "47a78032476cda87106fdea496f68319d13304fb60e7c40ec34ebfc83613a7a5",
+          "raw_hex": "04000000f1000000bd0000007f000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d636331325f756e69745f6e756d626572696e675f7669727475616c5f71756572795f6162695c6c6f63616c5c6e61746976655f6372745f6c6f636b31305f756e6c6f636b5f68656c7065722e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200000000",
+          "relocations": []
+        },
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "raw_size": 9,
+          "characteristics": "0x60501020",
+          "sha256": "04e57e2130fa52bb4120483156fd647a2a37e625fc1ad0a6bb0e6ae545c9b717",
+          "raw_hex": "6a0ae80000000059c3",
+          "relocations": [
+            {
+              "offset": 3,
+              "symbol_index": 9,
+              "type": 20,
+              "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+              "target_symbol_record": {
+                "index": 9,
+                "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0
+              }
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 2,
+              "bytes": "6a0a",
+              "asm": "push 0xa"
+            },
+            {
+              "offset": 2,
+              "size": 5,
+              "bytes": "e800000000",
+              "asm": "call 7"
+            },
+            {
+              "offset": 7,
+              "size": 1,
+              "bytes": "59",
+              "asm": "pop ecx"
+            },
+            {
+              "offset": 8,
+              "size": 1,
+              "bytes": "c3",
+              "asm": "ret "
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "name": ".chks64",
+          "raw_size": 32,
+          "characteristics": "0xa00",
+          "sha256": "8c56e79e1ff52a83507fa3a79c41844e46e5faa390a765d6abacd4d7a11a16cd",
+          "raw_hex": "76f6abfb5648dec747a78032476cda8704e57e2130fa52bb0000000000000000",
+          "relocations": []
+        }
+      ],
+      "symbols": [
+        {
+          "index": 0,
+          "name": "@comp.id",
+          "value": 17141140,
+          "section": -1,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 0
+        },
+        {
+          "index": 1,
+          "name": "@feat.00",
+          "value": 2147549585,
+          "section": -1,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 0
+        },
+        {
+          "index": 2,
+          "name": ".drectve",
+          "value": 0,
+          "section": 1,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "2f0000000000000000000000000000000000"
+        },
+        {
+          "index": 4,
+          "name": ".debug$S",
+          "value": 0,
+          "section": 2,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "cc0000000000000000000000000000000000"
+        },
+        {
+          "index": 6,
+          "name": ".text$mn",
+          "value": 0,
+          "section": 3,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "0900000001000000958ad601000001000000"
+        },
+        {
+          "index": 8,
+          "name": "?unlock_native_crt_initializer_lock10_00c11c18@bsp@@YAXXZ",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0
+        },
+        {
+          "index": 9,
+          "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0
+        },
+        {
+          "index": 10,
+          "name": ".chks64",
+          "value": 0,
+          "section": 4,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "200000000000000000000000000000000000"
+        }
+      ]
+    },
+    "provider": {
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_crt_canonical_unlock.obj",
+        "bytes": 802,
+        "sha256": "39da5fa1a78fc93aa9488008ddf1fc5bfe3f838a97be52c6db1dcc2aa8982619"
+      },
+      "machine": "0x14c",
+      "declared_symbol_records_including_aux": 12,
+      "primary_symbol_record_count": 8,
+      "sections": [
+        {
+          "index": 1,
+          "name": ".drectve",
+          "raw_size": 47,
+          "characteristics": "0x100a00",
+          "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+          "raw_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+          "relocations": []
+        },
+        {
+          "index": 2,
+          "name": ".debug$S",
+          "raw_size": 212,
+          "characteristics": "0x42100040",
+          "sha256": "f88cac5c6a59d4864074e0f72ecbc68222ec293006cc59717fb5843bb3666019",
+          "raw_hex": "04000000f1000000c500000087000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d636331325f726573756d655f696e7465677261746f725c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f6372745f63616e6f6e6963616c5f756e6c6f636b2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200000000",
+          "relocations": []
+        },
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "raw_size": 21,
+          "characteristics": "0x60501020",
+          "sha256": "08d601e12a0fd1c90a51c8c9e1541e19264960aa0bb18c8bf7394bda9c11f0a6",
+          "raw_hex": "558bec8b4508ff34c57864e100ff15000000005dc3",
+          "relocations": [
+            {
+              "offset": 15,
+              "symbol_index": 9,
+              "type": 6,
+              "symbol": "__imp__LeaveCriticalSection@4",
+              "target_symbol_record": {
+                "index": 9,
+                "name": "__imp__LeaveCriticalSection@4",
+                "value": 0,
+                "section": 0,
+                "type": 0,
+                "storage": 2,
+                "aux_count": 0
+              }
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "size": 1,
+              "bytes": "55",
+              "asm": "push ebp"
+            },
+            {
+              "offset": 1,
+              "size": 2,
+              "bytes": "8bec",
+              "asm": "mov ebp, esp"
+            },
+            {
+              "offset": 3,
+              "size": 3,
+              "bytes": "8b4508",
+              "asm": "mov eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "size": 7,
+              "bytes": "ff34c57864e100",
+              "asm": "push dword ptr [eax*8 + 0xe16478]"
+            },
+            {
+              "offset": 13,
+              "size": 6,
+              "bytes": "ff1500000000",
+              "asm": "call dword ptr [0]"
+            },
+            {
+              "offset": 19,
+              "size": 1,
+              "bytes": "5d",
+              "asm": "pop ebp"
+            },
+            {
+              "offset": 20,
+              "size": 1,
+              "bytes": "c3",
+              "asm": "ret "
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "name": ".chks64",
+          "raw_size": 32,
+          "characteristics": "0xa00",
+          "sha256": "13cccd303ae995f851ffc0a26659b9556e944f90dc9fcf48b4fd0929fd6a6aeb",
+          "raw_hex": "76f6abfb5648dec7f88cac5c6a59d48608d601e12a0fd1c90000000000000000",
+          "relocations": []
+        }
+      ],
+      "symbols": [
+        {
+          "index": 0,
+          "name": "@comp.id",
+          "value": 17141140,
+          "section": -1,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 0
+        },
+        {
+          "index": 1,
+          "name": "@feat.00",
+          "value": 2147549585,
+          "section": -1,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 0
+        },
+        {
+          "index": 2,
+          "name": ".drectve",
+          "value": 0,
+          "section": 1,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "2f0000000000000000000000000000000000"
+        },
+        {
+          "index": 4,
+          "name": ".debug$S",
+          "value": 0,
+          "section": 2,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "d40000000000000000000000000000000000"
+        },
+        {
+          "index": 6,
+          "name": ".text$mn",
+          "value": 0,
+          "section": 3,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "15000000010000005686e959000001000000"
+        },
+        {
+          "index": 8,
+          "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0
+        },
+        {
+          "index": 9,
+          "name": "__imp__LeaveCriticalSection@4",
+          "value": 0,
+          "section": 0,
+          "type": 0,
+          "storage": 2,
+          "aux_count": 0
+        },
+        {
+          "index": 10,
+          "name": ".chks64",
+          "value": 0,
+          "section": 4,
+          "type": 0,
+          "storage": 3,
+          "aux_count": 1,
+          "aux_hex": "200000000000000000000000000000000000"
+        }
+      ]
+    },
+    "resolution": {
+      "scope": "Indexed ordinary COFF object relocation matched to exact strong definition in existing Root normal-build provider object; not a linked/archive/startup admission",
+      "helper_relocation": {
+        "offset": 3,
+        "symbol_index": 9,
+        "type": 20,
+        "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+        "target_symbol_record": {
+          "index": 9,
+          "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0
+        }
+      },
+      "actual_provider_symbol": {
+        "index": 8,
+        "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0
+      },
+      "actual_provider_import": {
+        "offset": 15,
+        "symbol_index": 9,
+        "type": 6,
+        "symbol": "__imp__LeaveCriticalSection@4",
+        "target_symbol_record": {
+          "index": 9,
+          "name": "__imp__LeaveCriticalSection@4",
+          "value": 0,
+          "section": 0,
+          "type": 0,
+          "storage": 2,
+          "aux_count": 0
+        }
+      },
+      "provider_stable_since_before_compile": true,
+      "helper_all_code": {
+        "bytes": 9,
+        "ops": 4
+      },
+      "provider_all_code": {
+        "bytes": 21,
+        "ops": 7
+      },
+      "all_sections_and_primary_aux_symbol_records_reviewed": true
+    }
+  },
+  "COFF_review_notes": {
+    "helper": "Four sections, 12 symbol records including four auxiliary records, eight primary symbol records. Sole executable section is 9 bytes / four instructions; one REL32 at byte 3 to canonical unlock. Strong helper symbol is record 8, section 3, value zero.",
+    "provider": "Actual existing Root normal-build object is 802 bytes; sole executable section 21 bytes / seven instructions. Helper symbol-index 9 relocation resolves to provider strong record 8, section 3, value zero; provider has one DIR32 relocation at byte 15 to __imp__LeaveCriticalSection@4.",
+    "noncode_sections": "Both objects have only .drectve (MSVCRT/OLDNAMES), .debug$S (compiler/object-path metadata), and .chks64 checksum metadata outside the reviewed code. No additional relocations or hidden code/EH section.",
+    "limit": "Exact indexed actual-object provider resolution; no archive membership, linked executable, runtime lock release or fault/unwind proof in this worker packet."
+  },
+  "historical_baseline": {
+    "Source539_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_atlas_mesh_source_primary_review.json",
+      "bytes": 295511,
+      "sha256": "c68cbc887b6531254c1a16f1688ea00673e5d9e535763aa29d2621ac494713fd"
+    },
+    "selected_project_inputs": 539,
+    "whole_Core_objects": 59,
+    "whole_App_objects": 2,
+    "positive_Core_providers": 92,
+    "normal_build": {
+      "command": "./scripts/build.ps1",
+      "start_utc": "2026-10-09T23:30:36.230767+00:00",
+      "end_utc": "2026-10-09T23:30:55.248261+00:00",
+      "exit_code": 0
+    },
+    "checks_passed": 3,
+    "new_focused_cases_in_that_receipt": 1,
+    "scope": "Pinned historical normal-build receipt before the new helper. Selected project-input union is not full compiler/SDK closure. Its build/checks do not test or register this new Source; no baseline artifact/input replay or new startup smoke performed here.",
+    "accepted_parent_initializer_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\reports\\cc12_crt_canonical_lock_initializer_readiness.json",
+      "bytes": 43544,
+      "sha256": "55c606ebfc2dce5b4c400c97a5e06d840e183113ff28823e2ba49fa071c20d7a"
+    },
+    "parent_status": "Root accepted readiness with incomplete six-start listing gate; this packet does not change that status."
+  },
+  "local_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_unlock_cli_capture.json",
+      "bytes": 11270,
+      "sha256": "0171245994972eb4f929c144a0a4dc7e3704fd36e262e75335b5b3032e648b3d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_unlock_all_starts.json",
+      "bytes": 604,
+      "sha256": "d7450e39e074d0f254a8f1d572423385190d9ff69af5fbbd217e3fe367c7b9cd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_unlock_function_documentation.json",
+      "bytes": 708,
+      "sha256": "672cff6860fdedf353ee9f10484cb0953d2fe07fe36ce59feea3aab9142fd298"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_unlock_original.bin",
+      "bytes": 9,
+      "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_unlock_saved_listing.txt",
+      "bytes": 85,
+      "sha256": "963f743093ee19a461159e3eb9307b8bb50dfd82ee3cfc5033d588ad95a9de1a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_unlock_complete_capture.json",
+      "bytes": 1225,
+      "sha256": "b94d7304794f59297ef8b09affc6470058c387a4e3a1799a8f4c225bb9ce4a4b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_provider_before.json",
+      "bytes": 4899,
+      "sha256": "ff7e20bb102428be88bf6ab60b5709bd03200e6cf7b98ec3a10eb81fc9d110e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock10_unlock_complete_coff.json",
+      "bytes": 11604,
+      "sha256": "2991387048b9ec4a446f8b26785a39ac762caf6d871fc0e18ffbf3b53b663038"
+    }
+  ],
+  "integrator_next": "Review candidate; register the new cpp in the normal Win32 CMake build and perform normal build/checks and actual fresh-object/provider review. Root owns GPR annotation/ledger changes and preserves old comments. No helper runtime probe is required or claimed by this packet.",
+  "review": {
+    "full_Native_PE_live_saved_gate": true,
+    "entire_helper_and_actual_provider_COFF_sections_symbols_aux_relocations_code": true,
+    "public_precondition_and_entire_Source_readback": true,
+    "generated_document_report_full_readback": true,
+    "owned_only_staged_diff_check": true
+  },
+  "credit": {
+    "complete_ordinary_Source_candidate": 1,
+    "focused_compile_success": 1,
+    "new_registered_Source": 0,
+    "full_initializer_Source": 0,
+    "initializer_listing_repair": 0,
+    "normal_build_of_new_helper": 0,
+    "new_fixture": 0,
+    "Native_ABI": 0,
+    "runtime_lock_release": 0,
+    "fault_SEH_unwind": 0,
+    "faithful_startup": 0,
+    "gameplay": 0
+  }
+}
