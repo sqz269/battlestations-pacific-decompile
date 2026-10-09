@@ -1,0 +1,253 @@
+{
+  "schema": "cc12_type10_type11_complete_helper_TEXT_draft_v1",
+  "packet": "cc12_type10_type11_complete_helper_TEXT_draft",
+  "status": "complete_unexecuted_TEXT_proposal_Root_review_and_fresh_qualification_required",
+  "Source_credit": 0,
+  "new_functions": 0,
+  "new_fragments": 0,
+  "new_names": 0,
+  "new_Source_or_CMake_or_tests": 0,
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_complete_helper_TEXT_draft",
+  "generation_Main": "65a63388caa30ef327083988f077d4395bb3eba4",
+  "document": "docs/CC12_TYPE10_TYPE11_COMPLETE_HELPER_TEXT_DRAFT.md",
+  "draft_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_complete_helper_TEXT_draft\\local\\t1011draft",
+  "future_Root_family": "J:/PROG/battlestations-pacific-decompile/local/type1011p1",
+  "future_family_absent_at_selected_audit": true,
+  "lease_scope": {
+    "addresses": [],
+    "files": [
+      "docs/CC12_TYPE10_TYPE11_COMPLETE_HELPER_TEXT_DRAFT.md",
+      "reports/cc12_type10_type11_complete_helper_TEXT_draft.json"
+    ]
+  },
+  "strict_Source_core_files": 6,
+  "strict_Source_transitive_files": 12,
+  "case_selection": {
+    "exact_files": 28,
+    "original_family": "J:/PROG/battlestations-pacific-decompile-cc12_type10_type11_fresh_case_contract_review/local/t1011cases",
+    "manifest_sha256": "791bae6e107512ddb0db06dd06d444b05e5b823666f2220b32023cd988e20457",
+    "cases": 8,
+    "same_literals_in_probe_and_independent_reader": true
+  },
+  "Native_contracts": [
+    {
+      "tag": 10,
+      "entry": "008EF3E0",
+      "end_exclusive": "008EF454",
+      "bytes": 116,
+      "instructions": 36,
+      "sha256": "00c1508701d10a6508b556eff0feb4737f51a4ec289059dce77a796cc571919b",
+      "call_operand_offsets": [
+        51,
+        66
+      ]
+    },
+    {
+      "tag": 11,
+      "entry": "008EF460",
+      "end_exclusive": "008EF4D7",
+      "bytes": 119,
+      "instructions": 37,
+      "sha256": "fdb6bb6f351939abd63f85028eea15df069113701aba2de727bb9a16393978da",
+      "call_operand_offsets": [
+        54,
+        69
+      ]
+    }
+  ],
+  "proposed_fixture": {
+    "fresh_TUs": [
+      "type10",
+      "type11",
+      "canonical",
+      "probe"
+    ],
+    "lanes": [
+      "raw_Source",
+      "raw_rebound_Native",
+      "ordinary_typed_Source"
+    ],
+    "calls": 24,
+    "roots56": 24,
+    "copied_children": 12,
+    "canonical_success_allocate_free_pairs": 36,
+    "record_bytes": 352,
+    "header_bytes": 40,
+    "provider_bytes": 580,
+    "rebound_code_bytes": 139,
+    "observation_file_bytes": 13406,
+    "all_are_future_proposed_values": true,
+    "inside_input_array_guards_only": true,
+    "no_adjacent_heap_guards": true,
+    "capture": "actual PUSHFD/PUSHAD before+after, actual three stack DWORDs, pre saved ESP is T, post saved ESP+4 is T+16",
+    "retain_arithmetic_flags": "8D5=44 including AF0",
+    "copy_arithmetic_flags": "all six ADD flags from actual uint32(T-24)+16",
+    "copy_ECX_EDX": "unconstrained provider residuals",
+    "ES_FPU_MXCSR": "not qualified",
+    "provider_record": "actual loaded address/module/canonical path/file identity and relocated entry32 before/after canonical work and cleanup"
+  },
+  "full_gate": {
+    "primary_and_independent_raw_COFF_parsers": true,
+    "all_primary_aux_sections_relocations_and_overflow_records": true,
+    "weak_fallback_field": "full TagIndex",
+    "retained_weak_modes_supported": [
+      1,
+      3
+    ],
+    "actual_mode3_occurrence_assumed": false,
+    "mode2_or_unknown_format": "STOP",
+    "whole_main_raw_and_typed_callers_constructors_adapters_canonical": true,
+    "normal_cold_std_delete_free_import_cookie_stack_helpers": "all actual retained bodies require complete extents and relocation/CFG proof",
+    "Root_support_extents": "fresh linked_plan.json exact sizes plus evidence; no automatic next-symbol sizing",
+    "CFG": "unknown edges/internal unreachable STOP; only maximal trailing unreachable NOP/INT3 suffix",
+    "register_indirect": "all-predecessor fixed-IAT facts with partial-register invalidation",
+    "local_unexpanded_frontier": "one actual cookie helper jump to report_gsfailure only",
+    "external_nonreturn_boundaries": "named imported exit/abort/throw/watson/terminate paths, exact full local thunks; failure/EH execution excluded"
+  },
+  "dependencies": {
+    "installed_TEXT_files": 42,
+    "capstone_Python_TEXT_files": 37,
+    "pefile_Python_TEXT_files": 1,
+    "ordlookup_Python_TEXT_files": 4,
+    "current_query": "tools/ghidra_export.py standard-library HTTP Client, current read_memory hex schema",
+    "obsolete_ghidra_bridge_jfx_bridge_required": false,
+    "packages_imported_by_worker": 0,
+    "Root_required_runtime_pins": "actual package membership and packaged capstone.dll, interpreter/standard library/DLLs, explicit compiler/linker plans and all searched/consumed headers/libraries",
+    "rejected_overrides": [
+      "PYTHONOPTIMIZE",
+      "PYTHONPATH",
+      "PYTHONHOME",
+      "PYTHONSTARTUP",
+      "CL",
+      "_CL_",
+      "LINK",
+      "_LINK_",
+      "LIBCAPSTONE_PATH"
+    ]
+  },
+  "Root_protocol": {
+    "two_Root_receipts": [
+      "Root_text_review_receipt.json",
+      "Root_linked_manual_gate_receipt.json"
+    ],
+    "ordered_launch_keys": [
+      "executable",
+      "gate",
+      "coverage",
+      "objects",
+      "provenance",
+      "launch_ast"
+    ],
+    "launch_AST_sha256": "f12d654b9ec66791d07f88a33138c0f992412a63c2aac04138c1c8dde9fadb76",
+    "exclusive_attempts": true,
+    "sole_target_process": true,
+    "independent_readers_spawn_no_processes": true,
+    "runtime_Python_asserts": 0,
+    "Root_receipts_authored_by_worker": 0,
+    "phase_order": [
+      "prepare",
+      "review",
+      "Root_text_acceptance",
+      "native",
+      "build",
+      "Root_linked_plan",
+      "gate_and_independent_code",
+      "Root_provider_selection",
+      "prelaunch",
+      "Root_linked_acceptance",
+      "launch_once",
+      "recorded_independent_decode_and_post_bookends",
+      "seal"
+    ]
+  },
+  "worker_validation": {
+    "selected_audit": "TEXT_static_audit_r02.json",
+    "kind": "AST_literal_and_layout_arithmetic_plus_strict_file_hash_bookends_only",
+    "proposed_helpers_executed_or_imported": 0,
+    "compiler_or_linker_invocations": 0,
+    "task_Native_or_Ghidra_queries": 0,
+    "provider_or_target_execution": 0,
+    "old_runtime_family_access": 0,
+    "Root_family_writes": 0,
+    "frozen_selected_inputs_before_after_equal": true,
+    "earlier_audit": "TEXT_static_audit.json is retained revision history, not final candidate approval"
+  },
+  "key_artifacts": [
+    {
+      "path": "type1011_recipe.py.txt",
+      "bytes": 22727,
+      "sha256": "d9c6313d8986c0f0886b349ea1ffbde4e84020eb3f20cb331e72010cd59704c5"
+    },
+    {
+      "path": "type1011_probe.cpp.txt",
+      "bytes": 13404,
+      "sha256": "cbada3a571fa725e696bd8dc815fa981130c75ada775f78b472521a655483e7c"
+    },
+    {
+      "path": "type1011_gate.py.txt",
+      "bytes": 22788,
+      "sha256": "c06d00eb79e70591d11da0b3a60ce0a74c85da762ee8c307fe841089685795ce"
+    },
+    {
+      "path": "type1011_independent_code_reader.py.txt",
+      "bytes": 21457,
+      "sha256": "c80dcbb97d57262aecc926af2b2b874430aa307e5360cb73ab5537403a53d457"
+    },
+    {
+      "path": "type1011_independent_recorded_reader.py.txt",
+      "bytes": 13400,
+      "sha256": "e79084ffa203cdb25973e1645c0d755212bd0a1c62deabeddea84e204e55b458"
+    },
+    {
+      "path": "linked_plan.schema.json",
+      "bytes": 2319,
+      "sha256": "128ba082c4cb8200d996a82a7128abe9d47c94c0c25f4f809919eadd75902d1f"
+    },
+    {
+      "path": "TEXT_static_audit_r02.json",
+      "bytes": 3579,
+      "sha256": "c4f4d7d91247e73698f0bbc2ee7513b6e07a9f013b5689d6badf2e13336611ef"
+    },
+    {
+      "path": "input_bookends_before.json",
+      "bytes": 17933,
+      "sha256": "904bb6f5892bdb9927351c7f1fe433ae37860e628c9d91b7cec6039405710432"
+    },
+    {
+      "path": "input_bookends_after_r02.json",
+      "bytes": 21333,
+      "sha256": "6a0cba0ee8a49572749d1dfb3d88df97ed56d7bb28b0f0cd039bc0ca7521043e"
+    },
+    {
+      "path": "dependency_TEXT_inputs_before.json",
+      "bytes": 11819,
+      "sha256": "9676fff1376d6b9bbbdc48838f034d1fa308513f534c52a2979f138549099755"
+    },
+    {
+      "path": "current_dependency_TEXT_discovery.json",
+      "bytes": 943,
+      "sha256": "7a1e3fb75939e8c6efb3f1a434d1353060e7380b561f58c12c8e2b9ee63185fc"
+    }
+  ],
+  "seal": {
+    "manifest": "artifact_manifest.json",
+    "receipt": "receipt.json",
+    "exact_root_exclusions": [
+      "artifact_manifest.json",
+      "receipt.json"
+    ],
+    "exact_count_and_manifest_SHA256_location": "local draft receipt.json; final handoff reports exact values",
+    "coverage": "all utilities, TEXT, selected Source/case/dependency/context inputs, earlier/final audits, logs/stops, committed metadata copies and commit/handoff records"
+  },
+  "unqualified": [
+    "emitted machine code",
+    "Native/current ABI-compatible fixture",
+    "actual linked helper and provider closure",
+    "runtime process/captures",
+    "OOM/failure/reentry/naked EH",
+    "Native private CRT/EH",
+    "phase dispatch and class/owner/recursive lifetime",
+    "complete clone/publication",
+    "game/world"
+  ]
+}
