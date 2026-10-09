@@ -1,0 +1,172 @@
+{
+  "status": "construction_context_provider_source_review_and_win32_build_passed_application_binding_open",
+  "worker_commit": "e1620c5cf14a179302c290a7bb0b5312dd0483a6",
+  "source": "src/game_native_player_profile_context.cpp",
+  "header": "include/bsp/game_native_player_profile_context.hpp",
+  "source_fingerprints_before_build": {
+    "utc": "2026-10-09T03:27:35.046534+00:00",
+    "pins": [
+      {
+        "path": "include/bsp/game_native_player_profile_context.hpp",
+        "bytes": 1667,
+        "sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b"
+      },
+      {
+        "path": "src/game_native_player_profile_context.cpp",
+        "bytes": 871,
+        "sha256": "36687e71130eac32af0ac0bec59555fd95df8496e459097d1b68630df41fb36f"
+      },
+      {
+        "path": "include/bsp/native_player_profile_owner.hpp",
+        "bytes": 4505,
+        "sha256": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8"
+      },
+      {
+        "path": "src/native_player_profile_owner.cpp",
+        "bytes": 12427,
+        "sha256": "58d3710ec8fdc8a6985c2da99d3addad3ff56367f7579207499b1fd49c7162d9"
+      },
+      {
+        "path": "include/bsp/native_profile_collections.hpp",
+        "bytes": 2989,
+        "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+      },
+      {
+        "path": "src/native_profile_collections.cpp",
+        "bytes": 4909,
+        "sha256": "af4665083ea39ee1abd2c6d42b6c971486fab01829c0875eaf9f5d18332e523f"
+      },
+      {
+        "path": "src/game_native_settings_process.cpp",
+        "bytes": 7791,
+        "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+      },
+      {
+        "path": "include/bsp/game_native_vfs_runtime.hpp",
+        "bytes": 9565,
+        "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 16294,
+        "sha256": "243e1dd3ddadc0bdf4a71dcf2c3a8f5fe463b516a80500b66a7a752c528f3346"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 198705,
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      }
+    ]
+  },
+  "source_rechecked_unchanged_after_build": true,
+  "literal_spans_independently_rechecked_in_supported_PE": [
+    {
+      "address": "00ce3a0c",
+      "bytes": 1,
+      "hex": "00"
+    },
+    {
+      "address": "00cef794",
+      "bytes": 18,
+      "hex": "676c6f62616c732e6e6577706c6179657200"
+    },
+    {
+      "address": "00cef15c",
+      "bytes": 5,
+      "hex": "52414e4b00"
+    }
+  ],
+  "whole_emitted_object_sha256": "9a1ec03f1e0b83d7c379ad938ce3da6aaeab188ce25570fb4c38e732f8c02078",
+  "roots": [
+    {
+      "symbol": "??0GameNativePlayerProfileContext@game@bsp@@QAE@ABUGameNativeVfsRawServices@12@AAVGameNativeSettingsProcess@12@ABVGameNativeReadOnlyData@12@@Z",
+      "bytes": 176,
+      "instructions": 56,
+      "relocations": [
+        "__ehhandler$??0GameNativePlayerProfileContext@game@bsp@@QAE@ABUGameNativeVfsRawServices@12@AAVGameNativeSettingsProcess@12@ABVGameNativeReadOnlyData@12@@Z",
+        "___security_cookie",
+        "??_7NativePlayerProfileCalls@bsp@@6B@",
+        "?settings@GameNativeSettingsProcess@game@bsp@@QAEAAUNativeGameSettingsStorage@3@XZ",
+        "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+        "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+        "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+        "?profile_context@GameNativeSettingsProcess@game@bsp@@QAEAAUNativeProfileSettingsContext@3@XZ"
+      ]
+    },
+    {
+      "symbol": "?borrow_construction_context@GameNativePlayerProfileContext@game@bsp@@QAEAAUNativePlayerProfileContext@3@XZ",
+      "bytes": 4,
+      "instructions": 2,
+      "relocations": []
+    }
+  ],
+  "local_graph_external_boundaries": [
+    "___security_cookie",
+    "?settings@GameNativeSettingsProcess@game@bsp@@QAEAAUNativeGameSettingsStorage@3@XZ",
+    "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+    "?profile_context@GameNativeSettingsProcess@game@bsp@@QAEAAUNativeProfileSettingsContext@3@XZ",
+    "?allocate_00bf681b@NativeProfileCollectionCalls@bsp@@UAEPAXI@Z",
+    "?allocate_00bf55be@NativeProfileCollectionCalls@bsp@@UAEPAXI@Z",
+    "?free_00bf65ac@NativeProfileCollectionCalls@bsp@@UAEXPAX@Z",
+    "?call_00593570@NativeProfileCollectionCalls@bsp@@UAEXPAXAAVNativeStringStorage@2@@Z",
+    "?call_004c3020@NativePlayerProfileCalls@bsp@@UAEPAXXZ",
+    "?call_007f82f0@NativePlayerProfileCalls@bsp@@UAEPAXXZ",
+    "?call_004c26b0@NativePlayerProfileCalls@bsp@@UAEPAXXZ",
+    "?call_007f8540@NativePlayerProfileCalls@bsp@@UAEPAXXZ",
+    "?call_005826b0@NativePlayerProfileCalls@bsp@@UAEPAXXZ",
+    "?call_004cec60@NativePlayerProfileCalls@bsp@@UAEXPAX0AAVNativeStringStorage@2@@Z",
+    "?call_0058b520@NativePlayerProfileCalls@bsp@@UAEXPAX0AAVNativeStringStorage@2@@Z",
+    "?call_00bf6713@NativePlayerProfileCalls@bsp@@UAEXXZ",
+    "?call_004954f0@NativePlayerProfileCalls@bsp@@UAEPAXPAX00000AAVNativeStringStorage@2@@Z",
+    "?call_007fa880@NativePlayerProfileCalls@bsp@@UAEXPAX0AAVNativeStringStorage@2@@Z",
+    "?call_005070c0@NativePlayerProfileCalls@bsp@@UAEPAIPAXPBXAAVNativeStringStorage@2@@Z",
+    "?call_004d05e0@NativePlayerProfileCalls@bsp@@UAEXPAXAAVNativeStringStorage@2@@Z",
+    "?call_007f8390@NativePlayerProfileCalls@bsp@@UAEPAXPAX0PBE@Z",
+    "?call_007fa3a0@NativePlayerProfileCalls@bsp@@UAEIPAXI@Z",
+    "?call_008d4820@NativePlayerProfileCalls@bsp@@UAEXPAXAAUNativeProfileSettingsContext@2@@Z",
+    "?call_008d41c0@NativePlayerProfileCalls@bsp@@UAEXPAX@Z",
+    "??3@YAXPAXI@Z",
+    "??_7type_info@@6B@",
+    "@__security_check_cookie@4",
+    "___CxxFrameHandler3"
+  ],
+  "owned_calls_review": "Existing NativePlayerProfileCalls and inherited NativeProfileCollectionCalls delegate to real reconstructed allocation/collection/profile functions; no replacement stubs or new defaults added. Provider preparer does not invoke them.",
+  "build": {
+    "started_utc": "2026-10-09T03:27:35.048155+00:00",
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "attempt": 2,
+    "preceding_attempt": "CMake registration before deferred game target existed; configurefailed, no new compilation. Retained attempt01.",
+    "build_pid": 71912,
+    "exit_code": 0,
+    "finished_utc": "2026-10-09T03:27:51.614468+00:00"
+  },
+  "checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "map_roots_absent": true,
+  "lifetime": "Noncopyable/nonmovable provider owns callservice/stablecontext; borrowed VFS strings, ready settings owner/current manager/game/SDK refs and RO data must survive actual profile graph/failed operations. Teardown uses same eventual NativeGameLifetimeCalls and is not provided here.",
+  "credit": {
+    "new_original_functions": 0,
+    "actual_constructor_context_provider": 1,
+    "actual71A0_application_admission": 0,
+    "profile_runtime": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "First configure failed because bsp_game target is deferred; retained attempt01 and fixed same source registration with DEFER. Successful second configure/build/testreceipt retained.",
+    "Whole emitted object and positive local graph reviewed; external providers remain distinct body/lifetime boundaries. No entire compiler/OS/load provenance claim.",
+    "No profile object construction, SDK invocation, reset, publication, table/dispatcher binding, runtime probe or new test executed. Existing finite title run belongs to its earlier retained executable."
+  ]
+}

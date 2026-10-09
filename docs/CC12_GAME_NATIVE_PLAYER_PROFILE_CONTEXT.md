@@ -1,5 +1,15 @@
 # Retained player-profile constructor context
 
+Primary integration: registered through the existing deferred game target and
+build-tested; all three existing checks passed. The emitted preparation and
+borrow roots are 176/4 bytes. The preparation calls only the ready settings
+getter, three checked RO views and the existing process-context accessor;
+the three original literal spans were independently rechecked. Both roots
+remain absent from the game map. See the
+[primary review](../reports/cc12_player_profile_context_primary_review.json).
+The worker's earlier unregistered/unbuilt statements below preserve that phase;
+actual Game/profile construction and teardown are still unbound.
+
 `GameNativePlayerProfileContext` owns one existing concrete
 `NativePlayerProfileCalls` service and one stable `NativePlayerProfileContext`.
 It supplies the missing application-side context provider for the existing
