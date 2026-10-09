@@ -1,3 +1,21 @@
+# Root Type5 isolated fixture qualification
+
+Root admits Source for `008EF2B0` in the successful nonnull current allocator domain. The constructor has 63 bytes/19 instructions; all 59 non-CALL operand bytes remain literal, and only `[35,39)` binds the same qualified 57-byte duplicate. This qualification does not establish a drop-in original-game ABI, private CRT/EH, OOM, owner/class/factory/startup or gameplay equivalence.
+
+The isolated `cc12_type5_fixture_execution/local/type5p3` family completed exactly one prepare, build, static-gate, launch and post. Four fresh Win32 TUs compiled and linked without a BSP archive or old object. All 35 retained defined functions, two weak aliases and 53 complete gated spans were reviewed; the gate covers 9,283 bytes/2,809 instructions, full main/raw captures, cookie/stack and cold delete support. The named generic GS fail-fast frontier remains explicitly outside runtime admission.
+
+The sole fixture process made one Source and one mapped Original constructor call. Two fresh roots and two distinct owned NUL-terminated children produced four allocations and frees. Both Capture132 frames, complete storage56 images, guarded text40 and child6 records pass independent decoding: 33 written/23 poison-preserved bytes, balanced RET12 stack, saved GPRs and defined flags. ECX/EDX/ES are observed values; no universal preservation or AF assertion is made. Children were saved while live and disposed before roots in the reviewed probe; there is no separate allocator trace.
+
+All three selected independent entry points (six reader modules) closed zero before final post. Eight Root entries and fourteen nested children closed zero with exact pre/post input checks and no timeout. Native before/after, original inputs, headers, libraries and prior artifacts agree. The final execution seal lists 762 artifacts/exact763 files; the Root selection namespace seal lists 12,134 artifacts/exact12,135 files. Both remain immutable. The fresh dependency closure contained 12,052 files, 14,513 membership records and 53 scopes, with observed cleared role counts14/16/16, a privately frozen exports snapshot and optional-index absence.
+
+Separate static and saved-runtime peers pass. The latter independently decodes provider PE exports and relocated prefixes, including the UCRT HIGHLOW adjustment. Preentry MEM_IMAGE, AllocationBase, NT-path and GetProcAddress checks rely on the complete reviewed/gated probe, rather than separate raw fields. The post-four-free checks cover IAT/held-handle file-ID and size/full raw SHA/adjusted prefix; they do not repeat those four preentry checks.
+
+No C++ changed for this qualification. The full Win32 fixture build is new; existing Main registration/build/publication history remains preserved. Root records and precise seals are in `reports/cc12_type5_isolated_execution_selection.json` and `reports/native_scene_property_record_type5_storage_cc12.json`. The selected materialization/guard/reader receipts retain Source0; Root's separate qualification grants Source1 for the stated scope.
+
+The earlier V6 failed preparation and V7 unadopted dependency hold are historical Source0 attempts. V8 jointly repaired the three path consumers and closed the private exports/index inputs; no consumed preparation, accepted process or sealed family was replayed. The successful V8 prepare had a later error in Root's own PowerShell stream-variable bookkeeping, after the actual selected process closed zero. Root verified that closure independently and corrected only the caller for later stages.
+
+The earlier failure record follows unchanged.
+
 # Type5 isolated execution selection
 
 The first isolated Type5 selection is retained as a failed **Source=0**
