@@ -1,0 +1,542 @@
+{
+  "schema": "bsp.cc12.pending_registry_owner_construction_readiness.v1",
+  "packet": "cc12_pending_registry_owner_construction_readiness",
+  "kind": "read_only_complete_ordinary_constructor_and_service_identity",
+  "created_utc": "2026-10-09T06:42:53.998397+00:00",
+  "baseline_commit": "98fec2587fdac0a3c4d9fe90e5a30bc05c03a6f3",
+  "claimed_address": "00874BC0",
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "complete_ordinary_constructor_established": true,
+    "ordinary_Source_store_and_service_schedule_recoverable": true,
+    "native_receiver": "ECX actual raw8 owner",
+    "native_return": "EAX same captured receiver",
+    "profile_identity": "00D0DEA0",
+    "section_field": "owner+04",
+    "section_service": "00BD1860 -> pinned create_native_tracked_critical_section_00bd1860",
+    "production_Source_binding_ready": false,
+    "admitted_Source_API": false,
+    "held_dependencies": [
+      "Constructor C963E8 EH/cleanup, original FH3 and hardware-fault boundaries",
+      "Getter C96433 EH and canonical F878CC publication binding",
+      "Registry-owner retirement and actual section lifecycle",
+      "Callable owner-table delivery; D0DEA0 is an identity DWORD here",
+      "Prior common pending storage, callable registration-node profile, phase and independent group bootstrap contracts"
+    ]
+  },
+  "size_gate": {
+    "maximum_bytes": 300,
+    "saved_body_first": "00874BC0",
+    "saved_body_last": "00874C04",
+    "bytes": 69,
+    "passed": true,
+    "saved_prototype": "undefined FUN_00874bc0(void)",
+    "decompiled_prototype": "undefined4* __fastcall FUN_00874bc0(undefined4* param_1)",
+    "physical_input_contract_from_assembly": true,
+    "empty_saved_prototype_not_adopted": true
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verification": "bsp.py ghidra queries invoke Client.verify against configured project/program/language/image base.",
+    "status": "ghidra: up  /battlestationspacific.exe",
+    "count": "live function count 64729; snapshot 64729; same",
+    "fresh_spans": [
+      {
+        "address": "00874BC0",
+        "bytes": 69,
+        "end_inclusive": "00874C04",
+        "purpose": "Complete ordinary registry-owner constructor only",
+        "hex": "6aff68e863c90064a100000000506489250000000051568bf189742404c744241000000000c706a0ded000e870cc35008b4c24088946048bc65e64890d0000000083c410c3",
+        "sha256": "dbd4459a91dddfa42be5d17021ea441644245ea4f24c04bbf5f2167bcbdfbba6",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 69,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00874bc0  6a ff 68 e8 63 c9 00 64 a1 00 00 00 00 50 64 89  j.h.c..d.....Pd.\n00874bd0  25 00 00 00 00 51 56 8b f1 89 74 24 04 c7 44 24  %....QV...t$..D$\n00874be0  10 00 00 00 00 c7 06 a0 de d0 00 e8 70 cc 35 00  ............p.5.\n00874bf0  8b 4c 24 08 89 46 04 8b c6 5e 64 89 0d 00 00 00  .L$..F...^d.....\n00874c00  00 83 c4 10 c3  .....\n"
+      }
+    ],
+    "fresh_GPR_PE_bytes": 69,
+    "body_bytes": 69,
+    "instruction_count": 19,
+    "physical_CALL_count": 1,
+    "instructions": [
+      {
+        "address": "00874BC0",
+        "bytes": 2,
+        "hex": "6aff",
+        "mnemonic": "push",
+        "operands": "-1"
+      },
+      {
+        "address": "00874BC2",
+        "bytes": 5,
+        "hex": "68e863c900",
+        "mnemonic": "push",
+        "operands": "0xc963e8"
+      },
+      {
+        "address": "00874BC7",
+        "bytes": 6,
+        "hex": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "00874BCD",
+        "bytes": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00874BCE",
+        "bytes": 7,
+        "hex": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp"
+      },
+      {
+        "address": "00874BD5",
+        "bytes": 1,
+        "hex": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00874BD6",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00874BD7",
+        "bytes": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "00874BD9",
+        "bytes": 4,
+        "hex": "89742404",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 4], esi"
+      },
+      {
+        "address": "00874BDD",
+        "bytes": 8,
+        "hex": "c744241000000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x10], 0"
+      },
+      {
+        "address": "00874BE5",
+        "bytes": 6,
+        "hex": "c706a0ded000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xd0dea0"
+      },
+      {
+        "address": "00874BEB",
+        "bytes": 5,
+        "hex": "e870cc3500",
+        "mnemonic": "call",
+        "operands": "0xbd1860"
+      },
+      {
+        "address": "00874BF0",
+        "bytes": 4,
+        "hex": "8b4c2408",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 8]"
+      },
+      {
+        "address": "00874BF4",
+        "bytes": 3,
+        "hex": "894604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], eax"
+      },
+      {
+        "address": "00874BF7",
+        "bytes": 2,
+        "hex": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "00874BF9",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00874BFA",
+        "bytes": 7,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "00874C01",
+        "bytes": 3,
+        "hex": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10"
+      },
+      {
+        "address": "00874C04",
+        "bytes": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "calls": [
+      {
+        "address": "00874BEB",
+        "bytes": 5,
+        "hex": "e870cc3500",
+        "mnemonic": "call",
+        "operands": "0xbd1860"
+      }
+    ],
+    "fresh_descendant_or_table_bytes": 0
+  },
+  "native_ABI": {
+    "receiver": "ECX actual writable8-byte receiver, captured in ESI at874BD7 and spilled at874BD9.",
+    "input_extent": "Own stores cover+00..+07. Pinned875280 allocates exactly8 before calling this constructor, corroborating allocation size rather than only an accessed prefix.",
+    "other_inputs": "No EDX or caller stack argument consumed. Entry EAX overwritten by old FS:[0]. Ambient exception chain and native service state are implicit dependencies.",
+    "return_value": "874BF7 MOV EAX,ESI proves same receiver identity after section publication; plain RET874C04.",
+    "preserved": "ESI saved/restored; body does not modify EBX/EDI/EBP. BD1860 service preserves ESI by its pinned current Source body.",
+    "caller_relation": "This closes prior getter allocation-versus-constructor-return uncertainty on ordinary return; getter publication/reload order itself is reused from pinned prior evidence."
+  },
+  "ordered_operations": [
+    {
+      "address": "00874BC0",
+      "operation": "Push stateFFFFFFFF and handlerC963E8; save/install old FS:[0]."
+    },
+    {
+      "address": "00874BD5",
+      "operation": "Reserve receiver spill with PUSH ECX, save ESI, capture ECX receiver in ESI, explicitly store captured receiver in local ESP+4."
+    },
+    {
+      "address": "00874BDD",
+      "operation": "Set full EH state0 at localESP+10 BEFORE the owner profile write and service call."
+    },
+    {
+      "address": "00874BE5",
+      "operation": "Store DWORD D0DEA0 to owner+00. No base profile store or owner-field read occurs first."
+    },
+    {
+      "address": "00874BEB",
+      "operation": "Call actual BD1860 with no explicit arguments. Owner+04 has not been cleared or written by this constructor."
+    },
+    {
+      "address": "00874BF0",
+      "operation": "Load saved old exception-chain pointer into ECX while current frame remains installed."
+    },
+    {
+      "address": "00874BF4",
+      "operation": "Store returned service EAX into owner+04, unconditionally including zero."
+    },
+    {
+      "address": "00874BF7",
+      "operation": "Set EAX to captured ESI receiver, restore caller ESI, restore old FS:[0], remove16 local bytes, plain RET."
+    }
+  ],
+  "owner_writes": [
+    {
+      "address": "00874BE5",
+      "offset": 0,
+      "bytes": 4,
+      "value": "00D0DEA0",
+      "order": 1
+    },
+    {
+      "address": "00874BF4",
+      "offset": 4,
+      "bytes": 4,
+      "value": "EAX returned from actual00BD1860",
+      "order": 2
+    }
+  ],
+  "owner_and_publication": {
+    "successful_byte_coverage": "Both raw DWORDs+00..+07 are written on ordinary return; nothing outside raw8 is accessed.",
+    "preimage": "Owner+04 is not read, freed, zeroed or replaced before the service returns. This is a raw construction contract, not a reset/destructor for an existing lock owner.",
+    "profile": "D0DEA0 is an encoded owner profile identity. No method-table contents or descendant target bodies were queried; no callable Source table is established.",
+    "canonical_publication": "Constructor ordinary body neither reads nor writes F878CC. Pinned875280 publishes this returned receiver only after successful ordinary return.",
+    "owner_identity": "Established from actual receiver, explicit profile/section stores and pinned875280 call/publication; no alias to a same-layout F899E8/E198E0 owner is admitted.",
+    "section_identity": "Returned actual BD1860 section storage; distinct from getter manager+10h captured construction guard."
+  },
+  "reused_actual_section_service": {
+    "native_edge": {
+      "callsite": "00874BEB",
+      "target": "00BD1860",
+      "original_abi": "cdecl/no arguments/EAX tracked section/plain RET"
+    },
+    "current_Source": {
+      "declaration": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "definition": "src/native_renderer_worker_lifetime.cpp",
+      "symbol": "create_native_tracked_critical_section_00bd1860",
+      "allocation": "private allocate_worker_lock receives1Ch; delegates to singleton_lifetime_allocate({critical_section, bytes, bytes}) with native_bytes=host_bytes=1Ch.",
+      "allocator": "Current Source CRT malloc/new-handler/retry/bad_alloc from singleton_lifetime.cpp; no nothrow or larger semantic projection is substituted.",
+      "init": "For nonnull allocation, calls real InitializeCriticalSection; only after its normal return stores DWORD depth+18h=0 and returns that raw section. Null allocation path returns0.",
+      "failures": "Existing service adds no raw allocation cleanup if InitializeCriticalSection raises/fails nonlocally; original CRT/SEH/provider exception identities are not asserted.",
+      "storage": "TrackedCriticalSection is raw1Ch, depth at18h, with current Source static assertions. This layout check supports the actual named service; it does not establish registry-owner aliases."
+    },
+    "prior_audit": "reports/native_renderer_worker_lifetime_audit.json",
+    "prior_service_metadata": {
+      "address": "00bd1860",
+      "length": 39,
+      "end_inclusive": "00bd1886",
+      "name": "create_native_tracked_critical_section_00bd1860",
+      "original_abi": "cdecl no args; EAX raw1Ch tracked section; RET"
+    },
+    "fresh_native_descendant_queries": 0,
+    "service_reimplemented": false
+  },
+  "failure_state_order": {
+    "handler": "00C963E8",
+    "state_sequence": [
+      "FFFFFFFF at prologue",
+      "0 before profile+00 store"
+    ],
+    "state_remaining": "No later state write in the ordinary body; normal return removes the frame.",
+    "boundary_at_service_call": "Receiver already has D0DEA0. The constructor itself has left section+04 at its entry/preexisting value until the call returns.",
+    "service_raises": "Ordinary+04 store is not reached. Subsequent receiver/profile/publication cleanup is not inferable because handler/unwind bodies were excluded.",
+    "service_returns_null": "Owner+04 becomes zero and normal return still yields the receiver; no error branch or assertion exists.",
+    "invalid_receiver": "No null, range or live-owner check. Writable raw8 receiver required; hardware-fault dispatch and mutable exception-spill aliasing are not reproduced or validated.",
+    "no_invented_rollback": "Do not preclear section, free its preimage, clear F878CC, restamp a base table, register/unregister, or add catch/RAII cleanup from another owner contract."
+  },
+  "source_readiness": {
+    "ordinary_body": "Actual receiver/return/store order and fixed existing service boundary are recoverable for a future explicitly scoped Source implementation.",
+    "held": "This read-only packet admits no production constructor/getter binding, cleanup behavior, callable profile, canonical publication ownership or retirement contract.",
+    "Native_FH3_and_fault": "Handler/map/cleanup/SEH internals intentionally not expanded; no original ABI/hardware exception equivalence.",
+    "table_delivery": "Writing D0DEA0 preserves native identity only; callable Source method table and scalar retirement routing remain separate.",
+    "canonical_publication": "Actual F878CC cell and common lifetime must be bound explicitly by later integration; no private/default owner or manager.",
+    "next_bounded_evidence": "Constructor handlerC963E8 and its specifically owned cleanup boundary, separately from getterC96433 and owner retirement; size gate before expanding."
+  },
+  "Source_search": {
+    "paths": [
+      "include",
+      "src"
+    ],
+    "extensions": [
+      ".hpp",
+      ".cpp",
+      ".inc"
+    ],
+    "patterns": [
+      "874bc0",
+      "f878cc",
+      "d0dea0"
+    ],
+    "matches": 0,
+    "conclusion": "No current actual constructor/profile/publication implementation found at baseline."
+  },
+  "prior_evidence": {
+    "report": "reports/cc12_pending_registry_getter_readiness.json",
+    "pin_rechecks": [
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/sound_lifetime_access.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_lock.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/native_pending_entity_lock.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_PRODUCER_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_SPLICE_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      }
+    ],
+    "native_spans_PE_rechecked": [
+      {
+        "address": "00875280",
+        "bytes": 189,
+        "sha256": "bd993ecad5b81a25db47f6144f2e7a8e7208ee6c9b57569493e6eeb0ef15447b",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 189,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "00F878CC",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 4
+      }
+    ],
+    "getter_or_caller_live_queries": 0,
+    "constructor_return_uncertainty_closed": true,
+    "remaining_prior_holds_preserved": true
+  },
+  "Source_and_prior_evidence_pins": [
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_WORKER_LIFETIME.md",
+      "bytes": 10098,
+      "sha256": "60c97fd6304962778d2be6828d627dfb56c2f1620cd56856876a5075187b7860",
+      "lf_sha256": "60c97fd6304962778d2be6828d627dfb56c2f1620cd56856876a5075187b7860"
+    },
+    {
+      "path": "reports/native_renderer_worker_lifetime_audit.json",
+      "bytes": 31753,
+      "sha256": "6df3ccc54bbbfac9af820c1df695730792d5b1907c60d6c419b85ee0b5d9a780",
+      "lf_sha256": "6df3ccc54bbbfac9af820c1df695730792d5b1907c60d6c419b85ee0b5d9a780"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+      "bytes": 9420,
+      "sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf",
+      "lf_sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf"
+    },
+    {
+      "path": "reports/cc12_pending_registry_getter_readiness.json",
+      "bytes": 40457,
+      "sha256": "20f2cdaf05c5799d0b81e6f8050bf8f00c89e26b259c59b5bed351fc2e4795f2",
+      "lf_sha256": "b1b279d58971fe11ddf69c4d4883be18e1535f72789519ed38bca7f713d260e5"
+    }
+  ],
+  "validation": {
+    "fresh_windows": 1,
+    "fresh_GPR_PE_bytes": 69,
+    "body_instructions": 19,
+    "physical_calls": 1,
+    "independent_complete_body_decode": true,
+    "full_PE_hash_rechecked": true,
+    "source_and_prior_pins": 9,
+    "inherited_pin_rechecks": 16,
+    "inherited_PE_windows": 2,
+    "JSON_parse": true,
+    "source_edits": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_CMake_mutations": 0,
+    "descendant_body_queries": 0,
+    "EH_queries": 0,
+    "retirement_queries": 0,
+    "table_body_queries": 0,
+    "getter_or_caller_queries": 0,
+    "group_bootstrap_queries": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_runs": 0,
+    "new_Original_credit": 0
+  },
+  "limits": [
+    "Complete ordinary constructor only; provider behavior is reused through current pinned Source and existing audit.",
+    "No callable profile, constructor/getter EH, owner retirement, canonical publication or complete pending-registry composition claim.",
+    "No new Source/Native/Original ABI/game-validation credit."
+  ]
+}
