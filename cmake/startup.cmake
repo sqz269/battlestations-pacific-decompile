@@ -1689,3 +1689,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_mission_entity_lua_self_refresh.cpp)
 # Complete 00952640 actual three-DWORD constructor; array lifetime stays separate.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_unit_gunnery_category_header.cpp)
+# Qualified post-parent unit tick registration/publication business fragment.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_unit_tick_receiver_fragment.cpp)
