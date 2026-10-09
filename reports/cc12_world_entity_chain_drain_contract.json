@@ -1,0 +1,244 @@
+{
+  "schema": "bsp.cc12.world_entity_chain_drain_contract.v1",
+  "packet": "cc12_world_entity_chain_drain_contract",
+  "status": "READ_ONLY_BOUNDED_ACTUAL_STORAGE_CONTRACT_READY_WITH_EXISTING_CONCRETE_DISPATCH_ENTITY_OWNER_PROFILE_EXTERNAL",
+  "native": {
+    "adapter": {
+      "address": "00904390",
+      "bytes": 8,
+      "instructions": 2,
+      "operation": "ECX=[World+4]; tail009041A0"
+    },
+    "drain": {
+      "address": "009041A0",
+      "bytes": 100,
+      "instructions": 43,
+      "abi": "ECX actual header; no stacked arguments; plainRET; ESI/EDI saved"
+    },
+    "producer": {
+      "address": "009037F0",
+      "bytes": 89,
+      "instructions": 34,
+      "header": "first separately allocated12-byte header published atWorld+4 before second allocation"
+    },
+    "header_layout": {
+      "0": "first actual entity pointer",
+      "4": "last actual entity pointer",
+      "8": "DWORD count"
+    },
+    "entity_layout": {
+      "0": "actual callable primary table",
+      "34": "previous entity pointer",
+      "38": "next entity pointer"
+    },
+    "separate_payload_node": false,
+    "header_receiver_cached_for_entire_loop": true,
+    "world_4_reloaded_in_loop": false,
+    "entry_count_zero": "return without head read or normalization",
+    "unlink_condition": "previous!=0 OR next!=0 OR signed32(count)<=1",
+    "unlink_order": [
+      "previous.next or header.first",
+      "reload entity.next; next.previous or header.last",
+      "entity.next=0",
+      "entity.previous=0",
+      "DWORD count decremented"
+    ],
+    "destruction": {
+      "site": "009041FA",
+      "receiver": "actual current entity ECX",
+      "table_byte_slot": 0,
+      "flags": 1,
+      "return_ignored": true
+    },
+    "after_call": "reload retained header.count; if nonzero reload retained header.first; never read destroyed entity",
+    "stalled_exit": false,
+    "iteration_bound": false,
+    "null_head_guard": false,
+    "local_eh_or_rollback": false,
+    "throw_state": "previous unlink/count writes remain; exception propagates; no next iteration/header free",
+    "frees_header_or_world": false
+  },
+  "current_source_comparison": {
+    "projected_drain": {
+      "source": "src/world_deferred_destroy.cpp",
+      "host": "WorldDeferredDestroyHost",
+      "extra_stalled_exit": true,
+      "actual_storage_entry": false,
+      "production_src_host_subclass_found": false
+    },
+    "expiry_binding": {
+      "source": "src/game_hosts_ready.cpp",
+      "behavior": "log unimplemented, increment released, set index-token expiry counter-1",
+      "actual_scalar_delete": false
+    },
+    "general_game_virtual_scalar": {
+      "header": "include/bsp/native_game_lifetime.hpp",
+      "concrete_default": false,
+      "pure_virtual": true
+    },
+    "entity_id_profile": {
+      "header": "include/bsp/native_entity_id_tables.hpp",
+      "native_thiscall_compatible": false
+    },
+    "game_owner_scalar": {
+      "source": "src/game_native_game_runtime.cpp",
+      "qualified_identity": "own exact Game owner only",
+      "world_entity_substitute": false
+    }
+  },
+  "existing_real_dispatch": {
+    "class": "NativeGamePhysicsLifetimeCalls",
+    "method": "physics_virtual_scalar",
+    "source": "src/native_game_physics_lifetime.cpp",
+    "header": "include/bsp/native_game_physics_lifetime.hpp",
+    "registered": "cmake/startup.cmake:164",
+    "method_type": "void* (__thiscall*)(void*, std::uint32_t)",
+    "word_access": "actual32-bit table pointer and volatile32-bit entry read at byte offset",
+    "required_arguments": {
+      "receiver": "actual entity",
+      "byte_slot": 0,
+      "flags": 1
+    },
+    "concrete_default_body_exists": true,
+    "mechanically_supports_required_call": true,
+    "catch_or_diagnostic_or_stub": false,
+    "noexcept": false,
+    "flags_forwarded_unchanged": true,
+    "return_ignored": true,
+    "must_bind_concrete_default_or_independently_qualified_real_override": true,
+    "numeric_original_image_tables_callable": false,
+    "world_entity_lifetime_qualified_by_service_alone": false,
+    "new_emitted_body_or_runtime_evidence_added": false
+  },
+  "next_implementation_contract": {
+    "bounded_actual_storage_consumer_ready": true,
+    "inputs": [
+      "actual producer-compatible NativeWorldChainHeader",
+      "existing concrete lifetime call service",
+      "actual live entities with compatible current callable primarytable and qualified flags1 lifetime"
+    ],
+    "new_stub_callback_required": false,
+    "reuse_current_projected_stall_exit": false,
+    "must_not_be_noexcept": true,
+    "must_not_cache_next_across_delete": true,
+    "must_keep_header_alive_across_callbacks": true,
+    "must_not_free_header_or_owner": true,
+    "production_entity_owner_table_lifetime_ready": false,
+    "full_world_table_or_normal_destructor_ready": false,
+    "whole_polymorphic_family_audited": false,
+    "source_implemented_here": false
+  },
+  "verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "live_target_verified_by_each_cli_request": true,
+    "writes": [
+      "docs/CC12_WORLD_ENTITY_CHAIN_DRAIN_CONTRACT.md",
+      "reports/cc12_world_entity_chain_drain_contract.json"
+    ],
+    "Source_credit": 0,
+    "source_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "ghidra_mutations": 0,
+    "shared_metadata_changes": 0,
+    "observed_utc": "2026-10-09T03:30:07.175986+00:00",
+    "native_live_disk_bytes_equal": 197,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "baseline_revision": "5296c2b72690fea4b562f481896646659db4e677",
+  "native_live_disk_spans": [
+    {
+      "address": "00904390",
+      "bytes": 8,
+      "instructions": 2,
+      "hex": "8b4904e908feffff",
+      "sha256": "b5b9af4dac292b2e2cf26d401fec8ead78ff71fba517dbb94da4891d02f07257",
+      "live_disk_equal": true
+    },
+    {
+      "address": "009041A0",
+      "bytes": 100,
+      "instructions": 43,
+      "hex": "56578bf133ff397e087456eb038d49008b0e8b41343bc7750f3979387506837e08017f303bc774088b5138895038eb058b413889068b41383bc774088b5134895034eb068b4134894604897938897934834608ff8b118b026a01ffd0397e0875af5f5ec3",
+      "sha256": "c11521d998a283dcf66326d6fc80325835474ecca7a24637fa796f676d5aa73a",
+      "live_disk_equal": true
+    },
+    {
+      "address": "009037F0",
+      "bytes": 89,
+      "instructions": 34,
+      "hex": "8a44240456578bf133ff6a0c89bea80400008886a4040000e80e302f0083c4043bc7740a8978048938897808eb0233c06a0c894604e8f12f2f0083c4043bc7741089780489388978085f8946085ec20800897e085f5ec20800",
+      "sha256": "a78634c872f6a342bbab2641f25a04679590a448431ae363b6a45fd3cd480689",
+      "live_disk_equal": true
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "src/native_world_chain_headers.cpp",
+      "bytes": 2305,
+      "sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383"
+    },
+    {
+      "path": "include/bsp/world_deferred_destroy.hpp",
+      "bytes": 4764,
+      "sha256": "2e0a97f8f7180ef5eb782227814c4803a45968ffdac1909971bc292da869ee90"
+    },
+    {
+      "path": "src/world_deferred_destroy.cpp",
+      "bytes": 2313,
+      "sha256": "969483b6e8a651298578ec5f16532997c68d4f696542f0525ef54f2823566534"
+    },
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "bytes": 30809,
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9292,
+      "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889"
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "bytes": 6288,
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+    },
+    {
+      "path": "src/native_game_physics_lifetime.cpp",
+      "bytes": 13632,
+      "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+    },
+    {
+      "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+      "bytes": 3135,
+      "sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1"
+    },
+    {
+      "path": "include/bsp/native_entity_id_tables.hpp",
+      "bytes": 2513,
+      "sha256": "0b77ca62b83a1835b9351276ed8d1c8aadbb95977637825c2bfc60bb345c015a"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "bytes": 4780,
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca"
+    }
+  ]
+}
