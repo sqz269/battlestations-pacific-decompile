@@ -1,0 +1,15 @@
+# Type10/11 isolated Root execution selection
+
+Root has verified three cleared environment roles with its own benign observers. This is Source credit0 infrastructure evidence; all13 constructor-fixture selections remain null. The selected Job supervisor, driver, bootstrap, recipe, readers, Native tools, compiler, providers and constructors have not executed in this new family.
+
+The successful observation is sealed in `local/Root_type1011_roles02`: 30 artifacts/exact31 files, seal SHA256 `a181481dd585241a9d5ee20f4e017ea9d323edb1525a1c98072e88dccdfe3202`. Root independently checked full actual maps, image/cwd/argv, module-origin files, all selected DATA pins, process closure and absence guards. The observed counts are external host15, root Python11 and effective recipe Python13. The effective map derives from the actual observed root map and the byte-pinned candidate recipe's AST formula. Full maps and actual argv/origins remain in private local records.
+
+The first own observation stopped at the external-host map guard: PowerShell7 prepended PS_HOME to PATH. No root/effective Python observer started. Its failed family remains sealed in `local/Root_type1011_roles01`, 15 artifacts/exact16 files, seal SHA256 `ae40589dd5e897edddc0406c621bd7c52a31bb296d51060fc0476fb8d56a1bd1`. The fresh successful case selected that prefix in the external host map. Both helpers stayed byte-identical to the peer TEXT and every equality guard stayed intact; the two Python maps stayed unchanged.
+
+The observers used `C:/Program Files/PowerShell/7/pwsh.exe` and `C:/ProgramData/miniconda3/python.exe`. Each actual child closed with exit0, complete stdout/stderr and no timeout. Python used `-I -B -E -S -X pycache_prefix=...`; its chosen cache stayed empty. Root's optional SQLite index and future `local/type1011p2` family remain absent. `local/type1011select01` contains initial Root-owned snapshot/temp/coordination infrastructure only, with historical frozen `snapshot.json`321B SHA256 `5ea48b1bedbf37dcb69b562260e55dd12b70fa5315cf070b0e457dde3d0e82f3`.
+
+Python resident module-origin file evidence is narrower than a complete OS mapped-DLL inventory. The own observer route does not establish selected Job routing, supervisor quoting, Job accounting/cleanup, or the original540/560/600-second timeout contract. Those obligations remain for fresh Root selection and guarded execution.
+
+The candidate recipe still requires full TEXT review, a fresh immutable materialization draft, fresh complete dependency closure, explicit Root selections/receipts and complete linked-machine/provider review before constructor entry. Type10 `008EF3E0` and Type11 `008EF460` remain limited to their documented raw-storage interfaces; no new private-game allocator/EH, OOM, class ownership, startup, ABI-replacement or gameplay evidence is granted here.
+
+Machine-contract TEXT review proceeds independently in the existing fixture-review worker. The integrator retains selection, receipt, actual execution and qualification authority. See the accompanying [report](../reports/cc12_type10_type11_isolated_execution_selection.json) for immutable pins and outstanding work.
