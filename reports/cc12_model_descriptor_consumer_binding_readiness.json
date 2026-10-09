@@ -739,5 +739,12 @@
     "whole_CRT_or_absolute_numbering": false,
     "new_build_or_startup": false,
     "gameplay": false
+  },
+  "primary_review": {
+    "worker_commit": "ff33b5fb5",
+    "worker_report_committed_LF_sha256": "da3fe3600411bc6cb49e59ceb7c14e25a60987399074bfb6cf14e3e8a7a5da54",
+    "pin_occurrences_replayed": 74,
+    "evidence": "Root reviewed ownership, earliest existing consumers, missing actual callers and proposed production pool startup; independently replayed report pins on current sources or explicit retained historical artifacts. No new Native read, build, consumer or runtime credit.",
+    "approved_next_packet": "Actual production model and model-base pool startup using existing retained domains and real game_main caller."
   }
 }
