@@ -1,5 +1,6 @@
 #include "bsp/native_legacy_exception_owner.hpp"
 
+#include "bsp/native_allocator_base_cleanup.hpp"
 #include "bsp/native_allocator_base_copy_constructor.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -26,14 +27,9 @@ void construct_base(NativeLegacyExceptionStorage& owner) noexcept {
 }
 
 void destroy_base(NativeLegacyExceptionStorage& owner) noexcept {
-    // 00BF6454..00BF646A tests ownership BEFORE publishing the base table.
-    // Message/ownership fields remain unchanged, including after a real free.
-    volatile auto& actual = owner;
-    const auto owned = actual.owns_base_message_08;
-    actual.native_vtable_00 = exception_vtable;
-    if (owned != 0) {
-        std::free(actual.base_message_04);
-    }
+    // Original cleanup 00BF6454..00BF6469, 22 bytes. The actual typed owner
+    // supplies leading 0Ch backing; the raw call adds no local field reset.
+    cleanup_native_allocator_base_00bf6454(&owner, 0u);
 }
 
 struct BaseUnwindCleanup {
