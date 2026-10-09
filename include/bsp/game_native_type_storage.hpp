@@ -5,6 +5,8 @@
 #include "bsp/native_stream_type_ids.hpp"
 #include "bsp/native_mesh_subset_loading.hpp"
 #include "bsp/native_resource_extra_type_ids.hpp"
+#include "bsp/model_type_bootstrap.hpp"
+#include "bsp/native_model_base_bootstrap.hpp"
 
 #include <cstdint>
 
@@ -30,10 +32,14 @@ public:
     NativeMeshResourceTypeStorage& mesh_resource_types() noexcept { return mesh_resource_types_; }
     NativeGameResourceSelectorStorage& resource_selectors() noexcept { return resource_selectors_; }
     NativeResourceExtraTypeIdStorage& resource_extra_types() noexcept { return resource_extra_types_; }
+    // Borrow the canonical live cells; these views do not initialize or copy IDs.
+    // Borrowers must finish before this process owner is destroyed.
+    ModelTypeBootstrapStorage& model_types() noexcept;
+    ModelBaseTypeStorage& model_base_types() noexcept;
 
     // Recovered relative CRT order: CCEC00/CCF740/CCF980 selectors, then
-    // CD7D80 camera, CD82F0/CD8340 extra resource types and CD8690/CD86F0/CD87B0 mesh types,
-    // all before the stream types below.
+    // CD7D80 camera, CD7E60 model, CD7EB0 model-base, CD82F0/CD8340 extra
+    // resource types and CD8690/CD86F0/CD87B0 mesh types, before stream types.
     // Other native CRT entries remain separate; this does not promise their
     // execution or original absolute numeric IDs. All represented families
     // share this application's counter/root/scene and stable selector cells.
@@ -90,6 +96,17 @@ private:
     NativeMeshResourceTypeStorage mesh_resource_types_;
     NativeGameResourceSelectorStorage resource_selectors_;
     NativeResourceExtraTypeIdStorage resource_extra_types_;
+
+    // Append backing and views so the existing cells retain their host offsets.
+    // These names describe Native roles, not fixed-address mappings. The model
+    // descriptor's existing type and the model-base interface both name four
+    // DWORDs: own, node, root and Native name address, in that order.
+    volatile std::uint8_t model_guard_01090030_{};
+    volatile ModelTypeDescriptor model_01090034_{};
+    volatile std::uint8_t model_base_guard_01090031_{};
+    volatile std::uint32_t model_base_01090044_[4]{};
+    ModelTypeBootstrapStorage model_types_;
+    ModelBaseTypeStorage model_base_types_;
 };
 
 } // namespace bsp::game

@@ -1,0 +1,641 @@
+{
+  "schema": "bsp.cc12.native_crt_free_unlock_helper_Source.v1",
+  "created_utc": "2026-10-09T22:35:24.208482+00:00",
+  "status": "complete_Source_candidate_strict_Win32_object_checked_Root_admission_pending",
+  "scope": {
+    "packet": "cc12_native_crt_free_unlock_helper_Source",
+    "Native_address": "00BF9E1E",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi",
+    "branch": "agent/cc12_unit_numbering_virtual_query_abi",
+    "candidate_parent_commit": "c99f59ffc24dab790704e654b279302672c2d32a",
+    "merged_main_commit": "3280415d2eac569194e01565d0c34591ce5edd16",
+    "owned_files": [
+      "include/bsp/native_crt_free_unlock_helper.hpp",
+      "src/native_crt_free_unlock_helper.cpp",
+      "docs/CC12_NATIVE_CRT_FREE_UNLOCK_HELPER_SOURCE.md",
+      "reports/cc12_native_crt_free_unlock_helper_source.json"
+    ],
+    "Native_child_or_data_queries": 0,
+    "GPR_mutations": 0,
+    "ledger_mutations": 0,
+    "CMake_changes": 0,
+    "new_tests": 0,
+    "new_probe_executables": 0
+  },
+  "native_gate": {
+    "provenance": "Approved complete read-only gate from commit 630ae44bcdfdb770270f0c8e00ef758d5f0782ae; reused without another Native body/data query",
+    "prior_report_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\reports\\cc12_gunnery_unsized_free_provider_readiness.json",
+      "bytes": 36436,
+      "sha256": "f673c5f61fcb19b98b82d394fde9022c0052ec3242bfeaa5c7bba904d381c627"
+    },
+    "range": "00BF9E1E..00BF9E26",
+    "bytes": 9,
+    "physical_ops": 4,
+    "native_bytes": "6a04e80c7d010059c3",
+    "native_sha256": "851c6aed22514b3169b21db40740ec407cda2f0be832b2a0b59e427a75e09175",
+    "PE_equals_live_bytes": true,
+    "exact_live_and_saved_starts_match": true,
+    "separate_live_function": true,
+    "ops": [
+      {
+        "address": "00BF9E1E",
+        "size": 2,
+        "bytes": "6a04",
+        "asm": "push 4",
+        "live": "PUSH 0x4",
+        "partition": "cleanup_helper"
+      },
+      {
+        "address": "00BF9E20",
+        "size": 5,
+        "bytes": "e80c7d0100",
+        "asm": "call 0xc11b31",
+        "live": "CALL 0x00c11b31",
+        "partition": "cleanup_helper"
+      },
+      {
+        "address": "00BF9E25",
+        "size": 1,
+        "bytes": "59",
+        "asm": "pop ecx",
+        "live": "POP ECX",
+        "partition": "cleanup_helper"
+      },
+      {
+        "address": "00BF9E26",
+        "size": 1,
+        "bytes": "c3",
+        "asm": "ret ",
+        "live": "RET",
+        "partition": "cleanup_helper"
+      }
+    ],
+    "qualification": "Local ordinary CALL target, independent of containing discontiguous free function. Unopened SEH table is not admitted."
+  },
+  "Source_contract": {
+    "public_declaration": "void __cdecl bsp::unlock_native_crt_free_lock4_00bf9e1e()",
+    "implementation": "MSVC Win32 naked function; exact PUSH4/CALL genuine declared canonical unlock/POP ECX/RET",
+    "child_declaration": "void __cdecl bsp::unlock_native_crt_canonical_00c11b31(std::int32_t)",
+    "preconditions": [
+      "Readable actual canonical DWORD descriptor at 00E16478+4*8 = 00E16498",
+      "Descriptor points to valid initialized Win32 CRITICAL_SECTION already acquired by the calling thread and remains valid through LeaveCriticalSection",
+      "Normal child return follows its real cdecl contract; no fabricated callback, substituted heap/lock, private global copy or initialized storage"
+    ],
+    "registers_and_stack": [
+      "No input argument words, no own stack frame, no EBP-relative accesses",
+      "PUSH4 introduces the genuine child's argument; CALL pushes its return; the returning child leaves argument for POP ECX",
+      "POP ECX preserves the original instruction and gives ECX=4 on normal child return; plain RET consumes only the helper continuation",
+      "EAX/EDX and arithmetic flags retain child residual state; no meaningful return status, no zeroing or replacement ADD/tail jump",
+      "Callee-preserved registers follow genuine child/Win32 API contracts; own helper does not write them"
+    ],
+    "EH_limits": "No noexcept, catch/translation, added SEH owner or exception promise. No original table/unwind admission or fault-PC identity."
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_crt_free_unlock_helper.hpp",
+      "bytes": 864,
+      "sha256": "9cb0f84c8a7c4c08947f85c9cd2d354ee380135d35ef29be8cc842eb9b7b8753"
+    },
+    {
+      "path": "src/native_crt_free_unlock_helper.cpp",
+      "bytes": 619,
+      "sha256": "d61d134fc001427249f89fa6fa7842bff991e2afea83c2ad000a7483c4753b1b"
+    },
+    {
+      "path": "include/bsp/native_crt_canonical_unlock.hpp",
+      "bytes": 876,
+      "sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+      "integrator_LF_match": true
+    },
+    {
+      "path": "src/native_crt_canonical_unlock.cpp",
+      "bytes": 760,
+      "sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+      "integrator_LF_match": true
+    }
+  ],
+  "compile": {
+    "kind": "Single real Source object only, no executable, fixture or CMake mutation",
+    "command": "cmd /d /c local/cc12_free_unlock_compile.cmd",
+    "exit_code": 0,
+    "compiler_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+    "compiler_version": "19.51.36244.0",
+    "compiler_pin": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    "setup": "Same Visual Studio 18 Community selected by scripts/build.ps1; VsDevCmd -arch=x86 -host_arch=x64. Effective Release code-generation/warning flags taken from existing bsp_core CL command.",
+    "flags": "/c /W4 /WX /O2 /Ob2 /Oy- /D_MBCS /DWIN32 /D_WINDOWS /DNDEBUG /EHsc /MD /fp:strict /std:c++17 /external:W0 /TP /analyze-",
+    "setup_and_command_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_free_unlock_compile.cmd",
+        "bytes": 267,
+        "sha256": "f2b751538b43f853d290fe32b1cfb7f09a2e08084ca83041797fe716b55287b6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_free_unlock_compile.rsp",
+        "bytes": 482,
+        "sha256": "31b78b6b092b7775a00e6d99247495f1494b91f5cb421b75c39a45e1dae9c53b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_free_unlock_compile.log",
+        "bytes": 35,
+        "sha256": "45dcc6a002a9ac37b463ff89922835007e3095c68ac8b9d994028094f23bd543"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_free_unlock_compiler_path.txt",
+        "bytes": 208,
+        "sha256": "b547859a8eb3e178c2291f85487a4bc17a417de69f441deca70a4805f6201b23"
+      }
+    ],
+    "normal_full_build_run_here": false,
+    "normal_full_build_owner": "Root after CMake registration"
+  },
+  "emitted_whole_object_review": {
+    "helper_code_sections": 1,
+    "helper_code_bytes": 9,
+    "helper_instructions": 4,
+    "helper_call_count": 1,
+    "helper_code_hex": "6a04e80000000059c3",
+    "all_bytes_except_direct_call_displacement_match_native": true,
+    "indexed_relocation": {
+      "offset": 3,
+      "type": "IMAGE_REL_I386_REL32 (0x14)",
+      "symbol_index": 9,
+      "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z"
+    },
+    "resolution": "Exact strong symbol found at provider COFF symbol index8, section3, value0. This is object-to-object relocation resolution evidence, not an executable/core-library link.",
+    "provider_code_bytes": 21,
+    "provider_instructions": 7,
+    "provider_import": "__imp__LeaveCriticalSection@4",
+    "provider_import_relocation": {
+      "offset": 15,
+      "type": "IMAGE_REL_I386_DIR32 (6)",
+      "symbol_index": 9
+    },
+    "noncode_sections": [
+      ".drectve: only MSVCRT/OLDNAMES defaults, no relocations",
+      ".debug$S: object path/compiler metadata, no relocations",
+      ".chks64: compiler checksum data, no relocations"
+    ],
+    "no_other_executable_sections": true,
+    "no_hidden_calls_or_EH_data": true,
+    "complete_COFF_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_free_unlock_complete_coff.json",
+      "bytes": 11088,
+      "sha256": "d26e7f54f7c1acd5f0c7a1daf65f14b70823ff1cefee07414500fe5d2761059f"
+    },
+    "full_indexed_COFF": {
+      "created_utc": "2026-10-09T22:33:38.518191+00:00",
+      "helper": {
+        "pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\native_crt_free_unlock_helper.obj",
+          "bytes": 798,
+          "sha256": "e851fb864240e372d220e04552021641d40b35529ce94cae3edf2501948e2200"
+        },
+        "machine": "0x14c",
+        "declared_symbol_records_including_aux": 12,
+        "primary_symbol_record_count": 8,
+        "sections": [
+          {
+            "index": 1,
+            "name": ".drectve",
+            "raw_size": 47,
+            "characteristics": "0x100a00",
+            "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+            "raw_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+            "relocations": []
+          },
+          {
+            "index": 2,
+            "name": ".debug$S",
+            "raw_size": 200,
+            "characteristics": "0x42100040",
+            "sha256": "32243178e08e11cc30b5aad71351cc50f589ba26fc4edc6f08536aafb5d2bf3b",
+            "raw_hex": "04000000f1000000bb0000007d000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d636331325f756e69745f6e756d626572696e675f7669727475616c5f71756572795f6162695c6c6f63616c5c6e61746976655f6372745f667265655f756e6c6f636b5f68656c7065722e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c65720000",
+            "relocations": []
+          },
+          {
+            "index": 3,
+            "name": ".text$mn",
+            "raw_size": 9,
+            "characteristics": "0x60501020",
+            "sha256": "96f2733d930a328bab933f84684ed150bc93383b913c25a2cb51e56a65a60a70",
+            "raw_hex": "6a04e80000000059c3",
+            "relocations": [
+              {
+                "offset": 3,
+                "symbol_index": 9,
+                "type": 20,
+                "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+                "target_symbol_record": {
+                  "index": 9,
+                  "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+                  "value": 0,
+                  "section": 0,
+                  "type": 32,
+                  "storage": 2,
+                  "aux_count": 0
+                }
+              }
+            ],
+            "instructions": [
+              {
+                "offset": 0,
+                "size": 2,
+                "bytes": "6a04",
+                "asm": "push 4"
+              },
+              {
+                "offset": 2,
+                "size": 5,
+                "bytes": "e800000000",
+                "asm": "call 7"
+              },
+              {
+                "offset": 7,
+                "size": 1,
+                "bytes": "59",
+                "asm": "pop ecx"
+              },
+              {
+                "offset": 8,
+                "size": 1,
+                "bytes": "c3",
+                "asm": "ret "
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "name": ".chks64",
+            "raw_size": 32,
+            "characteristics": "0xa00",
+            "sha256": "6240e57ad169c356182a831fe3fdfb9e153b1a886813fe2fdca55594e34aa386",
+            "raw_hex": "76f6abfb5648dec732243178e08e11cc96f2733d930a328b0000000000000000",
+            "relocations": []
+          }
+        ],
+        "symbols": [
+          {
+            "index": 0,
+            "name": "@comp.id",
+            "value": 17141140,
+            "section": -1,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 0
+          },
+          {
+            "index": 1,
+            "name": "@feat.00",
+            "value": 2147549585,
+            "section": -1,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 0
+          },
+          {
+            "index": 2,
+            "name": ".drectve",
+            "value": 0,
+            "section": 1,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "2f0000000000000000000000000000000000"
+          },
+          {
+            "index": 4,
+            "name": ".debug$S",
+            "value": 0,
+            "section": 2,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "c80000000000000000000000000000000000"
+          },
+          {
+            "index": 6,
+            "name": ".text$mn",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "0900000001000000a7985c14000001000000"
+          },
+          {
+            "index": 8,
+            "name": "?unlock_native_crt_free_lock4_00bf9e1e@bsp@@YAXXZ",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0
+          },
+          {
+            "index": 9,
+            "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0
+          },
+          {
+            "index": 10,
+            "name": ".chks64",
+            "value": 0,
+            "section": 4,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "200000000000000000000000000000000000"
+          }
+        ]
+      },
+      "provider": {
+        "pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\bsp_core.dir\\Release\\native_crt_canonical_unlock.obj",
+          "bytes": 802,
+          "sha256": "39da5fa1a78fc93aa9488008ddf1fc5bfe3f838a97be52c6db1dcc2aa8982619"
+        },
+        "machine": "0x14c",
+        "declared_symbol_records_including_aux": 12,
+        "primary_symbol_record_count": 8,
+        "sections": [
+          {
+            "index": 1,
+            "name": ".drectve",
+            "raw_size": 47,
+            "characteristics": "0x100a00",
+            "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+            "raw_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d45532220",
+            "relocations": []
+          },
+          {
+            "index": 2,
+            "name": ".debug$S",
+            "raw_size": 212,
+            "characteristics": "0x42100040",
+            "sha256": "f88cac5c6a59d4864074e0f72ecbc68222ec293006cc59717fb5843bb3666019",
+            "raw_hex": "04000000f1000000c500000087000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d636331325f726573756d655f696e7465677261746f725c6275696c645c77696e33325c6273705f636f72652e6469725c52656c656173655c6e61746976655f6372745f63616e6f6e6963616c5f756e6c6f636b2e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200000000",
+            "relocations": []
+          },
+          {
+            "index": 3,
+            "name": ".text$mn",
+            "raw_size": 21,
+            "characteristics": "0x60501020",
+            "sha256": "08d601e12a0fd1c90a51c8c9e1541e19264960aa0bb18c8bf7394bda9c11f0a6",
+            "raw_hex": "558bec8b4508ff34c57864e100ff15000000005dc3",
+            "relocations": [
+              {
+                "offset": 15,
+                "symbol_index": 9,
+                "type": 6,
+                "symbol": "__imp__LeaveCriticalSection@4",
+                "target_symbol_record": {
+                  "index": 9,
+                  "name": "__imp__LeaveCriticalSection@4",
+                  "value": 0,
+                  "section": 0,
+                  "type": 0,
+                  "storage": 2,
+                  "aux_count": 0
+                }
+              }
+            ],
+            "instructions": [
+              {
+                "offset": 0,
+                "size": 1,
+                "bytes": "55",
+                "asm": "push ebp"
+              },
+              {
+                "offset": 1,
+                "size": 2,
+                "bytes": "8bec",
+                "asm": "mov ebp, esp"
+              },
+              {
+                "offset": 3,
+                "size": 3,
+                "bytes": "8b4508",
+                "asm": "mov eax, dword ptr [ebp + 8]"
+              },
+              {
+                "offset": 6,
+                "size": 7,
+                "bytes": "ff34c57864e100",
+                "asm": "push dword ptr [eax*8 + 0xe16478]"
+              },
+              {
+                "offset": 13,
+                "size": 6,
+                "bytes": "ff1500000000",
+                "asm": "call dword ptr [0]"
+              },
+              {
+                "offset": 19,
+                "size": 1,
+                "bytes": "5d",
+                "asm": "pop ebp"
+              },
+              {
+                "offset": 20,
+                "size": 1,
+                "bytes": "c3",
+                "asm": "ret "
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "name": ".chks64",
+            "raw_size": 32,
+            "characteristics": "0xa00",
+            "sha256": "13cccd303ae995f851ffc0a26659b9556e944f90dc9fcf48b4fd0929fd6a6aeb",
+            "raw_hex": "76f6abfb5648dec7f88cac5c6a59d48608d601e12a0fd1c90000000000000000",
+            "relocations": []
+          }
+        ],
+        "symbols": [
+          {
+            "index": 0,
+            "name": "@comp.id",
+            "value": 17141140,
+            "section": -1,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 0
+          },
+          {
+            "index": 1,
+            "name": "@feat.00",
+            "value": 2147549585,
+            "section": -1,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 0
+          },
+          {
+            "index": 2,
+            "name": ".drectve",
+            "value": 0,
+            "section": 1,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "2f0000000000000000000000000000000000"
+          },
+          {
+            "index": 4,
+            "name": ".debug$S",
+            "value": 0,
+            "section": 2,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "d40000000000000000000000000000000000"
+          },
+          {
+            "index": 6,
+            "name": ".text$mn",
+            "value": 0,
+            "section": 3,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "15000000010000005686e959000001000000"
+          },
+          {
+            "index": 8,
+            "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+            "value": 0,
+            "section": 3,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0
+          },
+          {
+            "index": 9,
+            "name": "__imp__LeaveCriticalSection@4",
+            "value": 0,
+            "section": 0,
+            "type": 0,
+            "storage": 2,
+            "aux_count": 0
+          },
+          {
+            "index": 10,
+            "name": ".chks64",
+            "value": 0,
+            "section": 4,
+            "type": 0,
+            "storage": 3,
+            "aux_count": 1,
+            "aux_hex": "200000000000000000000000000000000000"
+          }
+        ]
+      },
+      "resolution": {
+        "kind": "Indexed COFF relocation mapped to exact strong provider definition in current existing normal-build object; not a final link",
+        "helper_call_offset": 2,
+        "helper_relocation_offset": 3,
+        "helper_symbol_index": 9,
+        "provider_symbol": {
+          "index": 8,
+          "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0
+        },
+        "provider_import": {
+          "offset": 15,
+          "symbol_index": 9,
+          "type": 6,
+          "symbol": "__imp__LeaveCriticalSection@4",
+          "target_symbol_record": {
+            "index": 9,
+            "name": "__imp__LeaveCriticalSection@4",
+            "value": 0,
+            "section": 0,
+            "type": 0,
+            "storage": 2,
+            "aux_count": 0
+          }
+        },
+        "helper_exact_shape_passed": true,
+        "provider_code_bytes": 21,
+        "provider_code_instruction_count": 7
+      }
+    }
+  },
+  "primary_context": {
+    "current_Root_receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_unit_tick_fragment_primary_review.json",
+      "bytes": 189678,
+      "sha256": "6483e4c7f10827366aa5cab0605ce946bfce8dac97e44c5a29a1641ae34388b7"
+    },
+    "worker_receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\reports\\cc12_unit_tick_fragment_primary_review.json",
+      "bytes": 189678,
+      "sha256": "6483e4c7f10827366aa5cab0605ce946bfce8dac97e44c5a29a1641ae34388b7"
+    },
+    "Source_inputs": 511,
+    "selected_Core_objects": 44,
+    "selected_App_objects": 1,
+    "positive_Core_roots": 52,
+    "existing_checks_passed": 3,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "start_utc": "2026-10-09T22:19:45.531409+00:00",
+      "end_utc": "2026-10-09T22:20:02.915712+00:00",
+      "exit_code": 0
+    },
+    "latest_startup_summary": {
+      "frames_presented": 2,
+      "presents_skipped": 1,
+      "ticks": 3,
+      "PressStartPoll_state": 2,
+      "injected_input": false,
+      "mission_frames": 0,
+      "UNIMPLEMENTED_log_rows": 88,
+      "visual_observation": false
+    },
+    "qualification": "Inherited Source511 Root context, pinned not rerun. No current artifact comparison with old Source121/507/509 receipts. Smoke is not faithful startup/gameplay proof."
+  },
+  "admission_boundaries": {
+    "new_Source_candidate_functions": 1,
+    "new_Source_admissions_by_worker": 0,
+    "Original_ABI_admission": 0,
+    "runtime_or_fixture_credit": 0,
+    "faithful_startup_credit": 0,
+    "gameplay_credit": 0,
+    "remaining_Root_work": [
+      "CMake registration and normal scripts/build.ps1 run",
+      "Fresh normal-build artifact/whole-object/provider review",
+      "Source admission decision and coordinated ledger/Ghidra work"
+    ],
+    "not_closed": [
+      "Canonical lock initialization, acquisition, lifetime or storage owner",
+      "Allocator mode/heap/descriptor lookup/error services",
+      "Complete free dispatcher or gunnery destructor",
+      "SEH table/unwind paths or Original fault PCs",
+      "Native caller reachability, startup or gameplay"
+    ]
+  },
+  "review": {
+    "entire_header_and_cpp_read": true,
+    "all_helper_and_provider_emitted_code_reviewed": true,
+    "full_indexed_symbols_aux_records_and_all_sections_reviewed": true,
+    "report_doc_fully_reviewed_before_commit": true
+  }
+}

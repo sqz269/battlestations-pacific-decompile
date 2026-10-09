@@ -1,0 +1,1111 @@
+{
+  "schema": "cc12-production-model-descriptor-subset-source-v1",
+  "packet": "cc12_production_model_descriptor_subset_Source",
+  "created_utc": "2026-10-09T22:43:08.455855+00:00",
+  "status": "worker_built_Source_composition_candidate_pending_Root_integration_review",
+  "source_baseline_commit": "1172ce41243d31a7f27313797f39b8600f1cea90",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "owned_tracked_outputs": [
+    "include/bsp/game_native_type_storage.hpp",
+    "src/game_native_type_storage.cpp",
+    "docs/CC12_PRODUCTION_MODEL_DESCRIPTOR_SUBSET_SOURCE.md",
+    "reports/cc12_production_model_descriptor_subset_source.json"
+  ],
+  "scope": {
+    "change": "Retain canonical model and model-base Source guard/descriptor cells in the existing nonmoving production type owner and call genuine existing initializers with the same counter/common bootstrap.",
+    "new_Native_body_or_data_reads": 0,
+    "GPR_mutations": 0,
+    "CMake_or_other_Source_edits": 0,
+    "Original_addresses_as_roles": [
+      "01090030",
+      "01090034",
+      "01090031",
+      "01090044",
+      "00CD7E60",
+      "00CD7EB0"
+    ],
+    "Native_absolute_storage_mapping": false,
+    "whole_CRT_schedule_or_absolute_type_IDs_proved": false
+  },
+  "accepted_prior_evidence": {
+    "pins": [
+      {
+        "path": "docs/CC12_MODEL_DESCRIPTOR_CRT_PLACEMENT_READINESS.md",
+        "bytes": 8316,
+        "sha256": "8c60baa433a09bb529a6fa7892fe2d253190c5ab5211669570c93146a7200274"
+      },
+      {
+        "path": "reports/cc12_model_descriptor_crt_placement_readiness.json",
+        "bytes": 17769,
+        "sha256": "84f721579a7ccc4e257e29081b8fd1ca2805b631c3de25590c46c1e4b0772703"
+      },
+      {
+        "path": "docs/CC12_PRODUCTION_MODEL_DESCRIPTOR_BOOTSTRAP_READINESS.md",
+        "bytes": 9823,
+        "sha256": "9366c9fec661bf9875a949e9cbf96046646986d64af3066307838d49a23ff682"
+      },
+      {
+        "path": "reports/cc12_production_model_descriptor_bootstrap_readiness.json",
+        "bytes": 20207,
+        "sha256": "cc1510309dce3898b0d2a418e8a725cafe3c8f3bea7eabf01e7049cd6e54597f"
+      },
+      {
+        "path": "docs/CC12_SELF_REFRESH_RENDERER_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 5599,
+        "sha256": "887b966fa654a3167f4d3f19e728eb84c51478174ccec1acb0465674c26e3b12"
+      },
+      {
+        "path": "reports/cc12_self_refresh_renderer_source_primary_review.json",
+        "bytes": 183599,
+        "sha256": "ef66b96cb0d2634728bf04b0bf3b1e6c3ee3d1ed136852fa37fe39a1614b2547"
+      }
+    ],
+    "selected_cells": [
+      {
+        "slot": 905,
+        "cell": "00CE3558",
+        "target": "00CD7D80"
+      },
+      {
+        "slot": 909,
+        "cell": "00CE3568",
+        "target": "00CD7E60"
+      },
+      {
+        "slot": 910,
+        "cell": "00CE356C",
+        "target": "00CD7EB0"
+      },
+      {
+        "slot": 928,
+        "cell": "00CE35B4",
+        "target": "00CD82F0"
+      }
+    ],
+    "relationship": "Previously Root-accepted pointer-cell placement only; no original-image or Ghidra replay in this Source packet.",
+    "remaining_schedule_holds": [
+      "Slot 906 and slots 912 through 927 remain outside the selected Native capture.",
+      "Slot 907 target is unopened.",
+      "Other Native entries, intervening pool work and lazy dependencies are not composed by this patch.",
+      "Existing game_main pool initialization remains separate from this VFS type subset."
+    ]
+  },
+  "canonical_storage_contract": {
+    "model": {
+      "guard_role": "01090030",
+      "descriptor_role": "01090034",
+      "backing": "volatile uint8_t plus volatile ModelTypeDescriptor",
+      "view": "ModelTypeBootstrapStorage"
+    },
+    "model_base": {
+      "guard_role": "01090031",
+      "descriptor_role": "01090044",
+      "backing": "volatile uint8_t plus volatile uint32_t[4]",
+      "view": "ModelBaseTypeStorage binds the actual guard and four word lvalues separately"
+    },
+    "descriptor_word_order": [
+      "own type",
+      "node type",
+      "root type",
+      "Native name address"
+    ],
+    "constructor": "Cold Source backing value-initialization and retained reference binding only; no initializer, counter or registry call.",
+    "existing_owner_copy_and_move_deletions_preserved": true,
+    "accessors": [
+      "ModelTypeBootstrapStorage& GameNativeTypeStorage::model_types() noexcept",
+      "ModelBaseTypeStorage& GameNativeTypeStorage::model_base_types() noexcept"
+    ],
+    "accessor_effect": "Returns canonical retained view without ID copy, implicit initialization, snapshot, gate or private owner.",
+    "borrow_lifetime": "Borrowers finish before storage-owner destruction. Access can expose zero or partial cells. No initialization after shared singleton drain.",
+    "model_object_consumer_added": false
+  },
+  "initialization_and_failure_contract": {
+    "call_order": [
+      "CameraTypeBootstrap::initialize_static_00cd7d80",
+      "ModelTypeBootstrap::initialize_static_00cd7e60",
+      "ModelBaseTypeBootstrap::initialize_static_type_descriptor_00cd7eb0",
+      "NativeResourceExtraTypeIds::initialize_animation_resource_00cd82f0"
+    ],
+    "all_previous_initializer_calls_preserved": true,
+    "production_identity": "GameNativeVfsApplication::Impl passes the same owner_services.types() and its common_types bound to the retained type_storage.",
+    "generic_precondition": "The generic API requires the intended counter. require_common_bootstrap checks common-storage aliases, not counter identity.",
+    "provider_effects": "Existing providers set guard/name before dependencies, preserve established inherited-word capture ordering and consume counter before publishing their own ID.",
+    "failure": "No guard reset, retry, rollback, fixed IDs or new catch. Existing VFS attempt/failure retention remains sticky.",
+    "type_calls_precede_A0_constructor_try": true,
+    "existing_shutdown": "Interrupted native operations retain the VFS application; startup exits before ordinary drain if interrupted. Normal shared singleton drain precedes renderer/VFS destruction.",
+    "Native_frame_handler_equivalence": false
+  },
+  "selected_input_validation": {
+    "manifest_pin": {
+      "path": "build/cc12_production_model_descriptor_subset_Source/before_source.json",
+      "bytes": 142840,
+      "sha256": "96b03126b996e89fb38cb81ebe976d572610158abad9afdfbabc888d39670bb7"
+    },
+    "scope": "Selected Source509 baseline plus recursive project includes for eight explicit type/provider/owner translation units and build script; not every build input.",
+    "explicit_translation_units": [
+      "src/game_native_type_storage.cpp",
+      "src/game_native_vfs_application.cpp",
+      "src/game_native_renderer_application.cpp",
+      "src/model_type_bootstrap.cpp",
+      "src/native_model_base_bootstrap.cpp",
+      "src/light_type_bootstrap.cpp",
+      "src/camera_type_bootstrap.cpp",
+      "src/native_resource_extra_type_ids.cpp"
+    ],
+    "selected_inputs": 521,
+    "unchanged_after_build_and_at_report_generation": 521,
+    "entire_repository_build_manifest": false,
+    "direct_source_and_build_pins": [
+      {
+        "path": "include/bsp/game_native_type_storage.hpp",
+        "bytes": 5833,
+        "sha256": "e3ab9d271d4627ec3b5617b443d3f456a470a3eb513586659de74be7af2dae86"
+      },
+      {
+        "path": "src/game_native_type_storage.cpp",
+        "bytes": 4338,
+        "sha256": "e13668d5d28593b3441e55cbc06ac63f81e8828c005748c303d34960452bfed9"
+      },
+      {
+        "path": "include/bsp/model_type_bootstrap.hpp",
+        "bytes": 1537,
+        "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155"
+      },
+      {
+        "path": "src/model_type_bootstrap.cpp",
+        "bytes": 2635,
+        "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80"
+      },
+      {
+        "path": "include/bsp/native_model_base_bootstrap.hpp",
+        "bytes": 1733,
+        "sha256": "e92d899708427f4c04e540c1585cc592be412fe08c1c5ccbfde8e2a1fec34a0e"
+      },
+      {
+        "path": "src/native_model_base_bootstrap.cpp",
+        "bytes": 2494,
+        "sha256": "c9e8805842b3ce8aa889e2077148a373bfdcd9a4b779d142905080a097c6303a"
+      },
+      {
+        "path": "include/bsp/light_type_bootstrap.hpp",
+        "bytes": 3214,
+        "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+      },
+      {
+        "path": "src/light_type_bootstrap.cpp",
+        "bytes": 5880,
+        "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+      },
+      {
+        "path": "src/camera_type_bootstrap.cpp",
+        "bytes": 2737,
+        "sha256": "06f3b76beda1a755ab42d30917474581ce0c4c64f95a2adfd9a1f4ecd55918bd"
+      },
+      {
+        "path": "src/native_resource_extra_type_ids.cpp",
+        "bytes": 1259,
+        "sha256": "377925a90466328541ed3cd3d5c04219f38b625dff0d0e13bb3a2fe22a60765b"
+      },
+      {
+        "path": "src/game_native_vfs_application.cpp",
+        "bytes": 8470,
+        "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+      },
+      {
+        "path": "include/bsp/game_native_vfs_application.hpp",
+        "bytes": 3022,
+        "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "bytes": 21158,
+        "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+      },
+      {
+        "path": "include/bsp/game_hosts_vfs.hpp",
+        "bytes": 11990,
+        "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 120868,
+        "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 199223,
+        "sha256": "c334d5a28cb830d7a5baa9c225b9864ebd83d72f40bc5341a1437412d9c43f45"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      }
+    ],
+    "owned_preimage_pins": [
+      {
+        "path": "build/cc12_production_model_descriptor_subset_Source/game_native_type_storage.hpp.before",
+        "bytes": 4853,
+        "sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222"
+      },
+      {
+        "path": "build/cc12_production_model_descriptor_subset_Source/game_native_type_storage.cpp.before",
+        "bytes": 3611,
+        "sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b"
+      }
+    ]
+  },
+  "frozen_Source509_baseline": {
+    "report_pin": {
+      "path": "reports/cc12_self_refresh_renderer_source_primary_review.json",
+      "bytes": 183599,
+      "sha256": "ef66b96cb0d2634728bf04b0bf3b1e6c3ee3d1ed136852fa37fe39a1614b2547"
+    },
+    "replay_pin": {
+      "path": "build/cc12_production_model_descriptor_subset_Source/pre_edit_Source509_replay.json",
+      "bytes": 4131,
+      "sha256": "0f94f450fb211063706f6802bd93bb8392e9e6defb6cb69e7acef7f7895e33b4"
+    },
+    "pre_edit_worker_inputs": 509,
+    "raw_matches": 507,
+    "canonical_LF_matches": 509,
+    "raw_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "expected_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "actual_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "canonical_equal": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "expected_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "actual_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "canonical_equal": true
+      }
+    ],
+    "replay_scope_text_qualification": "Replay receipt retains inherited Source121 wording in its scope field; actual authoritative input_count is 509. Candidate selected manifest is separately 521.",
+    "frozen_artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\bsp_core.lib",
+        "bytes": 73786970,
+        "sha256": "406fe8cbf5ad3cdba20b5687ff2b0fa1c7f550ebc8c5242d22150c10627bf7c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\bsp_game.exe",
+        "bytes": 5091840,
+        "sha256": "532371d534d69bb84a00fb40e3c3c6b4f8ca6c9db391b8d0cecf26f943b41e0f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\bsp_game.map",
+        "bytes": 7522551,
+        "sha256": "9ba72dd1d4c5c8123ad26dffec73133bbdade8dbdf4b2065126625113d58d633"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\LastTest.log",
+        "bytes": 2448,
+        "sha256": "bb69787a6bd27af2c593805ca2e4f822ec3259b552ac77cf7837dcd9f84ac101"
+      }
+    ],
+    "complete_COFF_receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\complete_artifacts.json",
+      "bytes": 28831698,
+      "sha256": "e5da0efdc9a04ba78c3562d64711a8951bce0d1dc0a2d48d35bb21b69e6367da"
+    },
+    "all_frozen_artifact_hashes_replayed_now": true,
+    "mutable_Root_current_build_claim": false
+  },
+  "normal_worker_build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+    "pid": 103808,
+    "start_utc": "2026-10-09T22:17:01.391112+00:00",
+    "finish_utc": "2026-10-09T22:27:31.088428+00:00",
+    "exit_code": 0,
+    "success": true,
+    "selected_before_inputs": 521,
+    "log": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\normal_build.log",
+    "configuration": "Release",
+    "platform": "Win32",
+    "compiler_flags": {
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "ExceptionHandling": "Sync",
+      "FloatingPointModel": "Strict",
+      "InlineFunctionExpansion": "AnySuitable",
+      "Optimization": "MaxSpeed",
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "TreatWarningAsError": "true",
+      "WarningLevel": "Level4",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\""
+    },
+    "existing_tests": {
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "passed": 2,
+      "native_math_differential_enabled": false,
+      "reason": "CMakeLists253 requires absent local/seed_reference.hpp; no verify-seeds or new Native reads permitted in this packet; Root will use its existing seeded build after integration."
+    },
+    "new_tests": 0,
+    "probes": 0,
+    "worker_game_startups": 0,
+    "Root_seeded_integration_build_pending": true
+  },
+  "frozen_candidate_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_artifacts\\bsp_core.lib",
+      "bytes": 73810170,
+      "sha256": "0aa12bfe126ffe1404690dcc8e2999a902154e4699728c01ed8d3085d0f77913",
+      "build_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\Release\\bsp_core.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_artifacts\\bsp_game.exe",
+      "bytes": 5092352,
+      "sha256": "2a19f0c9eb770df1e003e91bcbe68dbc612769e0dcf46146babfdf2d3f2cc59c",
+      "build_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\Release\\bsp_game.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_artifacts\\bsp_game.map",
+      "bytes": 7523734,
+      "sha256": "90c4df3feb34a45d882a5faba62fbd99627bc1c97bd93636942bf7e9d9f721b6",
+      "build_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_game.map"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_artifacts\\LastTest.log",
+      "bytes": 1657,
+      "sha256": "9b05979603b663fb3f6216434ca594e9525a69bb4afe267ebb625071764195a9",
+      "build_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\Testing\\Temporary\\LastTest.log"
+    }
+  ],
+  "emitted_review": {
+    "complete_COFF_receipt_pin": {
+      "path": "build/cc12_production_model_descriptor_subset_Source/complete_emitted.json",
+      "bytes": 16968759,
+      "sha256": "b1f04c1532e46435a4710d9fa0b4ca324655a2328b70d379ff6d6f30061692fa"
+    },
+    "whole_Core_objects": 8,
+    "whole_application_objects": 2,
+    "whole_object_pins": [
+      {
+        "object": "game_native_type_storage.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\game_native_type_storage.obj",
+        "bytes": 15609,
+        "sha256": "e3c69ef879c62d167c9d4a69f1008560c6fc999c9507ac0965a7c2e2fccfdf85",
+        "machine": "I386",
+        "symbol_table_file_offset": 7839,
+        "symbol_table_record_count": 202
+      },
+      {
+        "object": "model_type_bootstrap.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\model_type_bootstrap.obj",
+        "bytes": 3276,
+        "sha256": "d8477685c511f807e3b23fc0626440c5090100f47322e07683565b4625f35a58",
+        "machine": "I386",
+        "symbol_table_file_offset": 1754,
+        "symbol_table_record_count": 45
+      },
+      {
+        "object": "native_model_base_bootstrap.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\native_model_base_bootstrap.obj",
+        "bytes": 12525,
+        "sha256": "862577b0234298d403416931a605da668d52209a6402582e36bc7e9382a82a3f",
+        "machine": "I386",
+        "symbol_table_file_offset": 6293,
+        "symbol_table_record_count": 193
+      },
+      {
+        "object": "light_type_bootstrap.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\light_type_bootstrap.obj",
+        "bytes": 7284,
+        "sha256": "f0145d5a08f1597bbca7dc0c661c34c49cede092de2318465c7a01a454ba6b43",
+        "machine": "I386",
+        "symbol_table_file_offset": 3604,
+        "symbol_table_record_count": 91
+      },
+      {
+        "object": "camera_type_bootstrap.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\camera_type_bootstrap.obj",
+        "bytes": 3580,
+        "sha256": "55e451d1eee0bb1c0f1d3801066346a284133ec72f7359fd9264ac1c0e9a881f",
+        "machine": "I386",
+        "symbol_table_file_offset": 1931,
+        "symbol_table_record_count": 46
+      },
+      {
+        "object": "native_resource_extra_type_ids.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\native_resource_extra_type_ids.obj",
+        "bytes": 3874,
+        "sha256": "3bdf2219f09ea3e92f2ead28b750ed320c9c1a1a831d84e61a9dbad3320597ae",
+        "machine": "I386",
+        "symbol_table_file_offset": 2398,
+        "symbol_table_record_count": 41
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\native_mesh_subset_loading.obj",
+        "bytes": 235125,
+        "sha256": "17d6ac994d74ac0e48c1a753603c41fd44a15b8016ed8d4d021c953d0cfeb763",
+        "machine": "I386",
+        "symbol_table_file_offset": 76817,
+        "symbol_table_record_count": 2335
+      },
+      {
+        "object": "native_stream_type_ids.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\native_stream_type_ids.obj",
+        "bytes": 3056,
+        "sha256": "301d37e685a02758b3ed3a8a8321defbaff189a7cded495780e32e34ac8a78e8",
+        "machine": "I386",
+        "symbol_table_file_offset": 1761,
+        "symbol_table_record_count": 37
+      },
+      {
+        "object": "game_native_vfs_application.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\game_native_vfs_application.obj",
+        "bytes": 52877,
+        "sha256": "eb515172d1f81b33cb03180441814603f760c74dca29741995728f05e013399d",
+        "machine": "I386",
+        "symbol_table_file_offset": 22213,
+        "symbol_table_record_count": 687
+      },
+      {
+        "object": "game_native_renderer_application.obj",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\cc12_production_model_descriptor_subset_Source\\candidate_objects\\game_native_renderer_application.obj",
+        "bytes": 328952,
+        "sha256": "bd24f5dd43f90a67451f1d324c0006198abc9034ccd7018eea793cb745945f7a",
+        "machine": "I386",
+        "symbol_table_file_offset": 140945,
+        "symbol_table_record_count": 3846
+      }
+    ],
+    "selected_roots": 31,
+    "unique_positive_Core_definition_rows": 27,
+    "selected_root_rows": [
+      {
+        "object": "game_native_type_storage.obj",
+        "symbol": "??0GameNativeTypeStorage@game@bsp@@QAE@XZ",
+        "symbol_index": 115,
+        "symbol_record_file_offset": 9909,
+        "section": 6,
+        "section_value": 0,
+        "physical_file_offset": 3661,
+        "bytes": 741,
+        "sha256": "d091d80b4c5c00d62133c19333970e4872477793e7bcd06ea8abb0e8bec492ea"
+      },
+      {
+        "object": "game_native_type_storage.obj",
+        "symbol": "?initialize_resource_types@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z",
+        "symbol_index": 118,
+        "symbol_record_file_offset": 9963,
+        "section": 25,
+        "section_value": 0,
+        "physical_file_offset": 5567,
+        "bytes": 312,
+        "sha256": "941c82f454e962f3d58856a415ac3ea9cc7ee5651978e614cb55cf8725696493"
+      },
+      {
+        "object": "game_native_type_storage.obj",
+        "symbol": "?model_types@GameNativeTypeStorage@game@bsp@@QAEAAUModelTypeBootstrapStorage@3@XZ",
+        "symbol_index": 116,
+        "symbol_record_file_offset": 9927,
+        "section": 28,
+        "section_value": 0,
+        "physical_file_offset": 6092,
+        "bytes": 7,
+        "sha256": "feb1dfc9b757be6eee1ba2bc1ff0b7acf7af001f384e72e4926a0cf21e502676"
+      },
+      {
+        "object": "game_native_type_storage.obj",
+        "symbol": "?model_base_types@GameNativeTypeStorage@game@bsp@@QAEAAUModelBaseTypeStorage@3@XZ",
+        "symbol_index": 117,
+        "symbol_record_file_offset": 9945,
+        "section": 26,
+        "section_value": 0,
+        "physical_file_offset": 6059,
+        "bytes": 7,
+        "sha256": "6557c4a88ec74ee092140cce013bbcb76f5409325ae0d829a45eab351cc739eb"
+      },
+      {
+        "object": "model_type_bootstrap.obj",
+        "symbol": "??0ModelTypeBootstrap@bsp@@QAE@AAVTypeIdCounterLifetime@1@AAVLightTypeBootstrap@1@UModelTypeBootstrapStorage@1@@Z",
+        "symbol_index": 36,
+        "symbol_record_file_offset": 2402,
+        "section": 4,
+        "section_value": 0,
+        "physical_file_offset": 1181,
+        "bytes": 32,
+        "sha256": "4c6bee08ff26e10eacf32bf76f3c396bbc60118e2b919a8eda0167647bb39237"
+      },
+      {
+        "object": "model_type_bootstrap.obj",
+        "symbol": "?initialize_static_00cd7e60@ModelTypeBootstrap@bsp@@QAEXXZ",
+        "symbol_index": 40,
+        "symbol_record_file_offset": 2474,
+        "section": 8,
+        "section_value": 0,
+        "physical_file_offset": 1368,
+        "bytes": 81,
+        "sha256": "70d8d6b3cb14017e401ce92e903a49a2d7bdb0967bbe2d9d974dbc57b3adade7"
+      },
+      {
+        "object": "model_type_bootstrap.obj",
+        "symbol": "?consume_type_id@ModelTypeBootstrap@bsp@@AAEIXZ",
+        "symbol_index": 42,
+        "symbol_record_file_offset": 2510,
+        "section": 5,
+        "section_value": 0,
+        "physical_file_offset": 1213,
+        "bytes": 19,
+        "sha256": "97c176386521291edeef35a273bf9b05a12d93a6e73bd2286dcad415ec2944f2"
+      },
+      {
+        "object": "native_model_base_bootstrap.obj",
+        "symbol": "??0ModelBaseTypeBootstrap@bsp@@QAE@AAVTypeIdCounterLifetime@1@AAVLightTypeBootstrap@1@UModelBaseTypeStorage@1@@Z",
+        "symbol_index": 79,
+        "symbol_record_file_offset": 7715,
+        "section": 4,
+        "section_value": 0,
+        "physical_file_offset": 3055,
+        "bytes": 34,
+        "sha256": "457d748e164dfecd29bb47acb92a86549a845dbd2eca14e1030a9befbfbc6a89"
+      },
+      {
+        "object": "native_model_base_bootstrap.obj",
+        "symbol": "?initialize_static_type_descriptor_00cd7eb0@ModelBaseTypeBootstrap@bsp@@QAEXXZ",
+        "symbol_index": 80,
+        "symbol_record_file_offset": 7733,
+        "section": 25,
+        "section_value": 0,
+        "physical_file_offset": 4539,
+        "bytes": 78,
+        "sha256": "ebba45fe1d10ffe41fa2358cc232118155c932ece5b4b61f44a17663b7fc0df5"
+      },
+      {
+        "object": "light_type_bootstrap.obj",
+        "symbol": "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ",
+        "symbol_index": 60,
+        "symbol_record_file_offset": 4684,
+        "section": 13,
+        "section_value": 0,
+        "physical_file_offset": 2253,
+        "bytes": 205,
+        "sha256": "0ae5345c807d41de6d82f2abb8468285e8c526fd6d30e3a4d604fc4359c56591"
+      },
+      {
+        "object": "light_type_bootstrap.obj",
+        "symbol": "?initialize_node_00b6f110@LightTypeBootstrap@bsp@@QAEXACUNodeTypeDescriptor@2@@Z",
+        "symbol_index": 64,
+        "symbol_record_file_offset": 4756,
+        "section": 21,
+        "section_value": 0,
+        "physical_file_offset": 3015,
+        "bytes": 87,
+        "sha256": "db06f4960598ce7009da383c5ac24b93a8e811fa17d6033e5f7f906c446c0801"
+      },
+      {
+        "object": "light_type_bootstrap.obj",
+        "symbol": "?initialize_root_00bea780@LightTypeBootstrap@bsp@@QAEXACURootTypeDescriptor@2@@Z",
+        "symbol_index": 63,
+        "symbol_record_file_offset": 4738,
+        "section": 22,
+        "section_value": 0,
+        "physical_file_offset": 3122,
+        "bytes": 38,
+        "sha256": "9ad55700d5cbfa8bee57aa4a5fe7a955424ea6c6a422f562a4afcd7ba76e57a4"
+      },
+      {
+        "object": "light_type_bootstrap.obj",
+        "symbol": "?consume_type_id@LightTypeBootstrap@bsp@@AAEIXZ",
+        "symbol_index": 70,
+        "symbol_record_file_offset": 4864,
+        "section": 9,
+        "section_value": 0,
+        "physical_file_offset": 1754,
+        "bytes": 214,
+        "sha256": "351354e0e3c5b182b19a8c18cdf6b823a3aa5f628dfbcf7256ec5b4df07a5379"
+      },
+      {
+        "object": "camera_type_bootstrap.obj",
+        "symbol": "??0CameraTypeBootstrap@bsp@@QAE@AAVTypeIdCounterLifetime@1@AAVLightTypeBootstrap@1@UCameraTypeBootstrapStorage@1@@Z",
+        "symbol_index": 36,
+        "symbol_record_file_offset": 2579,
+        "section": 4,
+        "section_value": 0,
+        "physical_file_offset": 1181,
+        "bytes": 32,
+        "sha256": "4c6bee08ff26e10eacf32bf76f3c396bbc60118e2b919a8eda0167647bb39237"
+      },
+      {
+        "object": "camera_type_bootstrap.obj",
+        "symbol": "?initialize_static_00cd7d80@CameraTypeBootstrap@bsp@@QAEXXZ",
+        "symbol_index": 39,
+        "symbol_record_file_offset": 2633,
+        "section": 9,
+        "section_value": 0,
+        "physical_file_offset": 1478,
+        "bytes": 81,
+        "sha256": "fa3664ed389bdcab218fd99a0a2cc50590583e476f5ebbb4247570ae97e2b99d"
+      },
+      {
+        "object": "native_resource_extra_type_ids.obj",
+        "symbol": "??0NativeResourceExtraTypeIds@bsp@@QAE@AAVTypeIdCounterLifetime@1@AAVNativeMeshResourceTypeIds@1@UNativeResourceExtraTypeIdStorage@1@@Z",
+        "symbol_index": 35,
+        "symbol_record_file_offset": 3028,
+        "section": 6,
+        "section_value": 0,
+        "physical_file_offset": 1865,
+        "bytes": 28,
+        "sha256": "f109480e2988375e1133cfa0e9099048167e1c6aa9b3b2ae9f538b64073bc184"
+      },
+      {
+        "object": "native_resource_extra_type_ids.obj",
+        "symbol": "?initialize_animation_resource_00cd82f0@NativeResourceExtraTypeIds@bsp@@QAEXXZ",
+        "symbol_index": 36,
+        "symbol_record_file_offset": 3046,
+        "section": 9,
+        "section_value": 0,
+        "physical_file_offset": 2027,
+        "bytes": 71,
+        "sha256": "16473ac94aa9e85a54d4035100c1b487cc083c56a606b0670c29e532704784eb"
+      },
+      {
+        "object": "native_resource_extra_type_ids.obj",
+        "symbol": "?initialize_bone_resource_00cd8340@NativeResourceExtraTypeIds@bsp@@QAEXXZ",
+        "symbol_index": 37,
+        "symbol_record_file_offset": 3064,
+        "section": 11,
+        "section_value": 0,
+        "physical_file_offset": 2144,
+        "bytes": 71,
+        "sha256": "ff92ce7fe1016399545ebae64716ed5a1860b85eb57e81a4ad4aed7b3adf472e"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "??0NativeMeshResourceTypeIds@bsp@@QAE@AAVTypeIdCounterLifetime@1@AAVLightTypeBootstrap@1@UNativeMeshResourceTypeStorage@1@@Z",
+        "symbol_index": 1535,
+        "symbol_record_file_offset": 104447,
+        "section": 222,
+        "section_value": 0,
+        "physical_file_offset": 42945,
+        "bytes": 36,
+        "sha256": "d00b57b08fab0f692580fb9cd18e756c2b7bfc92fc132c8d7df0422b494ad9ca"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "??0NativeGameResourceSelectorTypes@bsp@@QAE@AAVTypeIdCounterLifetime@1@AAVNativeMeshResourceTypeIds@1@UNativeGameResourceSelectorStorage@1@@Z",
+        "symbol_index": 1560,
+        "symbol_record_file_offset": 104897,
+        "section": 206,
+        "section_value": 0,
+        "physical_file_offset": 41847,
+        "bytes": 38,
+        "sha256": "8e41500a2a3d5150da1f77cb4f71b6d6749191de96fb96aec99bceb22b9f2320"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "?initialize_convex_object_00ccec00@NativeGameResourceSelectorTypes@bsp@@QAEXXZ",
+        "symbol_index": 1561,
+        "symbol_record_file_offset": 104915,
+        "section": 537,
+        "section_value": 0,
+        "physical_file_offset": 55726,
+        "bytes": 17,
+        "sha256": "b927f85137930fec599ba246b8f0e48361f60d86f8a39feb009034c5eeb34c91"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "?initialize_aux_00ccf740@NativeGameResourceSelectorTypes@bsp@@QAEXXZ",
+        "symbol_index": 1562,
+        "symbol_record_file_offset": 104933,
+        "section": 535,
+        "section_value": 0,
+        "physical_file_offset": 55673,
+        "bytes": 17,
+        "sha256": "4d5e23875c89a6ac51eae60990b4b8dfc2fb7dd3892aa62c760186decd59a875"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "?initialize_geom_mesh_00ccf980@NativeGameResourceSelectorTypes@bsp@@QAEXXZ",
+        "symbol_index": 1563,
+        "symbol_record_file_offset": 104951,
+        "section": 540,
+        "section_value": 0,
+        "physical_file_offset": 55892,
+        "bytes": 17,
+        "sha256": "82563a0e27eb402286735d916b6b35573ef018ddea8c1449330e1227be0d8216"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "?initialize_mesh_resource_00cd8690@NativeMeshResourceTypeIds@bsp@@QAEXXZ",
+        "symbol_index": 1538,
+        "symbol_record_file_offset": 104501,
+        "section": 547,
+        "section_value": 0,
+        "physical_file_offset": 56432,
+        "bytes": 13,
+        "sha256": "977f293801242d862204e5f30fb4f9a087e15246514284d6c67f645be0333ea8"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "?initialize_skined_mesh_resource_00cd86f0@NativeMeshResourceTypeIds@bsp@@QAEXXZ",
+        "symbol_index": 1539,
+        "symbol_record_file_offset": 104519,
+        "section": 550,
+        "section_value": 0,
+        "physical_file_offset": 56575,
+        "bytes": 88,
+        "sha256": "ea7ae632bec9a90ec0dc1e3ebba302d0b2f3f5213edc69019af9288720410570"
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "symbol": "?initialize_matrix_mesh_resource_00cd87b0@NativeMeshResourceTypeIds@bsp@@QAEXXZ",
+        "symbol_index": 1540,
+        "symbol_record_file_offset": 104537,
+        "section": 542,
+        "section_value": 0,
+        "physical_file_offset": 55945,
+        "bytes": 88,
+        "sha256": "e06c24355bc65b29ef31aaf7ed0f4cc6a1dd684af56b8d1a94785d5734fc8664"
+      },
+      {
+        "object": "game_native_vfs_application.obj",
+        "symbol": "??0GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@@Z",
+        "symbol_index": 372,
+        "symbol_record_file_offset": 28909,
+        "section": 42,
+        "section_value": 0,
+        "physical_file_offset": 12058,
+        "bytes": 135,
+        "sha256": "63dd7eb0af35c453d58794d88d805f5bd51468f75743e504e51f413ef01cab8d"
+      },
+      {
+        "object": "game_native_vfs_application.obj",
+        "symbol": "??0Impl@GameNativeVfsApplication@game@bsp@@QAE@AAVGameHostLog@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@ABVpath@filesystem@std@@@Z",
+        "symbol_index": 444,
+        "symbol_record_file_offset": 30205,
+        "section": 44,
+        "section_value": 0,
+        "physical_file_offset": 12325,
+        "bytes": 607,
+        "sha256": "8e04b6f51647b76b771391d20adf9ae3fac5200c714a074f411c037b881791b7"
+      },
+      {
+        "object": "game_native_vfs_application.obj",
+        "symbol": "?initialize_core@GameNativeVfsApplication@game@bsp@@QAEXXZ",
+        "symbol_index": 374,
+        "symbol_record_file_offset": 28945,
+        "section": 117,
+        "section_value": 0,
+        "physical_file_offset": 15897,
+        "bytes": 7,
+        "sha256": "e1f6501c07bdc73228b657f6b51047dacc562286c3d561afd7e4e6d371615916"
+      },
+      {
+        "object": "game_native_vfs_application.obj",
+        "symbol": "?initialize_core@Impl@GameNativeVfsApplication@game@bsp@@QAEXXZ",
+        "symbol_index": 445,
+        "symbol_record_file_offset": 30223,
+        "section": 119,
+        "section_value": 0,
+        "physical_file_offset": 15940,
+        "bytes": 542,
+        "sha256": "f4f1bc363932f2a3fcdb02bcdc3e87d03161c9516819418b9df0d28a81ecd1f6"
+      },
+      {
+        "object": "game_native_vfs_application.obj",
+        "symbol": "?types@GameNativeVfsApplication@game@bsp@@QAEAAVGameNativeTypeStorage@23@XZ",
+        "symbol_index": 380,
+        "symbol_record_file_offset": 29053,
+        "section": 153,
+        "section_value": 0,
+        "physical_file_offset": 17805,
+        "bytes": 8,
+        "sha256": "48931469e737767b045b83a6d622a6d3170dd9655368a5e261ffa3d36c39dd68"
+      }
+    ],
+    "changed_owner_comparison": {
+      "added": [
+        "?model_base_types@GameNativeTypeStorage@game@bsp@@QAEAAUModelBaseTypeStorage@3@XZ",
+        "?model_types@GameNativeTypeStorage@game@bsp@@QAEAAUModelTypeBootstrapStorage@3@XZ"
+      ],
+      "removed": [],
+      "changed_code_or_resolved_relocations": [
+        "??0GameNativeTypeStorage@game@bsp@@QAE@XZ",
+        "?initialize_resource_types@GameNativeTypeStorage@game@bsp@@QAEXAAVTypeIdCounterLifetime@3@AAVLightTypeBootstrap@3@@Z"
+      ],
+      "unchanged_function_count": 18
+    },
+    "owner_constructor": {
+      "bytes": 741,
+      "instructions": 147,
+      "calls": 0,
+      "relocations": 0,
+      "model_guard_this_offset": "01D4",
+      "model_descriptor_this_offset": "01D8",
+      "model_base_guard_this_offset": "01E8",
+      "model_base_own_node_root_name_this_offsets": [
+        "01EC",
+        "01F0",
+        "01F4",
+        "01F8"
+      ],
+      "model_view_this_offset": "01FC",
+      "model_base_view_this_offset": "0204",
+      "member_storage_end_exclusive": "0218",
+      "fixed_Native_mapping": false
+    },
+    "resource_initializer": {
+      "bytes": 312,
+      "instructions": 91,
+      "calls": 18,
+      "ordered_call_operand_offsets": [
+        {
+          "operand_offset": 153,
+          "symbol": "?initialize_static_00cd7d80@CameraTypeBootstrap@bsp@@QAEXXZ"
+        },
+        {
+          "operand_offset": 183,
+          "symbol": "?initialize_static_00cd7e60@ModelTypeBootstrap@bsp@@QAEXXZ"
+        },
+        {
+          "operand_offset": 231,
+          "symbol": "?initialize_static_type_descriptor_00cd7eb0@ModelBaseTypeBootstrap@bsp@@QAEXXZ"
+        },
+        {
+          "operand_offset": 267,
+          "symbol": "?initialize_animation_resource_00cd82f0@NativeResourceExtraTypeIds@bsp@@QAEXXZ"
+        }
+      ],
+      "ordered_call_instruction_offsets_hex": [
+        "98",
+        "B6",
+        "E6",
+        "10A"
+      ]
+    },
+    "new_accessors": {
+      "each_bytes": 7,
+      "each_instructions": 2,
+      "body": "LEA EAX,[ECX+retained_view_offset]; RET",
+      "positive_Core_definitions": true,
+      "separately_mapped_to_application": false
+    },
+    "production_VFS_composition": {
+      "Impl_allocation_bytes": "056C",
+      "type_storage_Impl_offset": "02F4",
+      "same_counter_Impl_offset": "02DC",
+      "same_common_bootstrap_Impl_offset": "050C",
+      "attempted_flag_Impl_offset": "055C",
+      "type_subset_call_instruction_offset": "006B",
+      "type_subset_call_before_A0_runtime_constructor_try_region": true,
+      "core_section_bytes_with_catch_and_cold_throw_arms": 634,
+      "catch_symbol_slice_bytes": 92,
+      "new_descriptor_failure_has_no_local_rollback": true
+    },
+    "existing_selected_provider_roots_unchanged": 22,
+    "whole_provider_object_comparison_summary": [
+      {
+        "object": "model_type_bootstrap.obj",
+        "whole_object_bytes_equal": false,
+        "function_count": 8,
+        "added_raw_symbol_names": 0,
+        "removed_raw_symbol_names": 0,
+        "changed_code_or_resolved_relocation_rows": 0
+      },
+      {
+        "object": "native_model_base_bootstrap.obj",
+        "whole_object_bytes_equal": false,
+        "function_count": 20,
+        "added_raw_symbol_names": 1,
+        "removed_raw_symbol_names": 1,
+        "changed_code_or_resolved_relocation_rows": 3
+      },
+      {
+        "object": "light_type_bootstrap.obj",
+        "whole_object_bytes_equal": false,
+        "function_count": 19,
+        "added_raw_symbol_names": 0,
+        "removed_raw_symbol_names": 0,
+        "changed_code_or_resolved_relocation_rows": 0
+      },
+      {
+        "object": "camera_type_bootstrap.obj",
+        "whole_object_bytes_equal": false,
+        "function_count": 9,
+        "added_raw_symbol_names": 0,
+        "removed_raw_symbol_names": 0,
+        "changed_code_or_resolved_relocation_rows": 0
+      },
+      {
+        "object": "native_resource_extra_type_ids.obj",
+        "whole_object_bytes_equal": false,
+        "function_count": 6,
+        "added_raw_symbol_names": 0,
+        "removed_raw_symbol_names": 0,
+        "changed_code_or_resolved_relocation_rows": 0
+      },
+      {
+        "object": "native_mesh_subset_loading.obj",
+        "whole_object_bytes_equal": false,
+        "function_count": 469,
+        "added_raw_symbol_names": 33,
+        "removed_raw_symbol_names": 33,
+        "changed_code_or_resolved_relocation_rows": 10
+      },
+      {
+        "object": "native_stream_type_ids.obj",
+        "whole_object_bytes_equal": false,
+        "function_count": 6,
+        "added_raw_symbol_names": 0,
+        "removed_raw_symbol_names": 0,
+        "changed_code_or_resolved_relocation_rows": 0
+      }
+    ],
+    "provider_comparison_qualification": "Selected 22 roots preserve code and resolved relocations exactly. Whole raw objects differ. Model-base and mesh include anonymous-namespace differences among other retained symbols. Complete raw rows remain in receipt without normalization or blanket whole-object equality.",
+    "selected_application_roots_mapped": 28,
+    "full_executable_graph": {
+      "selected_full_executable_graph_section_count": 67,
+      "selected_full_executable_graph_bytes": 5634,
+      "selected_full_executable_graph_instructions": 1756,
+      "complete_linear_decode_all_sections": true
+    },
+    "linked_executable_sections": {
+      "receipt_pin": {
+        "path": "build/cc12_production_model_descriptor_subset_Source/linked_graph_sections.json",
+        "bytes": 122686,
+        "sha256": "9cdb3361c18026421c7a26f4e04b8b37fa80df6d11c39f2f6681786952967407"
+      },
+      "method": "For every indexed reachable executable COFF section, use a unique named function map address minus its actual section value; compare entire section including catch/cold arms, masking only actual indexed relocation operands. Unmapped sections remain explicitly unlinked. No Native PE or Ghidra read.",
+      "total": 67,
+      "mapped_checked": 64,
+      "unmapped": [
+        {
+          "object": "game_native_type_storage.obj",
+          "section": 26,
+          "symbols": [
+            "?model_base_types@GameNativeTypeStorage@game@bsp@@QAEAAUModelBaseTypeStorage@3@XZ"
+          ]
+        },
+        {
+          "object": "game_native_type_storage.obj",
+          "section": 28,
+          "symbols": [
+            "?model_types@GameNativeTypeStorage@game@bsp@@QAEAAUModelTypeBootstrapStorage@3@XZ"
+          ]
+        },
+        {
+          "object": "model_type_bootstrap.obj",
+          "section": 5,
+          "symbols": [
+            "?consume_type_id@ModelTypeBootstrap@bsp@@AAEIXZ"
+          ]
+        }
+      ],
+      "non_executable_linked_data_complete_comparison": false
+    },
+    "review_pin": {
+      "path": "build/cc12_production_model_descriptor_subset_Source/emission_review.json",
+      "bytes": 17006,
+      "sha256": "b47f908cc94a40fb1f07accb9d07611d242f8e6d659e810d71151929794df7f1"
+    }
+  },
+  "retained_local_evidence_pins": [
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/before_source.json",
+      "bytes": 142840,
+      "sha256": "96b03126b996e89fb38cb81ebe976d572610158abad9afdfbabc888d39670bb7"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/pre_edit_Source509_replay.json",
+      "bytes": 4131,
+      "sha256": "0f94f450fb211063706f6802bd93bb8392e9e6defb6cb69e7acef7f7895e33b4"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/build_exit.json",
+      "bytes": 531,
+      "sha256": "6d21bd573c9b59cbf258229e8983a2c539a4c70df409ca3a6aca92c98465193b"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/normal_build.log",
+      "bytes": 77722,
+      "sha256": "b8725399eae0bc1a7390e3f27987e24e3d918f4c33eef813145dac67e1ccf1ef"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/complete_emitted.json",
+      "bytes": 16968759,
+      "sha256": "b1f04c1532e46435a4710d9fa0b4ca324655a2328b70d379ff6d6f30061692fa"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/linked_graph_sections.json",
+      "bytes": 122686,
+      "sha256": "9cdb3361c18026421c7a26f4e04b8b37fa80df6d11c39f2f6681786952967407"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/emission_review.json",
+      "bytes": 17006,
+      "sha256": "b47f908cc94a40fb1f07accb9d07611d242f8e6d659e810d71151929794df7f1"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/capture_emitted.py",
+      "bytes": 11242,
+      "sha256": "69443c7d78496f06a707bff10b3ee6605a59848aec5176aca2106680d460a9d0"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/reviewed_coff_indexed_mixed.py",
+      "bytes": 8377,
+      "sha256": "52474d6f8a7aeb65baa9b683398f104e4e3eb6dfa31d6e6e361be99263470db3"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/type_storage_selected.txt",
+      "bytes": 21123,
+      "sha256": "2c4850e2411238e0389b6267d0caf86f29332d5400b1ee639e7637a74da83c7a"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/provider_selected.txt",
+      "bytes": 12459,
+      "sha256": "df3c934ac6fc7b4190d9fb594c7b7691b4de83ec2ed4276e3899b6dbf890ee32"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/vfs_owner_selected.txt",
+      "bytes": 20432,
+      "sha256": "4789e88ae897ffa4141a625b10672291f8b276b23906c96e4f7d0592c27c37f2"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/game_native_type_storage.hpp.before",
+      "bytes": 4853,
+      "sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222"
+    },
+    {
+      "path": "build/cc12_production_model_descriptor_subset_Source/game_native_type_storage.cpp.before",
+      "bytes": 3611,
+      "sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b"
+    }
+  ],
+  "output_document_pin": {
+    "path": "docs/CC12_PRODUCTION_MODEL_DESCRIPTOR_SUBSET_SOURCE.md",
+    "bytes": 8612,
+    "sha256": "e510fae15cee374ad10ead5c58803574868a474588404ed708ee618f33854b47"
+  },
+  "credit_and_handoff": {
+    "implemented": "Actual retained model/model-base Source composition in the existing production VFS type subset.",
+    "worker_build_tested": true,
+    "worker_emitted_reviewed": true,
+    "Root_integration_and_Source_admission_pending": true,
+    "new_Native_body_credit": 0,
+    "Original_ABI_admission": false,
+    "faithful_whole_CRT_startup_credit": false,
+    "absolute_type_numbering_proved": false,
+    "runtime_or_gameplay_credit": false,
+    "later_model_construction": "No actual model360-to160-to0C owner/node construction, resource/atlas composition, current virtual0C mapping or numbering consumer added.",
+    "next_step": "Root merges four owned files, runs existing seeded checks, reviews emitted result and updates shared metadata if accepted."
+  }
+}
