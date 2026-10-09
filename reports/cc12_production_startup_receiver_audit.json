@@ -1,0 +1,545 @@
+{
+  "schema": "cc12_current_production_startup_receiver_audit_v1",
+  "created_utc": "2026-10-09T21:21:29.942404+00:00",
+  "status": "bounded_current_executable_startup_smoke_passed_faithful_startup_gameplay_unproved",
+  "current_Source121_authority_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_native_mlandfort_kind_primary_review.json",
+    "bytes": 94454,
+    "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+  },
+  "current121_source_inputs4_artifacts_replayed": true,
+  "original_image_unchanged": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "installed_override_unchanged": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
+    "bytes": 3833856,
+    "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2"
+  },
+  "genuine_sdk_files_verified": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+      "bytes": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+      "bytes": 1089440,
+      "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+      "bytes": 21408,
+      "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll",
+      "bytes": 13643936,
+      "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+    }
+  ],
+  "genuine_sdk_provenance": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\provenance.json",
+    "bytes": 828,
+    "sha256": "2412efe622da6c4715c3857f93b6344553b54a75d2fcfd237a88cfce609978de"
+  },
+  "genuine_runtime_source_and_files_verification": {
+    "passed": true,
+    "source": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\redist\\gfwlivesetup.exe",
+    "source_sha256": "82b3088d0af4bad22bf8058659fb80654040fbafdccbd0fc8df996153f597217",
+    "files": {
+      "xlive.dll": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "msidcrl40.dll": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+      "ppcrlconfig.dll": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+      "xlivefnt.dll": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+    },
+    "installer_executed_this_turn": false,
+    "genuine_runtime_selection_does_not_modify_installed_override": true
+  },
+  "ordinary_installed_override_run": {
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "1",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_retained_handle.log",
+      "--game-root",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_retained_handle"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 83520,
+    "start_utc": "2026-10-09T21:04:41.470352+00:00",
+    "window_style": "Hidden",
+    "exe_sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39",
+    "prior43604_handle_missing_confirmed_before_new_observation": true,
+    "purpose": "Capture exact exit of current controlled startup after terminal first process ended without retained exit handle.",
+    "finish_utc": "2026-10-09T21:04:41.906212+00:00",
+    "exit_code": 3221225477,
+    "exit_u32_hex": "c0000005",
+    "terminal": true,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "debug_diagnostic_only": {
+    "receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_debug_receipt_skip_invalid_handle.json",
+      "bytes": 30822,
+      "sha256": "f98b9297446c6feb088c5f84d177049477335a61ba50b54ef019a779a3716ce1"
+    },
+    "fault_DLL_RVA": "00319049",
+    "fault_target": "10640F5E",
+    "first_and_second_chance_AV_retained": true,
+    "first_chance_invalid_handle_continuation_is_diagnostic_only": true
+  },
+  "genuine_sdk_fullscreen_run": {
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "1",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_genuine_sdk.log",
+      "--game-root",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_genuine_sdk",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 64044,
+    "start_utc": "2026-10-09T21:09:28.188911+00:00",
+    "window_style": "Hidden",
+    "exe_sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39",
+    "prior43604_handle_missing_confirmed_before_new_observation": true,
+    "purpose": "Current controlled startup with verified genuine bundled SDK files instead of installed fixed-address patch override; prior debug and ordinary processes are terminal.",
+    "finish_utc": "2026-10-09T21:09:31.635478+00:00",
+    "exit_code": 4,
+    "exit_u32_hex": "00000004",
+    "terminal": true,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "windowed_one_tick_run": {
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "1",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_windowed.log",
+      "--game-root",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_windowed",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 75968,
+    "start_utc": "2026-10-09T21:10:48.933304+00:00",
+    "window_style": "Hidden",
+    "exe_sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39",
+    "prior43604_handle_missing_confirmed_before_new_observation": true,
+    "purpose": "Verified genuine bundled SDK plus ordinary loaded Native windowed option; isolated settings only. Prior genuine fullscreen run is terminal with renderer device failure code4.",
+    "finish_utc": "2026-10-09T21:10:51.209093+00:00",
+    "exit_code": 0,
+    "exit_u32_hex": "00000000",
+    "terminal": true,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "windowed_three_tick_run": {
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "3",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_windowed_three.log",
+      "--game-root",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_windowed_three",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 118072,
+    "start_utc": "2026-10-09T21:11:44.919902+00:00",
+    "window_style": "Hidden",
+    "exe_sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39",
+    "prior43604_handle_missing_confirmed_before_new_observation": true,
+    "purpose": "Verified genuine bundled SDK plus ordinary loaded Native windowed option; isolated settings only. Prior windowed one-tick run is terminal exit0 but Present was skipped during initial reset. Three ticks check the unresolved actual Present path.",
+    "finish_utc": "2026-10-09T21:11:46.998591+00:00",
+    "exit_code": 0,
+    "exit_u32_hex": "00000000",
+    "terminal": true,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "three_tick_summary": {
+    "window_created": true,
+    "device_created": true,
+    "device_hr": "00000000",
+    "back_buffer": "640x480",
+    "frames_presented": 2,
+    "presents_skipped": 1,
+    "loop_finished": true,
+    "exit_code": 0,
+    "mission_frames": 0,
+    "frontend_step": "PressStartPoll"
+  },
+  "all_UNIMPLEMENTED_trace_rows": [
+    "host PlatformWindowHost::initialize_power_policy [00bed223] UNIMPLEMENTED, returning a neutral value",
+    "host Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED, returning a neutral value",
+    "host Phase 4 renderer_resources [00b14a10] UNIMPLEMENTED, returning a neutral value",
+    "host GuiManagerResources::renderer_load_texture [00aa5e60] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::bind_page_root_scene_node [00aa6720] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::allocate_model_slot [00b74eb0] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::create_widget_node [00b75030] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::set_node_parent [00b6e680] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::widget_vtable_74 [00aaade8] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::widget_vtable_78 [00aaae5b] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::derived_property_reader [00aaa710] UNIMPLEMENTED, returning a neutral value",
+    "host GuiLayoutHost::propagate_root_registration [00b6d890] UNIMPLEMENTED, returning a neutral value",
+    "host GuiFrameBox::read_properties [00ad08e0] UNIMPLEMENTED, returning a neutral value",
+    "host Phase 8 world_effects_startup [00af0b10] UNIMPLEMENTED, returning a neutral value",
+    "host StartupSingleton::register_lifetime [00bd0c30] UNIMPLEMENTED, returning a neutral value",
+    "host DecalTable::load_vertex_format [00740454] UNIMPLEMENTED, returning a neutral value",
+    "host DecalTable::load_texture [00740b90] UNIMPLEMENTED, returning a neutral value",
+    "host DecalTable::load_shader [00740c50] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::reset_player_profile [007fdb20] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::load_texture_atlas [00af0060] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::create_attract_screen [00689d90] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::attract_screen_init [00689d90+4h] UNIMPLEMENTED, returning a neutral value",
+    "host PressStartScreen::clear_page_context [00518d60] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::sign_in_state_valid [0067c8f0] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::reset_sign_in_state [00a40020] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::rebind_primary_input [0067c970] UNIMPLEMENTED, returning a neutral value",
+    "host TitleInit::movie_screen_commit [004f83b0] UNIMPLEMENTED, returning a neutral value",
+    "host GameFrameControl::simulation_spine [004e4d32] UNIMPLEMENTED, returning a neutral value",
+    "host FrontEndFrame::render_queue_retained [00b1bf90] UNIMPLEMENTED, returning a neutral value",
+    "host FrontEndFrame::renderer_begin_frame [00f8d394+0ch] UNIMPLEMENTED, returning a neutral value",
+    "host TitleScreen::update_title_owner [00f8bbf4+4h] UNIMPLEMENTED, returning a neutral value",
+    "host XenonSystemManager::sign_in_phase [00a3e500] UNIMPLEMENTED, returning a neutral value",
+    "host XenonSystemManager::profile_change_pending [00a3e3b0] UNIMPLEMENTED, returning a neutral value",
+    "host PressStartScreen::primary_device [004ba6d0] UNIMPLEMENTED, returning a neutral value",
+    "host XenonSystemManager::sign_in_blocked [00f8abe8+3e8] UNIMPLEMENTED, returning a neutral value",
+    "host PressStartScreen::frontend_tail_event [00427190] UNIMPLEMENTED, returning a neutral value",
+    "host FrontEndFrame::gui_set_enabled [00aa0e00] UNIMPLEMENTED, returning a neutral value",
+    "host FrontEndFrame::gui_update [00aa4f80] UNIMPLEMENTED, returning a neutral value",
+    "host FrontEndFrame::game_render [004ca440] UNIMPLEMENTED, returning a neutral value",
+    "host FrontEndFrame::game_finish_render_frame [004ca1f0] UNIMPLEMENTED, returning a neutral value",
+    "host ApplicationFrameHost::update_loading_queue [004fde20] UNIMPLEMENTED, returning a neutral value",
+    "host GuiText::create_glyph_buffers [00ab8400] UNIMPLEMENTED, returning a neutral value",
+    "host GuiText::ensure_draw_sections [00ab8530] UNIMPLEMENTED, returning a neutral value",
+    "host ApplicationShutdownHost::singleton_teardown [00737f80] UNIMPLEMENTED, returning a neutral value",
+    "  PlatformWindowHost::initialize_power_policy              00bed223             UNIMPLEMENTED calls=1",
+    "  Phase 5 online_manager_initialize                        0073dc7c             UNIMPLEMENTED calls=1",
+    "  Phase 4 renderer_resources                               00b14a10             UNIMPLEMENTED calls=1",
+    "  GuiManagerResources::renderer_load_texture               00aa5e60             UNIMPLEMENTED calls=2",
+    "  GuiLayoutHost::bind_page_root_scene_node                 00aa6720             UNIMPLEMENTED calls=5",
+    "  GuiLayoutHost::allocate_model_slot                       00b74eb0             UNIMPLEMENTED calls=24",
+    "  GuiLayoutHost::create_widget_node                        00b75030             UNIMPLEMENTED calls=24",
+    "  GuiLayoutHost::set_node_parent                           00b6e680             UNIMPLEMENTED calls=24",
+    "  GuiLayoutHost::widget_vtable_74                          00aaade8             UNIMPLEMENTED calls=24",
+    "  GuiLayoutHost::widget_vtable_78                          00aaae5b             UNIMPLEMENTED calls=24",
+    "  GuiLayoutHost::derived_property_reader                   00aaa710             UNIMPLEMENTED calls=5",
+    "  GuiLayoutHost::propagate_root_registration               00b6d890             UNIMPLEMENTED calls=5",
+    "  GuiFrameBox::read_properties                             00ad08e0             UNIMPLEMENTED calls=5",
+    "  Phase 8 world_effects_startup                            00af0b10             UNIMPLEMENTED calls=1",
+    "  StartupSingleton::register_lifetime                      00bd0c30             UNIMPLEMENTED calls=1",
+    "  DecalTable::load_vertex_format                           00740454             UNIMPLEMENTED calls=1",
+    "  DecalTable::load_texture                                 00740b90             UNIMPLEMENTED calls=1",
+    "  DecalTable::load_shader                                  00740c50             UNIMPLEMENTED calls=1",
+    "  TitleInit::reset_player_profile                          007fdb20             UNIMPLEMENTED calls=1",
+    "  TitleInit::load_texture_atlas                            00af0060             UNIMPLEMENTED calls=1",
+    "  TitleInit::create_attract_screen                         00689d90             UNIMPLEMENTED calls=1",
+    "  TitleInit::attract_screen_init                           00689d90+4h          UNIMPLEMENTED calls=1",
+    "  PressStartScreen::clear_page_context                     00518d60             UNIMPLEMENTED calls=1",
+    "  TitleInit::sign_in_state_valid                           0067c8f0             UNIMPLEMENTED calls=1",
+    "  TitleInit::reset_sign_in_state                           00a40020             UNIMPLEMENTED calls=1",
+    "  TitleInit::rebind_primary_input                          0067c970             UNIMPLEMENTED calls=1",
+    "  TitleInit::movie_screen_commit                           004f83b0             UNIMPLEMENTED calls=1",
+    "  GameFrameControl::simulation_spine                       004e4d32             UNIMPLEMENTED calls=3",
+    "  FrontEndFrame::render_queue_retained                     00b1bf90             UNIMPLEMENTED calls=3",
+    "  FrontEndFrame::renderer_begin_frame                      00f8d394+0ch         UNIMPLEMENTED calls=3",
+    "  TitleScreen::update_title_owner                          00f8bbf4+4h          UNIMPLEMENTED calls=3",
+    "  XenonSystemManager::sign_in_phase                        00a3e500             UNIMPLEMENTED calls=6",
+    "  XenonSystemManager::profile_change_pending               00a3e3b0             UNIMPLEMENTED calls=6",
+    "  PressStartScreen::primary_device                         004ba6d0             UNIMPLEMENTED calls=6",
+    "  XenonSystemManager::sign_in_blocked                      00f8abe8+3e8         UNIMPLEMENTED calls=6",
+    "  PressStartScreen::frontend_tail_event                    00427190             UNIMPLEMENTED calls=6",
+    "  FrontEndFrame::gui_set_enabled                           00aa0e00             UNIMPLEMENTED calls=3",
+    "  FrontEndFrame::gui_update                                00aa4f80             UNIMPLEMENTED calls=3",
+    "  FrontEndFrame::game_render                               004ca440             UNIMPLEMENTED calls=3",
+    "  FrontEndFrame::game_finish_render_frame                  004ca1f0             UNIMPLEMENTED calls=3",
+    "  ApplicationFrameHost::update_loading_queue               004fde20             UNIMPLEMENTED calls=3",
+    "  GuiText::create_glyph_buffers                            00ab8400             UNIMPLEMENTED calls=2",
+    "  GuiText::ensure_draw_sections                            00ab8530             UNIMPLEMENTED calls=2",
+    "  ApplicationShutdownHost::singleton_teardown              00737f80             UNIMPLEMENTED calls=1"
+  ],
+  "retained_observation_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\debug_startup.py",
+      "bytes": 7428,
+      "sha256": "4b3ac181812084b8bb460863b24a07708242aaec96303b94629fe36fa47d3bc4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\debug_startup_first_observation.py",
+      "bytes": 7012,
+      "sha256": "8299ba1f89c4145d30c340df24e62772fd949ebe07bf8b61f17ed97606b0565d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\genuine_runtime_verification.json",
+      "bytes": 705,
+      "sha256": "cd3ae435c659090be4ddb66503996d09be1b7b98779a5ee87de3431a191743ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\genuine_sdk_exit.json",
+      "bytes": 1855,
+      "sha256": "5dfd150662788e30312183bc41b472cebe10d72b9ab351284701d600d6ca6dce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\genuine_sdk_live.json",
+      "bytes": 1687,
+      "sha256": "c4b3b8265f094c91cb1b0cb4500812954cc6e85e639314aa06edf4cb3404938f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\genuine_sdk_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\genuine_sdk_stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\help.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\publish_audit.py",
+      "bytes": 9301,
+      "sha256": "250c0cf6692834ddb06d9de5745c57e768ce877e002da66395c78dff75fbe651"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\retained_handle_exit.json",
+      "bytes": 1233,
+      "sha256": "efbd1e6b5b73259be09da1dcf48aec705d1079a9941d41ce213aca4d56635927"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\retained_handle_live.json",
+      "bytes": 1056,
+      "sha256": "28173338dbcb0838f2f47b48b60b835895a6aeec635dd9d6f35b9e1386cb2f1c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\retained_handle_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\retained_handle_stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\run_startup.py",
+      "bytes": 1616,
+      "sha256": "6845f8b897a222dcc816899738888c1ecc447c28000b91935af9a1546cf9b54d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\run_startup_genuine_sdk.py",
+      "bytes": 1877,
+      "sha256": "42a377cd141ac6df2dc5492168ed5cb59be7649351634489f87dace7d18b61f6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\run_startup_windowed.py",
+      "bytes": 1867,
+      "sha256": "9a8b2c1264ce37aca9ac27e1d06a0300aaaebf185d52f33335b6c2dbc7a6a9c5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\run_startup_windowed_three.py",
+      "bytes": 1972,
+      "sha256": "e8afcad7f9c2e601679e4d849b16584c984aa8a336ee538cbad3bb0e0ab42def"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup.log",
+      "bytes": 7019,
+      "sha256": "89ac4db6b983bb8487d179559650069c219bf29c5f71b3dde75b636221a0dbbe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_debug.log",
+      "bytes": 7032,
+      "sha256": "bd2d7c0c6c743a76b0c715dfaa196348129ad69089562e53fa9edf587a4803e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_debug_2.log",
+      "bytes": 7034,
+      "sha256": "0e01b826f8c501519163a2cc306a7cbb30be9e6a3f1434ceed9e35f7c7323630"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_debug_receipt.json",
+      "bytes": 1527,
+      "sha256": "0e21d145f3328a65fcbc612e8216bf88baeb9591ee5925cb3953a3ca19385a2d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_debug_receipt_skip_invalid_handle.json",
+      "bytes": 30822,
+      "sha256": "f98b9297446c6feb088c5f84d177049477335a61ba50b54ef019a779a3716ce1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_genuine_sdk.log",
+      "bytes": 9349,
+      "sha256": "567f5e306748ef0ce072813c6017cf713fd0aa40a9a8ddb5883ea1c35506eeb7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_process.json",
+      "bytes": 1070,
+      "sha256": "77d0ed52fdac07dd9d72159d2dc4f13a0f5ed8b72842ea6a5fa3b23c3a089bad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_retained_handle.log",
+      "bytes": 7051,
+      "sha256": "d6d9009444dfabef9e1f0a666a7543ccc3bf19545cfc717fb722c76313055001"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_windowed.log",
+      "bytes": 48497,
+      "sha256": "e842bce4116361abad2c8da111a2c86a918abc4fe0a06523c21d0fd2f0e2b143"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_windowed_three.log",
+      "bytes": 48782,
+      "sha256": "492eb1caa5b96ea5fc878df7c1ff241eea942b3a65bc25f705b96fb7116135a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_exit.json",
+      "bytes": 1857,
+      "sha256": "7a356bff4e8150a499d8dee3845c9db37ccf465c58b180912cbb2227554a478c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_live.json",
+      "bytes": 1689,
+      "sha256": "55e55b8dd693ae3627639a26afee9b0af1a06bcd78a78b2f0ebaf44727f7bf91"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_three_exit.json",
+      "bytes": 1939,
+      "sha256": "41a4fb2743701c4c091dc392559e04e8ab32e1c20e2bef3f462e46ee2ac80720"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_three_live.json",
+      "bytes": 1771,
+      "sha256": "c3b792f63424295e9fa10571e125a5d774f1f2da7d9f04c8831db205a8661921"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_three_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_three_stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "ce7d0908ffb4966edc292bc5fe13fd5a90532676fdcfffc8ae54b212516abdcb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_debug\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "ce7d0908ffb4966edc292bc5fe13fd5a90532676fdcfffc8ae54b212516abdcb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_debug_2\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "ce7d0908ffb4966edc292bc5fe13fd5a90532676fdcfffc8ae54b212516abdcb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_genuine_sdk\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "ce7d0908ffb4966edc292bc5fe13fd5a90532676fdcfffc8ae54b212516abdcb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_retained_handle\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "ce7d0908ffb4966edc292bc5fe13fd5a90532676fdcfffc8ae54b212516abdcb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_windowed\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\personal_windowed_three\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549"
+    }
+  ],
+  "reviewed_receiver_readiness_reports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_unit_numbering_self_table_publication_readiness.json",
+      "bytes": 77664,
+      "sha256": "bb8aa0478b902e5573713d8c9eb13621c8f380a2820d5364d5376fadc52f0f6d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_unit_numbering_landfort_receiver_construction_readiness.json",
+      "bytes": 56883,
+      "sha256": "38bedfa2a4584fc63e38dada5871d783ad8059f7f77571e78c4f89a03ea92ed5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_unit_numbering_production_model_services_readiness.json",
+      "bytes": 41611,
+      "sha256": "d7e0a9d6f43476d8b67e4b33225841fe20fa6cd681a443ebed7cd39f2abdf66f"
+    }
+  ],
+  "implementation_changes": false,
+  "new_build": false,
+  "new_Source_functions": 0,
+  "new_Original_ABI_admission": 0,
+  "bounded_current_startup_smoke": true,
+  "faithful_startup_completion": false,
+  "gameplay_validation": false,
+  "original_installation_executable_DLL_not_modified": true,
+  "GPR_body_prototype_listing_flow_changes": false,
+  "current_doc_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_PRODUCTION_STARTUP_RECEIVER_AUDIT.md",
+    "bytes": 4192,
+    "sha256": "b90c9055d0cfad515d912c7123e6c8c056a00a6b1cdde5e22908ffcf6f2c484b"
+  }
+}

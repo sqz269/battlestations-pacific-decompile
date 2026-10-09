@@ -1373,5 +1373,63 @@
       "canonical_lf_sha256": "446b0ad400cff1be3992315154cb5e477ce66d0df0b759c7aeb688340a53244a"
     },
     "report_self_pin_intentionally_absent": true
+  },
+  "Root_primary_acceptance": {
+    "worker_commit": "615728eafd427b96f7b8f5a338e0e846ff371e79",
+    "immutable_worker_report_pin": {
+      "path": "reports/cc12_unit_numbering_landfort_receiver_construction_readiness.json",
+      "bytes": 52905,
+      "sha256": "064ed2a6011cba4da79ade63bedf3bb0a7ef597e9bb8af3c3a24430a64cc889e"
+    },
+    "immutable_worker_doc_pin": {
+      "path": "docs/CC12_UNIT_NUMBERING_LANDFORT_RECEIVER_CONSTRUCTION_READINESS.md",
+      "bytes": 9995,
+      "sha256": "446b0ad400cff1be3992315154cb5e477ce66d0df0b759c7aeb688340a53244a"
+    },
+    "Root_complete_doc_and_relevant_actual_Source_evidence_read": true,
+    "Root_complete_Native_gate_review": [
+      {
+        "address": "00747000",
+        "bytes": 131,
+        "operations": 40,
+        "calls": 4,
+        "full_PE_SHA_decode_and_all_saved_snapshot_pins_replayed": true,
+        "historical_saved_listing_available": false
+      },
+      {
+        "address": "00745940",
+        "bytes": 243,
+        "operations": 58,
+        "calls": 4,
+        "full_PE_SHA_decode_and_all_saved_snapshot_pins_replayed": true,
+        "historical_saved_listing_available": true
+      }
+    ],
+    "all_recursive_report_pin_rows_replayed": 33,
+    "only_worker_LF_CRLF_differences": [
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json"
+    ],
+    "current_Source121_receipt_pin": {
+      "path": "reports/cc12_native_mlandfort_kind_primary_review.json",
+      "bytes": 94454,
+      "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+    },
+    "new_Source_build_Original_ABI_startup_gameplay_credit": 0,
+    "production_numbering_admission": "Source-held; concrete bounded provider prerequisites remain separate from actual receiver/model ownership.",
+    "current_doc_pin": {
+      "path": "docs/CC12_UNIT_NUMBERING_LANDFORT_RECEIVER_CONSTRUCTION_READINESS.md",
+      "bytes": 10414,
+      "sha256": "183d092d11ce3a7d9c045ffbe297de120018054ef33894b0e006d9254819b0ac"
+    },
+    "new_Cpp_CMake_tests_probes_consumers": false,
+    "Root_ledger_and_GPR_evidence_annotations": {
+      "saved_annotation_receipt": "local\\ghidra-annotations-20261009T211927Z.json",
+      "existing_names_and_comments_preserved": true,
+      "full_Native_bytes_all_starts_and_prototypes_unchanged": true,
+      "function_count_unchanged": true,
+      "forced_exports_refreshed": true,
+      "new_Source_ABI_startup_gameplay_credit": 0
+    },
+    "Source121_current121_Root_raw_inputs4_artifacts_and121_worker_LF_replayed": true
   }
 }

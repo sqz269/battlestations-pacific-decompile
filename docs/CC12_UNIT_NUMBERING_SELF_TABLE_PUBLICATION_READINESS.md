@@ -1,3 +1,5 @@
+Root primary acceptance: independently reviewed 634 bytes / 187 operations / 32 calls and the 40-byte / 11-operation refresh fragment. All 62 report pin rows replay; the current Source121 receipt still matches 121 Root inputs, four artifacts and 121 normalized worker inputs. The complete document and selected real Source contracts were read. This readiness packet adds no Source, build, Original ABI, startup or gameplay credit.
+
 # Unit numbering: actual self-table publication and refresh readiness
 
 **Production Source-held; one concrete refresh fragment is ready for review.**
