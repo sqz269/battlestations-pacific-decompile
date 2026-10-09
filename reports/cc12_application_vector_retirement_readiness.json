@@ -1,0 +1,299 @@
+{
+  "schema": "bsp.cc12.application_vector_retirement_readiness.v1",
+  "kind": "read_only_complete_ordinary_body",
+  "created_utc": "2026-10-09T06:33:21.871240+00:00",
+  "baseline": "a54ad3f18a8bb965ab24cf1c4e26c97b67dd92ae",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_count": 64729
+  },
+  "native": {
+    "address": "00735F30",
+    "bytes": 80,
+    "hex": "56578b7c240c8bf13b7e087e0657e87dffffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+    "sha256": "d394c24ef9bd622bffd085f533d79c02d298d2e7563cf4d2821582be40b53029",
+    "live_capture_raw_PE_equal": true,
+    "instructions": [
+      {
+        "address": "00735F30",
+        "hex": "56",
+        "text": "push esi"
+      },
+      {
+        "address": "00735F31",
+        "hex": "57",
+        "text": "push edi"
+      },
+      {
+        "address": "00735F32",
+        "hex": "8b7c240c",
+        "text": "mov edi, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "00735F36",
+        "hex": "8bf1",
+        "text": "mov esi, ecx"
+      },
+      {
+        "address": "00735F38",
+        "hex": "3b7e08",
+        "text": "cmp edi, dword ptr [esi + 8]"
+      },
+      {
+        "address": "00735F3B",
+        "hex": "7e06",
+        "text": "jle 0x735f43"
+      },
+      {
+        "address": "00735F3D",
+        "hex": "57",
+        "text": "push edi"
+      },
+      {
+        "address": "00735F3E",
+        "hex": "e87dffffff",
+        "text": "call 0x735ec0"
+      },
+      {
+        "address": "00735F43",
+        "hex": "8b4604",
+        "text": "mov eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "00735F46",
+        "hex": "3bc7",
+        "text": "cmp eax, edi"
+      },
+      {
+        "address": "00735F48",
+        "hex": "7d1c",
+        "text": "jge 0x735f66"
+      },
+      {
+        "address": "00735F4A",
+        "hex": "8d9b00000000",
+        "text": "lea ebx, [ebx]"
+      },
+      {
+        "address": "00735F50",
+        "hex": "8b0e",
+        "text": "mov ecx, dword ptr [esi]"
+      },
+      {
+        "address": "00735F52",
+        "hex": "8d0c81",
+        "text": "lea ecx, [ecx + eax*4]"
+      },
+      {
+        "address": "00735F55",
+        "hex": "85c9",
+        "text": "test ecx, ecx"
+      },
+      {
+        "address": "00735F57",
+        "hex": "7406",
+        "text": "je 0x735f5f"
+      },
+      {
+        "address": "00735F59",
+        "hex": "c70100000000",
+        "text": "mov dword ptr [ecx], 0"
+      },
+      {
+        "address": "00735F5F",
+        "hex": "83c001",
+        "text": "add eax, 1"
+      },
+      {
+        "address": "00735F62",
+        "hex": "3bc7",
+        "text": "cmp eax, edi"
+      },
+      {
+        "address": "00735F64",
+        "hex": "7cea",
+        "text": "jl 0x735f50"
+      },
+      {
+        "address": "00735F66",
+        "hex": "3b7e04",
+        "text": "cmp edi, dword ptr [esi + 4]"
+      },
+      {
+        "address": "00735F69",
+        "hex": "7d0d",
+        "text": "jge 0x735f78"
+      },
+      {
+        "address": "00735F6B",
+        "hex": "83c8ff",
+        "text": "or eax, 0xffffffff"
+      },
+      {
+        "address": "00735F6E",
+        "hex": "8bff",
+        "text": "mov edi, edi"
+      },
+      {
+        "address": "00735F70",
+        "hex": "014604",
+        "text": "add dword ptr [esi + 4], eax"
+      },
+      {
+        "address": "00735F73",
+        "hex": "3b7e04",
+        "text": "cmp edi, dword ptr [esi + 4]"
+      },
+      {
+        "address": "00735F76",
+        "hex": "7cf8",
+        "text": "jl 0x735f70"
+      },
+      {
+        "address": "00735F78",
+        "hex": "897e04",
+        "text": "mov dword ptr [esi + 4], edi"
+      },
+      {
+        "address": "00735F7B",
+        "hex": "5f",
+        "text": "pop edi"
+      },
+      {
+        "address": "00735F7C",
+        "hex": "5e",
+        "text": "pop esi"
+      },
+      {
+        "address": "00735F7D",
+        "hex": "c20400",
+        "text": "ret 4"
+      }
+    ],
+    "instruction_count": 31,
+    "Ghidra_listing_starts": 31,
+    "physical_calls": 1
+  },
+  "ABI": {
+    "receiver": "ECX actual12B vectorheader",
+    "stack_argument": "raw signed requestDWORD",
+    "preserved": [
+      "ESI",
+      "EDI"
+    ],
+    "cleanup": "RET4",
+    "semantic_EAX_return_established": false
+  },
+  "ordered_effects": [
+    "Signedrequest greater than currentcapacity: actual735EC0 call, then loadcurrentcount.",
+    "CapturecountEAX; signedgrowth loop reads currentdata eachiteration and writeszero unless calculatedslotaddress==0; wrappingindex/slot arithmetic.",
+    "Recompare actualcurrentcount; shrink ADDs -1 to actualcount eachiteration, signedcompare; no elementread/release.",
+    "Final unconditionalcount=requeststore; actualdata/capacity unchanged locally."
+  ],
+  "zero_request": {
+    "valid_nonnegative_count_capacity": "No reserve/growth, currentcountdecrements then finalzerostore; data/capacity/slotsunchanged.",
+    "new_invariant_checks": false,
+    "negative_capacity_can_call_reserve": true,
+    "negative_count_can_enter_growth": true
+  },
+  "reused_parent": {
+    "address": "007379a0",
+    "bytes": 93,
+    "sha256": "ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297",
+    "current_raw_PE_equal": true,
+    "source_report": "reports/cc12_application_base_retirement_readiness.json",
+    "schedule": "ActualApp+8 request0, reloadcurrentdata/freeBF6989, restoreouterECX and callBEA990."
+  },
+  "concrete_existing_Source": [
+    "NativeApplicationPointerVectorStorage actual12B with signedcount/capacity.",
+    "NativeApplicationPointerVectorAllocation actualallocator/freedomain.",
+    "reserve_native_application_pointer_vector_00735ec0 existingactualstorage Source; childNative/emittedproofnotrenewed."
+  ],
+  "prospective_Source_boundary": "Borrowexistingactualvectorheader/allocationbinding; completeordinaryresize; no newAppoverlay/owner/table/callback/domain.",
+  "source_pins": [
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 27,
+          "text": "namespace bsp {\n// Actual 0Ch pointer vector at application+08; count/capacity are signed.\n// Entries own the material loader's returned caller references, including null.\nstruct NativeApplicationPointerVectorStorage {\n    void** data_00;\n    std::int32_t count_04,capacity_08;\n};\nstatic_assert(sizeof(NativeApplicationPointerVectorStorage)==12);\nstruct NativeApplicationPointerVectorAllocation {\n    void* (*allocate_00bf55be)(std::uint32_t);\n    void (*free_00bf6989)(void*);\n};\n// 735EC0: ECX actual0Ch header; stack signed request; RET4. Minimum1,\n// signed capacity comparison, wrapping request*4 allocation, live source/count\n// reads, free CURRENT old data, THEN publish new data/capacity. Count unchanged.\n// Valid readable extents and native allocator/free contracts are required.\n// No rollback or original CRT/new-handler/FH3 identity is added.\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage&,std::int32_t,\n    const NativeApplicationPointerVectorAllocation&);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "excerpts": [
+        {
+          "start_line": 9,
+          "end_line": 42,
+          "text": "namespace {\nusing U=std::uint32_t;\nusing I=std::int32_t;\ntemplate<class T> T read(const void* p,U offset=0) noexcept {\n    return *reinterpret_cast<const volatile T*>(static_cast<const char*>(p)+offset);\n}\ntemplate<class T> void put(void* p,U offset,T value) noexcept {\n    *reinterpret_cast<volatile T*>(static_cast<char*>(p)+offset)=value;\n}\nI signed_bits(U value) noexcept {I result;std::memcpy(&result,&value,4);return result;}\nconstexpr char preload_script[]=\"shaderfx/shaderpreload.lua\";\nstatic_assert(sizeof(preload_script)==0x1b);\n}\n\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage& rows,I requested,\n    const NativeApplicationPointerVectorAllocation& allocation) {\n    if(requested<1)requested=1;\n    if(read<I>(&rows,8)>=requested)return;\n    void* const fresh=allocation.allocate_00bf55be(static_cast<U>(requested)*4u);\n    auto cursor=reinterpret_cast<std::uintptr_t>(fresh);\n    U index=0;\n    while(signed_bits(index)<read<I>(&rows,4)) {\n        if(cursor) {\n            const auto source=read<std::uintptr_t>(&rows);\n            put<U>(reinterpret_cast<void*>(cursor),0,\n                read<U>(reinterpret_cast<const void*>(source+index*4u)));\n        }\n        ++index;cursor+=4u;\n    }\n    allocation.free_00bf6989(read<void*>(&rows));\n    put<void*>(&rows,0,fresh);put<I>(&rows,8,requested);\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/app_frame.hpp",
+      "canonical_lf_sha256": "b74741c8e369d1b2555bbe757f585b709d2830ef5a082b1703a4f4ed93d0f16a",
+      "excerpts": [
+        {
+          "start_line": 6,
+          "end_line": 14,
+          "text": "namespace bsp {\n// Projection of the two per-frame flag bytes of the native application object.\n// Constructor 00737970 stores 1 at +18h and 0 at +19h and +1Ah. This is not the\n// full native layout; +4h..+14h hold unreconstructed subsystem pointers and\n// +14h is the game object passed to the update in ECX.\nstruct ApplicationFrameState {\n    bool first_update{true}; // +18h, cleared after the game update at 00737b2b\n    bool input_action_latch{false}; // +19h, cleared at 00737ac0 and set at 00737af2\n};"
+        }
+      ]
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "canonical_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpts": [
+        {
+          "start_line": 1798,
+          "end_line": 1804,
+          "text": "void GameStartupHost::application_construct() {\n    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's\n    // default. The remaining subsystem pointers at +4h..+14h are not reconstructed.\n    log_.implemented(\"StartupHost::application_construct\", \"00737970\");\n    frame_state_ = ApplicationFrameState{};\n    constructed_ = true;\n}"
+        }
+      ]
+    },
+    {
+      "path": "config/target.json",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "excerpts": []
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "excerpts": []
+    },
+    {
+      "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+      "canonical_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+      "excerpts": []
+    },
+    {
+      "path": "reports/cc12_application_base_retirement_readiness.json",
+      "canonical_lf_sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+      "excerpts": []
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "excerpts": []
+    }
+  ],
+  "descendant_native_queries": 0,
+  "held": [
+    "ActualcommonApplicationconstruction/publication/lifetimes and callableprofiles.",
+    "Existingreserve NativeCRT/newhandler/EH domainqualification; fullNativeentry/fault/exceptioncompatibility.",
+    "Production integration and startup/gameplay."
+  ],
+  "credit": {
+    "Source": 0,
+    "Original": 0,
+    "GPR_mutations": 0,
+    "CMake_ledger": 0,
+    "builds_tests_probes": 0,
+    "runtime": 0
+  }
+}
