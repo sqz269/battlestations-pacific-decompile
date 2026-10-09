@@ -1,0 +1,407 @@
+{
+  "schema": "bsp.cc12.pending_registry_base_cleanup_readiness.v1",
+  "packet": "cc12_pending_registry_base_cleanup_readiness",
+  "kind": "read_only_complete_ordinary_cleanup_and_qualified_constructor_relation",
+  "created_utc": "2026-10-09T07:38:45.888898+00:00",
+  "baseline_commit": "29aeaf6f7aa4cbf45e6a3b32ff3c65d80b347399",
+  "claimed_address": "008748F0",
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "complete_ordinary_cleanup_established": true,
+    "missing_native_children": false,
+    "ordinary_Source_store_schedule_recoverable": true,
+    "actual_effects": "Unconditionally clear actualF878CC DWORD, then write CE3818 to actual receiver+00; plainRET.",
+    "registry_section_04_touched": false,
+    "production_Source_binding_ready": false,
+    "admitted_Source_API": false,
+    "held_dependencies": [
+      "Actual8748F0 Source entry and canonicalF878CC borrowed-cell binding",
+      "Shared constructor unwind helper recognition/EBP frame protocol",
+      "Nested failure/original FH3/hardware-fault compatibility",
+      "Separate getterEH, ownerretirement/callabletable delivery and pending/group composition"
+    ]
+  },
+  "size_gate": {
+    "maximum_bytes": 300,
+    "body_first": "008748F0",
+    "body_last": "00874900",
+    "bytes": 17,
+    "passed": true,
+    "saved_prototype": "undefined FUN_008748f0(void)",
+    "decompiled_prototype": "void __fastcall FUN_008748f0(undefined4* param_1)",
+    "physical_input_from_complete_assembly": true
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verification": "bsp.py ghidra verifies existing project/program/language/image base before each live query.",
+    "status": "ghidra: up  /battlestationspacific.exe",
+    "count": "live function count 64729; snapshot 64729; same",
+    "fresh_spans": [
+      {
+        "address": "008748F0",
+        "end_inclusive": "00874900",
+        "bytes": 17,
+        "purpose": "Complete ordinary base cleanup body",
+        "hex": "c705cc78f80000000000c7011838ce00c3",
+        "sha256": "d6b00cb7e86ca84a971ae28580fec99ba8b7de3ccaf5750da1df4bf81b0d20cb",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 17,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "008748f0  c7 05 cc 78 f8 00 00 00 00 00 c7 01 18 38 ce 00  ...x.........8..\n00874900  c3  .\n"
+      }
+    ],
+    "fresh_GPR_PE_bytes": 17,
+    "complete_body_bytes": 17,
+    "instructions": [
+      {
+        "address": "008748F0",
+        "bytes": 10,
+        "hex": "c705cc78f80000000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf878cc], 0"
+      },
+      {
+        "address": "008748FA",
+        "bytes": 6,
+        "hex": "c7011838ce00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx], 0xce3818"
+      },
+      {
+        "address": "00874900",
+        "bytes": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "instruction_count": 3,
+    "physical_CALL_count": 0,
+    "tail_transfer_count": 0,
+    "branch_count": 0
+  },
+  "native_ABI": {
+    "receiver": "ECX points to writable actual receiver DWORD+00. Prior constructor proves enclosing owner allocation raw8, but this body accesses only its first4bytes.",
+    "EDX": "Not read or changed.",
+    "stack": "No caller stack argument read/consumed. PlainRET pops only incoming return address.",
+    "result": "No semantic result. EAX is unchanged; this is not a constructor-style returned-receiver contract.",
+    "preserved": "Both MOV stores and RET leave general registers and arithmetic flags unchanged on ordinary completion, apart from ESP consuming the return address.",
+    "implicit_input": "Actual mutable absolute publicationDWORD at00F878CC; its preexisting value is not read.",
+    "frame": "No local frame, handler installation, guard or local catch. No call or tail transfer."
+  },
+  "ordered_writes": [
+    {
+      "order": 1,
+      "address": "008748F0",
+      "instruction_bytes": 10,
+      "target": "absoluteDWORD00F878CC",
+      "bytes": 4,
+      "value": "00000000",
+      "unconditional": true
+    },
+    {
+      "order": 2,
+      "address": "008748FA",
+      "instruction_bytes": 6,
+      "target": "DWORD[ECX+00]",
+      "bytes": 4,
+      "value": "00CE3818",
+      "unconditional": true
+    }
+  ],
+  "storage_contract": {
+    "receiver_access": "Write+00..+03 only; no receiver reads. Owner+04..+07 (section field) is neither read nor written by this body.",
+    "publication_access": "One4-byte zero store to canonicalF878CC before receiver stamp; no current-pointer comparison, identity test or prior value read.",
+    "current_identity": "The clear still occurs if F878CC currently names another owner; actual encoded store is unconditional.",
+    "ordering": "Retain the two raw stores in this order. No substitute private publication or same-layout owner is admitted.",
+    "profile": "CE3818 is an encoded native base-profile identity only; no profile table bytes or targets were expanded.",
+    "absent_local_effects": [
+      "No section lookup/release/unlock",
+      "No allocation/free",
+      "No manager lookup or register/unregister",
+      "No publication restoration",
+      "No receiver/section zero-fill",
+      "No hidden descendant service"
+    ]
+  },
+  "existing_Source_reuse": {
+    "paths": [
+      "include/bsp/native_render_service_base.hpp",
+      "src/native_render_service_base.cpp"
+    ],
+    "symbol": "destroy_native_generic_singleton_base_00412430",
+    "current_definition": "*static_cast<volatile Word*>(actual_receiver) = 0x00ce3818u; where Word=std::uint32_t.",
+    "admitted_reuse": "Concrete Source semantics of the second store only. The first actualF878CC store and new actual cleanup binding remain outside this read-only packet.",
+    "limit": "Native8748F0 does not call412430; any Source composition is a new Source interface, not recovered native call topology or register/fault compatibility.",
+    "complete_target_binding_found": false,
+    "additional_missing_child_services": [],
+    "minimum_future_bindings": [
+      "Actual receiver",
+      "Stable binding to actual mutableF878CC cell"
+    ],
+    "no_private_service": "No added manager, lock provider, owner alias, callback default or allocation service is needed for these two ordinary stores."
+  },
+  "Source_search": {
+    "paths": [
+      "include",
+      "src"
+    ],
+    "extensions": [
+      ".hpp",
+      ".cpp",
+      ".inc"
+    ],
+    "actual_target_patterns": [
+      "8748f0",
+      "f878cc"
+    ],
+    "actual_target_matches": 0,
+    "reuse_pattern": "destroy_native_generic_singleton_base_00412430",
+    "reuse_definition": "src/native_render_service_base.cpp:51"
+  },
+  "qualified_constructor_state0": {
+    "prior_EH_report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+    "encoded_map": "DC84D4 stateindex0 -> toState-1,actionC963E0",
+    "direct_action": "C963E0 MOV ECX,currentDWORD[EBP-10h]; JMP8748F0",
+    "constructor_timing": "874BDD state0 precedes D0DEA0 profile store and BD1860 section construction; section+04 ordinary store comes only after the service returns.",
+    "required_frame_relation": "If shared helper supplies EBP=constructor incomingESP, current[EBP-10h] is the saved receiver slot. This helper contract remains unproved.",
+    "newly_established": "When that action reaches this target with valid bindings and both stores complete, actualF878CC is cleared before receiver profile becomesCE3818, without touching section+04.",
+    "no_success_assumption": "Actual dispatcher invocation, successful completion, mutable spill behavior and native fault equivalence are not implied by these store bytes.",
+    "no_chain_extension": "No outer allocation free, captured manager unlock, getter publication policy or complete owner retirement is inferred. GetterC96433 remains excluded."
+  },
+  "failure_boundary": {
+    "invalid_storage": "No null/range/identity checks. The first publication store may complete before an invalid receiver faults on the second; later runtime effects remain unknown.",
+    "native_fault": "No local EH handler or explicit C++ throw. This does not guarantee no hardware fault, successful unwind, or equality with a Source noexcept function.",
+    "nested_cleanup_failure": "Shared runtime behavior if the cleanup target faults/fails nonlocally remains unproved; no added catch or RAII policy.",
+    "no_resource_claim": "Preserving section+04 locally does not prove whether outer cleanup releases it; this body itself does not access or free it."
+  },
+  "Source_and_prior_evidence_pins": [
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_CONSTRUCTOR_EH_READINESS.md",
+      "bytes": 6873,
+      "sha256": "eadc68f4ed345216f1171bed14d905d49984843fd5b1248036652590e95bbce3",
+      "lf_sha256": "eadc68f4ed345216f1171bed14d905d49984843fd5b1248036652590e95bbce3"
+    },
+    {
+      "path": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+      "bytes": 17838,
+      "sha256": "8f9f20d14d91f38d1aca2bf2115861aaeade5206984f2d8306cbb784f97cbbd2",
+      "lf_sha256": "ee1f48f77ce3e3073fa3bf042b35563859001742049d81e7ee4a860ca5705ac5"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_OWNER_CONSTRUCTION_READINESS.md",
+      "bytes": 8133,
+      "sha256": "caefdbbdd81c5c2d72f6011da2b174fb0f6b49665f97dd37407d21bb95568c6e",
+      "lf_sha256": "caefdbbdd81c5c2d72f6011da2b174fb0f6b49665f97dd37407d21bb95568c6e"
+    },
+    {
+      "path": "reports/cc12_pending_registry_owner_construction_readiness.json",
+      "bytes": 21824,
+      "sha256": "f51550d1c2cc3e57192c3b223c6028f96948521dc6d44887ca72eaa332664a30",
+      "lf_sha256": "2af4cd5699e962e554079fa6216fe9e1ce50cdb0560ef711356a49c03a1a98ae"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+      "bytes": 9420,
+      "sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf",
+      "lf_sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf"
+    },
+    {
+      "path": "reports/cc12_pending_registry_getter_readiness.json",
+      "bytes": 40457,
+      "sha256": "20f2cdaf05c5799d0b81e6f8050bf8f00c89e26b259c59b5bed351fc2e4795f2",
+      "lf_sha256": "b1b279d58971fe11ddf69c4d4883be18e1535f72789519ed38bca7f713d260e5"
+    }
+  ],
+  "prior_evidence": {
+    "inherited_pin_rechecks": [
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "path": "docs/CC12_PENDING_REGISTRY_OWNER_CONSTRUCTION_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "path": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "path": "reports/cc12_pending_registry_getter_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "path": "docs/CC12_APPLICATION_RETIREMENT_EH_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "path": "reports/cc12_application_retirement_EH_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "include/bsp/random_threads.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "src/singleton_lifetime.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "docs/NATIVE_RENDERER_WORKER_LIFETIME.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "reports/native_renderer_worker_lifetime_audit.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "path": "reports/cc12_pending_registry_getter_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      }
+    ],
+    "native_windows_PE_rechecked": [
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00C963E8",
+        "bytes": 16,
+        "sha256": "51d68887a5e4093adba9b4fc7c56a0b59c4a7fd1fba56cbcd1c53008683a63e6",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00DC84DC",
+        "bytes": 36,
+        "sha256": "e33515791a52b841d6f4377621e695ef4597498bdcbc87ed652ea6bd53022d0a",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00DC84D4",
+        "bytes": 8,
+        "sha256": "8e8931ec3a74526a42344924490b857413db67f84a891d0d6c6fb440db7a69ba",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00C963E0",
+        "bytes": 8,
+        "sha256": "b200de45417c37de51a05a8bd2ed427c144350fac9f785a58f5b467169cad716",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "address": "00874BC0",
+        "bytes": 69,
+        "sha256": "dbd4459a91dddfa42be5d17021ea441644245ea4f24c04bbf5f2167bcbdfbba6",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      }
+    ],
+    "SDK_reference_rechecked": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+      "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+      "role": "Inherited layout reference only; no new SDK/runtime interpretation."
+    },
+    "fresh_live_prior_queries": false
+  },
+  "validation": {
+    "fresh_windows": 1,
+    "fresh_GPR_PE_bytes": 17,
+    "complete_instructions": 3,
+    "independent_complete_decode": true,
+    "full_PE_hash_rechecked": true,
+    "current_Source_and_prior_pins": 8,
+    "inherited_pin_rechecks": 15,
+    "inherited_native_windows": 5,
+    "SDK_pin_rechecked": true,
+    "JSON_parse": true,
+    "Source_edits": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_CMake_mutations": 0,
+    "native_descendant_queries": 0,
+    "getter_EH_queries": 0,
+    "other_caller_queries": 0,
+    "profile_or_bootstrap_queries": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_runs": 0,
+    "new_Original_credit": 0
+  },
+  "limits": [
+    "Complete ordinary base cleanup only; constructor state0 composition remains conditional on runtime frame/helper ABI and successful accesses.",
+    "No Source entry, actual publication lifecycle, callable profile delivery, retirement, getterEH or Native fault compatibility is admitted.",
+    "No build, fixture, ABI probe or game validation credit."
+  ]
+}
