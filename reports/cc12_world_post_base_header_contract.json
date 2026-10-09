@@ -1,0 +1,378 @@
+{
+  "schema": "bsp.cc12.world_post_base_header_contract.v1",
+  "packet": "cc12_world_post_base_header_contract",
+  "status": "IMPLEMENTED_UNBUILT",
+  "addresses": [
+    "009037F0",
+    "00904C40",
+    "004DE610",
+    "00BF681B",
+    "00BF65AC",
+    "00C671A0",
+    "00C66FC0",
+    "009258F0",
+    "0042B100",
+    "00BF6989"
+  ],
+  "entry": {
+    "address": "009037F0",
+    "descriptive_name": "BSP_World_AllocateEntityChains",
+    "name_is_hypothesis": true,
+    "native_size_bytes": 89,
+    "instruction_count": 34,
+    "abi": {
+      "machine": "MSVC Win32 x86",
+      "ecx": "borrowed actual World storage, actual caller supplies 0x4BC bytes after base construction",
+      "stack_4": "active byte from low byte of first 32-bit argument",
+      "stack_8": "second 32-bit argument ignored",
+      "stack_pop_bytes": 8,
+      "eax": "second allocation result, including explicit null branch",
+      "explicitly_saved_nonvolatiles": [
+        "ESI",
+        "EDI"
+      ],
+      "edx_input": false,
+      "local_eh_frame": false
+    },
+    "ordered_effects": [
+      {
+        "address": "009037FC",
+        "effect": "World DWORD+4A8=0"
+      },
+      {
+        "address": "00903802",
+        "effect": "World BYTE+4A4=first_argument_low_byte"
+      },
+      {
+        "address": "00903808",
+        "effect": "CDECL 00BF681B(12), caller pops4"
+      },
+      {
+        "addresses": [
+          "00903814",
+          "00903817",
+          "00903819"
+        ],
+        "effect": "nonnull first header DWORDs+4,+0,+8=0 in that order"
+      },
+      {
+        "address": "00903822",
+        "effect": "publish first result at World+4 before second allocation"
+      },
+      {
+        "address": "00903825",
+        "effect": "CDECL 00BF681B(12), caller pops4"
+      },
+      {
+        "addresses": [
+          "00903831",
+          "00903834",
+          "00903836"
+        ],
+        "effect": "nonnull second header DWORDs+4,+0,+8=0 in that order"
+      },
+      {
+        "addresses": [
+          "0090383A",
+          "00903841"
+        ],
+        "effect": "publish second result or null at World+8, return EAX with RET8"
+      }
+    ],
+    "unchanged_owner_fields": [
+      "World+0 method table",
+      "World+0C root",
+      "World+18 category array",
+      "World+4AC ready byte",
+      "World+4B4 matrix sentinel",
+      "World+4B8 matrix count"
+    ],
+    "precondition_for_bounded_source": "actual fresh post-base World storage with no previous ownership at+4,+8,+4A8; no populated-root reset"
+  },
+  "headers": {
+    "allocation_count": 2,
+    "bytes_each": 12,
+    "layout": {
+      "0": "first native entity pointer",
+      "4": "last native entity pointer",
+      "8": "DWORD count"
+    },
+    "layout_evidence": "009258F0 complete267B attachment producer; no additional callee semantics claimed",
+    "world_4_link_offsets": {
+      "previous": "34",
+      "next": "38"
+    },
+    "world_8_link_offsets": {
+      "previous": "40",
+      "next": "44"
+    },
+    "nonnull_hierarchy_parent_header": [
+      "48",
+      "4C",
+      "50"
+    ],
+    "not_category_header_layout": "World+18 category headers are count/head/tail and own separate nodes",
+    "vptr": false,
+    "embedded_delete_callback": false,
+    "sentinel": false,
+    "concrete_allocation_service": "singleton_lifetime_allocate",
+    "matching_raw_free_service": "singleton_lifetime_free",
+    "header_destructor_callback": null,
+    "allocation_boundary_limit": "host CRT malloc/new-handler/bad_alloc semantics; original CRT global or exception-object identity is not claimed",
+    "allocation_request": {
+      "kind": "SingletonAllocationKind::object",
+      "native_bytes": 12,
+      "host_bytes": 12
+    },
+    "allocation_call_sites": "two direct singleton_lifetime_allocate(request) calls in new Source"
+  },
+  "failure_contract": {
+    "native_allocator": "00BF681B retries malloc via __callnewh then throws bad_alloc; explicit null arms in caller retained",
+    "first_throw": "World+4/+8 retain preimage; World+4A8=0 and active BYTE write remain",
+    "second_throw": "World+4 retains first allocated/published header; World+8 retains preimage; no local free",
+    "null_return_arms": "publish null into corresponding slot and continue; no full-destructor safety claim",
+    "new_local_raii_or_rollback_would_change_behavior": true,
+    "normal_dtor_invalid_for_fresh_partial_world": {
+      "load_world_8": "00904C73",
+      "unguarded_dereference": "00904C76",
+      "unguarded_world_4_dereference": "00904C9E"
+    }
+  },
+  "caller_unwind": {
+    "function": "004DE610",
+    "arguments": [
+      1,
+      1
+    ],
+    "state_minus_one_store": "004DE68F",
+    "world_publication": "004DE696 Game+19CC=World",
+    "post_base_call": "004DE69C",
+    "handler": "00C671A0",
+    "func_info": "00D8FD04",
+    "magic": "19930522",
+    "max_state": 45,
+    "unwind_map": "00D8FD28",
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "state_zero": {
+      "next": -1,
+      "action": "00C66FC0",
+      "chain": [
+        "0042B100",
+        "00BF6989",
+        "00BF65AC"
+      ],
+      "purpose": "free saved raw World allocation if base construction throws"
+    },
+    "state_zero_armed_at_post_base_call": false,
+    "caller_local_header_rollback": false,
+    "outer_frame_cleanup": "outside scope; not asserted absent"
+  },
+  "normal_release_boundary": {
+    "function": "00904C40",
+    "header_free_span": [
+      "00904D82",
+      "00904DA8"
+    ],
+    "order": [
+      "free World+8 with00BF65AC then clear slot",
+      "free World+4 with00BF65AC then clear slot"
+    ],
+    "real_prior_teardown_boundaries_not_implemented_here": [
+      "00926D90(7)",
+      "00922FD0",
+      "entity vslot+DC",
+      "00874D00",
+      "00904600"
+    ],
+    "later_world_4a8_reference_release": "separate object, InterlockedDecrement and dynamic vslot0",
+    "export_issue": "false noreturn free omits return continuations at00904D8F and00904DA2; disk and live bytes recover them without Ghidra writes"
+  },
+  "source_admission": {
+    "scope": "actual-storage/publication fragment for009037F0 over supplied borrowed raw World storage; full owner/teardown excluded",
+    "requires_future_qualification": [
+      "integrator CMake registration",
+      "normal MSVC Win32 build acceptance",
+      "review actual-storage fragment scope separately from already projected original-function reconstruction"
+    ],
+    "requires_no_header_delete_callback": true,
+    "current_projection_is_not_native_body": "src/game_hosts_world.cpp GameWorldHost::build_entity_chains_009037f0 populates vectors and summary",
+    "full_world_owner_ready": false,
+    "normal_world_destructor_ready": false,
+    "startup_ready": false,
+    "game_ready": false,
+    "contract_ready": true,
+    "implementation_status": "IMPLEMENTED_UNBUILT",
+    "cpp_entry": "NativeWorldChainHeader* allocate_native_world_chain_headers_009037f0(void*, uint32_t active_word, uint32_t unused_word)",
+    "original_abi_replacement": false,
+    "source_header": "include/bsp/native_world_chain_headers.hpp",
+    "source_body": "src/native_world_chain_headers.cpp",
+    "owner_writes": "memcpy widths4,1,4,4 at+4A8,+4A4,+4,+8, with allocations and initialization between publications",
+    "header_cpp_lifetime": "placement default initialization of asserted trivially default constructible/destructible NativeWorldChainHeader; no additional allocation or field initialization",
+    "assembly_added": false,
+    "local_owning_objects_or_exception_catches": false
+  },
+  "verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "live_cli_target_verification": "Every ghidra CLI request calls Client.verify, matching project name, program path, language and image base",
+    "writes": [
+      "docs/CC12_WORLD_POST_BASE_HEADER_CONTRACT.md",
+      "reports/cc12_world_post_base_header_contract.json",
+      "include/bsp/native_world_chain_headers.hpp",
+      "src/native_world_chain_headers.cpp"
+    ],
+    "source_changes": 2,
+    "config_changes": 0,
+    "ledger_changes": 0,
+    "ghidra_mutations": 0,
+    "builds": 0,
+    "fixtures": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "function_credit": 0,
+    "registered_ready_packets": 0,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "inspected_main_revision": "b9de0885012052dc5def4702b5d1b509cb835384",
+    "native_live_disk_spans_equal": 11,
+    "native_live_disk_bytes_equal": 339,
+    "cmake_changes": 0,
+    "tests": 0,
+    "actual_storage_fragments_implemented_unbuilt": 1,
+    "actual_storage_fragments_accepted": 0
+  },
+  "native_spans": [
+    {
+      "address": "009037F0",
+      "size_bytes": 89,
+      "hex": "8a44240456578bf133ff6a0c89bea80400008886a4040000e80e302f0083c4043bc7740a8978048938897808eb0233c06a0c894604e8f12f2f0083c4043bc7741089780489388978085f8946085ec20800897e085f5ec20800",
+      "sha256": "a78634c872f6a342bbab2641f25a04679590a448431ae363b6a45fd3cd480689",
+      "live_disk_equal": true,
+      "instruction_count": 34
+    },
+    {
+      "address": "00BF681B",
+      "size_bytes": 105,
+      "hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "live_disk_equal": true,
+      "instruction_count": 33
+    },
+    {
+      "address": "004DE686",
+      "size_bytes": 27,
+      "hex": "6a0183cdff6a018bc889ac24a40000008986cc190000e84f514200",
+      "sha256": "133185bc92728bf0b2c0a8d57de404f2692a3dca62880404f4d7ffbf19531cbd",
+      "live_disk_equal": true,
+      "instruction_count": 7
+    },
+    {
+      "address": "00904D82",
+      "size_bytes": 38,
+      "hex": "8b46083bc3740c50e81d182f0083c404895e088b46043bc3740c50e80a182f0083c404895e04",
+      "sha256": "69567512e24fee3f8d187f72d1ebb0f395c987f6bccfd469308f9b6a0ab9c0a5",
+      "live_disk_equal": true,
+      "instruction_count": 14
+    },
+    {
+      "address": "00C671A0",
+      "size_bytes": 10,
+      "hex": "b804fdd800e999f9f8ff",
+      "sha256": "df9263572ab5befd4d1325f1dd71f4ff8914ba794b03a933f34475b2860932f1",
+      "live_disk_equal": true,
+      "instruction_count": 2
+    },
+    {
+      "address": "00D8FD04",
+      "size_bytes": 36,
+      "hex": "220593192d00000028fdd800000000000000000000000000000000000000000001000000",
+      "sha256": "4cff087fdb6d02368382bde689033729f4d8584afb6ea90c4afb9ec5a7cc7716",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00D8FD28",
+      "size_bytes": 8,
+      "hex": "ffffffffc06fc600",
+      "sha256": "c645f652778a0b75fd642ff7723211c7a98cc19f2ab5af2c7331d2be3bc554db",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00C66FC0",
+      "size_bytes": 8,
+      "hex": "8b4d84e938417cff",
+      "sha256": "0845604d9a860e07e1b211a8f550e3fe7b1d985cae5cba9025ffab11e7340571",
+      "live_disk_equal": true,
+      "instruction_count": 2
+    },
+    {
+      "address": "0042B100",
+      "size_bytes": 8,
+      "hex": "51e883b87c0059c3",
+      "sha256": "5299c2b31fab9e2663fa3abac703b1949741dea08807fb53d77c08dd44c1e7c3",
+      "live_disk_equal": true,
+      "instruction_count": 4
+    },
+    {
+      "address": "00BF6989",
+      "size_bytes": 5,
+      "hex": "e91efcffff",
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_disk_equal": true,
+      "instruction_count": 1
+    },
+    {
+      "address": "00BF65AC",
+      "size_bytes": 5,
+      "hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_disk_equal": true,
+      "instruction_count": 1
+    }
+  ],
+  "current_source_pins": [
+    {
+      "path": "src/game_hosts_world.cpp",
+      "bytes": 22955,
+      "sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/native_world_matrix_sentinel.cpp",
+      "bytes": 1463,
+      "sha256": "63bd07694a19e6d40f6eeb0d04aae61d3293a4e9685c9ac5e0d1956fad802451"
+    },
+    {
+      "path": "include/bsp/native_world_matrix_sentinel.hpp",
+      "bytes": 392,
+      "sha256": "71fa406a7c9da9ee40077db67480b20a6feb80256c76db01f523a3b478717793"
+    }
+  ],
+  "implementation_file_pins": [
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "src/native_world_chain_headers.cpp",
+      "bytes": 2305,
+      "sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383"
+    }
+  ]
+}
