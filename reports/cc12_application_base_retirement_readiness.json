@@ -1,0 +1,650 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_application_base_retirement_readiness",
+  "generated_at_utc": "2026-10-09T06:09:39.076142+00:00",
+  "base_commit": "141f7a16360139a982382b9c5f8bfecc67d202e6",
+  "requested_published_main": "141f7a163",
+  "preserved_manager_audit": "d02b25aa298c961b6b20ccb654237ee89e752680",
+  "verdict": "Complete 11-byte/2-instruction base-table tail wrapper established. Application retirement remains held at its unexpanded BEA8B0 child; no current address-labelled Source implementation or complete callable Application owner/table established.",
+  "scope": {
+    "owned_addresses": [
+      "00BEA990"
+    ],
+    "fresh_native_function_queries": [
+      "00BEA990"
+    ],
+    "reused_parent": "007379A0 only, from prior producer report",
+    "descendant_native_queries": [],
+    "source_changes": false,
+    "ghidra_mutations": false,
+    "ledger_changes": false,
+    "builds": false,
+    "tests": false,
+    "probes": false,
+    "native_execution": false,
+    "new_original_credit": 0,
+    "boundary": "No table query, owner implementation, descendant body/size query, native parent re-query, or entire application shutdown sweep."
+  },
+  "target": {
+    "config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "ensure": "ghidra: up /battlestationspacific.exe",
+    "verified_by": "bsp.py live commands verify project bsp, /battlestationspacific.exe, x86:LE:32:default and image base00400000 through GhidraClient.verify; configured saved project C:/Users/sqz269/bsp.gpr.",
+    "reported_program": "battlestationspacific.exe",
+    "body_size_gate": {
+      "start": "00BEA990",
+      "end_inclusive": "00BEA99A",
+      "bytes": 11,
+      "threshold_bytes": 300,
+      "passed": true,
+      "instruction_count": 2,
+      "basic_block_count": 1,
+      "tool_call_count": 1,
+      "tool_call_count_qualification": "Ghidra metadata counts the outgoing transfer as one call; physical instruction is JMP, with no new return address."
+    },
+    "ghidra_prototype": "undefined FUN_00bea990(void)",
+    "prototype_qualification": "Database prototype omits live ECX. Decompiler prints __fastcall(pointer); physical listing is authoritative, and this body has no RET from which to infer complete child stack cleanup.",
+    "decompiler": "void __fastcall FUN_00bea990(undefined4 *param_1) { *param_1 = &PTR_FUN_00d68bc8; FUN_00bea8b0(); return; }"
+  },
+  "native_contract": {
+    "receiver": "ECX is the actual mutable Application base address supplied by captured parent ESI. No projection or interior offset adjustment occurs.",
+    "local_schedule": [
+      {
+        "site": "00BEA990",
+        "operation": "Write DWORD00D68BC8 to actual[ECX+0]. This is a numeric native table identity, not proof of a callable Source table."
+      },
+      {
+        "site": "00BEA996",
+        "operation": "Tail JMP00BEA8B0 with ECX, all other registers, flags and stack unchanged by these two local instructions; child inherits the caller return address."
+      }
+    ],
+    "local_memory_access": "Exactly one explicit DWORD store at receiver+0; no local source/global load, owner free, vector mutation, publication load/clear or lock operation.",
+    "abi": "Physical entry consumes ECX as receiver; no explicit stack-argument read or stack adjustment, no local RET, no established semantic EAX result. Parent invokes with ECX=ESI and no newly pushed explicit argument, and does not consume EAX after return.",
+    "table": "D68BC8 matches the prior observed BEA970 base-construction table value, but table contents/callability are outside this audit.",
+    "exception_boundary": "No local exception frame or cleanup appears. A fault during the receiver store or failure/nonreturn in the child is not converted to successful retirement; parent FH3 behavior and child cleanup remain unexpanded.",
+    "completion": "Only local store-plus-tail-transfer established; the complete entry has not been reduced to a two-instruction semantic destructor because child behavior is required."
+  },
+  "parent_contract": {
+    "provenance": "Prior complete 7379A0 normal shell, 93 bytes/28 instructions, replayed against installed PE without a fresh parent query.",
+    "schedule": [
+      "7379B7 captures actual incoming ECX in ESI; 7379BE forms actual receiver+8 in EDI.",
+      "7379C1 pushes0; 7379C3 sets ECX=receiver+8; 7379CD calls735F30. Its descendants remain outside.",
+      "7379D2 reloads current [receiver+8] after735F30, then 7379D5 callsBF6989 with that vector data pointer, not ESI outer receiver.",
+      "7379DA discards the free argument; 7379DD restores actual receiverECX=ESI; 7379DF sets caller state-1; 7379E7 callsBEA990.",
+      "On normal child return, 7379EC..7379FC restores caller SEH frame/callee-saved registers and RET0. There is no intervening global-publication read or outer-owner free in this captured shell."
+    ],
+    "lifetime_limit": "Parent vector retirement precedes base table reset and child retirement. Neither this shell nor the local wrapper establishes total outer-storage ownership, clear timing, registration removal, lock schedule, failure cleanup, or complete destruction."
+  },
+  "unresolved_retirement": {
+    "actual_publication": "00E1AE90 was the prior Application producer publication; BEA990 contains no read/write of it. Whether BEA8B0 uses current publication or receiver and when it clears remain held here.",
+    "manager_registration_removal": "Prior BD0C30 audit established genuine raw registration. This wrapper does not unregister, inspect manager state or identify the removal operand. No converse lifecycle rule is inferred from construction.",
+    "locks": "No lock or manager getter locally. Child lock capture/reload/recursion/leave ordering remains held.",
+    "table_lifetime": "Only D68BC8 store proved locally; any final base profile, callable table slots and actual owner destruction binding remain held.",
+    "old_document": "PLATFORM_STOP_SCHEDULE_CC10.md line54 previously summarizes BEA8B0 as unregistering E1AE90. That historical summary identifies context only and is not imported as a current complete child proof; no child body was queried or replayed."
+  },
+  "current_source": {
+    "exact_address_table_search": {
+      "roots": [
+        "src/**/*.cpp",
+        "include/bsp/**/*.hpp"
+      ],
+      "file_count": 4044,
+      "needles": [
+        "bea990",
+        "bea8b0",
+        "d68bc8",
+        "d68bc4",
+        "cfeab0"
+      ],
+      "matches": [],
+      "qualification": "No address-labelled implementation/table match in these current files; not a whole-program absence proof or a search of generated/untracked code."
+    },
+    "application_owner": "GameStartupHost::application_construct resets projected ApplicationFrameState and constructed_; application_destruct only logs/clears constructed_. game_hosts_text explicitly states no actual E1AE90 owner exists in this process path.",
+    "dispatch": "Current raw singleton destruction switch ends with a logic_error for unrecovered profiles/actual bindings. The selected table identities have no address match; do not register a projection or cast numeric table into Source.",
+    "concrete_existing_services": [
+      {
+        "service": "get_native_singleton_manager_00415350",
+        "path": "src/native_singleton_publication.cpp:35",
+        "contract": "Actual mutable manager publication reference; current nonnull fast path, otherwise canonical allocation/construct/publish with captured allocation cleanup.",
+        "status": "Existing Source context, not a newly proved BEA8B0 dependency."
+      },
+      {
+        "service": "register_native_singleton_object_00bd0c30",
+        "path": "src/native_singleton_vector_registration_wrappers.cpp:143",
+        "contract": "Existing raw manager registration with actual argument slot; prior accepted complete39B proof and current Source pin.",
+        "status": "Proven constructor-side dependency from previous packet; does not prove retirement."
+      },
+      {
+        "service": "unregister_native_singleton_object_00bcfca0",
+        "path": "src/native_singleton_removal_reorder.cpp:17",
+        "contract": "Existing complete Source raw first-match slot clear preserving length/capacity and duplicates; null object touches no owner fields; no synchronization or destruction dispatch. Current SDK CRT/service qualifications retained.",
+        "status": "Potential reusable removal service only. BEA8B0 call edge/operands/order not examined in this packet."
+      }
+    ],
+    "implementation_readiness": "No new wrapper or Application factory is authorized/provided. Full raw owner, genuine table bindings, current publication and retirement schedule must be established before integration."
+  },
+  "native_evidence": {
+    "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_body": {
+      "address": "00bea990",
+      "end_inclusive": "00bea99a",
+      "length": 11,
+      "hex": "c701c88bd600e915ffffff",
+      "sha256": "138795b398c81b53ccf4b6fa83f39ac95b1ac2109edb4ab6501b1eac3740edf4",
+      "live_ghidra_matches_installed_pe_image": true,
+      "instructions": [
+        {
+          "address": "00bea990",
+          "size": 6,
+          "hex": "c701c88bd600",
+          "text": "mov dword ptr [ecx], 0xd68bc8"
+        },
+        {
+          "address": "00bea996",
+          "size": 5,
+          "hex": "e915ffffff",
+          "text": "jmp 0xbea8b0"
+        }
+      ]
+    },
+    "reused_parent": {
+      "address": "007379a0",
+      "length": 93,
+      "end_inclusive": "007379fc",
+      "meaning": "complete Application direct destructor shell",
+      "hex": "6aff680862c80064a100000000506489250000000051568bf157897424088d7e086a008bcfc744241800000000e85ee5ffff8b3f57e8afef4b0083c4048bcec7442414ffffffffe8a42f4b008b4c240c5f5e64890d0000000083c410c3",
+      "sha256": "ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297",
+      "live_ghidra_matches_installed_pe_image": true,
+      "pe_comparison": "raw PE bytes",
+      "raw_file_bytes_equal": true,
+      "instructions": [
+        {
+          "address": "007379a0",
+          "size": 2,
+          "hex": "6aff",
+          "text": "push -1"
+        },
+        {
+          "address": "007379a2",
+          "size": 5,
+          "hex": "680862c800",
+          "text": "push 0xc86208"
+        },
+        {
+          "address": "007379a7",
+          "size": 6,
+          "hex": "64a100000000",
+          "text": "mov eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "007379ad",
+          "size": 1,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "007379ae",
+          "size": 7,
+          "hex": "64892500000000",
+          "text": "mov dword ptr fs:[0], esp"
+        },
+        {
+          "address": "007379b5",
+          "size": 1,
+          "hex": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "007379b6",
+          "size": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "007379b7",
+          "size": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "007379b9",
+          "size": 1,
+          "hex": "57",
+          "text": "push edi"
+        },
+        {
+          "address": "007379ba",
+          "size": 4,
+          "hex": "89742408",
+          "text": "mov dword ptr [esp + 8], esi"
+        },
+        {
+          "address": "007379be",
+          "size": 3,
+          "hex": "8d7e08",
+          "text": "lea edi, [esi + 8]"
+        },
+        {
+          "address": "007379c1",
+          "size": 2,
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "007379c3",
+          "size": 2,
+          "hex": "8bcf",
+          "text": "mov ecx, edi"
+        },
+        {
+          "address": "007379c5",
+          "size": 8,
+          "hex": "c744241800000000",
+          "text": "mov dword ptr [esp + 0x18], 0"
+        },
+        {
+          "address": "007379cd",
+          "size": 5,
+          "hex": "e85ee5ffff",
+          "text": "call 0x735f30"
+        },
+        {
+          "address": "007379d2",
+          "size": 2,
+          "hex": "8b3f",
+          "text": "mov edi, dword ptr [edi]"
+        },
+        {
+          "address": "007379d4",
+          "size": 1,
+          "hex": "57",
+          "text": "push edi"
+        },
+        {
+          "address": "007379d5",
+          "size": 5,
+          "hex": "e8afef4b00",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "007379da",
+          "size": 3,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "007379dd",
+          "size": 2,
+          "hex": "8bce",
+          "text": "mov ecx, esi"
+        },
+        {
+          "address": "007379df",
+          "size": 8,
+          "hex": "c7442414ffffffff",
+          "text": "mov dword ptr [esp + 0x14], 0xffffffff"
+        },
+        {
+          "address": "007379e7",
+          "size": 5,
+          "hex": "e8a42f4b00",
+          "text": "call 0xbea990"
+        },
+        {
+          "address": "007379ec",
+          "size": 4,
+          "hex": "8b4c240c",
+          "text": "mov ecx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "007379f0",
+          "size": 1,
+          "hex": "5f",
+          "text": "pop edi"
+        },
+        {
+          "address": "007379f1",
+          "size": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "007379f2",
+          "size": 7,
+          "hex": "64890d00000000",
+          "text": "mov dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "007379f9",
+          "size": 3,
+          "hex": "83c410",
+          "text": "add esp, 0x10"
+        },
+        {
+          "address": "007379fc",
+          "size": 1,
+          "hex": "c3",
+          "text": "ret "
+        }
+      ],
+      "origin": "Reused complete 7379A0 capture in c7ee5bed producer report; no fresh Ghidra parent query.",
+      "current_pe_replay_equal": true,
+      "current_decoder_replay_equal": true,
+      "decoder_text_normalization": "Ignore prior trailing whitespace after operandless RET; bytes, addresses, lengths and stripped instruction text all match."
+    },
+    "fresh_bytes": 11,
+    "reused_bytes": 93,
+    "total_bytes": 104,
+    "fresh_instructions": 2,
+    "reused_instructions": 28,
+    "total_instructions": 30,
+    "all_selected_bytes_equal_current_installed_pe": true,
+    "all_selected_instructions_redecoded": true,
+    "distinction": "Static installed image/live analysis replay, not execution of the game or Source."
+  },
+  "source_pins": [
+    {
+      "path": "src/game_hosts.cpp",
+      "physical_bytes": 120868,
+      "physical_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 120868,
+      "normalized_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "matches_base_blob": true,
+      "git_blob_oid": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+      "excerpts": [
+        {
+          "start_line": 1798,
+          "end_line": 1804,
+          "text": "void GameStartupHost::application_construct() {\n    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's\n    // default. The remaining subsystem pointers at +4h..+14h are not reconstructed.\n    log_.implemented(\"StartupHost::application_construct\", \"00737970\");\n    frame_state_ = ApplicationFrameState{};\n    constructed_ = true;\n}"
+        },
+        {
+          "start_line": 2414,
+          "end_line": 2417,
+          "text": "void GameStartupHost::application_destruct() {\n    log_.implemented(\"StartupHost::application_destruct\", \"008f8444\");\n    constructed_ = false;\n}"
+        }
+      ]
+    },
+    {
+      "path": "src/game_hosts_text.cpp",
+      "physical_bytes": 18991,
+      "physical_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 18991,
+      "normalized_lf_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+      "matches_base_blob": true,
+      "git_blob_oid": "ee455960ccd4a7a8c68c77dfb8c173dd7bfac009",
+      "excerpts": [
+        {
+          "start_line": 73,
+          "end_line": 81,
+          "text": "// LocaleTextRuntimeHost for 00a9f4b0's two live dependencies.\n//\n// The native resolver reaches its Lua owner through the global at 00e1ae90 and that\n// object's virtual +14h. This process builds no such owner: the page scripts each own a\n// private state and none of them is the application's current context. So the '#...#'\n// substitution half is the unimplemented policy rather than a guess at which state to\n// read, and 00b692c0's own unsuccessful-traversal answer, \"invalid\", is returned. No\n// shipped title or main-menu string contains a marker, so the method is never reached;\n// a run that reaches it says so in the host table."
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "physical_bytes": 4127,
+      "physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 4127,
+      "normalized_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "matches_base_blob": true,
+      "git_blob_oid": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8",
+      "excerpts": [
+        {
+          "start_line": 35,
+          "end_line": 56,
+          "text": "__declspec(noinline) void* get_native_singleton_manager_00415350(\n    void* volatile& actual_manager_publication_01090aa0) {\n    void* const initial = actual_manager_publication_01090aa0;\n    if (initial) {\n        return initial;\n    }\n\n    // Allocation occurs before native state0 is armed. The saved allocation\n    // remains the cleanup target even if construction changes publication.\n    void* const allocation = singleton_lifetime_allocate({\n        SingletonAllocationKind::manager, 0x14, 0x14});\n    try {\n        void* const result = allocation\n            ? construct_native_singleton_manager_00bd0960(allocation, nullptr)\n            : nullptr;\n        actual_manager_publication_01090aa0 = result;\n        return result;\n    } catch (...) {\n        singleton_lifetime_free(allocation);\n        throw;\n    }\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_singleton_removal_reorder.hpp",
+      "physical_bytes": 1705,
+      "physical_sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 1705,
+      "normalized_lf_sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+      "matches_base_blob": true,
+      "git_blob_oid": "f2a02b1b56d640d2fa144e22c01e95c623d7c3eb",
+      "excerpts": [
+        {
+          "start_line": 7,
+          "end_line": 31,
+          "text": "namespace bsp {\n\n// Complete BCFCA0[115]. ECX raw owner, EDX unconsumed; one stack object\n// pointer, RET4, no semantic result. Null object touches no owner fields.\n// Recheck current count/bounds while scanning; clear only the first matching\n// slot through the current begin. Length, capacity and later duplicates stay.\nvoid __fastcall unregister_native_singleton_object_00bcfca0(\n    void* owner, void* unused_edx, void* object);\n\n// Complete BD0D70[474]. ECX raw owner, EDX unconsumed; stack object, anchor,\n// RET8, no semantic result. Remove the first object by shifting the tail and\n// decrementing current end, then insert it after the first remaining anchor.\n// Both searches are required: missing matches are not converted into no-ops.\n// Preserve returning validations, actual argument/result slots, captures and\n// reloads, inline append and both calls to the full checked insert provider.\nvoid __fastcall move_native_singleton_object_after_00bd0d70(\n    void* owner, void* unused_edx, void* object, void* anchor);\n\n// Actual raw fields: untouched DWORD+0, begin+4, end+8, capacity-end+0C.\n// No typed projection, synchronization or rollback is added. Fixed providers\n// are the completed raw count/checked-insert entries and actual SDK memmove_s\n// and _invalid_parameter_noinfo. Source CRT handler, heap, errno and C++\n// exception domains differ from the original static CRT. Native service\n// register/flag, hardware-fault and SEH identity are not claimed. These entries\n// do not perform or complete registered-owner destruction dispatch."
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_removal_reorder.cpp",
+      "physical_bytes": 7844,
+      "physical_sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 7844,
+      "normalized_lf_sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+      "matches_base_blob": true,
+      "git_blob_oid": "1b5f0f7f5cae8159456bc0cab19cf5b5d102afd5",
+      "excerpts": [
+        {
+          "start_line": 10,
+          "end_line": 75,
+          "text": "// Fixed actual CRT handler service; returning handlers remain possible.\n__declspec(noinline) void __cdecl current_crt_invalid_parameter() {\n    _invalid_parameter_noinfo();\n}\n} // namespace\n\n// Complete original raw instruction schedule, including redundant validations.\n__declspec(naked) void __fastcall unregister_native_singleton_object_00bcfca0(void*, void*, void*) {\n    __asm {\n        push ebx\n        mov ebx, dword ptr [esp + 8]\n        test ebx, ebx\n        push esi\n        mov esi, ecx\n        je at_00bcfd0e\n        push edi\n        xor edi, edi\n        call count_native_singleton_slots_00bcf910\n        test eax, eax\n        jbe at_00bcfd0d\n    at_00bcfcb8:\n        mov ecx, dword ptr [esi + 4]\n        test ecx, ecx\n        je at_00bcfccb\n        mov eax, dword ptr [esi + 8]\n        sub eax, ecx\n        sar eax, 2\n        cmp edi, eax\n        jb at_00bcfcd0\n    at_00bcfccb:\n        call current_crt_invalid_parameter\n    at_00bcfcd0:\n        mov eax, dword ptr [esi + 4]\n        cmp dword ptr [eax + edi*4], ebx\n        je at_00bcfcec\n        mov ecx, esi\n        add edi, 1\n        call count_native_singleton_slots_00bcf910\n        cmp edi, eax\n        jb at_00bcfcb8\n        pop edi\n        pop esi\n        pop ebx\n        ret 4\n    at_00bcfcec:\n        mov ecx, eax\n        test ecx, ecx\n        je at_00bcfcfe\n        mov eax, dword ptr [esi + 8]\n        sub eax, ecx\n        sar eax, 2\n        cmp edi, eax\n        jb at_00bcfd03\n    at_00bcfcfe:\n        call current_crt_invalid_parameter\n    at_00bcfd03:\n        mov ecx, dword ptr [esi + 4]\n        mov dword ptr [ecx + edi*4], 0\n    at_00bcfd0d:\n        pop edi\n    at_00bcfd0e:\n        pop esi\n        pop ebx\n        ret 4\n    }\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "physical_bytes": 2373,
+      "physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 2373,
+      "normalized_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "matches_base_blob": true,
+      "git_blob_oid": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+      "excerpts": [
+        {
+          "start_line": 25,
+          "end_line": 42,
+          "text": "\n// Complete BD0C30[39]. ECX actual manager/container, EDX unconsumed, one stack\n// object pointer, RET4. Validate bounds before testing the current argument\n// for null. A nonnull argument is passed by its actual stack-slot address.\n// No lock, duplicate check, retain operation or exception frame is installed.\nvoid __fastcall register_native_singleton_object_00bd0c30(\n    void* owner, void* unused_edx, void* object);\n\n// All entries preserve raw32 arithmetic, actual argument/result slots and the\n// captured/current read schedule. Native BF6713 calls use a fixed real SDK\n// _invalid_parameter_noinfo shim and its current source-CRT handler domain.\n// It can return; no noop/fatal/throw callback is substituted. Original encoded\n// global109DD64, Watson internals and service register/exception identities\n// remain explicit boundaries. Source BD0700 and its allocation/exception\n// providers are required; these wrappers do not create another owner domain.\n// Append/register have no semantic EAX result. No native lock or cleanup frame\n// exists in these three bodies, and none is invented in the source entries.\n} // namespace bsp"
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "physical_bytes": 4283,
+      "physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 4283,
+      "normalized_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "matches_base_blob": true,
+      "git_blob_oid": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+      "excerpts": [
+        {
+          "start_line": 143,
+          "end_line": 163,
+          "text": "__declspec(naked) void __fastcall register_native_singleton_object_00bd0c30(\n    void*, void*, void*) {\n    __asm {\n        push esi\n        mov esi, ecx\n        mov eax, dword ptr [esi + 8]\n        cmp dword ptr [esi + 4], eax\n        jbe test_current_object\n        call current_crt_invalid_parameter\n    test_current_object:\n        cmp dword ptr [esp + 8], 0\n        je finished\n        lea eax, [esp + 8]\n        push eax\n        mov ecx, esi\n        call append_native_singleton_slot_00bd0bc0\n    finished:\n        pop esi\n        ret 4\n    }\n}"
+        }
+      ]
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "physical_bytes": 25062,
+      "physical_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 25062,
+      "normalized_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+      "matches_base_blob": true,
+      "git_blob_oid": "d1e9bb6f5e839b66741571814d06aec9d63117a3",
+      "excerpts": [
+        {
+          "start_line": 521,
+          "end_line": 527,
+          "text": "    case 0x00ce44dc:\n        delete_native_device_registry_00441840(\n            static_cast<NativeDeviceRegistryStorage*>(owner), flags,\n            process_native_device_registry_00e17bf4());\n        return;\n    }\n    throw std::logic_error(\"raw singleton deletion requires a recovered profile and its actual bindings\");"
+        }
+      ]
+    }
+  ],
+  "prior_source_identity": [
+    {
+      "path": "src/game_hosts.cpp",
+      "prior_normalized_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "current_normalized_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_hosts_text.cpp",
+      "prior_normalized_lf_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+      "current_normalized_lf_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "prior_normalized_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "current_normalized_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "prior_normalized_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "current_normalized_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "prior_normalized_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "current_normalized_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "prior_normalized_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+      "current_normalized_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+      "unchanged": true
+    }
+  ],
+  "target_guard_pins": [
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 455,
+      "normalized_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 14411,
+      "normalized_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches_base_blob": true,
+      "git_blob_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+      "excerpts": [
+        {
+          "start_line": 101,
+          "end_line": 110,
+          "text": "    def verify(self):\n        project = self.get('list_project_files', folder='/')\n        info = self.get('get_current_program_info')\n        expected = self.config\n        if project['project_name'] != expected['project']:\n            raise RuntimeError(f\"Wrong Ghidra project: {project['project_name']}\")\n        for key, actual in [('program_path', info['path']), ('language', info['language']), ('image_base', info['image_base'])]:\n            if actual != expected[key]:\n                raise RuntimeError(f'Wrong target {key}: {actual}')\n        return project, info"
+        }
+      ]
+    }
+  ],
+  "prior_report_and_context_pins": [
+    {
+      "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+      "physical_bytes": 92258,
+      "physical_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 92258,
+      "normalized_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+      "matches_base_blob": true,
+      "git_blob_oid": "564df6292574b373cbe4d07f35042d20041f6276"
+    },
+    {
+      "path": "reports/cc12_application_manager_registration_readiness.json",
+      "physical_bytes": 42358,
+      "physical_sha256": "29fd4a887b1e12fb36ab1f9a22a1d5d253dcda2b0f01ff22c389740782ef158f",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 42358,
+      "normalized_lf_sha256": "29fd4a887b1e12fb36ab1f9a22a1d5d253dcda2b0f01ff22c389740782ef158f",
+      "matches_base_blob": true,
+      "git_blob_oid": "fcb50bc1a2b8c6727d0dacf0ea040c31ec1570f7"
+    },
+    {
+      "path": "docs/PLATFORM_STOP_SCHEDULE_CC10.md",
+      "physical_bytes": 7099,
+      "physical_sha256": "584bf1e4b6212186b25be3d88ee60d56c403423ad5902568a3788c57a3bc4029",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 7099,
+      "normalized_lf_sha256": "584bf1e4b6212186b25be3d88ee60d56c403423ad5902568a3788c57a3bc4029",
+      "matches_base_blob": true,
+      "git_blob_oid": "8b800d1065e13af2aacf509be4cf50c2ac2ee6a1",
+      "excerpts": [
+        {
+          "start_line": 53,
+          "end_line": 54,
+          "text": "| 007379a0..007379fc | Complete raw normal continuation inspected. Saved body stops at free call 7379D5, ending 7379D9. Missing continuation adds ESP,4, calls BEA990 at 7379E7, restores SEH frame and returns at 7379FC. |\n| 00bea990..00bea99a / 00bea8b0..00bea948 | Complete saved/live bodies inspected; application profile then tail-jump to unregister **E1AE90**, not platform CF04. |"
+        }
+      ]
+    }
+  ],
+  "next_bounded_check": {
+    "address": "00BEA8B0",
+    "reason": "Sole direct tail dependency atBEA996; its complete retirement schedule is needed to resolve actual publication/manager/lock lifetime.",
+    "requested_method": "Separate lease; first query ledger/current Source and body-size gate. If <=300B inspect complete body; otherwise hold at exact boundary. Reuse this captured caller and do not expand descendants automatically.",
+    "child_body_queried": false
+  },
+  "static_checks": [
+    {
+      "check": "Fresh native body11B decodes entirely as exactly expected2 instructions; JMP targetBEA8B0",
+      "passed": true
+    },
+    {
+      "check": "Fresh Ghidra bytes equal installedPE",
+      "passed": true
+    },
+    {
+      "check": "Reused parent93B SHA and all28 decoded rows match prior report and currentPE",
+      "passed": true
+    },
+    {
+      "check": "Source and target/context pins match current base git blobs after CRLF normalization",
+      "passed": true
+    },
+    {
+      "check": "Selected current Source/address table search exhausted without matches",
+      "passed": true
+    },
+    {
+      "check": "New body has only receiver+0 local store; remaining lifecycle schedule explicitly child-held",
+      "passed": true
+    },
+    {
+      "check": "Fresh native scope only BEA990; no child or parent live queries",
+      "passed": true
+    }
+  ],
+  "verification": {
+    "json_parse": true,
+    "source_pin_excerpts_verified": true,
+    "exact_two_owned_outputs_staged": true,
+    "staged_diff_check": true,
+    "no_source_build_or_test_run": true,
+    "no_native_execution": true,
+    "no_gpr_or_ledger_mutation": true
+  }
+}
