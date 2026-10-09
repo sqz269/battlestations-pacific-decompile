@@ -1,0 +1,30 @@
+{
+  "status": "HISTORICAL_TEXT_SUPPLEMENT_HELD_FOR_RAW_SECTION_PADDING_DEFECT",
+  "reviewed_commit": "0166b106e1f5adc6bb50d841283246423b2348b8",
+  "accepted_as_remedy": false,
+  "merged_supplement": false,
+  "scope": "Independent full altered-body and AST text review, with primary inspection of the concrete failing predicate and cited physical section evidence. No proposal import or execution.",
+  "finding": {
+    "proposal": "J:/PROG/battlestations-pacific-decompile-cc12_raw_duplicate_complete_family_design/local/dup57_graph_supplement/revision2/proposal/root_gate.py.txt",
+    "sha256": "492d378e61e4a4b48825a740326c30b83e6bc34c718328e93cbb1fc3ffb38d91",
+    "lines": [454, 474],
+    "predicate": "Raw member slice length must equal helper body plus linked padding; cookie14 requires 16 and stack43 requires 48.",
+    "physical_evidence": "J:/PROG/battlestations-pacific-decompile-cc12_raw_duplicate_complete_family_design/local/dup57_complete_design/historical_library_member_COFF_graph.json",
+    "physical_evidence_sha256": "d381c2b5451b2a36eeb34a5e405163104f65979bf382166fb01cceabe3d62367",
+    "actual_raw_section_sizes": {"secchk_section4": 14, "chkstk_section5": 43},
+    "linked_padding_sizes": {"cookie14": 2, "stack43": 5},
+    "consequence": "The proposal holds on its own cited helper profile before graph publication. Linked padding must be classified and checked separately from actual raw COFF sections; its owned_helper path already checks linked gaps.",
+    "unsafe_acceptance_found": false,
+    "expected_failure": "INCOMPLETE_PUBLISHED_GRAPH_HOLD"
+  },
+  "other_review_results": [
+    "Physical positive symbol indices, auxiliary weak aliases, library member offsets and whole-member hashes are explicit.",
+    "Cold type_info36, unknown frontiers and indirect provenance are represented; unresolved boundaries hold.",
+    "The suspected GS branch defect was ruled out by the actual internal conditional branch and external JMP shape.",
+    "All altered functions/classes, AST changed/unchanged lists and affected-body snapshots were reviewed as text.",
+    "All 19 report pins matched; one subprocess gateway and one target_once dispatch remain.",
+    "The gateway repeats linked graph/input acceptance and requires launch bindings and bookends."
+  ],
+  "authority": "This historical supplement is not an accepted remedy and does not supersede or requalify the other harness's fresh duplicate57 family already integrated on main. Its original worker branch and sealed evidence remain preserved.",
+  "credit": {"new_original_functions": 0, "generation": 0, "compilation": 0, "target_execution": 0, "ghidra_mutations": 0, "startup_validation": false, "gameplay_validation": false}
+}
