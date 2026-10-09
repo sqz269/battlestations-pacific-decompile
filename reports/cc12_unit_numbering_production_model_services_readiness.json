@@ -1,0 +1,990 @@
+{
+  "packet": "cc12_unit_numbering_production_model_services",
+  "scope": "Source-only production readiness inventory; exactly two tracked documentation/report outputs.",
+  "source_baseline_commit": "184a95c05b658a422441e69efd03c64b325be4b1",
+  "decision": "hold_actual_current_unit_numbering_composition; renderer_side_services_are_concretely_composable",
+  "current_711BE0_production_admission": false,
+  "reason": "No current unit model producer/publication or native hierarchy, raw atlas producer, model descriptor bootstrap, executable current-node type dispatch, or complete numbering-services application owner.",
+  "current_source121_authority": {
+    "receipt": {
+      "path": "reports/cc12_native_mlandfort_kind_primary_review.json",
+      "bytes": 94454,
+      "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+    },
+    "snapshot_replay_capture": {
+      "path": "local/cc12_unit_numbering_production_model_services_readiness/baseline121_replay.json",
+      "bytes": 2799,
+      "sha256": "ab01005037dd041ce80dc8afe957c76d08ecab9618bb78874189d95df54089de"
+    },
+    "snapshot_started_utc": "2026-10-09T21:01:10.316737+00:00",
+    "snapshot_finished_utc": "2026-10-09T21:01:10.388723+00:00",
+    "receipt_pin": {
+      "path": "reports/cc12_native_mlandfort_kind_primary_review.json",
+      "bytes": 94454,
+      "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+    },
+    "Root": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 103464,
+      "start_utc": "2026-10-09T20:46:26.766022+00:00",
+      "finish_utc": "2026-10-09T20:46:43.654990+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 121
+    },
+    "input_count": 121,
+    "input_manifest_canonical_JSON_sha256": "29c9e75ecc28a7fa455cdb02a2e8fa92b5b3b3c38c53baed5b598e98b3a37cee",
+    "Root121_raw_inputs_match": true,
+    "worker121_normalized_inputs_match": true,
+    "worker_raw_match_count": 119,
+    "CRLF_LF_only_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "Root_bytes": 51122,
+        "Root_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "worker_bytes": 52250,
+        "worker_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "CRLF_LF_only": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "Root_bytes": 18326,
+        "Root_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "worker_bytes": 17789,
+        "worker_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "CRLF_LF_only": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73781594,
+        "sha256": "b0d5120be850c18391097da87ca49d0b814e845189b8cae55c07709e4ed91366"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "29ca7b93292cf99c5789ccc0a74604a89efc51553a65679b7f465d41ff36e656"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "e222d06f94c4a165466a467e34b7741461e54e60fd048135231156425cc5ab42"
+      }
+    ],
+    "all4_Root_artifacts_match": true,
+    "whole_objects_per_Root": 37,
+    "Core_roots_per_Root": 41,
+    "existing_checks": 3,
+    "new_build_test_probe_or_object_recapture": false,
+    "time_qualification": "Paths can change under later Root builds; this is the verified snapshot at the recorded time."
+  },
+  "historical_AG_fixture": {
+    "receipt": {
+      "path": "reports/native_model_numbering_runtime_ag.json",
+      "bytes": 34533,
+      "sha256": "ec99204cae0b68943b5abb8ba8865beee8be956b31bc1287da0de080f34d7077"
+    },
+    "documentation": {
+      "path": "docs/NATIVE_MODEL_NUMBERING_RUNTIME_AG.md",
+      "bytes": 5140,
+      "sha256": "98cf5acd0769e46f67e3373713866f4da506c29a24c97570e8618a2dc4848ccf"
+    },
+    "source_commit": "c4e12d446133e51e39ebd7410238139372009bf7",
+    "retained_artifacts_verified_now": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch6-20260912/local/model_numbering_runtime_ag/manifest.json",
+        "bytes": 356272,
+        "sha256": "98369286684ff398cda091cff5918b13df947c9be4726a51cc7e9acff38490ac",
+        "matches_historical_receipt": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch6-20260912/local/model_numbering_runtime_ag/probe.exe",
+        "bytes": 298496,
+        "sha256": "0586768844934c02be7d80cced1437261fcbb7867a936f75313220a72a87e232",
+        "matches_historical_receipt": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch6-20260912/local/model_numbering_runtime_ag/probe.cpp",
+        "bytes": 25573,
+        "sha256": "8929e779e872a865bfca90a1062f5880bf07cbc0d1c7d3d0a242209e834b396b",
+        "inspected_line_ranges": [
+          [
+            116,
+            194
+          ],
+          [
+            195,
+            247
+          ],
+          [
+            255,
+            280
+          ]
+        ],
+        "line_count": 283,
+        "LF_sha256": "a782a5a399a3ffa654295139d230c820b979352910eaef84f07a51bb2deb4693"
+      }
+    ],
+    "historical_result": {
+      "passed": true,
+      "caller_comparisons": 25,
+      "section_invocations": 42,
+      "type_leaf_calls": 51,
+      "canonical_retirements": 90,
+      "real_d3d9_hal": true,
+      "native_fh3_tested": false,
+      "execution_scope": "Reconstructed complete source callers run. Original machine code provides vertex-loop reference outputs; original complete caller bodies and native FH3 do not execute in this fixture."
+    },
+    "fixture_only_inputs": [
+      "initialized renderer prefix and empty VFS tree",
+      "three raw node arrays and model+160/holder+0C chain",
+      "effect prefix with shipnumber name",
+      "ten raw atlas items/UV bounds and named-base logical texture arrays with external creator references retained",
+      "D62DE8-only node type callback and empty fallback literals"
+    ],
+    "boundaries": [
+      "Borrowed initialized renderer prefix and empty VFS fixture tree; full native renderer/window/resource startup is not exercised.",
+      "Texture named-base construction and actual retain/release are exercised. Texture/effect external creator references stay alive; complete texture/effect/cache lifecycles are not claimed.",
+      "Model descriptor setup/type leaf and numbering traversal are real source. Model-node/effect/atlas inputs are fixture storage; game model loading and atlas construction are not tested.",
+      "Only observed D62DE8 model current0C and initialized UVtype3 layout are admitted; other node classes, native FH3, allocation faults, unmasked FP and gameplay/render parity remain unproved.",
+      "The reconstructed mission runtime is not yet connected to this full numbering service composition."
+    ],
+    "rerun_this_packet": false
+  },
+  "production_service_inventory": [
+    {
+      "service": "strings, declaration cache, geometry, logical/physical streams and canonical owners",
+      "state": "genuine_current_startup_owned_backing",
+      "owner": "Impl.vfs.strings; Impl.declaration_cache; TextureLoadingGraph.geometry; DestructionGraph.vertex; GameGridGraph.streams/graphics; Impl.owners",
+      "borrow": "native_renderer()->game_grid_context().strings/graphics and publication_00f8d394(); actual_owners() returns the SAME registry.",
+      "evidence": [
+        "src/game_native_renderer_application.cpp:298-330",
+        "src/game_native_renderer_application.cpp:452-460",
+        "src/game_native_renderer_grid.inc:12-29",
+        "src/game_native_renderer_textures.inc:26-45"
+      ],
+      "limit": "Existing backing does not create a numbered section or current unit model. Live model sections must already have the required material, formats and D61D6C streams."
+    },
+    {
+      "service": "current renderer publication_00f8d394",
+      "state": "genuine_current_startup_owned_backing",
+      "owner": "GameNativeRendererApplication::Impl.renderer, shared by constructor, owners, recreation and graph contexts",
+      "borrow": "publication_00f8d394() returns a reference to the live cell, not a captured renderer pointer.",
+      "evidence": [
+        "src/game_hosts.cpp:1895-1899",
+        "src/game_hosts.cpp:2106-2119",
+        "src/game_native_renderer_application.cpp:374",
+        "src/game_native_renderer_lifetime.inc:75-85"
+      ],
+      "limit": "Requires completed current device startup and retention through all borrowers and singleton drain."
+    },
+    {
+      "service": "NativeMeshSectionLayoutServices",
+      "state": "concrete_leaf_exists_backing_ready_composition_missing",
+      "owner": "Existing GuiTextNativeLayoutServices can borrow texture_loading.geometry, graph.vertex, declaration_loading, devices.hardware and profiles(0x00d62af4).",
+      "borrow": "No instance in game_* source and no numbering layout accessor. DeviceGraph.hardware already wraps graph.hardware and the SAME strings.",
+      "evidence": [
+        "src/game_native_renderer_device.inc:17,48",
+        "src/game_native_renderer_lifetime.inc:84-85",
+        "include/bsp/gui_text_native_layout.hpp:42-60",
+        "src/gui_text_native_layout.cpp:61-75,110-118"
+      ],
+      "limit": "Needs persistent application lifetime. Destructor terminates on live companions or interrupted acquisition; failed layout frame cannot be replayed or silently drained."
+    },
+    {
+      "service": "NativeD3dx9Float16Import",
+      "state": "concrete_leaf_exists_backing_ready_composition_missing",
+      "owner": "DeviceGraph.d3dx loads actual system d3dx9_40.dll and retains it until DeviceGraph destruction.",
+      "borrow": "Construct and retain the existing Float16-to-Float32 import wrapper against devices.d3dx inside the renderer graph.",
+      "evidence": [
+        "src/game_native_renderer_device.inc:22,31-36,54,62",
+        "include/bsp/native_model_numbering.hpp:16"
+      ],
+      "limit": "No current game_* wrapper. Particle Float32To16 import is a different direction and is not a substitute."
+    },
+    {
+      "service": "model_type_01090034 and common type counter/root/node aliases",
+      "state": "common_backing_ready_model_descriptor_producer_missing",
+      "owner": "GameNativeTypeStorage owns common/root/node/camera/resource/stream descriptors; GameNativeVfsApplication shares existing counter and common bootstrap.",
+      "borrow": "Add persistent guard 01090030/descriptor 01090034 and ModelTypeBootstrap in a separate producer packet with the existing counter/common storage and recovered CRT schedule.",
+      "evidence": [
+        "include/bsp/game_native_type_storage.hpp:27-33,53-96",
+        "src/game_native_type_storage.cpp:39-54",
+        "src/game_native_vfs_application.cpp:88-112",
+        "include/bsp/model_type_bootstrap.hpp:9-37"
+      ],
+      "limit": "No current game_* ModelTypeBootstrap. Do not copy fixture IDs, invent an ID, or infer a live descriptor from the current root/node owners."
+    },
+    {
+      "service": "node_virtual0c executable dispatch",
+      "state": "production_profile_binding_missing",
+      "owner": "Numbering expects a callback for the actual current node/profile and live requested model type; no production composer supplies it.",
+      "borrow": "Resolve the actual current profile/table token to the corresponding reconstructed callable on the SAME node, with explicit supported-profile evidence.",
+      "evidence": [
+        "include/bsp/native_model_numbering.hpp:22-28",
+        "src/native_model_numbering.cpp:251-264",
+        "retained fixture probe.cpp:221-224"
+      ],
+      "limit": "Fixture admits D62DE8 and calls ModelTypeBootstrap::is_type_006ef860. That is not evidence for every production child profile. Numeric table values cannot be cast and called as native code."
+    },
+    {
+      "service": "atlas_00f8c26c and actual item/texture storage",
+      "state": "genuine_raw_publication_loader_missing",
+      "owner": "Frontend bridge owns TextureAtlasParseResult and COM texture pointers. Particle runtime input only borrows a caller-supplied raw F8C26C slot.",
+      "borrow": "Need one real retained raw atlas-manager publication and loader producing item pointers, NativeString names, UV fields and actual logical texture references.",
+      "evidence": [
+        "src/game_hosts_frontend.cpp:703-751,878-884",
+        "src/game_hosts_menu.cpp:694-698",
+        "src/game_hosts_hud.cpp:679-685",
+        "include/bsp/native_particle_texture_names_raw.hpp:33-40",
+        "include/bsp/game_native_particle_runtime.hpp:59-86"
+      ],
+      "limit": "Do not reinterpret the merged bridge vector or IDirect3DTexture9 as native atlas/item/logical texture storage. The fixture array of ten items is not a production atlas producer."
+    },
+    {
+      "service": "null-pattern E17BF0 and null-number-name E19B4F pointers",
+      "state": "numbering_binding_missing_partial_existing_snapshot",
+      "owner": "GameNativeVfsConstants contains a verified one-byte initial-image E17BF0 snapshot for VFS explicit-pointer consumers; not a live mutable-global alias. No game_* E19B4F binding found.",
+      "borrow": "Numbering needs stable explicit borrowed pointers in its own genuine service lifetime. Check original bytes/storage contract before a producer packet; no placeholder empty literals.",
+      "evidence": [
+        "include/bsp/game_native_vfs_constants.hpp:10-12,24-32",
+        "include/bsp/game_native_readonly_data.hpp:11-15,36-40",
+        "include/bsp/native_model_numbering.hpp:20-21"
+      ],
+      "limit": "Both addresses lie outside GameNativeReadOnlyData CE2000..E07B23; its read-only table accessor does not establish either alias. Fixture used empty literal inputs."
+    },
+    {
+      "service": "actual unit.model_360 and model+160 -> holder+0C -> node hierarchy",
+      "state": "current_unit_model_producer_and_publication_missing",
+      "owner": "GameUnitSlot is a semantic/projection host; current gunnery creation explicitly says the process builds no model hierarchy.",
+      "borrow": "Need the actual current unit model publication from genuine construction/loading, retained holder/node tree, supported current profiles, actual geometry/material/stream/layout owners and ordinary release schedule.",
+      "evidence": [
+        "src/game_hosts_units.cpp:326-350,15282-15287",
+        "src/native_model_numbering.cpp:286-291",
+        "include/bsp/native_model_owner.hpp:9-40",
+        "include/bsp/game_native_resource_application.hpp:17-39"
+      ],
+      "limit": "Existing NativeModelOwner constructor/environment and resource-manager/parser APIs do not establish this unit publication or chain. No game_* NativeModelPool exists in the scoped source search. Do not synthesize the chain from fixture arrays or semantic IDs."
+    },
+    {
+      "service": "NativeModelNumberingOperation and service/owner retention",
+      "state": "existing_operation_contract_no_application_owner",
+      "owner": "Operation stores phase/native_site/section and declaration/stream acquisitions; layout service separately retains its acquisition and companions.",
+      "borrow": "Caller must retain both operation and service graph across failures, plus unit/model/atlas/renderer/import/strings/registry lifetimes. Retire native survivors before graph destruction.",
+      "evidence": [
+        "include/bsp/native_model_numbering.hpp:30-41",
+        "src/native_model_numbering.cpp:168-171,231-247",
+        "src/gui_text_native_layout.cpp:116-118,139-148"
+      ],
+      "limit": "Interrupted operation cannot be replayed. Complete operation can be used for a later section. No automatic rollback, copied replacement contexts, or best-effort cleanup supplies native exception semantics."
+    }
+  ],
+  "app_call_graph": [
+    "GameStartupHost creates and constructs GameNativeRendererApplication, then GameDeviceHost creates the actual device and initializes the window render-entry cache.",
+    "Renderer Impl wires the existing VFS/string/pool/type/owner domains to TextureLoadingGraph and GameGridGraph. Current exposed game_grid_context borrows graphics and strings.",
+    "GameUnitSlot and current gunnery path use Source projections and authored class data; no actual model hierarchy is produced here.",
+    "NativeUnitHealthPartsBindings::call_00711be0 is pure virtual; src/native_unit_health_parts.cpp153 invokes that abstract boundary after live model/kind checks.",
+    "No concrete NativeModelNumberingServices or set_native_model_numbering_00711be0 caller appears outside its own implementation/header in the scoped source snapshot."
+  ],
+  "minimal_next_implementable_source_packet": {
+    "candidate": "renderer-owned layout service and half-float reader prerequisites",
+    "concrete_inputs": [
+      "texture_loading.geometry",
+      "graph.vertex",
+      "declaration_loading",
+      "devices.hardware",
+      "profiles(0x00d62af4)",
+      "devices.d3dx",
+      "game_grids.graphics",
+      "vfs.strings",
+      "renderer live publication"
+    ],
+    "construction": "Retain GuiTextNativeLayoutServices(texture_loading.geometry, graph.vertex, declaration_loading, devices.hardware, profiles(0x00d62af4)) and NativeD3dx9Float16Import(devices.d3dx) inside Impl after their providers; expose a narrow borrowed view only when the renderer is ready.",
+    "failure_lifetime": "Expose/retain layout acquired state and participate in requires_process_retention. Do not destroy surviving layout companions or interrupted acquisitions; retain the module and actual providers through native retirement and shared drain.",
+    "admission_limit": "This composes genuine existing backing but does not call 711BE0 or claim actual unit numbering readiness. No atlas/type/callback/model placeholders.",
+    "implemented_this_packet": false
+  },
+  "remaining_producer_order": [
+    "Establish retained model descriptor/guard using the existing VFS counter/common bootstrap and evidenced CRT schedule; supply current-profile executable type mapping.",
+    "Produce/own the real raw atlas publication and logical texture/item lifetimes; bind verified fallback byte storage.",
+    "Construct/load and publish the actual current unit model with the required model+160/holder+0C node tree and canonical mesh/material/stream owners.",
+    "Compose persistent numbering services/operation at the genuine unit caller only after those owners exist; retain live reload order and admit only verified profiles."
+  ],
+  "preserved_invariants": [
+    "Renderer/atlas publications and model descriptor remain borrowed live aliases. No captured replacement singleton or copied type ID.",
+    "Node current profile is read before the live requested model own_id. Dispatch uses the same actual node/profile and concrete Source callable mapping.",
+    "711BE0 reads current model+160 then holder+0C. Do not substitute a fixture node or semantic-unit address.",
+    "711A20 reloads geometry after type call and child/sibling links during traversal; material effect/first-texture name filters remain native.",
+    "Logical stream profiles/current slots and same canonical strings/declaration/pool/registry domains remain enforced.",
+    "Number >999 clamps as unsigned; zero hides matching nodes. Material texture change, map phases and stream/layout replacement survive at their actual failure point.",
+    "No failed operation replay or automatic rollback; keep operation, layout acquisition, imported DLL, model/atlas and renderer owners alive until genuine retirement."
+  ],
+  "source_search": {
+    "scope": "All .cpp/.hpp/.inc beneath src and include/bsp; second query restricts basename to game_*.",
+    "file_count": 4153,
+    "numbering_terms": [
+      "NativeModelNumberingServices",
+      "NativeModelNumberingOperation",
+      "set_native_model_numbering_00711be0",
+      "call_00711be0"
+    ],
+    "numbering_matches": [
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 12,
+        "text": "struct NativeModelNumberingServices {"
+      },
+      {
+        "term": "NativeModelNumberingOperation",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 33,
+        "text": "struct NativeModelNumberingOperation {"
+      },
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 63,
+        "text": "NativeMeshSectionStorage&, std::uint32_t, NativeModelNumberingServices&,"
+      },
+      {
+        "term": "NativeModelNumberingOperation",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 64,
+        "text": "NativeModelNumberingOperation&);"
+      },
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 68,
+        "text": "NativeModelNumberingServices&, NativeModelNumberingOperation&);"
+      },
+      {
+        "term": "NativeModelNumberingOperation",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 68,
+        "text": "NativeModelNumberingServices&, NativeModelNumberingOperation&);"
+      },
+      {
+        "term": "set_native_model_numbering_00711be0",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 70,
+        "text": "void set_native_model_numbering_00711be0(void* actual_model, std::uint32_t,"
+      },
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 71,
+        "text": "NativeModelNumberingServices&, NativeModelNumberingOperation&);"
+      },
+      {
+        "term": "NativeModelNumberingOperation",
+        "path": "include/bsp/native_model_numbering.hpp",
+        "line": 71,
+        "text": "NativeModelNumberingServices&, NativeModelNumberingOperation&);"
+      },
+      {
+        "term": "call_00711be0",
+        "path": "include/bsp/native_unit_health_parts.hpp",
+        "line": 82,
+        "text": "virtual void call_00711be0(void* model, std::int32_t numbering) = 0;"
+      },
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "src/native_model_numbering.cpp",
+        "line": 88,
+        "text": "void stream_slot(void* stream, NativeModelNumberingServices& s,"
+      },
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "src/native_model_numbering.cpp",
+        "line": 166,
+        "text": "NativeModelNumberingServices& s, NativeModelNumberingOperation& a) {"
+      },
+      {
+        "term": "NativeModelNumberingOperation",
+        "path": "src/native_model_numbering.cpp",
+        "line": 166,
+        "text": "NativeModelNumberingServices& s, NativeModelNumberingOperation& a) {"
+      },
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "src/native_model_numbering.cpp",
+        "line": 251,
+        "text": "NativeModelNumberingServices& s, NativeModelNumberingOperation& operation) {"
+      },
+      {
+        "term": "NativeModelNumberingOperation",
+        "path": "src/native_model_numbering.cpp",
+        "line": 251,
+        "text": "NativeModelNumberingServices& s, NativeModelNumberingOperation& operation) {"
+      },
+      {
+        "term": "set_native_model_numbering_00711be0",
+        "path": "src/native_model_numbering.cpp",
+        "line": 286,
+        "text": "void set_native_model_numbering_00711be0(void* model, std::uint32_t number,"
+      },
+      {
+        "term": "NativeModelNumberingServices",
+        "path": "src/native_model_numbering.cpp",
+        "line": 287,
+        "text": "NativeModelNumberingServices& s, NativeModelNumberingOperation& operation) {"
+      },
+      {
+        "term": "NativeModelNumberingOperation",
+        "path": "src/native_model_numbering.cpp",
+        "line": 287,
+        "text": "NativeModelNumberingServices& s, NativeModelNumberingOperation& operation) {"
+      },
+      {
+        "term": "call_00711be0",
+        "path": "src/native_unit_health_parts.cpp",
+        "line": 153,
+        "text": "b.call_00711be0(u.model_360, numbering); // live model after virtual calls"
+      }
+    ],
+    "game_composition_terms": [
+      "GuiTextNativeLayoutServices",
+      "NativeD3dx9Float16Import",
+      "ModelTypeBootstrap",
+      "NativeModelPool",
+      "model_pool_01090054"
+    ],
+    "game_composition_matches": [],
+    "interpretation": "No production caller or concrete numbering-services composition in this checked source snapshot. Abstract health-parts callback is not a provider."
+  },
+  "source_search_capture": {
+    "path": "local/cc12_unit_numbering_production_model_services_readiness/source_search.json",
+    "bytes": 4846,
+    "sha256": "93da1acbf8cab866efeadaf96fa223d18ba28f979f4cf3ca441914046273a594"
+  },
+  "bounded_inspected_source_pins": [
+    {
+      "path": "include/bsp/native_model_numbering.hpp",
+      "bytes": 3632,
+      "sha256": "a457c53466ea8a8786d56b1eec737647b65814f782b01275e90ae3c02ad18a8f",
+      "inspected_line_ranges": [
+        [
+          1,
+          71
+        ]
+      ],
+      "line_count": 72,
+      "LF_sha256": "a457c53466ea8a8786d56b1eec737647b65814f782b01275e90ae3c02ad18a8f"
+    },
+    {
+      "path": "src/native_model_numbering.cpp",
+      "bytes": 14621,
+      "sha256": "3da10ab4f8fed281561da49a71d343cca579eeae319794e22d8953fe020aef45",
+      "inspected_line_ranges": [
+        [
+          1,
+          249
+        ],
+        [
+          251,
+          291
+        ]
+      ],
+      "line_count": 291,
+      "LF_sha256": "3da10ab4f8fed281561da49a71d343cca579eeae319794e22d8953fe020aef45"
+    },
+    {
+      "path": "include/bsp/native_unit_health_parts.hpp",
+      "bytes": 4484,
+      "sha256": "c699fac536552b0dd908c78a7712a0835c5d19c8347605bfe6bc5aef5002a2df",
+      "inspected_line_ranges": [
+        [
+          67,
+          91
+        ]
+      ],
+      "line_count": 94,
+      "LF_sha256": "c699fac536552b0dd908c78a7712a0835c5d19c8347605bfe6bc5aef5002a2df"
+    },
+    {
+      "path": "src/native_unit_health_parts.cpp",
+      "bytes": 6203,
+      "sha256": "a4f89ea4dca1e58b002cf2591f84724b6badfe8793014c66e993963cfe233ade",
+      "inspected_line_ranges": [
+        [
+          125,
+          155
+        ]
+      ],
+      "line_count": 155,
+      "LF_sha256": "a4f89ea4dca1e58b002cf2591f84724b6badfe8793014c66e993963cfe233ade"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 7462,
+      "sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "inspected_line_ranges": [
+        [
+          1,
+          135
+        ]
+      ],
+      "line_count": 135,
+      "LF_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 36751,
+      "sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "inspected_line_ranges": [
+        [
+          245,
+          342
+        ],
+        [
+          369,
+          385
+        ],
+        [
+          440,
+          460
+        ]
+      ],
+      "line_count": 619,
+      "LF_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38"
+    },
+    {
+      "path": "src/game_native_renderer_grid.inc",
+      "bytes": 1778,
+      "sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+      "inspected_line_ranges": [
+        [
+          1,
+          30
+        ]
+      ],
+      "line_count": 31,
+      "LF_sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb"
+    },
+    {
+      "path": "src/game_native_renderer_lifetime.inc",
+      "bytes": 6788,
+      "sha256": "52c78a5e8ae42a0e5934549487475752ad4714af76c95123c638681c86ec9507",
+      "inspected_line_ranges": [
+        [
+          1,
+          99
+        ]
+      ],
+      "line_count": 99,
+      "LF_sha256": "52c78a5e8ae42a0e5934549487475752ad4714af76c95123c638681c86ec9507"
+    },
+    {
+      "path": "src/game_native_renderer_device.inc",
+      "bytes": 4555,
+      "sha256": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db",
+      "inspected_line_ranges": [
+        [
+          1,
+          63
+        ]
+      ],
+      "line_count": 63,
+      "LF_sha256": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db"
+    },
+    {
+      "path": "src/game_native_renderer_textures.inc",
+      "bytes": 2949,
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "inspected_line_ranges": [
+        [
+          1,
+          46
+        ]
+      ],
+      "line_count": 48,
+      "LF_sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e"
+    },
+    {
+      "path": "src/game_native_renderer_effect_owners.inc",
+      "bytes": 1043,
+      "sha256": "55bf626d3a4b85fd0a08598c1aa8cc13d584074df8591b07968359ae9c445962",
+      "inspected_line_ranges": [
+        [
+          1,
+          20
+        ]
+      ],
+      "line_count": 20,
+      "LF_sha256": "55bf626d3a4b85fd0a08598c1aa8cc13d584074df8591b07968359ae9c445962"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "bytes": 2855,
+      "sha256": "cc831cc840c16567c92e326115341eb9196fa821936e82a3c6cd5341d3f67651",
+      "inspected_line_ranges": [
+        [
+          1,
+          62
+        ]
+      ],
+      "line_count": 62,
+      "LF_sha256": "cc831cc840c16567c92e326115341eb9196fa821936e82a3c6cd5341d3f67651"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "bytes": 8174,
+      "sha256": "96c27d78bff8d58b663c649769c4c9b7ac64880ba1115fe5cef4a0fc89bee213",
+      "inspected_line_ranges": [
+        [
+          46,
+          150
+        ]
+      ],
+      "line_count": 160,
+      "LF_sha256": "96c27d78bff8d58b663c649769c4c9b7ac64880ba1115fe5cef4a0fc89bee213"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_construct.hpp",
+      "bytes": 2237,
+      "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798",
+      "inspected_line_ranges": [
+        [
+          1,
+          43
+        ]
+      ],
+      "line_count": 43,
+      "LF_sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798"
+    },
+    {
+      "path": "include/bsp/native_game_grid.hpp",
+      "bytes": 5494,
+      "sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726",
+      "inspected_line_ranges": [
+        [
+          56,
+          81
+        ]
+      ],
+      "line_count": 103,
+      "LF_sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726"
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "bytes": 4853,
+      "sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222",
+      "inspected_line_ranges": [
+        [
+          1,
+          95
+        ]
+      ],
+      "line_count": 95,
+      "LF_sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222"
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "bytes": 3611,
+      "sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b",
+      "inspected_line_ranges": [
+        [
+          1,
+          71
+        ]
+      ],
+      "line_count": 71,
+      "LF_sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "inspected_line_ranges": [
+        [
+          88,
+          118
+        ]
+      ],
+      "line_count": 189,
+      "LF_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "bytes": 3022,
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "inspected_line_ranges": [
+        [
+          1,
+          65
+        ]
+      ],
+      "line_count": 65,
+      "LF_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+    },
+    {
+      "path": "include/bsp/model_type_bootstrap.hpp",
+      "bytes": 1537,
+      "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "inspected_line_ranges": [
+        [
+          1,
+          47
+        ]
+      ],
+      "line_count": 47,
+      "LF_sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "bytes": 6717,
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "inspected_line_ranges": [
+        [
+          1,
+          42
+        ]
+      ],
+      "line_count": 130,
+      "LF_sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+    },
+    {
+      "path": "include/bsp/game_native_resource_pools.hpp",
+      "bytes": 2601,
+      "sha256": "4b45ec58c41c49d7860504929cdbd31892a18a705e3212bbd6b4d9a8be3e729c",
+      "inspected_line_ranges": [
+        [
+          1,
+          36
+        ]
+      ],
+      "line_count": 62,
+      "LF_sha256": "4b45ec58c41c49d7860504929cdbd31892a18a705e3212bbd6b4d9a8be3e729c"
+    },
+    {
+      "path": "include/bsp/game_native_resource_application.hpp",
+      "bytes": 1678,
+      "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+      "inspected_line_ranges": [
+        [
+          1,
+          46
+        ]
+      ],
+      "line_count": 46,
+      "LF_sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 72678,
+      "sha256": "6b7542a9c0031fc21b4c4cd4642dec77d09584755c3fd5362c39585ff4e76167",
+      "inspected_line_ranges": [
+        [
+          1089,
+          1123
+        ]
+      ],
+      "line_count": 1237,
+      "LF_sha256": "6b7542a9c0031fc21b4c4cd4642dec77d09584755c3fd5362c39585ff4e76167"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "inspected_line_ranges": [
+        [
+          1885,
+          1905
+        ],
+        [
+          2095,
+          2127
+        ]
+      ],
+      "line_count": 2444,
+      "LF_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "inspected_line_ranges": [
+        [
+          326,
+          407
+        ],
+        [
+          15282,
+          15301
+        ]
+      ],
+      "line_count": 36085,
+      "LF_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999"
+    },
+    {
+      "path": "src/game_hosts_frontend.cpp",
+      "bytes": 56749,
+      "sha256": "226bd00fa6df20777d66975e8e3260f08eb75bde1c0be3d6f8b1b0e3230867f6",
+      "inspected_line_ranges": [
+        [
+          687,
+          759
+        ],
+        [
+          865,
+          897
+        ]
+      ],
+      "line_count": 1215,
+      "LF_sha256": "226bd00fa6df20777d66975e8e3260f08eb75bde1c0be3d6f8b1b0e3230867f6"
+    },
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "bytes": 88818,
+      "sha256": "e88a9561e5b3be250d4b0e36f4b166debb0c4f30c049dd49d7f13420f9c19b1e",
+      "inspected_line_ranges": [
+        [
+          686,
+          704
+        ]
+      ],
+      "line_count": 1894,
+      "LF_sha256": "e88a9561e5b3be250d4b0e36f4b166debb0c4f30c049dd49d7f13420f9c19b1e"
+    },
+    {
+      "path": "src/game_hosts_hud.cpp",
+      "bytes": 184269,
+      "sha256": "eabe1d276b47703659720b81da81c9e958e04a55664282d3643584ef2e3421d6",
+      "inspected_line_ranges": [
+        [
+          674,
+          691
+        ]
+      ],
+      "line_count": 3832,
+      "LF_sha256": "eabe1d276b47703659720b81da81c9e958e04a55664282d3643584ef2e3421d6"
+    },
+    {
+      "path": "include/bsp/native_particle_texture_names_raw.hpp",
+      "bytes": 2444,
+      "sha256": "96527a03f29e6edd2511735b94f7dc961127a31a890df02a91a827e5743c8c43",
+      "inspected_line_ranges": [
+        [
+          1,
+          48
+        ]
+      ],
+      "line_count": 48,
+      "LF_sha256": "96527a03f29e6edd2511735b94f7dc961127a31a890df02a91a827e5743c8c43"
+    },
+    {
+      "path": "include/bsp/game_native_particle_runtime.hpp",
+      "bytes": 4871,
+      "sha256": "f3b8ef9da540829fd591242c752a0aa06bea80d1b32faba9b4bdbc79260ed6ff",
+      "inspected_line_ranges": [
+        [
+          54,
+          92
+        ]
+      ],
+      "line_count": 116,
+      "LF_sha256": "f3b8ef9da540829fd591242c752a0aa06bea80d1b32faba9b4bdbc79260ed6ff"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "inspected_line_ranges": [
+        [
+          1,
+          40
+        ]
+      ],
+      "line_count": 54,
+      "LF_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_constants.hpp",
+      "bytes": 1386,
+      "sha256": "11b0132f81d892b8714535b13793c30c3f0f6ff2e20e9a08e0bcccb9d5bd9ff5",
+      "inspected_line_ranges": [
+        [
+          1,
+          34
+        ]
+      ],
+      "line_count": 34,
+      "LF_sha256": "11b0132f81d892b8714535b13793c30c3f0f6ff2e20e9a08e0bcccb9d5bd9ff5"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "inspected_line_ranges": [
+        [
+          1,
+          78
+        ]
+      ],
+      "line_count": 78,
+      "LF_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+    }
+  ],
+  "validation": {
+    "source_inventory_and_pin_checks": true,
+    "baseline121_replay_scope": "Original recorded replay snapshot only; Root build paths are mutable under later builds.",
+    "new_build": false,
+    "new_tests": false,
+    "new_probe_execution": false,
+    "new_object_recapture": false,
+    "new_native_body_or_address_work": false,
+    "live_Ghidra_query_or_mutation": false,
+    "CPP_CMake_ledger_edits": false,
+    "original_caller_ABI_or_FH3_proof": false,
+    "startup_gameplay_or_visual_proof": false
+  },
+  "Root_primary_acceptance": {
+    "worker_commit": "fe510002ca1aa221909896574e26f7c0eb86aa12",
+    "immutable_worker_report_pin": {
+      "path": "reports/cc12_unit_numbering_production_model_services_readiness.json",
+      "bytes": 38883,
+      "sha256": "66a1cc8bd2799f8c9714df32498e9e8d05ca62b4cb640c7adb5e3e6a1352316b"
+    },
+    "immutable_worker_doc_pin": {
+      "path": "docs/CC12_UNIT_NUMBERING_PRODUCTION_MODEL_SERVICES_READINESS.md",
+      "bytes": 12937,
+      "sha256": "aeee0ec240745c425821cd8eb5b9d1aac19abf7621a71986e8e414c7765a7839"
+    },
+    "Root_complete_doc_and_relevant_actual_Source_evidence_read": true,
+    "Root_complete_Native_gate_review": [],
+    "all_recursive_report_pin_rows_replayed": 47,
+    "only_worker_LF_CRLF_differences": [
+      "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json"
+    ],
+    "current_Source121_receipt_pin": {
+      "path": "reports/cc12_native_mlandfort_kind_primary_review.json",
+      "bytes": 94454,
+      "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+    },
+    "new_Source_build_Original_ABI_startup_gameplay_credit": 0,
+    "new_Cpp_CMake_tests_probes_consumers_ledger_GPR_mutations": false,
+    "production_numbering_admission": "Source-held; concrete bounded provider prerequisites remain separate from actual receiver/model ownership.",
+    "current_doc_pin": {
+      "path": "docs/CC12_UNIT_NUMBERING_PRODUCTION_MODEL_SERVICES_READINESS.md",
+      "bytes": 13365,
+      "sha256": "68cca0b1d5ff24e938aa96f97cbde8e4c1d6ec27ad4917542eee51b75d12c94c"
+    },
+    "Source121_current121_Root_raw_inputs4_artifacts_and121_worker_LF_replayed": true
+  }
+}
