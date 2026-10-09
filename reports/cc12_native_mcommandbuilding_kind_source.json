@@ -1,0 +1,569 @@
+{
+  "schema": "bsp.cc12.native_mcommandbuilding_kind_source.v1",
+  "created_utc": "2026-10-09T20:38:28.818880+00:00",
+  "status": "uncompiled_Source_candidate_complete_owned_Native_gate_Root_admission_pending",
+  "packet": "cc12_mcommandbuilding_kind_Source",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi",
+  "branch": "agent/cc12_unit_numbering_virtual_query_abi",
+  "base_commit": "6a20ec95425fee482070b2375c3f19bf083aa9d7",
+  "scope": {
+    "address": "006F58E0",
+    "complete_Native_bytes": 59,
+    "complete_Native_operations": 21,
+    "owned_files": [
+      "include/bsp/native_mcommandbuilding_kind.hpp",
+      "src/native_mcommandbuilding_kind.cpp",
+      "docs/CC12_NATIVE_MCOMMANDBUILDING_KIND_SOURCE.md",
+      "reports/cc12_native_mcommandbuilding_kind_source.json"
+    ],
+    "other_Native_bodies_opened": 0,
+    "vtable_cells_opened": 0,
+    "callers_opened": 0,
+    "CMake_ledger_GPR_mutations": false,
+    "build_tests_probes_run": false,
+    "sibling_006F5890_untouched": true
+  },
+  "existing_Ghidra_name": {
+    "name": "BSP_MCommandBuilding_IsKindOf",
+    "status": "Existing provisional interpretation, retained without mutation; not a recovered symbol."
+  },
+  "Native_gate": {
+    "address": "006F58E0",
+    "end_inclusive": "006F591A",
+    "end_exclusive": "006F591B",
+    "bytes": 59,
+    "operations": 21,
+    "file_offset": 3102944,
+    "hex": "8b44240483f81c742a83f81b742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+    "sha256": "e114eda484401d63249b769c0ea91d93b99d264ed57dc1b970deb4114471bbb6",
+    "raw_instructions": [
+      {
+        "address": "006F58E0",
+        "bytes": "8b442404",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 4]"
+      },
+      {
+        "address": "006F58E4",
+        "bytes": "83f81c",
+        "mnemonic": "cmp",
+        "operands": "eax, 0x1c"
+      },
+      {
+        "address": "006F58E7",
+        "bytes": "742a",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F58E9",
+        "bytes": "83f81b",
+        "mnemonic": "cmp",
+        "operands": "eax, 0x1b"
+      },
+      {
+        "address": "006F58EC",
+        "bytes": "7425",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F58EE",
+        "bytes": "83f805",
+        "mnemonic": "cmp",
+        "operands": "eax, 5"
+      },
+      {
+        "address": "006F58F1",
+        "bytes": "7420",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F58F3",
+        "bytes": "83f804",
+        "mnemonic": "cmp",
+        "operands": "eax, 4"
+      },
+      {
+        "address": "006F58F6",
+        "bytes": "741b",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F58F8",
+        "bytes": "83f802",
+        "mnemonic": "cmp",
+        "operands": "eax, 2"
+      },
+      {
+        "address": "006F58FB",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F58FD",
+        "bytes": "83f801",
+        "mnemonic": "cmp",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "006F5900",
+        "bytes": "7411",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F5902",
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "006F5904",
+        "bytes": "740d",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F5906",
+        "bytes": "3b81c4000000",
+        "mnemonic": "cmp",
+        "operands": "eax, dword ptr [ecx + 0xc4]"
+      },
+      {
+        "address": "006F590C",
+        "bytes": "7405",
+        "mnemonic": "je",
+        "operands": "0x6f5913"
+      },
+      {
+        "address": "006F590E",
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "006F5910",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      },
+      {
+        "address": "006F5913",
+        "bytes": "b801000000",
+        "mnemonic": "mov",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "006F5918",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "Original_image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "target": {
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "project": "bsp",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000"
+    },
+    "saved_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\006f58e0\\assembly.txt",
+      "bytes": 531,
+      "sha256": "d2d5522a44b9cac7e6b8f9892f009bbd4f4bd6ae67f89aacea30a47dbc069e55"
+    },
+    "PE_live_bytes_equal": true,
+    "all_PE_live_saved_starts_equal": true,
+    "function_count": 64729,
+    "entire_body_read": true,
+    "any_other_body_opened_this_packet": false
+  },
+  "live_evidence": [
+    {
+      "command": "python tools/bsp.py ghidra bytes 006F58E0 --length 59",
+      "exit_code": 0,
+      "output": "006f58e0  8b 44 24 04 83 f8 1c 74 2a 83 f8 1b 74 25 83 f8  .D$....t*...t%..\r\n006f58f0  05 74 20 83 f8 04 74 1b 83 f8 02 74 16 83 f8 01  .t ...t....t....\r\n006f5900  74 11 85 c0 74 0d 3b 81 c4 00 00 00 74 05 33 c0  t...t.;.....t.3.\r\n006f5910  c2 04 00 b8 01 00 00 00 c2 04 00  ...........\r\n"
+    },
+    {
+      "command": "python tools/bsp.py ghidra disasm 006F58E0 --lines 25",
+      "exit_code": 0,
+      "output": "006f58e0: MOV EAX,dword ptr [ESP + 0x4] \r\n006f58e4: CMP EAX,0x1c \r\n006f58e7: JZ 0x006f5913 \r\n006f58e9: CMP EAX,0x1b \r\n006f58ec: JZ 0x006f5913 \r\n006f58ee: CMP EAX,0x5 \r\n006f58f1: JZ 0x006f5913 \r\n006f58f3: CMP EAX,0x4 \r\n006f58f6: JZ 0x006f5913 \r\n006f58f8: CMP EAX,0x2 \r\n006f58fb: JZ 0x006f5913 \r\n006f58fd: CMP EAX,0x1 \r\n006f5900: JZ 0x006f5913 \r\n006f5902: TEST EAX,EAX \r\n006f5904: JZ 0x006f5913 \r\n006f5906: CMP EAX,dword ptr [ECX + 0xc4] \r\n006f590c: JZ 0x006f5913 \r\n006f590e: XOR EAX,EAX \r\n006f5910: RET 0x4 \r\n006f5913: MOV EAX,0x1 \r\n006f5918: RET 0x4 \r\n"
+    },
+    {
+      "command": "python tools/bsp.py ghidra count",
+      "exit_code": 0,
+      "output": "live function count 64729; snapshot 64729; same\r\n"
+    }
+  ],
+  "Native_verification": {
+    "project_program_checked_by_each_bsp_ghidra_client": true,
+    "exact_project_file_basis": "Current config selects C:/Users/sqz269/bsp.gpr; prior Root Native gate pins exact file identity.",
+    "root_gate_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_tick_adjacent_Native_gate\\capture.json",
+      "bytes": 12856,
+      "sha256": "b381b76eb8966f0479ab5f0532986cab8f005c79547ab97a8db9a06615d5516d",
+      "canonical_lf_sha256": "b381b76eb8966f0479ab5f0532986cab8f005c79547ab97a8db9a06615d5516d"
+    },
+    "Original_image_hash_matches_Root_gate": true,
+    "Ghidra_write": false,
+    "Original_image_write": false,
+    "snapshot_refresh": false
+  },
+  "entry_contract": {
+    "ECX": "Same actual receiver; unchanged; only read by failed-fixed-chain CMP EAX,[ECX+C4].",
+    "EDX": "Incoming value unused and preserved; exposed as second fastcall argument.",
+    "EAX": "Incoming value overwritten by raw DWORD at ESP+4; full EAX0/1 on return.",
+    "stack": "One raw query DWORD at original entry ESP+4; false006F5910 and true006F5918 both RET4.",
+    "preserved": [
+      "ECX",
+      "EDX",
+      "EBX",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "fixed_words_in_original_order": [
+      28,
+      27,
+      5,
+      4,
+      2,
+      1,
+      0
+    ],
+    "receiver_access": "Exactly one late actual DWORD+C4 read only if every fixed word fails. No eager snapshot.",
+    "control_flow": "Any fixed match or current receiver+C4 match reaches006F5913 MOV EAX,1 then RET4; otherwise XOR EAX,EAX then RET4.",
+    "flags": "Incoming flags not consumed; each branch consumes its own immediately preceding comparison/test.",
+    "effects": "No calls, writes, globals, allocation, x87, EH setup, callbacks, copied ids, default classifier or base substitution.",
+    "raw_query_domain": "All32 query bits are preserved; comparison is equality, with no signed/boolean conversion."
+  },
+  "Source_candidate": {
+    "public_name": "bsp::native_mcommandbuilding_is_kind_006f58e0",
+    "declaration": "std::uint32_t __fastcall native_mcommandbuilding_is_kind_006f58e0(const void* actual_receiver, void* unused_edx, std::uint32_t class_word)",
+    "implementation": "One direct __declspec(naked) MSVC Win32 inline-assembly leaf with all21 original operations.",
+    "Win32_pointer_static_assert": true,
+    "source_operation_correspondence": [
+      {
+        "Native_address": "006F58E0",
+        "source_line": 10,
+        "source_instruction": "mov eax, dword ptr [esp + 4]"
+      },
+      {
+        "Native_address": "006F58E4",
+        "source_line": 11,
+        "source_instruction": "cmp eax, 0x1c"
+      },
+      {
+        "Native_address": "006F58E7",
+        "source_line": 12,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F58E9",
+        "source_line": 13,
+        "source_instruction": "cmp eax, 0x1b"
+      },
+      {
+        "Native_address": "006F58EC",
+        "source_line": 14,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F58EE",
+        "source_line": 15,
+        "source_instruction": "cmp eax, 5"
+      },
+      {
+        "Native_address": "006F58F1",
+        "source_line": 16,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F58F3",
+        "source_line": 17,
+        "source_instruction": "cmp eax, 4"
+      },
+      {
+        "Native_address": "006F58F6",
+        "source_line": 18,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F58F8",
+        "source_line": 19,
+        "source_instruction": "cmp eax, 2"
+      },
+      {
+        "Native_address": "006F58FB",
+        "source_line": 20,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F58FD",
+        "source_line": 21,
+        "source_instruction": "cmp eax, 1"
+      },
+      {
+        "Native_address": "006F5900",
+        "source_line": 22,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F5902",
+        "source_line": 23,
+        "source_instruction": "test eax, eax"
+      },
+      {
+        "Native_address": "006F5904",
+        "source_line": 24,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F5906",
+        "source_line": 25,
+        "source_instruction": "cmp eax, dword ptr [ecx + 0xc4]"
+      },
+      {
+        "Native_address": "006F590C",
+        "source_line": 26,
+        "source_instruction": "jz matched"
+      },
+      {
+        "Native_address": "006F590E",
+        "source_line": 27,
+        "source_instruction": "xor eax, eax"
+      },
+      {
+        "Native_address": "006F5910",
+        "source_line": 28,
+        "source_instruction": "ret 4"
+      },
+      {
+        "Native_address": "006F5913",
+        "source_line": 30,
+        "source_instruction": "mov eax, 1"
+      },
+      {
+        "Native_address": "006F5918",
+        "source_line": 31,
+        "source_instruction": "ret 4"
+      }
+    ],
+    "complete_header_CPP_and_doc_reviewed": true,
+    "complete_all21_Native_operations_reviewed": true,
+    "exact_instruction_sequence_represented": true,
+    "emitted_bytes_branch_encoding_and_complete_COFF_reviewed": false,
+    "CMake_registered": false,
+    "compiled": false,
+    "consumer_added": false,
+    "forced_retention_added": false,
+    "own_three_file_pins": [
+      {
+        "path": "include/bsp/native_mcommandbuilding_kind.hpp",
+        "bytes": 1159,
+        "sha256": "eb9742233890069526d9f3cbbf6a1748d54964423f17b756a0f24d59e12606cf",
+        "canonical_lf_sha256": "eb9742233890069526d9f3cbbf6a1748d54964423f17b756a0f24d59e12606cf"
+      },
+      {
+        "path": "src/native_mcommandbuilding_kind.cpp",
+        "bytes": 1471,
+        "sha256": "c052e058d601d3ab52da6ce9b3532314686f265e3cdd826a6c335c4313f5caad",
+        "canonical_lf_sha256": "c052e058d601d3ab52da6ce9b3532314686f265e3cdd826a6c335c4313f5caad"
+      },
+      {
+        "path": "docs/CC12_NATIVE_MCOMMANDBUILDING_KIND_SOURCE.md",
+        "bytes": 5503,
+        "sha256": "e4de1d00d40d0f775c52acbc5095e8b2f911508b8a332d474cc7a2ca3dd278bf",
+        "canonical_lf_sha256": "e4de1d00d40d0f775c52acbc5095e8b2f911508b8a332d474cc7a2ca3dd278bf"
+      }
+    ],
+    "report_self_pin_intentionally_absent": true
+  },
+  "ordinary_storage_domain": {
+    "receiver": "Stable nonnull actual receiver with readable backing through+C8.",
+    "fallback_word": "Genuine aligned uint32_t with an active lifetime at actual receiver+C4. Explicit in-place placement is required when composing that typed word over raw storage.",
+    "fixed_paths": "No receiver access on fixed matches, without widening constructor/profile/ownership/lifetime admission.",
+    "borrowed_identity": "Same actual receiver enters the leaf; copied ids, alternate objects and snapshots are not substitutions.",
+    "guards": "No null/storage guard added.",
+    "unproved": [
+      "invalid placement",
+      "fault delivery",
+      "unaligned or arbitrary alias domains",
+      "concurrent mutation",
+      "structural reentry",
+      "private EH",
+      "constructor and profile admission"
+    ]
+  },
+  "template_evidence": {
+    "actual_selected_entry": "native_ship_base_is_kind_006dfe50 at src/native_ship_kind.cpp:7, previously read completely in this same worker context.",
+    "convention": "Naked Win32 fastcall, actual receiver in ECX, explicit unused EDX, raw stack query, full EAX0/1, RET4.",
+    "pins": [
+      {
+        "path": "include/bsp/native_ship_kind.hpp",
+        "bytes": 2838,
+        "sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb",
+        "canonical_lf_sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb",
+        "unchanged_from_previous_complete_selected_Source_review": true,
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "src/native_ship_kind.cpp",
+        "bytes": 6177,
+        "sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8",
+        "canonical_lf_sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8",
+        "unchanged_from_previous_complete_selected_Source_review": true,
+        "Root_worker_LF_equal": true
+      }
+    ],
+    "prior_selected_review_pin": {
+      "path": "reports/cc12_native_unit_numbering_update_virtual_query_readiness.json",
+      "bytes": 37736,
+      "sha256": "c8fdcaf4b0e258ea25cd3c6a232851b849a02f500356a2a8e71e0d6402251d16",
+      "canonical_lf_sha256": "c8fdcaf4b0e258ea25cd3c6a232851b849a02f500356a2a8e71e0d6402251d16"
+    },
+    "no_new_template_Native_body_review": true,
+    "no_other_eight_Source_entries_revalidated": true
+  },
+  "Source117_context_replay": {
+    "observed_utc": "2026-10-09T20:38:28.818880+00:00",
+    "Root_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "primary_receipt_pins": [
+      {
+        "path": "reports/cc12_native_tick_subnode_requeue_primary_review.json",
+        "bytes": 122707,
+        "sha256": "e9976867186fb55092d48d6c28b31ff907f2a1fa192ef61c3dbc231a9598ea74",
+        "canonical_lf_sha256": "e9976867186fb55092d48d6c28b31ff907f2a1fa192ef61c3dbc231a9598ea74"
+      },
+      {
+        "path": "reports/cc12_native_return_one_byte_primary_review.json",
+        "bytes": 84138,
+        "sha256": "2e28d8d4185a54ac52e9e72116892bcdab97cc2f43d458d0cbf2bf11247886a5",
+        "canonical_lf_sha256": "2e28d8d4185a54ac52e9e72116892bcdab97cc2f43d458d0cbf2bf11247886a5"
+      }
+    ],
+    "receipt_input_and_artifact_lists_identical": true,
+    "recorded_normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 49172,
+      "start_utc": "2026-10-09T20:20:30.934115+00:00",
+      "finish_utc": "2026-10-09T20:20:47.377222+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 117
+    },
+    "inputs_count": 117,
+    "all117_Root_raw_input_hashes_and_sizes_match": true,
+    "all117_worker_canonical_LF_inputs_match": true,
+    "worker_raw_mismatches_only_CRLF_normalization": [
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json"
+    ],
+    "frozen_input_pin_list_sha256": "5eae68f0cdc2bc77b87e394b919f8ead0ccc7f9b038b41b0d67a62a9fe75d7f0",
+    "artifacts": [
+      {
+        "expected": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73779562,
+          "sha256": "9ca4a31896cd9bb2d28989046c199a98fd5d8e0bd950aedf88b46cd506ae75c0"
+        },
+        "actual": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73779562,
+          "sha256": "9ca4a31896cd9bb2d28989046c199a98fd5d8e0bd950aedf88b46cd506ae75c0",
+          "canonical_lf_sha256": "18d8d2b500e18e153600170aa881e90191fae791b6ce79ce310caaec2d6eeda1"
+        },
+        "bytes_and_hash_match": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "8cc8c87ad9394b9c83ad8240046690bb57c77ea0197f5094cf0367b88b7387b2"
+        },
+        "actual": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "8cc8c87ad9394b9c83ad8240046690bb57c77ea0197f5094cf0367b88b7387b2",
+          "canonical_lf_sha256": "8dfd2e3cca81bd2fa984a529b67e8f8d3536c7331c45e61e3bf4fff827e41415"
+        },
+        "bytes_and_hash_match": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "bf27205088f1a5c4a13450b684005ab8453bbfcdd8b41da7f8f42d50db8905bc"
+        },
+        "actual": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "bf27205088f1a5c4a13450b684005ab8453bbfcdd8b41da7f8f42d50db8905bc",
+          "canonical_lf_sha256": "64b36068774b3c10153aa7ac242ee58aca9fa79e7babba82ad1b5f4722e951a2"
+        },
+        "bytes_and_hash_match": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "be8ae45a3dd9b42af8a61a90f22c64c5fd5fa5b9d0723cda12af47da4b1b8c92"
+        },
+        "actual": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "be8ae45a3dd9b42af8a61a90f22c64c5fd5fa5b9d0723cda12af47da4b1b8c92",
+          "canonical_lf_sha256": "cdd41cb648dc5ff9fce8b218254d4ca48576dab8490248d3fb2ac408b479d040"
+        },
+        "bytes_and_hash_match": true
+      }
+    ],
+    "existing_checks_recorded_passed": 3,
+    "whole_objects_recorded_captured_or_replayed": 35,
+    "positive_Core_roots_recorded": 39,
+    "new_owned_Source_files_in_frozen_inputs": false,
+    "worker_build_or_object_recapture": false,
+    "historical_boundary": "Source117 is the pinned20:20:30..20:20:47Z Root build, verified at observed_utc. Later Root build may replace artifacts. It does not compile this candidate; no historical Source113/109 artifact credit is substituted."
+  },
+  "integration_gate": {
+    "owner": "Root integrator",
+    "pending": [
+      "CMake registration",
+      "normal MSVC Win32 build",
+      "complete emitted-object and byte/branch comparison",
+      "public/Core retention review",
+      "Source admission",
+      "ledger updates",
+      "locked Ghidra annotations",
+      "integration"
+    ],
+    "existing_source_found_before_creation": false,
+    "production_limit": "This direct leaf does not identify008761E0 production receiver/profile, install current-token routing, establish a constructor or supply00711BE0 numbering-service domains.",
+    "native_profile_addresses_remain_uncallable_numeric_DATA": true,
+    "different_classes_not_substituted": true
+  },
+  "credits": {
+    "Source_functions": 0,
+    "Source_Original_bytes": 0,
+    "build": 0,
+    "tests": 0,
+    "probes": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0
+  }
+}
