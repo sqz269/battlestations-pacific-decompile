@@ -1,0 +1,400 @@
+{
+  "schema": "CC12_qualified_Source_candidate_v1",
+  "packet": "cc12_lua_variant_link_record_allocation_Source",
+  "status": "Source_candidate_written_after_Root_full_body_gate_pending_primary_build_emitted_review_and_Core_admission",
+  "created_utc": "2026-10-09T18:20:25.513885+00:00",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "branch": "agent/cc12_global_config_effect_payload",
+  "baseline_commit": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+  "exact_owned_paths": [
+    "include/bsp/native_lua_variant_link_record_allocation.hpp",
+    "src/native_lua_variant_link_record_allocation.cpp",
+    "docs/CC12_NATIVE_LUA_VARIANT_LINK_RECORD_ALLOCATION_SOURCE.md",
+    "reports/cc12_native_lua_variant_link_record_allocation_source.json"
+  ],
+  "Native": {
+    "address": "006EDEA0",
+    "end_inclusive": "006EDED6",
+    "bytes": 55,
+    "operations": 17,
+    "body_sha256": "259e4c15e1d271b55cf57f4e6cbd91da8fd1c2dd389415e077c14e739508c6f7",
+    "bytes_hex": "6a34e87489500083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6403001c6403100c3",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_file_offset": 3071648,
+    "gate_capture_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_lua_link_record_allocation_primary/capture.json",
+      "bytes": 4707,
+      "sha256": "29ec8ec43d0da72a51326204f10cf4a1c80a083805646cd23a5561b4fb5074e5",
+      "canonical_lf_sha256": "a968d5d0f95c329b30bd55a819eb3e4016ca9966ee798066797a1a62b5ebb9ac"
+    },
+    "gate_approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_lua_link_record_allocation_primary/Root_Astra_gate_approval.json",
+      "bytes": 477,
+      "sha256": "234b5742f1448bf9ae6fdf7ee5dee7a0c1255367eeeac31281d27f81b56373fb",
+      "canonical_lf_sha256": "03614a510f577441c34a94235ca224d45d92341635c86d73ce9d737f12bb5cf2"
+    },
+    "Root_Astra_gate_accepted": true,
+    "Root_all55bytes_17operations_and_saved_starts_read": true,
+    "Root_live_bytes_equal_installed_PE": true,
+    "worker_gate_capture_hash_verified": true,
+    "worker_installed_image_hash_verified": true,
+    "worker_PE55_bytes_equal_capture": true,
+    "worker_Capstone55bytes_17operations_and_saved_starts_equal_capture": true,
+    "raw_operations": [
+      {
+        "address": "006edea0",
+        "bytes": "6a34",
+        "mnemonic": "push",
+        "operands": "0x34"
+      },
+      {
+        "address": "006edea2",
+        "bytes": "e874895000",
+        "mnemonic": "call",
+        "operands": "0xbf681b"
+      },
+      {
+        "address": "006edea7",
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "006edeaa",
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "006edeac",
+        "bytes": "7406",
+        "mnemonic": "je",
+        "operands": "0x6edeb4"
+      },
+      {
+        "address": "006edeae",
+        "bytes": "c70000000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], 0"
+      },
+      {
+        "address": "006edeb4",
+        "bytes": "8d4804",
+        "mnemonic": "lea",
+        "operands": "ecx, [eax + 4]"
+      },
+      {
+        "address": "006edeb7",
+        "bytes": "85c9",
+        "mnemonic": "test",
+        "operands": "ecx, ecx"
+      },
+      {
+        "address": "006edeb9",
+        "bytes": "7406",
+        "mnemonic": "je",
+        "operands": "0x6edec1"
+      },
+      {
+        "address": "006edebb",
+        "bytes": "c70100000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx], 0"
+      },
+      {
+        "address": "006edec1",
+        "bytes": "8d4808",
+        "mnemonic": "lea",
+        "operands": "ecx, [eax + 8]"
+      },
+      {
+        "address": "006edec4",
+        "bytes": "85c9",
+        "mnemonic": "test",
+        "operands": "ecx, ecx"
+      },
+      {
+        "address": "006edec6",
+        "bytes": "7406",
+        "mnemonic": "je",
+        "operands": "0x6edece"
+      },
+      {
+        "address": "006edec8",
+        "bytes": "c70100000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx], 0"
+      },
+      {
+        "address": "006edece",
+        "bytes": "c6403001",
+        "mnemonic": "mov",
+        "operands": "byte ptr [eax + 0x30], 1"
+      },
+      {
+        "address": "006eded2",
+        "bytes": "c6403100",
+        "mnemonic": "mov",
+        "operands": "byte ptr [eax + 0x31], 0"
+      },
+      {
+        "address": "006eded6",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "recovered_schedule": "Push34h; call00BF681B; pop4; test returned EAX before DWORD+0=0; test EAX+4 before DWORD+4=0; test EAX+8 before DWORD+8=0; unconditional BYTE+30h=1; BYTE+31h=0; RET with allocation EAX.",
+    "direct_children": [
+      "00BF681B"
+    ],
+    "fresh_Native_child_queries_or_decoding_by_worker": false,
+    "child_reuse": "Accepted host allocator receipt and current actual provider source only; no reopened Lua dependency-cycle audit.",
+    "new_Ghidra_mutations": false
+  },
+  "Source_contract": {
+    "symbol": "allocate_native_lua_variant_link_record_006edea0",
+    "declaration": "void* allocate_native_lua_variant_link_record_006edea0();",
+    "interface": "plain C++ with no arguments, default throwing specification, actual raw allocation pointer result",
+    "target": "MSVC Win32; sizeof(void*)=4, sizeof(std::uint32_t)=4 asserted",
+    "allocation": {
+      "provider": "bsp::singleton_lifetime_allocate",
+      "kind": "SingletonAllocationKind::object",
+      "native_bytes": 52,
+      "host_bytes": 52,
+      "call_count_on_entry": 1,
+      "current_host_CRT": true,
+      "nonnull_usable_success_or_throw": true,
+      "no_exception_translation": true
+    },
+    "ordered_volatile_stores": [
+      {
+        "order": 1,
+        "offset": 0,
+        "width_bytes": 4,
+        "value": 0,
+        "Native_site": "006EDEAE"
+      },
+      {
+        "order": 2,
+        "offset": 4,
+        "width_bytes": 4,
+        "value": 0,
+        "Native_site": "006EDEBB"
+      },
+      {
+        "order": 3,
+        "offset": 8,
+        "width_bytes": 4,
+        "value": 0,
+        "Native_site": "006EDEC8"
+      },
+      {
+        "order": 4,
+        "offset": 48,
+        "width_bytes": 1,
+        "value": 1,
+        "Native_site": "006EDECE"
+      },
+      {
+        "order": 5,
+        "offset": 49,
+        "width_bytes": 1,
+        "value": 0,
+        "Native_site": "006EDED2"
+      }
+    ],
+    "untouched_bytes_count": 38,
+    "untouched_offset_ranges_inclusive": [
+      [
+        "0Ch",
+        "2Fh"
+      ],
+      [
+        "32h",
+        "33h"
+      ]
+    ],
+    "return": "the same allocation pointer from the real provider",
+    "no_full_node_type_owner_copy_consumer_memset_or_callback": true,
+    "Native_null_and_wrapped_interior_branches": "outside actual usable nonnull52-byte provider success domain; not reproduced"
+  },
+  "actual_child_provider": {
+    "address": "00BF681B",
+    "symbol": "bsp::singleton_lifetime_allocate",
+    "direct_pins": [
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "reports/singleton_lifetime_audit.json",
+        "bytes": 28284,
+        "sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+        "canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c"
+      }
+    ],
+    "accepted_allocator_receipt_entry": {
+      "address": "00bf681b",
+      "proposed_name": "operator_new",
+      "cpp": "singleton_lifetime_allocate",
+      "native_abi": "cdecl size on stack; EAX raw pointer; RET; throws on exhausted allocation.",
+      "reconstruction_scope": "host_crt_service_boundary",
+      "evidence": "malloc then __callnewh(size) retry loop verified in assembly; host std::malloc/_callnewh/std::bad_alloc implement allocator service with host_bytes. CRT exception/vtable/global handler identity not replaced. Proposed library-role name remains descriptive."
+    },
+    "provider_behavior": "Actual std::malloc(host_bytes); return its nonnull pointer, otherwise invoke _callnewh(host_bytes); retry on nonzero or throw std::bad_alloc on zero.",
+    "provider_files_in_current_Source97_input_manifest": true,
+    "receipt_scope": "Historical accepted host_crt_service_boundary, not fresh Native child reconstruction or original CRT binding."
+  },
+  "current_Source97_baseline_replay": {
+    "shared_primary_receipt_pins": [
+      {
+        "path": "reports/cc12_native_lua_variant_string_fields_cleanup_primary_review.json",
+        "bytes": 59439,
+        "sha256": "4a9cba407cac454c511bded70d0ab4f467580a22547d18697123cfb0b4b006b9",
+        "canonical_lf_sha256": "4a9cba407cac454c511bded70d0ab4f467580a22547d18697123cfb0b4b006b9"
+      },
+      {
+        "path": "reports/cc12_native_squadron_launch_task_cleanup_primary_review.json",
+        "bytes": 372268,
+        "sha256": "1a56cf831cd7f39868bc39b04c38e1c6b8fe14448d8ca116df5cce803fdebb01",
+        "canonical_lf_sha256": "1a56cf831cd7f39868bc39b04c38e1c6b8fe14448d8ca116df5cce803fdebb01"
+      }
+    ],
+    "shared_normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 112244,
+      "start_utc": "2026-10-09T17:59:46.563985+00:00",
+      "finish_utc": "2026-10-09T18:00:05.036630+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 97
+    },
+    "shared_source_manifest_and_artifact_manifest_and_build_equal": true,
+    "source_input_pin_count": 97,
+    "source_input_manifest_canonical_JSON_sha256": "61eb5ecc750822856bf9f1f412976313735457b9466fbfaefa2f9c1601add217",
+    "worker_all97_canonical_LF_hashes_match": true,
+    "worker_raw_bytes_and_hash_match_count": 95,
+    "worker_line_ending_only_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "receipt_bytes": 51122,
+        "receipt_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "worker_bytes": 52250,
+        "worker_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "canonical_LF_equal": true,
+        "worker_and_primary_content_equal_after_CRLF_to_LF": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "receipt_bytes": 18326,
+        "receipt_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "worker_bytes": 17789,
+        "worker_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "canonical_LF_equal": true,
+        "worker_and_primary_content_equal_after_CRLF_to_LF": true
+      }
+    ],
+    "artifact_checks": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73760118,
+        "sha256": "84ad4366435f91988d8953eb063b2bf9ad98496ecd17d27f0ba5515510902d27",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "0b36e1744549c5f89082b185b77b48327366bafdcce6f203b5ea2ba857feadd3",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "062104768ae66ab7445e3de2b26a5ca9eab870323f9dbf053afc5c6ddac34186",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "bfcac109532094562ec8b9c57faeba0d954a8c17cef188b413e01d53f7379203",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "exact_match": true
+      }
+    ],
+    "existing_checks_passed": 3,
+    "whole_objects_captured_or_replayed_by_primary": 23,
+    "unique_positive_Core_definitions_by_primary": 27,
+    "objects_or_Core_definitions_redecoded_by_this_worker": false,
+    "duplicated_prior_object_graphs_or_full97_input_manifest": false,
+    "Source88": "historical; not current baseline and not replayed as current evidence",
+    "new_candidate_compiled_by_that_prior_build": false
+  },
+  "candidate_file_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+      "bytes": 1395,
+      "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d",
+      "canonical_lf_sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d"
+    },
+    {
+      "path": "src/native_lua_variant_link_record_allocation.cpp",
+      "bytes": 1101,
+      "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9",
+      "canonical_lf_sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9"
+    },
+    {
+      "path": "docs/CC12_NATIVE_LUA_VARIANT_LINK_RECORD_ALLOCATION_SOURCE.md",
+      "bytes": 5824,
+      "sha256": "138c4573d3cb2fe07fcc9c49a310a692bf95b9d04b62de72b4fa53e888c6a83c",
+      "canonical_lf_sha256": "138c4573d3cb2fe07fcc9c49a310a692bf95b9d04b62de72b4fa53e888c6a83c"
+    }
+  ],
+  "worker_validation": {
+    "complete_approved_Native55_body_replayed": true,
+    "Source_provider_call_and_five_volatile_stores_reviewed": true,
+    "baseline_Source97_canonical_inputs_and_four_exact_artifacts_replayed": true,
+    "new_build": false,
+    "new_tests": false,
+    "new_probes": false,
+    "CMake_or_ledger_or_GPR_or_consumer_changes": false,
+    "primary_registration_build_emitted_review_Core_admission": "pending"
+  },
+  "credit": {
+    "qualified_Source_candidate": true,
+    "Source_admission": false,
+    "Original_ABI": false,
+    "Native_execution": false,
+    "startup": false,
+    "gameplay": false
+  },
+  "limits": [
+    "Qualified Source success domain only: real usable suitably aligned nonnull52-byte storage returned by the actual host provider.",
+    "Native null and wrapped-interior guard paths are outside this success domain and are not reconstructed.",
+    "The existing allocation provider uses current host malloc/_callnewh/bad_alloc; Native00BF681B allocator/new-handler/CRT binding and exception identity are unproved.",
+    "No original register/flags/stack/fault timing, raw alias, unwind or caller ABI equivalence is claimed.",
+    "No recovered full node type, ownership/destructor/production lifetime, consumer or caller integration is supplied.",
+    "No new compilation, emitted-code review, Core admission, Native execution, startup or gameplay credit; Primary owns subsequent build and review.",
+    "The prior Source88 evidence is historical. Current shared baseline is Source97; its build does not compile this candidate."
+  ]
+}
