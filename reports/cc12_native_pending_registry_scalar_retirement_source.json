@@ -1,0 +1,422 @@
+{
+  "schema": "bsp.cc12.native_pending_registry_scalar_retirement_source.v1",
+  "packet": "cc12_pending_registry_scalar_retirement_source",
+  "kind": "bounded_ordinary_Source_candidate_explicit_borrowed_flags_and_actual_publication",
+  "status": "candidate_implemented_unbuilt_unlinked_pending_primary_normal_build_whole_function_actual_callees_and_core_archive_review",
+  "created_utc": "2026-10-09T08:49:36.697418+00:00",
+  "baseline_commit": "c9c6808db971c603e57a469500ad3f7c24b69be5",
+  "accepted_native_worker_commit": "3e71326ce3354da656ad5879f8b4c44180fe1b73",
+  "accepted_native_primary_integration_commit": "c9c6808db971c603e57a469500ad3f7c24b69be5",
+  "claimed_address": "00875850",
+  "owned_outputs": [
+    "include/bsp/native_pending_registry_scalar_retirement.hpp",
+    "src/native_pending_registry_scalar_retirement.cpp",
+    "docs/CC12_NATIVE_PENDING_REGISTRY_SCALAR_RETIREMENT_SOURCE.md",
+    "reports/cc12_native_pending_registry_scalar_retirement_source.json"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "Source_API": {
+    "symbol": "bsp::retire_native_pending_registry_scalar_00875850",
+    "declaration": "void* retire_native_pending_registry_scalar_00875850(void* actual_receiver, const volatile std::uint8_t& actual_deleting_flags_byte, void* volatile& actual_publication_00f878cc);",
+    "platform": "MSVC Win32 only; header rejects other compilers/architectures; pointer-size static assertion in source",
+    "ABI": "New ordinary C++ cdecl with explicit receiver and two references; no native entry adapter",
+    "noexcept": false,
+    "inputs": [
+      {
+        "name": "actual_receiver",
+        "contract": "Borrowed actual raw8 registry receiver; actual paired tracked section pointer or null in its+4 slot"
+      },
+      {
+        "name": "actual_deleting_flags_byte",
+        "contract": "const volatile uint8_t reference to genuine caller-owned byte, read once after section release and before basecleanup"
+      },
+      {
+        "name": "actual_publication_00f878cc",
+        "contract": "Borrowed mutable actual void* volatile reference to genuine F878CC publication; never replace with private/default cell"
+      }
+    ],
+    "result": "Original captured receiver address on both branches; no postfree dereference or continued storage lifetime promised",
+    "default_or_owned_inputs": false,
+    "receiver_or_reference_validation": false
+  },
+  "Source_schedule": [
+    {
+      "order": 1,
+      "operation": "Capture actual_receiver address in local const pointer"
+    },
+    {
+      "order": 2,
+      "operation": "Volatile uint32 storeD0DEA0 at capturedreceiver+0 before actualsection child"
+    },
+    {
+      "order": 3,
+      "operation": "Direct release_native_tracked_critical_section_0041cc80 on address of capturedreceiver+4 actualslot"
+    },
+    {
+      "order": 4,
+      "operation": "After child returns, read current borrowed volatile flags byte once and capture bit0 Boolean before basecleanup"
+    },
+    {
+      "order": 5,
+      "operation": "Direct cleanup_native_pending_registry_base_008748f0(capturedreceiver, actualpublication): clearcell then concrete genericbaseprofile store"
+    },
+    {
+      "order": 6,
+      "operation": "If captured Boolean true, direct singleton_lifetime_free(capturedreceiver)"
+    },
+    {
+      "order": 7,
+      "operation": "Return capturedreceiver address value without dereferencing it again"
+    }
+  ],
+  "exact_existing_dependencies": [
+    {
+      "native": "0041CC80",
+      "source": "src/native_tracked_critical_section_release.cpp",
+      "header": "include/bsp/native_tracked_critical_section_release.hpp",
+      "declaration": "void __fastcall release_native_tracked_critical_section_0041cc80(TrackedCriticalSection** actual_owner_slot);",
+      "definition_attribute": "__declspec(naked)",
+      "declared_noexcept": false,
+      "admitted_status": "complete_source_main_build_static_proof_saved_and_registered",
+      "effect": "Capture actual slot/currentsection once; null untouched; signed-positive depth drain--before realLeave; realDelete/pairedfree same capturedsection then originalslotclear",
+      "precondition": "Actual malloc-backed raw1Ch section paired with admitted nativeBD1860Source creator; owning/quiescent thread",
+      "primary_evidence": "reports/native_tracked_critical_section_release_audit.json"
+    },
+    {
+      "native": "008748F0 effects inline inside native875850",
+      "source": "src/native_pending_registry_base_cleanup.cpp",
+      "header": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "declaration": "void cleanup_native_pending_registry_base_008748f0(void* actual_receiver, void* volatile& actual_registry_publication_00f878cc);",
+      "declared_noexcept": false,
+      "admitted_status": "ordinary_explicit_borrowed_cell_Source_whole_leaf_child_and_positive_core_link_reviewed_normal_win32_build_passed",
+      "primary_evidence": "reports/cc12_native_pending_registry_base_cleanup_primary_review.json",
+      "effect": "Clear borrowed actualcell first then direct concrete genericbasehelper; leaves section+4 unchanged",
+      "exception_boundary": "Potentially throwing declaration, but body has no explicit throw/catch/compensation; no Original unwind/fault proof"
+    },
+    {
+      "native": "00412430 profile-store effect used by basecleanup",
+      "source": "src/native_render_service_base.cpp",
+      "header": "include/bsp/native_render_service_base.hpp",
+      "declaration": "void destroy_native_generic_singleton_base_00412430(void* actual_receiver) noexcept;",
+      "declared_noexcept": true,
+      "effect": "Volatile uint32 CE3818 store at actualreceiver+0",
+      "primary_evidence": "reports/cc12_native_pending_registry_base_cleanup_primary_review.json"
+    },
+    {
+      "native": "00BF65AC sourcefree boundary",
+      "source": "src/singleton_lifetime.cpp",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "declaration": "void singleton_lifetime_free(void*) noexcept;",
+      "declared_noexcept": true,
+      "effect": "Real host std::free(pointer)",
+      "pairing": "Existing host malloc/new-handler/retry allocator",
+      "original_CRT_or_heap_equivalence": false
+    }
+  ],
+  "accepted_native_evidence": {
+    "report": "reports/cc12_pending_registry_scalar_retirement_readiness.json",
+    "fresh_native_queries_this_packet": 0,
+    "native_child_body_expansions_this_packet": 0,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_sha256_at_accepted_audit": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "slot0": "00D0DEA0 ->00875850; exactly4bytes read by accepted audit; no tableextent",
+    "address": "00875850",
+    "bytes": 55,
+    "end_inclusive": "00875886",
+    "hex": "568bf18d4e04c706a0ded000e81f74bafff644240801c705cc78f80000000000c7061838ce00740956e82e0d380083c4048bc65ec20400",
+    "sha256": "c97f15957871f2e51a7cd2701b122e135de5af61be949becb43f069170fe86b9",
+    "instructions": 15,
+    "accepted_GPR_PE_equal": true,
+    "ordinary_child": "none: ordinaryretirement inline",
+    "listing_gap": "87587E83C404 ADD ESP,4 physically present; no Sourcepacket Ghidra repair",
+    "native_ABI": {
+      "receiver": "ECX actual raw8 registry; captured once in ESI",
+      "flag_storage": "low byte [entryESP+4], tested after section release returns",
+      "flag_mask": 1,
+      "stack_argument_bytes": 4,
+      "callee_pop_bytes": 4,
+      "result": "EAX original captured receiver on both branches, including its address after free",
+      "explicitly_preserved": [
+        "ESI"
+      ],
+      "locally_untouched_nonvolatile": [
+        "EBX",
+        "EDI",
+        "EBP"
+      ],
+      "provider_nonvolatile_preservation_inherited": true,
+      "volatile_outputs_unspecified": [
+        "ECX",
+        "EDX",
+        "EFLAGS"
+      ],
+      "hidden_register_input": false,
+      "x87": false,
+      "receiver_null_checked": false,
+      "saved_empty_prototype_not_adopted": true,
+      "local_EH_frame_installation": false
+    }
+  },
+  "mapping_qualifications": [
+    "Native ECX receiver and four-byte byvalue flag stackslot/RET4 are replaced by explicit receiver and two C++ reference args.",
+    "Borrowed real flagbyte preserves late volatile read; captured Boolean prevents reread after potentially aliasing publication/base stores.",
+    "Native TEST/MOV/MOV/JZ uses ZF across inline stores; Source captures Boolean then adds basecleanup/genericchild C++ call boundaries.",
+    "Actualowner selects section/free/profile operations; currentactualpublication is unconditionally cleared and never selects capturedowner.",
+    "Ordinary C++ sequencing is expressed; actual emitted whole function/stack/registers and callee bindings remain for primary review.",
+    "No arbitrary invalid-storage aliasing, race, lifetime violation, hardware fault, Original exception/returnPC/instruction identity established.",
+    "Nonlocal child failure has no added catch/RAII/compensation for ordinary operations not reached.",
+    "D0DEA0 and CE3818 are numeric Native profile identity stores; no callable Source table is delivered."
+  ],
+  "production_binding": {
+    "ready": false,
+    "created_owner": false,
+    "created_publication": false,
+    "created_callable_profile": false,
+    "constructor_or_getter_implemented": false,
+    "manager_retirement_wiring": false,
+    "native_scalar_adapter": false,
+    "missing": [
+      "Genuine registry owner/publication/flags producers and coherent caller lifecycle",
+      "Callable profile delivery and constructor/getter integration",
+      "Primary Source build, complete emittedfunction/actualcallee/corearchive review",
+      "Native ABI/FH3/hardware-fault/OriginalCRT and runtime/game proof"
+    ]
+  },
+  "source_and_evidence_pins": [
+    {
+      "path": "include/bsp/native_pending_registry_scalar_retirement.hpp",
+      "bytes": 937,
+      "sha256": "75c80c339b5d09c0cb032a5fb976273a01800f2fe2fa585b5aafec67d9a94119",
+      "lf_sha256": "75c80c339b5d09c0cb032a5fb976273a01800f2fe2fa585b5aafec67d9a94119"
+    },
+    {
+      "path": "src/native_pending_registry_scalar_retirement.cpp",
+      "bytes": 1096,
+      "sha256": "15b383a71149806a1befcdd1c584624339b0dcc33ef53897521e546b9031c0f3",
+      "lf_sha256": "15b383a71149806a1befcdd1c584624339b0dcc33ef53897521e546b9031c0f3"
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_REGISTRY_SCALAR_RETIREMENT_SOURCE.md",
+      "bytes": 8145,
+      "sha256": "f53fa829149b5a296994d8a163d070428288f6d1a7d0a594b43b2c98e720d35c",
+      "lf_sha256": "f53fa829149b5a296994d8a163d070428288f6d1a7d0a594b43b2c98e720d35c"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_SCALAR_RETIREMENT_READINESS.md",
+      "bytes": 10147,
+      "sha256": "f48d4d3bdf9e452cf3cc568c2a4543d9ef8b4a33f836c9bf83f6b658a149310d",
+      "lf_sha256": "f48d4d3bdf9e452cf3cc568c2a4543d9ef8b4a33f836c9bf83f6b658a149310d"
+    },
+    {
+      "path": "reports/cc12_pending_registry_scalar_retirement_readiness.json",
+      "bytes": 23434,
+      "sha256": "3429e18e8c2903c1cc4c490acf1f811009474242295850cb566d87300a521363",
+      "lf_sha256": "3429e18e8c2903c1cc4c490acf1f811009474242295850cb566d87300a521363"
+    },
+    {
+      "path": "include/bsp/native_tracked_critical_section_release.hpp",
+      "bytes": 794,
+      "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+      "lf_sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+    },
+    {
+      "path": "src/native_tracked_critical_section_release.cpp",
+      "bytes": 1637,
+      "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+      "lf_sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b"
+    },
+    {
+      "path": "docs/NATIVE_TRACKED_CRITICAL_SECTION_RELEASE.md",
+      "bytes": 6273,
+      "sha256": "8efdce1426df08174077be2bd27cc2ddf3adaa360ce64f287415c4837badd814",
+      "lf_sha256": "8efdce1426df08174077be2bd27cc2ddf3adaa360ce64f287415c4837badd814"
+    },
+    {
+      "path": "reports/native_tracked_critical_section_release_audit.json",
+      "bytes": 55504,
+      "sha256": "ce574c19731a0c8319637d71bada934ee76ac9d5abf4070f003b5c502cb53713",
+      "lf_sha256": "ce574c19731a0c8319637d71bada934ee76ac9d5abf4070f003b5c502cb53713"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "bytes": 843,
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b"
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "bytes": 403,
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597"
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_REGISTRY_BASE_CLEANUP_SOURCE.md",
+      "bytes": 6807,
+      "sha256": "f259b9711e2da5cbccc1e4d5e919a615f8cd634fdcf6a0417593142848a75ae8",
+      "lf_sha256": "f259b9711e2da5cbccc1e4d5e919a615f8cd634fdcf6a0417593142848a75ae8"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_base_cleanup_primary_review.json",
+      "bytes": 10497,
+      "sha256": "b4dfb672a84da81a61d8961741d04df873bbefed2dbddce88edf1d7b353c6271",
+      "lf_sha256": "b4dfb672a84da81a61d8961741d04df873bbefed2dbddce88edf1d7b353c6271"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "accepted_scalar_audit_pins_revalidated": [
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_SCALAR_RETIREMENT_READINESS.md",
+      "canonical_sha256": "f48d4d3bdf9e452cf3cc568c2a4543d9ef8b4a33f836c9bf83f6b658a149310d",
+      "current_equal": true
+    },
+    {
+      "path": "include/bsp/native_tracked_critical_section_release.hpp",
+      "canonical_sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+      "current_equal": true
+    },
+    {
+      "path": "src/native_tracked_critical_section_release.cpp",
+      "canonical_sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+      "current_equal": true
+    },
+    {
+      "path": "docs/NATIVE_TRACKED_CRITICAL_SECTION_RELEASE.md",
+      "canonical_sha256": "8efdce1426df08174077be2bd27cc2ddf3adaa360ce64f287415c4837badd814",
+      "current_equal": true
+    },
+    {
+      "path": "reports/native_tracked_critical_section_release_audit.json",
+      "canonical_sha256": "ce574c19731a0c8319637d71bada934ee76ac9d5abf4070f003b5c502cb53713",
+      "current_equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "canonical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "current_equal": true
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "canonical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "current_equal": true
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "canonical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "current_equal": true
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "canonical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "current_equal": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_REGISTRY_BASE_CLEANUP_SOURCE.md",
+      "canonical_sha256": "f259b9711e2da5cbccc1e4d5e919a615f8cd634fdcf6a0417593142848a75ae8",
+      "current_equal": true
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_base_cleanup_primary_review.json",
+      "canonical_sha256": "b4dfb672a84da81a61d8961741d04df873bbefed2dbddce88edf1d7b353c6271",
+      "current_equal": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "canonical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "current_equal": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "canonical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "current_equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_OWNER_CONSTRUCTION_READINESS.md",
+      "canonical_sha256": "caefdbbdd81c5c2d72f6011da2b174fb0f6b49665f97dd37407d21bb95568c6e",
+      "current_equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_owner_construction_readiness.json",
+      "canonical_sha256": "2af4cd5699e962e554079fa6216fe9e1ce50cdb0560ef711356a49c03a1a98ae",
+      "current_equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+      "canonical_sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf",
+      "current_equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_getter_readiness.json",
+      "canonical_sha256": "b1b279d58971fe11ddf69c4d4883be18e1535f72789519ed38bca7f713d260e5",
+      "current_equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_CONSTRUCTOR_EH_READINESS.md",
+      "canonical_sha256": "eadc68f4ed345216f1171bed14d905d49984843fd5b1248036652590e95bbce3",
+      "current_equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+      "canonical_sha256": "ee1f48f77ce3e3073fa3bf042b35563859001742049d81e7ee4a860ca5705ac5",
+      "current_equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_GETTER_EH_READINESS.md",
+      "canonical_sha256": "84ff801f43e258b46bcefc0c4e2d51e5704f828e89b80be628631ddc2dd35bde",
+      "current_equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_getter_EH_readiness.json",
+      "canonical_sha256": "9c76acf81ebb23d359c5678e42d6bfd47d519d526fccf5432684df2ba87e3e5d",
+      "current_equal": true
+    }
+  ],
+  "worker_validation": {
+    "JSON_parse": true,
+    "accepted_native_body_hash_rechecked": true,
+    "all_direct_source_and_evidence_pins_recorded": true,
+    "accepted_audit_pin_count": 21,
+    "source_schedule_reviewed": true,
+    "new_tests": 0,
+    "new_probes": 0,
+    "new_builds": 0,
+    "new_CMake_or_ledger_edits": 0,
+    "new_Ghidra_queries": 0,
+    "new_Ghidra_mutations": 0,
+    "original_body_executions": 0,
+    "Source_body_executions": 0,
+    "production_source_admitted": false
+  },
+  "required_primary_review": [
+    "Register candidate in CMake serially and run normal scripts/build.ps1 on MSVCWin32 with existing checks.",
+    "Review entire emitted function: entry/exit, profile before section call, late one-byte volatileflags read, capture before basecleanup, bit0branch/free/result.",
+    "Review actual linked section release/basecleanup/genericchild/free providers and precise relocations.",
+    "Prove one intended definition in the actual core archive and retain exact artifacts/input hashes.",
+    "Keep ordinarySource admission distinct from callableprofile/canonicalpublication producer, Native ABI/FH3/fault/runtime/game claims."
+  ]
+}
