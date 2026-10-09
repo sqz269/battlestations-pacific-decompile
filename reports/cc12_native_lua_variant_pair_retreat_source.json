@@ -1,0 +1,503 @@
+{
+  "schema": 1,
+  "packet": "cc12_lua_variant_pair_retreat_Source",
+  "created_utc": "2026-10-09T18:59:49.770355+00:00",
+  "baseline_commit": "30a13709746675e7cf7f3c4709ff6a7a08fafbe0",
+  "owned_files": [
+    "include/bsp/native_lua_variant_pair_retreat.hpp",
+    "src/native_lua_variant_pair_retreat.cpp",
+    "docs/CC12_NATIVE_LUA_VARIANT_PAIR_RETREAT_SOURCE.md",
+    "reports/cc12_native_lua_variant_pair_retreat_source.json"
+  ],
+  "claimed_addresses": [
+    "006edd80"
+  ],
+  "status": "Source_candidate_only_unregistered_unbuilt_pending_Root_complete_emitted_review",
+  "credit": {
+    "Source_functions": 0,
+    "Source_fragments": 0,
+    "Original_ABI": 0,
+    "startup_gameplay": 0
+  },
+  "scope": {
+    "Original_body_bytes": 137,
+    "Original_raw_operations": 48,
+    "Source_logical_instruction_count": 48,
+    "Source_assembly_statements_including_fourteen_emit_directives": 60,
+    "new_public_Source_entries": 1,
+    "new_tests_probes_builds_consumers_or_forced_retention": false,
+    "new_Native_child_caller_handler_table_or_neighbor_body_opened": false,
+    "Ghidra_mutation": false
+  },
+  "Root_gate": {
+    "capture_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_reparent_and_reverse_pair_primary/capture.json",
+      "bytes": 27401,
+      "sha256": "2c7f9f63d8d0ad41ec3a7d16756f75840f34e40b45033c4d5099fbc4a77f19c8",
+      "canonical_lf_sha256": "58108eb48597a2b310670518d29f76cdba1490c89ad7d12066ab7e1011ddcb14"
+    },
+    "approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_reparent_and_reverse_pair_primary/Root_Astra_gate_approval.json",
+      "bytes": 714,
+      "sha256": "bbe51c8240c5803ad916ad55cfca0355d7fbfb3c83f648888b25625e244a5593",
+      "canonical_lf_sha256": "16d0c127118201a17a8862304f72b61e53735fa3c44aad29f7ff9bb462ba4aaf"
+    },
+    "selected_approval_record": {
+      "address": "006edd80",
+      "bytes": 137,
+      "operations": 48,
+      "sha256": "82fea256088f18debecf69b5b0200be8f1a44d809fdd00f6f93483ed41f9c5d4"
+    },
+    "accepted_Native_body_gate": true,
+    "reverse_pair_qualified_Source_only_ready": true,
+    "verified_program": "/battlestationspacific.exe",
+    "capture_count_context": "live function count 64729; snapshot 64729; same\n",
+    "Root_live_PE_fullbody_verification_reused": true,
+    "worker_independent_PE_raw_decode_replay": true
+  },
+  "Native_evidence": {
+    "Original_image_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "Original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "006edd80",
+    "end_inclusive": "006ede08",
+    "file_offset": 3071360,
+    "bytes": 137,
+    "operations": 48,
+    "sha256": "82fea256088f18debecf69b5b0200be8f1a44d809fdd00f6f93483ed41f9c5d4",
+    "hex": "568bf1833e007505e8868950008b46048078310074128b40088946048078310074655ee96b8950008b088079310075208b41088078310075128da424000000008bc88b41088078310074f5894e045ec38b400480783100751c8da424000000008b4e043b08750e8946048bd08b42048078310074eb8b4e048079310074065ee90f8950008946045ec3",
+    "all48_saved_raw_starts_equal": true
+  },
+  "Source_interface": {
+    "public": "bsp::retreat_native_lua_variant_pair_006edd80",
+    "signature": "void __fastcall (void* actual_pair)",
+    "definition": "__declspec(naked)",
+    "receiver": "ECX actual adjacent pair",
+    "public_stack_arguments": 0,
+    "EDX_dummy": false,
+    "semantic_EAX_result": false,
+    "noexcept": false,
+    "noreturn": false,
+    "actual_child": "bsp::invoke_native_invalid_parameter_00bf6713()",
+    "policy": "Qualified current SDK CRT provider; validation may return; no Native CRT-policy equivalence"
+  },
+  "source_mapping": [
+    {
+      "Native_address": "006edd80",
+      "Native_bytes": "56",
+      "Source": "push esi"
+    },
+    {
+      "Native_address": "006edd81",
+      "Native_bytes": "8bf1",
+      "Source": "mov esi, ecx"
+    },
+    {
+      "Native_address": "006edd83",
+      "Native_bytes": "833e00",
+      "Source": "cmp dword ptr [esi], 0"
+    },
+    {
+      "Native_address": "006edd86",
+      "Native_bytes": "7505",
+      "Source": "jnz short pair_load_node"
+    },
+    {
+      "Native_address": "006edd88",
+      "Native_bytes": "e886895000",
+      "Source": "call invoke_native_invalid_parameter_00bf6713"
+    },
+    {
+      "Native_address": "006edd8d",
+      "Native_bytes": "8b4604",
+      "Source": "mov eax, dword ptr [esi + 4]"
+    },
+    {
+      "Native_address": "006edd90",
+      "Native_bytes": "80783100",
+      "Source": "cmp byte ptr [eax + 31h], 0"
+    },
+    {
+      "Native_address": "006edd94",
+      "Native_bytes": "7412",
+      "Source": "jz short pair_select_left"
+    },
+    {
+      "Native_address": "006edd96",
+      "Native_bytes": "8b4008",
+      "Source": "mov eax, dword ptr [eax + 8]"
+    },
+    {
+      "Native_address": "006edd99",
+      "Native_bytes": "894604",
+      "Source": "mov dword ptr [esi + 4], eax"
+    },
+    {
+      "Native_address": "006edd9c",
+      "Native_bytes": "80783100",
+      "Source": "cmp byte ptr [eax + 31h], 0"
+    },
+    {
+      "Native_address": "006edda0",
+      "Native_bytes": "7465",
+      "Source": "jz short pair_return"
+    },
+    {
+      "Native_address": "006edda2",
+      "Native_bytes": "5e",
+      "Source": "pop esi"
+    },
+    {
+      "Native_address": "006edda3",
+      "Native_bytes": "e96b895000",
+      "Source": "jmp invoke_native_invalid_parameter_00bf6713"
+    },
+    {
+      "Native_address": "006edda8",
+      "Native_bytes": "8b08",
+      "Source": "mov ecx, dword ptr [eax]"
+    },
+    {
+      "Native_address": "006eddaa",
+      "Native_bytes": "80793100",
+      "Source": "cmp byte ptr [ecx + 31h], 0"
+    },
+    {
+      "Native_address": "006eddae",
+      "Native_bytes": "7520",
+      "Source": "jnz short pair_ascend"
+    },
+    {
+      "Native_address": "006eddb0",
+      "Native_bytes": "8b4108",
+      "Source": "mov eax, dword ptr [ecx + 8]"
+    },
+    {
+      "Native_address": "006eddb3",
+      "Native_bytes": "80783100",
+      "Source": "cmp byte ptr [eax + 31h], 0"
+    },
+    {
+      "Native_address": "006eddb7",
+      "Native_bytes": "7512",
+      "Source": "jnz short pair_store_descent"
+    },
+    {
+      "Native_address": "006eddb9",
+      "Native_bytes": "8da42400000000",
+      "Source": "LEA ESP,[ESP+disp32(0)] through seven _emit directives"
+    },
+    {
+      "Native_address": "006eddc0",
+      "Native_bytes": "8bc8",
+      "Source": "mov ecx, eax"
+    },
+    {
+      "Native_address": "006eddc2",
+      "Native_bytes": "8b4108",
+      "Source": "mov eax, dword ptr [ecx + 8]"
+    },
+    {
+      "Native_address": "006eddc5",
+      "Native_bytes": "80783100",
+      "Source": "cmp byte ptr [eax + 31h], 0"
+    },
+    {
+      "Native_address": "006eddc9",
+      "Native_bytes": "74f5",
+      "Source": "jz short pair_descend_loop"
+    },
+    {
+      "Native_address": "006eddcb",
+      "Native_bytes": "894e04",
+      "Source": "mov dword ptr [esi + 4], ecx"
+    },
+    {
+      "Native_address": "006eddce",
+      "Native_bytes": "5e",
+      "Source": "pop esi"
+    },
+    {
+      "Native_address": "006eddcf",
+      "Native_bytes": "c3",
+      "Source": "ret"
+    },
+    {
+      "Native_address": "006eddd0",
+      "Native_bytes": "8b4004",
+      "Source": "mov eax, dword ptr [eax + 4]"
+    },
+    {
+      "Native_address": "006eddd3",
+      "Native_bytes": "80783100",
+      "Source": "cmp byte ptr [eax + 31h], 0"
+    },
+    {
+      "Native_address": "006eddd7",
+      "Native_bytes": "751c",
+      "Source": "jnz short pair_validate_current"
+    },
+    {
+      "Native_address": "006eddd9",
+      "Native_bytes": "8da42400000000",
+      "Source": "LEA ESP,[ESP+disp32(0)] through seven _emit directives"
+    },
+    {
+      "Native_address": "006edde0",
+      "Native_bytes": "8b4e04",
+      "Source": "mov ecx, dword ptr [esi + 4]"
+    },
+    {
+      "Native_address": "006edde3",
+      "Native_bytes": "3b08",
+      "Source": "cmp ecx, dword ptr [eax]"
+    },
+    {
+      "Native_address": "006edde5",
+      "Native_bytes": "750e",
+      "Source": "jnz short pair_validate_current"
+    },
+    {
+      "Native_address": "006edde7",
+      "Native_bytes": "894604",
+      "Source": "mov dword ptr [esi + 4], eax"
+    },
+    {
+      "Native_address": "006eddea",
+      "Native_bytes": "8bd0",
+      "Source": "mov edx, eax"
+    },
+    {
+      "Native_address": "006eddec",
+      "Native_bytes": "8b4204",
+      "Source": "mov eax, dword ptr [edx + 4]"
+    },
+    {
+      "Native_address": "006eddef",
+      "Native_bytes": "80783100",
+      "Source": "cmp byte ptr [eax + 31h], 0"
+    },
+    {
+      "Native_address": "006eddf3",
+      "Native_bytes": "74eb",
+      "Source": "jz short pair_ascend_loop"
+    },
+    {
+      "Native_address": "006eddf5",
+      "Native_bytes": "8b4e04",
+      "Source": "mov ecx, dword ptr [esi + 4]"
+    },
+    {
+      "Native_address": "006eddf8",
+      "Native_bytes": "80793100",
+      "Source": "cmp byte ptr [ecx + 31h], 0"
+    },
+    {
+      "Native_address": "006eddfc",
+      "Native_bytes": "7406",
+      "Source": "jz short pair_store_ascent"
+    },
+    {
+      "Native_address": "006eddfe",
+      "Native_bytes": "5e",
+      "Source": "pop esi"
+    },
+    {
+      "Native_address": "006eddff",
+      "Native_bytes": "e90f895000",
+      "Source": "jmp invoke_native_invalid_parameter_00bf6713"
+    },
+    {
+      "Native_address": "006ede04",
+      "Native_bytes": "894604",
+      "Source": "mov dword ptr [esi + 4], eax"
+    },
+    {
+      "Native_address": "006ede07",
+      "Native_bytes": "5e",
+      "Source": "pop esi"
+    },
+    {
+      "Native_address": "006ede08",
+      "Native_bytes": "c3",
+      "Source": "ret"
+    }
+  ],
+  "encoding_expectation": {
+    "bytes": 137,
+    "instructions": 48,
+    "unchanged_outside_three_REL32_operands": true,
+    "expected_relocations": [
+      {
+        "Native_instruction_address": "006edd88",
+        "Source_operand_offset": 9,
+        "type": "IMAGE_REL_I386_REL32",
+        "target": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+      },
+      {
+        "Native_instruction_address": "006edda3",
+        "Source_operand_offset": 36,
+        "type": "IMAGE_REL_I386_REL32",
+        "target": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+      },
+      {
+        "Native_instruction_address": "006eddff",
+        "Source_operand_offset": 128,
+        "type": "IMAGE_REL_I386_REL32",
+        "target": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ"
+      }
+    ],
+    "exact_identity_LEA_ESP": {
+      "addresses": [
+        "006eddb9",
+        "006eddd9"
+      ],
+      "bytes": "8da42400000000"
+    },
+    "all_local_branch_targets_preserved": true,
+    "compiled_result": false
+  },
+  "actual_provider": {
+    "current_header_pin": {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "canonical_lf_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    "current_source_pin": {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "canonical_lf_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    },
+    "provider_original_primary_receipt_pin": {
+      "path": "reports/cc12_native_invalid_parameter_noinfo_call_primary_review.json",
+      "bytes": 506065,
+      "sha256": "8643f78fb1d34a84a212c1a70425a79910b4e83bc71744b60cb2d7e6829a9fd5",
+      "canonical_lf_sha256": "8643f78fb1d34a84a212c1a70425a79910b4e83bc71744b60cb2d7e6829a9fd5"
+    },
+    "current_Core_member": {
+      "name": "bsp_core.dir\\Release\\native_invalid_parameter_noinfo_call.obj",
+      "header_offset": 63797640,
+      "payload_file_offset": 63797700,
+      "bytes": 812,
+      "sha256": "f5cad28a0ea63c416804543ded97b37d462a2fdfde1337285e232e35cb27a64d"
+    },
+    "current_positive_definition": {
+      "name": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+      "symbol_index": 8,
+      "symbol_record_file_offset": 650,
+      "section": 3,
+      "value": 0,
+      "type": 32
+    },
+    "current_member_bytes_replayed": true,
+    "current17bytes9ops_replayed": true,
+    "body_hex": "33c05050505050ff150000000083c414c3",
+    "body_sha256": "5ce1b0b5bae89d755da82f6c71920d82e97057881429839cdba3a0c34adc24ad",
+    "actual_import": "__imp___invalid_parameter_noinfo",
+    "indexed_DIR32_record_and_symbol_replayed": true
+  },
+  "current_inherited_compiled_evidence": {
+    "receipt_pin": {
+      "path": "reports/cc12_native_lua_variant_header_initializer_primary_review.json",
+      "bytes": 84744,
+      "sha256": "ca545cfd0fd2c8a2b71109dab0b3a9c1e3fcf907a90ab384220ce7ab37bcc8c9",
+      "canonical_lf_sha256": "ca545cfd0fd2c8a2b71109dab0b3a9c1e3fcf907a90ab384220ce7ab37bcc8c9"
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 86532,
+      "start_utc": "2026-10-09T18:56:24.196838+00:00",
+      "finish_utc": "2026-10-09T18:56:40.997368+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 107
+    },
+    "existing_checks_passed": 3,
+    "current107_canonical_Source_inputs_replayed_equal": true,
+    "compact_replay_manifest_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_world_post_base_header_contract/local/cc12_lua_pair_retreat/current_source_input_replay.json",
+      "bytes": 28771,
+      "sha256": "56b52b684b4a36a44dfa56a7884ea3e826c659108809ead4348e315e1c872756",
+      "canonical_lf_sha256": "6c35b5b33a4e80bf680bba11dcc29a22cdc163cc976ccac92bc7219bf0689089"
+    },
+    "source_input_count": 107,
+    "artifact_pins": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73769344,
+        "sha256": "4779da5bb661dec253e023b8a0c22384b29e44cd5e084ef77a6e0366c0ce0fa9",
+        "current_replayed_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "replayed_equal": true
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "1f289c9715396b81f192be9f198e8d66f2e6da7ca4f9e5841503d990fb46c96f",
+        "current_replayed_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "replayed_equal": true
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "00eb8c5ab39be196a279e4b9777705f33283be67d2a491955682304da72835dd",
+        "current_replayed_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "replayed_equal": true
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "300d119d70dcbb209f67d7cc69e7a997a4e3e020b6f25cba2b1e3c37d4662034",
+        "current_replayed_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "replayed_equal": true
+      }
+    ],
+    "whole_objects_captured_or_replayed": 29,
+    "unique_positive_Core_definitions": 33,
+    "inherited_build_is_not_this_candidate_compilation": true
+  },
+  "candidate_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_pair_retreat.hpp",
+      "bytes": 2379,
+      "sha256": "0a4fcb6106332a32c6a56cd61b7d373a50e2cc7da5a5047e916d27fd84ecad8c",
+      "canonical_lf_sha256": "0a4fcb6106332a32c6a56cd61b7d373a50e2cc7da5a5047e916d27fd84ecad8c"
+    },
+    {
+      "path": "src/native_lua_variant_pair_retreat.cpp",
+      "bytes": 4034,
+      "sha256": "68ea9ea20e3490b9e9eecae3a76faf004671ba1eb8a73506c6e715b7220a7c83",
+      "canonical_lf_sha256": "68ea9ea20e3490b9e9eecae3a76faf004671ba1eb8a73506c6e715b7220a7c83"
+    },
+    {
+      "path": "docs/CC12_NATIVE_LUA_VARIANT_PAIR_RETREAT_SOURCE.md",
+      "bytes": 8020,
+      "sha256": "db9e664a59f809600adf6dba7a6cfd5a775303de8e493c8779e0536053343dba",
+      "canonical_lf_sha256": "db9e664a59f809600adf6dba7a6cfd5a775303de8e493c8779e0536053343dba"
+    }
+  ],
+  "worker_validation": {
+    "owned_PE_range_equal": true,
+    "all48_operations_mapped": true,
+    "Source_statement_count": 60,
+    "exact_two_seven_byte_emit_groups": true,
+    "current_input_artifact_and_actual_provider_replay_passed": true,
+    "CMake_registration": false,
+    "ledger_mutation": false,
+    "Ghidra_mutation": false,
+    "build_run": false,
+    "tests_probes_fixtures_added_or_run": false
+  },
+  "limits": [
+    "Root must register and build, then review emitted bytes, indexed COFF relocations, symbol ownership and positive Core membership.",
+    "Raw pair/node/control backing, actual nonvolatile preservation and lifetime remain caller/provider obligations.",
+    "Pair stores can alias later loads or saved/control words; current saved ESI is popped; there is no rollback.",
+    "No Native ABI/runtime policy, startup or gameplay equivalence; no production consumer or forced retention."
+  ]
+}
