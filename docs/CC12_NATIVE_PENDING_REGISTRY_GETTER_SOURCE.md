@@ -138,3 +138,11 @@ JSON parsing, accepted-body hash/contiguous-instruction verification, focused
 Source scope/order review, four-file ownership, and whitespace checks passed.
 No compiler invocation, test, probe, Ghidra mutation/query, ledger change,
 additional reconstruction credit, or gameplay execution is claimed here.
+
+## Primary integration and review
+
+Root registered the getter in bsp_core and independently replayed the candidate input pins and complete189B Original body. The normal Win32 build at10:15:51Z through10:16:08Z passed all three configured existing checks. These checks do not execute the new getter.
+
+Primary compiled review covers the full250B/85-instruction getter,39B handler, both catch tails, physical140B EH table,14 complete concrete providers, physical Core members and positive unique public definitions. The emitted11B counter helper is unused: both unsigned volatile counter changes were inlined. Inner state1 ends before publication; second-manager lookup precedes current-publication registration reload; normal Leave and final reload remain under the outer scope.
+
+Primary admission credits one reconstructed Source function/189 Original bytes. The ordinary two-reference Source interface, generated C++ cleanup and host allocator remain qualified; Original ABI and gameplay credit are zero. Both canonical cells exist, but this getter remains absent from the current application map and has no production Source caller.

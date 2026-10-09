@@ -304,7 +304,9 @@ target_sources(bsp_core PRIVATE src/native_world_entity_chain_retirement.cpp)
 target_sources(bsp_core PRIVATE src/native_world_entity_chain_receiver.cpp)
 target_sources(bsp_core PRIVATE src/native_pending_registry_base_cleanup.cpp)
 target_sources(bsp_core PRIVATE src/native_pending_registry_constructor.cpp)
+target_sources(bsp_core PRIVATE src/native_pending_registry_getter.cpp)
 target_sources(bsp_core PRIVATE src/native_allocator_base_message_constructor.cpp)
+target_sources(bsp_core PRIVATE src/native_allocator_failure_object_constructor.cpp)
 
 target_sources(bsp_core PRIVATE src/native_pending_registry_scalar_retirement.cpp)
 

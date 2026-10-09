@@ -118,3 +118,11 @@ Core selection and finalize admission. The conditional proposal is one newly
 reconstructed Original function / 25 bytes. The already-admitted 24-byte child
 is not counted again. Broader allocator/CRT/exception, startup, static throw
 object, Original ABI and gameplay behavior remain unclaimed.
+
+## Primary integration and review
+
+Root registered the wrapper in bsp_core. The same normal Win32 build passed all three existing configured checks; they do not execute this root.
+
+Primary review covers the complete32B/14-instruction wrapper and actual24B/7-instruction admitted child, physical REL32 relocation, whole Core membership and positive unique definitions. Captured receiver and actual slot are delivered to the real child, followed by unconditional normal-return profileD6923C publication and captured receiver return.
+
+Primary admission credits one reconstructed Source function/25 Original bytes, with no recount of the existing child. Ghidra library name bad_alloc is preserved. Source ordinary two-argument ABI and explicit slot binding remain qualified; no Native static failure owner, Original ABI, startup or gameplay validation is claimed. The root is absent from the application map.
