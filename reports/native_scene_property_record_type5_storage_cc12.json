@@ -592,9 +592,7 @@
     "preprepare_correction": "GateHeader planned size corrected from32 to actual36 in new draft before prepare/freeze/compile; no failed fixture/build.",
     "external_read_only_verifier": "After sealing, initial shell-only recursive-inventory assertion excluded every basename seal.json and therefore incorrectly omitted frozen old_metadata/seal.json. No writes or stage/process reruns. Corrected exclusion to exact family-root seal path; then all362 artifact paths/sizes/hashes and full363 inventory passed. The sealed family remained unchanged."
   },
-  "Root_remaining": [
-    "Integrate and push the qualified metadata/naming/reconstruction record batch to main"
-  ],
+  "Root_remaining": [],
   "validation_boundaries": {
     "exported": "Whole native63 fresh read-only PE/Ghidra evidence",
     "reconstructed": true,
@@ -611,9 +609,18 @@
     "status": "Root_complete_retained_gate_and_current_domain_fixture_admitted",
     "qualification": "Successful nonnull raw-storage construction in the qualified current allocator domain; new C++ interface, opaque stored vtable, raw scalar payload words and captured Win32 machine contract for these two calls. No original private CRT/EH, abnormal unwind, class/owner/destructor/factory/startup, full clone or game proof.",
     "Root_current_domain_validation_complete": true,
-    "Main_publication_pending": true,
+    "Main_publication_pending": false,
     "historical_incomplete_gates_preserved": true,
-    "old_accepted_processes_replayed": 0
+    "old_accepted_processes_replayed": 0,
+    "Main_integration": {
+      "qualification_commit": "d654ac1ee3c1dd2853e0f7788d273af05b1bde70",
+      "verified_main_merge": "ea849905c51bb23eebeccef844547c329cb197df",
+      "destination": "main",
+      "qualification_commit_is_Main_ancestor": true,
+      "Source_CPP_six_unchanged": true,
+      "Source_admission_credit": 1,
+      "private_CRT_EH_class_startup_game_admission": false
+    }
   },
   "worker_Source_admission_credit": 0,
   "primary_source_status": "Root_complete_retained_gate_and_current_domain_fixture_admitted",
@@ -1396,5 +1403,14 @@
       },
       "name_is_raw_storage_hypothesis": true
     }
-  ]
+  ],
+  "Main_qualification_integration": {
+    "qualification_commit": "d654ac1ee3c1dd2853e0f7788d273af05b1bde70",
+    "verified_main_merge": "ea849905c51bb23eebeccef844547c329cb197df",
+    "destination": "main",
+    "qualification_commit_is_Main_ancestor": true,
+    "Source_CPP_six_unchanged": true,
+    "Source_admission_credit": 1,
+    "private_CRT_EH_class_startup_game_admission": false
+  }
 }
