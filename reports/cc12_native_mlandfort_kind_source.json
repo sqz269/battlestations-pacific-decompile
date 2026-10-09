@@ -1,0 +1,397 @@
+{
+  "schema": "CC12_naked_query_leaf_Source_candidate_v1",
+  "packet": "cc12_mlandfort_kind_Source",
+  "status": "concrete_uncompiled_Source_candidate_pending_Root_registration_emitted_byte_indexed_Core_review_and_admission",
+  "created_utc": "2026-10-09T20:37:12.097670+00:00",
+  "baseline_commit": "6a20ec95425fee482070b2375c3f19bf083aa9d7",
+  "exact_owned_paths": [
+    "include/bsp/native_mlandfort_kind.hpp",
+    "src/native_mlandfort_kind.cpp",
+    "docs/CC12_NATIVE_MLANDFORT_KIND_SOURCE.md",
+    "reports/cc12_native_mlandfort_kind_source.json"
+  ],
+  "Native_gate": {
+    "existing_name_retained": "BSP_MLandFort_IsKindOf",
+    "address": "006F5890",
+    "end_inclusive": "006F58C5",
+    "Original_bytes": 54,
+    "operations": 19,
+    "file_offset": 3102864,
+    "hex": "8b44240483f81b742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+    "sha256": "d487512e038c5230747b5b56380f0cfa842e5ddeeacce112e2daa048769953d0",
+    "raw_instructions": [
+      {
+        "address": "006F5890",
+        "bytes": "8b442404",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 4]"
+      },
+      {
+        "address": "006F5894",
+        "bytes": "83f81b",
+        "mnemonic": "cmp",
+        "operands": "eax, 0x1b"
+      },
+      {
+        "address": "006F5897",
+        "bytes": "7425",
+        "mnemonic": "je",
+        "operands": "0x6f58be"
+      },
+      {
+        "address": "006F5899",
+        "bytes": "83f805",
+        "mnemonic": "cmp",
+        "operands": "eax, 5"
+      },
+      {
+        "address": "006F589C",
+        "bytes": "7420",
+        "mnemonic": "je",
+        "operands": "0x6f58be"
+      },
+      {
+        "address": "006F589E",
+        "bytes": "83f804",
+        "mnemonic": "cmp",
+        "operands": "eax, 4"
+      },
+      {
+        "address": "006F58A1",
+        "bytes": "741b",
+        "mnemonic": "je",
+        "operands": "0x6f58be"
+      },
+      {
+        "address": "006F58A3",
+        "bytes": "83f802",
+        "mnemonic": "cmp",
+        "operands": "eax, 2"
+      },
+      {
+        "address": "006F58A6",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0x6f58be"
+      },
+      {
+        "address": "006F58A8",
+        "bytes": "83f801",
+        "mnemonic": "cmp",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "006F58AB",
+        "bytes": "7411",
+        "mnemonic": "je",
+        "operands": "0x6f58be"
+      },
+      {
+        "address": "006F58AD",
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "006F58AF",
+        "bytes": "740d",
+        "mnemonic": "je",
+        "operands": "0x6f58be"
+      },
+      {
+        "address": "006F58B1",
+        "bytes": "3b81c4000000",
+        "mnemonic": "cmp",
+        "operands": "eax, dword ptr [ecx + 0xc4]"
+      },
+      {
+        "address": "006F58B7",
+        "bytes": "7405",
+        "mnemonic": "je",
+        "operands": "0x6f58be"
+      },
+      {
+        "address": "006F58B9",
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "006F58BB",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      },
+      {
+        "address": "006F58BE",
+        "bytes": "b801000000",
+        "mnemonic": "mov",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "006F58C3",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "saved_listing_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\006f5890\\assembly.txt",
+      "bytes": 482,
+      "sha256": "6ca4b476ba494cdfbd2c963c092772a90313ef31c6bb6b5e2d4ffdfdb2dcd3c4",
+      "canonical_lf_sha256": "6ca4b476ba494cdfbd2c963c092772a90313ef31c6bb6b5e2d4ffdfdb2dcd3c4"
+    },
+    "accepted_readiness_report_pin": {
+      "path": "reports/cc12_native_unit_numbering_update_virtual_query_readiness.json",
+      "bytes": 37736,
+      "sha256": "c8fdcaf4b0e258ea25cd3c6a232851b849a02f500356a2a8e71e0d6402251d16",
+      "canonical_lf_sha256": "c8fdcaf4b0e258ea25cd3c6a232851b849a02f500356a2a8e71e0d6402251d16"
+    },
+    "accepted_readiness_doc_pin": {
+      "path": "docs/CC12_NATIVE_UNIT_NUMBERING_UPDATE_VIRTUAL_QUERY_READINESS.md",
+      "bytes": 8290,
+      "sha256": "98b238564839c087ce2e73dd6d02270f4d75dfc8442029ef5c0734ec60bb81fa",
+      "canonical_lf_sha256": "98b238564839c087ce2e73dd6d02270f4d75dfc8442029ef5c0734ec60bb81fa"
+    },
+    "Root_primary_acceptance_passed": true,
+    "Root_full54bytes_19operations_and_actual_slot_reviewed": true,
+    "PE_live_saved_starts_equal": true,
+    "Root_saved_annotation_receipt_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/ghidra-annotations-20261009T202717Z.json",
+      "bytes": 6392,
+      "sha256": "6cb35a430671241ce0791daecb36111294899592010b729a055cc5a51d6258dd",
+      "canonical_lf_sha256": "6cb35a430671241ce0791daecb36111294899592010b729a055cc5a51d6258dd"
+    },
+    "existing_name_and_comments_preserved_per_Root_acceptance": true,
+    "worker_owned54bytes_19operations_and_PE_saved_starts_replayed": true,
+    "actual_profile_slot": {
+      "profile": "00CFF3F8",
+      "offset": "5C",
+      "address": "00CFF454",
+      "file_offset": 9434196,
+      "hex": "90586f00",
+      "target": "006F5890",
+      "PE_live_bytes_equal": true
+    },
+    "worker_actual_slot4_PE_replayed": true,
+    "image_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "no_unrelated76_54_or88_function_Native_body_reaudit": true,
+    "worker_Ghidra_mutations": false
+  },
+  "Source_contract": {
+    "API": "std::uint32_t __fastcall native_mlandfort_is_kind_006f5890(const void* actual_receiver, void* unused_edx, std::uint32_t class_word);",
+    "definition": "MSVC Win32 naked function with all19 ordered assembly operations; pointer/uint32 widths asserted4",
+    "placement": "ECX actual receiver; unused second formal occupies EDX solely so the full tag is at entry ESP+4. EDX has no Native semantic input and is never read/written by the body.",
+    "fixed_checks_in_order": [
+      27,
+      5,
+      4,
+      2,
+      1,
+      0
+    ],
+    "zero_check": "TEST EAX,EAX, preserving exact two-byte instruction",
+    "fallback": "After all fixed checks fail, compare the already loaded tag once with current actual DWORD[ECX+C4]; no eager id copy or receiver read on fixed paths.",
+    "full_result": "EAX full32bits0 or1; both exits RET4; no bool/byte narrowing",
+    "branch_instruction_offsets": [
+      7,
+      12,
+      17,
+      22,
+      27,
+      31,
+      39
+    ],
+    "all_short_match_target_offset": 46,
+    "short_displacements_hex": [
+      "25",
+      "20",
+      "1b",
+      "16",
+      "11",
+      "0d",
+      "05"
+    ],
+    "return_offsets": [
+      43,
+      51
+    ],
+    "ordinary_domain": "All paths need usable actual stack argument/control backing. Only fallback requires live actual receiver with readable aligned DWORD+C4 spanning through+C8; fixed matches need no receiver data backing. No added validation.",
+    "Native_unchanged_registers": [
+      "ECX",
+      "EDX",
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP"
+    ],
+    "compiled_bytes_and_relocations_observed": false,
+    "expected_emitted_body": "all54bytes byte-for-byte Native, including seven short branch offsets and both RET4, with no relocations; pending Root build check",
+    "production_boundary": "This direct leaf does not resolve008761E0 actual receiver/profile/current target or numbering services. Query1B does not select a profile.",
+    "no_calls_globals_data_memory_writes_guard_owner_callback_dispatcher_consumer_or_noexcept": true
+  },
+  "actual_Ship_convention_context": {
+    "inspected_entry_only": "006DFE50 native_ship_base_is_kind_006dfe50; register/stack convention, not a child call",
+    "actual_file_pins": [
+      {
+        "worker_pin": {
+          "path": "include/bsp/native_ship_kind.hpp",
+          "bytes": 2838,
+          "sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb",
+          "canonical_lf_sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb"
+        },
+        "Root_bytes": 2838,
+        "Root_sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb",
+        "Root_worker_canonical_LF_equal": true
+      },
+      {
+        "worker_pin": {
+          "path": "src/native_ship_kind.cpp",
+          "bytes": 6177,
+          "sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8",
+          "canonical_lf_sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8"
+        },
+        "Root_bytes": 6177,
+        "Root_sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8",
+        "Root_worker_canonical_LF_equal": true
+      }
+    ],
+    "header_declaration_lines": [
+      20,
+      21
+    ],
+    "header_declaration_canonical_excerpt_sha256": "39a881e86702cf022a664cf42552e38ed3be6e106441d560b0e71d45e1a819f9",
+    "CPP_entry_lines": [
+      7,
+      31
+    ],
+    "CPP_entry_canonical_excerpt_sha256": "0305636490f904349a64f10321750ec55decca3943cbb276e65b3a187d7864e8",
+    "other_entries_not_revalidated": true,
+    "separate_context_not_a_Source117_build_or_provider_admission_claim": true
+  },
+  "Source117_worker_time_snapshot": {
+    "verified_snapshot_utc": "2026-10-09T20:34:10.590391+00:00",
+    "receipt_pins": [
+      {
+        "path": "reports/cc12_native_tick_subnode_requeue_primary_review.json",
+        "bytes": 122707,
+        "sha256": "e9976867186fb55092d48d6c28b31ff907f2a1fa192ef61c3dbc231a9598ea74",
+        "canonical_lf_sha256": "e9976867186fb55092d48d6c28b31ff907f2a1fa192ef61c3dbc231a9598ea74"
+      },
+      {
+        "path": "reports/cc12_native_return_one_byte_primary_review.json",
+        "bytes": 84138,
+        "sha256": "2e28d8d4185a54ac52e9e72116892bcdab97cc2f43d458d0cbf2bf11247886a5",
+        "canonical_lf_sha256": "2e28d8d4185a54ac52e9e72116892bcdab97cc2f43d458d0cbf2bf11247886a5"
+      }
+    ],
+    "shared_build_input_and_artifact_manifests_equal": true,
+    "normal_integrator_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 49172,
+      "start_utc": "2026-10-09T20:20:30.934115+00:00",
+      "finish_utc": "2026-10-09T20:20:47.377222+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 117
+    },
+    "integrator_root": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator",
+    "input_count": 117,
+    "input_manifest_canonical_JSON_sha256": "5eae68f0cdc2bc77b87e394b919f8ead0ccc7f9b038b41b0d67a62a9fe75d7f0",
+    "all117_actual_Root_raw_hashes_and_sizes_replayed": true,
+    "all117_worker_canonical_LF_hashes_replayed": true,
+    "worker_raw_match_count": 115,
+    "only_CRLF_LF_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "Root_receipt_bytes": 51122,
+        "Root_receipt_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "worker_bytes": 52250,
+        "worker_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "prewrite_Root_raw_match_and_only_CRLF_LF_different": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "Root_receipt_bytes": 18326,
+        "Root_receipt_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "worker_bytes": 17789,
+        "worker_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "prewrite_Root_raw_match_and_only_CRLF_LF_different": true
+      }
+    ],
+    "artifact_pins": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73779562,
+        "sha256": "9ca4a31896cd9bb2d28989046c199a98fd5d8e0bd950aedf88b46cd506ae75c0"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "8cc8c87ad9394b9c83ad8240046690bb57c77ea0197f5094cf0367b88b7387b2"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "bf27205088f1a5c4a13450b684005ab8453bbfcdd8b41da7f8f42d50db8905bc"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "be8ae45a3dd9b42af8a61a90f22c64c5fd5fa5b9d0723cda12af47da4b1b8c92"
+      }
+    ],
+    "all4_actual_Root_artifact_hashes_and_sizes_replayed": true,
+    "existing_checks": 3,
+    "whole_objects_per_Root": 35,
+    "selected_positive_Core_roots_per_Root": 39,
+    "scope": "All Root raw117 inputs/artifacts and normalized worker117 inputs matched before candidate edits at the recorded snapshot. Later Root builds may replace paths. New Source54 was not part of that build; Source109/113 context is historical and was not replayed.",
+    "no_prior_object_graph_or_full_manifest_copy": true
+  },
+  "candidate_file_pins": [
+    {
+      "path": "include/bsp/native_mlandfort_kind.hpp",
+      "bytes": 1129,
+      "sha256": "7155fb08bc0c9d6024bc51282cd492e8f5a159485574212c54fb80f86f846d26",
+      "canonical_lf_sha256": "7155fb08bc0c9d6024bc51282cd492e8f5a159485574212c54fb80f86f846d26"
+    },
+    {
+      "path": "src/native_mlandfort_kind.cpp",
+      "bytes": 1426,
+      "sha256": "d9169250a9c6ddf0ab79d13dfbbf10eb9950071bd0cd5af710680c526a7beb37",
+      "canonical_lf_sha256": "d9169250a9c6ddf0ab79d13dfbbf10eb9950071bd0cd5af710680c526a7beb37"
+    },
+    {
+      "path": "docs/CC12_NATIVE_MLANDFORT_KIND_SOURCE.md",
+      "bytes": 3716,
+      "sha256": "f1a6f72a0f56bc5e5d7731f285f3dad15058a45c0eadc2124e17210a148736a3",
+      "canonical_lf_sha256": "f1a6f72a0f56bc5e5d7731f285f3dad15058a45c0eadc2124e17210a148736a3"
+    }
+  ],
+  "validation": {
+    "complete_owned19_operations_and_candidate_header_CPP_doc_reviewed_before_commit": true,
+    "exact4file_git_diff_check": "performed before commit",
+    "new_tests_probes_build_CMake_ledger_GPR_or_shared_edits": false,
+    "Root_compilation_full_emitted_byte_indexed_Core_review": "pending"
+  },
+  "credit": {
+    "concrete_Source_candidate_created": true,
+    "Source_credit": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "Actual fallback backing/control requirements are not a recovered whole Native class ABI or production lifetime.",
+    "Provisional naming and observed slot data do not bind a dispatcher or prove008761E0 dynamic receiver.",
+    "Runtime/fault/private-EH/concurrency/whole-class ABI/startup/gameplay remain unproved.",
+    "Exact54 is Original Native size and Source intent; no new compiled size or admission is asserted."
+  ]
+}
