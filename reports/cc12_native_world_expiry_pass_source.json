@@ -1,0 +1,1672 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_world_expiry_pass_source",
+  "kind": "qualified actual-pointer World expiry Source; primary emitted and binding review pending",
+  "created_utc": "2026-10-09T07:21:39.375542+00:00",
+  "worker_and_published_baseline": "a3203d44403369e0415d666943a723ed21c28c78",
+  "owned_addresses": [
+    "00903610"
+  ],
+  "owned_outputs": [
+    "include/bsp/native_world_expiry_pass.hpp",
+    "src/native_world_expiry_pass.cpp",
+    "docs/CC12_NATIVE_WORLD_EXPIRY_PASS_SOURCE.md",
+    "reports/cc12_native_world_expiry_pass_source.json"
+  ],
+  "status": {
+    "Source_written": true,
+    "direct_009035E0_Source_prerequisite_closed_by_prior_primary_admission": true,
+    "registered_in_CMake_by_worker": false,
+    "worker_build_tested": false,
+    "worker_emitted_body_or_external_binding_reviewed": false,
+    "primary_Source_admission_pending": true,
+    "complete_production_graph_closed": false
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_function_credit_by_worker": 0,
+    "new_ABI_compatible_admissions": 0,
+    "game_validated": false,
+    "existing_counted_projected_function_preserved": true
+  },
+  "accepted_readiness": {
+    "path": "reports/cc12_world_activation_service_readiness.json",
+    "audit_worker_baseline": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+    "current_report_pin": {
+      "path": "reports/cc12_world_activation_service_readiness.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 35673,
+      "sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_bytes": 35673,
+      "physical_sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_match": "exact"
+    },
+    "prior_target_verification": {
+      "configuration": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "mechanism": "bsp.py ghidra CLI Client.verify checked project/program path/language/base before metadata/count/decompile/disasm/bytes queries.",
+      "live_function_count": 64729,
+      "snapshot_function_count": 64729,
+      "queries": [
+        "brief",
+        "ghidra count",
+        "lookup 00903610",
+        "ghidra proto 00903610",
+        "ghidra decompile 00903610 complete",
+        "ghidra disasm 00903610 complete",
+        "ghidra bytes 00903610 length93"
+      ],
+      "other_native_body_or_caller_or_descendant_or_table_or_FH3_sweep": false,
+      "Ghidra_mutation": false,
+      "per_instruction_Ghidra_override_metadata_claimed": false
+    },
+    "historical_direct_service_hold": "009035E0 actual-pointer child-subtree destruction has only WorldExpiryHost-mediated Source in the inspected baseline.",
+    "current_update": "The historical hold is closed only by the separately admitted actual42B helper; old read-only report remains unchanged. Actual virtual methods, lifetimes, progress and production graph remain qualified.",
+    "current_packet_Ghidra_queries_or_mutations": false
+  },
+  "native_evidence": {
+    "capture_utc": "2026-10-09T06:27:14.207814+00:00",
+    "live_byte_source": "bsp.py ghidra bytes 00903610 --length93; complete returned live hexdump transcribed",
+    "span": {
+      "address": "00903610",
+      "end_inclusive": "0090366c",
+      "bytes": 93,
+      "sha256": "469147a3ef98d0e543c4194ce2392ab735ab64e64a49058bf406a52e5befec59",
+      "hex": "538bd98b4304568b305733ff85f674498b466c85c07e3b83c00183f80389466c7c2e837e5000740e8b4e48e8a0ffffff837e500075f28b168b026a018bceffd085ff74058b7738eb0c8b4b048b31eb058bfe8b763885f675b75f5e5bc3",
+      "live_equals_installed_PE": true,
+      "decoded_instructions": 42,
+      "instructions": [
+        {
+          "address": "00903610",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00903611",
+          "bytes": "8bd9",
+          "mnemonic": "mov",
+          "operands": "ebx, ecx"
+        },
+        {
+          "address": "00903613",
+          "bytes": "8b4304",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "00903616",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00903617",
+          "bytes": "8b30",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [eax]"
+        },
+        {
+          "address": "00903619",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0090361a",
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "0090361c",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "0090361e",
+          "bytes": "7449",
+          "mnemonic": "je",
+          "operands": "0x903669"
+        },
+        {
+          "address": "00903620",
+          "bytes": "8b466c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x6c]"
+        },
+        {
+          "address": "00903623",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00903625",
+          "bytes": "7e3b",
+          "mnemonic": "jle",
+          "operands": "0x903662"
+        },
+        {
+          "address": "00903627",
+          "bytes": "83c001",
+          "mnemonic": "add",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0090362a",
+          "bytes": "83f803",
+          "mnemonic": "cmp",
+          "operands": "eax, 3"
+        },
+        {
+          "address": "0090362d",
+          "bytes": "89466c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x6c], eax"
+        },
+        {
+          "address": "00903630",
+          "bytes": "7c2e",
+          "mnemonic": "jl",
+          "operands": "0x903660"
+        },
+        {
+          "address": "00903632",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        {
+          "address": "00903636",
+          "bytes": "740e",
+          "mnemonic": "je",
+          "operands": "0x903646"
+        },
+        {
+          "address": "00903638",
+          "bytes": "8b4e48",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x48]"
+        },
+        {
+          "address": "0090363b",
+          "bytes": "e8a0ffffff",
+          "mnemonic": "call",
+          "operands": "0x9035e0"
+        },
+        {
+          "address": "00903640",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        {
+          "address": "00903644",
+          "bytes": "75f2",
+          "mnemonic": "jne",
+          "operands": "0x903638"
+        },
+        {
+          "address": "00903646",
+          "bytes": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00903648",
+          "bytes": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        {
+          "address": "0090364a",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "0090364c",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "0090364e",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00903650",
+          "bytes": "85ff",
+          "mnemonic": "test",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "00903652",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x903659"
+        },
+        {
+          "address": "00903654",
+          "bytes": "8b7738",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [edi + 0x38]"
+        },
+        {
+          "address": "00903657",
+          "bytes": "eb0c",
+          "mnemonic": "jmp",
+          "operands": "0x903665"
+        },
+        {
+          "address": "00903659",
+          "bytes": "8b4b04",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "0090365c",
+          "bytes": "8b31",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ecx]"
+        },
+        {
+          "address": "0090365e",
+          "bytes": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x903665"
+        },
+        {
+          "address": "00903660",
+          "bytes": "8bfe",
+          "mnemonic": "mov",
+          "operands": "edi, esi"
+        },
+        {
+          "address": "00903662",
+          "bytes": "8b7638",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esi + 0x38]"
+        },
+        {
+          "address": "00903665",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "00903667",
+          "bytes": "75b7",
+          "mnemonic": "jne",
+          "operands": "0x903620"
+        },
+        {
+          "address": "00903669",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0090366a",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0090366b",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0090366c",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "live_equals_installed_PE": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "contiguous_decode": true,
+    "branches": [
+      {
+        "site": "0090361e",
+        "bytes": "7449",
+        "operation": "je",
+        "target": "00903669"
+      },
+      {
+        "site": "00903625",
+        "bytes": "7e3b",
+        "operation": "jle",
+        "target": "00903662"
+      },
+      {
+        "site": "00903630",
+        "bytes": "7c2e",
+        "operation": "jl",
+        "target": "00903660"
+      },
+      {
+        "site": "00903636",
+        "bytes": "740e",
+        "operation": "je",
+        "target": "00903646"
+      },
+      {
+        "site": "00903644",
+        "bytes": "75f2",
+        "operation": "jne",
+        "target": "00903638"
+      },
+      {
+        "site": "00903652",
+        "bytes": "7405",
+        "operation": "je",
+        "target": "00903659"
+      },
+      {
+        "site": "00903657",
+        "bytes": "eb0c",
+        "operation": "jmp",
+        "target": "00903665"
+      },
+      {
+        "site": "0090365e",
+        "bytes": "eb05",
+        "operation": "jmp",
+        "target": "00903665"
+      },
+      {
+        "site": "00903667",
+        "bytes": "75b7",
+        "operation": "jne",
+        "target": "00903620"
+      }
+    ],
+    "encoded_CALL_count": 2,
+    "metadata_resolved_direct_call_count": 1,
+    "direct_call": {
+      "site": "0090363b",
+      "bytes": "e8a0ffffff",
+      "target": "009035e0",
+      "receiver": "fresh [current entity+48] loaded into ECX at00903638",
+      "stack_arguments": 0,
+      "continuation": "re-read same entity full DWORD+50 at00903640"
+    },
+    "indirect_call": {
+      "site": "0090364e",
+      "bytes": "ffd0",
+      "target": "current entity table slot0, fetched after child loop",
+      "table_load": "00903646 MOV EDX,[ESI]",
+      "function_load": "00903648 MOV EAX,[EDX]",
+      "stack_argument": "0090364A PUSH1: full DWORD00000001",
+      "receiver": "0090364C ECX=ESI current entity",
+      "compatible_callee_cleanup_bytes": 4,
+      "cleanup_basis": "No caller stack adjustment before continuation/pop sequence; called target must restore argument space compatibly.",
+      "typed_return_or_concrete_target_class_recovered": false
+    },
+    "entry_register_schedule": [
+      "PUSH EBX",
+      "EBX=ECX captured actual World",
+      "EAX=[EBX+4] current header",
+      "PUSH ESI",
+      "ESI=[EAX] first entity",
+      "PUSH EDI",
+      "EDI=0 resume anchor"
+    ],
+    "exit": [
+      "POP EDI",
+      "POP ESI",
+      "POP EBX",
+      "plain RET"
+    ],
+    "no_local_FPU_or_global_access": true
+  },
+  "current_static_PE_revalidation": {
+    "whole_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "whole_PE_matches_accepted_capture": true,
+    "complete93_byte_span_matches_accepted_live_bytes": true,
+    "complete42_instruction_decode_revalidated": true,
+    "all_nine_internal_branch_destinations_revalidated": true,
+    "direct_helper_CALL_target_revalidated": true,
+    "complete42_byte_provider_PE_hash_matches_primary": true,
+    "new_live_Ghidra_or_emitted_or_runtime_evidence": false
+  },
+  "source": {
+    "header": "include/bsp/native_world_expiry_pass.hpp",
+    "implementation": "src/native_world_expiry_pass.cpp",
+    "symbol": "bsp::release_native_world_expired_objects_00903610",
+    "declaration": "void __fastcall release_native_world_expired_objects_00903610(void* actual_world);",
+    "definition": "__declspec(naked) void __fastcall release_native_world_expired_objects_00903610(void*)",
+    "platform_guard": "defined(_MSC_VER) && defined(_M_IX86)",
+    "source_asm_statement_count": 42,
+    "native_instruction_count": 42,
+    "internal_branch_count": 9,
+    "source_instruction_mapping": [
+      {
+        "native": {
+          "address": "00903610",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 11,
+        "source_operation": "push ebx"
+      },
+      {
+        "native": {
+          "address": "00903611",
+          "bytes": "8bd9",
+          "mnemonic": "mov",
+          "operands": "ebx, ecx"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 12,
+        "source_operation": "mov ebx, ecx"
+      },
+      {
+        "native": {
+          "address": "00903613",
+          "bytes": "8b4304",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 4]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 13,
+        "source_operation": "mov eax, dword ptr [ebx + 4]"
+      },
+      {
+        "native": {
+          "address": "00903616",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 14,
+        "source_operation": "push esi"
+      },
+      {
+        "native": {
+          "address": "00903617",
+          "bytes": "8b30",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [eax]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 15,
+        "source_operation": "mov esi, dword ptr [eax]"
+      },
+      {
+        "native": {
+          "address": "00903619",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 16,
+        "source_operation": "push edi"
+      },
+      {
+        "native": {
+          "address": "0090361a",
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 17,
+        "source_operation": "xor edi, edi"
+      },
+      {
+        "native": {
+          "address": "0090361c",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 18,
+        "source_operation": "test esi, esi"
+      },
+      {
+        "native": {
+          "address": "0090361e",
+          "bytes": "7449",
+          "mnemonic": "je",
+          "operands": "0x903669"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 19,
+        "source_operation": "jz done"
+      },
+      {
+        "native": {
+          "address": "00903620",
+          "bytes": "8b466c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x6c]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 22,
+        "source_operation": "mov eax, dword ptr [esi + 6ch]"
+      },
+      {
+        "native": {
+          "address": "00903623",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 23,
+        "source_operation": "test eax, eax"
+      },
+      {
+        "native": {
+          "address": "00903625",
+          "bytes": "7e3b",
+          "mnemonic": "jle",
+          "operands": "0x903662"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 24,
+        "source_operation": "jle next_entity"
+      },
+      {
+        "native": {
+          "address": "00903627",
+          "bytes": "83c001",
+          "mnemonic": "add",
+          "operands": "eax, 1"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 25,
+        "source_operation": "add eax, 1"
+      },
+      {
+        "native": {
+          "address": "0090362a",
+          "bytes": "83f803",
+          "mnemonic": "cmp",
+          "operands": "eax, 3"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 26,
+        "source_operation": "cmp eax, 3"
+      },
+      {
+        "native": {
+          "address": "0090362d",
+          "bytes": "89466c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x6c], eax"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 27,
+        "source_operation": "mov dword ptr [esi + 6ch], eax"
+      },
+      {
+        "native": {
+          "address": "00903630",
+          "bytes": "7c2e",
+          "mnemonic": "jl",
+          "operands": "0x903660"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 28,
+        "source_operation": "jl age_entity"
+      },
+      {
+        "native": {
+          "address": "00903632",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 29,
+        "source_operation": "cmp dword ptr [esi + 50h], 0"
+      },
+      {
+        "native": {
+          "address": "00903636",
+          "bytes": "740e",
+          "mnemonic": "je",
+          "operands": "0x903646"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 30,
+        "source_operation": "jz release_own"
+      },
+      {
+        "native": {
+          "address": "00903638",
+          "bytes": "8b4e48",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x48]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 33,
+        "source_operation": "mov ecx, dword ptr [esi + 48h]"
+      },
+      {
+        "native": {
+          "address": "0090363b",
+          "bytes": "e8a0ffffff",
+          "mnemonic": "call",
+          "operands": "0x9035e0"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 34,
+        "source_operation": "call retire_native_world_child_subtree_009035e0"
+      },
+      {
+        "native": {
+          "address": "00903640",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 35,
+        "source_operation": "cmp dword ptr [esi + 50h], 0"
+      },
+      {
+        "native": {
+          "address": "00903644",
+          "bytes": "75f2",
+          "mnemonic": "jne",
+          "operands": "0x903638"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 36,
+        "source_operation": "jnz release_children"
+      },
+      {
+        "native": {
+          "address": "00903646",
+          "bytes": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 39,
+        "source_operation": "mov edx, dword ptr [esi]"
+      },
+      {
+        "native": {
+          "address": "00903648",
+          "bytes": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 40,
+        "source_operation": "mov eax, dword ptr [edx]"
+      },
+      {
+        "native": {
+          "address": "0090364a",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 41,
+        "source_operation": "push 1"
+      },
+      {
+        "native": {
+          "address": "0090364c",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 42,
+        "source_operation": "mov ecx, esi"
+      },
+      {
+        "native": {
+          "address": "0090364e",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 43,
+        "source_operation": "call eax"
+      },
+      {
+        "native": {
+          "address": "00903650",
+          "bytes": "85ff",
+          "mnemonic": "test",
+          "operands": "edi, edi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 44,
+        "source_operation": "test edi, edi"
+      },
+      {
+        "native": {
+          "address": "00903652",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x903659"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 45,
+        "source_operation": "jz resume_head"
+      },
+      {
+        "native": {
+          "address": "00903654",
+          "bytes": "8b7738",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [edi + 0x38]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 46,
+        "source_operation": "mov esi, dword ptr [edi + 38h]"
+      },
+      {
+        "native": {
+          "address": "00903657",
+          "bytes": "eb0c",
+          "mnemonic": "jmp",
+          "operands": "0x903665"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 47,
+        "source_operation": "jmp check_entity"
+      },
+      {
+        "native": {
+          "address": "00903659",
+          "bytes": "8b4b04",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebx + 4]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 50,
+        "source_operation": "mov ecx, dword ptr [ebx + 4]"
+      },
+      {
+        "native": {
+          "address": "0090365c",
+          "bytes": "8b31",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ecx]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 51,
+        "source_operation": "mov esi, dword ptr [ecx]"
+      },
+      {
+        "native": {
+          "address": "0090365e",
+          "bytes": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x903665"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 52,
+        "source_operation": "jmp check_entity"
+      },
+      {
+        "native": {
+          "address": "00903660",
+          "bytes": "8bfe",
+          "mnemonic": "mov",
+          "operands": "edi, esi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 55,
+        "source_operation": "mov edi, esi"
+      },
+      {
+        "native": {
+          "address": "00903662",
+          "bytes": "8b7638",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esi + 0x38]"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 57,
+        "source_operation": "mov esi, dword ptr [esi + 38h]"
+      },
+      {
+        "native": {
+          "address": "00903665",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 59,
+        "source_operation": "test esi, esi"
+      },
+      {
+        "native": {
+          "address": "00903667",
+          "bytes": "75b7",
+          "mnemonic": "jne",
+          "operands": "0x903620"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 60,
+        "source_operation": "jnz entity_loop"
+      },
+      {
+        "native": {
+          "address": "00903669",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 63,
+        "source_operation": "pop edi"
+      },
+      {
+        "native": {
+          "address": "0090366a",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 64,
+        "source_operation": "pop esi"
+      },
+      {
+        "native": {
+          "address": "0090366b",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 65,
+        "source_operation": "pop ebx"
+      },
+      {
+        "native": {
+          "address": "0090366c",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        "source_path": "src/native_world_expiry_pass.cpp",
+        "source_line": 66,
+        "source_operation": "ret"
+      }
+    ],
+    "native_nop_alignment_or_padding_instructions": 0,
+    "added_noops_or_alignment_instructions": false,
+    "explicit_direct_Source_dependency": "bsp::retire_native_world_child_subtree_009035e0",
+    "direct_external_CALL_opcode_offset": 43,
+    "direct_external_REL32_operand_offset": 44,
+    "native_relative_operand_hex": "a0ffffff",
+    "native_relative_displacement": -96,
+    "post_own_virtual_receiver_read_before_reselection": false,
+    "only_local_object_write": "0090362D full DWORD[ESI+6C]=EAX after CMP and before JL",
+    "added_Host_callback_default_token_overlay_context_owner_table_guard_minus1_cleanup_noexcept_or_binding": false
+  },
+  "ABI_contract": {
+    "input": "ECX actual captured World pointer",
+    "incoming_EDX_semantic_input": false,
+    "explicit_incoming_stack_arguments": 0,
+    "retained_registers": {
+      "EBX": "same captured World for entire pass",
+      "ESI": "current entity until changed by traversal",
+      "EDI": "last aged entity anchor, or zero"
+    },
+    "preserved_registers": [
+      "EBX",
+      "ESI",
+      "EDI"
+    ],
+    "semantic_return": "No typed result established; volatile register residues are not invented return semantics.",
+    "direct_service_ABI_observed": "Current child from+48 inECX, no explicit stack arguments; direct symbolic call to separately admitted actual42B recursive helper009035E0 with compatible native callee-saved registers. Complete primary helper proof pinned below.",
+    "virtual_service_ABI_observed": "ECX current entity, current slot0 called with DWORD1 and compatible callee cleanup of4; concrete implementation not recovered.",
+    "local_EH_frame_or_rollback": false,
+    "native_fault_unwind_or_runtime_execution_proven": false
+  },
+  "counter_schedule": {
+    "load_site": "00903620",
+    "width": 4,
+    "signed_initial_gate": "TEST EAX,EAX; JLE00903662 skips zero/all negative patterns without store/anchor change.",
+    "increment": "00903627 ADD EAX,1 wraps modulo2^32.",
+    "signed_release_test": "0090362A CMP EAX,3; 0090362D MOV[ESI+6C],EAX preserves flags; 00903630 JL selects age.",
+    "store_precedes_any_child_or_virtual_call": true,
+    "cases": [
+      {
+        "initial": "signed<=0",
+        "stored": "unchanged",
+        "action": "skip; anchor unchanged"
+      },
+      {
+        "initial": "1",
+        "stored": "2",
+        "action": "age; anchor=current entity"
+      },
+      {
+        "initial": "2..0x7ffffffe",
+        "stored": "incremented positive DWORD",
+        "action": "release; anchor unchanged"
+      },
+      {
+        "initial": "0x7fffffff",
+        "stored": "0x80000000",
+        "action": "age, because signed wrapped result is less than3; anchor=current entity"
+      }
+    ],
+    "Cxx_projection_gap": "Existing entity_expiry_step_00903620 uses signed counter+1; without an established range restriction it does not provide the native overflow guarantee. No speculative precondition or new test is added.",
+    "normal_1_2_3_sequence_limit": "Normal successive visits only; callback/link mutation is not constrained into a universal two-step or once-per-pass timing claim."
+  },
+  "ordered_storage_contract": [
+    {
+      "sites": "00903613/00903617",
+      "reads": "Captured World+4 then captured header.first at entry",
+      "qualification": "Null first is empty; null header is still dereferenced."
+    },
+    {
+      "sites": "00903620..00903630",
+      "reads_writes": "Current full counter6C; signed skip, wrap increment, compare, unconditional positive-input write, signed age/release branch",
+      "qualification": "Byte projection or signed-overflow assumptions are not equivalent."
+    },
+    {
+      "sites": "00903632..00903644",
+      "reads_calls": "Current full DWORD50 !=0; reload48 intoECX; direct9035E0; reload50; repeat",
+      "qualification": "Any nonzero count pattern enters; no cached count/head or null-child guard.",
+      "field_name_qualification": "Child count is the existing descriptive label for DWORD+50; producers were not audited."
+    },
+    {
+      "sites": "00903646..0090364e",
+      "reads_calls": "Late current vptr then slot0; PUSH DWORD1; ECXcurrententity; actual indirect CALL",
+      "qualification": "Child callbacks can alter the table/target before this fetch."
+    },
+    {
+      "sites": "00903650..0090365e",
+      "reads": "After retirement, nonnull anchor current38 OR reload same captured World current4 then current header.first",
+      "qualification": "No dereference of released current entity; no new global World selection and no reuse of initial header."
+    },
+    {
+      "sites": "00903660..00903667",
+      "reads_writes": "Only age updates anchor; skip/age follow current entity38; successor tested before next counter load",
+      "qualification": "Skipped nodes never become anchor; nodes between anchor and released entity can be revisited."
+    }
+  ],
+  "lifetime_and_progress": [
+    "Captured World remains valid for every reached header reload; each current header remains readable through its first-pointer load.",
+    "Current entity remains valid through positive-counter store, child-service returns/count reloads and late vslot0 dispatch.",
+    "Nonnull retained anchor remains readable for its post-retirement38 load even after callbacks; no stale-anchor guard is added.",
+    "Direct/virtual services retain compatible register/stack behavior for EBX World, ESI current entity and EDI anchor holders.",
+    "Child operations must make intended50/head48 traversal progress and retirement/unlink must leave valid anchor/head continuations; no implementation of that policy is supplied.",
+    "No current-entity dereference occurs after its own slot0 call, but external owner/caller lifetime requirements remain separate.",
+    "Null World/header faults; nonzero child gate with null child is forwarded to the qualified actual helper and faults at its first+50 read. Invalid, cyclic or nonprogressing state can fault, recurse or loop.",
+    "Earlier field stores and callback effects are not locally rolled back after later failure."
+  ],
+  "qualified_concrete_dependency": {
+    "path": "reports/cc12_native_world_child_retirement_primary_review.json",
+    "primary_status": "whole42B_native_body_physical_self_binding_and_core_definition_reviewed_normal_win32_build_passed",
+    "primary_worker_commit": "fe917417c3f2f6f88f5018228bdc79d6f4d7d89f",
+    "current_header_and_source_and_build_inputs_match_primary": {
+      "CMakeLists.txt": "f196f086b4a10a09f09cdfc1884c2e28b129f3f28b9ae8f51db3431c2912f393",
+      "cmake/startup.cmake": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "scripts/build.ps1": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "include/bsp/native_world_child_retirement.hpp": "56e0f566df8bd731e2408e5d678e16f4db9cca10b43d113e41c6791e0ff3e7a9",
+      "src/native_world_child_retirement.cpp": "54855f658d53212ab1e887173d16d4d8eccc2feaa99ed557b105cd58b5efb949"
+    },
+    "native_body": {
+      "address": "009035E0",
+      "bytes": 42,
+      "instructions": 16,
+      "sha256": "a84482b641eec58c063a5e47549586e95b17485ffb141239c13634654f55e2f8",
+      "entire_resolved_body_equal_installed_PE": true
+    },
+    "physical_root": {
+      "symbol": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+      "symbol_index": 8,
+      "section": 3,
+      "section_value": 0,
+      "physical_file_offset": 439,
+      "bytes": 42,
+      "instruction_count": 16
+    },
+    "sole_self_relocation": {
+      "record_file_offset": 481,
+      "raw_record_hex": "14000000080000001400",
+      "offset": 20,
+      "type": 20,
+      "symbol_index": 8,
+      "symbol": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+      "symbol_record": {
+        "index": 8,
+        "record_file_offset": 667,
+        "raw_record_hex": "000000000400000000000000030020000200",
+        "name": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      "operand_file_offset": 459,
+      "operand_hex": "00000000",
+      "operand_u32": 0,
+      "function_offset": 20
+    },
+    "resolved_self_operand_hex": "e8ffffff",
+    "positive_unique_core_definitions": [
+      {
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_world_child_retirement.obj",
+          "header_offset": 63758544,
+          "payload_file_offset": 63758604,
+          "bytes": 783,
+          "sha256": "d0081c0ef1ec38254ab40e6e6265eb28bcc4a0e803b4864b7d2e63555e7f42c7"
+        },
+        "definition": {
+          "name": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+          "symbol_index": 8,
+          "symbol_record_file_offset": 667,
+          "section": 3,
+          "value": 0,
+          "type": 32
+        }
+      }
+    ],
+    "whole_core_member": {
+      "name": "bsp_core.dir\\Release\\native_world_child_retirement.obj",
+      "header_offset": 63758544,
+      "payload_file_offset": 63758604,
+      "bytes": 783,
+      "sha256": "d0081c0ef1ec38254ab40e6e6265eb28bcc4a0e803b4864b7d2e63555e7f42c7"
+    },
+    "whole_object": {
+      "bytes": 783,
+      "sha256": "d0081c0ef1ec38254ab40e6e6265eb28bcc4a0e803b4864b7d2e63555e7f42c7"
+    },
+    "indexed_graph_external_boundaries": [],
+    "prior_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 8304,
+      "start_utc": "2026-10-09T07:05:35.290202+00:00",
+      "finish_utc": "2026-10-09T07:05:53.479651+00:00",
+      "exit_code": 0,
+      "success": true
+    },
+    "prior_existing_checks": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "prior_complete_review": [
+      "All42B/16instructions and2branchdestinations match installedPE after solephysicalselfCALLoperand20 rebind -24.",
+      "Exact7BLEAESP8DA42400000000; fullDWORD50 initialgate/currentreload after wholechildterminalvirtualreturn, fresh48 eachiteration.",
+      "Lateownvptr/slot0; EAXtable/EDXtarget, DWORD1/ECXsameactualreceiver; actualCALLEDX continuation followedPOPESI/plainRET; no ownreceiverread after ownvirtualreturn.",
+      "UniquecompleteCoremember/positiveownpublicdefinition; no namedexternal service; actual slot0/calleecleanup4/lifetimes/progress remaincallerqualified.",
+      "Existingcountedprojectedfunction preserved; actualstoragefragmentonly; rootabsentgamemap."
+    ],
+    "worker_reran_build_or_emitted_or_archive_review": false,
+    "remaining_limits": [
+      "Actual current callable slot0 mustconsumeDWORD1 andpreservecalleesaved registers; realowner/lifetimes/unlink/head/gateprogress remainexternal.",
+      "Parent mustsurvive postrecursive50/48/lateowndispatch; no child or ownpostvirtualreceiverread, no inventedguard/unlink/free/callback/default/cleanup.",
+      "Wholeemission/selfbinding/build/staticproof is not Nativeentry/exception/SEH/hardwarefault/runtime/startup/gameplay proof; no newtests/probes."
+    ]
+  },
+  "canonical_count_guard": {
+    "address_query": "bsp.py index --if-stale; bsp.py lookup00903610 --limit3; exact owned-address record comparisons",
+    "current_owned_address_records_equal_accepted_audit": true,
+    "records": {
+      "names": [
+        {
+          "address": "00903610",
+          "name": "BSP_World_ReleaseExpiredObjects",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_fixed_step, read-only analysis. __thiscall void(world), RET at 0090366c, body 00903610-0090366c. Caller 00875bb0 at 00875eda with ECX=[[00e188a8]+19cch], the world object; also 00874d00. Walks the list at [[this+4h]] through +38h: a node whose counter +6ch is at least 1 is incremented, and once it reaches 3 the node sub-list at +50h is drained through 009035e0 and the node destroyed through vtable[0](1), with the walk resuming from the predecessor. Objects are therefore released two fixed steps after they are marked. docs/FIXED_STEP_FANOUT.md | Packet cc2_entity_event_queues: the counter at +6Ch is set to 1 by 00922FD0 and aged once per pass, so an entity is released on the second pass after marking (1 to 2 to 3). A counter of zero or less is skipped by the signed test at 00903625 and never becomes the resume anchor, which is why after a release the walk resumes at the last aged entity and re-examines the unmarked ones in between. The chain is the world node's child list, [[world+4h]] through +38h, the one 00904BF0 walks."
+        }
+      ],
+      "reconstruction": [
+        {
+          "address": "00903610",
+          "name": "release_expired_world_objects_00903610",
+          "source": "src/entity_event_queues.cpp",
+          "status": "reconstructed_ledger_backfilled_from_source",
+          "evidence": "C++ body at src/entity_event_queues.cpp:153 (release_expired_world_objects_00903610), a definition named after the address. Documents: docs/ENTITY_EVENT_QUEUES.md, docs/ENTITY_THINK_DISPATCH.md, docs/FIXED_STEP_FANOUT.md, docs/IN_MISSION_SUBSYSTEM_TICK.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build.",
+          "cpp_symbol": "release_expired_world_objects_00903610",
+          "abi_compatible": false,
+          "game_validated": false,
+          "kind": "function",
+          "notes": "3 column-0 definitions carry this address suffix in src/; this record points at the first."
+        }
+      ]
+    },
+    "projected_Source_files_unchanged_since_accepted_audit": true,
+    "action": "Preserve existing counted projected function; actual Source is a qualified refinement without duplicate Original credit."
+  },
+  "accepted_canonical_input_pins": [
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "observed_physical_bytes": 11448,
+      "observed_physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 7833,
+      "sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "observed_physical_bytes": 7833,
+      "observed_physical_sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/game_hosts_ready.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 7555,
+      "sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "observed_physical_bytes": 7555,
+      "observed_physical_sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 30809,
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "observed_physical_bytes": 30809,
+      "observed_physical_sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "observed_physical_bytes": 1457,
+      "observed_physical_sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_activation_flush.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1272,
+      "sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "observed_physical_bytes": 1272,
+      "observed_physical_sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/native_world_activation_flush.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1920,
+      "sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "observed_physical_bytes": 1920,
+      "observed_physical_sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_world_activation_flush_source.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 33679,
+      "sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2",
+      "observed_physical_bytes": 33679,
+      "observed_physical_sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1412,
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "observed_physical_bytes": 1412,
+      "observed_physical_sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1956,
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "observed_physical_bytes": 1956,
+      "observed_physical_sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_entity_destroy_state_primary_review.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 15403,
+      "sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "observed_physical_bytes": 15403,
+      "observed_physical_sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 34812,
+      "sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f",
+      "observed_physical_bytes": 34812,
+      "observed_physical_sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 55502,
+      "sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7",
+      "observed_physical_bytes": 55502,
+      "observed_physical_sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 48004,
+      "sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9",
+      "observed_physical_bytes": 48004,
+      "observed_physical_sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "observed_physical_bytes": 455,
+      "observed_physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "observed_physical_bytes": 14411,
+      "observed_physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "observed_physical_match": "exact"
+    }
+  ],
+  "accepted_audit_doc_pin": {
+    "path": "docs/CC12_WORLD_ACTIVATION_SERVICE_READINESS.md",
+    "hash_domain": "UTF-8 LF physical bytes, must equal staged Git blob",
+    "bytes": 8086,
+    "sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04"
+  },
+  "current_canonical_input_pins": [
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "physical_bytes": 11448,
+      "physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7833,
+      "sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "physical_bytes": 7833,
+      "physical_sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/game_hosts_ready.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7555,
+      "sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "physical_bytes": 7555,
+      "physical_sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 30809,
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_bytes": 30809,
+      "physical_sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "physical_bytes": 1457,
+      "physical_sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_activation_flush.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1272,
+      "sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "physical_bytes": 1272,
+      "physical_sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_world_activation_flush.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1920,
+      "sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "physical_bytes": 1920,
+      "physical_sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_world_activation_flush_source.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 33679,
+      "sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2",
+      "physical_bytes": 33679,
+      "physical_sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1412,
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_bytes": 1412,
+      "physical_sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1956,
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_bytes": 1956,
+      "physical_sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_entity_destroy_state_primary_review.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 15403,
+      "sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "physical_bytes": 15403,
+      "physical_sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 34812,
+      "sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f",
+      "physical_bytes": 34812,
+      "physical_sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 58496,
+      "sha256": "13522cbff8fcee73701b9e60be2f2211a419bc6f4a5bed717bb60c3d10540a1f",
+      "physical_bytes": 58496,
+      "physical_sha256": "13522cbff8fcee73701b9e60be2f2211a419bc6f4a5bed717bb60c3d10540a1f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 52552,
+      "sha256": "4d30c4d25439c4b91d5a42d657160932a57ac4f65a7cdde7b8615cb7c099e57a",
+      "physical_bytes": 52552,
+      "physical_sha256": "4d30c4d25439c4b91d5a42d657160932a57ac4f65a7cdde7b8615cb7c099e57a",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_world_activation_service_readiness.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 35673,
+      "sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_bytes": 35673,
+      "physical_sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_WORLD_ACTIVATION_SERVICE_READINESS.md",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 8086,
+      "sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04",
+      "physical_bytes": 8086,
+      "physical_sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_child_retirement.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 984,
+      "sha256": "56e0f566df8bd731e2408e5d678e16f4db9cca10b43d113e41c6791e0ff3e7a9",
+      "physical_bytes": 984,
+      "physical_sha256": "56e0f566df8bd731e2408e5d678e16f4db9cca10b43d113e41c6791e0ff3e7a9",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_world_child_retirement.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1277,
+      "sha256": "54855f658d53212ab1e887173d16d4d8eccc2feaa99ed557b105cd58b5efb949",
+      "physical_bytes": 1277,
+      "physical_sha256": "54855f658d53212ab1e887173d16d4d8eccc2feaa99ed557b105cd58b5efb949",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_NATIVE_WORLD_CHILD_RETIREMENT_SOURCE.md",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7495,
+      "sha256": "14b5027939140d8eff955b3eb970c34bfedea428ab749443c9477a503c7f2fdb",
+      "physical_bytes": 7495,
+      "physical_sha256": "14b5027939140d8eff955b3eb970c34bfedea428ab749443c9477a503c7f2fdb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_world_child_retirement_source.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 38486,
+      "sha256": "a6056b50db86f5841457e4a6416c81d463e17e72ae9516eff15f2d176529cf75",
+      "physical_bytes": 38486,
+      "physical_sha256": "a6056b50db86f5841457e4a6416c81d463e17e72ae9516eff15f2d176529cf75",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_world_child_retirement_primary_review.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 13798,
+      "sha256": "0f457e281c5453d627ca3e029800ff87fe200592e847d73c8fe397087dec05b7",
+      "physical_bytes": 13798,
+      "physical_sha256": "0f457e281c5453d627ca3e029800ff87fe200592e847d73c8fe397087dec05b7",
+      "physical_match": "exact"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 17151,
+      "sha256": "f196f086b4a10a09f09cdfc1884c2e28b129f3f28b9ae8f51db3431c2912f393",
+      "physical_bytes": 17151,
+      "physical_sha256": "f196f086b4a10a09f09cdfc1884c2e28b129f3f28b9ae8f51db3431c2912f393",
+      "physical_match": "exact"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_match": "exact"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "physical_bytes": 1820,
+      "physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "physical_match": "exact"
+    }
+  ],
+  "changed_input_pins_since_historical_audit": [
+    {
+      "path": "config/names/00900000.jsonl",
+      "accepted_revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "accepted_sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7",
+      "current_revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "current_sha256": "13522cbff8fcee73701b9e60be2f2211a419bc6f4a5bed717bb60c3d10540a1f"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "accepted_revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "accepted_sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9",
+      "current_revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "current_sha256": "4d30c4d25439c4b91d5a42d657160932a57ac4f65a7cdde7b8615cb7c099e57a"
+    }
+  ],
+  "changed_input_qualification": "Only shared00900000 ledger shards differ after neighbor admissions; exact owned00903610 records remain identical to the accepted audit. Historical pins are preserved, not silently replaced.",
+  "owned_source_and_doc_pins": [
+    {
+      "path": "include/bsp/native_world_expiry_pass.hpp",
+      "hash_domain": "exact written LF and staged Git blob bytes",
+      "bytes": 1093,
+      "sha256": "de68781b1f2592c2929004cb08e3ccba3a7ae7ce754c9f62c5eaa7c70e8b736d"
+    },
+    {
+      "path": "src/native_world_expiry_pass.cpp",
+      "hash_domain": "exact written LF and staged Git blob bytes",
+      "bytes": 2603,
+      "sha256": "fde735556c018edf5d1269f2176224da1204d53dd5855fefe3af8203267e6c4e"
+    },
+    {
+      "path": "docs/CC12_NATIVE_WORLD_EXPIRY_PASS_SOURCE.md",
+      "hash_domain": "exact written LF and staged Git blob bytes",
+      "bytes": 9374,
+      "sha256": "958704a80d1e4cd60368fc29acefe5c4605eea4c04c1ab2d8e7d9d64db78d018"
+    }
+  ],
+  "validation": {
+    "full93_native_PE_bytes_and42_instruction_decode": "passed",
+    "all42_source_mappings_and_nine_internal_branches": "passed",
+    "exact42_source_asm_statements_no_extra_NOP_or_local_cleanup": "passed",
+    "signed_gate_wrapping_ADD_CMP_store_JL_and_age_only_anchor_schedule": "passed by complete native/source instruction mapping",
+    "post_retirement_continuation_skips_old_entity_successor_read": "passed by both release-continuation branches jumping to00903665 after selecting anchor successor or fresh head",
+    "direct_actual_helper_Source_and_primary_proof_hashes": "passed",
+    "historical16_canonical_pins_replayed": "passed",
+    "current26_canonical_pins_and_current_owned_record": "passed",
+    "JSON_parse": "passed by serialization and immediate reload",
+    "staged_owned_pins_exact_four_output_scope_and_diff_check": "passed; exact four owned outputs and three staged source/doc pins",
+    "build_tests_probes": "not run by worker authorization",
+    "CMake_ledger_GPR_writes": "none"
+  },
+  "primary_followup": [
+    "Register source serially in the core build.",
+    "Build normal MSVC Win32 and inspect all93 emitted bytes and42 instructions including all nine branches.",
+    "Resolve the sole external direct CALL operand at offset44 to the concrete42B child-retirement Source; retain complete provider self-binding/physical core definition proof.",
+    "Run relevant existing checks and refine the existing counted record without duplicate Original credit."
+  ],
+  "limits": [
+    "Written Source and static native/source mapping do not prove current emitted instruction identity or external binding.",
+    "Prior helper proof is pinned and source inputs verified; this worker does not repeat its build/emitted/archive validation.",
+    "Actual slot0 targets, argument cleanup4, callee-saved registers, World/header/parent/anchor lifetimes and hierarchy progress remain qualified caller obligations.",
+    "No EH/unwind/hardware-fault/runtime/gameplay equivalence, application wiring, or full World ownership graph is established.",
+    "No new Native bodies, callers, descendants, tables, or FH3 expansion; no worker CMake/ledger/GPR changes, builds, tests or probes."
+  ]
+}
