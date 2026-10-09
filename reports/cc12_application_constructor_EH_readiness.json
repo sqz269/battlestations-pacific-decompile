@@ -1,0 +1,1393 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_application_constructor_EH_readiness",
+  "generated_at_utc": "2026-10-09T07:36:02.789783+00:00",
+  "base_commit": "287e0bb7af049a33ad6e75f0e9e67113066a6770",
+  "requested_main": "287e0bb7af049a33ad6e75f0e9e67113066a6770",
+  "verdict": "Constructor-specific CC7240 metadata independently establishes two unwind entries and their direct action operands/cleanup targets. Intended saved-owner and local-guard mapping is corroborated by parent arithmetic/current x86 layout. Shared-helper frame setup, dispatch/nested faults and full native exceptional compatibility remain held.",
+  "scope": {
+    "owned_addresses": [
+      "00CC7240",
+      "00E01CC4",
+      "00E01CB4",
+      "00CC7230",
+      "00CC7238"
+    ],
+    "limits": {
+      "handler_capture_bytes": 32,
+      "FuncInfo_bytes": 36,
+      "UnwindMap_entries": 4,
+      "per_action_bytes": 300
+    },
+    "actual": {
+      "handler_selected_bytes": 10,
+      "handler_capture_bytes": 32,
+      "FuncInfo_bytes": 36,
+      "UnwindMap_entries": 2,
+      "direct_action_bytes": [
+        8,
+        8
+      ]
+    },
+    "no_native_queries": [
+      "BF6B43 shared handler",
+      "412430 cleanup descendant",
+      "411EE0 cleanup descendant",
+      "other handlers/callers/tables",
+      "fresh BEA810 parent"
+    ],
+    "constructor_vs_retirement": "CC7240/FuncInfoE01CC4/UnwindMapE01CB4 captured independently. Root CC7260 body/maps/actions are not used to fill these facts.",
+    "code_changes": false,
+    "cmake_changes": false,
+    "ledger_changes": false,
+    "ghidra_mutations": false,
+    "builds": false,
+    "tests": false,
+    "probes": false,
+    "native_execution": false,
+    "new_original_credit": 0
+  },
+  "target": {
+    "config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "project": "bsp",
+    "saved_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_live_count": 64729,
+    "snapshot_count": 64729,
+    "guard": "Live bsp.py queries verify configured project/program/language/image base; count checked before capture."
+  },
+  "native_evidence": {
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_captures": [
+      {
+        "address": "00cc7240",
+        "length": 32,
+        "role": "bounded handler capture window",
+        "hex": "b8c41ce000e9f9f8f2ffcccccccccccc8b4de8e9d8b174ff8d4dece980ac74ff",
+        "end_inclusive": "00cc725f",
+        "sha256": "b39de17f60934821df8f3e3defbbbef6f6b53cdbf0ad076018e90b6902d950e8",
+        "live_capture_matches_current_pe": true
+      },
+      {
+        "address": "00e01cc4",
+        "length": 36,
+        "role": "complete absolute-x86 FuncInfo",
+        "hex": "2205931902000000b41ce000000000000000000000000000000000000000000001000000",
+        "end_inclusive": "00e01ce7",
+        "sha256": "7d956550f9a80adfb7292f91d2653fac1a54c036489548090a3fcda346ae65b8",
+        "live_capture_matches_current_pe": true
+      },
+      {
+        "address": "00e01cb4",
+        "length": 16,
+        "role": "complete two-entry UnwindMap, below four-entry cap",
+        "hex": "ffffffff3072cc00000000003872cc00",
+        "end_inclusive": "00e01cc3",
+        "sha256": "afcfca922180e806b17f724746498302782449a5ac680c8abddfeb6b3a24c5e9",
+        "live_capture_matches_current_pe": true
+      },
+      {
+        "address": "00cc7230",
+        "length": 8,
+        "role": "complete direct state0 action, below300B cap",
+        "hex": "8b4de8e9f8b174ff",
+        "end_inclusive": "00cc7237",
+        "sha256": "0301e6275e7bf5f6d03ddbd6457e26da28646d1fc396965523e68f32617b94bf",
+        "live_capture_matches_current_pe": true,
+        "instructions": [
+          {
+            "address": "00cc7230",
+            "size": 3,
+            "hex": "8b4de8",
+            "text": "mov ecx, dword ptr [ebp - 0x18]"
+          },
+          {
+            "address": "00cc7233",
+            "size": 5,
+            "hex": "e9f8b174ff",
+            "text": "jmp 0x412430"
+          }
+        ],
+        "instruction_count": 2,
+        "size_gate_passed": true,
+        "size_gate_limit": 300
+      },
+      {
+        "address": "00cc7238",
+        "length": 8,
+        "role": "complete direct state1 action, below300B cap",
+        "hex": "8d4dece9a0ac74ff",
+        "end_inclusive": "00cc723f",
+        "sha256": "acdf33387f76d885eae756550107970b6271591e80ff6d478fa91ec9b40071a6",
+        "live_capture_matches_current_pe": true,
+        "instructions": [
+          {
+            "address": "00cc7238",
+            "size": 3,
+            "hex": "8d4dec",
+            "text": "lea ecx, [ebp - 0x14]"
+          },
+          {
+            "address": "00cc723b",
+            "size": 5,
+            "hex": "e9a0ac74ff",
+            "text": "jmp 0x411ee0"
+          }
+        ],
+        "instruction_count": 2,
+        "size_gate_passed": true,
+        "size_gate_limit": 300
+      }
+    ],
+    "fresh_captured_bytes": 100,
+    "selected_fresh_code_bytes": 26,
+    "selected_fresh_data_bytes": 52,
+    "selected_fresh_total_bytes": 78,
+    "selected_fresh_instructions": 6,
+    "unselected_capture_tail": {
+      "address": "00cc724a",
+      "bytes": 22,
+      "partition": "6 alignmentCC bytes followed by16 incidental neighboring bytes. Not decoded, attributed or followed."
+    },
+    "handler_selected": {
+      "address": "00cc7240",
+      "bytes": 10,
+      "hex": "b8c41ce000e9f9f8f2ff",
+      "sha256": "47ce0b872dfcf6b83806b53a2341e0f8b587c13167cc90b8535a7fa735f12909",
+      "instructions": [
+        {
+          "address": "00cc7240",
+          "size": 5,
+          "hex": "b8c41ce000",
+          "text": "mov eax, 0xe01cc4"
+        },
+        {
+          "address": "00cc7245",
+          "size": 5,
+          "hex": "e9f9f8f2ff",
+          "text": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    "reused_parent_bytes": 145,
+    "reused_parent_instructions": 40,
+    "all_captures_and_parent_equal_current_pe": true
+  },
+  "handler": {
+    "start": "00CC7240",
+    "function_start_in_lookup": false,
+    "selected_complete_transfer": "MOV EAX,00E01CC4; JMP00BF6B43",
+    "selected_bytes": 10,
+    "FuncInfo_from_actual_immediate": "00E01CC4",
+    "shared_dispatch_target": "00BF6B43",
+    "shared_target_followed": false,
+    "listing_qualification": "Lookup associates the raw handler with enclosing candidateCC7238 and a cached extra callee. Live proto bounds CC7238 to8bytes endingCC723F. Physical action JMP ends there; raw handler atCC7240 is separately decoded without changing saved analysis."
+  },
+  "FuncInfo": {
+    "address": "00E01CC4",
+    "layout": "absolute32-bit x869DWORDs /36bytes",
+    "raw_magic_and_bbt": "19930522",
+    "magic_29bit": "19930522",
+    "bbt_flags": 0,
+    "maxState": 2,
+    "pUnwindMap": "00e01cb4",
+    "nTryBlocks": 0,
+    "pTryBlockMap": "00000000",
+    "nIPMapEntries": 0,
+    "pIPtoStateMap": "00000000",
+    "pESTypeList": "00000000",
+    "EHFlags_raw": 1,
+    "interpretation": "maxState is highest state plus1, therefore two entries. No local try/IP/type-list entries in this metadata. EHFlags1 is retained numerically; original compiler options/asynchronous-fault coverage are not inferred."
+  },
+  "unwind_states": [
+    {
+      "state": 0,
+      "to_state": -1,
+      "action": "00cc7230",
+      "action_instructions": [
+        {
+          "address": "00cc7230",
+          "size": 3,
+          "hex": "8b4de8",
+          "text": "mov ecx, dword ptr [ebp - 0x18]"
+        },
+        {
+          "address": "00cc7233",
+          "size": 5,
+          "hex": "e9f8b174ff",
+          "text": "jmp 0x412430"
+        }
+      ],
+      "operand": "ECX = current DWORD[helper EBP-18h]",
+      "target": "00412430",
+      "source_service": "destroy_native_generic_singleton_base_00412430"
+    },
+    {
+      "state": 1,
+      "to_state": 0,
+      "action": "00cc7238",
+      "action_instructions": [
+        {
+          "address": "00cc7238",
+          "size": 3,
+          "hex": "8d4dec",
+          "text": "lea ecx, [ebp - 0x14]"
+        },
+        {
+          "address": "00cc723b",
+          "size": 5,
+          "hex": "e9a0ac74ff",
+          "text": "jmp 0x411ee0"
+        }
+      ],
+      "operand": "ECX = address(helper EBP-14h)",
+      "target": "00411EE0",
+      "source_service": "destroy_native_singleton_guard_00411ee0"
+    }
+  ],
+  "map_order": {
+    "from_state0": "0 -> -1 usingCC7230",
+    "from_state1": "1 -> 0 usingCC7238, then0 -> -1 usingCC7230",
+    "qualification": "Map-directed transition order when the shared runtime selects and successfully completes these actions. Actual dispatch/target-state selection/state-write timing and nested failure behavior are outside this audit."
+  },
+  "parent_replay": {
+    "address": "00bea810",
+    "name": "BSP_ApplicationSingleton_Construct",
+    "bytes": 145,
+    "instructions": 40,
+    "hex": "6aff684072cc0064a100000000506489250000000083ec0c56578bf9897c2408c744241c00000000c707c48bd600e80dab82ff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01893d90aee100e8dfaa82ff8b0d90aee100518bc8e8b163feff85f6740b834618ff56ff151022ce008b4c24148bc75f5e64890d0000000083c418c3",
+    "end_inclusive": "00bea8a0",
+    "sha256": "7cf5ea564272d231a6fa4ad3d8f88f1439d3370d31a5310132241cc9fc4eeee2",
+    "size_gate_limit": 300,
+    "size_gate_passed": true,
+    "current_installed_pe_equal": true,
+    "live_listing": [
+      "00bea810: PUSH -0x1",
+      "00bea812: PUSH 0xcc7240",
+      "00bea817: MOV EAX,FS:[0x0]",
+      "00bea81d: PUSH EAX",
+      "00bea81e: MOV dword ptr FS:[0x0],ESP",
+      "00bea825: SUB ESP,0xc",
+      "00bea828: PUSH ESI",
+      "00bea829: PUSH EDI",
+      "00bea82a: MOV EDI,ECX",
+      "00bea82c: MOV dword ptr [ESP + 0x8],EDI",
+      "00bea830: MOV dword ptr [ESP + 0x1c],0x0",
+      "00bea838: MOV dword ptr [EDI],0xd68bc4",
+      "00bea83e: CALL 0x00415350",
+      "00bea843: MOV ESI,dword ptr [EAX + 0x10]",
+      "00bea846: TEST ESI,ESI",
+      "00bea848: MOV dword ptr [ESP + 0xc],0xce37fc",
+      "00bea850: MOV dword ptr [ESP + 0x10],ESI",
+      "00bea854: JZ 0x00bea861",
+      "00bea856: PUSH ESI",
+      "00bea857: CALL dword ptr [0x00ce2218]",
+      "00bea85d: ADD dword ptr [ESI + 0x18],0x1",
+      "00bea861: MOV byte ptr [ESP + 0x1c],0x1",
+      "00bea866: MOV dword ptr [0x00e1ae90],EDI",
+      "00bea86c: CALL 0x00415350",
+      "00bea871: MOV ECX,dword ptr [0x00e1ae90]",
+      "00bea877: PUSH ECX",
+      "00bea878: MOV ECX,EAX",
+      "00bea87a: CALL 0x00bd0c30",
+      "00bea87f: TEST ESI,ESI",
+      "00bea881: JZ 0x00bea88e",
+      "00bea883: ADD dword ptr [ESI + 0x18],-0x1",
+      "00bea887: PUSH ESI",
+      "00bea888: CALL dword ptr [0x00ce2210]",
+      "00bea88e: MOV ECX,dword ptr [ESP + 0x14]",
+      "00bea892: MOV EAX,EDI",
+      "00bea894: POP EDI",
+      "00bea895: POP ESI",
+      "00bea896: MOV dword ptr FS:[0x0],ECX",
+      "00bea89d: ADD ESP,0x18",
+      "00bea8a0: RET"
+    ],
+    "decoded_instructions": [
+      {
+        "address": "00bea810",
+        "size": 2,
+        "hex": "6aff",
+        "text": "push -1"
+      },
+      {
+        "address": "00bea812",
+        "size": 5,
+        "hex": "684072cc00",
+        "text": "push 0xcc7240"
+      },
+      {
+        "address": "00bea817",
+        "size": 6,
+        "hex": "64a100000000",
+        "text": "mov eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "00bea81d",
+        "size": 1,
+        "hex": "50",
+        "text": "push eax"
+      },
+      {
+        "address": "00bea81e",
+        "size": 7,
+        "hex": "64892500000000",
+        "text": "mov dword ptr fs:[0], esp"
+      },
+      {
+        "address": "00bea825",
+        "size": 3,
+        "hex": "83ec0c",
+        "text": "sub esp, 0xc"
+      },
+      {
+        "address": "00bea828",
+        "size": 1,
+        "hex": "56",
+        "text": "push esi"
+      },
+      {
+        "address": "00bea829",
+        "size": 1,
+        "hex": "57",
+        "text": "push edi"
+      },
+      {
+        "address": "00bea82a",
+        "size": 2,
+        "hex": "8bf9",
+        "text": "mov edi, ecx"
+      },
+      {
+        "address": "00bea82c",
+        "size": 4,
+        "hex": "897c2408",
+        "text": "mov dword ptr [esp + 8], edi"
+      },
+      {
+        "address": "00bea830",
+        "size": 8,
+        "hex": "c744241c00000000",
+        "text": "mov dword ptr [esp + 0x1c], 0"
+      },
+      {
+        "address": "00bea838",
+        "size": 6,
+        "hex": "c707c48bd600",
+        "text": "mov dword ptr [edi], 0xd68bc4"
+      },
+      {
+        "address": "00bea83e",
+        "size": 5,
+        "hex": "e80dab82ff",
+        "text": "call 0x415350"
+      },
+      {
+        "address": "00bea843",
+        "size": 3,
+        "hex": "8b7010",
+        "text": "mov esi, dword ptr [eax + 0x10]"
+      },
+      {
+        "address": "00bea846",
+        "size": 2,
+        "hex": "85f6",
+        "text": "test esi, esi"
+      },
+      {
+        "address": "00bea848",
+        "size": 8,
+        "hex": "c744240cfc37ce00",
+        "text": "mov dword ptr [esp + 0xc], 0xce37fc"
+      },
+      {
+        "address": "00bea850",
+        "size": 4,
+        "hex": "89742410",
+        "text": "mov dword ptr [esp + 0x10], esi"
+      },
+      {
+        "address": "00bea854",
+        "size": 2,
+        "hex": "740b",
+        "text": "je 0xbea861"
+      },
+      {
+        "address": "00bea856",
+        "size": 1,
+        "hex": "56",
+        "text": "push esi"
+      },
+      {
+        "address": "00bea857",
+        "size": 6,
+        "hex": "ff151822ce00",
+        "text": "call dword ptr [0xce2218]"
+      },
+      {
+        "address": "00bea85d",
+        "size": 4,
+        "hex": "83461801",
+        "text": "add dword ptr [esi + 0x18], 1"
+      },
+      {
+        "address": "00bea861",
+        "size": 5,
+        "hex": "c644241c01",
+        "text": "mov byte ptr [esp + 0x1c], 1"
+      },
+      {
+        "address": "00bea866",
+        "size": 6,
+        "hex": "893d90aee100",
+        "text": "mov dword ptr [0xe1ae90], edi"
+      },
+      {
+        "address": "00bea86c",
+        "size": 5,
+        "hex": "e8dfaa82ff",
+        "text": "call 0x415350"
+      },
+      {
+        "address": "00bea871",
+        "size": 6,
+        "hex": "8b0d90aee100",
+        "text": "mov ecx, dword ptr [0xe1ae90]"
+      },
+      {
+        "address": "00bea877",
+        "size": 1,
+        "hex": "51",
+        "text": "push ecx"
+      },
+      {
+        "address": "00bea878",
+        "size": 2,
+        "hex": "8bc8",
+        "text": "mov ecx, eax"
+      },
+      {
+        "address": "00bea87a",
+        "size": 5,
+        "hex": "e8b163feff",
+        "text": "call 0xbd0c30"
+      },
+      {
+        "address": "00bea87f",
+        "size": 2,
+        "hex": "85f6",
+        "text": "test esi, esi"
+      },
+      {
+        "address": "00bea881",
+        "size": 2,
+        "hex": "740b",
+        "text": "je 0xbea88e"
+      },
+      {
+        "address": "00bea883",
+        "size": 4,
+        "hex": "834618ff",
+        "text": "add dword ptr [esi + 0x18], -1"
+      },
+      {
+        "address": "00bea887",
+        "size": 1,
+        "hex": "56",
+        "text": "push esi"
+      },
+      {
+        "address": "00bea888",
+        "size": 6,
+        "hex": "ff151022ce00",
+        "text": "call dword ptr [0xce2210]"
+      },
+      {
+        "address": "00bea88e",
+        "size": 4,
+        "hex": "8b4c2414",
+        "text": "mov ecx, dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "00bea892",
+        "size": 2,
+        "hex": "8bc7",
+        "text": "mov eax, edi"
+      },
+      {
+        "address": "00bea894",
+        "size": 1,
+        "hex": "5f",
+        "text": "pop edi"
+      },
+      {
+        "address": "00bea895",
+        "size": 1,
+        "hex": "5e",
+        "text": "pop esi"
+      },
+      {
+        "address": "00bea896",
+        "size": 7,
+        "hex": "64890d00000000",
+        "text": "mov dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "00bea89d",
+        "size": 3,
+        "hex": "83c418",
+        "text": "add esp, 0x18"
+      },
+      {
+        "address": "00bea8a0",
+        "size": 1,
+        "hex": "c3",
+        "text": "ret"
+      }
+    ],
+    "all_live_instruction_starts_equal_complete_decode": true,
+    "database_prototype": "undefined BSP_ApplicationSingleton_Construct(void)",
+    "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+    "fresh_parent_query": false,
+    "current_pe_replay_equal": true,
+    "complete_decode_replayed": true
+  },
+  "parent_frame": {
+    "S": "Incoming ESP to BEA810, pointing at its return address",
+    "R": "EH registration node = S-0Ch after saved-next push; published throughFS:[0] atBEA81E",
+    "Q": "Quiescent body ESP = S-20h after local0Ch and savedESI/EDI",
+    "slots": [
+      {
+        "name": "saved EDI",
+        "offset_from_S": -32,
+        "offset_from_Q": 0,
+        "site": "BEA829"
+      },
+      {
+        "name": "saved ESI",
+        "offset_from_S": -28,
+        "offset_from_Q": 4,
+        "site": "BEA828"
+      },
+      {
+        "name": "saved receiver word",
+        "offset_from_S": -24,
+        "offset_from_Q": 8,
+        "site": "BEA82C"
+      },
+      {
+        "name": "guard profile word",
+        "offset_from_S": -20,
+        "offset_from_Q": 12,
+        "site": "BEA848"
+      },
+      {
+        "name": "guard section word",
+        "offset_from_S": -16,
+        "offset_from_Q": 16,
+        "site": "BEA850"
+      },
+      {
+        "name": "EHRegistrationNode.pNext",
+        "offset_from_S": -12,
+        "offset_from_Q": 20,
+        "site": "BEA81D/BEA81E"
+      },
+      {
+        "name": "frame handler word",
+        "offset_from_S": -8,
+        "offset_from_Q": 24,
+        "site": "BEA812"
+      },
+      {
+        "name": "state word",
+        "offset_from_S": -4,
+        "offset_from_Q": 28,
+        "site": "BEA810/BEA830/BEA861"
+      }
+    ],
+    "helper_frame_corroboration": "Current ehdata.h x86 EHRegistrationNode has threeDWORD fields; FRAME_OFFSET=sizeof(node), PRN_FRAME=R+FRAME_OFFSET. Under this12B layout R+12=S.",
+    "intended_action_mapping": [
+      "If actual helperEBP=PRN_FRAME(R)=S, [EBP-18h] reads saved receiver atQ+8.",
+      "With same alignment LEA[EBP-14h] addresses the actual8Bguard atQ+0Ch; its section word isQ+10h."
+    ],
+    "explicit_limit": "BEA810 itself never establishes EBP. Neither current SDK macros nor matching two offsets prove BF6B43 actually sets this original helper frame or preserves its registers. That native helper ABI/frame alignment is a held prerequisite; no raw-frame Source adapter is supplied.",
+    "alias_qualification": "Action0 loads the current word from the receiver spill. Action1 passes the guard address, whose cleanup reads its current+4 word. Do not replace these memory operands with currentG, an unrelated object, or an assumed surviving EDI/ESI register."
+  },
+  "state_timing": [
+    {
+      "state": -1,
+      "range": "entryBEA810 until state0 storeBEA830",
+      "selected_map": "No action for blank-1 under layout reference",
+      "note": "Saved receiver spill is written atBEA82C before state0."
+    },
+    {
+      "state": 0,
+      "range": "BEA830 throughBEA85D, untilBEA861",
+      "selected_map": "CC7230 only",
+      "note": "State0 starts BEFORE D68BC4 store. It covers first manager lookup, guard materialization and optional Enter/+18 increment. Guard action is not yet armed by the parent state."
+    },
+    {
+      "state": 1,
+      "range": "BEA861 through normal registration/decrement/Leave and epilogue while this registration is live",
+      "selected_map": "CC7238 thenCC7230 if selected/completed by runtime",
+      "note": "Set after optional Enter/increment and before G publication. No later state decrement/disarm appears in the complete parent body."
+    }
+  ],
+  "concrete_Source_cleanup_services": [
+    {
+      "native_action": "CC7230 ->00412430",
+      "source": "destroy_native_generic_singleton_base_00412430",
+      "source_path": "src/native_render_service_base.cpp:51",
+      "current_Source_behavior": "One volatile DWORD writeCE3818 through supplied actual receiver; ordinary C++ explicit pointer interface declarednoexcept. No publication change, unregister or free in this Source leaf.",
+      "qualification": "Direct native edge is established. Cleanup descendant native body is not freshly queried; current Source/header/audit identity is pinned. Do not substitute scalar00412440 or infer ownership deletion."
+    },
+    {
+      "native_action": "CC7238 ->00411EE0",
+      "source": "destroy_native_singleton_guard_00411ee0",
+      "source_path": "src/native_diagnostic_sink_lifetime.cpp:33",
+      "current_Source_behavior": "Copy current guard+4 actual section pointer; stamp guard profileCE37FC; if capturedsection nonnull decrement its actual trackedDWORD+18, then call LeaveCriticalSection; preserve guard+4.",
+      "qualification": "Direct native edge is established. Existing Source ordinary pointer interface and Win32/CRT/fault contracts remain external; no fresh native descendant or compiled proof. The actual guard/frame address matters."
+    }
+  ],
+  "no_unjustified_cleanup_inference": {
+    "publication": "Neither selected direct action sequence contains an E1AE90 write, manager lookup/unregister or free. Current selected Source leaves add none. A total publication rollback, registration rollback or owner lifetime claim is not established.",
+    "enter_window": "Parent remains state0 during Enter and the subsequent increment. Do not infer a guard action or automatic unlock for every exception/fault in that window.",
+    "normal_release_window": "Parent normal decrementBEA883 and LeaveBEA888 execute while state1 is still recorded. No explicit disarm appears afterward before restoring the exception chain. This does not establish exactly-once release under a fault/throw during or after normal release.",
+    "nested_failure": "If an action/cleanup fails, this bounded map does not prove that later actions run, what state is committed, whether termination occurs, or how faults/foreign exceptions are treated. SharedBF6B43 and cleanup descendants are outside scope.",
+    "Source_policy": "Do not replace metadata with an invented RAII/catch/finally/noexcept/termination policy or copy another Source caller wrapper. Existing cleanup functions are reusable explicit C++ calls, not drop-in native ECX action targets or proof of Original helper-frame compatibility."
+  },
+  "remaining_readiness": "Two constructor unwind entries and concrete cleanup edges are now known. Actual helper-frame/dispatch/fault compatibility or a separately qualified Source failure policy, complete genuineApplication owner/current publication, callable profiles and lifetime composition remain unadmitted.",
+  "source_pins": [
+    {
+      "path": "src/native_render_service_base.cpp",
+      "physical_bytes": 4563,
+      "physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "canonical_lf_bytes": 4563,
+      "canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "f7d944a729cbb580238bc7d9719fb535a86ad1e9",
+      "excerpts": [
+        {
+          "start_line": 16,
+          "end_line": 16,
+          "text": "using Word = std::uint32_t;"
+        },
+        {
+          "start_line": 51,
+          "end_line": 53,
+          "text": "void destroy_native_generic_singleton_base_00412430(void* actual_receiver) noexcept {\n    *static_cast<volatile Word*>(actual_receiver) = 0x00ce3818u;\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "physical_bytes": 2361,
+      "physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "canonical_lf_bytes": 2361,
+      "canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "ee7f5b12da69a44a80bf2dc460509a084af5b3c6",
+      "excerpts": [
+        {
+          "start_line": 28,
+          "end_line": 29,
+          "text": "// Complete 412430[7]: ECX receiver, no arguments, RET. One profile DWORD store.\nvoid destroy_native_generic_singleton_base_00412430(void* actual_receiver) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "physical_bytes": 5460,
+      "physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "canonical_lf_bytes": 5460,
+      "canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "b7ae3cbf7f826434f012caf9bff91bf9aad98fb0",
+      "excerpts": [
+        {
+          "start_line": 18,
+          "end_line": 42,
+          "text": "namespace {\nstruct NativeGuard {\n    std::uint32_t profile_00;\n    CRITICAL_SECTION* section_04;\n};\nstatic_assert(sizeof(NativeGuard) == 8);\nstatic_assert(offsetof(NativeGuard, section_04) == 4);\nstatic_assert(sizeof(CRITICAL_SECTION) == 0x18);\n\nstd::uint32_t& tracked_counter(CRITICAL_SECTION* section) noexcept {\n    return *reinterpret_cast<std::uint32_t*>(\n        reinterpret_cast<std::byte*>(section) + 0x18);\n}\n} // namespace\n\nvoid destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard) {\n    CRITICAL_SECTION* captured;\n    std::memcpy(&captured, static_cast<std::byte*>(actual_8byte_guard) + 4, 4);\n    const std::uint32_t profile = 0x00ce37fcu;\n    std::memcpy(actual_8byte_guard, &profile, 4);\n    if (captured) {\n        --tracked_counter(captured);\n        LeaveCriticalSection(captured);\n    }\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "physical_bytes": 2257,
+      "physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "canonical_lf_bytes": 2257,
+      "canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "cb799f9f8f1d9f2e0635406a70258ea80d40761a",
+      "excerpts": [
+        {
+          "start_line": 39,
+          "end_line": 44,
+          "text": "// 00411EE0: ECX actual eight-byte guard, RET. +04 is the actual native\n// CRITICAL_SECTION pointer, whose tracked counter is physically at +18h;\n// it is not a pointer to SystemSingletonCriticalSection's C++ projection.\n// Captures +04 before writing the guard profile, decrements then leaves,\n// and preserves +04. The caller owns entry/state arming and raw storage.\nvoid destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard);"
+        }
+      ]
+    }
+  ],
+  "target_guard_pins": [
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_bytes": 455,
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_bytes": 14411,
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+      "excerpts": [
+        {
+          "start_line": 101,
+          "end_line": 110,
+          "text": "    def verify(self):\n        project = self.get('list_project_files', folder='/')\n        info = self.get('get_current_program_info')\n        expected = self.config\n        if project['project_name'] != expected['project']:\n            raise RuntimeError(f\"Wrong Ghidra project: {project['project_name']}\")\n        for key, actual in [('program_path', info['path']), ('language', info['language']), ('image_base', info['image_base'])]:\n            if actual != expected[key]:\n                raise RuntimeError(f'Wrong target {key}: {actual}')\n        return project, info"
+        }
+      ]
+    }
+  ],
+  "parent_report_pin": {
+    "path": "reports/cc12_application_ordinary_construction_readiness.json",
+    "physical_bytes": 88686,
+    "physical_sha256": "f14766e046196b5ea1d2b998d6230e2982989f3c547749a3a1d388d223a47ed2",
+    "canonical_lf_bytes": 86775,
+    "canonical_lf_sha256": "4aa0619d23c9f60b85a74c09f65985c6e427c5c0ad2c7a07584349be473cd5b9",
+    "physical_crlf_count": 1911,
+    "matches_base_blob": true,
+    "git_blob_oid": "afede5d5e6c5a441520bb43bc76d0726bec09462"
+  },
+  "historical_service_audit_pins": [
+    {
+      "path": "reports/native_render_service_base.json",
+      "physical_bytes": 27364,
+      "physical_sha256": "3223b8c51abbf33e0cccbce2e10399c10b217f2956a7c6aeb004cfe516461b18",
+      "canonical_lf_bytes": 27364,
+      "canonical_lf_sha256": "3223b8c51abbf33e0cccbce2e10399c10b217f2956a7c6aeb004cfe516461b18",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "e6f6b377c2bbe2dcb16a34cc19e9ca6e4d99380d"
+    },
+    {
+      "path": "reports/native_diagnostic_sink_lifetime_audit.json",
+      "physical_bytes": 203562,
+      "physical_sha256": "f24994c30a90bfac87e74767e86ba9afa3c0d03374ec945d0316cdc14a04d4dd",
+      "canonical_lf_bytes": 203562,
+      "canonical_lf_sha256": "f24994c30a90bfac87e74767e86ba9afa3c0d03374ec945d0316cdc14a04d4dd",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "ec0c7e9b2d909d4bae714d153634eef76066ef51"
+    }
+  ],
+  "historical_service_status": [
+    {
+      "path": "reports/native_render_service_base.json",
+      "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+      "use": "Existing service audit identity only; no historical fixture/build/Native result rerun or imported as constructor EH proof."
+    },
+    {
+      "path": "reports/native_diagnostic_sink_lifetime_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_FH3_fixture_and_strict_Win32_checked",
+      "use": "Existing service audit identity only; no historical fixture/build/Native result rerun or imported as constructor EH proof."
+    }
+  ],
+  "layout_reference": {
+    "pin": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+      "physical_bytes": 21203,
+      "physical_sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+      "canonical_lf_bytes": 20651,
+      "canonical_lf_sha256": "3fe06b28fe11bf50a5fba69c3a8d05255da1ff45e9263d2ca0501323050baca2",
+      "physical_crlf_count": 552,
+      "excerpts": [
+        {
+          "start_line": 87,
+          "end_line": 87,
+          "text": "typedef int __ehstate_t;\t\t// The type of a state index"
+        },
+        {
+          "start_line": 176,
+          "end_line": 191,
+          "text": "// Note that states are represented by a signed integer, and that the 'blank'\n// state is -1 so that the array remains 0-based (because by definition there\n// is never any unwind action to be performed from state -1).  It is also\n// assumed that state indices will be dense, i.e. that there will be no gaps of\n// unused state indices in a function.\n//\n\ntypedef const struct _s_UnwindMapEntry {\n\t__ehstate_t\ttoState;\t\t\t\t\t// State this action takes us to\n#if _EH_RELATIVE_FUNCINFO\n\tint\t\t\taction;\t\t\t\t\t\t// Image relative offset of funclet\n#else\n\tvoid\t\t(__cdecl * action)(void);\t// Funclet to call to effect state change\n#endif\n} UnwindMapEntry;\n"
+        },
+        {
+          "start_line": 240,
+          "end_line": 272,
+          "text": "typedef const struct _s_FuncInfo\n{\n\tunsigned int\t\tmagicNumber:29;\t\t// Identifies version of compiler\n\tunsigned int\t\tbbtFlags:3;\t\t\t// flags that may be set by BBT processing\n\t__ehstate_t\t\t\tmaxState;\t\t\t// Highest state number plus one (thus\n\t\t\t\t\t\t\t\t\t\t\t// number of entries in unwind map)\n#if _EH_RELATIVE_FUNCINFO\n\tint\t\t\t\t\tdispUnwindMap;\t\t// Image relative offset of the unwind map\n\tunsigned int\t\tnTryBlocks;\t\t\t// Number of 'try' blocks in this function\n\tint\t\t\t\t\tdispTryBlockMap;\t// Image relative offset of the handler map\n\tunsigned int\t\tnIPMapEntries;\t\t// # entries in the IP-to-state map. NYI (reserved)\n\tint\t\t\t\t\tdispIPtoStateMap;\t// Image relative offset of the IP to state map\n\tunion\n\t{\n\t\tint\t\t\t\tdispUwindHelp;\t\t// Displacement of unwind helpers from base\n\t\tstruct\n\t\t{\n\t\t\tshort dispUwindHelpFixed;\t    // Displacement of unwind helpers from base (fixed part without SVE)\n\t\t\tunsigned short dispUwindHelpSVE;// Number of SVE slots used for the frame\n\t\t} s;\t\t\t\t\t\t\t\t// 's' layout is used if the frame has SVE, indicated by\n\t\t\t\t\t\t\t\t\t\t\t// FI_FRAME_HAS_SVE bit in EHFlags\n\t} u;\n\tint\t\t\t\t\tdispESTypeList;\t\t// Image relative list of types for exception specifications\n#else\n\tUnwindMapEntry*\t\tpUnwindMap;\t\t\t// Where the unwind map is\n\tunsigned int\t\tnTryBlocks;\t\t\t// Number of 'try' blocks in this function\n\tTryBlockMapEntry*\tpTryBlockMap;\t\t// Where the handler map is\n\tunsigned int\t\tnIPMapEntries;\t\t// # entries in the IP-to-state map. NYI (reserved)\n\tvoid*\t\t\t\tpIPtoStateMap;\t\t// An IP to state map.  NYI (reserved).\n\tESTypeList*\t\t\tpESTypeList;\t\t// List of types for exception specifications\n#endif\n\tint\t\t\t\t\tEHFlags;\t\t\t// Flags for some features.\n} FuncInfo;"
+        },
+        {
+          "start_line": 321,
+          "end_line": 341,
+          "text": "\n#if defined(_M_IX86) && !defined(_CHPE_X86_ARM64_EH_)\n\nstruct EHRegistrationNode;\ntypedef struct EHRegistrationNode EHRegistrationNode;\n\nstruct EHRegistrationNode {\n\t/* void *\t\t\tstackPtr */\t\t// Stack ptr at entry to try (below address point)\n\tEHRegistrationNode*\tpNext;\t\t\t// Next node in the chain\n\tvoid * \t\t\t\tframeHandler;\t// The handler function for this frame\n\t__ehstate_t\t\t\tstate;\t\t\t// The current state of this function\n};\n\n# define FRAME_OFFSET\tsizeof(EHRegistrationNode)\n\n#define PRN_NEXT(prn)\t\t((prn)->pNext)\n#define PRN_HANDLER(prn)\t((prn)->frameHandler)\n#define PRN_STATE(prn)\t\t((prn)->state)\n#define PRN_STACK(prn)\t\t(((void**)(prn))[-1])\n# define PRN_FRAME(prn)\t\t((void*)(((char*)prn) + FRAME_OFFSET))\n"
+        }
+      ]
+    },
+    "role": "Current installed absolute-x86 metadata and registration-layout reference only. It is not the original compiler header or proof of the forbidden shared handler implementation."
+  },
+  "canonical_parent_pin_replay": {
+    "parent_direct_records": 23,
+    "parent_embedded_references": 55,
+    "total_records": 78,
+    "unique_paths": 50,
+    "rows": [
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_publication.cpp",
+        "canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "matched": true,
+        "matched_excerpts": 4
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "matched": true,
+        "matched_excerpts": 2
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "matched": true,
+        "matched_excerpts": 2
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_game_singleton_lifetime.cpp",
+        "canonical_lf_sha256": "fffeccd7bf5f34e3f7129e0a5034cad0b97c09fdda8b89977d7e6d23c9ca8574",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_vector_reserve_construct.cpp",
+        "canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/game_native_string_process.hpp",
+        "canonical_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+        "matched": true,
+        "matched_excerpts": 2
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_native_string_process.cpp",
+        "canonical_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts_singletons.cpp",
+        "canonical_lf_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "canonical_lf_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/app_frame.hpp",
+        "canonical_lf_sha256": "b74741c8e369d1b2555bbe757f585b709d2830ef5a082b1703a4f4ed93d0f16a",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_shader_preload.hpp",
+        "canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts.cpp",
+        "canonical_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts_text.cpp",
+        "canonical_lf_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_destruction.cpp",
+        "canonical_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/game_native_game_application_frame.hpp",
+        "canonical_lf_sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "config/target.json",
+        "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "matched": true,
+        "matched_excerpts": 0
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "tools/ghidra_export.py",
+        "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "matched": true,
+        "matched_excerpts": 1
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+        "canonical_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+        "matched": true,
+        "matched_excerpts": 0
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_application_manager_registration_readiness.json",
+        "canonical_lf_sha256": "29fd4a887b1e12fb36ab1f9a22a1d5d253dcda2b0f01ff22c389740782ef158f",
+        "matched": true,
+        "matched_excerpts": 0
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_application_scalar_table_entry_readiness.json",
+        "canonical_lf_sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a",
+        "matched": true,
+        "matched_excerpts": 0
+      },
+      {
+        "origin": "reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/native_singleton_publication_audit.json",
+        "canonical_lf_sha256": "ebce51b65df85e1cdff2213a8dcb9e45b7af3c5fcd02b71adceaef5ef437b7d7",
+        "matched": true,
+        "matched_excerpts": 0
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/game_hosts.hpp",
+        "canonical_lf_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts.cpp",
+        "canonical_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/winmain_startup.cpp",
+        "canonical_lf_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/winmain_startup.hpp",
+        "canonical_lf_sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/app_frame.hpp",
+        "canonical_lf_sha256": "b74741c8e369d1b2555bbe757f585b709d2830ef5a082b1703a4f4ed93d0f16a",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/platform_services.hpp",
+        "canonical_lf_sha256": "b123657d60b6959e6958c8736abca24f79fa489db51d72c2f9c0383563585237",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/platform_services.cpp",
+        "canonical_lf_sha256": "ec296e7890445c3757952c17828623a1b1dea9f4249feec5444d52e879dcea85",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/platform_window.hpp",
+        "canonical_lf_sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/app_bootstrap.hpp",
+        "canonical_lf_sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/app_bootstrap.cpp",
+        "canonical_lf_sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_string_duplicate.hpp",
+        "canonical_lf_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_string_duplicate.cpp",
+        "canonical_lf_sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/singleton_lifetime.cpp",
+        "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_shader_preload.hpp",
+        "canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_shader_preload.cpp",
+        "canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts_text.cpp",
+        "canonical_lf_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/game_native_game_application_frame.hpp",
+        "canonical_lf_sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_native_game_application_frame.cpp",
+        "canonical_lf_sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_native_renderer_application.cpp",
+        "canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_game_retained_application_frame_source.json",
+        "canonical_lf_sha256": "cdd7bd7ff15109892af280abe26adb99becb92ed32fd9ac2b76dab8ecdaffbd0",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_game_retained_application_frame_composition.json",
+        "canonical_lf_sha256": "f138a7b863644de8c4cee6a51d64256e189b4d4c8448672ad96926709da67ee0",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/native_string_duplicate_cc12.json",
+        "canonical_lf_sha256": "fa1ca792765cad90654b7a2711e49d97e5730955de35e4301d5c4f9d3ed3dcf6",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_native_string_duplicate_published_code_gate_audit.json",
+        "canonical_lf_sha256": "a36fca660ed315f8763d12c5aaf5e49ba32183f85eb35c89355598e2400e6185",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "docs/WINMAIN_STARTUP.md",
+        "canonical_lf_sha256": "82dbb88f3c33f1445be5dee135ccc0d424c6d7a5223fd3fb3f9f03464cee8db1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_publication.cpp",
+        "canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_vector_reserve_construct.cpp",
+        "canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+        "canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/game_native_string_process.hpp",
+        "canonical_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_native_string_process.cpp",
+        "canonical_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "canonical_lf_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts_singletons.cpp",
+        "canonical_lf_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/singleton_lifetime.cpp",
+        "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_destruction.cpp",
+        "canonical_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "canonical_lf_sha256": "a1b7233f61544b51628af292801286e2cc9296a232fc71d923d170e28a2c1638",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "config/target.json",
+        "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "tools/ghidra_export.py",
+        "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+        "canonical_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_global_config_lifetime_owner_escape.json",
+        "canonical_lf_sha256": "21a2d8ab3341face61f2f74ec58783c0057e1dd3f828d02e31f0f6fcb380f1b3",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/native_singleton_vector_registration_wrappers_audit.json",
+        "canonical_lf_sha256": "5e96a52f22dab73796c2b7e25e108aba772bfa91171e30dbe2b1a02cb69cd3d1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_destruction.cpp",
+        "canonical_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts.cpp",
+        "canonical_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/game_hosts_text.cpp",
+        "canonical_lf_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_publication.cpp",
+        "canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "src/native_singleton_removal_reorder.cpp",
+        "canonical_lf_sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "include/bsp/native_singleton_removal_reorder.hpp",
+        "canonical_lf_sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "config/target.json",
+        "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "tools/ghidra_export.py",
+        "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+        "canonical_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "reports/cc12_application_manager_registration_readiness.json",
+        "canonical_lf_sha256": "29fd4a887b1e12fb36ab1f9a22a1d5d253dcda2b0f01ff22c389740782ef158f",
+        "matched": true
+      },
+      {
+        "origin": "canonical references embedded in reports/cc12_application_ordinary_construction_readiness.json",
+        "path": "docs/CC12_APPLICATION_SCALAR_TABLE_ENTRY_READINESS.md",
+        "canonical_lf_sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c",
+        "matched": true
+      }
+    ],
+    "all_match": true
+  },
+  "static_checks": [
+    {
+      "check": "Handler<=32B, exactFuncInfo36B, twoUnwindMap entries<=4, both direct actions8B<=300B",
+      "passed": true
+    },
+    {
+      "check": "All100 fresh captured bytes equal currentPE; selected78B interpretation excludes22B incidentaltail",
+      "passed": true
+    },
+    {
+      "check": "Selected handler and actions fully decode to6 instructions with exact EAX/EBP operands and direct targets",
+      "passed": true
+    },
+    {
+      "check": "FuncInfo nineDWORDs and map signedstates independently parsed against installedehdata.h layout",
+      "passed": true
+    },
+    {
+      "check": "Published145B/40ins parent independently replayed; stack slots and both state stores mapped",
+      "passed": true
+    },
+    {
+      "check": "Current cleanupSource/target/parent pins, layoutheader and78 inherited canonicalreferences checked",
+      "passed": true
+    },
+    {
+      "check": "No sharedhelper/actiondescendant/retirementhandler substitution, mutation, build or execution",
+      "passed": true
+    }
+  ],
+  "verification": {
+    "json_parse": true,
+    "exact_two_owned_outputs_staged": true,
+    "staged_diff_check": true,
+    "source_pin_excerpts_verified": true,
+    "no_source_cmake_ledger_gpr_mutations": true,
+    "no_build_test_probe_native_execution": true,
+    "new_original_credit": 0
+  }
+}
