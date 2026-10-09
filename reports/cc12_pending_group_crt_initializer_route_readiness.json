@@ -1,0 +1,2250 @@
+{
+  "schema": 1,
+  "packet": "cc12_pending_group_crt_initializer_route",
+  "status": "readonly_static_PE_entry_CRT_table_route_established_conditional_on_normal_returns_no_Source_or_execution_credit",
+  "created_utc": "2026-10-09T13:27:50.659526+00:00",
+  "baseline": "8da47302782d1ec456aade3dbbf9a9b56d745905",
+  "scope": {
+    "functions": [
+      "00BFD2BD",
+      "00BFD0DD",
+      "00BFBC47",
+      "00BFBA92"
+    ],
+    "initializer_data_word": "00CE3020..00CE3023",
+    "adjacent_table_words_and_child_bodies_read": false,
+    "old153_candidate_not_reread_or_counted": true
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "every_query_verified_by_bsp_client": true
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_entry": "00BFD2BD"
+  },
+  "whole_owned_bodies": [
+    {
+      "address": "00BFD2BD",
+      "end_inclusive": "00BFD2C6",
+      "bytes": 10,
+      "hex": "e89cae0100e916feffff",
+      "sha256": "e83d9f5b5bb5a5688a2418d83e43541a76b46f6eabe05d26fcafe779423c2d7d",
+      "instructions": [
+        {
+          "address": "00BFD2BD",
+          "size": 5,
+          "hex": "e89cae0100",
+          "mnemonic": "call",
+          "operands": "0xc1815e",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD2C2",
+          "size": 5,
+          "hex": "e916feffff",
+          "mnemonic": "jmp",
+          "operands": "0xbfd0dd",
+          "present_in_saved_live_listing": true
+        }
+      ],
+      "linear_PE_instruction_count": 2,
+      "live_listed_instruction_count": 2,
+      "metadata": "Function: entry at 00bfd2bd\nSignature: undefined entry(void)\nEntry: 00bfd2bd\nBody: 00bfd2bd - 00bfd2c6\n{\n \"function_name\": \"entry\",\n \"address\": \"00bfd2bd\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"___security_init_cookie\",\n  \"___tmainCRTStartup\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"b4efe081cc0153f0543c6c7b446382562c893c48eb39e132069ed992be4f81dc\"\n ]\n}\n",
+      "live_listing": "00bfd2bd: CALL 0x00c1815e \n00bfd2c2: JMP 0x00bfd0dd \n",
+      "live_PE_equal": true,
+      "listing_omissions": []
+    },
+    {
+      "address": "00BFD0DD",
+      "end_inclusive": "00BFD2BC",
+      "bytes": 480,
+      "hex": "6a60683030e000e817ab00008365fc008d459050ff15c821ce00c745fcfeffffffbf94000000576a008b1de820ce00ffd350ff15f820ce008bf085f6750d6a12e856ffffff59e98a010000893e56ff159822ce00566a0085c0750effd350ff15fc20ce00e96c0100008b46108945e08b46048945dc8b46088945d88b7e0c81e7ff7f0000ffd350ff15fc20ce008b75e083fe02740681cf008000008b4ddc8bc1c1e0088b55d803c2893584dd0901a38cdd0901890d90dd0901891594dd0901893d88dd0901e8f5feffff8945e033db4353e80c4801005985c075086a1ce8b9feffff59e81782000085c075086a10e8a8feffff59e82c9b0100895dfce88e01010085c07d086a1be820e8ffff59ff15ec20ce00a3c4fe0901e82fae0100a3c8dd0901e86cad010085c07d086a08e8fae7ffff59e8deaa010085c07d086a09e8e9e7ffff5953e820eaffff5985c0740750e8d7e7ffff59e85eaa0100845dbc74060fb74dc0eb036a0a5951506a006800004000e89cafcfff8945e4837de000750650e858ebffffe875ebffffeb2e8b45ec8b088b09894dd45051e8439c01005959c38b65e88b45d48945e4837de000750650e839ebffffe854ebffffc745fcfeffffff8b45e4eb1333c040c38b65e8c745fcfeffffffb8ff000000e889a90000c3",
+      "sha256": "8f2ce7ae365d2c0620d2f8a1aceb7c5d867ec514090db37ffa7e89047d5b1fd7",
+      "instructions": [
+        {
+          "address": "00BFD0DD",
+          "size": 2,
+          "hex": "6a60",
+          "mnemonic": "push",
+          "operands": "0x60",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0DF",
+          "size": 5,
+          "hex": "683030e000",
+          "mnemonic": "push",
+          "operands": "0xe03030",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0E4",
+          "size": 5,
+          "hex": "e817ab0000",
+          "mnemonic": "call",
+          "operands": "0xc07c00",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0E9",
+          "size": 4,
+          "hex": "8365fc00",
+          "mnemonic": "and",
+          "operands": "dword ptr [ebp - 4], 0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0ED",
+          "size": 3,
+          "hex": "8d4590",
+          "mnemonic": "lea",
+          "operands": "eax, [ebp - 0x70]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0F0",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0F1",
+          "size": 6,
+          "hex": "ff15c821ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce21c8]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0F7",
+          "size": 7,
+          "hex": "c745fcfeffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0xfffffffe",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD0FE",
+          "size": 5,
+          "hex": "bf94000000",
+          "mnemonic": "mov",
+          "operands": "edi, 0x94",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD103",
+          "size": 1,
+          "hex": "57",
+          "mnemonic": "push",
+          "operands": "edi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD104",
+          "size": 2,
+          "hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD106",
+          "size": 6,
+          "hex": "8b1de820ce00",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [0xce20e8]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD10C",
+          "size": 2,
+          "hex": "ffd3",
+          "mnemonic": "call",
+          "operands": "ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD10E",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD10F",
+          "size": 6,
+          "hex": "ff15f820ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce20f8]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD115",
+          "size": 2,
+          "hex": "8bf0",
+          "mnemonic": "mov",
+          "operands": "esi, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD117",
+          "size": 2,
+          "hex": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD119",
+          "size": 2,
+          "hex": "750d",
+          "mnemonic": "jne",
+          "operands": "0xbfd128",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD11B",
+          "size": 2,
+          "hex": "6a12",
+          "mnemonic": "push",
+          "operands": "0x12",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD11D",
+          "size": 5,
+          "hex": "e856ffffff",
+          "mnemonic": "call",
+          "operands": "0xbfd078",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD122",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD123",
+          "size": 5,
+          "hex": "e98a010000",
+          "mnemonic": "jmp",
+          "operands": "0xbfd2b2",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD128",
+          "size": 2,
+          "hex": "893e",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], edi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD12A",
+          "size": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD12B",
+          "size": 6,
+          "hex": "ff159822ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2298]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD131",
+          "size": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD132",
+          "size": 2,
+          "hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD134",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD136",
+          "size": 2,
+          "hex": "750e",
+          "mnemonic": "jne",
+          "operands": "0xbfd146",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD138",
+          "size": 2,
+          "hex": "ffd3",
+          "mnemonic": "call",
+          "operands": "ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD13A",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD13B",
+          "size": 6,
+          "hex": "ff15fc20ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce20fc]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD141",
+          "size": 5,
+          "hex": "e96c010000",
+          "mnemonic": "jmp",
+          "operands": "0xbfd2b2",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD146",
+          "size": 3,
+          "hex": "8b4610",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x10]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD149",
+          "size": 3,
+          "hex": "8945e0",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x20], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD14C",
+          "size": 3,
+          "hex": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD14F",
+          "size": 3,
+          "hex": "8945dc",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x24], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD152",
+          "size": 3,
+          "hex": "8b4608",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 8]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD155",
+          "size": 3,
+          "hex": "8945d8",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x28], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD158",
+          "size": 3,
+          "hex": "8b7e0c",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esi + 0xc]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD15B",
+          "size": 6,
+          "hex": "81e7ff7f0000",
+          "mnemonic": "and",
+          "operands": "edi, 0x7fff",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD161",
+          "size": 2,
+          "hex": "ffd3",
+          "mnemonic": "call",
+          "operands": "ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD163",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD164",
+          "size": 6,
+          "hex": "ff15fc20ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce20fc]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD16A",
+          "size": 3,
+          "hex": "8b75e0",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ebp - 0x20]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD16D",
+          "size": 3,
+          "hex": "83fe02",
+          "mnemonic": "cmp",
+          "operands": "esi, 2",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD170",
+          "size": 2,
+          "hex": "7406",
+          "mnemonic": "je",
+          "operands": "0xbfd178",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD172",
+          "size": 6,
+          "hex": "81cf00800000",
+          "mnemonic": "or",
+          "operands": "edi, 0x8000",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD178",
+          "size": 3,
+          "hex": "8b4ddc",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x24]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD17B",
+          "size": 2,
+          "hex": "8bc1",
+          "mnemonic": "mov",
+          "operands": "eax, ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD17D",
+          "size": 3,
+          "hex": "c1e008",
+          "mnemonic": "shl",
+          "operands": "eax, 8",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD180",
+          "size": 3,
+          "hex": "8b55d8",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp - 0x28]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD183",
+          "size": 2,
+          "hex": "03c2",
+          "mnemonic": "add",
+          "operands": "eax, edx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD185",
+          "size": 6,
+          "hex": "893584dd0901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x109dd84], esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD18B",
+          "size": 5,
+          "hex": "a38cdd0901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x109dd8c], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD190",
+          "size": 6,
+          "hex": "890d90dd0901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x109dd90], ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD196",
+          "size": 6,
+          "hex": "891594dd0901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x109dd94], edx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD19C",
+          "size": 6,
+          "hex": "893d88dd0901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x109dd88], edi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1A2",
+          "size": 5,
+          "hex": "e8f5feffff",
+          "mnemonic": "call",
+          "operands": "0xbfd09c",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1A7",
+          "size": 3,
+          "hex": "8945e0",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x20], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1AA",
+          "size": 2,
+          "hex": "33db",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1AC",
+          "size": 1,
+          "hex": "43",
+          "mnemonic": "inc",
+          "operands": "ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1AD",
+          "size": 1,
+          "hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1AE",
+          "size": 5,
+          "hex": "e80c480100",
+          "mnemonic": "call",
+          "operands": "0xc119bf",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1B3",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1B4",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1B6",
+          "size": 2,
+          "hex": "7508",
+          "mnemonic": "jne",
+          "operands": "0xbfd1c0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1B8",
+          "size": 2,
+          "hex": "6a1c",
+          "mnemonic": "push",
+          "operands": "0x1c",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1BA",
+          "size": 5,
+          "hex": "e8b9feffff",
+          "mnemonic": "call",
+          "operands": "0xbfd078",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1BF",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1C0",
+          "size": 5,
+          "hex": "e817820000",
+          "mnemonic": "call",
+          "operands": "0xc053dc",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1C5",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1C7",
+          "size": 2,
+          "hex": "7508",
+          "mnemonic": "jne",
+          "operands": "0xbfd1d1",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1C9",
+          "size": 2,
+          "hex": "6a10",
+          "mnemonic": "push",
+          "operands": "0x10",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1CB",
+          "size": 5,
+          "hex": "e8a8feffff",
+          "mnemonic": "call",
+          "operands": "0xbfd078",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1D0",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1D1",
+          "size": 5,
+          "hex": "e82c9b0100",
+          "mnemonic": "call",
+          "operands": "0xc16d02",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1D6",
+          "size": 3,
+          "hex": "895dfc",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1D9",
+          "size": 5,
+          "hex": "e88e010100",
+          "mnemonic": "call",
+          "operands": "0xc0d36c",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1DE",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1E0",
+          "size": 2,
+          "hex": "7d08",
+          "mnemonic": "jge",
+          "operands": "0xbfd1ea",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1E2",
+          "size": 2,
+          "hex": "6a1b",
+          "mnemonic": "push",
+          "operands": "0x1b",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1E4",
+          "size": 5,
+          "hex": "e820e8ffff",
+          "mnemonic": "call",
+          "operands": "0xbfba09",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1E9",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1EA",
+          "size": 6,
+          "hex": "ff15ec20ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce20ec]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1F0",
+          "size": 5,
+          "hex": "a3c4fe0901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x109fec4], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1F5",
+          "size": 5,
+          "hex": "e82fae0100",
+          "mnemonic": "call",
+          "operands": "0xc18029",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1FA",
+          "size": 5,
+          "hex": "a3c8dd0901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x109ddc8], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD1FF",
+          "size": 5,
+          "hex": "e86cad0100",
+          "mnemonic": "call",
+          "operands": "0xc17f70",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD204",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD206",
+          "size": 2,
+          "hex": "7d08",
+          "mnemonic": "jge",
+          "operands": "0xbfd210",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD208",
+          "size": 2,
+          "hex": "6a08",
+          "mnemonic": "push",
+          "operands": "8",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD20A",
+          "size": 5,
+          "hex": "e8fae7ffff",
+          "mnemonic": "call",
+          "operands": "0xbfba09",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD20F",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD210",
+          "size": 5,
+          "hex": "e8deaa0100",
+          "mnemonic": "call",
+          "operands": "0xc17cf3",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD215",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD217",
+          "size": 2,
+          "hex": "7d08",
+          "mnemonic": "jge",
+          "operands": "0xbfd221",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD219",
+          "size": 2,
+          "hex": "6a09",
+          "mnemonic": "push",
+          "operands": "9",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD21B",
+          "size": 5,
+          "hex": "e8e9e7ffff",
+          "mnemonic": "call",
+          "operands": "0xbfba09",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD220",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD221",
+          "size": 1,
+          "hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD222",
+          "size": 5,
+          "hex": "e820eaffff",
+          "mnemonic": "call",
+          "operands": "0xbfbc47",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD227",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD228",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD22A",
+          "size": 2,
+          "hex": "7407",
+          "mnemonic": "je",
+          "operands": "0xbfd233",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD22C",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD22D",
+          "size": 5,
+          "hex": "e8d7e7ffff",
+          "mnemonic": "call",
+          "operands": "0xbfba09",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD232",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD233",
+          "size": 5,
+          "hex": "e85eaa0100",
+          "mnemonic": "call",
+          "operands": "0xc17c96",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD238",
+          "size": 3,
+          "hex": "845dbc",
+          "mnemonic": "test",
+          "operands": "byte ptr [ebp - 0x44], bl",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD23B",
+          "size": 2,
+          "hex": "7406",
+          "mnemonic": "je",
+          "operands": "0xbfd243",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD23D",
+          "size": 4,
+          "hex": "0fb74dc0",
+          "mnemonic": "movzx",
+          "operands": "ecx, word ptr [ebp - 0x40]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD241",
+          "size": 2,
+          "hex": "eb03",
+          "mnemonic": "jmp",
+          "operands": "0xbfd246",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD243",
+          "size": 2,
+          "hex": "6a0a",
+          "mnemonic": "push",
+          "operands": "0xa",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD245",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD246",
+          "size": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD247",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD248",
+          "size": 2,
+          "hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD24A",
+          "size": 5,
+          "hex": "6800004000",
+          "mnemonic": "push",
+          "operands": "0x400000",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD24F",
+          "size": 5,
+          "hex": "e89cafcfff",
+          "mnemonic": "call",
+          "operands": "0x8f81f0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD254",
+          "size": 3,
+          "hex": "8945e4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x1c], eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD257",
+          "size": 4,
+          "hex": "837de000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ebp - 0x20], 0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD25B",
+          "size": 2,
+          "hex": "7506",
+          "mnemonic": "jne",
+          "operands": "0xbfd263",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD25D",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD25E",
+          "size": 5,
+          "hex": "e858ebffff",
+          "mnemonic": "call",
+          "operands": "0xbfbdbb",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD263",
+          "size": 5,
+          "hex": "e875ebffff",
+          "mnemonic": "call",
+          "operands": "0xbfbddd",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD268",
+          "size": 2,
+          "hex": "eb2e",
+          "mnemonic": "jmp",
+          "operands": "0xbfd298",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD26A",
+          "size": 3,
+          "hex": "8b45ec",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x14]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD26D",
+          "size": 2,
+          "hex": "8b08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD26F",
+          "size": 2,
+          "hex": "8b09",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD271",
+          "size": 3,
+          "hex": "894dd4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x2c], ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD274",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD275",
+          "size": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD276",
+          "size": 5,
+          "hex": "e8439c0100",
+          "mnemonic": "call",
+          "operands": "0xc16ebe",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27B",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27C",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27D",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27E",
+          "size": 3,
+          "hex": "8b65e8",
+          "mnemonic": "mov",
+          "operands": "esp, dword ptr [ebp - 0x18]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD281",
+          "size": 3,
+          "hex": "8b45d4",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x2c]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD284",
+          "size": 3,
+          "hex": "8945e4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x1c], eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD287",
+          "size": 4,
+          "hex": "837de000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ebp - 0x20], 0",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD28B",
+          "size": 2,
+          "hex": "7506",
+          "mnemonic": "jne",
+          "operands": "0xbfd293",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD28D",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD28E",
+          "size": 5,
+          "hex": "e839ebffff",
+          "mnemonic": "call",
+          "operands": "0xbfbdcc",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD293",
+          "size": 5,
+          "hex": "e854ebffff",
+          "mnemonic": "call",
+          "operands": "0xbfbdec",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD298",
+          "size": 7,
+          "hex": "c745fcfeffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0xfffffffe",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD29F",
+          "size": 3,
+          "hex": "8b45e4",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x1c]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD2A2",
+          "size": 2,
+          "hex": "eb13",
+          "mnemonic": "jmp",
+          "operands": "0xbfd2b7",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD2A4",
+          "size": 2,
+          "hex": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2A6",
+          "size": 1,
+          "hex": "40",
+          "mnemonic": "inc",
+          "operands": "eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2A7",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2A8",
+          "size": 3,
+          "hex": "8b65e8",
+          "mnemonic": "mov",
+          "operands": "esp, dword ptr [ebp - 0x18]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2AB",
+          "size": 7,
+          "hex": "c745fcfeffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0xfffffffe",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2B2",
+          "size": 5,
+          "hex": "b8ff000000",
+          "mnemonic": "mov",
+          "operands": "eax, 0xff",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD2B7",
+          "size": 5,
+          "hex": "e889a90000",
+          "mnemonic": "call",
+          "operands": "0xc07c45",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFD2BC",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "present_in_saved_live_listing": true
+        }
+      ],
+      "linear_PE_instruction_count": 156,
+      "live_listed_instruction_count": 133,
+      "metadata": "Function: ___tmainCRTStartup at 00bfd0dd\nSignature: undefined ___tmainCRTStartup(void)\nEntry: 00bfd0dd\nBody: 00bfd0dd - 00bfd2bc\n{\n \"function_name\": \"___tmainCRTStartup\",\n \"address\": \"00bfd0dd\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 133,\n \"basic_block_count\": 27,\n \"edge_count\": 36,\n \"call_count\": 25,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 11,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_WinMain\",\n  \"__cinit\",\n  \"__mtinit\",\n  \"check_managed_app\",\n  \"__SEH_prolog4\",\n  \"__heap_init\",\n  \"__setargv\",\n  \"LIBCRT_unmatched_00c17cf3\",\n  \"GetProcessHeap\",\n  \"__ioinit\",\n  \"__cexit\",\n  \"LIBCRT_unmatched_00c18029\",\n  \"fast_error_exit\",\n  \"_exit\",\n  \"__amsg_exit\",\n  \"__wincmdln\",\n  \"__RTC_Initialize\",\n  \"__SEH_epilog4\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  96,\n  32768,\n  2,\n  8,\n  9,\n  10,\n  16,\n  18,\n  148,\n  27,\n  28,\n  32767,\n  255\n ],\n \"basic_block_hashes\": [\n  \"35fa2bdd9d3f984e2dd6086c608753997ccca03352bbfe355cb879c306e41eb3\",\n  \"7c3efebe499c147aa14cd9aa9390b7c1f38478a6969fe5b0895999a0156195e5\",\n  \"2d43dd602c026225c3eb39e0682b9a07d63189800ffeee13f1535e15db2b5a50\",\n  \"8a8bd4622a418365bcb93a94a8c59030828d848bc696d4ed034ce45002eaa705\",\n  \"11a43c6563d87426cd061b76b21f6fec97bf6bfb7bb8f8eb5405b52401edd156\",\n  \"240d875a98775b248f1d7aa56134e3dbe6f5033e5d7e5271f8220c0f0b590155\",\n  \"b6c071fbde6762fca5315a23f1ce9feff1eb3718cf1d8a180932be76e9420afe\",\n  \"418b748f2b34ad4b4cdf9b1a98bc31c20d2d8232a8018d0117622b1d59020585\",\n  \"54413b3239e1af2511667acda16f0cb1c57541d4c4bbf399887b3475c6bd3ff0\",\n  \"f7c85164df5942cda48d0dcc86ee39036fca8f976dfbfaed321d2144291cedf0\",\n  \"0e393b45e8a3de774fac0244dbc31e2bc9d7ea45832a8a8b8a7732ad38f2c515\",\n  \"6133302c0945a1ab03c195fd4b520ddbd7244de3cf2b921ada0b715eed5ee5c5\",\n  \"490219bba579c8224220e0dd2923be317fc979f28ee982234174d8f549245361\",\n  \"5d20f406b21680f0664c9b4fb7953db2027e40787c91bd21a45a0713d63fbf1d\",\n  \"31a6b2bc88b07f1435ae7e9dcb84b1b7b22d8c33a385c32502fff20ce52c3f7b\",\n  \"23068c31039262a98273530a1da2a9137daac89c6f8311eb4aa105eb860cebb0\",\n  \"bd859f2c79d1c6b8b5ba9f0c1a6aa714fcde3d7dd353ba0bb546dbd165b464d1\",\n  \"19c2877eff2125bb46c922fafca4807b6d26af18e2208aa11c42c4a3f241f8fd\",\n  \"22ca3caece67ca2c9766cbaadb95a1d7332db6f0e439012213898733cbe0a742\",\n  \"092055bfbf59b6efb1aeb102631125d78296339bd515cec0a0783f67b7f83f10\",\n  \"7ef4833bf51c3efe9d953c8058eaafe58847b10c40c6709e582684205bdd0c05\",\n  \"142be68d9c22ef70a1c8d9db5bc0463e5c6a7dbec70be43d9402bdd5c9e38931\",\n  \"17211f476fa2dc06b526e47dba6ab96aa947b06ae00a11cf6fbbebf2f5cff47b\",\n  \"eb5695036e4b64a4156b2ceca380b89cdadef5308948aa020d753a78b8fa4fdc\",\n  \"5a9b7206c1c1c2fb80a6e1db77af56607a286cb2ca12c39dfa02471a6a673676\",\n  \"3dfe3a08853fae5186e6f4b9972f7ce8778e1df94a7f8f77a06117aa2ab653ba\",\n  \"cca9a14ebf03feec9cc919414a194f27b3445015e5436f4658ca1df9a0a9de0b\"\n ]\n}\n",
+      "live_listing": "00bfd0dd: PUSH 0x60 \n00bfd0df: PUSH 0xe03030 \n00bfd0e4: CALL 0x00c07c00 \n00bfd0e9: AND dword ptr [EBP + -0x4],0x0 \n00bfd0ed: LEA EAX,[EBP + -0x70] \n00bfd0f0: PUSH EAX \n00bfd0f1: CALL dword ptr [0x00ce21c8] \n00bfd0f7: MOV dword ptr [EBP + -0x4],0xfffffffe \n00bfd0fe: MOV EDI,0x94 \n00bfd103: PUSH EDI \n00bfd104: PUSH 0x0 \n00bfd106: MOV EBX,dword ptr [0x00ce20e8] \n00bfd10c: CALL EBX \n00bfd10e: PUSH EAX \n00bfd10f: CALL dword ptr [0x00ce20f8] \n00bfd115: MOV ESI,EAX \n00bfd117: TEST ESI,ESI \n00bfd119: JNZ 0x00bfd128 \n00bfd11b: PUSH 0x12 \n00bfd11d: CALL 0x00bfd078 \n00bfd122: POP ECX \n00bfd123: JMP 0x00bfd2b2 \n00bfd128: MOV dword ptr [ESI],EDI \n00bfd12a: PUSH ESI \n00bfd12b: CALL dword ptr [0x00ce2298] \n00bfd131: PUSH ESI \n00bfd132: PUSH 0x0 \n00bfd134: TEST EAX,EAX \n00bfd136: JNZ 0x00bfd146 \n00bfd138: CALL EBX \n00bfd13a: PUSH EAX \n00bfd13b: CALL dword ptr [0x00ce20fc] \n00bfd141: JMP 0x00bfd2b2 \n00bfd146: MOV EAX,dword ptr [ESI + 0x10] \n00bfd149: MOV dword ptr [EBP + -0x20],EAX \n00bfd14c: MOV EAX,dword ptr [ESI + 0x4] \n00bfd14f: MOV dword ptr [EBP + -0x24],EAX \n00bfd152: MOV EAX,dword ptr [ESI + 0x8] \n00bfd155: MOV dword ptr [EBP + -0x28],EAX \n00bfd158: MOV EDI,dword ptr [ESI + 0xc] \n00bfd15b: AND EDI,0x7fff \n00bfd161: CALL EBX \n00bfd163: PUSH EAX \n00bfd164: CALL dword ptr [0x00ce20fc] \n00bfd16a: MOV ESI,dword ptr [EBP + -0x20] \n00bfd16d: CMP ESI,0x2 \n00bfd170: JZ 0x00bfd178 \n00bfd172: OR EDI,0x8000 \n00bfd178: MOV ECX,dword ptr [EBP + -0x24] \n00bfd17b: MOV EAX,ECX \n00bfd17d: SHL EAX,0x8 \n00bfd180: MOV EDX,dword ptr [EBP + -0x28] \n00bfd183: ADD EAX,EDX \n00bfd185: MOV dword ptr [0x0109dd84],ESI \n00bfd18b: MOV [0x0109dd8c],EAX \n00bfd190: MOV dword ptr [0x0109dd90],ECX \n00bfd196: MOV dword ptr [0x0109dd94],EDX \n00bfd19c: MOV dword ptr [0x0109dd88],EDI \n00bfd1a2: CALL 0x00bfd09c \n00bfd1a7: MOV dword ptr [EBP + -0x20],EAX \n00bfd1aa: XOR EBX,EBX \n00bfd1ac: INC EBX \n00bfd1ad: PUSH EBX \n00bfd1ae: CALL 0x00c119bf \n00bfd1b3: POP ECX \n00bfd1b4: TEST EAX,EAX \n00bfd1b6: JNZ 0x00bfd1c0 \n00bfd1b8: PUSH 0x1c \n00bfd1ba: CALL 0x00bfd078 \n00bfd1bf: POP ECX \n00bfd1c0: CALL 0x00c053dc \n00bfd1c5: TEST EAX,EAX \n00bfd1c7: JNZ 0x00bfd1d1 \n00bfd1c9: PUSH 0x10 \n00bfd1cb: CALL 0x00bfd078 \n00bfd1d0: POP ECX \n00bfd1d1: CALL 0x00c16d02 \n00bfd1d6: MOV dword ptr [EBP + -0x4],EBX \n00bfd1d9: CALL 0x00c0d36c \n00bfd1de: TEST EAX,EAX \n00bfd1e0: JGE 0x00bfd1ea \n00bfd1e2: PUSH 0x1b \n00bfd1e4: CALL 0x00bfba09 \n00bfd1e9: POP ECX \n00bfd1ea: CALL dword ptr [0x00ce20ec] \n00bfd1f0: MOV [0x0109fec4],EAX \n00bfd1f5: CALL 0x00c18029 \n00bfd1fa: MOV [0x0109ddc8],EAX \n00bfd1ff: CALL 0x00c17f70 \n00bfd204: TEST EAX,EAX \n00bfd206: JGE 0x00bfd210 \n00bfd208: PUSH 0x8 \n00bfd20a: CALL 0x00bfba09 \n00bfd20f: POP ECX \n00bfd210: CALL 0x00c17cf3 \n00bfd215: TEST EAX,EAX \n00bfd217: JGE 0x00bfd221 \n00bfd219: PUSH 0x9 \n00bfd21b: CALL 0x00bfba09 \n00bfd220: POP ECX \n00bfd221: PUSH EBX \n00bfd222: CALL 0x00bfbc47 \n00bfd227: POP ECX \n00bfd228: TEST EAX,EAX \n00bfd22a: JZ 0x00bfd233 \n00bfd22c: PUSH EAX \n00bfd22d: CALL 0x00bfba09 \n00bfd232: POP ECX \n00bfd233: CALL 0x00c17c96 \n00bfd238: TEST byte ptr [EBP + -0x44],BL \n00bfd23b: JZ 0x00bfd243 \n00bfd23d: MOVZX ECX,word ptr [EBP + -0x40] \n00bfd241: JMP 0x00bfd246 \n00bfd243: PUSH 0xa \n00bfd245: POP ECX \n00bfd246: PUSH ECX \n00bfd247: PUSH EAX \n00bfd248: PUSH 0x0 \n00bfd24a: PUSH 0x400000 \n00bfd24f: CALL 0x008f81f0 \n00bfd254: MOV dword ptr [EBP + -0x1c],EAX \n00bfd257: CMP dword ptr [EBP + -0x20],0x0 \n00bfd25b: JNZ 0x00bfd263 \n00bfd25d: PUSH EAX \n00bfd25e: CALL 0x00bfbdbb \n00bfd263: CALL 0x00bfbddd \n00bfd268: JMP 0x00bfd298 \n00bfd298: MOV dword ptr [EBP + -0x4],0xfffffffe \n00bfd29f: MOV EAX,dword ptr [EBP + -0x1c] \n00bfd2a2: JMP 0x00bfd2b7 \n00bfd2b2: MOV EAX,0xff \n00bfd2b7: CALL 0x00c07c45 \n00bfd2bc: RET \n",
+      "live_PE_equal": true,
+      "listing_omissions": [
+        {
+          "address": "00BFD26A",
+          "size": 3,
+          "hex": "8b45ec",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x14]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD26D",
+          "size": 2,
+          "hex": "8b08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD26F",
+          "size": 2,
+          "hex": "8b09",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ecx]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD271",
+          "size": 3,
+          "hex": "894dd4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x2c], ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD274",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD275",
+          "size": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD276",
+          "size": 5,
+          "hex": "e8439c0100",
+          "mnemonic": "call",
+          "operands": "0xc16ebe",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27B",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27C",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27D",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD27E",
+          "size": 3,
+          "hex": "8b65e8",
+          "mnemonic": "mov",
+          "operands": "esp, dword ptr [ebp - 0x18]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD281",
+          "size": 3,
+          "hex": "8b45d4",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x2c]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD284",
+          "size": 3,
+          "hex": "8945e4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x1c], eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD287",
+          "size": 4,
+          "hex": "837de000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ebp - 0x20], 0",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD28B",
+          "size": 2,
+          "hex": "7506",
+          "mnemonic": "jne",
+          "operands": "0xbfd293",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD28D",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD28E",
+          "size": 5,
+          "hex": "e839ebffff",
+          "mnemonic": "call",
+          "operands": "0xbfbdcc",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD293",
+          "size": 5,
+          "hex": "e854ebffff",
+          "mnemonic": "call",
+          "operands": "0xbfbdec",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2A4",
+          "size": 2,
+          "hex": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2A6",
+          "size": 1,
+          "hex": "40",
+          "mnemonic": "inc",
+          "operands": "eax",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2A7",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2A8",
+          "size": 3,
+          "hex": "8b65e8",
+          "mnemonic": "mov",
+          "operands": "esp, dword ptr [ebp - 0x18]",
+          "present_in_saved_live_listing": false
+        },
+        {
+          "address": "00BFD2AB",
+          "size": 7,
+          "hex": "c745fcfeffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], 0xfffffffe",
+          "present_in_saved_live_listing": false
+        }
+      ]
+    },
+    {
+      "address": "00BFBC47",
+      "end_inclusive": "00BFBCD8",
+      "bytes": 146,
+      "hex": "833dd893d60000741a68d893d600e876b1010085c059740bff742404ff15d893d60059e8a0ab0000680837ce0068e836ce00e814feffff85c059597554565768266dc100e865b3ffffbe3427ce008bc6bfe436ce003bc759730f8b0685c07402ffd083c6043bf772f1833dd8fe0901005f5e741b68d8fe0901e80bb1010085c059740c6a006a026a00ff15d8fe090133c0c3",
+      "sha256": "f7ec982f84c4a0c364ffb44ddb181f37268086f5ae5240bbc575143d373922f1",
+      "instructions": [
+        {
+          "address": "00BFBC47",
+          "size": 7,
+          "hex": "833dd893d60000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [0xd693d8], 0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC4E",
+          "size": 2,
+          "hex": "741a",
+          "mnemonic": "je",
+          "operands": "0xbfbc6a",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC50",
+          "size": 5,
+          "hex": "68d893d600",
+          "mnemonic": "push",
+          "operands": "0xd693d8",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC55",
+          "size": 5,
+          "hex": "e876b10100",
+          "mnemonic": "call",
+          "operands": "0xc16dd0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC5A",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC5C",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC5D",
+          "size": 2,
+          "hex": "740b",
+          "mnemonic": "je",
+          "operands": "0xbfbc6a",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC5F",
+          "size": 4,
+          "hex": "ff742404",
+          "mnemonic": "push",
+          "operands": "dword ptr [esp + 4]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC63",
+          "size": 6,
+          "hex": "ff15d893d600",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xd693d8]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC69",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC6A",
+          "size": 5,
+          "hex": "e8a0ab0000",
+          "mnemonic": "call",
+          "operands": "0xc0680f",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC6F",
+          "size": 5,
+          "hex": "680837ce00",
+          "mnemonic": "push",
+          "operands": "0xce3708",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC74",
+          "size": 5,
+          "hex": "68e836ce00",
+          "mnemonic": "push",
+          "operands": "0xce36e8",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC79",
+          "size": 5,
+          "hex": "e814feffff",
+          "mnemonic": "call",
+          "operands": "0xbfba92",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC7E",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC80",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC81",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC82",
+          "size": 2,
+          "hex": "7554",
+          "mnemonic": "jne",
+          "operands": "0xbfbcd8",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC84",
+          "size": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC85",
+          "size": 1,
+          "hex": "57",
+          "mnemonic": "push",
+          "operands": "edi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC86",
+          "size": 5,
+          "hex": "68266dc100",
+          "mnemonic": "push",
+          "operands": "0xc16d26",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC8B",
+          "size": 5,
+          "hex": "e865b3ffff",
+          "mnemonic": "call",
+          "operands": "0xbf6ff5",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC90",
+          "size": 5,
+          "hex": "be3427ce00",
+          "mnemonic": "mov",
+          "operands": "esi, 0xce2734",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC95",
+          "size": 2,
+          "hex": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC97",
+          "size": 5,
+          "hex": "bfe436ce00",
+          "mnemonic": "mov",
+          "operands": "edi, 0xce36e4",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC9C",
+          "size": 2,
+          "hex": "3bc7",
+          "mnemonic": "cmp",
+          "operands": "eax, edi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC9E",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBC9F",
+          "size": 2,
+          "hex": "730f",
+          "mnemonic": "jae",
+          "operands": "0xbfbcb0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCA1",
+          "size": 2,
+          "hex": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCA3",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCA5",
+          "size": 2,
+          "hex": "7402",
+          "mnemonic": "je",
+          "operands": "0xbfbca9",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCA7",
+          "size": 2,
+          "hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCA9",
+          "size": 3,
+          "hex": "83c604",
+          "mnemonic": "add",
+          "operands": "esi, 4",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCAC",
+          "size": 2,
+          "hex": "3bf7",
+          "mnemonic": "cmp",
+          "operands": "esi, edi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCAE",
+          "size": 2,
+          "hex": "72f1",
+          "mnemonic": "jb",
+          "operands": "0xbfbca1",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCB0",
+          "size": 7,
+          "hex": "833dd8fe090100",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [0x109fed8], 0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCB7",
+          "size": 1,
+          "hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCB8",
+          "size": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCB9",
+          "size": 2,
+          "hex": "741b",
+          "mnemonic": "je",
+          "operands": "0xbfbcd6",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCBB",
+          "size": 5,
+          "hex": "68d8fe0901",
+          "mnemonic": "push",
+          "operands": "0x109fed8",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCC0",
+          "size": 5,
+          "hex": "e80bb10100",
+          "mnemonic": "call",
+          "operands": "0xc16dd0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCC5",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCC7",
+          "size": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCC8",
+          "size": 2,
+          "hex": "740c",
+          "mnemonic": "je",
+          "operands": "0xbfbcd6",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCCA",
+          "size": 2,
+          "hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCCC",
+          "size": 2,
+          "hex": "6a02",
+          "mnemonic": "push",
+          "operands": "2",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCCE",
+          "size": 2,
+          "hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCD0",
+          "size": 6,
+          "hex": "ff15d8fe0901",
+          "mnemonic": "call",
+          "operands": "dword ptr [0x109fed8]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCD6",
+          "size": 2,
+          "hex": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBCD8",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "present_in_saved_live_listing": true
+        }
+      ],
+      "linear_PE_instruction_count": 50,
+      "live_listed_instruction_count": 50,
+      "metadata": "Function: __cinit at 00bfbc47\nSignature: int __cdecl __cinit(int param_1)\nEntry: 00bfbc47\nBody: 00bfbc47 - 00bfbcd8\n{\n \"function_name\": \"__cinit\",\n \"address\": \"00bfbc47\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 50,\n \"basic_block_count\": 13,\n \"edge_count\": 20,\n \"call_count\": 6,\n \"string_ref_count\": 0,\n \"param_count\": 1,\n \"cyclomatic_complexity\": 9,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"__IsNonwritableInCurrentImage\",\n  \"CG_static_init_00cd907f\",\n  \"__initterm_e\",\n  \"_atexit\",\n  \"__initp_misc_cfltcvt_tab\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  2,\n  4\n ],\n \"basic_block_hashes\": [\n  \"9187e8e33ae032e95229cc1a4a6c1970664a84b1890e2b23c7f2a30997690255\",\n  \"e6847ca18116b9f95a9d8600f060dbead7b9e0c69ce94bb09920c67d99e69b44\",\n  \"3dc48f6cb0e6781dc86a81e1080272bf873fc7194a7988ffec598a90ed9165bc\",\n  \"76e9d3ec73eeb417903803144961091f8a6e7cad857413d01b48d8e0e08387df\",\n  \"2dff06e1dbe7331e5e7bf066a131b0bceb0b9e7a3041909bd9c770869891af57\",\n  \"1813f05cd5ffa7502d5a7165c976b42d0b492056331a6f6d84e20ff03da849d8\",\n  \"3b642de86bbd3d4acccda6ee34b82e6a43fea43d0fbf040165d5fcfc9d80ecc8\",\n  \"f7993e6689cf664f02a78160ea17d91e50ab45a99b6660ecc175b4661c018478\",\n  \"f6938576d2d14de10dcaad91c186cb9a2c6804e183264e9be585a122402feacd\",\n  \"782143edc48bcb1f6b124f5a36031547a4d28aecec22afcd9aa00769b6cbc13f\",\n  \"b89ff0314266da57e34ba55cacd97303d4b18b87afcadc7fa7c3bbf299961a16\",\n  \"0592648e751381af844bb5ce754cd6d400932e42470bd01a38a326fe4dff30b4\",\n  \"0adbbd810c0c7db52c9091b7038939924132e8623b99a21e2aa57785f8c77d61\"\n ]\n}\n",
+      "live_listing": "00bfbc47: CMP dword ptr [0x00d693d8],0x0 \n00bfbc4e: JZ 0x00bfbc6a \n00bfbc50: PUSH 0xd693d8 \n00bfbc55: CALL 0x00c16dd0 \n00bfbc5a: TEST EAX,EAX \n00bfbc5c: POP ECX \n00bfbc5d: JZ 0x00bfbc6a \n00bfbc5f: PUSH dword ptr [ESP + 0x4] \n00bfbc63: CALL dword ptr [0x00d693d8] \n00bfbc69: POP ECX \n00bfbc6a: CALL 0x00c0680f \n00bfbc6f: PUSH 0xce3708 \n00bfbc74: PUSH 0xce36e8 \n00bfbc79: CALL 0x00bfba92 \n00bfbc7e: TEST EAX,EAX \n00bfbc80: POP ECX \n00bfbc81: POP ECX \n00bfbc82: JNZ 0x00bfbcd8 \n00bfbc84: PUSH ESI \n00bfbc85: PUSH EDI \n00bfbc86: PUSH 0xc16d26 \n00bfbc8b: CALL 0x00bf6ff5 \n00bfbc90: MOV ESI,0xce2734 \n00bfbc95: MOV EAX,ESI \n00bfbc97: MOV EDI,0xce36e4 \n00bfbc9c: CMP EAX,EDI \n00bfbc9e: POP ECX \n00bfbc9f: JNC 0x00bfbcb0 \n00bfbca1: MOV EAX,dword ptr [ESI] \n00bfbca3: TEST EAX,EAX \n00bfbca5: JZ 0x00bfbca9 \n00bfbca7: CALL EAX \n00bfbca9: ADD ESI,0x4 \n00bfbcac: CMP ESI,EDI \n00bfbcae: JC 0x00bfbca1 \n00bfbcb0: CMP dword ptr [0x0109fed8],0x0 \n00bfbcb7: POP EDI \n00bfbcb8: POP ESI \n00bfbcb9: JZ 0x00bfbcd6 \n00bfbcbb: PUSH 0x109fed8 \n00bfbcc0: CALL 0x00c16dd0 \n00bfbcc5: TEST EAX,EAX \n00bfbcc7: POP ECX \n00bfbcc8: JZ 0x00bfbcd6 \n00bfbcca: PUSH 0x0 \n00bfbccc: PUSH 0x2 \n00bfbcce: PUSH 0x0 \n00bfbcd0: CALL dword ptr [0x0109fed8] \n00bfbcd6: XOR EAX,EAX \n00bfbcd8: RET \n",
+      "live_PE_equal": true,
+      "listing_omissions": []
+    },
+    {
+      "address": "00BFBA92",
+      "end_inclusive": "00BFBAB1",
+      "bytes": 32,
+      "hex": "568b74240833c0eb0f85c075118b0e85c97402ffd183c6043b74240c72eb5ec3",
+      "sha256": "8026cc99de5f0f5083710e0c1f52beb27aede69826b267d12e8ccbe42ca3ca60",
+      "instructions": [
+        {
+          "address": "00BFBA92",
+          "size": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBA93",
+          "size": 4,
+          "hex": "8b742408",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esp + 8]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBA97",
+          "size": 2,
+          "hex": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBA99",
+          "size": 2,
+          "hex": "eb0f",
+          "mnemonic": "jmp",
+          "operands": "0xbfbaaa",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBA9B",
+          "size": 2,
+          "hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBA9D",
+          "size": 2,
+          "hex": "7511",
+          "mnemonic": "jne",
+          "operands": "0xbfbab0",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBA9F",
+          "size": 2,
+          "hex": "8b0e",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAA1",
+          "size": 2,
+          "hex": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAA3",
+          "size": 2,
+          "hex": "7402",
+          "mnemonic": "je",
+          "operands": "0xbfbaa7",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAA5",
+          "size": 2,
+          "hex": "ffd1",
+          "mnemonic": "call",
+          "operands": "ecx",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAA7",
+          "size": 3,
+          "hex": "83c604",
+          "mnemonic": "add",
+          "operands": "esi, 4",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAAA",
+          "size": 4,
+          "hex": "3b74240c",
+          "mnemonic": "cmp",
+          "operands": "esi, dword ptr [esp + 0xc]",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAAE",
+          "size": 2,
+          "hex": "72eb",
+          "mnemonic": "jb",
+          "operands": "0xbfba9b",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAB0",
+          "size": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "present_in_saved_live_listing": true
+        },
+        {
+          "address": "00BFBAB1",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "present_in_saved_live_listing": true
+        }
+      ],
+      "linear_PE_instruction_count": 15,
+      "live_listed_instruction_count": 15,
+      "metadata": "Function: __initterm_e at 00bfba92\nSignature: undefined __initterm_e(void)\nEntry: 00bfba92\nBody: 00bfba92 - 00bfbab1\n{\n \"function_name\": \"__initterm_e\",\n \"address\": \"00bfba92\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 15,\n \"basic_block_count\": 7,\n \"edge_count\": 9,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 4,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [\n  4\n ],\n \"basic_block_hashes\": [\n  \"30bfa5c62ee937ee29ed47836bd001bafe74d0edfb9620a15dec1b5c7607f45b\",\n  \"4e34a1f71c7003b1a56b4f1a9add1aa47eeeb62506fe14793f39eb4a670fd597\",\n  \"d1d61a7f9242dc63e660c36c44a99aafb5d5e8f691f3718c60ed0f523144fd5b\",\n  \"d73ded7dad5e3906e6727be1d11b13a277d6d4c94393a9fe9f529c6c8ec9b13a\",\n  \"cc6b4abcc595da2031d4b2fd77fd0f3f269852cf64e55f7a914a1125af2c5428\",\n  \"e91e11c3302ec3a8ce235816665bbc64b247f382c9edf7f9645908fbbb388f4f\",\n  \"296fe870c6939771bbb26dd5f2eaba0cbe4cc364645166432e4e0d4ddb036bd1\"\n ]\n}\n",
+      "live_listing": "00bfba92: PUSH ESI \n00bfba93: MOV ESI,dword ptr [ESP + 0x8] \n00bfba97: XOR EAX,EAX \n00bfba99: JMP 0x00bfbaaa \n00bfba9b: TEST EAX,EAX \n00bfba9d: JNZ 0x00bfbab0 \n00bfba9f: MOV ECX,dword ptr [ESI] \n00bfbaa1: TEST ECX,ECX \n00bfbaa3: JZ 0x00bfbaa7 \n00bfbaa5: CALL ECX \n00bfbaa7: ADD ESI,0x4 \n00bfbaaa: CMP ESI,dword ptr [ESP + 0xc] \n00bfbaae: JC 0x00bfba9b \n00bfbab0: POP ESI \n00bfbab1: RET \n",
+      "live_PE_equal": true,
+      "listing_omissions": []
+    }
+  ],
+  "table_route": {
+    "start_inclusive": "00CE2734",
+    "end_exclusive": "00CE36E4",
+    "DWORD_slot_count": 1004,
+    "selected_word": "00CE3020",
+    "selected_index": 571,
+    "selected_word_hex": "c027cd00",
+    "target": "00CD27C0",
+    "one_initial_function_pointer_reload_per_current_ESI_iteration": true,
+    "step_bytes": 4,
+    "skip_if_current_word_zero": true,
+    "unsigned_bound_compare": true,
+    "calls_current_EAX_without_stack_argument": true,
+    "does_not_test_initializer_EAX_return": true,
+    "no_more_table_words_read": true
+  },
+  "prior153_evidence_reference": {
+    "report": "reports/cc12_pending_group_initializer_entry_readiness.json",
+    "candidate_sha256": "ef403713f0319a915381e64216765bf0c561637508f0519db8e3cea0031649c2",
+    "groups": 5,
+    "field_writes_only": "head+4=0; head+8=tail; tail+8=0; tail+4=head, in ascending five groups"
+  },
+  "source_or_Ghidra_changes": false,
+  "repository_input_pins": [
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "revision": "8da47302782d1ec456aade3dbbf9a9b56d745905"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "canonical_lf_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "revision": "8da47302782d1ec456aade3dbbf9a9b56d745905"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "revision": "8da47302782d1ec456aade3dbbf9a9b56d745905"
+    },
+    {
+      "path": "reports/cc12_pending_group_initializer_entry_readiness.json",
+      "bytes": 15158,
+      "sha256": "82bd7a409afe5a87af18425a051e82b9a4f7b78bc78f5c80b63c929108a67aa1",
+      "canonical_lf_sha256": "82bd7a409afe5a87af18425a051e82b9a4f7b78bc78f5c80b63c929108a67aa1",
+      "revision": "8da47302782d1ec456aade3dbbf9a9b56d745905"
+    },
+    {
+      "path": "docs/CC12_PENDING_GROUP_INITIALIZER_ENTRY_READINESS.md",
+      "bytes": 4209,
+      "sha256": "73c7850733c79938f88f96b651c9eea669b8030622ea3a07219e50ee49fbc963",
+      "canonical_lf_sha256": "73c7850733c79938f88f96b651c9eea669b8030622ea3a07219e50ee49fbc963",
+      "revision": "8da47302782d1ec456aade3dbbf9a9b56d745905"
+    }
+  ],
+  "capture_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfba92_bytes.txt",
+      "bytes": 154,
+      "sha256": "3b9c03d07e54512f9476bd54597c65afe53c6bc1751f6495750970db31a835f6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfba92_listing.txt",
+      "bytes": 402,
+      "sha256": "d38607e2af29cbe0360605f94352446aeab5683392ff2a4dcdb817b0eee360a7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfba92_metadata.txt",
+      "bytes": 1063,
+      "sha256": "0d9cbe4bcd4f0df458a40a21e88f999606555ec67e4e42b9dca67aa186d0e4e8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfbc47_bytes.txt",
+      "bytes": 714,
+      "sha256": "124c7f8635c99a89bc34cc1d880b35bca7f526f244b53a6f1b6e1a2c7c3f1d76"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfbc47_listing.txt",
+      "bytes": 1302,
+      "sha256": "8b789ae19d92ff4ac1be67d1cc468e93ba2cba8ecf3538657d325e16384b569e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfbc47_metadata.txt",
+      "bytes": 1623,
+      "sha256": "0858cd5d8e3e990cd401e3a0fd515c6d91d79e5808a6a352ce288bb194e8809d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfd0dd_bytes.txt",
+      "bytes": 2310,
+      "sha256": "9dac73bbecb904ef6fb72a23456b886402be68f2cdfdfe4aafbd4a9a2097f51c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfd0dd_listing.txt",
+      "bytes": 3859,
+      "sha256": "0a22c5db186666a1c94a1c3a7b844b9ac08335cc9c240893cd20d34c2de37b24"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfd0dd_metadata.txt",
+      "bytes": 2949,
+      "sha256": "a28c5c7831b756d749de848a72f514dea5b225b709bedcb2b09c5c553a4cef5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfd2bd_bytes.txt",
+      "bytes": 53,
+      "sha256": "09fc95ec174ed4da1040cbd1f9562492412488e59364f8120da051e5033d1b72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfd2bd_listing.txt",
+      "bytes": 55,
+      "sha256": "5ea3be617a755c40012ad51acc699a8de39c898b22f920016a46fdbe07662ff2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\00bfd2bd_metadata.txt",
+      "bytes": 664,
+      "sha256": "54fe46053fc985383ed44fe354337e68049c40d08dc8391632e36f8168087ad3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\count.txt",
+      "bytes": 49,
+      "sha256": "64f4f9be166172342d092bf0cd71435b6499bdc159a7f8a34c738d7db792a246"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_group_crt_initializer_route_primary\\initializer_slot.txt",
+      "bytes": 29,
+      "sha256": "db8392fbf4910e451daea5cb9378d4aa0d8a675c161408171a8a362c9b1ccf23"
+    }
+  ],
+  "credit": {
+    "readonly": true,
+    "Source_functions": 0,
+    "Source_bytes": 0,
+    "Original_ABI": 0,
+    "startup_execution": 0,
+    "gameplay": 0,
+    "Ghidra_changes": 0,
+    "builds_or_tests": 0
+  },
+  "startup_route": {
+    "PE_entry": "00BFD2BD: CALL00C1815E then JMP00BFD0DD",
+    "CRT_startup": "00BFD222: CALL00BFBC47 after PUSH EBX; the normal preceding path sets EBX=1, subject to ordinary preservation by children",
+    "cinit_result_gate": "00BFD228 TEST EAX,EAX; zero branches00BFD233; nonzero calls00BFBA09 (unopened), so termination/return behavior is not invented",
+    "WinMain_call_after_cinit": "00BFD24F CALL008F81F0 with PUSH ECX; PUSH EAX; PUSH0; PUSH00400000, after other unopened children",
+    "Native_startup_and_gameplay_execution_performed": false
+  },
+  "early_integer_initializer_gate": {
+    "owned_function": "00BFBA92..00BFBAB1,32B15operations",
+    "incoming_arguments": "Ordinary two cdecl stack words: first/end pointers. PUSH ESI then loads first from ESP+8 and compares against end atESP+C",
+    "cinit_selected_start": "00CE36E8",
+    "cinit_selected_end_exclusive": "00CE3708",
+    "selected_DWORD_slots": 8,
+    "table_words_read_by_audit": false,
+    "initial_EAX": 0,
+    "loop": "Unsigned start<end. Before each next slot, nonzero current EAX exits; otherwise read current DWORD, skip zero, or CALL current ECX without pushed argument, then ADD ESI4. EAX is retained across null slots. Final EAX is returned.",
+    "cinit_gate": "CALL00BFBA92 atBFBC79, TEST EAX, POP ECX twice preserving flags, JNZ00BFBCD8 to plainRET if nonzero. The 1004-slot loop is bypassed on this arm.",
+    "metadata_call_count_zero_is_not_no_call_proof": "One physical CALL ECX at00BFBAA5; no child table words or bodies inspected."
+  },
+  "conditional_invocation_contract": [
+    "Entry security-cookie child and preceding CRT children must return normally with the required control stack and callee-saved registers intact.",
+    "00BFBA92 must return EAX=0 for00BFBC47 to enter the void initializer loop.",
+    "The void table is walked in ascending four-byte slots. Each called earlier initializer must return normally preserving ESI/EDI and usable stack for this ordinary cdecl loop.",
+    "When ESI reaches00CE3020, the freshly read word must still be00CD27C0. The static live/PE data agrees; no callback mutation or live execution is asserted.",
+    "The five-group initializer has no call, stack frame or argument access in its accepted153B body and ends in plainRET, compatible with this specific zero-pushed-argument edge under intact return backing.",
+    "Conditional invocation precedes the owned Native WinMain CALL00BFD24F on the normal route. This is static PE evidence, not observed startup or Source executable lifecycle."
+  ],
+  "startup_listing_qualification": {
+    "saved_live_listing_operations": 133,
+    "full_linear_owned_PE_operations": 156,
+    "unlisted_operations": 23,
+    "unlisted_spans": [
+      "00BFD26A..00BFD297",
+      "00BFD2A4..00BFD2B1"
+    ],
+    "policy": "Root Astra reviewed all23 physical diagnostic operations. They are preserved in the whole-body record but are not added to Ghidra listing/AddressSet/flow/prototype, not treated as normal fallthrough, and not promoted to a recovered exceptional path.",
+    "unopened": "Native SEH prologue/epilogue children, registration data00E03030, Native exception policy and all external child bodies remain uninspected."
+  },
+  "remaining_dependencies": [
+    "Actual mutable Source group backing, selected producer/owner and lifecycle call.",
+    "Separate pending-global sentinel backing identity; these five groups are not a substitute.",
+    "Source CRT and application startup integration, followed by actual startup and gameplay validation."
+  ],
+  "document_pin": {
+    "path": "docs/CC12_PENDING_GROUP_CRT_INITIALIZER_ROUTE_READINESS.md",
+    "bytes": 5033,
+    "sha256": "f2f0a6933aa462ee15b863482d72e8cbae8352034053590fab8c8d87ae9b8dff"
+  }
+}
