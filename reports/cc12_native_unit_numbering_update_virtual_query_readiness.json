@@ -1,0 +1,917 @@
+{
+  "schema": "bsp.cc12.native_unit_numbering_update_virtual_query_readiness.v1",
+  "created_utc": "2026-10-09T20:13:05.194708+00:00",
+  "status": "Source_held_actual_receiver_profile_and_current_slot5C_dispatch_binding_unresolved",
+  "packet": "cc12_unit_numbering_update_virtual_query_ABI",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi",
+  "branch": "agent/cc12_unit_numbering_virtual_query_abi",
+  "base_commit": "c43f5e7678598c03c3b4e168e5f382fc6a312f8d",
+  "scope": {
+    "primary_address": "008761E0",
+    "primary_bytes": 76,
+    "primary_operations": 28,
+    "additional_complete_Native_bodies": [
+      "006DFE50",
+      "006F5890"
+    ],
+    "additional_body_bytes": 108,
+    "additional_operations": 38,
+    "additional_data_cells": [
+      "00D096D4",
+      "00CFF454"
+    ],
+    "additional_data_bytes": 8,
+    "additional_lease_packet": "cc12_unit_numbering_query_provider_ABI_readonly",
+    "output_files": [
+      "docs/CC12_NATIVE_UNIT_NUMBERING_UPDATE_VIRTUAL_QUERY_READINESS.md",
+      "reports/cc12_native_unit_numbering_update_virtual_query_readiness.json"
+    ],
+    "excluded": "No other Native body, caller0088FE30, other86 predicates, constructor, runtime suite or711A20/711BE0 Native body analyzed. No credit to the other workers candidate bodies.",
+    "Ghidra_read_only": true,
+    "Source_CMake_ledger_GPR_mutations": false
+  },
+  "target": {
+    "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project_name": "bsp",
+    "verified_program_path": "/battlestationspacific.exe",
+    "verified_language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Every live query used bsp.py ghidra; client verifies project name, program path, language and image base first. Exact project file is locally configured and pinned in Root gate.",
+    "Original_image_pin": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "live_function_count": 64729,
+    "snapshot_function_count": 64729,
+    "function_count_unchanged": true
+  },
+  "Root_Native_gate": {
+    "capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_tick_adjacent_Native_gate\\capture.json",
+      "bytes": 12856,
+      "sha256": "b381b76eb8966f0479ab5f0532986cab8f005c79547ab97a8db9a06615d5516d",
+      "canonical_lf_sha256": "b381b76eb8966f0479ab5f0532986cab8f005c79547ab97a8db9a06615d5516d"
+    },
+    "approval_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_tick_adjacent_Native_gate\\Root_Astra_gate_approval.json",
+      "bytes": 500,
+      "sha256": "c6a9fa39def3adf557560314f936d89922b22261bd75c68173236bba10006574",
+      "canonical_lf_sha256": "c6a9fa39def3adf557560314f936d89922b22261bd75c68173236bba10006574"
+    },
+    "capture_approval_hash_equal": true,
+    "approval_passed": true,
+    "selected_record": {
+      "address": "008761e0",
+      "end_inclusive": "0087622b",
+      "bytes": 76,
+      "operations": 28,
+      "file_offset": 4678112,
+      "sha256": "28efa0cd1b6d198e789096fa4465491c591750b1ebcc5284498997cb9241b906",
+      "hex": "56578b7c240c8bf139be5c030000743783be600300000089be5c03000074288b068b505c6a06ffd284c0750f8b068b505c6a1b8bceffd284c0740c8b8e6003000057e8b9b9e9ff5f5ec20400",
+      "raw_instructions": [
+        {
+          "address": "008761e0",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "008761e1",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "008761e2",
+          "bytes": "8b7c240c",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "008761e6",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "008761e8",
+          "bytes": "39be5c030000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x35c], edi"
+        },
+        {
+          "address": "008761ee",
+          "bytes": "7437",
+          "mnemonic": "je",
+          "operands": "0x876227"
+        },
+        {
+          "address": "008761f0",
+          "bytes": "83be6003000000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x360], 0"
+        },
+        {
+          "address": "008761f7",
+          "bytes": "89be5c030000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x35c], edi"
+        },
+        {
+          "address": "008761fd",
+          "bytes": "7428",
+          "mnemonic": "je",
+          "operands": "0x876227"
+        },
+        {
+          "address": "008761ff",
+          "bytes": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00876201",
+          "bytes": "8b505c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x5c]"
+        },
+        {
+          "address": "00876204",
+          "bytes": "6a06",
+          "mnemonic": "push",
+          "operands": "6"
+        },
+        {
+          "address": "00876206",
+          "bytes": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00876208",
+          "bytes": "84c0",
+          "mnemonic": "test",
+          "operands": "al, al"
+        },
+        {
+          "address": "0087620a",
+          "bytes": "750f",
+          "mnemonic": "jne",
+          "operands": "0x87621b"
+        },
+        {
+          "address": "0087620c",
+          "bytes": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "0087620e",
+          "bytes": "8b505c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x5c]"
+        },
+        {
+          "address": "00876211",
+          "bytes": "6a1b",
+          "mnemonic": "push",
+          "operands": "0x1b"
+        },
+        {
+          "address": "00876213",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00876215",
+          "bytes": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00876217",
+          "bytes": "84c0",
+          "mnemonic": "test",
+          "operands": "al, al"
+        },
+        {
+          "address": "00876219",
+          "bytes": "740c",
+          "mnemonic": "je",
+          "operands": "0x876227"
+        },
+        {
+          "address": "0087621b",
+          "bytes": "8b8e60030000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x360]"
+        },
+        {
+          "address": "00876221",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00876222",
+          "bytes": "e8b9b9e9ff",
+          "mnemonic": "call",
+          "operands": "0x711be0"
+        },
+        {
+          "address": "00876227",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00876228",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00876229",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "saved_listing": "008761e0: PUSH ESI \n008761e1: PUSH EDI \n008761e2: MOV EDI,dword ptr [ESP + 0xc] \n008761e6: MOV ESI,ECX \n008761e8: CMP dword ptr [ESI + 0x35c],EDI \n008761ee: JZ 0x00876227 \n008761f0: CMP dword ptr [ESI + 0x360],0x0 \n008761f7: MOV dword ptr [ESI + 0x35c],EDI \n008761fd: JZ 0x00876227 \n008761ff: MOV EAX,dword ptr [ESI] \n00876201: MOV EDX,dword ptr [EAX + 0x5c] \n00876204: PUSH 0x6 \n00876206: CALL EDX \n00876208: TEST AL,AL \n0087620a: JNZ 0x0087621b \n0087620c: MOV EAX,dword ptr [ESI] \n0087620e: MOV EDX,dword ptr [EAX + 0x5c] \n00876211: PUSH 0x1b \n00876213: MOV ECX,ESI \n00876215: CALL EDX \n00876217: TEST AL,AL \n00876219: JZ 0x00876227 \n0087621b: MOV ECX,dword ptr [ESI + 0x360] \n00876221: PUSH EDI \n00876222: CALL 0x00711be0 \n00876227: POP EDI \n00876228: POP ESI \n00876229: RET 0x4 \n",
+      "Root_full_body_read": true,
+      "all_saved_starts_equal_Root_decode": true,
+      "PE_and_live_bytes_equal": true
+    },
+    "worker_complete_selected_record_read": true,
+    "worker_Original_PE_bytes_saved_starts_match": true,
+    "worker_live_bytes_at_008761E0_reconfirmed": true,
+    "worker_query": "python tools/bsp.py ghidra bytes 008761E0 --length 76"
+  },
+  "entry_contract": {
+    "Native": "ECX R; one raw32-bit number at entry ESP+4; preserves ESI/EDI; RET4; no EH setup or stable return-value contract.",
+    "ordered_sequence": [
+      "Save ESI/EDI; capture number once into EDI from ESP+C and R into ESI from ECX.",
+      "Compare R+35C to captured number. Equal returns without a model read or write.",
+      "Compare CURRENT R+360 to zero BEFORE storing captured number to R+35C. MOV preserves flags; pre-store-null returns after the store.",
+      "Read CURRENT [R] to EAX and [EAX+5C] to EDX; push6 and CALL EDX with ECX still R, ESI R and EDI captured number.",
+      "Test AL only. On false reload CURRENT [R] and CURRENT [+5C], push1B, explicitly restore ECX=R, CALL fresh EDX and again test AL only.",
+      "On either true result reload CURRENT R+360 into ECX, push captured EDI and call actual00711BE0.",
+      "No second null guard, number recapture, cached vtable or type-id-derived dispatch. Restore EDI/ESI and RET4."
+    ],
+    "query_call_sites": [
+      {
+        "address": "00876206",
+        "ECX": "R",
+        "EAX": "fresh [R] vtable",
+        "EDX": "fresh [EAX+5C] target",
+        "stack_word": 6,
+        "ESI": "R",
+        "EDI": "captured number",
+        "result": "AL only"
+      },
+      {
+        "address": "00876215",
+        "condition": "first AL==0",
+        "ECX": "explicitly restored R",
+        "EAX": "new [R] vtable",
+        "EDX": "new [EAX+5C] target",
+        "stack_word": 27,
+        "ESI": "R",
+        "EDI": "captured number",
+        "result": "AL only"
+      }
+    ],
+    "ordering_alias_lifetime_limits": [
+      "Pre-store model-null observation is distinct from late model argument.",
+      "Number store precedes all vtable/slot reads; no nonalias proof permits reordering it.",
+      "No proof permits hoisting second vtable/slot reads, late model read or receiver+C4 fallback across unresolved dispatch.",
+      "Exact selected leaves are pure; this does not prove universal dispatch purity or a production receiver/profile domain.",
+      "Stable reached storage and actual numbering service lifetimes required; arbitrary aliases, faults, invalid storage, concurrent mutation and structural reentry unproved."
+    ]
+  },
+  "bounded_actual_query_targets": [
+    {
+      "address": "006DFE50",
+      "end_exclusive": "006DFE86",
+      "bytes": 54,
+      "operations": 19,
+      "file_offset": 3014224,
+      "hex": "8b44240483f806742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "sha256": "a0fbb2103e5ea7b91e61c077d2889e4afd6073a60a3108c9f14dc48ae1271f33",
+      "raw_instructions": [
+        {
+          "address": "006DFE50",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "006DFE54",
+          "bytes": "83f806",
+          "mnemonic": "cmp",
+          "operands": "eax, 6"
+        },
+        {
+          "address": "006DFE57",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x6dfe7e"
+        },
+        {
+          "address": "006DFE59",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "006DFE5C",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x6dfe7e"
+        },
+        {
+          "address": "006DFE5E",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "006DFE61",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x6dfe7e"
+        },
+        {
+          "address": "006DFE63",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "006DFE66",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x6dfe7e"
+        },
+        {
+          "address": "006DFE68",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "006DFE6B",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x6dfe7e"
+        },
+        {
+          "address": "006DFE6D",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "006DFE6F",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x6dfe7e"
+        },
+        {
+          "address": "006DFE71",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "006DFE77",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x6dfe7e"
+        },
+        {
+          "address": "006DFE79",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "006DFE7B",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "006DFE7E",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "006DFE83",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "saved_listing_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\006dfe50\\assembly.txt",
+        "bytes": 481,
+        "sha256": "72f41e5924a8a0a8e135a6ef2c84b2ef8a167312c3ed9376763ac8e731084aa7",
+        "canonical_lf_sha256": "72f41e5924a8a0a8e135a6ef2c84b2ef8a167312c3ed9376763ac8e731084aa7"
+      },
+      "PE_live_bytes_equal": true,
+      "all_saved_live_PE_instruction_starts_equal": true,
+      "profile_slot": {
+        "profile": "00D09678",
+        "offset": "5C",
+        "address": "00D096D4",
+        "file_offset": 9475796,
+        "hex": "50fe6d00",
+        "target": "006DFE50",
+        "PE_live_bytes_equal": true
+      },
+      "ordered_fixed_words": [
+        6,
+        5,
+        4,
+        2,
+        1,
+        0
+      ],
+      "ABI": {
+        "stack": "One raw DWORD at entry ESP+4; both exits RET4.",
+        "EAX": "Incoming value overwritten by MOV EAX,[ESP+4]; full EAX 0 or 1 on return.",
+        "EDX": "Neither read nor written anywhere in this complete body.",
+        "ECX": "Unchanged same receiver; used only by final failed-fixed-chain CMP EAX,[ECX+C4].",
+        "preserved": "ESI EDI EBX EBP untouched; no hidden register input in this exact body.",
+        "flags": "Incoming flags not consumed; each branch uses local compare/test.",
+        "effects": "No calls, writes, globals or EH setup. Fixed matches avoid receiver read."
+      },
+      "actual_008761E0_receiver_profile_established": false,
+      "Source_status": "Existing exact naked leaf in src/native_ship_kind.cpp:7; whole-class/native virtual routing still unbound."
+    },
+    {
+      "address": "006F5890",
+      "end_exclusive": "006F58C6",
+      "bytes": 54,
+      "operations": 19,
+      "file_offset": 3102864,
+      "hex": "8b44240483f81b742583f805742083f804741b83f802741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "sha256": "d487512e038c5230747b5b56380f0cfa842e5ddeeacce112e2daa048769953d0",
+      "raw_instructions": [
+        {
+          "address": "006F5890",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "006F5894",
+          "bytes": "83f81b",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x1b"
+        },
+        {
+          "address": "006F5897",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x6f58be"
+        },
+        {
+          "address": "006F5899",
+          "bytes": "83f805",
+          "mnemonic": "cmp",
+          "operands": "eax, 5"
+        },
+        {
+          "address": "006F589C",
+          "bytes": "7420",
+          "mnemonic": "je",
+          "operands": "0x6f58be"
+        },
+        {
+          "address": "006F589E",
+          "bytes": "83f804",
+          "mnemonic": "cmp",
+          "operands": "eax, 4"
+        },
+        {
+          "address": "006F58A1",
+          "bytes": "741b",
+          "mnemonic": "je",
+          "operands": "0x6f58be"
+        },
+        {
+          "address": "006F58A3",
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operands": "eax, 2"
+        },
+        {
+          "address": "006F58A6",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x6f58be"
+        },
+        {
+          "address": "006F58A8",
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "006F58AB",
+          "bytes": "7411",
+          "mnemonic": "je",
+          "operands": "0x6f58be"
+        },
+        {
+          "address": "006F58AD",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "006F58AF",
+          "bytes": "740d",
+          "mnemonic": "je",
+          "operands": "0x6f58be"
+        },
+        {
+          "address": "006F58B1",
+          "bytes": "3b81c4000000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0xc4]"
+        },
+        {
+          "address": "006F58B7",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x6f58be"
+        },
+        {
+          "address": "006F58B9",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "006F58BB",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        },
+        {
+          "address": "006F58BE",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "006F58C3",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ],
+      "saved_listing_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\006f5890\\assembly.txt",
+        "bytes": 482,
+        "sha256": "6ca4b476ba494cdfbd2c963c092772a90313ef31c6bb6b5e2d4ffdfdb2dcd3c4",
+        "canonical_lf_sha256": "6ca4b476ba494cdfbd2c963c092772a90313ef31c6bb6b5e2d4ffdfdb2dcd3c4"
+      },
+      "PE_live_bytes_equal": true,
+      "all_saved_live_PE_instruction_starts_equal": true,
+      "profile_slot": {
+        "profile": "00CFF3F8",
+        "offset": "5C",
+        "address": "00CFF454",
+        "file_offset": 9434196,
+        "hex": "90586f00",
+        "target": "006F5890",
+        "PE_live_bytes_equal": true
+      },
+      "ordered_fixed_words": [
+        27,
+        5,
+        4,
+        2,
+        1,
+        0
+      ],
+      "ABI": {
+        "stack": "One raw DWORD at entry ESP+4; both exits RET4.",
+        "EAX": "Incoming value overwritten by MOV EAX,[ESP+4]; full EAX 0 or 1 on return.",
+        "EDX": "Neither read nor written anywhere in this complete body.",
+        "ECX": "Unchanged same receiver; used only by final failed-fixed-chain CMP EAX,[ECX+C4].",
+        "preserved": "ESI EDI EBX EBP untouched; no hidden register input in this exact body.",
+        "flags": "Incoming flags not consumed; each branch uses local compare/test.",
+        "effects": "No calls, writes, globals or EH setup. Fixed matches avoid receiver read."
+      },
+      "actual_008761E0_receiver_profile_established": false,
+      "Source_status": "No actual leaf found by bounded include/bsp and src searches; decoded table is present."
+    }
+  ],
+  "live_evidence_commands": {
+    "byte_queries": [
+      {
+        "cmd": "python tools/bsp.py ghidra bytes 006DFE50 --length 54",
+        "chunk_id": "d0e81a",
+        "wall_time_seconds": 2.681562,
+        "exit_code": 0,
+        "original_token_count": 67,
+        "output": "006dfe50  8b 44 24 04 83 f8 06 74 25 83 f8 05 74 20 83 f8  .D$....t%...t ..\r\n006dfe60  04 74 1b 83 f8 02 74 16 83 f8 01 74 11 85 c0 74  .t....t....t...t\r\n006dfe70  0d 3b 81 c4 00 00 00 74 05 33 c0 c2 04 00 b8 01  .;.....t.3......\r\n006dfe80  00 00 00 c2 04 00  ......\r\n"
+      },
+      {
+        "cmd": "python tools/bsp.py ghidra bytes 006F5890 --length 54",
+        "chunk_id": "8fe73b",
+        "wall_time_seconds": 2.6815365,
+        "exit_code": 0,
+        "original_token_count": 67,
+        "output": "006f5890  8b 44 24 04 83 f8 1b 74 25 83 f8 05 74 20 83 f8  .D$....t%...t ..\r\n006f58a0  04 74 1b 83 f8 02 74 16 83 f8 01 74 11 85 c0 74  .t....t....t...t\r\n006f58b0  0d 3b 81 c4 00 00 00 74 05 33 c0 c2 04 00 b8 01  .;.....t.3......\r\n006f58c0  00 00 00 c2 04 00  ......\r\n"
+      },
+      {
+        "cmd": "python tools/bsp.py ghidra bytes 00D096D4 --length 4",
+        "chunk_id": "afedb3",
+        "wall_time_seconds": 2.6789365,
+        "exit_code": 0,
+        "original_token_count": 8,
+        "output": "00d096d4  50 fe 6d 00  P.m.\r\n"
+      },
+      {
+        "cmd": "python tools/bsp.py ghidra bytes 00CFF454 --length 4",
+        "chunk_id": "31e4b7",
+        "wall_time_seconds": 2.6441474,
+        "exit_code": 0,
+        "original_token_count": 8,
+        "output": "00cff454  90 58 6f 00  .Xo.\r\n"
+      },
+      {
+        "cmd": "python tools/bsp.py ghidra count",
+        "chunk_id": "6b1883",
+        "wall_time_seconds": 2.662608,
+        "exit_code": 0,
+        "original_token_count": 13,
+        "output": "live function count 64729; snapshot 64729; same\r\n"
+      }
+    ],
+    "listing_queries": [
+      {
+        "name": "ship_live",
+        "chunk_id": "ad4c32",
+        "wall_time_seconds": 2.2926526,
+        "exit_code": 0,
+        "original_token_count": 125,
+        "output": "006dfe50: MOV EAX,dword ptr [ESP + 0x4] \r\n006dfe54: CMP EAX,0x6 \r\n006dfe57: JZ 0x006dfe7e \r\n006dfe59: CMP EAX,0x5 \r\n006dfe5c: JZ 0x006dfe7e \r\n006dfe5e: CMP EAX,0x4 \r\n006dfe61: JZ 0x006dfe7e \r\n006dfe63: CMP EAX,0x2 \r\n006dfe66: JZ 0x006dfe7e \r\n006dfe68: CMP EAX,0x1 \r\n006dfe6b: JZ 0x006dfe7e \r\n006dfe6d: TEST EAX,EAX \r\n006dfe6f: JZ 0x006dfe7e \r\n006dfe71: CMP EAX,dword ptr [ECX + 0xc4] \r\n006dfe77: JZ 0x006dfe7e \r\n006dfe79: XOR EAX,EAX \r\n006dfe7b: RET 0x4 \r\n006dfe7e: MOV EAX,0x1 \r\n006dfe83: RET 0x4 \r\n"
+      },
+      {
+        "name": "fort_live",
+        "chunk_id": "003ac1",
+        "wall_time_seconds": 2.2329804,
+        "exit_code": 0,
+        "original_token_count": 126,
+        "output": "006f5890: MOV EAX,dword ptr [ESP + 0x4] \r\n006f5894: CMP EAX,0x1b \r\n006f5897: JZ 0x006f58be \r\n006f5899: CMP EAX,0x5 \r\n006f589c: JZ 0x006f58be \r\n006f589e: CMP EAX,0x4 \r\n006f58a1: JZ 0x006f58be \r\n006f58a3: CMP EAX,0x2 \r\n006f58a6: JZ 0x006f58be \r\n006f58a8: CMP EAX,0x1 \r\n006f58ab: JZ 0x006f58be \r\n006f58ad: TEST EAX,EAX \r\n006f58af: JZ 0x006f58be \r\n006f58b1: CMP EAX,dword ptr [ECX + 0xc4] \r\n006f58b7: JZ 0x006f58be \r\n006f58b9: XOR EAX,EAX \r\n006f58bb: RET 0x4 \r\n006f58be: MOV EAX,0x1 \r\n006f58c3: RET 0x4 \r\n"
+      }
+    ]
+  },
+  "Source_provider_review": {
+    "00711BE0": {
+      "public": "set_native_model_numbering_00711be0",
+      "header": "include/bsp/native_model_numbering.hpp:70",
+      "body": "src/native_model_numbering.cpp:286",
+      "lookup_status": "complete_supported_normal_caller_original_loop_and_real_d3d9_runtime_fixture_tested",
+      "complete_relevant_body_and_header_read": true,
+      "body_behavior": "Read model+160 holder, holder+0C node; invoke existing node-numbering Source with captured number and supplied services/operation.",
+      "Source_ABI": "New C++ interface adds NativeModelNumberingServices& and NativeModelNumberingOperation&; not raw ECX model/stack number RET4.",
+      "inherited_requirements": "Same actual string/renderer/layout/stream/atlas/type/storage domains, real node_virtual0c dispatch, operation failure rules and lifetimes. No runtime binding created here.",
+      "new_Native_body_or_runtime_review": false
+    },
+    "006DFE50": {
+      "public": "native_ship_base_is_kind_006dfe50",
+      "header": "include/bsp/native_ship_kind.hpp:20",
+      "body": "src/native_ship_kind.cpp:7",
+      "exact_selected_Source_body_read": true,
+      "finding": "Existing complete naked Win32 entry explicitly exposes unused EDX and RET4; header leaves native virtual routing/constructor/profile/lifetime domain unbound.",
+      "other_eight_Source_entries_not_revalidated": true
+    },
+    "pure_kind_table": {
+      "paths": [
+        "include/bsp/unit_kind_query.hpp",
+        "src/unit_kind_query.cpp"
+      ],
+      "finding": "unit_is_kind_of selects a fixed list using supplied class id; unit_kind_body_answers consumes a supplied dynamic id. Neither fetches current actual slot target nor itself reproduces a late actual R+C4 read.",
+      "all88_body_claim_not_promoted": true
+    },
+    "attachment_access": {
+      "paths": [
+        "include/bsp/native_unit_part_attachment.hpp",
+        "src/native_unit_part_attachment.cpp"
+      ],
+      "finding": "query_kind_5c is a required borrowed fastcall callback with owner, captured target and stack kind, returning uint8. Bounded search found declarations and calls but no concrete provider assignment/definition.",
+      "not_a_resolved_provider": true,
+      "not_reused_or_extended": true
+    },
+    "separate_current_file_pins": [
+      {
+        "path": "include/bsp/native_model_numbering.hpp",
+        "bytes": 3632,
+        "sha256": "a457c53466ea8a8786d56b1eec737647b65814f782b01275e90ae3c02ad18a8f",
+        "canonical_lf_sha256": "a457c53466ea8a8786d56b1eec737647b65814f782b01275e90ae3c02ad18a8f",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "src/native_model_numbering.cpp",
+        "bytes": 14621,
+        "sha256": "3da10ab4f8fed281561da49a71d343cca579eeae319794e22d8953fe020aef45",
+        "canonical_lf_sha256": "3da10ab4f8fed281561da49a71d343cca579eeae319794e22d8953fe020aef45",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_ship_kind.hpp",
+        "bytes": 2838,
+        "sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb",
+        "canonical_lf_sha256": "3aef746ec845ffd530680f31be7661b5eb442e946a8a719c73d00799a3edafcb",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "src/native_ship_kind.cpp",
+        "bytes": 6177,
+        "sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8",
+        "canonical_lf_sha256": "9d64de4a86fb1b549626c6995eb25d9b64659c50488425f252bf0443384c41c8",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/unit_kind_query.hpp",
+        "bytes": 8624,
+        "sha256": "e25daedfd0b6af8627426c4b3f0f3bd43f0e8e5ce147230f662ec76859f39b9c",
+        "canonical_lf_sha256": "e25daedfd0b6af8627426c4b3f0f3bd43f0e8e5ce147230f662ec76859f39b9c",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "src/unit_kind_query.cpp",
+        "bytes": 16876,
+        "sha256": "235beae3267d6a79aa2409453ac4042287426e7987768d5a2660d7c3cb503498",
+        "canonical_lf_sha256": "235beae3267d6a79aa2409453ac4042287426e7987768d5a2660d7c3cb503498",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "include/bsp/native_unit_part_attachment.hpp",
+        "bytes": 2461,
+        "sha256": "d4eeca9036fe265edcd4dbd6367bfc482d6d7f08c91be3e9362269f0d1ad2844",
+        "canonical_lf_sha256": "d4eeca9036fe265edcd4dbd6367bfc482d6d7f08c91be3e9362269f0d1ad2844",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "src/native_unit_part_attachment.cpp",
+        "bytes": 2759,
+        "sha256": "548ec8f157b43c58107880167199c9cd31648869134830e8338d9381ab7c938e",
+        "canonical_lf_sha256": "548ec8f157b43c58107880167199c9cd31648869134830e8338d9381ab7c938e",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "docs/UNIT_KIND_QUERY.md",
+        "bytes": 31214,
+        "sha256": "427295baddd36dd8dee9e89830798ed11045ec29fa405126b76386c6b55b3b30",
+        "canonical_lf_sha256": "427295baddd36dd8dee9e89830798ed11045ec29fa405126b76386c6b55b3b30",
+        "Root_worker_LF_equal": true
+      },
+      {
+        "path": "docs/NATIVE_SHIP_KIND_CC11.md",
+        "bytes": 7248,
+        "sha256": "b711da3f5962a9cfa7c8389111e6fb1a19e8c6ddff77de390d55492fe69ae5d8",
+        "canonical_lf_sha256": "b711da3f5962a9cfa7c8389111e6fb1a19e8c6ddff77de390d55492fe69ae5d8",
+        "Root_worker_LF_equal": true
+      }
+    ]
+  },
+  "Source113_context_replay": {
+    "frozen_receipt_pin": {
+      "path": "reports/cc12_native_tick_subnode_reparent_primary_review.json",
+      "bytes": 219046,
+      "sha256": "53aea370bc3be4b76512821a5967e47ace72629ee11d7d0f762ee36370441bf4",
+      "canonical_lf_sha256": "53aea370bc3be4b76512821a5967e47ace72629ee11d7d0f762ee36370441bf4"
+    },
+    "Root_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "recorded_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 97596,
+      "start_utc": "2026-10-09T19:35:55.717080+00:00",
+      "finish_utc": "2026-10-09T19:36:12.082131+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 113
+    },
+    "input_count": 113,
+    "all_Root_raw_inputs_match": true,
+    "all_worker_LF_inputs_match": true,
+    "worker_raw_mismatches_only_CRLF_normalization": [
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json"
+    ],
+    "frozen_input_pin_list_sha256": "ec6b48c68c5c92fb4f0d1ff1dbbc5701dd36f2bec28adc3c7a1087d4fdd0b2d7",
+    "artifact_checks": [
+      {
+        "expected": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73776562,
+          "sha256": "c36ae4b3ab2ef290446407c0973d1d4b88de4c0d0ed0766255b59ceaefa57c0c"
+        },
+        "actual": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73776562,
+          "sha256": "c36ae4b3ab2ef290446407c0973d1d4b88de4c0d0ed0766255b59ceaefa57c0c",
+          "canonical_lf_sha256": "8aac934809a923f10b91f3097228836a6784844c53459bb9dba1b0706ede6171"
+        },
+        "match": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "242eedcff8abbf7ae13a98e4bab4d19b55cc1db4a6aba6b7b05b98334a6a10f1"
+        },
+        "actual": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "242eedcff8abbf7ae13a98e4bab4d19b55cc1db4a6aba6b7b05b98334a6a10f1",
+          "canonical_lf_sha256": "75ee4e550e075a889d8c66da9b35a27cfe855f993fdb962e709870654bd1e20c"
+        },
+        "match": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "237ce1c39ad2e01dd301cfd37ff78fe46ac2ba8eb104fecba0ddff97c03615c4"
+        },
+        "actual": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "237ce1c39ad2e01dd301cfd37ff78fe46ac2ba8eb104fecba0ddff97c03615c4",
+          "canonical_lf_sha256": "d2083dead7993f9d37cf2ff25b537068ed462a93fc32eb965855ed6910182ebd"
+        },
+        "match": true
+      },
+      {
+        "expected": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "f3ecdc12fba4e2c6c32535e94f122248e66d2e5e38c59f556bafb86d2c950e8a"
+        },
+        "actual": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "f3ecdc12fba4e2c6c32535e94f122248e66d2e5e38c59f556bafb86d2c950e8a",
+          "canonical_lf_sha256": "41814b8e29ac0ba0001ba8c68a5f9474ac71f40936063eb782fdd64caf604b4a"
+        },
+        "match": true
+      }
+    ],
+    "existing_checks_recorded_passed": 3,
+    "whole_objects_recorded_captured_or_replayed": 33,
+    "positive_Core_roots_recorded": 37,
+    "worker_build_tests_probes_run": false,
+    "limit": "Current pins replayed. Compiled-object claims are inherited from pinned primary report, not freshly recaptured. Source113 input list excludes inspected numbering/kind/attachment providers; these have separate pins."
+  },
+  "decision": {
+    "Source_candidate_008761E0_admitted": false,
+    "Native_indirect_call_signature_universally_proved": false,
+    "proved": "Exact76-byte caller contract plus two exact advertised targets and cells. EAX overwrite/unused EDX are target-local facts.",
+    "held": "Actual production R, its current profile and reached +5C target are unbound. Query6/1B does not establish either profile. A guessed bool(__thiscall*) cast, pure table, cached class id, callback declaration or reinterpretation of numeric-address DATA cannot close the gate.",
+    "smallest_concrete_next_prerequisite": [
+      "Evidence and bind one actual admitted production receiver/profile path into008761E0, including genuine R+0,+C4,+35C,+360 storage and lifetime. Sole indexed caller0088FE30 is a future separately leased lead, not reviewed evidence.",
+      "For that exact admitted profile bind each freshly captured actual +5C target to its exact complete executable Source provider. Verify receiver, stacked query, AL result and cleanup. A proven D09678 profile may reuse006DFE50; query6 alone cannot establish D09678.",
+      "Bind current model and inherited00711BE0 service/operation domain for the same admitted path. Preserve the second fresh slot read and late model read in the future76-byte Source candidate."
+    ],
+    "conditional_extension": "If admitted target is006F5890, reconstruct/review its actual Source leaf first. Other profiles need their own providers only when admitted; no all88 demand or default mapping is implied.",
+    "independent_bounded_Source_leaf_prerequisite": {
+      "address": "006F5890",
+      "end_exclusive": "006F58C6",
+      "bytes": 54,
+      "operations": 19,
+      "status": "Ready for a separately leased actual Source leaf packet; not implemented here.",
+      "contract": "Exact direct leaf: ECX is same actual receiver; incoming EDX unused; one raw DWORD query at ESP+4; incoming EAX overwritten; fixed1B/5/4/2/1/0 tests, then one late actual DWORD+C4 compare; full EAX0/1; both exits RET4.",
+      "ordinary_domain": "Genuine stable aligned DWORD at actual receiver+C4 and readable backing through+C8 for fallback. Fixed matches skip the read; they do not establish constructor/profile/lifetime admission.",
+      "Source_shape": "A direct actual entry preserving this exact stack/register contract, analogous to existing ship-kind leaves. No callback, copied object id, inherited base substitution or dynamic classifier.",
+      "separate_unresolved_prerequisite": "Completing this leaf would not bind008761E0 production R, establish its profile, install a current-token dispatcher, or satisfy model-numbering service lifetime."
+    }
+  },
+  "credits": {
+    "Source_functions": 0,
+    "Source_Original_bytes": 0,
+    "build": 0,
+    "tests": 0,
+    "probes": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0
+  }
+}
