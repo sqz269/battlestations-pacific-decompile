@@ -1,0 +1,141 @@
+{
+  "schema": "bsp.cc12.world_entity_chain_drain_primary_review.v1",
+  "status": "source_review_and_normal_win32_build_passed",
+  "utc": "2026-10-09T03:46:42.586711+00:00",
+  "worker_commit": "15b9d6081",
+  "build_exit": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 22704,
+    "start_utc": "2026-10-09T03:45:36.442663+00:00",
+    "finish_utc": "2026-10-09T03:45:57.350600+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "before_source_fingerprints": {
+    "pins": [
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "1906f9bdea3207111e8515caea6aea9f9ff115f979b11b5b47438b57a7918396"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "include/bsp/native_world_entity_chain_drain.hpp",
+        "sha256": "7c0e39fdb69fb1ddcefb83b16a03e52821e7520461f2c1459e2a960d1165068c"
+      },
+      {
+        "path": "src/native_world_entity_chain_drain.cpp",
+        "sha256": "cdb95aa2c88aea1f494bb8330ce357ee50bf4228315d8c8c8cdc076d32c777bb"
+      },
+      {
+        "path": "include/bsp/native_world_chain_headers.hpp",
+        "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+      }
+    ]
+  },
+  "same_bounded_inputs_rechecked_and_retained_after_build": true,
+  "units": [
+    {
+      "source": "src/native_world_entity_chain_drain.cpp",
+      "object_sha256": "11e4d36afd8dbe12764e44e649ac3c59d09dc6999b8937b1e4d741e2d5df7beb",
+      "roots": [
+        {
+          "symbol": "?drain_native_world_entity_chain_009041a0@bsp@@YAXPAUNativeWorldChainHeader@1@AAUNativeGamePhysicsLifetimeCalls@1@@Z",
+          "bytes": 115,
+          "instructions": 46,
+          "calls": [
+            "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z"
+          ]
+        }
+      ],
+      "unique_whole_library_member": {
+        "name": "bsp_core.dir\\Release\\native_world_entity_chain_drain.obj",
+        "header_offset": 63741856,
+        "payload_file_offset": 63741916,
+        "bytes": 1869,
+        "sha256": "11e4d36afd8dbe12764e44e649ac3c59d09dc6999b8937b1e4d741e2d5df7beb"
+      },
+      "external_boundaries": [
+        "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z"
+      ]
+    },
+    {
+      "source": "src/native_game_physics_lifetime.cpp",
+      "object_sha256": "2c42f59acc81da04e78b311f7534a33e56674c6422dee40e0f15281f9e0f391c",
+      "roots": [
+        {
+          "symbol": "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z",
+          "bytes": 23,
+          "instructions": 10,
+          "calls": []
+        }
+      ],
+      "unique_whole_library_member": {
+        "name": "bsp_core.dir\\Release\\native_game_physics_lifetime.obj",
+        "header_offset": 59352496,
+        "payload_file_offset": 59352556,
+        "bytes": 24475,
+        "sha256": "2c42f59acc81da04e78b311f7534a33e56674c6422dee40e0f15281f9e0f391c"
+      },
+      "external_boundaries": []
+    }
+  ],
+  "core_library_sha256": "58fee94c3ad68d4046c328b6746ad26ba0aed682607755384c0ab11e47ff0299",
+  "native_replay": {
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span": {
+      "address": "009041A0",
+      "bytes": 100,
+      "instructions": 43,
+      "hex": "56578bf133ff397e087456eb038d49008b0e8b41343bc7750f3979387506837e08017f303bc774088b5138895038eb058b413889068b41383bc774088b5134895034eb068b4134894604897938897934834608ff8b118b026a01ffd0397e0875af5f5ec3",
+      "sha256": "c11521d998a283dcf66326d6fc80325835474ecca7a24637fa796f676d5aa73a",
+      "live_disk_equal": true
+    },
+    "disk_pin_replayed": true
+  },
+  "whole_emitted_instruction_review": {
+    "passed": true,
+    "drain": "115 bytes/46 instructions; signed JG, unlink/zero/decrement before direct qualified call, current header reload, no after-call entity read.",
+    "dispatcher": "23 bytes/10 instructions; actual current vptr plus byte slot, flags argument, thiscall entity ECX, ignored return, RET C for service explicit args.",
+    "qualification": "Compiler loads previous before testing reloaded next in reciprocal-link selection. Valid storage schedule only, not exact native order/fault behavior."
+  },
+  "application_root_absent_from_game_map": true,
+  "credit": {
+    "additional_original_functions": 0,
+    "actual_storage_fragment": 1,
+    "full_world": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "New ordinary C++ interface; explicit borrowed service changes ABI.",
+    "Actual callable current entity tables and qualified allocation/deletion lifetimes remain caller preconditions.",
+    "No exact instruction-order, concurrent mutation, invalid-storage fault or general Native FH3/SEH equivalence claim.",
+    "No new tests/probes, Native-entry execution, full World table or application binding."
+  ],
+  "existing_warning": "LNK4006 duplicate spawn_request_id_matches; unchanged warning."
+}

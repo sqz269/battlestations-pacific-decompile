@@ -1,0 +1,167 @@
+{
+  "schema": "bsp.cc12.world_entity_chain_drain_source.v1",
+  "packet": "cc12_world_entity_chain_drain_source",
+  "status": "BOUNDED_SOURCE_IMPLEMENTED_PRIMARY_REVIEW_REGISTRATION_BUILD_PENDING_ENTITY_OWNER_PROFILE_EXTERNAL",
+  "baseline_revision": "33c0a0518ff8dddedaa088bfef35d440b4a55aa7",
+  "observed_utc": "2026-10-09T03:39:13.659686+00:00",
+  "source": {
+    "signature": "void drain_native_world_entity_chain_009041a0(NativeWorldChainHeader* actual_header, NativeGamePhysicsLifetimeCalls& lifetime_calls)",
+    "header": "include/bsp/native_world_entity_chain_drain.hpp",
+    "implementation": "src/native_world_entity_chain_drain.cpp",
+    "new_bodies": 1,
+    "ordinary_cpp_interface": true,
+    "original_binary_abi": false,
+    "target": "MSVC Win32",
+    "noexcept": false,
+    "retained_header": "genuine live 12-byte NativeWorldChainHeader; first+0, last+4, DWORD count+8",
+    "existing_producer": "allocate_native_world_chain_headers_009037f0",
+    "entity_links": {
+      "previous": "34h",
+      "next": "38h"
+    },
+    "opaque_entity_access": "memcpy pointer object representations through unsigned-char storage; no invented typed entity reference",
+    "header_access": "volatile-qualified genuine header object; no synchronization or emitted-instruction-order claim",
+    "scalar_call": "lifetime_calls.NativeGamePhysicsLifetimeCalls::physics_virtual_scalar(entity, 0, 1)",
+    "base_service_explicitly_qualified": true,
+    "service_overrides_used": false,
+    "new_callback_facade": false
+  },
+  "native": {
+    "address": "009041A0",
+    "last_instruction": "00904203",
+    "abi": "ECX actual header; no stacked arguments; plain RET; ESI/EDI saved",
+    "byte_span": {
+      "address": "009041A0",
+      "bytes": 100,
+      "instructions": 43,
+      "hex": "56578bf133ff397e087456eb038d49008b0e8b41343bc7750f3979387506837e08017f303bc774088b5138895038eb058b413889068b41383bc774088b5134895034eb068b4134894604897938897934834608ff8b118b026a01ffd0397e0875af5f5ec3",
+      "sha256": "c11521d998a283dcf66326d6fc80325835474ecca7a24637fa796f676d5aa73a",
+      "live_disk_equal": true
+    },
+    "byte_pin_provenance": "Prior read-only contract packet; this Source packet independently reread the live instruction listing, not native bytes",
+    "inherited_binary_pin": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "unreachable_alignment_instruction": "009041AD LEA ECX,[ECX] occupies 3 bytes inside the 100-byte span",
+    "adapter_00904390_implemented_here": false
+  },
+  "preconditions": [
+    "Header is a genuine live writable NativeWorldChainHeader object, retained at the same address throughout all entity calls.",
+    "Header and call-service lifetimes extend beyond every scalar method and the entire drain.",
+    "Every accessed entity and neighbor supplies valid actual pointer representations at offsets 34h and 38h.",
+    "Each current entity has a genuine callable current primary-table slot0 accepting actual receiver with __thiscall flags1.",
+    "Each entity scalar lifetime is qualified for its construction allocation domain; real deletion may free the receiver and mutate retained-header fields.",
+    "Single-threaded valid-storage execution; no concurrent mutation or reliance on native invalid-storage fault behavior."
+  ],
+  "schedule": [
+    {
+      "sites": "009041A6..A9",
+      "effect": "Read retained header.count; zero returns without reading head or normalizing storage."
+    },
+    {
+      "sites": "009041B0..C2",
+      "effect": "Read current head and entity.previous; short-circuit previous!=null OR next!=null OR signed32(count)<=1."
+    },
+    {
+      "sites": "009041C8..D3",
+      "effect": "Read entity.next; write previous.next or retained header.first."
+    },
+    {
+      "sites": "009041D5..E7",
+      "effect": "Reload entity.next and entity.previous; write next.previous or retained header.last."
+    },
+    {
+      "sites": "009041EA..F0",
+      "effect": "Clear entity.next, clear entity.previous, then decrement header.count as unsigned DWORD."
+    },
+    {
+      "sites": "009041F4..FA",
+      "effect": "Qualified existing dispatcher reads actual current entity table/slot0 and invokes flags1; ignore result even if unlink skipped."
+    },
+    {
+      "sites": "009041FC..FF",
+      "effect": "Reload retained header.count; only if nonzero reload current head on next iteration; never read deleted entity."
+    }
+  ],
+  "lifetime_and_failure": {
+    "header_identity_retained": true,
+    "world_4_reloaded": false,
+    "header_or_world_freed": false,
+    "cached_next_across_scalar_call": false,
+    "post_scalar_entity_reads": false,
+    "iteration_limit": false,
+    "stalled_loop_exit": false,
+    "null_head_repair": false,
+    "catch_rollback_or_cleanup_owner": false,
+    "scalar_exception": "Propagates with previous unlink/count writes retained; no subsequent header count read by this body.",
+    "skipped_unlink": "Scalar call still occurs; continuation is determined solely by current retained header.count."
+  },
+  "verification": {
+    "live_listing_checked": true,
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "target_verified_by_cli_request": true,
+    "native_source_schedule_reviewed": true,
+    "json_parse_and_pin_check": "passed: six Source pins, contract report pin, inherited 100-byte native hash",
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "cmake_config_ledger_changes": 0,
+    "ghidra_mutations": 0,
+    "primary_review_registration_build": "integrator next"
+  },
+  "admission": {
+    "actual_storage_source_body_implemented": true,
+    "source_build_tested": false,
+    "fixture_tested": false,
+    "original_abi_compatible": false,
+    "production_entity_producer_table_lifetime_qualified": false,
+    "full_world_table_or_normal_destructor_ready": false,
+    "application_startup_or_gameplay_validated": false
+  },
+  "owned_files": [
+    "include/bsp/native_world_entity_chain_drain.hpp",
+    "src/native_world_entity_chain_drain.cpp",
+    "docs/CC12_WORLD_ENTITY_CHAIN_DRAIN_SOURCE.md",
+    "reports/cc12_world_entity_chain_drain_source.json"
+  ],
+  "contract_evidence_pin": {
+    "path": "reports/cc12_world_entity_chain_drain_contract.json",
+    "bytes": 9196,
+    "sha256": "a8ed6bd3d361d337624d4067580dd9349b0323d76b4f8c0b34b9e5155fc45dd8"
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_world_entity_chain_drain.hpp",
+      "bytes": 1531,
+      "sha256": "7c0e39fdb69fb1ddcefb83b16a03e52821e7520461f2c1459e2a960d1165068c"
+    },
+    {
+      "path": "src/native_world_entity_chain_drain.cpp",
+      "bytes": 3278,
+      "sha256": "cdb95aa2c88aea1f494bb8330ce357ee50bf4228315d8c8c8cdc076d32c777bb"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "src/native_world_chain_headers.cpp",
+      "bytes": 2305,
+      "sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383"
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "bytes": 6288,
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+    },
+    {
+      "path": "src/native_game_physics_lifetime.cpp",
+      "bytes": 13632,
+      "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+    }
+  ]
+}

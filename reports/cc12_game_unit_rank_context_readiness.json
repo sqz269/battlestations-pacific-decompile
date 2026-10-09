@@ -110,6 +110,18 @@
     "docs/NATIVE_GAME_TABLES_R114.md": "5183673f673087ec9fee0708be2ffba494042bd4de839d2b28dd8eb3297359c1",
     "reports/native_game_tables_r114.json": "0585ea3e92ae1e65563b6edf7908dd0b87c4bb6325dad8933c0f0f993991bce8",
     "docs/CC12_GAME_CONSTRUCTION_PROVIDER_REFRESH.md": "888239b3bf12a0c3bd53425f783b32c84fa0a427ca5c15624cbabcf7c47791e6",
-    "reports/cc12_game_construction_provider_refresh.json": "2479f8d2480da5d8b566e4ab5681b1f30d052ef531cbe25c33a3b3643ef62b08"
+    "reports/cc12_game_construction_provider_refresh.json": "6f341ac19dbd89a9b0d50fe4500f22970aced7b426a2748387e42661019e7ad2"
+  },
+  "primary_review": {
+    "passed": true,
+    "all_six_source_files_and_static_registration_dependency_match_base": true,
+    "existing_table_owner_body_independently_read": true,
+    "historical_report_pin_correction": {
+      "old_worker_pin": "2479f8d2480da5d8b566e4ab5681b1f30d052ef531cbe25c33a3b3643ef62b08",
+      "correct_source_base_and_current_pin": "6f341ac19dbd89a9b0d50fe4500f22970aced7b426a2748387e42661019e7ad2"
+    },
+    "CMakeLists_pin_scope": "Worker source-base pin retained; current CMake adds only the reviewed World drain registration.",
+    "native_abi_comparisons_rerun": false,
+    "new_build_or_test_for_read_only_audit": false
   }
 }
