@@ -1,3 +1,9 @@
+Primary compiled review: Root read all 54 emitted bytes / 19 operations and verified an exact byte-for-byte match to the complete Native body, both RET4 exits, every local branch and the unique physical public definition. There are zero indexed public edges, calls or new EH records.
+
+Combined MSVC Win32 build 2026-10-09T20:46:26.766022+00:00 to 2026-10-09T20:46:43.654990+00:00 passed all three existing checks. Both leaves total 113 bytes / 40 operations; all 35 previously reviewed objects remain byte-identical including code, EH and indexed relocations. The current receipt pins 121 inputs and four artifacts, with 37 whole objects and 41 selected positive Core definitions. The two roots are absent from the application map.
+
+Root corrected the candidate documentation and header to describe a raw naked x86 load, without imposing an extra aligned C++ DWORD-object lifetime restriction. Fixed matches need no receiver data backing; a reached fallback needs actual readable receiver+C4 storage. C++ implementation is unchanged. The worker Source117 snapshot and its original header/document pins below remain historical evidence. Original whole-call ABI, production receiver ownership/dispatch, startup and gameplay are unproved.
+
 # MLandFort kind query Source candidate
 
 `006F5890..006F58C5` is a complete 54-byte, 19-operation leaf. Its existing
@@ -36,8 +42,9 @@ intended body, and its emitted 54-byte size/encoding remains unverified until
 Root builds it. The Source result exposes the actual full DWORD 0 or 1.
 
 Fixed matches do not read receiver memory. On fallback, an ordinary caller
-supplies live actual receiver storage with a readable aligned DWORD at +C4,
-spanning at least C8, plus valid stack argument and return backing. No null
+supplies the actual receiver with readable four-byte backing at +C4,
+plus valid stack argument and return backing. The naked load retains Native
+x86 access/alignment behavior and adds no C++ typed-view lifetime requirement. No null
 test, eager id copy, field snapshot, class layout, global, dispatcher,
 callback, guard, owner, `noexcept` or consumer is introduced. ECX, EDX and
 nonvolatile registers are unchanged by the Native body. Raw fault, private

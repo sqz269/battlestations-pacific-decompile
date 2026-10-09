@@ -1,3 +1,9 @@
+Primary compiled review: Root read all 59 emitted bytes / 21 operations and verified an exact byte-for-byte match to the complete Native body, both RET4 exits, every local branch and the unique physical public definition. There are zero indexed public edges, calls or new EH records.
+
+Combined MSVC Win32 build 2026-10-09T20:46:26.766022+00:00 to 2026-10-09T20:46:43.654990+00:00 passed all three existing checks. Both leaves total 113 bytes / 40 operations; all 35 previously reviewed objects remain byte-identical including code, EH and indexed relocations. The current receipt pins 121 inputs and four artifacts, with 37 whole objects and 41 selected positive Core definitions. The two roots are absent from the application map.
+
+Root corrected the candidate documentation and header to describe a raw naked x86 load, without imposing an extra aligned C++ DWORD-object lifetime restriction. Fixed matches need no receiver data backing; a reached fallback needs actual readable receiver+C4 storage. C++ implementation is unchanged. The worker Source117 snapshot and its original header/document pins below remain historical evidence. Original whole-call ABI, production receiver ownership/dispatch, startup and gameplay are unproved.
+
 # MCommandBuilding kind predicate Source candidate
 
 The complete 006F58E0..006F591A predicate is reconstructed as one direct naked
@@ -46,12 +52,12 @@ third argument as the stacked uint32 query, and a naked body containing the
 complete original instruction sequence. A Win32 pointer-size assertion prevents
 accidentally admitting this entry as a 64-bit implementation.
 
-An ordinary caller supplies a stable nonnull actual receiver with readable
-backing through +C8 and a genuine aligned uint32_t at the actual +C4 offset.
-When constructing this borrowed view over raw storage, establish that DWORD's
-lifetime in place. A copied id passed through another object does not satisfy
-the actual-storage contract. Fixed paths do not read the receiver; that fact
-does not establish constructor/profile/ownership/lifetime admission.
+Fallback requires the actual receiver with readable four-byte backing at +C4.
+The naked load retains Native x86 access/alignment behavior; it introduces no
+C++ typed-view lifetime requirement or added check. A copied id passed through
+another object does not satisfy the actual-storage contract. Fixed paths need
+no receiver data backing and do not establish constructor/profile/ownership
+admission.
 
 The header and CPP were reviewed completely against all 21 original operations.
 There is no eager receiver read, null guard, wrapper, dispatcher or consumer.

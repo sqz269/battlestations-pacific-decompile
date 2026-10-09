@@ -13,8 +13,10 @@ namespace bsp {
 // stack placement; the Native body neither reads nor writes EDX.
 // Fixed matches 1Bh/5/4/2/1/0 precede the sole fresh DWORD[ECX+C4] read.
 // A fixed match needs no receiver data backing. Ordinary fallback callers
-// supply a live actual receiver with readable aligned DWORD+C4 (span>=C8),
-// plus valid argument/return backing. There is no added null or range check.
+// supply the actual receiver and readable four-byte backing at receiver+C4,
+// plus valid argument/return backing. The naked load retains Native x86
+// access/alignment behavior; it adds no C++ typed-view lifetime requirement
+// or null, alignment or range check.
 // No copied id, recovered class layout, ownership or lifetime is supplied.
 // This leaf does not bind 008761E0's receiver/profile/current target or
 // numbering services; query1Bh does not select a profile. No noexcept,
