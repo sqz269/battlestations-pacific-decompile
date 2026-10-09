@@ -1,0 +1,709 @@
+{
+  "schema": "cc12_type5_private_native_dependency_TEXT_peer_v1",
+  "Source_credit": 0,
+  "Root_author": null,
+  "Root_adoption_on_worker_authority": false,
+  "passed": true,
+  "blockers": [],
+  "fixed_files": 103,
+  "fixed_original_copy_bookends_equal": true,
+  "V7_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5isolatedFix02\\seal.json",
+    "size": 417765,
+    "sha256": "090b743b90bee3d2b0f02b853eba1b8634c071cd27e487bd9ffde09c6b905e2d"
+  },
+  "V7_exact_files": 2211,
+  "V7_all_artifacts_verified": true,
+  "payloads": [
+    {
+      "sha256": "34b29ff57f4440c24e576c3fb095b7fbead5af31666e12441c2e31dfd76be11b",
+      "basename": "recipe.py",
+      "size": 46053,
+      "byte_identical": true
+    },
+    {
+      "sha256": "40a616be33d0fb19d52abb8779a2c1a47785215e3b1b9a7f5952eae794388437",
+      "basename": "helpers.py",
+      "size": 19357,
+      "byte_identical": true
+    },
+    {
+      "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d",
+      "basename": "probe.cpp",
+      "size": 27488,
+      "byte_identical": true
+    },
+    {
+      "sha256": "d25d8b201e26a39949026c8b14f2cd7e989b7ddd625b022bbbe7236dc6cd5e5a",
+      "basename": "raw_formats.py",
+      "size": 17605,
+      "byte_identical": true
+    },
+    {
+      "sha256": "5e16629a6c6afcaec4130e20e7f8eebd4f86e1e74b28ca5b5a98ee96af4eb0c7",
+      "basename": "register_imports.py",
+      "size": 10763,
+      "byte_identical": true
+    },
+    {
+      "sha256": "382ea442210026172aa976139bff2bc23e9a748d98090f55ae639c8fbd96d0e4",
+      "basename": "caller_frames.py",
+      "size": 8387,
+      "byte_identical": true
+    },
+    {
+      "sha256": "dfe90b2fdf2d610f1bc50a8b1ff3be826172aea93eef1a3da8987a7b62faaec5",
+      "basename": "code_gate.py",
+      "size": 32552,
+      "byte_identical": true
+    },
+    {
+      "sha256": "a5e635532e63bdc977af08b872f0d0d4608b512f6879e3806d96ab8f447c17ed",
+      "basename": "observations.py",
+      "size": 19910,
+      "byte_identical": true
+    },
+    {
+      "sha256": "3137a43e826448df61d7e2545ba6b190c23f11ecc1187281a435f3375ce66b8f",
+      "basename": "protocol_review.py",
+      "size": 11427,
+      "byte_identical": true
+    },
+    {
+      "sha256": "62cf9a8e23870173dc2713a79d7a0936bc259b56246e93dfd79790c5cbcd8e70",
+      "basename": "guarded_tool_entry.py",
+      "size": 4689,
+      "byte_identical": true
+    },
+    {
+      "sha256": "a2d99608b211bfb0bdae68ac0872a0c64a0832761f6cf1e84de286e98987271d",
+      "basename": "complete_guard.py",
+      "size": 15616,
+      "byte_identical": true
+    },
+    {
+      "sha256": "18a612eb24f7b2172d4a5e2c9410b10b704cfbd17afb87a362f4eb1146a8ee84",
+      "basename": "external_dispatch.ps1",
+      "size": 21128,
+      "byte_identical": true
+    }
+  ],
+  "materializer_byte_identical": true,
+  "profiles": [
+    {
+      "keys": 14,
+      "changed_keys": [
+        "BSP_EXPORTS_DIR",
+        "TEMP",
+        "TMP"
+      ],
+      "all_other_keys_values_preserved": true,
+      "Git_fallback_bypassed": true,
+      "role": "external"
+    },
+    {
+      "keys": 14,
+      "changed_keys": [
+        "BSP_EXPORTS_DIR",
+        "TEMP",
+        "TMP"
+      ],
+      "all_other_keys_values_preserved": true,
+      "Git_fallback_bypassed": true,
+      "role": "base"
+    },
+    {
+      "keys": 16,
+      "changed_keys": [
+        "BSP_EXPORTS_DIR",
+        "TEMP",
+        "TMP"
+      ],
+      "all_other_keys_values_preserved": true,
+      "Git_fallback_bypassed": true,
+      "role": "root"
+    },
+    {
+      "keys": 16,
+      "changed_keys": [
+        "BSP_EXPORTS_DIR",
+        "TEMP",
+        "TMP"
+      ],
+      "all_other_keys_values_preserved": true,
+      "Git_fallback_bypassed": true,
+      "role": "effective_child"
+    }
+  ],
+  "environment_pair_and_derived_maps_equal": true,
+  "scopes": [
+    {
+      "equal": true,
+      "members": 41,
+      "category": "guard41"
+    },
+    {
+      "equal": true,
+      "members": 53,
+      "category": "reader53"
+    },
+    {
+      "equal": true,
+      "members": 53,
+      "category": "schema53"
+    },
+    {
+      "equal": true,
+      "members": 27,
+      "category": "cases"
+    },
+    {
+      "equal": true,
+      "members": 14,
+      "category": "Main_selected"
+    },
+    {
+      "equal": true,
+      "members": 2024,
+      "category": "Main_include"
+    },
+    {
+      "equal": true,
+      "members": 46,
+      "category": "Main_tools_all_py"
+    },
+    {
+      "equal": true,
+      "members": 95,
+      "category": "capstone_package"
+    },
+    {
+      "equal": true,
+      "members": 2,
+      "category": "pefile_module"
+    },
+    {
+      "equal": true,
+      "members": 8,
+      "category": "ordinal_lookup_package"
+    },
+    {
+      "equal": true,
+      "members": 7,
+      "category": "distribution_capstone-5.0.7.dist-info"
+    },
+    {
+      "equal": true,
+      "members": 7,
+      "category": "distribution_pefile-2024.8.26.dist-info"
+    },
+    {
+      "equal": true,
+      "members": 1452,
+      "category": "python_stdlib"
+    },
+    {
+      "equal": true,
+      "members": 34,
+      "category": "python_DLLs"
+    },
+    {
+      "equal": true,
+      "members": 62,
+      "category": "python_root"
+    },
+    {
+      "equal": true,
+      "members": 91,
+      "category": "python_companion_DLLs"
+    },
+    {
+      "equal": true,
+      "members": 4,
+      "category": "startup_0__distutils_hack"
+    },
+    {
+      "equal": true,
+      "members": 66,
+      "category": "startup_1_win32_lib"
+    },
+    {
+      "equal": true,
+      "members": 2,
+      "category": "startup_1_pywin32_system32"
+    },
+    {
+      "equal": true,
+      "members": 213,
+      "category": "startup_1_Pythonwin"
+    },
+    {
+      "equal": true,
+      "members": 5,
+      "category": "python_startup"
+    },
+    {
+      "equal": true,
+      "members": 71,
+      "category": "MSVC_hostx64_x86"
+    },
+    {
+      "equal": true,
+      "members": 353,
+      "category": "MSVC_include"
+    },
+    {
+      "equal": true,
+      "members": 79,
+      "category": "MSVC_libraries_x86"
+    },
+    {
+      "equal": true,
+      "members": 66,
+      "category": "SDK_include_ucrt"
+    },
+    {
+      "equal": true,
+      "members": 303,
+      "category": "SDK_include_shared"
+    },
+    {
+      "equal": true,
+      "members": 2189,
+      "category": "SDK_include_um"
+    },
+    {
+      "equal": true,
+      "members": 839,
+      "category": "SDK_include_winrt"
+    },
+    {
+      "equal": true,
+      "members": 1374,
+      "category": "SDK_include_cppwinrt"
+    },
+    {
+      "equal": true,
+      "members": 8,
+      "category": "SDK_libraries_ucrt_x86"
+    },
+    {
+      "equal": true,
+      "members": 453,
+      "category": "SDK_libraries_um_x86"
+    },
+    {
+      "equal": true,
+      "members": 156,
+      "category": "SDK_tools_x86"
+    },
+    {
+      "equal": true,
+      "members": 9,
+      "category": "old_dependency_TEXT_subset"
+    },
+    {
+      "equal": true,
+      "members": 8,
+      "category": "Main_additional_context"
+    },
+    {
+      "equal": true,
+      "members": 4,
+      "category": "Main_tools_all_pyc"
+    },
+    {
+      "equal": true,
+      "members": 74,
+      "category": "MSVC_literal_full_bin"
+    },
+    {
+      "equal": true,
+      "members": 231,
+      "category": "SDK_literal_full_bin"
+    },
+    {
+      "equal": true,
+      "members": 148,
+      "category": "MSVC_literal_recursive_libraries"
+    },
+    {
+      "equal": true,
+      "members": 8,
+      "category": "SDK_literal_recursive_libraries_ucrt"
+    },
+    {
+      "equal": true,
+      "members": 481,
+      "category": "SDK_literal_recursive_libraries_um"
+    },
+    {
+      "equal": true,
+      "members": 1504,
+      "category": "Root_python_literal_stdlib"
+    },
+    {
+      "equal": true,
+      "members": 36,
+      "category": "Root_python_literal_DLLs"
+    },
+    {
+      "equal": true,
+      "members": 1104,
+      "category": "Root_powershell_runtime"
+    },
+    {
+      "equal": true,
+      "members": 130,
+      "category": "Root_running_PS_native"
+    },
+    {
+      "equal": true,
+      "members": 19,
+      "category": "Root_selected_v2"
+    },
+    {
+      "equal": true,
+      "members": 130,
+      "category": "Root_qualified_duplicate_provider"
+    },
+    {
+      "equal": true,
+      "members": 272,
+      "category": "Root_reference_readiness"
+    },
+    {
+      "equal": true,
+      "members": 17,
+      "category": "Root_reviewed_V4"
+    },
+    {
+      "equal": true,
+      "members": 126,
+      "category": "Root_current_PS_native"
+    },
+    {
+      "equal": true,
+      "members": 2,
+      "category": "Root_user_PowerShell_modules"
+    },
+    {
+      "equal": true,
+      "members": 12,
+      "category": "Root_guard_V8_TEXT"
+    },
+    {
+      "equal": true,
+      "members": 1,
+      "category": "Root_native_snapshot_DATA"
+    },
+    {
+      "equal": true,
+      "members": 0,
+      "category": "Isolated_optional_index_absence"
+    }
+  ],
+  "old_51_scope_predicates_preserved": true,
+  "new_scopes": 2,
+  "inventory": {
+    "unexpected_Main_current_members": 0,
+    "Main_historical_members": 147,
+    "memberships": 14513,
+    "isolated_tools": 46,
+    "original_and_frozen_files_hashed": 24104,
+    "scopes": 53,
+    "all_match": true,
+    "files": 12052,
+    "isolated_current_config_selected": true
+  },
+  "snapshot": {
+    "selected_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5select04\\frozen_native_exports\\snapshot.json",
+      "size": 321,
+      "sha256": "5ea48b1bedbf37dcb69b562260e55dd12b70fa5315cf070b0e457dde3d0e82f3"
+    },
+    "historical_origin_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\snapshot.json",
+      "size": 321,
+      "sha256": "5ea48b1bedbf37dcb69b562260e55dd12b70fa5315cf070b0e457dde3d0e82f3"
+    },
+    "origin_is_DATA_only": true,
+    "Main_origin_live_read_by_worker": false,
+    "Main_origin_not_selected": true,
+    "scope_members": 1,
+    "current_frozen_content_matches": true
+  },
+  "optional_index": {
+    "nonrecursive_sqlite_membership_guard": true,
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\bsp_index.sqlite",
+    "absent": true,
+    "scope_members": 0
+  },
+  "Root_profile_inspectors": [
+    {
+      "requested_actual_selected_equal": true,
+      "keys": 14,
+      "role": "external_host",
+      "Root_exit": 0,
+      "Root_closed": true,
+      "worker_replayed": false
+    },
+    {
+      "requested_actual_selected_equal": true,
+      "keys": 16,
+      "role": "root_python",
+      "Root_exit": 0,
+      "Root_closed": true,
+      "worker_replayed": false
+    },
+    {
+      "requested_actual_selected_equal": true,
+      "keys": 16,
+      "role": "effective_python",
+      "Root_exit": 0,
+      "Root_closed": true,
+      "worker_replayed": false
+    }
+  ],
+  "Root_text_review": {
+    "exit_code": 0,
+    "timed_out": false,
+    "worker_replayed": false,
+    "closed": true,
+    "before_after_records_equal": true
+  },
+  "worker_full_runtime_closure_claimed": false,
+  "selected_payloads_imported": 0,
+  "selected_functions_executed": 0,
+  "Native_queries": 0,
+  "compiler_execution": 0,
+  "provider_execution": 0,
+  "probe_execution": 0,
+  "original_PE_execution": 0,
+  "target_execution": 0,
+  "initial_state": {
+    "UTC": "2026-10-09T08:19:49.835156Z",
+    "future_family_exists": true,
+    "optional_index_exists": false
+  },
+  "final_observation": {
+    "optional_index_exists": false,
+    "future_family_exists": true,
+    "UTC": "2026-10-09T08:20:02.7570984Z"
+  },
+  "limitations": [
+    "Passive selected-source and fixed-DATA review only; no Native-route runtime or process-tree closure proof",
+    "Root own inspector closures remain Root evidence; materialization and admission are separate",
+    "Membership bookends do not prove race-free absence between observations"
+  ],
+  "selected_source_route_trace": {
+    "Source_credit": 0,
+    "kind": "manual_selected_source_control_flow_review",
+    "selected_payloads_executed": 0,
+    "scope": "four exact guarded BSP Native routes under selected complete ENV maps",
+    "guarded_entry": {
+      "selected_BSP_bytes_checked_before_exec": true,
+      "lines": [
+        41,
+        42,
+        44,
+        45,
+        46,
+        47
+      ],
+      "file": "tool route candidate guarded_tool_entry.py",
+      "exact_routes": [
+        "ghidra count",
+        "ghidra proto 008EF2B0 --lines 64",
+        "ghidra bytes 008EF2B0 --length 63",
+        "ghidra disasm 008EF2B0 --lines 64"
+      ]
+    },
+    "root_config": {
+      "lines": [
+        37,
+        675,
+        677
+      ],
+      "config": "isolated config/target.json",
+      "root_origin": "ledger.py:17 derives the isolated module parent",
+      "config_program_path": "/battlestationspacific.exe",
+      "config_project": "bsp",
+      "file": "bsp.py",
+      "actual_Ghidra_query_performed": false,
+      "config_program": "battlestationspacific.exe"
+    },
+    "exports": {
+      "actual_override_present_all_four_roles": true,
+      "lines": [
+        39,
+        29,
+        30,
+        31,
+        33
+      ],
+      "Git_fallback_reachable_with_selected_maps": false,
+      "historical_Main_snapshot_origin_not_live_dependency": true,
+      "files": [
+        "bsp.py",
+        "workspace.py"
+      ],
+      "actual_override_selects_Root_private_snapshot_directory": true
+    },
+    "optional_index": {
+      "lines": [
+        38,
+        280,
+        281,
+        285,
+        767
+      ],
+      "file": "bsp.py",
+      "selected_empty_nonrecursive_sqlite_scope": true,
+      "query_error_disasm_path_uses_no_DB_when_absent": true,
+      "all_four_routes_call_connect_required_false": true,
+      "actual_index_absent": true
+    },
+    "routes": [
+      {
+        "extra_Git_or_Main_input": false,
+        "name": "count",
+        "inputs": [
+          "selected private snapshot.json",
+          "verified Ghidra get_function_count response"
+        ],
+        "lines": [
+          768,
+          769,
+          770,
+          771,
+          772
+        ],
+        "file": "bsp.py"
+      },
+      {
+        "extra_Git_or_Main_input": false,
+        "name": "proto",
+        "inputs": [
+          "verified Ghidra get_function_by_address response",
+          "get_function_signature response"
+        ],
+        "lines": [
+          773,
+          776,
+          784,
+          786
+        ],
+        "file": "bsp.py"
+      },
+      {
+        "extra_Git_or_Main_input": false,
+        "name": "bytes",
+        "inputs": [
+          "verified Ghidra read_memory response"
+        ],
+        "lines": [
+          837,
+          839,
+          840,
+          841,
+          842,
+          843,
+          844
+        ],
+        "file": "bsp.py"
+      },
+      {
+        "extra_Git_or_Main_input": false,
+        "name": "disasm",
+        "inputs": [
+          "verified Ghidra disassemble_function response"
+        ],
+        "lines": [
+          845,
+          847,
+          849,
+          851,
+          854,
+          872
+        ],
+        "file": "bsp.py"
+      }
+    ],
+    "client": {
+      "loopback_HTTP_only": true,
+      "no_snapshot_export_or_PE_summary_call_on_four_routes": true,
+      "lines": [
+        72,
+        75,
+        76,
+        80,
+        81,
+        82,
+        102,
+        103,
+        104,
+        106,
+        108
+      ],
+      "file": "ghidra_export.py",
+      "verifies_project_program_path_language_image_base": true
+    },
+    "disabled_autostart": {
+      "all_selected_maps_BSP_GHIDRA_AUTOSTART_zero": true,
+      "short_circuit_before_probe_ensure_or_Git": true,
+      "lines": [
+        680,
+        681,
+        682,
+        684
+      ],
+      "file": "bsp.py",
+      "error_path_may_import_selected_ghidra_launch": true
+    },
+    "other_Git_helpers": {
+      "files": [
+        "branch_sync.py",
+        "coordination.py"
+      ],
+      "status": "defined but not reached by the four guarded ghidra routes",
+      "bsp_main_selected_dispatch_lines": [
+        1249,
+        1278,
+        1279,
+        1280,
+        1283,
+        1284
+      ]
+    },
+    "output_budget": {
+      "potential_output": "isolated local/output only",
+      "new_Main_input_or_Git_call": false,
+      "lines": [
+        45,
+        71,
+        72,
+        73,
+        74
+      ],
+      "file": "bsp.py"
+    },
+    "conclusion": "No additional unguarded Main file read or implicit Git call found on the four selected routes under the captured maps.",
+    "limitations": "Static control-flow evidence only; no live Native-route or platform/process-tree proof"
+  },
+  "preliminary_filesystem_observation": {
+    "UTC": "2026-10-09T08:15:55.7702643Z",
+    "future_family_exists": false,
+    "optional_index_exists": false,
+    "kind": "read_only_initial_tool_observation_before_fixed_capture"
+  },
+  "own_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5nativePeer08\\seal.json",
+    "size": 19545,
+    "sha256": "1dc7a393d2f026cd593714e3bb4198b41f1d64f9820bcdc649779b9a1a402196",
+    "artifacts": 108,
+    "exact_recursive_files": 109,
+    "verified_after_write": true
+  },
+  "evidence_limits": "Focused source/data admission peer only. Actual Root materialization is separate. Root own inspector evidence is not worker Native/runtime proof."
+}
