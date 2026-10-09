@@ -1,0 +1,231 @@
+{
+  "schema": 1,
+  "packet": "cc12_tick_subnode_reparent_unwind_contract_readiness",
+  "status": "readonly_complete_Native_descriptor_to_action_to_guard_edge_established_Runtime_execution_unproved",
+  "created_utc": "2026-10-09T14:06:04.373633+00:00",
+  "baseline": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "every_live_query_bsp_verified": true,
+    "metadata": "00c964e0 Unwind@00c964e0  undefined Unwind@00c964e0(void)  body 00c964e0 - 00c964e7\n00c964e8 ?  ?  body ?\n00bf6b43 FID_conflict:___CxxFrameHandler3  undefined FID_conflict:___CxxFrameHandler3(void)  body 00bf6b43 - 00bf6b78\n",
+    "count": "live function count 64729; snapshot 64729; same\n"
+  },
+  "Original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "scope": {
+    "code_diagnostic": "00C964E0..00C964F7,24B =8B action+10B handler+6CC diagnostic padding",
+    "data": "00DC8644..00DC866F,44B =8B record+36B descriptor",
+    "Native_frame_handler_and_guard_bodies_read": false,
+    "Native_parent_body_reread": false,
+    "Original_handler_function_creation_or_listing_repair": false
+  },
+  "whole_code": {
+    "hex": "8d4dece9f8b977ffb84c86dc00e95106f6ffcccccccccccc",
+    "sha256": "f1b10135d3e0af4a52d06ee849aac44445b26d3065b787aac583eea28b9887e1",
+    "bytes": 24,
+    "instructions": [
+      {
+        "address": "00C964E0",
+        "hex": "8d4dec",
+        "mnemonic": "lea",
+        "operands": "ecx, [ebp - 0x14]"
+      },
+      {
+        "address": "00C964E3",
+        "hex": "e9f8b977ff",
+        "mnemonic": "jmp",
+        "operands": "0x411ee0"
+      },
+      {
+        "address": "00C964E8",
+        "hex": "b84c86dc00",
+        "mnemonic": "mov",
+        "operands": "eax, 0xdc864c"
+      },
+      {
+        "address": "00C964ED",
+        "hex": "e95106f6ff",
+        "mnemonic": "jmp",
+        "operands": "0xbf6b43"
+      }
+    ],
+    "padding_hex": "cccccccccccc",
+    "GPR_PE_equal": true
+  },
+  "whole_data": {
+    "hex": "ffffffffe064c90022059319010000004486dc00000000000000000000000000000000000000000001000000",
+    "sha256": "35bd91e777bf30d8d9bc7b206b0aba9c3ba546fd09e320c88228bc796888a363",
+    "bytes": 44,
+    "GPR_PE_equal": true
+  },
+  "descriptor": {
+    "address": "00DC864C",
+    "bytes": 36,
+    "DWORD_words": [
+      429065506,
+      1,
+      14452292,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "magic": "19930522",
+    "maxState": 1,
+    "unwindMap": "00DC8644",
+    "nTryBlocks": 0,
+    "pTryBlockMap": 0,
+    "nIPMapEntries": 0,
+    "pIPtoStateMap": 0,
+    "pESTypeList": 0,
+    "EHFlags": 1,
+    "layout_qualification": "Raw words match installed x86 absolute FuncInfo fields; actual Native interpreter body and state-dispatch/failure policy are uninspected."
+  },
+  "one_record": {
+    "address": "00DC8644",
+    "bytes": 8,
+    "toState": -1,
+    "action": "00C964E0",
+    "layout_qualification": "Raw eight bytes match installed x86 absolute UnwindMapEntry layout; not observed action invocation."
+  },
+  "action_edge": {
+    "entry": "00C964E0",
+    "bytes": 8,
+    "receiver": "ECX=EBP-14h, using actual runtime-provided EBP",
+    "target": "00411EE0",
+    "tail_jump": true,
+    "pushed_stack_arguments": 0,
+    "local_EH": false,
+    "prior_EAX_EDX_untouched": true,
+    "arithmetic_flags_unchanged_by_owned_LEA_JMP": true
+  },
+  "parent_guard_location": {
+    "accepted_parent": "00876020..00876112,243B80ops; not reread",
+    "registration": "S-0Ch three DWORD priorFS/handler/state",
+    "guard": "S-14h eight bytes, profileCE37FC atS-14h and capturedsection atS-10h",
+    "state_zero_timing": "After getter/optionalEnter/depth and lateNode read plus oldParent load/TEST; state remains0 through normal release and FS restoration.",
+    "current_x86_convention_comparison": "Installed ehdata.h EHRegistrationNode has three32-bit fields/FRAME_OFFSET=size12; its PRN_FRAME and trnsctrl targetEBP convention give registration+12=S. Under that convention action EBP-14 targets the accepted guard.",
+    "Native_runtime_qualification": "This computes the matching frame coordinate but does not prove the unopened Original FrameHandler body or OS exception dispatch supplies that EBP or invokes the action."
+  },
+  "known_current_Source_guard": {
+    "function": "destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard)",
+    "file": "src/native_diagnostic_sink_lifetime.cpp",
+    "contract": "Capture actualguard+4 section before rawCE37FC profile write; nonnull section decrements currentDWORD+18 and LeaveCriticalSection(captured); no clear/sectionreload or noexcept declaration.",
+    "normal_path_distinction": "Accepted reparent normal path uses capturedEBX directly; unwind action targets storedguard. A Source RAII destructor automatically used on normal return would not preserve this distinction for guard aliases.",
+    "prior_native_fixture_or_Original_ABI_claims_replayed": false
+  },
+  "remaining": [
+    "Actual Original frame-handler state dispatch, register setup and failure/exception policy",
+    "Current Source adaptation preserving active-state timing, captured normal release versus actualstoredguard unwind",
+    "Actual node/profile/producer bindings and production startup/gameplay"
+  ],
+  "repository_input_pins": [
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "revision": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "canonical_lf_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "revision": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "revision": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_subnode_reparent_caller_ABI_readiness.json",
+      "bytes": 54026,
+      "sha256": "e30c66838a4a2ceda6376c94cb80e36c6438b66b806dad5937a194618e1d0966",
+      "canonical_lf_sha256": "e30c66838a4a2ceda6376c94cb80e36c6438b66b806dad5937a194618e1d0966",
+      "revision": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_SUBNODE_REPARENT_CALLER_ABI_READINESS.md",
+      "bytes": 9969,
+      "sha256": "065dbf056515258b6f457fef62d222cfcec7722b88bc3a9331e0d23369aa1f57",
+      "canonical_lf_sha256": "065dbf056515258b6f457fef62d222cfcec7722b88bc3a9331e0d23369aa1f57",
+      "revision": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "revision": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "revision": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1"
+    }
+  ],
+  "installed_compiler_Source_pins": [
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+      "bytes": 21203,
+      "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+      "role": "Current installed MSVC Source layout/convention comparison only; not Original compiler/runtime provenance."
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\crt\\src\\i386\\trnsctrl.cpp",
+      "bytes": 29655,
+      "sha256": "97eaba1752f55305b719b6f4743d50673d0f7ba1efa9df8a87a26492d4e870d8",
+      "role": "Current installed MSVC Source layout/convention comparison only; not Original compiler/runtime provenance."
+    }
+  ],
+  "capture_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reparent_unwind_primary\\action_handler_diagnostic.txt",
+      "bytes": 122,
+      "sha256": "27e8aabe11757265bf0460c9bb1ff247f92b197de42541b7243e79b8b8cee44f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reparent_unwind_primary\\count.txt",
+      "bytes": 49,
+      "sha256": "64f4f9be166172342d092bf0cd71435b6499bdc159a7f8a34c738d7db792a246"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reparent_unwind_primary\\descriptor_and_record.txt",
+      "bytes": 215,
+      "sha256": "a8678809b89213cc229c5fd978b6b1c70ea59e53ffa7918d5933fc2b9648d235"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_reparent_unwind_primary\\metadata.txt",
+      "bytes": 227,
+      "sha256": "0785b8f9a3be8e64e99eba9d0f4ac7f9419410d3522c207518cbc3479c5e40b9"
+    }
+  ],
+  "credit": {
+    "Source_functions": 0,
+    "Source_bytes": 0,
+    "Original_ABI": 0,
+    "startup_execution": 0,
+    "gameplay": 0,
+    "Ghidra_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0
+  },
+  "document_pin": {
+    "path": "docs/CC12_TICK_SUBNODE_REPARENT_UNWIND_CONTRACT_READINESS.md",
+    "bytes": 4073,
+    "sha256": "8665788c4d1967d2bf82229166a2ef408b9a0bd5d6e005b164f086ba5f41e95c"
+  }
+}
