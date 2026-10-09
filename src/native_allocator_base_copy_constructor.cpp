@@ -4,6 +4,9 @@
 #include <cstdlib>
 #include <cstring>
 
+// Inline assembly needs the callable CRT symbol rather than the intrinsic.
+#pragma function(strlen)
+
 namespace bsp {
 
 static_assert(sizeof(void*) == 4);

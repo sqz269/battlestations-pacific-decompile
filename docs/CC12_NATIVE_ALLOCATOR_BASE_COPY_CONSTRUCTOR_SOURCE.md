@@ -142,3 +142,7 @@ ad hoc compiler probe or new test. After registration, the primary must run
 the normal build and inspect the whole emitted adapter, real CRT bindings,
 Core definition and actual legacy-owner call. Admission remains pending;
 the earlier 24-byte and 25-byte constructors are not counted again.
+
+## Primary registered build and compiled review
+
+Primary resolved MSVC strlen intrinsic operand rejection using #pragma function(strlen), leaving all38 asm operations unchanged. Registerednormalbuild at11:06:47Z through11:07:05Z passed all3 existingchecks. Entire90B adapter retains Original88B instruction/branch schedule with actualCRTcall forms: REL32_strlen and FF15malloc/strcpy_s. Physicalfinalmap/PE confirms actualCRTimports and6Bstrlen thunk. Whole132B actualtypedconsumer and18B privatewrapper resolve to uniqueCoreprovider; minimallegacySource diff verified. Adapter selectedgame map, not executionproof. Sourceadmission may credit1function/88 Originalbytes; prior24/25B notrecounted and NativeABI/gameplay zero.

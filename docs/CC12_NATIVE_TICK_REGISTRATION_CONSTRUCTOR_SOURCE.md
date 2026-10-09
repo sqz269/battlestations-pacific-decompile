@@ -137,3 +137,7 @@ evidence-pin and staged whitespace/four-file checks passed. The primary agent
 must register and compile the candidate, review the entire emitted body and
 actual provider bindings, verify Core resolution, and run the normal existing
 checks before Source admission. This worker ran no build, test or probe.
+
+## Primary registered build and compiled review
+
+Primary registeredbuild at11:06:47Z through11:07:05Z passed all3 existing configuredchecks. Whole152B/52ins constructor, actualunchanged250B getter/140B EH and physicalCore definitions were reviewed. Actualtail+4 identity/two currentreads and late timerword value read remain preserved. No localEH/extrahelpers or productionactivation; root absentgame map. Sourceadmission may credit1function/139 Originalbytes, with ABI/gameplay zero.
