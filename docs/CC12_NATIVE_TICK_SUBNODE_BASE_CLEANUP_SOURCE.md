@@ -1,5 +1,15 @@
 # Tick subnode base cleanup: Source candidate
 
+Current Source is registered and build-tested. The complete owned Native84/30 schedule maps to an emitted97-byte /33-operation borrower with explicit publication references and RET8. Original ABI, production binding and execution remain unproved.
+
+## Integrator compiled review
+
+Root independently replayed the candidate pins, all thirty Native positions, all thirty-three Source operations and the five normal stack paths, then reviewed the complete emitted object and its indexed relocation graph. The normal MSVC Win32 build passed all three existing checks. Four relocations select the admitted getter and unlink leaf plus Win32 Enter/Leave; the new root has one actual Core definition and is absent from the application map. All eleven prior whole objects remain byte-identical, including all twenty Legacy code/relocation bodies and eight EH payload/relocation contracts. No probe, new test, storage, consumer, forced retention or facade binding was added. The immutable worker report below records its unregistered candidate stage; current admission is recorded in the primary report.
+
+Current evidence: `reports/cc12_native_tick_subnode_base_cleanup_primary_review.json`.
+
+## Worker candidate snapshot
+
 This unregistered MSVC Win32 borrower translates the complete owned
 `00875B30..00875B83` schedule. It preserves the comparison before the profile
 write, the parent capture before the getter/lock, and the section test before
