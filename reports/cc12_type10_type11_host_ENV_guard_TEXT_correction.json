@@ -1,0 +1,532 @@
+{
+  "schema": "cc12_type1011_host_ENV_complete_guard_TEXT_correction_v1",
+  "Source_credit": 0,
+  "result": "PASS_UNADOPTED_TYPE1011_HOST_ENV_MAPPED_PATH_TEXT_CORRECTION",
+  "packet": "cc12_type1011_host_ENV_complete_guard_TEXT_correction",
+  "author": "/root/command_target_initialize",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT",
+  "owned_addresses": [],
+  "own_evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT",
+  "own_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\seal.json",
+    "bytes": 2616714,
+    "sha256": "843709f896d31e6a9213464ce8c34b710413d8c07dfca90e896bcd094b607b8f"
+  },
+  "listed_artifacts": 13047,
+  "exact_recursive_files": 13048,
+  "final_review_inputs": {
+    "Source_credit": 0,
+    "kind": "Exact final peer-review inputs only",
+    "final_candidate_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3",
+    "payloads": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3\\dependency_bootstrap.py.txt",
+        "bytes": 15324,
+        "sha256": "d613132e737cf9af114921a114372999ae4806194fd6282c9a8921905beb750b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3\\external_preinterpreter_guard.ps1.txt",
+        "bytes": 14139,
+        "sha256": "37a56d9f2fbdfde67d9e32b93678a542bc513e2a3772a5f348e8f5cfc6d222d7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3\\external_python_driver.py.txt",
+        "bytes": 1899,
+        "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3\\type1011_gate.py.txt",
+        "bytes": 23804,
+        "sha256": "3b9bdc4f00f34af1498d385b13baa2ab0cd6dd5b41e9cbeef913ad276bfe83d5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3\\type1011_independent_code_reader.py.txt",
+        "bytes": 22411,
+        "sha256": "1b4bfc2c66632c315a4b1ea2d49d66bcea927e4a589d9e52dcca6cfcf0a9b6cf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3\\type1011_independent_recorded_reader.py.txt",
+        "bytes": 13994,
+        "sha256": "4cf7660bbabb831f141b4c92f6c568084eb7d35db55ab11885dc194fb8e06bf5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_TEXT_v3\\type1011_recipe.py.txt",
+        "bytes": 23899,
+        "sha256": "1f0c5a391a4ff09dfad68978cfd9334222e5432a0f7b6bba96213d4dbdd093d1"
+      }
+    ],
+    "selection_template": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\proposed_dependency_selection_template_v4.json",
+      "bytes": 8958544,
+      "sha256": "2a32969301a2df379daca31517911960511c8cf8f76f1a2f56b09e6466ec29d3"
+    },
+    "Python_profile_candidate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\private_proposed_environment_profiles_UNADOPTED.json",
+      "bytes": 2113,
+      "sha256": "0238e1912734d2aec96fceb79fdd236102f88ad2515bc80b58fc0fe1e57d0e12"
+    },
+    "external_profile_candidate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\private_proposed_external_environment_v3_UNADOPTED.json",
+      "bytes": 841,
+      "sha256": "bdc518ba60041a429baad0e9ddf011d6fa2aa94af0d6de37d0ee1477c2cbbd81"
+    },
+    "materialization_draft119": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\candidate_materialization_draft119",
+    "original_materialization119_bytes_unchanged": true,
+    "Root_selected_code": null,
+    "Root_external_powershell_host": null,
+    "Root_private_external_environment": null,
+    "Root_adopted": false,
+    "execution_admitted": false
+  },
+  "original_Root_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\seal.json",
+    "bytes": 2029480,
+    "sha256": "2ac0ce5032ef89c871fd335c13d370c812592d62732c9a576abdc4b6c5a2b646"
+  },
+  "original_Root_exact_files": 10594,
+  "original_draft_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_complete_helper_TEXT_draft\\local\\t1011draft\\artifact_manifest.json",
+    "bytes": 21239,
+    "sha256": "be3e8a16721849eee13fd27a71b3c17d750a20cd9c1dce91459146aef9be8e28"
+  },
+  "original_draft_exact_files": 119,
+  "fresh_own_analysis_closure": {
+    "files": 2102,
+    "memberships": 3588,
+    "scopes": 16,
+    "before_optional_own_imports": true,
+    "final_loaded_file_origins": 44,
+    "selected_modules_imported": false
+  },
+  "preserved_roles": [
+    {
+      "name": "type1011_recipe.py.txt",
+      "old_explicit_guards": 49,
+      "current_explicit_guards": 50,
+      "Root_payload_byte_identical": true,
+      "original_asserts": 0,
+      "original_asserts_preserved": true,
+      "entry_before_optional_imports": true
+    },
+    {
+      "name": "type1011_gate.py.txt",
+      "old_explicit_guards": 87,
+      "current_explicit_guards": 89,
+      "Root_payload_byte_identical": true,
+      "original_asserts": 0,
+      "original_asserts_preserved": true,
+      "entry_before_optional_imports": true
+    },
+    {
+      "name": "type1011_independent_code_reader.py.txt",
+      "old_explicit_guards": 86,
+      "current_explicit_guards": 88,
+      "Root_payload_byte_identical": true,
+      "original_asserts": 0,
+      "original_asserts_preserved": true,
+      "entry_before_optional_imports": true
+    },
+    {
+      "name": "type1011_independent_recorded_reader.py.txt",
+      "old_explicit_guards": 58,
+      "current_explicit_guards": 58,
+      "Root_payload_byte_identical": true,
+      "original_asserts": 0,
+      "original_asserts_preserved": true,
+      "entry_before_optional_imports": true
+    }
+  ],
+  "preservation": {
+    "original_explicit_guards": 280,
+    "current_explicit_guards": 285,
+    "unchanged_recipe_contract_functions": [
+      "launch",
+      "launch_ast",
+      "compile_plan",
+      "link_plan"
+    ],
+    "Native_and_six_launch_key_literals_unchanged": true,
+    "driver_byte_identical": true,
+    "bootstrap_changed_existing_functions": [
+      "initialize",
+      "verify_snapshot",
+      "verify_environment",
+      "after_selected_imports"
+    ],
+    "bootstrap_new_functions": [
+      "mapped_capstone_module"
+    ],
+    "all_original_bootstrap_guards_preserved": true,
+    "literal_members_predicates_unchanged": true,
+    "all_original_selection_values_unchanged": true,
+    "old_null_fields": [
+      "materialization_draft",
+      "selected_code",
+      "private_environment",
+      "empty_cache_prefix",
+      "external_driver",
+      "external_bootstrap",
+      "external_records_directory",
+      "external_timeout_seconds",
+      "external_child_timeout_seconds"
+    ],
+    "new_null_fields": [
+      "external_powershell_host",
+      "private_external_environment"
+    ],
+    "runtime_description_AST_unchanged": true,
+    "dynamic_mapped_observation_excluded_from_static_selection": true,
+    "all119_Root_materialization_bytes_unchanged": true,
+    "only_preexisting_original119_differences": [
+      "artifact_manifest.json",
+      "receipt.json",
+      "type1011_gate.py.txt",
+      "type1011_independent_code_reader.py.txt",
+      "type1011_independent_recorded_reader.py.txt",
+      "type1011_recipe.py.txt"
+    ],
+    "Source12_case28_pin_tuples_unchanged": true
+  },
+  "PowerShell_AST_review": {
+    "Source_credit": 0,
+    "passed": true,
+    "method": "Independent PowerShell ParseFile and AST inspection only",
+    "syntax_errors": 0,
+    "mandatory_parameters_exact": true,
+    "old_Require_count": 24,
+    "new_Require_count": 36,
+    "old_Require_calls_preserved_in_order": true,
+    "old_Check_count": 8,
+    "new_Check_count": 11,
+    "old_Check_calls_preserved_in_order": true,
+    "old_throw_statements_preserved": true,
+    "original_functions": [
+      {
+        "name": "Require",
+        "body_byte_text_equal": true
+      },
+      {
+        "name": "Pin",
+        "body_byte_text_equal": true
+      },
+      {
+        "name": "Check",
+        "body_byte_text_equal": true
+      },
+      {
+        "name": "Members",
+        "body_byte_text_equal": true
+      },
+      {
+        "name": "ReviewAll",
+        "body_byte_text_equal": false
+      },
+      {
+        "name": "Put",
+        "body_byte_text_equal": true
+      }
+    ],
+    "only_new_function": "ReviewHost",
+    "literal_Members_predicate_unchanged": true,
+    "outer_try_catch_finally_body_exact": true,
+    "descendant_timeout_cleanup_limitation_unchanged": true,
+    "actual_host_path_bytes_hash_checked": true,
+    "full_external_profile_ordinal_keys_and_values_checked": true,
+    "external_profile_whitelist_and_case_alias_rejection_present": true,
+    "host_admission_before_start_and_in_pre_post_ReviewAll": true,
+    "Python_profile_uppercase_checks_present": true,
+    "selected_functions_executed": false
+  },
+  "mapped_path_static_review": {
+    "Source_credit": 0,
+    "selected_API_called": false,
+    "capstone_loaded": false,
+    "ctypes_loaded": false,
+    "query": "GetModuleFileNameW",
+    "source_of_handle": "already loaded capstone._cs._handle",
+    "non_null_integer_handle_required": true,
+    "pointer_width_HMODULE": true,
+    "UTF16_output_pointer": true,
+    "DWORD_return_and_count": true,
+    "buffer_WCHARs": 32768,
+    "zero_and_truncation_rejected": true,
+    "System32_API_load_flag": "0x00000800",
+    "absolute_mapped_path_required": true,
+    "requested_path_check_retained": true,
+    "packaged_content_check_retained": true,
+    "mapped_path_compared_to_selected_packaged_path": true,
+    "mapped_path_file_content_repinned_after_query": true,
+    "new_ctypes_import_origins_checked": true,
+    "gate_and_independent_code_reader_check_after_import_before_decoder_calls": true,
+    "mapped_image_bytes_proven": false,
+    "all_OS_module_identities_proven": false,
+    "official_reference": "https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulefilenamew"
+  },
+  "environment_review": {
+    "Source_credit": 0,
+    "profiles_root_selected": false,
+    "old_keys": {
+      "root_process": [
+        "SystemRoot",
+        "WINDIR",
+        "COMSPEC",
+        "TEMP",
+        "TMP",
+        "PATH",
+        "BSP_GHIDRA_AUTOSTART",
+        "PYTHONDONTWRITEBYTECODE",
+        "VSLANG",
+        "NO_PROXY"
+      ],
+      "recipe_children": [
+        "SystemRoot",
+        "WINDIR",
+        "COMSPEC",
+        "TEMP",
+        "TMP",
+        "PATH",
+        "BSP_GHIDRA_AUTOSTART",
+        "PYTHONDONTWRITEBYTECODE",
+        "VSLANG",
+        "NO_PROXY",
+        "INCLUDE",
+        "LIB"
+      ]
+    },
+    "new_keys": {
+      "root_process": [
+        "SYSTEMROOT",
+        "WINDIR",
+        "COMSPEC",
+        "TEMP",
+        "TMP",
+        "PATH",
+        "BSP_GHIDRA_AUTOSTART",
+        "PYTHONDONTWRITEBYTECODE",
+        "VSLANG",
+        "NO_PROXY"
+      ],
+      "recipe_children": [
+        "SYSTEMROOT",
+        "WINDIR",
+        "COMSPEC",
+        "TEMP",
+        "TMP",
+        "PATH",
+        "BSP_GHIDRA_AUTOSTART",
+        "PYTHONDONTWRITEBYTECODE",
+        "VSLANG",
+        "NO_PROXY",
+        "INCLUDE",
+        "LIB"
+      ]
+    },
+    "external_keys": [
+      "SYSTEMROOT",
+      "WINDIR",
+      "COMSPEC",
+      "TEMP",
+      "TMP",
+      "PATH",
+      "BSP_GHIDRA_AUTOSTART",
+      "PYTHONDONTWRITEBYTECODE",
+      "VSLANG",
+      "NO_PROXY",
+      "PSMODULEPATH",
+      "PATHEXT",
+      "USERPROFILE",
+      "BSP_COORDINATION_DIR"
+    ],
+    "only_Python_key_spelling_changed": true,
+    "all_original_Python_ENV_values_unchanged": true,
+    "uppercase_Python_keys_validated_by_both_launcher_and_bootstrap": true,
+    "full_external_profile_separately_selected_and_checked": true,
+    "external_profile_key_casing_and_values_require_exact_future_host_observation": true,
+    "external_profile_example_is_not_runtime_admission": true,
+    "private_values_published": false
+  },
+  "final_current_Root_drift": {
+    "Source_credit": 0,
+    "originals_checked": 10422,
+    "frozen_pins_checked": 10422,
+    "scopes_checked": 45,
+    "content_holds": [],
+    "membership_holds": [
+      {
+        "category": "Main_include_guard",
+        "before_count": 2016,
+        "current_count": 2022,
+        "changes": [
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\game_native_game_application_frame.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_entity_destroy_state.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_global_config_sample_dispatch.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_mission_clock_reset.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_subtree_invalidation.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_world_current_tick.hpp",
+            "SideIndicator": "=>"
+          }
+        ],
+        "execution_hold": true
+      }
+    ],
+    "execution_admitted": false,
+    "old_selection_repinned": false,
+    "UTC": "2026-10-09T06:27:23.0310645Z"
+  },
+  "revision_and_own_attempt_notes": {
+    "Source_credit": 0,
+    "initial_candidate_consumed_preserved_and_unadopted": true,
+    "candidate_V1_issue": "A dynamic mapped-module value in runtime_description would change recipe.selection and reject the immutable Root TEXT receipt after Capstone import.",
+    "candidate_V2_correction": "Restore runtime_description exactly; preserve private mapped-path verification. Add PATHEXT and keep external profile distinct from Python profiles.",
+    "final_candidate_V3_correction": "Allow explicit USERPROFILE and BSP_COORDINATION_DIR in the full separately selected sanitized host profile.",
+    "original_and_prior_candidate_files_overwritten": false,
+    "own_review_utility_corrections": [
+      "Initial Python review assumed the import check precedes all helper definitions; corrected to prove it precedes all capstone.Cs decoder calls.",
+      "Initial PowerShell review used reserved Host variable; a broad rename then changed an unrelated assertion string. A third own utility used a precise variable rename and passed; no candidate body changed.",
+      "Initial drift-copy helper omitted directory creation when only membership changed and no content changed. A new own helper created the fresh destination and completed the full audit."
+    ],
+    "selected_code_execution_during_all_attempts": false
+  },
+  "final_static_closed": {
+    "Source_credit": 0,
+    "returncode": 0,
+    "failure": null,
+    "post_failure": null,
+    "selected_execution": false,
+    "Root_writes": 0,
+    "successful": true,
+    "UTC": "2026-10-09T06:23:44.5684692Z"
+  },
+  "final_bookend": {
+    "Source_credit": 0,
+    "checked_original_and_frozen_pairs": 12815,
+    "root_exact_files": 10594,
+    "original119_exact_files": 119,
+    "own_analysis_scopes": 16,
+    "unchanged": true,
+    "full_private_environment_unchanged": true,
+    "future_type1011p1_absent": true,
+    "UTC": "2026-10-09T06:27:32.6129327Z"
+  },
+  "conclusion": {
+    "Source_credit": 0,
+    "result": "PASS_UNADOPTED_TYPE1011_HOST_ENV_MAPPED_PATH_TEXT_CORRECTION",
+    "final_candidate": "candidate_TEXT_v3",
+    "final_template": "proposed_dependency_selection_template_v4.json",
+    "final_external_profile": "private_proposed_external_environment_v3_UNADOPTED.json",
+    "final_Python_profile": "private_proposed_environment_profiles_UNADOPTED.json",
+    "changed_selected_bodies": [
+      "dependency_bootstrap.py.txt",
+      "external_preinterpreter_guard.ps1.txt"
+    ],
+    "unchanged_selected_bodies": 5,
+    "original_explicit_recipe_reader_guards": 280,
+    "current_explicit_recipe_reader_guards": 285,
+    "all_original_guards_preserved": true,
+    "recipe_launch_launch_ast_compile_plan_link_plan_AST_unchanged": true,
+    "runtime_description_AST_unchanged": true,
+    "changing_mapped_observation_excluded_from_static_selection": true,
+    "Root_materialization119_bytes_unchanged": true,
+    "Source12_case28_pin_tuples_unchanged": true,
+    "literal_Python_and_PowerShell_membership_predicates_unchanged": true,
+    "current_original_content_holds": 0,
+    "current_membership_holds": [
+      {
+        "category": "Main_include_guard",
+        "before_count": 2016,
+        "current_count": 2022,
+        "changes": [
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\game_native_game_application_frame.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_entity_destroy_state.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_global_config_sample_dispatch.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_mission_clock_reset.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_subtree_invalidation.hpp",
+            "SideIndicator": "=>"
+          },
+          {
+            "InputObject": "j:\\prog\\battlestations-pacific-decompile\\include\\bsp\\native_world_current_tick.hpp",
+            "SideIndicator": "=>"
+          }
+        ],
+        "execution_hold": true
+      }
+    ],
+    "own_fresh_analysis_files": 2102,
+    "own_fresh_analysis_memberships": 3588,
+    "own_fresh_analysis_scopes": 16,
+    "own_final_loaded_file_origins": 44,
+    "Root_original_exact_files": 10594,
+    "original_draft_exact_files": 119,
+    "new_Root_fields": {
+      "external_powershell_host": null,
+      "private_external_environment": null
+    },
+    "old_nine_Root_fields_still_null": true,
+    "candidate_Python_profiles_uppercase": true,
+    "original_Python_environment_values_unchanged": true,
+    "external_profile_keys_allowed": 14,
+    "external_profile_full_key_and_value_equality_required": true,
+    "external_profile_example_not_Runtime_admitted": true,
+    "host_path_bytes_hash_admission_proposed": true,
+    "mapped_Capstone_GetModuleFileNameW_guard_proposed": true,
+    "selected_GetModuleFileNameW_invocations": 0,
+    "actual_mapped_path_observation_obtained": false,
+    "mapped_image_bytes_identity_proven": false,
+    "actual_all_Windows_modules_proven": false,
+    "descendant_timeout_cleanup_limitation_retained": true,
+    "cleanup_limitation": "An inner 540-second TimeoutExpired may end the outer Python before the 600-second outer wait; closed=true can skip the later tree kill. Nonzero outer exit blocks dependent work, but descendant closure is unproven.",
+    "Root_adopted": false,
+    "execution_admitted": false,
+    "Root_receipts_authored": 0,
+    "Root_writes": 0,
+    "Main_writes": 0,
+    "materializations": 0,
+    "compiler_invocations": 0,
+    "Native_Ghidra_queries": 0,
+    "provider_runs": 0,
+    "original_PE_runs": 0,
+    "target_runs": 0,
+    "selected_helpers_drivers_parsers_executed": 0,
+    "selected_functions_evaluated": 0,
+    "prior_runtime_replays": 0,
+    "source_or_test_changes": 0,
+    "future_type1011p1_absent": true,
+    "official_API_references": [
+      "https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulefilenamew",
+      "https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryexa",
+      "https://docs.python.org/3.13/library/ctypes.html"
+    ],
+    "UTC": "2026-10-09T06:27:23.0513737Z"
+  },
+  "Root_adopted": false,
+  "execution_admitted": false
+}
