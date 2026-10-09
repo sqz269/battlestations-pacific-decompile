@@ -1,0 +1,2219 @@
+{
+  "schema": 1,
+  "packet": "cc12_squadron_launch_task_constructor_ABI_readiness",
+  "kind": "readonly_complete_owned_Native_constructor_ABI_access_and_producer_boundary",
+  "created_utc": "2026-10-09T14:12:54.453782+00:00",
+  "baseline_commit": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1",
+  "claimed_address": "007F1DE0",
+  "owned_files": [
+    "docs/CC12_SQUADRON_LAUNCH_TASK_CONSTRUCTOR_ABI_READINESS.md",
+    "reports/cc12_squadron_launch_task_constructor_ABI_readiness.json"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusions": [
+    "All owned136 bytes match live GPR and original PE; 41 instructions, one straight-line block, two direct calls and RET8; no x87/padding/gaps.",
+    "Actual raw task field writes and captured-task PUSH into 876020 are established. Normal delivery of that same value requires intact outgoing word/backing through writes and the callee delayed argument read.",
+    "Parent is captured before task initialization; second argument is read only after reparent returns. State write follows late argument capture/member computation/PUSH.",
+    "Last owned root profile D08AE4 is written before unopened7F0F80; unknown child can affect Task0. Tail writes CF6514 through current EDI after late saved-chain capture.",
+    "Direct task footprint ends+23; no full38h allocation, task+34, concrete class or slot0 target established.",
+    "Both latest61 input pins match; old57 has CMake-only drift. All current compiled/EH/Core/build evidence remains accepted Source context, not NativeEH/ABI/runtime proof."
+  ],
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "config_pin": {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "mechanism": "Every live bsp.py ghidra command performs client.verify before querying; no target mismatch.",
+    "queries": [
+      "ghidra proto 007F1DE0 007F0F80 --lines 12",
+      "ghidra disasm 007F1DE0 --lines 70",
+      "ghidra bytes 007F1DE0 --length 136",
+      "ghidra callees 007F0F80 --limit 12 --lines 30"
+    ]
+  },
+  "Root_Astra_gate": {
+    "passed": true,
+    "whole41_reviewed": true,
+    "owned_bytes": 136,
+    "sha256": "6c3b892b4f05e0e83c225b4db2383c610876cc60480f42d104b4215a3f8e7b5c",
+    "gate_file_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_squadron_launch_task_constructor_primary_gate.json",
+      "bytes": 3551,
+      "sha256": "7f9b14a5ba4c85396f5ee2c868cb31f7d7ff2bb5682d19066d340143c0e87dfb",
+      "canonical_lf_sha256": "921d1c53f98a406806d91e67c982c27785b1d312edaa9b844de31aa944b67e5e"
+    },
+    "entry": "ECX actualTask receiver; entry stack+4 actual parentreceiver captured intoECX before profile/member writes; lateentry stack+8 secondinput loaded AFTER876020 ordinary return.",
+    "stack": "Native FS registration/handlerC8F3B8, localword and EBX/ESI/EDI saves; PUSH capturedTask into876020 with ECXcapturedParent. ECX=actualTask+20 and PUSH current late secondargument into7F0F80. Both children requireRET4-equivalent; ownRET8.",
+    "producer_schedule": "Owned rawprofileCFD99C thenDWORD+4/+8/+C zero,bytes10=0/11=1,DWORD14=0/18=2 BEFORE876020 raw node delivery. Later state0 AFTER latearg capture/zeroXMM0/memberLEA/push; thenprofileD08AE4 andfloatDWORD1C zero BEFORE7F0F80. LatepriorFSload then forceMember+0 CF6514 AFTERchild.",
+    "direct_extent": "Owned writes throughTask+23h (memberDWORDat20), not full38h allocation proof; child writes/aliases unknown.",
+    "limits": "No Source admission; no class/profile table/slot0/caller/handler/data/child body read. Last owned profileD08AE4 is before uninspected member child, not proof that unknown child cannot changeTask0. NativeEH/unwind semantics unopened. XORPS/XMM0 zeroing is owned, child may clobberXMM0; finalADDESP10 flags and actualreturnbacking qualified."
+  },
+  "native_evidence": {
+    "address": "007F1DE0",
+    "end_inclusive": "007F1E67",
+    "bytes": 136,
+    "sha256": "6c3b892b4f05e0e83c225b4db2383c610876cc60480f42d104b4215a3f8e7b5c",
+    "hex": "6aff68b8f3c80064a10000000050648925000000005153568bf18b4c241c33db575689742410c7069cd9cf00895e04895e08895e0c885e10c6461101895e14c7461802000000e8f54108008b4424240f57c08d7e20508bcf895c241cc706e48ad000f30f11461ce834f1ffff8b4c2410c7071465cf005f8bc65e5b64890d0000000083c410c20800",
+    "GPR_live_equal_PE": true,
+    "Root_gate_hash_equal": true,
+    "all_file_backed": true,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_section": ".text",
+    "PE_RVA": "003F1DE0",
+    "PE_file_offset": 4136416,
+    "instruction_count": 41,
+    "basic_block_count": 1,
+    "branch_or_jump_count": 0,
+    "padding_or_unclassified_bytes": 0,
+    "x87_operations": 0,
+    "SSE_operations": [
+      "007F1E2F XORPS XMM0,XMM0",
+      "007F1E42 MOVSS [ESI+1Ch],XMM0"
+    ],
+    "ordinary_intraprocedural_instruction_edges": [
+      [
+        "007F1DE0",
+        "007F1DE2"
+      ],
+      [
+        "007F1DE2",
+        "007F1DE7"
+      ],
+      [
+        "007F1DE7",
+        "007F1DED"
+      ],
+      [
+        "007F1DED",
+        "007F1DEE"
+      ],
+      [
+        "007F1DEE",
+        "007F1DF5"
+      ],
+      [
+        "007F1DF5",
+        "007F1DF6"
+      ],
+      [
+        "007F1DF6",
+        "007F1DF7"
+      ],
+      [
+        "007F1DF7",
+        "007F1DF8"
+      ],
+      [
+        "007F1DF8",
+        "007F1DFA"
+      ],
+      [
+        "007F1DFA",
+        "007F1DFE"
+      ],
+      [
+        "007F1DFE",
+        "007F1E00"
+      ],
+      [
+        "007F1E00",
+        "007F1E01"
+      ],
+      [
+        "007F1E01",
+        "007F1E02"
+      ],
+      [
+        "007F1E02",
+        "007F1E06"
+      ],
+      [
+        "007F1E06",
+        "007F1E0C"
+      ],
+      [
+        "007F1E0C",
+        "007F1E0F"
+      ],
+      [
+        "007F1E0F",
+        "007F1E12"
+      ],
+      [
+        "007F1E12",
+        "007F1E15"
+      ],
+      [
+        "007F1E15",
+        "007F1E18"
+      ],
+      [
+        "007F1E18",
+        "007F1E1C"
+      ],
+      [
+        "007F1E1C",
+        "007F1E1F"
+      ],
+      [
+        "007F1E1F",
+        "007F1E26"
+      ],
+      [
+        "007F1E26",
+        "007F1E2B"
+      ],
+      [
+        "007F1E2B",
+        "007F1E2F"
+      ],
+      [
+        "007F1E2F",
+        "007F1E32"
+      ],
+      [
+        "007F1E32",
+        "007F1E35"
+      ],
+      [
+        "007F1E35",
+        "007F1E36"
+      ],
+      [
+        "007F1E36",
+        "007F1E38"
+      ],
+      [
+        "007F1E38",
+        "007F1E3C"
+      ],
+      [
+        "007F1E3C",
+        "007F1E42"
+      ],
+      [
+        "007F1E42",
+        "007F1E47"
+      ],
+      [
+        "007F1E47",
+        "007F1E4C"
+      ],
+      [
+        "007F1E4C",
+        "007F1E50"
+      ],
+      [
+        "007F1E50",
+        "007F1E56"
+      ],
+      [
+        "007F1E56",
+        "007F1E57"
+      ],
+      [
+        "007F1E57",
+        "007F1E59"
+      ],
+      [
+        "007F1E59",
+        "007F1E5A"
+      ],
+      [
+        "007F1E5A",
+        "007F1E5B"
+      ],
+      [
+        "007F1E5B",
+        "007F1E62"
+      ],
+      [
+        "007F1E62",
+        "007F1E65"
+      ]
+    ],
+    "CFG_qualification": "One straight-line owned block, 40 instruction fallthrough edges under required normal child returns. Child internal CFG, exceptions and nonreturns are not modeled.",
+    "calls": [
+      {
+        "site": "007F1E26",
+        "target": "00876020",
+        "caller_ESP_before_S_offset": -32,
+        "child_entry_ESP_S_offset": -36,
+        "return_address_written_S_offset": -36,
+        "return_address": "007F1E2B",
+        "argument_word_S_offset": -32,
+        "required_normal_child_cleanup_bytes": 4,
+        "required_normal_child_return_ESP_S_offset": -28,
+        "callee_body_opened_here": false
+      },
+      {
+        "site": "007F1E47",
+        "target": "007F0F80",
+        "caller_ESP_before_S_offset": -32,
+        "child_entry_ESP_S_offset": -36,
+        "return_address_written_S_offset": -36,
+        "return_address": "007F1E4C",
+        "argument_word_S_offset": -32,
+        "required_normal_child_cleanup_bytes": 4,
+        "required_normal_child_return_ESP_S_offset": -28,
+        "callee_body_opened_here": false
+      }
+    ],
+    "instructions": [
+      {
+        "index": 0,
+        "address": "007F1DE0",
+        "offset": 0,
+        "size": 2,
+        "hex": "6aff",
+        "mnemonic": "push",
+        "operands": "-1",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": -4,
+        "implicit_stack": {
+          "write_S_offset": -4,
+          "bytes": 4,
+          "value_operand": "-1"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 1,
+        "address": "007F1DE2",
+        "offset": 2,
+        "size": 5,
+        "hex": "68b8f3c800",
+        "mnemonic": "push",
+        "operands": "0xc8f3b8",
+        "ESP_before_S_offset": -4,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": {
+          "write_S_offset": -8,
+          "bytes": 4,
+          "value_operand": "0xc8f3b8"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 2,
+        "address": "007F1DE7",
+        "offset": 7,
+        "size": 6,
+        "hex": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": true,
+            "access_write": false,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "address": "007F1DED",
+        "offset": 13,
+        "size": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": {
+          "write_S_offset": -12,
+          "bytes": 4,
+          "value_operand": "eax"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 4,
+        "address": "007F1DEE",
+        "offset": 14,
+        "size": 7,
+        "hex": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "address": "007F1DF5",
+        "offset": 21,
+        "size": 1,
+        "hex": "51",
+        "mnemonic": "push",
+        "operands": "ecx",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": {
+          "write_S_offset": -16,
+          "bytes": 4,
+          "value_operand": "ecx"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 6,
+        "address": "007F1DF6",
+        "offset": 22,
+        "size": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": {
+          "write_S_offset": -20,
+          "bytes": 4,
+          "value_operand": "ebx"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 7,
+        "address": "007F1DF7",
+        "offset": 23,
+        "size": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": {
+          "write_S_offset": -24,
+          "bytes": 4,
+          "value_operand": "esi"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 8,
+        "address": "007F1DF8",
+        "offset": 24,
+        "size": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 9,
+        "address": "007F1DFA",
+        "offset": 26,
+        "size": 4,
+        "hex": "8b4c241c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x1c]",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 28,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "address": "007F1DFE",
+        "offset": 30,
+        "size": 2,
+        "hex": "33db",
+        "mnemonic": "xor",
+        "operands": "ebx, ebx",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 11,
+        "address": "007F1E00",
+        "offset": 32,
+        "size": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": {
+          "write_S_offset": -28,
+          "bytes": 4,
+          "value_operand": "edi"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 12,
+        "address": "007F1E01",
+        "offset": 33,
+        "size": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": {
+          "write_S_offset": -32,
+          "bytes": 4,
+          "value_operand": "esi"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 13,
+        "address": "007F1E02",
+        "offset": 34,
+        "size": 4,
+        "hex": "89742410",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x10], esi",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 14,
+        "address": "007F1E06",
+        "offset": 38,
+        "size": 6,
+        "hex": "c7069cd9cf00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xcfd99c",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 15,
+        "address": "007F1E0C",
+        "offset": 44,
+        "size": 3,
+        "hex": "895e04",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], ebx",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 4,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 16,
+        "address": "007F1E0F",
+        "offset": 47,
+        "size": 3,
+        "hex": "895e08",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], ebx",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 8,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 17,
+        "address": "007F1E12",
+        "offset": 50,
+        "size": 3,
+        "hex": "895e0c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0xc], ebx",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 12,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 18,
+        "address": "007F1E15",
+        "offset": 53,
+        "size": 3,
+        "hex": "885e10",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x10], bl",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 1,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 19,
+        "address": "007F1E18",
+        "offset": 56,
+        "size": 4,
+        "hex": "c6461101",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x11], 1",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 1,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 17,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 20,
+        "address": "007F1E1C",
+        "offset": 60,
+        "size": 3,
+        "hex": "895e14",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x14], ebx",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 20,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 21,
+        "address": "007F1E1F",
+        "offset": 63,
+        "size": 7,
+        "hex": "c7461802000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x18], 2",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 24,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 22,
+        "address": "007F1E26",
+        "offset": 70,
+        "size": 5,
+        "hex": "e8f5410800",
+        "mnemonic": "call",
+        "operands": "0x876020",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 23,
+        "address": "007F1E2B",
+        "offset": 75,
+        "size": 4,
+        "hex": "8b442424",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x24]",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 36,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 24,
+        "address": "007F1E2F",
+        "offset": 79,
+        "size": 3,
+        "hex": "0f57c0",
+        "mnemonic": "xorps",
+        "operands": "xmm0, xmm0",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 25,
+        "address": "007F1E32",
+        "offset": 82,
+        "size": 3,
+        "hex": "8d7e20",
+        "mnemonic": "lea",
+        "operands": "edi, [esi + 0x20]",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 32,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "qualification": "LEA describes address computation and performs no memory access."
+          }
+        ]
+      },
+      {
+        "index": 26,
+        "address": "007F1E35",
+        "offset": 85,
+        "size": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": {
+          "write_S_offset": -32,
+          "bytes": 4,
+          "value_operand": "eax"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 27,
+        "address": "007F1E36",
+        "offset": 86,
+        "size": 2,
+        "hex": "8bcf",
+        "mnemonic": "mov",
+        "operands": "ecx, edi",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 28,
+        "address": "007F1E38",
+        "offset": 88,
+        "size": 4,
+        "hex": "895c241c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x1c], ebx",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 28,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 29,
+        "address": "007F1E3C",
+        "offset": 92,
+        "size": 6,
+        "hex": "c706e48ad000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xd08ae4",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 30,
+        "address": "007F1E42",
+        "offset": 98,
+        "size": 5,
+        "hex": "f30f11461c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esi + 0x1c], xmm0",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -32,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 28,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 31,
+        "address": "007F1E47",
+        "offset": 103,
+        "size": 5,
+        "hex": "e834f1ffff",
+        "mnemonic": "call",
+        "operands": "0x7f0f80",
+        "ESP_before_S_offset": -32,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 32,
+        "address": "007F1E4C",
+        "offset": 108,
+        "size": 4,
+        "hex": "8b4c2410",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x10]",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": true,
+            "access_write": false,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 33,
+        "address": "007F1E50",
+        "offset": 112,
+        "size": 6,
+        "hex": "c7071465cf00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edi], 0xcf6514",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "edi",
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": null,
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 34,
+        "address": "007F1E56",
+        "offset": 118,
+        "size": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": {
+          "read_S_offset": -28,
+          "bytes": 4,
+          "destination": "edi"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 35,
+        "address": "007F1E57",
+        "offset": 119,
+        "size": 2,
+        "hex": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 36,
+        "address": "007F1E59",
+        "offset": 121,
+        "size": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi",
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": {
+          "read_S_offset": -24,
+          "bytes": 4,
+          "destination": "esi"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 37,
+        "address": "007F1E5A",
+        "offset": 122,
+        "size": 1,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": {
+          "read_S_offset": -20,
+          "bytes": 4,
+          "destination": "ebx"
+        },
+        "memory_operands": []
+      },
+      {
+        "index": 38,
+        "address": "007F1E5B",
+        "offset": 123,
+        "size": 7,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": false,
+            "access_write": true,
+            "qualification": null
+          }
+        ]
+      },
+      {
+        "index": 39,
+        "address": "007F1E62",
+        "offset": 130,
+        "size": 3,
+        "hex": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": 0,
+        "implicit_stack": null,
+        "memory_operands": []
+      },
+      {
+        "index": 40,
+        "address": "007F1E65",
+        "offset": 133,
+        "size": 3,
+        "hex": "c20800",
+        "mnemonic": "ret",
+        "operands": "8",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": 12,
+        "implicit_stack": {
+          "return_address_read_S_offset": 0,
+          "argument_cleanup_bytes": 8
+        },
+        "memory_operands": []
+      }
+    ],
+    "stack_validation": {
+      "all_41_owned_positions_accounted": true,
+      "assumed_normal_child_cleanup_bytes": {
+        "00876020": 4,
+        "007F0F80": 4
+      },
+      "final_before_RET_S_offset": 0,
+      "after_RET8_S_offset": 12,
+      "qualification": "No execution; static own-op accounting. Child RET4-equivalent behavior and selected memory/control-stack integrity are required, not proved for unopened 007F0F80."
+    },
+    "root_gate_file": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_squadron_launch_task_constructor_primary_gate.json",
+    "root_gate_sha256": "7f9b14a5ba4c85396f5ee2c868cb31f7d7ff2bb5682d19066d340143c0e87dfb"
+  },
+  "owned_metadata": {
+    "name": "BSP_SquadronLaunchTask_Construct",
+    "signature": "undefined BSP_SquadronLaunchTask_Construct(void)",
+    "start": "007F1DE0",
+    "end_inclusive": "007F1E67",
+    "instruction_count": 41,
+    "basic_block_count": 1,
+    "metadata_edge_count": 0,
+    "metadata_call_count": 2,
+    "qualification": "Descriptive name and undefined(void) signature are non-authoritative. Physical body supplies the entry/stack/access evidence."
+  },
+  "entry_frame_and_inputs": {
+    "S": "entry ESP",
+    "T": "entry ECX captured in ESI at 007F1DF8",
+    "P": "current [S+4] captured into ECX at 007F1DFA after initial frame writes, before task writes",
+    "Q": "current [S+8] captured into EAX at 007F1E2B after first child normal return",
+    "native_owned_argument_contract": "ECX task receiver and two stack words; own RET8. Does not infer source-language class/prototype.",
+    "frame": [
+      {
+        "S_offset": 8,
+        "meaning": "Second input read late at 007F1E2B after first child."
+      },
+      {
+        "S_offset": 4,
+        "meaning": "Parent current word captured early into ECX at 007F1DFA."
+      },
+      {
+        "S_offset": 0,
+        "meaning": "Current owned return-address backing."
+      },
+      {
+        "S_offset": -4,
+        "meaning": "State: PUSH -1; current EBX stored at 007F1E38 after late argument push."
+      },
+      {
+        "S_offset": -8,
+        "meaning": "PUSH numeric handler C8F3B8; unopened."
+      },
+      {
+        "S_offset": -12,
+        "meaning": "Pushed old FS:[0]; registration starts here; tail captures current word before member write."
+      },
+      {
+        "S_offset": -16,
+        "meaning": "PUSH entry ECX; later rewritten with captured ESI at 007F1E02."
+      },
+      {
+        "S_offset": -20,
+        "meaning": "Saved incoming EBX."
+      },
+      {
+        "S_offset": -24,
+        "meaning": "Saved incoming ESI."
+      },
+      {
+        "S_offset": -28,
+        "meaning": "Saved incoming EDI."
+      },
+      {
+        "S_offset": -32,
+        "meaning": "Outgoing stack word: pushed T then pushed Q; intervening task writes can change it."
+      },
+      {
+        "S_offset": -36,
+        "meaning": "Each CALL writes its return address here before entering child."
+      }
+    ],
+    "registration_publish": {
+      "site": "007F1DEE",
+      "destination": "FS:[0]",
+      "value": "S-0Ch"
+    },
+    "saved_this_rewrite": {
+      "site": "007F1E02",
+      "destination": "[S-10h]",
+      "value": "captured ESI=T"
+    },
+    "state_update": {
+      "site": "007F1E38",
+      "destination": "[S-4]",
+      "value": "current EBX, zero under first-child nonvolatile preservation",
+      "order": "After Q capture, XORPS, member LEA, Q PUSH and ECX=EDI; before root D08AE4 and MOVSS store."
+    },
+    "no_later_explicit_state_reset": true,
+    "initial_pushes_and_other_stack_writes_can_alias_task_backing": true
+  },
+  "ordered_direct_task_writes": [
+    {
+      "site": "007F1E06",
+      "destination": "current ESI+00",
+      "width": 4,
+      "value": "00CFD99C",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E0C",
+      "destination": "current ESI+04",
+      "width": 4,
+      "value": "current EBX=0",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E0F",
+      "destination": "current ESI+08",
+      "width": 4,
+      "value": "current EBX=0",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E12",
+      "destination": "current ESI+0C",
+      "width": 4,
+      "value": "current EBX=0",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E15",
+      "destination": "current ESI+10",
+      "width": 1,
+      "value": "current BL=0",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E18",
+      "destination": "current ESI+11",
+      "width": 1,
+      "value": "01",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E1C",
+      "destination": "current ESI+14",
+      "width": 4,
+      "value": "current EBX=0",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E1F",
+      "destination": "current ESI+18",
+      "width": 4,
+      "value": "00000002",
+      "phase": "before first child"
+    },
+    {
+      "site": "007F1E3C",
+      "destination": "current ESI+00",
+      "width": 4,
+      "value": "00D08AE4",
+      "phase": "after first child and state write; before second child"
+    },
+    {
+      "site": "007F1E42",
+      "destination": "current ESI+1C",
+      "width": 4,
+      "value": "XMM0.low32=00000000",
+      "phase": "after first child; before second child"
+    },
+    {
+      "site": "007F1E50",
+      "destination": "current EDI",
+      "width": 4,
+      "value": "00CF6514",
+      "phase": "after second child and late FS-chain capture"
+    }
+  ],
+  "raw_layout_and_extent": {
+    "initial_root_profile": "00CFD99C",
+    "last_owned_root_profile": "00D08AE4",
+    "last_owned_root_profile_occurs_before_unopened_child": true,
+    "post_child_root_profile_proved": false,
+    "post_child_member_profile_store": "00CF6514 through current EDI, normally T+20h",
+    "direct_extent_bytes": 36,
+    "direct_highest_byte_offset_hex": "23",
+    "untouched_holes_in_owned_initialization": [
+      "T+12h",
+      "T+13h"
+    ],
+    "explicit_owned_task_field_reads": 0,
+    "full_38h_allocation_proved": false,
+    "task_34h_contents_proved": false,
+    "overall_required_backing_extent_known": false,
+    "qualification": "24h is only the owned direct-write footprint. Reparent needs selected parent/list/neighbors and the unopened member child can require more backing. There is no direct allocation call in the owned body; child-side allocations are separate."
+  },
+  "first_child_delivery": {
+    "call_site": "007F1E26",
+    "target": "00876020",
+    "outgoing_registers": {
+      "ECX": "captured P",
+      "ESI": "captured T",
+      "EBX": 0,
+      "EDI": "incoming EDI",
+      "EAX": "earlier old FS:[0] capture",
+      "EDX": "incoming EDX; no owned write"
+    },
+    "pushed_word": {
+      "site": "007F1E01",
+      "slot": "[S-20h]",
+      "value_at_PUSH": "captured T"
+    },
+    "initialization_before_call": "Root CFD99C, parent/prev/next zero, bytes10=0/11=1, DWORD14=0, priority18=2, all in owned order.",
+    "raw_Node_delivery_established": "Physical PUSH of captured Task followed by CALL reparent with captured parent in ECX; not just metadata.",
+    "actual_observed_node_qualification": "Owned task writes and CALL return-address write can alias the pushed word/backing; known reparent reads its node argument only after getter/lock activity. Same-T observation requires those effects not to replace the word.",
+    "initial_fields_not_frozen_through_getter_or_aliases": true,
+    "required_normal_cleanup_bytes": 4,
+    "required_nonvolatile_and_stack_contract": "Preserve EBX=0 and ESI=T, plus ordinary nonvolatile/control-stack backing; child save/restore aliases remain qualified.",
+    "callee_body_reopened_here": false,
+    "callee_evidence": "reports/cc12_pending_registry_tick_subnode_reparent_caller_ABI_readiness.json",
+    "Original_handler_not_opened_by_this_worker": "00C964E8; later separate Root EH packet notice is qualified below",
+    "arithmetic_flags_at_call": {
+      "source": "007F1DFE XOR EBX,EBX",
+      "CF": 0,
+      "OF": 0,
+      "SF": 0,
+      "ZF": 1,
+      "PF": 1,
+      "AF": "undefined"
+    },
+    "return_EAX_not_used_as_constructor_result": "Immediately overwritten by late Q load."
+  },
+  "second_child_contract": {
+    "call_site": "007F1E47",
+    "target": "007F0F80",
+    "member_address_capture": "007F1E32 LEA EDI,[current ESI+20h]",
+    "outgoing_registers_under_first_child_contract": {
+      "ECX": "M=current ESI+20h",
+      "EDI": "M",
+      "ESI": "T",
+      "EBX": 0,
+      "EAX": "captured Q",
+      "EDX": "first-child residual",
+      "XMM0": "all128 bits zero"
+    },
+    "pushed_word": {
+      "site": "007F1E35",
+      "slot": "[S-20h]",
+      "value_at_PUSH": "captured Q"
+    },
+    "outgoing_word_alias_limit": "Subsequent root profile/MOVSS stores and CALL write can alias argument/Task backing; do not relocate PUSH after initialization.",
+    "arithmetic_flags_at_call": "First-child return flags pass through the owned MOV/LEA/PUSH/XORPS/MOVSS sequence unchanged.",
+    "required_normal_cleanup_bytes": 4,
+    "required_preservation": [
+      "ESI for returned Task and caller restoration",
+      "EDI for post-child member store",
+      "EBX and EBP for normal nonvolatile ABI"
+    ],
+    "metadata_only": {
+      "name": "FUN_007f0f80",
+      "signature": "undefined FUN_007f0f80(void)",
+      "start": "007F0F80",
+      "end_inclusive": "007F0FDB",
+      "span_bytes": 92,
+      "instruction_count": 28,
+      "basic_block_count": 3,
+      "edge_count": 3,
+      "call_count": 1,
+      "callees": [
+        "BSP_Observer_RegisterPair @ 00694A60"
+      ]
+    },
+    "body_or_profile_or_handler_read": false,
+    "metadata_not_proof_of_register_ABI_or_observer_effects": true,
+    "unknowns": [
+      "actual writes/backing extent",
+      "Task0 changes through aliases or side effects",
+      "nonvolatile/stack behavior",
+      "hidden inputs",
+      "exceptions/reentry/nonreturn",
+      "class/ownership/registration semantics"
+    ]
+  },
+  "tail_order_and_normal_exit": {
+    "late_chain_capture": {
+      "site": "007F1E4C",
+      "source": "current [S-0Ch]",
+      "destination": "ECX",
+      "occurs_before_member_store": true
+    },
+    "post_child_member_store": {
+      "site": "007F1E50",
+      "destination": "current [EDI]",
+      "value": "00CF6514",
+      "not_recomputed_from_ESI": true
+    },
+    "sequence": [
+      "POP current [S-1Ch] to EDI",
+      "MOV EAX,current ESI",
+      "POP current [S-18h] to ESI",
+      "POP current [S-14h] to EBX",
+      "restore FS:[0] from captured ECX",
+      "ADD ESP,10h",
+      "RET8"
+    ],
+    "EAX": "Current ESI at 007F1E57, before POP ESI. Equals captured T only with required child preservation.",
+    "ECX": "Late saved-chain capture from before member store; no reload after potential member-store alias.",
+    "EDX": "Second-child residual; no owned EDX write.",
+    "XMM0": "Zeroed before second child, but its final contents are not guaranteed after that child.",
+    "EBX_ESI_EDI": "Restored from current saved words; equal incoming values only if backing survives aliases.",
+    "EBP": "No explicit owned write; children must preserve for ordinary ABI.",
+    "before_final_ADD_ESP": "S-10h",
+    "before_RET_ESP": "S",
+    "after_RET8_ESP": "S+0Ch",
+    "RET_reads_current_return_address": true
+  },
+  "final_arithmetic_flags": {
+    "site": "007F1E62",
+    "instruction": "ADD ESP,10h",
+    "x": "32-bit actual pre-ADD ESP",
+    "r": "(x+0x10) modulo2^32, normally S",
+    "CF": "x >= 0xFFFFFFF0",
+    "OF": "0x7FFFFFF0 <= x <= 0x7FFFFFFF",
+    "AF": 0,
+    "ZF": "r == 0",
+    "SF": "(r >>31)&1",
+    "PF": "even parity of r&0xFF",
+    "RET_preserves_arithmetic_flags": true,
+    "XORPS_is_not_arithmetic_EFLAGS_source": true
+  },
+  "alias_fault_and_EH_limits": {
+    "task_and_stack_aliases": "Frame/PUSH/CALL writes can change Task memory; Task/member writes can change outgoing arguments, saved registers/state/chain and current return backing. Preserve the full access ordering.",
+    "parent_aliases": "P is captured before task writes and held in ECX; pointed-to parent/list backing can still alias and change.",
+    "second_input_aliases": "Q is read late after first-child effects, not copied from entry.",
+    "late_chain_aliases": "Member store can change [S-C] after ECX capture, but FS restore uses captured ECX.",
+    "no_null_extent_validation_or_branch_guard": true,
+    "faults": "Earlier writes need not roll back when a later access or child fails; valid selected memory and intact code/control stack are required for normal composition.",
+    "Native_handler": "00C8F3B8",
+    "handler_table_funclet_bytes_read": false,
+    "state_writes_only": "Initial -1 then current EBX at 1E38, normally0; no explicit later reset. Alias changes to actual state backing remain possible.",
+    "no_unwind_cleanup_recovery_or_rollback_inferred": true,
+    "no_exception_fault_concurrency_equivalence_claim": true
+  },
+  "current_Source_context": {
+    "selection_report": "reports/cc12_tick_subnode_producer_selection.json",
+    "selection_baseline": "12f249d3ab42e33b6ec910aafafc9eb2cd217a85",
+    "selection_pin_rechecks_at_current_baseline": {
+      "count": 30,
+      "equal_count": 29,
+      "differences": [
+        {
+          "path": "CMakeLists.txt",
+          "accepted_canonical_lf_sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb",
+          "current_canonical_lf_sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5"
+        }
+      ],
+      "Source_count": 20,
+      "Source_equal_count": 20
+    },
+    "selected_current_Source_route": "PlaneSquadronRegistry::records_ vector -> PlaneSquadronHostRecord -> launch_task_live, launch_task_timer_1c, launch_task_deck, launch_task_sends. This is an actual typed storage route, not raw Native Node storage.",
+    "selected_current_Source_lifecycle": "GameUnitsHost construction projection initializes fields; run_landing_queue_006cd240 iterates squadron records and calls base_launch_task_tick_007f1f00; no-member branch clears launch_task_live. Scheduling placement is explicitly labelled in Source.",
+    "Source_route_is_raw_TaskNode_construction": false,
+    "rechecked_excerpts": [
+      {
+        "path": "include/bsp/unit_instance_layout.hpp",
+        "line_start": 205,
+        "line_end": 209,
+        "canonical_lf_excerpt_sha256": "57364c10979b8f65a652a5d808d45105c6024a7accd476f8af2369989ad57b75",
+        "text": "    // 0087B6A9: 00875890 BSP_TickRegistration_Construct(instance+310h,\n    // instance, 0). docs/FIXED_STEP_JOB_WAVES.md owns the node.\n    virtual void construct_tick_node(std::uint32_t node,\n                                     std::uint32_t payload,\n                                     int group) = 0;\n",
+        "finding": "Pure virtual tick-node hook; comments are historical Source evidence.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "src/unit_instance_layout.cpp",
+        "line_start": 79,
+        "line_end": 82,
+        "canonical_lf_excerpt_sha256": "df7627793702ad15f40930554ddd68b0bee425b27df977b2406f9d1641ca7a01",
+        "text": "\n        // Level 3, 0087B670: the fixed-step node, group 0 at construction.\n        host.construct_tick_node(block + kUnitLayoutOffTickNode, block, 0);\n        result.tick_payload = block;\n",
+        "finding": "One abstract creation-model call; raw block arguments do not prove a host implementation.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "include/bsp/unit_destructor_levels.hpp",
+        "line_start": 243,
+        "line_end": 244,
+        "canonical_lf_excerpt_sha256": "ffe35e5b3ad69c689e4022b1b759eb2f0253a3fcce1f48402bca2a54ec82eb0d",
+        "text": "    // Level 3.\n    virtual void destroy_tick_element_310() = 0;       // 0087A4B5 -> 00875490 -> 00874F00\n",
+        "finding": "Pure virtual tick-element destruction hook.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "src/unit_destructor_levels.cpp",
+        "line_start": 368,
+        "line_end": 370,
+        "canonical_lf_excerpt_sha256": "6ae0984d55b22e9885d92b492fb4cffd093d4a52b5231f6175b9c80cc902ec68",
+        "text": "            case UnitReleaseStep::l3_destroy_tick_element_310:\n                host.destroy_tick_element_310();\n                break;\n",
+        "finding": "Modeled destruction call only.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "src/game_hosts_fixed_step.cpp",
+        "line_start": 127,
+        "line_end": 140,
+        "canonical_lf_excerpt_sha256": "138a51219018fff5a54689beb57b43d8ceda1e01235a2e263deb823754973820",
+        "text": "\nbool GameFixedStepHost::next_element(std::size_t group, std::size_t position,\n    bsp::JobWaveElementView& view) {\n    static_cast<void>(group);\n    static_cast<void>(position);\n    static_cast<void>(view);\n    if (!groups_reported_) {\n        groups_reported_ = true;\n        log_.notef(\"fixed-step job waves: the five 68h groups at 00f876c0 are empty. Every \"\n            \"element comes from 00875890, whose nine construction sites are unit, aircraft \"\n            \"and objective paths this process does not run, and the splice 00874c90 is row \"\n            \"11 behind the closed world gate\");\n    }\n    return false;\n",
+        "finding": "Production element provider ignores inputs and returns false.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 32771,
+        "line_end": 32780,
+        "canonical_lf_excerpt_sha256": "d4b432fcaf9ed53a2e600cb0141366340b7f2777b9a3e5ed923ac55c08fb694d",
+        "text": "                    // set, a holder kind ([+C0h]+4h) other than 2 (every host\n                    // squadron is kind 1) and a base answering IsKindOf(9) or\n                    // IsKindOf(45h), 38h bytes -> 007F1DE0(base+310h, squadron):\n                    // +1Ch = 0, the squadron at +34h. ORDER, LABELLED: the image\n                    // builds it after the command block (007F4E06-007F4EA3);\n                    // nothing between reads it, and here the command block's\n                    // early returns would otherwise skip it. A scene squadron with\n                    // a HomeBase gets a task in the image too, whose first ready\n                    // tick finds no state-1 member and ends it; it is not built here.\n                    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();\n",
+        "finding": "Existing Source construction comment, not fresh Native proof.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 32781,
+        "line_end": 32790,
+        "canonical_lf_excerpt_sha256": "beaf8e9f726cdd0753769939264522546fcb0b792a401cfeea6a0b83a144e86d",
+        "text": "                    for (std::size_t di = 0; di < decks.size(); ++di) {\n                        if (decks.name_at(di) != rec->bag_home_base) continue;\n                        rec->launch_task_live = true;\n                        rec->launch_task_timer_1c = 0.0f;\n                        rec->launch_task_deck = di;\n                        rec->launch_task_sends = 0;\n                        ++host.base_launch_tasks_built;\n                        host.done(\"SquadronLaunchTask::construct_007f1de0\", 0x007f1de0u);\n                        break;\n                    }\n",
+        "finding": "Actual typed task-state construction route in production host.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 131,
+        "line_end": 140,
+        "canonical_lf_excerpt_sha256": "5e3b77c47408cb59da688206e249a9e25e3fe84314bccc7fbecd7014fdfb7801",
+        "text": "    // Inside the base and 007F4DA9 skips the airborne placement 007F2920.\n    bool home_launch_408{false};\n    // The launch task 007F1DE0 (38h bytes, vtable 00D08AE4) that pass C builds at\n    // 007F53FF for a squadron whose home base is a mother ship or an airfield:\n    // task+1Ch the send countdown, task+34h the squadron. `launch_task_deck` is\n    // the base's index in air_ops_decks().\n    bool launch_task_live{false};\n    float launch_task_timer_1c{0.0f};\n    std::size_t launch_task_deck{kPlaneSquadronNoUnit};\n    std::int32_t launch_task_sends{0};\n",
+        "finding": "Task fields and profile comment. Profile target remains unopened.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 245,
+        "line_end": 246,
+        "canonical_lf_excerpt_sha256": "b76f2090fe6125db3ec7c577da8b09002c6ec32a9bc3b6192b50be5b8df946e1",
+        "text": "    std::vector<PlaneSquadronHostRecord>& records() noexcept { return records_; }\n    const std::vector<PlaneSquadronHostRecord>& records() const noexcept { return records_; }\n",
+        "finding": "Registry records are typed squadron records.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 253,
+        "line_end": 255,
+        "canonical_lf_excerpt_sha256": "ef51f18cb64989a91334a9d1896edd948e7a45e5571ed07a62738d935cad8134",
+        "text": "\n   private:\n    std::vector<PlaneSquadronHostRecord> records_;\n",
+        "finding": "Concrete vector storage; no raw task layout is implied.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 14485,
+        "line_end": 14493,
+        "canonical_lf_excerpt_sha256": "60baa37e1d47d7dc1d882baf74e1b4800cb475207c61293f870ddc33304115bc",
+        "text": "        if constexpr (kBaseLaunchChainBound) {\n            // Packet cc9_base_launch_task: each squadron's launch task 007F1F00.\n            // POSITION, LABELLED: the image ticks it from its task list\n            // (00876020's registration), whose place in the frame is unread;\n            // it runs here, before the site ticks that read site+18h.\n            for (bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {\n                h.base_launch_task_tick_007f1f00(sq, dt);\n            }\n            // Packet cc9_base_launch_deck_arms: 006CDC70's site slot +4h for an\n",
+        "finding": "Explicit Source scheduling substitution and typed record loop.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 12875,
+        "line_end": 12885,
+        "canonical_lf_excerpt_sha256": "875ff6dffb221a1a5573aa146684cc8af883459a90737071c69d62d1962cc2bf",
+        "text": "    }\n    if (pick >= slots.size()) {\n        // 007EF041: 1, none left; 007F1FB7-007F1FCF end the task.\n        sq.launch_task_live = false;\n        ++base_launch_tasks_ended;\n        log.notef(\"base launch task: squadron=%s ends at %.2f s after %d send(s) \"\n            \"(007EF010 -> 1, 007F1FCF; packet cc9_base_launch_task)\", sq.name.c_str(),\n            static_cast<double>(summary.simulated_seconds), sq.launch_task_sends);\n        done(\"SquadronLaunchTask::tick_007f1f00\", 0x007f1f00u);\n        return;\n    }\n",
+        "finding": "Source task retirement clears live flag; no Native slot dispatch.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+        "line_start": 11,
+        "line_end": 22,
+        "canonical_lf_excerpt_sha256": "ebcca2b3e0b1fbce8da59e4421d2bbd6d5edc3047afbeeb1c051b3a6a7ce7a6f",
+        "text": "// Ordinary 00875960[69] through a new explicit naked fastcall Source API.\n// ECX is the actual receiver, EDX an unused placement word. Three stack words\n// hold addresses of the actual borrowed node-input/F-publication/M-publication\n// cells. RET 0Ch pops those three references; Original instead uses RET 4.\n// Void does not invent a common semantic EAX result: Leave may replace it.\n//\n// Keep all three actual cells alive at stable addresses for the whole call;\n// do not pass snapshots or private publication cells. The current node word\n// is read only after the actual getter and optional Enter/depth increment.\n// The getter borrows both actual publication cells under its own contract.\n// Its result+4 section is captured once for Enter/depth/Leave. Depth is the\n// raw DWORD at section+18h, incremented after Enter and decremented after the\n",
+        "finding": "Current admitted Source69 cell/argument/lifetime qualification.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+        "line_start": 33,
+        "line_end": 43,
+        "canonical_lf_excerpt_sha256": "9928331b8eccbb40ba9eb757e2cc0864214f503c3932e2e506b2733d17c3f447",
+        "text": "// profile, virtual-slot binding or forced application retention is supplied.\n// These extra Source cells, getter arguments and frame are not Original stack\n// identity. Current Source getter/import policy, Original ABI/placement/callers,\n// exceptions, faults, concurrency, common register residuals and gameplay\n// remain separately qualified; no Original drop-in compatibility is claimed.\nvoid __fastcall unlink_native_tick_subnode_00875960(\n    void* actual_receiver,\n    std::uint32_t unused_edx,\n    void* volatile& actual_node_input_word,\n    void* volatile& actual_registry_publication_00f878cc,\n    void* volatile& actual_manager_publication_01090aa0);\n",
+        "finding": "Current admitted Source69 boundary and declaration.",
+        "rechecked_at_current_baseline": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_getter.hpp",
+        "line_start": 10,
+        "line_end": 20,
+        "canonical_lf_excerpt_sha256": "8538f19dffab575aac6072e495117e5cf09bf32d0f8359dd707ef9965fc655aa",
+        "text": "// The fast path returns its first capture; the slow path rereads publication\n// after releasing the first manager's captured raw section. Allocation cleanup\n// ends before publication, the second manager lookup and current registration.\n// Source C++ failure cleanup uses the actual raw8 guard and captured allocation;\n// it does not reproduce native FH3/SEH or mutable native stack-spill aliases.\n// Production composition requires the canonical process cell and its matching\n// manager deletion binding. Numeric profiles are not callable Source vtables.\nvoid* get_native_pending_registry_00875280(\n    void* volatile& actual_registry_publication_00f878cc,\n    void* volatile& actual_manager_publication_01090aa0);\n\n",
+        "finding": "Actual-cell getter contract and numeric-profile limitation.",
+        "rechecked_at_current_baseline": true
+      }
+    ],
+    "Source69": "Admitted Source fastcall unlink caller borrows actual node-input word and both actual publication cells, requiring three stack references and RET0Ch; Original uses node value and RET4. No drop-in substitution.",
+    "Source_getter": "Admitted Source getter takes actual F878CC and1090AA0 publication-cell references. Original child getter uses a different zero-pushed-argument contract.",
+    "readonly243": "Baseline Native receiver/node insertion evidence only. This worker adds no Source implementation or C964E8 proof; later separate Root EH notice is qualified below.",
+    "readonly100": "Current captured-node profile/slot0 plus flag1 still has no identified callable deletion target.",
+    "primary_versions": {
+      "latest61_allocator": {
+        "report": "reports/cc12_native_allocator_owned_message_constructor_primary_review.json",
+        "status": "Source_admitted_complete_compiled_Core_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 61,
+          "equal_count": 61,
+          "differences": [],
+          "Source_count": 56,
+          "Source_equal_count": 56
+        }
+      },
+      "latest61_lua": {
+        "report": "reports/cc12_native_lua_variant_link_repair_helpers_primary_review.json",
+        "status": "Source_admitted_complete_compiled_Core_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 61,
+          "equal_count": 61,
+          "differences": [],
+          "Source_count": 56,
+          "Source_equal_count": 56
+        }
+      },
+      "older57_unlink_caller": {
+        "report": "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json",
+        "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 57,
+          "equal_count": 56,
+          "differences": [
+            {
+              "path": "CMakeLists.txt",
+              "accepted_canonical_lf_sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb",
+              "current_canonical_lf_sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5"
+            }
+          ],
+          "Source_count": 52,
+          "Source_equal_count": 52
+        }
+      },
+      "older53_raw_unlink": {
+        "report": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+        "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 53,
+          "equal_count": 51,
+          "differences": [
+            {
+              "path": "CMakeLists.txt",
+              "accepted_canonical_lf_sha256": "3ad433f48a4c865a95ed46010651ed21653c86ceb51047b47f45cb12bb263231",
+              "current_canonical_lf_sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5"
+            },
+            {
+              "path": "src/native_legacy_exception_owner.cpp",
+              "accepted_canonical_lf_sha256": "011b97c1083164f3c47ba8873e85508acd84f1ef4a037f952641c2f29c0497db",
+              "current_canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+            }
+          ],
+          "Source_count": 48,
+          "Source_equal_count": 47
+        }
+      },
+      "older38_getter": {
+        "report": "reports/cc12_native_pending_registry_getter_primary_review.json",
+        "status": "source_admitted_complete_compiled_review_and_normal_build_passed_original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 38,
+          "equal_count": 37,
+          "differences": [
+            {
+              "path": "CMakeLists.txt",
+              "accepted_canonical_lf_sha256": "12b90fc33a04cb19167d3e91b37fa153a5a1e2d7a6268253a8339cc4d65d90c5",
+              "current_canonical_lf_sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5"
+            }
+          ],
+          "Source_count": 30,
+          "Source_equal_count": 30
+        }
+      }
+    },
+    "latest_Source_compiled_receipts": {
+      "native_tick_subnode_unlink_caller": {
+        "whole_object_bytes": 1107,
+        "whole_object_sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281",
+        "all_function_receipts": [
+          {
+            "symbol": "?unlink_native_tick_subnode_00875960@bsp@@YIXPAXIACRAX11@Z",
+            "bytes": 82,
+            "sha256": "c13949dbd6222fdee45e3fa3fcd552387b4b1560630740fe312c0c962d7055b5",
+            "instruction_count": 29,
+            "relocation_count": 4
+          }
+        ],
+        "accepted_Core_member": {
+          "name": "bsp_core.dir\\Release\\native_tick_subnode_unlink_caller.obj",
+          "header_offset": 63771252,
+          "payload_file_offset": 63771312,
+          "bytes": 1107,
+          "sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281"
+        },
+        "unchanged_comparison": {
+          "stem": "native_tick_subnode_unlink_caller",
+          "all_functions": 1,
+          "all_code_bytes_and_relocation_contracts_unchanged": true,
+          "EH_sections": 0,
+          "all_EH_payloads_and_relocation_contracts_unchanged": true
+        },
+        "domain": "Latest accepted Source compiled evidence, reused from pinned primary report. Object/Core/map/EH bytes not reread or executed by this worker. No Native C8F3B8 or C964E8 inference."
+      },
+      "native_pending_registry_getter": {
+        "whole_object_bytes": 3703,
+        "whole_object_sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113",
+        "all_function_receipts": [
+          {
+            "symbol": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+            "bytes": 250,
+            "sha256": "640e03f66d07747180012ac1b275a19d56738dd71a0f3cbcd2daad66bc7c8970",
+            "instruction_count": 85,
+            "relocation_count": 10
+          },
+          {
+            "symbol": "?tracked_counter@?A0xed3d3ed5@bsp@@YAACIPAU_RTL_CRITICAL_SECTION@@@Z",
+            "bytes": 11,
+            "sha256": "92ba22847a14f1e433171e10305bf3cc77e926efba088c0105a6c1410e67fb6f",
+            "instruction_count": 6,
+            "relocation_count": 0
+          },
+          {
+            "symbol": "__ehhandler$?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+            "bytes": 39,
+            "sha256": "8b65f3b96faf763cee46992f6834295aea04e217a0ca907b48c4eaaf3b4179e3",
+            "instruction_count": 12,
+            "relocation_count": 4
+          },
+          {
+            "symbol": "__catch$?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z$2",
+            "bytes": 21,
+            "sha256": "52872b9f9f5b7932e91b41737f8db08d168a808c5aa0e6a0210f32370268a32b",
+            "instruction_count": 7,
+            "relocation_count": 2
+          },
+          {
+            "symbol": "__catch$?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z$0",
+            "bytes": 26,
+            "sha256": "8bbab7fdeffb51da7a02233adcf47967a5933e72c2f42b669f824ed2ebf9041b",
+            "instruction_count": 12,
+            "relocation_count": 2
+          }
+        ],
+        "accepted_Core_member": {
+          "name": "bsp_core.dir\\Release\\native_pending_registry_getter.obj",
+          "header_offset": 63774776,
+          "payload_file_offset": 63774836,
+          "bytes": 3703,
+          "sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113"
+        },
+        "unchanged_comparison": {
+          "stem": "native_pending_registry_getter",
+          "all_functions": 5,
+          "all_code_bytes_and_relocation_contracts_unchanged": true,
+          "EH_sections": 1,
+          "all_EH_payloads_and_relocation_contracts_unchanged": true
+        },
+        "domain": "Latest accepted Source compiled evidence, reused from pinned primary report. Object/Core/map/EH bytes not reread or executed by this worker. No Native C8F3B8 or C964E8 inference."
+      },
+      "native_tick_sublist_unlink": {
+        "whole_object_bytes": 812,
+        "whole_object_sha256": "21e75aea9d833fb7d262adfa954140168f43c66efe400528ef9f959178d56f59",
+        "all_function_receipts": [
+          {
+            "symbol": "?unlink_native_tick_sublist_node_00874e60@bsp@@YIPAXPAXI0@Z",
+            "bytes": 83,
+            "sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
+            "instruction_count": 29,
+            "relocation_count": 0
+          }
+        ],
+        "accepted_Core_member": {
+          "name": "bsp_core.dir\\Release\\native_tick_sublist_unlink.obj",
+          "header_offset": 63772420,
+          "payload_file_offset": 63772480,
+          "bytes": 812,
+          "sha256": "21e75aea9d833fb7d262adfa954140168f43c66efe400528ef9f959178d56f59"
+        },
+        "unchanged_comparison": {
+          "stem": "native_tick_sublist_unlink",
+          "all_functions": 1,
+          "all_code_bytes_and_relocation_contracts_unchanged": true,
+          "EH_sections": 0,
+          "all_EH_payloads_and_relocation_contracts_unchanged": true
+        },
+        "domain": "Latest accepted Source compiled evidence, reused from pinned primary report. Object/Core/map/EH bytes not reread or executed by this worker. No Native C8F3B8 or C964E8 inference."
+      },
+      "native_legacy_exception_owner": {
+        "whole_object_bytes": 10071,
+        "whole_object_sha256": "7019ec2d8a61caba7231ca895df5efd08a95635c2edfb11922abdf85a17478ae",
+        "all_function_receipts": [
+          {
+            "symbol": "?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z",
+            "bytes": 132,
+            "sha256": "495069650d5db3faccb8a6737b750fcd798ee6047e743e3cb7f0a8a119f0c566",
+            "instruction_count": 40,
+            "relocation_count": 4
+          },
+          {
+            "symbol": "?destroy_native_legacy_logic_error_00411780@bsp@@YAXAAUNativeLegacyExceptionStorage@1@@Z",
+            "bytes": 93,
+            "sha256": "e6a898a19d3fb8ec959e3ee3ae0ad407d69f51304ad690448b7f52416f0e2796",
+            "instruction_count": 34,
+            "relocation_count": 4
+          },
+          {
+            "symbol": "?scalar_delete_native_legacy_logic_error_004117c0@bsp@@YAPAUNativeLegacyExceptionStorage@1@AAU21@I@Z",
+            "bytes": 110,
+            "sha256": "3bfd464f58c713ed86124c86bb9fb8541560e37d65835f94f6a8e930159ef8af",
+            "instruction_count": 40,
+            "relocation_count": 5
+          },
+          {
+            "symbol": "?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+            "bytes": 132,
+            "sha256": "c077637e6debc1af35dcc5ea0cb9fa70f07ba51e976be2eb8b1f39bc96430bf2",
+            "instruction_count": 44,
+            "relocation_count": 4
+          },
+          {
+            "symbol": "?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+            "bytes": 138,
+            "sha256": "436a291081276dcdd15b211b4004f917c74e37940ae6a9745958529259ca2c68",
+            "instruction_count": 45,
+            "relocation_count": 4
+          },
+          {
+            "symbol": "?construct_base@?A0x48aa704d@bsp@@YAXAAUNativeLegacyExceptionStorage@2@@Z",
+            "bytes": 64,
+            "sha256": "8f666717f86170bdc8b080291a016fd330b1d760ab99412b4d1ce7b05d3b4bd8",
+            "instruction_count": 25,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "?destroy_base@?A0x48aa704d@bsp@@YAXAAUNativeLegacyExceptionStorage@2@@Z",
+            "bytes": 64,
+            "sha256": "8f666717f86170bdc8b080291a016fd330b1d760ab99412b4d1ce7b05d3b4bd8",
+            "instruction_count": 25,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "??1BaseUnwindCleanup@?A0x48aa704d@bsp@@QAE@XZ",
+            "bytes": 76,
+            "sha256": "0e51fd9f5c060a4b85d48125f519d72573df581f6c2ab9c86e177ac2a73479fb",
+            "instruction_count": 28,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "?copy_base@?A0x48aa704d@bsp@@YAXAAUNativeLegacyExceptionStorage@2@ABU32@@Z",
+            "bytes": 18,
+            "sha256": "520ee386b8f4a07696e0b1c155d5307839ac4460fb10d63c82ebe7cfb6273e39",
+            "instruction_count": 8,
+            "relocation_count": 1
+          },
+          {
+            "symbol": "__ehhandler$?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z",
+            "bytes": 29,
+            "sha256": "221f30ce790e06217eba86f97655fb547d2391f49c249a5463e6445aeb5b41f6",
+            "instruction_count": 9,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "__unwindfunclet$?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z$0",
+            "bytes": 13,
+            "sha256": "24e23abbf1d9e15419c4f52a1771e284a8ca6b37a0884446d2242e6c3768492e",
+            "instruction_count": 7,
+            "relocation_count": 1
+          },
+          {
+            "symbol": "__ehhandler$?destroy_native_legacy_logic_error_00411780@bsp@@YAXAAUNativeLegacyExceptionStorage@1@@Z",
+            "bytes": 29,
+            "sha256": "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355",
+            "instruction_count": 9,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "__ehhandler$?scalar_delete_native_legacy_logic_error_004117c0@bsp@@YAPAUNativeLegacyExceptionStorage@1@AAU21@I@Z",
+            "bytes": 29,
+            "sha256": "9a5dc141b1c216b6acc9ef2e462c99300221fc5a2de03b963c6abbf76ceaa355",
+            "instruction_count": 9,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "__ehhandler$?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+            "bytes": 29,
+            "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+            "instruction_count": 9,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "__unwindfunclet$?copy_native_legacy_logic_error_004118d0@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z$0",
+            "bytes": 13,
+            "sha256": "24e23abbf1d9e15419c4f52a1771e284a8ca6b37a0884446d2242e6c3768492e",
+            "instruction_count": 7,
+            "relocation_count": 1
+          },
+          {
+            "symbol": "__ehhandler$?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+            "bytes": 29,
+            "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+            "instruction_count": 9,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "__unwindfunclet$?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z$0",
+            "bytes": 13,
+            "sha256": "24e23abbf1d9e15419c4f52a1771e284a8ca6b37a0884446d2242e6c3768492e",
+            "instruction_count": 7,
+            "relocation_count": 1
+          },
+          {
+            "symbol": "__ehhandler$?construct_base@?A0x48aa704d@bsp@@YAXAAUNativeLegacyExceptionStorage@2@@Z",
+            "bytes": 29,
+            "sha256": "d90cb4be796cf291fed7ec4133c6ee08fdef7075b7cc3fda0d4572cc996b7b69",
+            "instruction_count": 9,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "__ehhandler$?destroy_base@?A0x48aa704d@bsp@@YAXAAUNativeLegacyExceptionStorage@2@@Z",
+            "bytes": 29,
+            "sha256": "d90cb4be796cf291fed7ec4133c6ee08fdef7075b7cc3fda0d4572cc996b7b69",
+            "instruction_count": 9,
+            "relocation_count": 3
+          },
+          {
+            "symbol": "__ehhandler$??1BaseUnwindCleanup@?A0x48aa704d@bsp@@QAE@XZ",
+            "bytes": 29,
+            "sha256": "d90cb4be796cf291fed7ec4133c6ee08fdef7075b7cc3fda0d4572cc996b7b69",
+            "instruction_count": 9,
+            "relocation_count": 3
+          }
+        ],
+        "accepted_Core_member": {
+          "name": "bsp_core.dir\\Release\\native_legacy_exception_owner.obj",
+          "header_offset": 65791204,
+          "payload_file_offset": 65791264,
+          "bytes": 10071,
+          "sha256": "7019ec2d8a61caba7231ca895df5efd08a95635c2edfb11922abdf85a17478ae"
+        },
+        "unchanged_comparison": {
+          "stem": "native_legacy_exception_owner",
+          "all_functions": 20,
+          "all_code_bytes_and_relocation_contracts_unchanged": true,
+          "EH_sections": 8,
+          "all_EH_payloads_and_relocation_contracts_unchanged": true
+        },
+        "domain": "Latest accepted Source compiled evidence, reused from pinned primary report. Object/Core/map/EH bytes not reread or executed by this worker. No Native C8F3B8 or C964E8 inference."
+      }
+    },
+    "latest_accepted_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "start_utc": "2026-10-09T13:39:47.093038+00:00",
+      "finish_utc": "2026-10-09T13:40:03.116307+00:00",
+      "exit_code": 0,
+      "success": true
+    },
+    "latest_accepted_build_checks": 3,
+    "latest_build_artifact_pins_from_primary": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73738406,
+        "sha256": "1794982915c5918fb267a13770f29a09c0a6741dda566a632486f39222a4c72e"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "b5cceca88f81383f4e66d414580bf73a29bd1527f3bed4445d7e10ac8b7f149a"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "96e58669c613ca31f6d4161cdd42656e1aba00d21c9a4f55ea5f558b476f9736"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "b90454691fbd626be402131dbb86efda33285246b4941ad508025938ef36a0a4"
+      }
+    ],
+    "latest_new_Source_consumers": 0,
+    "artifacts_reread_or_executed_here": false,
+    "qualification": "Latest61 Source pins match this baseline, including both CMake additions. Retained compiled/Core/build/EH receipts are accepted snapshots only. All20 legacy functions/eight SourceEH sections unchanged does not prove Native handler behavior or runtime ABI."
+  },
+  "next_evidence_selected_lead": {
+    "kind": "unopened_numeric_root_profile_slot0_candidate",
+    "profile_address": "00D08AE4",
+    "slot_offset": 0,
+    "slot_word_address": "00D08AE4",
+    "selection_evidence": "Owned 007F1E3C writes this root profile before the member child; readonly100 cleanup uses current node profile slot0.",
+    "slot_word_bytes_read_by_this_worker": false,
+    "slot_target_independently_resolved_by_this_worker": false,
+    "post_child_root_profile_proved": false,
+    "required_prior_qualification": "Unopened7F0F80 may change Task0 or relevant backing. Establish its actual contract or other bounded preservation evidence before asserting final/later profile identity.",
+    "earlier_root_profile": "00CFD99C",
+    "member_profile": "00CF6514",
+    "neither_profile_is_a_guessed_free_or_destructor_binding": true,
+    "no_expansion_or_additional_address_ownership_taken": true
+  },
+  "later_Root_notices_not_independently_reaudited": {
+    "source": "Root messages received during this audit after the stated checkout baseline.",
+    "reparent_EH_packet": "Root reported a separate packet published at3cff8776a. Its evidence is not imported or recounted here; actual Native interpreter/dispatch contract remains separate. Constructor handlerC8F3B8 stays wholly unopened by this worker.",
+    "profile_word_only_leads": [
+      {
+        "slot_word_address": "00CFD99C",
+        "Root_reported_target": "0071C4D0"
+      },
+      {
+        "slot_word_address": "00D08AE4",
+        "Root_reported_target": "007F1EE0"
+      }
+    ],
+    "qualification": "Root-reported conditional table-slot identities only. This worker read no table or target body. No target ABI/effects, post-child current Task profile or runtime deletion is certified."
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 18550,
+      "sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5",
+      "canonical_lf_sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_CONSTRUCTOR_ABI_READINESS.md",
+      "bytes": 11332,
+      "sha256": "674c09ef8cb1569aa2a8eae8bc3099422414277229bb18f4fbfc8860e3b085ed",
+      "canonical_lf_sha256": "674c09ef8cb1569aa2a8eae8bc3099422414277229bb18f4fbfc8860e3b085ed"
+    },
+    {
+      "path": "docs/CC12_TICK_SUBNODE_PRODUCER_SELECTION.md",
+      "bytes": 8822,
+      "sha256": "d37dd4a516cec0fd5c5c5413a656559d8faedee2ef63d9725ef6e9f36151bacd",
+      "canonical_lf_sha256": "d37dd4a516cec0fd5c5c5413a656559d8faedee2ef63d9725ef6e9f36151bacd"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2"
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "bytes": 25784,
+      "sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e",
+      "canonical_lf_sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e"
+    },
+    {
+      "path": "include/bsp/unit_destructor_levels.hpp",
+      "bytes": 15720,
+      "sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+      "canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5"
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "bytes": 18412,
+      "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+    },
+    {
+      "path": "reports/cc12_native_allocator_owned_message_constructor_primary_review.json",
+      "bytes": 1889046,
+      "sha256": "2ca2f35dd8959800e20117fdf4041a2cf663891a355ce3e74716de29b1712695",
+      "canonical_lf_sha256": "2ca2f35dd8959800e20117fdf4041a2cf663891a355ce3e74716de29b1712695"
+    },
+    {
+      "path": "reports/cc12_native_lua_variant_link_repair_helpers_primary_review.json",
+      "bytes": 1900289,
+      "sha256": "932c033288e0b5a4542abdeb6867c4538b84f6c877be9df980c76907bac2cc4c",
+      "canonical_lf_sha256": "932c033288e0b5a4542abdeb6867c4538b84f6c877be9df980c76907bac2cc4c"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "bytes": 853902,
+      "sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+      "canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277"
+    },
+    {
+      "path": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+      "bytes": 1101362,
+      "sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df",
+      "canonical_lf_sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df"
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json",
+      "bytes": 567071,
+      "sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0",
+      "canonical_lf_sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+      "bytes": 57016,
+      "sha256": "8605faad42e0c1a6760ca00d36626450913e867ff285f4fcb18310bc7d2e39e1",
+      "canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_subnode_reparent_caller_ABI_readiness.json",
+      "bytes": 54026,
+      "sha256": "e30c66838a4a2ceda6376c94cb80e36c6438b66b806dad5937a194618e1d0966",
+      "canonical_lf_sha256": "e30c66838a4a2ceda6376c94cb80e36c6438b66b806dad5937a194618e1d0966"
+    },
+    {
+      "path": "reports/cc12_tick_subnode_producer_selection.json",
+      "bytes": 78606,
+      "sha256": "bc4d81cea48be7ae01bc03d6bd2b18548b2c6d1ef470579142e07fa7d99183f3",
+      "canonical_lf_sha256": "bc4d81cea48be7ae01bc03d6bd2b18548b2c6d1ef470579142e07fa7d99183f3"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "canonical_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999"
+    },
+    {
+      "path": "src/native_allocator_base_default_constructor.cpp",
+      "bytes": 755,
+      "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "canonical_lf_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "bytes": 4352,
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "src/native_tick_sublist_unlink.cpp",
+      "bytes": 2257,
+      "sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "canonical_lf_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2"
+    },
+    {
+      "path": "src/native_tick_subnode_unlink_caller.cpp",
+      "bytes": 2743,
+      "sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "canonical_lf_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9"
+    },
+    {
+      "path": "src/unit_destructor_levels.cpp",
+      "bytes": 18167,
+      "sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+      "canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673"
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "bytes": 10576,
+      "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+    }
+  ],
+  "hash_domains": {
+    "owned_Native": "Full136 live GPR == file-backed original PE .text; Root gate hash equality; all41 instructions decoded.",
+    "image_identity": "Whole original file SHA256 is identity only; no unowned Native bytes decoded.",
+    "Source_and_reports": "Raw worktree SHA256 and CRLF-to-LF hash at named baseline. Source excerpt pins rechecked against current files.",
+    "compiled_artifacts": "Latest primary report receipts only, not current object/library/map rereads by this audit.",
+    "self_report": "No recursive self hash."
+  },
+  "validation": {
+    "owned_live_PE_and_Root_hash_equal": true,
+    "all41_boundaries_match_live_listing": true,
+    "all136_bytes_classified": true,
+    "all41_stack_positions_accounted": true,
+    "two_direct_CALLs_and_RET8_accounted": true,
+    "eleven_direct_task_write_sites_accounted": true,
+    "current_Source_excerpt_pins_equal": true,
+    "latest61_input_replays": "61/61 for both latest primary reports",
+    "older57_replay": "56/57; CMake-only difference",
+    "JSON_and_current_pins_checked": true
+  },
+  "limits": {
+    "Source_CMake_ledger_GPR_mutation": false,
+    "build_tests_or_probes": false,
+    "Native_children_callers_handler_profile_slot_neighbor_body_or_data_read": false,
+    "Source_admission": false,
+    "Native_admission": false,
+    "Original_ABI_admission": false,
+    "runtime_gameplay_or_lifecycle_proof": false,
+    "only_owned_two_outputs": true
+  }
+}

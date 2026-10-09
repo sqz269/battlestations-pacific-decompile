@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "packet": "cc12_squadron_launch_task_deletion_binding_readiness",
+  "status": "readonly_two_concrete_Profile_slot0_targets_identified_target_ABI_cleanup_and_Source_binding_unproved",
+  "created_utc": "2026-10-09T14:24:55.855930+00:00",
+  "baseline": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "each_live_query_bsp_verified": true
+  },
+  "Original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "profile_word_rows": [
+    {
+      "profile_word": "00CFD99C",
+      "hex": "d0c47100",
+      "bytes": 4,
+      "sha256": "d0602d83e37e17837f3c56ba9735b02147ae887a028124d95d6ba5fc19be5332",
+      "target": "0071C4D0",
+      "GPR_PE_equal": true,
+      "PE_section": ".rdata",
+      "PE_section_characteristics": "40000040",
+      "target_metadata": "Function: CG_scalar_deleting_dtor_0071c4d0 at 0071c4d0\nSignature: undefined CG_scalar_deleting_dtor_0071c4d0(void)\nEntry: 0071c4d0\nBody: 0071c4d0 - 0071c4ed\n{\n \"function_name\": \"CG_scalar_deleting_dtor_0071c4d0\",\n \"address\": \"0071c4d0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 3,\n \"edge_count\": 2,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\",\n  \"FUN_00875b30\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"77f46f91ccfaaab734b391d0bff0ff82d49da39c69cdfd1bee6a4930a45cdc7e\",\n  \"ecd163bc5aca8c13e498342c0435262fd9e4a9cd5b0f9abd516157edcccbb4be\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+      "target_body_read": false,
+      "ABI_and_deletion_effects_proved": false
+    },
+    {
+      "profile_word": "00D08AE4",
+      "hex": "e01e7f00",
+      "bytes": 4,
+      "sha256": "7907f85bed3f8cb9593ed83f5e25a80202edd4ebad1ad9062c49532ef4905a01",
+      "target": "007F1EE0",
+      "GPR_PE_equal": true,
+      "PE_section": ".rdata",
+      "PE_section_characteristics": "40000040",
+      "target_metadata": "Function: CG_scalar_deleting_dtor_007f1ee0 at 007f1ee0\nSignature: undefined CG_scalar_deleting_dtor_007f1ee0(void)\nEntry: 007f1ee0\nBody: 007f1ee0 - 007f1efd\n{\n \"function_name\": \"CG_scalar_deleting_dtor_007f1ee0\",\n \"address\": \"007f1ee0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 3,\n \"edge_count\": 2,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\",\n  \"FUN_007f1e70\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"77f46f91ccfaaab734b391d0bff0ff82d49da39c69cdfd1bee6a4930a45cdc7e\",\n  \"ecd163bc5aca8c13e498342c0435262fd9e4a9cd5b0f9abd516157edcccbb4be\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+      "target_body_read": false,
+      "ABI_and_deletion_effects_proved": false
+    }
+  ],
+  "constructor_evidence": "Separate RootAstra whole136B/41 gate: task0=CFD99C before CALL876020 with capturedTask; task0=D08AE4 before uninspected memberchild7F0F80. Lastowned store does not prove post-child currentTask0.",
+  "conditional_consumer_edge": "Accepted100B874F00 captures currentheadN and freshly reads currentN0/currentprofile0 after unlink stores, then CALLs the actual slot with ECXN/PUSH1. If currentN0 equals either provenwordaddress and currenttableword unchanged, the physical indirect edge targets the corresponding metadata function.",
+  "metadata_target_contracts": [
+    {
+      "address": "0071C4D0",
+      "span_metadata_only": "0071C4D0..0071C4ED30B10ops",
+      "named_callees": [
+        "00875B30",
+        "00BF65AC"
+      ],
+      "calling_and_free_effects": "Unproved; _free/CGlabel are metadata names, no ret/preservation/throw/noreturn inferred."
+    },
+    {
+      "address": "007F1EE0",
+      "span_metadata_only": "007F1EE0..007F1EFD30B10ops",
+      "named_callees": [
+        "007F1E70",
+        "00BF65AC"
+      ],
+      "calling_and_free_effects": "Unproved; raw full-body/possiblelistinggap needed."
+    }
+  ],
+  "Source_search": "Bounded case-insensitive exact addresses/names/profiles acrossinclude/bsp andsrc *.hpp/*.cpp found only D08AE4 metadata comment plane_squadron_host.hpp133; no actual corresponding Source callable/dispatch binding.",
+  "Source_scope": "Existing finite singleton dispatcher is not a generic subnode deletion shim; do not add unknown-profile free fallback.",
+  "remaining": [
+    "RootAstra complete target entry/stack/RET/register/flag gate, including possible incorrect no-return listing",
+    "Owned actual destructor children875B30 and7F1E70 contracts and their dependencies",
+    "Actual current node/profile producer and stable Source node/lifetime/dispatch bindings",
+    "Separate actual production storage/lifecycle/startup/gameplay"
+  ],
+  "repository_input_pins": [
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "revision": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "canonical_lf_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "revision": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "revision": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+      "bytes": 55590,
+      "sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a",
+      "canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a",
+      "revision": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0"
+    },
+    {
+      "path": "reports/cc12_tick_subnode_producer_selection.json",
+      "bytes": 78606,
+      "sha256": "bc4d81cea48be7ae01bc03d6bd2b18548b2c6d1ef470579142e07fa7d99183f3",
+      "canonical_lf_sha256": "bc4d81cea48be7ae01bc03d6bd2b18548b2c6d1ef470579142e07fa7d99183f3",
+      "revision": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0"
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "bytes": 25784,
+      "sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e",
+      "canonical_lf_sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e",
+      "revision": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 25482,
+      "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "revision": "3cff8776a2c5e44f56d9fcb29ccf205ec7d754d0"
+    },
+    {
+      "path": "local/cc12_squadron_launch_task_constructor_primary_gate.json",
+      "bytes": 3551,
+      "sha256": "7f9b14a5ba4c85396f5ee2c868cb31f7d7ff2bb5682d19066d340143c0e87dfb",
+      "canonical_lf_sha256": "921d1c53f98a406806d91e67c982c27785b1d312edaa9b844de31aa944b67e5e",
+      "revision": null
+    }
+  ],
+  "capture_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_task_profile_slot_primary\\0071c4d0_metadata.txt",
+      "bytes": 878,
+      "sha256": "8be8d6e7da595f7267f4968efa4f4bc83098bd88579eead1439f1df8f40af81f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_task_profile_slot_primary\\007f1ee0_metadata.txt",
+      "bytes": 878,
+      "sha256": "9c0dab6b9d693cb968d96524b552d913e2fe10870ab790898870a0827e613a6c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_task_profile_slot_primary\\00cfd99c_word.txt",
+      "bytes": 29,
+      "sha256": "6bfdd9feabb5970fb3c32c2365c951019053e3bdcb57abd8277393d11b46d0e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_task_profile_slot_primary\\00d08ae4_word.txt",
+      "bytes": 29,
+      "sha256": "f6dee1d2d83879fa6097091544df7f9838162dae0b8691c3901be6d29f9b29ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_task_profile_slot_primary\\count.txt",
+      "bytes": 49,
+      "sha256": "64f4f9be166172342d092bf0cd71435b6499bdc159a7f8a34c738d7db792a246"
+    }
+  ],
+  "credit": {
+    "Source_functions": 0,
+    "Source_bytes": 0,
+    "Original_ABI": 0,
+    "startup_execution": 0,
+    "gameplay": 0,
+    "Ghidra_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0
+  },
+  "document_pin": {
+    "path": "docs/CC12_SQUADRON_LAUNCH_TASK_DELETION_BINDING_READINESS.md",
+    "bytes": 2902,
+    "sha256": "22a67698c33a086344089b291c9e47293edda493a12aedaef327983c2ff27466"
+  }
+}
