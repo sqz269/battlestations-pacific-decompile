@@ -1,7 +1,7 @@
 {
   "packet": "cc12_native_world_matrix_sentinel_source",
-  "status": "Source_implemented_from_primary_approved_design_build_pending_Root_registration",
-  "utc": "2026-10-08T23:47:03.910022+00:00",
+  "status": "worker_static_Source_proof_complete_primary_merged_review_pending",
+  "utc": "2026-10-09T00:06:06.020202+00:00",
   "Source_files": {
     "include/bsp/native_world_matrix_sentinel.hpp": {
       "sha256": "41bcc5a4502e912a373e021bd53af9f19202b1e20f597df8e3df51df517bd575",
@@ -53,12 +53,199 @@
     "World_publication_or_lifetime_implemented": false
   },
   "validation": {
-    "build": "pending explicit Root CMake registration notification",
-    "normal_builds": 0,
+    "status": "PASS",
+    "verified_utc": "2026-10-09T00:04:00.167404+00:00",
+    "pre_build_pins": 4781,
+    "post_build_pins": 4530,
+    "actual_new_TU_inputs": 84,
+    "normal_build": {
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast",
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\scripts\\build.ps1"
+      ],
+      "started_utc": "2026-10-08T23:54:37.275640+00:00",
+      "preimages": "pre_build/pins.json",
+      "all_prefrozen_inputs_rehashed_before_invocation": true,
+      "Root_authorization": "Root_build_authorization.json",
+      "returncode": 0,
+      "finished_utc": "2026-10-08T23:54:53.808872+00:00"
+    },
+    "helper": {
+      "symbol": "?create_native_world_matrix_sentinel_004c3080@bsp@@YAPAXXZ",
+      "symbol_index": 13,
+      "section": 5,
+      "section_value": 0,
+      "physical_file_offset": 869,
+      "bytes": 26,
+      "sha256": "c580f1f74454ad9bfd7f316c7e6304b1a647b182aac0e3872498cd7d46504a9c",
+      "instruction_count": 11,
+      "relocations": [
+        {
+          "record_file_offset": 895,
+          "raw_record_hex": "030000000f0000001400",
+          "offset": 3,
+          "type": 20,
+          "symbol_index": 15,
+          "symbol": "?allocate_sentinel_storage@?A0xe595f91c@bsp@@YAPAXI@Z",
+          "symbol_record": {
+            "index": 15,
+            "record_file_offset": 1223,
+            "raw_record_hex": "00000000a400000000000000040020000300",
+            "name": "?allocate_sentinel_storage@?A0xe595f91c@bsp@@YAPAXI@Z",
+            "value": 0,
+            "section": 4,
+            "type": 32,
+            "storage": 3,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 872,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 3
+        }
+      ]
+    },
+    "adapter": {
+      "symbol": "?allocate_sentinel_storage@?A0xe595f91c@bsp@@YAPAXI@Z",
+      "symbol_index": 15,
+      "section": 4,
+      "section_value": 0,
+      "physical_file_offset": 781,
+      "bytes": 58,
+      "sha256": "7b121d1cbda959af3f6bfc76d0e9390da02b20036100aa2023f449029e9c915c",
+      "instruction_count": 20,
+      "relocations": [
+        {
+          "record_file_offset": 839,
+          "raw_record_hex": "07000000110000000600",
+          "offset": 7,
+          "type": 6,
+          "symbol_index": 17,
+          "symbol": "___security_cookie",
+          "symbol_record": {
+            "index": 17,
+            "record_file_offset": 1259,
+            "raw_record_hex": "00000000f500000000000000000000000200",
+            "name": "___security_cookie",
+            "value": 0,
+            "section": 0,
+            "type": 0,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 788,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 7
+        },
+        {
+          "record_file_offset": 849,
+          "raw_record_hex": "250000000e0000001400",
+          "offset": 37,
+          "type": 20,
+          "symbol_index": 14,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "symbol_record": {
+            "index": 14,
+            "record_file_offset": 1205,
+            "raw_record_hex": "000000005a00000000000000000020000200",
+            "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 818,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 37
+        },
+        {
+          "record_file_offset": 859,
+          "raw_record_hex": "32000000100000001400",
+          "offset": 50,
+          "type": 20,
+          "symbol_index": 16,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_record": {
+            "index": 16,
+            "record_file_offset": 1241,
+            "raw_record_hex": "00000000da00000000000000000020000200",
+            "name": "@__security_check_cookie@4",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 831,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 50
+        }
+      ]
+    },
+    "new_object": {
+      "bytes": 1577,
+      "sha256": "c5b7a238fe5da23e20f32b49719b7a6482b7025d6b4ba095f173fcd6297eb769",
+      "symbol_table_file_offset": 953,
+      "symbol_table_record_count": 20
+    },
+    "allocator_object": {
+      "bytes": 32971,
+      "sha256": "f48e5f632dca40f11b95e9f94b8022229047e543b9889737d6b3795d9a860582"
+    },
+    "allocator_reused_unchanged": true,
+    "allocator_whole_reached_sections": 27,
+    "allocator_whole_reached_functions": 9,
+    "CRT_whole_static_members": 6,
+    "CRT_short_import_members": 6,
+    "core_archive_bytes": 73672790,
+    "core_archive_sha256": "c1e55cc90fb1d7e7005aa256e25a0c6a6e550d8c2ac547544f76582c3e0d553b",
+    "Native_bodies": [
+      {
+        "address": "004C3080",
+        "bytes": 26,
+        "sha256": "5a5cc009f2f21acf33ca74f2d277ca8fb843c93a8e12a798cd2d3d9978a7b090",
+        "instruction_count": 11
+      },
+      {
+        "address": "00BF681B",
+        "bytes": 105,
+        "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+        "instruction_count": 33
+      },
+      {
+        "address": "00BF65AC",
+        "bytes": 5,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "instruction_count": 1
+      }
+    ],
+    "normal_tests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "test_pass_count": 3,
+    "build_invocation_count": 1,
     "new_tests": 0,
-    "probes": 0,
-    "target_executions": 0,
-    "fresh_emitted_code_qualified": false
+    "ad_hoc_probes": 0,
+    "target_execution": 0,
+    "Ghidra_writes": 0,
+    "whole_World_ready": false,
+    "whole_game_ready": false,
+    "boundary": "Static whole-body Source/Native bytes and positive physical archive/provider origins. The raw sentinel alone is reconstructed; actual owner construction, publication, teardown, World caller admission and runtime behavior remain outside this packet."
   },
   "scope": {
     "new_raw_leaf_Source_definitions": 1,
@@ -68,5 +255,39 @@
     "production_World_or_game_readiness": false,
     "Ghidra_program_mutations": 0,
     "worker_CMake_or_ledger_edits": 0
-  }
+  },
+  "contracts": {
+    "Native": "004C3080 whole26B/11, incoming ECX/EDX ignored, no stack args, plain RET, EAX allocation and ECX=EAX+4 on ordinary return. Native callers004CB030 and004C8B50; not exclusive to World.",
+    "raw_result": "Allocate exactly108 bytes. Store self at+0 and+4 only. +08..+6B remain unspecified allocator contents. Transfer ownership to caller in the existing singleton_lifetime_free domain. No zeroing, registry, class ctor, callback or World publication.",
+    "helper_schedule": "Every instruction start and every raw byte matches Native except the four-byte CALL displacement [3,7), which physically targets private adapter symbol index15/section4/value0. Both conditional branches are preserved; hypothetical EAX0 is not graceful success.",
+    "adapter": "Complete58B/20. Establish EBP frame/16 bytes; save XORed /GS cookie at EBP-4; request{object=3,bytes,bytes} at EBP-16,-12,-8; pass request address synchronously; call real allocator; check cookie preserving EAX; restore stack/EBP and RET. No cleanup object/EH thunk or catch.",
+    "GS": "New emitted detail: cookie global and check from actual MSVCRT members. Complete14B/4 check compares ECX with cookie and returns or jumps to whole8B/3 failure MOV ECX,2;INT29;RET. Cookie68B section and complement fully retained; initial bytes are not runtime state. No /GS policy changes or cold-path omission.",
+    "allocator": "Existing Source object reused unchanged, not freshly compiled. Allocate90B/37 + free6B/1 and complete27-section/9-function exception/RTTI/throw graph checked through physical symbol-table indices, aux fallback records and entire reached code/data. Existing host malloc/callnewh/bad_alloc boundary preserved.",
+    "platform": "Six complete MSVCRT members plus six I386 UCRT/VCRUNTIME short-import members positively resolve all graph externals. Same normal app map confirms static providers and PE import directory retained. No loaded DLL/OS execution or Native exception/global/FH3 identity claim.",
+    "scope": "Raw allocation leaf only. No production Source World caller; constructor004CB030, destructor/vtable/EH, publication9037F0 and actual Game caller004DE610 remain separate. World/full-game/startup readiness stays false."
+  },
+  "evidence": {
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_native_world_matrix_sentinel_source_evidence.zip",
+    "bytes": 159140246,
+    "sha256": "ec277e89365e5ff37de73441df8b21c3d76589e7b5ea95e3f3c5b192cd09b8d6",
+    "manifest_sha256": "d5628b1560c9b421cc8c6504dda63d02d3d3ea120db4e9067aa17456b675339d",
+    "manifest_files": 9371,
+    "zip_entries": 9372,
+    "all_payload_hashes_and_CRC_checked": true
+  },
+  "evidence_paths": [
+    "actual_consumed_input_closure.json",
+    "whole_sentinel_COFF.json",
+    "whole_sentinel_INDEX_graph.json",
+    "whole_allocator_COFF.json",
+    "whole_allocator_INDEX_graph.json",
+    "whole_CRT_INDEX_graphs.json",
+    "complete_cross_member_provider_graph.json",
+    "whole_core_archive_origins.json",
+    "actual_library_consumption.json",
+    "normal_application_provider_evidence.json",
+    "whole_Native_originals.json",
+    "verification_attempts.json"
+  ],
+  "followup": "Independent primary normal-build review required before packet acceptance. This leaf does not admit either original caller or any World owner lifetime."
 }
