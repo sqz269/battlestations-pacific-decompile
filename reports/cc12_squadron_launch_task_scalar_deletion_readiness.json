@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-09T14:39:25.827166+00:00",
+  "baseline_commit": "ac9205e2864b6d8604955dcd16a7032b8cc6d313",
+  "status": "readonly_complete_two_scalar_wrappers_cleanup_and_binding_open",
+  "scope": {
+    "owned_code_bytes": 60,
+    "owned_raw_instruction_count": 22,
+    "owned_functions": [
+      "0071c4d0",
+      "007f1ee0"
+    ],
+    "child_bodies_unopened": [
+      "00875b30",
+      "007f1e70",
+      "00bf65ac"
+    ],
+    "separate_member92_gate_excluded": true
+  },
+  "Original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verified_program": "/battlestationspacific.exe",
+  "function_count": "live function count 64729; snapshot 64729; same\n",
+  "records": [
+    {
+      "address": "0071c4d0",
+      "length": 30,
+      "sha256": "d8e9f92d8a45ace5501bdb6f085a10a938e11f7944ba494834f2fa58cf030829",
+      "bytes_hex": "568bf1e858961500f644240801740956e8c7a04d0083c4048bc65ec20400",
+      "metadata": "Function: CG_scalar_deleting_dtor_0071c4d0 at 0071c4d0\nSignature: undefined CG_scalar_deleting_dtor_0071c4d0(void)\nEntry: 0071c4d0\nBody: 0071c4d0 - 0071c4ed\n{\n \"function_name\": \"CG_scalar_deleting_dtor_0071c4d0\",\n \"address\": \"0071c4d0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 3,\n \"edge_count\": 2,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\",\n  \"FUN_00875b30\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"77f46f91ccfaaab734b391d0bff0ff82d49da39c69cdfd1bee6a4930a45cdc7e\",\n  \"ecd163bc5aca8c13e498342c0435262fd9e4a9cd5b0f9abd516157edcccbb4be\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+      "listing": "0071c4d0: PUSH ESI \n0071c4d1: MOV ESI,ECX \n0071c4d3: CALL 0x00875b30 \n0071c4d8: TEST byte ptr [ESP + 0x8],0x1 \n0071c4dd: JZ 0x0071c4e8 \n0071c4df: PUSH ESI \n0071c4e0: CALL 0x00bf65ac \n0071c4e8: MOV EAX,ESI \n0071c4ea: POP ESI \n0071c4eb: RET 0x4 \n",
+      "raw_instructions": [
+        {
+          "address": "0071c4d0",
+          "size": 1,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0071c4d1",
+          "size": 2,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "0071c4d3",
+          "size": 5,
+          "bytes": "e858961500",
+          "mnemonic": "call",
+          "operands": "0x875b30"
+        },
+        {
+          "address": "0071c4d8",
+          "size": 5,
+          "bytes": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "0071c4dd",
+          "size": 2,
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0x71c4e8"
+        },
+        {
+          "address": "0071c4df",
+          "size": 1,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0071c4e0",
+          "size": 5,
+          "bytes": "e8c7a04d00",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "0071c4e5",
+          "size": 3,
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0071c4e8",
+          "size": 2,
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "0071c4ea",
+          "size": 1,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0071c4eb",
+          "size": 3,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "address": "007f1ee0",
+      "length": 30,
+      "sha256": "61c4f6a149a32ebf0082d04b56f3bc34fdd1f78355cd94a3711f810ff5095d18",
+      "bytes_hex": "568bf1e888fffffff644240801740956e8b746400083c4048bc65ec20400",
+      "metadata": "Function: CG_scalar_deleting_dtor_007f1ee0 at 007f1ee0\nSignature: undefined CG_scalar_deleting_dtor_007f1ee0(void)\nEntry: 007f1ee0\nBody: 007f1ee0 - 007f1efd\n{\n \"function_name\": \"CG_scalar_deleting_dtor_007f1ee0\",\n \"address\": \"007f1ee0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 3,\n \"edge_count\": 2,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\",\n  \"FUN_007f1e70\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"77f46f91ccfaaab734b391d0bff0ff82d49da39c69cdfd1bee6a4930a45cdc7e\",\n  \"ecd163bc5aca8c13e498342c0435262fd9e4a9cd5b0f9abd516157edcccbb4be\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+      "listing": "007f1ee0: PUSH ESI \n007f1ee1: MOV ESI,ECX \n007f1ee3: CALL 0x007f1e70 \n007f1ee8: TEST byte ptr [ESP + 0x8],0x1 \n007f1eed: JZ 0x007f1ef8 \n007f1eef: PUSH ESI \n007f1ef0: CALL 0x00bf65ac \n007f1ef8: MOV EAX,ESI \n007f1efa: POP ESI \n007f1efb: RET 0x4 \n",
+      "raw_instructions": [
+        {
+          "address": "007f1ee0",
+          "size": 1,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "007f1ee1",
+          "size": 2,
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "007f1ee3",
+          "size": 5,
+          "bytes": "e888ffffff",
+          "mnemonic": "call",
+          "operands": "0x7f1e70"
+        },
+        {
+          "address": "007f1ee8",
+          "size": 5,
+          "bytes": "f644240801",
+          "mnemonic": "test",
+          "operands": "byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "007f1eed",
+          "size": 2,
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0x7f1ef8"
+        },
+        {
+          "address": "007f1eef",
+          "size": 1,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "007f1ef0",
+          "size": 5,
+          "bytes": "e8b7464000",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "007f1ef5",
+          "size": 3,
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "007f1ef8",
+          "size": 2,
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "007f1efa",
+          "size": 1,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "007f1efb",
+          "size": 3,
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    }
+  ],
+  "saved_listing_missing_starts": {
+    "0071c4e5": {
+      "address": "0071c4e5",
+      "error": "No instruction at address"
+    },
+    "007f1ef5": {
+      "address": "007f1ef5",
+      "error": "No instruction at address"
+    }
+  },
+  "flow_query": {
+    "utc": "2026-10-09T14:35:46.590880+00:00",
+    "addresses": [
+      "0071c4d0",
+      "007f1ee0",
+      "00bf65ac"
+    ],
+    "read_only": true,
+    "endpoint": "run_script_inline",
+    "verified_before": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4658,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64729,
+        "symbol_count": 145557,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "verified_after": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4658,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64729,
+        "symbol_count": 145557,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "query_source": "\nimport ghidra.app.script.GhidraScript;\nimport ghidra.program.model.address.Address;\nimport ghidra.program.model.listing.CodeUnit;\nimport ghidra.program.model.listing.Function;\nimport ghidra.program.model.listing.Instruction;\n\npublic class BspFlowProperties_20261009143546588122 extends GhidraScript {\n    private String q(Object value) {\n        if (value == null) return \"null\";\n        String s = value.toString();\n        return \"\\\"\" + s.replace(\"\\\\\", \"\\\\\\\\\").replace(\"\\\"\", \"\\\\\\\"\")\n            .replace(\"\\n\", \"\\\\n\").replace(\"\\r\", \"\\\\r\").replace(\"\\t\", \"\\\\t\") + \"\\\"\";\n    }\n    private void field(StringBuilder row, String name, Object value) {\n        if (row.length() > 1) row.append(',');\n        row.append(q(name)).append(':').append(q(value));\n    }\n    @Override public void run() throws Exception {\n        if (!currentProgram.getDomainFile().getPathname().equals(\"/battlestationspacific.exe\") ||\n            !currentProgram.getLanguageID().toString().equals(\"x86:LE:32:default\") ||\n            currentProgram.getImageBase().getOffset() != 4194304L)\n            throw new IllegalStateException(\"Wrong BSP target inside read-only query\");\n        String[] addresses = {\"0071c4d0\",\"007f1ee0\",\"00bf65ac\"};\n        StringBuilder output = new StringBuilder(\"[\");\n        for (String value : addresses) {\n            Address address = currentProgram.getAddressFactory().getAddress(value);\n            Instruction instruction = currentProgram.getListing().getInstructionAt(address);\n            Instruction containing = currentProgram.getListing().getInstructionContaining(address);\n            CodeUnit unit = currentProgram.getListing().getCodeUnitAt(address);\n            Function function = currentProgram.getFunctionManager().getFunctionContaining(address);\n            Function thunk = function != null && function.isThunk() ? function.getThunkedFunction(false) : null;\n            StringBuilder row = new StringBuilder(\"{\");\n            field(row, \"address\", address);\n            field(row, \"instruction\", instruction);\n            field(row, \"instruction_start\", containing == null ? null : containing.getAddress());\n            field(row, \"code_unit_class\", unit == null ? null : unit.getClass().getName());\n            field(row, \"code_unit_length\", unit == null ? null : unit.getLength());\n            field(row, \"flow_override\", instruction == null ? null : instruction.getFlowOverride());\n            field(row, \"default_flow_type\", instruction == null ? null : instruction.getPrototype().getFlowType(instruction.getInstructionContext()));\n            field(row, \"effective_flow_type\", instruction == null ? null : instruction.getFlowType());\n            field(row, \"default_fallthrough\", instruction == null ? null : instruction.getDefaultFallThrough());\n            field(row, \"fallthrough\", instruction == null ? null : instruction.getFallThrough());\n            field(row, \"fallthrough_overridden\", instruction == null ? null : instruction.isFallThroughOverridden());\n            field(row, \"flows\", instruction == null ? null : java.util.Arrays.toString(instruction.getFlows()));\n            field(row, \"function_entry\", function == null ? null : function.getEntryPoint());\n            field(row, \"function_name\", function == null ? null : function.getName());\n            field(row, \"function_body\", function == null ? null : function.getBody());\n            field(row, \"function_no_return\", function == null ? null : function.hasNoReturn());\n            field(row, \"function_is_thunk\", function == null ? null : function.isThunk());\n            field(row, \"thunk_target\", thunk == null ? null : thunk.getEntryPoint());\n            field(row, \"thunk_target_name\", thunk == null ? null : thunk.getName());\n            field(row, \"thunk_target_no_return\", thunk == null ? null : thunk.hasNoReturn());\n            row.append('}');\n            if (output.length() > 1) output.append(',');\n            output.append(row);\n        }\n        output.append(']');\n        println(\"BSP_FLOW_PROPERTIES_BEGIN\");\n        println(output.toString());\n        println(\"BSP_FLOW_PROPERTIES_END\");\n    }\n}\n",
+    "http_status": 200,
+    "raw_response": "{\"error\":\"Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.\"}",
+    "decoded_response": {
+      "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process."
+    },
+    "properties": null
+  },
+  "Source_search": {
+    "command": "rg -n -i 71c4d0|7f1ee0|875b30|7f1e70 include/bsp src",
+    "exit_code": 0,
+    "stdout": "include/bsp\\native_pilot_bot_task_owner.hpp:50:    virtual void base_cleanup_00875b30() = 0;           // actual owner base\nsrc\\native_pilot_bot_task_owner.cpp:182:    calls.base_cleanup_00875b30();           //0099A7E1, owner base\n",
+    "claim": "Only a required pure virtual base_cleanup_00875b30 and its facade call; no raw wrapper or cleanup provider."
+  },
+  "input_pins": [
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_DELETION_BINDING_READINESS.md",
+      "bytes": 2902,
+      "sha256": "22a67698c33a086344089b291c9e47293edda493a12aedaef327983c2ff27466"
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_deletion_binding_readiness.json",
+      "bytes": 9884,
+      "sha256": "10c5ca7a71a7fe1ea2deacdee7dad6fdcc23e2395d82424ef96d8fa193ba2392"
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_CONSTRUCTOR_ABI_READINESS.md",
+      "bytes": 11332,
+      "sha256": "674c09ef8cb1569aa2a8eae8bc3099422414277229bb18f4fbfc8860e3b085ed"
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_constructor_ABI_readiness.json",
+      "bytes": 86726,
+      "sha256": "1959d5d59a305b5bab2373c8f09fc98301b11e39d06b9915ac96393f1fdada6e"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
+      "bytes": 10868,
+      "sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+      "bytes": 55590,
+      "sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a"
+    },
+    {
+      "path": "include/bsp/native_pilot_bot_task_owner.hpp",
+      "bytes": 9506,
+      "sha256": "880c237b8f549cee403ebe498502d62e84be229945b993a4feeb162dee3e7ad8"
+    },
+    {
+      "path": "src/native_pilot_bot_task_owner.cpp",
+      "bytes": 9666,
+      "sha256": "d1d9b2bc2d4cce779c83374d38fbf04b44859b89e757ff3bc13790262687c4b0"
+    }
+  ],
+  "Source_excerpts": [
+    {
+      "path": "include/bsp/native_pilot_bot_task_owner.hpp",
+      "start_line": 34,
+      "end_line": 50,
+      "text": "class NativePilotBotTaskOwnerCalls {\n   public:\n    virtual ~NativePilotBotTaskOwnerCalls() = default;\n    virtual NativePilotBotTaskHandle* allocate_task_array_00bf55be(\n        const NativePilotBotTaskArrayAllocation&) = 0;\n    virtual void free_task_array_00bf6989(NativePilotBotTaskHandle*) = 0;\n    virtual void task_hook_58(NativePilotBotTaskHandle) = 0;\n    virtual void task_scalar_delete_00(NativePilotBotTaskHandle, std::uint32_t flags) = 0;\n    // Native0099A742/748 stamps owner00D1F348 and callback subobject00D1F32C.\n    // Actual profile/layout publication is external to this source facade.\n    virtual void enter_member_destructor_profiles_0099a742() = 0;\n    // Actual owner+84h storage, reverse order, two1Ch records; dtor0099A010\n    // tail-jumps004B7EF0. Existing game-array adapter excludes this pair.\n    virtual void destroy_embedded_plans_00bf7c6e(std::uint32_t stride,\n        std::uint32_t count, std::uint32_t native_destructor) = 0;\n    virtual void destroy_callback_owner_00695870() = 0;  // actual owner+1Ch\n    virtual void base_cleanup_00875b30() = 0;           // actual owner base"
+    },
+    {
+      "path": "src/native_pilot_bot_task_owner.cpp",
+      "start_line": 170,
+      "end_line": 184,
+      "text": "    for (std::uint32_t i = 0; i < active.count; ++i) {\n        const NativePilotBotTaskHandle task = active.entries[i];\n        if (task.identity == 0) continue; //0099A769/76E\n        calls.task_scalar_delete_00(task, 1); //0099A776; no+58h call\n        active.entries[i] = {0};             //0099A778\n    }\n    calls.destroy_embedded_plans_00bf7c6e(0x1c, 2, 0x0099a010); //0099A7A3; RET10h helper\n    if (owner.retired_64_68_6c.entries != nullptr) {\n        calls.free_task_array_00bf6989(owner.retired_64_68_6c.entries); //0099A7B0\n    }\n    if (active.entries != nullptr) calls.free_task_array_00bf6989(active.entries); //0099A7C0\n    calls.destroy_callback_owner_00695870(); //0099A7D2, owner+1Ch\n    calls.base_cleanup_00875b30();           //0099A7E1, owner base\n    // The native leaves array publications/counts/capacities untouched.\n}"
+    }
+  ],
+  "ABI_contract": {
+    "entry": "ECX receiver; entry+4 actual current flag byte read only after cleanup; no incoming EDX value used by owned code.",
+    "children": "Receiver-cleanup ECX captured receiver/no pushed args/balanced return; free push current ESI then caller ADDESP4, preserve nonvolatile registers as required.",
+    "stack": "Entry S; saved ESI at S-4; base child return to S-4; optional argument at S-8, free return then ADD4; POP ESI restores current S-4; RET4 -> S+8.",
+    "return": "EAX=current ESI after children, not lifetime-valid pointer; owned ESI restored from current saved word. No owned EBX/EDI/EBP write.",
+    "flags": "No-free: TEST low flag byte,1; free: ADDESP4. Later MOV/POP/RET do not modify flags.",
+    "exceptions": "No owned EH or noexcept; subordinate Native throw/free/ABI policies unopened."
+  },
+  "credit": {
+    "exported": false,
+    "reconstructed": false,
+    "Source_functions": 0,
+    "Source_bytes": 0,
+    "Original_ABI": false,
+    "startup": false,
+    "gameplay": false,
+    "build_run": false,
+    "tests_run": false,
+    "Ghidra_mutated": false
+  },
+  "doc_pin": {
+    "path": "docs/CC12_SQUADRON_LAUNCH_TASK_SCALAR_DELETION_READINESS.md",
+    "bytes": 4119,
+    "sha256": "553b076b3149ad173f2e30d2e3615e827dc82e6e59ce2c901974a2edd24adcb5"
+  }
+}
