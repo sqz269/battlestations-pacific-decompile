@@ -1,0 +1,236 @@
+{
+  "schema": "bsp.cc12.world_entity_chain_receiver_primary_review.v1",
+  "status": "whole8B_native_tail_body_concrete100B_provider_PE_equal_positive_core_binding_normal_win32_build_passed",
+  "created_utc": "2026-10-09T07:55:38.148977+00:00",
+  "build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 64796,
+    "start_utc": "2026-10-09T07:53:59.405980+00:00",
+    "finish_utc": "2026-10-09T07:54:21.815600+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "source_inputs_rechecked_after_build": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "35b9683f530e0ad40efca4c69aa6a3afd2cb771d98123f835cfdc99b7d8c6560"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "include/bsp/native_world_entity_chain_receiver.hpp",
+      "sha256": "fb0ea3a6d920f0655ba98d39039ef265c493efa84399fadd7515c9065bac34ae"
+    },
+    {
+      "path": "src/native_world_entity_chain_receiver.cpp",
+      "sha256": "e0ba6c8874bf0d6e0f0e5982221d5c94c8e5ce8724c41822d8602725aadb1883"
+    },
+    {
+      "path": "include/bsp/native_world_entity_chain_retirement.hpp",
+      "sha256": "e7a32ff959bb0442d108f065fa2e7c99d92bd80c4598ae5523eab08b70b53a01"
+    },
+    {
+      "path": "src/native_world_entity_chain_retirement.cpp",
+      "sha256": "a9b2b9ebf9f417690c44cc00e56b26babd05d8df22677d48f7a23aaaa3b30caa"
+    },
+    {
+      "path": "reports/cc12_native_world_entity_chain_retirement_primary_review.json",
+      "sha256": "c658d5efa9646759b5c871a521524063680813f66a7beda09a8bfdeb04c85186"
+    },
+    {
+      "path": "include/bsp/world_deferred_destroy.hpp",
+      "sha256": "2e0a97f8f7180ef5eb782227814c4803a45968ffdac1909971bc292da869ee90"
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "count": 64729,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "00904390",
+    "end_inclusive": "00904397",
+    "bytes": 8,
+    "instructions": 2,
+    "sha256": "b5b9af4dac292b2e2cf26d401fec8ead78ff71fba517dbb94da4891d02f07257",
+    "hex": "8b4904e908feffff",
+    "live_and_installed_PE_equal": true,
+    "complete_decode": [
+      {
+        "address": "00904390",
+        "bytes": 3,
+        "hex": "8b4904",
+        "text": "mov ecx, dword ptr [ecx + 4]"
+      },
+      {
+        "address": "00904393",
+        "bytes": 5,
+        "hex": "e908feffff",
+        "text": "jmp 0x9041a0"
+      }
+    ]
+  },
+  "physical_root": {
+    "symbol": "?retire_native_world_entities_00904390@bsp@@YIXPAX@Z",
+    "symbol_index": 8,
+    "section": 3,
+    "section_value": 0,
+    "physical_file_offset": 443,
+    "bytes": 8,
+    "instruction_count": 2
+  },
+  "sole_external_tail_relocation": {
+    "record_file_offset": 451,
+    "raw_record_hex": "04000000090000001400",
+    "offset": 4,
+    "type": 20,
+    "symbol_index": 9,
+    "symbol": "?retire_native_world_entity_chain_009041a0@bsp@@YIXPAX@Z",
+    "symbol_record": {
+      "index": 9,
+      "record_file_offset": 655,
+      "raw_record_hex": "000000003900000000000000000020000200",
+      "name": "?retire_native_world_entity_chain_009041a0@bsp@@YIXPAX@Z",
+      "value": 0,
+      "section": 0,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0,
+      "aux_records_hex": ""
+    },
+    "operand_file_offset": 447,
+    "operand_hex": "00000000",
+    "operand_u32": 0,
+    "function_offset": 4
+  },
+  "resolved_tail_operand_hex": "08feffff",
+  "current_concrete_provider": {
+    "physical_root": {
+      "symbol": "?retire_native_world_entity_chain_009041a0@bsp@@YIXPAX@Z",
+      "symbol_index": 8,
+      "section": 3,
+      "section_value": 0,
+      "physical_file_offset": 447,
+      "bytes": 100,
+      "instruction_count": 43
+    },
+    "complete100B_43instructions_equal_installed_PE": true,
+    "sha256": "c11521d998a283dcf66326d6fc80325835474ecca7a24637fa796f676d5aa73a",
+    "relocations": [],
+    "accepted_primary_report": "reports/cc12_native_world_entity_chain_retirement_primary_review.json"
+  },
+  "unique_positive_core_definitions": [
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_world_entity_chain_receiver.obj",
+        "header_offset": 63759086,
+        "payload_file_offset": 63759146,
+        "bytes": 823,
+        "sha256": "a4b81647a1964316901aa3fff9a78f050499b88031866e4a1a88c72036d00694"
+      },
+      "definition": {
+        "name": "?retire_native_world_entities_00904390@bsp@@YIXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 637,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_world_entity_chain_retirement.obj",
+        "header_offset": 63759970,
+        "payload_file_offset": 63760030,
+        "bytes": 838,
+        "sha256": "015d491d39ad85a003cd560367312af24a61dedcd085015b9bc8b5df0b7e33e4"
+      },
+      "definition": {
+        "name": "?retire_native_world_entity_chain_009041a0@bsp@@YIXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 723,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    }
+  ],
+  "complete_matching_core_members": [
+    {
+      "name": "bsp_core.dir\\Release\\native_world_entity_chain_receiver.obj",
+      "header_offset": 63759086,
+      "payload_file_offset": 63759146,
+      "bytes": 823,
+      "sha256": "a4b81647a1964316901aa3fff9a78f050499b88031866e4a1a88c72036d00694"
+    },
+    {
+      "name": "bsp_core.dir\\Release\\native_world_entity_chain_retirement.obj",
+      "header_offset": 63759970,
+      "payload_file_offset": 63760030,
+      "bytes": 838,
+      "sha256": "015d491d39ad85a003cd560367312af24a61dedcd085015b9bc8b5df0b7e33e4"
+    }
+  ],
+  "whole_objects": [
+    {
+      "bytes": 823,
+      "sha256": "a4b81647a1964316901aa3fff9a78f050499b88031866e4a1a88c72036d00694"
+    },
+    {
+      "bytes": 838,
+      "sha256": "015d491d39ad85a003cd560367312af24a61dedcd085015b9bc8b5df0b7e33e4"
+    }
+  ],
+  "core_library_sha256": "d00ae7aeffeb96b6a534d52eb1f3cef8f0ae7adb99f92759f4868db2f1df955b",
+  "indexed_graph_external_boundaries": [
+    "?retire_native_world_entity_chain_009041a0@bsp@@YIXPAX@Z"
+  ],
+  "provider_indexed_graph_external_boundaries": [],
+  "complete_review": [
+    "All8B/twoinstructions are fresh actualWorld+4 pointer load then unconditional tailJMP; no inserted CALL/RET/push/guard/global/owner/typedHost.",
+    "Sole REL32 operand4 is an external physical symbol to concrete100B chain body; rebind0 to -504=08feffff makes entire8B equal installedPE/live bytes.",
+    "Current complete100B/43instruction provider also equalsPE with zero relocations/namedexternal boundaries. Two exact complete Core members and positive unique public definitions prove concrete tail binding.",
+    "InitialWorld mustsurvive pointer read; same stack/EDX passes through tail; provider retains actualheader and preserves current unlink/virtual/count/head ordering and qualified lifetime/progress.",
+    "Existing counted documented two-instruction contract preserved; new machine-level fragment only/zero Originalfunctions orbytes. Both roots absentgamemap; no SourceWorldtable/owner/wiring supplied."
+  ],
+  "retained_complete_evidence": "local/cc12_world_chain_receiver_primary/whole_objects_and_physical_tail_binding.json",
+  "root_and_provider_absent_game_map": true,
+  "credit": {
+    "additional_Original_functions": 0,
+    "additional_Original_bytes": 0,
+    "new_machine_level_fragment": 1,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "No fullWorld/table/slot ownership from this adapter; actualWorld+4 pointer/header/entity/link/table/scalarlifetime/allocationdomain/progress are caller contracts.",
+    "Originalnumericprofile words do not provide callable Source tables. Whole emitted/tail/Core/build proof does not establish NativeABI entry/fault/EH/SEH/runtime/startup/gameplay; no new tests/probes."
+  ],
+  "ledger_fragment": "complete_machine_level_world_entity_chain_receiver_00904390",
+  "current_document_canonical_sha256": "e0be1ba490750929732b57916313f336109f45f4fa91d042718809d287ea406e",
+  "ghidra": {
+    "saved_receipt": "local/ghidra-annotations-20261009T075655Z.json",
+    "unchanged_provisional_name": "BSP_World_DestroyAllEntities",
+    "prior_comment_preserved": true,
+    "current_comment_sha256": "9858f69e56dbb11901da37197c1722882fcd48f76872baa4ce207d74c855f75e",
+    "forced_export_refreshed": "00904390",
+    "count": 64729
+  }
+}
