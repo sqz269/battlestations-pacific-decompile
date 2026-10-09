@@ -1,0 +1,1530 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_global_config_current_dispatch_provider_readiness",
+  "generated_at_utc": "2026-10-09T03:49:13.318721+00:00",
+  "base_commit": "33c0a0518ff8dddedaa088bfef35d440b4a55aa7",
+  "evidence_kind": "read_only_current_dispatch_provider_feasibility_and_storage_contract",
+  "verdict": {
+    "status": "ready_for_bounded_normal_flow_provider_implementation_under_actual_callable_payload_preconditions",
+    "real_provider_glue_is_viable": true,
+    "reason": "GlobalConfigEffects already separates stop and post-decrement zero-reference calls with exactly the native argument shapes. The source destructor owns the real atomic decrement and slot ordering. A stateless concrete provider can perform genuine current-table calls without fixed profile selection or projected Sound conversion.",
+    "unconditional_current_sound_pipeline_compatibility_proven": false,
+    "integration_limit": "A correct generic provider does not make numeric original-image profile identities callable in the rebuilt process and cannot accept nonnative SoundInstance/SoundLevelEntry layouts. Current raw sample construction uses a numeric D5B074 identity and a separate source cleanup adapter. Actual admitted payload/table construction and producer lifetime remain required.",
+    "second_array_producer": "Still unresolved. Non-null second-array objects must satisfy the explicit runtime raw-object/current-table/reference/lifetime contract; no empty-array or D5ABF8 assumption is used.",
+    "exception_limit": "The existing GlobalConfigEffects methods and aggregate cleanup are noexcept. A provider using them preserves the current normal-flow/nonthrowing source contract; it does not establish original EH/SEH behavior when a native virtual method throws."
+  },
+  "scope": {
+    "native_addresses": [
+      "008DBDB0",
+      "004325B0",
+      "00524180",
+      "004C3810",
+      "00BD30E0",
+      "00CE2220"
+    ],
+    "tracked_outputs": [
+      "docs/CC12_GLOBAL_CONFIG_CURRENT_DISPATCH_PROVIDER_READINESS.md",
+      "reports/cc12_global_config_current_dispatch_provider_readiness.json"
+    ],
+    "no_source_ghidra_build_or_probe_changes": true,
+    "provider_implementation_done": false
+  },
+  "native_contract": {
+    "effects_this": "GlobalConfig owner+0x2C0; first slots +0/+4/+8, second slots +0xC/+0x10/+0x14.",
+    "outer_destructor_entry": "004325CF forms owner+0x2C0 and 004325DD calls 008DBDB0. Other owner fields and terminal scalar dispatch are outside this provider change.",
+    "ascending_loop": [
+      "008DBDE0 captures the current second-array pointer. Its non-null test is the NEG/SBB/TEST sequence; the literal 0xE19311 does not identify a pointee type.",
+      "008DBDEF/008DBDF1 load current receiver table and table+8; 008DBDF4 pushes zero and 008DBDF5 calls that target with ECX=the actual captured object.",
+      "008DBDF7 reloads the second-array slot after the call. The object released can differ from the object that was stopped.",
+      "For a non-null reloaded object, 008DBDFD addresses object+4 and 008DBE01 calls IAT 00CE2220. Only a zero result reaches the current table+0 call at 008DBE11; no stack flags are supplied.",
+      "The current second slot is cleared after the zero callback, with an explicit second clear.",
+      "The corresponding first slot is captured and decremented at 008DBE22; only zero reaches its current table+0 call at 008DBE32. It receives no stop call.",
+      "After three ascending pairs, reverse second-array and then reverse first-array destructor passes remain observable for callback repopulation."
+    ],
+    "standalone_slot_destructors": {
+      "00524180": "Capture non-null pointee; InterlockedDecrement(pointee+4) at 0052418E; only zero invokes current table+0 at 0052419E; clear slot after callback. Initially null slot is not written.",
+      "004C3810": "Identical native bytes and order; atomic call 004C381E and zero call 004C382E."
+    },
+    "atomic_import": {
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedDecrement",
+      "iat_va": "00CE2220"
+    },
+    "native_zero_example": {
+      "address": "00BD30E0",
+      "behavior": "No incoming stack arguments and no decrement. For non-null receiver, load current table+4, push flag 1, call it, plain RET.",
+      "qualification": "An example of a valid zero-reference endpoint, not a universal target. The proposed provider must execute the actual current v+0; it must not substitute BD30E0 or bypass directly to v+4."
+    }
+  },
+  "existing_source_contract": {
+    "interface": "GlobalConfigEffects in include/bsp/global_config.hpp has only two pure virtual callbacks: stop_slot_08(void*,uint32_t) noexcept and zero_references_slot_00(void*) noexcept.",
+    "implementation_search": {
+      "command": "rg -l GlobalConfigEffects src include tests",
+      "matched_files": [
+        "include/bsp/global_config.hpp",
+        "src/global_config.cpp"
+      ],
+      "observation": "No concrete GlobalConfigEffects implementation is present in the inspected source/include/tests tree at this revision."
+    },
+    "atomic_owner": "src/global_config.cpp private release() already calls real InterlockedDecrement at the actual object+4 once and invokes zero_references_slot_00 only when result == 0.",
+    "slot_owner": "The existing aggregate/slot helpers own post-stop reload, clear-after-callback behavior, paired ascending order and the two reverse passes. These should remain unchanged.",
+    "count_semantics": "Exactly once per non-null release operation, not once per distinct pointer over the entire destructor. Multiple owned slots or callback repopulation can legitimately cause later release operations."
+  },
+  "proposed_provider": {
+    "name": "NativeGlobalConfigCurrentDispatch (proposed; not implemented)",
+    "declaration": "class NativeGlobalConfigCurrentDispatch final : public GlobalConfigEffects {\npublic:\n    void stop_slot_08(void* actual_object, std::uint32_t flag) noexcept override;\n    void zero_references_slot_00(void* actual_object) noexcept override;\n};",
+    "stop_function_pointer_signature": "using StopMethod = void (__thiscall*)(void* actual_object, std::uint32_t flag);",
+    "zero_function_pointer_signature": "using ZeroMethod = void (__thiscall*)(void* actual_object);",
+    "stop_body_contract": [
+      "Read the current table pointer from the actual object at callback entry.",
+      "Read StopMethod from that table byte offset 8, equivalent to the third four-byte entry on Win32.",
+      "Call method(actual_object, flag), using actual_object as ECX and one DWORD stack argument. The aggregate currently supplies zero.",
+      "Do not retain or use the receiver after the target returns; the target may destroy/rebind the owning slot."
+    ],
+    "zero_body_contract": [
+      "This callback is entered after the source release operation has already decremented actual_object+4 to zero.",
+      "Read the actual object current table now, then read ZeroMethod at byte offset 0.",
+      "Call method(actual_object), ECX=actual object with no stack arguments.",
+      "Do not decrement, retain, free directly, clear owner slots, select an old profile, or call a high-level release routine here."
+    ],
+    "table_reads": "Use a fresh actual-object/table read in each callback. Existing read<T> memcpy helper can read the pointer and method pointer under Win32 representation assertions. Do not cache across stop, slot reload, atomic decrement or separate callback invocations.",
+    "platform": "MSVC Win32; require _MSC_VER/_M_IX86 and four-byte object/function pointers. Existing atomic counter contract uses a four-byte aligned LONG at object+4.",
+    "minimal_source_scope": [
+      "Add the concrete provider declaration next to GlobalConfigEffects in include/bsp/global_config.hpp.",
+      "Add only the two method bodies in src/global_config.cpp, reusing its raw read helper and leaving release()/aggregate/slot loops unchanged. These files already build; no new manager or Sound subsystem is required.",
+      "Have the actual GlobalConfigContext owner retain a provider instance only for payloads admitted under the runtime contract. Context wiring and payload admission are a separate integration proof."
+    ],
+    "not_required": [
+      "No new atomic decrement callback.",
+      "No NativeGamePhysicsLifetimeCalls inheritance or physics allocation/services dependency.",
+      "No duplicate SoundChannelRuntime release implementation.",
+      "No D5ABF8 profile switch or hardcoded original PE code call.",
+      "No removal of reverse slot cleanup passes."
+    ]
+  },
+  "concrete_dispatch_precedents": [
+    {
+      "source": "src/native_game_physics_lifetime.cpp:49",
+      "behavior": "physics_virtual_scalar reads current object/table byte-slot through raw volatile words and calls void*(__thiscall*)(void*,uint32_t) on the actual receiver. Header explicitly requires actual callable tables for external objects.",
+      "relevance": "Establishes the current-table call pattern. Its scalar signature must not be used for the no-argument zero-reference callback; supplying flags changes the call contract."
+    },
+    {
+      "source": "src/native_damageable_section.cpp:22",
+      "behavior": "release_native_ref_counted_handle_0041de40 captures a raw slot, performs _InterlockedDecrement(owner+4), then calls current table+0 as void(__thiscall*)(void*) at zero and clears afterwards.",
+      "relevance": "Concrete source precedent for the same atomic-then-zero-dispatch contract. It is a full release helper and must not itself be called from GlobalConfig zero callback because that would decrement again."
+    },
+    {
+      "source": "src/native_particle_component_lifetime.cpp:89",
+      "behavior": "Fallback cleanup decrements actual resource+4 then loads current table slot0 and calls void(__thiscall*)(void*).",
+      "relevance": "Another actual current-table zero call; does not prove GlobalConfig payload provenance."
+    },
+    {
+      "source": "src/native_online_notification_dispatch.cpp:43",
+      "behavior": "current_client28 reads current table and method pointer with memcpy, then invokes void(__thiscall*)(void*) on the actual receiver.",
+      "relevance": "Existing alias-safe raw-load pattern usable for the proposed provider."
+    }
+  ],
+  "sound_compatibility": [
+    {
+      "object": "SoundInstance / SoundChannelInstance",
+      "source": "include/bsp/sound_instance.hpp:9",
+      "facts": [
+        "Explicitly documented behavioral projections with nonnative layout.",
+        "Inherit SoundLevelEntry and VoiceSoundStartFields; native_vtable_00 and references_04 are semantic fields, not proof of leading native table/counter positions."
+      ],
+      "conclusion": "Do not cast the canonical SoundLevelEntry pointer into this raw-object provider or access physical object+4 as its projected references field."
+    },
+    {
+      "object": "SoundChannelRuntime",
+      "source": "src/sound_channel_runtime.cpp:49",
+      "facts": [
+        "release_reference takes a canonical SoundLevelEntry subobject and decrements s.references_04 itself.",
+        "At zero it chooses a profile-specific projected scalar helper with flags 1 and borrowed context.",
+        "stop_slot08 takes projected entry/context and dispatches projected Sound methods."
+      ],
+      "conclusion": "It is not a zero-only raw callback. Delegating an already-decremented native object here introduces incompatible storage and an extra decrement."
+    },
+    {
+      "object": "SoundSampleStorage / SoundSampleRuntime",
+      "sources": [
+        "include/bsp/sound_sample.hpp:8",
+        "src/sound_sample.cpp:143",
+        "src/sound_sample_runtime.cpp:55"
+      ],
+      "facts": [
+        "SoundSampleStorage is actual 0x7C storage with intrusive counter+4.",
+        "Its current source constructor writes literal 0x00D5B074 at +0 and count 1 at +4.",
+        "SoundSampleRuntime::zero_references_slot_00 checks that current numeric identity, then directly calls scalar_delete_sound_sample_00a82e80(sample,1,sample_context) without another decrement."
+      ],
+      "conclusion": "Raw layout alone does not prove a callable source method table. A generic genuine-call provider cannot assume the literal legacy address is a valid rebuilt-process table. The existing explicit sample adapter or a separately established callable-table construction contract remains necessary for this source payload family."
+    },
+    {
+      "object": "NativeRefCountedDeleteCalls",
+      "source": "src/native_ref_counted.cpp:4",
+      "facts": [
+        "invoke_native_ref_counted_delete_00bd30e0 reads current profile and delegates slot04(flags1) to an injected source provider, without decrement."
+      ],
+      "conclusion": "This is a profile-resolution source interface, not an arbitrary current v+0 implementation. Calling it unconditionally would assume the actual zero target is BD30E0 and would skip any other current v+0 behavior."
+    }
+  ],
+  "runtime_preconditions": [
+    "Each non-null slot represents a valid owned intrusive reference; actual object+4 is an accessible, aligned four-byte interlocked counter belonging to that same object.",
+    "Every first-array object provides a valid current-process method table with callable v+0 of the no-stack-argument zero-reference ABI.",
+    "Every second-array object additionally provides callable current v+8 with actual receiver in ECX and one DWORD flag. The unknown producer must establish this interface and lifetime; no particular profile or Sound type is inferred.",
+    "After stop returns, any non-null replacement in the slot must independently satisfy the same reference/table/lifetime contract. The original stopped object need not be the released object.",
+    "The actual object remains valid through the counter transition and current zero-table read; method bodies and their contexts/allocators outlive the call.",
+    "Callable table entries must be genuine addresses in the current executable/process, not original-image numeric profile labels or a C++ projection service vtable.",
+    "No exception may cross the existing noexcept source callbacks if retaining the current normal-flow contract. Native exceptional cleanup fidelity requires a separate interface/unwind scope."
+  ],
+  "what_this_closes": [
+    "The missing concrete stop/zero callback bodies can be implemented using real native-style current-table calls, with no unresolved abstract callback inside those two bodies.",
+    "The existing source can keep its actual InterlockedDecrement exactly once per release and all mutation-sensitive slot ordering."
+  ],
+  "what_this_does_not_close": [
+    "Discovery or construction of the second-array producer.",
+    "Admission of existing projected Sound instances as native raw objects.",
+    "Callable-table validity of current raw sample objects carrying numeric profile identities.",
+    "GlobalConfigContext shared lifetime/string bindings and outer-owner current scalar-deletion dispatch.",
+    "Original EH/SEH exception propagation and cleanup semantics.",
+    "Build, emitted ABI, live runtime or gameplay validation of the proposed provider."
+  ],
+  "future_proportionate_verification": [
+    "After source implementation is authorized, compile with the existing MSVC Win32 build and inspect emitted calls for ECX actual receiver, stop DWORD argument, and zero callback with no stack flags.",
+    "Use or minimally extend the existing focused lifetime case only if needed to exercise genuine callable test tables: stop replaces the slot, replacement counter goes 1->0 once, current zero table is read after decrement, and callback repopulation survives the reverse passes. No test or probe was created or run here."
+  ],
+  "validation": {
+    "target": {
+      "project": "bsp",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program_path": "/battlestationspacific.exe",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "every_live_query_uses_bsp_target_verification": true,
+    "code_span_count": 5,
+    "code_bytes": 469,
+    "data_span_count": 1,
+    "data_bytes": 4,
+    "complete_body_decodes": 5,
+    "decoded_instruction_count": 170,
+    "instruction_context_count": 12,
+    "all_live_spans_equal_installed_pe": true,
+    "iat_import_independently_resolved_from_pe": {
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedDecrement",
+      "iat_va": "00CE2220"
+    },
+    "source_file_pins": 18,
+    "build_tested": false,
+    "fixture_tested": false,
+    "runtime_or_game_validated": false
+  },
+  "source_evidence": [
+    {
+      "path": "include/bsp/global_config.hpp",
+      "sha256": "ee2b789c8a6485e57e7ccab3b9c75c61d49a39a2bf22600b0ea6082306bb255f",
+      "excerpts": [
+        {
+          "first_line": 12,
+          "last_line": 48,
+          "lines": [
+            "//004324E0 writes only its vtable, five vector triples, seven strings and the",
+            "//embedded effect slots. Readers/loaders retain this same native storage.",
+            "struct alignas(4) GlobalConfigOwner {",
+            "    std::array<std::byte, 0x2e8> native;",
+            "};",
+            "static_assert(sizeof(GlobalConfigOwner) == 0x2e8);",
+            "",
+            "struct GlobalConfigEffects {",
+            "    virtual ~GlobalConfigEffects() = default;",
+            "    // CURRENT vtable+8, ECX=actual object, one stack argument0. The callback",
+            "    //may replace its owner's effect slot;008DBDB0 reloads it before release.",
+            "    virtual void stop_slot_08(void* actual_object, std::uint32_t flag) noexcept = 0;",
+            "    // CURRENT vtable+0, ECX=actual object, no stack arguments; called only",
+            "    //after a real InterlockedDecrement(object+4) reaches zero.",
+            "    virtual void zero_references_slot_00(void* actual_object) noexcept = 0;",
+            "};",
+            "struct GlobalConfigContext {",
+            "    // Same01090AA0 lifetime domain as every other startup singleton.",
+            "    SoundLifetimeAccess lifetime;",
+            "    GlobalConfigOwner* volatile& singleton_00f878e4;",
+            "    NativeStringStorage& strings;",
+            "    GlobalConfigEffects& effects;",
+            "};",
+            "",
+            "//008DBCD0/008DBDB0 ECX=actual owner+2C0, RET. Two three-element pointer arrays",
+            "//and float18. Destruction performs stop/release in ascending paired order,",
+            "//then reverse destructor passes over second array and first array.",
+            "void construct_global_config_effects_008dbcd0(void* actual_effect_storage,",
+            "    GlobalConfigEffects&) noexcept;",
+            "void destroy_global_config_effects_008dbdb0(void* actual_effect_storage,",
+            "    GlobalConfigEffects&) noexcept;",
+            "//004C3810/00524180 have identical slot destruction: capture pointee, release,",
+            "//clear after callback. No clear when the initially captured pointer is null.",
+            "void destroy_global_config_pointer_slot_004c3810(void* actual_slot,",
+            "    GlobalConfigEffects&) noexcept;",
+            "void destroy_global_config_pointer_slot_00524180(void* actual_slot,",
+            "    GlobalConfigEffects&) noexcept;"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/global_config.cpp",
+      "sha256": "8a34e935abc406255558c213a8cc0e3fa11b76e8af5c355ad8d1c93d8f3b4741",
+      "excerpts": [
+        {
+          "first_line": 19,
+          "last_line": 78,
+          "lines": [
+            "void release(void* object, GlobalConfigEffects& effects) noexcept {",
+            "    if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(",
+            "            static_cast<std::byte*>(object) + 4)) == 0)",
+            "        effects.zero_references_slot_00(object);",
+            "}",
+            "void destroy_slot(void* slot, GlobalConfigEffects& effects) noexcept {",
+            "    void* const captured = read<void*>(slot, 0);",
+            "    if (captured) {",
+            "        release(captured, effects);",
+            "        write<void*>(slot, 0, nullptr);",
+            "    }",
+            "}",
+            "} // namespace",
+            "",
+            "void destroy_global_config_pointer_slot_004c3810(void* slot,",
+            "    GlobalConfigEffects& effects) noexcept { destroy_slot(slot, effects); }",
+            "void destroy_global_config_pointer_slot_00524180(void* slot,",
+            "    GlobalConfigEffects& effects) noexcept { destroy_slot(slot, effects); }",
+            "",
+            "void construct_global_config_effects_008dbcd0(void* storage,",
+            "    GlobalConfigEffects& effects) noexcept {",
+            "    for (std::size_t i = 0; i != 3; ++i) write<void*>(storage, i * 4, nullptr);",
+            "    for (std::size_t i = 0; i != 3; ++i) write<void*>(storage, 0xc + i * 4, nullptr);",
+            "    write<std::uint32_t>(storage, 0x18, 0);",
+            "    for (std::size_t i = 0; i != 3; ++i) {",
+            "        auto* first = static_cast<std::byte*>(storage) + i * 4;",
+            "        destroy_slot(first, effects);",
+            "        write<void*>(first, 0, nullptr); // native unconditional second store",
+            "        auto* second = first + 0xc;",
+            "        destroy_slot(second, effects);",
+            "        write<void*>(second, 0, nullptr);",
+            "    }",
+            "}",
+            "void destroy_global_config_effects_008dbdb0(void* storage,",
+            "    GlobalConfigEffects& effects) noexcept {",
+            "    for (std::size_t i = 0; i != 3; ++i) {",
+            "        auto* second = static_cast<std::byte*>(storage) + 0xc + i * 4;",
+            "        void* const captured = read<void*>(second, 0);",
+            "        if (captured) {",
+            "            effects.stop_slot_08(captured, 0);",
+            "            destroy_slot(second, effects); // CURRENT slot after virtual+8",
+            "            write<void*>(second, 0, nullptr);",
+            "        }",
+            "        auto* first = second - 0xc;",
+            "        destroy_slot(first, effects);",
+            "        write<void*>(first, 0, nullptr);",
+            "    }",
+            "    // Earlier callbacks can repopulate slots already visited. The native EH",
+            "    //iterator destructors therefore remain observable even after the loop.",
+            "    for (std::size_t i = 3; i != 0; --i)",
+            "        destroy_global_config_pointer_slot_00524180(",
+            "            static_cast<std::byte*>(storage) + 0xc + (i - 1) * 4, effects);",
+            "    for (std::size_t i = 3; i != 0; --i)",
+            "        destroy_global_config_pointer_slot_004c3810(",
+            "            static_cast<std::byte*>(storage) + (i - 1) * 4, effects);",
+            "}",
+            "void destroy_global_config_strings_004312b0(void* headers,",
+            "    NativeStringStorage& strings) noexcept {",
+            "    for (std::size_t i = 7; i != 0; --i)",
+            "        destroy_native_string_header_0041dd20("
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+      "excerpts": [
+        {
+          "first_line": 17,
+          "last_line": 23,
+          "lines": [
+            "    virtual void physics_delete_section(void*);",
+            "    // External attachment classes use their actual callable tables. Numeric",
+            "    // original-image vtables are not callable source tables.",
+            "    virtual void physics_virtual_scalar(void*,std::uint32_t byte_slot,std::uint32_t flags);",
+            "    // When the table matches the borrowed construction context, use the",
+            "    // concrete ConvexMeshShape scalar with that context's original pool.",
+            "    virtual void physics_attachment_scalar(void*,std::uint32_t flags,const DynBodyCreationContext*);"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_game_physics_lifetime.cpp",
+      "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+      "excerpts": [
+        {
+          "first_line": 10,
+          "last_line": 17,
+          "lines": [
+            "using U=std::uint32_t;",
+            "static_assert(sizeof(void*)==4);",
+            "U address(const void* p) noexcept{return reinterpret_cast<U>(p);}",
+            "void* pointer(U p) noexcept{return reinterpret_cast<void*>(p);}",
+            "void* at(const void* p,U n=0) noexcept{return pointer(address(p)+n);}",
+            "volatile U& word(const void* p,U n=0) noexcept{return *static_cast<volatile U*>(at(p,n));}",
+            "void* ptr(const void* p,U n=0) noexcept{return pointer(word(p,n));}",
+            "void ptr(void* p,U n,void* q) noexcept{word(p,n)=address(q);}"
+          ]
+        },
+        {
+          "first_line": 49,
+          "last_line": 57,
+          "lines": [
+            "void NativeGamePhysicsLifetimeCalls::physics_virtual_scalar(void* p,U slot,U flags){",
+            "    using Method=void*(__thiscall*)(void*,U);auto method=reinterpret_cast<Method>(word(ptr(p),slot));(void)method(p,flags);",
+            "}",
+            "void NativeGamePhysicsLifetimeCalls::physics_attachment_scalar(void* p,U flags,const DynBodyCreationContext* shapes){",
+            "    if(shapes&&ptr(p)==shapes->convex_shape_vtable){",
+            "        if(!shapes->convex_pool)throw std::invalid_argument(\"convex attachment cleanup requires its construction pool\");",
+            "        delete_native_dyn_convex_shape_004062c0(*static_cast<DynConvexShapeStorage*>(p),flags,*shapes->convex_pool);",
+            "    }else physics_virtual_scalar(p,4,flags);",
+            "}"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_damageable_section.cpp",
+      "sha256": "ba7208b253dc9a3f8fd761bfc4e1ce9123f5a1dde0dce811f1c4f722be39b0c0",
+      "excerpts": [
+        {
+          "first_line": 10,
+          "last_line": 31,
+          "lines": [
+            "namespace {",
+            "using Word = std::uint32_t;",
+            "static_assert(sizeof(void*) == 4 && sizeof(long) == 4);",
+            "void* at(const void* p, Word offset) noexcept {",
+            "    return reinterpret_cast<void*>(reinterpret_cast<Word>(p) + offset);",
+            "}",
+            "template<class T> volatile T& field(const void* p, Word offset = 0) noexcept {",
+            "    return *static_cast<volatile T*>(at(p, offset));",
+            "}",
+            "using ReleaseOwner = void (__thiscall*)(void*);",
+            "} // namespace",
+            "",
+            "void release_native_ref_counted_handle_0041de40(void* slot) {",
+            "    void* const owner = field<void*>(slot);",
+            "    if (owner == nullptr) return;",
+            "    if (_InterlockedDecrement(&field<long>(owner, 4)) == 0) {",
+            "        void* const table = field<void*>(owner);",
+            "        field<ReleaseOwner>(table)(owner);",
+            "    }",
+            "    field<void*>(slot) = nullptr;",
+            "}",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_particle_component_lifetime.cpp",
+      "sha256": "4fa608de0a0d1638567b6ce5ea454175d180079a86d1b0b234a6c77eeff1a9e9",
+      "excerpts": [
+        {
+          "first_line": 89,
+          "last_line": 105,
+          "lines": [
+            "",
+            "static void destroy_component_with_context(void* component, NativeStringRawPoolContext& strings, NativeParticleResourceCacheContext* context) {",
+            "    write(component, 0, 0x00d0d5b4);",
+            "    ParticleCleanup cleanup{component, strings};",
+            "    while (read(component, 0x2c) != 0) {",
+            "        void* const resource = pointer(read(pointer(",
+            "            read(component, 0x28) + read(component, 0x2c) * 4u - 4u)));",
+            "        if (context) release_native_particle_resource_00871420(resource, *context, strings);",
+            "        else if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(member(resource, 4))) == 0) {",
+            "            using ZeroReferences = void (__thiscall*)(void*);",
+            "            const auto current_slot = reinterpret_cast<ZeroReferences>(read(pointer(read(resource))));",
+            "            current_slot(resource);",
+            "        }",
+            "        const Word current_count = read(component, 0x2c);",
+            "        if (current_count != 0) write(component, 0x2c, current_count - 1u);",
+            "    }",
+            "    cleanup.state = 1;"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_online_notification_dispatch.cpp",
+      "sha256": "7a4fba7612cdd337bdad1e5a41e8e9e59f41ac93ae56da8b441d0d1ad547299e",
+      "excerpts": [
+        {
+          "first_line": 43,
+          "last_line": 49,
+          "lines": [
+            "void current_client28(void* client) {",
+            "    void* table;",
+            "    std::memcpy(&table, client, sizeof(table));",
+            "    using Method = void (__thiscall*)(void*);",
+            "    Method method;",
+            "    std::memcpy(&method, static_cast<std::byte*>(table) + 0x28, sizeof(method));",
+            "    method(client);"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_instance.hpp",
+      "sha256": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948",
+      "excerpts": [
+        {
+          "first_line": 9,
+          "last_line": 26,
+          "lines": [
+            "// Behavioral projection of native52h base and5Ch channel objects. The inherited",
+            "// fields are the canonical fields used by manager walkers and voice start.",
+            "// These are NOT native layouts; never use raw object+4 reference operations here.",
+            "// Names are hypotheses. Explicit recovered destruction owns sample/class/name.",
+            "struct SoundInstance : SoundLevelEntry, VoiceSoundStartFields {",
+            "    std::uint32_t native_vtable_00{}, references_04{}, id_08{};",
+            "    NativeString name_0c;",
+            "    std::uint8_t stopped_15{}, paused_1c{};",
+            "    std::uint32_t updates_18{};",
+            "    float frequency_scale_20{}, volume_24{}, scale_28{}, fade_2c{}, target_30{}, rate_34{}, pan_level_40{};",
+            "    std::uint32_t type_48{};",
+            "    void* sample_4c{}; // actual7Ch SoundSampleStorage, not SoundOwnedResource",
+            "    std::uint8_t flag_50{}, stop_requested_51{};",
+            "};",
+            "struct SoundChannelInstance : SoundInstance {",
+            "    void* channel_54{};",
+            "    std::uint8_t was_virtual_58{}, virtual_59{}, ended_5a{};",
+            "};"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_channel_runtime.hpp",
+      "sha256": "ece72ded94c356ecfce4599c0764786d9c4ab637f80baa357a3a2866d2f53b03",
+      "excerpts": [
+        {
+          "first_line": 7,
+          "last_line": 14,
+          "lines": [
+            "namespace bsp {",
+            "// Active-entry/lifetime binding for D5ABF8, retained D5AD58/D5ADA0/D5ADE8,",
+            "// and optional D5B510/D5B4C8 projections. Retained slots use their full destructor.",
+            "// All incoming void pointers must be the canonical SoundLevelEntry subobject,",
+            "// never a native bank/sample pointer. The context and services outlive entries.",
+            "// Does not own a parallel list. Factory returns one reference; tracked creation",
+            "// through A7E490 adds the manager reference using this same lifetime interface.",
+            "class SoundChannelRuntime final : public SoundActiveEntryHost {"
+          ]
+        },
+        {
+          "first_line": 26,
+          "last_line": 36,
+          "lines": [
+            "    void retain_reference(void*) override;",
+            "    void release_reference(void*) noexcept override;",
+            "    SoundInstance& instance_fields(SoundLevelEntry*) override;",
+            "    void update_slot30(SoundLevelEntry*, float, SoundListenerOwnerState&) override;",
+            "    bool transition_slot24(SoundLevelEntry*) override;",
+            "    void refresh_slot10(SoundLevelEntry*) override;",
+            "    bool completed_slot0c(SoundLevelEntry*) override;",
+            "    bool nonvirtual_slot14(SoundLevelEntry*) override;",
+            "    void stop_slot08(SoundLevelEntry*, std::uint8_t) override;",
+            "    void* handle_slot18(SoundLevelEntry*);",
+            "    float audibility_slot1c(SoundLevelEntry*, SoundGameplayFmodHost&, SoundEventQueryLockBindings&);"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/sound_channel_runtime.cpp",
+      "sha256": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57",
+      "excerpts": [
+        {
+          "first_line": 49,
+          "last_line": 69,
+          "lines": [
+            "void SoundChannelRuntime::release_reference(void* canonical_entry) noexcept {",
+            "    // Native slot teardown is a nonthrowing callback contract. Missing FMOD",
+            "    // symbols or an unsupported profile cannot be converted into a fake release.",
+            "    try {",
+            "        auto& s = checked(static_cast<SoundLevelEntry*>(canonical_entry));",
+            "        if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(&s.references_04)) == 0) {",
+            "            if (s.native_vtable_00 == 0x00d5b4c8)",
+            "                scalar_delete_spatial_sound_event_00a89ee0(static_cast<SpatialSoundEventInstance*>(&s), 1, *events_);",
+            "            else if (s.native_vtable_00 == 0x00d5b510)",
+            "                scalar_delete_spatial_sound_channel_00a8a460(static_cast<SpatialSoundChannelInstance*>(&s), 1, *spatial_);",
+            "            else if (s.native_vtable_00 == 0x00d5ad58)",
+            "                scalar_delete_retained_sound_channel_00a7db20(static_cast<RetainedSoundChannelInstance*>(&s), 1, context_);",
+            "            else if (s.native_vtable_00 == 0x00d5ada0)",
+            "                scalar_delete_scaled_retained_sound_channel_00a7dc70(static_cast<ScaledRetainedSoundChannelInstance*>(&s), 1, context_);",
+            "            else if (s.native_vtable_00 == 0x00d5ade8)",
+            "                scalar_delete_underwater_retained_sound_channel_00a7ddb0(static_cast<RetainedSoundChannelInstance*>(&s), 1, context_);",
+            "            else scalar_delete_sound_channel_00a7d5a0(static_cast<SoundChannelInstance*>(&s), 1, context_);",
+            "        }",
+            "    } catch (...) { std::terminate(); }",
+            "}",
+            "SoundLevelEntry* SoundChannelRuntime::create_spatial(SoundSystemOwner& owner, void* sample,"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/sound_sample.cpp",
+      "sha256": "e804f9109d495ce292680d899da4b704241198ced6e4d441f977a29ed490099f",
+      "excerpts": [
+        {
+          "first_line": 143,
+          "last_line": 150,
+          "lines": [
+            "void* construct_sound_sample_00a84d70(void* sample, const NativeString& input, SoundSampleContext& context) {",
+            "    put<std::uint32_t>(sample, 0, 0x00ceb130); put<std::uint32_t>(sample, 4, 1);",
+            "    put<std::uint32_t>(sample, 0, 0x00d5b074);",
+            "    for (auto offset : {0x44u, 0x48u, 0x4cu}) put<std::uint32_t>(sample, offset, 0);",
+            "    put(sample, 0xc, 1.0f); put(sample, 0x10, 1.0f);",
+            "    put(sample, 0x14, 10.0f); put(sample, 0x18, 1000000000.0f);",
+            "    put<std::uint32_t>(sample, 8, 0);",
+            "    for (auto offset : {0x1du, 0x1eu, 0x1cu}) put<std::uint8_t>(sample, offset, 0);"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/sound_sample_runtime.cpp",
+      "sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837",
+      "excerpts": [
+        {
+          "first_line": 55,
+          "last_line": 60,
+          "lines": [
+            "void SoundSampleRuntime::zero_references_slot_00(void* sample) {",
+            "    if (get<std::uint32_t>(sample, 0) != 0x00d5b074)",
+            "        throw std::logic_error(\"Sample final release requires the recovered D5B074 profile\");",
+            "    scalar_delete_sound_sample_00a82e80(sample, 1, sample_);",
+            "}",
+            "bool SoundSampleRuntime::resolve_name_00bdf4c0(NativeString& name) {"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/sound_sample.hpp",
+      "sha256": "43cdd558fa7135ed708b468e79f1104fc87e58ecfbe122d0cea94e5ae461f117",
+      "excerpts": [
+        {
+          "first_line": 8,
+          "last_line": 13,
+          "lines": [
+            "struct GameplayEffectComponentLifetime;",
+            "// Actual 7Ch sample storage, including the intrusive count at4 and actual",
+            "// pooled string/array headers. Unwritten bytes are preserved by construction.",
+            "struct SoundSampleStorage { alignas(4) std::array<std::byte, 0x7c> bytes; };",
+            "static_assert(sizeof(SoundSampleStorage) == 0x7c);",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_global_config_fields.cpp",
+      "sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+      "excerpts": [
+        {
+          "first_line": 13,
+          "last_line": 43,
+          "lines": [
+            "void release(void* value, GameplayEffectComponentLifetime& lifetime) {",
+            "    if (value && InterlockedDecrement(reinterpret_cast<volatile LONG*>(",
+            "        static_cast<unsigned char*>(value) + 4)) == 0)",
+            "        lifetime.zero_references_slot_00(value);",
+            "}",
+            "} // namespace",
+            "",
+            "bool assign_global_config_sound_008dbe90(void* effects, std::int32_t index,",
+            "    const NativeString& name, NativeGlobalConfigSoundContext& context) {",
+            "    void* temporary;",
+            "    auto** const result = acquire_sound_sample_00a83fd0(",
+            "        *context.current_cache_00f8bbe8, temporary, name, context.cache);",
+            "    void* const next = *result;",
+            "    auto* const slot = reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(effects)",
+            "        + static_cast<std::uint32_t>(index) * 4u);",
+            "    void* const old = read<void*>(slot);",
+            "    try {",
+            "        if (old != next) {",
+            "            std::memcpy(slot, &next, sizeof(next));",
+            "            if (next) InterlockedIncrement(reinterpret_cast<volatile LONG*>(",
+            "                static_cast<unsigned char*>(next) + 4));",
+            "            release(old, context.lifetime);",
+            "        }",
+            "    } catch (...) {",
+            "        // Native state0 -> CA33D0 ->4C3810 cleans the actual local pointer.",
+            "        release(temporary, context.lifetime);",
+            "        temporary = nullptr;",
+            "        throw;",
+            "    }",
+            "    // Native disarms state0 before this final release; do not retry it on throw.",
+            "    release(temporary, context.lifetime);"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+      "excerpts": [
+        {
+          "first_line": 4,
+          "last_line": 10,
+          "lines": [
+            "void invoke_native_ref_counted_delete_00bd30e0(void* owner,",
+            "    NativeRefCountedDeleteCalls& calls) {",
+            "    if (owner == nullptr) return;",
+            "    const std::uint32_t profile = *static_cast<const volatile std::uint32_t*>(owner);",
+            "    calls.delete_vslot04(owner, profile, 1);",
+            "}",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+      "excerpts": [
+        {
+          "first_line": 5,
+          "last_line": 16,
+          "lines": [
+            "struct NativeRefCountedDeleteCalls {",
+            "    virtual ~NativeRefCountedDeleteCalls() = default;",
+            "    // Resolve this captured profile's original slot04 to its concrete source",
+            "    // scalar body. The callback receives flags1; the BD30E0 caller has NO flags.",
+            "    virtual void delete_vslot04(void* actual_owner, std::uint32_t current_profile,",
+            "        std::uint32_t flags) = 0;",
+            "};",
+            "",
+            "// BD30E0: native ECX owner, no stack args, RET. Null does nothing; otherwise",
+            "// capture current profile and invoke slot04(flags1). No reference decrement.",
+            "// Added source provider changes the ABI and does not supply arbitrary vtables.",
+            "void invoke_native_ref_counted_delete_00bd30e0(void*, NativeRefCountedDeleteCalls&);"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "excerpts": [
+        {
+          "first_line": 69,
+          "last_line": 73,
+          "lines": [
+            "void* NativeGameConstructionCalls::call_00432650(GlobalConfigContext& c){return get_global_config_00432650(c);}",
+            "void NativeGameConstructionCalls::call_0087d7b0(void* owner,NativeGlobalConfigLoadContext& c,",
+            "    NativeGlobalConfigLoadOperation& operation){",
+            "    load_native_global_config_0087d7b0(*static_cast<GlobalConfigOwner*>(owner),c,operation);",
+            "}"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "excerpts": [
+        {
+          "first_line": 89,
+          "last_line": 92,
+          "lines": [
+            "    NativeGameDynamicsContext dynamics;",
+            "    NativeGameTablesContext& tables;",
+            "    GlobalConfigContext& global_configuration;",
+            "    NativeGlobalConfigLoadContext& global_configuration_load;"
+          ]
+        }
+      ]
+    }
+  ],
+  "native_bytes_and_decodes": [
+    {
+      "name": "effects_destructor",
+      "address": "008DBDB0",
+      "size": 218,
+      "hex": "6aff68b933ca0064a10000000050648925000000005153555657894c2410c744241c010000008d710cbd0300000033db8b0e8bc1f7d81bc0a91193e10074288b118b420853ffd08b3e3bfb74188d4f0451ff152022ce0085c075088b178b028bcfffd0891e891e8b7ef43bfb74198d4f0451ff152022ce0085c075088b178b028bcfffd0895ef4895ef483c60483ed01759e8b44241068804152006a036a0483c00c50885c242ce812be31008b4c24106810384c006a036a0451c744242cffffffffe8f7bd31008b4c24145f5e5d5b64890d0000000083c410c3",
+      "sha256": "0155c5076841ab7188f054415599a7c04d507e7c137f04c9184363c4ca2badc2",
+      "live_matches_installed_pe": true,
+      "instruction_count": 79,
+      "instructions": [
+        "008DBDB0: push -1",
+        "008DBDB2: push 0xca33b9",
+        "008DBDB7: mov eax, dword ptr fs:[0]",
+        "008DBDBD: push eax",
+        "008DBDBE: mov dword ptr fs:[0], esp",
+        "008DBDC5: push ecx",
+        "008DBDC6: push ebx",
+        "008DBDC7: push ebp",
+        "008DBDC8: push esi",
+        "008DBDC9: push edi",
+        "008DBDCA: mov dword ptr [esp + 0x10], ecx",
+        "008DBDCE: mov dword ptr [esp + 0x1c], 1",
+        "008DBDD6: lea esi, [ecx + 0xc]",
+        "008DBDD9: mov ebp, 3",
+        "008DBDDE: xor ebx, ebx",
+        "008DBDE0: mov ecx, dword ptr [esi]",
+        "008DBDE2: mov eax, ecx",
+        "008DBDE4: neg eax",
+        "008DBDE6: sbb eax, eax",
+        "008DBDE8: test eax, 0xe19311",
+        "008DBDED: je 0x8dbe17",
+        "008DBDEF: mov edx, dword ptr [ecx]",
+        "008DBDF1: mov eax, dword ptr [edx + 8]",
+        "008DBDF4: push ebx",
+        "008DBDF5: call eax",
+        "008DBDF7: mov edi, dword ptr [esi]",
+        "008DBDF9: cmp edi, ebx",
+        "008DBDFB: je 0x8dbe15",
+        "008DBDFD: lea ecx, [edi + 4]",
+        "008DBE00: push ecx",
+        "008DBE01: call dword ptr [0xce2220]",
+        "008DBE07: test eax, eax",
+        "008DBE09: jne 0x8dbe13",
+        "008DBE0B: mov edx, dword ptr [edi]",
+        "008DBE0D: mov eax, dword ptr [edx]",
+        "008DBE0F: mov ecx, edi",
+        "008DBE11: call eax",
+        "008DBE13: mov dword ptr [esi], ebx",
+        "008DBE15: mov dword ptr [esi], ebx",
+        "008DBE17: mov edi, dword ptr [esi - 0xc]",
+        "008DBE1A: cmp edi, ebx",
+        "008DBE1C: je 0x8dbe37",
+        "008DBE1E: lea ecx, [edi + 4]",
+        "008DBE21: push ecx",
+        "008DBE22: call dword ptr [0xce2220]",
+        "008DBE28: test eax, eax",
+        "008DBE2A: jne 0x8dbe34",
+        "008DBE2C: mov edx, dword ptr [edi]",
+        "008DBE2E: mov eax, dword ptr [edx]",
+        "008DBE30: mov ecx, edi",
+        "008DBE32: call eax",
+        "008DBE34: mov dword ptr [esi - 0xc], ebx",
+        "008DBE37: mov dword ptr [esi - 0xc], ebx",
+        "008DBE3A: add esi, 4",
+        "008DBE3D: sub ebp, 1",
+        "008DBE40: jne 0x8dbde0",
+        "008DBE42: mov eax, dword ptr [esp + 0x10]",
+        "008DBE46: push 0x524180",
+        "008DBE4B: push 3",
+        "008DBE4D: push 4",
+        "008DBE4F: add eax, 0xc",
+        "008DBE52: push eax",
+        "008DBE53: mov byte ptr [esp + 0x2c], bl",
+        "008DBE57: call 0xbf7c6e",
+        "008DBE5C: mov ecx, dword ptr [esp + 0x10]",
+        "008DBE60: push 0x4c3810",
+        "008DBE65: push 3",
+        "008DBE67: push 4",
+        "008DBE69: push ecx",
+        "008DBE6A: mov dword ptr [esp + 0x2c], 0xffffffff",
+        "008DBE72: call 0xbf7c6e",
+        "008DBE77: mov ecx, dword ptr [esp + 0x14]",
+        "008DBE7B: pop edi",
+        "008DBE7C: pop esi",
+        "008DBE7D: pop ebp",
+        "008DBE7E: pop ebx",
+        "008DBE7F: mov dword ptr fs:[0], ecx",
+        "008DBE86: add esp, 0x10",
+        "008DBE89: ret"
+      ]
+    },
+    {
+      "name": "global_config_destructor",
+      "address": "004325B0",
+      "size": 155,
+      "hex": "6aff682cedc50064a1000000005064892500000000515356578bf9897c240c8d8fc0020000c744241803000000e8ce974a008d8fa8000000c644241802e8beecffff8d4f1ce816ecffff8b4f108d770c33db3bcb885c2418741a8b44240c8b56085056e838faffff8b4e0451e88b3f7c0083c4048b4c2410895e04895e08895e0c891de478f800c7071838ce005f5e5b64890d0000000083c410c3",
+      "sha256": "9a9aa51dcce2878be4e127199c0a863aed0358d7115c6773c2a0b7693b14a52c",
+      "live_matches_installed_pe": true,
+      "instruction_count": 46,
+      "instructions": [
+        "004325B0: push -1",
+        "004325B2: push 0xc5ed2c",
+        "004325B7: mov eax, dword ptr fs:[0]",
+        "004325BD: push eax",
+        "004325BE: mov dword ptr fs:[0], esp",
+        "004325C5: push ecx",
+        "004325C6: push ebx",
+        "004325C7: push esi",
+        "004325C8: push edi",
+        "004325C9: mov edi, ecx",
+        "004325CB: mov dword ptr [esp + 0xc], edi",
+        "004325CF: lea ecx, [edi + 0x2c0]",
+        "004325D5: mov dword ptr [esp + 0x18], 3",
+        "004325DD: call 0x8dbdb0",
+        "004325E2: lea ecx, [edi + 0xa8]",
+        "004325E8: mov byte ptr [esp + 0x18], 2",
+        "004325ED: call 0x4312b0",
+        "004325F2: lea ecx, [edi + 0x1c]",
+        "004325F5: call 0x431210",
+        "004325FA: mov ecx, dword ptr [edi + 0x10]",
+        "004325FD: lea esi, [edi + 0xc]",
+        "00432600: xor ebx, ebx",
+        "00432602: cmp ecx, ebx",
+        "00432604: mov byte ptr [esp + 0x18], bl",
+        "00432608: je 0x432624",
+        "0043260A: mov eax, dword ptr [esp + 0xc]",
+        "0043260E: mov edx, dword ptr [esi + 8]",
+        "00432611: push eax",
+        "00432612: push esi",
+        "00432613: call 0x432050",
+        "00432618: mov ecx, dword ptr [esi + 4]",
+        "0043261B: push ecx",
+        "0043261C: call 0xbf65ac",
+        "00432621: add esp, 4",
+        "00432624: mov ecx, dword ptr [esp + 0x10]",
+        "00432628: mov dword ptr [esi + 4], ebx",
+        "0043262B: mov dword ptr [esi + 8], ebx",
+        "0043262E: mov dword ptr [esi + 0xc], ebx",
+        "00432631: mov dword ptr [0xf878e4], ebx",
+        "00432637: mov dword ptr [edi], 0xce3818",
+        "0043263D: pop edi",
+        "0043263E: pop esi",
+        "0043263F: pop ebx",
+        "00432640: mov dword ptr fs:[0], ecx",
+        "00432647: add esp, 0x10",
+        "0043264A: ret"
+      ]
+    },
+    {
+      "name": "second_slot_destructor",
+      "address": "00524180",
+      "size": 41,
+      "hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "live_matches_installed_pe": true,
+      "instruction_count": 19,
+      "instructions": [
+        "00524180: push esi",
+        "00524181: push edi",
+        "00524182: mov edi, ecx",
+        "00524184: mov esi, dword ptr [edi]",
+        "00524186: test esi, esi",
+        "00524188: je 0x5241a6",
+        "0052418A: lea eax, [esi + 4]",
+        "0052418D: push eax",
+        "0052418E: call dword ptr [0xce2220]",
+        "00524194: test eax, eax",
+        "00524196: jne 0x5241a0",
+        "00524198: mov edx, dword ptr [esi]",
+        "0052419A: mov eax, dword ptr [edx]",
+        "0052419C: mov ecx, esi",
+        "0052419E: call eax",
+        "005241A0: mov dword ptr [edi], 0",
+        "005241A6: pop edi",
+        "005241A7: pop esi",
+        "005241A8: ret"
+      ]
+    },
+    {
+      "name": "first_slot_destructor",
+      "address": "004C3810",
+      "size": 41,
+      "hex": "56578bf98b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c707000000005f5ec3",
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "live_matches_installed_pe": true,
+      "instruction_count": 19,
+      "instructions": [
+        "004C3810: push esi",
+        "004C3811: push edi",
+        "004C3812: mov edi, ecx",
+        "004C3814: mov esi, dword ptr [edi]",
+        "004C3816: test esi, esi",
+        "004C3818: je 0x4c3836",
+        "004C381A: lea eax, [esi + 4]",
+        "004C381D: push eax",
+        "004C381E: call dword ptr [0xce2220]",
+        "004C3824: test eax, eax",
+        "004C3826: jne 0x4c3830",
+        "004C3828: mov edx, dword ptr [esi]",
+        "004C382A: mov eax, dword ptr [edx]",
+        "004C382C: mov ecx, esi",
+        "004C382E: call eax",
+        "004C3830: mov dword ptr [edi], 0",
+        "004C3836: pop edi",
+        "004C3837: pop esi",
+        "004C3838: ret"
+      ]
+    },
+    {
+      "name": "example_native_zero_entry",
+      "address": "00BD30E0",
+      "size": 14,
+      "hex": "85c974098b018b50046a01ffd2c3",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_matches_installed_pe": true,
+      "instruction_count": 7,
+      "instructions": [
+        "00BD30E0: test ecx, ecx",
+        "00BD30E2: je 0xbd30ed",
+        "00BD30E4: mov eax, dword ptr [ecx]",
+        "00BD30E6: mov edx, dword ptr [eax + 4]",
+        "00BD30E9: push 1",
+        "00BD30EB: call edx",
+        "00BD30ED: ret"
+      ]
+    },
+    {
+      "name": "interlocked_decrement_iat",
+      "address": "00CE2220",
+      "size": 4,
+      "hex": "e856a000",
+      "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+      "live_matches_installed_pe": true,
+      "instruction_count": 0,
+      "instructions": []
+    }
+  ],
+  "instruction_contexts": {
+    "008dbdf5": {
+      "address": "008dbdf5",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "008dbdf4: PUSH EBX",
+        "008dbdf1: MOV EAX,dword ptr [EDX + 0x8]",
+        "008dbdef: MOV EDX,dword ptr [ECX]",
+        "008dbded: JZ 0x008dbe17",
+        "008dbde8: TEST EAX,0xe19311",
+        "008dbde6: SBB EAX,EAX",
+        "008dbde4: NEG EAX",
+        "008dbde2: MOV EAX,ECX",
+        "008dbde0: MOV ECX,dword ptr [ESI]",
+        "008dbdde: XOR EBX,EBX",
+        "008dbdd9: MOV EBP,0x3",
+        "008dbdd6: LEA ESI,[ECX + 0xc]",
+        "008dbdce: MOV dword ptr [ESP + 0x1c],0x1",
+        "008dbdca: MOV dword ptr [ESP + 0x10],ECX",
+        "008dbdc9: PUSH EDI",
+        "008dbdc8: PUSH ESI"
+      ],
+      "context_after": [
+        "008dbdf7: MOV EDI,dword ptr [ESI]",
+        "008dbdf9: CMP EDI,EBX",
+        "008dbdfb: JZ 0x008dbe15",
+        "008dbdfd: LEA ECX,[EDI + 0x4]",
+        "008dbe00: PUSH ECX",
+        "008dbe01: CALL dword ptr [0x00ce2220]",
+        "008dbe07: TEST EAX,EAX",
+        "008dbe09: JNZ 0x008dbe13",
+        "008dbe0b: MOV EDX,dword ptr [EDI]",
+        "008dbe0d: MOV EAX,dword ptr [EDX]",
+        "008dbe0f: MOV ECX,EDI",
+        "008dbe11: CALL EAX",
+        "008dbe13: MOV dword ptr [ESI],EBX",
+        "008dbe15: MOV dword ptr [ESI],EBX",
+        "008dbe17: MOV EDI,dword ptr [ESI + -0xc]",
+        "008dbe1a: CMP EDI,EBX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "008dbdf7": {
+      "address": "008dbdf7",
+      "instruction": "MOV EDI,dword ptr [ESI]",
+      "context_before": [
+        "008dbdf5: CALL EAX",
+        "008dbdf4: PUSH EBX",
+        "008dbdf1: MOV EAX,dword ptr [EDX + 0x8]",
+        "008dbdef: MOV EDX,dword ptr [ECX]",
+        "008dbded: JZ 0x008dbe17",
+        "008dbde8: TEST EAX,0xe19311",
+        "008dbde6: SBB EAX,EAX",
+        "008dbde4: NEG EAX",
+        "008dbde2: MOV EAX,ECX",
+        "008dbde0: MOV ECX,dword ptr [ESI]",
+        "008dbdde: XOR EBX,EBX",
+        "008dbdd9: MOV EBP,0x3",
+        "008dbdd6: LEA ESI,[ECX + 0xc]",
+        "008dbdce: MOV dword ptr [ESP + 0x1c],0x1",
+        "008dbdca: MOV dword ptr [ESP + 0x10],ECX",
+        "008dbdc9: PUSH EDI"
+      ],
+      "context_after": [
+        "008dbdf9: CMP EDI,EBX",
+        "008dbdfb: JZ 0x008dbe15",
+        "008dbdfd: LEA ECX,[EDI + 0x4]",
+        "008dbe00: PUSH ECX",
+        "008dbe01: CALL dword ptr [0x00ce2220]",
+        "008dbe07: TEST EAX,EAX",
+        "008dbe09: JNZ 0x008dbe13",
+        "008dbe0b: MOV EDX,dword ptr [EDI]",
+        "008dbe0d: MOV EAX,dword ptr [EDX]",
+        "008dbe0f: MOV ECX,EDI",
+        "008dbe11: CALL EAX",
+        "008dbe13: MOV dword ptr [ESI],EBX",
+        "008dbe15: MOV dword ptr [ESI],EBX",
+        "008dbe17: MOV EDI,dword ptr [ESI + -0xc]",
+        "008dbe1a: CMP EDI,EBX",
+        "008dbe1c: JZ 0x008dbe37"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "008dbe01": {
+      "address": "008dbe01",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "context_before": [
+        "008dbe00: PUSH ECX",
+        "008dbdfd: LEA ECX,[EDI + 0x4]",
+        "008dbdfb: JZ 0x008dbe15",
+        "008dbdf9: CMP EDI,EBX",
+        "008dbdf7: MOV EDI,dword ptr [ESI]",
+        "008dbdf5: CALL EAX",
+        "008dbdf4: PUSH EBX",
+        "008dbdf1: MOV EAX,dword ptr [EDX + 0x8]",
+        "008dbdef: MOV EDX,dword ptr [ECX]",
+        "008dbded: JZ 0x008dbe17",
+        "008dbde8: TEST EAX,0xe19311",
+        "008dbde6: SBB EAX,EAX",
+        "008dbde4: NEG EAX",
+        "008dbde2: MOV EAX,ECX",
+        "008dbde0: MOV ECX,dword ptr [ESI]",
+        "008dbdde: XOR EBX,EBX"
+      ],
+      "context_after": [
+        "008dbe07: TEST EAX,EAX",
+        "008dbe09: JNZ 0x008dbe13",
+        "008dbe0b: MOV EDX,dword ptr [EDI]",
+        "008dbe0d: MOV EAX,dword ptr [EDX]",
+        "008dbe0f: MOV ECX,EDI",
+        "008dbe11: CALL EAX",
+        "008dbe13: MOV dword ptr [ESI],EBX",
+        "008dbe15: MOV dword ptr [ESI],EBX",
+        "008dbe17: MOV EDI,dword ptr [ESI + -0xc]",
+        "008dbe1a: CMP EDI,EBX",
+        "008dbe1c: JZ 0x008dbe37",
+        "008dbe1e: LEA ECX,[EDI + 0x4]",
+        "008dbe21: PUSH ECX",
+        "008dbe22: CALL dword ptr [0x00ce2220]",
+        "008dbe28: TEST EAX,EAX",
+        "008dbe2a: JNZ 0x008dbe34"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "008dbe11": {
+      "address": "008dbe11",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "008dbe0f: MOV ECX,EDI",
+        "008dbe0d: MOV EAX,dword ptr [EDX]",
+        "008dbe0b: MOV EDX,dword ptr [EDI]",
+        "008dbe09: JNZ 0x008dbe13",
+        "008dbe07: TEST EAX,EAX",
+        "008dbe01: CALL dword ptr [0x00ce2220]",
+        "008dbe00: PUSH ECX",
+        "008dbdfd: LEA ECX,[EDI + 0x4]",
+        "008dbdfb: JZ 0x008dbe15",
+        "008dbdf9: CMP EDI,EBX",
+        "008dbdf7: MOV EDI,dword ptr [ESI]",
+        "008dbdf5: CALL EAX",
+        "008dbdf4: PUSH EBX",
+        "008dbdf1: MOV EAX,dword ptr [EDX + 0x8]",
+        "008dbdef: MOV EDX,dword ptr [ECX]",
+        "008dbded: JZ 0x008dbe17"
+      ],
+      "context_after": [
+        "008dbe13: MOV dword ptr [ESI],EBX",
+        "008dbe15: MOV dword ptr [ESI],EBX",
+        "008dbe17: MOV EDI,dword ptr [ESI + -0xc]",
+        "008dbe1a: CMP EDI,EBX",
+        "008dbe1c: JZ 0x008dbe37",
+        "008dbe1e: LEA ECX,[EDI + 0x4]",
+        "008dbe21: PUSH ECX",
+        "008dbe22: CALL dword ptr [0x00ce2220]",
+        "008dbe28: TEST EAX,EAX",
+        "008dbe2a: JNZ 0x008dbe34",
+        "008dbe2c: MOV EDX,dword ptr [EDI]",
+        "008dbe2e: MOV EAX,dword ptr [EDX]",
+        "008dbe30: MOV ECX,EDI",
+        "008dbe32: CALL EAX",
+        "008dbe34: MOV dword ptr [ESI + -0xc],EBX",
+        "008dbe37: MOV dword ptr [ESI + -0xc],EBX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "008dbe22": {
+      "address": "008dbe22",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "context_before": [
+        "008dbe21: PUSH ECX",
+        "008dbe1e: LEA ECX,[EDI + 0x4]",
+        "008dbe1c: JZ 0x008dbe37",
+        "008dbe1a: CMP EDI,EBX",
+        "008dbe17: MOV EDI,dword ptr [ESI + -0xc]",
+        "008dbe15: MOV dword ptr [ESI],EBX",
+        "008dbe13: MOV dword ptr [ESI],EBX",
+        "008dbe11: CALL EAX",
+        "008dbe0f: MOV ECX,EDI",
+        "008dbe0d: MOV EAX,dword ptr [EDX]",
+        "008dbe0b: MOV EDX,dword ptr [EDI]",
+        "008dbe09: JNZ 0x008dbe13",
+        "008dbe07: TEST EAX,EAX",
+        "008dbe01: CALL dword ptr [0x00ce2220]",
+        "008dbe00: PUSH ECX",
+        "008dbdfd: LEA ECX,[EDI + 0x4]"
+      ],
+      "context_after": [
+        "008dbe28: TEST EAX,EAX",
+        "008dbe2a: JNZ 0x008dbe34",
+        "008dbe2c: MOV EDX,dword ptr [EDI]",
+        "008dbe2e: MOV EAX,dword ptr [EDX]",
+        "008dbe30: MOV ECX,EDI",
+        "008dbe32: CALL EAX",
+        "008dbe34: MOV dword ptr [ESI + -0xc],EBX",
+        "008dbe37: MOV dword ptr [ESI + -0xc],EBX",
+        "008dbe3a: ADD ESI,0x4",
+        "008dbe3d: SUB EBP,0x1",
+        "008dbe40: JNZ 0x008dbde0",
+        "008dbe42: MOV EAX,dword ptr [ESP + 0x10]",
+        "008dbe46: PUSH 0x524180",
+        "008dbe4b: PUSH 0x3",
+        "008dbe4d: PUSH 0x4",
+        "008dbe4f: ADD EAX,0xc"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "008dbe32": {
+      "address": "008dbe32",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "008dbe30: MOV ECX,EDI",
+        "008dbe2e: MOV EAX,dword ptr [EDX]",
+        "008dbe2c: MOV EDX,dword ptr [EDI]",
+        "008dbe2a: JNZ 0x008dbe34",
+        "008dbe28: TEST EAX,EAX",
+        "008dbe22: CALL dword ptr [0x00ce2220]",
+        "008dbe21: PUSH ECX",
+        "008dbe1e: LEA ECX,[EDI + 0x4]",
+        "008dbe1c: JZ 0x008dbe37",
+        "008dbe1a: CMP EDI,EBX",
+        "008dbe17: MOV EDI,dword ptr [ESI + -0xc]",
+        "008dbe15: MOV dword ptr [ESI],EBX",
+        "008dbe13: MOV dword ptr [ESI],EBX",
+        "008dbe11: CALL EAX",
+        "008dbe0f: MOV ECX,EDI",
+        "008dbe0d: MOV EAX,dword ptr [EDX]"
+      ],
+      "context_after": [
+        "008dbe34: MOV dword ptr [ESI + -0xc],EBX",
+        "008dbe37: MOV dword ptr [ESI + -0xc],EBX",
+        "008dbe3a: ADD ESI,0x4",
+        "008dbe3d: SUB EBP,0x1",
+        "008dbe40: JNZ 0x008dbde0",
+        "008dbe42: MOV EAX,dword ptr [ESP + 0x10]",
+        "008dbe46: PUSH 0x524180",
+        "008dbe4b: PUSH 0x3",
+        "008dbe4d: PUSH 0x4",
+        "008dbe4f: ADD EAX,0xc",
+        "008dbe52: PUSH EAX",
+        "008dbe53: MOV byte ptr [ESP + 0x2c],BL",
+        "008dbe57: CALL 0x00bf7c6e",
+        "008dbe5c: MOV ECX,dword ptr [ESP + 0x10]",
+        "008dbe60: PUSH 0x4c3810",
+        "008dbe65: PUSH 0x3"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "0052418e": {
+      "address": "0052418e",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "context_before": [
+        "0052418d: PUSH EAX",
+        "0052418a: LEA EAX,[ESI + 0x4]",
+        "00524188: JZ 0x005241a6",
+        "00524186: TEST ESI,ESI",
+        "00524184: MOV ESI,dword ptr [EDI]",
+        "00524182: MOV EDI,ECX",
+        "00524181: PUSH EDI",
+        "00524180: PUSH ESI",
+        "00524175: RET",
+        "00524174: POP ESI",
+        "00524173: POP EBX",
+        "00524172: POP EDI",
+        "0052416d: CALL 0x00522d60",
+        "0052416b: XOR EDX,EDX",
+        "0052416a: PUSH EAX",
+        "00524167: MOV dword ptr [EDX + -0x4],EBX"
+      ],
+      "context_after": [
+        "00524194: TEST EAX,EAX",
+        "00524196: JNZ 0x005241a0",
+        "00524198: MOV EDX,dword ptr [ESI]",
+        "0052419a: MOV EAX,dword ptr [EDX]",
+        "0052419c: MOV ECX,ESI",
+        "0052419e: CALL EAX",
+        "005241a0: MOV dword ptr [EDI],0x0",
+        "005241a6: POP EDI",
+        "005241a7: POP ESI",
+        "005241a8: RET",
+        "005241d0: MOV EAX,FS:[0x0]",
+        "005241d6: PUSH -0x1",
+        "005241d8: PUSH 0xc6b398",
+        "005241dd: PUSH EAX",
+        "005241de: MOV dword ptr FS:[0x0],ESP",
+        "005241e5: SUB ESP,0x44"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "0052419e": {
+      "address": "0052419e",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "0052419c: MOV ECX,ESI",
+        "0052419a: MOV EAX,dword ptr [EDX]",
+        "00524198: MOV EDX,dword ptr [ESI]",
+        "00524196: JNZ 0x005241a0",
+        "00524194: TEST EAX,EAX",
+        "0052418e: CALL dword ptr [0x00ce2220]",
+        "0052418d: PUSH EAX",
+        "0052418a: LEA EAX,[ESI + 0x4]",
+        "00524188: JZ 0x005241a6",
+        "00524186: TEST ESI,ESI",
+        "00524184: MOV ESI,dword ptr [EDI]",
+        "00524182: MOV EDI,ECX",
+        "00524181: PUSH EDI",
+        "00524180: PUSH ESI",
+        "00524175: RET",
+        "00524174: POP ESI"
+      ],
+      "context_after": [
+        "005241a0: MOV dword ptr [EDI],0x0",
+        "005241a6: POP EDI",
+        "005241a7: POP ESI",
+        "005241a8: RET",
+        "005241d0: MOV EAX,FS:[0x0]",
+        "005241d6: PUSH -0x1",
+        "005241d8: PUSH 0xc6b398",
+        "005241dd: PUSH EAX",
+        "005241de: MOV dword ptr FS:[0x0],ESP",
+        "005241e5: SUB ESP,0x44",
+        "005241e8: PUSH EBX",
+        "005241e9: PUSH ESI",
+        "005241ea: MOV ESI,ECX",
+        "005241ec: MOV ECX,dword ptr [0x00e188d8]",
+        "005241f2: XOR EBX,EBX",
+        "005241f4: CMP ECX,EBX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "004c381e": {
+      "address": "004c381e",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "context_before": [
+        "004c381d: PUSH EAX",
+        "004c381a: LEA EAX,[ESI + 0x4]",
+        "004c3818: JZ 0x004c3836",
+        "004c3816: TEST ESI,ESI",
+        "004c3814: MOV ESI,dword ptr [EDI]",
+        "004c3812: MOV EDI,ECX",
+        "004c3811: PUSH EDI",
+        "004c3810: PUSH ESI",
+        "004c380b: RET",
+        "004c380a: POP ESI",
+        "004c3808: MOV EAX,ESI",
+        "004c3803: CALL 0x004bf830",
+        "004c3801: MOV ESI,ECX",
+        "004c3800: PUSH ESI",
+        "004c3784: RET",
+        "004c3783: POP ESI"
+      ],
+      "context_after": [
+        "004c3824: TEST EAX,EAX",
+        "004c3826: JNZ 0x004c3830",
+        "004c3828: MOV EDX,dword ptr [ESI]",
+        "004c382a: MOV EAX,dword ptr [EDX]",
+        "004c382c: MOV ECX,ESI",
+        "004c382e: CALL EAX",
+        "004c3830: MOV dword ptr [EDI],0x0",
+        "004c3836: POP EDI",
+        "004c3837: POP ESI",
+        "004c3838: RET",
+        "004c3840: PUSH -0x1",
+        "004c3842: PUSH 0xc650eb",
+        "004c3847: MOV EAX,FS:[0x0]",
+        "004c384d: PUSH EAX",
+        "004c384e: MOV dword ptr FS:[0x0],ESP",
+        "004c3855: SUB ESP,0xac"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "004c382e": {
+      "address": "004c382e",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "004c382c: MOV ECX,ESI",
+        "004c382a: MOV EAX,dword ptr [EDX]",
+        "004c3828: MOV EDX,dword ptr [ESI]",
+        "004c3826: JNZ 0x004c3830",
+        "004c3824: TEST EAX,EAX",
+        "004c381e: CALL dword ptr [0x00ce2220]",
+        "004c381d: PUSH EAX",
+        "004c381a: LEA EAX,[ESI + 0x4]",
+        "004c3818: JZ 0x004c3836",
+        "004c3816: TEST ESI,ESI",
+        "004c3814: MOV ESI,dword ptr [EDI]",
+        "004c3812: MOV EDI,ECX",
+        "004c3811: PUSH EDI",
+        "004c3810: PUSH ESI",
+        "004c380b: RET",
+        "004c380a: POP ESI"
+      ],
+      "context_after": [
+        "004c3830: MOV dword ptr [EDI],0x0",
+        "004c3836: POP EDI",
+        "004c3837: POP ESI",
+        "004c3838: RET",
+        "004c3840: PUSH -0x1",
+        "004c3842: PUSH 0xc650eb",
+        "004c3847: MOV EAX,FS:[0x0]",
+        "004c384d: PUSH EAX",
+        "004c384e: MOV dword ptr FS:[0x0],ESP",
+        "004c3855: SUB ESP,0xac",
+        "004c385b: XOR EAX,EAX",
+        "004c385d: PUSH EBX",
+        "004c385e: PUSH EBP",
+        "004c385f: MOV dword ptr [ESP + 0x18],EAX",
+        "004c3863: MOV dword ptr [ESP + 0x1c],EAX",
+        "004c3867: MOV dword ptr [ESP + 0x20],EAX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd30eb": {
+      "address": "00bd30eb",
+      "instruction": "CALL EDX",
+      "context_before": [
+        "00bd30e9: PUSH 0x1",
+        "00bd30e6: MOV EDX,dword ptr [EAX + 0x4]",
+        "00bd30e4: MOV EAX,dword ptr [ECX]",
+        "00bd30e2: JZ 0x00bd30ed",
+        "00bd30e0: TEST ECX,ECX",
+        "00bd30d5: JMP 0x0041cc80",
+        "00bd30d0: MOV ECX,0x1090ac0",
+        "00bd30cb: RET",
+        "00bd30ca: POP ESI",
+        "00bd30c4: CALL dword ptr [0x00ce2210]",
+        "00bd30c3: PUSH ESI",
+        "00bd30bf: ADD dword ptr [ESI + 0x18],-0x1",
+        "00bd30bd: JZ 0x00bd30ca",
+        "00bd30bb: TEST ESI,ESI",
+        "00bd30b6: MOV [0x01090aec],EAX",
+        "00bd30b4: JGE 0x00bd30a6"
+      ],
+      "context_after": [
+        "00bd30ed: RET",
+        "00bd30f0: MOV dword ptr [ECX],0xceb130",
+        "00bd30f6: RET",
+        "00bd31a0: PUSH ESI",
+        "00bd31a1: MOV ESI,ECX",
+        "00bd31a3: MOV ECX,dword ptr [ESI + 0x4]",
+        "00bd31a6: TEST ECX,ECX",
+        "00bd31a8: PUSH EDI",
+        "00bd31a9: MOV EDI,dword ptr [ESP + 0xc]",
+        "00bd31ad: JZ 0x00bd31bb",
+        "00bd31af: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd31b2: SUB EAX,ECX",
+        "00bd31b4: SAR EAX,0x3",
+        "00bd31b7: CMP EDI,EAX",
+        "00bd31b9: JC 0x00bd31c0",
+        "00bd31bb: CALL 0x00bf6713"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "004325dd": {
+      "address": "004325dd",
+      "instruction": "CALL 0x008dbdb0",
+      "context_before": [
+        "004325d5: MOV dword ptr [ESP + 0x18],0x3",
+        "004325cf: LEA ECX,[EDI + 0x2c0]",
+        "004325cb: MOV dword ptr [ESP + 0xc],EDI",
+        "004325c9: MOV EDI,ECX",
+        "004325c8: PUSH EDI",
+        "004325c7: PUSH ESI",
+        "004325c6: PUSH EBX",
+        "004325c5: PUSH ECX",
+        "004325be: MOV dword ptr FS:[0x0],ESP",
+        "004325bd: PUSH EAX",
+        "004325b7: MOV EAX,FS:[0x0]",
+        "004325b2: PUSH 0xc5ed2c",
+        "004325b0: PUSH -0x1",
+        "004325ad: RET",
+        "004325aa: ADD ESP,0x14",
+        "004325a3: MOV dword ptr FS:[0x0],ECX"
+      ],
+      "context_after": [
+        "004325e2: LEA ECX,[EDI + 0xa8]",
+        "004325e8: MOV byte ptr [ESP + 0x18],0x2",
+        "004325ed: CALL 0x004312b0",
+        "004325f2: LEA ECX,[EDI + 0x1c]",
+        "004325f5: CALL 0x00431210",
+        "004325fa: MOV ECX,dword ptr [EDI + 0x10]",
+        "004325fd: LEA ESI,[EDI + 0xc]",
+        "00432600: XOR EBX,EBX",
+        "00432602: CMP ECX,EBX",
+        "00432604: MOV byte ptr [ESP + 0x18],BL",
+        "00432608: JZ 0x00432624",
+        "0043260a: MOV EAX,dword ptr [ESP + 0xc]",
+        "0043260e: MOV EDX,dword ptr [ESI + 0x8]",
+        "00432611: PUSH EAX",
+        "00432612: PUSH ESI",
+        "00432613: CALL 0x00432050"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    }
+  },
+  "references": [
+    "docs/GLOBAL_CONFIG.md",
+    "docs/CC12_GLOBAL_CONFIG_SECOND_ARRAY_PAYLOAD.md",
+    "docs/CC12_GLOBAL_CONFIG_SECOND_ARRAY_DIRECT_CALLERS.md",
+    "docs/CC12_GLOBAL_CONFIG_COLOR_SETTER_FRONTIER.md",
+    "docs/CC12_GLOBAL_CONFIG_LIFETIME_OWNER_ESCAPE.md"
+  ]
+}
