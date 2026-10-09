@@ -1,0 +1,349 @@
+{
+  "created_utc": "2026-10-09T11:33:58.734899+00:00",
+  "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+  "configuration": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_image": {
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "count": "live function count 64729; snapshot 64729; same\n",
+  "spans": [
+    {
+      "address": "00E0B6D0",
+      "bytes": 12,
+      "hex": "000000000000000004b7e000",
+      "sha256": "0836a45f4cf885f04aafd07fead7691b215c6f053c2a239c6952fb6b0d541fc2",
+      "DWORDs": [
+        "00000000",
+        "00000000",
+        "00E0B704"
+      ],
+      "live_matches_installed_PE": true,
+      "section": ".data",
+      "section_characteristics": "C0000040",
+      "file_backed": true
+    },
+    {
+      "address": "00E0B704",
+      "bytes": 12,
+      "hex": "00000000d0b6e00000000000",
+      "sha256": "b2e49bc8d81a5a3902d6c26ff6a4ebfd86ba3e965c2597da141b31f10816238e",
+      "DWORDs": [
+        "00000000",
+        "00E0B6D0",
+        "00000000"
+      ],
+      "live_matches_installed_PE": true,
+      "section": ".data",
+      "section_characteristics": "C0000040",
+      "file_backed": true
+    },
+    {
+      "address": "00D7A260",
+      "bytes": 4,
+      "hex": "000080bf",
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "DWORDs": [
+        "BF800000"
+      ],
+      "live_matches_installed_PE": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "file_backed": true
+    }
+  ],
+  "xrefs": {
+    "00E0B704": "From 008758df in BSP_TickRegistration_Construct [DATA]\nFrom 00874cd3 in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00874cd6 in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00874cc7 in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00874c95 in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00874cbe in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00874ce5 in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00e0b6d8 [DATA]\n",
+    "00E0B708": "From 00874cf4 in BSP_TickRegistry_FlushPendingGroups [WRITE]\nFrom 008758d3 in BSP_TickRegistration_Construct [READ]\nFrom 008758e6 in BSP_TickRegistration_Construct [READ]\nFrom 008758ee in BSP_TickRegistration_Construct [WRITE]\nFrom 00874ca3 in BSP_TickRegistry_FlushPendingGroups [READ]\nFrom 00874cac in BSP_TickRegistry_FlushPendingGroups [READ]\nFrom 00874cc7 in BSP_TickRegistry_FlushPendingGroups [WRITE]\n",
+    "00D7A260": "From 00ab8609 in BSP_TextContext_EnsureDrawSections [READ]\nFrom 00b751b6 in BSP_GeneratedModel_SetGeometry [READ]\nFrom 00a3add9 in BSP_NetworkConsoleChannel_Reset [READ]\nFrom 00424b83 in BSP_GameplayTuningSettings_Construct [READ]\nFrom 004c72b2 in BSP_World_LayoutBorderZoneRecords [READ]\nFrom 004c73a7 in BSP_World_LayoutBorderZoneRecords [READ]\nFrom 0070bd86 in BSP_GameGrid_Construct [READ]\nFrom 0076ee57 in BSP_GameEmbeddedState_Construct_0076EDE0 [READ]\nFrom 007e88ae in BSP_GameTuning_LoadFromPlaneGlobals [READ]\nFrom 007e8937 in BSP_GameTuning_LoadFromPlaneGlobals [READ]\nFrom 007784cf in BSP_Session_PumpStep [READ]\nFrom 005e3850 in FUN_005e3580 [READ]\nFrom 005e39f0 in FUN_005e3580 [READ]\nFrom 0054bcaf in BSP_MainMenuCommandBar_Rebuild [READ]\nFrom 0054be95 in BSP_MainMenuCommandBar_Rebuild [READ]\nFrom 0071fbac in FUN_0071fb90 [READ]\nFrom 00782846 in BSP_SessionTransport_TickCountdown [READ]\nFrom 00783b0c in BSP_SessionTarget_Construct [READ]\nFrom 00799b50 in MovieCameraKeyframe_Construct [READ]\nFrom 00797106 in FUN_00797070 [READ]\nFrom 0042cf2e in BSP_Geometry_AsinClamped [READ]\nFrom 007a53ae in FUN_007a5110 [READ]\nFrom 007a5975 in FUN_007a5110 [READ]\nFrom 00795542 in BSP_CameraPosition_ApplyRecordMode [READ]\nFrom 0085aba4 in BSP_TurningGun_SetTargetAngles [READ]\n",
+    "00F876F8": "From 00874cc4 in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00874cd0 in BSP_TickRegistry_FlushPendingGroups [DATA]\nFrom 00874cd6 in BSP_TickRegistry_FlushPendingGroups [DATA]\n"
+  },
+  "unowned_bootstrap_metadata_only": "No function found for 00cd27d6\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00cd27d6'})\n",
+  "current_input_pins": [
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "bytes": 1247,
+      "sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "physical_bytes": 1247,
+      "physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "src/native_tick_registration_constructor.cpp",
+      "bytes": 3108,
+      "sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "physical_bytes": 3108,
+      "physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
+      "bytes": 8308,
+      "sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
+      "physical_bytes": 8451,
+      "physical_sha256": "7383167321e0ddd90161e84a77823adcc1f70bc02eaeba8f60d0945e0e20a07f"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
+      "bytes": 102583,
+      "sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
+      "physical_bytes": 106009,
+      "physical_sha256": "0cb39719c22c5d0a93f77353ca05c9e6e793f370f81c01b9ee2ed70e4932817e"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_SPLICE_READINESS.md",
+      "bytes": 8156,
+      "sha256": "18310573ebe042411e2fbf2168c7a97318af0a384d6f45c5d15e1c5897c52c53",
+      "physical_bytes": 8156,
+      "physical_sha256": "18310573ebe042411e2fbf2168c7a97318af0a384d6f45c5d15e1c5897c52c53"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "reports/cc12_pending_entity_registration_splice_readiness.json",
+      "bytes": 24762,
+      "sha256": "894016d4ca5cceaae4be56cdfa95cf0c85172a06f29b15d320c9ab95dab1eebd",
+      "physical_bytes": 24762,
+      "physical_sha256": "894016d4ca5cceaae4be56cdfa95cf0c85172a06f29b15d320c9ab95dab1eebd"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "physical_bytes": 2713,
+      "physical_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "src/game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "physical_bytes": 7167,
+      "physical_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "include/bsp/game_native_data_bootstrap.hpp",
+      "bytes": 4111,
+      "sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "physical_bytes": 4111,
+      "physical_sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "src/game_native_particle_runtime.cpp",
+      "bytes": 12819,
+      "sha256": "64fde4c6a4d8938ce769828469ddcd6ca2c68e985d69e98406e8fa9893c400f1",
+      "physical_bytes": 12819,
+      "physical_sha256": "64fde4c6a4d8938ce769828469ddcd6ca2c68e985d69e98406e8fa9893c400f1"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "src/game_hosts_fixed_step.cpp",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "physical_bytes": 23671,
+      "physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "physical_bytes": 11060,
+      "physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "revision": "9a45da88d25a3c86c41fe71ead4dce8224da18c3",
+      "path": "src/unit_instance_layout.cpp",
+      "bytes": 10576,
+      "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "physical_bytes": 10576,
+      "physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+    }
+  ],
+  "capture_artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\count.txt",
+      "bytes": 49,
+      "sha256": "64f4f9be166172342d092bf0cd71435b6499bdc159a7f8a34c738d7db792a246",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\bytes_00E0B6D0.txt",
+      "bytes": 61,
+      "sha256": "5102d7466e66c8d8427f504145b3eb3ef1fbd115cae2ea0a64cda477e42c8296",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00E0B6D0",
+        "--length",
+        "12"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\bytes_00E0B704.txt",
+      "bytes": 61,
+      "sha256": "36f5f617ab0076205cd2831636407417899f223ccda59de6e4d316b970cb47be",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00E0B704",
+        "--length",
+        "12"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\bytes_00D7A260.txt",
+      "bytes": 29,
+      "sha256": "90071f406f4f041b108ed68b33991d361286aa04206bb39036f73ba957c52cba",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00D7A260",
+        "--length",
+        "4"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\xrefs_00E0B704.txt",
+      "bytes": 444,
+      "sha256": "0863af0f8fae0ea74c96191e9c6b99069d9a059cd93d8c37e4f3bff8a29aa5db",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "xrefs",
+        "00E0B704"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\xrefs_00E0B708.txt",
+      "bytes": 415,
+      "sha256": "b4ee2df40e02ba2a82bc0d826f982b09e9f2eee184ee7cedded3d4d92fb37adf",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "xrefs",
+        "00E0B708"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\xrefs_00D7A260.txt",
+      "bytes": 1309,
+      "sha256": "a7d9a2f5237e4f418c6302ac23f8629513cd468565adb7abc236e69316f910fb",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "xrefs",
+        "00D7A260"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\xrefs_00F876F8.txt",
+      "bytes": 183,
+      "sha256": "966969fe382a5c819aea76bf3bc3afdd077d40c5b019779a795b15797d19cab1",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "xrefs",
+        "00F876F8"
+      ]
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_pending_tick_global_storage_binding_primary\\group_bootstrap_metadata.txt",
+      "bytes": 128,
+      "sha256": "56ba3d9a083dc02be01342b8017db90bddcaf89443685489d618a7d383cf274a",
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "00CD27D6"
+      ]
+    }
+  ],
+  "no_Native_code_body_or_unselected_data_read": true,
+  "schema": "bsp.cc12.pending_tick_global_storage_binding_readiness.v1",
+  "packet": "cc12_pending_tick_global_storage_binding_readiness",
+  "kind": "read_only_actual_data_binding_and_production_owner_readiness",
+  "conclusion": "Exact saved -1.0f DWORD is available through the existing read-only data service; actual mutable pending/group owner and group bootstrap remain production holds.",
+  "credit": {
+    "new_Source_functions": 0,
+    "Original_function_bytes": 0,
+    "Original_ABI": 0,
+    "gameplay": 0
+  },
+  "Source_binding": {
+    "actual_initializer_address": "00D7A260",
+    "exact_word": "BF800000",
+    "float_value": -1.0,
+    "reads_after_link_publication": true,
+    "available_service": "GameNativeReadOnlyData::data_at(0x00d7a260,4)",
+    "lifetime_requirement": "Actual owning band reservation remains mapped throughout the consumer lifetime.",
+    "new_constructor_application_binding_demonstrated": false,
+    "mutable_pending_addresses_excluded_from_service_domain": true
+  },
+  "production_holds": [
+    "Actual common mutable pending/group owner and pointer identity.",
+    "Complete group bootstrap and startup/lifetime/producer-consumer phase.",
+    "Concrete UnitInstanceLayoutHost construction binding and actual payload/group inputs.",
+    "Receiver storage and registry/manager lifetime/failure delivery."
+  ],
+  "bootstrap_qualification": {
+    "metadata_only_address": "00CD27D6",
+    "no_function_at_address": true,
+    "bounded_instruction_evidence_in_prior_report": true,
+    "full_initializer_or_route_opened_here": false,
+    "exact_function_AddressSet_or_no_return_flag_queried": false,
+    "repair_performed": false
+  },
+  "limits": [
+    "Saved data and Source service contracts are not live original-game sampling.",
+    "Read-only xrefs do not prove exhaustive dynamic write absence.",
+    "Only the two 12-byte sentinel prefixes are selected; unselected fields are not asserted.",
+    "All current inputs are pinned at the recorded revision; concurrent later changes require replay."
+  ],
+  "owned_doc_pin": {
+    "path": "docs/CC12_PENDING_TICK_GLOBAL_STORAGE_BINDING_READINESS.md",
+    "bytes": 4194,
+    "sha256": "c5b069d947342ff0121f9f4ad08603c5d0bb2f6f2c2cb09bf1e1ea47f879f2f8"
+  }
+}
