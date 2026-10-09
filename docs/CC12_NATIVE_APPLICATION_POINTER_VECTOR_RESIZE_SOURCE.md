@@ -115,3 +115,34 @@ hashes and all nine input pins from the accepted audit were replayed.
 
 Only the new header, implementation, this document and its report changed.
 No CMake, ledger or GPR edit, build, test, probe or native execution was performed.
+
+## Primary registration and complete emitted review
+
+The integrator registered this unit in bsp_core. The normal MSVC Win32 build
+and all three existing checks passed. The private core is exactly 80 bytes /
+31 instructions. Its sole call relocation targets the physical local bridge;
+rebinding that operand to the original comparison addresses gives `7D FF FF FF`
+and makes the entire core equal the pinned live bytes and installed PE.
+Both explicit no-op encodings and all six branch destinations are retained.
+
+The entire public adapter (19 bytes / 8 instructions) and reserve bridge
+(20 bytes / 9 instructions) forward the same borrowed header, requested count
+and allocation binding, with the respective cdecl and RET4 cleanup. Physical
+symbol-index resolution proves both local edges and the bridge's external
+edge to the actual existing reserve service. Complete matching core members
+contain two unique positive public definitions and two file-local definitions.
+
+The current reserve service's whole 113-byte / 50-instruction emitted body was
+also reviewed: signed minimum/capacity decisions, wrapping size, actual callback
+loads, current source/count reads, current old-data free, then new data/capacity
+publication. Its named external graph is empty; its two indirect calls retain
+the existing caller-supplied allocator/free contracts. Its original child bytes
+and Native CRT/exception behavior were not newly qualified.
+
+Admission adds one reconstructed Original function of 80 bytes. The new public,
+core and bridge roots are absent from the game map. This remains an explicit
+C++ binding interface; no actual Application owner, callable profile, production
+startup path, Native exception/fault execution or gameplay proof is supplied.
+Complete evidence and artifacts are retained under
+`local/cc12_application_vector_primary`, with the primary report at
+`reports/cc12_native_application_pointer_vector_resize_primary_review.json`.

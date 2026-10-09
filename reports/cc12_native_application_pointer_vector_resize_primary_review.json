@@ -1,0 +1,266 @@
+{
+  "schema": "bsp.cc12.application_pointer_vector_resize_primary_review.v1",
+  "status": "complete_80B_core_public_adapter_bridge_and_actual_reserve_binding_reviewed_build_passed",
+  "created_utc": "2026-10-09T06:58:16.698673+00:00",
+  "worker_commit": "3328268f436f71f52aeb4c93420a96af01c02988",
+  "build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 15744,
+    "start_utc": "2026-10-09T06:48:35.873907+00:00",
+    "finish_utc": "2026-10-09T06:48:56.024737+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "before_inputs_rechecked_after_build": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "ddbfbe2933cfb7c073bf96fe223d60acb16e3c7d465df50e18f015718031450d"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58"
+    },
+    {
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b"
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff"
+    }
+  ],
+  "current_worker_Source_pins_replayed": [
+    {
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58"
+    },
+    {
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b"
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff"
+    },
+    {
+      "path": "config/target.json",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "reports/cc12_application_vector_retirement_readiness.json",
+      "canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e"
+    }
+  ],
+  "canonical_prior_pin_references_replayed": 9,
+  "core": {
+    "bytes": 80,
+    "instructions": 31,
+    "physical_symbol": "?resize_body@?A0xe788dc78@bsp@@YIXPAUNativeApplicationPointerVectorStorage@2@PBUNativeApplicationPointerVectorAllocation@2@H@Z",
+    "sha256_after_original_address_rebinding": "d394c24ef9bd622bffd085f533d79c02d298d2e7563cf4d2821582be40b53029",
+    "entire_rebound_body_equal_installed_PE": true,
+    "sole_relocation_operand": 15,
+    "comparison_delta": -131,
+    "comparison_operand_hex": "7dffffff",
+    "EDX_extra_Source_binding": "Untouched before onlyreserveedge; unused thereafter."
+  },
+  "public_adapter": {
+    "bytes": 19,
+    "instructions": 8,
+    "symbol": "?resize_native_application_pointer_vector_00735f30@bsp@@YAXAAUNativeApplicationPointerVectorStorage@1@HABUNativeApplicationPointerVectorAllocation@1@@Z",
+    "complete_contract": "Cdeclactualrefs/count: pushrequested, loadEDXsameallocationaddress/ECXsameheaderaddress; callprivate; preserveEBP/plainRET; caller12Bcleanup."
+  },
+  "reserve_bridge": {
+    "bytes": 20,
+    "instructions": 9,
+    "symbol": "?reserve_for_resize@?A0xe788dc78@bsp@@YIXPAUNativeApplicationPointerVectorStorage@2@PBUNativeApplicationPointerVectorAllocation@2@H@Z",
+    "complete_contract": "SameEDXallocation/samestackrequest/sameECXheader pushas threecdeclargs; actualreservecall; ADDESP12; restoreEBP; RET4."
+  },
+  "actual_reserve": {
+    "symbol": "?reserve_native_application_pointer_vector_00735ec0@bsp@@YAXAAUNativeApplicationPointerVectorStorage@1@HABUNativeApplicationPointerVectorAllocation@1@@Z",
+    "bytes": 113,
+    "instructions": 50,
+    "source": "src/native_shader_preload.cpp",
+    "whole_emitted_body_review_pending": false,
+    "original_child_native_body_requeried": false,
+    "indexed_graph_external_boundaries": {},
+    "complete_emitted_review": [
+      "113B/50instructions; min1 via signedCMOVGE, signedcurrentcapacity earlyexit; noESIpoponunenteredbranch.",
+      "Actualallocationfunction loaded from samecontext, wrappingcapacity*4 stackword; cdeclcall/ADDESP4; retainfreshpointer in originalrequestargumentlocal.",
+      "Currentcount firstread afterallocation; freshsourcepointer only for nonnullcomputedcurrentdestination; currentcount reload after eachiteration and wrappingindex/destinationadvance.",
+      "Actualfreefunction reloaded from samecontext then CURRENTolddata loaded/pushed; free returns before freshdata/capacity publication; count unchanged.",
+      "Only2dynamiccalls are actualborrowedallocator/free; entireindexedlocalgraph one realfunction/noexternalnamedboundaries; uniquepositivepublicdefinition/exactwholeCoremember."
+    ]
+  },
+  "whole_objects": [
+    {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_application_pointer_vector_resize.obj",
+      "bytes": 3238,
+      "sha256": "e3b3e11262ece40e12e06c49559dc0ba12c73d6a0a5ca6b9bf3cdfee927c4592"
+    },
+    {
+      "path": "build\\win32\\bsp_core.dir\\Release\\native_shader_preload.obj",
+      "bytes": 58655,
+      "sha256": "166653d0aed78b68ce9699b2888ad061faa5829d0e5d24f5c059abd818b75cac"
+    }
+  ],
+  "whole_core_members": [
+    {
+      "name": "bsp_core.dir\\Release\\native_application_pointer_vector_resize.obj",
+      "header_offset": 63755064,
+      "payload_file_offset": 63755124,
+      "bytes": 3238,
+      "sha256": "e3b3e11262ece40e12e06c49559dc0ba12c73d6a0a5ca6b9bf3cdfee927c4592"
+    },
+    {
+      "name": "bsp_core.dir\\Release\\native_shader_preload.obj",
+      "header_offset": 27372838,
+      "payload_file_offset": 27372898,
+      "bytes": 58655,
+      "sha256": "166653d0aed78b68ce9699b2888ad061faa5829d0e5d24f5c059abd818b75cac"
+    }
+  ],
+  "positive_unique_public_core_definitions": [
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_shader_preload.obj",
+        "header_offset": 27372838,
+        "payload_file_offset": 27372898,
+        "bytes": 58655,
+        "sha256": "166653d0aed78b68ce9699b2888ad061faa5829d0e5d24f5c059abd818b75cac"
+      },
+      "definition": {
+        "name": "?reserve_native_application_pointer_vector_00735ec0@bsp@@YAXAAUNativeApplicationPointerVectorStorage@1@HABUNativeApplicationPointerVectorAllocation@1@@Z",
+        "symbol_index": 414,
+        "symbol_record_file_offset": 31451,
+        "section": 163,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_application_pointer_vector_resize.obj",
+        "header_offset": 63755064,
+        "payload_file_offset": 63755124,
+        "bytes": 3238,
+        "sha256": "e3b3e11262ece40e12e06c49559dc0ba12c73d6a0a5ca6b9bf3cdfee927c4592"
+      },
+      "definition": {
+        "name": "?resize_native_application_pointer_vector_00735f30@bsp@@YAXAAUNativeApplicationPointerVectorStorage@1@HABUNativeApplicationPointerVectorAllocation@1@@Z",
+        "symbol_index": 25,
+        "symbol_record_file_offset": 2422,
+        "section": 9,
+        "value": 0,
+        "type": 32
+      }
+    }
+  ],
+  "physical_private_definitions": [
+    {
+      "symbol": {
+        "index": 27,
+        "record_file_offset": 2458,
+        "raw_record_hex": "000000005702000000000000080020000300",
+        "name": "?resize_body@?A0xe788dc78@bsp@@YIXPAUNativeApplicationPointerVectorStorage@2@PBUNativeApplicationPointerVectorAllocation@2@H@Z",
+        "value": 0,
+        "section": 8,
+        "type": 32,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      "whole_core_member_header_offset": 63755064,
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_application_pointer_vector_resize.obj",
+      "scope": "file_local_positive_definition"
+    },
+    {
+      "symbol": {
+        "index": 26,
+        "record_file_offset": 2440,
+        "raw_record_hex": "00000000d101000000000000070020000300",
+        "name": "?reserve_for_resize@?A0xe788dc78@bsp@@YIXPAUNativeApplicationPointerVectorStorage@2@PBUNativeApplicationPointerVectorAllocation@2@H@Z",
+        "value": 0,
+        "section": 7,
+        "type": 32,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      "whole_core_member_header_offset": 63755064,
+      "object": "build\\win32\\bsp_core.dir\\Release\\native_application_pointer_vector_resize.obj",
+      "scope": "file_local_positive_definition"
+    }
+  ],
+  "core_library_sha256": "5e809d0987c64d11afccdee781b1b1d53970875fab9582ce8eb3036060ee53a3",
+  "complete_review": [
+    "All80B/31nativecoreinstructions and6branchdestinations retained aftersolecomparisonrebinding; exact6BLEA/2BMOVEDI.",
+    "Five signedcomparisons, wrappingindex/slot/decrement, currentdatareload/calculatedaddressnulltest, liveshrinkcountupdates and unconditionalcountpublication.",
+    "Completepublic19B/8ins andbridge20B/9ins reviewed; threephysicalrelocationedges connect actualsameborrowedrefs, no copiedcontext/defaultprovider.",
+    "One Core member perwholeobject,2uniquepositivepublicdefinitions and2physicalfile-localdefinitions; unrelatedheader-generatedvectorctor outsideindexedrootclosure.",
+    "New public/private/bridge roots absentgamemap; noStartupbinding or NativeABI/runtime/EH/faultproof."
+  ],
+  "retained_complete_evidence": "local/cc12_application_vector_primary/whole_resize_objects_and_indexed_graphs.json",
+  "credit": {
+    "additional_Original_functions": 1,
+    "additional_Original_bytes": 80,
+    "new_Source_function": 1,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "PublicC++refinterface andextraEDXbinding are distinct from originalentry; actualallocation/service/validextents remaincallercontracts.",
+    "ExistingreserveSource/nativeCRT/newhandler/EHqualification remains; noNativeABI/dropin/faultcompatibilityclaim.",
+    "ActualApplicationowner/publication/callabletables/exceptionalretirement/startup/gameplay remainopen; no newtests/probes."
+  ],
+  "ledger_function": "resize_native_application_pointer_vector_00735f30",
+  "existing_original_function_record_before_admission": null,
+  "worker_document_before_primary_append_sha256": "279d95f135773a259346cc8c6ac81e4de3a8cc24a2dc747c92e48bfeb7e2ad64",
+  "current_document_canonical_sha256": "69309fa49788b967e38feb10571494e7e11a0490d7e2071079784c478b3792d7",
+  "build_warning": "Preexisting LNK4006 duplicate spawn_request_id_matches in unrelated Lua modules.",
+  "saved_Ghidra_annotation": {
+    "path": "local\\ghidra-annotations-20261009T070059Z.json",
+    "sha256": "e92283898c21096517effae89dd6a5363da8f456a6af9940ef36fae63dd174a6",
+    "prior_name": "FUN_00735f30",
+    "name": "BSP_AppPointerVector_Resize",
+    "project_saved": true,
+    "forced_export": [
+      "00735F30"
+    ],
+    "function_count_unchanged": 64729
+  }
+}
