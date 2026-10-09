@@ -1,0 +1,632 @@
+{
+  "schema": 1,
+  "packet": "cc12_tick_reparent_Source_call_bindings",
+  "created_utc": "2026-10-09T19:21:56.272853+00:00",
+  "baseline_commit": "806294aa1939cd6710d1a86f155f22c574ea2d8f",
+  "owned_files": [
+    "docs/CC12_TICK_REPARENT_SOURCE_CALL_BINDINGS.md",
+    "reports/cc12_tick_reparent_Source_call_bindings.json"
+  ],
+  "claimed_Native_addresses": [],
+  "status": "Current_admitted_Source_call_bindings_verified_parent_implementation_and_review_owned_by_Root",
+  "scope": {
+    "Source_API_and_argument_cell_composition_only": true,
+    "Native_parent_gate_reused_as_given_contract": true,
+    "Native_parent_child_handler_or_PE_audit": false,
+    "Ghidra_read_or_mutation": false,
+    "parent_implementation_files_touched": false,
+    "CMake_ledger_or_executable_source_mutation": false,
+    "build_tests_fixtures_probes_consumers_or_whole_library_decode": false
+  },
+  "credit": {
+    "new_Source_functions": 0,
+    "new_Source_fragments": 0,
+    "Original_ABI": 0,
+    "startup_gameplay": 0
+  },
+  "actual_declaration_pins": [
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2"
+    },
+    {
+      "path": "src/native_tick_subnode_unlink_caller.cpp",
+      "bytes": 2743,
+      "sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "canonical_lf_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "bytes": 2363,
+      "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "bytes": 593,
+      "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "bytes": 7776,
+      "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+    }
+  ],
+  "APIs": [
+    {
+      "public": "bsp::get_native_pending_registry_00875280",
+      "signature": "void* (void* volatile& Fcell, void* volatile& Mcell)",
+      "current_calling_convention": "cdecl",
+      "argument_values_are_actual_cell_addresses": true,
+      "entry_stack": {
+        "Fcell_address": "S+4",
+        "Mcell_address": "S+8"
+      },
+      "lifetime": "Both actual publication cells have stable addresses for the entire call; runtime canonical cells and matching deletion binding have longer external lifetime requirements.",
+      "input_timing": [
+        {
+          "Source_offset": "0x2e",
+          "effect": "Capture actual F cell reference from EBP+8"
+        },
+        {
+          "Source_offset": "0x31",
+          "effect": "Capture actual M cell reference from EBP+0Ch"
+        },
+        {
+          "Source_offset": "0x34",
+          "effect": "Read current F; nonnull fast path returns this capture"
+        },
+        {
+          "Source_offset": "0x3f",
+          "effect": "Call actual manager getter with M cell reference"
+        },
+        {
+          "Source_offset": "0x47",
+          "effect": "Capture first manager raw +10h section"
+        },
+        {
+          "Source_offset": "0x66",
+          "effect": "Recheck current F after optional Enter/depth increment"
+        },
+        {
+          "Source_offset": "0xb4",
+          "effect": "Publish constructed result through original F cell"
+        },
+        {
+          "Source_offset": "0xb6",
+          "effect": "Second manager getter through original M cell"
+        },
+        {
+          "Source_offset": "0xc0",
+          "effect": "Reload current F after second manager lookup for registration"
+        },
+        {
+          "Source_offset": "0xdc",
+          "effect": "Reload current F after normal decrement/Leave for slow-path return"
+        }
+      ]
+    },
+    {
+      "public": "bsp::unlink_native_tick_subnode_00875960",
+      "signature": "void __fastcall (void* receiver, std::uint32_t unused_edx, void* volatile& Ncell, void* volatile& Fcell, void* volatile& Mcell)",
+      "definition": "__declspec(naked)",
+      "entry_registers": {
+        "ECX": "receiver",
+        "EDX": "explicit unused Source placement word"
+      },
+      "entry_stack": {
+        "Ncell_address": "S+4",
+        "Fcell_address": "S+8",
+        "Mcell_address": "S+0Ch"
+      },
+      "input_timing": [
+        {
+          "Source_offset": "0x05",
+          "effect": "Push actual M cell address at S+0Ch after three register saves"
+        },
+        {
+          "Source_offset": "0x09",
+          "effect": "Push actual F cell address at S+8 after preceding M push"
+        },
+        {
+          "Source_offset": "0x0d",
+          "effect": "Call admitted actual cdecl getter with F/M cells"
+        },
+        {
+          "Source_offset": "0x12",
+          "effect": "ADD ESP,8 removes temporary getter reference arguments"
+        },
+        {
+          "Source_offset": "0x15",
+          "effect": "Capture getter result+4 as section"
+        },
+        {
+          "Source_offset": "0x1d",
+          "effect": "Optional current EnterCriticalSection import"
+        },
+        {
+          "Source_offset": "0x23",
+          "effect": "Increment captured section raw depth after Enter"
+        },
+        {
+          "Source_offset": "0x27",
+          "effect": "Load actual N cell address at S+4"
+        },
+        {
+          "Source_offset": "0x2b",
+          "effect": "Read current node word from that N cell"
+        },
+        {
+          "Source_offset": "0x31",
+          "effect": "Call actual raw unlink leaf with node value; no EDX reset"
+        },
+        {
+          "Source_offset": "0x38",
+          "effect": "Clear current EDI+4 after leaf without reloading Ncell or selecting EAX"
+        },
+        {
+          "Source_offset": "0x4f",
+          "effect": "RET 0Ch consumes three Source reference arguments"
+        }
+      ],
+      "normal_return_ESP": "S+10h",
+      "semantic_EAX_result": false,
+      "owned_unwind_cleanup": false,
+      "Native_RET4_vs_Source_RET0Ch_is_existing_qualified_API_difference": true
+    }
+  ],
+  "parent_binding_contract": {
+    "accepted_parent_capture_point": "Node captured once after outer lock entry/depth step; no repeated Native audit in this packet.",
+    "accepted_child_value_input": "Native PUSH ESI supplies a value copy of captured Node.",
+    "new_Source_argument_storage": "One new actual void* volatile child_node_argument_word initialized from captured_node at the approved child-call point.",
+    "call": "unlink_native_tick_subnode_00875960(actual_unlink_receiver, 0u, child_node_argument_word, original_Fcell, original_Mcell)",
+    "keep_new_word_at_stable_address": "Throughout child getter, optional section entry/depth, late cell read, leaf and remaining child execution.",
+    "incoming_parent_Nodecell_reborrowed_or_reread": false,
+    "original_F_M_references_forwarded": true,
+    "F_M_pointer_value_snapshots_or_private_publication_cells": false,
+    "explicit_EDX_word_is_Source_placement_only": true,
+    "Native_EDX_propagation_claim": false,
+    "new_cell_does_not_establish_Native_frame_alias_identity": true,
+    "volatile_does_not_establish_atomicity_or_concurrency_safety": true
+  },
+  "runtime_cell_qualification": {
+    "canonical_owner": "GameNativeStringProcess retained by game_native_string_process static pointer",
+    "F_accessor": "GameNativeStringProcess::pending_registry_00f878cc()",
+    "M_accessor": "GameNativeStringProcess::manager_01090aa0()",
+    "host_borrows_same_cells": true,
+    "host_F_accessor": "GameSingletonHost::pending_registry_publication_00f878cc()",
+    "deletion_binding": "NativeSingletonDeletionBindings::actual_pending_registry_publication_00f878cc receives address of same retained F cell",
+    "matching_host_binding_required_through_manager_drain": true,
+    "retained_process_does_not_extend_Host_or_other_context_lifetimes": true,
+    "no_new_storage_owner_registration_consumer_or_startup_activation": true
+  },
+  "current_Source109_snapshot": {
+    "captured_utc": "2026-10-09T19:15:45.481858+00:00",
+    "capture_pin": {
+      "path": "local/cc12_tick_reparent_Source_call_bindings/capture.json",
+      "bytes": 5011,
+      "sha256": "a7c2f40879bce70f718f2b32983278b99c91871e33926adc4e4805eb9299e5b5",
+      "canonical_lf_sha256": "d2a48a1da1920c4a9c1c604a31699314c319fa76c2e928fec799c31dd8c388f0"
+    },
+    "selected_replay_pin": {
+      "path": "local/cc12_tick_reparent_Source_call_bindings/selected_Source_replay.json",
+      "bytes": 13223,
+      "sha256": "7161e32bd40193b80a784da5c33f31de09fe65cfc84a57a8fc15e0db1853a775",
+      "canonical_lf_sha256": "63945886a930862d41ae5833e7750fafcf55bac813d86db0029864ed60d7ddc7"
+    },
+    "ignored_capture_base_directory": "J:/PROG/battlestations-pacific-decompile-cc12_world_post_base_header_contract",
+    "current_receipt_pin": {
+      "path": "reports/cc12_native_lua_variant_pair_retreat_primary_review.json",
+      "bytes": 94647,
+      "sha256": "08c8aca9449360284ba3b62ee9c9c14fef17702ab25825da2c48b36f2ac71e9a",
+      "canonical_lf_sha256": "08c8aca9449360284ba3b62ee9c9c14fef17702ab25825da2c48b36f2ac71e9a"
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 11128,
+      "start_utc": "2026-10-09T19:04:50.472711+00:00",
+      "finish_utc": "2026-10-09T19:05:05.720846+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 109
+    },
+    "source_input_count": 109,
+    "all109_canonical_inputs_replayed_equal": true,
+    "input_manifest_pin": {
+      "path": "local/cc12_tick_reparent_Source_call_bindings/current_source_input_replay.json",
+      "bytes": 29309,
+      "sha256": "3bd2a42f93439f3c6695ea2d5cce2eba2e11874b15169e29822f608bde237910",
+      "canonical_lf_sha256": "a59218d360bfea5e5a42605a7a495d779b9f82ae4d5a0557e4f5be09ca066302"
+    },
+    "artifact_pins": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "bytes": 73770556,
+        "sha256": "99e1e62de6a01c5661769650988c22e0fd433f89dcad2487c32b10c8528a7018",
+        "canonical_lf_sha256": "c5105c899d6999f7fe9416f0ec17d3e70089b16ef84695cf056bee4417f3973d",
+        "current_Source109_artifact_replayed_equal": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "d8a8af4a543a62761dfb7abba7eadd1e59a80f949f99fe45ef1fe63a601dc0e1",
+        "canonical_lf_sha256": "d7725e38004b0cba318e2f0281f7d6f19f6372955b3673bed74d8f68139bfc82",
+        "current_Source109_artifact_replayed_equal": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "e233a7f88ccd446f005f934e3999cdc8956e4261ed3f41a18510f64b3a806768",
+        "canonical_lf_sha256": "dd1f4d32a42cf6e7fc67a56504396a7cbe877595ce216485bb6bd96be8007674",
+        "current_Source109_artifact_replayed_equal": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "9395476dbfb95f74de3770a4fbc305f3e2f6a9a4e39f9b11c2b78654f376114b",
+        "canonical_lf_sha256": "c5a2610180694ed87f2dcea18b6b7100930f85c8fe6efed473cc020d4340e9b3",
+        "current_Source109_artifact_replayed_equal": true
+      }
+    ],
+    "existing_checks_passed": 3,
+    "whole_objects": 30,
+    "unique_positive_Core_definitions": 34,
+    "later_Root_builds_may_replace_artifact_paths": true,
+    "preserved_selected_objects_used_for_replay": true
+  },
+  "inherited_admission_receipts": [
+    {
+      "path": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "bytes": 853902,
+      "sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+      "canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277"
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json",
+      "bytes": 567071,
+      "sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0",
+      "canonical_lf_sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0"
+    },
+    {
+      "path": "reports/cc12_pending_registry_process_cell_and_dispatch_primary_review.json",
+      "bytes": 370478,
+      "sha256": "931f03469d5913e9e424f9ebc1a788e5175b205bac4b7d82d85feb6b4f6433e0",
+      "canonical_lf_sha256": "931f03469d5913e9e424f9ebc1a788e5175b205bac4b7d82d85feb6b4f6433e0"
+    }
+  ],
+  "selected_compiled_API_evidence": [
+    {
+      "stem": "native_pending_registry_getter",
+      "current_positive_Core": {
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_pending_registry_getter.obj",
+          "header_offset": 63806926,
+          "payload_file_offset": 63806986,
+          "bytes": 3703,
+          "sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113"
+        },
+        "definition": {
+          "name": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+          "symbol_index": 15,
+          "symbol_record_file_offset": 1970,
+          "section": 4,
+          "value": 0,
+          "type": 32
+        }
+      },
+      "selected_root": {
+        "section": 4,
+        "header_file_offset": 140,
+        "raw_header_hex": "2e74657874246d6e00000000000000002901000081030000aa040000000000000e00000020105060",
+        "containing_section_bytes": 297,
+        "containing_section_relocation_count": 14,
+        "physical_file_offset": 897,
+        "bytes": 250,
+        "instructions": 85,
+        "sha256": "640e03f66d07747180012ac1b275a19d56738dd71a0f3cbcd2daad66bc7c8970",
+        "hex": "558bec6aff680000000064a1000000005083ec20a10000000033c58945ec535657508d45f464a3000000008965f08b7d088b5d0c8b0785c00f85a000000053e80000000083c4048b7010c745d4fc37ce008975d885f6740e56ff15000000008b461840894618833f00c745fc0000000075588d45e0c745e00300000050c745e408000000c745e808000000e80000000083c4048945dcc645fc0185c0740c5750e80000000083c408eb0233c053c745fc000000008907e80000000083c4048bc88b0733d250e80000000085f6740e8b4e184956894e18ff15000000008b078b4df464890d00000000595f5e5b8b4dec33cde8000000008be55dc3"
+      },
+      "preserved_object_pin": {
+        "path": "local/cc12_tick_reparent_Source_call_bindings/native_pending_registry_getter.obj",
+        "bytes": 3703,
+        "sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113",
+        "canonical_lf_sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113"
+      },
+      "public_symbol_record": {
+        "index": 15,
+        "record_file_offset": 1970,
+        "raw_record_hex": "000000001f00000000000000040020000200",
+        "name": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      "indexed_root_edges": [
+        {
+          "Source_function_operand_offset": 6,
+          "relocation_record_file_offset": 1194,
+          "raw_relocation_record": "060000001c0000000600",
+          "relocation_type": 6,
+          "symbol_index": 28,
+          "symbol": "__ehhandler$?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+          "symbol_record_file_offset": 2204,
+          "raw_symbol_record": "000000007b02000000000000050020000300",
+          "symbol_section": 5,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 21,
+          "relocation_record_file_offset": 1204,
+          "raw_relocation_record": "15000000290000000600",
+          "relocation_type": 6,
+          "symbol_index": 41,
+          "symbol": "___security_cookie",
+          "symbol_record_file_offset": 2438,
+          "raw_symbol_record": "00000000a804000000000000000000000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 64,
+          "relocation_record_file_offset": 1214,
+          "raw_relocation_record": "40000000140000001400",
+          "relocation_type": 20,
+          "symbol_index": 20,
+          "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+          "symbol_record_file_offset": 2060,
+          "raw_symbol_record": "000000004101000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 91,
+          "relocation_record_file_offset": 1224,
+          "raw_relocation_record": "5b000000160000000600",
+          "relocation_type": 6,
+          "symbol_index": 22,
+          "symbol": "__imp__EnterCriticalSection@4",
+          "symbol_record_file_offset": 2096,
+          "raw_symbol_record": "00000000b501000000000000000000000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 140,
+          "relocation_record_file_offset": 1234,
+          "raw_relocation_record": "8c000000100000001400",
+          "relocation_type": 20,
+          "symbol_index": 16,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "symbol_record_file_offset": 1988,
+          "raw_symbol_record": "000000005800000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 161,
+          "relocation_record_file_offset": 1244,
+          "raw_relocation_record": "a1000000130000001400",
+          "relocation_type": 20,
+          "symbol_index": 19,
+          "symbol": "?construct_native_pending_registry_00874bc0@bsp@@YAPAXPAXACRAX@Z",
+          "symbol_record_file_offset": 2042,
+          "raw_symbol_record": "000000000001000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 183,
+          "relocation_record_file_offset": 1254,
+          "raw_relocation_record": "b7000000140000001400",
+          "relocation_type": 20,
+          "symbol_index": 20,
+          "symbol": "?get_native_singleton_manager_00415350@bsp@@YAPAXACRAX@Z",
+          "symbol_record_file_offset": 2060,
+          "raw_symbol_record": "000000004101000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 198,
+          "relocation_record_file_offset": 1264,
+          "raw_relocation_record": "c6000000150000001400",
+          "relocation_type": 20,
+          "symbol_index": 21,
+          "symbol": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+          "symbol_record_file_offset": 2078,
+          "raw_symbol_record": "000000007a01000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 216,
+          "relocation_record_file_offset": 1274,
+          "raw_relocation_record": "d8000000170000000600",
+          "relocation_type": 6,
+          "symbol_index": 23,
+          "symbol": "__imp__LeaveCriticalSection@4",
+          "symbol_record_file_offset": 2114,
+          "raw_symbol_record": "00000000d301000000000000000000000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 242,
+          "relocation_record_file_offset": 1284,
+          "raw_relocation_record": "f2000000190000001400",
+          "relocation_type": 20,
+          "symbol_index": 25,
+          "symbol": "@__security_check_cookie@4",
+          "symbol_record_file_offset": 2150,
+          "raw_symbol_record": "000000003602000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        }
+      ],
+      "all_selected_bytes_and_raw_indexed_records_replayed": true,
+      "unchanged_from_existing_admitted_complete_object": true
+    },
+    {
+      "stem": "native_tick_subnode_unlink_caller",
+      "current_positive_Core": {
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_tick_subnode_unlink_caller.obj",
+          "header_offset": 63803402,
+          "payload_file_offset": 63803462,
+          "bytes": 1107,
+          "sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281"
+        },
+        "definition": {
+          "name": "?unlink_native_tick_subnode_00875960@bsp@@YIXPAXIACRAX11@Z",
+          "symbol_index": 8,
+          "symbol_record_file_offset": 741,
+          "section": 3,
+          "value": 0,
+          "type": 32
+        }
+      },
+      "selected_root": {
+        "section": 3,
+        "header_file_offset": 100,
+        "raw_header_hex": "2e74657874246d6e000000000000000052000000bb0100000d020000000000000400000020105060",
+        "containing_section_bytes": 82,
+        "containing_section_relocation_count": 4,
+        "physical_file_offset": 443,
+        "bytes": 82,
+        "instructions": 29,
+        "sha256": "c13949dbd6222fdee45e3fa3fcd552387b4b1560630740fe312c0c962d7055b5",
+        "hex": "5356578bd9ff742418ff742418e80000000083c4088b700485f6740b56ff1500000000834618018b7c24108b3f578d4b1ce80000000085f6c7470400000000740b834618ff56ff15000000005f5e5bc20c00"
+      },
+      "preserved_object_pin": {
+        "path": "local/cc12_tick_reparent_Source_call_bindings/native_tick_subnode_unlink_caller.obj",
+        "bytes": 1107,
+        "sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281",
+        "canonical_lf_sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281"
+      },
+      "public_symbol_record": {
+        "index": 8,
+        "record_file_offset": 741,
+        "raw_record_hex": "000000000400000000000000030020000200",
+        "name": "?unlink_native_tick_subnode_00875960@bsp@@YIXPAXIACRAX11@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      "indexed_root_edges": [
+        {
+          "Source_function_operand_offset": 14,
+          "relocation_record_file_offset": 525,
+          "raw_relocation_record": "0e000000090000001400",
+          "relocation_type": 20,
+          "symbol_index": 9,
+          "symbol": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+          "symbol_record_file_offset": 759,
+          "raw_symbol_record": "000000003f00000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 31,
+          "relocation_record_file_offset": 535,
+          "raw_relocation_record": "1f0000000b0000000600",
+          "relocation_type": 6,
+          "symbol_index": 11,
+          "symbol": "__imp__EnterCriticalSection@4",
+          "symbol_record_file_offset": 795,
+          "raw_symbol_record": "00000000b400000000000000000000000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 50,
+          "relocation_record_file_offset": 545,
+          "raw_relocation_record": "320000000a0000001400",
+          "relocation_type": 20,
+          "symbol_index": 10,
+          "symbol": "?unlink_native_tick_sublist_node_00874e60@bsp@@YIPAXPAXI0@Z",
+          "symbol_record_file_offset": 777,
+          "raw_symbol_record": "000000007800000000000000000020000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        },
+        {
+          "Source_function_operand_offset": 72,
+          "relocation_record_file_offset": 555,
+          "raw_relocation_record": "480000000c0000000600",
+          "relocation_type": 6,
+          "symbol_index": 12,
+          "symbol": "__imp__LeaveCriticalSection@4",
+          "symbol_record_file_offset": 813,
+          "raw_symbol_record": "00000000d200000000000000000000000200",
+          "symbol_section": 0,
+          "operand_hex": "00000000"
+        }
+      ],
+      "all_selected_bytes_and_raw_indexed_records_replayed": true,
+      "unchanged_from_existing_admitted_complete_object": true
+    }
+  ],
+  "validation": {
+    "selected_root_bytes": 332,
+    "selected_root_instructions": 114,
+    "indexed_root_edges": 14,
+    "exact_complete_objects_equal_to_current_Source109_and_old_admitted_objects": true,
+    "all_selected_raw_bytes_instruction_decodes_section_headers_relocation_and_symbol_records_replayed": true,
+    "unlink_getter_external_symbol_resolves_to_current_unique_positive_Core_definition": true,
+    "getter_containing_section_has_previously_admitted_catch_tails": true,
+    "catch_tail_instructions_and_Source_handler_not_reaudited": true,
+    "new_build_or_execution": false
+  },
+  "document_pin": {
+    "path": "docs/CC12_TICK_REPARENT_SOURCE_CALL_BINDINGS.md",
+    "bytes": 8581,
+    "sha256": "8c715ac3812e040367f5afda8077f1404f5178831aadc40a592b78e323260027",
+    "canonical_lf_sha256": "8c715ac3812e040367f5afda8077f1404f5178831aadc40a592b78e323260027"
+  },
+  "limits": [
+    "Binding verification supplies no parent implementation, admission, whole-call ABI or gameplay credit.",
+    "The new actual child node word represents Source value-copy input, without Native stack/spill/control alias equivalence.",
+    "Publication cells retain identity while values can change; actual current provider and cleanup policies remain qualified.",
+    "Receiver/node/neighbor/section backing, arbitrary raw aliases, nonlocal exits and parent cleanup remain external requirements."
+  ]
+}
