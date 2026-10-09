@@ -1,0 +1,655 @@
+{
+  "schema": "cc12_type5_isolated_path_TEXT_peer_v1",
+  "Source_credit": 0,
+  "kind": "passive_TEXT_and_DATA_peer",
+  "peer_passed": false,
+  "Root_proposal_adopted": false,
+  "Root_concrete_adoption_is_separate": true,
+  "blocking_defects": [
+    {
+      "id": "fixed_family_not_rebased",
+      "check_line": 43,
+      "line": 11,
+      "payload": "complete_guard.py",
+      "required": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5p2",
+      "actual": "J:/PROG/battlestations-pacific-decompile/local/type5p1",
+      "effect": "Exact fresh Root family rejects V6 isolated family before downstream stages"
+    },
+    {
+      "id": "Native_tool_literal_not_rebased",
+      "check_line": 42,
+      "line": 41,
+      "payload": "guarded_tool_entry.py",
+      "required": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\tools\\bsp.py",
+      "actual": "J:/PROG/battlestations-pacific-decompile/tools/bsp.py",
+      "effect": "Isolated Native argv rejected; Main path has no selected inventory row"
+    },
+    {
+      "id": "include_roots_and_ENV_not_rebased",
+      "affected_roles": [
+        "root_python",
+        "effective_python"
+      ],
+      "selection_field": "include_roots[0]",
+      "effect": "Recipe-derived isolated INCLUDE differs from selected effective ENV; Main include not covered by inventory",
+      "actual": "J:\\PROG\\battlestations-pacific-decompile\\include",
+      "required": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\include",
+      "profile_key": "INCLUDE",
+      "recipe_check_line": 197
+    }
+  ],
+  "input_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5isolatedPeer01\\input_manifest.json",
+    "size": 33113,
+    "sha256": "ca4c2232a4b91aed505f1ca81004150e8f149e8ba8cc402ea8caf9cda7894871"
+  },
+  "fixed_data_files": 50,
+  "fixed_original_and_copy_bookends_equal": true,
+  "full_worker_runtime_closure_claimed": false,
+  "derivation": {
+    "Python_original_asserts_preserved_by_byte_identity": true,
+    "driver_exact_two_literal_replacements": true,
+    "Root_recorded_recipe_asserts": 108,
+    "materializer_exact_family_and_log_replacements": true,
+    "payloads": [
+      {
+        "basename": "recipe.py",
+        "v5_size": 46053,
+        "v5_sha256": "34b29ff57f4440c24e576c3fb095b7fbead5af31666e12441c2e31dfd76be11b",
+        "v6_size": 46053,
+        "v6_sha256": "34b29ff57f4440c24e576c3fb095b7fbead5af31666e12441c2e31dfd76be11b",
+        "byte_identical": true
+      },
+      {
+        "basename": "helpers.py",
+        "v5_size": 19357,
+        "v5_sha256": "40a616be33d0fb19d52abb8779a2c1a47785215e3b1b9a7f5952eae794388437",
+        "v6_size": 19357,
+        "v6_sha256": "40a616be33d0fb19d52abb8779a2c1a47785215e3b1b9a7f5952eae794388437",
+        "byte_identical": true
+      },
+      {
+        "basename": "probe.cpp",
+        "v5_size": 27488,
+        "v5_sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d",
+        "v6_size": 27488,
+        "v6_sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d",
+        "byte_identical": true
+      },
+      {
+        "basename": "raw_formats.py",
+        "v5_size": 17605,
+        "v5_sha256": "d25d8b201e26a39949026c8b14f2cd7e989b7ddd625b022bbbe7236dc6cd5e5a",
+        "v6_size": 17605,
+        "v6_sha256": "d25d8b201e26a39949026c8b14f2cd7e989b7ddd625b022bbbe7236dc6cd5e5a",
+        "byte_identical": true
+      },
+      {
+        "basename": "register_imports.py",
+        "v5_size": 10763,
+        "v5_sha256": "5e16629a6c6afcaec4130e20e7f8eebd4f86e1e74b28ca5b5a98ee96af4eb0c7",
+        "v6_size": 10763,
+        "v6_sha256": "5e16629a6c6afcaec4130e20e7f8eebd4f86e1e74b28ca5b5a98ee96af4eb0c7",
+        "byte_identical": true
+      },
+      {
+        "basename": "caller_frames.py",
+        "v5_size": 8387,
+        "v5_sha256": "382ea442210026172aa976139bff2bc23e9a748d98090f55ae639c8fbd96d0e4",
+        "v6_size": 8387,
+        "v6_sha256": "382ea442210026172aa976139bff2bc23e9a748d98090f55ae639c8fbd96d0e4",
+        "byte_identical": true
+      },
+      {
+        "basename": "code_gate.py",
+        "v5_size": 32552,
+        "v5_sha256": "dfe90b2fdf2d610f1bc50a8b1ff3be826172aea93eef1a3da8987a7b62faaec5",
+        "v6_size": 32552,
+        "v6_sha256": "dfe90b2fdf2d610f1bc50a8b1ff3be826172aea93eef1a3da8987a7b62faaec5",
+        "byte_identical": true
+      },
+      {
+        "basename": "observations.py",
+        "v5_size": 19910,
+        "v5_sha256": "a5e635532e63bdc977af08b872f0d0d4608b512f6879e3806d96ab8f447c17ed",
+        "v6_size": 19910,
+        "v6_sha256": "a5e635532e63bdc977af08b872f0d0d4608b512f6879e3806d96ab8f447c17ed",
+        "byte_identical": true
+      },
+      {
+        "basename": "protocol_review.py",
+        "v5_size": 11427,
+        "v5_sha256": "3137a43e826448df61d7e2545ba6b190c23f11ecc1187281a435f3375ce66b8f",
+        "v6_size": 11427,
+        "v6_sha256": "3137a43e826448df61d7e2545ba6b190c23f11ecc1187281a435f3375ce66b8f",
+        "byte_identical": true
+      },
+      {
+        "basename": "guarded_tool_entry.py",
+        "v5_size": 4660,
+        "v5_sha256": "c797a96f326e42ebc4ff6c24d3fda768c8f14f130fcc08eaedc57eabc3376653",
+        "v6_size": 4660,
+        "v6_sha256": "c797a96f326e42ebc4ff6c24d3fda768c8f14f130fcc08eaedc57eabc3376653",
+        "byte_identical": true
+      },
+      {
+        "basename": "complete_guard.py",
+        "v5_size": 15587,
+        "v5_sha256": "fdfa7b507bccaf25b115c2029589c9b6111e128644e0d2df2052bffc423e91aa",
+        "v6_size": 15587,
+        "v6_sha256": "fdfa7b507bccaf25b115c2029589c9b6111e128644e0d2df2052bffc423e91aa",
+        "byte_identical": true
+      },
+      {
+        "basename": "external_dispatch.ps1",
+        "v5_size": 21070,
+        "v5_sha256": "e7f721943af138f260d0303ecd4d980fb136d0bd3f7b437cd8c82917b84a9c29",
+        "v6_size": 21128,
+        "v6_sha256": "33fcf8fa31e3c4f02c6099a3139bdbf801a462682f0452d9551c2fe10c048f78",
+        "byte_identical": false
+      }
+    ],
+    "unchanged": 11,
+    "Root_recorded_helpers_asserts": 62,
+    "PowerShell": [
+      {
+        "throw_and_Assert_text_sequences_identical": true,
+        "throw_count": 57,
+        "Assert_command_count": 25,
+        "syntax_errors": 0,
+        "name": "driver"
+      },
+      {
+        "throw_and_Assert_text_sequences_identical": true,
+        "throw_count": 29,
+        "Assert_command_count": 13,
+        "syntax_errors": 0,
+        "name": "materializer"
+      }
+    ]
+  },
+  "scopes": {
+    "current_scope_difference_count": 0,
+    "predicates_unchanged": true,
+    "historical_paths_not_rebased": true,
+    "current_memberships": [
+      {
+        "count": 41,
+        "recorded_count": 41,
+        "category": "guard41",
+        "equal": true
+      },
+      {
+        "count": 53,
+        "recorded_count": 53,
+        "category": "reader53",
+        "equal": true
+      },
+      {
+        "count": 53,
+        "recorded_count": 53,
+        "category": "schema53",
+        "equal": true
+      },
+      {
+        "count": 27,
+        "recorded_count": 27,
+        "category": "cases",
+        "equal": true
+      },
+      {
+        "count": 14,
+        "recorded_count": 14,
+        "category": "Main_selected",
+        "equal": true
+      },
+      {
+        "count": 2024,
+        "recorded_count": 2024,
+        "category": "Main_include",
+        "equal": true
+      },
+      {
+        "count": 46,
+        "recorded_count": 46,
+        "category": "Main_tools_all_py",
+        "equal": true
+      },
+      {
+        "count": 95,
+        "recorded_count": 95,
+        "category": "capstone_package",
+        "equal": true
+      },
+      {
+        "count": 2,
+        "recorded_count": 2,
+        "category": "pefile_module",
+        "equal": true
+      },
+      {
+        "count": 8,
+        "recorded_count": 8,
+        "category": "ordinal_lookup_package",
+        "equal": true
+      },
+      {
+        "count": 7,
+        "recorded_count": 7,
+        "category": "distribution_capstone-5.0.7.dist-info",
+        "equal": true
+      },
+      {
+        "count": 7,
+        "recorded_count": 7,
+        "category": "distribution_pefile-2024.8.26.dist-info",
+        "equal": true
+      },
+      {
+        "count": 1452,
+        "recorded_count": 1452,
+        "category": "python_stdlib",
+        "equal": true
+      },
+      {
+        "count": 34,
+        "recorded_count": 34,
+        "category": "python_DLLs",
+        "equal": true
+      },
+      {
+        "count": 62,
+        "recorded_count": 62,
+        "category": "python_root",
+        "equal": true
+      },
+      {
+        "count": 91,
+        "recorded_count": 91,
+        "category": "python_companion_DLLs",
+        "equal": true
+      },
+      {
+        "count": 4,
+        "recorded_count": 4,
+        "category": "startup_0__distutils_hack",
+        "equal": true
+      },
+      {
+        "count": 66,
+        "recorded_count": 66,
+        "category": "startup_1_win32_lib",
+        "equal": true
+      },
+      {
+        "count": 2,
+        "recorded_count": 2,
+        "category": "startup_1_pywin32_system32",
+        "equal": true
+      },
+      {
+        "count": 213,
+        "recorded_count": 213,
+        "category": "startup_1_Pythonwin",
+        "equal": true
+      },
+      {
+        "count": 5,
+        "recorded_count": 5,
+        "category": "python_startup",
+        "equal": true
+      },
+      {
+        "count": 71,
+        "recorded_count": 71,
+        "category": "MSVC_hostx64_x86",
+        "equal": true
+      },
+      {
+        "count": 353,
+        "recorded_count": 353,
+        "category": "MSVC_include",
+        "equal": true
+      },
+      {
+        "count": 79,
+        "recorded_count": 79,
+        "category": "MSVC_libraries_x86",
+        "equal": true
+      },
+      {
+        "count": 66,
+        "recorded_count": 66,
+        "category": "SDK_include_ucrt",
+        "equal": true
+      },
+      {
+        "count": 303,
+        "recorded_count": 303,
+        "category": "SDK_include_shared",
+        "equal": true
+      },
+      {
+        "count": 2189,
+        "recorded_count": 2189,
+        "category": "SDK_include_um",
+        "equal": true
+      },
+      {
+        "count": 839,
+        "recorded_count": 839,
+        "category": "SDK_include_winrt",
+        "equal": true
+      },
+      {
+        "count": 1374,
+        "recorded_count": 1374,
+        "category": "SDK_include_cppwinrt",
+        "equal": true
+      },
+      {
+        "count": 8,
+        "recorded_count": 8,
+        "category": "SDK_libraries_ucrt_x86",
+        "equal": true
+      },
+      {
+        "count": 453,
+        "recorded_count": 453,
+        "category": "SDK_libraries_um_x86",
+        "equal": true
+      },
+      {
+        "count": 156,
+        "recorded_count": 156,
+        "category": "SDK_tools_x86",
+        "equal": true
+      },
+      {
+        "count": 9,
+        "recorded_count": 9,
+        "category": "old_dependency_TEXT_subset",
+        "equal": true
+      },
+      {
+        "count": 8,
+        "recorded_count": 8,
+        "category": "Main_additional_context",
+        "equal": true
+      },
+      {
+        "count": 4,
+        "recorded_count": 4,
+        "category": "Main_tools_all_pyc",
+        "equal": true
+      },
+      {
+        "count": 74,
+        "recorded_count": 74,
+        "category": "MSVC_literal_full_bin",
+        "equal": true
+      },
+      {
+        "count": 231,
+        "recorded_count": 231,
+        "category": "SDK_literal_full_bin",
+        "equal": true
+      },
+      {
+        "count": 148,
+        "recorded_count": 148,
+        "category": "MSVC_literal_recursive_libraries",
+        "equal": true
+      },
+      {
+        "count": 8,
+        "recorded_count": 8,
+        "category": "SDK_literal_recursive_libraries_ucrt",
+        "equal": true
+      },
+      {
+        "count": 481,
+        "recorded_count": 481,
+        "category": "SDK_literal_recursive_libraries_um",
+        "equal": true
+      },
+      {
+        "count": 1504,
+        "recorded_count": 1504,
+        "category": "Root_python_literal_stdlib",
+        "equal": true
+      },
+      {
+        "count": 36,
+        "recorded_count": 36,
+        "category": "Root_python_literal_DLLs",
+        "equal": true
+      },
+      {
+        "count": 1104,
+        "recorded_count": 1104,
+        "category": "Root_powershell_runtime",
+        "equal": true
+      },
+      {
+        "count": 130,
+        "recorded_count": 130,
+        "category": "Root_running_PS_native",
+        "equal": true
+      },
+      {
+        "count": 19,
+        "recorded_count": 19,
+        "category": "Root_selected_v2",
+        "equal": true
+      },
+      {
+        "count": 130,
+        "recorded_count": 130,
+        "category": "Root_qualified_duplicate_provider",
+        "equal": true
+      },
+      {
+        "count": 272,
+        "recorded_count": 272,
+        "category": "Root_reference_readiness",
+        "equal": true
+      },
+      {
+        "count": 17,
+        "recorded_count": 17,
+        "category": "Root_reviewed_V4",
+        "equal": true
+      },
+      {
+        "count": 126,
+        "recorded_count": 126,
+        "category": "Root_current_PS_native",
+        "equal": true
+      },
+      {
+        "count": 2,
+        "recorded_count": 2,
+        "category": "Root_user_PowerShell_modules",
+        "equal": true
+      },
+      {
+        "count": 12,
+        "recorded_count": 12,
+        "category": "Root_guard_V6_TEXT",
+        "equal": true
+      }
+    ],
+    "count": 51,
+    "exact_old_scope_rebase": true
+  },
+  "inventory": {
+    "unexpected_Main_mutable_originals": [],
+    "originals": 12051,
+    "Main_include_files": 0,
+    "recorded_memberships": 14512,
+    "Main_historical_groups": [
+      {
+        "files": 130,
+        "family": "dup57p2"
+      },
+      {
+        "files": 17,
+        "family": "type5guardReview01"
+      }
+    ],
+    "isolated_include_files": 2024,
+    "original_and_frozen_files_hashed": 24102,
+    "differences": []
+  },
+  "six_Source_pins": [
+    {
+      "relative_path": "src/native_scene_property_record_type5_storage.cpp",
+      "size": 1388,
+      "sha256": "bf0267a1f2362148b39599a3b9c3ae9ddefd01b6d26c6da0ede9e410f91407ce",
+      "Main_current_matches": true,
+      "isolated_current_and_frozen_match": true
+    },
+    {
+      "relative_path": "src/native_string_duplicate.cpp",
+      "size": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+      "Main_current_matches": true,
+      "isolated_current_and_frozen_match": true
+    },
+    {
+      "relative_path": "src/singleton_lifetime.cpp",
+      "size": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "Main_current_matches": true,
+      "isolated_current_and_frozen_match": true
+    },
+    {
+      "relative_path": "include/bsp/native_scene_property_record_type5_storage.hpp",
+      "size": 2382,
+      "sha256": "e013cde2dbb55bed44deba372d6fd7ed7162c5f770d0ef561a8dee0a047677e4",
+      "Main_current_matches": true,
+      "isolated_current_and_frozen_match": true
+    },
+    {
+      "relative_path": "include/bsp/native_string_duplicate.hpp",
+      "size": 933,
+      "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "Main_current_matches": true,
+      "isolated_current_and_frozen_match": true
+    },
+    {
+      "relative_path": "include/bsp/singleton_lifetime.hpp",
+      "size": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "Main_current_matches": true,
+      "isolated_current_and_frozen_match": true
+    }
+  ],
+  "literal_path_survey_all_12_payloads": [
+    {
+      "text": "AUDIT=Path('J:/PROG/battlestations-pacific-decompile-cc12_property_record_reference_readiness/local/rfa')",
+      "line": 53,
+      "basename": "recipe.py"
+    },
+    {
+      "text": "tool=Path('J:/PROG/battlestations-pacific-decompile/tools/bsp.py').resolve()",
+      "line": 41,
+      "basename": "guarded_tool_entry.py"
+    },
+    {
+      "text": "EXPECTED_FAMILY=Path('J:/PROG/battlestations-pacific-decompile/local/type5p1').resolve()",
+      "line": 11,
+      "basename": "complete_guard.py"
+    },
+    {
+      "text": "$expectedFamily=[IO.Path]::GetFullPath('J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5p2')",
+      "line": 6,
+      "basename": "external_dispatch.ps1"
+    },
+    {
+      "text": "$bsp='J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\tools\\bsp.py'",
+      "line": 78,
+      "basename": "external_dispatch.ps1"
+    }
+  ],
+  "module_paths": {
+    "count": 46,
+    "all_isolated": true
+  },
+  "environment": {
+    "selection_derived_effective_matches": true,
+    "Root_actual_inspector_records": [
+      {
+        "keys": 14,
+        "name": "external_host",
+        "requested_and_recorded_actual_exactly_equal": true,
+        "Root_recorded_closed": true,
+        "Root_recorded_exit": 0,
+        "worker_replayed": false
+      },
+      {
+        "keys": 16,
+        "name": "root_python",
+        "requested_and_recorded_actual_exactly_equal": true,
+        "Root_recorded_closed": true,
+        "Root_recorded_exit": 0,
+        "worker_replayed": false
+      },
+      {
+        "keys": 16,
+        "name": "effective_python",
+        "requested_and_recorded_actual_exactly_equal": true,
+        "Root_recorded_closed": true,
+        "Root_recorded_exit": 0,
+        "worker_replayed": false
+      }
+    ],
+    "worker_inspectors_executed": 0,
+    "external_equals_base": true,
+    "recipe_derived_effective_matches": false,
+    "root_equals_effective": true,
+    "recipe_mismatch_keys": [
+      "INCLUDE"
+    ],
+    "private_values_published": false
+  },
+  "Root_own_TEXT_evidence": {
+    "files": 12051,
+    "exit_code": 0,
+    "scopes": 51,
+    "limitation": "Root own inspector closure and TEXT counts do not establish relocated payload validity",
+    "closed": true,
+    "worker_replayed": false,
+    "memberships": 14512,
+    "timed_out": false,
+    "before_after_records_identical": true
+  },
+  "sealed_V5_selected_payloads_match_ledger": true,
+  "sealed_V5_declared_artifacts": 36268,
+  "whole_sealed_V5_rehash_claimed": false,
+  "proposal_initial_original_files": 12063,
+  "concrete_initial_original_files": 12051,
+  "current_concrete_selection_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5select02\\current_dependency_selection.json",
+    "size": 10722896,
+    "sha256": "7f0ddecb4cf51286c63a4ebeffe5d38ed616c1d14b9e00625656f69da92e4b5d"
+  },
+  "selected_functions_executed": 0,
+  "compiler_execution": 0,
+  "Native_queries": 0,
+  "provider_execution": 0,
+  "original_PE_execution": 0,
+  "target_execution": 0,
+  "closed_UTC": "2026-10-09T07:49:38.2976631Z",
+  "own_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t5isolatedPeer01\\seal.json",
+    "size": 10429,
+    "sha256": "41857c02febd2ef72d99f343872c30f230ea4f7f84f87caea3f7fd0ac05d524e",
+    "artifacts": 57,
+    "recursive_files_including_seal": 58,
+    "verified_after_write": true
+  },
+  "execution_timeline_boundary": "Worker initially observed type5p2 absent. Root separately adopted/materialized and reported prepare rejection at fixed family. Worker did not replay those stages.",
+  "next_action": "Fresh UNADOPTED correction of all three path defects, preserving all rejection logic; Root admission and receipts remain separate."
+}
