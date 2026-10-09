@@ -1,0 +1,1426 @@
+{
+  "schema": "bsp.cc12.pending_registry_tick_element_sublist_cleanup_ABI_readiness.v1",
+  "packet": "cc12_tick_element_sublist_cleanup_ABI_readiness",
+  "kind": "read_only_complete_owned_100B_CFG_ABI_and_unresolved_current_virtual_deletion_contract",
+  "created_utc": "2026-10-09T11:32:56.127448+00:00",
+  "baseline_commit": "2307e3374e67761712886394517ecd4e18ee8c3b",
+  "claimed_address": "00874F00",
+  "owned_files": [
+    "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
+    "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusions": [
+    "Complete100B GPR/PE equality:97 reachable codebytes/42 instructions plus skipped3B LEA encoding;43 linear decodes,14 reachable blocks,20 internaledges.",
+    "Physical CALL EAX at874F5A exists despite metadata call_count0; current captured-node profile/slot0 selects unresolved target with flag1.",
+    "Owned input ECX is raw list; no hidden incoming EAX/EDX/x87 requirement. Empty EAX/EDX residuals are preserved, nonempty outputs inherit last target.",
+    "Local RET is plain; each normal virtual target must consume its one DWORD flag and preserve ESI=list/EDI=0. Actual target ABI/body remains unproved.",
+    "Signed current count>1 with tested previous/next zero skips unlink, both clears and decrement yet still dispatches; no progress/rollback guarantee.",
+    "Source constructor zeros corresponding list fields but no concrete child-node/profile producer or callable deletion service is established; no generic callback/free/getter substitute is admitted."
+  ],
+  "target_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 64729,
+    "snapshot_function_count": 64729,
+    "method": "Project-aware bsp.py ghidra proto gate before owned decompile/bytes/listing; CLI verifies configured target before live queries.",
+    "config_pin": {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "Ghidra_mutations": 0
+  },
+  "metadata_gate": {
+    "name": "BSP_UnitTickElement_ClearSubList",
+    "signature": "undefined BSP_UnitTickElement_ClearSubList(void)",
+    "live_body": [
+      "00874F00",
+      "00874F63"
+    ],
+    "bytes": 100,
+    "listed_instructions": 42,
+    "basic_blocks": 14,
+    "edges": 20,
+    "cyclomatic_complexity": 8,
+    "param_count": 0,
+    "call_count": 0,
+    "resolved_callees": [],
+    "qualifications": [
+      "Zero metadata/resolved calls is not zero physical CALL proof.",
+      "Zero metadata parameters does not erase the ECX raw-list input.",
+      "The inherited only-parent-tail comment is not caller proof; current index lists875490 and875920, and no Native caller body was read."
+    ]
+  },
+  "native_evidence": {
+    "address": "00874F00",
+    "end_inclusive": "00874F63",
+    "bytes": 100,
+    "hex": "56578bf133ff397e087456eb038d49008b0e8b41083bc7750f39790c7506837e08017f303bc774088b510c89500ceb058b410c89068b410c3bc774088b5108895008eb068b410889460489790c897908834608ff8b118b026a01ffd0397e0875af5f5ec3",
+    "sha256": "e3f7894ef6fe0b62f548fa5841e8dcfa2144db535e47de0545c6877e2b0ef611",
+    "GPR_equal_PE": true,
+    "all_file_backed": true,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_section": ".text",
+    "PE_RVA": 4673280,
+    "PE_file_offset": 4673280,
+    "complete_linear_instructions": 43,
+    "normal_entry_reachable_instructions": 42,
+    "normal_entry_reachable_bytes": 97,
+    "outside_normal_entry_CFG": {
+      "address": "00874F0D",
+      "bytes": 3,
+      "hex": "8d4900",
+      "decode": "lea ecx, [ecx]",
+      "meaning": "Inert alignment-form encoding skipped by initial JMP and every loop edge; no normal owned branch targets it."
+    },
+    "instructions": [
+      {
+        "address": "00874F00",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F01",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F02",
+        "bytes": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F04",
+        "bytes": 2,
+        "hex": "33ff",
+        "mnemonic": "xor",
+        "operands": "edi, edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F06",
+        "bytes": 3,
+        "hex": "397e08",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [esi + 8], edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F09",
+        "bytes": 2,
+        "hex": "7456",
+        "mnemonic": "je",
+        "operands": "0x874f61",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F0B",
+        "bytes": 2,
+        "hex": "eb03",
+        "mnemonic": "jmp",
+        "operands": "0x874f10",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F0D",
+        "bytes": 3,
+        "hex": "8d4900",
+        "mnemonic": "lea",
+        "operands": "ecx, [ecx]",
+        "reachable_from_entry": false
+      },
+      {
+        "address": "00874F10",
+        "bytes": 2,
+        "hex": "8b0e",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esi]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F12",
+        "bytes": 3,
+        "hex": "8b4108",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ecx + 8]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F15",
+        "bytes": 2,
+        "hex": "3bc7",
+        "mnemonic": "cmp",
+        "operands": "eax, edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F17",
+        "bytes": 2,
+        "hex": "750f",
+        "mnemonic": "jne",
+        "operands": "0x874f28",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F19",
+        "bytes": 3,
+        "hex": "39790c",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [ecx + 0xc], edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F1C",
+        "bytes": 2,
+        "hex": "7506",
+        "mnemonic": "jne",
+        "operands": "0x874f24",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F1E",
+        "bytes": 4,
+        "hex": "837e0801",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [esi + 8], 1",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F22",
+        "bytes": 2,
+        "hex": "7f30",
+        "mnemonic": "jg",
+        "operands": "0x874f54",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F24",
+        "bytes": 2,
+        "hex": "3bc7",
+        "mnemonic": "cmp",
+        "operands": "eax, edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F26",
+        "bytes": 2,
+        "hex": "7408",
+        "mnemonic": "je",
+        "operands": "0x874f30",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F28",
+        "bytes": 3,
+        "hex": "8b510c",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx + 0xc]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F2B",
+        "bytes": 3,
+        "hex": "89500c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0xc], edx",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F2E",
+        "bytes": 2,
+        "hex": "eb05",
+        "mnemonic": "jmp",
+        "operands": "0x874f35",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F30",
+        "bytes": 3,
+        "hex": "8b410c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ecx + 0xc]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F33",
+        "bytes": 2,
+        "hex": "8906",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], eax",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F35",
+        "bytes": 3,
+        "hex": "8b410c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ecx + 0xc]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F38",
+        "bytes": 2,
+        "hex": "3bc7",
+        "mnemonic": "cmp",
+        "operands": "eax, edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F3A",
+        "bytes": 2,
+        "hex": "7408",
+        "mnemonic": "je",
+        "operands": "0x874f44",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F3C",
+        "bytes": 3,
+        "hex": "8b5108",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx + 8]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F3F",
+        "bytes": 3,
+        "hex": "895008",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], edx",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F42",
+        "bytes": 2,
+        "hex": "eb06",
+        "mnemonic": "jmp",
+        "operands": "0x874f4a",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F44",
+        "bytes": 3,
+        "hex": "8b4108",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ecx + 8]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F47",
+        "bytes": 3,
+        "hex": "894604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], eax",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F4A",
+        "bytes": 3,
+        "hex": "89790c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx + 0xc], edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F4D",
+        "bytes": 3,
+        "hex": "897908",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx + 8], edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F50",
+        "bytes": 4,
+        "hex": "834608ff",
+        "mnemonic": "add",
+        "operands": "dword ptr [esi + 8], -1",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F54",
+        "bytes": 2,
+        "hex": "8b11",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F56",
+        "bytes": 2,
+        "hex": "8b02",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [edx]",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F58",
+        "bytes": 2,
+        "hex": "6a01",
+        "mnemonic": "push",
+        "operands": "1",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F5A",
+        "bytes": 2,
+        "hex": "ffd0",
+        "mnemonic": "call",
+        "operands": "eax",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F5C",
+        "bytes": 3,
+        "hex": "397e08",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [esi + 8], edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F5F",
+        "bytes": 2,
+        "hex": "75af",
+        "mnemonic": "jne",
+        "operands": "0x874f10",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F61",
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F62",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi",
+        "reachable_from_entry": true
+      },
+      {
+        "address": "00874F63",
+        "bytes": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": "",
+        "reachable_from_entry": true
+      }
+    ],
+    "all_branch_targets_at_owned_instruction_boundaries": true,
+    "basic_blocks": [
+      {
+        "start": "00874F00",
+        "end_inclusive": "00874F0A",
+        "instructions": 6,
+        "instruction_addresses": [
+          "00874F00",
+          "00874F01",
+          "00874F02",
+          "00874F04",
+          "00874F06",
+          "00874F09"
+        ],
+        "successors": [
+          "00874F61",
+          "00874F0B"
+        ]
+      },
+      {
+        "start": "00874F0B",
+        "end_inclusive": "00874F0C",
+        "instructions": 1,
+        "instruction_addresses": [
+          "00874F0B"
+        ],
+        "successors": [
+          "00874F10"
+        ]
+      },
+      {
+        "start": "00874F10",
+        "end_inclusive": "00874F18",
+        "instructions": 4,
+        "instruction_addresses": [
+          "00874F10",
+          "00874F12",
+          "00874F15",
+          "00874F17"
+        ],
+        "successors": [
+          "00874F28",
+          "00874F19"
+        ]
+      },
+      {
+        "start": "00874F19",
+        "end_inclusive": "00874F1D",
+        "instructions": 2,
+        "instruction_addresses": [
+          "00874F19",
+          "00874F1C"
+        ],
+        "successors": [
+          "00874F24",
+          "00874F1E"
+        ]
+      },
+      {
+        "start": "00874F1E",
+        "end_inclusive": "00874F23",
+        "instructions": 2,
+        "instruction_addresses": [
+          "00874F1E",
+          "00874F22"
+        ],
+        "successors": [
+          "00874F54",
+          "00874F24"
+        ]
+      },
+      {
+        "start": "00874F24",
+        "end_inclusive": "00874F27",
+        "instructions": 2,
+        "instruction_addresses": [
+          "00874F24",
+          "00874F26"
+        ],
+        "successors": [
+          "00874F30",
+          "00874F28"
+        ]
+      },
+      {
+        "start": "00874F28",
+        "end_inclusive": "00874F2F",
+        "instructions": 3,
+        "instruction_addresses": [
+          "00874F28",
+          "00874F2B",
+          "00874F2E"
+        ],
+        "successors": [
+          "00874F35"
+        ]
+      },
+      {
+        "start": "00874F30",
+        "end_inclusive": "00874F34",
+        "instructions": 2,
+        "instruction_addresses": [
+          "00874F30",
+          "00874F33"
+        ],
+        "successors": [
+          "00874F35"
+        ]
+      },
+      {
+        "start": "00874F35",
+        "end_inclusive": "00874F3B",
+        "instructions": 3,
+        "instruction_addresses": [
+          "00874F35",
+          "00874F38",
+          "00874F3A"
+        ],
+        "successors": [
+          "00874F44",
+          "00874F3C"
+        ]
+      },
+      {
+        "start": "00874F3C",
+        "end_inclusive": "00874F43",
+        "instructions": 3,
+        "instruction_addresses": [
+          "00874F3C",
+          "00874F3F",
+          "00874F42"
+        ],
+        "successors": [
+          "00874F4A"
+        ]
+      },
+      {
+        "start": "00874F44",
+        "end_inclusive": "00874F49",
+        "instructions": 2,
+        "instruction_addresses": [
+          "00874F44",
+          "00874F47"
+        ],
+        "successors": [
+          "00874F4A"
+        ]
+      },
+      {
+        "start": "00874F4A",
+        "end_inclusive": "00874F53",
+        "instructions": 3,
+        "instruction_addresses": [
+          "00874F4A",
+          "00874F4D",
+          "00874F50"
+        ],
+        "successors": [
+          "00874F54"
+        ]
+      },
+      {
+        "start": "00874F54",
+        "end_inclusive": "00874F60",
+        "instructions": 6,
+        "instruction_addresses": [
+          "00874F54",
+          "00874F56",
+          "00874F58",
+          "00874F5A",
+          "00874F5C",
+          "00874F5F"
+        ],
+        "successors": [
+          "00874F10",
+          "00874F61"
+        ]
+      },
+      {
+        "start": "00874F61",
+        "end_inclusive": "00874F63",
+        "instructions": 3,
+        "instruction_addresses": [
+          "00874F61",
+          "00874F62",
+          "00874F63"
+        ],
+        "successors": []
+      }
+    ],
+    "basic_block_count": 14,
+    "internal_CFG_edges": 20,
+    "conditional_branches": 7,
+    "unconditional_internal_JMPs": 3,
+    "direct_CALLs": 0,
+    "indirect_CALLs": 1,
+    "RET_count": 1,
+    "indirect_call": {
+      "address": "00874F5A",
+      "hex": "ffd0",
+      "operand": "EAX",
+      "continuation": "00874F5C",
+      "target_code_address": null
+    },
+    "no_inline_branch_table": true,
+    "external_profile_slot_or_target_bytes_read": false
+  },
+  "CFG_qualification": {
+    "calls_follow_normal_return_continuation_for_reachability": true,
+    "unresolved_dynamic_target_and_nonlocal_paths_not_modeled_as_internal_edges": true,
+    "redundant_edge": "Block874F24 syntactically branches nonzero to874F28, but every ordinary arrival has unchanged captured EAX previous==0.874F28 remains reachable directly from874F17.",
+    "no_flow_or_listing_repair_needed_or_performed": true,
+    "no_hidden_owned_register_x87_or_unresolved_internal_branch_gate": true,
+    "alignment_limit": "874F0D..0F encodes LEA ECX,[ECX] and is outside normal-entry reachability; all100bytes retained, no bytes silently discarded."
+  },
+  "raw_layout": {
+    "list_receiver": "L=entry ECX, captured ESI",
+    "list_fields": {
+      "head": "+00 DWORD pointer",
+      "tail": "+04 DWORD pointer",
+      "count": "+08 DWORD"
+    },
+    "minimum_list_extent": 12,
+    "node_receiver": "N=current list head captured once per iteration in ECX",
+    "node_fields": {
+      "current_profile_pointer": "+00 DWORD",
+      "previous_hypothesis": "+08 DWORD pointer",
+      "next_hypothesis": "+0C DWORD pointer"
+    },
+    "minimum_direct_node_extent": 16,
+    "node_plus04_accessed_directly": false,
+    "guards": "Count==0 only; no head/null/profile/target/link/alignment/member validation.",
+    "alias_limit": "Indirect neighbor/list writes can alias any subsequently reread field; do not collapse current reads or infer untouched storage from direct footprint."
+  },
+  "exact_access_schedule": [
+    {
+      "site": "00874F06",
+      "operation": "Read current DWORD[L+08] and test against zero; return if zero."
+    },
+    {
+      "site": "00874F10",
+      "operation": "Capture N=current DWORD[L+00] into ECX."
+    },
+    {
+      "site": "00874F12",
+      "operation": "Capture P=DWORD[N+08] into EAX; nonzero branches directly to first previous-neighbor store block."
+    },
+    {
+      "site": "00874F19",
+      "operation": "Only if P is zero, test current DWORD[N+0C] against zero."
+    },
+    {
+      "site": "00874F1E",
+      "operation": "Only if both tested links are zero, reread current DWORD[L+08], compare signed with1, and skip all owned unlink/clear/decrement writes when greater."
+    },
+    {
+      "site": "00874F24",
+      "operation": "Recompare unchanged captured P, not a fresh previous-field read; zero selects head update."
+    },
+    {
+      "site": "00874F28",
+      "operation": "P nonzero: read current DWORD[N+0C] into EDX, store at DWORD[P+0C]."
+    },
+    {
+      "site": "00874F30",
+      "operation": "P zero, unlink path: read current DWORD[N+0C] into EAX, store at DWORD[L+00]."
+    },
+    {
+      "site": "00874F35",
+      "operation": "Reread current DWORD[N+0C] after first splice/head write and test against zero."
+    },
+    {
+      "site": "00874F3C",
+      "operation": "Current next nonzero: read current DWORD[N+08] into EDX, store at current next+08."
+    },
+    {
+      "site": "00874F44",
+      "operation": "Current next zero: read current DWORD[N+08] into EAX, store at DWORD[L+04]."
+    },
+    {
+      "site": "00874F4A",
+      "operation": "Store zero to DWORD[N+0C]."
+    },
+    {
+      "site": "00874F4D",
+      "operation": "Store zero to DWORD[N+08]."
+    },
+    {
+      "site": "00874F50",
+      "operation": "RMW decrement current DWORD[L+08] modulo2^32."
+    },
+    {
+      "site": "00874F54",
+      "operation": "All dispatch paths: read current DWORD[N+00] profile pointer into EDX, after any list changes."
+    },
+    {
+      "site": "00874F56",
+      "operation": "Read current DWORD[EDX+00] target code pointer into EAX."
+    },
+    {
+      "site": "00874F58",
+      "operation": "Push DWORD1."
+    },
+    {
+      "site": "00874F5A",
+      "operation": "CALL EAX with ECX=captured N; target identity and implementation unresolved."
+    },
+    {
+      "site": "00874F5C",
+      "operation": "After ordinary return, reread current DWORD[L+08] and loop to capture fresh current head if nonzero."
+    }
+  ],
+  "special_path": {
+    "condition": "Captured N+08==0, current tested N+0C==0, then signed32(current L+08)>1.",
+    "signed_comparison": {
+      "address": "00874F1E",
+      "comparison": "CMP DWORD[L+08],1; JG874F54"
+    },
+    "effects_skipped": [
+      "first splice or head update",
+      "second splice or tail update",
+      "N+0C clear",
+      "N+08 clear",
+      "L+08 decrement"
+    ],
+    "effects_still_performed": [
+      "current N profile/slot0 load",
+      "flag1 indirect dispatch",
+      "postcall current count recheck and possible next iteration"
+    ],
+    "termination": "Not guaranteed; actual target/current state must provide progress. No count repair, fallback unlink or cycle guard may be invented."
+  },
+  "current_virtual_dispatch": {
+    "site": "00874F5A",
+    "opcode": "FFD0",
+    "target": "EAX=current DWORD[current DWORD[N+00]+00]",
+    "profile_read_site": "00874F54",
+    "slot_read_site": "00874F56",
+    "argument_push_site": "00874F58",
+    "receiver_ECX": "captured N, not refreshed L+00 after head mutation",
+    "stack_argument": {
+      "bytes": 4,
+      "value": 1
+    },
+    "other_outgoing_registers": {
+      "EAX": "current slot0 code pointer at CALL",
+      "EDX": "current profile pointer",
+      "ESI": "captured L",
+      "EDI": 0
+    },
+    "target_address_identified": false,
+    "profile_or_slot_native_bytes_read": false,
+    "callee_body_read": false,
+    "deletion_semantics": "Scalar-deletion-shaped flag1 request only; actual destruction/free/recursion/registry/exception effects depend on unrecovered callee.",
+    "no_direct_owned_free_allocation_registry_getter_or_lock": true,
+    "no_named_getter_dependency_forced": true
+  },
+  "ABI": {
+    "owned_data_input": "ECX raw list only",
+    "incoming_EAX_EDX": "Not consumed as ordinary nonempty-path data; retained unchanged on initial-empty return.",
+    "incoming_ESI_EDI": "Saved to caller stack and restored by local epilogue.",
+    "EBX_EBP": "Not locally modified; actual virtual target must still satisfy its required nonvolatile convention.",
+    "caller_stack_argument_read_by_owned_body": false,
+    "local_frame": "No EBP frame or FS/EH record. PUSH ESI then PUSH EDI only.",
+    "stack_layout_relative_entry_S": {
+      "saved_ESI": -4,
+      "saved_EDI": -8,
+      "pushed_flag1": -12,
+      "virtual_callee_entry_return_address": -16,
+      "callee_return_address_value": "00874F5C"
+    },
+    "required_target_stack_contract": "Target must consume one DWORD flag in addition to return address, RET4-equivalent, restoring ESP toS-8. Caller does not ADD ESP,4.",
+    "required_target_preservation": "ESI=L and EDI=0 are live across target; their preservation is required for correct subsequent loop/test. Other target requirements unproved.",
+    "local_return": "POP EDI; POP ESI; plain RET at874F63; no caller argument consumed, conditional on balanced target returns.",
+    "empty_residuals": {
+      "EAX": "incoming EAX",
+      "EDX": "incoming EDX",
+      "ECX": "incoming list L"
+    },
+    "nonempty_residuals": {
+      "EAX": "last normally returning target residual",
+      "EDX": "last normally returning target residual",
+      "ECX": "last normally returning target residual"
+    },
+    "semantic_return_value_produced": "No uniform semantic value; no captured receiver return or Source return type inferred.",
+    "ordinary_return_arithmetic_flags_if_EDI_preserved_zero": {
+      "ZF": 1,
+      "PF": 1,
+      "CF": 0,
+      "OF": 0,
+      "SF": 0,
+      "AF": 0
+    },
+    "flags_reason": "Final count==0 CMP0,0, followed only by POP/POP/RET. Other EFLAGS bits and target nonlocal behavior unproved.",
+    "x87_or_SSE_owned_instructions": 0,
+    "proposed_Source_prototype": null
+  },
+  "fault_exception_and_alias_limits": [
+    "Any selected memory access may fail after earlier effects; no local rollback or EH cleanup exists.",
+    "Virtual target may fail or throw; no owned catch restores unlink, node links, count or previous head.",
+    "Current head/count/profile/slot and both current link reload phases must retain ordering; captured node and current list head are distinct.",
+    "Zero is the only loop-empty test. Current signed count is used solely for special skip comparison; normal decrement uses modulo32 memory arithmetic.",
+    "Actual profile/current slot must be backed and callable in its own domain; opaque Source numeric constants cannot be reinterpreted as Native callable tables."
+  ],
+  "corrected_parent_composition": {
+    "accepted_report": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
+    "complete_native_bytes": 32,
+    "end_inclusive": "008754AF",
+    "instructions": 9,
+    "hex": "8b41048b5108c701c8ded0008950088b41088b510489500483c11ce950faffff",
+    "sha256": "467c74d1ee7fcb9f8c2c2bb983d52e5245e0d0246a6b3dc1a143e6cc96002ff5",
+    "physical_CALLs": 0,
+    "sole_tail": "00874F00",
+    "tail_input": "ECX=outer receiver+1C; EAX/EDX=second current outer link pair; original stack unchanged.",
+    "new_owned_child_result": "On empty list, parent EAX/EDX link captures pass through; on nonempty list final target residuals replace them. Child local RET is plain with virtual target ABI conditions above.",
+    "no_direct_875280_edge": true,
+    "primary_annotation": {
+      "annotation_receipt": "local\\ghidra-annotations-20261009T105238Z.json",
+      "physical_replay_passed": true,
+      "old_comments_and_name_preserved": true,
+      "new_evidence_in_actual_saved_comment": true,
+      "function_count_unchanged": true,
+      "forced_export_refreshed": true,
+      "body_prototype_flow_unchanged": true,
+      "new_Source_ABI_gameplay_credit": 0,
+      "cached_index_edge_remains_qualified": true
+    },
+    "live_comment_verification": "Current ghidra comments00875490 contains preserved original text and appended primary32B/zeroCALL/sole-tail correction; no mutation in this packet.",
+    "old_index_or_comment_head_not_authoritative": true,
+    "original_doc_hash_changed_by_approved_primary_append": true,
+    "updated_primary_doc_pin": {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
+      "bytes": 8676,
+      "sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
+      "canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd"
+    },
+    "historical_pin_comparison": [
+      {
+        "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
+        "historical_canonical_lf_sha256": "26654003a74bf0574cb487d12463614dd5b417e88cc70ea537f8ecdb324f6096",
+        "current_canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
+        "equal": false
+      },
+      {
+        "path": "reports/cc12_native_pending_registry_getter_primary_review.json",
+        "historical_canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+        "current_canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+        "equal": true
+      },
+      {
+        "path": "docs/CC12_NATIVE_PENDING_REGISTRY_GETTER_SOURCE.md",
+        "historical_canonical_lf_sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534",
+        "current_canonical_lf_sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534",
+        "equal": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_getter.hpp",
+        "historical_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "current_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "equal": true
+      },
+      {
+        "path": "src/native_pending_registry_getter.cpp",
+        "historical_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "current_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "equal": true
+      },
+      {
+        "path": "include/bsp/unit_destructor_levels.hpp",
+        "historical_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+        "current_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+        "equal": true
+      },
+      {
+        "path": "src/unit_destructor_levels.cpp",
+        "historical_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+        "current_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+        "equal": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_lock.hpp",
+        "historical_canonical_lf_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+        "current_canonical_lf_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+        "equal": true
+      },
+      {
+        "path": "config/target.json",
+        "historical_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "current_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "equal": true
+      }
+    ],
+    "parent_Native_body_reread_this_packet": false
+  },
+  "admitted_constructor_Source_context": {
+    "primary_report": "reports/cc12_native_tick_registration_constructor_primary_review.json",
+    "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+    "compiled_root": {
+      "bytes": 152,
+      "instructions": 52,
+      "sha256": "562668f00b5908420260b0054de183d5df003a0b5835afe18f872adefdd2282f"
+    },
+    "actual_getter": {
+      "bytes": 250,
+      "sha256": "640e03f66d07747180012ac1b275a19d56738dd71a0f3cbcd2daad66bc7c8970",
+      "EH140_unchanged_per_primary": true
+    },
+    "accepted_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 32808,
+      "start_utc": "2026-10-09T11:06:47.647327+00:00",
+      "finish_utc": "2026-10-09T11:07:05.207485+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 49,
+      "candidate_current_pins_replayed": 58,
+      "copy_historical_refs_replayed": 48
+    },
+    "accepted_existing_checks": {
+      "passed": 3,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "new_routine_execution_proved": false
+    },
+    "Source_field_composition": "Constructor outer+1C head zero, outer+20 tail zero and outer+24 count zero correspond to this L+0/+4/+8 through parent outer+1C tail adjustment.",
+    "current_Source_pins_equal": 44,
+    "current_document_pin": {
+      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
+      "bytes": 8308,
+      "sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
+      "canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746"
+    },
+    "read_scope": "Accepted compiled reports and current Source pins only; no fresh ignored build artifact, constructor Native body or Native caller read.",
+    "actual_child_profile_or_producer_inferred": false,
+    "limits": [
+      "Ordinary seven-argument Source/plainRET differs from OriginalECX/RET8. Source integerword copies/counter operations do not reproduce residualSSE/flags, protectedfault timing, arbitrary caller-frame/reference-slot aliases, NativeCRT/exception/concurrency or callable numericprofiles.",
+      "No Source concrete UnitConstructionHost override, actual pendingtail/timer producer or caller/lifecycle activation; root absentgame map. Startup/gameplay remain unproved."
+    ]
+  },
+  "current_Source_contracts": {
+    "exact_874F00_name_or_address_search": {
+      "roots": [
+        "include/bsp",
+        "src"
+      ],
+      "extensions": [
+        "*.hpp",
+        "*.cpp",
+        "*.inc"
+      ],
+      "matches": [
+        {
+          "path": "include/bsp/unit_destructor_levels.hpp",
+          "line": 109,
+          "role": "planned step comment"
+        },
+        {
+          "path": "include/bsp/unit_destructor_levels.hpp",
+          "line": 244,
+          "role": "pure virtual destroy_tick_element_310 Host slot"
+        }
+      ],
+      "concrete_owned_Source_implementation_found": false
+    },
+    "fixed_step": "fixed_step_job_waves.hpp declares subnode previous+08/next+0C and action classification; fixed_step_job_waves.cpp chooses skip/run/release actions, not a concrete callable raw destructor for this captured node.",
+    "tick_tables": "tick_element_overrides.cpp stores numeric parent tick-element profile/slot metadata, including D0DEC8 slot0=875920. No evidence identifies any sublist head profile with this parent table.",
+    "singleton_dispatch": "native_singleton_destruction.cpp private delete_current_profile is a finite actual-owner/binding dispatcher, not arbitrary Native slot execution. Its D0DEA0 case retires the F878CC raw8 registry; no874F00/D0DEC8 subnode adapter found in its header/source.",
+    "unknown_singleton_profile_behavior": "Existing actual Source dispatcher requires a recovered profile and its bindings; no generic destructor callback or unknown-profile free path is supplied.",
+    "no_source_callback_free_shim_or_Native_table_substitution_admitted": true,
+    "actual_callee_domain_open": true
+  },
+  "constructor_primary_Source_pin_rechecks": [
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "accepted_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "current_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "accepted_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "current_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "accepted_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "current_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+      "accepted_canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "current_canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "accepted_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "current_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+      "accepted_canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "current_canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "accepted_canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "current_canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "accepted_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "current_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "accepted_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "current_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_constructor.hpp",
+      "accepted_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "current_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "accepted_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "current_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "accepted_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "current_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "accepted_canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "current_canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "accepted_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "current_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "accepted_canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "current_canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "accepted_canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "current_canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "accepted_canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "current_canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "accepted_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "current_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/plane_squadron.hpp",
+      "accepted_canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "current_canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "accepted_canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "current_canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "accepted_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "current_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "accepted_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "current_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "accepted_canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "current_canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "equal": true
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "accepted_canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "current_canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "equal": true
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "accepted_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "current_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "equal": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "accepted_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "current_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "equal": true
+    },
+    {
+      "path": "src/native_allocator_base_copy_constructor.cpp",
+      "accepted_canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "current_canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "equal": true
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "accepted_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "current_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "equal": true
+    },
+    {
+      "path": "src/native_allocator_failure_object_constructor.cpp",
+      "accepted_canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "current_canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "equal": true
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "accepted_canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "current_canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "equal": true
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "accepted_canonical_lf_sha256": "333a051dc86c6b10c7e09b61220feef3b5f36d5d4ba870b6174a9feb2f3682a5",
+      "current_canonical_lf_sha256": "333a051dc86c6b10c7e09b61220feef3b5f36d5d4ba870b6174a9feb2f3682a5",
+      "equal": true
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "accepted_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "current_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "equal": true
+    },
+    {
+      "path": "src/native_pending_registry_constructor.cpp",
+      "accepted_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "current_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "equal": true
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "accepted_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "current_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "equal": true
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "accepted_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "current_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "equal": true
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "accepted_canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "current_canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "equal": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "accepted_canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "current_canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "equal": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "accepted_canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "current_canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "equal": true
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "accepted_canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "current_canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "equal": true
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "accepted_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "current_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "equal": true
+    },
+    {
+      "path": "src/plane_squadron.cpp",
+      "accepted_canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "current_canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "equal": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "accepted_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "current_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "equal": true
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "accepted_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "current_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "equal": true
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "accepted_canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "current_canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "equal": true
+    }
+  ],
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
+      "bytes": 10868,
+      "sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
+      "canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
+      "bytes": 40375,
+      "sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
+      "canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
+      "bytes": 8676,
+      "sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
+      "canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd"
+    },
+    {
+      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
+      "bytes": 102583,
+      "sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
+      "canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae"
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
+      "bytes": 8308,
+      "sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
+      "canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746"
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "bytes": 1247,
+      "sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee"
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "bytes": 3108,
+      "sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "include/bsp/unit_destructor_levels.hpp",
+      "bytes": 15720,
+      "sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+      "canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5"
+    },
+    {
+      "path": "src/unit_destructor_levels.cpp",
+      "bytes": 18167,
+      "sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+      "canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673"
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "path": "src/fixed_step_job_waves.cpp",
+      "bytes": 5564,
+      "sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
+      "canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda"
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "bytes": 18720,
+      "sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54"
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "bytes": 12785,
+      "sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 18086,
+      "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 25482,
+      "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  ],
+  "minimum_next_contract": {
+    "blocking_dependency": "Actual sublist child-node/profile producer and current slot-zero deletion target(s).",
+    "required_evidence": [
+      "bounded producer/profile ownership evidence",
+      "actual slot0 target identity and complete calling/stack preservation contract",
+      "actual deletion and list-mutation/reentry/throw behavior",
+      "concrete Source dispatch bindings with valid storage/lifetime"
+    ],
+    "no_guessed_child_address_or_scope_expansion": true,
+    "no_unrelated_pending_registry_or_entity_lock_substitution": true,
+    "Source_prototype_or_implementation_added": false
+  },
+  "validation": {
+    "complete100B_GPR_PE_equality_and_whole_image_hash": true,
+    "all43_linear_decodes_and42_reachable_instructions_classified": true,
+    "full14block20edge_graph_and_all_branch_boundaries_checked": true,
+    "physical_indirect_CALL_and_stack_contract_reviewed": true,
+    "signed_skip_branch_modulo_count_and_current_access_schedule_reviewed": true,
+    "parent_corrected32B_report_hash_and_live_correction_comment_verified": true,
+    "parent_historical_pins_equal": 8,
+    "parent_historical_doc_pin_drift_explained": 1,
+    "updated_parent_doc_pin_equal": true,
+    "constructor_current_Source_pins_equal": 44,
+    "constructor_current_doc_pin_equal": true,
+    "local_index_first_attempt": "Read sharing collision during parallel live CLI queries; WinError32; no state mutation beyond local index attempt.",
+    "local_index_retry": "Sequential index --if-stale completed successfully after live reads finished.",
+    "JSON_staged_whitespace_and_two_file_ownership_checks": true,
+    "Native_child_caller_handler_profile_string_outside_table_bytes_read": 0,
+    "Source_CMake_ledger_or_Ghidra_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "new_reconstruction_credit": 0
+  },
+  "limits": [
+    "Whole owned loop/ABI is established under normal dispatch returns; actual dynamic deletion target identity and effects remain unresolved.",
+    "Metadata param_count/call_count and descriptive table/class names are not a complete callable ABI or child-profile proof.",
+    "No Source implementation or production lifecycle is added; prior constructor/getter admission and existing checks do not establish this cleanup in the application.",
+    "No Original binary ABI, fault/exception/concurrency/nested-failure equivalence or gameplay execution is claimed."
+  ]
+}
