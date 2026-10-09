@@ -1,0 +1,752 @@
+{
+  "schema": "bsp.cc12.native_allocator_base_message_constructor_source.v1",
+  "status": "complete_Source_candidate_static_checks_passed_registration_compile_emitted_Core_and_admission_pending",
+  "created_utc": "2026-10-09T09:48:28.217082+00:00",
+  "base_commit": "34ad122c6cb3894c962821550711613a021c1966",
+  "requested_published_main": "34ad122c6cb3894c962821550711613a021c1966",
+  "scope": {
+    "packet": "cc12_allocator_base_message_constructor_source",
+    "leased_addresses": [
+      "00bf638e"
+    ],
+    "owned_files": [
+      "include/bsp/native_allocator_base_message_constructor.hpp",
+      "src/native_allocator_base_message_constructor.cpp",
+      "docs/CC12_NATIVE_ALLOCATOR_BASE_MESSAGE_CONSTRUCTOR_SOURCE.md",
+      "reports/cc12_native_allocator_base_message_constructor_source.json"
+    ],
+    "new_Source_functions": 1,
+    "child_or_adjacent_native_bytes_read": 0,
+    "Ghidra_queries_or_mutations": 0,
+    "ledger_edits": 0,
+    "CMake_edits": 0,
+    "new_tests": 0,
+    "ad_hoc_compiler_probes": 0
+  },
+  "accepted_metadata": {
+    "source_report": "reports/cc12_allocator_base_message_constructor_readiness.json",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "function_metadata": {
+      "name": "exception",
+      "signature": "undefined __thiscall exception(exception * this, char * * param_1, int param_2)",
+      "body_start": "00bf638e",
+      "body_end_inclusive": "00bf63a5",
+      "metadata_span_bytes": 24,
+      "reported_instruction_count": 7,
+      "reported_call_count": 0,
+      "metadata_checked_before_full_body": true
+    },
+    "metadata_is_inherited": true,
+    "saved_library_name_preserved": "exception"
+  },
+  "Original_body": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "00bf638e",
+    "end_inclusive": "00bf63a5",
+    "bytes": 24,
+    "hex": "8bc18b4c2404c7007093d6008b0983600800894804c20800",
+    "sha256": "ccfccad13f993683d876dfcc066242c5f2fbfe2c04f9db3cb593bfba81fc70b8",
+    "instructions": [
+      {
+        "address": "00bf638e",
+        "size": 2,
+        "hex": "8bc1",
+        "text": "mov eax, ecx"
+      },
+      {
+        "address": "00bf6390",
+        "size": 4,
+        "hex": "8b4c2404",
+        "text": "mov ecx, dword ptr [esp + 4]"
+      },
+      {
+        "address": "00bf6394",
+        "size": 6,
+        "hex": "c7007093d600",
+        "text": "mov dword ptr [eax], 0xd69370"
+      },
+      {
+        "address": "00bf639a",
+        "size": 2,
+        "hex": "8b09",
+        "text": "mov ecx, dword ptr [ecx]"
+      },
+      {
+        "address": "00bf639c",
+        "size": 4,
+        "hex": "83600800",
+        "text": "and dword ptr [eax + 8], 0"
+      },
+      {
+        "address": "00bf63a0",
+        "size": 3,
+        "hex": "894804",
+        "text": "mov dword ptr [eax + 4], ecx"
+      },
+      {
+        "address": "00bf63a3",
+        "size": 3,
+        "hex": "c20800",
+        "text": "ret 8"
+      }
+    ],
+    "all_bytes_equal_accepted_report_and_current_PE": true,
+    "full_independent_decode_matches_accepted_listing": true,
+    "actual_DWORD_RMW_operand_access": 3
+  },
+  "Source_contract": {
+    "symbol": "bsp::construct_native_allocator_base_message_00bf638e",
+    "descriptive_name_provisional": true,
+    "target": "MSVC Win32 only",
+    "linkage": "ordinary C++ declaration; naked __fastcall definition",
+    "argument_mapping": [
+      {
+        "name": "actual_receiver",
+        "type": "void*",
+        "entry": "ECX"
+      },
+      {
+        "name": "unused_edx",
+        "type": "uint32_t",
+        "entry": "EDX",
+        "body_reads": false,
+        "body_writes": false
+      },
+      {
+        "name": "actual_pointer_slot_address",
+        "type": "const void*",
+        "entry": "[ESP+4]"
+      },
+      {
+        "name": "ignored_numeric",
+        "type": "uint32_t",
+        "entry": "[ESP+8]",
+        "body_reads": false
+      }
+    ],
+    "return_register": "EAX original receiver",
+    "stack_cleanup_bytes": 8,
+    "ECX_exit": "captured raw slot DWORD",
+    "EDX_body_unchanged": true,
+    "EDX_declaration_still_volatile": true,
+    "local_stack_bytes": 0,
+    "receiver_footprint_bytes": 12,
+    "write_offsets_in_order": [
+      0,
+      8,
+      4
+    ],
+    "write_widths": [
+      4,
+      4,
+      4
+    ],
+    "full_receiver_byte_coverage": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "slot_address_captured_before_profile_store": true,
+    "slot_value_read_after_profile_store_before_RMW": true,
+    "final_slot_store_after_RMW": true,
+    "RMW": "AND DWORD [receiver+8],0; real prior-value read and instruction flags preserved",
+    "profile": "raw immediate 00d69370; no callable Source profile or global binding",
+    "null_receiver_or_slot_guard": false,
+    "null_copied_word_allowed": true,
+    "pointee_read": false,
+    "string_copy": false,
+    "allocation": false,
+    "cleanup": false,
+    "larger_owner_cast": false,
+    "no_new_RTTI_or_exception_ABI": true,
+    "caller_owns_actual_backing_slot_pointee_lifetime_and_runtime_identity": true
+  },
+  "static_source_validation": {
+    "header_guard": true,
+    "pointer_and_uint32_size_guards": true,
+    "exact_public_argument_signature": true,
+    "naked_fastcall": true,
+    "all_seven_asm_operations": [
+      "mov eax, ecx",
+      "mov ecx, dword ptr [esp + 4]",
+      "mov dword ptr [eax], 00d69370h",
+      "mov ecx, dword ptr [ecx]",
+      "and dword ptr [eax + 8], 0",
+      "mov dword ptr [eax + 4], ecx",
+      "ret 8"
+    ],
+    "address_comments_match": true,
+    "no_edx_read_write_or_helper_call_in_body": true,
+    "expected_emission_hex": "8bc18b4c2404c7007093d6008b0983600800894804c20800",
+    "actual_emission_verified": false
+  },
+  "build_boundary": {
+    "unregistered_at_worker_base": true,
+    "registration_search_exit": 1,
+    "wildcard_registration_search_exit": 1,
+    "worker_build_run": false,
+    "worker_build_reason": "Primary explicitly deferred worker build because the new leaf is unregistered; primary owns relevant registration and normal build.",
+    "primary_required": [
+      "CMake registration",
+      "scripts/build.ps1 MSVC Win32 normal build",
+      "complete emitted function review including all 24 bytes",
+      "Core validation",
+      "final ledger and Ghidra review"
+    ],
+    "compile_verified": false,
+    "build_verified": false,
+    "emitted_body_verified": false,
+    "fixture_tested": false,
+    "ABI_admitted": false,
+    "game_validated": false
+  },
+  "candidate_output_pins": [
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "physical_bytes": 1770,
+      "physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "canonical_lf_bytes": 1770,
+      "canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "physical_crlf_count": 0,
+      "git_blob_oid": "c74d0c68429b8d42bbcb4e21400a5e34fc95a5ef"
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "physical_bytes": 979,
+      "physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "canonical_lf_bytes": 979,
+      "canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "physical_crlf_count": 0,
+      "git_blob_oid": "be962845b578261c4154cba939f730d7d4e6c031"
+    },
+    {
+      "path": "docs/CC12_NATIVE_ALLOCATOR_BASE_MESSAGE_CONSTRUCTOR_SOURCE.md",
+      "physical_bytes": 5319,
+      "physical_sha256": "9315d855a77463cb7b8ac5bb0fd8203f8e07757556d32e7c007791ff6f41dfbb",
+      "canonical_lf_bytes": 5319,
+      "canonical_lf_sha256": "9315d855a77463cb7b8ac5bb0fd8203f8e07757556d32e7c007791ff6f41dfbb",
+      "physical_crlf_count": 0,
+      "git_blob_oid": "51291a01666d90ba25b56b7f7499ac276cc50900"
+    }
+  ],
+  "current_repository_input_pins": [
+    {
+      "path": "reports/cc12_allocator_base_message_constructor_readiness.json",
+      "physical_bytes": 46191,
+      "physical_sha256": "7ded1b7979db0c1bc341bcbe6c92b53f1039d282cac9858b536b07db565985c1",
+      "canonical_lf_bytes": 45371,
+      "canonical_lf_sha256": "db5dfe4fd193a7e02ff41f9ec5f260792ece3de7226417eb1cc6cc15e2a82278",
+      "physical_crlf_count": 820,
+      "matches_base_blob": true,
+      "git_blob_oid": "c201b57e34b220cd3fdb800f807a30aab962b317"
+    },
+    {
+      "path": "docs/CC12_ALLOCATOR_BASE_MESSAGE_CONSTRUCTOR_READINESS.md",
+      "physical_bytes": 8319,
+      "physical_sha256": "6dbff58e4e69a41b2a0e0144255a96a34b2bfd72306f05d6529deeff03ffe2fe",
+      "canonical_lf_bytes": 8319,
+      "canonical_lf_sha256": "6dbff58e4e69a41b2a0e0144255a96a34b2bfd72306f05d6529deeff03ffe2fe",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "458f29f2d13910da871e62de7ecec9f077e1c901"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_variant_initializer.hpp",
+      "physical_bytes": 776,
+      "physical_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "canonical_lf_bytes": 776,
+      "canonical_lf_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "5b83a88edfb7fd4e178901d3f86b8ab899b1fdf6"
+    },
+    {
+      "path": "src/native_mission_lua_variant_initializer.cpp",
+      "physical_bytes": 1022,
+      "physical_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "canonical_lf_bytes": 1022,
+      "canonical_lf_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "9184e342f6702b026fc042cd1dc959c58e311c6b"
+    },
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_bytes": 455,
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "physical_bytes": 17691,
+      "physical_sha256": "72d27a5628aadf16461e8d93a9249d7414435abeca91ecc2d3404ffc9b63bb92",
+      "canonical_lf_bytes": 17691,
+      "canonical_lf_sha256": "72d27a5628aadf16461e8d93a9249d7414435abeca91ecc2d3404ffc9b63bb92",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "b22af925188537fd3f786b8cf3d82183fd189591"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "canonical_lf_bytes": 198705,
+      "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "ae693a5b7378ce5702009489852d942a3d03419d"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "physical_bytes": 1820,
+      "physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "canonical_lf_bytes": 1820,
+      "canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "41d4bd970057f9cf9dd3c9c6d88527ce27ebbf01"
+    }
+  ],
+  "inherited_canonical_pin_replays": [
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/native_legacy_exception_owner.cpp",
+      "expected_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "actual_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "expected_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "actual_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "expected_canonical_lf_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "actual_canonical_lf_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/system_camera_axes.hpp",
+      "expected_canonical_lf_sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+      "actual_canonical_lf_sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_crt_libm_error_support.hpp",
+      "expected_canonical_lf_sha256": "351b5db188bea468f861b1d55b8cde492aa0908852831c939ca6cfaa1f78c1c9",
+      "actual_canonical_lf_sha256": "351b5db188bea468f861b1d55b8cde492aa0908852831c939ca6cfaa1f78c1c9",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "reports/cc12_allocator_failure_object_constructor_readiness.json",
+      "expected_canonical_lf_sha256": "290f246bd87732239d0b1ebedfdc9e6e6573f328a883960661cfb7bd4128ead0",
+      "actual_canonical_lf_sha256": "290f246bd87732239d0b1ebedfdc9e6e6573f328a883960661cfb7bd4128ead0",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_legacy_exception_owner.cpp",
+      "expected_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "actual_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "expected_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "actual_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "actual_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/game_native_renderer_application.cpp",
+      "expected_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "actual_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_application_allocator_policy_readiness.json",
+      "expected_canonical_lf_sha256": "8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9",
+      "actual_canonical_lf_sha256": "8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "actual_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/game_native_renderer_application.cpp",
+      "expected_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "actual_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_legacy_exception_owner.cpp",
+      "expected_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "actual_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "expected_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "actual_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_application_pointer_vector_crt_boundary_readiness.json",
+      "expected_canonical_lf_sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+      "actual_canonical_lf_sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/singleton_lifetime_audit.json",
+      "expected_canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "actual_canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "expected_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "actual_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/game_native_renderer_shaders.inc",
+      "expected_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "actual_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/game_native_renderer_application.cpp",
+      "expected_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "actual_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "expected_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "actual_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "actual_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+      "expected_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "actual_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_native_application_pointer_vector_resize_primary_review.json",
+      "expected_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "actual_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/native_shader_preload_r99.json",
+      "expected_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "actual_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_application_vector_retirement_readiness.json",
+      "expected_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "actual_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "expected_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "actual_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "matches": true
+    }
+  ],
+  "validation": {
+    "inherited_reference_count": 58,
+    "inherited_unique_paths": 26,
+    "inherited_excerpt_replays": 9,
+    "all_inherited_pins_match": true,
+    "all_current_base_pins_match": true,
+    "independent_checker_passed": true,
+    "staged_scope_checked": true,
+    "staged_diff_check_passed": true
+  },
+  "credit": {
+    "actual_applied_Original_functions": 0,
+    "actual_applied_Original_bytes": 0,
+    "proposed_Original_functions": 1,
+    "proposed_Original_bytes": 24,
+    "proposal_conditional_on_primary_registration_build_emission_Core_and_final_review": true,
+    "no_wider_allocator_exception_startup_or_runtime_credit": true
+  }
+}
