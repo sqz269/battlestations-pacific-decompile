@@ -1,0 +1,761 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_game_retained_application_frame_composition",
+  "generated_at_utc": "2026-10-09T04:49:30.652559+00:00",
+  "base_commit": "5522250b7873637b82031cf36c06e1b4fcd4bd5a",
+  "requested_published_main": "d5f2598c4021c24a77f783cbf0d23966792ae5f2",
+  "preserved_sample_source_commit": "3148e8144608bc3218582c13939a832cbf291623",
+  "verdict": {
+    "minimal_retained_source_caller_owner_feasible": true,
+    "new_generic_callback_required": false,
+    "requires_fully_composed_game_runtime": true,
+    "actual_application_frame_currently_composed": false,
+    "missing_full_contexts_supplied": false,
+    "new_source_implemented": false,
+    "source_credit": 0,
+    "original_function_credit": 0
+  },
+  "scope": {
+    "owned_outputs": [
+      "docs/CC12_GAME_RETAINED_APPLICATION_FRAME_COMPOSITION.md",
+      "reports/cc12_game_retained_application_frame_composition.json"
+    ],
+    "native_range": "0073E150..0073E1D9",
+    "native_range_use": "Replay only the retained 138-byte caller fragment; no constructor/lifetime body re-audit or live Ghidra export.",
+    "existing_contexts": "Read bounded current runtime/storage/string/allocator and operation-retirement contracts; reuse existing caller audit."
+  },
+  "proposed_smallest_source_pair": {
+    "header": "include/bsp/game_native_game_application_frame.hpp",
+    "source": "src/game_native_game_application_frame.cpp",
+    "class_name": "bsp::game::GameNativeGameApplicationFrame",
+    "kind": "Ordinary stable noncopyable/nonmovable C++ owner for the caller frame and external outer allocation; no table or constructor-body implementation.",
+    "borrowed_inputs": [
+      {
+        "name": "runtime",
+        "type": "GameNativeGameRuntime&",
+        "contract": "Already fully composed, stable, fresh and exclusively used by this caller; its matching construction/lifetime/Dyn/string/allocation services remain retained."
+      },
+      {
+        "name": "actual_application_game_14",
+        "type": "void* volatile&",
+        "contract": "The actual Application+14 cell, distinct from constructor publication E188A8; no private mirror and no requirement that its pre-call value is null."
+      },
+      {
+        "name": "current_init_input_00e1ae78",
+        "type": "char* volatile&",
+        "contract": "Actual current duplicate publication owned by the earlier bootstrap producer. Capture its live nonnull NUL-terminated value only at the native point after allocation/zeroing; no cachedload substitution."
+      },
+      {
+        "name": "raw_strings",
+        "type": "NativeStringRawPoolContext&",
+        "contract": "Retained canonical pool/return-gate/manager cells matching runtime construction and lifetime string services. Runtime currently exposes no introspection proving this identity, so admission is an explicit producer contract."
+      }
+    ],
+    "owned_state": [
+      "Canonical malloc allocation pointer plus explicit none/owned/retired/uncertain ownership disposition and object-lifetime-started marker.",
+      "Actual aligned 8-byte temporary name header, untouched before its preparation entry; raw constructor itself zeros length/data before strlen.",
+      "Captured borrowed input pointer (not owned), name preparation/completion/return-attempt/return-completion or externally-resolved status.",
+      "Constructor-returned result, actual Application+14-publication-written marker, frame stage and failure stage/site.",
+      "Parent-cleanup state -1/27h/28h and native temporary mask value0x2 as evidence markers; these do not install Original FH3.",
+      "Scalar flags/attempt/completion and historical allocation/return address bits needed to distinguish destroyed-but-owned storage from already-freed storage.",
+      "References to the existing retained runtime and raw string context; use the runtime existing construction/lifetime operations rather than duplicate those graphs."
+    ],
+    "suggested_api": [
+      {
+        "signature": "construct()",
+        "contract": "One attempt from fresh. Allocate/start lifetime/zero/name/construct/publish/cleanup in order. On supported C++ failure retain state and rethrow; never reset to fresh."
+      },
+      {
+        "signature": "scalar_delete(uint32_t flags)",
+        "contract": "Explicit first scalar only for runtime live and a resolved temporary-name obligation. Forward full flags to runtime, distinguish flags&1 freed from flags0 still-owned outer storage. No publication rollback or post-free dereference."
+      },
+      {
+        "signature": "free_retained_storage()",
+        "contract": "Explicit matching singleton_lifetime_free/std::free only when allocation is still proven owned, no live or unresolved partial graph remains, and name obligation is resolved. Eligible runtime states: fresh with constructor never entered, destroyed after scalar flags0, or diagnostic_retired after external partial-graph resolution. No second scalar call."
+      },
+      {
+        "signature": "acknowledge_name_resolution()",
+        "contract": "Diagnostic acknowledgement after the caller has actually resolved the retained partial/pending name. Performs no pooled return, header clearing or graph mutation. Does not replay failed preparation/cleanup."
+      },
+      {
+        "signature": "acknowledge_diagnostic_retirement(DiagnosticDisposition)",
+        "contract": "Explicit terminal acknowledgement after name resolution and an explicit outer disposition of never allocated or already freed (by the matched scalar/frame/qualified external diagnostic), identifying this original allocation. Performs no cleanup/free/replay/publication edits. Require runtime fresh with constructor never entered, destroyed, or diagnostic_retired; a failed runtime must first be externally resolved and acknowledged via its existing APIs. Never acknowledge a still-live Game as failed solely because name return failed."
+      },
+      {
+        "signature": "status()/retained storage and raw header diagnostics",
+        "contract": "Expose stable stage/ownership facts and the live retained addresses needed for qualified external diagnosis. Do not expose freed historical pointers as live owned storage."
+      }
+    ],
+    "destructor": "No automatic scalar, string return, free, rollback or publication edit. Require explicit retirement; unresolved running/failed/owned state should be rejected using the repository retained-owner fail-fast policy rather than silently discarded.",
+    "diagnostic_disposition": "Carries explicit external resolution of the name and outer allocation absence/already-freed status, including a custom-free outcome. This is a qualified caller assertion after actual cleanup, not proof manufactured by the frame or permission to discard still-owned live storage."
+  },
+  "normal_schedule": [
+    {
+      "step": 1,
+      "site": "0073E150..0073E15B",
+      "behavior": "From a fresh one-shot frame and fresh runtime, call singleton_lifetime_allocate({object,0x71a0,0x71a0}); immediately retain the returned allocation. Its canonical contract is nonnull-or-throw."
+    },
+    {
+      "step": 2,
+      "site": "0073E15B..0073E17C",
+      "behavior": "Begin NativeGameStorage lifetime by placement default construction in that allocation, then memset exactly sizeof(NativeGameStorage)==0x71A0. Do not use a stack/unique_ptr-new allocation or value-initialize only selected members. Record parent state27h after zeroing."
+    },
+    {
+      "step": 3,
+      "site": "0073E17E..0073E188",
+      "behavior": "Capture current E1AE78-equivalent cell once and enter name_preparing. Call construct_native_string_header_0041e870(actual8h,raw_strings,captured_input); its own zeros/strlen/resize/copy are reused."
+    },
+    {
+      "step": 4,
+      "site": "0073E18D..0073E1A1",
+      "behavior": "Only after name construction returns mark complete and native mask0x2. Record state28h and call runtime.construct(*actual_allocation,actual_name_header). The existing constructor initializes and copies to actual Game+7164 using its matching strings."
+    },
+    {
+      "step": 5,
+      "site": "004DE105 before Dyn; 0073E1A1 return",
+      "behavior": "Do not interpose on existing constructor publication E188A8 before Dyn initialization. A thrown Dyn construction can leave this internal publication while Application+14 has not been written by the caller."
+    },
+    {
+      "step": 6,
+      "site": "0073E1AF then0073E1B2",
+      "behavior": "On return preserve and publish the actual constructor result to actual Application+14, then record parent cleanup state=-1. Never publish the allocation early or defer internal E188A8 publication until return."
+    },
+    {
+      "step": 7,
+      "site": "0073E1BB..0073E1D5",
+      "behavior": "Record name-return attempt and invoke the raw-pool destroy_native_string_header_0041dd20 overload. It captures data and length+1, gets current pool and returns the block without clearing header. Mark completion only on return. There is no normal mask-clear instruction in this fragment."
+    },
+    {
+      "step": 8,
+      "site": "after0073E1D9",
+      "behavior": "Frame reports live/complete caller construction while runtime retains graph and operations. No automatic Game teardown, duplicate-input release, or replay is introduced."
+    }
+  ],
+  "mask_precision": {
+    "native_mask": "0x2 (the second bit)",
+    "set": "0073E18D OR dword ptr [ESP+20],2",
+    "test": "0073E1AA TEST byte ptr [ESP+20],2",
+    "normal_mask_cleared": false,
+    "critical_disarm": "0073E1B2 stores EBX=-1 into parent state before normal name return.",
+    "source_rule": "A name-complete boolean or stale nonnull header cannot authorize automatic replay after return failure; separate attempted/completed/resolved status is required.",
+    "prior_wording": "The predecessor prose says bit2; this report uses exact mask0x2, not bit index2/value4."
+  },
+  "failure_matrix": [
+    {
+      "stage": "outer allocation",
+      "runtime_phase": "fresh",
+      "storage": "None if the canonical allocator throws before returning.",
+      "name": "Preparation not entered; header not a cleanup candidate.",
+      "publications": "No caller Application+14 write and no Game constructor publication from this attempt.",
+      "resolution": "Retain failed allocation/site fact and perform explicit terminal diagnostic acknowledgement. Do not restart the frame."
+    },
+    {
+      "stage": "name preparation",
+      "runtime_phase": "fresh",
+      "storage": "Owned actual71A0 allocation with NativeGameStorage lifetime started and all bytes zeroed.",
+      "name": "Retain actual header and preparing stage; completion/mask0x2 was not set. A raw helper failure is not proof the header/buffer is safely destroyable.",
+      "publications": "Application+14 remains untouched by this frame; Game constructor was not entered.",
+      "resolution": "Caller resolves exact partial raw-string state. Only after that may it acknowledge the name and explicitly free the never-constructed outer storage. No automatic name cleanup or retry."
+    },
+    {
+      "stage": "Game constructor",
+      "runtime_phase": "failed",
+      "storage": "Owned retained partial Game; existing construction operation/context/children remain live.",
+      "name": "Completed actual name header remains retained.",
+      "publications": "Caller has not assigned Application+14; internal E188A8 may already identify this game before a later Dyn failure.",
+      "resolution": "Keep frame/runtime/all services and storage. Resolve child/graph/publication obligations through qualified diagnostics, use existing runtime acknowledgement only after resolution, resolve the name, then free proven-owned outer storage exactly once. Never call the whole scalar on an incomplete graph."
+    },
+    {
+      "stage": "normal name return after constructor",
+      "runtime_phase": "live",
+      "storage": "Live constructed allocation, with constructor return and Application+14 publication recorded.",
+      "name": "Return attempted but not complete; header bytes remain available and may be stale/dangling depending on qualified failure boundary.",
+      "publications": "Application+14 already published; parent cleanup state is already-1.",
+      "resolution": "Retain live runtime and pending name state. Explicitly resolve/acknowledge name obligation without rerunning construct or pretending runtime failed. Then normal first scalar retirement remains possible; runtime acknowledge_diagnostic_cleanup is invalid while live."
+    },
+    {
+      "stage": "scalar destruction or custom free",
+      "runtime_phase": "failed",
+      "storage": "Retain exact lifetime operation/native site; if a custom free could release then throw, ownership is uncertain until diagnosed.",
+      "name": "Must already be resolved before scalar entry.",
+      "publications": "Do not infer rollback or clear actual cells automatically.",
+      "resolution": "Resolve the retained destruction graph and exact outer allocation disposition before acknowledgement/free. No second scalar and no automatic second free. Canonical default free is std::free; other overrides need matching allocation and qualified failure semantics."
+    }
+  ],
+  "ownership": {
+    "storage_type": "alignas(4) NativeGameStorage, exact0x71A0 and trivially default constructible.",
+    "allocation": "singleton_lifetime_allocate uses std::malloc plus new-handler retry; no nullable success bypass of the preceding memset.",
+    "scalar_free": "Existing NativeGameLifetimeCalls::free_00bf6989 default is std::free. The fully composed lifetime service must retain that matched domain, or independently qualify any override.",
+    "flags_1": "Normal scalar completion frees outer allocation; retain returned address only as historical bits, relinquish local ownership and never dereference it.",
+    "flags_0": "Normal scalar completion leaves outer allocation owned while runtime phase becomes destroyed. Explicit matching outer free follows; a second scalar is prohibited.",
+    "diagnostic": "Acknowledgement alone does not destroy children, return name storage, clear publications or free allocation. These must be resolved and recorded explicitly.",
+    "application_publication": "The bounded caller proves its construction store only. No automatic clearing/rollback of Application+14 or internal publications is proposed; application shutdown/publication retirement needs its own qualified caller policy.",
+    "duplicate_input": "Borrow only. Earlier duplicate producer and later73E45C retirement remain external; neither hard-code cachedload nor free/replace E1AE78 in this owner."
+  },
+  "existing_runtime_constraints": [
+    "GameNativeGameRuntime copies construction/lifetime contexts containing borrowed references and owns persistent operations plus the Game-specific callable table. It does not own the external71A0 allocation.",
+    "Runtime construction checks shared game/grid publication references and canonical Dyn engine/world services; it does not manufacture or establish all other full constructor/lifetime inputs, nor expose their string/free identity for new introspection.",
+    "Runtime construct is one-shot; it records owner and constructing phase, sets live only on return, failed on supported exception.",
+    "Runtime scalar_delete is legal only when live; phase becomes destroyed on successful flags0 as well as flags1. Runtime destructor accepts only fresh/destroyed/diagnostic_retired.",
+    "Runtime diagnostic acknowledgement accepts only failed, requires existing operation/child cleanup guards satisfied, then marks diagnostic_retired; it neither frees storage nor permits replay."
+  ],
+  "missing_actual_producers": [
+    "GameStartupHost::application_construct currently says subsystem pointers+4..+14 are unreconstructed and initializes ApplicationFrameState only. It is not the actual Application+14 producer required by this API.",
+    "GameStartupHost::application_initialize validates mode and run_initialize_phases parses that input directly. It does not provide the earlier native duplicate publication E1AE78 to the retained Game caller. Existing duplicate_native_string_00438e40 can implement that separate producer, but it is not invoked or owned by this proposed frame.",
+    "A fully composed GameNativeGameRuntime with genuine constructor/lifetime/physics/Dyn/globalconfig/load/resources/tables/grids/profile/string inputs and exact opaque descriptor/local preimages is still required. This packet supplies none of those missing contexts.",
+    "Current WinMain passes cachedload, but a later caller must read the actual current duplicated-input cell at the native point. That constant does not replace provenance or ownership."
+  ],
+  "verification": {
+    "source_files_pinned": 16,
+    "bounded_excerpts": 32,
+    "prior_caller_source_pins_revalidated": 26,
+    "native_fragment_bytes": 138,
+    "native_fragment_instructions": 39,
+    "original_fragment_hash_replayed": true,
+    "fresh_native_exports_or_byte_queries": false,
+    "new_source_or_build_registration": false,
+    "builds_tests_probes": false,
+    "ghidra_or_ledger_mutation": false,
+    "native_execution": false,
+    "game_validation": false,
+    "pins_refreshed_after_primary_sample_subtree_integration": true
+  },
+  "prior_audit_pin": {
+    "path": "reports/cc12_game_application_allocation_name_frame_readiness.json",
+    "physical_sha256": "8b16ba7ae1adb743339173f5f10b6f41f6734604dc2c561e82d2657c2957bd1e",
+    "normalized_lf_sha256": "8b16ba7ae1adb743339173f5f10b6f41f6734604dc2c561e82d2657c2957bd1e",
+    "git_blob_oid": "03f67bacc79283f971b8e8a6cd3c643667dea49e"
+  },
+  "native_fragment": {
+    "address": "0073E150",
+    "end_inclusive": "0073E1D9",
+    "hex": "68a0710000e864744b0068a07100008bf05756e888984b0083c410897424103bf7c784244401000027000000742aa178aee100508d4c2430e8e306ceff834c2420028d4c242c518bcec684244801000028e8eaf9d9ffeb0233c0f644242002894514899c2444010000741f8b4c24303bcf74178b44242c6a0183c0015051e8edbacdff8bc8e836334900",
+    "sha256": "d81dc741f86b6c13de99ad7fd5f7c5a157ba2e3bd96532d83d31a94b0cbf555f",
+    "stored_original_live_disk_equal": true,
+    "current_installed_pe_match": true,
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "instructions": [
+      "0073E150: push 0x71a0",
+      "0073E155: call 0xbf55be",
+      "0073E15A: push 0x71a0",
+      "0073E15F: mov esi, eax",
+      "0073E161: push edi",
+      "0073E162: push esi",
+      "0073E163: call 0xbf79f0",
+      "0073E168: add esp, 0x10",
+      "0073E16B: mov dword ptr [esp + 0x10], esi",
+      "0073E16F: cmp esi, edi",
+      "0073E171: mov dword ptr [esp + 0x144], 0x27",
+      "0073E17C: je 0x73e1a8",
+      "0073E17E: mov eax, dword ptr [0xe1ae78]",
+      "0073E183: push eax",
+      "0073E184: lea ecx, [esp + 0x30]",
+      "0073E188: call 0x41e870",
+      "0073E18D: or dword ptr [esp + 0x20], 2",
+      "0073E192: lea ecx, [esp + 0x2c]",
+      "0073E196: push ecx",
+      "0073E197: mov ecx, esi",
+      "0073E199: mov byte ptr [esp + 0x148], 0x28",
+      "0073E1A1: call 0x4ddb90",
+      "0073E1A6: jmp 0x73e1aa",
+      "0073E1A8: xor eax, eax",
+      "0073E1AA: test byte ptr [esp + 0x20], 2",
+      "0073E1AF: mov dword ptr [ebp + 0x14], eax",
+      "0073E1B2: mov dword ptr [esp + 0x144], ebx",
+      "0073E1B9: je 0x73e1da",
+      "0073E1BB: mov ecx, dword ptr [esp + 0x30]",
+      "0073E1BF: cmp ecx, edi",
+      "0073E1C1: je 0x73e1da",
+      "0073E1C3: mov eax, dword ptr [esp + 0x2c]",
+      "0073E1C7: push 1",
+      "0073E1C9: add eax, 1",
+      "0073E1CC: push eax",
+      "0073E1CD: push ecx",
+      "0073E1CE: call 0x419cc0",
+      "0073E1D3: mov ecx, eax",
+      "0073E1D5: call 0xbd1510"
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "physical_sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "physical_bytes": 2173,
+      "normalized_lf_sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "normalized_lf_bytes": 2173,
+      "git_blob_oid": "82d6f97019a8ced315745431c1d80759d0251779",
+      "excerpts": [
+        {
+          "start_line": 12,
+          "end_line": 44,
+          "text": "// Stable owner for the actual game's complete one-slot primary table. Borrows\n// already composed construction/lifetime services and the canonical Dyn owner;\n// owns persistent operation frames, not the externally supplied 71A0h storage.\n// The source tables are installed at the original constructor/destructor stores.\n// Explicit construct and scalar_delete are required; destruction cannot infer\n// cleanup of a partially constructed/destroyed native graph.\nclass GameNativeGameRuntime final {\npublic:\n    enum class Phase {fresh,constructing,live,destroying,destroyed,failed,diagnostic_retired};\n    GameNativeGameRuntime(const NativeGameConstructionContext&,\n        const NativeGameLifetimeContext&,GameNativeDynProcess&);\n    ~GameNativeGameRuntime();\n    GameNativeGameRuntime(const GameNativeGameRuntime&)=delete;\n    GameNativeGameRuntime& operator=(const GameNativeGameRuntime&)=delete;\n    NativeGameStorage* construct(NativeGameStorage&,const void* actual_name_header);\n    NativeGameStorage* scalar_delete(std::uint32_t flags);\n    // 875E0C reloads [actual game publication]+18h before C5C540. Requires\n    // this completed, still-published owner; never creates a substitute world.\n    void simulate_physics_00875e0c(float step);\n    Phase phase() const noexcept;\n    NativeGameStorage* storage() const noexcept;\n    const void* table() const noexcept {return methods_;}\n    NativeGameConstructionOperation& construction_operation() noexcept;\n    NativeGameLifetimeOperation& lifetime_operation() noexcept;\n    // Only after the caller resolves every retained graph/child operation.\n    // Does not free storage, undo publications, roll back, or permit replay.\n    void acknowledge_diagnostic_cleanup();\nprivate:\n    const std::uintptr_t methods_[1];\n    struct Impl;\n    Impl* const impl_;\n    static void* __fastcall scalar(void*,void*,std::uint32_t);\n};"
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "physical_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "physical_bytes": 4780,
+      "normalized_lf_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "normalized_lf_bytes": 4780,
+      "git_blob_oid": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d",
+      "excerpts": [
+        {
+          "start_line": 14,
+          "end_line": 37,
+          "text": "    NativeGameConstructionContext construction;\n    NativeGameLifetimeContext lifetime;\n    const NativeDynWorldStepContext& step;\n    NativeGameSourceTables tables;\n    NativeGameConstructionOperation construct_operation;\n    NativeGameLifetimeOperation destroy_operation;\n    NativeGameStorage* owner{};\n    Phase phase{Phase::fresh};\n    Impl(const NativeGameConstructionContext& c,const NativeGameLifetimeContext& l,\n        GameNativeDynProcess& p,const void* table)\n        :construction(c),lifetime(l),step(p.world_step()),tables{table,p.contact_reports().table()} {\n        const auto& dynamics=p.dynamics();\n        if(&c.actual_game_00e188a8!=&l.game_00e188a8\n            ||&c.actual_00e19b0c!=&l.grid_00e19b0c\n            ||&c.actual_00e19b08!=&l.grid_00e19b08\n            ||&c.actual_00e19b04!=&l.grid_00e19b04\n            ||&c.dynamics.engine!=&dynamics.engine||&c.dynamics.world!=&dynamics.world\n            ||!l.physics||&l.physics->calls!=&l.calls||&l.physics->dynamics.engine!=&dynamics.engine\n            ||&l.physics->dynamics.world!=&dynamics.world)\n            throw std::invalid_argument(\"Native game requires shared game/grid publications and canonical Dyn construction/lifetime owners\");\n        construction.source_tables=&tables;\n        lifetime.source_primary_table=table;\n    }\n};"
+        },
+        {
+          "start_line": 39,
+          "end_line": 59,
+          "text": "    const NativeGameLifetimeContext& l,GameNativeDynProcess& p)\n    :methods_{reinterpret_cast<std::uintptr_t>(&scalar)},impl_(new Impl(c,l,p,methods_)) {\n    static_assert(std::is_standard_layout_v<GameNativeGameRuntime>);\n    static_assert(offsetof(GameNativeGameRuntime,methods_)==0);\n}\nGameNativeGameRuntime::~GameNativeGameRuntime(){\n    if(impl_->phase!=Phase::fresh&&impl_->phase!=Phase::destroyed&&impl_->phase!=Phase::diagnostic_retired)\n        std::terminate();\n    delete impl_;\n}\nNativeGameStorage* GameNativeGameRuntime::construct(NativeGameStorage& game,const void* name){\n    auto& i=*impl_;if(i.phase!=Phase::fresh)throw std::logic_error(\"Native game construction is one-shot\");\n    i.owner=&game;i.phase=Phase::constructing;\n    try{auto* result=construct_native_game_004ddb90(game,name,i.construction,i.construct_operation);i.phase=Phase::live;return result;}\n    catch(...){i.phase=Phase::failed;throw;}\n}\nNativeGameStorage* GameNativeGameRuntime::scalar_delete(std::uint32_t flags){\n    auto& i=*impl_;if(i.phase!=Phase::live)throw std::logic_error(\"Native game deletion requires its live constructed owner\");\n    i.phase=Phase::destroying;\n    try{auto* result=delete_native_game_004de270(*i.owner,flags,i.lifetime,i.destroy_operation);i.phase=Phase::destroyed;return result;}\n    catch(...){i.phase=Phase::failed;throw;}"
+        },
+        {
+          "start_line": 72,
+          "end_line": 81,
+          "text": "}\nGameNativeGameRuntime::Phase GameNativeGameRuntime::phase() const noexcept{return impl_->phase;}\nNativeGameStorage* GameNativeGameRuntime::storage() const noexcept{return impl_->owner;}\nNativeGameConstructionOperation& GameNativeGameRuntime::construction_operation() noexcept{return impl_->construct_operation;}\nNativeGameLifetimeOperation& GameNativeGameRuntime::lifetime_operation() noexcept{return impl_->destroy_operation;}\nvoid GameNativeGameRuntime::acknowledge_diagnostic_cleanup(){\n    auto& i=*impl_;if(i.phase!=Phase::failed)throw std::logic_error(\"Only a failed native game operation can be diagnostically retired\");\n    i.construct_operation.acknowledge_diagnostic_cleanup();i.destroy_operation.acknowledge_diagnostic_cleanup();\n    i.phase=Phase::diagnostic_retired;\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "physical_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "physical_bytes": 7095,
+      "normalized_lf_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "normalized_lf_bytes": 7095,
+      "git_blob_oid": "e83a2b3736edfb4d6fa699526a003861d3805977",
+      "excerpts": [
+        {
+          "start_line": 16,
+          "end_line": 22,
+          "text": "namespace bsp {\n// 73E150 allocates71A0, 73E163 clears the entire allocation, then 73E1A1\n// invokes4DDB90. The constructor itself preserves every unlisted byte. This\n// type supplies the observed allocation extent, not an invented game layout.\nstruct alignas(4) NativeGameStorage final { std::byte bytes[0x71a0]; };\nstatic_assert(sizeof(NativeGameStorage)==0x71a0);\nstatic_assert(std::is_trivially_default_constructible_v<NativeGameStorage>);"
+        },
+        {
+          "start_line": 76,
+          "end_line": 121,
+          "text": "};\nstruct NativeGameConstructionContext {\n    void* volatile& actual_game_00e188a8;\n    void* volatile& actual_00e19b0c;\n    void* volatile& actual_00e19b08;\n    void* volatile& actual_00e19b04;\n    void* volatile& actual_movie_00e18d48;\n    NativeStringStorage& strings;\n    NativeGameConstructionConstants constants;\n    NativePlayerProfileContext& profile;\n    NativeGameConstructionCalls& calls;\n    NativeGameEmbeddedStateConstants embedded_constants;\n    NativeGameArrayConstants array_constants;\n    NativeGameDynamicsContext dynamics;\n    NativeGameTablesContext& tables;\n    GlobalConfigContext& global_configuration;\n    NativeGlobalConfigLoadContext& global_configuration_load;\n    NativeGameResourceParsersContext& resource_parsers;\n    // Required by the default70BD70 implementation. A null binding fails at\n    // the reached call; it never fabricates a grid. Explicit preimages retain\n    // the two otherwise-uninitialized descriptor words for each of three calls.\n    NativeGameGridContext* grids;\n    NativeGameGridDescriptorPreimage grid_descriptor_preimages[3];\n    const NativeGameSourceTables* source_tables{};\n};\nstruct NativeGameConstructionOperation final {\n    enum class Phase { fresh,running,complete,failed,diagnostic_retired };\n    Phase phase{Phase::fresh};\n    NativeGameStorage* owner{};\n    NativeGameConstructionContext* context{};\n    std::uint32_t native_site{};\n    std::int32_t unwind_state{-1};\n    void* current_allocation{};\n    std::uint32_t worker_count;\n    DynWorldDescriptor descriptor;\n    NativePlayerProfileOperation profile;\n    NativeGameEmbeddedStateOperation embedded;\n    NativeGameArrayOperation arrays[4];\n    NativeGlobalConfigLoadOperation global_configuration;\n    NativeGameGridOperation grids[3];\n    NativeGameConstructionOperation()=default;\n    ~NativeGameConstructionOperation();\n    NativeGameConstructionOperation(const NativeGameConstructionOperation&)=delete;\n    NativeGameConstructionOperation& operator=(const NativeGameConstructionOperation&)=delete;\n    // Only after the retained graph has been resolved by a diagnostic caller.\n    void acknowledge_diagnostic_cleanup() noexcept;"
+        },
+        {
+          "start_line": 123,
+          "end_line": 134,
+          "text": "\n// Full4DDB90 normal parent schedule. Native ECX=71A0 game, stack=actual8h\n// string header pointer, EAX=same game, RET4. Real input/Lua/string primitives\n// and the raw profile constructor/reset are reused; remaining callees above\n// and the profile's remaining services are required dependencies. The input\n// header may alias game+7164, which is initialized BEFORE the self-copy test.\n// Current game publication happens late at4DE105, BEFORE Dyn initialization.\n// Source exceptions retain the frame/partial graph and prohibit replay; this\n// does not reproduce native FH3 cleanup, parent allocation/free, destruction,\n// private-stack aliases, binary ABI or whole-application/gameplay behavior.\nNativeGameStorage* construct_native_game_004ddb90(NativeGameStorage&,\n    const void* actual_name_header,NativeGameConstructionContext&,NativeGameConstructionOperation&);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "physical_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "physical_bytes": 14665,
+      "normalized_lf_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "normalized_lf_bytes": 14665,
+      "git_blob_oid": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+      "excerpts": [
+        {
+          "start_line": 102,
+          "end_line": 124,
+          "text": "NativeGameConstructionOperation::~NativeGameConstructionOperation(){\n    if(phase==Phase::running||phase==Phase::failed)std::terminate();\n}\nvoid NativeGameConstructionOperation::acknowledge_diagnostic_cleanup() noexcept {\n    if(phase==Phase::failed){\n        if(global_configuration.retains_native_state())std::terminate();\n        for(const auto& grid:grids)if(grid.phase==NativeGameGridOperation::Phase::failed||grid.phase==NativeGameGridOperation::Phase::running)std::terminate();\n        profile.acknowledge_diagnostic_cleanup();embedded.acknowledge_diagnostic_cleanup();\n        for(auto& array:arrays)array.acknowledge_diagnostic_cleanup();phase=Phase::diagnostic_retired;\n    }\n}\n\nNativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,\n    const void* name,NativeGameConstructionContext& c,Op& a) {\n    if(a.phase!=Op::Phase::fresh)throw std::logic_error(\"game constructor operation is one-shot\");\n    a.owner=&storage;a.context=&c;a.phase=Op::Phase::running;\n    auto& calls=c.calls;void* const game=&storage;\n    try {\n        word(game,0,c.source_tables?reinterpret_cast<Word>(c.source_tables->primary_00ce7cb8):0x00ce7cb8);byte(game,8,1);word(game,0xc,0xffffffff);byte(game,0x10);\n        word(game,0x1c,c.source_tables?reinterpret_cast<Word>(c.source_tables->reports_00ce78c0):0x00ce78c0);word(game,0x24);word(game,0x28);word(game,0x2c);\n        a.unwind_state=0;a.native_site=0x004ddbe2;\n        construct_native_input_configuration_00698680(at(game,0x3c));\n        a.unwind_state=1;a.native_site=0x004ddc01;"
+        },
+        {
+          "start_line": 161,
+          "end_line": 176,
+          "text": "        void* const destination=at(game,0x7164);word(destination,0);word(destination,4);\n        a.unwind_state=33;a.native_site=0x004ddf17;\n        put(game,0x7170,calls.call_004c1a40());word(game,0x7174);word(game,0x7178);\n        word(game,0x717c);word(game,0x7180);byte(game,0x7184);\n        word(game,0x7190);word(game,0x7194);word(game,0x7198);a.unwind_state=36;\n        byte(game,0x719c);byte(game,0x719d);byte(game,0x719e);word(game,0x38);byte(game,0x1ee0);\n        if(destination!=name) {\n            a.native_site=0x004ddf81;\n            resize_native_string_header_0041dd40(destination,c.strings,read<Word>(name),true);\n            if(read<Word>(name)!=0) {\n                const auto count=read<Word>(destination);\n                void* const target=read<void*>(destination,4);\n                const void* const source=read<const void*>(name,4);\n                a.native_site=0x004ddf99;std::memcpy(target,source,count);\n            }\n        }"
+        },
+        {
+          "start_line": 199,
+          "end_line": 208,
+          "text": "        c.actual_movie_00e18d48=nullptr;word(game,0x19c8);word(game,0x21e0);\n        byte(game,0x2191);byte(game,0x2192);word(game,0x18c8,0xffffffff);word(game,0x18ec,0xffffffff);\n        word(game,0x7058);byte(game,0x22dd);byte(game,0x1ee5);byte(game,0x1ee3);\n        byte(game,0x1ee4);byte(game,0x1ee1);c.actual_game_00e188a8=game;\n        a.unwind_state=36;word(game,0x34);a.worker_count=1;\n        a.native_site=0x004de11c;a.worker_count=calls.call_00be4800();\n        a.native_site=0x004de129;void* const engine=calls.call_00c55f50(&a.worker_count,c.dynamics.engine);\n        const Word solver=c.constants.bits_00ce7480;\n        const Word half=c.constants.bits_00ce3800;\n        descriptor_word(a.descriptor,0x30,solver);"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "physical_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+      "physical_bytes": 9292,
+      "normalized_lf_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+      "normalized_lf_bytes": 9292,
+      "git_blob_oid": "6f63039a56ee19fb54ba204b18032a5a9243e78d",
+      "excerpts": [
+        {
+          "start_line": 65,
+          "end_line": 100,
+          "text": "    virtual std::int32_t interlocked_decrement(volatile std::int32_t*);\n    void* allocate_00bf55be(std::uint32_t) override;\n    virtual void free_00bf65ac(void*);\n    virtual void free_00bf6989(void*);\n};\nstruct NativeGameLifetimeContext {\n    volatile std::uint32_t& small_returns_disabled_01090aa4;\n    void* volatile& publication_00e18678;\n    void* volatile& publication_00e1867c;\n    void* volatile& publication_00e19900;\n    void* volatile& publication_00e18db0;\n    void* volatile& publication_00e19698;\n    void* volatile& publication_00e1930c;\n    void* volatile& publication_00e198bc;\n    void* volatile& movie_00e18d48;\n    void* volatile& game_00e188a8;\n    void* volatile& grid_00e19b0c;\n    void* volatile& grid_00e19b08;\n    void* volatile& grid_00e19b04;\n    NativeGameLifetimeCalls& calls;\n    // Required by the concrete array default. Same call service and actual\n    // string/observer domain as the constructed game; null fails when reached.\n    NativeGameArrayLifetimeContext* arrays;\n    NativeGameEmbeddedLifetimeContext* embedded;\n    NativeGameProfileLifetimeContext* profile;\n    // Borrow the game's actual publication cells and the same raw manager\n    // publication used by its string/profile services. Context must outlive\n    // parent/child diagnostics. Missing or foreign call services fail on use.\n    NativeGameSingletonLifetimeContext* singletons{};\n    NativeGameLuaGlobalsLifetimeContext* lua_globals{};\n    NativeResourceManagerContext* resources{};\n    NativeGameClassCleanupContext* classes{};\n    NativeGamePhysicsLifetimeContext* physics{};\n    // The same primary source table used by construction, or null for the\n    // original CE7CB8 identity in raw reconstruction diagnostics.\n    const void* source_primary_table{};"
+        },
+        {
+          "start_line": 106,
+          "end_line": 128,
+          "text": "struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {\n    enum class Phase {fresh,running,complete,failed,diagnostic_retired};\n    Phase phase{Phase::fresh};\n    NativeGameStorage* owner{};\n    NativeGameLifetimeContext* context{};\n    NativeGameArrayLifetimeOperation arrays[4];\n    NativeGameEmbeddedLifetimeOperation embedded;\n    NativeGameProfileLifetimeOperation profile;\n    NativeGameContainerLifetimeProgress containers;\n    NativeAwardRegistryLifetimeOperation awards;\n    NativeGameTreeLifetimeProgress trees;\n    NativeGameSingletonLifetimeOperation singletons[3];\n    NativeGameLuaGlobalsLifetimeOperation lua_globals;\n    NativeGameClassCleanupOperation classes;\n    NativeGamePhysicsLifetimeOperation physics;\n    NativeGameLifetimeOperation()=default;\n    ~NativeGameLifetimeOperation();\n    NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;\n    NativeGameLifetimeOperation& operator=(const NativeGameLifetimeOperation&)=delete;\n    // Caller must resolve the partially destroyed graph first. No rollback,\n    // retry, owner release, or native FH3 cleanup is performed by this method.\n    void acknowledge_diagnostic_cleanup() noexcept;\n};"
+        },
+        {
+          "start_line": 139,
+          "end_line": 145,
+          "text": "// are contracts, not implementations. Scalar flags use only lowbyte bit0;\n// return the original owner even after free. Explicit C++ interfaces do not\n// implement original calling convention, native FH3 unwind or app admission.\nvoid destroy_native_game_004dcf90(NativeGameStorage&,NativeGameLifetimeContext&,\n    NativeGameLifetimeOperation&);\nNativeGameStorage* delete_native_game_004de270(NativeGameStorage&,std::uint32_t flags,\n    NativeGameLifetimeContext&,NativeGameLifetimeOperation&);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "physical_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+      "physical_bytes": 21673,
+      "normalized_lf_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+      "normalized_lf_bytes": 21673,
+      "git_blob_oid": "c2bb099af6d7713d40fa43ad4aca79e9b5d813a5",
+      "excerpts": [
+        {
+          "start_line": 128,
+          "end_line": 149,
+          "text": "void begin(NativeGameStorage& g,NativeGameLifetimeContext& x,NativeGameLifetimeOperation& o) {\n    if(o.phase!=NativeGameLifetimeOperation::Phase::fresh)throw std::logic_error(\"native game destruction cannot be replayed\");\n    o.owner=&g;o.context=&x;o.phase=NativeGameLifetimeOperation::Phase::running;\n}\n}\nstd::int32_t NativeGameLifetimeCalls::interlocked_decrement(volatile std::int32_t* p){return ::InterlockedDecrement(reinterpret_cast<volatile LONG*>(p));}\nvoid NativeGameLifetimeCalls::free_00bf65ac(void* p){::operator delete(p);}\nvoid NativeGameLifetimeCalls::free_00bf6989(void* p){std::free(p);}\nNativeGameLifetimeOperation::~NativeGameLifetimeOperation(){if(phase==Phase::running||phase==Phase::failed)std::terminate();}\nvoid NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {\n    if(phase==Phase::failed){\n        for(const auto& array:arrays)if(array.phase==NativeGameArrayLifetimeOperation::Phase::running||array.phase==NativeGameArrayLifetimeOperation::Phase::failed)std::terminate();\n        if(embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::running||embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::failed)std::terminate();\n        if(profile.phase==NativeGameProfileLifetimeOperation::Phase::running||profile.phase==NativeGameProfileLifetimeOperation::Phase::failed)std::terminate();\n        if(awards.phase==NativeAwardRegistryLifetimeOperation::Phase::running||awards.phase==NativeAwardRegistryLifetimeOperation::Phase::failed)std::terminate();\n        for(const auto& singleton:singletons)if(singleton.phase==NativeGameSingletonLifetimeOperation::Phase::running||singleton.phase==NativeGameSingletonLifetimeOperation::Phase::failed)std::terminate();\n        if(lua_globals.phase==NativeGameLuaGlobalsLifetimeOperation::Phase::running||lua_globals.phase==NativeGameLuaGlobalsLifetimeOperation::Phase::failed)std::terminate();\n        if(classes.phase==NativeGameClassCleanupOperation::Phase::running||classes.phase==NativeGameClassCleanupOperation::Phase::failed)std::terminate();\n        if(physics.phase==NativeGamePhysicsLifetimeOperation::Phase::running||physics.phase==NativeGamePhysicsLifetimeOperation::Phase::failed)std::terminate();\n        phase=Phase::diagnostic_retired;\n    }\n}"
+        },
+        {
+          "start_line": 271,
+          "end_line": 278,
+          "text": "void destroy_native_game_004dcf90(NativeGameStorage& g,NativeGameLifetimeContext& x,NativeGameLifetimeOperation& o) {\n    begin(g,x,o);try{normal(g,x,o);o.phase=NativeGameLifetimeOperation::Phase::complete;}\n    catch(...){o.phase=NativeGameLifetimeOperation::Phase::failed;throw;}\n}\nNativeGameStorage* delete_native_game_004de270(NativeGameStorage& g,U flags,NativeGameLifetimeContext& x,NativeGameLifetimeOperation& o) {\n    begin(g,x,o);auto* result=&g;\n    try{normal(g,x,o);if(flags&1){o.native_site=0x4de280;x.calls.free_00bf6989(result);}o.phase=NativeGameLifetimeOperation::Phase::complete;return result;}\n    catch(...){o.phase=NativeGameLifetimeOperation::Phase::failed;throw;}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "physical_bytes": 8771,
+      "normalized_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "normalized_lf_bytes": 8771,
+      "git_blob_oid": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "excerpts": [
+        {
+          "start_line": 31,
+          "end_line": 40,
+          "text": "struct NativeStringPoolStorage;\n// Actual publication cells shared with the native string-pool getter and raw\n// singleton manager. This context owns no storage and adds no host callback.\nstruct NativeStringRawPoolContext {\n    NativeStringPoolStorage* volatile& actual_published_01090aa8;\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4;\n    void* volatile& actual_manager_publication_01090aa0;\n};\n\n// Semantic SizedStoragePool projection; not the actual 00419cc0 owner layout."
+        },
+        {
+          "start_line": 54,
+          "end_line": 66,
+          "text": "// Full 0041DD20; ECX actual8h header, RET. Capture its nonnull data pointer,\n// then length+1 (DWORD wrap), and release through supplied storage. Leave the\n// header untouched, including changes performed during release. Null data\n// skips the length read and storage call. No implicit header destruction.\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringStorage& storage) noexcept;\n\n// Complete raw-pool composition. Resolve 00419CC0 before every nonnull return,\n// including large blocks and disabled small returns. Getter exceptions escape;\n// the caller's original cleanup state determines subsequent cleanup. The header\n// remains untouched. Evidence: docs/NATIVE_STRING_RAW_POOL_CONTEXT.md.\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringRawPoolContext& context);"
+        },
+        {
+          "start_line": 92,
+          "end_line": 98,
+          "text": "// Complete 0041E870 against an actual8h header and the concrete raw pool.\n// ECX header, stack nonnull C string, RET4/EAX same header. The CALLEE zeros\n// both header fields before strlen; no caller initialization is assumed and\n// any previous buffer is abandoned. Resize preserves, then copy CURRENT\n// length+1 into CURRENT data if nonnull. No local exception cleanup is added.\nvoid* construct_native_string_header_0041e870(void* actual_header,\n    NativeStringRawPoolContext& context, const char* text);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_string.cpp",
+      "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "physical_bytes": 9121,
+      "normalized_lf_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "normalized_lf_bytes": 9121,
+      "git_blob_oid": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "excerpts": [
+        {
+          "start_line": 23,
+          "end_line": 43,
+          "text": "class RawStringPoolAccess {\npublic:\n    explicit RawStringPoolAccess(NativeStringRawPoolContext& context) noexcept\n        : context_(context) {}\n    char* allocate(std::uint32_t size) {\n        auto* const pool = current_pool();\n        return static_cast<char*>(allocate_native_string_pool_00bd1120(pool, size));\n    }\n    void release(char* data, std::uint32_t size) {\n        auto* const pool = current_pool();\n        return_native_string_pool_00bd1510(pool, data, size,\n            context_.actual_small_returns_disabled_01090aa4);\n    }\nprivate:\n    NativeStringPoolStorage* current_pool() {\n        return native_string_pool_get_or_create_00419cc0(\n            context_.actual_published_01090aa8,\n            context_.actual_manager_publication_01090aa0);\n    }\n    NativeStringRawPoolContext& context_;\n};"
+        },
+        {
+          "start_line": 72,
+          "end_line": 107,
+          "text": "void resize_header(void* actual_header,\n    Storage& storage, std::uint32_t length, bool preserve) {\n    const auto initial_length = read_header<std::uint32_t>(actual_header, 0);\n    if (length == initial_length) return; // 0041dd4a does not read the pointer.\n\n    if (length == 0) { // 0041dd52\n        auto* const old_data = read_header<char*>(actual_header, 4);\n        if (old_data != nullptr) storage.release(old_data, initial_length + 1u);\n        write_header<char*>(actual_header, 4, nullptr);\n        write_header<std::uint32_t>(actual_header, 0, 0);\n        return;\n    }\n\n    // 0041dd90 allocates before any old-buffer release. Do not snapshot the\n    // source header across this boundary: a callback may have changed it.\n    char* block = storage.allocate(length + 1u);\n    if (preserve) { // 0041dd95\n        const auto current_length = read_header<std::uint32_t>(actual_header, 0);\n        const auto copied = length > current_length ? current_length : length;\n        // Preserve the existing host policy: omit native memcpy with count 0,\n        // which can pass a null source and is not a defined standard C++ call.\n        if (copied != 0) {\n            if constexpr (NativeOverlap)\n                std::memmove(block, read_header<char*>(actual_header, 4), copied);\n            else\n                std::memcpy(block, read_header<char*>(actual_header, 4), copied);\n        }\n    }\n    auto* const old_data = read_header<char*>(actual_header, 4); // 0041ddb9\n    if (old_data != nullptr)\n        storage.release(old_data, read_header<std::uint32_t>(actual_header, 0) + 1u);\n    write_header<char*>(actual_header, 4, block);\n    write_header<std::uint32_t>(actual_header, 0, length);\n    // Native Win32 address addition, including uint32 wrap. No length guard or\n    // cleanup is added if the caller/storage contract cannot support the write.\n    *reinterpret_cast<char*>(reinterpret_cast<std::uintptr_t>(block) + length) = '\\0';"
+        },
+        {
+          "start_line": 129,
+          "end_line": 137,
+          "text": "void destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringRawPoolContext& context) {\n    auto* const data = read_header<char*>(actual_header, 4);\n    if (data != nullptr) {\n        const auto size = read_header<std::uint32_t>(actual_header, 0) + 1u;\n        RawStringPoolAccess storage(context);\n        storage.release(data, size);\n    }\n}"
+        },
+        {
+          "start_line": 176,
+          "end_line": 188,
+          "text": "void* construct_native_string_header_0041e870(void* header,\n    NativeStringRawPoolContext& context, const char* text) {\n    write_header<std::uint32_t>(header, 0, 0);\n    write_header<char*>(header, 4, nullptr);\n    const auto length = static_cast<std::uint32_t>(std::strlen(text));\n    resize_native_string_header_0041dd40(header, context, length, true);\n    void* const data = read_header<void*>(header, 4);\n    if (data != nullptr) {\n        const auto bytes = read_header<std::uint32_t>(header, 0) + 1u;\n        if (bytes) std::memmove(data, text, bytes); // Native BF7680 admits overlap.\n    }\n    return header;\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "physical_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "physical_bytes": 2017,
+      "normalized_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "normalized_lf_bytes": 2017,
+      "git_blob_oid": "84af7f1cd0a9a64323bcc3c1c4fbab783f941299",
+      "excerpts": [
+        {
+          "start_line": 6,
+          "end_line": 38,
+          "text": "// Original loader-zero publications outlive the application and every CRT\n// callback, including a late 00419CC0 that recreates the manager/string pool.\n// This owns cells and source bindings only; getters create the native owners.\nclass GameNativeStringProcess final {\npublic:\n    GameNativeStringProcess(const GameNativeStringProcess&) = delete;\n    GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;\n    void* volatile& manager_01090aa0() noexcept { return manager_; }\n    NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }\n    volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }\n    NativeStringRawPoolContext& raw_context() noexcept { return raw_; }\n    ActualNativeStringPoolStorage& strings() noexcept { return strings_; }\n    // Distinct permanent Source authorities for the two Original initial-NUL\n    // roles. Only const pointers escape; Original's writable .data is not\n    // claimed universally immutable. Shader E17654 borrowers use this SAME byte.\n    const char* property_empty_00e177e4() const noexcept;\n    const char* query_empty_00e17654() const noexcept;\nprivate:\n    friend GameNativeStringProcess& game_native_string_process();\n    GameNativeStringProcess() noexcept = default;\n    void* volatile manager_{};\n    NativeStringPoolStorage* volatile pool_{};\n    volatile std::uint32_t disabled_{};\n    NativeStringRawPoolContext raw_{pool_, disabled_, manager_};\n    ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};\n    // Append after every established publication/context/storage field.\n    const char property_empty_00e177e4_{};\n    const char query_empty_00e17654_{};\n};\n\n// Intentionally retained through process termination. No C++ exit destructor\n// may invalidate the cells/bindings before another native CRT callback.\nGameNativeStringProcess& game_native_string_process();"
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "physical_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "physical_bytes": 471,
+      "normalized_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "normalized_lf_bytes": 471,
+      "git_blob_oid": "eabbb65685dc6f301fed0b7bba7e52d2c9c188da",
+      "excerpts": [
+        {
+          "start_line": 13,
+          "end_line": 17,
+          "text": "    static auto* const process = new GameNativeStringProcess;\n    return *process;\n}\n} // namespace bsp::game"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "physical_bytes": 2805,
+      "normalized_lf_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "normalized_lf_bytes": 2805,
+      "git_blob_oid": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "excerpts": [
+        {
+          "start_line": 31,
+          "end_line": 47,
+          "text": "// raw publications require the explicit pool deletion binding. EVERY operation\n// calls00419CC0, even large\n// allocations/frees and disabled small returns: do not cache the pool here.\n// NativeStringStorage::release is noexcept: its returning-getter domain is\n// covered; C++ failure while lazily recreating a pool terminates under that\n// pre-existing interface. This bridge does not claim native EH/SEH ABI parity.\nclass ActualNativeStringPoolStorage final : public NativeStringStorage {\npublic:\n    ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,\n        volatile std::uint32_t& returns_disabled,\n        SingletonLifetimeDomain& lifetime) noexcept;\n    ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,\n        volatile std::uint32_t& returns_disabled,\n        void* volatile& actual_manager_publication_01090aa0) noexcept;\n    char* allocate(std::uint32_t size) override;\n    void release(char* block, std::uint32_t size) noexcept override;\n"
+        }
+      ]
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_bytes": 13257,
+      "normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "normalized_lf_bytes": 13257,
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "excerpts": [
+        {
+          "start_line": 51,
+          "end_line": 67,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "physical_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "physical_bytes": 933,
+      "normalized_lf_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "normalized_lf_bytes": 933,
+      "git_blob_oid": "a3c211324e0a44deab01eca75af8dfad848c516b",
+      "excerpts": [
+        {
+          "start_line": 9,
+          "end_line": 21,
+          "text": "// Whole native 00438E40..00438E79: actual borrowed text in ECX, no stack\n// arguments, full EAX result and RET 0. Null returns null without providers.\n// Otherwise the source must remain a live, readable, NUL-terminated byte\n// object whose length + 1 and address range do not wrap. On normal success\n// the result owns that many bytes in the current canonical allocation domain;\n// release it once with singleton_lifetime_free after the final observation.\n// The two genuine calls bind current canonical allocation and standard memcpy.\n// Original private CRT/EH, failure unwind and class ownership are not admitted.\n// This entry does not change the older plain-CDECL duplicate_00438e40 API.\nchar* __fastcall duplicate_native_string_00438e40(const char* actual_text_ecx);\n\n}  // namespace bsp"
+        }
+      ]
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "physical_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "physical_bytes": 120868,
+      "normalized_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "normalized_lf_bytes": 120868,
+      "git_blob_oid": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+      "excerpts": [
+        {
+          "start_line": 1798,
+          "end_line": 1811,
+          "text": "void GameStartupHost::application_construct() {\n    // 00737970 stores 1 at +18h and 0 at +19h/+1Ah, which is ApplicationFrameState's\n    // default. The remaining subsystem pointers at +4h..+14h are not reconstructed.\n    log_.implemented(\"StartupHost::application_construct\", \"00737970\");\n    frame_state_ = ApplicationFrameState{};\n    constructed_ = true;\n}\n\nvoid GameStartupHost::application_initialize(int flags, const char* mode) {\n    if (mode == nullptr) throw std::invalid_argument(\"application initialization requires its native mode string\");\n    log_.implemented(\"StartupHost::application_initialize\", \"0073d410\");\n    log_.notef(\"initialize flags=%d mode=%s\", flags, mode != nullptr ? mode : \"(null)\");\n    run_initialize_phases(mode);\n}"
+        },
+        {
+          "start_line": 1865,
+          "end_line": 1874,
+          "text": "    // The command line is parsed at 0073d94a, after the whole phase-2 block, which is why\n    // cachedload cannot have influenced any phase-2 mount. Milestone 1 parsed it before\n    // phase 2; the native position is used here.\n    // WinMain passes \"cachedload\" as the second 0073d410 argument. Native keeps\n    // that pointer in EBP, duplicates it at 0073d933, then parses at 0073d94a.\n    const CommandLineOptions command_line = parse_command_line_0073ce20(mode);\n    log_.implemented(\"Phase 3 parse_command_line\", \"0073ce20\");\n    log_.notef(\"command line cached_load=%d fixed_frame_rate=%d file_access_log=%d\",\n        command_line.cached_load ? 1 : 0, command_line.fixed_frame_rate ? 1 : 0,\n        command_line.file_access_log ? 1 : 0);"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "physical_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+      "physical_bytes": 38481,
+      "normalized_lf_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+      "normalized_lf_bytes": 38481,
+      "git_blob_oid": "a777902d1207251888b81ce1ef9442864d88957f",
+      "excerpts": [
+        {
+          "start_line": 613,
+          "end_line": 641,
+          "text": "class GameStartupHost final : public StartupHost {\npublic:\n    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options,\n        GameNativeReadOnlyData* native_data = nullptr);\n    ~GameStartupHost() override;\n\n    long com_initialize() override;\n    long com_initialize_security() override;\n    void com_uninitialize() override;\n    void current_directory(char* buffer, unsigned long capacity) override;\n    bool game_explorer_create() override;\n    bool game_explorer_verify_access(const wchar_t* gdf_binary_path) override;\n    void game_explorer_release() override;\n    void exit_process(int code) override;\n    void random_threads_initialize() override;\n    void* allocate_thread_slot() override;\n    void random_threads_register_current() override;\n    void random_threads_unregister_current() override;\n    void release_thread_slot(void* slot) override;\n    void random_threads_shutdown() override;\n    SingleInstanceMutex create_single_instance_mutex(const char* name) override;\n    void close_mutex(void* handle) override;\n    std::string resolve_language() override;\n    void error_message_box(const wchar_t* text, const wchar_t* caption) override;\n    void set_thread_affinity_to_first_processor() override;\n    void publish_game_resource_factory() override;\n    void application_construct() override;\n    void application_initialize(int flags, const char* mode) override;\n    void platform_run_loop_dispatch() override;"
+        }
+      ]
+    },
+    {
+      "path": "src/winmain_startup.cpp",
+      "physical_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "physical_bytes": 10209,
+      "normalized_lf_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "normalized_lf_bytes": 10209,
+      "git_blob_oid": "4dc6dd149ab3e4a76c5b5ff1633d83e3fe12f38a",
+      "excerpts": [
+        {
+          "start_line": 83,
+          "end_line": 85,
+          "text": "const char kSingleInstanceMutexName[] = \"MidwayThreadMutex\";\nconst char kGdfBinarySuffix[] = \"\\\\battlestationspacific.exe\";\nconst char kApplicationInitializeMode[] = \"cachedload\";"
+        },
+        {
+          "start_line": 227,
+          "end_line": 229,
+          "text": "    host.publish_game_resource_factory();\n    host.application_construct();\n    host.application_initialize(kApplicationInitializeFlags, kApplicationInitializeMode);"
+        }
+      ]
+    }
+  ],
+  "prior_source_pins": [
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "current_normalized_lf_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "matches_prior_audit": true,
+      "git_blob_oid": "e83a2b3736edfb4d6fa699526a003861d3805977"
+    },
+    {
+      "path": "src/native_game_construction.cpp",
+      "current_normalized_lf_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "matches_prior_audit": true,
+      "git_blob_oid": "ad55eb59309369dff06d596cbdf3efd1e4c7037a"
+    },
+    {
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "current_normalized_lf_sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "matches_prior_audit": true,
+      "git_blob_oid": "82d6f97019a8ced315745431c1d80759d0251779"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "current_normalized_lf_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "matches_prior_audit": true,
+      "git_blob_oid": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "current_normalized_lf_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+      "matches_prior_audit": true,
+      "git_blob_oid": "6f63039a56ee19fb54ba204b18032a5a9243e78d"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "current_normalized_lf_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+      "matches_prior_audit": true,
+      "git_blob_oid": "c2bb099af6d7713d40fa43ad4aca79e9b5d813a5"
+    },
+    {
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "current_normalized_lf_sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+      "matches_prior_audit": true,
+      "git_blob_oid": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9"
+    },
+    {
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "current_normalized_lf_sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+      "matches_prior_audit": true,
+      "git_blob_oid": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "current_normalized_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "matches_prior_audit": true,
+      "git_blob_oid": "3b7af4c6508cfc1df81e913108b5162208685e97"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "current_normalized_lf_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "matches_prior_audit": true,
+      "git_blob_oid": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a"
+    },
+    {
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "current_normalized_lf_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "matches_prior_audit": true,
+      "git_blob_oid": "a3c211324e0a44deab01eca75af8dfad848c516b"
+    },
+    {
+      "path": "src/native_string_duplicate.cpp",
+      "current_normalized_lf_sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+      "matches_prior_audit": true,
+      "git_blob_oid": "f745264df105154fe437e331df18d4f2418c2160"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "current_normalized_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches_prior_audit": true,
+      "git_blob_oid": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "current_normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches_prior_audit": true,
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "current_normalized_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "matches_prior_audit": true,
+      "git_blob_oid": "84af7f1cd0a9a64323bcc3c1c4fbab783f941299"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "current_normalized_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "matches_prior_audit": true,
+      "git_blob_oid": "eabbb65685dc6f301fed0b7bba7e52d2c9c188da"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "current_normalized_lf_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "matches_prior_audit": true,
+      "git_blob_oid": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "current_normalized_lf_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "matches_prior_audit": true,
+      "git_blob_oid": "0e5d59593c47a3cdabaf1020adddc735141d28d3"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "current_normalized_lf_sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+      "matches_prior_audit": true,
+      "git_blob_oid": "21a0950349db25c464e2c7eaa058bcd90d0ea114"
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "current_normalized_lf_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "matches_prior_audit": true,
+      "git_blob_oid": "32a441a593a381b649ccd89b71a6e4277e91401d"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "current_normalized_lf_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+      "matches_prior_audit": true,
+      "git_blob_oid": "2fa69f0a256c502018731554aa36fa449c63020f"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "current_normalized_lf_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+      "matches_prior_audit": true,
+      "git_blob_oid": "04fa246ee6a08551a7b70cf62ace9db7b91ec7ec"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "current_normalized_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "matches_prior_audit": true,
+      "git_blob_oid": "e3b4fa6b517938fe0490f129dfb8765c49e08a48"
+    },
+    {
+      "path": "src/winmain_startup.cpp",
+      "current_normalized_lf_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "matches_prior_audit": true,
+      "git_blob_oid": "4dc6dd149ab3e4a76c5b5ff1633d83e3fe12f38a"
+    },
+    {
+      "path": "include/bsp/game_native_game_tables.hpp",
+      "current_normalized_lf_sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb",
+      "matches_prior_audit": true,
+      "git_blob_oid": "e5eb7b86ef82e88242a122dfa87de444d10cb8ee"
+    },
+    {
+      "path": "include/bsp/native_game_grid.hpp",
+      "current_normalized_lf_sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726",
+      "matches_prior_audit": true,
+      "git_blob_oid": "d8eaf6e61bc5877655375157133184f34109f9cd"
+    }
+  ],
+  "refreshed_published_main": "24229ec42885160e4eb02afcdff939e4a94f2c78"
+}
