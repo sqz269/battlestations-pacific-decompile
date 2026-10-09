@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "audit_id": "cc12_header13_recorded_reader_TEXT_schema_audit",
+  "kind": "bounded_independent_plaintext_writer_recorded_reader_schema_review",
+  "Source_credit": 0,
+  "Root_acceptance": false,
+  "baseline": "5e4f1ab189bad664c8940336501ff6180a0a5097",
+  "address_lease_count": 0,
+  "result": "No concrete field/schema/count/width contradiction found in reviewed chosen TEXT.",
+  "chosen_Q": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_header13_independent_reader_text_correction/local/h13readerfix20261008a",
+    "exact_files": 37,
+    "selection_filename": "selection.json",
+    "selection_size": 3312,
+    "selection_sha256": "1f750fba27fcf8f358c5fd36c0cd8ee33ec35d7a45cf32920f78ca0dd4237849"
+  },
+  "chosen_D": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_parent_header_initializer_complete_helper_text_draft/local/h13draft",
+    "exact_files": 39,
+    "seal_sha256": "aa812320a924f44415274a3524c29880b645cf228d0f1a1434d4e120b3986f45"
+  },
+  "chosen_generator": {
+    "filename": "header13_final_generator.r01.py.txt",
+    "sha256": "88b0939b5e0ec8397bf41f0d5ea10acb031b339af606c766e7472c489d9b64a8"
+  },
+  "limited_frozen_inputs": [
+    {
+      "label": "Q",
+      "name": "capture_provider_audit.r02.py.txt",
+      "sha256": "9fafc82518c526bf0ea3b9236998b1451c37915bc60ca51aa2c61502810b92bd",
+      "size": 16615
+    },
+    {
+      "label": "Q",
+      "name": "raw_formats.r01.py.txt",
+      "sha256": "e7bcf3f1166019a68b629dc425e992b8d6212330031e5383099ad3ddddcb98c6",
+      "size": 10233
+    },
+    {
+      "label": "Q",
+      "name": "input_contract.r01.py.txt",
+      "sha256": "9c6251815faeab555827da9bdc9fd010c13359657691a85a02cfe4d65be2409b",
+      "size": 4425
+    },
+    {
+      "label": "Q",
+      "name": "code_inputs.r01.template.json",
+      "sha256": "6bcbaff8e23eaae093126d6f60437032749d88afa106f8cc35c93b64d3fec8d0",
+      "size": 2062
+    },
+    {
+      "label": "Q",
+      "name": "recorded_inputs.r01.template.json",
+      "sha256": "3516206bc57ba2ca4b2c2c535a7e3c52ffa35a02f133f8067099c749bffc1f1c",
+      "size": 3127
+    },
+    {
+      "label": "Q",
+      "name": "selection.json",
+      "sha256": "1f750fba27fcf8f358c5fd36c0cd8ee33ec35d7a45cf32920f78ca0dd4237849",
+      "size": 3312
+    },
+    {
+      "label": "Q",
+      "name": "seal.json",
+      "sha256": "d266218bd321f5e966406f41f65e18de38dd5cb43663f0a9b906255052e687cc",
+      "size": 6108
+    },
+    {
+      "label": "D",
+      "name": "probe.cpp",
+      "sha256": "8e776957838e9444eea07f61e219a53bcceaa0f6b376467b885da12c56b06f21",
+      "size": 22109
+    },
+    {
+      "label": "D",
+      "name": "selection.json",
+      "sha256": "d6363d366e2ef5cad7673ef5e3bbfc30b585f5878fdac174bec01f27e1d56937",
+      "size": 10200
+    },
+    {
+      "label": "D",
+      "name": "seal.json",
+      "sha256": "aa812320a924f44415274a3524c29880b645cf228d0f1a1434d4e120b3986f45",
+      "size": 6393
+    },
+    {
+      "label": "G",
+      "name": "header13_final_generator.r01.py.txt",
+      "sha256": "88b0939b5e0ec8397bf41f0d5ea10acb031b339af606c766e7472c489d9b64a8",
+      "size": 131276
+    }
+  ],
+  "plaintext_dimensions": {
+    "rows": 7,
+    "CASE": 3,
+    "UCRT": 3,
+    "PASS": 1,
+    "allocations_targets_frees": [
+      3,
+      3,
+      3
+    ],
+    "caller_buffer_bytes": 44,
+    "header_bytes": 12,
+    "CaptureBox_bytes": 96,
+    "Capture_bytes": 88,
+    "capture_dwords": 24,
+    "before_after_bytes": [
+      32,
+      32
+    ]
+  },
+  "configuration_counts": {
+    "base": 11,
+    "code": 12,
+    "recorded": 21,
+    "runtime_pins": 13
+  },
+  "receipt_schema_counts": {
+    "process_args.json": {
+      "schema": "bsp.cc12.header13.process_args.v1",
+      "writer_keys": 10,
+      "reader_keys": 10,
+      "writer_only": [],
+      "missing_writer_keys": []
+    },
+    "process_exit.json": {
+      "schema": "bsp.cc12.header13.process_exit.v1",
+      "writer_keys": 7,
+      "reader_keys": 6,
+      "writer_only": [
+        "status"
+      ],
+      "missing_writer_keys": []
+    },
+    "runtime_evidence.json": {
+      "schema": "bsp.cc12.header13.runtime_evidence.v1",
+      "writer_keys": 6,
+      "reader_keys": 5,
+      "writer_only": [
+        "status"
+      ],
+      "missing_writer_keys": []
+    }
+  },
+  "frozen_provider_receipt": {
+    "schema": "bsp.cc12.header13.frozen_provider_evidence.v1",
+    "writer_keys": 14,
+    "reader_keys": 13,
+    "writer_only": [
+      "status"
+    ],
+    "missing_writer_keys": []
+  },
+  "identity_and_all_three_selected_Source_hashes_match": true,
+  "observed_vs_inferred": {
+    "plaintext_pointer_fields": "BASE/ROOT and bound-IAT/EXPORT/RVA are writer values; no actual values observed by this TEXT audit",
+    "DF_EDX_case_columns": "chosen case/poison labels, separately compared against captured words and flags by Q",
+    "ES": "two captured DWORDs; Q checks equality and16-bit range for these selected cases, not blanket segment ABI",
+    "R_Q_T_and_ordinary_frame": "Q computed/recorded interpretation; no machine frame or arithmetic recovery here",
+    "module_base": "Q derives IAT minus RVA; HMODULE is not separately serialized",
+    "MEM_IMAGE": "not a stdout field; selected probe contains the check, with machine/gate proof deferred to Root",
+    "FileID": "serialized probe values compared to frozen records; no new physical identity query by reader or audit",
+    "Source_code_binding": "chosen probe ordering and static/gate context, not a per-CASE target-address stdout field",
+    "prefix": "physical export32 adjusted to recorded load base, despite NORMALIZED name; no preferred-base normalization",
+    "other_live_buffers": "selected probe checks all live buffers, but each CASE serializes only its current buffer",
+    "allocation_counts": "PASS counters, not an independent allocation trace"
+  },
+  "external_reader_record": {
+    "required_keys": [
+      "Source_credit",
+      "argv",
+      "config",
+      "cwd",
+      "env",
+      "interpreter",
+      "interpreter_bytes_unchanged_before_and_after",
+      "kind",
+      "non_assert_preflight_failure_prevents_child",
+      "optimization_preflight",
+      "preflight_completed_before_reader",
+      "reader",
+      "reader_bytes_unchanged_before_and_after",
+      "returncode",
+      "shell",
+      "stderr",
+      "stdout"
+    ],
+    "not_a_probe_field": true,
+    "writer_is_Root_external_execution_workflow": true,
+    "this_audit_does_not_create_or_accept_execution_record": true
+  },
+  "encoding": "G writes JSON UTF-8 with LF, standard JSON escaping; plaintext stdout is encoded UTF-8 from subprocess text result",
+  "missing_fields_or_schema_contradictions": [],
+  "limits": [
+    "Source/TEXT only; no observations",
+    "No machine ABI, frame or arithmetic recovery",
+    "No selected module/helper import or execution",
+    "No Native/Ghidra/provider/compiler/target or old runtime family access",
+    "No Source changes, tests, approval or reconstruction credit",
+    "Mutable Main is generation context; chosen Q/D/G associations are strict"
+  ],
+  "remaining_Root_prerequisites": [
+    "materialize actual12/21 pins and receipts",
+    "external code/recorded reader execution records with optimization preflight and unchanged interpreter/module bytes",
+    "full actual emitted-code/ABI/Main/provider review and sole process qualification",
+    "correct final approval separate from this Source0 TEXT audit"
+  ],
+  "local_evidence": {
+    "family": "local/h13schema",
+    "schema_comparison_sha256": "d15315479d6726b05ab52b2ac3a5f8cba458d3b18392b2d59153416ea5b69f88",
+    "receipt_supplement_sha256": "10b7995c865046ac3968094028a9ec9d25c41e76c9535d1140e59fd8f5476e84",
+    "manifest": "artifact_manifest.json",
+    "receipt": "receipt.json",
+    "before_after": [
+      "Q_inventory_before.json",
+      "Q_inventory_after.json",
+      "D_inventory_before.json",
+      "D_inventory_after.json",
+      "selected_TEXT_before.json",
+      "selected_TEXT_after.json"
+    ]
+  }
+}
