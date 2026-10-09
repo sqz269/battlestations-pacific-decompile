@@ -1691,3 +1691,7 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_unit_gunnery_category_header.cpp)
 # Qualified post-parent unit tick registration/publication business fragment.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_unit_tick_receiver_fragment.cpp)
+# Complete lock4 release helper, preserving its actual canonical CRT provider.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_crt_free_unlock_helper.cpp)
+# Complete vehicle-class base constructor over the genuine damageable access.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_vehicle_class_base_constructor.cpp)
