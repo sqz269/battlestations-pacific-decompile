@@ -1,0 +1,598 @@
+{
+  "schema": "cc12_type1011_descendant_closure_TEXT_correction_v1",
+  "packet": "cc12_type1011_descendant_closure_TEXT_correction",
+  "Source_credit": 0,
+  "worker": "/root/command_target_initialize",
+  "branch": "agent/cc12_type5_complete_guard_materialization_TEXT",
+  "starting_Main_commit": "c99da7ed0d346209a66a2a4a6b861d748b56fe07",
+  "addresses": [],
+  "owned_files": [
+    "docs/CC12_TYPE10_TYPE11_DESCENDANT_CLOSURE_TEXT_CORRECTION.md",
+    "reports/cc12_type10_type11_descendant_closure_TEXT_correction.json"
+  ],
+  "passed_passive_review": true,
+  "original_hold": "A 540-second inner TimeoutExpired/nonzero can end the outer Python before the 600-second PowerShell timeout; the old started-and-not-closed tree-kill branch can be skipped while descendants remain.",
+  "correction": "An explicit pinned Python supervisor creates the original driver suspended inside an owned Job Object, always cleans up after root-child exit, and reports observed zero active processes. PowerShell adds a mandatory matching closure gate.",
+  "Root_acceptance": false,
+  "Root_adopted_fields": false,
+  "runtime_descendant_closure_proven": false,
+  "concrete_Root_fields_null": [
+    "materialization_draft",
+    "selected_code",
+    "private_environment",
+    "empty_cache_prefix",
+    "external_driver",
+    "external_bootstrap",
+    "external_records_directory",
+    "external_timeout_seconds",
+    "external_child_timeout_seconds",
+    "external_powershell_host",
+    "private_external_environment",
+    "external_job_supervisor",
+    "external_job_policy"
+  ],
+  "new_concrete_Root_fields": [
+    "external_job_supervisor",
+    "external_job_policy"
+  ],
+  "original_Root_selection_values_preserved": true,
+  "old_Main_content_and_membership_holds_reselected": false,
+  "new_execution_route": "PowerShell -> new pinned owned-job Python supervisor -> original external Python driver -> original selected program",
+  "own_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT",
+  "final_input_record": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\FINAL_UNADOPTED_TEXT_INPUTS_v2.json",
+    "bytes": 4306,
+    "sha256": "1d7228181155a45c9d3637dbb208472d37fe2c1e4597b720a7c35bb35cf7f621"
+  },
+  "payload_count": 8,
+  "payloads": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\dependency_bootstrap.py.txt",
+      "bytes": 15638,
+      "sha256": "5f366715e70485ff2c2936df0a9f2dcef6dc60fa350e1543a977d53c90f9a8f9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\external_preinterpreter_guard.ps1.txt",
+      "bytes": 17775,
+      "sha256": "e3a74da3e7cd4ab5727bc308464e702749461d5a3e438439732d49e9f0025e38"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\external_python_driver.py.txt",
+      "bytes": 1899,
+      "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_gate.py.txt",
+      "bytes": 23804,
+      "sha256": "3b9bdc4f00f34af1498d385b13baa2ab0cd6dd5b41e9cbeef913ad276bfe83d5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_independent_code_reader.py.txt",
+      "bytes": 22411,
+      "sha256": "1b4bfc2c66632c315a4b1ea2d49d66bcea927e4a589d9e52dcca6cfcf0a9b6cf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_independent_recorded_reader.py.txt",
+      "bytes": 13994,
+      "sha256": "4cf7660bbabb831f141b4c92f6c568084eb7d35db55ab11885dc194fb8e06bf5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_recipe.py.txt",
+      "bytes": 23899,
+      "sha256": "1f0c5a391a4ff09dfad68978cfd9334222e5432a0f7b6bba96213d4dbdd093d1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\external_job_supervisor.py.txt",
+      "bytes": 18910,
+      "sha256": "2fe6ffb82fae33f55d3631f348e5efc08eca0a42dd0d46d23014e5206c552ccd"
+    }
+  ],
+  "proposed_policy": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\proposed_job_policy_UNADOPTED.json",
+    "bytes": 490,
+    "sha256": "b117b7541f0eb4e93a0fed835cf3e5c59198286f8feaad34368bf7e214268796"
+  },
+  "proposed_policy_contents": {
+    "schema": "type1011_owned_job_policy_v1",
+    "Source_credit": 0,
+    "platform": "Windows x64 Python",
+    "minimum_Windows_major": 10,
+    "atomic_creation_assignment": "PROC_THREAD_ATTRIBUTE_JOB_LIST",
+    "create_suspended": true,
+    "kill_on_job_close": true,
+    "allow_breakaway": false,
+    "run_timeout_ms": 560000,
+    "cleanup_timeout_ms": 20000,
+    "wait_poll_ms": 100,
+    "standard_handles": "duplicate existing stdin/stdout/stderr only",
+    "success_requires_no_residual_descendants": true
+  },
+  "proposed_selection_template": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\proposed_dependency_selection_template_v5.json",
+    "bytes": 8959335,
+    "sha256": "49b9a88b2a6a7be0f0b183d2fd67d88909d4dfb8ec282cdf7ebfea87bcbe6c6e"
+  },
+  "previous_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT",
+  "previous_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011hostEnvTEXT\\seal.json",
+    "bytes": 2616714,
+    "sha256": "843709f896d31e6a9213464ce8c34b710413d8c07dfca90e896bcd094b607b8f"
+  },
+  "previous_all_13047_artifacts_reverified": true,
+  "previous_exact_recursive_files": 13048,
+  "previous_fixed_copies": 131,
+  "SDK_headers_read_as_data": 6,
+  "materialization_draft119": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_materialization_draft119",
+  "all_119_bytes_preserved": true,
+  "Source_header_probe_case_bytes_preserved": true,
+  "existing_payloads": [
+    {
+      "name": "dependency_bootstrap.py.txt",
+      "old": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_TEXT\\dependency_bootstrap.py.txt",
+        "bytes": 15324,
+        "sha256": "d613132e737cf9af114921a114372999ae4806194fd6282c9a8921905beb750b"
+      },
+      "new": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\dependency_bootstrap.py.txt",
+        "bytes": 15638,
+        "sha256": "5f366715e70485ff2c2936df0a9f2dcef6dc60fa350e1543a977d53c90f9a8f9"
+      },
+      "byte_equal": false,
+      "changed_functions": [
+        "initialize",
+        "verify_snapshot"
+      ],
+      "original_guard_count": 55,
+      "new_guard_count": 56,
+      "original_guard_AST_order_preserved": true,
+      "asserts_exact": true
+    },
+    {
+      "name": "external_preinterpreter_guard.ps1.txt",
+      "old": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_TEXT\\external_preinterpreter_guard.ps1.txt",
+        "bytes": 14139,
+        "sha256": "37a56d9f2fbdfde67d9e32b93678a542bc513e2a3772a5f348e8f5cfc6d222d7"
+      },
+      "new": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\external_preinterpreter_guard.ps1.txt",
+        "bytes": 17775,
+        "sha256": "e3a74da3e7cd4ab5727bc308464e702749461d5a3e438439732d49e9f0025e38"
+      },
+      "byte_equal": false
+    },
+    {
+      "name": "external_python_driver.py.txt",
+      "old": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_TEXT\\external_python_driver.py.txt",
+        "bytes": 1899,
+        "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+      },
+      "new": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\external_python_driver.py.txt",
+        "bytes": 1899,
+        "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+      },
+      "byte_equal": true,
+      "changed_functions": [],
+      "original_guard_count": 0,
+      "new_guard_count": 0,
+      "original_guard_AST_order_preserved": true,
+      "asserts_exact": true
+    },
+    {
+      "name": "type1011_gate.py.txt",
+      "old": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_TEXT\\type1011_gate.py.txt",
+        "bytes": 23804,
+        "sha256": "3b9bdc4f00f34af1498d385b13baa2ab0cd6dd5b41e9cbeef913ad276bfe83d5"
+      },
+      "new": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_gate.py.txt",
+        "bytes": 23804,
+        "sha256": "3b9bdc4f00f34af1498d385b13baa2ab0cd6dd5b41e9cbeef913ad276bfe83d5"
+      },
+      "byte_equal": true,
+      "changed_functions": [],
+      "original_guard_count": 89,
+      "new_guard_count": 89,
+      "original_guard_AST_order_preserved": true,
+      "asserts_exact": true
+    },
+    {
+      "name": "type1011_independent_code_reader.py.txt",
+      "old": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_TEXT\\type1011_independent_code_reader.py.txt",
+        "bytes": 22411,
+        "sha256": "1b4bfc2c66632c315a4b1ea2d49d66bcea927e4a589d9e52dcca6cfcf0a9b6cf"
+      },
+      "new": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_independent_code_reader.py.txt",
+        "bytes": 22411,
+        "sha256": "1b4bfc2c66632c315a4b1ea2d49d66bcea927e4a589d9e52dcca6cfcf0a9b6cf"
+      },
+      "byte_equal": true,
+      "changed_functions": [],
+      "original_guard_count": 88,
+      "new_guard_count": 88,
+      "original_guard_AST_order_preserved": true,
+      "asserts_exact": true
+    },
+    {
+      "name": "type1011_independent_recorded_reader.py.txt",
+      "old": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_TEXT\\type1011_independent_recorded_reader.py.txt",
+        "bytes": 13994,
+        "sha256": "4cf7660bbabb831f141b4c92f6c568084eb7d35db55ab11885dc194fb8e06bf5"
+      },
+      "new": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_independent_recorded_reader.py.txt",
+        "bytes": 13994,
+        "sha256": "4cf7660bbabb831f141b4c92f6c568084eb7d35db55ab11885dc194fb8e06bf5"
+      },
+      "byte_equal": true,
+      "changed_functions": [],
+      "original_guard_count": 58,
+      "new_guard_count": 58,
+      "original_guard_AST_order_preserved": true,
+      "asserts_exact": true
+    },
+    {
+      "name": "type1011_recipe.py.txt",
+      "old": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_TEXT\\type1011_recipe.py.txt",
+        "bytes": 23899,
+        "sha256": "1f0c5a391a4ff09dfad68978cfd9334222e5432a0f7b6bba96213d4dbdd093d1"
+      },
+      "new": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_TEXT_v4\\type1011_recipe.py.txt",
+        "bytes": 23899,
+        "sha256": "1f0c5a391a4ff09dfad68978cfd9334222e5432a0f7b6bba96213d4dbdd093d1"
+      },
+      "byte_equal": true,
+      "changed_functions": [],
+      "original_guard_count": 50,
+      "new_guard_count": 50,
+      "original_guard_AST_order_preserved": true,
+      "asserts_exact": true
+    }
+  ],
+  "existing_byte_identical_payloads": 5,
+  "changed_existing_payloads": [
+    "dependency_bootstrap.py",
+    "external_preinterpreter_guard.ps1"
+  ],
+  "bootstrap_changed_functions": [
+    "initialize",
+    "verify_snapshot"
+  ],
+  "new_payload": "external_job_supervisor.py",
+  "original_compile_link_launch_and_native_case_contract_preserved": true,
+  "original_runtime_description_AST_exact": true,
+  "original_inner_guarded_subprocess_AST_exact": true,
+  "original_mapped_Capstone_guard_AST_exact": true,
+  "original_Python_named_guards": 340,
+  "retained_original_Python_named_guards": 340,
+  "changed_existing_payload_Python_named_guards": 341,
+  "PowerShell_preservation": {
+    "Source_credit": 0,
+    "passed": true,
+    "syntax_errors": 0,
+    "original_Require_count": 36,
+    "new_Require_count": 47,
+    "original_Require_sequence_retained": true,
+    "original_Check_count": 11,
+    "new_Check_count": 15,
+    "original_Check_sequence_retained": true,
+    "original_param_block_exact": true,
+    "original_child_argv_assignment_exact": true,
+    "original_environment_and_cwd_exact": true,
+    "original_600_second_wait_and_fallback_kill_exact": true,
+    "original_host_and_membership_functions_exact": true,
+    "supervisor_execution_route_explicit": true,
+    "new_job_closure_gate_before_dependent_action": true,
+    "new_job_closure_gate_in_successful_outer_result": true,
+    "missing_or_invalid_job_record_holds": true,
+    "selected_functions_executed": 0,
+    "Add_Type_compilation": 0,
+    "runtime_cleanup_proven": false
+  },
+  "process_lifetime_design": {
+    "create_time_job_assignment": "PROC_THREAD_ATTRIBUTE_JOB_LIST; no create-then-assign gap",
+    "child_created_suspended": true,
+    "membership_verified_before_resume": true,
+    "job_anonymous_and_noninheritable": true,
+    "job_limit_flags": "0x00002000 KILL_ON_JOB_CLOSE only",
+    "breakaway_flags_absent": true,
+    "inherited_handle_list": "Only duplicates of the three existing standard handles; no job handle",
+    "original_child_executable_flags_argv_ENV_cwd_preserved": true,
+    "all_paths_after_job_creation_request_termination": true,
+    "cleanup_independent_of_direct_child_liveness": true,
+    "unresumed_root_cleanup_fallback": true,
+    "closure_requires_zero_active_accounting": true,
+    "closure_requires_signaled_root_process_when_created": true,
+    "closure_requires_job_handle_closed_and_no_cleanup_failure": true,
+    "zero_exit_with_residual_descendants_is_cleaned_and_held": true,
+    "original_inner_timeout_seconds": 540,
+    "proposed_supervisor_run_timeout_seconds": 560,
+    "proposed_cleanup_timeout_seconds": 20,
+    "original_outer_watchdog_seconds": 600,
+    "non_wait_overhead_can_exhaust_outer_watchdog": true,
+    "abrupt_supervisor_death": "Last-handle-close kill is a fallback; missing positive closure evidence remains a hold",
+    "job_scope": "Processes in the owned job and child jobs; no closure claim for existing external providers or independently brokered/WMI processes",
+    "Root_receipts_issued": 0
+  },
+  "proposed_Win32_bindings": [
+    "CreateJobObjectW",
+    "SetInformationJobObject",
+    "QueryInformationJobObject",
+    "TerminateJobObject",
+    "GetHandleInformation",
+    "GetCurrentProcess",
+    "GetStdHandle",
+    "DuplicateHandle",
+    "CloseHandle",
+    "InitializeProcThreadAttributeList",
+    "UpdateProcThreadAttribute",
+    "DeleteProcThreadAttributeList",
+    "CreateProcessW",
+    "IsProcessInJob",
+    "ResumeThread",
+    "WaitForSingleObject",
+    "GetExitCodeProcess",
+    "TerminateProcess"
+  ],
+  "passive_x64_layout_models": [
+    {
+      "C_structure": "IO_COUNTERS",
+      "Python_structure": "IO_COUNTERS",
+      "SDK_header": "WinNT.h",
+      "x64_size": 48
+    },
+    {
+      "C_structure": "JOBOBJECT_BASIC_LIMIT_INFORMATION",
+      "Python_structure": "BASIC_LIMIT",
+      "SDK_header": "WinNT.h",
+      "x64_size": 64
+    },
+    {
+      "C_structure": "JOBOBJECT_EXTENDED_LIMIT_INFORMATION",
+      "Python_structure": "EXTENDED_LIMIT",
+      "SDK_header": "WinNT.h",
+      "x64_size": 144
+    },
+    {
+      "C_structure": "JOBOBJECT_BASIC_ACCOUNTING_INFORMATION",
+      "Python_structure": "ACCOUNTING",
+      "SDK_header": "WinNT.h",
+      "x64_size": 48
+    },
+    {
+      "C_structure": "STARTUPINFOW",
+      "Python_structure": "STARTUPINFO",
+      "SDK_header": "Processthreadsapi.h",
+      "x64_size": 104
+    },
+    {
+      "C_structure": "STARTUPINFOEXW",
+      "Python_structure": "STARTUPINFOEX",
+      "SDK_header": "WinBase.h",
+      "x64_size": 112
+    },
+    {
+      "C_structure": "PROCESS_INFORMATION",
+      "Python_structure": "PROCESS_INFORMATION",
+      "SDK_header": "Processthreadsapi.h",
+      "x64_size": 24
+    }
+  ],
+  "ABI_or_actual_API_validation": false,
+  "own_analysis_closure": {
+    "files": 2102,
+    "membership_records": 3588,
+    "scopes": 16,
+    "before_optional_own_imports": true,
+    "Python_flags": [
+      "-I",
+      "-B",
+      "-E",
+      "-S"
+    ],
+    "optimization": 0,
+    "empty_private_bytecode_prefix": true,
+    "loaded_origins": 44,
+    "all_loaded_origins_pinned": true,
+    "ctypes_or_selected_payload_imports": 0,
+    "full_private_environment_unchanged": true,
+    "private_ENV_values_published": false
+  },
+  "final_bookend": {
+    "Source_credit": 0,
+    "checked_original_and_frozen_pairs": 2239,
+    "previous_all_artifacts_verified": 13047,
+    "previous_exact_files": 13048,
+    "own_analysis_scopes": 16,
+    "unchanged": true,
+    "full_private_environment_unchanged": true,
+    "selected_execution": false,
+    "Root_writes": 0,
+    "UTC": "2026-10-09T07:26:15.1759029Z"
+  },
+  "own_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\seal.json",
+    "bytes": 428873,
+    "sha256": "3b4b64201752fcd96204b05c15685c77e0fbaf68d60ef70594b6dfeb81aeb418"
+  },
+  "own_listed_artifacts": 2294,
+  "own_exact_recursive_files": 2295,
+  "own_independent_full_post_seal_reverification": true,
+  "failed_utility_retained": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_finalization_failure_retained.json",
+    "bytes": 1010,
+    "sha256": "d6debda7676a48f52256b79d9eb7e54500f46cf9a3bee856ea0e30e212775728"
+  },
+  "failure_summary": "The first finalizer detected a nested copied seal by basename and stopped before producing the root seal. The corrected finalizer checks only the exact root path; original utility and partial outputs remain unchanged.",
+  "final_conclusions": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_final_conclusions2.json",
+    "bytes": 2161,
+    "sha256": "390da6eecd841757a6978341768a302c0a72cd404319cf9378e89eb392529e18"
+  },
+  "superseded_partial_finalization_outputs": [
+    "FINAL_UNADOPTED_TEXT_INPUTS.json",
+    "own_final_bookend.json",
+    "own_final_conclusions.json"
+  ],
+  "actual_selected_payload_imports": 0,
+  "actual_selected_code_execution": 0,
+  "actual_proposed_API_calls": 0,
+  "actual_proposed_process_launches": 0,
+  "Add_Type_compilation": 0,
+  "compiler_execution": 0,
+  "Native_or_provider_or_original_PE_or_target_execution": 0,
+  "prior_runtime_replay": 0,
+  "Root_writes": 0,
+  "Main_writes": 0,
+  "Root_receipts_authored": 0,
+  "Root_materializations": 0,
+  "Cpp_changes": 0,
+  "tests_added_or_run": 0,
+  "primary_sources": [
+    {
+      "title": "A more direct and mistake-free way of creating a process in a job object",
+      "url": "https://devblogs.microsoft.com/oldnewthing/20230209-00/?p=107812"
+    },
+    {
+      "title": "UpdateProcThreadAttribute",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute"
+    },
+    {
+      "title": "InitializeProcThreadAttributeList",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-initializeprocthreadattributelist"
+    },
+    {
+      "title": "CreateProcessW",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw"
+    },
+    {
+      "title": "Job Objects",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects"
+    },
+    {
+      "title": "TerminateJobObject",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/jobapi2/nf-jobapi2-terminatejobobject"
+    },
+    {
+      "title": "QueryInformationJobObject",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/jobapi2/nf-jobapi2-queryinformationjobobject"
+    },
+    {
+      "title": "JOBOBJECT_BASIC_ACCOUNTING_INFORMATION",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_accounting_information"
+    },
+    {
+      "title": "Nested Jobs",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/procthread/nested-jobs"
+    },
+    {
+      "title": "Parsing C command-line arguments",
+      "url": "https://learn.microsoft.com/en-us/cpp/c-language/parsing-c-command-line-arguments?view=vs-2019"
+    },
+    {
+      "title": "ctypes",
+      "url": "https://docs.python.org/3.13/library/ctypes.html"
+    },
+    {
+      "title": "subprocess",
+      "url": "https://docs.python.org/3.13/library/subprocess.html"
+    }
+  ],
+  "primary_source_retrieval_note": "The official Microsoft creation-time job article direct open returned HTTP 403; its official search result supplied the article body. This is recorded in the sealed source-contract list.",
+  "evidence_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_freeze_receipt.json",
+      "bytes": 1558,
+      "sha256": "6b40b1eb8f8284b0ad628daba61ecb6cb4241b090f398cdca243ecc87d0dd1c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\previous_fixed_copy_inventory.json",
+      "bytes": 91252,
+      "sha256": "fe93092059004a5bcf5fbca71315e57b63f39ebbf78c4eb2463c9cadf1f88651"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\SDK_header_copy_inventory.json",
+      "bytes": 3211,
+      "sha256": "dbe425a6c5a9503c3e51cdf109a2c163c6a286a102dc26e9e1fac9d9a55c58bb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\candidate_derivation.json",
+      "bytes": 3741,
+      "sha256": "f8a1ad05261cf70d389aa9d3fbf9fd6813fb0cacf0120874da3930addebd4d08"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_static_preservation.json",
+      "bytes": 7159,
+      "sha256": "e87ad135181964f23ae6c0d5f2f2d231d1c86d181745187b398668d3e0f54700"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_job_control_flow_review.json",
+      "bytes": 10466,
+      "sha256": "fd548892bb86caef4b03f724aba65214806f7c417156d61f8e23f9922422ea46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_PowerShell_preservation.json",
+      "bytes": 847,
+      "sha256": "c96c7d778190e49a033e0a26e886d9a837930d7998bc8ade0f9232d5cf4d9bb8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_static_loaded_origins.json",
+      "bytes": 11688,
+      "sha256": "f4c2fe23b49f1dd5cd1670ddad5fbf447ffee7cb9ef3bd43dc9c9a79f8006df4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\derive_closed.json",
+      "bytes": 214,
+      "sha256": "c7d17f1631bb2c2506aefe91f12c061b5d7159d6552e7c77080a141cd2e943e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\static_closed.json",
+      "bytes": 214,
+      "sha256": "6e549261616fb7eb33481942f04c9252f54a802ab0d5600bff99c3acfbef4d91"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\powershell_closed.json",
+      "bytes": 127,
+      "sha256": "3d76debc9c1d20d493c5f9668b0d6d4efd4a6807ba2b0ba5c6d94a1dd92e6157"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\own_final_bookend2.json",
+      "bytes": 345,
+      "sha256": "76613b98cf6ffe6f886b0f970e153c407b91db80887ffd65c000b639adf6ec07"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\primary_contract_sources.json",
+      "bytes": 4760,
+      "sha256": "c0c13dd2e4ebe47174ceb8722c1745c3e6bfea7395936697aabbbd435eaf2475"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\dependency_bootstrap.py.txt.diff",
+      "bytes": 2518,
+      "sha256": "13bdb7ce9abe71cfa57c8bd0273a87f482cf297fefb9f4026d0ec5ba13cd27a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011jobTEXT\\external_preinterpreter_guard.ps1.txt.diff",
+      "bytes": 10753,
+      "sha256": "5369dbb0a5cefdab3c6bc4ce3e99fd89d185d5ae69ae26d7d59451aca50581cb"
+    }
+  ],
+  "remaining_Root_and_runtime_checks": [
+    "Fresh full dependency selection and independently selected supervisor/policy/code pins",
+    "Root review/adoption/receipts remain required; no old content or membership hold is repinned",
+    "Supported Windows x64 ABI and compatible inherited job restrictions",
+    "Valid inherited standard handles and exact child argv/ENV/cwd at runtime",
+    "Normal completion, early nonzero exit, inner TimeoutExpired, supervisor deadline, and setup failure closure",
+    "Supervisor death or outer watchdog: missing closure remains a hold; fallback kill is not a positive observation",
+    "Job membership covers the created tree, not existing external providers or independently brokered processes"
+  ],
+  "UTC": "2026-10-09T07:30:11.0612636Z"
+}
