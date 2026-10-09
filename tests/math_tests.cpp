@@ -92,6 +92,7 @@
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
+#include <stdexcept>
 #include "bsp/vehicle_class.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/plane_class_fields.hpp"
@@ -929,6 +930,67 @@ int main() {
         check(!bsp::atlas_split_name_matches_00aef3c0(request,
                   "interface/textures/fe/common_dxt1.ats"),
             "a candidate in a deeper directory is rejected");
+    }
+
+    {
+        struct AtlasRegistryHost final : bsp::WorldEffectsStartupHost {
+            const std::string request{"interface/textures/common.ats"};
+            std::vector<std::string> registered;
+            std::vector<std::string> events;
+            void log_line(const std::string&) override {}
+            std::vector<std::string> find_files_with_extension(
+                const std::string&, const std::string&) override {
+                events.push_back("enumerate");
+                return {"interface/textures/common_dxt5_1.ats",
+                    "interface/textures/common_dxt5_2.ats",
+                    "interface/textures/other.ats"};
+            }
+            std::vector<std::string> registered_atlas_texture_paths() override {
+                events.push_back("registry");
+                return registered;
+            }
+            bool vfs_resolve_existing(std::string&) override {
+                events.push_back("resolve");
+                return true;
+            }
+            void load_atlas_descriptor(const std::string&) override {
+                events.push_back("load");
+                registered.push_back(request);
+            }
+            [[noreturn]] static void unexpected() {
+                throw std::logic_error("unexpected non-atlas fixture call");
+            }
+            void* create_water_texture_source(int, const std::string&, int) override { unexpected(); }
+            void publish_water_texture_source_table(const bsp::WaterTextureSourceTable&) override { unexpected(); }
+            std::vector<bsp::DecalDefinition> read_decal_table(const std::string&) override { unexpected(); }
+            std::vector<bsp::FoliageTypeDefinition> read_foliage_table(const std::string&) override { unexpected(); }
+            void* load_vertex_format(const std::string&) override { unexpected(); }
+            void* load_shader(const std::string&) override { unexpected(); }
+            void* load_texture(const std::string&) override { unexpected(); }
+            void* create_vertex_declaration(void*) override { unexpected(); }
+            void* create_index_buffer(std::uint32_t) override { unexpected(); }
+            void fill_index_buffer(void*, const std::vector<std::uint16_t>&) override { unexpected(); }
+            void release_texture(void*) override { unexpected(); }
+            void* create_material_for_effect(const std::string&) override { unexpected(); }
+            void set_material_texture_slot(void*, int, void*) override { unexpected(); }
+            void publish_decal_system(std::vector<bsp::DecalDefinition>) override { unexpected(); }
+            void publish_foliage_system(std::vector<bsp::FoliageTypeDefinition>) override { unexpected(); }
+            void publish_particle_shader_set(const bsp::ParticleShaderSet&) override { unexpected(); }
+            void publish_foliage_group_manager(const bsp::FoliageGroupManagerState&) override { unexpected(); }
+            void set_foliage_enabled_flag(bool) override { unexpected(); }
+            std::size_t foliage_type_count() override { unexpected(); }
+            std::size_t foliage_group_count() override { unexpected(); }
+            void set_foliage_type_enabled(std::size_t, bool) override { unexpected(); }
+            void set_foliage_group_enabled(std::size_t, bool) override { unexpected(); }
+            void* create_critical_section() override { unexpected(); }
+        } host;
+        // Registration can change the current array between matching candidates.
+        // A nonmatching candidate must not query the array or invoke the loader.
+        std::size_t missing = 0;
+        const auto loaded = bsp::load_texture_atlas_00af0060(host.request, host, &missing);
+        check(loaded == 1 && missing == 0 && host.events == std::vector<std::string>{
+                  "enumerate", "registry", "resolve", "load", "registry"},
+            "atlas candidates observe registration performed by the preceding loader callback");
     }
 
     {
