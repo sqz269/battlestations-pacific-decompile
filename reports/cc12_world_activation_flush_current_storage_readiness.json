@@ -1,0 +1,672 @@
+{
+  "schema": 1,
+  "packet": "cc12_world_activation_flush_current_storage_readiness",
+  "kind": "bounded read-only actual-pointer caller readiness",
+  "created_utc": "2026-10-09T06:06:39.606280+00:00",
+  "worker_and_published_baseline": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+  "owned_addresses": [
+    "00903670"
+  ],
+  "owned_outputs": [
+    "docs/CC12_WORLD_ACTIVATION_FLUSH_CURRENT_STORAGE_READINESS.md",
+    "reports/cc12_world_activation_flush_current_storage_readiness.json"
+  ],
+  "size_gate": {
+    "metadata_start": "00903670",
+    "metadata_end_inclusive": "009036a8",
+    "maximum_requested_body_bytes": 300,
+    "computed_bytes": 57,
+    "gate_passed_before_whole_body_read": true,
+    "whole_body_audited": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_functions": 0,
+    "new_ABI_compatible_admissions": 0,
+    "game_validated": false,
+    "canonical_address_already_has_counted_function": true,
+    "future_refinement_requires_preserving_or_reconciling_existing_record": true
+  },
+  "conclusion": {
+    "qualified_Source_leaf_ready": true,
+    "sole_direct_service_prerequisite_closed": true,
+    "sole_concrete_service": "bsp::mark_native_entity_destroy_state_00922fd0(void*)",
+    "transitive_real_virtual_target_and_storage_lifetimes_remain_caller_qualifications": true,
+    "actual_storage_caller_implementation_found": false,
+    "production_graph_closed": false,
+    "summary": "Complete 57-byte caller has one concrete direct Source dependency. A narrow raw flush can reuse the existing reviewed 66-byte helper under its explicit callable-table/hierarchy/lifetime contract; current vector/unit projections do not close the actual-pointer body."
+  },
+  "target_verification": {
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "current_canonical_config_matches_project_program_language_base_binary_and_project_file": true,
+    "mechanism": "bsp.py ghidra CLI Client.verify checks project name, program path, language and image base before live metadata/bytes/count queries.",
+    "queries": [
+      "lookup 00903670 (local index)",
+      "ghidra proto 00903670",
+      "show 00903670 complete pseudocode",
+      "show 00903670 --asm complete listing",
+      "ghidra bytes 00903670 --length 57",
+      "ghidra count"
+    ],
+    "live_count_and_snapshot": 64729,
+    "other_native_bodies_queried": false,
+    "forbidden_addresses_queried": false,
+    "Ghidra_mutation": false,
+    "per_instruction_flow_override_metadata_checked": false
+  },
+  "native_evidence": {
+    "capture_utc": "2026-10-09T06:02:03.513605+00:00",
+    "live_byte_source": "bsp.py ghidra bytes 00903670 --length 57; complete returned live hexdump transcribed",
+    "span": {
+      "address": "00903670",
+      "end_inclusive": "009036a8",
+      "bytes": 57,
+      "sha256": "1711b2cb01a1341d6bbecc164337978395150304375ea23838060ec319e769b1",
+      "hex": "8b4104568b3085f6742d8d9b00000000807e5e00741a837e6c0075148b463c85c0740680785e0075078bcee830f901008b763885f675d95ec3",
+      "live_equals_installed_PE": true,
+      "decoded_instructions": 22,
+      "instructions": [
+        {
+          "address": "00903670",
+          "bytes": "8b4104",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 4]"
+        },
+        {
+          "address": "00903673",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00903674",
+          "bytes": "8b30",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [eax]"
+        },
+        {
+          "address": "00903676",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "00903678",
+          "bytes": "742d",
+          "mnemonic": "je",
+          "operands": "0x9036a7"
+        },
+        {
+          "address": "0090367a",
+          "bytes": "8d9b00000000",
+          "mnemonic": "lea",
+          "operands": "ebx, [ebx]"
+        },
+        {
+          "address": "00903680",
+          "bytes": "807e5e00",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [esi + 0x5e], 0"
+        },
+        {
+          "address": "00903684",
+          "bytes": "741a",
+          "mnemonic": "je",
+          "operands": "0x9036a0"
+        },
+        {
+          "address": "00903686",
+          "bytes": "837e6c00",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x6c], 0"
+        },
+        {
+          "address": "0090368a",
+          "bytes": "7514",
+          "mnemonic": "jne",
+          "operands": "0x9036a0"
+        },
+        {
+          "address": "0090368c",
+          "bytes": "8b463c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x3c]"
+        },
+        {
+          "address": "0090368f",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00903691",
+          "bytes": "7406",
+          "mnemonic": "je",
+          "operands": "0x903699"
+        },
+        {
+          "address": "00903693",
+          "bytes": "80785e00",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [eax + 0x5e], 0"
+        },
+        {
+          "address": "00903697",
+          "bytes": "7507",
+          "mnemonic": "jne",
+          "operands": "0x9036a0"
+        },
+        {
+          "address": "00903699",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "0090369b",
+          "bytes": "e830f90100",
+          "mnemonic": "call",
+          "operands": "0x922fd0"
+        },
+        {
+          "address": "009036a0",
+          "bytes": "8b7638",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esi + 0x38]"
+        },
+        {
+          "address": "009036a3",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "009036a5",
+          "bytes": "75d9",
+          "mnemonic": "jne",
+          "operands": "0x903680"
+        },
+        {
+          "address": "009036a7",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "009036a8",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_equals_installed_PE": true,
+    "contiguous_decoded_listing_matches_live_bytes": true,
+    "encoded_conditional_branches": [
+      {
+        "site": "00903678",
+        "operation": "je",
+        "target": "009036a7"
+      },
+      {
+        "site": "00903684",
+        "operation": "je",
+        "target": "009036a0"
+      },
+      {
+        "site": "0090368a",
+        "operation": "jne",
+        "target": "009036a0"
+      },
+      {
+        "site": "00903691",
+        "operation": "je",
+        "target": "00903699"
+      },
+      {
+        "site": "00903697",
+        "operation": "jne",
+        "target": "009036a0"
+      },
+      {
+        "site": "009036a5",
+        "operation": "jne",
+        "target": "00903680"
+      }
+    ],
+    "sole_direct_call": {
+      "site": "0090369b",
+      "bytes": "e830f90100",
+      "target": "00922fd0",
+      "receiver_setup_site": "00903699",
+      "receiver": "ECX current ESI entity",
+      "stack_arguments": 0,
+      "return_continuation": "009036a0 reload same entity+38 after whole callee and its terminal method return"
+    },
+    "indirect_calls_in_this_body": 0,
+    "no_op": {
+      "site": "0090367a",
+      "bytes": "8d9b00000000",
+      "operation": "LEA EBX,[EBX+00000000]",
+      "bytes_count": 6,
+      "effects": "EBX and flags unchanged; executed only on initially nonempty chain, before first predicate."
+    },
+    "terminal": {
+      "site": "009036a8",
+      "bytes": "c3",
+      "operation": "plain RET",
+      "stack_cleanup_bytes": 0
+    },
+    "metadata_prototype_limit": "Zero-parameter undefined prototype/pseudocode do not express ECX receiver or callee argument; full assembly/bytes are authoritative."
+  },
+  "abi": {
+    "input": "ECX actual World-like receiver pointer",
+    "explicit_stack_arguments": 0,
+    "incoming_EDX_semantic_input": false,
+    "explicit_saved_registers": [
+      "ESI"
+    ],
+    "EBX": "Native six-byte LEA is a no-op; callees must retain callee-saved register behavior.",
+    "call_convention_observed": "Current actual entity moved into ECX; no stack args pushed before sole CALL.",
+    "callee_return_obligation": "Its terminal virtual target returns with compatible stack/callee-saved state, including caller current ESI, when traversal continues.",
+    "local_return": "POP ESI; plain RET",
+    "typed_return_value_recovered": false,
+    "floating_point_instructions": 0,
+    "global_accesses": 0,
+    "local_object_field_writes": 0,
+    "direct_allocations_or_frees": 0,
+    "local_EH_frame": false
+  },
+  "ordered_accesses": [
+    {
+      "site": "00903670",
+      "base": "receiver",
+      "offset": "0x4",
+      "width": 4,
+      "operation": "Capture actual header before PUSH ESI; no later receiver field read."
+    },
+    {
+      "site": "00903674",
+      "base": "captured header",
+      "offset": "0x0",
+      "width": 4,
+      "operation": "Capture first entity exactly once; header pointer itself is unconditionally dereferenced."
+    },
+    {
+      "site": "00903680",
+      "base": "current entity",
+      "offset": "0x5e",
+      "width": 1,
+      "operation": "Compare with zero; zero skips later predicates and call."
+    },
+    {
+      "site": "00903686",
+      "base": "current entity",
+      "offset": "0x6c",
+      "width": 4,
+      "operation": "Compare whole DWORD with zero only after byte5E nonzero; any nonzero skips parent/call."
+    },
+    {
+      "site": "0090368c",
+      "base": "current entity",
+      "offset": "0x3c",
+      "width": 4,
+      "operation": "Capture current parent only after earlier gates pass; null parent allows call."
+    },
+    {
+      "site": "00903693",
+      "base": "captured nonnull parent",
+      "offset": "0x5e",
+      "width": 1,
+      "operation": "Read once; zero permits call, nonzero skips."
+    },
+    {
+      "site": "009036a0",
+      "base": "same current entity",
+      "offset": "0x38",
+      "width": 4,
+      "operation": "Read current successor after full call/terminal method return or after skip; no saved successor."
+    }
+  ],
+  "gate": "entity byte5E != 0 AND entity full DWORD6C == 0 AND (parent3C == null OR parent byte5E == 0), evaluated in that order with short circuit",
+  "callback_visibility": [
+    "World+4 and captured header first are never reloaded; a new head is not independently revisited.",
+    "Current entity+38 is read only after all direct callee recursion and final virtual effects finish; callback successor mutations are observed.",
+    "Later entity flags/full6C/parent pointer/parent5E are loaded when reached, so prior recursive mark writes can suppress a later call.",
+    "Native parent pointer need not be in this same chain; there is no vector membership/index check.",
+    "No parent/child/active gate beyond encoded predicates, no count bound, visited set or traversal restart."
+  ],
+  "lifetime_failure_contract": [
+    "Receiver must support its initial+4 load; captured header must support the subsequent first-pointer load. No later receiver/header read is made by this body.",
+    "Each current entity must survive all reached predicate reads and the post-call+38 reload.",
+    "A nonnull captured parent must survive its reached single+5E byte read; this body performs no later parent access.",
+    "The concrete callee own hierarchy/callable84/currentchild44 lifetime and compatible return obligations remain in force.",
+    "Null receiver or null header is not a successful empty path. Header.first==null is the genuine empty path.",
+    "Cycles in+38 can loop even if all6C marks are nonzero; no cycle guard added.",
+    "Any earlier callee effects remain after later faults or failure; no local catch, rollback, exception translation or new noexcept."
+  ],
+  "service_dependency_closure": {
+    "direct_service_count": 1,
+    "sole_service_native": "00922fd0",
+    "Source_header": "include/bsp/native_entity_destroy_state.hpp",
+    "Source_file": "src/native_entity_destroy_state.cpp",
+    "Source_symbol": "bsp::mark_native_entity_destroy_state_00922fd0",
+    "qualified_Source_service_closed": true,
+    "no_new_abstract_dispatcher_or_callback_service_needed": true,
+    "current_callee_Source_hashes_match_primary_review": {
+      "include/bsp/native_entity_destroy_state.hpp": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "src/native_entity_destroy_state.cpp": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b"
+    },
+    "CMake_registration": "CMakeLists.txt: target_sources(bsp_core PRIVATE src/native_entity_destroy_state.cpp)",
+    "accepted_primary_proof": {
+      "path": "reports/cc12_entity_destroy_state_primary_review.json",
+      "status": "complete_whole_emitted_body_and_self_relocation_match_normal_win32_build_passed",
+      "build_success": true,
+      "build_exit_code": 0,
+      "existing_checks": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "native_body": {
+        "address": "00922fd0",
+        "bytes": 66,
+        "instructions": 25,
+        "sha256": "29eceff51de711a90ebe3201b0f270a6cdc3febb62b1532857b5fba6301d382d",
+        "entire_resolved_Source_body_equal_installed_PE": true
+      },
+      "root_symbol": "?mark_native_entity_destroy_state_00922fd0@bsp@@YIXPAX@Z",
+      "sole_self_relocation_symbol": "?mark_native_entity_destroy_state_00922fd0@bsp@@YIXPAX@Z",
+      "resolved_self_operand_hex": "d3ffffff",
+      "positive_unique_core_definition_count": 1,
+      "whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_entity_destroy_state.obj",
+        "header_offset": 63754508,
+        "payload_file_offset": 63754568,
+        "bytes": 806,
+        "sha256": "6430e376cab440a40d662581ea15eb1f89368d07b1d361618908b06efcbc91ff"
+      },
+      "limits": [
+        "Actual writable hierarchy/current callable84 methods and mutation/termination contracts remain caller qualifications.",
+        "Currentchild must remain readable through postrecursive44; World caller requires sameentity38 afterreturn.",
+        "Typed projected function and count retained. No wholeentity owner/productiontable/hierarchy producer/application binding or fabricated callback.",
+        "Static entirebody/reboundcall proof and existingchecks are not Nativeentry/exception/SEH/fault/Sourcecallback-exception/runtime/gameplay execution. No new tests/probes."
+      ]
+    },
+    "worker_reran_build_checks_or_artifact_execution": false,
+    "production_target_table_hierarchy_owner_provenance_closed": false
+  },
+  "current_Source_comparison": [
+    {
+      "path": "src/world_entities.cpp",
+      "lines": "203..227",
+      "provider": "activation_pending / flush_entity_activations_00903670",
+      "gap": "Vector index walk, projected Boolean6C and bounded parent index; invalid index returns false. No real World+4/header first/currententity+38 or concrete direct helper call."
+    },
+    {
+      "path": "include/bsp/world_entities.hpp",
+      "lines": "239..250",
+      "provider": "ActivationNode",
+      "gap": "Boolean spawned/activated and size_t parent index are semantic projections, not actual byte/full-DWORD/pointer storage."
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "lines": "431..447",
+      "provider": "flush_unit_kills_00903670",
+      "gap": "Null and identity guards, unit-index loop, projected flags, separate indexed6C counter, unit_kills counter and virtual84 log. Assumes no parent/children; does not call concrete raw callee."
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "lines": "775..778",
+      "provider": "activate_entity_subtree_00922fd0 host callback",
+      "gap": "Records an event only."
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "lines": "1131..1140 and 1465..1472",
+      "provider": "current caller bindings",
+      "gap": "Conditional unit-kill path or projected vector/log callback path; neither binds raw World storage to the concrete helper."
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "lines": "555..563",
+      "provider": "killed_counter_006c / mark_killed_006c",
+      "gap": "Separate vector storage cannot substitute actual current entity+6C word."
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "lines": "12..19",
+      "provider": "NativeWorldChainHeader",
+      "reusable_fact": "Existing first-member pointer is compatible with this caller footprint. This audit does not analyze or call header allocation; last/count and full World lifetime are outside the body."
+    }
+  ],
+  "canonical_credit_guard": {
+    "index_refreshed": true,
+    "current_records": {
+      "name": [
+        {
+          "address": "00903670",
+          "name": "BSP_EntityWorld_FlushActivations",
+          "evidence": "Hypothesis, not a recovered symbol. Packet game_world_entities, read-only analysis. __thiscall(this), RET (009036a8), no argument, ECX game+19CCh from BSP_Game_OnMove at 004e5382. Three callers: 004e4a40, BSP_Game_CheckMissionCompletion 004d7ea0 and 0046b730, so it is a flush several sites can force rather than a per-frame-only pass. Walks the intrusive chain from [this+4h] linked through node+38h and calls 00922fd0(node) when node+5Eh is set, node+6Ch is clear, and either node+3Ch is null or node+3Ch->5Eh is clear (00903680-009036a5). 00922fd0 sets +5Eh and +5Dh, clears +5Ch, latches +6Ch, recurses over children from node+48h linked through +44h for children whose +6Ch is clear, and tail-calls virtual +84h, so the outer walk skips any node reached as a child. game+19CCh is the same world object whose +4ACh byte gates BSP_EntityManager_Update 00481640; it is constructed at 004de686 with 004cb030 and initialised with 009037f0(1, 1). Supersedes the BSP_BotManager_Update proposal in docs/GAME_ON_MOVE_MAP.md, which rested on segment keywords alone. docs/GAME_WORLD_ENTITIES.md."
+        }
+      ],
+      "reconstruction": [
+        {
+          "address": "00903670",
+          "name": "flush_entity_activations_00903670",
+          "source": "src/world_entities.cpp",
+          "status": "reconstructed_ledger_backfilled_from_source",
+          "evidence": "C++ body at src/world_entities.cpp:218 (flush_entity_activations_00903670), a definition named after the address. Documents: docs/ENTITY_EVENT_QUEUES.md, docs/GAME_FRAME_CONTROL.md, docs/GAME_ON_MOVE_MAP.md, docs/GAME_WORLD_CONSTRUCT.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build.",
+          "cpp_symbol": "flush_entity_activations_00903670",
+          "abi_compatible": false,
+          "game_validated": false,
+          "kind": "function"
+        }
+      ]
+    },
+    "action": "Preserve counted projected function. This read-only audit adds no Original/Source credit; future actual-storage refinement must not create a duplicate Original function."
+  },
+  "minimum_recommended_Source_packet": {
+    "files": [
+      "include/bsp/native_world_activation_flush.hpp",
+      "src/native_world_activation_flush.cpp"
+    ],
+    "provisional_interface": "void __fastcall flush_native_world_activations_00903670(void* actual_world);",
+    "form": "MSVC Win32 guarded narrow naked full22-instruction schedule, explicit native six-byte LEA encoding and sole direct CALL to existing mark_native_entity_destroy_state_00922fd0.",
+    "sole_concrete_include_dependency": "bsp/native_entity_destroy_state.hpp",
+    "no_new_context_global_owner_object_overlay_table_allocator_or_callback": true,
+    "qualified_actual_storage_preconditions_required": true,
+    "application_wiring_not_authorized_by_audit": true,
+    "registration_build_emitted_review_owner": "Root integrator after separate Source authorization"
+  },
+  "current_canonical_input_pins": [
+    {
+      "path": "include/bsp/world_entities.hpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 22225,
+      "sha256": "329e490ffd4609186db4360600114585a18859d6ec42cf9a1fd3d25d92d33ebb",
+      "physical_bytes": 22225,
+      "physical_sha256": "329e490ffd4609186db4360600114585a18859d6ec42cf9a1fd3d25d92d33ebb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/world_entities.cpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 13940,
+      "sha256": "0f13cf989c933f4114d86b2b7ea955beef27ddd1a892472f309e14a50959f710",
+      "physical_bytes": 13940,
+      "physical_sha256": "0f13cf989c933f4114d86b2b7ea955beef27ddd1a892472f309e14a50959f710",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 197476,
+      "sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af",
+      "physical_bytes": 197476,
+      "physical_sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/game_hosts_ready.hpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 7555,
+      "sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "physical_bytes": 7555,
+      "physical_sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 30809,
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_bytes": 30809,
+      "physical_sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 1412,
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_bytes": 1412,
+      "physical_sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 1956,
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_bytes": 1956,
+      "physical_sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_NATIVE_ENTITY_DESTROY_STATE_SOURCE.md",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 6899,
+      "sha256": "80d1bec019c3dfadc64d2a9ca2d1a4b5c96d3e591a3775213c799b5427aab441",
+      "physical_bytes": 6899,
+      "physical_sha256": "80d1bec019c3dfadc64d2a9ca2d1a4b5c96d3e591a3775213c799b5427aab441",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_entity_destroy_state_primary_review.json",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 15403,
+      "sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "physical_bytes": 15403,
+      "physical_sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "physical_bytes": 1457,
+      "physical_sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 55502,
+      "sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7",
+      "physical_bytes": 55502,
+      "physical_sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 48004,
+      "sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9",
+      "physical_bytes": 48004,
+      "physical_sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9",
+      "physical_match": "exact"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 16927,
+      "sha256": "91ff8491f0eb2486f15832ba8f511d34227bf4c7e0ac47b3a3a8a9ea4cd6d9d9",
+      "physical_bytes": 16927,
+      "physical_sha256": "91ff8491f0eb2486f15832ba8f511d34227bf4c7e0ac47b3a3a8a9ea4cd6d9d9",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "042826a42c4ec424b79a829e5c9b8194cc830a77",
+      "hash_domain": "canonical Git blob bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_match": "exact"
+    }
+  ],
+  "owned_doc_pin": {
+    "path": "docs/CC12_WORLD_ACTIVATION_FLUSH_CURRENT_STORAGE_READINESS.md",
+    "hash_domain": "UTF-8 LF bytes, must equal staged Git blob",
+    "bytes": 7417,
+    "sha256": "32bb3b2d74de98985e314eb37597b40a7c94797b98d005c4f55c0dc30a2d20b8"
+  },
+  "validation": {
+    "native_full57B_hash_and22_instruction_decode": true,
+    "complete_live_bytes_equal_installed_PE": true,
+    "all6_branch_destinations_internal_and_sole_direct_call922fd0": true,
+    "canonical_current_input_pins": true,
+    "current_concrete_callee_hashes_match_published_primary_proof": true,
+    "JSON_parse": true,
+    "staged_doc_pin_and_exact_two_output_scope": true,
+    "git_diff_check": true,
+    "Source_CMake_ledger_GPR_mutations": false,
+    "new_build_tests_probes_or_native_execution": false
+  },
+  "limits": [
+    "Read-only bounded caller audit; no broad callee or owner sweep.",
+    "Existing callee primary build/artifact results are attributed, not newly executed by this worker.",
+    "Actual callable target, hierarchy/parent provenance, mutation/termination and post-call lifetime remain explicit caller qualifications.",
+    "No production application graph, whole World owner/destructor or gameplay completion is implied.",
+    "Original ABI/runtime/native EH and fault execution are not established by static instruction inspection alone."
+  ]
+}
