@@ -38108,6 +38108,403 @@
         "admission_reconsidered_from_unchanged_sealed_evidence": true,
         "callback_Native_processes_replayed_for_dependency_close": 0
       }
+    },
+    {
+      "id": "cc12_scene_property_record_type10_raw_array_storage",
+      "done": false,
+      "state": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+      "function_addresses": [
+        "008ef3e0"
+      ],
+      "output_files": [
+        "src/native_scene_property_record_type10_raw_array_storage.cpp",
+        "include/bsp/native_scene_property_record_type10_raw_array_storage.hpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE10_RAW_ARRAY_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type10_raw_array_storage_cc12.json"
+      ],
+      "depends_on": [],
+      "Source_admission_credit": 0,
+      "primary_integration": {
+        "passed": true,
+        "Source_admission_credit": 0,
+        "status": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+        "Root_independent_CPP_HPP_review": true,
+        "CMake_registered": true,
+        "production_Win32_build_passed": true,
+        "existing_checks_passed": [
+          "reconstructed_math",
+          "native_math_differential",
+          "tool_tests"
+        ],
+        "current_Main_actual_inputs": 4051,
+        "build_receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_current_Main_build.receipt.json",
+          "size": 1613,
+          "sha256": "c2e0e41cb8d6bf9d612d1803ad3610428a6321f8ed64c95b9df4cc8587e2b11f"
+        },
+        "actual_current_object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_record_type10_raw_array_storage.obj",
+          "size": 1737,
+          "sha256": "b8cd0c8eb13681741e9db8778dda71bdbb89bb118054cbdc238b589956583b08"
+        },
+        "production_object_review": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_production_object_review.json",
+          "size": 4548,
+          "sha256": "e9a0dc0878a6644ad87ad5c4385fb1e01b1d7dee95e56f286322e0eefad4c785"
+        },
+        "whole_Native_bytes": 116,
+        "whole_Native_instructions": 36,
+        "actual_literal_bytes_checked": 108,
+        "actual_COFF_symbolic_CALL_operands": [
+          {
+            "offset": 51,
+            "type": "IMAGE_REL_I386_REL32",
+            "symbol": "?allocate_native_type10_array_bytes@?A0x1f28620b@bsp@@YAPAXI@Z"
+          },
+          {
+            "offset": 66,
+            "type": "IMAGE_REL_I386_REL32",
+            "symbol": "_memcpy"
+          }
+        ],
+        "source_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type10_raw_array_storage.cpp",
+          "size": 2244,
+          "sha256": "cdaba66d272be20645bc3237ffdd0f27feba861054a66ec1a087ffe759d2bbbe"
+        },
+        "header_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type10_raw_array_storage.hpp",
+          "size": 2695,
+          "sha256": "d9f5f671dc4c138e9fefcfd4eb9af29acfaad449a4a5d549fd830537900c080e"
+        },
+        "complete_helper_ABI_qualification_pending": true,
+        "saved_analysis_publication_pending": false,
+        "abi_compatible": false,
+        "game_validated": false,
+        "qualification": "WholeNative008ef3e0..008ef454 116B36 independently reviewed and reconstructed in raw MSVCWin32 Source. ECX fresh unowned56 root, EDX padding; COUNT/INPUT/fullFLAG T+4/+8/+C, lowBYTE retain/copy, stride4;29written27preserved including owner+30. Marker1both notownership. Actual currentcanonical sizeadapter plus realmemcpy, no privateCRT/class/wholeclone admission. Retain8D5=44 includingAF0; copyADD(T-24,16), providerECX/EDX unasserted. No blanketES/FPU/MXCSR. Positive readable/disjoint successful domain only. Fresh currentMain build/all3existingchecksPASS,4051 actualinputs unchanged. Actual productionI386 COFF whole116 body literal108 checked; only expected symbolicCALL operands[51, 66] excluded. Complete linked helper/caller/provider/gated singleprocess fixture remains pending; Source credit0, not binaryreplacement/game proof."
+      },
+      "saved_analysis_publication_pending": false,
+      "fixture_requirements": {
+        "enabled": true,
+        "Root_only_admission": true,
+        "whole_Native_bytes": 116,
+        "whole_Native_instructions": 36,
+        "contract": "ECX fresh unowned56 root, EDX padding; COUNT/INPUT/fullFLAG T+4/+8/+C, lowBYTE retain/copy, stride4;29written27preserved including owner+30. Marker1both notownership. Actual currentcanonical sizeadapter plus realmemcpy, no privateCRT/class/wholeclone admission. Retain8D5=44 includingAF0; copyADD(T-24,16), providerECX/EDX unasserted. No blanketES/FPU/MXCSR. Positive readable/disjoint successful domain only.",
+        "source_body_reconstructed_and_compiled": true,
+        "complete_helper_caller_provider_frame_and_single_process_pending": true,
+        "old_helper_object_stage_or_process_replay_allowed": false,
+        "game_validated": false
+      },
+      "Root_saved_raw_Source_analysis_publication": {
+        "passed": true,
+        "Source_admission_credit": 0,
+        "addresses": [
+          "008ef3e0",
+          "008ef460",
+          "008ef7f0"
+        ],
+        "saved_provisional_names_and_raw_evidence": true,
+        "preserving_old_names_and_comments": true,
+        "previous_values_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20261008T234552Z.json",
+          "size": 4927,
+          "sha256": "805875a518ded9b5a5f8cef35ec51702deeb908448851f532b848f5e5a0c3ea5"
+        },
+        "forced_affected_exports": true,
+        "program": "/battlestationspacific.exe",
+        "project": "C:/Users/sqz269/bsp.gpr",
+        "complete_helper_ABI_qualification_pending": true,
+        "abi_compatible": false,
+        "game_validated": false,
+        "logs": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_live_program.log",
+            "size": 40,
+            "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_annotations.log",
+            "size": 297,
+            "sha256": "2f66fd4a1851a4c6e6f92dec1442bc8d2166c3fed4d1e6856784107ded3ae677"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_exports.log",
+            "size": 69,
+            "sha256": "128b8664545b22f1d82269d10d6aa74fe3f90cf6670bf3daae4cf0ba3276bf9b"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_snapshot.log",
+            "size": 295,
+            "sha256": "32e2df3a455f13556b6b94b6180da6958800f091b96eb54e4296bd508b169e9f"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_index.log",
+            "size": 16,
+            "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cc12_scene_property_record_type11_raw_array_storage",
+      "done": false,
+      "state": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+      "function_addresses": [
+        "008ef460"
+      ],
+      "output_files": [
+        "src/native_scene_property_record_type11_raw_array_storage.cpp",
+        "include/bsp/native_scene_property_record_type11_raw_array_storage.hpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_TYPE11_RAW_ARRAY_STORAGE_CC12.md",
+        "reports/native_scene_property_record_type11_raw_array_storage_cc12.json"
+      ],
+      "depends_on": [],
+      "Source_admission_credit": 0,
+      "primary_integration": {
+        "passed": true,
+        "Source_admission_credit": 0,
+        "status": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+        "Root_independent_CPP_HPP_review": true,
+        "CMake_registered": true,
+        "production_Win32_build_passed": true,
+        "existing_checks_passed": [
+          "reconstructed_math",
+          "native_math_differential",
+          "tool_tests"
+        ],
+        "current_Main_actual_inputs": 4051,
+        "build_receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_current_Main_build.receipt.json",
+          "size": 1613,
+          "sha256": "c2e0e41cb8d6bf9d612d1803ad3610428a6321f8ed64c95b9df4cc8587e2b11f"
+        },
+        "actual_current_object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_record_type11_raw_array_storage.obj",
+          "size": 1740,
+          "sha256": "c78377845f819f2c07cbdb0959389682bacacb3440343f6b9c5f980d4ddff64c"
+        },
+        "production_object_review": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_production_object_review.json",
+          "size": 4548,
+          "sha256": "e9a0dc0878a6644ad87ad5c4385fb1e01b1d7dee95e56f286322e0eefad4c785"
+        },
+        "whole_Native_bytes": 119,
+        "whole_Native_instructions": 37,
+        "actual_literal_bytes_checked": 111,
+        "actual_COFF_symbolic_CALL_operands": [
+          {
+            "offset": 54,
+            "type": "IMAGE_REL_I386_REL32",
+            "symbol": "?allocate_native_type11_array_bytes@?A0x9e0d072c@bsp@@YAPAXI@Z"
+          },
+          {
+            "offset": 69,
+            "type": "IMAGE_REL_I386_REL32",
+            "symbol": "_memcpy"
+          }
+        ],
+        "source_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type11_raw_array_storage.cpp",
+          "size": 2275,
+          "sha256": "77579cc3a2c4caa3ef07c19c458dc52b8db2f22fa0ea7743b7dc5953ac604306"
+        },
+        "header_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type11_raw_array_storage.hpp",
+          "size": 2779,
+          "sha256": "92d8cf0801c951a04f6beb8f1038607344b2d5fdea41fc405ca293453ca113b6"
+        },
+        "complete_helper_ABI_qualification_pending": true,
+        "saved_analysis_publication_pending": false,
+        "abi_compatible": false,
+        "game_validated": false,
+        "qualification": "WholeNative008ef460..008ef4d7 119B37 independently reviewed and reconstructed in raw MSVCWin32 Source. ECX fresh unowned56 root, EDX padding; COUNT/INPUT/fullFLAG T+4/+8/+C, lowBYTE retain/copy, stride12;29written27preserved including owner+30. Marker1both notownership. Actual currentcanonical sizeadapter plus realmemcpy, no privateCRT/class/wholeclone admission. Retain8D5=44 includingAF0; copyADD(T-24,16), providerECX/EDX unasserted. No blanketES/FPU/MXCSR. Positive readable/disjoint successful domain only. Fresh currentMain build/all3existingchecksPASS,4051 actualinputs unchanged. Actual productionI386 COFF whole119 body literal111 checked; only expected symbolicCALL operands[54, 69] excluded. Complete linked helper/caller/provider/gated singleprocess fixture remains pending; Source credit0, not binaryreplacement/game proof."
+      },
+      "saved_analysis_publication_pending": false,
+      "fixture_requirements": {
+        "enabled": true,
+        "Root_only_admission": true,
+        "whole_Native_bytes": 119,
+        "whole_Native_instructions": 37,
+        "contract": "ECX fresh unowned56 root, EDX padding; COUNT/INPUT/fullFLAG T+4/+8/+C, lowBYTE retain/copy, stride12;29written27preserved including owner+30. Marker1both notownership. Actual currentcanonical sizeadapter plus realmemcpy, no privateCRT/class/wholeclone admission. Retain8D5=44 includingAF0; copyADD(T-24,16), providerECX/EDX unasserted. No blanketES/FPU/MXCSR. Positive readable/disjoint successful domain only.",
+        "source_body_reconstructed_and_compiled": true,
+        "complete_helper_caller_provider_frame_and_single_process_pending": true,
+        "old_helper_object_stage_or_process_replay_allowed": false,
+        "game_validated": false
+      },
+      "Root_saved_raw_Source_analysis_publication": {
+        "passed": true,
+        "Source_admission_credit": 0,
+        "addresses": [
+          "008ef3e0",
+          "008ef460",
+          "008ef7f0"
+        ],
+        "saved_provisional_names_and_raw_evidence": true,
+        "preserving_old_names_and_comments": true,
+        "previous_values_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20261008T234552Z.json",
+          "size": 4927,
+          "sha256": "805875a518ded9b5a5f8cef35ec51702deeb908448851f532b848f5e5a0c3ea5"
+        },
+        "forced_affected_exports": true,
+        "program": "/battlestationspacific.exe",
+        "project": "C:/Users/sqz269/bsp.gpr",
+        "complete_helper_ABI_qualification_pending": true,
+        "abi_compatible": false,
+        "game_validated": false,
+        "logs": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_live_program.log",
+            "size": 40,
+            "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_annotations.log",
+            "size": 297,
+            "sha256": "2f66fd4a1851a4c6e6f92dec1442bc8d2166c3fed4d1e6856784107ded3ae677"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_exports.log",
+            "size": 69,
+            "sha256": "128b8664545b22f1d82269d10d6aa74fe3f90cf6670bf3daae4cf0ba3276bf9b"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_snapshot.log",
+            "size": 295,
+            "sha256": "32e2df3a455f13556b6b94b6180da6958800f091b96eb54e4296bd508b169e9f"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_index.log",
+            "size": 16,
+            "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cc12_scene_property_record_element_count",
+      "done": false,
+      "state": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+      "function_addresses": [
+        "008ef7f0"
+      ],
+      "output_files": [
+        "src/native_scene_property_record_element_count.cpp",
+        "include/bsp/native_scene_property_record_element_count.hpp",
+        "docs/NATIVE_SCENE_PROPERTY_RECORD_ELEMENT_COUNT_CC12.md",
+        "reports/native_scene_property_record_element_count_cc12.json"
+      ],
+      "depends_on": [],
+      "Source_admission_credit": 0,
+      "primary_integration": {
+        "passed": true,
+        "Source_admission_credit": 0,
+        "status": "raw_Source_reconstructed_production_compiled_complete_fixture_ABI_qualification_pending",
+        "Root_independent_CPP_HPP_review": true,
+        "CMake_registered": true,
+        "production_Win32_build_passed": true,
+        "existing_checks_passed": [
+          "reconstructed_math",
+          "native_math_differential",
+          "tool_tests"
+        ],
+        "current_Main_actual_inputs": 4051,
+        "build_receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_current_Main_build.receipt.json",
+          "size": 1613,
+          "sha256": "c2e0e41cb8d6bf9d612d1803ad3610428a6321f8ed64c95b9df4cc8587e2b11f"
+        },
+        "actual_current_object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\bsp_core.dir\\Release\\native_scene_property_record_element_count.obj",
+          "size": 775,
+          "sha256": "2245eb3befe91c8719b779ba9fe177b4bd9bc8959d5acd0abbab1691b49cf5c0"
+        },
+        "production_object_review": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_production_object_review.json",
+          "size": 4548,
+          "sha256": "e9a0dc0878a6644ad87ad5c4385fb1e01b1d7dee95e56f286322e0eefad4c785"
+        },
+        "whole_Native_bytes": 42,
+        "whole_Native_instructions": 17,
+        "actual_literal_bytes_checked": 42,
+        "actual_COFF_symbolic_CALL_operands": [],
+        "source_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_element_count.cpp",
+          "size": 1491,
+          "sha256": "da39df669bdffc0fda445dd46d5fc604f8f68ddb13c30c9465d6d968c1c7ff8c"
+        },
+        "header_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_element_count.hpp",
+          "size": 1456,
+          "sha256": "3ae755f3044c40fdae17d4565be1d3a53ebea34b19f74060ef91d551a6a15696"
+        },
+        "complete_helper_ABI_qualification_pending": true,
+        "saved_analysis_publication_pending": false,
+        "abi_compatible": false,
+        "game_validated": false,
+        "qualification": "WholeNative008ef7f0..008ef81a 42B17 independently reviewed and reconstructed in raw MSVCWin32 Source. ECX readable stable actual record; no stackargs/plainRET, noCALL/writes/providers. Tags9/10 unsignedsize24>>2, tag11 exactunsigned/12 by MULAAAAAAAB-high/SHR3, others0withoutsize read. ECX/nonvol/DF/ES preserve; EDX changes onlytag11 highproduct; SHR C5 excludes undefinedAF/OF, defaultXOR8C5=44 excludesAF. No class/child/ownership/wholeclone admission. Fresh currentMain build/all3existingchecksPASS,4051 actualinputs unchanged. Actual productionI386 COFF whole42 body literal42 checked; only expected symbolicCALL operands[] excluded. Complete linked helper/caller/provider/gated singleprocess fixture remains pending; Source credit0, not binaryreplacement/game proof."
+      },
+      "saved_analysis_publication_pending": false,
+      "fixture_requirements": {
+        "enabled": true,
+        "Root_only_admission": true,
+        "whole_Native_bytes": 42,
+        "whole_Native_instructions": 17,
+        "contract": "ECX readable stable actual record; no stackargs/plainRET, noCALL/writes/providers. Tags9/10 unsignedsize24>>2, tag11 exactunsigned/12 by MULAAAAAAAB-high/SHR3, others0withoutsize read. ECX/nonvol/DF/ES preserve; EDX changes onlytag11 highproduct; SHR C5 excludes undefinedAF/OF, defaultXOR8C5=44 excludesAF. No class/child/ownership/wholeclone admission.",
+        "source_body_reconstructed_and_compiled": true,
+        "complete_helper_caller_provider_frame_and_single_process_pending": true,
+        "old_helper_object_stage_or_process_replay_allowed": false,
+        "game_validated": false
+      },
+      "Root_saved_raw_Source_analysis_publication": {
+        "passed": true,
+        "Source_admission_credit": 0,
+        "addresses": [
+          "008ef3e0",
+          "008ef460",
+          "008ef7f0"
+        ],
+        "saved_provisional_names_and_raw_evidence": true,
+        "preserving_old_names_and_comments": true,
+        "previous_values_record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20261008T234552Z.json",
+          "size": 4927,
+          "sha256": "805875a518ded9b5a5f8cef35ec51702deeb908448851f532b848f5e5a0c3ea5"
+        },
+        "forced_affected_exports": true,
+        "program": "/battlestationspacific.exe",
+        "project": "C:/Users/sqz269/bsp.gpr",
+        "complete_helper_ABI_qualification_pending": true,
+        "abi_compatible": false,
+        "game_validated": false,
+        "logs": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_live_program.log",
+            "size": 40,
+            "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_annotations.log",
+            "size": 297,
+            "sha256": "2f66fd4a1851a4c6e6f92dec1442bc8d2166c3fed4d1e6856784107ded3ae677"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_exports.log",
+            "size": 69,
+            "sha256": "128b8664545b22f1d82269d10d6aa74fe3f90cf6670bf3daae4cf0ba3276bf9b"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_snapshot.log",
+            "size": 295,
+            "sha256": "32e2df3a455f13556b6b94b6180da6958800f091b96eb54e4296bd508b169e9f"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_property_three_Source_primary_index.log",
+            "size": 16,
+            "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+          }
+        ]
+      }
     }
   ],
   "snapshot_after_analysis": {
