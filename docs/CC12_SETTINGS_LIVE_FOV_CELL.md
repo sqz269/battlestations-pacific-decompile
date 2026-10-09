@@ -1,5 +1,12 @@
 # CC12: retained native settings FOV cell
 
+Primary integration: the normal MSVC Win32 build and all three existing checks
+passed. The complete emitted accessor is 14 bytes/5 instructions: it obtains
+the guarded process owner and returns its actual +34h address. Its exact core
+library member is retained; the accessor is absent from the game map, so the
+GlobalConfig application binding remains open. See
+[primary review](../reports/cc12_settings_world_source_primary_review.json).
+
 `GameNativeSettingsApplication::fov_divisor_00f889b4()` now returns the actual
 `float` subobject at `+34h` in the canonical process-owned `BCh` settings object.
 It is suitable for the existing `NativeGlobalConfigLoadContext` reference field.

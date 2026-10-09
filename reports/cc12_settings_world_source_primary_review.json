@@ -1,0 +1,192 @@
+{
+  "status": "source_review_and_normal_win32_build_passed",
+  "utc": "2026-10-09T02:54:22.029092+00:00",
+  "worker_commits": [
+    "bce4e55035e724c4dbc31f5d3c8af64cb3380cf8",
+    "a017a75fc7dadd47e77ccd29fe753dae716bd102"
+  ],
+  "build_exit": {
+    "last_native_exit_code": 0,
+    "finished_utc": "2026-10-09T02:49:02.8560491Z",
+    "started_utc": "2026-10-09T02:48:34.7469122Z",
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "build_output_receipt": "Native stdout observed in exec session24627. PowerShell transcript contains only host framing; retained CTest LastTest.log records all3 passes. No build/test rerun for logging.",
+  "before_source_fingerprints": {
+    "utc": "2026-10-09T02:48:32.152036+00:00",
+    "pins": [
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 16092,
+        "sha256": "310cd0e313b8b4b286eb49ee8f3b3545b650e8caa9abd1b23b10f2ae7ecdf164"
+      },
+      {
+        "path": "include/bsp/native_game_settings_owner.hpp",
+        "bytes": 5980,
+        "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+      },
+      {
+        "path": "include/bsp/game_native_settings_application.hpp",
+        "bytes": 2280,
+        "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760"
+      },
+      {
+        "path": "src/game_native_settings_application.cpp",
+        "bytes": 11456,
+        "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a"
+      },
+      {
+        "path": "src/game_native_settings_process.cpp",
+        "bytes": 7791,
+        "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+      },
+      {
+        "path": "src/native_game_settings_owner.cpp",
+        "bytes": 7785,
+        "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+      },
+      {
+        "path": "include/bsp/native_world_parent_headers.hpp",
+        "bytes": 1906,
+        "sha256": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba"
+      },
+      {
+        "path": "src/native_world_parent_headers.cpp",
+        "bytes": 1819,
+        "sha256": "15c7dbf48d091d94e46f8ed9174e02a2f3338fcd43410d0a980415eaf5807685"
+      },
+      {
+        "path": "include/bsp/native_parent_list_header_storage.hpp",
+        "bytes": 1026,
+        "sha256": "f462efb6557acb2d52dbc4bd6c4e439aace97613652db6e82881ea4fd8c40aca"
+      },
+      {
+        "path": "src/native_parent_list_header_storage.cpp",
+        "bytes": 887,
+        "sha256": "e8adeb28a7deeb4b3fbe14c483fc6e0207de3c8347960787eb696a7611c2677d"
+      },
+      {
+        "path": "include/bsp/native_parent_header_destructor_callback.hpp",
+        "bytes": 493,
+        "sha256": "6169d09c5cd644250bda3407eb4c023e081f114ffd8a055c4dcd0afcaadfd600"
+      },
+      {
+        "path": "src/native_parent_header_destructor_callback.cpp",
+        "bytes": 694,
+        "sha256": "b4fe5bd5576702321b43911d47205f0af6022c20a018cd74b0deae12df0da23d"
+      },
+      {
+        "path": "include/bsp/native_parent_header_clear.hpp",
+        "bytes": 1141,
+        "sha256": "b67b449dec89b1298b3d330e36a7f628a1a523d8eb1f8d0aa9c78448f4c70dee"
+      },
+      {
+        "path": "src/native_parent_header_clear.cpp",
+        "bytes": 1842,
+        "sha256": "8755aa1345bb5ad1897f5e6b7f77909a9a3bfd7f55977968e80a17edc1f28c4f"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 198705,
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      }
+    ]
+  },
+  "same_sources_rechecked_and_retained_after_build": true,
+  "units": [
+    {
+      "source": "src/native_world_parent_headers.cpp",
+      "object_sha256": "9aa9554f8f9f875c661d49db34c866f6cbbc9bb5b6b489fabbb838bcc2a18576",
+      "roots": [
+        {
+          "symbol": "?initialize_native_world_parent_headers@bsp@@YAXPAX@Z",
+          "bytes": 49,
+          "instructions": 23,
+          "calls": [
+            "?initialize_native_parent_list_header_storage_004b7ec0@bsp@@YIPAXPAXI@Z",
+            "?initialize_native_parent_list_header_storage_004b7ec0@bsp@@YIPAXPAXI@Z"
+          ]
+        },
+        {
+          "symbol": "?clear_native_world_parent_headers@bsp@@YAXPAX@Z",
+          "bytes": 53,
+          "instructions": 22,
+          "calls": [
+            "?destroy_native_parent_header_004c2d30@bsp@@YIXPAXI@Z",
+            "?destroy_native_parent_header_004c2d30@bsp@@YIXPAXI@Z"
+          ]
+        }
+      ],
+      "unique_whole_library_member": {
+        "name": "bsp_core.dir\\Release\\native_world_parent_headers.obj",
+        "header_offset": 63741386,
+        "payload_file_offset": 63741446,
+        "bytes": 1182,
+        "sha256": "9aa9554f8f9f875c661d49db34c866f6cbbc9bb5b6b489fabbb838bcc2a18576"
+      },
+      "external_boundaries": [
+        "?destroy_native_parent_header_004c2d30@bsp@@YIXPAXI@Z",
+        "?initialize_native_parent_list_header_storage_004b7ec0@bsp@@YIPAXPAXI@Z"
+      ]
+    },
+    {
+      "source": "src/game_native_settings_application.cpp",
+      "object_sha256": "f0839261c33de080ec7e2553924d33a911ff5f3059bfc01ef17b760685621902",
+      "roots": [
+        {
+          "symbol": "?fov_divisor_00f889b4@GameNativeSettingsApplication@game@bsp@@QBEADMXZ",
+          "bytes": 14,
+          "instructions": 5,
+          "calls": [
+            "?settings@GameNativeSettingsProcess@game@bsp@@QAEAAUNativeGameSettingsStorage@3@XZ"
+          ]
+        }
+      ],
+      "unique_whole_library_member": {
+        "name": "bsp_core.dir\\Release\\game_native_settings_application.obj",
+        "header_offset": 56566708,
+        "payload_file_offset": 56566768,
+        "bytes": 154541,
+        "sha256": "f0839261c33de080ec7e2553924d33a911ff5f3059bfc01ef17b760685621902"
+      },
+      "external_boundaries": [
+        "?settings@GameNativeSettingsProcess@game@bsp@@QAEAAUNativeGameSettingsStorage@3@XZ"
+      ]
+    }
+  ],
+  "core_library_sha256": "fc1b4a39e3abd3c92889e0bd0d64572469ee2478cf99f22bca897d46bbe7737a",
+  "cpp_contract": {
+    "settings": "Actual float member+34 in unchanged BC/align4 owner; process-retained direct const volatile reference, existing ready guard; no new Original ABI claim.",
+    "world": "Fresh actual World root+0C and97 array headers+18/strideC; real callback ascending initialization and descending clear/root-last; ordinary C++ interfaces, no full World or general CRT/EH binding."
+  },
+  "header13_dependency": {
+    "published_commit": "7fa18e18d",
+    "current_source_admission": 1,
+    "source_changed_since_build_fingerprints": false,
+    "note": "Worker pending snapshot is historical; current peer publication qualifies the same Source helper. Root did not rerun the peer fixture."
+  },
+  "application_roots_absent_from_game_map": true,
+  "credit": {
+    "additional_original_functions": 0,
+    "actual_storage_composition_fragment": 1,
+    "full_world": 0,
+    "new_api_application_binding": 0,
+    "gameplay": 0
+  },
+  "limitations": [
+    "16 Source/recipe fingerprints captured before build; physical contents rechecked/retained afterward. No whole compiler/OS/load provenance claim.",
+    "Whole emitted COFF and exact core members reviewed. Positive local symbol-index graphs keep external provider bodies as explicit boundaries.",
+    "Existing LNK4006 duplicate spawn_request_id_matches warning remains; no new test/probe/fixture executed.",
+    "Current Source startup observation is separately recorded; these new roots remain absent from the game map."
+  ]
+}

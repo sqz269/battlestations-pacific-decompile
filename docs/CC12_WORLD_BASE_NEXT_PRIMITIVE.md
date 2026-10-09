@@ -1,5 +1,13 @@
 # World base next primitive (CC12)
 
+Primary integration: registered and built; all three existing checks passed.
+The emitted initialization/clear roots are 49/53 bytes and use the real header
+callbacks. Main `7fa18e18d` subsequently admitted the same unchanged Header13
+Source dependency; the pending/unbuilt statements below preserve the worker's
+earlier snapshot. This composition remains absent from the game map and does
+not establish full World lifetime. See the
+[primary review](../reports/cc12_settings_world_source_primary_review.json).
+
 The next concrete storage edge is the **World-specific root and 97-header
 profile**, not another header constructor or a full World constructor. Main
 `0b2eede10` has the actual header initializer, raw clear and destructor callback,

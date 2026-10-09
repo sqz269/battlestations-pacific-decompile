@@ -1,0 +1,201 @@
+{
+  "status": "current_source_three_tick_title_startup_passed_gameplay_unvalidated",
+  "ordinary_initial_failure": {
+    "schema": 1,
+    "started_utc": "2026-10-09T02:43:24.636928+00:00",
+    "source_head": "0b2eede1007b74f45a1a85622f359a288a4fbd89",
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "bytes": 5079552,
+      "sha256": "50f942443e2e73d82bd84b5038e5d8b41c5601897cb0e062d08a8c25b5a13ad1"
+    },
+    "original_image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "mutex_preflight": {
+      "name_from_native_00d16a64": "MidwayThreadMutex",
+      "open_error": 2
+    },
+    "process_preflight": [],
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "3",
+      "--game-root",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\personal",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\game.log",
+      "--window-resolution",
+      "1280x720",
+      "--screenshot",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\startup.png"
+    ],
+    "scope": "current ordinary Source startup observation; no original ABI or gameplay acceptance",
+    "bootstrap_parent_pid": 33516,
+    "exit_code": 3221225477,
+    "finished_utc": "2026-10-09T02:43:26.468730+00:00",
+    "retained_outputs": [
+      {
+        "path": "console.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "game.log",
+        "bytes": 7101,
+        "sha256": "904f3201d4c1e87bc2e1aa741f49eb91c9741f730ac7107afd6c85cf4be4a50a"
+      },
+      {
+        "path": "personal\\Battlestations-Pacific\\options.txt",
+        "bytes": 226,
+        "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c"
+      }
+    ]
+  },
+  "debugger_capture": {
+    "started_utc": "2026-10-09T02:47:11.624913+00:00",
+    "command": [
+      "C:\\Program Files\\WindowsApps\\Microsoft.WinDbg_1.2610.1001.0_x64__8wekyb3d8bbwe\\x86\\cdb.exe",
+      "-o",
+      "-g",
+      "-G",
+      "-c",
+      "sxd -c2 \".echo BSP_SECOND_CHANCE_AV; .ecxr; r; kv 20; lm; .dump /m J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\startup_av.dmp; q\" av; g",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "3",
+      "--game-root",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\personal",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\debug_game.log",
+      "--window-resolution",
+      "1280x720",
+      "--screenshot",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\startup.png"
+    ],
+    "scope": "debugger capture after observed ordinary startup AV; no validation credit",
+    "debugger_pid": 111268,
+    "exit_code": 2147942430,
+    "finished_utc": "2026-10-09T02:47:14.577312+00:00"
+  },
+  "debugger_qualification": "Observed C0000008 invalid-handle at NtClose while installed xlive loads, not current AV replay; no current crash PC attribution. Prior installed-shim investigation and unchanged physical DLL support recurrence.",
+  "genuine_sdk_startup": {
+    "schema": 1,
+    "private_runtime": {
+      "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime",
+      "sha256": {
+        "xlive.dll": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+        "msidcrl40.dll": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+        "ppcrlconfig.dll": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+        "xlivefnt.dll": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+      }
+    },
+    "working_tree_diff": "CMakeLists.txt | 1 +\n 1 file changed, 1 insertion(+)",
+    "source_fingerprints": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_settings_world_source_primary_review\\before_source.json",
+    "started_utc": "2026-10-09T02:51:19.712086+00:00",
+    "source_head": "bccbfa0312c2eaf4add2c2717951d3522773c533",
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "bytes": 5079552,
+      "sha256": "f7aedac68778c38f8b8526db15f900b175d0164dd858b92e39145c0c854ccdf7"
+    },
+    "original_image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "mutex_preflight": {
+      "name_from_native_00d16a64": "MidwayThreadMutex",
+      "open_error": 2
+    },
+    "process_preflight": [],
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "3",
+      "--game-root",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\genuine\\personal",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\genuine\\game.log",
+      "--window-resolution",
+      "fit",
+      "--screenshot",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\genuine\\startup.png",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\gfwl-private-runtime\\msidcrl40.dll"
+    ],
+    "scope": "current ordinary Source startup observation; no original ABI or gameplay acceptance",
+    "bootstrap_parent_pid": 67004,
+    "exit_code": 0,
+    "finished_utc": "2026-10-09T02:51:26.492932+00:00",
+    "retained_outputs": [
+      {
+        "path": "console.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "game.log",
+        "bytes": 49031,
+        "sha256": "58814fa8bf0bd2ea0e25cba30f2722dbf31811c3e83383aab87c5752075b4106"
+      },
+      {
+        "path": "personal\\Battlestations-Pacific\\options.txt",
+        "bytes": 226,
+        "sha256": "f871b61acf20319045e8d07b87f69d66d9562308920456537d0103200e2a6b4c"
+      },
+      {
+        "path": "startup.png",
+        "bytes": 2051947,
+        "sha256": "5b5b4c38676629fc46fece4aeac358936fc90661980f5ff8dfc7d9dcfee30d07"
+      }
+    ]
+  },
+  "source_build_review": "reports/cc12_settings_world_source_primary_review.json",
+  "observed_summaries": [
+    "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1920x1080 frames_presented=2 presents_skipped=1 loop_finished=1 exit_code=0",
+    "summary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=3/3",
+    "summary options_file=0 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\genuine\\personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=1920x1080 fullscreen=1 vsync=1 antialias=0",
+    "summary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=1 locale_keys=6856 locale_files=1",
+    "summary fonts_loaded=6 font_resource_opens=19 fingerprint_defined_bytes=240",
+    "summary gui_resources=9 pages=5/5 widgets=29 widgets_with_texture=22",
+    "summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678 textures=13 quads=61 frames=3",
+    "summary init_tail hardware_probe=1 stored_values=0 factories=4 parsers=8 pak_registry=1 pak_lock=1 decals=3",
+    "summary frontend title_init=1 press_start_slot=92 screens=0 screen_pages=3 pump_frames=3 enters=1 exits=0 commits=1",
+    "summary mainmenu press_start_frame=-1 injected=0 shell=0 manager=0 screen=0 step=PressStartPoll state=2",
+    "summary text bridge=1 widgets=2 runs=2 glyphs=55 quads=55",
+    "summary screenshot=1 frame=-1 path=J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_current_startup_observation\\genuine\\startup.png",
+    "host methods 120 concrete, 44 unimplemented",
+    "summary native renderer lost device: lost_polls=0 holds=0 recreations=0 create_failures=0 resets=1 reset_failures=0 faked_polls=0 hold_bound=1 (00B2ABD0/00B29670, packet cc9_d3d_device_lost)"
+  ],
+  "visual_review": {
+    "image": "local/cc12_current_startup_observation/genuine/startup.png",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "observed": "Battlestations main-menu banner, Pacific map and login/press-enter prompt, lower Midway/Eidos branding. Actual installed assets include AlterBSP login text; original-content visual parity not inferred."
+  },
+  "limits": [
+    "Three ticks:2 presents/1 skipped; no input injected, no menu selection, mission or combat.44 unimplemented host methods remain.",
+    "Settings options output uses isolated personal directory. Save-storage constructor still selected C:/Users/sqz269/Documents/Battlestations-Pacific/save; no pre-run folder preimage was retained, so no blanket unchanged-save-directory claim.",
+    "No installed game DLL or PE was replaced/patched. Genuine SDK/runtime already retained in ignored local/gfwl-private-runtime; explicit options select it.",
+    "Worker audit reports all four private files match prior Microsoft runtime; no current loaded-DLL trace for successful ordinary run.",
+    "Default direct game launch still selects incompatible game-local shim; explicit genuine SDK route is required in this installation.",
+    "FOV getter and World parent composition remain absent from bsp_game map. Title startup does not validate those helpers or actual fullGame/fullWorld/GlobalConfig binding."
+  ],
+  "credit": {
+    "observed_finite_source_startup": 1,
+    "original_binary_ABI": 0,
+    "complete_faithful_game_startup": 0,
+    "gameplay": 0
+  }
+}
