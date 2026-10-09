@@ -1,0 +1,1911 @@
+{
+  "schema": "bsp.cc12.native_invalid_parameter_noinfo_call_source.v1",
+  "packet": "cc12_native_invalid_parameter_noinfo_call_source",
+  "kind": "qualified_uncompiled_Source_candidate",
+  "created_utc": "2026-10-09T16:23:59.228547+00:00",
+  "baseline_revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+  "worker": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi",
+  "owner": "agent/cc12_lua_variant_copy_child_abi",
+  "owned_addresses": [
+    "00bf6713"
+  ],
+  "owned_outputs": [
+    "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+    "src/native_invalid_parameter_noinfo_call.cpp",
+    "docs/CC12_NATIVE_INVALID_PARAMETER_NOINFO_CALL_SOURCE.md",
+    "reports/cc12_native_invalid_parameter_noinfo_call_source.json"
+  ],
+  "conclusion": "Standalone naked Win32 cdecl void Source wrapper preserves Native16 nine-operation text schedule with five zero padding DWORDs and an actual SDK zero-argument CRT import. Provider equivalence, emitted body/import graph, build and admission remain open.",
+  "credit": {
+    "new_admitted_Source_functions": 0,
+    "new_admitted_Source_bytes": 0,
+    "Original_ABI": 0,
+    "runtime": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "candidate_size_domain": {
+    "accepted_Native_owned_bytes": 16,
+    "accepted_Native_owned_instructions": 9,
+    "candidate_Source_text_operations": 9,
+    "new_Source_function_definitions": 1,
+    "compiled_Source_bytes": null,
+    "compiled_Source_instructions": null,
+    "expected_only_if_normal_FF15_import_lowering": {
+      "bytes": 17,
+      "instructions": 9,
+      "call_instruction_bytes": 6
+    },
+    "expected_size_is_not_compiler_evidence": true
+  },
+  "scope": {
+    "fresh_Native_PE_bytes_read": "00BF6713..00BF6722 only",
+    "Native36_body_or_other_Native_provider_caller_data_IAT_window_opened": false,
+    "Ghidra_queries_or_mutations": false,
+    "Native_names_or_prototypes_changed": false,
+    "CMake_or_ledger_changed": false,
+    "build_test_probe_or_runtime_execution": false,
+    "production_Runtime_member_binding_changed": false,
+    "assert99_or_parent691_binding_changed": false,
+    "local_capture_helpers_are_ignored_and_do_not_compile_or_execute_candidate": true
+  },
+  "accepted_receipt_and_doc_pins": [
+    {
+      "path": "reports/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 144503,
+      "sha256": "7e8ccf8c7c1eee10f0d212267165cdc2843915760e8981d68e82a0682422f0f4",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 144503,
+      "physical_sha256": "7e8ccf8c7c1eee10f0d212267165cdc2843915760e8981d68e82a0682422f0f4",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_INVALID_PARAMETER_PROVIDER_ABI_READINESS.md",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 12045,
+      "sha256": "054d4064972525ac981930aba0b3f5b096a7047aac94cf06581becf7d9d63512",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 12045,
+      "physical_sha256": "054d4064972525ac981930aba0b3f5b096a7047aac94cf06581becf7d9d63512",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "reports/cc12_native_crt_five_zero_argument_target_ABI_readiness.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 286393,
+      "sha256": "0604279ae80fa3913163fec92c48fcafaff47219a901959c1bf409ad7d88a86e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 286393,
+      "physical_sha256": "0604279ae80fa3913163fec92c48fcafaff47219a901959c1bf409ad7d88a86e",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_CRT_FIVE_ZERO_ARGUMENT_TARGET_ABI_READINESS.md",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 12988,
+      "sha256": "0c567beab6188bdee8e7175a1bd805aa4ef50762ddd6d62655cab2f2d00f8e13",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 12988,
+      "physical_sha256": "0c567beab6188bdee8e7175a1bd805aa4ef50762ddd6d62655cab2f2d00f8e13",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 97308,
+      "sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 97308,
+      "physical_sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_SUBNODE_BASE_CLEANUP_SOURCE.md",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 13807,
+      "sha256": "fe6f426412b4b3d31e3deec5c48ea5d6b5945dbc59b62db2c9b2473e0b46ab22",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 13807,
+      "physical_sha256": "fe6f426412b4b3d31e3deec5c48ea5d6b5945dbc59b62db2c9b2473e0b46ab22",
+      "physical_matches_canonical_after_LF_normalization": true
+    }
+  ],
+  "fresh_Native16_PE_replay": {
+    "accepted16_receipt": "reports/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness.json",
+    "accepted36_receipt": "reports/cc12_native_crt_five_zero_argument_target_ABI_readiness.json",
+    "original_PE_pin": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "image_base": "00400000",
+    "address": "00BF6713",
+    "end_inclusive": "00BF6722",
+    "rva": "007F6713",
+    "file_offset": 8349459,
+    "bytes": 16,
+    "hex": "33c05050505050e8d0ffffff83c414c3",
+    "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+    "instructions": [
+      {
+        "address": "00BF6713",
+        "bytes": "33c0",
+        "size": 2,
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "00BF6715",
+        "bytes": "50",
+        "size": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF6716",
+        "bytes": "50",
+        "size": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF6717",
+        "bytes": "50",
+        "size": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF6718",
+        "bytes": "50",
+        "size": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF6719",
+        "bytes": "50",
+        "size": 1,
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00BF671A",
+        "bytes": "e8d0ffffff",
+        "size": 5,
+        "mnemonic": "call",
+        "operands": "0xbf66ef"
+      },
+      {
+        "address": "00BF671F",
+        "bytes": "83c414",
+        "size": 3,
+        "mnemonic": "add",
+        "operands": "esp, 0x14"
+      },
+      {
+        "address": "00BF6722",
+        "bytes": "c3",
+        "size": 1,
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "independent_decoder": "capstone 5.0.7",
+    "matches_all_accepted16_PE_bytes_and_instruction_records": true,
+    "fresh_live_Ghidra_query": false,
+    "accepted_Ghidra_gate_inherited_only": {
+      "saved_extent_verified_before_capture": true,
+      "live_PE_bytes_equal": 16,
+      "independent_decode_instructions": 9,
+      "all_saved_instruction_starts_equal_independent_decode": true,
+      "listing_gaps_or_unowned_required_continuation": [],
+      "all_owned_reachable_under_compatible_provider_return": true,
+      "concrete_Native_provider_return_or_nonreturn_proved": false,
+      "function_count_unchanged": true,
+      "metadata_names_or_param_count_do_not_replace_physical_delivery": true
+    },
+    "saved_name_inherited_unchanged": "LIBCRT_unmatched_00bf6713",
+    "Native36_name_inherited_unchanged": "LIBCRT_unmatched_00bf66ef",
+    "Native36_live_PE_listing_or_body_reopened": false,
+    "Native36_global_0109DD64_value_read": false,
+    "other_Native_bodies_data_IAT_handlers_or_callers_opened": false
+  },
+  "all9_Native_to_Source_instruction_mapping": [
+    {
+      "address": "00BF6713",
+      "bytes": "33c0",
+      "size": 2,
+      "mnemonic": "xor",
+      "operands": "eax, eax",
+      "Source_operation": "xor eax, eax",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 15,
+      "Source_text_order": 1,
+      "mapping": "same physical operation in Source text"
+    },
+    {
+      "address": "00BF6715",
+      "bytes": "50",
+      "size": 1,
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_operation": "push eax",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 16,
+      "Source_text_order": 2,
+      "mapping": "same physical operation in Source text"
+    },
+    {
+      "address": "00BF6716",
+      "bytes": "50",
+      "size": 1,
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_operation": "push eax",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 17,
+      "Source_text_order": 3,
+      "mapping": "same physical operation in Source text"
+    },
+    {
+      "address": "00BF6717",
+      "bytes": "50",
+      "size": 1,
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_operation": "push eax",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 18,
+      "Source_text_order": 4,
+      "mapping": "same physical operation in Source text"
+    },
+    {
+      "address": "00BF6718",
+      "bytes": "50",
+      "size": 1,
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_operation": "push eax",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 19,
+      "Source_text_order": 5,
+      "mapping": "same physical operation in Source text"
+    },
+    {
+      "address": "00BF6719",
+      "bytes": "50",
+      "size": 1,
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_operation": "push eax",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 20,
+      "Source_text_order": 6,
+      "mapping": "same physical operation in Source text"
+    },
+    {
+      "address": "00BF671A",
+      "bytes": "e8d0ffffff",
+      "size": 5,
+      "mnemonic": "call",
+      "operands": "0xbf66ef",
+      "Source_operation": "call _invalid_parameter_noinfo",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 21,
+      "Source_text_order": 7,
+      "mapping": "qualified current Source CRT call replaces Native direct child"
+    },
+    {
+      "address": "00BF671F",
+      "bytes": "83c414",
+      "size": 3,
+      "mnemonic": "add",
+      "operands": "esp, 0x14",
+      "Source_operation": "add esp, 14h",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 22,
+      "Source_text_order": 8,
+      "mapping": "same physical operation in Source text"
+    },
+    {
+      "address": "00BF6722",
+      "bytes": "c3",
+      "size": 1,
+      "mnemonic": "ret",
+      "operands": "",
+      "Source_operation": "ret",
+      "Source_path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "Source_line": 23,
+      "Source_text_order": 9,
+      "mapping": "same physical operation in Source text"
+    }
+  ],
+  "complete_Source_entry_stack_register_flags_and_return_contract": {
+    "Source_public_API": {
+      "qualified_name": "bsp::invoke_native_invalid_parameter_00bf6713",
+      "return_type": "void",
+      "calling_convention": "__cdecl",
+      "formal_arguments": [],
+      "naked_MSVC_Win32_body": true,
+      "noexcept": false,
+      "noreturn": false,
+      "receiver_or_hidden_context_added": false,
+      "semantic_EAX_result_promised": false,
+      "Native_CRT_symbol_identification_proved": false
+    },
+    "notation": {
+      "S": "ESP at wrapper entry",
+      "T": "Source provider entry ESP=S-24",
+      "P": "actual ESP immediately after Source provider returns",
+      "R": "(P+0x14) modulo2^32"
+    },
+    "local_stack_writes_in_order": [
+      {
+        "operation": "PUSH EAX #1",
+        "address_relative_to_S": -4,
+        "bytes": 4,
+        "initial_value": 0
+      },
+      {
+        "operation": "PUSH EAX #2",
+        "address_relative_to_S": -8,
+        "bytes": 4,
+        "initial_value": 0
+      },
+      {
+        "operation": "PUSH EAX #3",
+        "address_relative_to_S": -12,
+        "bytes": 4,
+        "initial_value": 0
+      },
+      {
+        "operation": "PUSH EAX #4",
+        "address_relative_to_S": -16,
+        "bytes": 4,
+        "initial_value": 0
+      },
+      {
+        "operation": "PUSH EAX #5",
+        "address_relative_to_S": -20,
+        "bytes": 4,
+        "initial_value": 0
+      },
+      {
+        "operation": "CALL actual Source API",
+        "address_relative_to_S": -24,
+        "bytes": 4,
+        "value": "actual Source continuation address; differs from Native00BF671F"
+      }
+    ],
+    "Source_provider_delivery": {
+      "real_declaration": "_ACRTIMP_ALT void __cdecl _invalid_parameter_noinfo(void);",
+      "formal_arguments": 0,
+      "entry_ESP": "S-24",
+      "physical_words_above_call_return_slot": [
+        {
+          "offset_from_provider_entry_ESP": 4,
+          "initial_value": 0,
+          "classification": "unused padding for declared zero-argument Source API"
+        },
+        {
+          "offset_from_provider_entry_ESP": 8,
+          "initial_value": 0,
+          "classification": "unused padding for declared zero-argument Source API"
+        },
+        {
+          "offset_from_provider_entry_ESP": 12,
+          "initial_value": 0,
+          "classification": "unused padding for declared zero-argument Source API"
+        },
+        {
+          "offset_from_provider_entry_ESP": 16,
+          "initial_value": 0,
+          "classification": "unused padding for declared zero-argument Source API"
+        },
+        {
+          "offset_from_provider_entry_ESP": 20,
+          "initial_value": 0,
+          "classification": "unused padding for declared zero-argument Source API"
+        }
+      ],
+      "padding_is_not_fabricated_semantic_arguments": true,
+      "padding_immutable_or_inaccessible_to_provider": false,
+      "Native_fiveword_field_types_or_exact_child_arity_recovered": false,
+      "EAX": 0,
+      "ECX_EDX_EBX_ESI_EDI_EBP": "incoming values at call instruction",
+      "arithmetic_flags_at_call_instruction": {
+        "CF": 0,
+        "OF": 0,
+        "SF": 0,
+        "ZF": 1,
+        "PF": 1,
+        "AF": "undefined"
+      },
+      "other_flags": "unchanged by owned pre-call instructions"
+    },
+    "conditional_normal_return": {
+      "assumption": "Provider returns to actual Source continuation with P=S-20 and usable current[S]",
+      "ADD": "ESP=R; compatible normal return gives R=S",
+      "RET": "Loads destination from current[R], then ESP=R+4; compatible normal return gives S+4",
+      "cleanup_bytes": 20,
+      "RET_immediate_bytes": 0,
+      "EAX": "provider result/residue, no semantic result promised",
+      "ECX_EDX": "provider values, no local restoration",
+      "EBX_ESI_EDI_EBP": "not written by owned operations; preservation depends on compatible provider",
+      "CF_PF_AF_ZF_SF_OF": "flags of ADD(P,20), retained by RET; not initial XOR flags",
+      "other_flags": "not restored locally; provider contract",
+      "incorrect_provider_stack_cleanup": "Not detected or repaired; ADD/RET use actual P/R",
+      "changed_padding_values": "Ignored by owned normal continuation",
+      "changed_return_slot": "RET uses the changed current value"
+    },
+    "arithmetic_flag_formulas_for_final_ADD": {
+      "width": 32,
+      "result": "R=(P+20)&0xffffffff",
+      "CF": "P+20>0xffffffff",
+      "PF": "even parity of R&0xff",
+      "AF": "((P^20^R)&0x10)!=0",
+      "ZF": "R==0",
+      "SF": "(R&0x80000000)!=0",
+      "OF": "((~(P^20)&(P^R))&0x80000000)!=0",
+      "no_runtime_or_fixture_evaluation": true
+    },
+    "backing_and_lifetime": {
+      "caller_return_slot": "readable and usable current[S] on compatible return",
+      "own_stack_write_extent": "24 bytes below S, including CALL return slot",
+      "provider_stack_needs": "additional external contract",
+      "non_stack_local_reads_or_writes": "none in owned Source text aside from linkage import operand",
+      "global_Handler_or_Runtime_object_added": false,
+      "provider_state_handler_lifetime_reentrancy_failure_and_exceptions": "external policy; not recovered by this wrapper"
+    },
+    "control_flow": {
+      "owned_operations": 9,
+      "calls": 1,
+      "plain_RET": 1,
+      "conditional_branches": 0,
+      "loops": 0,
+      "tail_transfers": 0,
+      "all_operations_execute_only_if_provider_returns": "final ADD and RET are conditional on compatible provider return",
+      "EH_handler_or_guard_or_catch_or_throw_translation_added": false,
+      "Source_provider_may_not_return": true,
+      "concrete_return_nonreturn_throw_or_termination_policy_proved": false,
+      "x87_SSE_or_stack_realignment_in_owned_text": false
+    }
+  },
+  "accepted_Native36_boundary_inherited_only": {
+    "address": "00BF66EF",
+    "extent": "00BF66EF..00BF6712",
+    "bytes": 36,
+    "instructions": 14,
+    "receipt": "reports/cc12_native_crt_five_zero_argument_target_ABI_readiness.json",
+    "saved_name": "LIBCRT_unmatched_00bf66ef",
+    "encoded_global_operand_address": "0109DD64",
+    "encoded_global_value_read": false,
+    "decode_edge": "CALL00C04FDE after pushing current DWORD operand",
+    "nonzero_route": "Late stack POPs then JMP returned EAX; tail retains current caller argument positions",
+    "zero_route": "PUSH2/CALL00C04EF3, late POPs, then JMP00BF65BB; tail retains current caller argument positions",
+    "five_values_preserved_immutable": false,
+    "concrete_tail_provider_behavior_proved": false,
+    "Source_zeroarg_API_equivalent_to_Native_global_lookup_hook_or_fiveword_tail_delivery": false,
+    "Source_name_identifies_Native_library_symbol": false,
+    "fresh_child_bytes_listing_data_or_handler_read": false
+  },
+  "current_SDK_and_generated_project_metadata": {
+    "project_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_core.vcxproj",
+      "bytes": 301836,
+      "sha256": "cbd47dc356edc11bcc281eec4f69ef04e357be34d55decf5a0f2256385a693bc"
+    },
+    "configuration": "Release|Win32",
+    "SDK": "10.0.26100.0",
+    "toolset": "v145",
+    "compile_settings": {
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "ExceptionHandling": "Sync",
+      "CallingConvention": null,
+      "Optimization": "MaxSpeed",
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\""
+    },
+    "candidate_registered_in_generated_project": false,
+    "SDK_header_pin": {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt.h",
+      "bytes": 127273,
+      "sha256": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc"
+    },
+    "declaration_line": 371,
+    "declaration": "_ACRTIMP_ALT void __cdecl _invalid_parameter_noinfo(void);",
+    "declaration_arity": 0,
+    "declaration_return": "void",
+    "declaration_calling_convention": "__cdecl",
+    "declaration_has_noreturn": false,
+    "declaration_has_noexcept": false,
+    "actual_header_included_directly_by_candidate": "corecrt.h",
+    "import_macro_evidence": [
+      {
+        "line": 132,
+        "text": "#ifndef _ACRTIMP"
+      },
+      {
+        "line": 133,
+        "text": "    #if defined _CRTIMP && !defined _VCRT_DEFINED_CRTIMP"
+      },
+      {
+        "line": 134,
+        "text": "        #define _ACRTIMP _CRTIMP"
+      },
+      {
+        "line": 135,
+        "text": "    #elif !defined _CORECRT_BUILD && defined _DLL"
+      },
+      {
+        "line": 136,
+        "text": "        #define _ACRTIMP __declspec(dllimport)"
+      },
+      {
+        "line": 137,
+        "text": "    #else"
+      },
+      {
+        "line": 138,
+        "text": "        #define _ACRTIMP"
+      },
+      {
+        "line": 139,
+        "text": "    #endif"
+      },
+      {
+        "line": 140,
+        "text": "#endif"
+      },
+      {
+        "line": 141,
+        "text": ""
+      },
+      {
+        "line": 142,
+        "text": "// If you need the ability to remove __declspec(import) from an API, to support static replacement,"
+      },
+      {
+        "line": 143,
+        "text": "// declare the API using _ACRTIMP_ALT instead of _ACRTIMP."
+      },
+      {
+        "line": 144,
+        "text": "#ifndef _ACRTIMP_ALT"
+      },
+      {
+        "line": 145,
+        "text": "    #define _ACRTIMP_ALT _ACRTIMP"
+      },
+      {
+        "line": 146,
+        "text": "#endif"
+      }
+    ],
+    "expected_import_model": "The existing /MD project normally selects dllimport through _ACRTIMP_ALT -> _ACRTIMP. Candidate preprocessor output/object/import relocation have not been compiled or inspected.",
+    "no_private_CRT_redeclaration_or_macro_override_in_candidate": true
+  },
+  "existing_Runtime_provider_boundary": {
+    "member": "bsp::NativeInputDeviceRuntime::invalid_parameter_00bf6713()",
+    "body": "void NativeInputDeviceRuntime::invalid_parameter_00bf6713() { _invalid_parameter_noinfo(); }",
+    "path": "src/native_input_device_runtime.cpp",
+    "line": 97,
+    "member_requires_real_object_API": true,
+    "member_or_interface_rebound_to_candidate": false,
+    "fake_Runtime_object_or_fiveargument_CRT_declaration_added": false,
+    "current3_provider_files": [
+      {
+        "path": "include/bsp/native_input_enumeration.hpp",
+        "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+        "bytes": 2814,
+        "sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_bytes": 2814,
+        "physical_sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+        "physical_matches_canonical_after_LF_normalization": true,
+        "matches_accepted_Native36_receipt": true,
+        "not_among_Source67_inputs": true
+      },
+      {
+        "path": "include/bsp/native_input_device_runtime.hpp",
+        "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+        "bytes": 7289,
+        "sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_bytes": 7289,
+        "physical_sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+        "physical_matches_canonical_after_LF_normalization": true,
+        "matches_accepted_Native36_receipt": true,
+        "not_among_Source67_inputs": true
+      },
+      {
+        "path": "src/native_input_device_runtime.cpp",
+        "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+        "bytes": 13772,
+        "sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+        "hash_domain": "canonical Git blob bytes",
+        "physical_bytes": 13772,
+        "physical_sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+        "physical_matches_canonical_after_LF_normalization": true,
+        "matches_accepted_Native36_receipt": true,
+        "not_among_Source67_inputs": true
+      }
+    ]
+  },
+  "prior_Source67_domain": {
+    "published_receipt_revision": "fbaefa43f0135f71e019bb995c48078c8fa3306f",
+    "input_count": 67,
+    "canonical_repository_inputs_replayed": true,
+    "current_artifacts_replayed": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "bytes": 73742308,
+        "sha256": "0bb1308c14dbc8498035eeef8df4b7fa09e3ac1770bb798d428f14152d28edb8",
+        "receipt_relative_path": "build/win32/Release/bsp_core.lib",
+        "matches_accepted_Source67_receipt": true,
+        "candidate_included_or_built": false
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "4e7dfe876d8903ee119c5c9ec7c31517dfdc085a7bb4b28bf1b9397a9cf69e84",
+        "receipt_relative_path": "build/win32/Release/bsp_game.exe",
+        "matches_accepted_Source67_receipt": true,
+        "candidate_included_or_built": false
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "7488eabf7a5d0ae0d7eca6eb2eb2092aae69087927760fd3276dfa557c1aa307",
+        "receipt_relative_path": "build/win32/bsp_game.map",
+        "matches_accepted_Source67_receipt": true,
+        "candidate_included_or_built": false
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "fae94c55906236b7d438f2848edd8be12cbc427711cefc6d276377f50a2f0d90",
+        "receipt_relative_path": "build/win32/Testing/Temporary/LastTest.log",
+        "matches_accepted_Source67_receipt": true,
+        "candidate_included_or_built": false
+      }
+    ],
+    "recorded_normal_build_inherited": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 42716,
+      "start_utc": "2026-10-09T15:51:21.776753+00:00",
+      "finish_utc": "2026-10-09T15:51:40.392145+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 67
+    },
+    "recorded_existing_checks_inherited": 3,
+    "whole_object_or_indexed_graph_reparsed": false,
+    "complete_owned_objects_in_prior_receipt": 12,
+    "positive_public_Core_roots_in_prior_receipt": 14,
+    "prior_import_metadata_inherited_only": {
+      "map_lines": [
+        {
+          "line": 1888,
+          "text": " 0001:0002b9a0       ?invalid_parameter_00bf6713@NativeInputDeviceRuntime@bsp@@UAEXXZ 1002c9a0 f   bsp_core:native_input_device_runtime.obj"
+        },
+        {
+          "line": 11409,
+          "text": " 0002:00000620       __imp___invalid_parameter_noinfo 103cc620     ucrt:api-ms-win-crt-runtime-l1-1-0.dll"
+        }
+      ],
+      "imports": [
+        {
+          "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "name": "_invalid_parameter_noinfo",
+          "Source_IAT_address": "103CC620",
+          "Source_image_base": "10000000"
+        }
+      ],
+      "current_exe_and_map_hashes_verified_before_and_after_metadata_read": true,
+      "actual_Source_method_call_operand_or_provider_body_opened": false,
+      "Native_IAT_or_data_window_opened": false
+    },
+    "candidate_included_in_prior_build_or_artifacts": false,
+    "historical_Source65_or_Native_aggregate_credit_reinterpreted": false
+  },
+  "current_repository_input_pins": [
+    {
+      "path": "reports/cc12_mission_lua_variant_invalid_parameter_provider_ABI_readiness.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 144503,
+      "sha256": "7e8ccf8c7c1eee10f0d212267165cdc2843915760e8981d68e82a0682422f0f4",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 144503,
+      "physical_sha256": "7e8ccf8c7c1eee10f0d212267165cdc2843915760e8981d68e82a0682422f0f4",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_INVALID_PARAMETER_PROVIDER_ABI_READINESS.md",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 12045,
+      "sha256": "054d4064972525ac981930aba0b3f5b096a7047aac94cf06581becf7d9d63512",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 12045,
+      "physical_sha256": "054d4064972525ac981930aba0b3f5b096a7047aac94cf06581becf7d9d63512",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "reports/cc12_native_crt_five_zero_argument_target_ABI_readiness.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 286393,
+      "sha256": "0604279ae80fa3913163fec92c48fcafaff47219a901959c1bf409ad7d88a86e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 286393,
+      "physical_sha256": "0604279ae80fa3913163fec92c48fcafaff47219a901959c1bf409ad7d88a86e",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_CRT_FIVE_ZERO_ARGUMENT_TARGET_ABI_READINESS.md",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 12988,
+      "sha256": "0c567beab6188bdee8e7175a1bd805aa4ef50762ddd6d62655cab2f2d00f8e13",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 12988,
+      "physical_sha256": "0c567beab6188bdee8e7175a1bd805aa4ef50762ddd6d62655cab2f2d00f8e13",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 97308,
+      "sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 97308,
+      "physical_sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_SUBNODE_BASE_CLEANUP_SOURCE.md",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 13807,
+      "sha256": "fe6f426412b4b3d31e3deec5c48ea5d6b5945dbc59b62db2c9b2473e0b46ab22",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 13807,
+      "physical_sha256": "fe6f426412b4b3d31e3deec5c48ea5d6b5945dbc59b62db2c9b2473e0b46ab22",
+      "physical_matches_canonical_after_LF_normalization": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 18785,
+      "sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18785,
+      "physical_sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 18785,
+      "receipt_recorded_physical_sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e",
+      "receipt_canonical_lf_sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 198705,
+      "receipt_recorded_physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "receipt_canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 11060,
+      "physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 11060,
+      "receipt_recorded_physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "receipt_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 7776,
+      "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 7776,
+      "physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 7776,
+      "receipt_recorded_physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "receipt_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2363,
+      "sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2363,
+      "physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2363,
+      "receipt_recorded_physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "receipt_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_cleanup.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1632,
+      "sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1632,
+      "physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1632,
+      "receipt_recorded_physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "receipt_canonical_lf_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2013,
+      "sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2013,
+      "physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2013,
+      "receipt_recorded_physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "receipt_canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_default_constructor.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1412,
+      "sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1412,
+      "physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1412,
+      "receipt_recorded_physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "receipt_canonical_lf_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1770,
+      "sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1770,
+      "physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1770,
+      "receipt_recorded_physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "receipt_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1698,
+      "sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1698,
+      "physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1698,
+      "receipt_recorded_physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "receipt_canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_allocator_owned_message_constructor.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1938,
+      "sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1938,
+      "physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1938,
+      "receipt_recorded_physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+      "receipt_canonical_lf_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2257,
+      "physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2257,
+      "receipt_recorded_physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "receipt_canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3232,
+      "physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 3232,
+      "receipt_recorded_physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "receipt_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2957,
+      "sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2957,
+      "physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2957,
+      "receipt_recorded_physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "receipt_canonical_lf_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2260,
+      "sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2260,
+      "physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2260,
+      "receipt_recorded_physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "receipt_canonical_lf_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 843,
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 843,
+      "physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 843,
+      "receipt_recorded_physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "receipt_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_constructor.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 761,
+      "sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 761,
+      "physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 761,
+      "receipt_recorded_physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "receipt_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 963,
+      "physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 963,
+      "receipt_recorded_physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "receipt_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_pending_tick_group_initialization.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1448,
+      "sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1448,
+      "physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1448,
+      "receipt_recorded_physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+      "receipt_canonical_lf_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2361,
+      "physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2361,
+      "receipt_recorded_physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "receipt_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2431,
+      "physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2431,
+      "receipt_recorded_physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "receipt_canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 18086,
+      "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18086,
+      "physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 18086,
+      "receipt_recorded_physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "receipt_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2293,
+      "physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2293,
+      "receipt_recorded_physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "receipt_canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2373,
+      "physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2373,
+      "receipt_recorded_physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "receipt_canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1845,
+      "physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1845,
+      "receipt_recorded_physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "receipt_canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1247,
+      "sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1247,
+      "physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1247,
+      "receipt_recorded_physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "receipt_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1882,
+      "physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1882,
+      "receipt_recorded_physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "receipt_canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2315,
+      "sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2315,
+      "physical_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2315,
+      "receipt_recorded_physical_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "receipt_canonical_lf_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2322,
+      "physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2322,
+      "receipt_recorded_physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "receipt_canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/plane_squadron.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 15252,
+      "sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 15252,
+      "physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 15252,
+      "receipt_recorded_physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "receipt_canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1446,
+      "physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1446,
+      "receipt_recorded_physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "receipt_canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 4372,
+      "receipt_recorded_physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "receipt_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 18720,
+      "sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18720,
+      "physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 18720,
+      "receipt_recorded_physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "receipt_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 18412,
+      "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 18412,
+      "physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 18412,
+      "receipt_recorded_physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "receipt_canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 51122,
+      "physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 51122,
+      "receipt_recorded_physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+      "receipt_canonical_lf_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 17789,
+      "physical_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 18326,
+      "receipt_recorded_physical_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+      "receipt_canonical_lf_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "scripts/build.ps1",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 1820,
+      "physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 1820,
+      "receipt_recorded_physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "receipt_canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 23671,
+      "physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 23671,
+      "receipt_recorded_physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "receipt_canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 6831,
+      "physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 6831,
+      "receipt_recorded_physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "receipt_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 593,
+      "sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 593,
+      "physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 593,
+      "receipt_recorded_physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "receipt_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_allocator_base_cleanup.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 894,
+      "sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 894,
+      "physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 894,
+      "receipt_recorded_physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "receipt_canonical_lf_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_allocator_base_copy_constructor.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2951,
+      "sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2951,
+      "physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2951,
+      "receipt_recorded_physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "receipt_canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_allocator_base_default_constructor.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 755,
+      "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 755,
+      "physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 755,
+      "receipt_recorded_physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "receipt_canonical_lf_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 979,
+      "sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 979,
+      "physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 979,
+      "receipt_recorded_physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "receipt_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_allocator_failure_object_constructor.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 764,
+      "sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 764,
+      "physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 764,
+      "receipt_recorded_physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "receipt_canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_allocator_owned_message_constructor.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2638,
+      "sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2638,
+      "physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2638,
+      "receipt_recorded_physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+      "receipt_canonical_lf_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 5460,
+      "physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 5460,
+      "receipt_recorded_physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "receipt_canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 4352,
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4352,
+      "physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 4352,
+      "receipt_recorded_physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "receipt_canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_lua_variant_link_repair_helpers.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 4367,
+      "sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4367,
+      "physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 4367,
+      "receipt_recorded_physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+      "receipt_canonical_lf_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_lua_variant_small_link_helpers.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2266,
+      "sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2266,
+      "physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2266,
+      "receipt_recorded_physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+      "receipt_canonical_lf_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 403,
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 403,
+      "physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 403,
+      "receipt_recorded_physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "receipt_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_pending_registry_constructor.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 997,
+      "sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 997,
+      "physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 997,
+      "receipt_recorded_physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "receipt_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3449,
+      "physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 3449,
+      "receipt_recorded_physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "receipt_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_pending_tick_group_initialization.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2898,
+      "sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2898,
+      "physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2898,
+      "receipt_recorded_physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+      "receipt_canonical_lf_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4563,
+      "physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 4563,
+      "receipt_recorded_physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "receipt_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 6911,
+      "physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 6911,
+      "receipt_recorded_physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "receipt_canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4127,
+      "physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 4127,
+      "receipt_recorded_physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "receipt_canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 4283,
+      "physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 4283,
+      "receipt_recorded_physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "receipt_canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3731,
+      "physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 3731,
+      "receipt_recorded_physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "receipt_canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 3108,
+      "sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3108,
+      "physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 3108,
+      "receipt_recorded_physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "receipt_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_tick_sublist_unlink.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2257,
+      "sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2257,
+      "physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2257,
+      "receipt_recorded_physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "receipt_canonical_lf_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_tick_subnode_base_cleanup.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 3164,
+      "sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 3164,
+      "physical_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 3164,
+      "receipt_recorded_physical_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "receipt_canonical_lf_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/native_tick_subnode_unlink_caller.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2743,
+      "sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2743,
+      "physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 2743,
+      "receipt_recorded_physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "receipt_canonical_lf_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/plane_squadron.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 6796,
+      "sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 6796,
+      "physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 6796,
+      "receipt_recorded_physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "receipt_canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 13257,
+      "receipt_recorded_physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "receipt_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 12785,
+      "sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 12785,
+      "physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 12785,
+      "receipt_recorded_physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "receipt_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 10576,
+      "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 10576,
+      "physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "receipt_recorded_physical_bytes": 10576,
+      "receipt_recorded_physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "receipt_canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "comparison_domain": "accepted canonical LF SHA256; receipt physical bytes may use CRLF",
+      "matches_accepted_Source67_receipt": true
+    },
+    {
+      "path": "include/bsp/native_input_enumeration.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 2814,
+      "sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 2814,
+      "physical_sha256": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "matches_accepted_Native36_receipt": true,
+      "not_among_Source67_inputs": true
+    },
+    {
+      "path": "include/bsp/native_input_device_runtime.hpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 7289,
+      "sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 7289,
+      "physical_sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "matches_accepted_Native36_receipt": true,
+      "not_among_Source67_inputs": true
+    },
+    {
+      "path": "src/native_input_device_runtime.cpp",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 13772,
+      "sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 13772,
+      "physical_sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9",
+      "physical_matches_canonical_after_LF_normalization": true,
+      "matches_accepted_Native36_receipt": true,
+      "not_among_Source67_inputs": true
+    },
+    {
+      "path": "config/target.json",
+      "revision": "fef0b981dcd77f0c85490c3ab15e78be046c0791",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "hash_domain": "canonical Git blob bytes",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_matches_canonical_after_LF_normalization": true
+    }
+  ],
+  "Source_text_validation": {
+    "operation_count": 9,
+    "operations": [
+      "xor eax, eax",
+      "push eax",
+      "push eax",
+      "push eax",
+      "push eax",
+      "push eax",
+      "call _invalid_parameter_noinfo",
+      "add esp, 14h",
+      "ret"
+    ],
+    "exact_owned_schedule_matches": true,
+    "references": [
+      "src\\native_invalid_parameter_noinfo_call.cpp:13:__declspec(naked) void __cdecl invoke_native_invalid_parameter_00bf6713() {",
+      "include\\bsp\\native_invalid_parameter_noinfo_call.hpp:27:void __cdecl invoke_native_invalid_parameter_00bf6713();"
+    ],
+    "no_production_consumer": true,
+    "no_CMake_registration": true,
+    "no_noexcept_or_noreturn_declaration": true,
+    "real_SDK_header_no_redeclaration": true,
+    "compile_or_link_or_execution_performed": false
+  },
+  "candidate_and_document_pins": [
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    },
+    {
+      "path": "docs/CC12_NATIVE_INVALID_PARAMETER_NOINFO_CALL_SOURCE.md",
+      "bytes": 10424,
+      "sha256": "b50036e39e1427647e8188c16dd1cca2d2390a20fcff273487d9211dd6b81058"
+    }
+  ],
+  "capture_artifact_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_native_invalid_parameter_noinfo_call/write_report.py",
+      "bytes": 12578,
+      "sha256": "b32cef79f3c57ec0d6443e94bea5d189c1458ea1e9cef1b578efb6787957e119"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_native_invalid_parameter_noinfo_call/capture.py",
+      "bytes": 12093,
+      "sha256": "23ea5250b4d84704b474e7e0d1f05ee56b19c81aca1a1e04b3aa35ad8e0b9901"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi/local/cc12_native_invalid_parameter_noinfo_call/capture.json",
+      "bytes": 83867,
+      "sha256": "64792e81d9cdd0568909097d90b5b0b98fc02bda799d7069565e36bbb114d4f2"
+    }
+  ],
+  "integrator_compile_and_admission_gate": {
+    "registration_pending": true,
+    "normal_MSVC_Win32_build_pending": true,
+    "whole_candidate_object_and_indexed_relocations_pending": true,
+    "verify_actual_nine_operation_payload_and_real_CRT_import": true,
+    "expected_source_public_symbol_and_import_symbol_names_need_compiled_review": true,
+    "normal_build_and_relevant_existing_checks_pending": true,
+    "forced_consumer_or_probe_required_by_this_packet": false,
+    "Source_admission_and_ledger_decision_owned_by_Root": true
+  },
+  "remaining_boundaries": [
+    "Source text is not compiled bytes, archive selection, linked reachability or runtime proof.",
+    "Normal return requires the actual Source provider to return with a compatible stack and usable return-slot backing.",
+    "Current UCRT handler/global selection, failure, nonreturn, exception, lifetime and reentrancy policy differs from or remains unproved against Native36.",
+    "Native36 global0109DD64 remains unread; its decoder/hook/handler/Watson implementations remain outside this packet.",
+    "Native16 physical five-word delivery does not identify exact Native child argument types.",
+    "Source call and fault/return addresses differ from original placement.",
+    "Parent691/assert99 and existing NativeInputDeviceRuntime member remain unbound to the new entry.",
+    "No Original ABI, startup, runtime or gameplay equivalence is admitted."
+  ]
+}
