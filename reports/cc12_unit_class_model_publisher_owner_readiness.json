@@ -1,0 +1,1309 @@
+{
+  "schema": "cc12_unit_class_model_publisher_owner_readiness_v1",
+  "created_utc": "2026-10-09T22:23:23.368780+00:00",
+  "packet": "cc12_unit_class_model_publisher_owner_readiness",
+  "status": "complete_whole_publisher_gate_receiver_prerequisite_identified_production_composition_held",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding",
+  "branch": "agent/cc12_unit_numbering_caller_receiver_binding",
+  "base_commit": "1172ce41243d31a7f27313797f39b8600f1cea90",
+  "scope": {
+    "Native_function": "00879590",
+    "files": [
+      "docs/CC12_UNIT_CLASS_MODEL_PUBLISHER_OWNER_READINESS.md",
+      "reports/cc12_unit_class_model_publisher_owner_readiness.json"
+    ],
+    "new_Native_children": [],
+    "new_Native_data_cells": [],
+    "Cxx_CMake_build_tests_probes_ledger_GPR_changes": false,
+    "existing_Source_and_historical_receipts_only_outside_gate": true
+  },
+  "decision": {
+    "production_composition_ready": false,
+    "new_Source_packet_preapproved": false,
+    "single_next_receiver_prerequisite": {
+      "address": "00749050",
+      "meaning": "Complete actual vehicle-class base construction on original 138h storage, composed with existing actual 0087C640.",
+      "current_gap": "No reconstructed body or production descriptor construction owner; current VehicleClassHost::construct_descriptor remains required and GameUnitsHost reads semantic Lua rows.",
+      "next_bounded_gate": "Whole-gate 00749050 only, recover its actual-storage construction/cleanup contract, and assess existing 0087C640 composition before any Source implementation.",
+      "already_opened_here": false,
+      "not_sufficient_for_full_route": "A constructor alone does not supply class registry lifetime, actual authored Mesh field loading, full current-target load/cache dispatch or a complete production unit/model chain."
+    },
+    "available_real_owners": [
+      "GameSingletonHost game factory and deletion context",
+      "GameNativeResourceApplication raw manager and parser publications",
+      "GameNativeVfsApplication shared string, VFS, counter/root/node domains"
+    ],
+    "rejected_substitutes": [
+      "semantic VehicleClassDescriptor or GameUnitSlot receiver cast",
+      "hand-built Mesh header passed off as authored class loading",
+      "extra publication or copied string/type domain",
+      "raw root accessor",
+      "numeric original function call",
+      "fallback resource/parser result"
+    ]
+  },
+  "evidence": {
+    "gate_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\gate_capture.json",
+      "bytes": 29562,
+      "sha256": "ea5afaa8e72c6a7a88599d3b3ee896edb240d4266da68bb229180fe1d6cb7ed6",
+      "canonical_lf_sha256": "ea5afaa8e72c6a7a88599d3b3ee896edb240d4266da68bb229180fe1d6cb7ed6"
+    },
+    "gate_script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\capture_gate.py",
+      "bytes": 3681,
+      "sha256": "7fa80e62d086074ce8326854b7a584f37fe6197cc569f16328d41d4edb6f10ad",
+      "canonical_lf_sha256": "7fa80e62d086074ce8326854b7a584f37fe6197cc569f16328d41d4edb6f10ad"
+    },
+    "Source_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\source_capture.json",
+      "bytes": 44260,
+      "sha256": "ea9a624b7401f6386411c2decac3916fd928e1babcee54fd3bcacf3a952a1c05",
+      "canonical_lf_sha256": "ea9a624b7401f6386411c2decac3916fd928e1babcee54fd3bcacf3a952a1c05"
+    },
+    "Source_script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\capture_sources.py",
+      "bytes": 6393,
+      "sha256": "e478306d4a54418ac146607bb1f66dc74008bc029e60c75d1240de20e8dc4dde",
+      "canonical_lf_sha256": "e478306d4a54418ac146607bb1f66dc74008bc029e60c75d1240de20e8dc4dde"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "function_count": 64730,
+    "identity_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\programs.json",
+        "bytes": 1065,
+        "sha256": "07b9d7377c4e90a4147566d5f230b7b610a2cc6b437676b37206b9a93313f1fe",
+        "canonical_lf_sha256": "07b9d7377c4e90a4147566d5f230b7b610a2cc6b437676b37206b9a93313f1fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\project_process.json",
+        "bytes": 794,
+        "sha256": "190c2aa2639c8d4e7c4f412f3ceab7376cc4c4a8444e9f7f78dfee6e9af3261a",
+        "canonical_lf_sha256": "190c2aa2639c8d4e7c4f412f3ceab7376cc4c4a8444e9f7f78dfee6e9af3261a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\live_batch_programs.json",
+        "bytes": 1065,
+        "sha256": "07b9d7377c4e90a4147566d5f230b7b610a2cc6b437676b37206b9a93313f1fe",
+        "canonical_lf_sha256": "07b9d7377c4e90a4147566d5f230b7b610a2cc6b437676b37206b9a93313f1fe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\live_batch_project.json",
+        "bytes": 798,
+        "sha256": "91acd797532d22717a78b18e16287bf63152bc7d45ff38cd1b7792a487dabd4e",
+        "canonical_lf_sha256": "190c2aa2639c8d4e7c4f412f3ceab7376cc4c4a8444e9f7f78dfee6e9af3261a"
+      }
+    ],
+    "Original_PE_pin": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "canonical_lf_sha256": "fe1f47d46cc8d0a82ae098b0a6e184f4b0faeac6a671097f1ffa2a301eaf7256"
+    },
+    "saved_export_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00879590\\decompiled.c",
+        "bytes": 4273,
+        "sha256": "06b96157a5e833ec755f6b1e51131e71b28747649b0103d05d66dad093f4d555",
+        "canonical_lf_sha256": "06b96157a5e833ec755f6b1e51131e71b28747649b0103d05d66dad093f4d555"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00879590\\assembly.txt",
+        "bytes": 4553,
+        "sha256": "50e0d39056e9fc80754b28d23acb379e924cb7e758a6a63cec84817489443e2b",
+        "canonical_lf_sha256": "50e0d39056e9fc80754b28d23acb379e924cb7e758a6a63cec84817489443e2b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00879590\\metadata.json",
+        "bytes": 210,
+        "sha256": "45c35f3cbeb8b8ec0086648b48680c0eb3c955b21e7d4b206c7a412ac4bf4690",
+        "canonical_lf_sha256": "45c35f3cbeb8b8ec0086648b48680c0eb3c955b21e7d4b206c7a412ac4bf4690"
+      }
+    ],
+    "live_capture_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\live_bytes.txt",
+        "bytes": 2574,
+        "sha256": "895fb14b1d81ecab4fe176ed59dc1de2930ee253a410200a80f7341ad040ad02",
+        "canonical_lf_sha256": "bd2a34edc997ea2e337a80bfcdae526a15ac3a936dcfb42a0072eb4ce945eb13"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\live_disasm_000.txt",
+        "bytes": 2452,
+        "sha256": "a787d58807d097c7a1b2896e762e1721cf855bfb70a54a48c6c655deeefa91b3",
+        "canonical_lf_sha256": "0f8008f24b1264b7998dacd282ed1602e4eef188357a73c91cb20d668e878931"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\live_disasm_085.txt",
+        "bytes": 2320,
+        "sha256": "ad6ff2d5f39b9e3dee74b301c4c4146ec40da7c4702b6faf8f2fa512b8725dfa",
+        "canonical_lf_sha256": "ada823259bee9c85c49a796a092f9f9e92cee49b04069a8b53001561ca0892ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_model_publisher_owner_readiness\\live_proto.txt",
+        "bytes": 2731,
+        "sha256": "596fdd7afee701ef3f63bd8fc926750bcb1db5187e46f301c864ce1cbeacc567",
+        "canonical_lf_sha256": "a99cbb9f098695b02876ff9a06a031aefdeb06a261866a7fbe367148e63f9af5"
+      }
+    ],
+    "live_scope": "Current Ghidra analysis bytes/listing, not running-game heap or execution."
+  },
+  "whole_Native_gate": {
+    "address": "00879590",
+    "end_inclusive": "008797A4",
+    "bytes": 533,
+    "instructions": 165,
+    "hex": "64a1000000006aff681066c900506489250000000083ec30558be98b453885c0578d7d380f84d8010000837d50000f85ce010000807c2448000f84700100008b470485c00f846501000068703ace0050e85bfe370083c40885c00f844f0100002b4704568bf083feff0f8e3f010000536808dfd0008d4c241ce86252baff68ffffff7f568d442440508bcfc744245400000000e81802bfff8bd8566a008d4c2438518bcfc644245401e80202bfff8d542418528d4c242c518bc8c644245002e84ccbbaff538d542414528bc8c644245003e83acbbaff8b44242c85c0c6442448055b74178b4c24246a0183c1015150e83c06baff8bc8e8857e35008b4c243085c9c64424440674178b44242c6a0183c0015051e81806baff8bc8e8617e35008b4c243885c9c64424440774178b4424346a0183c0015051e8f405baff8bc8e83d7e35008b4c241885c9c64424440874178b4424146a0183c0015051e8d005baff8bc8e8197e35008b0decce09018d44240c50e8b95d360084c0740c8d4c240c518bcfe829c8baff8b4c241085c9c7442444ffffffff74178b44240c6a0183c0015051e88905baff8bc8e8d27d35005e8b7f0485ff8bc77505b8e078f800508d4c241ce81951baff8d4c2418c744244009000000e838f1e9ff8945508b44241c85c0c7442440ffffffff74178b4c24186a0183c1015150e83505baff8bc8e87e7d35008b4c24385f5d64890d0000000083c43cc20400",
+    "sha256": "169b120c3eaa86c7fa352047a679852e299d4c06e09fb9e9971609f518a11acf",
+    "PE_live_bytes_equal": true,
+    "all165_saved_live_rows_equal": true,
+    "all165_independent_instruction_starts_equal": true,
+    "calls": [
+      {
+        "site": "008795E0",
+        "target": "0xbf9440",
+        "bytes": "e85bfe3700",
+        "indirect": false
+      },
+      {
+        "site": "00879609",
+        "target": "0x41e870",
+        "bytes": "e86252baff",
+        "indirect": false
+      },
+      {
+        "site": "00879623",
+        "target": "0x469840",
+        "bytes": "e81802bfff",
+        "indirect": false
+      },
+      {
+        "site": "00879639",
+        "target": "0x469840",
+        "bytes": "e80202bfff",
+        "indirect": false
+      },
+      {
+        "site": "0087964F",
+        "target": "0x4261a0",
+        "bytes": "e84ccbbaff",
+        "indirect": false
+      },
+      {
+        "site": "00879661",
+        "target": "0x4261a0",
+        "bytes": "e83acbbaff",
+        "indirect": false
+      },
+      {
+        "site": "0087967F",
+        "target": "0x419cc0",
+        "bytes": "e83c06baff",
+        "indirect": false
+      },
+      {
+        "site": "00879686",
+        "target": "0xbd1510",
+        "bytes": "e8857e3500",
+        "indirect": false
+      },
+      {
+        "site": "008796A3",
+        "target": "0x419cc0",
+        "bytes": "e81806baff",
+        "indirect": false
+      },
+      {
+        "site": "008796AA",
+        "target": "0xbd1510",
+        "bytes": "e8617e3500",
+        "indirect": false
+      },
+      {
+        "site": "008796C7",
+        "target": "0x419cc0",
+        "bytes": "e8f405baff",
+        "indirect": false
+      },
+      {
+        "site": "008796CE",
+        "target": "0xbd1510",
+        "bytes": "e83d7e3500",
+        "indirect": false
+      },
+      {
+        "site": "008796EB",
+        "target": "0x419cc0",
+        "bytes": "e8d005baff",
+        "indirect": false
+      },
+      {
+        "site": "008796F2",
+        "target": "0xbd1510",
+        "bytes": "e8197e3500",
+        "indirect": false
+      },
+      {
+        "site": "00879702",
+        "target": "0xbdf4c0",
+        "bytes": "e8b95d3600",
+        "indirect": false
+      },
+      {
+        "site": "00879712",
+        "target": "0x425f40",
+        "bytes": "e829c8baff",
+        "indirect": false
+      },
+      {
+        "site": "00879732",
+        "target": "0x419cc0",
+        "bytes": "e88905baff",
+        "indirect": false
+      },
+      {
+        "site": "00879739",
+        "target": "0xbd1510",
+        "bytes": "e8d27d3500",
+        "indirect": false
+      },
+      {
+        "site": "00879752",
+        "target": "0x41e870",
+        "bytes": "e81951baff",
+        "indirect": false
+      },
+      {
+        "site": "00879763",
+        "target": "0x7188a0",
+        "bytes": "e838f1e9ff",
+        "indirect": false
+      },
+      {
+        "site": "00879786",
+        "target": "0x419cc0",
+        "bytes": "e83505baff",
+        "indirect": false
+      },
+      {
+        "site": "0087978D",
+        "target": "0xbd1510",
+        "bytes": "e87e7d3500",
+        "indirect": false
+      }
+    ],
+    "direct_calls": 22,
+    "unique_direct_targets": 9,
+    "indirect_calls": 0
+  },
+  "all165_instruction_starts": [
+    "00879590",
+    "00879596",
+    "00879598",
+    "0087959D",
+    "0087959E",
+    "008795A5",
+    "008795A8",
+    "008795A9",
+    "008795AB",
+    "008795AE",
+    "008795B0",
+    "008795B1",
+    "008795B4",
+    "008795BA",
+    "008795BE",
+    "008795C4",
+    "008795C9",
+    "008795CF",
+    "008795D2",
+    "008795D4",
+    "008795DA",
+    "008795DF",
+    "008795E0",
+    "008795E5",
+    "008795E8",
+    "008795EA",
+    "008795F0",
+    "008795F3",
+    "008795F4",
+    "008795F6",
+    "008795F9",
+    "008795FF",
+    "00879600",
+    "00879605",
+    "00879609",
+    "0087960E",
+    "00879613",
+    "00879614",
+    "00879618",
+    "00879619",
+    "0087961B",
+    "00879623",
+    "00879628",
+    "0087962A",
+    "0087962B",
+    "0087962D",
+    "00879631",
+    "00879632",
+    "00879634",
+    "00879639",
+    "0087963E",
+    "00879642",
+    "00879643",
+    "00879647",
+    "00879648",
+    "0087964A",
+    "0087964F",
+    "00879654",
+    "00879655",
+    "00879659",
+    "0087965A",
+    "0087965C",
+    "00879661",
+    "00879666",
+    "0087966A",
+    "0087966C",
+    "00879671",
+    "00879672",
+    "00879674",
+    "00879678",
+    "0087967A",
+    "0087967D",
+    "0087967E",
+    "0087967F",
+    "00879684",
+    "00879686",
+    "0087968B",
+    "0087968F",
+    "00879691",
+    "00879696",
+    "00879698",
+    "0087969C",
+    "0087969E",
+    "008796A1",
+    "008796A2",
+    "008796A3",
+    "008796A8",
+    "008796AA",
+    "008796AF",
+    "008796B3",
+    "008796B5",
+    "008796BA",
+    "008796BC",
+    "008796C0",
+    "008796C2",
+    "008796C5",
+    "008796C6",
+    "008796C7",
+    "008796CC",
+    "008796CE",
+    "008796D3",
+    "008796D7",
+    "008796D9",
+    "008796DE",
+    "008796E0",
+    "008796E4",
+    "008796E6",
+    "008796E9",
+    "008796EA",
+    "008796EB",
+    "008796F0",
+    "008796F2",
+    "008796F7",
+    "008796FD",
+    "00879701",
+    "00879702",
+    "00879707",
+    "00879709",
+    "0087970B",
+    "0087970F",
+    "00879710",
+    "00879712",
+    "00879717",
+    "0087971B",
+    "0087971D",
+    "00879725",
+    "00879727",
+    "0087972B",
+    "0087972D",
+    "00879730",
+    "00879731",
+    "00879732",
+    "00879737",
+    "00879739",
+    "0087973E",
+    "0087973F",
+    "00879742",
+    "00879744",
+    "00879746",
+    "00879748",
+    "0087974D",
+    "0087974E",
+    "00879752",
+    "00879757",
+    "0087975B",
+    "00879763",
+    "00879768",
+    "0087976B",
+    "0087976F",
+    "00879771",
+    "00879779",
+    "0087977B",
+    "0087977F",
+    "00879781",
+    "00879784",
+    "00879785",
+    "00879786",
+    "0087978B",
+    "0087978D",
+    "00879792",
+    "00879796",
+    "00879797",
+    "00879798",
+    "0087979F",
+    "008797A2"
+  ],
+  "calls": [
+    {
+      "site": "008795E0",
+      "target": "0xbf9440",
+      "bytes": "e85bfe3700",
+      "indirect": false,
+      "semantic_target": "CRT strstr",
+      "ABI_contract": "cdecl(name data, dot literal); EAX first match; caller ADD ESP,8",
+      "ordering_contract": "After return, reload current class name data for subtraction. No child or literal data read here."
+    },
+    {
+      "site": "00879609",
+      "target": "0x41e870",
+      "bytes": "e86252baff",
+      "indirect": false,
+      "semantic_target": "0041E870 suffix",
+      "ABI_contract": "ECX=fresh suffix header; stack(_enemy C string); RET4",
+      "ordering_contract": "On success arm state 0."
+    },
+    {
+      "site": "00879623",
+      "target": "0x469840",
+      "bytes": "e81802bfff",
+      "indirect": false,
+      "semantic_target": "00469840 extension",
+      "ABI_contract": "ECX=actual class name; stack(output header, offset, 7FFFFFFF); RET0C; EAX=output",
+      "ordering_contract": "Capture returned extension pointer in EBX; arm state 1 only after return."
+    },
+    {
+      "site": "00879639",
+      "target": "0x469840",
+      "bytes": "e80202bfff",
+      "indirect": false,
+      "semantic_target": "00469840 prefix",
+      "ABI_contract": "ECX=same actual name; stack(output header,0,offset); RET0C; EAX=output",
+      "ordering_contract": "Current header fields remain provider inputs; arm state 2 after return."
+    },
+    {
+      "site": "0087964F",
+      "target": "0x4261a0",
+      "bytes": "e84ccbbaff",
+      "indirect": false,
+      "semantic_target": "004261A0 joined prefix+suffix",
+      "ABI_contract": "ECX=returned prefix; stack(output joined, suffix header); RET8; EAX=output",
+      "ordering_contract": "Arm state 3 after return."
+    },
+    {
+      "site": "00879661",
+      "target": "0x4261a0",
+      "bytes": "e83acbbaff",
+      "indirect": false,
+      "semantic_target": "004261A0 complete candidate",
+      "ABI_contract": "ECX=returned joined; stack(output candidate, captured extension); RET8",
+      "ordering_contract": "State 4 is not installed; set state 5 before joined cleanup."
+    },
+    {
+      "site": "0087967F",
+      "target": "0x419cc0",
+      "bytes": "e83c06baff",
+      "indirect": false,
+      "semantic_target": "00419CC0 current pool getter",
+      "ABI_contract": "No native arguments; EAX=pool; RET. Pushed data/size/1 belongs to following return call.",
+      "ordering_contract": "Nonzero joined data and wrapped length+1 captured first; cleanup state already 5. Current pool getter runs even for large or disabled returns."
+    },
+    {
+      "site": "00879686",
+      "target": "0xbd1510",
+      "bytes": "e8857e3500",
+      "indirect": false,
+      "semantic_target": "00BD1510 block return",
+      "ABI_contract": "ECX=returned actual pool; stack(captured data, wrapped length+1,1); RET0C",
+      "ordering_contract": "Return joined storage without clearing header. Pre-advanced state 5 prevents retry by this caller on a throwing getter/return path."
+    },
+    {
+      "site": "008796A3",
+      "target": "0x419cc0",
+      "bytes": "e81806baff",
+      "indirect": false,
+      "semantic_target": "00419CC0 current pool getter",
+      "ABI_contract": "No native arguments; EAX=pool; RET. Pushed data/size/1 belongs to following return call.",
+      "ordering_contract": "Nonzero prefix data and wrapped length+1 captured first; cleanup state already 6. Current pool getter runs even for large or disabled returns."
+    },
+    {
+      "site": "008796AA",
+      "target": "0xbd1510",
+      "bytes": "e8617e3500",
+      "indirect": false,
+      "semantic_target": "00BD1510 block return",
+      "ABI_contract": "ECX=returned actual pool; stack(captured data, wrapped length+1,1); RET0C",
+      "ordering_contract": "Return prefix storage without clearing header. Pre-advanced state 6 prevents retry by this caller on a throwing getter/return path."
+    },
+    {
+      "site": "008796C7",
+      "target": "0x419cc0",
+      "bytes": "e8f405baff",
+      "indirect": false,
+      "semantic_target": "00419CC0 current pool getter",
+      "ABI_contract": "No native arguments; EAX=pool; RET. Pushed data/size/1 belongs to following return call.",
+      "ordering_contract": "Nonzero extension data and wrapped length+1 captured first; cleanup state already 7. Current pool getter runs even for large or disabled returns."
+    },
+    {
+      "site": "008796CE",
+      "target": "0xbd1510",
+      "bytes": "e83d7e3500",
+      "indirect": false,
+      "semantic_target": "00BD1510 block return",
+      "ABI_contract": "ECX=returned actual pool; stack(captured data, wrapped length+1,1); RET0C",
+      "ordering_contract": "Return extension storage without clearing header. Pre-advanced state 7 prevents retry by this caller on a throwing getter/return path."
+    },
+    {
+      "site": "008796EB",
+      "target": "0x419cc0",
+      "bytes": "e8d005baff",
+      "indirect": false,
+      "semantic_target": "00419CC0 current pool getter",
+      "ABI_contract": "No native arguments; EAX=pool; RET. Pushed data/size/1 belongs to following return call.",
+      "ordering_contract": "Nonzero suffix data and wrapped length+1 captured first; cleanup state already 8. Current pool getter runs even for large or disabled returns."
+    },
+    {
+      "site": "008796F2",
+      "target": "0xbd1510",
+      "bytes": "e8197e3500",
+      "indirect": false,
+      "semantic_target": "00BD1510 block return",
+      "ABI_contract": "ECX=returned actual pool; stack(captured data, wrapped length+1,1); RET0C",
+      "ordering_contract": "Return suffix storage without clearing header. Pre-advanced state 8 prevents retry by this caller on a throwing getter/return path."
+    },
+    {
+      "site": "00879702",
+      "target": "0xbdf4c0",
+      "bytes": "e8b95d3600",
+      "indirect": false,
+      "semantic_target": "00BDF4C0 candidate resolution",
+      "ABI_contract": "ECX=current 0109CEEC loaded at 008796F7; stack(candidate header); RET4; AL success",
+      "ordering_contract": "Read publication only after earlier temporary returns. False can mutate candidate but does not assign actual class name."
+    },
+    {
+      "site": "00879712",
+      "target": "0x425f40",
+      "bytes": "e829c8baff",
+      "indirect": false,
+      "semantic_target": "00425F40 class name assignment",
+      "ABI_contract": "ECX=actual class+38; stack(current candidate header); RET4",
+      "ordering_contract": "Only after resolver AL true; name publication is not rolled back by later failure."
+    },
+    {
+      "site": "00879732",
+      "target": "0x419cc0",
+      "bytes": "e88905baff",
+      "indirect": false,
+      "semantic_target": "00419CC0 current pool getter",
+      "ABI_contract": "No native arguments; EAX=pool; RET. Pushed data/size/1 belongs to following return call.",
+      "ordering_contract": "Nonzero candidate data and wrapped length+1 captured first; cleanup state already -1. Current pool getter runs even for large or disabled returns."
+    },
+    {
+      "site": "00879739",
+      "target": "0xbd1510",
+      "bytes": "e8d27d3500",
+      "indirect": false,
+      "semantic_target": "00BD1510 block return",
+      "ABI_contract": "ECX=returned actual pool; stack(captured data, wrapped length+1,1); RET0C",
+      "ordering_contract": "Return candidate storage without clearing header. Pre-advanced state -1 prevents retry by this caller on a throwing getter/return path."
+    },
+    {
+      "site": "00879752",
+      "target": "0x41e870",
+      "bytes": "e81951baff",
+      "indirect": false,
+      "semantic_target": "0041E870 load-name copy",
+      "ABI_contract": "ECX=distinct load-name header; stack(current actual name data or existing empty literal); RET4",
+      "ordering_contract": "Capture current data after candidate cleanup; arm state 9 on success."
+    },
+    {
+      "site": "00879763",
+      "target": "0x7188a0",
+      "bytes": "e838f1e9ff",
+      "indirect": false,
+      "semantic_target": "007188A0 full game resource loader",
+      "ABI_contract": "ECX=load-name header; RET; EAX=resource",
+      "ordering_contract": "Store EAX at same actual class+50 before load-name cleanup; no recheck/retain/null gate."
+    },
+    {
+      "site": "00879786",
+      "target": "0x419cc0",
+      "bytes": "e83505baff",
+      "indirect": false,
+      "semantic_target": "00419CC0 current pool getter",
+      "ABI_contract": "No native arguments; EAX=pool; RET. Pushed data/size/1 belongs to following return call.",
+      "ordering_contract": "Nonzero load_name data and wrapped length+1 captured first; cleanup state already -1. Current pool getter runs even for large or disabled returns."
+    },
+    {
+      "site": "0087978D",
+      "target": "0xbd1510",
+      "bytes": "e87e7d3500",
+      "indirect": false,
+      "semantic_target": "00BD1510 block return",
+      "ABI_contract": "ECX=returned actual pool; stack(captured data, wrapped length+1,1); RET0C",
+      "ordering_contract": "Return load_name storage without clearing header. Pre-advanced state -1 prevents retry by this caller on a throwing getter/return path."
+    }
+  ],
+  "ABI": {
+    "entry": "ECX=actual class, one stacked DWORD enemy flag; only low byte read at 008795C4.",
+    "return": "RET4 at 008797A2. Source void interface claims no stable return value after cleanup.",
+    "preservation": "EBP/EDI saved throughout; ESI saved on dot-offset path and EBX during candidate construction. Same receiver is kept in EBP.",
+    "exception_frame": "FS:[0] chain names handler 00C96610. Frame restored at normal return. Handler/funclet/map bodies were not reopened.",
+    "prototype_limit": "Live signature is undefined function(void), param_count 0; assembly establishes ECX and stack inputs.",
+    "x87_or_SSE_in_this_body": false,
+    "get_pool_argument_correction": "00419CC0 has no native arguments. Its following BD1510 consumes the already pushed (block,size,1); pseudocode getter arguments are not the ABI contract.",
+    "Source_boundary": "Explicit MSVC Win32 C++ interface, no Original ABI/private-stack/FH3/SEH/fault compatibility admission."
+  },
+  "normal_schedule": [
+    {
+      "sites": "008795A9..008795BE",
+      "behavior": "Capture actual class and header+38. Require current length nonzero, then current resource+50 null. Both guards run once."
+    },
+    {
+      "sites": "008795C4..008795F9",
+      "behavior": "Enemy low byte; nonnull name data; first-dot strstr; reload header data for DWORD subtraction; accept nonnegative signed offset."
+    },
+    {
+      "sites": "00879609..00879661",
+      "behavior": "Suffix, extension, prefix, joined prefix/suffix, complete candidate construction; retained return pointers and order."
+    },
+    {
+      "sites": "0087966C..008796F2",
+      "behavior": "Advance cleanup states then return joined, prefix, extension, suffix; current pool resolution for every nonnull block."
+    },
+    {
+      "sites": "008796F7..00879712",
+      "behavior": "Late current VFS publication read, mutable candidate resolution, current candidate assignment only on true AL."
+    },
+    {
+      "sites": "00879717..00879752",
+      "behavior": "Disarm candidate cleanup; return its block; reload current actual name data and build distinct load-name header or existing empty-literal spelling."
+    },
+    {
+      "sites": "0087975B..00879768",
+      "behavior": "Arm load-name state9; full game loader call; publish returned pointer at same actual class+50 immediately after return."
+    },
+    {
+      "sites": "0087976B..008797A4",
+      "behavior": "Disarm load-name cleanup before current-pool block return; restore frame/registers and RET4."
+    }
+  ],
+  "publication_and_partial_state": {
+    "no_second_gate": "No class+50 recheck after entry. Any provider-written intervening +50 value can be overwritten without release at final publication.",
+    "name_success_then_load_failure": "Successful enemy-name assignment remains visible if loading later throws. Earlier provider writes are not rolled back.",
+    "before_publication_failure": "This invocation does not execute its +50 return-value store if the loader throws, but it does not undo reached provider mutations.",
+    "after_publication_failure": "Load-name cleanup may fail after class+50 is already published; neither resource nor name publication is rolled back.",
+    "no_extra_ownership": "No caller class retain, resource retain, returned-null gate, prior-resource release or copy into another class owner.",
+    "false_candidate_resolution": "False may leave candidate mutated; actual class name is assigned only on true, then current actual data is reloaded after candidate cleanup.",
+    "empty_literal_limit": "F878E0 spelling is existing Source/historical initialized-image evidence, not a new Native data read in this packet."
+  },
+  "Cpp_exception_and_lifetime": {
+    "invocation": "Fresh immovable acquired frame, same context, one attempt; phase running then complete or failed. Freshness validation is Source API behavior.",
+    "owned": "Six temporary name headers and existing nested VFS/cache invocation frames only.",
+    "borrowed": "Actual class/name bytes, factory and resource-manager contexts, VFS publication/services and raw string/lifetime publications outlive calls and cleanup.",
+    "Source_previous_states": [
+      -1,
+      0,
+      1,
+      2,
+      3,
+      2,
+      1,
+      0,
+      -1,
+      -1
+    ],
+    "state_destructors": [
+      "suffix",
+      "extension",
+      "prefix",
+      "joined",
+      "candidate",
+      "candidate",
+      "candidate",
+      "candidate",
+      "candidate",
+      "load_name"
+    ],
+    "state4_installed_by_this_body": false,
+    "normal_cleanup": "Set 5/6/7/8 before joined/prefix/extension/suffix destruction; -1 before candidate and load-name destruction. Destructors do not clear headers.",
+    "unwind": "Advance prior state before each actual header destructor; terminate if another cleanup exception escapes. Do not replay a disarmed normal destruction.",
+    "nested_failure_retention": "Failed VFS resolution retains its existing acquired-frame and caller-header lifetime obligation; this frame must remain retained when that nested contract requires it.",
+    "noexcept_boundary": "Substring, concatenation and header assignment use ActualNativeStringPoolStorage/NativeStringStorage release; lazy getter failure there terminates under the existing noexcept interface.",
+    "historical_only_EH_map": "The ten-state handler/map/funclet interpretation comes from the pinned earlier class-model receipt and current Source, not fresh child Native reads."
+  },
+  "factory_manager_cache_contract": {
+    "wrapper_Source": "Existing 007188A0 gets/captures the actual game factory before getting the manager; then full B80720 receives that factory and the same name header.",
+    "real_factory_owner": "GameSingletonHost owns E19B90 and context, binds its deletion at construction, and separately publishes F8D31C at WinMain call site. Alias bits survive owner deletion; do not substitute them for the getter domain.",
+    "real_manager_owner": "GameNativeResourceApplication owns raw manager/parser cells and binds shared deletion contexts; strings share host 01090AA0.",
+    "hit": "B80720 writes factory at manager20 before lookup, publishes matched resource at24, atomically retains that resource+4, and returns CURRENT24 without clearing factory.",
+    "miss": "Read CURRENT manager20 and captured current factory slot4; dispatch full create/resolve/open/root/parse/cache path; late metrics use current stats and current manager24; capture final result before temporary cleanup.",
+    "target_and_cache_ambiguity": "Known-target source dispatch does not prove every captured factory target. Cache hits/preexisting class resources/publication changes do not guarantee profile CFD8CC.",
+    "earlier_selection_witness": "Prior Root-accepted CFD8CC+8 -> 007137F0 remains conditional on actual captured resource profile and late saved-table entry. No profile cell reopened here.",
+    "uncomposed_current_production_context": "No named game_* NativeResourceRootDispatchContext or NativeDefaultResourceLoadCacheCalls/actual_allocation_stats_0109cefc composition was found; particle runtime borrows a required load-cache context instead of owning it."
+  },
+  "owner_evidence": [
+    {
+      "files": [
+        "include/bsp/game_hosts_singletons.hpp:117-122",
+        "src/game_hosts_singletons.cpp:24,106-110,119-137"
+      ],
+      "result": "Real factory storage/context/deletion and alias are available through shared drain."
+    },
+    {
+      "files": [
+        "include/bsp/game_native_resource_application.hpp",
+        "src/game_native_resource_application.cpp:25-82,120-127"
+      ],
+      "result": "Real raw manager/parser storage, raw manager borrow and same string/lifetime domain; no class owner."
+    },
+    {
+      "files": [
+        "include/bsp/game_native_vfs_application.hpp",
+        "src/game_native_vfs_application.cpp:39-100",
+        "include/bsp/game_native_vfs_runtime.hpp:37-56"
+      ],
+      "result": "Actual VFS publication, strings, resolver/open domains, counter/root/node lifetime already retained; no private substitute domain needed."
+    },
+    {
+      "files": [
+        "include/bsp/game_native_type_storage.hpp",
+        "src/game_native_type_storage.cpp",
+        "include/bsp/model_type_bootstrap.hpp"
+      ],
+      "result": "Real process type owner exists but no model descriptor member/call. Accepted sibling CRT receipt resolved relative placement for a qualified insertion; type ownership does not supply a vehicle descriptor."
+    },
+    {
+      "files": [
+        "src/native_damageable_class_construction.cpp:108-146",
+        "include/bsp/native_damageable_class_construction.hpp"
+      ],
+      "result": "Existing complete actual base constructor accepts borrowed storage and zeroes38/3C/50. No allocation or authored Mesh name is supplied."
+    },
+    {
+      "files": [
+        "include/bsp/vehicle_class.hpp:158-170,195-246",
+        "src/vehicle_class.cpp:200",
+        "src/game_hosts_units.cpp:14628-14637"
+      ],
+      "result": "Semantic descriptor and abstract factory operations; current production unit host reads Lua row/kind. No actual class receiver owner found."
+    },
+    {
+      "files": [
+        "include/bsp/native_damageable_class_lua.hpp",
+        "docs/NATIVE_DAMAGEABLE_CLASS_LUA_ORCH4.md:8-12,69-77"
+      ],
+      "result": "0087CA80 is explicitly Source absent. Historical Mesh arm writes actual name38 at0087CB44..CBCA; not freshly gated or replaced here."
+    },
+    {
+      "files": [
+        "include/bsp/native_vehicle_class_activation.hpp",
+        "include/bsp/native_damageable_class_binding.hpp"
+      ],
+      "result": "Existing actual activation/binding APIs are borrowed-storage operations with required complete terminal providers; they do not allocate the missing descriptor."
+    }
+  ],
+  "selected_next_prerequisite_evidence": {
+    "command": [
+      "python",
+      "tools/bsp.py",
+      "lookup",
+      "00749050"
+    ],
+    "stdout": "00749050  BSP_VehicleClass_ConstructBase  thunk=no  export=exports/bsp/functions/00749050\nsegment 41 [00735f30-00758eb0] 327 candidates wave 2  keywords: landvehicle, landingship, landfort, sumleaks, sumforces, rampaelfordulas, partraszalltunk, partraszallas\nledger name: BSP_VehicleClass_ConstructBase - Hypothesis, not a recovered symbol. docs/VEHICLE_CLASS_DESCRIPTORS.md. Base vehicle-class descriptor constructor, 0138h bytes. __fastcall(void* this) returning this, SEH handler 00C874BB. Calls 0087C640, writes the vptr pair 00CFF7CC primary / 00CFF7C8 at +6Ch, then zeroes dwords 1Dh, 1Eh, 20h, 25h-\ncallers (7): 00749180 BSP_VehicleClass_ConstructLandFort, 007d1e50 FUN_007d1e50, 0095fee0 BSP_VehicleClass_ConstructAirField, 0095ff50 BSP_VehicleClass_ConstructShipyard, 0095ffc0 BSP_VehicleClass_ConstructLandVehicle, 00960050 BSP_VehicleClass_ConstructDummyTarget, 00963380 BSP_ShipClass_ConstructBase\ncallees (1): 0087c640 BSP_DamageableClass_ConstructBase\ndocs (4): docs/LAND_AND_STRUCTURES.md (Land units and structures (packet `cc2_land_and_st); docs/NATIVE_DEVICE_CLASS_RESOLUTION_ORCH4.md (Device-class resolution: complete factory evidence); docs/VEHICLE_CLASS_DESCRIPTORS.md (Vehicle class descriptors); docs/VEHICLE_CLASS_LUA_LOAD.md (Vehicle class Lua load: the parent-most base and t)\n",
+    "stderr": "",
+    "fresh_Native_body_opened": false
+  },
+  "source_consistency": {
+    "Root_commit_at_capture": "6899cb20865bf9bfd7b2e7702dd3ed35ee74ee4e",
+    "worker_base": "1172ce41243d31a7f27313797f39b8600f1cea90",
+    "files_compared": 37,
+    "Root_worker_LF_equal": 37,
+    "compiler_input_receipt": false,
+    "full_Root_pins": "evidence.Source_capture_pin -> source_pins"
+  },
+  "source_search": {
+    "full_commands_and_results": "evidence.Source_capture_pin -> searches",
+    "counts": [
+      {
+        "query": "production_class_model_composition",
+        "Root": false,
+        "matches": 0
+      },
+      {
+        "query": "production_class_model_composition",
+        "Root": true,
+        "matches": 0
+      },
+      {
+        "query": "actual_vehicle_base_construction",
+        "Root": false,
+        "matches": 6
+      },
+      {
+        "query": "actual_vehicle_base_construction",
+        "Root": true,
+        "matches": 6
+      },
+      {
+        "query": "vehicle_class_factory_host",
+        "Root": false,
+        "matches": 8
+      },
+      {
+        "query": "vehicle_class_factory_host",
+        "Root": true,
+        "matches": 8
+      },
+      {
+        "query": "actual_damageable_base_constructor",
+        "Root": false,
+        "matches": 9
+      },
+      {
+        "query": "actual_damageable_base_constructor",
+        "Root": true,
+        "matches": 9
+      },
+      {
+        "query": "production_resource_load_context",
+        "Root": false,
+        "matches": 0
+      },
+      {
+        "query": "production_resource_load_context",
+        "Root": true,
+        "matches": 0
+      },
+      {
+        "query": "production_model_bootstrap",
+        "Root": false,
+        "matches": 0
+      },
+      {
+        "query": "production_model_bootstrap",
+        "Root": true,
+        "matches": 0
+      }
+    ],
+    "scope_limit": "Negative results concern the named symbols and searched src/include .cpp/.hpp/.inc files only; Native children and dynamic owners were not inferred."
+  },
+  "Source_file_pins": [
+    {
+      "path": "include\\bsp\\native_damageable_class_model.hpp",
+      "bytes": 3528,
+      "sha256": "30b828865b2462c794b2a7a80770cf8efd01e425459d367e9d995d1f5e3ed2ac",
+      "canonical_lf_sha256": "30b828865b2462c794b2a7a80770cf8efd01e425459d367e9d995d1f5e3ed2ac",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_damageable_class_model.cpp",
+      "bytes": 7014,
+      "sha256": "46d5e4fc52e1aac77f96a14d68dda84848e49d1c9311f503ec3f0f3381f6f7ae",
+      "canonical_lf_sha256": "46d5e4fc52e1aac77f96a14d68dda84848e49d1c9311f503ec3f0f3381f6f7ae",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_damageable_class_construction.hpp",
+      "bytes": 2553,
+      "sha256": "e696887cbb8c1fc59d4e4ed2f4f2be755ebaf5ab2306125a8875897ea4cca974",
+      "canonical_lf_sha256": "e696887cbb8c1fc59d4e4ed2f4f2be755ebaf5ab2306125a8875897ea4cca974",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_damageable_class_construction.cpp",
+      "bytes": 5679,
+      "sha256": "0434b5348c36536b80fd1019f4049202cd2cf724b2f9cc137a67ee2bf484aa9f",
+      "canonical_lf_sha256": "0434b5348c36536b80fd1019f4049202cd2cf724b2f9cc137a67ee2bf484aa9f",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_damageable_class_lua.hpp",
+      "bytes": 732,
+      "sha256": "20614d27d2aa3edc066a0612191e1b3bdeee6002861e1b37038d0114247c98f4",
+      "canonical_lf_sha256": "20614d27d2aa3edc066a0612191e1b3bdeee6002861e1b37038d0114247c98f4",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_damageable_class_lua.cpp",
+      "bytes": 839,
+      "sha256": "5515990dfc3968ec10ed931a1acdfb8501b760d9833642d29044090c64e262d2",
+      "canonical_lf_sha256": "5515990dfc3968ec10ed931a1acdfb8501b760d9833642d29044090c64e262d2",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_damageable_class_binding.hpp",
+      "bytes": 1916,
+      "sha256": "95aa4cf1765e543746fee84710ad1f9970386044542a55b0ab5b7eb92f50541c",
+      "canonical_lf_sha256": "95aa4cf1765e543746fee84710ad1f9970386044542a55b0ab5b7eb92f50541c",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_vehicle_class_activation.hpp",
+      "bytes": 2204,
+      "sha256": "829d5f01a957abc119264570506ec2fc6a1213ccfff1f406cd9c5a0982a5da7a",
+      "canonical_lf_sha256": "829d5f01a957abc119264570506ec2fc6a1213ccfff1f406cd9c5a0982a5da7a",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_vehicle_class_activation.cpp",
+      "bytes": 9211,
+      "sha256": "2ee253a22479097d11660ec79ab8d14bf567029206b826d0939a4b87820e6eeb",
+      "canonical_lf_sha256": "2ee253a22479097d11660ec79ab8d14bf567029206b826d0939a4b87820e6eeb",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_game_resource_factory.hpp",
+      "bytes": 2885,
+      "sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+      "canonical_lf_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_game_resource_factory.cpp",
+      "bytes": 3919,
+      "sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+      "canonical_lf_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_load_cache.hpp",
+      "bytes": 4654,
+      "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+      "canonical_lf_sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_load_cache.cpp",
+      "bytes": 11802,
+      "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a",
+      "canonical_lf_sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_root_dispatch.hpp",
+      "bytes": 3835,
+      "sha256": "12f08dc3a62d0bfd7755f748b3f265000f3b1bbc99d707f65da11604113f6080",
+      "canonical_lf_sha256": "12f08dc3a62d0bfd7755f748b3f265000f3b1bbc99d707f65da11604113f6080",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_hierarchy_parser.hpp",
+      "bytes": 2466,
+      "sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c",
+      "canonical_lf_sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_vfs_name_resolution.hpp",
+      "bytes": 3176,
+      "sha256": "791bd34d2a2826043832d85e27cd723996b988c1d6e22f818e26cd4d45f07bcc",
+      "canonical_lf_sha256": "791bd34d2a2826043832d85e27cd723996b988c1d6e22f818e26cd4d45f07bcc",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "canonical_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "canonical_lf_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "canonical_lf_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "canonical_lf_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_hosts_singletons.hpp",
+      "bytes": 7776,
+      "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_hosts_singletons.cpp",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_native_resource_application.hpp",
+      "bytes": 1678,
+      "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+      "canonical_lf_sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_native_resource_application.cpp",
+      "bytes": 6579,
+      "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+      "canonical_lf_sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_native_vfs_application.hpp",
+      "bytes": 3022,
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "canonical_lf_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "canonical_lf_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_native_vfs_runtime.hpp",
+      "bytes": 9565,
+      "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+      "canonical_lf_sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_native_type_storage.hpp",
+      "bytes": 4853,
+      "sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222",
+      "canonical_lf_sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_native_type_storage.cpp",
+      "bytes": 3611,
+      "sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b",
+      "canonical_lf_sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\model_type_bootstrap.hpp",
+      "bytes": 1537,
+      "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "canonical_lf_sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_native_particle_runtime.hpp",
+      "bytes": 4871,
+      "sha256": "f3b8ef9da540829fd591242c752a0aa06bea80d1b32faba9b4bdbc79260ed6ff",
+      "canonical_lf_sha256": "f3b8ef9da540829fd591242c752a0aa06bea80d1b32faba9b4bdbc79260ed6ff",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_native_particle_runtime.cpp",
+      "bytes": 12819,
+      "sha256": "64fde4c6a4d8938ce769828469ddcd6ca2c68e985d69e98406e8fa9893c400f1",
+      "canonical_lf_sha256": "64fde4c6a4d8938ce769828469ddcd6ca2c68e985d69e98406e8fa9893c400f1",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\vehicle_class.hpp",
+      "bytes": 16911,
+      "sha256": "69dd1423f447a21125bc6209d9579c7a00f398263aeeba366377a3c7fe6ee2c6",
+      "canonical_lf_sha256": "69dd1423f447a21125bc6209d9579c7a00f398263aeeba366377a3c7fe6ee2c6",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\vehicle_class.cpp",
+      "bytes": 12177,
+      "sha256": "2ce059da837a0e37f6cb63947daa8a3caebec066492167b9ee9f1d55f551a95a",
+      "canonical_lf_sha256": "2ce059da837a0e37f6cb63947daa8a3caebec066492167b9ee9f1d55f551a95a",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\vehicle_class_lua_load.hpp",
+      "bytes": 24055,
+      "sha256": "031a85428055ee9332334459849b402c30ecbb16eb551c3f635a7d231b9b6226",
+      "canonical_lf_sha256": "031a85428055ee9332334459849b402c30ecbb16eb551c3f635a7d231b9b6226",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\vehicle_class_lua_load.cpp",
+      "bytes": 27780,
+      "sha256": "22d2ea4398f8395ff5c072a78af17acb14392958660cdd0d6bf8767ab6d6a950",
+      "canonical_lf_sha256": "22d2ea4398f8395ff5c072a78af17acb14392958660cdd0d6bf8767ab6d6a950",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "canonical_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "Root_worker_LF_equal": true
+    }
+  ],
+  "context_pins": [
+    {
+      "path": "docs\\NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md",
+      "bytes": 7362,
+      "sha256": "3624a7b83ed475b95a20e1e6b3d19ec5e7837a9ddcc7703881398b004c38f529",
+      "canonical_lf_sha256": "3624a7b83ed475b95a20e1e6b3d19ec5e7837a9ddcc7703881398b004c38f529"
+    },
+    {
+      "path": "reports\\native_damageable_class_model_be.json",
+      "bytes": 16599,
+      "sha256": "40fcee4c8480bf046acd21d6c3f42c5df876cf5c925f941e95f09c918d5fac93",
+      "canonical_lf_sha256": "40fcee4c8480bf046acd21d6c3f42c5df876cf5c925f941e95f09c918d5fac93"
+    },
+    {
+      "path": "docs\\NATIVE_DAMAGEABLE_CLASS_LUA_ORCH4.md",
+      "bytes": 20113,
+      "sha256": "f5e1d830f8ab9dbfc1be7c2216e72efdcb7c01287defe5dd89aeb3381e51c52b",
+      "canonical_lf_sha256": "f5e1d830f8ab9dbfc1be7c2216e72efdcb7c01287defe5dd89aeb3381e51c52b"
+    },
+    {
+      "path": "docs\\CC12_UNIT_CLASS_RESOURCE_SELECTION_READINESS.md",
+      "bytes": 9586,
+      "sha256": "207ff17f65e60b5ed22e7d716f4c6630f68d26cf91cedbf22e3496a908ba8994",
+      "canonical_lf_sha256": "207ff17f65e60b5ed22e7d716f4c6630f68d26cf91cedbf22e3496a908ba8994"
+    },
+    {
+      "path": "reports\\cc12_unit_class_resource_selection_readiness.json",
+      "bytes": 47919,
+      "sha256": "8e1ed1f246d3c47cdf254a7fbeb7f9677ad086690dfdbae28553f6a37f638a4f",
+      "canonical_lf_sha256": "8e1ed1f246d3c47cdf254a7fbeb7f9677ad086690dfdbae28553f6a37f638a4f"
+    },
+    {
+      "path": "docs\\CC12_PRODUCTION_MODEL_DESCRIPTOR_BOOTSTRAP_READINESS.md",
+      "bytes": 9823,
+      "sha256": "9366c9fec661bf9875a949e9cbf96046646986d64af3066307838d49a23ff682",
+      "canonical_lf_sha256": "9366c9fec661bf9875a949e9cbf96046646986d64af3066307838d49a23ff682"
+    },
+    {
+      "path": "docs\\CC12_MODEL_DESCRIPTOR_CRT_PLACEMENT_READINESS.md",
+      "bytes": 8316,
+      "sha256": "8c60baa433a09bb529a6fa7892fe2d253190c5ab5211669570c93146a7200274",
+      "canonical_lf_sha256": "8c60baa433a09bb529a6fa7892fe2d253190c5ab5211669570c93146a7200274"
+    },
+    {
+      "path": "reports\\cc12_self_refresh_renderer_source_primary_review.json",
+      "bytes": 183599,
+      "sha256": "ef66b96cb0d2634728bf04b0bf3b1e6c3ee3d1ed136852fa37fe39a1614b2547",
+      "canonical_lf_sha256": "ef66b96cb0d2634728bf04b0bf3b1e6c3ee3d1ed136852fa37fe39a1614b2547"
+    }
+  ],
+  "historical_and_primary_validation": {
+    "historical_class_model_fixture": "Earlier receipt records five Source/original activation pairs and two Source-only failures using explicit fixture class binding; no successful enemy-file lookup, disk/parser miss, Native FH3 or production unit/class ownership proof. Not rerun here.",
+    "historical_model_CRT_receipts": "Accepted relative placement for qualified model Source subset; no new data/body read or model startup credit in this packet.",
+    "current_primary_Source509": {
+      "source_inputs": 509,
+      "source_pin_scope": "Source121 plus recursively included project files for eight explicit changed/new/provider translation units; not the entire build",
+      "normal_build_exit_code": 0,
+      "checks": 3,
+      "Core_whole_objects": 43,
+      "App_whole_objects": 1,
+      "Core_roots": 51,
+      "startup_summary": {
+        "window_created": 1,
+        "device_created": 1,
+        "device_hr": 0,
+        "back_buffer": "640x480",
+        "ticks": 3,
+        "frames_presented": 2,
+        "initial_presents_skipped": 1,
+        "loop_finished": 1,
+        "exit_code": 0,
+        "step": "PressStartPoll",
+        "state": 2,
+        "mission_frames": 0,
+        "injected_input": false,
+        "visual_validation": false,
+        "normal_COM_final_release": true,
+        "UNIMPLEMENTED_log_rows": 88,
+        "unimplemented_count_is_rows_not_unique_functions": true
+      },
+      "worker_replayed_build_or_artifacts": false
+    },
+    "Source121_Source507": "Frozen historical receipts; no old input/artifact pin applied to current binary files.",
+    "current_build_artifact_paths_read_or_compared": false,
+    "new_build_tests_or_probes": false
+  },
+  "credits": {
+    "readiness": 1,
+    "Source": 0,
+    "build": 0,
+    "fixture": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0,
+    "runtime": 0
+  },
+  "review": {
+    "complete_Native533_byte165_instruction_body_read": true,
+    "all22_calls_reviewed": true,
+    "complete_current_class_model_Source_header_and_body_read": true,
+    "actual_owner_sources_and_bounded_historical_context_reviewed": true,
+    "complete_doc_report_read": true,
+    "final_current_pin_checks": 99,
+    "exact_PE_live_533_byte165_instruction22_call_replay": true,
+    "current_Root37_Source_pins_reverified": true
+  },
+  "document_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\docs\\CC12_UNIT_CLASS_MODEL_PUBLISHER_OWNER_READINESS.md",
+    "bytes": 10121,
+    "sha256": "d1b5e2f7f922a2587f4c2577e3d170993b9b9811f778837377ed23b54551ccb1",
+    "canonical_lf_sha256": "d1b5e2f7f922a2587f4c2577e3d170993b9b9811f778837377ed23b54551ccb1"
+  },
+  "Root_primary_review": {
+    "decision": "Accepted as a complete533-byte/165-instruction/22-call static gate and owner-frontier refinement. Root independently replayed the original PE and retained Source pins. Publication precedes temporary cleanup, with no late resource-field recheck or rollback. Real service owners exist; the actual vehicle-class constructor/loaded descriptor/production invocation remain held. All absence statements and Source509 context are worker-capture history, not a claim about later Source packets.",
+    "worker_report_capture_sha256": "8e7cec2bfadbe7f141d9b5639c8c329c43d2734eb97c45c9a86eed2647e4e227",
+    "verified_pin_rows": 62,
+    "independent_Native_PE_replay": {
+      "bytes": 533,
+      "instructions": 165,
+      "calls": 22
+    },
+    "local_validation_pin": {
+      "path": "local\\cc12_class_and_free_frontier_primary_review\\validation.json",
+      "sha256": "a2ee84041487f02b5355eb1b7a2401da3560e43672978364e05c746ab5ac5489"
+    },
+    "current_primary_document_pin": {
+      "path": "docs\\CC12_UNIT_CLASS_MODEL_PUBLISHER_OWNER_READINESS.md",
+      "bytes": 10842,
+      "sha256": "e2299588682545855300eb217b6cd32bf9bd7b8aa457f675445931c7cf18a2af"
+    },
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0,
+    "GPR_mutations": 0
+  }
+}
