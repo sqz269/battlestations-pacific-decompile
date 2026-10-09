@@ -1,3 +1,7 @@
+Primary compiled review: Root read every 12 emitted bytes/6 operations and the sole indexed REL 32 edge. Every byte matches Native 006EDE90 outside the operand at 4, which targets the actual admitted Source 137 retreat helper. Physical post-child ESI moves to EAX before saved ESI restoration; result remains conditional on child preservation/control backing. No EH, guard or new consumer is added.
+
+Normal MSVC Win 32 build 2026-10-09T 19:35:55.717080+00:00 to 2026-10-09T 19:36:12.082131+00:00 passed all three existing checks. The combined evidence pins 113 Source/build inputs and four artifacts; all 30 prior objects and the existing 20-function raw-guard provider object are unchanged. The provider is newly included in the capture domain, giving 33 captured/replayed whole objects and 37 selected positive Core definitions. Only the provider's selected 31-byte destroy was newly instruction-reviewed. Both new public roots are absent from the application map. Original ABI, startup and gameplay remain unproved. The worker candidate section below is an immutable Source 109 snapshot; its build artifacts are historical.
+
 # Lua pair retreat wrapper Source candidate
 
 The complete `006EDE90..006EDE9B` wrapper is 12 bytes and six instructions.
