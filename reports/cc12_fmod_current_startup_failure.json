@@ -507,5 +507,151 @@
     ],
     "source_change_proposed": null,
     "risk_boundary": "Changing the default playback device is a persistent user setting and may affect other applications; this worker makes no such change. No forced NOSOUND, fabricated outputs, length fallback, driver override or success bypass."
+  },
+  "primary_review": {
+    "worker_commit": "c3fe0559404fef967d9f97974617f29caeac5370",
+    "review": "Root reviewed complete diagnosis, real initial/control attempt pins, local4.18 enums, Source sequence and authorized installed SDK probe. Current active/default endpoint absence is a concrete prerequisite, not a resolved startup or proof of lost-endpoint cause. No device/service/configuration change authorized or made by this review.",
+    "pin_occurrences_replayed": 23,
+    "retained_evidence_pins": [
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_exit.json",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\41022a2e8a286644_initial_startup_exit.json",
+        "bytes": 1992,
+        "sha256": "41022a2e8a286644bec49df0700c168252a5a26aef8e1c82209ed61276e59f6e"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_three_ticks.log",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\e9c1bef722862f01_initial_startup_three_ticks.log",
+        "bytes": 11848,
+        "sha256": "e9c1bef722862f01bf0806ec87a2e87ad4e3571bf6800b4311d4ec8e54fc03cb"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_exit.json",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\877de0d184a60ee8_control_exit.json",
+        "bytes": 2046,
+        "sha256": "877de0d184a60ee88449676966ed668a5f3d74758149d39496b91b4495a4c964"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_Source539.log",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\4e62700e5e59ce27_control_Source539.log",
+        "bytes": 11795,
+        "sha256": "4e62700e5e59ce2749723989c84ab297ad0642b79642756ab1a61a934d86ead7"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\audio_online_startup.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\e8c564464cc8ac90_audio_online_startup.cpp",
+        "bytes": 17786,
+        "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\audio_online_startup.hpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\2856a03245c6a27a_audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\fmod_configuration_library.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\dc7c1cd3403ab4aa_fmod_configuration_library.cpp",
+        "bytes": 24627,
+        "sha256": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\fmod_configuration_library.hpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\0e08119c6a928469_fmod_configuration_library.hpp",
+        "bytes": 10053,
+        "sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\sound_resource_asset.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\0c651691506dff63_sound_resource_asset.cpp",
+        "bytes": 11484,
+        "sha256": "0c651691506dff63690ca237c4f8f88d172c4fd6ee8a0a398e5a53f77b945782"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_hosts.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\8be6cb7ede7b4c99_game_hosts.cpp",
+        "bytes": 123312,
+        "sha256": "8be6cb7ede7b4c99c313264ad25184eb492682dc0d12b5048cb167009fab8bce"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_main.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\ff10ae1118c386de_game_main.cpp",
+        "bytes": 73196,
+        "sha256": "ff10ae1118c386de4ee04533d25d13ca7559fa555333dafa45df45d763bbb414"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_sound_runtime.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\fd9efd3561f2d4d6_game_sound_runtime.cpp",
+        "bytes": 20484,
+        "sha256": "fd9efd3561f2d4d6f57e497f5ed13f19c9ad6d9daf34535d66fe79d06b627d56"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\sound_startup.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\bc4d830bf30d3173_sound_startup.cpp",
+        "bytes": 2269,
+        "sha256": "bc4d830bf30d3173d59fd696850cb3e4d08e596d36ebbe8eff7543a850164aee"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\config\\fmod_ex_types.json",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\1a9166bbfe4bae22_fmod_ex_types.json",
+        "bytes": 56459,
+        "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\complete_artifacts.json",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\5fcbd4d6d30a7c4e_complete_artifacts.json",
+        "bytes": 29712916,
+        "sha256": "5fcbd4d6d30a7c4ee38139e00b209f8098009f0b41eabe2547d67a290c01f511"
+      },
+      {
+        "original_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\31e7451aef6115b0_fmodex.dll",
+        "bytes": 350544,
+        "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8"
+      },
+      {
+        "original_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\4b6ae7ba8d3da780_fmod_event.dll",
+        "bytes": 238936,
+        "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe_result.json",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\4234b06f139bac33_fmod_probe_result.json",
+        "bytes": 2954,
+        "sha256": "4234b06f139bac336408984d2b01a6bd967a997d8edbbb01b11ab1f443f02e1b"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe_stdout.jsonl",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\fd256621243ef26f_fmod_probe_stdout.jsonl",
+        "bytes": 1109,
+        "sha256": "fd256621243ef26f54015ce010161eb01e901929c11a84d771d636d7115b8bd6"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe.cpp",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\3cb3c44da44e86c1_fmod_probe.cpp",
+        "bytes": 5835,
+        "sha256": "3cb3c44da44e86c16eb59e2923d741bf4be1d86f25d4b8932133899a7d0be3eb"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\build_probe.cmd",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\eab5d967e572ceec_build_probe.cmd",
+        "bytes": 253,
+        "sha256": "eab5d967e572ceec3800f5ceeb074c173d585ca30967c66e744c7cee9e5aafcf"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_three_exit.json",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\41a4fb2743701c4c_windowed_three_exit.json",
+        "bytes": 1939,
+        "sha256": "41a4fb2743701c4c091dc392559e04e8ab32e1c20e2bef3f462e46ee2ac80720"
+      },
+      {
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_windowed_three.log",
+        "retained_path": "local\\cc12_fmod_primary\\retained\\492eb1caa5b96ea5_startup_windowed_three.log",
+        "bytes": 48782,
+        "sha256": "492eb1caa5b96ea5fc878df7c1ff241eea942b3a65bc25f705b96fb7116135a8"
+      }
+    ],
+    "Source583_runtime_credit": false
   }
 }
