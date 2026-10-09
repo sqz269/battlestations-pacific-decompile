@@ -1,0 +1,425 @@
+{
+  "packet": "cc12_mission_clock_reset_provider_readiness",
+  "status": "read_only_complete_ordinary_reset_body_ready_for_bounded_source_implementation",
+  "baseline_commit": "4652b343c640eb3f4f955f9323ae657e44752379",
+  "original_function_credit": 0,
+  "scope": {
+    "owned_files": [
+      "docs/CC12_MISSION_CLOCK_RESET_PROVIDER_READINESS.md",
+      "reports/cc12_mission_clock_reset_provider_readiness.json"
+    ],
+    "owned_addresses": [
+      "00874640",
+      "00BF7420"
+    ],
+    "no_broad_callers": true,
+    "no_source_build_test_probe_gpr_ledger_or_cmake_changes": true
+  },
+  "decision": {
+    "ordinary_reset_body_has_complete_concrete_dependencies": true,
+    "converter_gap": null,
+    "ready_to_implement_bounded_source_pair": true,
+    "implemented_by_this_packet": false,
+    "shared_mission_clock_owner_admitted": false,
+    "application_composition_admitted": false,
+    "native_drop_in_abi_admitted": false,
+    "source_pair_requires_no_new_converter_or_private_clock": true,
+    "reason": "The complete raw mode-selecting converter and fallback already exist as callable Source. A reset kernel can retain S/T below ST0 across that direct call and borrow the five actual writable cells, exact step and current mode address. This does not establish the common clock owner."
+  },
+  "existing_converter": {
+    "public_header": "include/bsp/native_render_batch_keys.hpp",
+    "source": "src/native_render_batch_keys.cpp",
+    "registered_by": "CMakeLists.txt:64",
+    "older_ledger_pointer": "src/gui_group_bounds.cpp now calls the moved shared converter; it is not the implementation owner.",
+    "selector_signature": "std::int32_t __fastcall native_crt_truncate_st0_00bf7420(const volatile std::uint32_t* actual_0109eea4) noexcept",
+    "selector_native_extent": [
+      "00BF7420",
+      "00BF743B"
+    ],
+    "selector_native_length": 28,
+    "raw_abi": {
+      "input": "ST0 contains the extended operand; ECX supplies the actual mode address in Source.",
+      "selection": "Fresh DWORD read at the conversion call; any nonzero word selects SSE2.",
+      "nonzero": "FSTP double under the current x87 environment, then CVTTSD2SI EAX; consumes only the input ST0.",
+      "zero": "Tail transfer to existing native_x87_truncate_st0_00bf7456; consumes its input and returns signed-integer bits in EDX:EAX.",
+      "reset_consumes": "Only EAX; store the DWORD, then signed FILD from that same count cell.",
+      "retained_stack": "S and original loaded T below the operand survive both normal-return paths.",
+      "callee_preserved_address_registers": [
+        "ESI",
+        "EDI",
+        "EBX"
+      ],
+      "invocation": "Assembly caller only; a C++ expression does not provide the hidden ST0 input."
+    },
+    "fallback_signature": "std::uint64_t __cdecl native_x87_truncate_st0_00bf7456() noexcept",
+    "fallback_source_contract": "Complete raw helper, including duplicate, FISTP qword, FILD qword, residual/correction and both zero-path FSTP stores.",
+    "fallback_evidence_scope": "Inspected current complete Source and existing qualified ledger contract. No new live BF7456 body capture, address lease, fixture or execution.",
+    "prohibited_substitutes": [
+      "C++ float-to-int cast",
+      "std::trunc or saturation",
+      "zero-only shortcut",
+      "GUI radius wrapper",
+      "instance_sort binary32 numeric projection",
+      "cached bool selector",
+      "new external link stub"
+    ],
+    "existing_retained_stack_example": "src/native_dyn_convex_support.cpp calls the same raw converter with deeper x87 operands retained."
+  },
+  "reset_body": {
+    "address": "00874640",
+    "inclusive_extent": [
+      "00874640",
+      "00874690"
+    ],
+    "native_bytes": 81,
+    "native_instruction_count": 18,
+    "original_abi": "One stack binary32 DWORD at ESP+4; ECX unused; RET 4.",
+    "raw_input_reason": "Initial FLD may quiet a masked signaling NaN internally; following MOVSS operations still copy the original DWORD bits. Forwarding a C++ float before the kernel can change those bits or fault too early.",
+    "required_order": [
+      {
+        "at": "00874640",
+        "operation": "FLD input DWORD as float",
+        "stack": "T"
+      },
+      {
+        "at": "00874644",
+        "operation": "MOVSS original input bits to XMM0",
+        "stack": "T"
+      },
+      {
+        "at": "0087464A",
+        "operation": "FLD ST0",
+        "stack": "T,T"
+      },
+      {
+        "at": "0087464C",
+        "operation": "MOVSS XMM0 to actual F876A4",
+        "stack": "T,T"
+      },
+      {
+        "at": "00874654",
+        "operation": "FLD exact binary64 step D7A270",
+        "stack": "S,T,T"
+      },
+      {
+        "at": "0087465A",
+        "operation": "MOVSS XMM0 to actual F876A8",
+        "stack": "S,T,T"
+      },
+      {
+        "at": "00874662",
+        "operation": "FDIV ST1,ST0",
+        "stack": "S,Q,T"
+      },
+      {
+        "at": "00874664",
+        "operation": "FXCH",
+        "stack": "Q,S,T"
+      },
+      {
+        "at": "00874666",
+        "operation": "Direct call to existing raw BF7420 with actual mode address",
+        "stack": "S,T"
+      },
+      {
+        "at": "0087466B",
+        "operation": "Store EAX bits to actual F876B0",
+        "stack": "S,T"
+      },
+      {
+        "at": "00874670",
+        "operation": "Signed FILD DWORD from that same actual count cell",
+        "stack": "count,S,T"
+      },
+      {
+        "at": "00874676",
+        "operation": "FMUL ST1",
+        "stack": "count*S,S,T"
+      },
+      {
+        "at": "00874678",
+        "operation": "FSUBP ST2,ST0",
+        "stack": "S,T-count*S"
+      },
+      {
+        "at": "0087467A",
+        "operation": "FXCH",
+        "stack": "T-count*S,S"
+      },
+      {
+        "at": "0087467C",
+        "operation": "FSTP binary32 to actual remainder F876AC",
+        "stack": "S"
+      },
+      {
+        "at": "00874682",
+        "operation": "FSUB actual stored binary32 remainder",
+        "stack": "S-stored_remainder"
+      },
+      {
+        "at": "00874688",
+        "operation": "FSTP binary32 to actual interpolation F876B4",
+        "stack": "Incoming depth restored"
+      },
+      {
+        "at": "0087468E",
+        "operation": "Original RET 4",
+        "stack": "Incoming depth restored"
+      }
+    ],
+    "not_written": [
+      "F876A1 stepping byte",
+      "E0B6CC buffer index",
+      "F876B8 previous buffer"
+    ],
+    "no_clock_or_reset_schedule_supplied": true,
+    "no_eager_writes_before_initial_fld": true,
+    "no_retained_operand_spills_or_unrounded_remainder_shortcut": true
+  },
+  "constant": {
+    "step_address": "00D7A270",
+    "binary64_hex_bytes": "000000a09999a93f",
+    "exact_hex_value": "0x1.99999a0000000p-5",
+    "value": 0.05000000074505806,
+    "cross_check_address": "00D0DE84",
+    "binary32_hex_bytes": "cdcc4c3d",
+    "promoted_binary32_equals_native_binary64": true,
+    "ordinary_binary64_literal_0_05_is_equal": false,
+    "provider_contract": "Borrow the qualified actual binary64 step; do not use a different literal or pre-rounded floating intermediate."
+  },
+  "proposed_source_pair": {
+    "files": [
+      "include/bsp/native_mission_clock_reset.hpp",
+      "src/native_mission_clock_reset.cpp"
+    ],
+    "files_created": false,
+    "context_name": "NativeMissionClockResetContext",
+    "context_fields": [
+      {
+        "type": "volatile float&",
+        "name": "clock_00f876a4"
+      },
+      {
+        "type": "volatile float&",
+        "name": "accumulated_00f876a8"
+      },
+      {
+        "type": "volatile float&",
+        "name": "remainder_00f876ac"
+      },
+      {
+        "type": "volatile std::uint32_t&",
+        "name": "step_count_00f876b0"
+      },
+      {
+        "type": "volatile float&",
+        "name": "interpolation_00f876b4"
+      },
+      {
+        "type": "const volatile double&",
+        "name": "step_00d7a270"
+      },
+      {
+        "type": "const volatile std::uint32_t&",
+        "name": "conversion_mode_0109eea4"
+      }
+    ],
+    "signature": "void reset_native_mission_clock_00874640(std::uint32_t input_float_bits, const NativeMissionClockResetContext&);",
+    "preconditions": [
+      "Five distinct actual writable cells belonging to the same admitted clock state.",
+      "Qualified actual step and current conversion-mode cell.",
+      "All borrowed storage remains valid throughout the call.",
+      "MSVC Win32 x87/SSE2 environment and existing concrete raw converter are available."
+    ],
+    "implementation_boundary": [
+      "Prepare borrowed addresses without floating operations or eager value/mode reads.",
+      "Use one contiguous assembly kernel with a stable DWORD argument slot for the two original input reads.",
+      "Preserve exact floating/store order; call the existing raw converter directly.",
+      "Integer address adaptation may use a private pointer layout; no native layout is assumed for the public reference-bearing context.",
+      "No allocation, global owner, private timeline, guard, callback, catch, rollback or synthetic success."
+    ],
+    "raw_bits_precedents": [
+      "include/bsp/native_camera_projection.hpp",
+      "include/bsp/native_bit_cursor_numeric.hpp"
+    ]
+  },
+  "current_mode_provider": {
+    "provider": "GameNativeCanonicalDataOwner::mutable_crt_data().feature_word()",
+    "getter": "src/game_native_mutable_crt_data.cpp:138",
+    "actual_address": "0109EEA4",
+    "owner_lifetime": "Canonical owner is intentionally retained for process lifetime after successful existing initialization.",
+    "current_application_borrow": "src/game_main.cpp:1036",
+    "current_dyn_borrow": "src/game_main.cpp:1119",
+    "same_identity_retained": "GameNativeDynProcess::Impl::ConvexBinding holds a const volatile uint32_t&; startup rejects a different address and crt_conversion_0109eea4 returns that reference.",
+    "selector_value_read_or_assumed": false,
+    "not_a_clock_owner": true,
+    "no_hardware_query_or_private_bool_substitution": true
+  },
+  "limits": {
+    "shared_owner": "Inherited audit still leaves five-cell owner identity, reset/increment authority and shared consumer lifetime unqualified.",
+    "abi": "Proposed public C++ interface does not admit original RET4, scratch-register or EFLAGS equivalence. Wrapper integer prologue/epilogue can change flags.",
+    "control": "Existing hardware path runs under current x87 control word and MXCSR. Do not normalize masks, precision or rounding. These thread controls are separate from the selector DWORD.",
+    "exceptions": "No catch or rollback is proposed. New C++ interface does not establish Windows SEH/unwind or hardware-fault equivalence.",
+    "volatile": "Explicit access only; no synchronization or ownership.",
+    "validation": "No new emitted-code, native differential, ABI, startup or gameplay evidence."
+  },
+  "inherited_owner_report": {
+    "path": "reports/cc12_world_mission_clock_owner_readiness.json",
+    "sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5",
+    "shared_owner_admitted": false
+  },
+  "verification": {
+    "native_image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "image_base": "00400000",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "native_live_disk_spans": [
+      {
+        "address": "00874640",
+        "length": 81,
+        "purpose": "complete reset body",
+        "hex": "d9442404f30f10442404d9c0f30f1105a476f800dd0570a2d700f30f1105a876f800dcf9d9c9e8b52d3800a3b076f800db05b076f800d8c9deead9c9d91dac76f800d825ac76f800d91db476f800c20400",
+        "sha256": "a0bef200fc1854e9df3faea97321b407d15d802b76dbbbcec80cfdcbc6759656",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00BF7420",
+        "length": 28,
+        "purpose": "complete selector/SSE2 body; tail transfer to existing BF7456",
+        "hex": "833da4ee090100742d558bec83ec0883e4f8dd1c24f20f2c0424c9c3",
+        "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00D7A270",
+        "length": 8,
+        "purpose": "exact reset step operand",
+        "hex": "000000a09999a93f",
+        "sha256": "f6695ce73944e91633628832ea0c0f88a3ea4f28087ed24fa862b40ffeec8154",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00D0DE84",
+        "length": 4,
+        "purpose": "promoted-float step cross-check",
+        "hex": "cdcc4c3d",
+        "sha256": "0b9d79ff0fc4d0a77ef398763bbe45c445501e826219f2b6a1aa709411ab631d",
+        "live_disk_equal": true
+      }
+    ],
+    "native_live_disk_span_count": 4,
+    "native_live_disk_bytes_equal": 121,
+    "source_build_file_pin_count": 14,
+    "inherited_audit_pin_count": 2,
+    "checks": [
+      "Four live-Ghidra/installed-PE windows match exactly: 121 bytes.",
+      "Exact Native step decoded and compared with promoted float.",
+      "Fourteen Source/build-file and two inherited audit hashes match, including LF-normalized hashes.",
+      "Current complete raw Source helper bodies and registration inspected.",
+      "JSON decoding and git diff checks passed."
+    ],
+    "build_tests_probes_runtime": "Not performed; read-only audit.",
+    "source_changes": 0,
+    "gpr_mutations": 0,
+    "original_function_credit": 0
+  },
+  "source_and_inherited_evidence_pins": [
+    {
+      "path": "include/bsp/native_render_batch_keys.hpp",
+      "bytes": 1858,
+      "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "lf_content_sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "bytes": 5004,
+      "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "lf_content_sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+    },
+    {
+      "path": "include/bsp/gui_group_bounds.hpp",
+      "bytes": 1642,
+      "sha256": "2de051ee41a6f13f70fa71580319a92b1ea708782551a55e01279bcaf7eeb932",
+      "lf_content_sha256": "2de051ee41a6f13f70fa71580319a92b1ea708782551a55e01279bcaf7eeb932"
+    },
+    {
+      "path": "src/gui_group_bounds.cpp",
+      "bytes": 3049,
+      "sha256": "390fff98406f8766d14674acd522666dad53ddccc351aef43c28edf4336bdc67",
+      "lf_content_sha256": "390fff98406f8766d14674acd522666dad53ddccc351aef43c28edf4336bdc67"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "lf_content_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+    },
+    {
+      "path": "src/game_native_mutable_crt_data.cpp",
+      "bytes": 10114,
+      "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "lf_content_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39"
+    },
+    {
+      "path": "include/bsp/game_native_dyn_process.hpp",
+      "bytes": 2723,
+      "sha256": "a2fd23518752eb7232a0076a039123202f6be1c2ef50fd17a5c9eaff17bdcee6",
+      "lf_content_sha256": "a2fd23518752eb7232a0076a039123202f6be1c2ef50fd17a5c9eaff17bdcee6"
+    },
+    {
+      "path": "src/game_native_dyn_process.cpp",
+      "bytes": 8919,
+      "sha256": "6ca1af2006f4462e1807d03821183bcf7925404bb77bbdbb32399ee78d32e4e2",
+      "lf_content_sha256": "6ca1af2006f4462e1807d03821183bcf7925404bb77bbdbb32399ee78d32e4e2"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 72678,
+      "sha256": "6b7542a9c0031fc21b4c4cd4642dec77d09584755c3fd5362c39585ff4e76167",
+      "lf_content_sha256": "6b7542a9c0031fc21b4c4cd4642dec77d09584755c3fd5362c39585ff4e76167"
+    },
+    {
+      "path": "src/native_dyn_convex_support.cpp",
+      "bytes": 17511,
+      "sha256": "6b152077a91851c9006114b9ece00c0921e3930b6bafd234419f304cb2b02047",
+      "lf_content_sha256": "6b152077a91851c9006114b9ece00c0921e3930b6bafd234419f304cb2b02047"
+    },
+    {
+      "path": "include/bsp/native_camera_projection.hpp",
+      "bytes": 1594,
+      "sha256": "ba4c89ced442571e2b6230a2337011f819bd2505d5efbc4cdd0bc002bedf413a",
+      "lf_content_sha256": "ba4c89ced442571e2b6230a2337011f819bd2505d5efbc4cdd0bc002bedf413a"
+    },
+    {
+      "path": "include/bsp/native_bit_cursor_numeric.hpp",
+      "bytes": 1467,
+      "sha256": "8ccf4e016d824a1be04bad517ab9b02785f4b2e616a7d23d7273e88a8c53581c",
+      "lf_content_sha256": "8ccf4e016d824a1be04bad517ab9b02785f4b2e616a7d23d7273e88a8c53581c"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 16589,
+      "sha256": "72a927c4d9a08e5d1f6dfe96a8ac12605f7b957aa6100aa9d0f922af343bbcfd",
+      "lf_content_sha256": "72a927c4d9a08e5d1f6dfe96a8ac12605f7b957aa6100aa9d0f922af343bbcfd"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "lf_content_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "reports/cc12_world_mission_clock_owner_readiness.json",
+      "bytes": 21728,
+      "sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5",
+      "lf_content_sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5"
+    },
+    {
+      "path": "docs/CC12_WORLD_MISSION_CLOCK_OWNER_READINESS.md",
+      "bytes": 10531,
+      "sha256": "98eb16dfc297100b91364ecb81e14956b77b9436a64dfc28fdf983800468b5ac",
+      "lf_content_sha256": "98eb16dfc297100b91364ecb81e14956b77b9436a64dfc28fdf983800468b5ac"
+    }
+  ]
+}

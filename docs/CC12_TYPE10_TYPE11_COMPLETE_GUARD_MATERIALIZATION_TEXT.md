@@ -20,4 +20,6 @@ The two added headers are native_global_config_sample_dispatch.hpp, 1,731 bytes/
 
 All future Root code, private ENV, driver/bootstrap, empty-cache, materialization, context and timeout selections remain null/unadopted. Private environment values stay ignored; the report contains only their file pin. Main/local/type1011p1 remains absent. There was no compiler/linker, Native/Ghidra/provider/original-game PE/target access, prior runtime replay, new test or C++ change. Actual mapped Windows DLL identity, fixture/ABI/owner/private-heap/EH/game qualification are not established.
 
+Installed Python Lib/os.py lines 777-790 normalizes Windows environment keys to uppercase. The sealed private profile illustration includes mixed-case SystemRoot and remains unadopted. Fresh concrete Root profiles must use uppercase keys, including SYSTEMROOT, so the exact Python environment comparison can pass. This requirement changes only the published review note; the sealed candidate and its profile pin remain unchanged.
+
 The next step is a separate complete current selection and full Root text/ENV review before concrete pin adoption and exclusive materialization. The new text candidate does not waive the two-header hold or any original acceptance gate.
