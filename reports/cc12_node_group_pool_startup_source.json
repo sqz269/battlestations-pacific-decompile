@@ -1,0 +1,734 @@
+{
+  "schema": "cc12-node-group-pool-startup-source-v1",
+  "packet": "cc12_node_group_pool_startup_source",
+  "created_utc": "2026-10-09T23:53:29.845813+00:00",
+  "baseline_commit": "99c0522ae22b7f61f4f1ac132bf173158473b0ce",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "source_composition_implemented_build_checked_and_focused_Source_CRT_probe_passed_pending_Root_review",
+  "owned_files": [
+    "include/bsp/game_native_resource_pools.hpp",
+    "src/game_native_resource_pools.cpp",
+    "src/game_main.cpp",
+    "docs/CC12_NODE_GROUP_POOL_STARTUP_SOURCE.md",
+    "reports/cc12_node_group_pool_startup_source.json"
+  ],
+  "new_Native_body_reads": 0,
+  "new_Native_data_reads": 0,
+  "new_handler_reads": 0,
+  "GPR_mutations": 0,
+  "new_Native_function_reconstructions": 0,
+  "new_descriptor_cells": 0,
+  "new_descriptor_consumers": 0,
+  "new_node_group_or_model_payloads_constructed": 0,
+  "provider_readiness": {
+    "plain_node": "Complete existing native_node_pool_owner and native_node_pool_allocation Source; already registered in bsp_core; no missing startup/cleanup provider.",
+    "group": "Complete existing NativeGroupPool Source including actual storage/companion, trim, slot allocation/return, startup and cleanup; already registered in bsp_core.",
+    "shared_domain": "Existing retained GameNativePhysicalPoolProcess E188B4 allocator list and singleton lifetime allocation services; no new domain/head.",
+    "no_consumer_prerequisite_for_raw_pool_startup": "Pool constructors use no node/group/model type ID, descriptor, factory, graph, scene or environment.",
+    "checked_further_consumer": "Existing NativeResourceGraphBuiltinDispatch requires distinct actual plain and model-base buffers and binds the environment group companion; future environment must borrow these retained canonical providers."
+  },
+  "Source_implementation": {
+    "actual_process": "bsp::game::GameNativeResourcePoolProcess function-local static; append new storage/companion/state/status members after every existing member.",
+    "same_allocator_domain": "game_native_physical_pool_process().allocator_list_domain_00e188b4()",
+    "plain_node_pool": {
+      "native_global": "0108FF58",
+      "storage": "alignas(4) std::byte plain_node_storage_0108ff58_[0x38]",
+      "native_pool_bytes": 56,
+      "slot_bytes": 376,
+      "payload_bytes": 372,
+      "header_lifetime": "placement-new trivial AllocatorListElement before binding takes a reference; does not initialize or publish the pool",
+      "explicit_startup": "initialize_plain_node_once_00cd7d10",
+      "binding": "bind_static_native_node_pool_0108ff58(actual retained buffer, SAME list)",
+      "existing_startup": "initialize_static_native_node_pool_00cd7d10",
+      "existing_constructor": "initialize_native_node_pool_00b6e980",
+      "real_CRT_callback": "destroy_static_native_node_pool_00ce0e20",
+      "existing_destructor": "destroy_native_node_pool_00b6e3d0",
+      "checked_accessor": "plain_node_pool_storage_0108ff58",
+      "trim_profile": "D62C78/B6EA60",
+      "binding_boundary": "Existing binder is setup-once and does not reject arbitrary rebinding; this production wrapper fixes and binds the one retained pair once. Future direct rebinding violates the provider lifetime contract."
+    },
+    "group_pool": {
+      "native_global": "010902F4",
+      "storage": "NativeGroupPoolStorage group_storage_010902f4_",
+      "companion": "NativeGroupPool group_",
+      "native_pool_bytes": 56,
+      "slot_bytes": 396,
+      "payload_bytes": 392,
+      "explicit_startup": "initialize_group_once_00cd8460",
+      "binding": "bind_static_native_group_pool_010902f4(group_)",
+      "existing_startup": "initialize_static_native_group_pool_00cd8460",
+      "existing_constructor": "NativeGroupPool::initialize_00b8f190",
+      "real_CRT_callback": "destroy_static_native_group_pool_00ce0f00",
+      "existing_destructor": "NativeGroupPool::destroy_00b8ec80",
+      "checked_accessor": "group_pool_010902f4",
+      "trim_profile": "D634D4/B8F270",
+      "binding_boundary": "Existing static binder rejects a different companion; future NativeGroupEnvironment must borrow this exact checked companion."
+    },
+    "real_caller": "src/game_main.cpp WinMain current resource-pool startup block after accepted canonical data handoff and VFS qualification early returns, before game host construction.",
+    "Source_startup_order": [
+      "plain-node 00CD7D10",
+      "camera 00CD7DD0",
+      "mesh 00CD7E40",
+      "model 00CD7F00",
+      "model-base 00CD7F20",
+      "section 00CD8250",
+      "hierarchy 00CD82D0",
+      "group 00CD8460"
+    ],
+    "preserved_prior_subsequence": [
+      "camera 00CD7DD0",
+      "mesh 00CD7E40",
+      "model 00CD7F00",
+      "model-base 00CD7F20",
+      "section 00CD8250",
+      "hierarchy 00CD82D0"
+    ],
+    "unchanged_prior_methods": [
+      "initialize_camera_once_00cd7dd0",
+      "initialize_mesh_once_00cd7e40",
+      "initialize_section_once_00cd8250",
+      "initialize_hierarchy_once_00cd82d0",
+      "initialize_model_once_00cd7f00",
+      "initialize_model_base_once_00cd7f20",
+      "camera_pool_0108ffb0",
+      "mesh_pool_0108fff8",
+      "section_pool_010901d4",
+      "hierarchy_pool_0109022c",
+      "model_pool_01090054",
+      "model_base_pool_storage_0109008c"
+    ],
+    "distinct_unmodified_families": [
+      "particle-model 00CD7830",
+      "model-base 0109008C",
+      "model 01090054",
+      "material-parameter 00F8D3E4"
+    ],
+    "source_order_qualification": "Two explicit Source startup positions; no new evidence of original Native CRT table ordering, despite address-bearing names.",
+    "registration": "Existing real std::atexit callbacks retained, no substitute callback or dummy provider.",
+    "normal_CRT_reverse_resource_callbacks": [
+      "00CE0F00 group",
+      "00CE0ED0 hierarchy",
+      "00CE0EC0 section",
+      "00CE0E60 model-base",
+      "00CE0E50 model",
+      "00CE0E40 mesh",
+      "00CE0E30 camera",
+      "00CE0E20 plain-node"
+    ],
+    "distinct_callbacks": "Plain-node and model-base share B6E980/B6E3D0 bodies but have separate storage, static binding cells and CE0E20/CE0E60 callbacks. Plain-node/group callbacks unlink elements without unbinding their host trim entries; model-base callback additionally unbinds. Preserve all three existing behaviors.",
+    "lifetime": "Shared physical/list process constructed first; resource process C++ exit registration finishes before explicit pool callback registration. Actual buffers, companion and list remain alive during cleanup. Default C++ destructor does not run Native pool teardown.",
+    "terminal_payload_rule": "Finish every future real node/group/model payload and companion, then return its raw slot before pool callbacks free slabs/tables. Raw pool destruction does not invoke payload destructors.",
+    "synchronization": "Existing resource-process mutex serializes its methods. WinMain serializes inter-owner E188B4 mutations; no additional global list lock or arbitrary concurrent publication claim."
+  },
+  "failure_contracts": [
+    {
+      "path": "cold checked accessor",
+      "behavior": "throw logic_error; do not initialize",
+      "evidence": "Source and local probe"
+    },
+    {
+      "path": "first attempt",
+      "behavior": "mark threw before binding/startup, cache actual status and mark returned only after return",
+      "evidence": "Source and successful local probe"
+    },
+    {
+      "path": "repeat after return",
+      "behavior": "return original status, with no rebind/reinit/duplicate callback",
+      "evidence": "Source and local probe including actual callback count"
+    },
+    {
+      "path": "binding or constructor exception",
+      "behavior": "leave attempted state sticky, later startup throws and accessor unavailable; no retry/rollback; existing lower-provider unwind remains",
+      "evidence": "Source inspection only, not fault injected"
+    },
+    {
+      "path": "nonzero real atexit result",
+      "behavior": "retain initialized pool and cached nonzero status; checked accessor available, no registered cleanup and no synthetic C++ cleanup",
+      "evidence": "Source inspection only, not fault injected"
+    },
+    {
+      "path": "pre-start process construction exception",
+      "behavior": "ordinary existing C++ function-local-static construction rules before either once method starts; per-pool states do not cover this stage",
+      "evidence": "Source boundary only, not fault injected"
+    },
+    {
+      "path": "exception reaching WinMain startup catch",
+      "behavior": "existing catch logs and returns 1; already registered callbacks remain for ordinary CRT exit",
+      "evidence": "Source inspection only, not game execution"
+    }
+  ],
+  "validation_receipt_pin": {
+    "path": "local/cc12_node_group_pool_startup_source/validation.json",
+    "bytes": 22409,
+    "sha256": "ef1053de7a33abfb212a5cbb720c51e93fd14825fdd77bd1b3678be9bdedc50e"
+  },
+  "validation": {
+    "schema": "cc12-node-group-pool-startup-source-validation-v1",
+    "created_utc": "2026-10-09T23:52:22.412306+00:00",
+    "baseline_commit": "99c0522ae22b7f61f4f1ac132bf173158473b0ce",
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": {
+        "path": "local/cc12_node_group_pool_startup_source/build.log",
+        "bytes": 3423,
+        "sha256": "bfe29fbe88952bc6eec573585fda78fd0a008957a5ac7c7e9d767bfe8afe02ac",
+        "canonical_lf_sha256": "a5e76d02dedb7206c0f45ef3c6529e7a6585a5b4a4461577c0aab2a326359377"
+      },
+      "configured_CTests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "CTest_passed": 2,
+      "CTest_failed": 0,
+      "local_seed_reference_present": false,
+      "native_math_differential_configured": false
+    },
+    "probe": {
+      "source": {
+        "path": "local/cc12_node_group_pool_startup_source/node_group_pool_probe.cpp",
+        "bytes": 6570,
+        "sha256": "f37412589b23cb2f860fc7eb927e3259be0dfe63f63dab6108b4dd0664967f74",
+        "canonical_lf_sha256": "f37412589b23cb2f860fc7eb927e3259be0dfe63f63dab6108b4dd0664967f74"
+      },
+      "compile_command": {
+        "path": "local/cc12_node_group_pool_startup_source/compile_probe.cmd",
+        "bytes": 679,
+        "sha256": "73e80d1e9163587036445866d83c6ea0f462872baa75ef7548971bb552492f11",
+        "canonical_lf_sha256": "075ddd103a2139ede12da7b23a92d974607e87c7fea05946bec11d384f8d2c13"
+      },
+      "compile_log": {
+        "path": "local/cc12_node_group_pool_startup_source/probe_compile.log",
+        "bytes": 272,
+        "sha256": "73c7438a2e4c034d9496b16940c0559e7deaeeda7bd883b1ec3dc44bf099e2bb",
+        "canonical_lf_sha256": "42c2ad351d1a22fa8b64fdc3ea52398c6f8c43988f09c4589f809e7f7d23d37d"
+      },
+      "executable": {
+        "path": "local/cc12_node_group_pool_startup_source/node_group_pool_probe.exe",
+        "bytes": 232448,
+        "sha256": "adcb61fff2fd639889b41ddf5fd94ced042e0be2432e236b5744f0bdfd576c33"
+      },
+      "run_log": {
+        "path": "local/cc12_node_group_pool_startup_source/probe_run.log",
+        "bytes": 435,
+        "sha256": "e86f23c818e6bcd9e12ec5b1d119a4c0f1951b686b5b9d8e306f8ebc098ba567",
+        "canonical_lf_sha256": "96d027ecf98276eeba8b8aa9cfc03def7432c0239d3f050dd76aaad16fe6e978"
+      },
+      "compile_exit_code": 0,
+      "run_exit_code": 0,
+      "manifest_embedded": true,
+      "case_count": 1,
+      "actual_CRT_reverse_checkpoints": 8,
+      "new_node_group_or_model_payloads_constructed": 0,
+      "native_image_reads": 0,
+      "scope": "Source actual process/list/eight pool storage and real CRT; not bsp_game WinMain or the Native executable"
+    },
+    "selected_COFF_receipt": {
+      "path": "local/cc12_node_group_pool_startup_source/selected_COFF_receipt.json",
+      "bytes": 6039,
+      "sha256": "dc573334c95586db307ab59b2861d27573d5836286d6161eccce91a6907bf452",
+      "canonical_lf_sha256": "dc573334c95586db307ab59b2861d27573d5836286d6161eccce91a6907bf452"
+    },
+    "selected_COFF_objects": [
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_game.dir\\Release\\game_main.obj",
+          "bytes": 529339,
+          "sha256": "eb3c34e8a1013332d753b667d41bd5a1a1d29a9fdb72acf4fa56907553f23b25"
+        },
+        "complete_symbols_and_relocations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_node_group_pool_startup_source\\game_main.coff.txt",
+          "bytes": 1782185,
+          "sha256": "ecef695115b16ca0a363cf4b2a5f7f1faa4d74b29407d7a2dcd5918c31cda058"
+        },
+        "expected_symbols_present": [
+          "initialize_plain_node_once_00cd7d10",
+          "initialize_group_once_00cd8460",
+          "initialize_model_once_00cd7f00",
+          "initialize_model_base_once_00cd7f20"
+        ]
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_core.dir\\Release\\game_native_resource_pools.obj",
+          "bytes": 41894,
+          "sha256": "14c78c3669ebd76bdf3c53da62cd366dfc34edfed55c2e33e8e93da4344e1d20"
+        },
+        "complete_symbols_and_relocations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_node_group_pool_startup_source\\game_native_resource_pools.coff.txt",
+          "bytes": 130555,
+          "sha256": "bc8c103a80342259c995438dcbbcf5f64a19e206826d24be6d4ce7c811972597"
+        },
+        "expected_symbols_present": [
+          "bind_static_native_node_pool_0108ff58",
+          "initialize_static_native_node_pool_00cd7d10",
+          "bind_static_native_group_pool_010902f4",
+          "initialize_static_native_group_pool_00cd8460"
+        ]
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_core.dir\\Release\\native_group_pool.obj",
+          "bytes": 18655,
+          "sha256": "7329dd6a5f38527567408b6605c23753f06dbb87c7822f7564764e4b1e1ba9f6"
+        },
+        "complete_symbols_and_relocations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_node_group_pool_startup_source\\native_group_pool.coff.txt",
+          "bytes": 64249,
+          "sha256": "d2965f3c12080f07c4275ac1b97d3815ca431735526555bf3c7687f13d6cf1f4"
+        },
+        "expected_symbols_present": [
+          "initialize_static_native_group_pool_00cd8460",
+          "destroy_static_native_group_pool_00ce0f00"
+        ]
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_core.dir\\Release\\native_node_pool_owner.obj",
+          "bytes": 6439,
+          "sha256": "5c55448a1a54ab22b9db9ad1a0a98d342bb588f56183f2dc337be7150f1efb47"
+        },
+        "complete_symbols_and_relocations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_node_group_pool_startup_source\\native_node_pool_owner.coff.txt",
+          "bytes": 18584,
+          "sha256": "cc21b477c394d817c94747851872b0a16b22b1801c1da25c8d69e7291a49ab87"
+        },
+        "expected_symbols_present": [
+          "initialize_static_native_node_pool_00cd7d10",
+          "destroy_static_native_node_pool_00ce0e20",
+          "initialize_native_node_pool_00b6e980",
+          "destroy_native_node_pool_00b6e3d0"
+        ]
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_core.dir\\Release\\native_node_pool_allocation.obj",
+          "bytes": 5049,
+          "sha256": "5f39dc081e529538aeb9b3687acc25e3c4780aa7f62651b5bac59e25c66c3b9b"
+        },
+        "complete_symbols_and_relocations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_node_group_pool_startup_source\\native_node_pool_allocation.coff.txt",
+          "bytes": 8262,
+          "sha256": "69d9c02bd5ab93840b74232340fb6e526dd9f818e6ec21a03385ca0520f635c3"
+        },
+        "expected_symbols_present": [
+          "allocate_native_node_00b6ed70",
+          "return_native_node_00b6e670"
+        ]
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_core.dir\\Release\\native_model_pool.obj",
+          "bytes": 18651,
+          "sha256": "4d57c673393d2ad1a6008ffe0b4614cfd04efdad59cd806d13b32928dd13ecbc"
+        },
+        "complete_symbols_and_relocations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_node_group_pool_startup_source\\native_model_pool.coff.txt",
+          "bytes": 64249,
+          "sha256": "0a34e0443f82c028816469c1221cc0b9dae15227e0a4c5de2de962e22c98d185"
+        },
+        "expected_symbols_present": [
+          "destroy_static_native_model_pool_00ce0e50"
+        ]
+      },
+      {
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\build\\win32\\bsp_core.dir\\Release\\native_model_base_bootstrap.obj",
+          "bytes": 12525,
+          "sha256": "862577b0234298d403416931a605da668d52209a6402582e36bc7e9382a82a3f"
+        },
+        "complete_symbols_and_relocations": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_node_group_pool_startup_source\\native_model_base_bootstrap.coff.txt",
+          "bytes": 47626,
+          "sha256": "589971cb892187c7b95a4c2f4c1152a96608924c78dc8afd17398a3013aa737c"
+        },
+        "expected_symbols_present": [
+          "destroy_static_model_base_node_pool_00ce0e60"
+        ]
+      }
+    ],
+    "frozen_build_artifacts": [
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/bsp_core.lib",
+        "bytes": 73843856,
+        "sha256": "cce7b1ee354f9b1c587301a915633eecffc56d80634561d6a64295838beb4bfe",
+        "built_from_path": "build/win32/Release/bsp_core.lib"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/bsp_game.exe",
+        "bytes": 5098496,
+        "sha256": "4e12e2c661b3f3825cd285fbf8110a9dd4a6102936afa6d50e32617d074cbb0f",
+        "built_from_path": "build/win32/Release/bsp_game.exe"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/game_main.obj",
+        "bytes": 529339,
+        "sha256": "eb3c34e8a1013332d753b667d41bd5a1a1d29a9fdb72acf4fa56907553f23b25",
+        "built_from_path": "build/win32/bsp_game.dir/Release/game_main.obj"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/game_native_resource_pools.obj",
+        "bytes": 41894,
+        "sha256": "14c78c3669ebd76bdf3c53da62cd366dfc34edfed55c2e33e8e93da4344e1d20",
+        "built_from_path": "build/win32/bsp_core.dir/Release/game_native_resource_pools.obj"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/native_group_pool.obj",
+        "bytes": 18655,
+        "sha256": "7329dd6a5f38527567408b6605c23753f06dbb87c7822f7564764e4b1e1ba9f6",
+        "built_from_path": "build/win32/bsp_core.dir/Release/native_group_pool.obj"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/native_node_pool_owner.obj",
+        "bytes": 6439,
+        "sha256": "5c55448a1a54ab22b9db9ad1a0a98d342bb588f56183f2dc337be7150f1efb47",
+        "built_from_path": "build/win32/bsp_core.dir/Release/native_node_pool_owner.obj"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/native_node_pool_allocation.obj",
+        "bytes": 5049,
+        "sha256": "5f39dc081e529538aeb9b3687acc25e3c4780aa7f62651b5bac59e25c66c3b9b",
+        "built_from_path": "build/win32/bsp_core.dir/Release/native_node_pool_allocation.obj"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/native_model_pool.obj",
+        "bytes": 18651,
+        "sha256": "4d57c673393d2ad1a6008ffe0b4614cfd04efdad59cd806d13b32928dd13ecbc",
+        "built_from_path": "build/win32/bsp_core.dir/Release/native_model_pool.obj"
+      },
+      {
+        "path": "local/cc12_node_group_pool_startup_source/frozen_artifacts/native_model_base_bootstrap.obj",
+        "bytes": 12525,
+        "sha256": "862577b0234298d403416931a605da668d52209a6402582e36bc7e9382a82a3f",
+        "built_from_path": "build/win32/bsp_core.dir/Release/native_model_base_bootstrap.obj"
+      }
+    ],
+    "selected_source_inputs": [
+      {
+        "path": "include/bsp/game_native_resource_pools.hpp",
+        "bytes": 4717,
+        "sha256": "789564d051c7037f3dbcc8a9a64da9f15b2d32f9a26c6f862789d8b9c639940a",
+        "canonical_lf_sha256": "789564d051c7037f3dbcc8a9a64da9f15b2d32f9a26c6f862789d8b9c639940a"
+      },
+      {
+        "path": "src/game_native_resource_pools.cpp",
+        "bytes": 9410,
+        "sha256": "7130ac9b6f96b6b0d4a90bfc01f876da9a4d4fd2ad7d2b2d7a343d6458c8c713",
+        "canonical_lf_sha256": "7130ac9b6f96b6b0d4a90bfc01f876da9a4d4fd2ad7d2b2d7a343d6458c8c713"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "bytes": 73768,
+        "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+        "canonical_lf_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+      },
+      {
+        "path": "include/bsp/native_model_pool.hpp",
+        "bytes": 3166,
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+        "canonical_lf_sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      },
+      {
+        "path": "src/native_model_pool.cpp",
+        "bytes": 11199,
+        "sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020",
+        "canonical_lf_sha256": "38a6363a3fa090b2c939f8a65e02433f4090671bd0d42b4b66dd35d4e1ddc020"
+      },
+      {
+        "path": "include/bsp/native_model_base_bootstrap.hpp",
+        "bytes": 1733,
+        "sha256": "e92d899708427f4c04e540c1585cc592be412fe08c1c5ccbfde8e2a1fec34a0e",
+        "canonical_lf_sha256": "e92d899708427f4c04e540c1585cc592be412fe08c1c5ccbfde8e2a1fec34a0e"
+      },
+      {
+        "path": "src/native_model_base_bootstrap.cpp",
+        "bytes": 2494,
+        "sha256": "c9e8805842b3ce8aa889e2077148a373bfdcd9a4b779d142905080a097c6303a",
+        "canonical_lf_sha256": "c9e8805842b3ce8aa889e2077148a373bfdcd9a4b779d142905080a097c6303a"
+      },
+      {
+        "path": "include/bsp/native_node_pool_owner.hpp",
+        "bytes": 2405,
+        "sha256": "a0d5dab26a44e7fd32275968e23252209368fee4b9019b188b3f260499007e93",
+        "canonical_lf_sha256": "a0d5dab26a44e7fd32275968e23252209368fee4b9019b188b3f260499007e93"
+      },
+      {
+        "path": "src/native_node_pool_owner.cpp",
+        "bytes": 6097,
+        "sha256": "07d2133d6824276aca55581bb47a2046209bf7d3dd2bf8c93aaa31dc78abffaf",
+        "canonical_lf_sha256": "07d2133d6824276aca55581bb47a2046209bf7d3dd2bf8c93aaa31dc78abffaf"
+      },
+      {
+        "path": "include/bsp/native_node_pool_allocation.hpp",
+        "bytes": 2226,
+        "sha256": "ff3bdbc1203c0401f857077ba6b88ccf921682abce593ba4fdc0801b02f94c12",
+        "canonical_lf_sha256": "ff3bdbc1203c0401f857077ba6b88ccf921682abce593ba4fdc0801b02f94c12"
+      },
+      {
+        "path": "src/native_node_pool_allocation.cpp",
+        "bytes": 6659,
+        "sha256": "215908bbec7a3b62067978e94f0919c9c092e1083514e7c08d966e01fe811426",
+        "canonical_lf_sha256": "215908bbec7a3b62067978e94f0919c9c092e1083514e7c08d966e01fe811426"
+      },
+      {
+        "path": "include/bsp/game_native_physical_pool.hpp",
+        "bytes": 3787,
+        "sha256": "96d7cda0fe9674648d77a97b0a5528f4fae5731774c33badc98a2ced4686246d",
+        "canonical_lf_sha256": "96d7cda0fe9674648d77a97b0a5528f4fae5731774c33badc98a2ced4686246d"
+      },
+      {
+        "path": "src/game_native_physical_pool.cpp",
+        "bytes": 3147,
+        "sha256": "683649cc6ee36e57e3ec51c4682c2d5750805f62c71254d7186d835c6821dbe5",
+        "canonical_lf_sha256": "683649cc6ee36e57e3ec51c4682c2d5750805f62c71254d7186d835c6821dbe5"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "bytes": 2192,
+        "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+        "canonical_lf_sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+      },
+      {
+        "path": "src/allocator_list.cpp",
+        "bytes": 2682,
+        "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+        "canonical_lf_sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "include/bsp/native_camera_pool.hpp",
+        "bytes": 3029,
+        "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038",
+        "canonical_lf_sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+      },
+      {
+        "path": "src/native_camera_pool.cpp",
+        "bytes": 11439,
+        "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3",
+        "canonical_lf_sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3"
+      },
+      {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "bytes": 2929,
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+        "canonical_lf_sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      {
+        "path": "src/native_mesh_pool.cpp",
+        "bytes": 11152,
+        "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+        "canonical_lf_sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "bytes": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e",
+        "canonical_lf_sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      },
+      {
+        "path": "src/native_mesh_section.cpp",
+        "bytes": 23109,
+        "sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876",
+        "canonical_lf_sha256": "8f09c61b3ba5ef47c403de9769d24d9d9e6a79c1bb8668430e53fc33587ed876"
+      },
+      {
+        "path": "include/bsp/native_material_pools.hpp",
+        "bytes": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+        "canonical_lf_sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+      },
+      {
+        "path": "src/native_material_pools.cpp",
+        "bytes": 19885,
+        "sha256": "dae9c549cfc295d680184d7a51d0d073c310bf6bd00553d31be5fd81f530f13f",
+        "canonical_lf_sha256": "dae9c549cfc295d680184d7a51d0d073c310bf6bd00553d31be5fd81f530f13f"
+      },
+      {
+        "path": "include/bsp/native_resource_hierarchy_pool.hpp",
+        "bytes": 2175,
+        "sha256": "43c6b72030e5acb673d7fce986a1822384f845394f02d18854138b5e37a66eed",
+        "canonical_lf_sha256": "43c6b72030e5acb673d7fce986a1822384f845394f02d18854138b5e37a66eed"
+      },
+      {
+        "path": "src/native_resource_hierarchy_pool.cpp",
+        "bytes": 1064,
+        "sha256": "4b1a00ae565b019c1335e6944bbb9145566a9ffa5e163ab3895ced226e1b24c8",
+        "canonical_lf_sha256": "4b1a00ae565b019c1335e6944bbb9145566a9ffa5e163ab3895ced226e1b24c8"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "canonical_lf_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 200071,
+        "sha256": "8315dc71eec8370c05b9b5e158767387a7a806ebf2fc7ad2a3250475a0225523",
+        "canonical_lf_sha256": "8315dc71eec8370c05b9b5e158767387a7a806ebf2fc7ad2a3250475a0225523"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "include/bsp/native_group_pool.hpp",
+        "bytes": 3166,
+        "sha256": "ad6835d963a433887a9b8700bec5911e4817cd15f9b06dee53c622ea1fe0a1c2",
+        "canonical_lf_sha256": "ad6835d963a433887a9b8700bec5911e4817cd15f9b06dee53c622ea1fe0a1c2"
+      },
+      {
+        "path": "src/native_group_pool.cpp",
+        "bytes": 11199,
+        "sha256": "7fd8a15f0942dd6c5b18d1887f6422c04c166aabf7abd2736738819072e2edd1",
+        "canonical_lf_sha256": "7fd8a15f0942dd6c5b18d1887f6422c04c166aabf7abd2736738819072e2edd1"
+      },
+      {
+        "path": "include/bsp/native_resource_graph_builtin_dispatch.hpp",
+        "bytes": 2931,
+        "sha256": "5c536749705f5c60f32fd83d3013da0e93f7013c907d706de1c095a5a6dd49b3",
+        "canonical_lf_sha256": "5c536749705f5c60f32fd83d3013da0e93f7013c907d706de1c095a5a6dd49b3"
+      },
+      {
+        "path": "src/native_resource_graph_builtin_dispatch.cpp",
+        "bytes": 9746,
+        "sha256": "0df1814d187501d957af6b0a400d80633b78fe52c8dd797785ed5cc493d4b2ea",
+        "canonical_lf_sha256": "0df1814d187501d957af6b0a400d80633b78fe52c8dd797785ed5cc493d4b2ea"
+      }
+    ],
+    "unchanged_selected_provider_or_build_inputs": [
+      "include/bsp/native_model_pool.hpp",
+      "src/native_model_pool.cpp",
+      "include/bsp/native_model_base_bootstrap.hpp",
+      "src/native_model_base_bootstrap.cpp",
+      "include/bsp/native_node_pool_owner.hpp",
+      "src/native_node_pool_owner.cpp",
+      "include/bsp/native_node_pool_allocation.hpp",
+      "src/native_node_pool_allocation.cpp",
+      "include/bsp/game_native_physical_pool.hpp",
+      "src/game_native_physical_pool.cpp",
+      "include/bsp/allocator_list.hpp",
+      "src/allocator_list.cpp",
+      "include/bsp/singleton_lifetime.hpp",
+      "src/singleton_lifetime.cpp",
+      "include/bsp/native_camera_pool.hpp",
+      "src/native_camera_pool.cpp",
+      "include/bsp/native_mesh_pool.hpp",
+      "src/native_mesh_pool.cpp",
+      "include/bsp/native_mesh_section.hpp",
+      "src/native_mesh_section.cpp",
+      "include/bsp/native_material_pools.hpp",
+      "src/native_material_pools.cpp",
+      "include/bsp/native_resource_hierarchy_pool.hpp",
+      "src/native_resource_hierarchy_pool.cpp",
+      "CMakeLists.txt",
+      "cmake/startup.cmake",
+      "scripts/build.ps1",
+      "include/bsp/native_group_pool.hpp",
+      "src/native_group_pool.cpp",
+      "include/bsp/native_resource_graph_builtin_dispatch.hpp",
+      "src/native_resource_graph_builtin_dispatch.cpp"
+    ],
+    "unchanged_existing_six_pool_methods": [
+      "initialize_camera_once_00cd7dd0",
+      "initialize_mesh_once_00cd7e40",
+      "initialize_section_once_00cd8250",
+      "initialize_hierarchy_once_00cd82d0",
+      "initialize_model_once_00cd7f00",
+      "initialize_model_base_once_00cd7f20",
+      "camera_pool_0108ffb0",
+      "mesh_pool_0108fff8",
+      "section_pool_010901d4",
+      "hierarchy_pool_0109022c",
+      "model_pool_01090054",
+      "model_base_pool_storage_0109008c"
+    ],
+    "qualification": "Selected exact input/artifact pins, not complete translation-unit include closure or full application graph evidence. No GPR access, Native execution, game startup or forced allocation/registration-failure test."
+  },
+  "document_pin": {
+    "path": "docs/CC12_NODE_GROUP_POOL_STARTUP_SOURCE.md",
+    "bytes": 7823,
+    "sha256": "c8b8a1016b40a09ce18cd0a8333d7950a0ccde2cc83b7f3607cbbef2389b3242"
+  },
+  "unchanged_historical_context_pins": [
+    {
+      "path": "docs/CC12_MODEL_POOLS_COMMENT_SOURCE_PRIMARY_REVIEW.md",
+      "bytes": 3374,
+      "sha256": "b2e7dbb3f3d2823822dd1684432c02853512c114a4c5550edd99211e1a17430d"
+    },
+    {
+      "path": "reports/cc12_model_pools_comment_source_primary_review.json",
+      "bytes": 494425,
+      "sha256": "2c357510441f156d6116de9d8d90dcbc72fd6affedae10cdb759eed8e0cb9872"
+    },
+    {
+      "path": "docs/CC12_MODEL_BASE_POOL_STARTUP_SOURCE.md",
+      "bytes": 7664,
+      "sha256": "0ba7f28884a1d7f537c3d817110724c41dbc7325a9e6e95f3419393d01e9fad8"
+    },
+    {
+      "path": "reports/cc12_model_base_pool_startup_source.json",
+      "bytes": 30121,
+      "sha256": "510b4f8d6bda6d12bc6c7771361120c9735e184284b8ef7ab7f1486455b1ab20"
+    },
+    {
+      "path": "docs/CC12_MODEL_DESCRIPTOR_CONSUMER_BINDING_READINESS.md",
+      "bytes": 15116,
+      "sha256": "454d45442d7f6969fd8c978c70440b712214d09616c6d67108f27e66dc927853"
+    },
+    {
+      "path": "reports/cc12_model_descriptor_consumer_binding_readiness.json",
+      "bytes": 33337,
+      "sha256": "65a9b21c1cfef068a4c36d3abeb9781fa5dac1f349774671a7b0c903645cf8be"
+    },
+    {
+      "path": "docs/CC12_MODEL_CLASS_UNLOCK_SOURCE_PRIMARY_REVIEW.md",
+      "bytes": 4162,
+      "sha256": "cbd422486c8d173384d9d29b8601ce33774297ace457897cf85df238c1700d89"
+    },
+    {
+      "path": "reports/cc12_model_class_unlock_source_primary_review.json",
+      "bytes": 236728,
+      "sha256": "9fc3a11764a53ed6c100471213d97509b47f510617d6bea9c32f39c5b4c7f218"
+    }
+  ],
+  "historical_runtime_context": {
+    "Source581": "Root primary review records model/model-base registration status 0 followed by FMOD init61/create78/length37 before window/device/Present.",
+    "unchanged_Source539_control": "Same settings and genuine SDK reproduced the same FMOD failure; no attribution to new model pools.",
+    "this_packet": "Historical report/doc preserved; no game launch, Native image read or FMOD modification, reproduction or resolution claim."
+  },
+  "remaining_contracts": [
+    "Original Native CRT table placement/order was not reopened or newly established.",
+    "Forced OOM, nonzero atexit, binding/constructor exceptions and asynchronous faults retain Source-only evidence here.",
+    "Actual NativeGroupEnvironment, plain/model-base graph environments, factories, parenting and completed selected-set/root ownership remain separate composition.",
+    "Production model/group descriptor cells and live consumer dispatch, loader/cache/root parser, remaining graph providers and actual class/unit receiver are not supplied by raw pool startup.",
+    "Terminal payload/companion lifetime composition must retire and return all slots before retained CRT pool callbacks.",
+    "Selected COFF symbol/relocation dumps are not full application graph, quoted-include/preprocessed build closure or Native instruction/ABI equivalence.",
+    "bsp_game.exe built but not executed; Source581/539 runtime evidence remains historical. No successful startup/Present, model object or gameplay credit."
+  ],
+  "evidence_levels": {
+    "Source_composition": true,
+    "MSVC_Win32_build": true,
+    "existing_worker_CTests": true,
+    "focused_Source_eight_pool_CRT_probe": true,
+    "production_game_startup_executed": false,
+    "descriptor_consumer_admission": false,
+    "complete_Native_startup": false,
+    "Native_ABI_compatible": false,
+    "game_validated": false
+  }
+}
