@@ -330,6 +330,19 @@
       "library_allocator_name_preserved": true
     },
     "World_ready": false,
-    "game_ready": false
+    "game_ready": false,
+    "later_integration_build": {
+      "status": "PASS_CURRENT_MAIN_RECIPE_INTEGRATION_BUILD",
+      "head": "a581f519bbb5936205bbb8f58cba52daba2bb68d",
+      "checks": 3,
+      "new_sentinel_compilation": false,
+      "sentinel_and_allocator_objects_unchanged": true,
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sentinel_source_integration_build.txt",
+        "bytes": 3421,
+        "sha256": "bf55ce9ae5ff4efbc2022704104105ac55c1e0d6338e54a7e063c651bdaa9cba"
+      },
+      "reason": "Incoming main adds three Source module registrations; bounded sentinel proof preserved."
+    }
   }
 }
