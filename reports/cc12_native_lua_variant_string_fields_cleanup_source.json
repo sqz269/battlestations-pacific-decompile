@@ -1,0 +1,491 @@
+{
+  "schema": 1,
+  "packet": "cc12_lua_variant_string_fields_cleanup_source",
+  "created_utc": "2026-10-09T17:46:21.403948+00:00",
+  "baseline_commit": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+  "status": "qualified_Cpp_Source_candidate_unregistered_unbuilt_pending_integrator_compiled_review",
+  "owned_files": [
+    "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+    "src/native_lua_variant_string_fields_cleanup.cpp",
+    "docs/CC12_NATIVE_LUA_VARIANT_STRING_FIELDS_CLEANUP_SOURCE.md",
+    "reports/cc12_native_lua_variant_string_fields_cleanup_source.json"
+  ],
+  "claimed_addresses": [
+    "006ee020"
+  ],
+  "credit": {
+    "Source": 0,
+    "Original_ABI": 0,
+    "startup_gameplay": 0
+  },
+  "Root_gate": {
+    "capture_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_lua_pool_cleanup_primary/capture.json",
+      "bytes": 3928,
+      "sha256": "36755e3203a34b63ecd57ae3fb1e681b3e5e268cd67dfab22f1926dac544ff54",
+      "canonical_lf_sha256": "4b4317097a193d6d9a7df9e9c635fd6e89553c22647974971481287b30e2b833"
+    },
+    "approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_lua_pool_cleanup_primary/Root_Astra_gate_approval.json",
+      "bytes": 652,
+      "sha256": "328a3f758b6a39b7e7b30125b0484db121182c8f54394622db9d16fb7013f2ef",
+      "canonical_lf_sha256": "a3889bcbb558f1f82adf24a33971531abb8aae0b2f545643a53fb63ed68a98a3"
+    },
+    "approval": {
+      "Root_Astra_full_native_body_read": true,
+      "capture_sha256": "36755e3203a34b63ecd57ae3fb1e681b3e5e268cd67dfab22f1926dac544ff54",
+      "bytes": 30,
+      "ops": 12,
+      "Source_policy": "Qualified C++ field-reference API, capture actual buffer08 first; zero skips size/services; nonzero reads actual length04 and wraps+1 before current actual pool getter then actual return helper; no field clearing, ownership or frame-alias equivalence invented",
+      "Native_unused_word1_not_invented_as_Source_semantic_argument": true,
+      "Native_combined_child_stack_cleanup": 12,
+      "Native_register_frame_policy_equivalence": false,
+      "Source_ABI_credit": 0
+    },
+    "verified_program": "/battlestationspacific.exe",
+    "function_count_context": "live function count 64729; snapshot 64729; same\n",
+    "Root_live_fullbody_verification_reused": true,
+    "worker_new_live_Ghidra_queries_or_mutations": false
+  },
+  "Native_evidence": {
+    "Original_image_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "Original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "address": "006ee020",
+    "end": "006ee03d",
+    "file_offset": 3072032,
+    "bytes": 30,
+    "sha256": "c7c6c84748f6b5b4a3d6d30dea7efcc591a12a139f26b09d9b3144fd247dc270",
+    "bytes_hex": "8b510885d274168b41046a0183c0015052e88abcd2ff8bc8e8d3344e00c3",
+    "raw_instructions": [
+      {
+        "address": "006ee020",
+        "size": 3,
+        "bytes": "8b5108",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx + 8]"
+      },
+      {
+        "address": "006ee023",
+        "size": 2,
+        "bytes": "85d2",
+        "mnemonic": "test",
+        "operands": "edx, edx"
+      },
+      {
+        "address": "006ee025",
+        "size": 2,
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0x6ee03d"
+      },
+      {
+        "address": "006ee027",
+        "size": 3,
+        "bytes": "8b4104",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ecx + 4]"
+      },
+      {
+        "address": "006ee02a",
+        "size": 2,
+        "bytes": "6a01",
+        "mnemonic": "push",
+        "operands": "1"
+      },
+      {
+        "address": "006ee02c",
+        "size": 3,
+        "bytes": "83c001",
+        "mnemonic": "add",
+        "operands": "eax, 1"
+      },
+      {
+        "address": "006ee02f",
+        "size": 1,
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "006ee030",
+        "size": 1,
+        "bytes": "52",
+        "mnemonic": "push",
+        "operands": "edx"
+      },
+      {
+        "address": "006ee031",
+        "size": 5,
+        "bytes": "e88abcd2ff",
+        "mnemonic": "call",
+        "operands": "0x419cc0"
+      },
+      {
+        "address": "006ee036",
+        "size": 2,
+        "bytes": "8bc8",
+        "mnemonic": "mov",
+        "operands": "ecx, eax"
+      },
+      {
+        "address": "006ee038",
+        "size": 5,
+        "bytes": "e8d3344e00",
+        "mnemonic": "call",
+        "operands": "0xbd1510"
+      },
+      {
+        "address": "006ee03d",
+        "size": 1,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "Root_saved_listing": "006ee020: MOV EDX,dword ptr [ECX + 0x8] \n006ee023: TEST EDX,EDX \n006ee025: JZ 0x006ee03d \n006ee027: MOV EAX,dword ptr [ECX + 0x4] \n006ee02a: PUSH 0x1 \n006ee02c: ADD EAX,0x1 \n006ee02f: PUSH EAX \n006ee030: PUSH EDX \n006ee031: CALL 0x00419cc0 \n006ee036: MOV ECX,EAX \n006ee038: CALL 0x00bd1510 \n006ee03d: RET \n",
+    "all12_listing_starts_match": true,
+    "physical_CALL_count": 2,
+    "RET_count": 1,
+    "no_owned_field_stores": true,
+    "Native_child_bodies_not_opened": true,
+    "combined_child_cleanup_context": "Three DWORDs are pushed before the two CALLs; owned caller has no explicit cleanup. Compatible ordinary Native child behavior must collectively remove12 bytes. No new Source frame/register/flags/stack-alias equivalence follows."
+  },
+  "Source_interface": {
+    "return_type": "void",
+    "parameters_in_order": [
+      {
+        "type": "volatile std::uint32_t&",
+        "name": "actual_length_04",
+        "backing": "Actual selected N+4 length cell"
+      },
+      {
+        "type": "void* volatile&",
+        "name": "actual_buffer_08",
+        "backing": "Actual selected N+8 buffer-pointer cell"
+      },
+      {
+        "type": "NativeStringPoolStorage* volatile&",
+        "name": "actual_published_01090aa8",
+        "backing": "Actual canonical pool publication cell"
+      },
+      {
+        "type": "void* volatile&",
+        "name": "actual_manager_publication_01090aa0",
+        "backing": "Actual canonical raw manager publication cell"
+      },
+      {
+        "type": "volatile std::uint32_t&",
+        "name": "actual_small_returns_disabled_01090aa4",
+        "backing": "Actual live small-return gate cell"
+      }
+    ],
+    "public_noexcept": false,
+    "Source_policy": "Qualified C++ field-reference interface with real typed/aligned backing and lifetimes supplied by caller; no physical member/header type, copied cells, owner, allocation or Native frame adapter.",
+    "Native_unused_PUSH1": "Unused physical word only; no Source semantic parameter fabricated.",
+    "Source_byte_count_or_raw_12_op_identity_predicted": false
+  },
+  "ordered_mapping": [
+    {
+      "Native_sites": [
+        "006ee020"
+      ],
+      "Source": "Capture actual_buffer_08 exactly once into captured_block."
+    },
+    {
+      "Native_sites": [
+        "006ee023",
+        "006ee025"
+      ],
+      "Source": "If captured_block is null, return without length value read, getter or return-helper call."
+    },
+    {
+      "Native_sites": [
+        "006ee027"
+      ],
+      "Source": "Read actual_length_04 once only after nonnull buffer."
+    },
+    {
+      "Native_sites": [
+        "006ee02a"
+      ],
+      "Source": "No counterpart argument: Native PUSH1 is unused physical padding."
+    },
+    {
+      "Native_sites": [
+        "006ee02c"
+      ],
+      "Source": "Compute captured_length + uint32_t{1}, retaining unsigned32 wrap."
+    },
+    {
+      "Native_sites": [
+        "006ee02f",
+        "006ee030"
+      ],
+      "Source": "Captured size/block remain local values before getter; no subsequent field reload."
+    },
+    {
+      "Native_sites": [
+        "006ee031",
+        "006ee036"
+      ],
+      "Source": "Invoke actual raw-publication overload native_string_pool_get_or_create_00419cc0(publication,manager), retain returned pool."
+    },
+    {
+      "Native_sites": [
+        "006ee038"
+      ],
+      "Source": "Invoke return_native_string_pool_00bd1510(pool,captured_block,captured_size,actual_gate)."
+    },
+    {
+      "Native_sites": [
+        "006ee03d"
+      ],
+      "Source": "Return through different void C++ API; no Native registers/flags/stack placement promise."
+    }
+  ],
+  "actual_provider_contracts": {
+    "getter": "Concrete raw-publication overload, not semantic SizedStoragePool or a NativeStringStorage release facade. Every nonnull call invokes it even if size is large or small returns are disabled. Current buffer/size captures precede it.",
+    "getter_domain": "Actual01090AA8 and01090AA0 cells retain their real identities and lifetime; canonical domain must already have the pool deletion binding. Existing getter may lazily allocate its actual owner; no extra allocation/owner is added by this wrapper.",
+    "return_helper": "Concrete actual-pool/block/size/gate helper. size>=150 uses current CRTfree without pool/gate reads; otherwise current gate is read first, disabled skips owner, enabled uses actual section/depth/exact-size ring. Existing declaration is noexcept.",
+    "current_cpp_excerpts": [
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "start_line": 58,
+        "end_line": 72,
+        "text": "// 00419CC0..00419D7F, no native arguments, EAX published owner, RET. References\n// must be the application's one 01090AA8 slot and canonical01090AA0 domain.\n// Install a real D68200/00BD1730 binding in that domain before first use (the\n// binding below composes it with the application's other registered owners).\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    SingletonLifetimeDomain& actual_lifetime);\n\n// Same complete getter schedule using the application's actual raw14h manager\n// publication. Borrows the same01090AA0 cell used by SoundLifetimeAccess and\n// NativePhysicalFactoryContext; no semantic domain is allocated. Raw manager\n// shutdown requires the pool's explicit native deletion binding.\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    void* volatile& actual_manager_publication_01090aa0);",
+        "sha256": "62116dbfd9f167be524e92d75e5313b8896a3b3a34a692c14d205bf5c8dfc3e0",
+        "purpose": "Actual publication/raw-manager overload and required deletion-binding contract."
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "start_line": 93,
+        "end_line": 134,
+        "text": "NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    void* volatile& actual_manager_publication_01090aa0) {\n    if (auto* const owner = actual_published_01090aa8) return owner;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        actual_manager_publication_01090aa0);\n    auto* const captured_section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    auto* const depth = reinterpret_cast<volatile std::uint32_t*>(\n        reinterpret_cast<std::uintptr_t>(captured_section) + 0x18);\n    if (captured_section) {\n        EnterCriticalSection(captured_section);\n        *depth = *depth + 1u;\n    }\n    void* allocation = nullptr;\n    unsigned unwind_state = 0;\n    // Preserve the existing source __finally boundary and native state1 raw\n    // allocation cleanup. State0 retains the first manager's actual section.\n    __try {\n        if (!actual_published_01090aa8) {\n            allocation = singleton_lifetime_allocate({SingletonAllocationKind::object,\n                0x8ad4a0, sizeof(NativeStringPoolStorage)});\n            unwind_state = 1;\n            auto* const owner = allocation\n                ? construct_native_string_pool_00bd1480(allocation) : nullptr;\n            unwind_state = 0;\n            actual_published_01090aa8 = owner;\n            void* const registration_manager = get_native_singleton_manager_00415350(\n                actual_manager_publication_01090aa0);\n            // Native419D49 resolves manager BEFORE419D4E reloads pool argument.\n            register_native_singleton_object_00bd0c30(registration_manager, nullptr,\n                actual_published_01090aa8);\n        }\n    } __finally {\n        if (unwind_state == 1) singleton_lifetime_free(allocation);\n        if (captured_section) {\n            *depth = *depth - 1u;\n            LeaveCriticalSection(captured_section);\n        }\n    }\n    return actual_published_01090aa8;\n}",
+        "sha256": "7973fc3aa1ad5100143c4f17881e5f8915041485cabb23be3d0fdf356366e6d1",
+        "purpose": "Concrete raw-manager getter, existing lazy allocation/publication/registration and captured-section finally boundary."
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "start_line": 22,
+        "end_line": 28,
+        "text": "// Complete BD1510. Native ECX pool, stack (block, size, unused), RET0C.\n// Large requests free without reading pool or the real01090AA4 gate. Small\n// returns read that live gate first; a nonzero value does not touch the owner.\nvoid return_native_string_pool_00bd1510(NativeStringPoolStorage* actual_pool,\n    void* block, std::uint32_t size,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept;\n",
+        "sha256": "b2ffe3c47eaa93397c6d447d1f671bea6bc1b36cd1dcf6d0bd2c53929738bca1",
+        "purpose": "Actual pool/block/size/live-gate return declaration; inherited noexcept."
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "start_line": 80,
+        "end_line": 95,
+        "text": "void return_native_string_pool_00bd1510(NativeStringPoolStorage* pool,\n    void* block, std::uint32_t size,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept {\n    if (size >= class_count) {\n        std::free(block);\n        return;\n    }\n    if (actual_small_returns_disabled_01090aa4 != 0) return;\n    auto* const captured_section = section(*pool);\n    EnterCriticalSection(captured_section);\n    volatile auto& actual = *pool;\n    actual.recursion_8ad49c = actual.recursion_8ad49c + 1u;\n    return_native_string_pool_small_00bd12a0(pool->ring_6acfcc, &block, size);\n    actual.recursion_8ad49c = actual.recursion_8ad49c - 1u;\n    LeaveCriticalSection(captured_section);\n}",
+        "sha256": "1ed7ae77bfaac491394c544f9b0abf3fbc07503b4d7b027b6afc9a4ee430fa2f",
+        "purpose": "Current large/free, live small-return gate, actual section/depth/ring behavior."
+      }
+    ],
+    "current_registered_provider_lines": [
+      {
+        "path": "cmake/startup.cmake",
+        "line": 1276,
+        "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_pool_owner.cpp)"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "line": 1277,
+        "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_pool_storage.cpp)"
+      }
+    ]
+  },
+  "failure_and_alias_boundary": {
+    "zero_path": "No length/pool/gate value read or service call by wrapper; all supplied references must still satisfy C++ binding/backing requirements.",
+    "nonnull_capture": "One buffer read then one length read. Getter effects on original fields do not replace captured block/size. Gate remains an actual reference read within return helper.",
+    "no_wrapper_field_writes": "No clearing, resetting or post-service reread of buffer/length. Provider/alias effects are not suppressed; retained bytes do not prove live allocation.",
+    "getter_failure": "Public function permits propagation and adds no catch/guard/retry; return helper is not invoked if getter does not return normally.",
+    "inherited_return_failure": "Existing noexcept and pool/CRT/manager failure policy remain qualified; no Native exception/hardware-fault/frame/reentry equivalence established.",
+    "Native_stack_aliases": "C++ fields and domain references require valid typed aligned object backing; no arbitrary Native register/frame/stack-alias equivalence claimed."
+  },
+  "earlier_EH_snapshot": {
+    "doc_pin": {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_CLEANUP_EH_STAGE_READINESS.md",
+      "bytes": 13664,
+      "sha256": "b30f505b0dcffd4c0384aa92754f05f2b2b18bdfe61dba213485ec584050cc01",
+      "canonical_lf_sha256": "b30f505b0dcffd4c0384aa92754f05f2b2b18bdfe61dba213485ec584050cc01"
+    },
+    "report_pin": {
+      "path": "reports/cc12_mission_lua_variant_cleanup_EH_stage_readiness.json",
+      "bytes": 60581,
+      "sha256": "f91ac9cc440859f20c092f9166b6db71bb133c5f1fe8501a688220c1d223502d",
+      "canonical_lf_sha256": "f91ac9cc440859f20c092f9166b6db71bb133c5f1fe8501a688220c1d223502d"
+    },
+    "prior_baseline": "f3bb494d7f222735cb62e5442345acbdf2df3fdc",
+    "prior_metadata_only_child_scope_preserved": true,
+    "old_files_unchanged": true,
+    "qualification": "This later full-body candidate does not rewrite the old metadata-only report, supply its two distinct saved-frame receiver deliveries, establish Native EH dispatch, or bind an action."
+  },
+  "current_Source88_build_receipt": {
+    "receipt_pin": {
+      "path": "reports/cc12_native_observer_member_cleanup_primary_review.json",
+      "bytes": 11354583,
+      "sha256": "19545aa8e68c9c3f10777542903df951a903b11b49f3c4a7aff338055877d49a",
+      "canonical_lf_sha256": "19545aa8e68c9c3f10777542903df951a903b11b49f3c4a7aff338055877d49a"
+    },
+    "status": "Source_admitted_complete_compiled_Core_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 121784,
+      "start_utc": "2026-10-09T17:23:29.234687+00:00",
+      "finish_utc": "2026-10-09T17:23:47.076256+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 88
+    },
+    "existing_checks_passed": 3,
+    "whole_object_count": 19,
+    "positive_Core_definition_count": 22,
+    "selected_Source_inputs_checked": 88,
+    "matched": 88,
+    "physical_matches": 86,
+    "canonical_LF_only_matches": 2,
+    "mismatch_paths": [],
+    "receipt_source_pin_manifest_sha256": "4684b15eb021e10d891c6c7df39cc202d1496f72b8b9170a8d687e5bb41cd2ee",
+    "manifest_hash_encoding": "UTF-8 compact JSON of receipt source_input_pins, sorted dictionary keys; array order preserved. Full array remains in pinned receipt.",
+    "four_current_artifact_replays": [
+      {
+        "receipt_path": "build/win32/Release/bsp_core.lib",
+        "actual_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "bytes": 73751918,
+        "sha256": "c8c022e85e8ba65c5a2774fda7ed36d635112c4bf5892e3a72973f3cc668bb13",
+        "matches_receipt": true
+      },
+      {
+        "receipt_path": "build/win32/Release/bsp_game.exe",
+        "actual_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "4454fd15ed997bde492b285a23ea35eacf6157ecf8d58c65638c52cd056d600f",
+        "matches_receipt": true
+      },
+      {
+        "receipt_path": "build/win32/bsp_game.map",
+        "actual_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "bd3fa37da96e5a0fd6c2659a11dfeb0296dde19232905fc25e0f0ecd15f74690",
+        "matches_receipt": true
+      },
+      {
+        "receipt_path": "build/win32/Testing/Temporary/LastTest.log",
+        "actual_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "8c72a72d0a45381a74ab03ac36148bcfd61d836bf591f9acbc2f5477d413b25b",
+        "matches_receipt": true
+      }
+    ],
+    "actual_pool_provider_paths_in_selected88_inputs": [],
+    "provider_scope": "Actual pool files are independently pinned below. Do not claim they are among receipt selected88 inputs or reviewed19 objects merely because the complete build passed.",
+    "new_candidate_in_receipt": false,
+    "new_build_test_or_execution_by_worker": false
+  },
+  "relevant_current_dependency_pins": [
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "canonical_lf_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "canonical_lf_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "canonical_lf_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "canonical_lf_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "canonical_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 19171,
+      "sha256": "3f14248851edbef50685beb3e84247021da9ef6c6cdc0b19954d3c3255180075",
+      "canonical_lf_sha256": "3f14248851edbef50685beb3e84247021da9ef6c6cdc0b19954d3c3255180075"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "reports/cc12_native_observer_member_cleanup_primary_review.json",
+      "bytes": 11354583,
+      "sha256": "19545aa8e68c9c3f10777542903df951a903b11b49f3c4a7aff338055877d49a",
+      "canonical_lf_sha256": "19545aa8e68c9c3f10777542903df951a903b11b49f3c4a7aff338055877d49a"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_VARIANT_CLEANUP_EH_STAGE_READINESS.md",
+      "bytes": 13664,
+      "sha256": "b30f505b0dcffd4c0384aa92754f05f2b2b18bdfe61dba213485ec584050cc01",
+      "canonical_lf_sha256": "b30f505b0dcffd4c0384aa92754f05f2b2b18bdfe61dba213485ec584050cc01"
+    },
+    {
+      "path": "reports/cc12_mission_lua_variant_cleanup_EH_stage_readiness.json",
+      "bytes": 60581,
+      "sha256": "f91ac9cc440859f20c092f9166b6db71bb133c5f1fe8501a688220c1d223502d",
+      "canonical_lf_sha256": "f91ac9cc440859f20c092f9166b6db71bb133c5f1fe8501a688220c1d223502d"
+    }
+  ],
+  "candidate_Source_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+      "bytes": 1698,
+      "sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9",
+      "canonical_lf_sha256": "ae929f84634f6a83d4a6cc22c6264b7a9e6a1ce8e23f993658c50b56eb08fdd9"
+    },
+    {
+      "path": "src/native_lua_variant_string_fields_cleanup.cpp",
+      "bytes": 1226,
+      "sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921",
+      "canonical_lf_sha256": "b31d80cd54faaba97c7a83a2e2994915ebb18003e17500614f04bc1f68e54921"
+    }
+  ],
+  "doc_pin": {
+    "path": "docs/CC12_NATIVE_LUA_VARIANT_STRING_FIELDS_CLEANUP_SOURCE.md",
+    "bytes": 6388,
+    "sha256": "136d2bcaf12a49b4cb29ac0476f145adfa98ca3b3ec3ea2d2c38873ca84b0565",
+    "canonical_lf_sha256": "136d2bcaf12a49b4cb29ac0476f145adfa98ca3b3ec3ea2d2c38873ca84b0565"
+  },
+  "bounded_static_review": {
+    "signature_exact_requested_five_types_in_order": true,
+    "captured_buffer_then_null_branch_then_length_then_wrap_then_getter_then_return": true,
+    "one_value_read_each_of_buffer_and_length": true,
+    "actual_raw_getter_overload_selected_by_declared_manager_reference_type": true,
+    "captured_values_passed_without_reread": true,
+    "actual_gate_forwarded_by_reference": true,
+    "unused_physical_word_not_an_API_argument": true,
+    "no_wrapper_stores_guard_catch_proxy_owner_or_cast": true,
+    "candidate_registration_hits": [],
+    "git_diff_check": "passed_exact_four_owned_staged_files"
+  },
+  "limits": [
+    "Qualified Source behavior with actual typed field/domain references; Native frame/register/flags/stack-alias and original allocator/exception equivalence remain unproved.",
+    "No new member/header class, owner, allocation, copied process backing, raw frame adapter or production caller binding.",
+    "Inherited pool getter may lazily allocate and propagate; return helper retains its existing noexcept/current CRT/gate behavior.",
+    "No registration, CMake, Ghidra, ledger, build, test, probe, forced retention or admission changes by worker; integrator owns emitted/Core review."
+  ]
+}
