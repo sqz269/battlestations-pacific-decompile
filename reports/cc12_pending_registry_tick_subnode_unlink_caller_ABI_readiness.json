@@ -1,0 +1,768 @@
+{
+  "schema": 1,
+  "packet": "cc12_tick_subnode_unlink_caller_ABI_readiness",
+  "kind": "read_only_complete_owned_body_and_qualified_Source_contract_audit",
+  "created_utc": "2026-10-09T12:32:45.397454+00:00",
+  "baseline_commit": "0bd8828b70d1c543e9e934778699e90aaf23193e",
+  "containing_published_Source_admission": "9f055bd7b42ef14366fa32b49805c21d41ff1adc",
+  "claimed_address": "00875960",
+  "owned_files": [
+    "docs/CC12_PENDING_REGISTRY_TICK_SUBNODE_UNLINK_CALLER_ABI_READINESS.md",
+    "reports/cc12_pending_registry_tick_subnode_unlink_caller_ABI_readiness.json"
+  ],
+  "Source_credit": false,
+  "Native_credit": false,
+  "Original_ABI_credit": false,
+  "conclusions": [
+    "All69B are accounted for by25 reachable instructions,5blocks/6edges,4physicalCALLs and oneRET4.",
+    "Original ECX receiver R is captured in EBX before getter; leaf receives list R+1C and N captured late from the first original stack argument after optional Enter/depth update.",
+    "The current registry section is captured once, used for optional Enter/depth ADD+1, then after unlink/+4 clear for depth ADD-1/Leave.",
+    "Postleaf TEST ESI controls JZ across a flag-preserving MOV[currentEDI+4],0; the store normally targets N+4 but relies on leaf EDI preservation and intact spill memory.",
+    "The null-section path retains EAX=N and TEST-zero flags; Leave may replace volatile registers/flags on the nonnull path.",
+    "This proves an Original direct caller of874E60, without assigning a producer/profile/virtual-slot target or promoting qualified Source APIs to Original runtime ABI."
+  ],
+  "target_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "method": "Project-aware bsp.py ghidra proto before owned decompile/listing/bytes; CLI verifies configured project/program on live queries. Primary independently repeated target/proto/listing at the omission gate.",
+    "accepted_primary_and_snapshot_function_count": 64729,
+    "config_pin": {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "Ghidra_mutations": 0
+  },
+  "metadata_gate": {
+    "name": "FUN_00875960",
+    "signature": "undefined FUN_00875960(void)",
+    "live_body": [
+      "00875960",
+      "008759A4"
+    ],
+    "bytes": 69,
+    "listed_instructions": 25,
+    "basic_blocks": 5,
+    "edges": 6,
+    "cyclomatic_complexity": 3,
+    "param_count": 0,
+    "named_call_count": 2,
+    "named_callees": [
+      "BSP_PendingRegistry_Get",
+      "BSP_TickSubList_UnlinkNode"
+    ],
+    "current_index_callee_addresses": [
+      "00874E60",
+      "00875280"
+    ],
+    "current_index_caller_addresses_metadata_only": [
+      "00876020"
+    ],
+    "current_index_name_qualification": "Cached function snapshot retains FUN child labels despite saved current Ghidra names/ledger Source admissions; no annotation or snapshot mutation in this packet.",
+    "decompiler_input_omission": "Only stack param_1 appears; it omits incoming ECX captured in EBX and the ECX=EBX+1C leaf receiver.",
+    "receiver_gate_resolution": {
+      "worker_stopped_before_PE_continuation": true,
+      "primary_Astra_independent_live_target_proto_and_whole25_operation_listing_review": true,
+      "confirmed_sites": [
+        "00875963 MOV EBX,ECX",
+        "00875981 LEA ECX,[EBX+1C]",
+        "0087597C late stack node capture",
+        "00875989 TEST ESI across0087598B MOV before JZ"
+      ],
+      "disposition": "Resolved read-only; ordinary incoming receiver recovered, no prototype repair or scope expansion.",
+      "primary_return_qualification": "EAX node only on null-section path; imported Leave may change volatile residuals."
+    },
+    "other_hidden_input_or_x87_gate": false,
+    "unresolved_listing_or_flow_gap": false,
+    "physical_call_count_qualification": "Two direct named edges plus two indirect absolute IAT calls; metadata count is not the total physical CALL count."
+  },
+  "native_evidence": {
+    "address": "00875960",
+    "end_inclusive": "008759A4",
+    "bytes": 69,
+    "hex": "5356578bd9e816f9ffff8b700485f6740b56ff151822ce00834618018b7c2410578d4b1ce8d7f4ffff85f6c7470400000000740b834618ff56ff151022ce005f5e5bc20400",
+    "sha256": "c0ecd0fa7e59f3a5e2077de82b52378ca3a06fc5565f4847176556edba5e2323",
+    "GPR_equal_PE": true,
+    "all_file_backed": true,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_section": ".text",
+    "PE_RVA": 4675936,
+    "PE_file_offset": 4675936,
+    "instructions": [
+      {
+        "address": "00875960",
+        "bytes": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00875961",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00875962",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "00875963",
+        "bytes": 2,
+        "hex": "8bd9",
+        "mnemonic": "mov",
+        "operands": "ebx, ecx"
+      },
+      {
+        "address": "00875965",
+        "bytes": 5,
+        "hex": "e816f9ffff",
+        "mnemonic": "call",
+        "operands": "0x875280"
+      },
+      {
+        "address": "0087596A",
+        "bytes": 3,
+        "hex": "8b7004",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [eax + 4]"
+      },
+      {
+        "address": "0087596D",
+        "bytes": 2,
+        "hex": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "0087596F",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x87597c"
+      },
+      {
+        "address": "00875971",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00875972",
+        "bytes": 6,
+        "hex": "ff151822ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "00875978",
+        "bytes": 4,
+        "hex": "83461801",
+        "mnemonic": "add",
+        "operands": "dword ptr [esi + 0x18], 1"
+      },
+      {
+        "address": "0087597C",
+        "bytes": 4,
+        "hex": "8b7c2410",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00875980",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "00875981",
+        "bytes": 3,
+        "hex": "8d4b1c",
+        "mnemonic": "lea",
+        "operands": "ecx, [ebx + 0x1c]"
+      },
+      {
+        "address": "00875984",
+        "bytes": 5,
+        "hex": "e8d7f4ffff",
+        "mnemonic": "call",
+        "operands": "0x874e60"
+      },
+      {
+        "address": "00875989",
+        "bytes": 2,
+        "hex": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "0087598B",
+        "bytes": 7,
+        "hex": "c7470400000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edi + 4], 0"
+      },
+      {
+        "address": "00875992",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x87599f"
+      },
+      {
+        "address": "00875994",
+        "bytes": 4,
+        "hex": "834618ff",
+        "mnemonic": "add",
+        "operands": "dword ptr [esi + 0x18], -1"
+      },
+      {
+        "address": "00875998",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00875999",
+        "bytes": 6,
+        "hex": "ff151022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2210]"
+      },
+      {
+        "address": "0087599F",
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "008759A0",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "008759A1",
+        "bytes": 1,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "008759A2",
+        "bytes": 3,
+        "hex": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "instruction_count": 25,
+    "reachable_instructions": 25,
+    "unclassified_or_unreachable_bytes": 0,
+    "basic_blocks": [
+      {
+        "start": "00875960",
+        "end_inclusive": "00875970",
+        "instruction_addresses": [
+          "00875960",
+          "00875961",
+          "00875962",
+          "00875963",
+          "00875965",
+          "0087596A",
+          "0087596D",
+          "0087596F"
+        ],
+        "successors": [
+          "0087597C",
+          "00875971"
+        ]
+      },
+      {
+        "start": "00875971",
+        "end_inclusive": "0087597B",
+        "instruction_addresses": [
+          "00875971",
+          "00875972",
+          "00875978"
+        ],
+        "successors": [
+          "0087597C"
+        ]
+      },
+      {
+        "start": "0087597C",
+        "end_inclusive": "00875993",
+        "instruction_addresses": [
+          "0087597C",
+          "00875980",
+          "00875981",
+          "00875984",
+          "00875989",
+          "0087598B",
+          "00875992"
+        ],
+        "successors": [
+          "0087599F",
+          "00875994"
+        ]
+      },
+      {
+        "start": "00875994",
+        "end_inclusive": "0087599E",
+        "instruction_addresses": [
+          "00875994",
+          "00875998",
+          "00875999"
+        ],
+        "successors": [
+          "0087599F"
+        ]
+      },
+      {
+        "start": "0087599F",
+        "end_inclusive": "008759A4",
+        "instruction_addresses": [
+          "0087599F",
+          "008759A0",
+          "008759A1",
+          "008759A2"
+        ],
+        "successors": []
+      }
+    ],
+    "basic_block_count": 5,
+    "internal_CFG_edges": 6,
+    "conditional_branches": 2,
+    "unconditional_internal_JMPs": 0,
+    "physical_CALLs": [
+      {
+        "site": "00875965",
+        "kind": "direct",
+        "target": "00875280"
+      },
+      {
+        "site": "00875972",
+        "kind": "indirect_absolute_IAT",
+        "slot_address": "00CE2218",
+        "resolved_name_from_decompiler_metadata": "EnterCriticalSection"
+      },
+      {
+        "site": "00875984",
+        "kind": "direct",
+        "target": "00874E60"
+      },
+      {
+        "site": "00875999",
+        "kind": "indirect_absolute_IAT",
+        "slot_address": "00CE2210",
+        "resolved_name_from_decompiler_metadata": "LeaveCriticalSection"
+      }
+    ],
+    "direct_CALL_count": 2,
+    "indirect_import_CALL_count": 2,
+    "total_CALL_count": 4,
+    "RET_count": 1,
+    "RET_immediate": 4,
+    "all_branch_targets_owned_instruction_boundaries": true,
+    "syntactic_stack_path_count": 4,
+    "all_syntactic_paths_stack_balanced_under_callee_contracts": true,
+    "callee_stack_cleanup_contracts": {
+      "00875965": 0,
+      "00875972": 4,
+      "00875984": 4,
+      "00875999": 4
+    },
+    "stack_path_qualification": "Assumes normal zero-stack-argument getter return, RET4 leaf and one-DWORD stdcall imports. All4 syntactic paths are balanced; under preserved ESI only both-null or both-present lock paths are ordinarily feasible. No callee body/import slot bytes are read or executed.",
+    "no_inline_table_or_outside_target_bytes_read": true
+  },
+  "raw_objects_and_accesses": {
+    "receiver": {
+      "address": "R=entry ECX, captured EBX at00875963",
+      "own_direct_dereference": false,
+      "embedded_list_address": "R+1C modulo2^32 via LEA",
+      "leaf_fields_relative_to_receiver": [
+        "+1C head",
+        "+20 tail",
+        "+24 count"
+      ],
+      "minimum_receiver_extent_for_leaf": "0x28",
+      "profile_access_in_owned_caller": false
+    },
+    "node": {
+      "address": "N captured into EDI at0087597C from current[ESP+10], ordinarily original[S+4]",
+      "capture_timing": "After getter and optional Enter/depth increment; not an entry-time capture.",
+      "minimum_extent_in_leaf": "0x10",
+      "own_postleaf_write": "DWORD[currentEDI+4]=0",
+      "offset4_read_in_owned_caller": false,
+      "offset0_profile_access_in_owned_caller": false,
+      "owner_or_parent_label": "Unproved hypothesis; the body only clears+4 and never loads a parent from it."
+    },
+    "registry": {
+      "result": "EAX from direct00875280",
+      "own_access": "DWORD[result+4] captured once into ESI=K",
+      "null_result_guard": false
+    },
+    "section": {
+      "address": "K=ESI captured once",
+      "null_guard": true,
+      "extension_depth_offset": "0x18",
+      "minimum_extent_for_owned_depth_access": "0x1C",
+      "increment": "actual ADD DWORD[K+18],1 after Enter",
+      "decrement": "actual ADD DWORD[K+18],FFFFFFFF after postleaf+4 clear and before Leave",
+      "depth_reload_order": "Each ADD reads current backing at its own instruction; earlier call/store aliases can change it.",
+      "section_reloaded_for_Leave": false
+    },
+    "labels_are_descriptive_hypotheses": true
+  },
+  "exact_access_schedule": [
+    {
+      "at": "00875960..00875963",
+      "operation": "PUSH EBX; PUSH ESI; PUSH EDI; EBX=entryECX=R."
+    },
+    {
+      "at": "00875965",
+      "operation": "CALL00875280 with no pushed arguments at this call site; current ECX still R, without implying a getter input contract."
+    },
+    {
+      "at": "0087596A..0087596F",
+      "operation": "ESI=K=DWORD[getter EAX+4]; TEST K; JZ0087597C when null."
+    },
+    {
+      "at": "00875971..00875972",
+      "condition": "K nonzero",
+      "operation": "PUSH K; CALL DWORD[00CE2218], named EnterCriticalSection by decompiler import metadata."
+    },
+    {
+      "at": "00875978",
+      "condition": "K nonzero",
+      "operation": "ADD current DWORD[K+18],1 only after Enter returns."
+    },
+    {
+      "at": "0087597C",
+      "operation": "EDI=N=DWORD[currentESP+10], ordinarily the current original first argument word[S+4]."
+    },
+    {
+      "at": "00875980..00875984",
+      "operation": "PUSH N; LEA ECX,[R+1C]; CALL00874E60. EDX is not explicitly prepared or preserved."
+    },
+    {
+      "at": "00875989",
+      "operation": "TEST current ESI; overwrite arithmetic flags returned by leaf."
+    },
+    {
+      "at": "0087598B",
+      "operation": "MOV DWORD[currentEDI+4],0; preserves TEST flags. Normally EDI=N under admitted leaf spill preservation."
+    },
+    {
+      "at": "00875992",
+      "operation": "JZ0087599F from prior TEST ESI; the +4 write happens on both paths before this branch."
+    },
+    {
+      "at": "00875994",
+      "condition": "K nonzero",
+      "operation": "ADD current DWORD[K+18],FFFFFFFF after +4 clear; no underflow guard."
+    },
+    {
+      "at": "00875998..00875999",
+      "condition": "K nonzero",
+      "operation": "PUSH K; CALL DWORD[00CE2210], named LeaveCriticalSection by decompiler import metadata."
+    },
+    {
+      "at": "0087599F..008759A2",
+      "operation": "POP EDI; POP ESI; POP EBX from current slots; RET4."
+    }
+  ],
+  "actual_leaf_delivery": {
+    "call_site": "00875984",
+    "Original_target": "00874E60",
+    "ECX": "captured R+1C modulo2^32",
+    "first_leaf_stack_word": "captured N pushed at00875980",
+    "EDX": "volatile residual, not explicitly set; admitted leaf overwrites before data use",
+    "callee_return": "Accepted leaf reaches RET4 with EAX=N; ordinary EDI preservation requires intact leaf spill.",
+    "current_Source_API": "void* __fastcall unlink_native_tick_sublist_node_00874e60(void* actual_list, std::uint32_t unused_edx, void* actual_node_first_stack_word)",
+    "Source_API_qualification": "Explicit unused EDX fixes Source argument placement; no Original caller migration, binding or runtime invocation follows from Source admission.",
+    "leaf_entry_ESP": "Ordinarily S-20; pushed N at S-16; conditional leaf EDI spill at S-24.",
+    "postleaf_store_qualification": "Uses current EDI, not returned EAX or a reloaded node. Aliased leaf spill corruption can change the +4 store target."
+  },
+  "ABI_and_residuals": {
+    "inputs": {
+      "ECX": "actual receiver R",
+      "entry_stack_plus4": "node word read late, not captured at entry"
+    },
+    "normal_return_instruction": "RET4, ESP=S+8 after return",
+    "saved_slots": {
+      "EBX": "S-4",
+      "ESI": "S-8",
+      "EDI": "S-12"
+    },
+    "ordinary_nonvolatile_preservation": "Requires getter/import normal nonvolatile-register contracts and intact saved slots; leaf has its own documented EDI spill-alias limit.",
+    "callee_stack_conditions": {
+      "00875280": "normal return without popping caller arguments",
+      "00874E60": "proven accepted RET4",
+      "Enter_Leave": "one-DWORD Win32 stdcall contract; runtime slots and implementations unexamined"
+    },
+    "null_section_path": {
+      "EAX": "captured N from leaf",
+      "ECX": "leaf list R+1C",
+      "EDX": "accepted leaf residual from fresh next or previous read",
+      "last_flag_writer": "TEST ESI,ESI at00875989 with ESI=0",
+      "arithmetic_flags": {
+        "CF": 0,
+        "OF": 0,
+        "SF": 0,
+        "ZF": 1,
+        "PF": 1,
+        "AF": "undefined"
+      },
+      "flag_preserving_suffix": "MOV+4 zero, JZ, POPs, RET4"
+    },
+    "nonnull_section_path": {
+      "EAX_ECX_EDX": "No common residual promise; imported Leave may replace them.",
+      "arithmetic_flags": "Depth ADD-1 runs before Leave; the import may change flags, so no final ADD flags are claimed."
+    },
+    "caller_use_of_return_examined": false,
+    "common_semantic_return_value_proven": false,
+    "Original_drop_in_ABI_or_exception_identity_proven": false
+  },
+  "alias_fault_and_exception_limits": [
+    "Getter/imports and the depth increment precede the node argument load and can alter its stack backing; an early Source value capture would not establish this alias behavior.",
+    "The caller retains the same section address K; the node clear may alias its depth before the decrement reads it.",
+    "Leaf writes can alter its EDI spill and thus current EDI in the caller; other aliases can alter saved registers, the original argument or return address.",
+    "No null registry/node/receiver/neighbor validation, membership guard, depth clamp or saturation is present.",
+    "No owned exception frame/handler or balanced-release cleanup; a later fault/throw can leave an entered section or partial writes/depth changes.",
+    "Native child/import bodies, import slot contents, profiles, tables, strings and adjacent body bytes remain unread.",
+    "Static stack arithmetic assumes normal child returns and does not prove valid memory, nonvolatile preservation under arbitrary aliases, race behavior or execution equivalence."
+  ],
+  "current_Source_contracts": {
+    "getter_explicit_API": "void* get_native_pending_registry_00875280(void* volatile& actual_registry_publication_00f878cc, void* volatile& actual_manager_publication_01090aa0)",
+    "getter_binding_qualification": "Two actual publication-cell references are Source API inputs, not recovered stack arguments at Original call875965.",
+    "leaf_primary_context": {
+      "primary_report": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+      "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+      "input_pin_count": 53,
+      "current_equal_count": 53,
+      "mismatches": [],
+      "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current Source files compared to historical primary input snapshot.",
+      "accepted_all_input_manifest_sha256": "7b6c1f68700e9226b86d38020e9283e35c92d2d7006e7c52b7aa557ea81fa71e",
+      "current_all_input_manifest_sha256": "7b6c1f68700e9226b86d38020e9283e35c92d2d7006e7c52b7aa557ea81fa71e",
+      "Source_input_count": 48,
+      "all_Source_inputs_equal": true,
+      "accepted_Source_manifest_sha256": "02248512171e4f2fa649358c7a01880b1c224e8e90d8596d195fdd7ee91334e0",
+      "current_Source_manifest_sha256": "02248512171e4f2fa649358c7a01880b1c224e8e90d8596d195fdd7ee91334e0",
+      "current_doc_pin": {
+        "path": "docs/CC12_NATIVE_TICK_SUBLIST_UNLINK_SOURCE.md",
+        "bytes": 6737,
+        "sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c",
+        "canonical_lf_sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c"
+      },
+      "accepted_compiled_receipt": {
+        "domain": "Accepted primary Source compiled artifact snapshot; object/library artifacts not reread in this packet",
+        "body_bytes": 83,
+        "body_sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
+        "instruction_count": 29,
+        "relocation_count": 0,
+        "symbol": "?unlink_native_tick_sublist_node_00874e60@bsp@@YIPAXPAXI0@Z",
+        "Core_member": {
+          "name": "bsp_core.dir\\Release\\native_tick_sublist_unlink.obj",
+          "header_offset": 63767352,
+          "payload_file_offset": 63767412,
+          "bytes": 812,
+          "sha256": "21e75aea9d833fb7d262adfa954140168f43c66efe400528ef9f959178d56f59"
+        }
+      },
+      "Original_ABI_promotion": false,
+      "accepted_primary_build_checks": 3,
+      "accepted_primary_whole83B_equal_Original": true,
+      "accepted_primary_unique_positive_Core_definition": true,
+      "accepted_primary_application_map_selected": false
+    },
+    "getter_primary_context": {
+      "primary_report": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "status": "source_admitted_complete_compiled_review_and_normal_build_passed_original_ABI_and_gameplay_unproved",
+      "input_pin_count": 38,
+      "current_equal_count": 37,
+      "mismatches": [
+        {
+          "path": "CMakeLists.txt",
+          "accepted_canonical_lf_sha256": "12b90fc33a04cb19167d3e91b37fa153a5a1e2d7a6268253a8339cc4d65d90c5",
+          "current_canonical_lf_sha256": "3ad433f48a4c865a95ed46010651ed21653c86ceb51047b47f45cb12bb263231",
+          "equal": false
+        }
+      ],
+      "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current Source files compared to historical primary input snapshot.",
+      "accepted_all_input_manifest_sha256": "47bda050b063c40c4a66e04098422692e3f03d6e1262896eeba4e441bafeb389",
+      "current_all_input_manifest_sha256": "11d0a25588a57687660e25f5a583ae628d96d955024635c7dd1a185bb36154e6",
+      "Source_input_count": 30,
+      "all_Source_inputs_equal": true,
+      "accepted_Source_manifest_sha256": "0d8a7fc475eb21c48a90a25630325fe22562a1ed214d18a5458c6ebf67675762",
+      "current_Source_manifest_sha256": "0d8a7fc475eb21c48a90a25630325fe22562a1ed214d18a5458c6ebf67675762",
+      "current_doc_pin": {
+        "path": "docs/CC12_NATIVE_PENDING_REGISTRY_GETTER_SOURCE.md",
+        "bytes": 9523,
+        "sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534",
+        "canonical_lf_sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534"
+      },
+      "accepted_compiled_receipt": {
+        "domain": "Accepted primary Source compiled artifact snapshot; object/library artifacts not reread in this packet",
+        "body_bytes": 250,
+        "body_sha256": "640e03f66d07747180012ac1b275a19d56738dd71a0f3cbcd2daad66bc7c8970",
+        "instruction_count": 85,
+        "relocation_count": 10,
+        "symbol": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+        "Core_member": {
+          "name": "bsp_core.dir\\Release\\native_pending_registry_getter.obj",
+          "header_offset": 63764704,
+          "payload_file_offset": 63764764,
+          "bytes": 3703,
+          "sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113"
+        }
+      },
+      "Original_ABI_promotion": false,
+      "drift_qualification": "Build registration differs from the earlier getter-primary snapshot; all30 referenced Source files and its separate document pin remain equal. No old artifact hash is treated as a current build."
+    },
+    "exact_caller_Source_search": "rg -n -i -g '*.hpp' -g '*.cpp' -g '*.inc' '00875960|875960' include/bsp src",
+    "matching_Source_rows": 0,
+    "new_Source_interface": false,
+    "accepted_compiled_artifact_receipts_reread_as_binary": false
+  },
+  "producer_and_slot_scope": {
+    "proved_relation": "Original875960 calls874E60 with receiver-embedded list+1C and supplied node, then clears currentEDI+4.",
+    "node_creation_or_profile_producer_identified": false,
+    "virtual_dispatch_in_owned_body": false,
+    "accepted_cleanup_reference": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+    "slot0_qualification": "Accepted874F00 dispatches ECX=node with stack flag1; this wrapper requires a receiver and supplied node pointer. RET4/adjacency/caller metadata does not establish a slot0 target.",
+    "minimum_next_contract": "Actual node producer and profile/slot target remain to be established by separately owned evidence; Source composition also needs the real publication bindings and qualified late argument/lock behavior.",
+    "no_guessed_parent_type_or_producer_or_scope_expansion": true
+  },
+  "hash_domains": {
+    "native_body": "Raw Original PE/live Ghidra owned69B, freshly compared.",
+    "current_pins": "Raw worktree bytes and canonicalLF text hashes at stated baseline.",
+    "primary_receipts": "Accepted Source compiled artifact snapshots with current Source-input comparisons; artifacts themselves were not reread.",
+    "manifest_encoding": "ASCII json.dumps(sorted([path,canonicalLFsha256] pairs),separators=(comma,colon),ensure_ascii=True).",
+    "self_report": "Parsed and structurally validated; no recursive self-hash."
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_SUBNODE_UNLINK_CALLER_ABI_READINESS.md",
+      "bytes": 8214,
+      "sha256": "cf34db8ac721737caa75929feb1df172da6d726b7771cc2c2cb9de6c0ad49b97",
+      "canonical_lf_sha256": "cf34db8ac721737caa75929feb1df172da6d726b7771cc2c2cb9de6c0ad49b97"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "src/native_tick_sublist_unlink.cpp",
+      "bytes": 2257,
+      "sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "canonical_lf_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+      "bytes": 1101362,
+      "sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df",
+      "canonical_lf_sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "bytes": 853902,
+      "sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+      "canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277"
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_SUBLIST_UNLINK_SOURCE.md",
+      "bytes": 6737,
+      "sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c",
+      "canonical_lf_sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c"
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_REGISTRY_GETTER_SOURCE.md",
+      "bytes": 9523,
+      "sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534",
+      "canonical_lf_sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+      "bytes": 49632,
+      "sha256": "3ab2337a4fe9dc51dac05d0e4c46d6e7e9903e81d3bf4426a0a49dbe960ab323",
+      "canonical_lf_sha256": "b6373159a8eeed7118d01c0504cd225241a592c48f4e92145bc2f0ecdb42c9ff"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+      "bytes": 57016,
+      "sha256": "8605faad42e0c1a6760ca00d36626450913e867ff285f4fcb18310bc7d2e39e1",
+      "canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a"
+    }
+  ],
+  "validation": {
+    "whole69B_GPR_PE_equal": true,
+    "all25_instructions_5blocks_6edges_accounted": true,
+    "physical_CALLs": 4,
+    "syntactic_stack_paths_checked_with_qualified_callees": 4,
+    "receiver_gate_independently_resolved_by_primary": true,
+    "leaf_primary_inputs_equal": "53/53",
+    "getter_primary_inputs_equal": "37/38; only CMakeLists.txt differs",
+    "leaf_and_getter_Source_inputs_equal": "48/48 and30/30",
+    "both_current_primary_doc_pins_equal": true,
+    "current_direct_pin_count": 12,
+    "JSON_and_embedded_current_pins_checked": true,
+    "builds": 0,
+    "probes": 0,
+    "new_tests": 0,
+    "runtime_runs": 0,
+    "Ghidra_mutations": 0,
+    "qualification": "Whole-body static decode/CFG/stack arithmetic and file hashing only; no Source or Native execution."
+  },
+  "limits": {
+    "Source_edit": false,
+    "CMake_edit": false,
+    "ledger_edit": false,
+    "Ghidra_mutation": false,
+    "Native_child_or_caller_body_read": false,
+    "Native_handler_read": false,
+    "Native_profile_or_table_or_string_read": false,
+    "adjacent_Native_bytes_read": false,
+    "Source_admission": false,
+    "Native_admission": false,
+    "Original_ABI_admission": false,
+    "integration_credit": false,
+    "game_validation": false,
+    "only_owned_two_outputs": true
+  }
+}
