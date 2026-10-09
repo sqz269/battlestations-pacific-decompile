@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "audit_id": "cc12_type5_final_recorded_schema_TEXT_audit",
+  "kind": "bounded_selected_final_TEXT_serialized_writer_reader_schema_audit",
+  "Source_credit": 0,
+  "process_ready_approval": false,
+  "Root_acceptance": false,
+  "baseline": "0e771b613d7c00fe9820705bdfe7b55a473a5c97",
+  "address_count": 0,
+  "result": "No concrete reviewed serialized-field contradiction; standalone duplicate57 prerequisite remains unmet.",
+  "duplicate57_prerequisite": {
+    "report": "reports/native_string_duplicate_cc12.json",
+    "field": "primary_integration.Source_admission_credit",
+    "required": 1,
+    "observed_at_generation": 0,
+    "met": false
+  },
+  "chosen_guard": {
+    "family": "J:/PROG/battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit/local/t5pregen20261008a",
+    "actual_files": 41,
+    "seal_sha256": "da41e9a1c047ee82be1230c79e2ed801c613d84c6449a6916affdebc1e67e989"
+  },
+  "chosen_reader_family": {
+    "family": "J:/PROG/battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction/local/t5readerfix20261008a",
+    "actual_files": 53
+  },
+  "limited_frozen_TEXT": [
+    {
+      "name": "recipe.py.txt",
+      "size": 34894,
+      "sha256": "1441eda8af500a16c89885ef1c7f752cfde0e35b2eaa506c437e4ace8c809151",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\proposed_recipe_v3.py.txt"
+    },
+    {
+      "name": "probe.cpp.txt",
+      "size": 27488,
+      "sha256": "859e8d19d2c5f98ab23f18eadd191b3812f9b7517acde2187b36b0e5195e9b2d",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\00_probe_text.txt"
+    },
+    {
+      "name": "helpers.py.txt",
+      "size": 18589,
+      "sha256": "e9f7ab383de95f183656be4bf8bcac0e3e0077fc6e7fde350ad3512c317c18e7",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\in\\18_helpers_text.txt"
+    },
+    {
+      "name": "raw_formats.py.txt",
+      "size": 13707,
+      "sha256": "719c65ba0d49394ee891ff377fd80c9a9f57ff3d7c1ef91d5a530165142b369e",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\raw_formats.py.txt"
+    },
+    {
+      "name": "register_imports.py.txt",
+      "size": 7150,
+      "sha256": "49944f52c7691c5c5ed9fc0234d4d9811e3e4c1f0f8043c63143db2af4431d7b",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\register_imports.py.txt"
+    },
+    {
+      "name": "caller_frames.py.txt",
+      "size": 4774,
+      "sha256": "3dac624f85852f2023ccd46d0254d29f91d3a09aa26e95c506c200d340dc046e",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\caller_frames.py.txt"
+    },
+    {
+      "name": "code_gate.py.txt",
+      "size": 28939,
+      "sha256": "6018340ef76afbd167dda4d9551485a72d5ed5bdfb2cab4d7f013205c82a146d",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\code_gate.py.txt"
+    },
+    {
+      "name": "observations.py.txt",
+      "size": 16297,
+      "sha256": "f50a70b0e0067412c58b9c009db1fa28ea2c7bbb1af4dfc2b7e91c8d49bf14fa",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\observations.py.txt"
+    },
+    {
+      "name": "protocol_review.py.txt",
+      "size": 7814,
+      "sha256": "48139b9cd79f70f8c6c565b7e8ff2f54a86c629ee137e7c450a61d3fb9c1a5d2",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\protocol_review.py.txt"
+    },
+    {
+      "name": "proposed_selection.json",
+      "size": 2889,
+      "sha256": "2d5a8eb52a822248fe7c38fa91e4847d84047defddd3e080f22f3030df1c5c7f",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\proposed_selection.json"
+    },
+    {
+      "name": "selected_modules.json",
+      "size": 5371,
+      "sha256": "a5dc39d9660a5a5e33244b6d32b65b03f54613c7f249f3c01f3d2e6fb82353f3",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\selected_modules.json"
+    },
+    {
+      "name": "guard_seal.json",
+      "size": 6856,
+      "sha256": "da41e9a1c047ee82be1230c79e2ed801c613d84c6449a6916affdebc1e67e989",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_selected_text_pre_generation_audit\\local\\t5pregen20261008a\\seal.json"
+    },
+    {
+      "name": "reader_seal.json",
+      "size": 14996,
+      "sha256": "265818c807869a75e0268eaf4dd7b65f812cf5f6813bf8fa77b04af823a1c5b4",
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_independent_reader_text_correction\\local\\t5readerfix20261008a\\seal.json"
+    }
+  ],
+  "schema_key_counts": {
+    "runtime_writer": 31,
+    "runtime_reader": 31,
+    "provider_writer": 9,
+    "provider_reader": 9,
+    "missing_writer_keys": []
+  },
+  "Capture132": {
+    "bytes": 132,
+    "pre_bytes": 16,
+    "Registers_bytes": 100,
+    "Registers_offset": 16,
+    "post_offset": 116,
+    "post_bytes": 16,
+    "little_endian_DWORD_count": 33,
+    "register_fields_in_order": [
+      "esp_before",
+      "esp_after",
+      "eax_after",
+      "ecx_after",
+      "edx_after",
+      "ebx_before",
+      "esi_before",
+      "edi_before",
+      "ebp_before",
+      "ebx_after",
+      "esi_after",
+      "edi_after",
+      "ebp_after",
+      "flags_before",
+      "flags_after",
+      "es_before",
+      "es_after",
+      "stack_guard0",
+      "stack_guard1",
+      "text_slot",
+      "text_word",
+      "word18_slot",
+      "word18_word",
+      "word08_slot",
+      "word08_word"
+    ],
+    "R_Q_T_named_fields": false
+  },
+  "binary_snapshot_sizes": {
+    "source_capture.bin": 132,
+    "source_storage.bin": 56,
+    "source_guarded_text.bin": 40,
+    "source_child.bin": 6,
+    "original_capture.bin": 132,
+    "original_storage.bin": 56,
+    "original_guarded_text.bin": 40,
+    "original_child.bin": 6,
+    "bound_original.bin": 63
+  },
+  "selected_cases": [
+    {
+      "name": "source",
+      "input8_hex": "d7329a61e400bc58",
+      "copied6_hex": "d7329a61e400",
+      "NUL_offset": 5,
+      "later_bytes_retained_only_in_input_hex": "bc58",
+      "WORD18": 1033029540,
+      "WORD08": 2783014972,
+      "root_poison": 166
+    },
+    {
+      "name": "original",
+      "input8_hex": "4bc625f89300e17a",
+      "copied6_hex": "4bc625f89300",
+      "NUL_offset": 5,
+      "later_bytes_retained_only_in_input_hex": "e17a",
+      "WORD18": 3261937755,
+      "WORD08": 1511952323,
+      "root_poison": 89
+    }
+  ],
+  "root_mask": {
+    "size": 56,
+    "written_ranges_half_open": [
+      [
+        0,
+        12
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        44,
+        45
+      ],
+      [
+        52,
+        56
+      ]
+    ],
+    "written_count": 33,
+    "preserved_count": 23,
+    "owner_0x30": "preserved poison",
+    "marker_0x2C": 1,
+    "does_not_establish_class_or_marker_ownership": true
+  },
+  "selected_counts": {
+    "Source_calls": 1,
+    "Original_calls": 1,
+    "ordinary_dynamic_calls": 0,
+    "roots": 2,
+    "children": 2,
+    "root_bytes": 56,
+    "child_bytes": 6,
+    "allocations": 4,
+    "frees": 4,
+    "free_order": "Source child,Original child,then both actual roots"
+  },
+  "encodings": {
+    "numbers": "unsigned32 decimal from writer types",
+    "hex": "lowercase two digits per byte; provider SHA/prefix64chars each",
+    "Capture": "binary33 little-endian DWORDs, not runtime JSON hex",
+    "path": "wide_json escapes quote/backslash and emits UTF16 code units as JSON Unicode escapes outside printable ASCII",
+    "provider_name": "four selected ASCII names",
+    "recipe_logs": "UTF-8 saved subprocess text and JSON process_args/process_exit; observation reader parses same stdout result"
+  },
+  "recorded_vs_inferred": {
+    "R": "Q labels captured esp_before as R",
+    "T": "Q derives T=R-16; no T/Q fields serialized",
+    "frame_or_flag_formula_validated_here": false,
+    "ES": "serialized DWORD pair; Q equality assertion additional to selected probe machine_ok, not blanket ABI",
+    "AF": "both chosen predicates use8C5 and excludeAF; no arithmetic recovery",
+    "ECX_EDX": "serialized residuals unasserted",
+    "Capture_address": "not separately serialized; Q uses captured ESI plus caller context",
+    "module_base": "actually serialized in Type5 JSON",
+    "MEM_IMAGE_FileID_GetProcAddress": "no separate runtime query records; selected gated probe checks and frozen static metadata remain distinct",
+    "normalized_prefix": "expected physical export32 adjusted to loaded base; not a separate raw live-prefix dump",
+    "child_first_dispositions": "reported boolean plus selected probe ordering; no independent heap trace",
+    "other_live_preservation": "probe checks live other roots/captures/inputs; final saved snapshots decoded, not invented intermediate records"
+  },
+  "pre_helper_and_precompiler_selection": {
+    "exact_unique_basenames": [
+      "recipe.py",
+      "probe.cpp",
+      "helpers.py"
+    ],
+    "full_size_SHA_checks": true,
+    "top_exec_line": 62,
+    "guard_function_line": 49,
+    "actual_receipt_acceptance_here": false
+  },
+  "contradictions_in_reviewed_schema": [],
+  "actual_prerequisite_field_required_1_current_generation_0_not_weakened": true,
+  "Root_remaining": "actual complete ABI/Main/helper/provider qualification, exact receipts and sole process after real duplicate57 admission; this audit authorizes none",
+  "local_evidence": {
+    "family": "local/t5schema",
+    "readout": "schema_comparison_r02.json",
+    "readout_sha256": "89d9ef95c54679d3d3f52ed0dd2ee22b0566df889716cd5d4a3e0093aca06fdf",
+    "receipt": "receipt.json",
+    "manifest": "artifact_manifest.json",
+    "old_inventory_counts": [
+      41,
+      53
+    ],
+    "selected_TEXT_count": 13
+  },
+  "limits": [
+    "Source/TEXT field bookkeeping only",
+    "No observed outputs, actual addresses or physical facts supplied",
+    "No machine ABI/frame/flag recovery",
+    "No selected helper/reader/candidate imports or execution",
+    "No Native/Ghidra/provider/compiler/target or embedded old-runtime path access",
+    "No Source changes/tests/approval/admission credit",
+    "Mutable reports are frozen generation context, not strict forever pins",
+    "Separate existing Source qualifications unchanged"
+  ]
+}
