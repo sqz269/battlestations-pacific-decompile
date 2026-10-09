@@ -91,3 +91,11 @@ Canonical input and owned-file hashes, JSON parsing and the staged diff are also
 checked. No new test, probe, standalone build, GPR, CMake or ledger mutation was
 performed. The integrator must build the registered Source and inspect every
 emitted instruction and its recursive relocation before accepting ABI claims.
+
+## Primary registration and emitted review
+
+The integrator registered this unit in bsp_core. The normal MSVC Win32 build and all three existing checks passed. Complete physical COFF review finds exactly 66 bytes / 25 instructions and one self-call relocation: operand 41 targets the same physical symbol index8, section3, value0. Resolving its zero addend to `D3 FF FF FF` makes the entire body equal the pinned live capture and installed PE, including `8D 49 00` and the terminal `FF E2` jump. The unique whole Core member and positive own definition are retained.
+
+The existing counted projected function record is preserved. This is one additional actual-storage fragment with zero new Original function/byte credit. The name-ledger correction records +5D at00922FE1 and +5C at00922FE4 while preserving the older evidence. The public root is absent from the game map. Real current tables, hierarchy/lifetimes, Native entry/exception/fault execution and gameplay remain open.
+
+Evidence: `reports/cc12_entity_destroy_state_primary_review.json`; complete retained objects/library/map/build receipts under `local/cc12_entity_destroy_state_primary`.

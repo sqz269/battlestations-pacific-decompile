@@ -1,0 +1,366 @@
+{
+  "schema": "bsp.cc12.entity_destroy_state_primary_review.v1",
+  "status": "complete_whole_emitted_body_and_self_relocation_match_normal_win32_build_passed",
+  "utc": "2026-10-09T05:51:57.450267+00:00",
+  "worker_source_commit": "ccaec247a80235dc5c37a4969be76fa6f0b5ebec",
+  "build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 108044,
+    "start_utc": "2026-10-09T05:50:02.607633+00:00",
+    "finish_utc": "2026-10-09T05:50:23.133826+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "before_inputs_rechecked_after_build": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "91ff8491f0eb2486f15832ba8f511d34227bf4c7e0ac47b3a3a8a9ea4cd6d9d9"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b"
+    },
+    {
+      "path": "include/bsp/native_subtree_invalidation.hpp",
+      "sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07"
+    },
+    {
+      "path": "src/native_subtree_invalidation.cpp",
+      "sha256": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959"
+    },
+    {
+      "path": "include/bsp/native_world_current_tick.hpp",
+      "sha256": "d4bf7f829180eddb17e9286dfef9007e6ead92560944cb9f80e519bdca597f1b"
+    },
+    {
+      "path": "src/native_world_current_tick.cpp",
+      "sha256": "d18ae4a7e134e55f7c7d2b35b4d1eddeaf44a8058b4a9cc12cdcf866b6ce7a5b"
+    },
+    {
+      "path": "include/bsp/native_mission_clock_reset.hpp",
+      "sha256": "27d47cb37491d112eec0a4fb8b54c7beab88be1d86c92a75f5137a7728569a11"
+    },
+    {
+      "path": "src/native_mission_clock_reset.cpp",
+      "sha256": "7b19b589c9418edc8cf14c460a1bae1a6517afe377e6c335b946f253a8b9c075"
+    },
+    {
+      "path": "include/bsp/game_native_game_application_frame.hpp",
+      "sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09"
+    }
+  ],
+  "canonical_worker_and_audit_pins_replayed": [
+    {
+      "path": "docs/CC12_ENTITY_DESTROY_STATE_CURRENT_STORAGE_READINESS.md",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "028c1282b3c9736b3dce0f104fc27e750cbf3ae90558ea9d44fb0ab4c6cd4ad7"
+    },
+    {
+      "path": "reports/cc12_entity_destroy_state_current_storage_readiness.json",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "1a6cc838016a78d4509d543d6676bc26b2f47c1762c6784ed2f686da76aa3aef"
+    },
+    {
+      "path": "include/bsp/hit_narrowphase.hpp",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "a8eb957cb7fbc030fb6676a8cc1ed2b9b047796a5b664653fbc9f8932a78dd20"
+    },
+    {
+      "path": "src/hit_narrowphase.cpp",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "bbc069a4ece1c8a840ba284796f909c0b78d04282565909e64368aba50b510ef"
+    },
+    {
+      "path": "include/bsp/native_subtree_invalidation.hpp",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07"
+    },
+    {
+      "path": "src/native_subtree_invalidation.cpp",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959"
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+    },
+    {
+      "path": "config/names/00920000.jsonl",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "416feccfee2c6e8a1222a1c2cd7f94281e7e7f3b565f8495a609cfcd67066188"
+    },
+    {
+      "path": "config/reconstruction/00920000.jsonl",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "17a7b46478b224e2359b8e69c0e0110de5db0118477d9e183accfe45d625fb4e"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "699e2c38a874e771365eed989b0bc52fd52541ea",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "include/bsp/hit_narrowphase.hpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "a8eb957cb7fbc030fb6676a8cc1ed2b9b047796a5b664653fbc9f8932a78dd20"
+    },
+    {
+      "path": "src/hit_narrowphase.cpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "bbc069a4ece1c8a840ba284796f909c0b78d04282565909e64368aba50b510ef"
+    },
+    {
+      "path": "include/bsp/entity_lifecycle_tails.hpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "5da5bd67bc91a932786817e1551333605cc675a446577c2fbb393b69f66141ed"
+    },
+    {
+      "path": "src/entity_lifecycle_tails.cpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "98eb63beb57d13e66a6d25d9e95bf9d17da37c1c8461ecb78b0a85e686855b99"
+    },
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160"
+    },
+    {
+      "path": "include/bsp/world_entities.hpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "329e490ffd4609186db4360600114585a18859d6ec42cf9a1fd3d25d92d33ebb"
+    },
+    {
+      "path": "src/world_entities.cpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "0f13cf989c933f4114d86b2b7ea955beef27ddd1a892472f309e14a50959f710"
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af"
+    },
+    {
+      "path": "include/bsp/game_hosts_ready.hpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+    },
+    {
+      "path": "src/game_hosts_world.cpp",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829"
+    },
+    {
+      "path": "config/names/00920000.jsonl",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "416feccfee2c6e8a1222a1c2cd7f94281e7e7f3b565f8495a609cfcd67066188"
+    },
+    {
+      "path": "config/reconstruction/00920000.jsonl",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "17a7b46478b224e2359b8e69c0e0110de5db0118477d9e183accfe45d625fb4e"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "21590800be946bc1c807b9b3bfaee029831ca147",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "docs/CC12_WORLD_DESTRUCTOR_AFTER_CURRENT_TICK_READINESS.md",
+      "revision": "18203a7f5be5c0882af2c09404acb91d5378629b",
+      "sha256": "a6a1adca942851332b73b901c01157e4b637270643aa70717dd0e145a862a725"
+    },
+    {
+      "path": "reports/cc12_world_destructor_after_current_tick_readiness.json",
+      "revision": "18203a7f5be5c0882af2c09404acb91d5378629b",
+      "sha256": "1952956148e4d86c067acba61eff1c5f22a116e1103e454d00a12674a70a0e18"
+    }
+  ],
+  "owned_source_and_doc_pins_replayed": [
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "hash_domain": "UTF-8 LF physical bytes; must equal staged Git blob",
+      "bytes": 1412,
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "hash_domain": "UTF-8 LF physical bytes; must equal staged Git blob",
+      "bytes": 1956,
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b"
+    },
+    {
+      "path": "docs/CC12_NATIVE_ENTITY_DESTROY_STATE_SOURCE.md",
+      "hash_domain": "UTF-8 LF physical bytes; must equal staged Git blob",
+      "bytes": 5750,
+      "sha256": "fd367411c23a9818ea350ec873c13d70f03e3f6206888c6e66665cca1bba7440"
+    }
+  ],
+  "native_body": {
+    "address": "00922fd0",
+    "bytes": 66,
+    "instructions": 25,
+    "sha256": "29eceff51de711a90ebe3201b0f270a6cdc3febb62b1532857b5fba6301d382d",
+    "entire_resolved_Source_body_equal_installed_PE": true
+  },
+  "whole_object": {
+    "path": "build\\win32\\bsp_core.dir\\Release\\native_entity_destroy_state.obj",
+    "bytes": 806,
+    "sha256": "6430e376cab440a40d662581ea15eb1f89368d07b1d361618908b06efcbc91ff",
+    "machine": "I386"
+  },
+  "root": {
+    "symbol": "?mark_native_entity_destroy_state_00922fd0@bsp@@YIXPAX@Z",
+    "symbol_index": 8,
+    "section": 3,
+    "section_value": 0,
+    "physical_file_offset": 439,
+    "bytes": 66,
+    "instructions": 25
+  },
+  "sole_self_relocation": {
+    "record_file_offset": 505,
+    "raw_record_hex": "29000000080000001400",
+    "offset": 41,
+    "type": 20,
+    "symbol_index": 8,
+    "symbol": "?mark_native_entity_destroy_state_00922fd0@bsp@@YIXPAX@Z",
+    "symbol_record": {
+      "index": 8,
+      "record_file_offset": 691,
+      "raw_record_hex": "000000000400000000000000030020000200",
+      "name": "?mark_native_entity_destroy_state_00922fd0@bsp@@YIXPAX@Z",
+      "value": 0,
+      "section": 3,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0,
+      "aux_records_hex": ""
+    },
+    "operand_file_offset": 480,
+    "operand_hex": "00000000",
+    "operand_u32": 0,
+    "function_offset": 41
+  },
+  "resolved_self_operand_hex": "d3ffffff",
+  "positive_unique_core_definitions": [
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_entity_destroy_state.obj",
+        "header_offset": 63754508,
+        "payload_file_offset": 63754568,
+        "bytes": 806,
+        "sha256": "6430e376cab440a40d662581ea15eb1f89368d07b1d361618908b06efcbc91ff"
+      },
+      "definition": {
+        "name": "?mark_native_entity_destroy_state_00922fd0@bsp@@YIXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 691,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    }
+  ],
+  "whole_core_member": {
+    "name": "bsp_core.dir\\Release\\native_entity_destroy_state.obj",
+    "header_offset": 63754508,
+    "payload_file_offset": 63754568,
+    "bytes": 806,
+    "sha256": "6430e376cab440a40d662581ea15eb1f89368d07b1d361618908b06efcbc91ff"
+  },
+  "core_library_sha256": "c7303f51327288b98ef0fd760dd2be1ac5485a911a3b0e9576810804a96954f3",
+  "graph_external_boundaries": [],
+  "complete_primary_review": [
+    "All25Native encoded instructions and branch destinations match after rebinding sole selfCALL; three-byte8D4900LEA exact, no padding or compiler prologue.",
+    "Firstchild48 capture/TEST precedes stores5E1/5D1/5C0/fullDWORD6C1; MOVs preserve TEST flags. Correct addresses:5D atFE1,5C atFE4.",
+    "Currentchild DWORD6C comparison gates recursion; samechild44 reload follows full recursive terminal return. No saved sibling/headrestart/cycleguard.",
+    "Final latevptr/84 loads retainEAXcurrenttable/EDXtarget; ECXreceiver prepared; EDI/ESI restored before finalJMPEDX. Tail uses original callerreturnaddress; no extraRET/defaultreturn/cleanup. No read after own terminal dispatch.",
+    "Only local graph edge is the positive physical own function symbol. One complete matching library member and one positive publicdefinition; rootabsentgamemap."
+  ],
+  "existing_function_record_preserved": {
+    "address": "00922fd0",
+    "name": "scene_node_kill_00922fd0",
+    "source": "src/hit_narrowphase.cpp",
+    "status": "reconstructed_ledger_backfilled_from_source",
+    "evidence": "C++ body at src/hit_narrowphase.cpp:231 (scene_node_kill_00922fd0), a definition named after the address. Documents: docs/ENTITY_EVENT_QUEUES.md, docs/ENTITY_LIFECYCLE_TAILS.md, docs/GAME_WORLD_ENTITIES.md, docs/HIT_NARROWPHASE.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build.",
+    "cpp_symbol": "scene_node_kill_00922fd0",
+    "abi_compatible": false,
+    "game_validated": false,
+    "kind": "function"
+  },
+  "credit": {
+    "additional_Original_functions": 0,
+    "additional_Original_bytes": 0,
+    "new_actual_storage_fragment": 1,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "retained_complete_evidence": "local/cc12_entity_destroy_state_primary/whole_object_and_indexed_local_graph.json",
+  "limits": [
+    "Actual writable hierarchy/current callable84 methods and mutation/termination contracts remain caller qualifications.",
+    "Currentchild must remain readable through postrecursive44; World caller requires sameentity38 afterreturn.",
+    "Typed projected function and count retained. No wholeentity owner/productiontable/hierarchy producer/application binding or fabricated callback.",
+    "Static entirebody/reboundcall proof and existingchecks are not Nativeentry/exception/SEH/fault/Sourcecallback-exception/runtime/gameplay execution. No new tests/probes."
+  ],
+  "worker_document_before_primary_append_sha256": "fd367411c23a9818ea350ec873c13d70f03e3f6206888c6e66665cca1bba7440",
+  "current_document_sha256": "80d1bec019c3dfadc64d2a9ca2d1a4b5c96d3e591a3775213c799b5427aab441",
+  "current_document_pin_policy": "canonical LF bytes; original worker owned-document pin is historical before primary append",
+  "ghidra_annotation": {
+    "receipt": "local\\ghidra-annotations-20261009T055336Z.json",
+    "sha256": "e837b4c70925f03861b6b179b345b62a5a7e7fcc70e5e67d5671fdc4108b0cc1",
+    "program_saved": true,
+    "prior_comments_preserved": true,
+    "name_preserved": "BSP_SceneNode_Kill",
+    "flag_site_correction_appended": true,
+    "forced_export_refreshed": true,
+    "flow_body_signature_changes": false
+  }
+}
