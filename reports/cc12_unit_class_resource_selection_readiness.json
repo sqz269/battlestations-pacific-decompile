@@ -1,0 +1,1132 @@
+{
+  "schema": "cc12_unit_class_resource_selection_readiness_v1",
+  "created_utc": "2026-10-09T22:05:08.460748+00:00",
+  "packet": "cc12_unit_class_resource_selection_readiness",
+  "status": "complete_whole_initializer_gate_and_conditional_profile_target_witness_production_ownership_held",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding",
+  "branch": "agent/cc12_unit_numbering_caller_receiver_binding",
+  "base_commit": "180fa09622d3a8e095f68db39c14690e97e2feb0",
+  "scope": {
+    "Native_function": "0087BCC0",
+    "approved_extra_data_cell": "00CFD8D4",
+    "extra_cell_bytes": 4,
+    "extra_lease_packet": "cc12_unit_class_resource_selection_profile_cell",
+    "primary_approved_extension": "Read only this four-byte cell, full Original PE SHA and PE/live equality. Keep witness conditional on actual class+50 object profile and saved-table use; no other cells or bodies.",
+    "files": [
+      "docs/CC12_UNIT_CLASS_RESOURCE_SELECTION_READINESS.md",
+      "reports/cc12_unit_class_resource_selection_readiness.json"
+    ],
+    "Native_child_bodies": [],
+    "other_profile_cells": [],
+    "Cxx_CMake_build_tests_probes_ledger_GPR_changes": false,
+    "base_retained_at_primary_request": true
+  },
+  "decision": {
+    "static_profile_mapping": "Established: 00CFD8CC +8 at00CFD8D4 contains007137F0.",
+    "production_admission": "Held: actual class/resource ownership, saved profile and late target value, completed graph and lifetime still require production composition.",
+    "existing_Source_publisher": "Actual00879590 Source writes loader result to class+50; this body is not absent.",
+    "new_Source_implementation_ready_claim": false,
+    "next_bounded_evidence_candidate": "00879590 actual class+50 publisher and its load/cache provenance; no fresh Native gate of that body here.",
+    "prohibited_substitutes": [
+      "semantic GameUnitSlot receiver cast",
+      "raw root accessor presented as ownership",
+      "numeric process-vtable call",
+      "fallback callback",
+      "unconditional007137F0 target substitution"
+    ]
+  },
+  "evidence": {
+    "capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\capture.json",
+      "bytes": 65666,
+      "sha256": "3633dc8e5588b9a200e70ecee107d8c86768a3112bf3f28ec3f17ca229709837",
+      "canonical_lf_sha256": "3633dc8e5588b9a200e70ecee107d8c86768a3112bf3f28ec3f17ca229709837"
+    },
+    "capture_script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\capture.py",
+      "bytes": 7970,
+      "sha256": "33e4d0ba7c8490eadb886ed1286bfbfc01cb74abe9024168f28689cc6534c007",
+      "canonical_lf_sha256": "33e4d0ba7c8490eadb886ed1286bfbfc01cb74abe9024168f28689cc6534c007"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "function_count": 64730,
+    "project_identity_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\project_process.json",
+        "bytes": 786,
+        "sha256": "2a3149d4ebe89234e2e8cb3746b269f6883eab2433a6c8076f6d977cc517f6d3",
+        "canonical_lf_sha256": "0e0ce29b04363aa52dfaecd4bc0a0cc764c739861c784d3385362f88f6128db9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\profile_project_process.json",
+        "bytes": 786,
+        "sha256": "2a3149d4ebe89234e2e8cb3746b269f6883eab2433a6c8076f6d977cc517f6d3",
+        "canonical_lf_sha256": "0e0ce29b04363aa52dfaecd4bc0a0cc764c739861c784d3385362f88f6128db9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\programs.json",
+        "bytes": 1065,
+        "sha256": "07b9d7377c4e90a4147566d5f230b7b610a2cc6b437676b37206b9a93313f1fe",
+        "canonical_lf_sha256": "07b9d7377c4e90a4147566d5f230b7b610a2cc6b437676b37206b9a93313f1fe"
+      }
+    ],
+    "Original_PE_pin": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "live_capture_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\live_bytes.txt",
+        "bytes": 3340,
+        "sha256": "1d50194bd46c63094facf5b225bb8aec6590d869c24e5f2a20d87b71b4e8e6d3",
+        "canonical_lf_sha256": "17b73a0a8852a68d7d8216fc0e2b13658946a94bfee99b709a267172a521bd94"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\live_disasm_000.txt",
+        "bytes": 2561,
+        "sha256": "23b1f656d00ce9a8af41086715a2ff5a1e71b66edf0f786071b7b29cdde4ecc4",
+        "canonical_lf_sha256": "c0d9f91c9559c396cdb0c2bda67e4e212e8e0e25a7e28e3caa7786e9a61cc8e5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\live_disasm_082.txt",
+        "bytes": 2354,
+        "sha256": "67713daf75150a4249511684bb2750ba19c111a89a8b6498bdab20f4f57cc782",
+        "canonical_lf_sha256": "f845c03ef7acac917365c24d50010302b9a2517637e660336891f4447c596885"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\live_disasm_162.txt",
+        "bytes": 2080,
+        "sha256": "effb09a33a3f51502bd3dbb2a0eb4e0e59a48011c33edf6dd55670587e6cf17c",
+        "canonical_lf_sha256": "d48d5fe065becb2ae9be208522cf3deb5cdbc46058f44f484738bed41b063218"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\live_proto.txt",
+        "bytes": 3775,
+        "sha256": "f2efb6795c66cfd4bf20e0d0e810fef581d02239efb25f85329c6c7f605fa0b6",
+        "canonical_lf_sha256": "45a949e93055f76ffbe6a8d2800462d9f933e3f5f459483892f071d38fee7256"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_class_resource_selection_readiness\\live_profile_cell.txt",
+        "bytes": 29,
+        "sha256": "42743231732c9902a200fba21f87e0606098d149d79565af52889079fa83776f",
+        "canonical_lf_sha256": "43a0fd06fdbd9002c96daf8a8a5b3113b2ce67da44ec71c51151a6fe9dce07c3"
+      }
+    ],
+    "saved_export_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0087bcc0\\assembly.txt",
+        "bytes": 6653,
+        "sha256": "22c260bfce694526be9f0c8697e1d7aaa4b4fd928cf699d48ff1ddb7a54e0ad4",
+        "canonical_lf_sha256": "22c260bfce694526be9f0c8697e1d7aaa4b4fd928cf699d48ff1ddb7a54e0ad4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0087bcc0\\decompiled.c",
+        "bytes": 5635,
+        "sha256": "95d6629f7bc8af137e60c30d1d526ebd6ca520f76a3d71d1fe2d44752059ba37",
+        "canonical_lf_sha256": "95d6629f7bc8af137e60c30d1d526ebd6ca520f76a3d71d1fe2d44752059ba37"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0087bcc0\\metadata.json",
+        "bytes": 233,
+        "sha256": "8b04306541885ed438fcd19d6dbde7ab0856553443addc1fc1bc6e58aab0a524",
+        "canonical_lf_sha256": "8b04306541885ed438fcd19d6dbde7ab0856553443addc1fc1bc6e58aab0a524"
+      }
+    ],
+    "live_scope": "Current Ghidra program bytes/listing, not running-game heap or execution."
+  },
+  "whole_Native_gate": {
+    "address": "0087BCC0",
+    "end_inclusive": "0087BF73",
+    "bytes": 692,
+    "operations": 232,
+    "hex": "6aff68e667c90064a100000000506489250000000051535556578bf1e8ff33f0ff8b8654030000f30f10404cf30f100d4ca2d700f30f118668030000f30f104048f30f11866c030000f30f118e64010000f30f118670030000c68678030000018b501c33db3bd3750433c0eb168b48202bcab8abaaaa2af7e9c1fa038bc2c1e81f03c233c9518dae44030000508bcde80cf7ffff895c24108b4d0485c9746a8b45082bc1c1f8023bd8735e8bbe540300008b471c83c71885c0741a8b4f082bc8b8abaaaa2af7e9c1fa038bc2c1e81f03c23bd87205e879a937008b7f048b4d04037c241085c9740c8b45082bc1c1f8023bd87205e85aa937008b4504893c9883c3018344241030eb8f8b7e3c85ff74258b178b82b00000008bcfffd085c075098b7f3c85ff75e9eb0c8b178b82b00000008bcfffd08b86540300008b785033db3bfb0f84530100008b168b425c6a1b8bceffd084c068ac0100007443e8faa937008be883c404896c24103beb895c241c74708b16d905e0d9ce008b1f8b8290010000518bced91c2483c308ffd08b13508bcfffd250568bcde86377e9ffeb45e8b7a937008be883c404896c24103bebc744241c0100000074298b06d9e88b1f8b9090010000518bced91c2483c308ffd2508b038bcfffd050568bcde82077e9ffeb0233c08986600300008b86c000000085c0c744241cffffffff74198378040275138b78088b4f58518bcee8f0afffff8b7f5ceb326a008bcee8e2afffff8b86c000000085c0bf01000000741a8b400885c074136830e1d0008bc8e86063070085c074038b780c39be5c030000745283be600300000089be5c03000074438b168b425c6a068bceffd084c0750f8b168b425c6a1b8bceffd084c074258b8e6003000057e8985ce9ff5f5e5d5b8b4c240464890d0000000083c410c3899e600300008b4c24145f5e5d5b64890d0000000083c410c3",
+    "sha256": "da924710786a0ee671717c865c0352fca292beb684abd1282bdc0447bdaa9c23",
+    "PE_live_bytes_equal": true,
+    "all232_saved_live_rows_equal": true,
+    "all232_independent_decode_starts_equal": true,
+    "calls": [
+      {
+        "site": "0087BCDC",
+        "target": "0x77f0e0",
+        "bytes": "e8ff33f0ff",
+        "indirect": false
+      },
+      {
+        "site": "0087BD4F",
+        "target": "0x87b460",
+        "bytes": "e80cf7ffff",
+        "indirect": false
+      },
+      {
+        "site": "0087BD95",
+        "target": "0xbf6713",
+        "bytes": "e879a93700",
+        "indirect": false
+      },
+      {
+        "site": "0087BDB4",
+        "target": "0xbf6713",
+        "bytes": "e85aa93700",
+        "indirect": false
+      },
+      {
+        "site": "0087BDDA",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "0087BDF3",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "0087BE11",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "0087BE1C",
+        "target": "0xbf681b",
+        "bytes": "e8faa93700",
+        "indirect": false
+      },
+      {
+        "site": "0087BE4B",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "0087BE52",
+        "target": "edx",
+        "bytes": "ffd2",
+        "indirect": true
+      },
+      {
+        "site": "0087BE58",
+        "target": "0x7135c0",
+        "bytes": "e86377e9ff",
+        "indirect": false
+      },
+      {
+        "site": "0087BE5F",
+        "target": "0xbf681b",
+        "bytes": "e8b7a93700",
+        "indirect": false
+      },
+      {
+        "site": "0087BE8E",
+        "target": "edx",
+        "bytes": "ffd2",
+        "indirect": true
+      },
+      {
+        "site": "0087BE95",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "0087BE9B",
+        "target": "0x7135c0",
+        "bytes": "e82077e9ff",
+        "indirect": false
+      },
+      {
+        "site": "0087BECB",
+        "target": "0x876ec0",
+        "bytes": "e8f0afffff",
+        "indirect": false
+      },
+      {
+        "site": "0087BED9",
+        "target": "0x876ec0",
+        "bytes": "e8e2afffff",
+        "indirect": false
+      },
+      {
+        "site": "0087BEFB",
+        "target": "0x8f2260",
+        "bytes": "e860630700",
+        "indirect": false
+      },
+      {
+        "site": "0087BF27",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "0087BF36",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "0087BF43",
+        "target": "0x711be0",
+        "bytes": "e8985ce9ff",
+        "indirect": false
+      }
+    ],
+    "direct_calls": 12,
+    "indirect_calls": 9,
+    "unique_direct_targets": 8,
+    "live_proto_reported_call_count": 12
+  },
+  "all232_instruction_starts": [
+    "0087BCC0",
+    "0087BCC2",
+    "0087BCC7",
+    "0087BCCD",
+    "0087BCCE",
+    "0087BCD5",
+    "0087BCD6",
+    "0087BCD7",
+    "0087BCD8",
+    "0087BCD9",
+    "0087BCDA",
+    "0087BCDC",
+    "0087BCE1",
+    "0087BCE7",
+    "0087BCEC",
+    "0087BCF4",
+    "0087BCFC",
+    "0087BD01",
+    "0087BD09",
+    "0087BD11",
+    "0087BD19",
+    "0087BD20",
+    "0087BD23",
+    "0087BD25",
+    "0087BD27",
+    "0087BD29",
+    "0087BD2B",
+    "0087BD2D",
+    "0087BD30",
+    "0087BD32",
+    "0087BD37",
+    "0087BD39",
+    "0087BD3C",
+    "0087BD3E",
+    "0087BD41",
+    "0087BD43",
+    "0087BD45",
+    "0087BD46",
+    "0087BD4C",
+    "0087BD4D",
+    "0087BD4F",
+    "0087BD54",
+    "0087BD58",
+    "0087BD5B",
+    "0087BD5D",
+    "0087BD5F",
+    "0087BD62",
+    "0087BD64",
+    "0087BD67",
+    "0087BD69",
+    "0087BD6B",
+    "0087BD71",
+    "0087BD74",
+    "0087BD77",
+    "0087BD79",
+    "0087BD7B",
+    "0087BD7E",
+    "0087BD80",
+    "0087BD85",
+    "0087BD87",
+    "0087BD8A",
+    "0087BD8C",
+    "0087BD8F",
+    "0087BD91",
+    "0087BD93",
+    "0087BD95",
+    "0087BD9A",
+    "0087BD9D",
+    "0087BDA0",
+    "0087BDA4",
+    "0087BDA6",
+    "0087BDA8",
+    "0087BDAB",
+    "0087BDAD",
+    "0087BDB0",
+    "0087BDB2",
+    "0087BDB4",
+    "0087BDB9",
+    "0087BDBC",
+    "0087BDBF",
+    "0087BDC2",
+    "0087BDC7",
+    "0087BDC9",
+    "0087BDCC",
+    "0087BDCE",
+    "0087BDD0",
+    "0087BDD2",
+    "0087BDD8",
+    "0087BDDA",
+    "0087BDDC",
+    "0087BDDE",
+    "0087BDE0",
+    "0087BDE3",
+    "0087BDE5",
+    "0087BDE7",
+    "0087BDE9",
+    "0087BDEB",
+    "0087BDF1",
+    "0087BDF3",
+    "0087BDF5",
+    "0087BDFB",
+    "0087BDFE",
+    "0087BE00",
+    "0087BE02",
+    "0087BE08",
+    "0087BE0A",
+    "0087BE0D",
+    "0087BE0F",
+    "0087BE11",
+    "0087BE13",
+    "0087BE15",
+    "0087BE1A",
+    "0087BE1C",
+    "0087BE21",
+    "0087BE23",
+    "0087BE26",
+    "0087BE2A",
+    "0087BE2C",
+    "0087BE30",
+    "0087BE32",
+    "0087BE34",
+    "0087BE3A",
+    "0087BE3C",
+    "0087BE42",
+    "0087BE43",
+    "0087BE45",
+    "0087BE48",
+    "0087BE4B",
+    "0087BE4D",
+    "0087BE4F",
+    "0087BE50",
+    "0087BE52",
+    "0087BE54",
+    "0087BE55",
+    "0087BE56",
+    "0087BE58",
+    "0087BE5D",
+    "0087BE5F",
+    "0087BE64",
+    "0087BE66",
+    "0087BE69",
+    "0087BE6D",
+    "0087BE6F",
+    "0087BE77",
+    "0087BE79",
+    "0087BE7B",
+    "0087BE7D",
+    "0087BE7F",
+    "0087BE85",
+    "0087BE86",
+    "0087BE88",
+    "0087BE8B",
+    "0087BE8E",
+    "0087BE90",
+    "0087BE91",
+    "0087BE93",
+    "0087BE95",
+    "0087BE97",
+    "0087BE98",
+    "0087BE99",
+    "0087BE9B",
+    "0087BEA0",
+    "0087BEA2",
+    "0087BEA4",
+    "0087BEAA",
+    "0087BEB0",
+    "0087BEB2",
+    "0087BEBA",
+    "0087BEBC",
+    "0087BEC0",
+    "0087BEC2",
+    "0087BEC5",
+    "0087BEC8",
+    "0087BEC9",
+    "0087BECB",
+    "0087BED0",
+    "0087BED3",
+    "0087BED5",
+    "0087BED7",
+    "0087BED9",
+    "0087BEDE",
+    "0087BEE4",
+    "0087BEE6",
+    "0087BEEB",
+    "0087BEED",
+    "0087BEF0",
+    "0087BEF2",
+    "0087BEF4",
+    "0087BEF9",
+    "0087BEFB",
+    "0087BF00",
+    "0087BF02",
+    "0087BF04",
+    "0087BF07",
+    "0087BF0D",
+    "0087BF0F",
+    "0087BF16",
+    "0087BF1C",
+    "0087BF1E",
+    "0087BF20",
+    "0087BF23",
+    "0087BF25",
+    "0087BF27",
+    "0087BF29",
+    "0087BF2B",
+    "0087BF2D",
+    "0087BF2F",
+    "0087BF32",
+    "0087BF34",
+    "0087BF36",
+    "0087BF38",
+    "0087BF3A",
+    "0087BF3C",
+    "0087BF42",
+    "0087BF43",
+    "0087BF48",
+    "0087BF49",
+    "0087BF4A",
+    "0087BF4B",
+    "0087BF4C",
+    "0087BF50",
+    "0087BF57",
+    "0087BF5A",
+    "0087BF5B",
+    "0087BF61",
+    "0087BF65",
+    "0087BF66",
+    "0087BF67",
+    "0087BF68",
+    "0087BF69",
+    "0087BF70",
+    "0087BF73"
+  ],
+  "approved_profile_cell": {
+    "address": "00CFD8D4",
+    "profile": "00CFD8CC",
+    "offset": 8,
+    "bytes": 4,
+    "hex": "f0377100",
+    "little_endian_target": "007137F0",
+    "sha256": "dbceee7609a9276a450d72562f9b2bb2fe7dd50780a5bc1a0639aad9df27e2f0",
+    "PE_live_equal": true,
+    "primary_explicitly_approved_single4_byte_extension": true,
+    "conditional_only": "Requires captured class+50 object to carry CFD8CC at the SAVED-table capture and the late saved-table+8 read to have this current value. Does not prove actual production object/profile or lifetime."
+  },
+  "ABI": {
+    "entry": "ECX=actual unit; no explicit stack arguments.",
+    "callee_saved": [
+      "EBX",
+      "EBP",
+      "ESI",
+      "EDI"
+    ],
+    "return": "Bare RET at0087BF5A or0087BF73; Source void interface claims no meaningful result.",
+    "frame": "FS exception-chain registration names00C967E6; restore prior frame on both returns.",
+    "live_metadata_limit": "Live signature has zero parameters; full assembly establishes ECX receiver. Ghidra reported call_count12 matches direct sites; complete decode has21 including9 indirect.",
+    "pseudocode_correction": "Apparent float argument to unit virtual+190 is a pre-pushed second argument for resource virtual+8. Existing complete Source contract and historical two-profile selector leaves establish no selector stack argument. No child body or those profile cells were reopened.",
+    "new_interface": "NativeUnitHealthPartsView and complete explicit providers are an ordinary C++ interface, not original register/stack/FH3 compatibility."
+  },
+  "whole_body_schedule": [
+    "0087BCDC activation precedes current descriptor capture and health stores. Armour from class+4C, HP from class+48 to maximum/current health, one to marker164 and byte condition378=1.",
+    "Checked pointer vector344 is resized to signed DWORD difference/30h, then populated. Each iteration reloads descriptor; returning invalid-parameter calls preserve captured class-vector identity and require later begin rereads.",
+    "Parent3C traversal dispatches currentB0; first nonzero result triggers second call on same parent with fresh target, result discarded.",
+    "Current descriptor354 then class50 are captured; null resource clears model360 and returns. Nonnull resource runs kind1B predicate, allocation and one of two x87/selector/constructor arms.",
+    "Constructor/null-allocation result is published at360 before property/group state; kind2 saved object stays captured while its numbering is read after state update, other arm reloads holder and bag.",
+    "If numbering differs, model presence is checked before35C write. Current unit kind6 then kind1B short-circuit; final current360 reload follows both callbacks before711BE0."
+  ],
+  "calls": [
+    {
+      "site": "0087BCDC",
+      "target": "0x77f0e0",
+      "bytes": "e8ff33f0ff",
+      "indirect": false,
+      "semantic_target": "0077F0E0",
+      "ABI_contract": "ECX=unit; RET",
+      "ordering_contract": "Complete activation/registration; existing Source caller requires real bindings. Later class read occurs after return."
+    },
+    {
+      "site": "0087BD4F",
+      "target": "0x87b460",
+      "bytes": "e80cf7ffff",
+      "indirect": false,
+      "semantic_target": "0087B460",
+      "ABI_contract": "ECX=unit+344; stack(count,0); RET8",
+      "ordering_contract": "Existing actual pointer-vector resize default; class/vector may rebind."
+    },
+    {
+      "site": "0087BD95",
+      "target": "0xbf6713",
+      "bytes": "e879a93700",
+      "indirect": false,
+      "semantic_target": "00BF6713",
+      "ABI_contract": "No normal stack arguments",
+      "ordering_contract": "Returning invalid-parameter path preserves captured class-vector identity, then rereads its begin."
+    },
+    {
+      "site": "0087BDB4",
+      "target": "0xbf6713",
+      "bytes": "e85aa93700",
+      "indirect": false,
+      "semantic_target": "00BF6713",
+      "ABI_contract": "No normal stack arguments",
+      "ordering_contract": "Returning invalid-parameter path rereads current destination begin before store."
+    },
+    {
+      "site": "0087BDDA",
+      "target": "eax",
+      "bytes": "ffd0",
+      "indirect": true,
+      "semantic_target": "parent_current_slot_B0",
+      "ABI_contract": "ECX=current parent; no stack arguments",
+      "ordering_contract": "First parent result chooses repeat or next parent; pointer result only tested."
+    },
+    {
+      "site": "0087BDF3",
+      "target": "eax",
+      "bytes": "ffd0",
+      "indirect": true,
+      "semantic_target": "same_parent_current_slot_B0",
+      "ABI_contract": "ECX=same parent; no stack arguments",
+      "ordering_contract": "Fresh table/entry lookup after first nonzero result; second result discarded."
+    },
+    {
+      "site": "0087BE11",
+      "target": "eax",
+      "bytes": "ffd0",
+      "indirect": true,
+      "semantic_target": "unit_current_slot_5C",
+      "ABI_contract": "ECX=unit; stack(1B); AL predicate",
+      "ordering_contract": "Resource identity EDI was already captured from current class+50; later field replacement does not replace it."
+    },
+    {
+      "site": "0087BE1C",
+      "target": "0xbf681b",
+      "bytes": "e8faa93700",
+      "indirect": false,
+      "semantic_target": "00BF681B",
+      "ABI_contract": "cdecl(1AC); EAX=allocation; caller ADD ESP,4",
+      "ordering_contract": "Kind1B allocation before FLD and both selector calls; save exact allocation before arming state0."
+    },
+    {
+      "site": "0087BE4B",
+      "target": "eax",
+      "bytes": "ffd0",
+      "indirect": true,
+      "semantic_target": "unit_captured_slot_190",
+      "ABI_contract": "ECX=unit; no stack argument consumed; EAX=selector",
+      "ordering_contract": "Pre-pushed detail remains for the subsequent resource call; unit table/entry captured before this call."
+    },
+    {
+      "site": "0087BE52",
+      "target": "edx",
+      "bytes": "ffd2",
+      "indirect": true,
+      "semantic_target": "captured_resource_saved_table_slot_08",
+      "ABI_contract": "ECX=captured resource; stack(selector,detail_float32); required RET8; EAX=selected instance",
+      "ordering_contract": "Target read at0087BE4D from saved table+8 after unit selector; no current-vptr reread."
+    },
+    {
+      "site": "0087BE58",
+      "target": "0x7135c0",
+      "bytes": "e86377e9ff",
+      "indirect": false,
+      "semantic_target": "007135C0",
+      "ABI_contract": "ECX=saved allocation; stack(unit,selected instance); RET8; EAX=model",
+      "ordering_contract": "Immediate selected return forwarding, without caller null check/AddRef/Release."
+    },
+    {
+      "site": "0087BE5F",
+      "target": "0xbf681b",
+      "bytes": "e8b7a93700",
+      "indirect": false,
+      "semantic_target": "00BF681B",
+      "ABI_contract": "cdecl(1AC); EAX=allocation; caller ADD ESP,4",
+      "ordering_contract": "Other-kind allocation; save exact allocation before arming state1."
+    },
+    {
+      "site": "0087BE8E",
+      "target": "edx",
+      "bytes": "ffd2",
+      "indirect": true,
+      "semantic_target": "unit_captured_slot_190",
+      "ABI_contract": "ECX=unit; no stack argument consumed; EAX=selector",
+      "ordering_contract": "FLD1/FSTP detail remains on stack across selector call."
+    },
+    {
+      "site": "0087BE95",
+      "target": "eax",
+      "bytes": "ffd0",
+      "indirect": true,
+      "semantic_target": "captured_resource_saved_table_slot_08",
+      "ABI_contract": "ECX=captured resource; stack(selector,detail_float32); required RET8; EAX=selected instance",
+      "ordering_contract": "Target read at0087BE91 from saved table+8 after selector; selector was already pushed at0087BE90."
+    },
+    {
+      "site": "0087BE9B",
+      "target": "0x7135c0",
+      "bytes": "e82077e9ff",
+      "indirect": false,
+      "semantic_target": "007135C0",
+      "ABI_contract": "ECX=saved allocation; stack(unit,selected instance); RET8; EAX=model",
+      "ordering_contract": "Constructor result published only after return."
+    },
+    {
+      "site": "0087BECB",
+      "target": "0x876ec0",
+      "bytes": "e8f0afffff",
+      "indirect": false,
+      "semantic_target": "00876EC0",
+      "ABI_contract": "ECX=unit; stack(saved.state58); RET4",
+      "ordering_contract": "Kind2 branch captures saved object then rereads its numbering5C after call."
+    },
+    {
+      "site": "0087BED9",
+      "target": "0x876ec0",
+      "bytes": "e8e2afffff",
+      "indirect": false,
+      "semantic_target": "00876EC0",
+      "ABI_contract": "ECX=unit; stack(0); RET4",
+      "ordering_contract": "Other-kind branch reloads current property holder/bag after call."
+    },
+    {
+      "site": "0087BEFB",
+      "target": "0x8f2260",
+      "bytes": "e860630700",
+      "indirect": false,
+      "semantic_target": "008F2260",
+      "ABI_contract": "ECX=current bag; stack(Numbering key); RET4; EAX=property",
+      "ordering_contract": "Read nonnull returned property+0C; no new kind1 restriction."
+    },
+    {
+      "site": "0087BF27",
+      "target": "eax",
+      "bytes": "ffd0",
+      "indirect": true,
+      "semantic_target": "unit_current_slot_5C",
+      "ABI_contract": "ECX=unit; stack(6); AL predicate",
+      "ordering_contract": "First numbering query; true short-circuits the next query."
+    },
+    {
+      "site": "0087BF36",
+      "target": "eax",
+      "bytes": "ffd0",
+      "indirect": true,
+      "semantic_target": "unit_current_slot_5C",
+      "ABI_contract": "ECX=unit; stack(1B); AL predicate",
+      "ordering_contract": "Fresh current table/entry; final model pointer is reread only after queries."
+    },
+    {
+      "site": "0087BF43",
+      "target": "0x711be0",
+      "bytes": "e8985ce9ff",
+      "indirect": false,
+      "semantic_target": "00711BE0",
+      "ABI_contract": "ECX=CURRENT unit+360; stack(numbering); RET4",
+      "ordering_contract": "Whole numbering wrapper; model reload follows kind callbacks, no private model substitute."
+    }
+  ],
+  "resource_identity_and_target": {
+    "class_capture": "0087BDF5 reads current [unit+354] after activation/vector/parent work. 0087BDFB captures [that descriptor+50] into EDI. The initializer does not write class+50.",
+    "identity_lifetime": "EDI retains that identity across kind5C, allocation, unit190 and constructor. Later descriptor/class50 replacement does not replace it. Actual resource and saved table must remain valid for every use; no caller retain protects them here.",
+    "table_capture": "Nonzero allocation:0087BE32/BE79 captures current unit table; FLD CED9E0/FLD1;0087BE3A/BE7D captures [EDI] resource table; read captured unit table+190; spill detail; save resource table+8 address in EBX.",
+    "entry_late_read": "0087BE4D/BE91 reads the saved table+8 entry only after unit190 returns. A change to resource vptr does not redirect this call; a change to saved table+8 does change the selected target.",
+    "selector_and_detail": "Resource ECX=EDI, stack arg1=32-bit EAX selector, arg2=float32 detail produced by FLD/FSTP. Unit190 consumes no stack word; resource8 requires RET8. Source keeps table reads pure and preserves x87 stack/environment.",
+    "witness_conditions": [
+      "Captured class50 object must actually carry profileCFD8CC at resource-table capture.",
+      "Saved table+8 read after unit190 must have the witnessed current value007137F0; source must not use an early cached entry or a newly replaced object vptr.",
+      "Actual object/table/profile mappings and lifetimes must remain valid. Static analysis memory proves neither production instance nor arbitrary dynamic mutation behavior."
+    ],
+    "profile_mapping_is_not_factory_mapping": "Only CFD8CC+8 was read. FactoryCFD850+4 and any other Native data were not opened; known Source factory dispatch remains conditional on its captured target."
+  },
+  "allocation_return_and_ownership": {
+    "allocation": "Both arms call00BF681B(1AC) before float/selector dispatch, save exact allocation in EBP and stack cleanup slot, then arm state0/1. Null allocation skips both virtual selection calls and constructor.",
+    "return_forwarding": "Resource8 EAX is pushed immediately, followed by unit, then full007135C0 receives ECX=saved allocation. No caller null check, AddRef, Release or selected-instance copy intervenes.",
+    "publication": "0087BEA4 stores constructor EAX into unit+360 only after return. Existing constructor stores selected instance at model+160. These publications do not release a prior model or independently establish an owning production unit.",
+    "null_resource": "0087BF5B clears model360 and returns before property/group/numbering work.",
+    "null_allocation": "0087BEA2 zeroes EAX then shared publication clears360; property/group/numbering tail still runs.",
+    "failure": "Existing Source catch frees saved outer allocation on selection/construction exception and rethrows. It introduces no selected-instance rollback. Constructor owns only reached completed-member cleanup; early base-init failure before selected-set ownership is established is not an unconditional transfer/cleanup guarantee.",
+    "unwind_evidence_limit": "Main body exception state writes are freshly gated. Allocation free funclets, handler map, constructor internals and Native FH3/SEH/fault execution remain prior evidence/separate domains; no fresh child gate."
+  },
+  "Source_provenance": [
+    {
+      "files": [
+        "include/bsp/native_unit_health_parts.hpp",
+        "src/native_unit_health_parts.cpp"
+      ],
+      "review": "Complete current header/body read; prior already-read tail reused unchanged. Same actual observer alias/class/holder/model cells, current resource capture, saved table and late entry sequence. Resource8 and constructor remain required complete providers."
+    },
+    {
+      "files": [
+        "include/bsp/native_unit_activation.hpp",
+        "src/native_unit_activation.cpp"
+      ],
+      "review": "Complete Source caller/header inspected. Actual list/unit/property storage is borrowed and operation providers remain required. Initial activation name does not prove any particular class-resource callback effect."
+    },
+    {
+      "files": [
+        "include/bsp/native_damageable_class_construction.hpp",
+        "src/native_damageable_class_construction.cpp:108-142"
+      ],
+      "review": "Existing actual class constructor zeroes class50 at line126; no resource loaded there. This was Source inspection only."
+    },
+    {
+      "files": [
+        "include/bsp/native_damageable_class_model.hpp",
+        "src/native_damageable_class_model.cpp"
+      ],
+      "review": "Complete Source loader/activation body and header read. Name38 must be nonempty and class50 null. Optional enemy-name selection uses real VFS. Full7188A0 loader result is stored at50 before temporary-name cleanup. Existing nonnull class50 bypasses loading; no replacement/rollback is inserted."
+    },
+    {
+      "files": [
+        "src/native_damageable_class_model.cpp:56-60",
+        "include/bsp/native_game_resource_factory.hpp",
+        "src/native_game_resource_factory.cpp:24-48"
+      ],
+      "review": "7188A0 captures actual game factory before manager getter then calls full load/cache with same name and captured factory. Actual factory Source publishes CFD850 primary in its eight-byte owner; factory slot4 was not read in this Native packet."
+    },
+    {
+      "files": [
+        "include/bsp/native_resource_load_cache.hpp",
+        "src/native_resource_load_cache.cpp:90-181,202-215"
+      ],
+      "review": "Actual load/cache hit retains matched resource+4 and returns current manager24. Miss reads captured factory target, calls required dispatch, parses/caches, captures final current manager24 before temporary cleanup and returns it. Default dispatch maps target71B870 to actual game-resource factory but is not proof every encountered target equals71B870."
+    },
+    {
+      "files": [
+        "include/bsp/native_resource_construction.hpp",
+        "src/native_resource_construction.cpp"
+      ],
+      "review": "Complete Source file read.71B870 allocates74h and calls71B810;71B810 stampsCFD8CC after base construction. Selected successful path supplies a concrete profile witness; cache hits/current-publication changes and existing resources require independent identity evidence."
+    },
+    {
+      "files": [
+        "src/native_vehicle_class_activation.cpp:208-216"
+      ],
+      "review": "Existing Source vehicle-class activation calls actual damageable-class activation. This confirms a library composition edge, not a production game owner."
+    },
+    {
+      "files": [
+        "include/bsp/native_resource_graph_builder.hpp",
+        "src/native_resource_graph_builder.cpp:118-143",
+        "include/bsp/native_resource_instance_lifecycle.hpp",
+        "src/native_resource_instance_lifecycle.cpp:81-119"
+      ],
+      "review": "Previously read unchanged existing actual graph/instance Source:007137F0 wrapper forwards after FLD/FSTP; B891A0 builds and publishes instance0C. Instance constructors retain resource8 but leave root0C to later graph phase. Canonical graph providers/lifetimes remain required."
+    },
+    {
+      "files": [
+        "include/bsp/native_unit_part_construction.hpp",
+        "src/native_unit_part_construction.cpp"
+      ],
+      "review": "Previously completed 356-byte constructor readiness reused only for its existing Source schedule: selected return stored at160, current holder0C later read, staged member cleanup. No new Native constructor gate here."
+    },
+    {
+      "files": [
+        "include/bsp/game_native_resource_application.hpp",
+        "src/game_native_resource_application.cpp",
+        "src/game_hosts_units.cpp:326-340,15282-15287"
+      ],
+      "review": "Actual manager/parser publication domains and semantic partial unit host do not establish the real class-resource/model chain. Targeted current game_source searches show no named producer composition in worker or Root."
+    }
+  ],
+  "refinement_of_prior_readiness": "Older health documentation leaves class50 producer unresolved. Current Source00879590 is an actual publisher, so the current gap is production class owner/load-cache/current-profile/lifetime composition, not absence of its Source body. The prior constructor-only packet did not gate this publisher.",
+  "source_search": {
+    "complete_commands_and_results": "evidence.capture_pin -> source_searches",
+    "resource_selection_interface_matches": 6,
+    "actual_class_resource_loader_matches": 30,
+    "worker_game_production_matches": 0,
+    "Root_game_production_matches": 0,
+    "scope": "src and include/bsp .cpp/.hpp/.inc; game query restricted to game_*.cpp/.hpp/.inc. Negative findings cover named symbols and current searched files only."
+  },
+  "source_consistency": {
+    "Root_commit_at_capture": "4b49a29cd79ead188971e23e0277881986849900",
+    "worker_base": "180fa09622d3a8e095f68db39c14690e97e2feb0",
+    "files_compared": 26,
+    "Root_worker_LF_equal": 26,
+    "compiler_input_receipt": false,
+    "Root_raw_pins": "evidence.capture_pin -> source_pins"
+  },
+  "Source_file_pins": [
+    {
+      "path": "include\\bsp\\native_unit_health_parts.hpp",
+      "bytes": 4484,
+      "sha256": "c699fac536552b0dd908c78a7712a0835c5d19c8347605bfe6bc5aef5002a2df",
+      "canonical_lf_sha256": "c699fac536552b0dd908c78a7712a0835c5d19c8347605bfe6bc5aef5002a2df",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_health_parts.cpp",
+      "bytes": 6203,
+      "sha256": "a4f89ea4dca1e58b002cf2591f84724b6badfe8793014c66e993963cfe233ade",
+      "canonical_lf_sha256": "a4f89ea4dca1e58b002cf2591f84724b6badfe8793014c66e993963cfe233ade",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_unit_activation.hpp",
+      "bytes": 4100,
+      "sha256": "baddf6ea25b5151d5958ee00353e92aa228e1b94bf71be39ddd12778694c2357",
+      "canonical_lf_sha256": "baddf6ea25b5151d5958ee00353e92aa228e1b94bf71be39ddd12778694c2357",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_activation.cpp",
+      "bytes": 4088,
+      "sha256": "b79ad8793f4e9a9010bdac72def802ee2e305c54dc5e7f7056c40563a5ad9b29",
+      "canonical_lf_sha256": "b79ad8793f4e9a9010bdac72def802ee2e305c54dc5e7f7056c40563a5ad9b29",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_unit_part_construction.hpp",
+      "bytes": 3707,
+      "sha256": "d7126bce59b7d52a7a683dd20aea2e3f30eb94164de35403a6038ae2aa2f038b",
+      "canonical_lf_sha256": "d7126bce59b7d52a7a683dd20aea2e3f30eb94164de35403a6038ae2aa2f038b",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_part_construction.cpp",
+      "bytes": 5041,
+      "sha256": "c93bf6e197d632988f2ec52ede5ec8d1f20b978da5beb71400d730028e6c71a2",
+      "canonical_lf_sha256": "c93bf6e197d632988f2ec52ede5ec8d1f20b978da5beb71400d730028e6c71a2",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_damageable_class_model.hpp",
+      "bytes": 3528,
+      "sha256": "30b828865b2462c794b2a7a80770cf8efd01e425459d367e9d995d1f5e3ed2ac",
+      "canonical_lf_sha256": "30b828865b2462c794b2a7a80770cf8efd01e425459d367e9d995d1f5e3ed2ac",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_damageable_class_model.cpp",
+      "bytes": 7014,
+      "sha256": "46d5e4fc52e1aac77f96a14d68dda84848e49d1c9311f503ec3f0f3381f6f7ae",
+      "canonical_lf_sha256": "46d5e4fc52e1aac77f96a14d68dda84848e49d1c9311f503ec3f0f3381f6f7ae",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_damageable_class_construction.hpp",
+      "bytes": 2553,
+      "sha256": "e696887cbb8c1fc59d4e4ed2f4f2be755ebaf5ab2306125a8875897ea4cca974",
+      "canonical_lf_sha256": "e696887cbb8c1fc59d4e4ed2f4f2be755ebaf5ab2306125a8875897ea4cca974",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_damageable_class_construction.cpp",
+      "bytes": 5679,
+      "sha256": "0434b5348c36536b80fd1019f4049202cd2cf724b2f9cc137a67ee2bf484aa9f",
+      "canonical_lf_sha256": "0434b5348c36536b80fd1019f4049202cd2cf724b2f9cc137a67ee2bf484aa9f",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_damageable_class_binding.hpp",
+      "bytes": 1916,
+      "sha256": "95aa4cf1765e543746fee84710ad1f9970386044542a55b0ab5b7eb92f50541c",
+      "canonical_lf_sha256": "95aa4cf1765e543746fee84710ad1f9970386044542a55b0ab5b7eb92f50541c",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_damageable_class_binding.cpp",
+      "bytes": 11350,
+      "sha256": "9f6803d39eebc32b55716bc0eb66254a9557abc74b1b1bc7a559c6fb8769e2f2",
+      "canonical_lf_sha256": "9f6803d39eebc32b55716bc0eb66254a9557abc74b1b1bc7a559c6fb8769e2f2",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_vehicle_class_activation.cpp",
+      "bytes": 9211,
+      "sha256": "2ee253a22479097d11660ec79ab8d14bf567029206b826d0939a4b87820e6eeb",
+      "canonical_lf_sha256": "2ee253a22479097d11660ec79ab8d14bf567029206b826d0939a4b87820e6eeb",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_game_resource_factory.hpp",
+      "bytes": 2885,
+      "sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+      "canonical_lf_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_game_resource_factory.cpp",
+      "bytes": 3919,
+      "sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+      "canonical_lf_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_construction.hpp",
+      "bytes": 1619,
+      "sha256": "e29766a6c0e0a3344a8326b45787b7950d71bb5c2fa445f4eeec8445155c13be",
+      "canonical_lf_sha256": "e29766a6c0e0a3344a8326b45787b7950d71bb5c2fa445f4eeec8445155c13be",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_construction.cpp",
+      "bytes": 4010,
+      "sha256": "d3330960bf189a12b7d03549f2d47058f6eade66a2bad420731548421d929fee",
+      "canonical_lf_sha256": "d3330960bf189a12b7d03549f2d47058f6eade66a2bad420731548421d929fee",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_load_cache.hpp",
+      "bytes": 4654,
+      "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+      "canonical_lf_sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_load_cache.cpp",
+      "bytes": 11802,
+      "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a",
+      "canonical_lf_sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_graph_builder.hpp",
+      "bytes": 3890,
+      "sha256": "571cee0719acae8649ed4c8c9761fa89bf87509c5c1214613bc245e248147474",
+      "canonical_lf_sha256": "571cee0719acae8649ed4c8c9761fa89bf87509c5c1214613bc245e248147474",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_graph_builder.cpp",
+      "bytes": 10806,
+      "sha256": "372a67325f8b03f9fa2cd818d352c469bd008805ccac267c4fa291dbaf93a446",
+      "canonical_lf_sha256": "372a67325f8b03f9fa2cd818d352c469bd008805ccac267c4fa291dbaf93a446",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_instance_lifecycle.hpp",
+      "bytes": 4985,
+      "sha256": "514cb2eaa5c83ff3212d87e6c5ae89d3ecfca1276f8024a13ff39a970dece3e8",
+      "canonical_lf_sha256": "514cb2eaa5c83ff3212d87e6c5ae89d3ecfca1276f8024a13ff39a970dece3e8",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_instance_lifecycle.cpp",
+      "bytes": 8260,
+      "sha256": "d761e893266fb08e2821897dcb1295e1545a366045fb820fe369218011b7fbc8",
+      "canonical_lf_sha256": "d761e893266fb08e2821897dcb1295e1545a366045fb820fe369218011b7fbc8",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_native_resource_application.hpp",
+      "bytes": 1678,
+      "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+      "canonical_lf_sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_native_resource_application.cpp",
+      "bytes": 6579,
+      "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+      "canonical_lf_sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "canonical_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "Root_worker_LF_equal": true
+    }
+  ],
+  "context_pins": [
+    {
+      "path": "docs\\NATIVE_UNIT_HEALTH_PARTS.md",
+      "bytes": 10472,
+      "sha256": "d935a78a791537da36ecf46ae801ffb7016744f47f53e0a17abbbb9a2b34f726",
+      "canonical_lf_sha256": "d935a78a791537da36ecf46ae801ffb7016744f47f53e0a17abbbb9a2b34f726"
+    },
+    {
+      "path": "reports\\native_unit_health_parts.json",
+      "bytes": 26990,
+      "sha256": "1e47d54f1ea17c3012c4a423defadad0f67d3ad4eda01303090854df3d039f43",
+      "canonical_lf_sha256": "1e47d54f1ea17c3012c4a423defadad0f67d3ad4eda01303090854df3d039f43"
+    },
+    {
+      "path": "reports\\cc12_unit_model_constructor_node_publication_readiness.json",
+      "bytes": 34052,
+      "sha256": "7953013adffe0056147a113c8fa3acbcc766b84579aae831ec68a17ccda5e796",
+      "canonical_lf_sha256": "7953013adffe0056147a113c8fa3acbcc766b84579aae831ec68a17ccda5e796"
+    },
+    {
+      "path": "docs\\CC12_UNIT_MODEL_CONSTRUCTOR_NODE_PUBLICATION_READINESS.md",
+      "bytes": 7675,
+      "sha256": "15d95f172f68677ec5dc8ad0fab6e19faa8cf80d3e99b4520a32e4953ff38c1f",
+      "canonical_lf_sha256": "15d95f172f68677ec5dc8ad0fab6e19faa8cf80d3e99b4520a32e4953ff38c1f"
+    }
+  ],
+  "historical_and_primary_validation": {
+    "historical_health_report": "The historical report records 5 original 692-byte/source caller cases and 1 source-only constructor exception case; all native fixture callees were bridges and original callee bodies/FH3 were not executed. No fixture rerun or current artifact replay here.",
+    "Source121_and507": "Frozen historical context; no current artifact path compared with old pins.",
+    "Root509": "Primary reports 509 inputs, 3 checks, 43 selected Core plus 1 App whole objects, 51 roots, real Lua and bounded 3-tick/2-Present exit-0 startup. This worker did not execute or reverify these receipts and awards none of their credit.",
+    "current_build_artifact_paths_read_or_compared": false,
+    "new_build_tests_or_probes": false
+  },
+  "credits": {
+    "readiness": 1,
+    "Source": 0,
+    "build": 0,
+    "fixture": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0,
+    "runtime": 0
+  },
+  "review": {
+    "complete_Native692_byte232_instruction_body_read": true,
+    "all21_calls_reviewed": true,
+    "complete_current_health_Source_and_actual_loader_Source_read": true,
+    "only_approved4_byte_profile_extension": true,
+    "complete_doc_report_read": true,
+    "final_current_pin_checks": 72,
+    "exact_PE_live_692_byte232_instruction21_call_replay": true,
+    "exact_PE_live_4_byte_profile_cell_replay": true,
+    "current_Root26_Source_pins_reverified": true
+  },
+  "document_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\docs\\CC12_UNIT_CLASS_RESOURCE_SELECTION_READINESS.md",
+    "bytes": 8873,
+    "sha256": "fb5150c2a6ed574720e0918171b4c07fb42ade07b269104d38b338ecc28cb171",
+    "canonical_lf_sha256": "fb5150c2a6ed574720e0918171b4c07fb42ade07b269104d38b338ecc28cb171"
+  },
+  "Root_primary_review": {
+    "decision": "Accepted as a complete 692-byte / 232-instruction / 21-call static gate and one conditional four-byte profile witness. The primary reproduced the PE body, instruction starts and cell, and checked the retained Source pins. The resource identity and table are captured before the unit selector; the saved table entry is read after that callback. Actual production class/resource lifetime and current entry provenance remain unbound; there is no unconditional profile or selected-set ownership claim.",
+    "worker_report_capture_sha256": "44f4336a47ad25360f6a852ac08a6f7b3a32ef367b8c46f9de1f82e8cd02d240",
+    "verified_pin_rows": 46,
+    "independent_PE_replay": [
+      {
+        "bytes": 692,
+        "instructions": 232,
+        "calls": 21,
+        "profile_cell_bytes": 4
+      }
+    ],
+    "local_validation": {
+      "path": "local\\cc12_remaining_readiness_primary_review\\validation.json",
+      "sha256": "05898a80130108febd0f77a10c4652536110bde0fe83e9321323cf99db4c9461"
+    },
+    "current_primary_document_pin": {
+      "path": "docs\\CC12_UNIT_CLASS_RESOURCE_SELECTION_READINESS.md",
+      "bytes": 9586,
+      "sha256": "207ff17f65e60b5ed22e7d716f4c6630f68d26cf91cedbf22e3496a908ba8994"
+    },
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0
+  }
+}

@@ -1,0 +1,503 @@
+{
+  "packet": "cc12_model_descriptor_crt_placement_readiness",
+  "created_utc": "2026-10-09T22:03:00.185003+00:00",
+  "source_baseline_commit": "5615ccb5ac429256e512b0a59babae976e27656c",
+  "decision": "READY_static_table_membership_and_camera_model_animation_subset_order; HOLD_faithful_CRT_and_complete_shared_counter_ID_parity",
+  "scope": {
+    "Native_function_bodies_read": 0,
+    "Native_data_bytes_read": 28,
+    "Native_DWORD_cells_read": 7,
+    "new_Native_types_or_ABIs_recovered": 0,
+    "Source_implementation_changed": false,
+    "outputs": [
+      "docs/CC12_MODEL_DESCRIPTOR_CRT_PLACEMENT_READINESS.md",
+      "reports/cc12_model_descriptor_crt_placement_readiness.json"
+    ],
+    "initial_lease": {
+      "packet": "cc12_model_descriptor_crt_placement_readiness",
+      "addresses": [
+        "00CD7E60"
+      ],
+      "files": [
+        "docs/CC12_MODEL_DESCRIPTOR_CRT_PLACEMENT_READINESS.md",
+        "reports/cc12_model_descriptor_crt_placement_readiness.json"
+      ]
+    },
+    "approved_readonly_extensions": [
+      {
+        "packet": "cc12_model_descriptor_crt_neighbors_readonly",
+        "DWORD_starts": [
+          "00CE3560",
+          "00CE3564",
+          "00CE3568",
+          "00CE356C",
+          "00CE3570"
+        ],
+        "scope": "20-byte neighborhood only"
+      },
+      {
+        "packet": "cc12_model_descriptor_crt_anchor_xrefs_readonly",
+        "addresses": [
+          "00CD7D80",
+          "00CD82F0"
+        ],
+        "scope": "xref metadata only"
+      },
+      {
+        "packet": "cc12_model_descriptor_crt_anchor_cells_readonly",
+        "DWORD_starts": [
+          "00CE3558",
+          "00CE35B4"
+        ],
+        "scope": "two four-byte anchor cells only"
+      }
+    ],
+    "stop_after_anchor_reads": true,
+    "unread_local_intervals": [
+      "[00CE355C,00CE3560)",
+      "[00CE3574,00CE35B4)"
+    ]
+  },
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "observed_java_pid": 33644,
+    "java_command_line_project": "ghidra.GhidraRun C:/Users/sqz269/bsp.gpr",
+    "live_function_count": 64730,
+    "transport": "http://127.0.0.1:8089",
+    "every_bsp_live_query_verifies_configured_project_program": true,
+    "mutations": false
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_base": "00400000"
+  },
+  "xref_queries": [
+    {
+      "target": "00CD7E60",
+      "command": "python tools/bsp.py ghidra xrefs 00CD7E60 --limit 16 --lines 30",
+      "response": "From 00ce3568 [DATA]"
+    },
+    {
+      "target": "00CD7D80",
+      "command": "python tools/bsp.py ghidra xrefs 00CD7D80 --limit 12 --lines 20",
+      "response": "From 00ce3558 [DATA]"
+    },
+    {
+      "target": "00CD82F0",
+      "command": "python tools/bsp.py ghidra xrefs 00CD82F0 --limit 12 --lines 20",
+      "response": "From 00ce35b4 [DATA]"
+    }
+  ],
+  "selected_data_spans": [
+    {
+      "start": "00CE3560",
+      "end_exclusive": "00CE3574",
+      "length": 20,
+      "section": ".rdata",
+      "file_offset": "008E3560",
+      "PE_hex": "f0 7d cd 00 40 7e cd 00 60 7e cd 00 b0 7e cd 00 00 7f cd 00",
+      "live_Ghidra_hex": "f07dcd00407ecd00607ecd00b07ecd00007fcd00",
+      "live_PE_equal": true,
+      "sha256": "6d75405c0b52d5a7e4521270db6672e829b28b6f3abf04370b019300898aac8f",
+      "command": "python tools/bsp.py ghidra bytes 00CE3560 --length 20"
+    },
+    {
+      "start": "00CE3558",
+      "end_exclusive": "00CE355C",
+      "length": 4,
+      "section": ".rdata",
+      "file_offset": "008E3558",
+      "PE_hex": "80 7d cd 00",
+      "live_Ghidra_hex": "807dcd00",
+      "live_PE_equal": true,
+      "sha256": "1af628578e7878e367db24e0288f48c87b3d9e8cafc3b718739c3a8963e3eb5a",
+      "command": "python tools/bsp.py ghidra bytes 00CE3558 --length 4"
+    },
+    {
+      "start": "00CE35B4",
+      "end_exclusive": "00CE35B8",
+      "length": 4,
+      "section": ".rdata",
+      "file_offset": "008E35B4",
+      "PE_hex": "f0 82 cd 00",
+      "live_Ghidra_hex": "f082cd00",
+      "live_PE_equal": true,
+      "sha256": "44afbbee79311302330a9166545be067e0e2f290b1f9f2858eba56425de55882",
+      "command": "python tools/bsp.py ghidra bytes 00CE35B4 --length 4"
+    }
+  ],
+  "decoded_selected_cells": [
+    {
+      "cell": "00CE3558",
+      "zero_based_slot": 905,
+      "target": "00CD7D80",
+      "role": "camera type",
+      "source_reference": "src/game_native_type_storage.cpp:48"
+    },
+    {
+      "cell": "00CE3560",
+      "zero_based_slot": 907,
+      "target": "00CD7DF0",
+      "role": "unopened target; no exact indexed function starts here",
+      "source_reference": null
+    },
+    {
+      "cell": "00CE3564",
+      "zero_based_slot": 908,
+      "target": "00CD7E40",
+      "role": "mesh pool",
+      "source_reference": "src/game_main.cpp:1098"
+    },
+    {
+      "cell": "00CE3568",
+      "zero_based_slot": 909,
+      "target": "00CD7E60",
+      "role": "model type; existing Source, absent production call",
+      "source_reference": "src/model_type_bootstrap.cpp:42"
+    },
+    {
+      "cell": "00CE356C",
+      "zero_based_slot": 910,
+      "target": "00CD7EB0",
+      "role": "model-base type; existing Source, absent production call",
+      "source_reference": "src/native_model_base_bootstrap.cpp:17"
+    },
+    {
+      "cell": "00CE3570",
+      "zero_based_slot": 911,
+      "target": "00CD7F00",
+      "role": "model pool; existing reconstructed entry",
+      "source_reference": "include/bsp/native_model_pool.hpp:63"
+    },
+    {
+      "cell": "00CE35B4",
+      "zero_based_slot": 928,
+      "target": "00CD82F0",
+      "role": "animation resource type",
+      "source_reference": "src/game_native_type_storage.cpp:50"
+    }
+  ],
+  "historical_CRT_contract": {
+    "document": "docs/CC12_PENDING_GROUP_CRT_INITIALIZER_ROUTE_READINESS.md",
+    "report": "reports/cc12_pending_group_crt_initializer_route_readiness.json",
+    "report_sha256": "230a27ad3c9b78b37fc072483fbe9c7dccee7354a613cbf413949913eba48bef",
+    "created_utc": "2026-10-09T13:27:50.659526+00:00",
+    "matching_whole_PE_identity": true,
+    "instructions_and_boundaries_replayed": false,
+    "start_inclusive": "00CE2734",
+    "end_exclusive": "00CE36E4",
+    "DWORD_slots": 1004,
+    "step_bytes": 4,
+    "current_pointer_reloaded": true,
+    "skip_null": true,
+    "call_without_pushed_argument": true,
+    "child_EAX_not_tested": true,
+    "model_slot_calculation": "(0x00CE3568 - 0x00CE2734) / 4 = 909",
+    "membership_and_order": "current selected cells combined with pinned historical bounds/traversal; no numerical function-address ordering inference",
+    "conditions": [
+      "prior integer initializer gate returns zero",
+      "earlier children return preserving loop registers and usable stack",
+      "current table words retain captured targets when reloaded"
+    ],
+    "Original_startup_observed": false
+  },
+  "production_subset": {
+    "owner": "GameNativeTypeStorage inside GameNativeVfsApplication::Impl",
+    "existing_counter": "owner_services.types(), same instance as common_types",
+    "current_order": [
+      "CCEC00 selector",
+      "CCF740 selector",
+      "CCF980 selector",
+      "CD7D80 camera",
+      "CD82F0 animation",
+      "CD8340 bone",
+      "CD8690 mesh",
+      "CD86F0 skined mesh",
+      "CD87B0 matrix mesh"
+    ],
+    "qualified_proposed_slice": [
+      "CD7D80 camera",
+      "CD7E60 model",
+      "CD82F0 animation"
+    ],
+    "placement_evidence": "selected cells CE3558(slot905),CE3568(slot909),CE35B4(slot928)",
+    "absolute_original_ID_claim": false,
+    "full_CRT_interleaving_claim": false,
+    "implementation_authorized_or_performed_by_this_packet": false,
+    "reuse_prior_storage_lifetime_contract": "reports/cc12_production_model_descriptor_bootstrap_readiness.json",
+    "requirements": [
+      "retained canonical guard01090030 and descriptor01090034, initialized only at selected subset call",
+      "existing TypeIdCounterLifetime and common bootstrap",
+      "no construction-time initialization, guard reset, copied IDs or alternate lazy target",
+      "preserve existing failure retention and borrower lifetimes"
+    ]
+  },
+  "omitted_counter_consumer": {
+    "entry": "00CD7EB0",
+    "cell": "00CE356C",
+    "slot": 910,
+    "source": "src/native_model_base_bootstrap.cpp:17-30",
+    "header": "include/bsp/native_model_base_bootstrap.hpp:19-25",
+    "name_hypothesis": "model-base descriptor / cDummy",
+    "guard": "01090031",
+    "own_id": "01090044",
+    "cold_behavior": "publish guard/name; shared node initializer; capture parent words; get006FAC20; capture counter+4; increment counter; publish captured own ID",
+    "nonzero_guard_behavior": "return without consuming ID",
+    "same_counter_required": true,
+    "production_call_found": false,
+    "effect": "one concrete omitted ID consumer suffices to reject full shared-counter parity for model-only insertion",
+    "does_not_establish_current_guard_or_execution": true,
+    "further_children_opened": false,
+    "further_children_assumed_harmless": false
+  },
+  "search_evidence": [
+    {
+      "pattern": "ModelBaseTypeBootstrap",
+      "roots": [
+        "src",
+        "include"
+      ],
+      "extensions": [
+        "cpp",
+        "hpp",
+        "inc"
+      ],
+      "matches": [
+        "include\\bsp\\native_model_base_bootstrap.hpp:19:class ModelBaseTypeBootstrap final {",
+        "include\\bsp\\native_model_base_bootstrap.hpp:22:    ModelBaseTypeBootstrap(TypeIdCounterLifetime& counter,",
+        "src\\native_model_base_bootstrap.cpp:13:ModelBaseTypeBootstrap::ModelBaseTypeBootstrap(TypeIdCounterLifetime& counter,",
+        "src\\native_model_base_bootstrap.cpp:17:void ModelBaseTypeBootstrap::initialize_static_type_descriptor_00cd7eb0() {"
+      ],
+      "production_call_found": false
+    },
+    {
+      "pattern": "initialize_static_type_descriptor_00cd7eb0",
+      "roots": [
+        "src",
+        "include"
+      ],
+      "extensions": [
+        "cpp",
+        "hpp",
+        "inc"
+      ],
+      "matches": [
+        "include\\bsp\\native_model_base_bootstrap.hpp:25:    void initialize_static_type_descriptor_00cd7eb0();",
+        "src\\native_model_base_bootstrap.cpp:17:void ModelBaseTypeBootstrap::initialize_static_type_descriptor_00cd7eb0() {"
+      ],
+      "production_call_found": false
+    },
+    {
+      "pattern": "initialize_static_00cd7e60",
+      "roots": [
+        "src",
+        "include"
+      ],
+      "extensions": [
+        "cpp",
+        "hpp",
+        "inc"
+      ],
+      "matches": [
+        "src\\model_type_bootstrap.cpp:42:void ModelTypeBootstrap::initialize_static_00cd7e60() {",
+        "include\\bsp\\model_type_bootstrap.hpp:35:    void initialize_static_00cd7e60();"
+      ],
+      "production_call_found": false
+    },
+    {
+      "pattern": "initialize_00b74f90",
+      "roots": [
+        "src",
+        "include"
+      ],
+      "extensions": [
+        "cpp",
+        "hpp",
+        "inc"
+      ],
+      "matches": [
+        "include\\bsp\\model_type_bootstrap.hpp:37:    void initialize_00b74f90(volatile ModelTypeDescriptor& target);",
+        "src\\model_type_bootstrap.cpp:57:void ModelTypeBootstrap::initialize_00b74f90(volatile ModelTypeDescriptor& target) {"
+      ],
+      "production_call_found": false
+    }
+  ],
+  "current_source_pins": [
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "bytes": 4853,
+      "sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222",
+      "inspected_lines": [
+        "22-50"
+      ]
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "bytes": 3611,
+      "sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b",
+      "inspected_lines": [
+        "1-70"
+      ]
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "inspected_lines": [
+        "50-96",
+        "100-119"
+      ]
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 72678,
+      "sha256": "6b7542a9c0031fc21b4c4cd4642dec77d09584755c3fd5362c39585ff4e76167",
+      "inspected_lines": [
+        "1071-1120"
+      ]
+    },
+    {
+      "path": "include/bsp/model_type_bootstrap.hpp",
+      "bytes": 1537,
+      "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "inspected_lines": [
+        "1-47"
+      ]
+    },
+    {
+      "path": "src/model_type_bootstrap.cpp",
+      "bytes": 2635,
+      "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+      "inspected_lines": [
+        "1-73"
+      ]
+    },
+    {
+      "path": "include/bsp/native_model_base_bootstrap.hpp",
+      "bytes": 1733,
+      "sha256": "e92d899708427f4c04e540c1585cc592be412fe08c1c5ccbfde8e2a1fec34a0e",
+      "inspected_lines": [
+        "1-46"
+      ]
+    },
+    {
+      "path": "src/native_model_base_bootstrap.cpp",
+      "bytes": 2494,
+      "sha256": "c9e8805842b3ce8aa889e2077148a373bfdcd9a4b779d142905080a097c6303a",
+      "inspected_lines": [
+        "1-64"
+      ]
+    },
+    {
+      "path": "include/bsp/native_model_pool.hpp",
+      "bytes": 3166,
+      "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+      "inspected_lines": [
+        "59-68"
+      ]
+    }
+  ],
+  "historical_document_and_receipt_pins": [
+    {
+      "path": "docs/CC12_PENDING_GROUP_CRT_INITIALIZER_ROUTE_READINESS.md",
+      "bytes": 4949,
+      "sha256": "57d9f8ad1baba31eb0900a674792c2b78bb97cfed529a67e52bca0ba9ac16363"
+    },
+    {
+      "path": "reports/cc12_pending_group_crt_initializer_route_readiness.json",
+      "bytes": 79943,
+      "sha256": "230a27ad3c9b78b37fc072483fbe9c7dccee7354a613cbf413949913eba48bef"
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_EXTRA_TYPE_IDS_R30.md",
+      "bytes": 2688,
+      "sha256": "e37f10f158db930dff360dbe0b0581c9be28dc612a1a5b93f19820e075974568"
+    },
+    {
+      "path": "reports/native_resource_extra_type_ids_r30.json",
+      "bytes": 16325,
+      "sha256": "5c2010fe76d7d2fb2c08297ad6c390135b22e51d05e5a6c06188483e6fabb020"
+    },
+    {
+      "path": "docs/CC12_PRODUCTION_MODEL_DESCRIPTOR_BOOTSTRAP_READINESS.md",
+      "bytes": 9532,
+      "sha256": "7e4990b05ca416d3cb2a0da22f28986337000657855866fa0ee09b4a128958b8"
+    },
+    {
+      "path": "reports/cc12_production_model_descriptor_bootstrap_readiness.json",
+      "bytes": 19459,
+      "sha256": "d6a0a04e2e1cc83170a9d4846925756af065eaafe8abac0c45c85e5f432f69ee"
+    },
+    {
+      "path": "reports/native_model_base_bootstrap.json",
+      "bytes": 11008,
+      "sha256": "505732f849ecab3827c99832097bfb32515b1defd13f51cfc35ce625f4818b71"
+    }
+  ],
+  "output_document_pin": {
+    "path": "docs/CC12_MODEL_DESCRIPTOR_CRT_PLACEMENT_READINESS.md",
+    "bytes": 7646,
+    "sha256": "5122f62d6de2a881a2d9904fe5fac8d3e3cf0f3204066918349e1956f279f3c5"
+  },
+  "validation": {
+    "original_full_image_SHA_matches_retained_CRT_receipt": true,
+    "all_28_live_PE_bytes_match": true,
+    "all_seven_DWORD_targets_checked": true,
+    "aligned_model_slot909_within_accepted_bounds": true,
+    "anchor_slots905_lt909_lt928": true,
+    "owned_outputs_full_review_required_before_commit": true,
+    "all_input_pins_rechecked_before_commit": true,
+    "git_diff_check_required_before_commit": true,
+    "owned_outputs_fully_reviewed": true
+  },
+  "credit": {
+    "Source_functions": 0,
+    "Source_bytes": 0,
+    "Native_ABI": 0,
+    "new_function_body_evidence_bytes": 0,
+    "new_data_evidence_bytes": 28,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "startup_execution": 0,
+    "gameplay": 0,
+    "Ghidra_mutations": 0,
+    "ledger_changes": 0
+  },
+  "build_evidence_boundary": "Source121 and507 historical. Root reported a newer build/smoke pending publication; no mutable build artifacts replayed and no worker build/runtime credit.",
+  "remaining_gates": [
+    "Full original counter schedule remains incomplete; model-base consumer and other uninspected children are not composed.",
+    "Actual model construction and publication, current node dispatch, atlas/loading and numbering remain separate.",
+    "Any qualified subset implementation still needs primary Source/build/emitted/lifetime review."
+  ],
+  "Root_primary_review": {
+    "decision": "Accepted as data-backed relative placement only. The primary independently reproduced all seven pointer cells (28 bytes) from the unchanged original PE and checked retained Source/historical pins. The historical CRT traversal is pinned evidence, not freshly replayed instruction or runtime evidence. Camera precedes model and model-base, which precede animation in this selected slice; omitted initializer consumers still prevent full counter/CRT parity.",
+    "worker_report_capture_sha256": "2c37d117679b4ff7f296b74c53c230e2e3ce40145178af62c38dd9d2af60b9a0",
+    "verified_pin_rows": 18,
+    "independent_PE_replay": [
+      {
+        "selected_data_bytes": 28,
+        "cells": 7,
+        "full_CRT_execution_replayed": false
+      }
+    ],
+    "local_validation": {
+      "path": "local\\cc12_remaining_readiness_primary_review\\validation.json",
+      "sha256": "05898a80130108febd0f77a10c4652536110bde0fe83e9321323cf99db4c9461"
+    },
+    "current_primary_document_pin": {
+      "path": "docs\\CC12_MODEL_DESCRIPTOR_CRT_PLACEMENT_READINESS.md",
+      "bytes": 8316,
+      "sha256": "8c60baa433a09bb529a6fa7892fe2d253190c5ab5211669570c93146a7200274"
+    },
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0
+  }
+}

@@ -1,0 +1,490 @@
+{
+  "packet": "cc12_production_model_descriptor_bootstrap_readiness",
+  "created_utc": "2026-10-09T21:46:19.196402+00:00",
+  "source_baseline_commit": "705b9d10beb94891822178c1bd9c3676c0ac34df",
+  "decision": "genuine_storage_domain_and_lifetime_composition_ready; initializer_schedule_admission_held",
+  "storage_member_composable": true,
+  "missing_Native_initializer_or_counter_provider": false,
+  "static_initialization_schedule_admitted": false,
+  "production_lazy_invocation_found": false,
+  "single_remaining_admission_evidence_gate": "Verified original CRT placement of existing 00CD7E60, or a separately evidenced genuine lazy caller schedule. Function addresses alone do not establish order.",
+  "scope": "Exactly two documentation/report outputs. Source-only inspection; no new Native address/body work, GPR, CPP/CMake, build, tests, probes, ledger or artifact replay.",
+  "current_source_pins": [
+    {
+      "path": "include/bsp/model_type_bootstrap.hpp",
+      "bytes": 1537,
+      "sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "LF_sha256": "49052b9738eb7e5b0b20b9bea44ccee682534ed884d20c30ee1e6975ac874155",
+      "inspected_line_ranges": [
+        [
+          1,
+          47
+        ]
+      ],
+      "line_count": 47
+    },
+    {
+      "path": "src/model_type_bootstrap.cpp",
+      "bytes": 2635,
+      "sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+      "LF_sha256": "4abe8eb0bf3ea2bdc3efe202c31f583f637167134108d8cf3d0b7e6e4d794b80",
+      "inspected_line_ranges": [
+        [
+          1,
+          70
+        ]
+      ],
+      "line_count": 70
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "bytes": 4853,
+      "sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222",
+      "LF_sha256": "60f8d4f4a23e465a2f78589ed28251a54c4f75b5aeba46fade491c4cfc206222",
+      "inspected_line_ranges": [
+        [
+          1,
+          95
+        ]
+      ],
+      "line_count": 95
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "bytes": 3611,
+      "sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b",
+      "LF_sha256": "33ddf8cd1ef51bea65277634325bcf2d885ab39016e29651adf00e54cfb4e90b",
+      "inspected_line_ranges": [
+        [
+          1,
+          71
+        ]
+      ],
+      "line_count": 71
+    },
+    {
+      "path": "src/game_native_vfs_application.cpp",
+      "bytes": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "LF_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "inspected_line_ranges": [
+        [
+          43,
+          144
+        ],
+        [
+          178,
+          183
+        ]
+      ],
+      "line_count": 189
+    },
+    {
+      "path": "include/bsp/game_native_vfs_application.hpp",
+      "bytes": 3022,
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "LF_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+      "inspected_line_ranges": [
+        [
+          1,
+          65
+        ]
+      ],
+      "line_count": 65
+    },
+    {
+      "path": "include/bsp/native_vfs_owner_services.hpp",
+      "bytes": 3548,
+      "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+      "LF_sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+      "inspected_line_ranges": [
+        [
+          1,
+          79
+        ]
+      ],
+      "line_count": 79
+    },
+    {
+      "path": "src/native_vfs_owner_services.cpp",
+      "bytes": 1236,
+      "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+      "LF_sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+      "inspected_line_ranges": [
+        [
+          1,
+          29
+        ]
+      ],
+      "line_count": 29
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "bytes": 3214,
+      "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+      "LF_sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+      "inspected_line_ranges": [
+        [
+          1,
+          32
+        ],
+        [
+          57,
+          89
+        ]
+      ],
+      "line_count": 91
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "bytes": 5880,
+      "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+      "LF_sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+      "inspected_line_ranges": [
+        [
+          1,
+          84
+        ]
+      ],
+      "line_count": 134
+    },
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "bytes": 11990,
+      "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee",
+      "LF_sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee",
+      "inspected_line_ranges": [
+        [
+          84,
+          96
+        ],
+        [
+          129,
+          141
+        ]
+      ],
+      "line_count": 246
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "bytes": 21158,
+      "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24",
+      "LF_sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24",
+      "inspected_line_ranges": [
+        [
+          111,
+          139
+        ]
+      ],
+      "line_count": 457
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "LF_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "inspected_line_ranges": [
+        [
+          1504,
+          1517
+        ],
+        [
+          1561,
+          1603
+        ]
+      ],
+      "line_count": 2444
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 25482,
+      "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "LF_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "inspected_line_ranges": [
+        [
+          410,
+          415
+        ]
+      ],
+      "line_count": 685
+    }
+  ],
+  "bounded_existing_documentation_pins": [
+    {
+      "path": "docs/MODEL_TYPE_BOOTSTRAP.md",
+      "bytes": 6402,
+      "sha256": "bad17885edfe0a2d14442b944c9350f8bc26854d5c9c442db2be2830cf92cd6b",
+      "LF_sha256": "bad17885edfe0a2d14442b944c9350f8bc26854d5c9c442db2be2830cf92cd6b",
+      "inspected_line_ranges": [
+        [
+          1,
+          97
+        ]
+      ],
+      "line_count": 97
+    },
+    {
+      "path": "docs/GAME_NATIVE_TYPE_STORAGE_BI.md",
+      "bytes": 3157,
+      "sha256": "5c02c38f02ff1be0dd1fa9d62a06e8b2d2f551f15ebad06cc2f6fa3ed79f57eb",
+      "LF_sha256": "5c02c38f02ff1be0dd1fa9d62a06e8b2d2f551f15ebad06cc2f6fa3ed79f57eb",
+      "inspected_line_ranges": [
+        [
+          1,
+          51
+        ]
+      ],
+      "line_count": 51
+    }
+  ],
+  "current_output_doc_pin": {
+    "path": "docs/CC12_PRODUCTION_MODEL_DESCRIPTOR_BOOTSTRAP_READINESS.md",
+    "bytes": 9532,
+    "sha256": "7e4990b05ca416d3cb2a0da22f28986337000657855866fa0ee09b4a128958b8",
+    "LF_sha256": "7e4990b05ca416d3cb2a0da22f28986337000657855866fa0ee09b4a128958b8"
+  },
+  "baseline_build_boundaries": {
+    "Source121_frozen_historical_receipt": {
+      "path": "reports/cc12_native_mlandfort_kind_primary_review.json",
+      "bytes": 94454,
+      "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d",
+      "LF_sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+    },
+    "historical_selected_inputs": 121,
+    "historical_artifacts": 4,
+    "historical_selected_whole_objects": 37,
+    "historical_selected_Core_roots": 41,
+    "historical_checks": 3,
+    "historical_count_limit": "Selected receipt inventory, not all Core members or a complete application dependency manifest.",
+    "artifact_paths_read_or_replayed": false,
+    "newer_Root_build_reported_at_task_dispatch": {
+      "source_inputs": 507,
+      "checks": 3,
+      "reported_UTC_window": "2026-10-09 21:37:06..21:37:45",
+      "status_at_dispatch": "Normal build reported passed; emission/smoke/admission pending. No current build receipt or artifacts inspected for this worker packet."
+    },
+    "worker_build_or_runtime_credit": false
+  },
+  "existing_contract": {
+    "storage": "ModelTypeBootstrapStorage binds SAME volatile byte guard 01090030 and SAME volatile 16-byte ModelTypeDescriptor 01090034.",
+    "descriptor_words": [
+      "own_id +0",
+      "node_id +4",
+      "root_id +8",
+      "native_name_address +C"
+    ],
+    "construction": "Binding wrapper references does not initialize guard, descriptor, counter or type IDs.",
+    "counter_precondition": "The exact TypeIdCounterLifetime instance supplied to the common LightTypeBootstrap, including its actual 0109DB7C cell/shared singleton domain.",
+    "static_cold_order": [
+      "test shared guard; return if any nonzero byte",
+      "publish guard 1",
+      "store native name address 00D62DD4",
+      "initialize shared actual node/root descriptor through common bootstrap",
+      "capture node own/root words before either destination store",
+      "store both parents",
+      "obtain SAME counter; capture next_id_04; store increment with uint32 wrap; publish captured model own_id"
+    ],
+    "lazy_difference": "SAME shared guard, but explicit target may differ from canonical descriptor. Node-own load/store precedes node-root load/store. An alternate target can set guard and suppress later canonical initialization.",
+    "leaves": "Type/name/predicate read live canonical words, never initialize or gate on guard; zero may match fresh zero storage. Name is numeric native-address evidence, not a host string pointer.",
+    "failure": "Guard precedes dependencies. Preserve partial descriptor/parent/counter changes and nonzero guard after failure. No guard reset, counter compensation, rollback, recreated storage, retry or added locking."
+  },
+  "actual_application_domain": [
+    {
+      "role": "canonical model guard and descriptor",
+      "current_owner": "GameNativeTypeStorage owns other stable process cells and reference views; model cells/view absent.",
+      "missing_work": "Add model guard 01090030, ModelTypeDescriptor 01090034 and ModelTypeBootstrapStorage reference view to this existing noncopyable/nonmovable owner.",
+      "evidence": [
+        "include/bsp/game_native_type_storage.hpp:13-96",
+        "src/game_native_type_storage.cpp:7-22"
+      ]
+    },
+    {
+      "role": "SAME counter and publication",
+      "current_owner": "GameNativeVfsApplication::Impl.type_counter_0109db7c -> NativeVfsPublicationCells -> NativeVfsOwnerServices::types_",
+      "missing_work": "No new provider. Borrow owner_services.types(); do not construct a second TypeIdCounterLifetime or prepublished fixture counter.",
+      "evidence": [
+        "src/game_native_vfs_application.cpp:53-59,79-90",
+        "src/native_vfs_owner_services.cpp:9-17",
+        "include/bsp/native_vfs_owner_services.hpp:25,49,65-66"
+      ]
+    },
+    {
+      "role": "SAME root/node/common bootstrap",
+      "current_owner": "Impl.common_types(owner_services.types(), type_storage.light_types())",
+      "missing_work": "Borrow this actual common object and its node/root storage. Existing require_common_bootstrap validates cell identity, while exact VFS wiring establishes counter identity.",
+      "evidence": [
+        "src/game_native_vfs_application.cpp:90,109-113",
+        "src/game_native_type_storage.cpp:24-37",
+        "include/bsp/light_type_bootstrap.hpp:57-89"
+      ]
+    },
+    {
+      "role": "counter lifetime/deletion",
+      "current_owner": "owner_services.bind_deletion runs before initialize_core; CFB6C4 deletion dispatch uses that SAME counter context.",
+      "missing_work": "No new callback. Preserve context/cells through shared manager drain.",
+      "evidence": [
+        "src/game_native_vfs_application.cpp:100,103-113",
+        "src/native_vfs_owner_services.cpp:19-26",
+        "src/native_singleton_destruction.cpp:410-415"
+      ]
+    },
+    {
+      "role": "failed-startup retention",
+      "current_owner": "initialize_core attempted flag plus GameVfsHost::invoke_native failure flag and GameStartupHost VFS _Exit policy.",
+      "missing_work": "Any future scheduled model initializer must remain inside this existing protected once-attempt path. Preserve failed guard and all objects until exit.",
+      "evidence": [
+        "src/game_native_vfs_application.cpp:103-110",
+        "include/bsp/game_hosts_vfs.hpp:88-90,134-137",
+        "src/game_hosts_vfs.cpp:137",
+        "src/game_hosts.cpp:1504-1517"
+      ]
+    }
+  ],
+  "minimal_genuine_composition": {
+    "persistent_member": "Model guard/descriptor/reference aggregate in GameNativeTypeStorage. Fresh owner construction follows existing Source process-storage lifetime; rebinding must not reset cells.",
+    "optional_retained_service": "ModelTypeBootstrap member in VFS Impl after common_types, initialized from owner_services.types(), common_types and type_storage.model_types() once the storage API exists.",
+    "call_only_alternative": "Existing GameNativeTypeStorage pattern uses temporary reference adapters during initializer calls. This is valid for call-only bootstrap use; the model guard/descriptor remain persistent.",
+    "no_initialization_at_member_construction": true,
+    "no_schedule_placement_chosen": true,
+    "storage_only_member_admission": "Can be implemented without Native provider recovery, but remains uninitialized and gets no startup/type-ID credit pending exact scheduling evidence.",
+    "not_required_for_descriptor": [
+      "model-pool slot",
+      "Native model/node constructor",
+      "renderer",
+      "raw atlas",
+      "fixture descriptor",
+      "callback facade",
+      "synthetic Native owner"
+    ]
+  },
+  "scheduling_findings": {
+    "current_Source_order": [
+      "resource selectors (convex/aux/geom mesh)",
+      "camera type",
+      "extra resource types (animation/bone)",
+      "mesh/skined/matrix resource types",
+      "memory stream type",
+      "separate physical-provider pool",
+      "physical stream type"
+    ],
+    "model_family_present_in_current_order": false,
+    "order_source": [
+      "src/game_native_type_storage.cpp:39-54",
+      "src/game_native_vfs_application.cpp:109-113"
+    ],
+    "original_model_position_verified": false,
+    "reason_gate_matters": "A cold model call consumes the shared monotonic counter; choosing an unverified position changes later family IDs. Numeric function addresses do not establish CRT table order.",
+    "lazy_path": {
+      "production_callsite_found": false,
+      "actual_schedule": null,
+      "scope": "All .cpp/.hpp/.inc under src and include/bsp",
+      "matches_are_declarations_definitions_only": [
+        {
+          "term": "initialize_static_00cd7e60",
+          "path": "include/bsp/model_type_bootstrap.hpp",
+          "line": 35,
+          "text": "void initialize_static_00cd7e60();"
+        },
+        {
+          "term": "initialize_00b74f90",
+          "path": "include/bsp/model_type_bootstrap.hpp",
+          "line": 37,
+          "text": "void initialize_00b74f90(volatile ModelTypeDescriptor& target);"
+        },
+        {
+          "term": "initialize_static_00cd7e60",
+          "path": "src/model_type_bootstrap.cpp",
+          "line": 42,
+          "text": "void ModelTypeBootstrap::initialize_static_00cd7e60() {"
+        },
+        {
+          "term": "initialize_00b74f90",
+          "path": "src/model_type_bootstrap.cpp",
+          "line": 57,
+          "text": "void ModelTypeBootstrap::initialize_00b74f90(volatile ModelTypeDescriptor& target) {"
+        }
+      ]
+    },
+    "new_lazy_call_proposed": false,
+    "next_evidence": "Separate authorized evidence work must establish original static initializer placement or an actual lazy caller schedule; this Source-only packet does not open Native data or infer a slot."
+  },
+  "retirement_schedule": {
+    "during_use": "Keep stable model cells/reference view and any retained bootstrap inside the existing VFS type/counter/common lifetime. Copying a descriptor or counter publication is not a borrow.",
+    "failure": "Nonzero guard can represent interrupted initialization. Existing VFS failure retention must block normal cleanup/replay; do not rebuild owner to force another cold attempt.",
+    "normal_drain": "Shared singleton shutdown runs before VFS/type services are destroyed. Counter CFB6C4 dispatch calls deleting_destructor_006fad40 using the original context.",
+    "counter_effect": "Clears actual 0109DB7C publication unconditionally and frees only under flags&1. Does not reset descriptor guards/IDs.",
+    "borrower_order": "GameStartupHost resets renderer before deleting VFS. A new VFS bootstrap declared after common_types destroys before common_types/type_storage/owner_services; descriptor cells survive manager drain and consumers.",
+    "after_drain": "No bootstrap initialization or counter recreation. Descriptor member destruction needs no native callback.",
+    "evidence": [
+      "src/game_hosts.cpp:1561-1603",
+      "src/light_type_bootstrap.cpp:47-57",
+      "src/native_singleton_destruction.cpp:410-415",
+      "src/game_native_vfs_application.cpp:53-59"
+    ]
+  },
+  "search_evidence": {
+    "source_files_in_scope": 4153,
+    "model_initializer_matches": [
+      {
+        "term": "initialize_static_00cd7e60",
+        "path": "include/bsp/model_type_bootstrap.hpp",
+        "line": 35,
+        "text": "void initialize_static_00cd7e60();"
+      },
+      {
+        "term": "initialize_00b74f90",
+        "path": "include/bsp/model_type_bootstrap.hpp",
+        "line": 37,
+        "text": "void initialize_00b74f90(volatile ModelTypeDescriptor& target);"
+      },
+      {
+        "term": "initialize_static_00cd7e60",
+        "path": "src/model_type_bootstrap.cpp",
+        "line": 42,
+        "text": "void ModelTypeBootstrap::initialize_static_00cd7e60() {"
+      },
+      {
+        "term": "initialize_00b74f90",
+        "path": "src/model_type_bootstrap.cpp",
+        "line": 57,
+        "text": "void ModelTypeBootstrap::initialize_00b74f90(volatile ModelTypeDescriptor& target) {"
+      }
+    ],
+    "game_model_member_matches": []
+  },
+  "validation": {
+    "bounded_Source_and_existing_docs_reviewed": true,
+    "complete_model_bootstrap_contract_reviewed": true,
+    "same_counter_and_storage_wiring_reviewed": true,
+    "one_attempt_failure_retention_and_shared_drain_reviewed": true,
+    "exact_original_CRT_placement_verified": false,
+    "new_build": false,
+    "new_tests": false,
+    "new_probe": false,
+    "new_runtime": false,
+    "old_artifact_replay": false,
+    "new_Native_body_address_or_GPR_work": false,
+    "CPP_CMake_ledger_changes": false,
+    "original_ABI_FH3_admission": false,
+    "startup_model_numbering_visual_gameplay_credit": false,
+    "full_doc_and_report_review_passed": true,
+    "all_current_source_doc_receipt_pins_rechecked": 18,
+    "tracked_scope_exactly_two_outputs": true
+  },
+  "actual_application_storage_identity": "Recovered 01090030/01090034 names identify the canonical Source role, following existing GameNativeTypeStorage. Host-owned members are not fixed-address mappings or proof of Native object ABI.",
+  "Root_primary_acceptance": {
+    "worker_commit": "5615ccb5ac429256e512b0a59babae976e27656c",
+    "immutable_worker_report_sha256": "d6a0a04e2e1cc83170a9d4846925756af065eaafe8abac0c45c85e5f432f69ee",
+    "current_retained_pin_rows_replayed": 17,
+    "new_Source_ABI_build_fixture_startup_gameplay_credit": 0,
+    "Root_complete_doc_and_actual_source_domain_schedule_lifetime_findings_reviewed": true,
+    "Native_scope": "none",
+    "storage_member_composable": true,
+    "initialization_held_on_original_CRT_placement": true,
+    "current_doc_pin": {
+      "path": "docs\\CC12_PRODUCTION_MODEL_DESCRIPTOR_BOOTSTRAP_READINESS.md",
+      "bytes": 9823,
+      "sha256": "9366c9fec661bf9875a949e9cbf96046646986d64af3066307838d49a23ff682"
+    }
+  }
+}

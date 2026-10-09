@@ -96,6 +96,8 @@
 #include "bsp/native_cockpit_helper_construction.hpp"
 #include "bsp/native_render_resources_lifetime.hpp"
 #include "bsp/native_game_grid.hpp"
+#include "bsp/gui_text_native_layout.hpp"
+#include "bsp/native_vertex_position_read.hpp"
 #include "bsp/game_native_geometry_globals.hpp"
 #include <array>
 #include <cstring>
@@ -281,6 +283,10 @@ struct GameNativeRendererApplication::Impl {
     DeviceGraph devices;
     TextureLoadingGraph texture_loading;
     GameGridGraph game_grids;
+    // Reverse destruction keeps the SAME geometry/declarations/hardware and
+    // D3DX module alive until these retained borrowed services are gone.
+    NativeD3dx9Float16Import vertex_half;
+    GuiTextNativeLayoutServices section_layouts;
     CameraGraph cameras;
     NativeParticleRecordResizeContext particle_clock_records;
     NativeParticleClockShutdownContext particle_clock_shutdown;
@@ -323,6 +329,9 @@ struct GameNativeRendererApplication::Impl {
           devices(graph,constructor,host,vfs.strings,platform),
         texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
         game_grids(graph,devices,texture_loading,declaration_cache,vfs.strings,renderer),
+          vertex_half(devices.d3dx),
+          section_layouts(texture_loading.geometry,graph.vertex,declaration_loading,
+              devices.hardware,profiles(0xd62af4)),
           cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()),
           particle_clock_records{vfs.strings,validation},
           particle_clock_shutdown{particle_clock_records,cameras.decrement,
@@ -350,6 +359,11 @@ struct GameNativeRendererApplication::Impl {
         deletion.render_resources=&resources.lifetime;
         deletion.shadow_depth_target=&shadow.context;
         deletion.particle_clock=&particle_clock_shutdown;
+    }
+    bool section_layout_acquisition_pending() const noexcept {
+        const auto acquired=section_layouts.acquired().phase;
+        return acquired!=GuiTextNativeLayoutPhase::empty &&
+            acquired!=GuiTextNativeLayoutPhase::transferred;
     }
     ~Impl() {
         if(phase!=Phase::prepared && phase!=Phase::drained) std::terminate();
@@ -457,6 +471,16 @@ NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() 
 }
 NativeGameGridContext& GameNativeRendererApplication::game_grid_context() noexcept {
     return impl_->game_grids.context;
+}
+GuiTextNativeLayoutServices& GameNativeRendererApplication::section_layout_services() {
+    check(impl_->phase==Impl::Phase::ready && !impl_->section_layout_acquisition_pending(),
+        "native section layout services require ready renderer and completed acquisition");
+    return impl_->section_layouts;
+}
+const NativeD3dx9Float16Import& GameNativeRendererApplication::vertex_half_import() const {
+    check(impl_->phase==Impl::Phase::ready && !impl_->section_layout_acquisition_pending(),
+        "native vertex half import requires ready renderer and completed layout acquisition");
+    return impl_->vertex_half;
 }
 void GameNativeRendererApplication::construct() {
     auto& p=*impl_;check(p.phase==Impl::Phase::prepared,"renderer constructor is once-only");
@@ -591,7 +615,9 @@ const D3DPRESENT_PARAMETERS& GameNativeRendererApplication::presentation() const
 bool GameNativeRendererApplication::requires_process_retention() const noexcept {
     const auto phase=impl_->phase;
     return (phase!=Impl::Phase::prepared && phase!=Impl::Phase::ready && phase!=Impl::Phase::drained)
-        || !impl_->shaders.quiescent() || !impl_->shadow.quiescent();
+        || !impl_->shaders.quiescent() || !impl_->shadow.quiescent()
+        || impl_->section_layout_acquisition_pending()
+        || impl_->section_layouts.has_live_companions();
 }
 void GameNativeRendererApplication::drain_singletons() {
     check(!requires_process_retention(),"incomplete native renderer cannot be drained");

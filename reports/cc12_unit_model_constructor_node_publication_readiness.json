@@ -1,0 +1,757 @@
+{
+  "schema": "cc12_unit_model_constructor_node_publication_readiness_v1",
+  "created_utc": "2026-10-09T21:49:12.104223+00:00",
+  "packet": "cc12_unit_model_constructor_node_publication_readiness",
+  "status": "complete_whole_constructor_gate_existing_Source_ownership_chain_not_ready",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding",
+  "branch": "agent/cc12_unit_numbering_caller_receiver_binding",
+  "base_commit": "6a181249404feaabd5bdcf239376eeaa8d97fb6c",
+  "base_authorization": "Primary explicitly retained 6a181249 candidate parent, already merged into Root but not yet main when task began; no sync/rebase of that parent.",
+  "scope": {
+    "leased_address": "007135C0",
+    "files": [
+      "docs/CC12_UNIT_MODEL_CONSTRUCTOR_NODE_PUBLICATION_READINESS.md",
+      "reports/cc12_unit_model_constructor_node_publication_readiness.json"
+    ],
+    "new_Native_child_bodies": [],
+    "source_inspection_only_outside_gate": true,
+    "Cxx_CMake_build_test_probe_ledger_GPR_changes": false
+  },
+  "decision": {
+    "production_unit_model_chain": "held",
+    "single_new_Source_ready_prerequisite": null,
+    "reason": "The complete constructor Source already exists. Native 007135C0 stores the supplied selected set and consumes its root; it does not establish actual production resource selection, retained instance/root ownership or unit+360 publication. Existing lower-edge producers have no observed game composition.",
+    "next_single_evidence_packet": "Establish actual class.part_set_50 resource ownership/current profile and the actual virtual+8 target that returns a retained graph-complete selected instance. Existing Source 007137F0 is a candidate, not a target proved by this constructor.",
+    "no_extension_opened": true
+  },
+  "evidence": {
+    "capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_model_constructor_node_publication_readiness\\capture.json",
+      "bytes": 51660,
+      "sha256": "622c1f0310e9a2096e6c50c96ba856e6d98764c1f7fadf404a30310d607c01d8",
+      "canonical_lf_sha256": "622c1f0310e9a2096e6c50c96ba856e6d98764c1f7fadf404a30310d607c01d8"
+    },
+    "capture_script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_model_constructor_node_publication_readiness\\capture.py",
+      "bytes": 7188,
+      "sha256": "00d0556159e5eb98e95b980da6cce8ed76bae39c555f1c2744ed44f7d863a5ee",
+      "canonical_lf_sha256": "00d0556159e5eb98e95b980da6cce8ed76bae39c555f1c2744ed44f7d863a5ee"
+    },
+    "project_identity_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_model_constructor_node_publication_readiness\\ghidra_identity.json",
+      "bytes": 3368,
+      "sha256": "b7cefd867149580b875a6fa3020ac9a4871ac652cb498ecfff15bed43f99ba45",
+      "canonical_lf_sha256": "b7cefd867149580b875a6fa3020ac9a4871ac652cb498ecfff15bed43f99ba45"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "project_process_id": 33644,
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "Original_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "live_capture_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_model_constructor_node_publication_readiness\\live_bytes.txt",
+        "bytes": 1723,
+        "sha256": "0121a3a43b940eec28d31953b75fb7c57461983f81ed04cef3953b3f12fef455",
+        "canonical_lf_sha256": "a8d8fca6c6e0562ddf761b6f3b531c0eba45ddfb38e5b7e75f6860c4b627272d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_model_constructor_node_publication_readiness\\live_disasm.txt",
+        "bytes": 3171,
+        "sha256": "f56e6c2da6f75cce65540f64b3dff9b734fdb6c05e1f0a0ae51c04085d8460e3",
+        "canonical_lf_sha256": "ef5f37d8eb02836d14bd9d2a602bbc5ff72731e8acdca6b8648d373e0c42a0eb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\local\\cc12_unit_model_constructor_node_publication_readiness\\live_proto.txt",
+        "bytes": 1619,
+        "sha256": "62204007aeb29088dbc24fe07e7451ecb3f18d1e095dcfc442323fe34d6cfe70",
+        "canonical_lf_sha256": "823e4fb2c7d2f9767941e1c731c60bf0508080a1e813632a010eaa36665aa015"
+      }
+    ],
+    "saved_export_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007135c0\\assembly.txt",
+        "bytes": 3072,
+        "sha256": "ef5f37d8eb02836d14bd9d2a602bbc5ff72731e8acdca6b8648d373e0c42a0eb",
+        "canonical_lf_sha256": "ef5f37d8eb02836d14bd9d2a602bbc5ff72731e8acdca6b8648d373e0c42a0eb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007135c0\\decompiled.c",
+        "bytes": 6555,
+        "sha256": "342c6b8e71fb9c3cb2ce764b06bc587c633f53cc2bb6a490a0f495490f642f9a",
+        "canonical_lf_sha256": "342c6b8e71fb9c3cb2ce764b06bc587c633f53cc2bb6a490a0f495490f642f9a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007135c0\\metadata.json",
+        "bytes": 228,
+        "sha256": "95fff2a69d3a8fb019337d5a52026972eb58e5207340b2f131af5d1fa2af2f97",
+        "canonical_lf_sha256": "95fff2a69d3a8fb019337d5a52026972eb58e5207340b2f131af5d1fa2af2f97"
+      }
+    ]
+  },
+  "whole_Native_gate": {
+    "address": "007135C0",
+    "end_inclusive": "00713723",
+    "bytes": 356,
+    "operations": 99,
+    "hex": "6aff68644bc80064a100000000506489250000000083ec0c5355568bf15789742410c706e889ce00e8932eddff8b7c242c897e4c8b44243033dbc706b8d7cf00895c242489866001000089be64010000899e6c010000899e70010000899e740100008dae780100008bcdc644242402e86ccdffff894504895d088dae880100008bcdc644242403889e84010000e86ecdffff894504895d088dae940100008bcdc644242404e856cdffff894504895d08899ea0010000899ea4010000899ea80100008bcec644242406e8f2fcffff3bfb74518b178b42108bcfffd0508d4c2418e8cbb1d0ff8b86600100008b400c8d4c2414518bc8c644242807e8a1c245008b4424183bc3c64424240674178b4c24146a0183c1015150e8e465d0ff8bc8e82dde4b003bfb8b966401000089564c74168bcee849edffff399e9001000074078bcee8cad3ffff8bcee853e5ffff8b4c241c5f8bc65e5d5b64890d0000000083c418c20800",
+    "sha256": "61cc4457032508218c120f796ae7eaa238e73f27e24162d91e69487a0e414a96",
+    "PE_live_bytes_equal": true,
+    "saved_live_all99_rows_equal": true,
+    "independent_decode_all99_starts_equal": true,
+    "calls": [
+      {
+        "site": "007135E8",
+        "target": "0x4e6480",
+        "bytes": "e8932eddff",
+        "indirect": false
+      },
+      {
+        "site": "0071362F",
+        "target": "0x7103a0",
+        "bytes": "e86ccdffff",
+        "indirect": false
+      },
+      {
+        "site": "0071364D",
+        "target": "0x7103c0",
+        "bytes": "e86ecdffff",
+        "indirect": false
+      },
+      {
+        "site": "00713665",
+        "target": "0x7103c0",
+        "bytes": "e856cdffff",
+        "indirect": false
+      },
+      {
+        "site": "00713689",
+        "target": "0x713380",
+        "bytes": "e8f2fcffff",
+        "indirect": false
+      },
+      {
+        "site": "00713699",
+        "target": "eax",
+        "bytes": "ffd0",
+        "indirect": true
+      },
+      {
+        "site": "007136A0",
+        "target": "0x41e870",
+        "bytes": "e8cbb1d0ff",
+        "indirect": false
+      },
+      {
+        "site": "007136BA",
+        "target": "0xb6f960",
+        "bytes": "e8a1c24500",
+        "indirect": false
+      },
+      {
+        "site": "007136D7",
+        "target": "0x419cc0",
+        "bytes": "e8e465d0ff",
+        "indirect": false
+      },
+      {
+        "site": "007136DE",
+        "target": "0xbd1510",
+        "bytes": "e82dde4b00",
+        "indirect": false
+      },
+      {
+        "site": "007136F2",
+        "target": "0x712440",
+        "bytes": "e849edffff",
+        "indirect": false
+      },
+      {
+        "site": "00713701",
+        "target": "0x710ad0",
+        "bytes": "e8cad3ffff",
+        "indirect": false
+      },
+      {
+        "site": "00713708",
+        "target": "0x711c60",
+        "bytes": "e853e5ffff",
+        "indirect": false
+      }
+    ],
+    "direct_calls": 12,
+    "indirect_calls": 1,
+    "unique_direct_targets": 11,
+    "live_proto_reported_call_count": 12
+  },
+  "all99_instruction_starts": [
+    "007135C0",
+    "007135C2",
+    "007135C7",
+    "007135CD",
+    "007135CE",
+    "007135D5",
+    "007135D8",
+    "007135D9",
+    "007135DA",
+    "007135DB",
+    "007135DD",
+    "007135DE",
+    "007135E2",
+    "007135E8",
+    "007135ED",
+    "007135F1",
+    "007135F4",
+    "007135F8",
+    "007135FA",
+    "00713600",
+    "00713604",
+    "0071360A",
+    "00713610",
+    "00713616",
+    "0071361C",
+    "00713622",
+    "00713628",
+    "0071362A",
+    "0071362F",
+    "00713634",
+    "00713637",
+    "0071363A",
+    "00713640",
+    "00713642",
+    "00713647",
+    "0071364D",
+    "00713652",
+    "00713655",
+    "00713658",
+    "0071365E",
+    "00713660",
+    "00713665",
+    "0071366A",
+    "0071366D",
+    "00713670",
+    "00713676",
+    "0071367C",
+    "00713682",
+    "00713684",
+    "00713689",
+    "0071368E",
+    "00713690",
+    "00713692",
+    "00713694",
+    "00713697",
+    "00713699",
+    "0071369B",
+    "0071369C",
+    "007136A0",
+    "007136A5",
+    "007136AB",
+    "007136AE",
+    "007136B2",
+    "007136B3",
+    "007136B5",
+    "007136BA",
+    "007136BF",
+    "007136C3",
+    "007136C5",
+    "007136CA",
+    "007136CC",
+    "007136D0",
+    "007136D2",
+    "007136D5",
+    "007136D6",
+    "007136D7",
+    "007136DC",
+    "007136DE",
+    "007136E3",
+    "007136E5",
+    "007136EB",
+    "007136EE",
+    "007136F0",
+    "007136F2",
+    "007136F7",
+    "007136FD",
+    "007136FF",
+    "00713701",
+    "00713706",
+    "00713708",
+    "0071370D",
+    "00713711",
+    "00713712",
+    "00713714",
+    "00713715",
+    "00713716",
+    "00713717",
+    "0071371E",
+    "00713721"
+  ],
+  "ABI": {
+    "entry": "ECX=fresh actual model storage; stack arg1=original unit, arg2=selected set.",
+    "return": "EAX=same model storage; RET8 at 00713721.",
+    "callee_saved": "EBX,EBP,ESI,EDI saved/restored.",
+    "exception_frame": "FS exception-chain frame names 00C84B64; original saved frame restored before return.",
+    "live_metadata_limitation": "Live prototype is undefined BSP_UnitPartInstance_Construct(void), param_count0. Assembly, not that prototype, establishes incoming operands and return. Ghidra count 12 matches 12 direct sites; independent decode/listing have 13 total including CALL EAX.",
+    "new_interface": "Existing Source uses borrowed NativeUnitPartConstructionView, explicit raw string context and provider bindings. It is not the original ABI.",
+    "Native_handler_and_fault_domain": "No fresh Native handler/map/child gate; original FH3/SEH/longjmp/fault execution equivalence not established."
+  },
+  "calls": [
+    {
+      "site": "007135E8",
+      "target": "004E6480",
+      "ABI_contract": "ECX=model; RET",
+      "Source_boundary": "Complete collision base initialization; Source storage subclass supplies actual fields/allocation."
+    },
+    {
+      "site": "0071362F",
+      "target": "007103A0",
+      "ABI_contract": "ECX=model+178; RET; EAX=sentinel",
+      "Source_boundary": "Concrete circular 30h sentinel default; input ECX is unused by provider."
+    },
+    {
+      "site": "0071364D",
+      "target": "007103C0",
+      "ABI_contract": "ECX=model+188; RET; EAX=sentinel",
+      "Source_boundary": "Second concrete sentinel."
+    },
+    {
+      "site": "00713665",
+      "target": "007103C0",
+      "ABI_contract": "ECX=model+194; RET; EAX=sentinel",
+      "Source_boundary": "Third concrete sentinel."
+    },
+    {
+      "site": "00713689",
+      "target": "00713380",
+      "ABI_contract": "ECX=model; RET",
+      "Source_boundary": "Concrete complete damage-group producer default."
+    },
+    {
+      "site": "00713699",
+      "target": "current_original_unit_primary_slot_10",
+      "ABI_contract": "ECX=original unit; no stack argument; EAX=C-string",
+      "Source_boundary": "Indirect CALL EAX. Existing Source reads current unit table and requires complete dispatch; original unit null-test governs this branch."
+    },
+    {
+      "site": "007136A0",
+      "target": "0041E870",
+      "ABI_contract": "ECX=temporary 8-byte header; stack C-string; RET4",
+      "Source_boundary": "Canonical raw pooled-string construction; current selected set is read AFTER return."
+    },
+    {
+      "site": "007136BA",
+      "target": "00B6F960",
+      "ABI_contract": "ECX=current selected_set+0C node; stack name header; RET4",
+      "Source_boundary": "Concrete actual node-name setter default. Reads name_54; does not manufacture selected-set or root ownership."
+    },
+    {
+      "site": "007136D7",
+      "target": "00419CC0",
+      "ABI_contract": "No arguments consumed; bare RET; EAX=pool",
+      "Source_boundary": "Three pre-pushed release arguments survive this getter. Source uses actual raw string-pool domain."
+    },
+    {
+      "site": "007136DE",
+      "target": "00BD1510",
+      "ABI_contract": "ECX=pool; stack(data,length+1,1); RET0C",
+      "Source_boundary": "Pool return; state 7 has already been lowered to 6 before this normal temporary destruction."
+    },
+    {
+      "site": "007136F2",
+      "target": "00712440",
+      "ABI_contract": "ECX=model; RET; result discarded",
+      "Source_boundary": "Full collision-shape producer from storage subclass; only reached for nonnull original unit."
+    },
+    {
+      "site": "00713701",
+      "target": "00710AD0",
+      "ABI_contract": "ECX=model; RET",
+      "Source_boundary": "Spatial attachment from attachment subclass; gates on current model+190 !=0."
+    },
+    {
+      "site": "00713708",
+      "target": "00711C60",
+      "ABI_contract": "ECX=model; RET",
+      "Source_boundary": "Concrete actual part-entry producer; reached for both null and nonnull original unit."
+    }
+  ],
+  "own_publication_and_reads": [
+    {
+      "site": "007135E2/007135FA",
+      "effect": "Store base 00CE89E8 then derived 00CFD7B8 profile at model+0, around base initialization."
+    },
+    {
+      "site": "007135F1/0071360A",
+      "effect": "Store original unit at model+4C and model+164."
+    },
+    {
+      "site": "00713604",
+      "effect": "Store second stack argument directly at model+160; no retain in this own store and no selected-set allocation in body."
+    },
+    {
+      "site": "00713610..0071367C",
+      "effect": "Zero group begin/end/capacity 16C/170/174; obtain sentinels at 17C/18C/198 with zero counts 180/190/19C; zero byte 184 and entries 1A0/1A4/1A8. Proxy cells remain outside own stores."
+    },
+    {
+      "site": "007136A5/007136AB",
+      "effect": "After group construction, virtual unit name and pooled-name construction, reload CURRENT model+160 then read CURRENT holder+0C; pass node as ECX to name assignment."
+    },
+    {
+      "site": "007136E5/007136EB",
+      "effect": "Reload current model+164 and republish model+4C, preserving provider rebindings."
+    },
+    {
+      "site": "entire 356-byte body",
+      "effect": "No own unit+360 store, no own holder+0C store, no selected-set allocation or resource parse/selection call. This statement does not exclude opaque callee effects."
+    }
+  ],
+  "existing_Source_review": {
+    "constructor": "Complete include/bsp/native_unit_part_construction.hpp and src/native_unit_part_construction.cpp reviewed. Current source preserves provider schedule, original-unit gating, current selected-set/root/owner reads and actual pooled names.",
+    "cleanup": "Source int-state catch unwinds completed base/members through required nonthrowing cleanup. Reached states -1/2/3/4/6/7 and lowering 7 to 6 before normal name destruction are retained. Constructor does not free outer allocation; source cleanup failure terminates through noexcept. Prior Native EH report is historical, not a fresh child-body gate.",
+    "concrete_defaults": [
+      "Circular sentinels",
+      "Damage-group production",
+      "Actual pooled node-name assignment",
+      "Part-entry production",
+      "Collision base/group/list/entry cleanup"
+    ],
+    "subclass_extensions": [
+      "NativeUnitPartStorageBindings supplies complete actual collision base and collision shape calls with borrowed globals/callback domain.",
+      "NativeUnitPartAttachmentBindings supplies complete spatial attachment with actual captured-target unit dispatch."
+    ],
+    "remaining_required_bindings": [
+      "Current actual unit primary table/name slot 10 dispatch",
+      "Current actual selected-set root +0C access",
+      "Selected-set cleanup composition",
+      "Actual model allocation view and its containing caller/lifetime"
+    ],
+    "existing_release_support": "release_native_unit_part_selected_set_00711080 decrements actual owner+4 and dispatches current slot 0 at zero, then clears actual cell. native_resource_instance_selected_callbacks supplies D63244/CFD8E0 terminal dispatch via BD30E0 to existing scalar deletes; retained resource/root owners and listener/renderer access remain required.",
+    "stale_document_note": "docs/NATIVE_UNIT_PART_CONSTRUCTION.md says the whole node-name setter is absent; current src/native_unit_part_entries.cpp:99 and constructor default:11 show it now exists. Do not treat that old remaining-provider sentence as current.",
+    "semantic_storage_rejected": "The 1ACh unit-part allocation is not the 188h NativeModelOwner render-model family, nor GameUnitSlot semantic backing."
+  },
+  "ownership_chain": [
+    {
+      "Source": "src/native_unit_health_parts.cpp:84-123; include/bsp/native_unit_health_parts.hpp:73-78",
+      "established": "Existing source reads class.part_set_50, captures actual table/selector/detail, calls required part-set virtual+8, passes returned selected set to required 007135C0 and publishes its result to unit.model_360.",
+      "remaining": "Concrete genuine unit/class storage/profile dispatch, provider composition and complete successful/failure ownership are not supplied by this constructor gate."
+    },
+    {
+      "Source": "src/native_unit_part_construction.cpp:73,100-102",
+      "established": "Existing source stores selected set at model+160, reloads current set after callbacks, reads actual root +0C through required binding, and calls real name setter.",
+      "remaining": "No runtime selected-set identity or genuine model_360 owner is established by borrowed references alone."
+    },
+    {
+      "Source": "src/native_resource_graph_builder.cpp:118-143",
+      "established": "Existing B891A0 source creates actual instance, constructs/parents nodes, writes instance+0C=root at line 126, attaches items, postprocesses and binds bones. Existing 007137F0 source wrapper performs FLD/FSTP then forwards.",
+      "remaining": "No proof here that the production current class-resource virtual+8 selects this wrapper. Complete current item/resource/foreign dispatch and canonical graph/lifetime domains remain required."
+    },
+    {
+      "Source": "include/bsp/native_resource_instance_lifecycle.hpp; src/native_resource_instance_lifecycle.cpp:81-119",
+      "established": "Actual base/game instance constructors retain resource+8 and preserve uninitialized root+0C; graph builder owns later publication. Existing selected-set terminal callbacks constrain accepted profiles.",
+      "remaining": "A just-constructed instance is not a completed graph or automatically safe for normal destruction; actual root/resource lifetime owners must be present."
+    },
+    {
+      "Source": "include/bsp/native_resource_graph_builtin_dispatch.hpp; src/native_resource_graph_builtin_dispatch.cpp:74-139",
+      "established": "Actual plain/model-base/group factories prepare canonical scene/lifetime companions, returning same actual node storage.",
+      "remaining": "External resource/item/foreign operations, profiles/type descriptors and surrounding graph domains remain required; no game consumer found."
+    },
+    {
+      "Source": "include/bsp/native_model_owner.hpp:27-77; src/native_model_owner.cpp:150-241",
+      "established": "Render-model owner/environment provide actual 188h slot/node construction with explicit pool/name/profile/lifetime requirements.",
+      "remaining": "Different family from 1ACh unit-part model; does not publish unit+360 or supply transferred selected-set ownership."
+    },
+    {
+      "Source": "include/bsp/native_resource_construction.hpp; include/bsp/native_resource_load_cache.hpp; include/bsp/native_resource_hierarchy_parser.hpp",
+      "established": "Actual resource constructor/load/cache/hierarchy-parser interfaces exist; hierarchy parser appends authored 84h records, while graph construction is a later phase.",
+      "remaining": "Interfaces do not demonstrate current production class-resource loading/selection or runtime root ownership."
+    },
+    {
+      "Source": "src/game_native_resource_application.cpp:23-80; include/bsp/geom_mesh_resource.hpp:20-24",
+      "established": "Game application owns actual resource-manager and parser publication/registration domains; separate semantic GeomMesh payload explicitly has no native item layout.",
+      "remaining": "Neither proves the selected instance used by the unit; semantic payload is not admissible owner backing."
+    },
+    {
+      "Source": "src/game_hosts_units.cpp:326-340,15282-15287",
+      "established": "GameUnitSlot constructor uses partial observer/callback projections; gunnery comment states this process builds no model hierarchy. Captured targeted game source searches have zero chain-consumer matches in worker and current Root.",
+      "remaining": "No genuine current model_360 -> selected-set -> actual node tree production connection is demonstrated."
+    }
+  ],
+  "source_search": {
+    "capture": "evidence.capture_pin -> source_searches",
+    "worker_constructor_binding_matches": 34,
+    "worker_graph_context_matches": 29,
+    "worker_game_producer_matches": 0,
+    "Root_game_producer_matches": 0,
+    "search_scope": "src and include/bsp, .cpp/.hpp/.inc; game production query limited to game_*.cpp/.hpp/.inc; exact commands and complete results retained.",
+    "negative_result_scope": "No matches for the named construction/environment/graph symbols, not proof about arbitrary binaries or unsearched generated code."
+  },
+  "source_consistency": {
+    "Root_commit_at_capture": "4dd3dcbad45812b4262c25638425629c0544bac3",
+    "worker_base": "6a181249404feaabd5bdcf239376eeaa8d97fb6c",
+    "files_compared": 30,
+    "Root_worker_LF_equal": 30,
+    "comparison_is_build_input_receipt": false,
+    "full_Root_raw_pins": "evidence.capture_pin -> source_and_context_pins"
+  },
+  "inspected_or_context_file_pins": [
+    {
+      "path": "include\\bsp\\native_unit_part_construction.hpp",
+      "bytes": 3707,
+      "sha256": "d7126bce59b7d52a7a683dd20aea2e3f30eb94164de35403a6038ae2aa2f038b",
+      "canonical_lf_sha256": "d7126bce59b7d52a7a683dd20aea2e3f30eb94164de35403a6038ae2aa2f038b",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_part_construction.cpp",
+      "bytes": 5041,
+      "sha256": "c93bf6e197d632988f2ec52ede5ec8d1f20b978da5beb71400d730028e6c71a2",
+      "canonical_lf_sha256": "c93bf6e197d632988f2ec52ede5ec8d1f20b978da5beb71400d730028e6c71a2",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_unit_part_storage.hpp",
+      "bytes": 3119,
+      "sha256": "516ff6e556406fcb2bc14037e4f6a300dee7b7abbcc04c702016cda46c010ecf",
+      "canonical_lf_sha256": "516ff6e556406fcb2bc14037e4f6a300dee7b7abbcc04c702016cda46c010ecf",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_part_storage.cpp",
+      "bytes": 4169,
+      "sha256": "aede7bf16c886bf84d689116ed362315807b00db535da7c170c0d49d77ad609c",
+      "canonical_lf_sha256": "aede7bf16c886bf84d689116ed362315807b00db535da7c170c0d49d77ad609c",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_unit_part_attachment.hpp",
+      "bytes": 2461,
+      "sha256": "d4eeca9036fe265edcd4dbd6367bfc482d6d7f08c91be3e9362269f0d1ad2844",
+      "canonical_lf_sha256": "d4eeca9036fe265edcd4dbd6367bfc482d6d7f08c91be3e9362269f0d1ad2844",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_part_attachment.cpp",
+      "bytes": 2759,
+      "sha256": "548ec8f157b43c58107880167199c9cd31648869134830e8338d9381ab7c938e",
+      "canonical_lf_sha256": "548ec8f157b43c58107880167199c9cd31648869134830e8338d9381ab7c938e",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_unit_health_parts.hpp",
+      "bytes": 4484,
+      "sha256": "c699fac536552b0dd908c78a7712a0835c5d19c8347605bfe6bc5aef5002a2df",
+      "canonical_lf_sha256": "c699fac536552b0dd908c78a7712a0835c5d19c8347605bfe6bc5aef5002a2df",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_health_parts.cpp",
+      "bytes": 6203,
+      "sha256": "a4f89ea4dca1e58b002cf2591f84724b6badfe8793014c66e993963cfe233ade",
+      "canonical_lf_sha256": "a4f89ea4dca1e58b002cf2591f84724b6badfe8793014c66e993963cfe233ade",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_unit_part_entries.hpp",
+      "bytes": 2744,
+      "sha256": "f91f84b1157e415c90641c962b1533b9b72f32731eae19267b3f9ddd1c9e7fe9",
+      "canonical_lf_sha256": "f91f84b1157e415c90641c962b1533b9b72f32731eae19267b3f9ddd1c9e7fe9",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_unit_part_entries.cpp",
+      "bytes": 5762,
+      "sha256": "70462f983b8e9a8178d43aa57a35a5e368e98b312a5279900808a25fe8c57211",
+      "canonical_lf_sha256": "70462f983b8e9a8178d43aa57a35a5e368e98b312a5279900808a25fe8c57211",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_model_owner.hpp",
+      "bytes": 6717,
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "canonical_lf_sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_model_owner.cpp",
+      "bytes": 16777,
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "canonical_lf_sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_graph_builder.hpp",
+      "bytes": 3890,
+      "sha256": "571cee0719acae8649ed4c8c9761fa89bf87509c5c1214613bc245e248147474",
+      "canonical_lf_sha256": "571cee0719acae8649ed4c8c9761fa89bf87509c5c1214613bc245e248147474",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_graph_builder.cpp",
+      "bytes": 10806,
+      "sha256": "372a67325f8b03f9fa2cd818d352c469bd008805ccac267c4fa291dbaf93a446",
+      "canonical_lf_sha256": "372a67325f8b03f9fa2cd818d352c469bd008805ccac267c4fa291dbaf93a446",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_graph_builtin_dispatch.hpp",
+      "bytes": 2931,
+      "sha256": "5c536749705f5c60f32fd83d3013da0e93f7013c907d706de1c095a5a6dd49b3",
+      "canonical_lf_sha256": "5c536749705f5c60f32fd83d3013da0e93f7013c907d706de1c095a5a6dd49b3",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_graph_builtin_dispatch.cpp",
+      "bytes": 9746,
+      "sha256": "0df1814d187501d957af6b0a400d80633b78fe52c8dd797785ed5cc493d4b2ea",
+      "canonical_lf_sha256": "0df1814d187501d957af6b0a400d80633b78fe52c8dd797785ed5cc493d4b2ea",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_instance_lifecycle.hpp",
+      "bytes": 4985,
+      "sha256": "514cb2eaa5c83ff3212d87e6c5ae89d3ecfca1276f8024a13ff39a970dece3e8",
+      "canonical_lf_sha256": "514cb2eaa5c83ff3212d87e6c5ae89d3ecfca1276f8024a13ff39a970dece3e8",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_resource_instance_lifecycle.cpp",
+      "bytes": 8260,
+      "sha256": "d761e893266fb08e2821897dcb1295e1545a366045fb820fe369218011b7fbc8",
+      "canonical_lf_sha256": "d761e893266fb08e2821897dcb1295e1545a366045fb820fe369218011b7fbc8",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_hierarchy_parser.hpp",
+      "bytes": 2466,
+      "sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c",
+      "canonical_lf_sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_load_cache.hpp",
+      "bytes": 4654,
+      "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+      "canonical_lf_sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\native_resource_construction.hpp",
+      "bytes": 1619,
+      "sha256": "e29766a6c0e0a3344a8326b45787b7950d71bb5c2fa445f4eeec8445155c13be",
+      "canonical_lf_sha256": "e29766a6c0e0a3344a8326b45787b7950d71bb5c2fa445f4eeec8445155c13be",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\native_game_resource_parsers.cpp",
+      "bytes": 9776,
+      "sha256": "f1ea3eed4490ca9c9ef64f780aeadaa95120e74f51d92802599c3df667ef799f",
+      "canonical_lf_sha256": "f1ea3eed4490ca9c9ef64f780aeadaa95120e74f51d92802599c3df667ef799f",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\game_native_resource_application.hpp",
+      "bytes": 1678,
+      "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+      "canonical_lf_sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_native_resource_application.cpp",
+      "bytes": 6579,
+      "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+      "canonical_lf_sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "include\\bsp\\geom_mesh_resource.hpp",
+      "bytes": 8092,
+      "sha256": "9dfd5b117e173ad61db31a9f2538b5ec2eb16834358f8a6d0a26c6025076fd4a",
+      "canonical_lf_sha256": "9dfd5b117e173ad61db31a9f2538b5ec2eb16834358f8a6d0a26c6025076fd4a",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "src\\game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "canonical_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "docs\\NATIVE_UNIT_PART_CONSTRUCTION.md",
+      "bytes": 10284,
+      "sha256": "7467fb60079f2b107c61d0cbb3a8608e9d3844387a5d31a764e9fab224b82743",
+      "canonical_lf_sha256": "7467fb60079f2b107c61d0cbb3a8608e9d3844387a5d31a764e9fab224b82743",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "reports\\native_unit_part_construction.json",
+      "bytes": 15292,
+      "sha256": "3bfc189025f12bff7d415ec26f5ce5337ec81addf207101acfc540012e34423c",
+      "canonical_lf_sha256": "3bfc189025f12bff7d415ec26f5ce5337ec81addf207101acfc540012e34423c",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "docs\\CC12_UNIT_NUMBERING_PRODUCTION_MODEL_SERVICES_READINESS.md",
+      "bytes": 13365,
+      "sha256": "68cca0b1d5ff24e938aa96f97cbde8e4c1d6ec27ad4917542eee51b75d12c94c",
+      "canonical_lf_sha256": "68cca0b1d5ff24e938aa96f97cbde8e4c1d6ec27ad4917542eee51b75d12c94c",
+      "Root_worker_LF_equal": true
+    },
+    {
+      "path": "reports\\cc12_unit_numbering_production_model_services_readiness.json",
+      "bytes": 40621,
+      "sha256": "8ca33ce1e442a0170f094c6d54ac847d92dbcd4d6183448e411e0fcfecb8ac23",
+      "canonical_lf_sha256": "8ca33ce1e442a0170f094c6d54ac847d92dbcd4d6183448e411e0fcfecb8ac23",
+      "Root_worker_LF_equal": true
+    }
+  ],
+  "build_and_fixture_context": {
+    "Source121": "Frozen historical receipt only; no old current-path artifact comparison performed.",
+    "Root_new_build": "Primary reported 507-input build with 3 checks from 2026-10-09T21:37:06..21:37:45; emission/smoke/admission pending when assigned. Not independently replayed or credited by this worker.",
+    "historical_constructor_fixture": "Existing report records 3 controlled original 356-byte/source comparisons and 6 source cleanup cases. Native providers and Native FH3 were not executed there. No historical result is relabelled as this packet validation.",
+    "new_build_or_tests": false,
+    "new_probe": false,
+    "current_build_artifacts_read_or_compared": false
+  },
+  "credits": {
+    "readiness": 1,
+    "Source": 0,
+    "build": 0,
+    "fixture": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0,
+    "runtime": 0
+  },
+  "review": {
+    "complete_Native_body_and_constructor_Source_read": true,
+    "current_provider_contracts_and_relevant_application_Source_inspected": true,
+    "no_new_Native_child_expansion": true,
+    "complete_doc_report_read": true,
+    "final_current_pin_checks": 71,
+    "exact_PE99_instruction13_call_replay": true
+  },
+  "document_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_caller_receiver_binding\\docs\\CC12_UNIT_MODEL_CONSTRUCTOR_NODE_PUBLICATION_READINESS.md",
+    "bytes": 7675,
+    "sha256": "15d95f172f68677ec5dc8ad0fab6e19faa8cf80d3e99b4520a32e4953ff38c1f",
+    "canonical_lf_sha256": "15d95f172f68677ec5dc8ad0fab6e19faa8cf80d3e99b4520a32e4953ff38c1f"
+  },
+  "Root_primary_acceptance": {
+    "worker_commit": "180fa09622d3a8e095f68db39c14690e97e2feb0",
+    "immutable_worker_report_sha256": "7953013adffe0056147a113c8fa3acbcc766b84579aae831ec68a17ccda5e796",
+    "current_retained_pin_rows_replayed": 41,
+    "new_Source_ABI_build_fixture_startup_gameplay_credit": 0,
+    "Root_complete_Native_body_doc_and_calls_read": true,
+    "Original_full_PE_SHA_and_independent356B99ops13calls_replayed": true,
+    "new_Source_ready_prerequisite": false,
+    "current_doc_pin": {
+      "path": "docs\\CC12_UNIT_MODEL_CONSTRUCTOR_NODE_PUBLICATION_READINESS.md",
+      "bytes": 7966,
+      "sha256": "b9e94eba25bf8a72f3b54dec309d205cd3f8b0dc76d7380c1af9234b1d5b99d2"
+    }
+  }
+}
