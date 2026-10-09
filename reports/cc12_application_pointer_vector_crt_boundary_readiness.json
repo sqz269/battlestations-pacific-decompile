@@ -1,0 +1,755 @@
+{
+  "schema": "bsp.cc12.application_pointer_vector_crt_boundary_readiness.v1",
+  "status": "read_only_selected15B_CRT_thunk_routes_and_concrete_Source_provider_audited_large_target_and_second_hop_unresolved",
+  "created_utc": "2026-10-09T08:36:26.493926+00:00",
+  "base_commit": "365083d632ee8aaff7095a02292766b1f5271051",
+  "requested_published_main": "365083d632ee8aaff7095a02292766b1f5271051",
+  "scope": {
+    "initial_addresses": [
+      "00bf55be",
+      "00bf6989"
+    ],
+    "lease_extended_before_target_query": [
+      "00bf681b",
+      "00bf65ac"
+    ],
+    "output_files": [
+      "docs/CC12_APPLICATION_POINTER_VECTOR_CRT_BOUNDARY_READINESS.md",
+      "reports/cc12_application_pointer_vector_crt_boundary_readiness.json"
+    ],
+    "body_gate_bytes": 32,
+    "max_selected_direct_hops_per_initial_thunk": 1,
+    "selected_fresh_native_bytes": 15,
+    "selected_fresh_native_instructions": 3,
+    "Ghidra_mutations": false,
+    "correct_library_names_preserved": true,
+    "no_source_edits": true,
+    "no_new_native_handlers_callers_bootstrap_or_heap_internals_queries": true
+  },
+  "target_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 64729,
+    "method": "Initial bsp.py ghidra count and each live query use configured Ghidra.verify project/program checks."
+  },
+  "native_evidence": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_selected_complete_bodies": [
+      {
+        "address": "00bf55be",
+        "length": 5,
+        "hex": "e958120000",
+        "name": "operator_new",
+        "signature": "undefined operator_new(void)",
+        "target": "00bf681b",
+        "selected_direct_hops_from_initial_entry": 0,
+        "live_ghidra_listing": "00bf55be: JMP 0x00bf681b",
+        "end_inclusive": "00bf55c2",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "whole_body_gate": {
+          "limit_bytes": 32,
+          "actual_bytes": 5,
+          "passed_before_listing": true
+        },
+        "instruction_count": 1,
+        "instructions": [
+          {
+            "address": "00bf55be",
+            "size": 5,
+            "hex": "e958120000",
+            "mnemonic": "jmp",
+            "operands": "0xbf681b"
+          }
+        ],
+        "live_capture_matches_current_pe": true,
+        "full_independent_decode_matches_live": true,
+        "direct_relative_displacement": 4696,
+        "containing_pe_section": ".text",
+        "stack_registers_flags_unchanged_by_selected_thunk": true,
+        "no_import_indirect_operand": true
+      },
+      {
+        "address": "00bf6989",
+        "length": 5,
+        "hex": "e91efcffff",
+        "name": "_free",
+        "signature": "void __cdecl _free(void * _Memory)",
+        "target": "00bf65ac",
+        "selected_direct_hops_from_initial_entry": 0,
+        "live_ghidra_listing": "00bf6989: JMP 0x00bf65ac",
+        "end_inclusive": "00bf698d",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "whole_body_gate": {
+          "limit_bytes": 32,
+          "actual_bytes": 5,
+          "passed_before_listing": true
+        },
+        "instruction_count": 1,
+        "instructions": [
+          {
+            "address": "00bf6989",
+            "size": 5,
+            "hex": "e91efcffff",
+            "mnemonic": "jmp",
+            "operands": "0xbf65ac"
+          }
+        ],
+        "live_capture_matches_current_pe": true,
+        "full_independent_decode_matches_live": true,
+        "direct_relative_displacement": -994,
+        "containing_pe_section": ".text",
+        "stack_registers_flags_unchanged_by_selected_thunk": true,
+        "no_import_indirect_operand": true
+      },
+      {
+        "address": "00bf65ac",
+        "length": 5,
+        "hex": "e917380000",
+        "name": "_free",
+        "signature": "void __cdecl _free(void * _Memory)",
+        "target": "00bf9dc8",
+        "selected_direct_hops_from_initial_entry": 1,
+        "live_ghidra_listing": "00bf65ac: JMP 0x00bf9dc8",
+        "end_inclusive": "00bf65b0",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "whole_body_gate": {
+          "limit_bytes": 32,
+          "actual_bytes": 5,
+          "passed_before_listing": true
+        },
+        "instruction_count": 1,
+        "instructions": [
+          {
+            "address": "00bf65ac",
+            "size": 5,
+            "hex": "e917380000",
+            "mnemonic": "jmp",
+            "operands": "0xbf9dc8"
+          }
+        ],
+        "live_capture_matches_current_pe": true,
+        "full_independent_decode_matches_live": true,
+        "direct_relative_displacement": 14359,
+        "containing_pe_section": ".text",
+        "stack_registers_flags_unchanged_by_selected_thunk": true,
+        "no_import_indirect_operand": true
+      }
+    ],
+    "allocator_target_metadata": {
+      "address": "00bf681b",
+      "name": "operator_new",
+      "signature": "undefined operator_new(void)",
+      "body_start": "00bf681b",
+      "body_end_inclusive": "00bf6883",
+      "declared_whole_body_bytes": 105,
+      "reported_instructions": 33,
+      "gate_limit": 32,
+      "gate_passed": false,
+      "decision": "STOP:105B exceeds32B; no direct target body/listing/byte query made and no target policy admitted."
+    },
+    "free_first_target_metadata": {
+      "address": "00bf65ac",
+      "name": "_free",
+      "signature": "void __cdecl _free(void * _Memory)",
+      "body_start": "00bf65ac",
+      "body_end_inclusive": "00bf65b0",
+      "declared_whole_body_bytes": 5,
+      "reported_instructions": 1,
+      "gate_limit": 32,
+      "gate_passed": true
+    },
+    "free_second_destination": {
+      "address": "00bf9dc8",
+      "origin": "operand in selected00BF65AC E9",
+      "metadata_queried": false,
+      "body_queried": false,
+      "bytes_read": false,
+      "lease_claimed": false,
+      "decision": "STOP: one direct hop already selected from initial00BF6989."
+    },
+    "import_boundary": {
+      "selected_import_indirect_operands": 0,
+      "IAT_cells_read": 0,
+      "import_metadata_queries": 0,
+      "no_broad_import_scan": true,
+      "imported_DLL_or_symbol_identity_established": false
+    },
+    "tooling_scope_event": {
+      "commands": [
+        "bsp.py ghidra decompile 0x00BF55BE --lines35",
+        "bsp.py ghidra decompile 0x00BF6989 --lines35"
+      ],
+      "observation": "Decompiling initial5B thunks unexpectedly returned expanded downstream pseudocode instead of a5B thunk-only representation.",
+      "treatment": "Returned expanded pseudocode is excluded from selected evidence and all semantic conclusions; it is not reproduced. Only bounded live listings/bytes and separately gated target metadata are admitted. No further decompile or downstream body request was made.",
+      "this_is_not_a_claim_that_the_tool_returned_no_downstream_text": true
+    }
+  },
+  "original_reserve_call_contract_reused": {
+    "parent_report": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+    "parent_original_body_sha256": "f4ac9801ae9e08b9b64f7a983913dc8e53f3f2afd677f03531e4d00403c9c8b6",
+    "parent_complete_bytes": 95,
+    "parent_complete_instructions": 38,
+    "no_fresh_parent_query_or_graph_reaudit": true,
+    "allocation": {
+      "call_site": "00735ee0",
+      "target": "00bf55be",
+      "stack_operand_site": "00735edf",
+      "operand": "low32(clamped_signed_request*4)",
+      "result_site": "00735ee5",
+      "result": "MOV EBX,EAX",
+      "caller_cleanup_site": "00735ee9",
+      "caller_cleanup_bytes": 4
+    },
+    "free": {
+      "current_data_read_site": "00735f09",
+      "stack_operand_site": "00735f0b",
+      "call_site": "00735f0c",
+      "target": "00bf6989",
+      "operand": "CURRENT actual header.data, including null",
+      "caller_cleanup_site": "00735f11",
+      "caller_cleanup_bytes": 4,
+      "result_consumed": false,
+      "following_publications": [
+        "00735f14 captured fresh data",
+        "00735f16 captured clamped capacity"
+      ]
+    },
+    "exception_or_original_ABI_extension": false
+  },
+  "source_provider_chain": [
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "lines": [
+        106,
+        115
+      ],
+      "role": "Concrete file-local callable Source adapters in bsp::game anonymous namespace.",
+      "behavior": "raw_allocate(uint32) calls singleton_lifetime_allocate({object,size,size}); raw_free(void*) noexcept calls singleton_lifetime_free."
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "lines": [
+        137,
+        137
+      ],
+      "role": "The same translation unit includes game_native_renderer_shaders.inc after those adapters.",
+      "behavior": "Its ShaderGraph binds these concrete function addresses, not new callbacks or literal Original addresses."
+    },
+    {
+      "path": "src/game_native_renderer_shaders.inc",
+      "lines": [
+        9,
+        15
+      ],
+      "role": "ShaderGraph constructor produces NativeShaderBinaryCacheContext.",
+      "behavior": "Both object and array allocation slots receive &raw_allocate; both free slots receive &raw_free, in header field order."
+    },
+    {
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "lines": [
+        12,
+        25
+      ],
+      "role": "Exact aggregate slot order and signature.",
+      "behavior": "allocate_object_00bf681b, allocate_array_00bf55be, free_array_00bf6989, free_object_00bf65ac are ordinary function pointers over uint32/pointer values."
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "lines": [
+        327,
+        331
+      ],
+      "role": "Application renderer implementation member construction.",
+      "behavior": "Actual shaders member is initialized with existing vfs/raw/cameras/profiles; no standalone vector lifetime is supplied here."
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "lines": [
+        387,
+        389
+      ],
+      "role": "Public Source accessor.",
+      "behavior": "shader_cache_context() returns impl_->shaders.cache by reference, exposing the produced callable binding."
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "lines": [
+        136,
+        147
+      ],
+      "role": "Existing vector-reserve call site inside full preload implementation.",
+      "behavior": "When count==capacity, construct local NativeApplicationPointerVectorAllocation from c.cache array allocation/free pointers, then invoke actual reserve on application+8 header."
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "lines": [
+        51,
+        67
+      ],
+      "role": "Concrete current host allocation/free implementation.",
+      "behavior": "Loop std::malloc(request.host_bytes); return nonnull result; otherwise _callnewh(host_bytes), retry for nonzero or throw std::bad_alloc for zero. Free forwards to std::free and is noexcept."
+    }
+  ],
+  "current_source_search": {
+    "command": [
+      "rg",
+      "-n",
+      "preload_native_application_shaders_0073bf80|NativeShaderPreloadContext|NativeApplicationPointerVectorAllocation|resize_native_application_pointer_vector_00735f30",
+      "src",
+      "include",
+      "tests"
+    ],
+    "scope": [
+      "src",
+      "include",
+      "tests"
+    ],
+    "match_count": 18,
+    "matched_files": [
+      "include/bsp/native_application_pointer_vector_resize.hpp",
+      "include/bsp/native_shader_preload.hpp",
+      "src/native_application_pointer_vector_resize.cpp",
+      "src/native_shader_preload.cpp"
+    ],
+    "output": "include\\bsp\\native_application_pointer_vector_resize.hpp:28:void resize_native_application_pointer_vector_00735f30(\ninclude\\bsp\\native_application_pointer_vector_resize.hpp:31:    const NativeApplicationPointerVectorAllocation& allocation);\nsrc\\native_application_pointer_vector_resize.cpp:19:    const NativeApplicationPointerVectorAllocation* allocation,\nsrc\\native_application_pointer_vector_resize.cpp:30:    const NativeApplicationPointerVectorAllocation*, std::int32_t) {\nsrc\\native_application_pointer_vector_resize.cpp:80:__declspec(noinline) void resize_native_application_pointer_vector_00735f30(\nsrc\\native_application_pointer_vector_resize.cpp:83:    const NativeApplicationPointerVectorAllocation& allocation) {\ninclude\\bsp\\native_shader_preload.hpp:16:struct NativeApplicationPointerVectorAllocation {\ninclude\\bsp\\native_shader_preload.hpp:27:    const NativeApplicationPointerVectorAllocation&);\ninclude\\bsp\\native_shader_preload.hpp:32:struct NativeShaderPreloadContext {\ninclude\\bsp\\native_shader_preload.hpp:64:    friend void preload_native_application_shaders_0073bf80(\ninclude\\bsp\\native_shader_preload.hpp:65:        void*,NativeShaderPreloadContext&,NativeShaderPreloadOperation&);\ninclude\\bsp\\native_shader_preload.hpp:73:void preload_native_application_shaders_0073bf80(\ninclude\\bsp\\native_shader_preload.hpp:74:    void* actual_application,NativeShaderPreloadContext&,NativeShaderPreloadOperation&);\nsrc\\native_shader_preload.cpp:25:    const NativeApplicationPointerVectorAllocation& allocation) {\nsrc\\native_shader_preload.cpp:56:    NativeShaderPreloadContext* context{};\nsrc\\native_shader_preload.cpp:91:void preload_native_application_shaders_0073bf80(void* application,\nsrc\\native_shader_preload.cpp:92:    NativeShaderPreloadContext& c,NativeShaderPreloadOperation& operation) {\nsrc\\native_shader_preload.cpp:141:                const NativeApplicationPointerVectorAllocation allocation{c.cache.allocate_array_00bf55be,c.cache.free_array_00bf6989};\n",
+    "finding": "Only declarations/definitions/internal interfaces and local preload binding match. No concrete full-preload context construction/call or external public-resize call was found within this source search.",
+    "qualification": "Exact textual source search is not dynamic execution evidence and does not rule out external consumers or generated/dynamically selected calls."
+  },
+  "binding_status": {
+    "concrete_renderer_cache_allocation_free_provider_exists": true,
+    "provider_is_current_host_Source_not_Original_address_binding": true,
+    "shader_cache_context_accessor_returns_actual_produced_context": true,
+    "local_preload_to_vector_reserve_binding_exists": true,
+    "full_preload_context_or_public_resize_production_call_found": false,
+    "actual_Vector_owner_and_lifetime_established": false,
+    "Native_CRT_new_handler_null_free_exception_identity_established": false
+  },
+  "contracts_and_qualifications": [
+    "Selected native entries are fixed direct relative JMPs inside the main PE. No IAT-indirect operand was encountered; no import cell or import table was read. Ultimate imported/static heap implementation identity is not concluded beyond selected routes.",
+    "The original reserve caller pushes one low32 request*4 DWORD before CALL00BF55BE and caller-cleans4; EAX is captured as the fresh pointer. The selected allocator JMP adds no stack argument, return frame, register move or flag change. Target105B is outside the32B gate.",
+    "The original reserve caller pushes CURRENT header.data, including null, before CALL00BF6989 and caller-cleans4 before pointer/capacity publication. Both selected free JMPs preserve that stack contract; destination00BF9DC8 remains uninspected under the one-hop limit.",
+    "The selected route confirms00BF55BE and the existing00BF681B Source slot label converge at one native address;00BF6989 first reaches00BF65AC. Array/object names do not establish C++ new[]/delete[] semantics, heap provenance or cross-family interchangeability.",
+    "Neither selected5-byte body checks size/pointer/null or catches exceptions. No allocation success/failure/new-handler policy, free(nullptr) implementation, heap state, invalid-pointer behavior or native exception propagation is established from these jumps or metadata names.",
+    "The current renderer/cache Source binding is produced and callable by signature. It is the current host malloc/_callnewh/std::bad_alloc/std::free domain, not a pointer to Original fixed entrypoints. Active host CRT handler, exception objects and heap identity are separate from Original CRT/FH3/SEH.",
+    "For the current concrete Source allocator, a normal return is nonnull, zero-size behavior enters the same host malloc loop, and _callnewh or std::bad_alloc may exit exceptionally. These are Source statements only, not imported Native policy from an oversized body.",
+    "Current raw_free/singleton_lifetime_free forwards null to host std::free. A correctly allocated nonnull pointer must belong to that matching host domain and be releasable; no arbitrary Original/game allocation is proven compatible.",
+    "The vector allocation interface itself permits any matching callbacks and adds no runtime identity validation. Its local preload binding is copied from whichever cache context the caller supplied; the concrete renderer accessor is available but the complete NativeShaderPreloadContext production/call edge remains absent in the scoped src/include/tests search.",
+    "The public resize function continues to require an externally supplied actual header and allocation reference; no production call site was found by exact-symbol search. No new Source hookup, native-address bridge, test invocation, Application/vector owner lifetime or production execution is claimed."
+  ],
+  "current_repository_input_pins": [
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "physical_bytes": 3737,
+      "physical_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "canonical_lf_bytes": 3737,
+      "canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "4cb7b1e2ef254a58c18e4f71102d4920c6d5e3ca",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 27,
+          "text": "namespace bsp {\n// Actual 0Ch pointer vector at application+08; count/capacity are signed.\n// Entries own the material loader's returned caller references, including null.\nstruct NativeApplicationPointerVectorStorage {\n    void** data_00;\n    std::int32_t count_04,capacity_08;\n};\nstatic_assert(sizeof(NativeApplicationPointerVectorStorage)==12);\nstruct NativeApplicationPointerVectorAllocation {\n    void* (*allocate_00bf55be)(std::uint32_t);\n    void (*free_00bf6989)(void*);\n};\n// 735EC0: ECX actual0Ch header; stack signed request; RET4. Minimum1,\n// signed capacity comparison, wrapping request*4 allocation, live source/count\n// reads, free CURRENT old data, THEN publish new data/capacity. Count unchanged.\n// Valid readable extents and native allocator/free contracts are required.\n// No rollback or original CRT/new-handler/FH3 identity is added.\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage&,std::int32_t,\n    const NativeApplicationPointerVectorAllocation&);"
+        },
+        {
+          "start_line": 32,
+          "end_line": 40,
+          "text": "struct NativeShaderPreloadContext {\n    NativeStringStorage& strings;\n    const NativeLuaBootstrapInputs& bootstrap;\n    const NativeLuaFileServices& files;\n    NativeShaderBinaryCacheContext& cache;\n    NativeMaterialEffectCacheContext& materials;\n    void* const volatile& actual_renderer_00f8d394;\n    const volatile std::uint32_t* actual_renderer_profile_00d5f0a8;\n};"
+        },
+        {
+          "start_line": 64,
+          "end_line": 74,
+          "text": "    friend void preload_native_application_shaders_0073bf80(\n        void*,NativeShaderPreloadContext&,NativeShaderPreloadOperation&);\n};\n// Full normal 73BF80: ECX actual application, RET. Cache create, Lua mask1,\n// actual shaderfx/shaderpreload.lua, FileNames native iteration (all keys),\n// current renderer+48 per value, append owned/null results to application+08.\n// Cache release precedes reverse value/key/table/Lua cleanup. Original4254B0\n// bracket diagnostics are RET-only. Existing vector entries are preserved.\n// Source normal-path ABI; original private frame/SEH and game parity unproved.\nvoid preload_native_application_shaders_0073bf80(\n    void* actual_application,NativeShaderPreloadContext&,NativeShaderPreloadOperation&);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "physical_bytes": 9265,
+      "physical_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "canonical_lf_bytes": 9265,
+      "canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "8f03277c0e7fa740e636fd51cfe5ffbe885047dc",
+      "excerpts": [
+        {
+          "start_line": 9,
+          "end_line": 41,
+          "text": "namespace {\nusing U=std::uint32_t;\nusing I=std::int32_t;\ntemplate<class T> T read(const void* p,U offset=0) noexcept {\n    return *reinterpret_cast<const volatile T*>(static_cast<const char*>(p)+offset);\n}\ntemplate<class T> void put(void* p,U offset,T value) noexcept {\n    *reinterpret_cast<volatile T*>(static_cast<char*>(p)+offset)=value;\n}\nI signed_bits(U value) noexcept {I result;std::memcpy(&result,&value,4);return result;}\nconstexpr char preload_script[]=\"shaderfx/shaderpreload.lua\";\nstatic_assert(sizeof(preload_script)==0x1b);\n}\n\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage& rows,I requested,\n    const NativeApplicationPointerVectorAllocation& allocation) {\n    if(requested<1)requested=1;\n    if(read<I>(&rows,8)>=requested)return;\n    void* const fresh=allocation.allocate_00bf55be(static_cast<U>(requested)*4u);\n    auto cursor=reinterpret_cast<std::uintptr_t>(fresh);\n    U index=0;\n    while(signed_bits(index)<read<I>(&rows,4)) {\n        if(cursor) {\n            const auto source=read<std::uintptr_t>(&rows);\n            put<U>(reinterpret_cast<void*>(cursor),0,\n                read<U>(reinterpret_cast<const void*>(source+index*4u)));\n        }\n        ++index;cursor+=4u;\n    }\n    allocation.free_00bf6989(read<void*>(&rows));\n    put<void*>(&rows,0,fresh);put<I>(&rows,8,requested);\n}"
+        },
+        {
+          "start_line": 91,
+          "end_line": 100,
+          "text": "void preload_native_application_shaders_0073bf80(void* application,\n    NativeShaderPreloadContext& c,NativeShaderPreloadOperation& operation) {\n    auto& a=*operation.impl_;\n    if(!application||a.phase!=NativeShaderPreloadPhase::fresh)\n        throw std::logic_error(\"shader preload requires actual application storage and a fresh retained frame\");\n    if(&c.strings!=&c.materials.strings||&c.strings!=&c.materials.effects.construction.strings\n        ||c.bootstrap.do_file_00b69e00!=c.files.do_file_00b69e00\n        ||&c.files.manager_0109ceec!=&c.cache.actual_vfs_0109ceec\n        ||&c.files.manager_0109ceec!=&c.materials.effects.current_vfs_0109ceec\n        ||&c.actual_renderer_00f8d394!=&c.materials.effects.construction.current_renderer_00f8d394)"
+        },
+        {
+          "start_line": 136,
+          "end_line": 147,
+          "text": "            a.phase=NativeShaderPreloadPhase::append;\n            auto& rows=*reinterpret_cast<NativeApplicationPointerVectorStorage*>(static_cast<char*>(application)+8);\n            const I capacity=read<I>(&rows,8);\n            if(read<I>(&rows,4)==capacity) {\n                const I doubled=signed_bits(static_cast<U>(capacity)*2u);\n                const NativeApplicationPointerVectorAllocation allocation{c.cache.allocate_array_00bf55be,c.cache.free_array_00bf6989};\n                a.site=0x0073c14a;reserve_native_application_pointer_vector_00735ec0(rows,doubled>1?doubled:1,allocation);\n            }\n            const U count=read<U>(&rows,4);const auto data=read<std::uintptr_t>(&rows);\n            void* const output=reinterpret_cast<void*>(data+count*4u);\n            if(output)put<void*>(output,0,step.result);\n            put<U>(&rows,4,read<U>(&rows,4)+1u);step.appended=true;++a.appended;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "physical_bytes": 4300,
+      "physical_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "canonical_lf_bytes": 4300,
+      "canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "c622171df4c13d649f850b11900921ec95ead010",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 25,
+          "text": "// Borrow the SAME raw string/VFS domain and source-mode cells used by the\n// material compiler. No private cache, provider, allocator or stream is made.\n// Allocation callbacks preserve the existing application's malloc/free domain;\n// original static CRT/new-handler and FH3 identities remain explicit boundaries.\nstruct NativeShaderBinaryCacheContext {\n    NativeResourceStreamReadContext& reads;\n    NativeVfsRuntimeBindings& vfs;\n    void* volatile& actual_vfs_0109ceec;\n    const volatile std::uint8_t& load_variants_0108d6f0;\n    const volatile std::uint8_t& source_mode_0108d6f1;\n    NativeShaderBinaryCacheStorage* volatile& actual_cache_0108d6ec;\n    const char* actual_filename_00d60d30;\n    const volatile std::uint32_t* actual_physical_profile_00d691b0;\n    NativeShaderCacheDecrement const volatile& decrement_00ce2220;\n    void* (*allocate_object_00bf681b)(std::uint32_t);\n    void* (*allocate_array_00bf55be)(std::uint32_t);\n    void (*free_array_00bf6989)(void*);\n    void (*free_object_00bf65ac)(void*);"
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_renderer_shaders.inc",
+      "physical_bytes": 1513,
+      "physical_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "canonical_lf_bytes": 1513,
+      "canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "895165689083f691659cbecd38d978be90924cec",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 15,
+          "text": "// Shared compiler process state and the existing application's VFS/raw pool.\n// Native73BF80 determines when the cache is created/released; no eager I/O.\nstruct ShaderGraph {\n GameNativeShaderProcess& process;\n NativeResourceStreamReadContext reads;\n NativeShaderBinaryCacheContext cache;\n std::unique_ptr<NativeShaderBinaryCacheOperation> operation;\n bool released{};\n ShaderGraph(GameNativeVfsRawServices& vfs,NativeStringRawPoolContext& raw,CameraGraph& cameras,\n     CanonicalProfiles& profiles)\n  :process(game_native_shader_process()),reads{raw,vfs.bindings,process.stream_empty_0109db64()},\n   cache{reads,vfs.bindings,vfs.actual_vfs_publication_0109ceec,\n       process.modes().load_variants_0108d6f0,process.modes().source_mode_0108d6f1,\n       process.cache_0108d6ec(),reinterpret_cast<const char*>(profiles(0xd60d30)),\n       profiles(0xd691b0),cameras.decrement,&raw_allocate,&raw_allocate,&raw_free,&raw_free} {}"
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "physical_bytes": 36751,
+      "physical_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "canonical_lf_bytes": 36751,
+      "canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "cf5d79719ef386079e97ea68d83983de410cb08b",
+      "excerpts": [
+        {
+          "start_line": 106,
+          "end_line": 115,
+          "text": "namespace bsp::game {\nnamespace {\nusing U=std::uint32_t;\nvoid check(bool value,const char* message) { if(!value) throw std::runtime_error(message); }\nU bits(const void* p) noexcept { return reinterpret_cast<U>(p); }\ntemplate<class T> T get(const void* p,U offset=0) noexcept {\n    T value;std::memcpy(&value,static_cast<const unsigned char*>(p)+offset,sizeof value);return value;\n}\nvoid* __cdecl raw_allocate(U size) { return singleton_lifetime_allocate({SingletonAllocationKind::object,size,size}); }\nvoid __cdecl raw_free(void* p) noexcept { singleton_lifetime_free(p); }"
+        },
+        {
+          "start_line": 137,
+          "end_line": 137,
+          "text": "#include \"game_native_renderer_shaders.inc\""
+        },
+        {
+          "start_line": 287,
+          "end_line": 287,
+          "text": "    ShaderGraph shaders;"
+        },
+        {
+          "start_line": 327,
+          "end_line": 331,
+          "text": "          particle_clock_records{vfs.strings,validation},\n          particle_clock_shutdown{particle_clock_records,cameras.decrement,\n              host.particle_clock_publication_00f8d420(),\n              data.data_at(0x00ce7d08,0x14),data.data_at(0x00ce7d24,0x14),&owners},\n          shaders(vfs,raw,cameras,profiles),"
+        },
+        {
+          "start_line": 387,
+          "end_line": 389,
+          "text": "NativeShaderBinaryCacheContext& GameNativeRendererApplication::shader_cache_context() noexcept {\n    return impl_->shaders.cache;\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "physical_bytes": 7462,
+      "physical_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "canonical_lf_bytes": 7462,
+      "canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "262c4aded2a3e3538fdc56d8c6181debb3599b35",
+      "excerpts": [
+        {
+          "start_line": 80,
+          "end_line": 85,
+          "text": "    //73BF80's cache bracket over canonical process cells and this SAME VFS.\n    // Keep it alive through material compilation, release before singleton drain.\n    // Full preload loop remains separate; these entrypoints perform real I/O.\n    void create_shader_cache();\n    void release_shader_cache();\n    NativeShaderBinaryCacheContext& shader_cache_context() noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "canonical_lf_bytes": 13257,
+      "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "excerpts": [
+        {
+          "start_line": 51,
+          "end_line": 67,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "canonical_lf_bytes": 4372,
+      "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "excerpts": [
+        {
+          "start_line": 11,
+          "end_line": 20,
+          "text": "// Explicit host allocation boundary: native object sizes are evidence, while\n// host_bytes allocates the reconstructed C++ type. The returned bytes are raw.\nenum class SingletonAllocationKind { manager, pointer_slots, critical_section, object };\nstruct SingletonAllocationRequest {\n    SingletonAllocationKind kind;\n    std::size_t native_bytes;\n    std::size_t host_bytes;\n};\nvoid* singleton_lifetime_allocate(const SingletonAllocationRequest&);\nvoid singleton_lifetime_free(void*) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "physical_bytes": 1749,
+      "physical_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "canonical_lf_bytes": 1749,
+      "canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "c70948d941c02381b3696a1faa0bd21157eae995",
+      "excerpts": [
+        {
+          "start_line": 11,
+          "end_line": 31,
+          "text": "// Complete ordinary 00735F30..00735F7F schedule, 80 bytes/31 instructions.\n// This public C++ interface borrows the EXISTING actual 0Ch vector header and\n// allocation binding; it is distinct from native ECX/header, stack signed\n// request and RET4. There is no established semantic native EAX result.\n// Compare signed capacity first and call the concrete 735EC0 reserve service\n// only when required. Growth reloads data each iteration, tests the calculated\n// low32 slot address, and writes a zero DWORD there only when that address is\n// nonzero. Its index wraps; growth makes no direct count-field publication.\n// Shrink decrements the actual count field each iteration and compares its\n// current signed value again. Always finish by storing the requested count.\n// Preserve signed negative inputs, wrapping arithmetic, aliases and cycles;\n// do not replace request0 with clear, free or per-element release. The actual\n// reached storage and allocation/free services must satisfy their existing\n// contracts. Invalid accesses may fault with preceding stores/effects retained.\n// No validation, noexcept promise, catch, rollback or new cleanup is added.\n// Original CRT/FH3/fault/service-register identity, callable Application tables,\n// common owner construction and production wiring remain separate boundaries.\nvoid resize_native_application_pointer_vector_00735f30(\n    NativeApplicationPointerVectorStorage& actual_rows,\n    std::int32_t requested,\n    const NativeApplicationPointerVectorAllocation& allocation);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "physical_bytes": 3808,
+      "physical_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "canonical_lf_bytes": 3808,
+      "canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "2433969c7274d021e40f5543b46b0a5d1d693aff",
+      "excerpts": [
+        {
+          "start_line": 14,
+          "end_line": 23,
+          "text": "// Private Source ABI: ECX actual header, EDX borrowed allocation binding,\n// stack signed request, RET4. Forward the same objects to the real reserve\n// service; no copied binding, default callback or alternate allocation domain.\n__declspec(noinline) void __fastcall reserve_for_resize(\n    NativeApplicationPointerVectorStorage* actual_rows,\n    const NativeApplicationPointerVectorAllocation* allocation,\n    std::int32_t requested) {\n    reserve_native_application_pointer_vector_00735ec0(\n        *actual_rows, requested, *allocation);\n}"
+        },
+        {
+          "start_line": 80,
+          "end_line": 85,
+          "text": "__declspec(noinline) void resize_native_application_pointer_vector_00735f30(\n    NativeApplicationPointerVectorStorage& actual_rows,\n    std::int32_t requested,\n    const NativeApplicationPointerVectorAllocation& allocation) {\n    resize_body(&actual_rows, &allocation, requested);\n}"
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+      "physical_bytes": 83431,
+      "physical_sha256": "998dc36918f60a64487e9c107092cac47cf8dbeab55302aa34a97787ca9a36ba",
+      "canonical_lf_bytes": 81357,
+      "canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "physical_crlf_count": 2074,
+      "matches_base_blob": true,
+      "git_blob_oid": "3d277a536262fa29c00ef012907844fd1cb9961f"
+    },
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_bytes": 455,
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_bytes": 14411,
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+      "excerpts": [
+        {
+          "start_line": 101,
+          "end_line": 110,
+          "text": "    def verify(self):\n        project = self.get('list_project_files', folder='/')\n        info = self.get('get_current_program_info')\n        expected = self.config\n        if project['project_name'] != expected['project']:\n            raise RuntimeError(f\"Wrong Ghidra project: {project['project_name']}\")\n        for key, actual in [('program_path', info['path']), ('language', info['language']), ('image_base', info['image_base'])]:\n            if actual != expected[key]:\n                raise RuntimeError(f'Wrong target {key}: {actual}')\n        return project, info"
+        }
+      ]
+    }
+  ],
+  "inherited_canonical_pin_replays": [
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "reports/cc12_native_application_pointer_vector_resize_primary_review.json",
+      "expected_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "actual_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "reports/native_shader_preload_r99.json",
+      "expected_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "actual_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "reports/cc12_application_vector_retirement_readiness.json",
+      "expected_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "actual_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "matches": true
+    },
+    {
+      "parent_field": "current_primary_report_canonical_pins_replayed",
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "expected_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "actual_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "matches": true
+    }
+  ],
+  "retained_source_proof_reuse": {
+    "parent_report": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+    "accepted_previous_commit": "c272f5f03327ffbb7cb91d99e9a3423b5e00d9e7",
+    "previously_reviewed_emitted_bytes": 232,
+    "previously_reviewed_emitted_instructions": 98,
+    "previously_reviewed_reserve_bytes": 113,
+    "previously_reviewed_reserve_instructions": 50,
+    "new_graph_or_object_reaudit": false,
+    "new_build": false,
+    "new_test": false,
+    "reuse_basis": "Parent report pinned; its8direct+8primary canonical records replayed (10unique paths), including Source/helper/provider interface files. Retained compiled graphs were not rerun or re-audited."
+  },
+  "validation": {
+    "all_three_selected5B_captures_match_current_PE": true,
+    "all_three_complete_single_JMP_decodes_match_live": true,
+    "all_three_rel32_targets_independently_calculated": true,
+    "allocator_target_105B_rejected_by32B_gate": true,
+    "free_first_target5B_gate_passed_and_second_destination_not_followed": true,
+    "no_IAT_reads_or_import_scan": true,
+    "thirteen_direct_repository_pins_match_base": true,
+    "sixteen_inherited_canonical_references_replayed": true,
+    "inherited_unique_paths": 10,
+    "exact_Source_aggregate_field_order_and_provider_chain_checked": true,
+    "report_json_parses": true,
+    "staged_exact_two_owned_files": true,
+    "diff_check_passed": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_functions": 0,
+    "new_fragments": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_execution": 0,
+    "Source_changes": 0,
+    "Ghidra_changes": 0,
+    "ledger_changes": 0,
+    "CMake_changes": 0,
+    "Application_wiring": 0,
+    "game_validation": 0
+  },
+  "next_boundary": "Any renewed Original allocator policy needs a separately authorized105B00BF681B audit; original free implementation needs authorization beyond observed00BF9DC8. Neither is authorized by this packet. The concrete current host Source provider exists, but Source publication into full-preload/actual Application-vector ownership remains separate."
+}
