@@ -1,0 +1,399 @@
+{
+  "schema": "bsp.cc12.application_scalar_table_entry_readiness.v1",
+  "kind": "read_only_complete_slot_zero_entry_contract",
+  "created_utc": "2026-10-09T06:21:20.267182+00:00",
+  "baseline": "6df8a40cbdad733d56fcbef6424bd8199997a5a2",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "live_function_count_verified": 64729,
+  "installed_image": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "fresh_code": [
+    {
+      "address": "00737E00",
+      "bytes": 30,
+      "hex": "568bf1e898fbfffff644240801740956e897e74b0083c4048bc65ec20400",
+      "sha256": "df7c5e8e769109da1b0c6187ead9fe97cd0037bf3b9d6eaaaf61e67d0c3fef17",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": [
+        {
+          "address": "00737E00",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00737E01",
+          "bytes": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00737E03",
+          "bytes": 5,
+          "hex": "e898fbffff",
+          "text": "call 0x7379a0"
+        },
+        {
+          "address": "00737E08",
+          "bytes": 5,
+          "hex": "f644240801",
+          "text": "test byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00737E0D",
+          "bytes": 2,
+          "hex": "7409",
+          "text": "je 0x737e18"
+        },
+        {
+          "address": "00737E0F",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00737E10",
+          "bytes": 5,
+          "hex": "e897e74b00",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00737E15",
+          "bytes": 3,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00737E18",
+          "bytes": 2,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00737E1A",
+          "bytes": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00737E1B",
+          "bytes": 3,
+          "hex": "c20400",
+          "text": "ret 4"
+        }
+      ],
+      "ordinary_child": "007379A0"
+    },
+    {
+      "address": "00BEA950",
+      "bytes": 30,
+      "hex": "568bf1e858fffffff644240801740956e847bc000083c4048bc65ec20400",
+      "sha256": "bc802d5c9459fc3eb3a526b83927516f7b6462394baef333948a4bf6f189f4e0",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": [
+        {
+          "address": "00BEA950",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00BEA951",
+          "bytes": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00BEA953",
+          "bytes": 5,
+          "hex": "e858ffffff",
+          "text": "call 0xbea8b0"
+        },
+        {
+          "address": "00BEA958",
+          "bytes": 5,
+          "hex": "f644240801",
+          "text": "test byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00BEA95D",
+          "bytes": 2,
+          "hex": "7409",
+          "text": "je 0xbea968"
+        },
+        {
+          "address": "00BEA95F",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00BEA960",
+          "bytes": 5,
+          "hex": "e847bc0000",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00BEA965",
+          "bytes": 3,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00BEA968",
+          "bytes": 2,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00BEA96A",
+          "bytes": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00BEA96B",
+          "bytes": 3,
+          "hex": "c20400",
+          "text": "ret 4"
+        }
+      ],
+      "ordinary_child": "00BEA8B0"
+    },
+    {
+      "address": "00BEA9A0",
+      "bytes": 36,
+      "hex": "568bf1c706c88bd600e802fffffff644240801740956e8f1bb000083c4048bc65ec20400",
+      "sha256": "555765f2b068ddb0c619db2a1ec56134fb4c9e145d6faa51248cba6a41e2b949",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": [
+        {
+          "address": "00BEA9A0",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00BEA9A1",
+          "bytes": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00BEA9A3",
+          "bytes": 6,
+          "hex": "c706c88bd600",
+          "text": "mov dword ptr [esi], 0xd68bc8"
+        },
+        {
+          "address": "00BEA9A9",
+          "bytes": 5,
+          "hex": "e802ffffff",
+          "text": "call 0xbea8b0"
+        },
+        {
+          "address": "00BEA9AE",
+          "bytes": 5,
+          "hex": "f644240801",
+          "text": "test byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00BEA9B3",
+          "bytes": 2,
+          "hex": "7409",
+          "text": "je 0xbea9be"
+        },
+        {
+          "address": "00BEA9B5",
+          "bytes": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00BEA9B6",
+          "bytes": 5,
+          "hex": "e8f1bb0000",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00BEA9BB",
+          "bytes": 3,
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00BEA9BE",
+          "bytes": 2,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00BEA9C0",
+          "bytes": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00BEA9C1",
+          "bytes": 3,
+          "hex": "c20400",
+          "text": "ret 4"
+        }
+      ],
+      "ordinary_child": "00BEA8B0"
+    }
+  ],
+  "fresh_slot_zero_cells": [
+    {
+      "address": "00CFEAB0",
+      "bytes": 4,
+      "hex": "007e7300",
+      "sha256": "eb4b264354cb480e9dce6706d54ac7789eb7141ee28decb4a917227468bf25ec",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": []
+    },
+    {
+      "address": "00D68BC4",
+      "bytes": 4,
+      "hex": "50a9be00",
+      "sha256": "231874c3e6c49bef4859fab8e139f28255260396d069feb3410c0ff9fe7cdac3",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": []
+    },
+    {
+      "address": "00D68BC8",
+      "bytes": 4,
+      "hex": "a0a9be00",
+      "sha256": "4ace0dbd95cca7d2c84f1f4560f7ae7c890004f7d2787bfca61d712c0ea47a67",
+      "raw_PE_equal": true,
+      "qualified_static_virtual_zero": false,
+      "instructions": []
+    }
+  ],
+  "fresh_bytes": 108,
+  "complete_code_instructions": 34,
+  "Ghidra_listing_instruction_counts": [
+    10,
+    10,
+    11
+  ],
+  "Ghidra_listing_gaps": [
+    {
+      "address": "00737E15",
+      "hex": "83c404",
+      "operation": "ADD ESP,4",
+      "bytes": 3
+    },
+    {
+      "address": "00BEA965",
+      "hex": "83c404",
+      "operation": "ADD ESP,4",
+      "bytes": 3
+    },
+    {
+      "address": "00BEA9BB",
+      "hex": "83c404",
+      "operation": "ADD ESP,4",
+      "bytes": 3
+    }
+  ],
+  "saved_listing_repaired": false,
+  "placeholder_prototypes_admitted": false,
+  "contract": [
+    "SaveESI and capture actualECX; thirdentry writesD68BC8 before directBEA8B0.",
+    "Ordinarychild mustreturn before callerargumentlowbit read atESP+8.",
+    "Bit0 set: pushcapturedESI, callactualBF65AC, ADDESP4; otherbitsunconsumedlocally.",
+    "Returncapturedpointer withoutpostfreedereference, restoreESI, RET4.",
+    "No localpublication/manager/refcount/nullguard/catch/rollback; childfault/EH remains external."
+  ],
+  "table_width_or_later_slots_established": false,
+  "source_search": {
+    "bounded_roots": [
+      "src/**/*.cpp",
+      "include/bsp/**/*.hpp"
+    ],
+    "exact_entry_matches": [],
+    "three_dispatch_cases_present": false
+  },
+  "current_input_pins": [
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "canonical_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "canonical_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+    },
+    {
+      "path": "src/game_hosts_text.cpp",
+      "canonical_lf_sha256": "2a508d549b1b26de329a94773e89dd61ddcc3fe7e9087deaed582412ef5dba2a"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "src/native_singleton_removal_reorder.cpp",
+      "canonical_lf_sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+    },
+    {
+      "path": "include/bsp/native_singleton_removal_reorder.hpp",
+      "canonical_lf_sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+    },
+    {
+      "path": "config/target.json",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "reports/cc12_game_application_name_cell_producer_readiness.json",
+      "canonical_lf_sha256": "5c3e67d6c78459f60ac22990cbab182d57fb0b30f418e9e1c5e213987fc36ff1"
+    },
+    {
+      "path": "reports/cc12_application_manager_registration_readiness.json",
+      "canonical_lf_sha256": "29fd4a887b1e12fb36ab1f9a22a1d5d253dcda2b0f01ff22c389740782ef158f"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_SCALAR_TABLE_ENTRY_READINESS.md",
+      "canonical_lf_sha256": "4e9a20fa1b20dc26d52bbb60be18f432fbd7cab59e52665a8279d3693609522c"
+    }
+  ],
+  "other_bounded_audits_replayed": [
+    {
+      "worker_commit": "7e66a429c43d15879e9a7be96b6f98aaf6aa4652",
+      "report": "reports/cc12_application_base_retirement_readiness.json",
+      "canonical_lf_sha256": "27d1be6b6cbb317f6174b90ca9009f600f154af49aa76446689ebfd0c3c7dde8",
+      "current_pins": 13,
+      "windows": 2
+    },
+    {
+      "worker_commit": "284fa4eb6920d7fa2488eadda58abe29a8f7f975",
+      "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+      "canonical_lf_sha256": "929ec69d3e02d899513b64aec4af27baac5e6007c29f6e378dee0b43f9ee018a",
+      "current_pins": 15,
+      "windows": 9
+    }
+  ],
+  "held": [
+    "ActualBEA8B0 retirement and outervectorchild735F30.",
+    "CommonactualApplicationowner/publication/registration and callableSourceprofiles.",
+    "WinMainstackowner differs from qualifiedheapfreepath; callerflags/allocationdomainrequired.",
+    "Nativeexception/fault compatibility, productionbinding, startup/gameplay."
+  ],
+  "credit": {
+    "Source": 0,
+    "Original": 0,
+    "GPR_mutations": 0,
+    "builds_tests_probes": 0,
+    "runtime_gameplay": 0
+  }
+}
