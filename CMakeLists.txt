@@ -346,3 +346,6 @@ target_sources(bsp_core PRIVATE src/native_lua_variant_pair_retreat.cpp)
 
 target_sources(bsp_core PRIVATE src/native_lua_variant_pair_retreat_wrapper.cpp)
 target_sources(bsp_core PRIVATE src/native_tick_subnode_reparent.cpp)
+
+target_sources(bsp_core PRIVATE src/native_return_one_byte.cpp)
+target_sources(bsp_core PRIVATE src/native_tick_subnode_requeue.cpp)

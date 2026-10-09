@@ -913,5 +913,42 @@
     "Original_ABI": 0,
     "startup": 0,
     "gameplay": 0
+  },
+  "Root_primary_acceptance": {
+    "worker_commit": "ae771798b4428808217a393f0b0439022f65c05a",
+    "worker_report_pin": {
+      "path": "reports/cc12_native_unit_numbering_update_virtual_query_readiness.json",
+      "bytes": 36243,
+      "sha256": "810c0f3ce466f5d46c294b20d57dc6ebafd7de55e11b978185f013cc05b4522d"
+    },
+    "review": {
+      "passed": true,
+      "Root_complete130line_doc_76B28ops_and_additional108B38ops_read": true,
+      "additional8slot_data_bytes_read": true,
+      "PE_body_and_slot_replay": true,
+      "Source_held_dynamic_receiver_current_token_dispatch_and_services": true,
+      "pin_checks": 49,
+      "only_line_ending_differences": [
+        "reports/cc12_native_pending_registry_getter_primary_review.json",
+        "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json"
+      ],
+      "no_Source_ABI_startup_gameplay_credit": true
+    },
+    "Source113_snapshot_now_historical_after_primary_Source117_build": true,
+    "current_Source117_inputs_objects_positive_roots_existing_checks": [
+      117,
+      35,
+      39,
+      3
+    ],
+    "new_Source_ABI_startup_gameplay_credit": 0,
+    "existing_name_evidence_refresh": {
+      "name": "BSP_MLandFort_IsKindOf",
+      "saved_annotation_receipt": "local\\ghidra-annotations-20261009T202717Z.json",
+      "old_name_and_comment_preserved": true,
+      "Native54bytes_and19listing_starts_unchanged": true,
+      "export_refreshed": true,
+      "Source_ABI_startup_gameplay_credit": 0
+    }
   }
 }

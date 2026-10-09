@@ -1,3 +1,7 @@
+Primary compiled review: Root read all 166 emitted bytes / 71 operations in four functions (public requeue 133 bytes / 53 operations and three unused 11-byte reference helpers), plus all five physical indexed public edges. The signed early exit and sole late input read remain. Captured Node is saved in a reused public-argument stack slot; after Leave the fresh volatile child word is initialized at EBP-4 and passed with the original guard/F/M. The compiler moves the captured-K test after Node+4 clear; Native tests before that flag-preserving store. This is qualified C++ behavior, without flags/fault/frame equivalence. No outer EH or cleanup is added.
+
+Combined MSVC Win32 build 2026-10-09T20:20:30.934115+00:00 to 2026-10-09T20:20:47.377222+00:00 passed all three existing checks. Root read all new 169 bytes / 73 operations in five functions, replayed all 33 prior objects byte-identically, and captured 35 whole objects with 39 selected positive Core definitions. The receipt pins 117 inputs and four artifacts. Both public roots are absent from the application map; no consumer or forced retention was added. Candidate Source113 context below is immutable historical evidence. Original ABI, startup and gameplay remain unproved.
+
 # Tick subnode requeue Source candidate
 
 This packet composes the complete `00876120..00876175` body, 86 bytes /
