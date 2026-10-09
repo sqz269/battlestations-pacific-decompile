@@ -1,0 +1,203 @@
+{
+  "packet": "cc12_ghidra_flow_repair_safety",
+  "status": "tooling_source_repair_complete; primary_review_pending",
+  "utc": "2026-10-09T01:21:52.975738+00:00",
+  "owned_files": [
+    "tools/ghidra_flow_repair.py",
+    "tests/test_ghidra_flow_repair.py",
+    "docs/CC12_GHIDRA_FLOW_REPAIR_SAFETY.md",
+    "reports/cc12_ghidra_flow_repair_safety.json"
+  ],
+  "scope": {
+    "Ghidra_address_leases": 0,
+    "Ghidra_mutations": 0,
+    "fresh_Ghidra_analysis_queries": 0,
+    "read_only_Ghidra_status": "bsp brief only",
+    "bridge_changes": 0,
+    "server_configuration_changes": 0,
+    "script_enable_changes": 0,
+    "bridge_restarts": 0,
+    "CPlusPlus_Source_changes": 0,
+    "CMake_changes": 0,
+    "ledger_changes": 0,
+    "new_function_or_name_credit": 0,
+    "builds": 0,
+    "Native_probes_or_game_execution": 0,
+    "full_listing_repair_credit": false
+  },
+  "current_baseline": {
+    "worker_head_before_edit": "5402b0b9be6fcf9a2908f27697de6f492fd81373",
+    "main_head_when_preimage_captured": "dc1c5a32752a8e7dd1570d101f2e47a4d5038031",
+    "complete_preimages": [
+      {
+        "path": "tools/ghidra_flow_repair.py",
+        "bytes": 12710,
+        "sha256": "644b1761e5f558dcec4b28f1ed732d9832c225774c7d42d8ccc06cdcc3b648d7"
+      },
+      {
+        "path": "tests/test_ghidra_flow_repair.py",
+        "bytes": 1239,
+        "sha256": "b2427f4bf837a9d117c406e5a6b553c21aef9165c1f50d2d3a22eb8148c5d58e"
+      }
+    ],
+    "prior_reviewed_evidence": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_world_destructor_listing_repair_design_evidence\\design_analysis.json",
+        "retained": "prior_reviewed_evidence\\design_analysis.json",
+        "bytes": 34790,
+        "sha256": "3f531385233b95186d06d5d023f7ef2085c55680a9b6fd94246a705fe0c7b402"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_world_destructor_listing_repair_design_evidence\\current_flow.json",
+        "retained": "prior_reviewed_evidence\\current_flow.json",
+        "bytes": 8040,
+        "sha256": "eedc3fcf18e76935df16b05ad46593876ab7bc0f88f074a0a2ce74ea8dd219cb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_world_destructor_listing_repair_design_evidence\\bridge\\FunctionService.java",
+        "retained": "prior_reviewed_evidence\\bridge\\FunctionService.java",
+        "bytes": 165097,
+        "sha256": "6b12fae758291cf568faafddf463b3bf0df579f199f5d2fab0c1ba442d1af1bd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_world_destructor_listing_repair_design_evidence\\Ghidra\\ghidra\\app\\cmd\\disassemble\\DisassembleCommand.java",
+        "retained": "prior_reviewed_evidence\\Ghidra\\ghidra\\app\\cmd\\disassemble\\DisassembleCommand.java",
+        "bytes": 14531,
+        "sha256": "cc937e9b4183ed4aae76e3cafc055bb5703c1f1d7cadae30a6b1c4c32592d5bf"
+      }
+    ]
+  },
+  "observed_risk": {
+    "precise_scope": "The pre-change wrapper default report branch was already read-only. The reviewed bridge clear_instruction_flow_override endpoint is a mutator, not a safe dry-run/property query. Do not misreport a default wrapper mutation that was not observed.",
+    "unsafe_apply": "The former --apply path used that mutator, then legacy disassemble_bytes with a null restricted AddressSet and a boolean wired to Ghidra followFlow. It lacked exact FlowOverride/fallthrough/body metadata preimages, an atomic rollback transaction and an existing-function-body update; it could save after warning that the body tail remained incomplete.",
+    "read_limit": "No current typed read route implemented here supplies the exact flow, fallthrough and no-return properties. The prior explicitly read-only inline query was rejected by the existing disabled-script gate. No new property query, guessed endpoint, script workaround or server change is introduced."
+  },
+  "old_control_flow": [
+    "Parse --apply/--record/tail options; read config, instantiate and verify Ghidra Client, read disk PE and existing JSON repair record.",
+    "Read disassemble_function, compute/print gaps. Without --apply, return after advertising --apply as the way to clear overrides and decode gaps; no default write occurred.",
+    "With --apply, acquire coordination lock/check leases, then post clear_instruction_flow_override and disassemble_bytes for each eligible gap; explicit-tail mode clears all matching free-call overrides again.",
+    "Re-decompile/report remaining gaps, write repair records and save_program even when the separate stored-body extension remains incomplete."
+  ],
+  "new_control_flow": [
+    "Immediately reject any --apply argument with concrete missing bounded/atomic-route and exact-preimage requirements, before config/record access, Client creation, PE reads or any Ghidra request.",
+    "For default/--dry-run reporting, preserve function/tail parsing, verified Client reads and existing gap computation. --record remains accepted but the record file is neither read nor modified.",
+    "Only Client.verify GETs list_project_files/get_current_program_info and listing GET disassemble_function are reachable through the real read client. Report a conditional plan and state that exact flags, cause and body completion were not established.",
+    "The former POST helper, URL write imports, mutation endpoint calls, lock/mutation branch, record writes and save retry path are removed. No guessed capability detection or hidden bypass flag replaces them."
+  ],
+  "unsupported_apply_message": "Unsupported --apply: an attested bounded/atomic callable repair route and exact flow/fallthrough, body and metadata preimages are required. The legacy flow-clearing/disassembly/save path is disabled. No Ghidra requests or mutations were made. Run without --apply for a conditional read-only report.",
+  "compatibility": [
+    "Existing default report invocation and bsp.py ghidra flow remain read-only; explicit --dry-run is documented and follows the same report path.",
+    "Multiple functions, explicit tail bounds and --tail-rethrow argument requirements are preserved. load_pe, listing, find_gaps and tail_terminator helper source is unchanged after newline normalization.",
+    "--record <path> remains accepted for report invocations and leaves existing bytes unchanged. It no longer parses an unused JSON record, so malformed prior records do not block a read-only report; a missing path now produces a clear error.",
+    "All --apply invocations intentionally exit before connecting. This holds the unsafe legacy repair workflow rather than claiming a safe replacement exists. Previously retained repair records are not migrated, deleted or relabeled.",
+    "The report no longer attributes every gap to confirmed CALL_RETURN or recommends --apply. Tail reporting remains a boundary hint, not whole-Native validation or Ghidra body admission."
+  ],
+  "required_future_route": [
+    "Independent review and attestation of a concrete callable bounded/atomic route; a descriptive endpoint name, dry-run flag, or script enable setting is not that attestation.",
+    "Direct exact preimages: local flow override, separate fallthrough flag/default/effective targets, callee no-return/thunk chain, Function ID/body ranges, all metadata/comments/references, full-byte ownership and unchanged original/live byte evidence.",
+    "Exclusive leases and coordination lock, existing saved-project checkpoint, proper analysis worker suppression, one owned transaction with rollback on any failed assertion.",
+    "Explicit restricted AddressSet disassembly with followFlow=false, preservation of existing code, validation of the recomputed candidate body before setting the same existing Function, with no deletion/recreation or overlapping owner edits.",
+    "Full postconditions for bytes, instruction starts, body, flow, metadata, references and neighbors, followed by saved-project receipt, refreshed exports and persistence readback; rollback must not undo unrelated work.",
+    "See docs/CC12_WORLD_DESTRUCTOR_LISTING_REPAIR_DESIGN.md for the concrete 00904C40 design. This tooling change supplies none of its missing live preimages or repair execution."
+  ],
+  "validation": {
+    "utc": "2026-10-09T01:19:48.811501+00:00",
+    "checks": [
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-m",
+          "py_compile",
+          "tools/ghidra_flow_repair.py",
+          "tests/test_ghidra_flow_repair.py"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-c",
+          "import sys; sys.path.insert(0, 'tools'); import ghidra_flow_repair; print('Imported flow-report tool without calling main or Ghidra')"
+        ],
+        "exit_code": 0,
+        "stdout": "Imported flow-report tool without calling main or Ghidra\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tests/test_ghidra_flow_repair.py",
+          "ExplicitCatchTailTest.test_report_and_unsupported_apply_never_reach_mutators",
+          "-v"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "test_report_and_unsupported_apply_never_reach_mutators (__main__.ExplicitCatchTailTest.test_report_and_unsupported_apply_never_reach_mutators) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.044s\n\nOK\n"
+      }
+    ],
+    "result": "PASS",
+    "physical_sources": [
+      {
+        "path": "tools/ghidra_flow_repair.py",
+        "bytes": 6756,
+        "sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6"
+      },
+      {
+        "path": "tests/test_ghidra_flow_repair.py",
+        "bytes": 5211,
+        "sha256": "270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab"
+      }
+    ],
+    "unchanged_helper_block_sha256": "a9b7413257f5fdbd42862709f2b1404cfed08893ff152d7c129311923fa35106",
+    "removed_mutation_endpoints": [
+      "clear_instruction_flow_override",
+      "disassemble_bytes",
+      "save_program"
+    ],
+    "Ghidra_requests": 0,
+    "Ghidra_mutations": 0,
+    "offline_regression": "One new unittest, two report variants and two unsupported-apply variants; strict GET allowlist, zero direct legacy/network escape, record bytes unchanged, apply creates no Client or PE reader."
+  },
+  "regression_scope": {
+    "new_test_methods": 1,
+    "default_and_dry_run_cases": 2,
+    "unsupported_apply_cases": 2,
+    "real_Client_verify_get_used": true,
+    "mocked_GET_endpoints": [
+      "list_project_files",
+      "get_current_program_info",
+      "disassemble_function"
+    ],
+    "other_endpoint_or_HTTP_write": "assertion failure",
+    "legacy_urlopen_or_unmocked_network": "assertion failure",
+    "existing_record_bytes": "unchanged",
+    "unsupported_apply_Client_and_PE_reader": "not called",
+    "actual_network_requests": 0,
+    "new_framework": false,
+    "other_tests": "not run; existing rethrow test preserved"
+  },
+  "failures": [
+    {
+      "kind": "editing tool context mismatch",
+      "error": "apply_patch verification failed: Failed to find expected lines in tools/ghidra_flow_repair.py (large removal hunk).",
+      "specific_mismatch": "The proposed old print text said bytes differ from the disk image; the actual old line said bytes differ from disk.",
+      "effect": "Atomic patch rejection; no file change. edit_tool.py then asserted the complete original SHA256 before writing the new tool.",
+      "retry": "One exact-preimage guarded source rewrite; syntax/import and focused regression passed on the first validation run."
+    }
+  ],
+  "limits": [
+    "Offline Python tooling checks only. No Ghidra project repair, new analysis query, saved-project change, Native/Source function implementation, ABI validation, startup or gameplay result.",
+    "Prior bridge/Ghidra evidence is retained as provenance and was not refreshed by querying or restarting the server."
+  ],
+  "evidence_seal": {
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_wake_append_source_ast\\local\\cc12_ghidra_flow_repair_safety_evidence.zip",
+    "bytes": 77426,
+    "sha256": "227db17b59ada003051d361aa3023ceb0444abfe5e8a636d27ed1659d5faa47e",
+    "manifest_sha256": "98bcf3453e547b8340efb5dbd104a1c06bd4b9672acd97d627ab1823402f490d",
+    "manifest_files": 20,
+    "ZIP_entries": 21,
+    "all_payload_SHA256_and_CRC": "PASS"
+  }
+}
