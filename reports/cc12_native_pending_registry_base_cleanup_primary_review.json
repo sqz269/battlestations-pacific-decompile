@@ -1,0 +1,304 @@
+{
+  "schema": "bsp.cc12.pending_registry_base_cleanup_primary_review.v1",
+  "status": "ordinary_explicit_borrowed_cell_Source_whole_leaf_child_and_positive_core_link_reviewed_normal_win32_build_passed",
+  "created_utc": "2026-10-09T08:04:13.732662+00:00",
+  "worker_commit": "27e5d47594ea9f45ad82261ec8842718305503f9",
+  "build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 113000,
+    "start_utc": "2026-10-09T08:00:42.371756+00:00",
+    "finish_utc": "2026-10-09T08:01:04.699983+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "source_inputs_rechecked_after_build": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "a315c5fefbb4885f715edd4941688ae43102b9aa7ae1fd12b2d118cb2811586f"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b"
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    }
+  ],
+  "canonical_worker_and_prior_pins_replayed": 15,
+  "accepted_native": {
+    "address": "008748F0",
+    "bytes": 17,
+    "instructions": 3,
+    "hex": "c705cc78f80000000000c7011838ce00c3",
+    "sha256": "d6b00cb7e86ca84a971ae28580fec99ba8b7de3ccaf5750da1df4bf81b0d20cb",
+    "complete_current_PE_equal": true,
+    "physical_native_CALLs": 0
+  },
+  "entire_emitted_leaf": {
+    "symbol": "?cleanup_native_pending_registry_base_008748f0@bsp@@YAXPAXACRAX@Z",
+    "symbol_index": 8,
+    "section": 3,
+    "section_value": 0,
+    "physical_file_offset": 447,
+    "bytes": 25,
+    "instruction_count": 9,
+    "hex": "558bec8b450cff7508c70000000000e80000000083c4045dc3",
+    "instructions": [
+      {
+        "offset": 0,
+        "bytes": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "offset": 1,
+        "bytes": "8bec",
+        "mnemonic": "mov",
+        "operands": "ebp, esp"
+      },
+      {
+        "offset": 3,
+        "bytes": "8b450c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp + 0xc]"
+      },
+      {
+        "offset": 6,
+        "bytes": "ff7508",
+        "mnemonic": "push",
+        "operands": "dword ptr [ebp + 8]"
+      },
+      {
+        "offset": 9,
+        "bytes": "c70000000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], 0"
+      },
+      {
+        "offset": 15,
+        "bytes": "e800000000",
+        "mnemonic": "call",
+        "operands": "0x14"
+      },
+      {
+        "offset": 20,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "offset": 23,
+        "bytes": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "offset": 24,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "sole_Source_child_relocation": {
+    "record_file_offset": 472,
+    "raw_record_hex": "10000000090000001400",
+    "offset": 16,
+    "type": 20,
+    "symbol_index": 9,
+    "symbol": "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z",
+    "symbol_record": {
+      "index": 9,
+      "record_file_offset": 676,
+      "raw_record_hex": "000000004600000000000000000020000200",
+      "name": "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z",
+      "value": 0,
+      "section": 0,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0,
+      "aux_records_hex": ""
+    },
+    "operand_file_offset": 463,
+    "operand_hex": "00000000",
+    "operand_u32": 0,
+    "function_offset": 16
+  },
+  "entire_actual_Source_child": {
+    "symbol": "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z",
+    "symbol_index": 39,
+    "section": 10,
+    "section_value": 0,
+    "physical_file_offset": 1548,
+    "bytes": 14,
+    "instruction_count": 6,
+    "hex": "558bec8b4508c7001838ce005dc3",
+    "instructions": [
+      {
+        "offset": 0,
+        "bytes": "55",
+        "mnemonic": "push",
+        "operands": "ebp"
+      },
+      {
+        "offset": 1,
+        "bytes": "8bec",
+        "mnemonic": "mov",
+        "operands": "ebp, esp"
+      },
+      {
+        "offset": 3,
+        "bytes": "8b4508",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp + 8]"
+      },
+      {
+        "offset": 6,
+        "bytes": "c7001838ce00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], 0xce3818"
+      },
+      {
+        "offset": 12,
+        "bytes": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "offset": 13,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "positive_unique_core_definitions": [
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_pending_registry_base_cleanup.obj",
+        "header_offset": 63759290,
+        "payload_file_offset": 63759350,
+        "bytes": 862,
+        "sha256": "be8dcdce0c92de83c3267150ca2d519025ce56a8b2a099e6527a64f9993e064f"
+      },
+      "definition": {
+        "name": "?cleanup_native_pending_registry_base_008748f0@bsp@@YAXPAXACRAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 658,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_render_service_base.obj",
+        "header_offset": 28969614,
+        "payload_file_offset": 28969674,
+        "bytes": 6618,
+        "sha256": "f6ee4ab84c0f431816aff5f19eb949a0d2594adad110bbb987844629d0adc45e"
+      },
+      "definition": {
+        "name": "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z",
+        "symbol_index": 39,
+        "symbol_record_file_offset": 3600,
+        "section": 10,
+        "value": 0,
+        "type": 32
+      }
+    }
+  ],
+  "complete_matching_core_members": [
+    {
+      "name": "bsp_core.dir\\Release\\native_pending_registry_base_cleanup.obj",
+      "header_offset": 63759290,
+      "payload_file_offset": 63759350,
+      "bytes": 862,
+      "sha256": "be8dcdce0c92de83c3267150ca2d519025ce56a8b2a099e6527a64f9993e064f"
+    },
+    {
+      "name": "bsp_core.dir\\Release\\native_render_service_base.obj",
+      "header_offset": 28969614,
+      "payload_file_offset": 28969674,
+      "bytes": 6618,
+      "sha256": "f6ee4ab84c0f431816aff5f19eb949a0d2594adad110bbb987844629d0adc45e"
+    }
+  ],
+  "whole_objects": [
+    {
+      "bytes": 862,
+      "sha256": "be8dcdce0c92de83c3267150ca2d519025ce56a8b2a099e6527a64f9993e064f"
+    },
+    {
+      "bytes": 6618,
+      "sha256": "f6ee4ab84c0f431816aff5f19eb949a0d2594adad110bbb987844629d0adc45e"
+    }
+  ],
+  "core_library_sha256": "25ee1f5c8c93ed436b3d946c6026dff17d634d2c8bea66a8413849c2a160c5db",
+  "indexed_graph_external_boundaries": [
+    "?destroy_native_generic_singleton_base_00412430@bsp@@YAXPAX@Z"
+  ],
+  "child_indexed_graph_external_boundaries": [],
+  "complete_review": [
+    "Whole25B/9ins leaf: cdeclframe, load secondarg actualcelladdress, push captured firstarg receiver, volatilecellDWORDzero atoffset9, actualprofile-store helperCALL atoffset15, callerADDESP4, restoreEBP/plainRET.",
+    "Whole14B/6ins currentactualchild: cdeclframe/firstarg receiver load, solevolatileDWORD CE3818 store atoffset6, restoreEBP/plainRET; no field4 access/guard/callback/free/unlock/global/cleanup.",
+    "Sole REL32 operand16 externalphysicalsymbol resolves to actual concrete helper; two exact complete Core members and unique positivepublic definitions; child has no namedexternal boundaries.",
+    "Ordinary semantic refinement only: newborrowedactualcell C++API is25B+14B Source call topology versus17B/no-call Originalbody. No identical Nativebytes/registers/flags/entry/FH3 behavior claim.",
+    "Publicationclear isunconditional andprecedes solebaseprofile store; receiversection4 unchanged. No new cell/global/owner/table/validation/manager/free/unlock/rollback/RAII/noexcept/wiring; root absent game map."
+  ],
+  "retained_complete_evidence": "local/cc12_registry_base_cleanup_primary/whole_objects_and_actual_profile_store_binding.json",
+  "root_absent_game_map": true,
+  "credit": {
+    "additional_Original_reconstructed_functions": 1,
+    "covered_Original_bytes": 17,
+    "Native_ABI": 0,
+    "canonical_cell_producer": 0,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "Caller must bind genuine stable mutableF878CC lvalue and actualreceiver lifetime; this API produces neither thecell nor owner/callableprofiles. NumericCE3818 is only established base-profile identity, not supplied callable Source vtable.",
+    "OriginalECX/noEDX/RET0/registerflagpreservation/absolute-global entry and sharedFH3 funclet ABI are not supplied by new twoargumentcdecl API. Source explicit helperCALL is not a recovered NativeCALL.",
+    "Valid ordinary accesses/store order and whole Source/build/Core evidence do not prove Nativealias/concurrency/fault/SEH/EH/nestedfailure/production/runtime/startup/gameplay behavior; no new tests/probes."
+  ],
+  "ledger_function": "cleanup_native_pending_registry_base_008748f0",
+  "worker_document_before_primary_append_sha256": "628bd4eef975f5491d8d350cf32cd431e8d770ba296403881620256c46800968",
+  "current_document_canonical_sha256": "f259b9711e2da5cbccc1e4d5e919a615f8cd634fdcf6a0417593142848a75ae8",
+  "ghidra": {
+    "saved_receipt": "local/ghidra-annotations-20261009T080603Z.json",
+    "previous_name": "FUN_008748f0",
+    "provisional_name": "BSP_PendingRegistry_ClearPublicationAndResetBase",
+    "prior_comment_preserved": true,
+    "current_comment_sha256": "215c7649cf5664074eef74edba5256ab297d2d013b2e7432e94b18871840c432",
+    "forced_export_refreshed": "008748F0",
+    "count": 64729
+  }
+}
