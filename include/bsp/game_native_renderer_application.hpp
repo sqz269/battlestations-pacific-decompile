@@ -27,6 +27,8 @@ struct NativeShaderDescriptorReadContext;
 class NativeShaderDescriptorReadOperation;
 struct NativeGameGridContext;
 class NativeShadowDepthTargetContext;
+class GuiTextNativeLayoutServices;
+class NativeD3dx9Float16Import;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -77,6 +79,16 @@ public:
     // release grids before draining this renderer. Uses the same VFS strings,
     // declaration cache, stream owners and live process vector as the graph.
     NativeGameGridContext& game_grid_context() noexcept;
+    // Ready-only borrowed section-layout/vertex-reader prerequisites. These
+    // use game_grid_context()'s SAME graphics/string/owner domain and the live
+    // renderer publication. Retain this application through every borrower;
+    // serialize uses with startup, device recreation, frames and native drain.
+    // Retire caller-owned layout references before the shared renderer drain.
+    // Interrupted factory/registration state or surviving layout companions
+    // require process retention. Successful live layouts remain usable; the
+    // retained service and interrupted acquisition must not be replaced/replayed.
+    GuiTextNativeLayoutServices& section_layout_services();
+    const NativeD3dx9Float16Import& vertex_half_import() const;
     //73BF80's cache bracket over canonical process cells and this SAME VFS.
     // Keep it alive through material compilation, release before singleton drain.
     // Full preload loop remains separate; these entrypoints perform real I/O.

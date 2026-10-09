@@ -1,0 +1,474 @@
+{
+  "packet": "cc12_renderer_layout_half_import_composition",
+  "status": "Source_candidate_ready_for_Root_normal_Win32_build_emitted_review_and_bounded_smoke",
+  "baseline_commit": "a44121db9dc9a936b323dc0004ad3ffaff0987e5",
+  "scope": "Existing startup-owner composition plus read-only live-companion query. Six tracked files; no distinct provider-view header needed.",
+  "tracked_files": [
+    "include/bsp/game_native_renderer_application.hpp",
+    "src/game_native_renderer_application.cpp",
+    "include/bsp/gui_text_native_layout.hpp",
+    "src/gui_text_native_layout.cpp",
+    "docs/CC12_RENDERER_LAYOUT_HALF_IMPORT_COMPOSITION_SOURCE.md",
+    "reports/cc12_renderer_layout_half_import_composition_source.json"
+  ],
+  "owned_source_full_review_pins": [
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 8283,
+      "sha256": "f91e34a463addb6de2f469276d45d018f0d2f67b33675cc5c5f7769fca57a346",
+      "LF_sha256": "f91e34a463addb6de2f469276d45d018f0d2f67b33675cc5c5f7769fca57a346",
+      "inspected_line_ranges": [
+        [
+          1,
+          147
+        ]
+      ],
+      "line_count": 147,
+      "preimage_git_commit": "a44121db9dc9a936b323dc0004ad3ffaff0987e5",
+      "preimage_git_blob_bytes": 7462,
+      "preimage_git_blob_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "in_selected_Source121_input_manifest": false
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 38240,
+      "sha256": "cca0567a8031dfaa267dd37ccf48396eb2ceeb91257f4f81aabdd1c0d4a40f90",
+      "LF_sha256": "cca0567a8031dfaa267dd37ccf48396eb2ceeb91257f4f81aabdd1c0d4a40f90",
+      "inspected_line_ranges": [
+        [
+          1,
+          645
+        ]
+      ],
+      "line_count": 645,
+      "preimage_git_commit": "a44121db9dc9a936b323dc0004ad3ffaff0987e5",
+      "preimage_git_blob_bytes": 36751,
+      "preimage_git_blob_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "in_selected_Source121_input_manifest": false
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "bytes": 3064,
+      "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3",
+      "LF_sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3",
+      "inspected_line_ranges": [
+        [
+          1,
+          65
+        ]
+      ],
+      "line_count": 65,
+      "preimage_git_commit": "a44121db9dc9a936b323dc0004ad3ffaff0987e5",
+      "preimage_git_blob_bytes": 2855,
+      "preimage_git_blob_sha256": "cc831cc840c16567c92e326115341eb9196fa821936e82a3c6cd5341d3f67651",
+      "in_selected_Source121_input_manifest": false
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "bytes": 8285,
+      "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d",
+      "LF_sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d",
+      "inspected_line_ranges": [
+        [
+          1,
+          163
+        ]
+      ],
+      "line_count": 163,
+      "preimage_git_commit": "a44121db9dc9a936b323dc0004ad3ffaff0987e5",
+      "preimage_git_blob_bytes": 8174,
+      "preimage_git_blob_sha256": "96c27d78bff8d58b663c649769c4c9b7ac64880ba1115fe5cef4a0fc89bee213",
+      "in_selected_Source121_input_manifest": false
+    }
+  ],
+  "bounded_dependency_pins": [
+    {
+      "path": "src/game_native_renderer_grid.inc",
+      "bytes": 1778,
+      "sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+      "LF_sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+      "inspected_line_ranges": [
+        [
+          1,
+          30
+        ]
+      ],
+      "line_count": 31
+    },
+    {
+      "path": "src/game_native_renderer_textures.inc",
+      "bytes": 2949,
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "LF_sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "inspected_line_ranges": [
+        [
+          1,
+          46
+        ]
+      ],
+      "line_count": 48
+    },
+    {
+      "path": "src/game_native_renderer_lifetime.inc",
+      "bytes": 6788,
+      "sha256": "52c78a5e8ae42a0e5934549487475752ad4714af76c95123c638681c86ec9507",
+      "LF_sha256": "52c78a5e8ae42a0e5934549487475752ad4714af76c95123c638681c86ec9507",
+      "inspected_line_ranges": [
+        [
+          16,
+          99
+        ]
+      ],
+      "line_count": 99
+    },
+    {
+      "path": "src/game_native_renderer_device.inc",
+      "bytes": 4555,
+      "sha256": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db",
+      "LF_sha256": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db",
+      "inspected_line_ranges": [
+        [
+          1,
+          63
+        ]
+      ],
+      "line_count": 63
+    },
+    {
+      "path": "include/bsp/native_vertex_position_read.hpp",
+      "bytes": 3810,
+      "sha256": "5e5933b441f3806ab97fef05c8e409c967ad8925a451e99ef77dd19c35e6ef10",
+      "LF_sha256": "5e5933b441f3806ab97fef05c8e409c967ad8925a451e99ef77dd19c35e6ef10",
+      "inspected_line_ranges": [
+        [
+          1,
+          25
+        ]
+      ],
+      "line_count": 70
+    },
+    {
+      "path": "src/native_vertex_position_read.cpp",
+      "bytes": 13361,
+      "sha256": "17238c8326d7c223740e5b229cbc721641504c91fe5c48f9c8b2ef3bcf14b450",
+      "LF_sha256": "17238c8326d7c223740e5b229cbc721641504c91fe5c48f9c8b2ef3bcf14b450",
+      "inspected_line_ranges": [
+        [
+          253,
+          263
+        ]
+      ],
+      "line_count": 404
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "LF_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "inspected_line_ranges": [
+        [
+          1531,
+          1557
+        ]
+      ],
+      "line_count": 2444
+    },
+    {
+      "path": "include/bsp/native_model_numbering.hpp",
+      "bytes": 3632,
+      "sha256": "a457c53466ea8a8786d56b1eec737647b65814f782b01275e90ae3c02ad18a8f",
+      "LF_sha256": "a457c53466ea8a8786d56b1eec737647b65814f782b01275e90ae3c02ad18a8f",
+      "inspected_line_ranges": [
+        [
+          1,
+          41
+        ]
+      ],
+      "line_count": 72
+    }
+  ],
+  "readiness_predecessor": {
+    "path": "reports/cc12_unit_numbering_production_model_services_readiness.json",
+    "bytes": 40621,
+    "sha256": "8ca33ce1e442a0170f094c6d54ac847d92dbcd4d6183448e411e0fcfecb8ac23",
+    "LF_sha256": "8ca33ce1e442a0170f094c6d54ac847d92dbcd4d6183448e411e0fcfecb8ac23"
+  },
+  "prior_Source121_authority": {
+    "capture_pin": {
+      "path": "local/cc12_renderer_layout_half_import_composition_source/pre_edit_source121_replay.json",
+      "bytes": 3950,
+      "sha256": "0f335e9a51bfac5976f019e7bafb544fb7bff8baacb3e1db79cea024bd777811",
+      "LF_sha256": "0f335e9a51bfac5976f019e7bafb544fb7bff8baacb3e1db79cea024bd777811"
+    },
+    "snapshot_started_utc": "2026-10-09T21:26:49.249600+00:00",
+    "snapshot_finished_utc": "2026-10-09T21:26:49.319126+00:00",
+    "worker_baseline_commit": "a44121db9dc9a936b323dc0004ad3ffaff0987e5",
+    "Root_path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator",
+    "receipt_pin": {
+      "path": "reports/cc12_native_mlandfort_kind_primary_review.json",
+      "bytes": 94454,
+      "sha256": "172830f450247240d7713964f1ba7f1d2f71b192f92fd30bcbabd9cee8a1d41d"
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 103464,
+      "start_utc": "2026-10-09T20:46:26.766022+00:00",
+      "finish_utc": "2026-10-09T20:46:43.654990+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 121
+    },
+    "input_count": 121,
+    "input_manifest_canonical_JSON_sha256": "29c9e75ecc28a7fa455cdb02a2e8fa92b5b3b3c38c53baed5b598e98b3a37cee",
+    "Root121_raw_inputs_match": true,
+    "worker121_pre_edit_normalized_inputs_match": true,
+    "worker_pre_edit_raw_match_count": 119,
+    "CRLF_LF_only_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "Root": {
+          "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+          "bytes": 51122,
+          "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+        },
+        "worker": {
+          "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+          "bytes": 52250,
+          "sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed"
+        },
+        "CRLF_LF_only": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "Root": {
+          "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "bytes": 18326,
+          "sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d"
+        },
+        "worker": {
+          "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+          "bytes": 17789,
+          "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+        },
+        "CRLF_LF_only": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73781594,
+        "sha256": "b0d5120be850c18391097da87ca49d0b814e845189b8cae55c07709e4ed91366"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39"
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "29ca7b93292cf99c5789ccc0a74604a89efc51553a65679b7f465d41ff36e656"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "e222d06f94c4a165466a467e34b7741461e54e60fd048135231156425cc5ab42"
+      }
+    ],
+    "all4_Root_artifacts_match": true,
+    "selected_whole_objects_per_Root": 37,
+    "selected_Core_roots_per_Root": 41,
+    "existing_checks_per_Root": 3,
+    "scope": "Prior compiled Source121 authority, verified before candidate source edits. Thirty-seven is the selected whole-object inventory, not all Core library members. No new build/test/probe/object recapture. Candidate changes require Root normal build/emitted review.",
+    "path_time_qualification": "Root build paths are mutable under later builds; values describe this recorded snapshot.",
+    "pre_edit_owned_source_pins": [
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "bytes": 7462,
+        "sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "bytes": 36751,
+        "sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38"
+      }
+    ],
+    "candidate_build_credit": false,
+    "manifest_limit": "The 121 inputs are selected receipt inputs, not a complete application dependency manifest. All four changed source files are outside it; a continuing 121-pin match cannot validate this candidate."
+  },
+  "prior_controlled_startup_observation": {
+    "receipt": {
+      "path": "reports/cc12_production_startup_receiver_audit.json",
+      "bytes": 33349,
+      "sha256": "58557146a04a1b0688c6f33c430b9eb8a2551ae09dde5dc2b18d3f8579d242aa",
+      "LF_sha256": "58557146a04a1b0688c6f33c430b9eb8a2551ae09dde5dc2b18d3f8579d242aa"
+    },
+    "source": "Published Root receipt; no runtime attempt in this worker packet.",
+    "three_tick_summary": {
+      "window_created": true,
+      "device_created": true,
+      "device_hr": "00000000",
+      "back_buffer": "640x480",
+      "frames_presented": 2,
+      "presents_skipped": 1,
+      "loop_finished": true,
+      "exit_code": 0,
+      "mission_frames": 0,
+      "frontend_step": "PressStartPoll"
+    },
+    "three_tick_start_utc": "2026-10-09T21:11:44.919902+00:00",
+    "three_tick_finish_utc": "2026-10-09T21:11:46.998591+00:00",
+    "exe_sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39",
+    "conditions": "Genuine bundled XLive runtime with isolated 640x480 windowed personal settings; installed fixed-address XLive override and default fullscreen were separate failed runs.",
+    "bounded_startup_smoke": true,
+    "faithful_startup_completion": false,
+    "gameplay_validation": false,
+    "candidate_runtime_credit": false
+  },
+  "construction": [
+    {
+      "member": "Impl.vertex_half",
+      "type": "NativeD3dx9Float16Import",
+      "argument": "devices.d3dx",
+      "effect": "Binds the existing D3DXFloat16To32Array export from the SAME retained system d3dx9_40.dll. Does not load another DLL or use the particle reverse conversion.",
+      "evidence": [
+        "src/game_native_renderer_application.cpp:288,332",
+        "src/game_native_renderer_device.inc:22,31-36,54,62",
+        "src/native_vertex_position_read.cpp:253-263"
+      ]
+    },
+    {
+      "member": "Impl.section_layouts",
+      "type": "GuiTextNativeLayoutServices",
+      "arguments": [
+        "texture_loading.geometry",
+        "graph.vertex",
+        "declaration_loading",
+        "devices.hardware",
+        "profiles(0x00d62af4)"
+      ],
+      "effect": "Retains the existing concrete stream+24/renderer+40 Source service with its own existing acquired record and companion list, borrowing the already shared owner registry, renderer cell, declaration/pool/type-size/string domains.",
+      "evidence": [
+        "src/game_native_renderer_application.cpp:289,333-334",
+        "src/game_native_renderer_grid.inc:12-29",
+        "src/gui_text_native_layout.cpp:61-75,110-114"
+      ]
+    }
+  ],
+  "public_borrow_contract": {
+    "section_layout_services": "GuiTextNativeLayoutServices& GameNativeRendererApplication::section_layout_services()",
+    "vertex_half_import": "const NativeD3dx9Float16Import& GameNativeRendererApplication::vertex_half_import() const",
+    "gate": "Renderer phase must be ready AND section-layout acquisition must be empty or transferred. Check only; no state reset, construction, reference-count change, cleanup or replay.",
+    "successful_live_layouts": "Live companions alone do not reject either accessor. Successful layouts can remain in use and the same service can complete later acquisitions.",
+    "existing_shared_views": [
+      "game_grid_context().graphics",
+      "game_grid_context().strings",
+      "publication_00f8d394()",
+      "actual_owners()"
+    ],
+    "lifetime": "References borrow stable Impl members. Keep application, VFS/strings, singleton/support/pools, canonical data and D3DX loaded through every use and retirement. Borrow-time checks neither lock nor revoke a previously returned reference; serialize with frames/device recreation/startup/drain.",
+    "copy_move": "No copy or move occurs. GameNativeRendererApplication and NativeD3dx9Float16Import retain their deleted-copy/nonmoving ownership; GuiTextNativeLayoutServices remains a unique_ptr owner with user-declared destructor. No stack-local service wrapper or new registry.",
+    "new_view_header": false
+  },
+  "retention_contract": {
+    "new_query": "bool GuiTextNativeLayoutServices::has_live_companions() const noexcept",
+    "query_body": "return !impl_->entries.empty();",
+    "query_scope": "Read-only service-owned companion presence, including a transferred acquisition. Does not inspect stale acquired.companion, guess native refcounts, allocate, erase entries, clear phases or release native objects.",
+    "pending_acquisition": "Impl.section_layout_acquisition_pending() reads the retained acquired phase; every value other than empty/transferred requires retention.",
+    "application_retention": "Existing phase/shader/shadow reasons OR pending layout acquisition OR has_live_companions().",
+    "drain": "Existing drain_singletons() precheck rejects before activation and singleton shutdown when retention is required. Existing GameStartupHost exit_if_native_renderer_incomplete() observes the query and uses process exit to retain ownership instead of invoking ordinary drain/destruction.",
+    "successful_reference_retirement": "Caller must retire/unbind actual layout references until canonical zero-reference disposal removes all service entries before shared renderer drain. A transferred phase alone is insufficient. Missed retirement now forces process retention; no cleanup is synthesized.",
+    "failure": "Factory or registration exceptions retain the existing phase, creator/companion and any actual side effects. No automatic rollback, no replacement service, no acquisition replay.",
+    "stale_bookkeeping": "Transferred acquisition can retain a stale companion pointer after actual retirement; the guard reads the live entries list only and does not dereference that pointer.",
+    "direct_destruction": "Existing destructors continue enforcing their invariants. Callers must honor requires_process_retention and shared-drain order; the accessors do not make direct premature destruction safe."
+  },
+  "member_lifetime_order": {
+    "declaration_order": [
+      "declaration_loading/cache and owner registry",
+      "DestructionGraph graph",
+      "DeviceGraph devices",
+      "TextureLoadingGraph texture_loading",
+      "GameGridGraph game_grids",
+      "NativeD3dx9Float16Import vertex_half",
+      "GuiTextNativeLayoutServices section_layouts",
+      "existing camera/shader/resource/frame graphs"
+    ],
+    "destruction": "After native borrower retirement, reverse member destruction removes section_layouts then vertex_half before geometry/stream/device/hardware/declaration/registry providers. DeviceGraph unloads d3dx only after vertex_half is gone. Normal successful cleanup does not replace existing native drain ordering.",
+    "constructor_failure": "The half binding resolves an existing export; layout construction allocates Source metadata and validates domains. Neither performs a native layout acquisition in the constructor. Earlier provider members outlive unwinding of either service."
+  },
+  "state_matrix": [
+    {
+      "renderer": "ready",
+      "acquisition": "empty",
+      "live_companions": false,
+      "borrow_accessors": "allow",
+      "layout_retention_reason": false
+    },
+    {
+      "renderer": "ready",
+      "acquisition": "transferred",
+      "live_companions": false,
+      "borrow_accessors": "allow",
+      "layout_retention_reason": false
+    },
+    {
+      "renderer": "ready",
+      "acquisition": "transferred",
+      "live_companions": true,
+      "borrow_accessors": "allow",
+      "layout_retention_reason": true
+    },
+    {
+      "renderer": "ready",
+      "acquisition": "factory or registration",
+      "live_companions": "either",
+      "borrow_accessors": "reject",
+      "layout_retention_reason": true
+    },
+    {
+      "renderer": "any phase other than ready",
+      "acquisition": "any",
+      "live_companions": "either",
+      "borrow_accessors": "reject",
+      "layout_retention_reason": "determined independently; existing application phase rules remain"
+    }
+  ],
+  "validation": {
+    "complete_owned_header_CPP_review": true,
+    "all_changed_Source_lines_reviewed": true,
+    "member_order_and_same_domain_arguments_reviewed": true,
+    "pending_and_transferred_live_companion_paths_reviewed": true,
+    "git_diff_check_passed": true,
+    "new_worker_build": false,
+    "new_worker_tests": false,
+    "new_worker_probe": false,
+    "new_worker_runtime": false,
+    "new_object_recapture": false,
+    "CMake_changes": false,
+    "new_Native_body_or_address": false,
+    "ledger_GPR_queries_or_mutations": false,
+    "Root_required": [
+      "Normal scripts/build.ps1 Win32 build",
+      "Review changed application and layout-provider emitted/link evidence, including any newly linked existing Core dependencies",
+      "Bounded startup smoke with the published controlled configuration; report its actual scope"
+    ]
+  },
+  "admission_limits": {
+    "actual_711BE0_binding": false,
+    "model_360_or_holder_node_production": false,
+    "raw_atlas_production": false,
+    "model_descriptor_bootstrap": false,
+    "current_node_callback_or_fake_ID": false,
+    "new_callback_or_registry": false,
+    "original_ABI_or_FH3_credit": false,
+    "faithful_startup_credit": false,
+    "gameplay_or_visual_numbering_credit": false,
+    "reason": "This creates genuine retained startup prerequisites only. Actual unit model/atlas/type/current-node dispatch and full numbering-operation ownership remain separate producers."
+  }
+}

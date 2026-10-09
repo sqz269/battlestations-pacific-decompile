@@ -55,6 +55,9 @@ public:
     void* current_stream_descriptor_virtual24(void*) override;
     void* current_renderer_layout_virtual40(const NativeMeshSectionLayoutKey&) override;
     const GuiTextNativeLayoutAcquired& acquired() const noexcept;
+    // Successful transfer can leave canonical companions owned by this service.
+    // Retire their actual native references before draining borrowed providers.
+    bool has_live_companions() const noexcept;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
