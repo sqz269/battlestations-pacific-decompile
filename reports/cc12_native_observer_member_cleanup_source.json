@@ -1,0 +1,1826 @@
+{
+  "schema": "bsp.cc12.native_observer_member_cleanup_source.v1",
+  "packet": "cc12_observer_member_cleanup_source",
+  "status": "Qualified Source candidate, unregistered and uncompiled; awaiting primary build and emitted-object review",
+  "created_utc": "2026-10-09T17:19:21.517815+00:00",
+  "baseline_commit": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+  "owned_address": "00653390",
+  "owned_files": [
+    "include/bsp/native_observer_member_cleanup.hpp",
+    "src/native_observer_member_cleanup.cpp",
+    "docs/CC12_NATIVE_OBSERVER_MEMBER_CLEANUP_SOURCE.md",
+    "reports/cc12_native_observer_member_cleanup_source.json"
+  ],
+  "credit": {
+    "Source_admission": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "interface": {
+    "symbol": "bsp::cleanup_native_observer_member_00653390",
+    "declaration": "void cleanup_native_observer_member_00653390(NativeObserverOwnerStorage& actual_member_owner, NativeObserverOwnerStorage* volatile& actual_endpoint_cell, NativeObserverLifetime& retained_lifetime);",
+    "public_noexcept": false,
+    "result": "void; no Native common EAX/result guarantee",
+    "representation": "Ordinary C++ composition through exact existing actual-storage provider types; no naked or inline-assembly adapter",
+    "owner_storage": "Existing NativeObserverOwnerStorage actual 10h prefix, with volatile profile and actual edge pointer/count/capacity; no new struct or default field state",
+    "endpoint_cell": "Separate actual volatile pointer cell. Identity, backing and association with this member are supplied by the caller outside the 10h prefix; no offset/task calculation or copied cell",
+    "lifetime": "Actual retained NativeObserverLifetime, distinct from either endpoint and borrowing the existing domain/publication cells/services"
+  },
+  "Source_schedule_mapping": [
+    {
+      "Native_site": "006533AD",
+      "Source_line": 36,
+      "effect": "First body statement writes opaque 00CF6494 to the actual volatile owner profile."
+    },
+    {
+      "Native_site": "006533B3",
+      "Source_line": 37,
+      "effect": "One late volatile endpoint-cell capture after profile publication; cell reference is explicit."
+    },
+    {
+      "Native_site": "006533B8",
+      "Source_line": 38,
+      "effect": "Arm private Source guard after capture. This is Source state, not a Native EH slot."
+    },
+    {
+      "Native_site": "006533C0 / 006533C4",
+      "Source_line": 39,
+      "effect": "Use the one captured pointer for conditional unregister against the actual owner and retained lifetime."
+    },
+    {
+      "Native_site": "006533CB",
+      "Source_line": 43,
+      "effect": "Disarm before normal owner destruction starts."
+    },
+    {
+      "Native_site": "006533D3",
+      "Source_line": 44,
+      "effect": "Normal owner destruction on both branches, with no retry after this begins."
+    },
+    {
+      "Native_selected_action": "00C7AF40 / accepted Root policy",
+      "Source_line": 18,
+      "effect": "On an unregister exception, the armed noexcept Source destructor invokes actual owner destruction; cleanup failure terminates under current C++ policy."
+    }
+  ],
+  "Source_exception_policy": {
+    "guard": "Private noncopyable ObserverMemberUnregisterGuard, holding actual owner/lifetime references and one private armed bool; constructor/disarm noexcept",
+    "arming": "After first profile write and single volatile endpoint capture, immediately before conditional unregister",
+    "unregister_throws": "Armed guard calls destroy_callback_owner_00695870(actual owner). Successful cleanup lets the original C++ exception continue.",
+    "guard_destructor": "Explicit noexcept. A throwing cleanup during unregister unwinding invokes current C++ termination policy.",
+    "normal_boundary": "Disarm before normal destroy_callback_owner_00695870 begins, including the null-endpoint path.",
+    "normal_destroy_throws": "Guard stays disarmed, existing child performs its own catch/free/rethrow policy, and no second owner destruction is attempted.",
+    "no_new_catch_or_exception_translation": true,
+    "not_Native_EH_proof": "Framework selection, interpreter EBP basis, Native exactly-once dispatch and original failure/double-exception policy remain unproved.",
+    "faults_and_aliases": "No hardware-fault guarantee, Native FS/frame reconstruction, saved-word alias equivalence or invalid-lifetime recovery."
+  },
+  "Native88_accepted_evidence": {
+    "receipt": "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json",
+    "record": {
+      "address": "00653390",
+      "end_inclusive": "006533E7",
+      "bytes": 88,
+      "sha256": "83a09c9e3d3c3f6006cf2d3aab805129a3f0d58cb21584f49c720c963dc737ea",
+      "hex": "6aff6848afc70064a100000000506489250000000051568bf189742404c7069464cf008b4e1485c9c74424100000000074078bd6e8d71e04008bcec7442410ffffffffe8982404008b4c24085e64890d0000000083c410c3",
+      "live_equal_PE_equal_Root": true,
+      "PE_RVA": "00253390",
+      "PE_file_offset": 2438032,
+      "PE_section": ".text",
+      "all_file_backed": true,
+      "instructions": [
+        {
+          "address": "00653390",
+          "size": 2,
+          "hex": "6aff",
+          "mnemonic": "push",
+          "operands": "-1",
+          "ESP_before_S_offset": 0,
+          "ESP_after_normal_completion_S_offset": -4,
+          "implicit_stack": {
+            "write_S_offset": -4,
+            "width": 4,
+            "value": "-1"
+          },
+          "memory_operands": [],
+          "normal_successors": [
+            "00653392"
+          ]
+        },
+        {
+          "address": "00653392",
+          "size": 5,
+          "hex": "6848afc700",
+          "mnemonic": "push",
+          "operands": "0xc7af48",
+          "ESP_before_S_offset": -4,
+          "ESP_after_normal_completion_S_offset": -8,
+          "implicit_stack": {
+            "write_S_offset": -8,
+            "width": 4,
+            "value": "0xc7af48"
+          },
+          "memory_operands": [],
+          "normal_successors": [
+            "00653397"
+          ]
+        },
+        {
+          "address": "00653397",
+          "size": 6,
+          "hex": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]",
+          "ESP_before_S_offset": -8,
+          "ESP_after_normal_completion_S_offset": -8,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 0,
+              "segment": "fs",
+              "access_read": true,
+              "access_write": false,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "0065339D"
+          ]
+        },
+        {
+          "address": "0065339D",
+          "size": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "ESP_before_S_offset": -8,
+          "ESP_after_normal_completion_S_offset": -12,
+          "implicit_stack": {
+            "write_S_offset": -12,
+            "width": 4,
+            "value": "eax"
+          },
+          "memory_operands": [],
+          "normal_successors": [
+            "0065339E"
+          ]
+        },
+        {
+          "address": "0065339E",
+          "size": 7,
+          "hex": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp",
+          "ESP_before_S_offset": -12,
+          "ESP_after_normal_completion_S_offset": -12,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 0,
+              "segment": "fs",
+              "access_read": false,
+              "access_write": true,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533A5"
+          ]
+        },
+        {
+          "address": "006533A5",
+          "size": 1,
+          "hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx",
+          "ESP_before_S_offset": -12,
+          "ESP_after_normal_completion_S_offset": -16,
+          "implicit_stack": {
+            "write_S_offset": -16,
+            "width": 4,
+            "value": "ecx"
+          },
+          "memory_operands": [],
+          "normal_successors": [
+            "006533A6"
+          ]
+        },
+        {
+          "address": "006533A6",
+          "size": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "ESP_before_S_offset": -16,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": {
+            "write_S_offset": -20,
+            "width": 4,
+            "value": "esi"
+          },
+          "memory_operands": [],
+          "normal_successors": [
+            "006533A7"
+          ]
+        },
+        {
+          "address": "006533A7",
+          "size": 2,
+          "hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533A9"
+          ]
+        },
+        {
+          "address": "006533A9",
+          "size": 4,
+          "hex": "89742404",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 4], esi",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": "esp",
+              "index": null,
+              "scale": 1,
+              "displacement": 4,
+              "segment": null,
+              "access_read": false,
+              "access_write": true,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533AD"
+          ]
+        },
+        {
+          "address": "006533AD",
+          "size": 6,
+          "hex": "c7069464cf00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xcf6494",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": "esi",
+              "index": null,
+              "scale": 1,
+              "displacement": 0,
+              "segment": null,
+              "access_read": false,
+              "access_write": true,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533B3"
+          ]
+        },
+        {
+          "address": "006533B3",
+          "size": 3,
+          "hex": "8b4e14",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x14]",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": "esi",
+              "index": null,
+              "scale": 1,
+              "displacement": 20,
+              "segment": null,
+              "access_read": true,
+              "access_write": false,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533B6"
+          ]
+        },
+        {
+          "address": "006533B6",
+          "size": 2,
+          "hex": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533B8"
+          ]
+        },
+        {
+          "address": "006533B8",
+          "size": 8,
+          "hex": "c744241000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], 0",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": "esp",
+              "index": null,
+              "scale": 1,
+              "displacement": 16,
+              "segment": null,
+              "access_read": false,
+              "access_write": true,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533C0"
+          ]
+        },
+        {
+          "address": "006533C0",
+          "size": 2,
+          "hex": "7407",
+          "mnemonic": "je",
+          "operands": "0x6533c9",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533C9",
+            "006533C2"
+          ]
+        },
+        {
+          "address": "006533C2",
+          "size": 2,
+          "hex": "8bd6",
+          "mnemonic": "mov",
+          "operands": "edx, esi",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533C4"
+          ]
+        },
+        {
+          "address": "006533C4",
+          "size": 5,
+          "hex": "e8d71e0400",
+          "mnemonic": "call",
+          "operands": "0x6952a0",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533C9"
+          ]
+        },
+        {
+          "address": "006533C9",
+          "size": 2,
+          "hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533CB"
+          ]
+        },
+        {
+          "address": "006533CB",
+          "size": 8,
+          "hex": "c7442410ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], 0xffffffff",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": "esp",
+              "index": null,
+              "scale": 1,
+              "displacement": 16,
+              "segment": null,
+              "access_read": false,
+              "access_write": true,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533D3"
+          ]
+        },
+        {
+          "address": "006533D3",
+          "size": 5,
+          "hex": "e898240400",
+          "mnemonic": "call",
+          "operands": "0x695870",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533D8"
+          ]
+        },
+        {
+          "address": "006533D8",
+          "size": 4,
+          "hex": "8b4c2408",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 8]",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -20,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": "esp",
+              "index": null,
+              "scale": 1,
+              "displacement": 8,
+              "segment": null,
+              "access_read": true,
+              "access_write": false,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533DC"
+          ]
+        },
+        {
+          "address": "006533DC",
+          "size": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "ESP_before_S_offset": -20,
+          "ESP_after_normal_completion_S_offset": -16,
+          "implicit_stack": {
+            "read_S_offset": -20,
+            "width": 4,
+            "register": "esi"
+          },
+          "memory_operands": [],
+          "normal_successors": [
+            "006533DD"
+          ]
+        },
+        {
+          "address": "006533DD",
+          "size": 7,
+          "hex": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "ESP_before_S_offset": -16,
+          "ESP_after_normal_completion_S_offset": -16,
+          "implicit_stack": null,
+          "memory_operands": [
+            {
+              "width": 4,
+              "base": null,
+              "index": null,
+              "scale": 1,
+              "displacement": 0,
+              "segment": "fs",
+              "access_read": false,
+              "access_write": true,
+              "address_calculation_only": false
+            }
+          ],
+          "normal_successors": [
+            "006533E4"
+          ]
+        },
+        {
+          "address": "006533E4",
+          "size": 3,
+          "hex": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10",
+          "ESP_before_S_offset": -16,
+          "ESP_after_normal_completion_S_offset": 0,
+          "implicit_stack": null,
+          "memory_operands": [],
+          "normal_successors": [
+            "006533E7"
+          ]
+        },
+        {
+          "address": "006533E7",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": "",
+          "ESP_before_S_offset": 0,
+          "ESP_after_normal_completion_S_offset": 4,
+          "implicit_stack": {
+            "read_return_address_S_offset": 0,
+            "argument_cleanup_bytes": 0
+          },
+          "memory_operands": [],
+          "normal_successors": []
+        }
+      ],
+      "instruction_count": 24,
+      "basic_blocks": [
+        {
+          "start": "00653390",
+          "end_inclusive": "006533C1",
+          "instructions": 14,
+          "successors": [
+            "006533C9",
+            "006533C2"
+          ]
+        },
+        {
+          "start": "006533C2",
+          "end_inclusive": "006533C8",
+          "instructions": 2,
+          "successors": [
+            "006533C9"
+          ]
+        },
+        {
+          "start": "006533C9",
+          "end_inclusive": "006533E7",
+          "instructions": 8,
+          "successors": []
+        }
+      ],
+      "basic_block_count": 3,
+      "block_edges": 3,
+      "calls": [
+        {
+          "site": "006533C4",
+          "target": "006952A0",
+          "ESP_before_CALL_S_offset": -20,
+          "child_entry_ESP_S_offset": -24,
+          "required_argument_cleanup_bytes": 0,
+          "required_return_ESP_S_offset": -20,
+          "return_address": "006533C9",
+          "child_Native_body_opened": false
+        },
+        {
+          "site": "006533D3",
+          "target": "00695870",
+          "ESP_before_CALL_S_offset": -20,
+          "child_entry_ESP_S_offset": -24,
+          "required_argument_cleanup_bytes": 0,
+          "required_return_ESP_S_offset": -20,
+          "return_address": "006533D8",
+          "child_Native_body_opened": false
+        }
+      ],
+      "plain_RET_count": 1,
+      "padding_or_unclassified_bytes": 0,
+      "all24_stack_positions_and_merges_checked": true,
+      "normal_exit_ESP_S_offset": 4,
+      "Root_owned_approval": {
+        "address": "00653390",
+        "bytes": 88,
+        "raw_ops": 24,
+        "sha256": "83a09c9e3d3c3f6006cf2d3aab805129a3f0d58cb21584f49c720c963dc737ea",
+        "contract": "ECX receiver captured ESI, Native FS frame handlerC7AF48 unopened/localThis. StampCF6494 then late receiver14 ECX, TEST survives full state0 store into JE. Nonzero captures current ESI into EDX before CALL6952A0, no pushed args. Current ESI into ECX then full state-1 before CALL695870, no pushed args. Both require RET0 and normal stack/nonvol preservation. PriorFS read ESP8 before POP ESI; restoreFS/ADDESP10/plainRET. Original EH policy and exact extra lifetime Source interface differ and remain unproved."
+      },
+      "Root_owned_metadata": "Function: FUN_00653390 at 00653390\nSignature: undefined FUN_00653390(void)\nEntry: 00653390\nBody: 00653390 - 006533e7\n{\n \"function_name\": \"FUN_00653390\",\n \"address\": \"00653390\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 24,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_CallbackOwner_Destroy\",\n  \"BSP_Observer_UnregisterPair\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  16\n ],\n \"basic_block_hashes\": [\n  \"17e065b629350c8ca991c1060b6291d3efa42936b01b1a19ef01360aeac3ffac\",\n  \"38b39b5a50cfc4729d9370aff7873ad34fd0ac01841fd95e8ee207474f0a5bd6\",\n  \"f196742dcbd7cbd186105437f247dc57f65b34bac0626f3df0481ad85bd0737d\"\n ]\n}\n"
+    },
+    "Root_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_observer_endpoint_cleanup_primary\\capture.json",
+      "bytes": 13193,
+      "sha256": "f3c77c26c184316ac8a2145681e874c57ff5bd66c814501fe5fcc1a9ac6901bc",
+      "hash_domain": "Exact physical file bytes"
+    },
+    "Root_approval_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_observer_endpoint_cleanup_primary\\Root_Astra_gate_approval.json",
+      "bytes": 1537,
+      "sha256": "af32988c260376375df0dfefd57130149b1ff9c5551bbc06fb9f3787e9e10aca",
+      "hash_domain": "Exact physical file bytes"
+    },
+    "Root_owned_approval": {
+      "address": "00653390",
+      "bytes": 88,
+      "raw_ops": 24,
+      "sha256": "83a09c9e3d3c3f6006cf2d3aab805129a3f0d58cb21584f49c720c963dc737ea",
+      "contract": "ECX receiver captured ESI, Native FS frame handlerC7AF48 unopened/localThis. StampCF6494 then late receiver14 ECX, TEST survives full state0 store into JE. Nonzero captures current ESI into EDX before CALL6952A0, no pushed args. Current ESI into ECX then full state-1 before CALL695870, no pushed args. Both require RET0 and normal stack/nonvol preservation. PriorFS read ESP8 before POP ESI; restoreFS/ADDESP10/plainRET. Original EH policy and exact extra lifetime Source interface differ and remain unproved."
+    },
+    "worker_current_physical_replay": {
+      "whole_88_bytes_equal_accepted_Root_and_prior_audit": true,
+      "all_24_instruction_starts_equal_Root": true,
+      "original_image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "PE_RVA": "00253390",
+      "PE_file_offset": 2438032,
+      "all_file_backed": true,
+      "fresh_Ghidra_query": false
+    },
+    "qualification": "Current physical identity replay of accepted complete Native88 only. No new Native child/handler/interpreter body opened and no runtime proof."
+  },
+  "Native_EH_primary_gate_and_committed_context": {
+    "primary_policy_gate_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_observer_member_source_primary\\Root_Astra_gate_approval.json",
+      "bytes": 1709,
+      "sha256": "3ef0bd65baf9f8f0d62a183e504b07b10559ea19fd9348a44d667661164cabe5",
+      "hash_domain": "Exact physical file bytes"
+    },
+    "primary_policy_gate": {
+      "Root_Astra_whole_selected_handler_action_gate": true,
+      "complete_code_ops_read": 4,
+      "code_bytes": 18,
+      "data_bytes": 44,
+      "capture_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi\\local\\cc12_observer_member_cleanup_EH\\native_evidence.json",
+      "capture_sha256": "bbff4e9a68c363538ea4595ea48e158ed174dc24387e7ec33a9dab631ab0ad12",
+      "records": [
+        {
+          "kind": "handler",
+          "address": "00C7AF48",
+          "bytes": 10,
+          "sha256": "d3ded63692c174109e0260f1b748a29576ef68e663c575c94f169e6211887bf5"
+        },
+        {
+          "kind": "descriptor",
+          "address": "00DA7B14",
+          "bytes": 36,
+          "sha256": "3c4f51d51ffcf7fe6170fbf331ba132c0281e2c997fe79ccc40a4235750320cd"
+        },
+        {
+          "kind": "unwind_map",
+          "address": "00DA7B0C",
+          "bytes": 8,
+          "sha256": "deb098016dc9b536c89d502a7752e37d39a88ef7cf862684f2df7fd5f1fc9313"
+        },
+        {
+          "kind": "action",
+          "address": "00C7AF40",
+          "bytes": 8,
+          "sha256": "a8f148e7a6b2fbed593b2b5a3c9fdf83eab352dac4df37190216db28602ad8a0"
+        }
+      ],
+      "action": "current ECX=[current EBP-10h], tail00695870; stack/flags unchanged by own2ops",
+      "Source_interface": "actual owner prefix reference, separate volatile endpoint-pointer cell reference, retained lifetime reference",
+      "Source_policy": "private armed guard covers only conditional unregister; disarm before normal owner destruction; public function may throw; guard destructor noexcept explicitly uses current C++ termination if destruction throws during unwind",
+      "Native_framework_interpreter_and_original_double_exception_policy_proved": false,
+      "Native_ABI_gameplay_credit": 0
+    },
+    "primary_capture_identity_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_lua_variant_copy_child_abi\\local\\cc12_observer_member_cleanup_EH\\native_evidence.json",
+      "bytes": 7042,
+      "sha256": "bbff4e9a68c363538ea4595ea48e158ed174dc24387e7ec33a9dab631ab0ad12",
+      "hash_domain": "Exact physical file bytes"
+    },
+    "capture_use": "Whole capture file identity only; handler/action/data interpretation is inherited from the primary gate and committed Astra audit, not reopened by this worker.",
+    "candidate_revision": "f3bb494d7f222735cb62e5442345acbdf2df3fdc",
+    "candidate_pins": [
+      {
+        "path": "docs/CC12_OBSERVER_MEMBER_CLEANUP_EH_READINESS.md",
+        "revision": "f3bb494d7f222735cb62e5442345acbdf2df3fdc",
+        "hash_domain": "Exact canonical committed candidate Git blob",
+        "bytes": 10868,
+        "sha256": "7dc0435e8ab67d7e389f06f08af15c2fe2fedf04a0f9870230721f9571d2621f",
+        "current_baseline_contains_identical_report_or_doc": true
+      },
+      {
+        "path": "reports/cc12_observer_member_cleanup_EH_readiness.json",
+        "revision": "f3bb494d7f222735cb62e5442345acbdf2df3fdc",
+        "hash_domain": "Exact canonical committed candidate Git blob",
+        "bytes": 101565,
+        "sha256": "5027241a843f133ab1e5cab901bd24ab6d3a375767479283b33afba370f73e06",
+        "current_baseline_contains_identical_report_or_doc": true
+      }
+    ],
+    "conclusion": "One selected action reloads ECX from currentEBP-10h and tail-jumps to00695870. Cleanup88 full state0/FFFFFFFF order supports an explicitly qualified Source armed phase around unregister, disarmed before normal destruction. Interpreter frame/dispatch/exactly-once and failure-during-unwind semantics remain unopened.",
+    "approved_Source_design": {
+      "implemented_by_this_packet": false,
+      "inputs": "actual owner reference, actual volatile endpoint-cell reference, real retained NativeObserverLifetime service",
+      "ordering": "Publish profile/capture endpoint, arm around unregister phase, disarm before normal destroy.",
+      "unregister_exception": "An armed Source guard can invoke owner destruction once during SourceC++ unwinding.",
+      "normal_destroy_exception": "Guard already disarmed; it does not retry that normal destruction.",
+      "public_noexcept_promised": false,
+      "nonthrowing_guard_destructor_failure": "CurrentC++ termination on a throwing destruction during unwind must be explicitly qualified, not represented as NativeFH3 proof.",
+      "explicit_owner_reference_models_arbitrary_Native_saved_frame_aliases": false,
+      "Native_actual_handler_search_unwind_failure_or_double_exception_equivalence": false,
+      "binary_binding_or_production_registration_supplied": false
+    },
+    "Native_limits": [
+      "No Native InternalC07991, BF6B43 adapter, cleanup88 owner,6952A0,695870 or other EH body was reopened.",
+      "The one map record and owner state stores support the proposed Source phase boundary, not proof of interpreter selection or Native exactly-once destruction.",
+      "Action receiver is the current frame word and requires the unproved interpreter-supplied EBP relation; explicit Source owner references are a qualified interface.",
+      "Public Source exception behavior and nonthrowing guard double-exception termination remain currentC++ policy.",
+      "No Original ABI/runtime/startup/gameplay equivalence is admitted."
+    ],
+    "admission_status_at_candidate_pin": "Primary gate approved; Root published the immutable EH audit to main/origin before candidate finalization. Both current baseline files equal the pinned f3bb494d7 committed blobs."
+  },
+  "current_actual_Source_children": {
+    "prefix": "NativeObserverOwnerStorage is exactly 10h, NativeObserverEdgeStorage is exactly 10h; actual current arrays and pointer identity are retained.",
+    "unregister": "Retained lifetime method acquires shared lock, nested actual pair lookup, invalidates current dispatch, decrements edge count and conditionally removes/deletes. Missing edge returns; no automatic callback-owner destroy on failure.",
+    "destroy": "Writes CE3CD4, outer and nested guards, captured count, optional detach_all, current array free after unlock; catch also frees current array then rethrows. Does not free owner or clear retained array fields.",
+    "delete_policy": "Current Source canonical CF7E64 path uses the real admitted Source deletion provider; otherwise existing service handles it. Current game service throws for unsupported profiles. This is not generic Native virtual-slot identity.",
+    "validation_and_heap": "Existing observer validation can return through its current SDK import; current singleton free reaches Source CRT. The newer standalone invalid-parameter Source entry is not silently wired into this service.",
+    "actual_domain": "Retained SoundLifetimeAccess plus actual lock/dispatch publication references and services. Current GameObserverRuntime owns and binds its real domain, but no selected raw task/member binding is supplied.",
+    "Source_policy_not_original_child_ABI": true
+  },
+  "caller_lifetime_and_storage_requirements": [
+    "Provide this actual callback-owner prefix and its actual endpoint cell. A copied pointer value, copied owner or proxy edge identity is not the required binding.",
+    "Keep the current selected endpoint and actual owner valid through unregister and any reached failure cleanup; keep current array spans, counts/capacities and live dispatch storage valid under the existing children.",
+    "Keep the retained lifetime, actual publication-cell addresses, domain and services alive through cleanup and the represented application drain order; a retained alias after dispatch drain is not live backing.",
+    "Use real supported deletion/validation providers and the same registration domain; no newly invented service or private domain is created by this candidate.",
+    "The opaque CF6494 store is not callable Source profile registration. Children can replace the profile; no final profile value is promised.",
+    "Source references deliberately exclude arbitrary Native frame/local-this alias behavior. No fake 18h member, raw-task layout, owner allocator or production adoption is provided."
+  ],
+  "unchanged_existing_provider_and_registration_context": {
+    "existing_observer_registration": "cmake/startup.cmake: observer_lifetime.cpp and game_observer_runtime.cpp remain registered.",
+    "admitted_Source84_convention": "Existing raw Source84 uses explicit actual publication references and qualifies its changed stack ABI; this HLL candidate instead has ordinary typed references and a separate explicit Source exception policy.",
+    "admitted_Source70_convention": "Existing Source70 uses actual pending-entity provider references and leaves raw task/production binding held. Its accepted primary receipt supplies the current 80-input build domain.",
+    "candidate_registration_present": false,
+    "new_consumer_or_production_call": false
+  },
+  "latest_accepted_Source_build_context": {
+    "receipt": "reports/cc12_native_observer_endpoint_live_count_cleanup_primary_review.json",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 117692,
+      "start_utc": "2026-10-09T16:28:10.509150+00:00",
+      "finish_utc": "2026-10-09T16:28:29.144081+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 80
+    },
+    "current_Source_input_identity_replay": [
+      {
+        "path": "CMakeLists.txt",
+        "canonical_lf_bytes": 19025,
+        "canonical_lf_sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+        "prior_receipt_physical_bytes": 19025,
+        "prior_receipt_physical_sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "canonical_lf_bytes": 198705,
+        "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "prior_receipt_physical_bytes": 198705,
+        "prior_receipt_physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/entity_event_queues.hpp",
+        "canonical_lf_bytes": 11448,
+        "canonical_lf_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+        "prior_receipt_physical_bytes": 11448,
+        "prior_receipt_physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/fixed_step_job_waves.hpp",
+        "canonical_lf_bytes": 11060,
+        "canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+        "prior_receipt_physical_bytes": 11060,
+        "prior_receipt_physical_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "canonical_lf_bytes": 7776,
+        "canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "prior_receipt_physical_bytes": 7776,
+        "prior_receipt_physical_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "canonical_lf_bytes": 2363,
+        "canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+        "prior_receipt_physical_bytes": 2363,
+        "prior_receipt_physical_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_cleanup.hpp",
+        "canonical_lf_bytes": 1632,
+        "canonical_lf_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "prior_receipt_physical_bytes": 1632,
+        "prior_receipt_physical_sha256": "e79d029fc2c68c35921bb7bedc1ce996e1d1521fc88b1478e8ad6727c9ea5ddd",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+        "canonical_lf_bytes": 2013,
+        "canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "prior_receipt_physical_bytes": 2013,
+        "prior_receipt_physical_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_default_constructor.hpp",
+        "canonical_lf_bytes": 1412,
+        "canonical_lf_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "prior_receipt_physical_bytes": 1412,
+        "prior_receipt_physical_sha256": "553c41754f76c37fbbfb1465fb832a5f29e7cc1e4b7537920380877219d90ac1",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+        "canonical_lf_bytes": 1770,
+        "canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+        "prior_receipt_physical_bytes": 1770,
+        "prior_receipt_physical_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+        "canonical_lf_bytes": 1698,
+        "canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+        "prior_receipt_physical_bytes": 1698,
+        "prior_receipt_physical_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_allocator_owned_message_constructor.hpp",
+        "canonical_lf_bytes": 1938,
+        "canonical_lf_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+        "prior_receipt_physical_bytes": 1938,
+        "prior_receipt_physical_sha256": "d9a16bac8857f61b12976483f9427129af3569bbcc9dbe3703daa3b8b54b0cf1",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "canonical_lf_bytes": 2257,
+        "canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "prior_receipt_physical_bytes": 2257,
+        "prior_receipt_physical_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "canonical_lf_bytes": 1471,
+        "canonical_lf_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "prior_receipt_physical_bytes": 1471,
+        "prior_receipt_physical_sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_legacy_exception_owner.hpp",
+        "canonical_lf_bytes": 3232,
+        "canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "prior_receipt_physical_bytes": 3232,
+        "prior_receipt_physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_link_repair_helpers.hpp",
+        "canonical_lf_bytes": 2957,
+        "canonical_lf_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+        "prior_receipt_physical_bytes": 2957,
+        "prior_receipt_physical_sha256": "743638c84bc875e7da54d4dcec0045f0d955b054e2b22c10bff9793b6f265711",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_lua_variant_small_link_helpers.hpp",
+        "canonical_lf_bytes": 2260,
+        "canonical_lf_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+        "prior_receipt_physical_bytes": 2260,
+        "prior_receipt_physical_sha256": "c2e77bc0f83727d62ad19cf391b536323fb9bcec2b7e483f464de1a5b524b6e6",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+        "canonical_lf_bytes": 2600,
+        "canonical_lf_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+        "prior_receipt_physical_bytes": 2600,
+        "prior_receipt_physical_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_lock.hpp",
+        "canonical_lf_bytes": 3445,
+        "canonical_lf_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+        "prior_receipt_physical_bytes": 3445,
+        "prior_receipt_physical_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_owners.hpp",
+        "canonical_lf_bytes": 2876,
+        "canonical_lf_sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+        "prior_receipt_physical_bytes": 2876,
+        "prior_receipt_physical_sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_producers.hpp",
+        "canonical_lf_bytes": 3874,
+        "canonical_lf_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+        "prior_receipt_physical_bytes": 3874,
+        "prior_receipt_physical_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+        "canonical_lf_bytes": 843,
+        "canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+        "prior_receipt_physical_bytes": 843,
+        "prior_receipt_physical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_constructor.hpp",
+        "canonical_lf_bytes": 761,
+        "canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+        "prior_receipt_physical_bytes": 761,
+        "prior_receipt_physical_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_pending_registry_getter.hpp",
+        "canonical_lf_bytes": 963,
+        "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "prior_receipt_physical_bytes": 963,
+        "prior_receipt_physical_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_pending_tick_group_initialization.hpp",
+        "canonical_lf_bytes": 1448,
+        "canonical_lf_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+        "prior_receipt_physical_bytes": 1448,
+        "prior_receipt_physical_sha256": "af3cd048db2847806f26b72847f7ea61f156ae01846bd1d10f6d9bcc8e2201a7",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "canonical_lf_bytes": 2361,
+        "canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "prior_receipt_physical_bytes": 2361,
+        "prior_receipt_physical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "canonical_lf_bytes": 2431,
+        "canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "prior_receipt_physical_bytes": 2431,
+        "prior_receipt_physical_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "canonical_lf_bytes": 18086,
+        "canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "prior_receipt_physical_bytes": 18086,
+        "prior_receipt_physical_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "canonical_lf_bytes": 2293,
+        "canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "prior_receipt_physical_bytes": 2293,
+        "prior_receipt_physical_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "canonical_lf_bytes": 2373,
+        "canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "prior_receipt_physical_bytes": 2373,
+        "prior_receipt_physical_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+        "canonical_lf_bytes": 1845,
+        "canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "prior_receipt_physical_bytes": 1845,
+        "prior_receipt_physical_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_tick_registration_constructor.hpp",
+        "canonical_lf_bytes": 1247,
+        "canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+        "prior_receipt_physical_bytes": 1247,
+        "prior_receipt_physical_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_tick_sublist_unlink.hpp",
+        "canonical_lf_bytes": 1882,
+        "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+        "prior_receipt_physical_bytes": 1882,
+        "prior_receipt_physical_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+        "canonical_lf_bytes": 2315,
+        "canonical_lf_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+        "prior_receipt_physical_bytes": 2315,
+        "prior_receipt_physical_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_scalar_deletion.hpp",
+        "canonical_lf_bytes": 2017,
+        "canonical_lf_sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a",
+        "prior_receipt_physical_bytes": 2017,
+        "prior_receipt_physical_sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+        "canonical_lf_bytes": 2322,
+        "canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+        "prior_receipt_physical_bytes": 2322,
+        "prior_receipt_physical_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/plane_squadron.hpp",
+        "canonical_lf_bytes": 15252,
+        "canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+        "prior_receipt_physical_bytes": 15252,
+        "prior_receipt_physical_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "canonical_lf_bytes": 1446,
+        "canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "prior_receipt_physical_bytes": 1446,
+        "prior_receipt_physical_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "canonical_lf_bytes": 4372,
+        "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "prior_receipt_physical_bytes": 4372,
+        "prior_receipt_physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/tick_element_overrides.hpp",
+        "canonical_lf_bytes": 18720,
+        "canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+        "prior_receipt_physical_bytes": 18720,
+        "prior_receipt_physical_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "include/bsp/unit_instance_layout.hpp",
+        "canonical_lf_bytes": 18412,
+        "canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+        "prior_receipt_physical_bytes": 18412,
+        "prior_receipt_physical_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "canonical_lf_bytes": 51122,
+        "canonical_lf_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "prior_receipt_physical_bytes": 51122,
+        "prior_receipt_physical_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "canonical_lf_bytes": 17789,
+        "canonical_lf_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "prior_receipt_physical_bytes": 18326,
+        "prior_receipt_physical_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "scripts/build.ps1",
+        "canonical_lf_bytes": 1820,
+        "canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "prior_receipt_physical_bytes": 1820,
+        "prior_receipt_physical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/game_hosts_fixed_step.cpp",
+        "canonical_lf_bytes": 23671,
+        "canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+        "prior_receipt_physical_bytes": 23671,
+        "prior_receipt_physical_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "canonical_lf_bytes": 6831,
+        "canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "prior_receipt_physical_bytes": 6831,
+        "prior_receipt_physical_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/game_native_string_process.cpp",
+        "canonical_lf_bytes": 593,
+        "canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+        "prior_receipt_physical_bytes": 593,
+        "prior_receipt_physical_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_allocator_base_cleanup.cpp",
+        "canonical_lf_bytes": 894,
+        "canonical_lf_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "prior_receipt_physical_bytes": 894,
+        "prior_receipt_physical_sha256": "f0141bf4cb2c9fbe64d42e4f67f4665ea30ff196983d3925d0676ca409c78968",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_allocator_base_copy_constructor.cpp",
+        "canonical_lf_bytes": 2951,
+        "canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "prior_receipt_physical_bytes": 2951,
+        "prior_receipt_physical_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_allocator_base_default_constructor.cpp",
+        "canonical_lf_bytes": 755,
+        "canonical_lf_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "prior_receipt_physical_bytes": 755,
+        "prior_receipt_physical_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_allocator_base_message_constructor.cpp",
+        "canonical_lf_bytes": 979,
+        "canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+        "prior_receipt_physical_bytes": 979,
+        "prior_receipt_physical_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_allocator_failure_object_constructor.cpp",
+        "canonical_lf_bytes": 764,
+        "canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+        "prior_receipt_physical_bytes": 764,
+        "prior_receipt_physical_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_allocator_owned_message_constructor.cpp",
+        "canonical_lf_bytes": 2638,
+        "canonical_lf_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+        "prior_receipt_physical_bytes": 2638,
+        "prior_receipt_physical_sha256": "471a2a689f66afe6ae4ae5de9369cb9255bd91e52c6a5aacd284d3a699bf36f2",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "canonical_lf_bytes": 5460,
+        "canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "prior_receipt_physical_bytes": 5460,
+        "prior_receipt_physical_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_invalid_parameter_noinfo_call.cpp",
+        "canonical_lf_bytes": 1089,
+        "canonical_lf_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+        "prior_receipt_physical_bytes": 1089,
+        "prior_receipt_physical_sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_legacy_exception_owner.cpp",
+        "canonical_lf_bytes": 4352,
+        "canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "prior_receipt_physical_bytes": 4352,
+        "prior_receipt_physical_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_lua_variant_link_repair_helpers.cpp",
+        "canonical_lf_bytes": 4367,
+        "canonical_lf_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+        "prior_receipt_physical_bytes": 4367,
+        "prior_receipt_physical_sha256": "2b604eb546b2696ce8a9fdada7b367e26f96810764161b50fad2dc95d55ce9da",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_lua_variant_small_link_helpers.cpp",
+        "canonical_lf_bytes": 2266,
+        "canonical_lf_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+        "prior_receipt_physical_bytes": 2266,
+        "prior_receipt_physical_sha256": "e049543f225d55c76c941febe1d762bb62a5584a994cc011d95e3d07573b2571",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_observer_endpoint_live_count_cleanup.cpp",
+        "canonical_lf_bytes": 2755,
+        "canonical_lf_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+        "prior_receipt_physical_bytes": 2755,
+        "prior_receipt_physical_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_pending_entity_lock.cpp",
+        "canonical_lf_bytes": 3613,
+        "canonical_lf_sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+        "prior_receipt_physical_bytes": 3613,
+        "prior_receipt_physical_sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_pending_entity_owners.cpp",
+        "canonical_lf_bytes": 1636,
+        "canonical_lf_sha256": "14f68daf67f3458581777eb14908df01ad1b6da7329af979396e6f623231b8d8",
+        "prior_receipt_physical_bytes": 1636,
+        "prior_receipt_physical_sha256": "14f68daf67f3458581777eb14908df01ad1b6da7329af979396e6f623231b8d8",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_pending_entity_producers.cpp",
+        "canonical_lf_bytes": 4026,
+        "canonical_lf_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+        "prior_receipt_physical_bytes": 4026,
+        "prior_receipt_physical_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_pending_registry_base_cleanup.cpp",
+        "canonical_lf_bytes": 403,
+        "canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+        "prior_receipt_physical_bytes": 403,
+        "prior_receipt_physical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_pending_registry_constructor.cpp",
+        "canonical_lf_bytes": 997,
+        "canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+        "prior_receipt_physical_bytes": 997,
+        "prior_receipt_physical_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_pending_registry_getter.cpp",
+        "canonical_lf_bytes": 3449,
+        "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "prior_receipt_physical_bytes": 3449,
+        "prior_receipt_physical_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_pending_tick_group_initialization.cpp",
+        "canonical_lf_bytes": 2898,
+        "canonical_lf_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+        "prior_receipt_physical_bytes": 2898,
+        "prior_receipt_physical_sha256": "f02a505da48f55a6a5c577910dd2cc337dc438b310877add9a1bc2123e9e0eec",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "canonical_lf_bytes": 4563,
+        "canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+        "prior_receipt_physical_bytes": 4563,
+        "prior_receipt_physical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "canonical_lf_bytes": 6911,
+        "canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "prior_receipt_physical_bytes": 6911,
+        "prior_receipt_physical_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "canonical_lf_bytes": 4127,
+        "canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "prior_receipt_physical_bytes": 4127,
+        "prior_receipt_physical_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "canonical_lf_bytes": 4283,
+        "canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "prior_receipt_physical_bytes": 4283,
+        "prior_receipt_physical_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_singleton_vector_reserve_construct.cpp",
+        "canonical_lf_bytes": 3731,
+        "canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "prior_receipt_physical_bytes": 3731,
+        "prior_receipt_physical_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_tick_registration_constructor.cpp",
+        "canonical_lf_bytes": 3108,
+        "canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+        "prior_receipt_physical_bytes": 3108,
+        "prior_receipt_physical_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_tick_sublist_unlink.cpp",
+        "canonical_lf_bytes": 2257,
+        "canonical_lf_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+        "prior_receipt_physical_bytes": 2257,
+        "prior_receipt_physical_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_tick_subnode_base_cleanup.cpp",
+        "canonical_lf_bytes": 3164,
+        "canonical_lf_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+        "prior_receipt_physical_bytes": 3164,
+        "prior_receipt_physical_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_tick_subnode_scalar_deletion.cpp",
+        "canonical_lf_bytes": 1687,
+        "canonical_lf_sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb",
+        "prior_receipt_physical_bytes": 1687,
+        "prior_receipt_physical_sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/native_tick_subnode_unlink_caller.cpp",
+        "canonical_lf_bytes": 2743,
+        "canonical_lf_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+        "prior_receipt_physical_bytes": 2743,
+        "prior_receipt_physical_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/plane_squadron.cpp",
+        "canonical_lf_bytes": 6796,
+        "canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+        "prior_receipt_physical_bytes": 6796,
+        "prior_receipt_physical_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "canonical_lf_bytes": 13257,
+        "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "prior_receipt_physical_bytes": 13257,
+        "prior_receipt_physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/tick_element_overrides.cpp",
+        "canonical_lf_bytes": 12785,
+        "canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+        "prior_receipt_physical_bytes": 12785,
+        "prior_receipt_physical_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      },
+      {
+        "path": "src/unit_instance_layout.cpp",
+        "canonical_lf_bytes": 10576,
+        "canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+        "prior_receipt_physical_bytes": 10576,
+        "prior_receipt_physical_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+        "prior_canonical_receipt_equal_current_Git_and_normalized_file": true
+      }
+    ],
+    "replayed_inputs": 80,
+    "existing_checks_passed": 3,
+    "whole_objects_captured": 16,
+    "positive_public_Core_roots": 18,
+    "not_candidate_evidence": "Prior build and checks predate this candidate. No worker compilation, object recapture, fixture or executable run. Historical artifacts are not reclassified as current candidate evidence."
+  },
+  "current_canonical_input_pins": [
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 7290,
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "physical_bytes": 7290,
+      "physical_sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 14092,
+      "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+      "physical_bytes": 14092,
+      "physical_sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 3039,
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "physical_bytes": 3039,
+      "physical_sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/game_observer_runtime.hpp",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 1967,
+      "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+      "physical_bytes": 1967,
+      "physical_sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/game_observer_runtime.cpp",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 2390,
+      "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+      "physical_bytes": 2390,
+      "physical_sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 2315,
+      "sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "physical_bytes": 2315,
+      "physical_sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_tick_subnode_base_cleanup.cpp",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 3164,
+      "sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "physical_bytes": 3164,
+      "physical_sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 19025,
+      "sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+      "physical_bytes": 19025,
+      "physical_sha256": "b704a4b7a8c74dad7bcc05ebc12139f4039ef189ddc0e71814dbe7af8e0b93a5",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_bytes": 198705,
+      "physical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 120141,
+      "sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca",
+      "physical_bytes": 120141,
+      "physical_sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_ENDPOINT_CLEANUP_ABI_READINESS.md",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 14414,
+      "sha256": "dd30a9311015a7d83f222dd9b5be1805fc55a30118865a80524ae200ebe27e67",
+      "physical_bytes": 14414,
+      "physical_sha256": "dd30a9311015a7d83f222dd9b5be1805fc55a30118865a80524ae200ebe27e67",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_pair_release_owner_ABI_readiness.json",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 277380,
+      "sha256": "484f92b6bd71a8413e9675a362c26ad9d3088d785f6c8e73353e36cc9f2021cb",
+      "physical_bytes": 277380,
+      "physical_sha256": "484f92b6bd71a8413e9675a362c26ad9d3088d785f6c8e73353e36cc9f2021cb",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_PAIR_RELEASE_OWNER_ABI_READINESS.md",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 14335,
+      "sha256": "590ad1ca928524d75385eb60b207e1d130432fe4255b11135e84d595c54f666f",
+      "physical_bytes": 14335,
+      "physical_sha256": "590ad1ca928524d75385eb60b207e1d130432fe4255b11135e84d595c54f666f",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_task_member_unwind_tail_binding_readiness.json",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 157952,
+      "sha256": "d9bf8a491f5c4a372326883a4eddf4e9598b44512b21615acb35e2510441b943",
+      "physical_bytes": 157952,
+      "physical_sha256": "d9bf8a491f5c4a372326883a4eddf4e9598b44512b21615acb35e2510441b943",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_TASK_MEMBER_UNWIND_TAIL_BINDING_READINESS.md",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 8967,
+      "sha256": "da7a78a8a28fb005891fdb1d7fb63e50a93e20034bd15c7cfd765f282dc56dd3",
+      "physical_bytes": 8967,
+      "physical_sha256": "da7a78a8a28fb005891fdb1d7fb63e50a93e20034bd15c7cfd765f282dc56dd3",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_observer_endpoint_live_count_cleanup_primary_review.json",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 521711,
+      "sha256": "a5c1533ad44f69fc49115c0b1b0dfe8ab5121506d652f600d59fdf49e527007b",
+      "physical_bytes": 521711,
+      "physical_sha256": "a5c1533ad44f69fc49115c0b1b0dfe8ab5121506d652f600d59fdf49e527007b",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 97308,
+      "sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "physical_bytes": 97308,
+      "physical_sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_MEMBER_CLEANUP_EH_READINESS.md",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 10868,
+      "sha256": "7dc0435e8ab67d7e389f06f08af15c2fe2fedf04a0f9870230721f9571d2621f",
+      "physical_bytes": 10868,
+      "physical_sha256": "7dc0435e8ab67d7e389f06f08af15c2fe2fedf04a0f9870230721f9571d2621f",
+      "physical_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_member_cleanup_EH_readiness.json",
+      "revision": "1066d3ee565fb350bde65db79afd3357bf3d60dc",
+      "hash_domain": "Exact canonical Git blob bytes",
+      "bytes": 101565,
+      "sha256": "5027241a843f133ab1e5cab901bd24ab6d3a375767479283b33afba370f73e06",
+      "physical_bytes": 101565,
+      "physical_sha256": "5027241a843f133ab1e5cab901bd24ab6d3a375767479283b33afba370f73e06",
+      "physical_equal_after_CRLF_to_LF": true
+    }
+  ],
+  "exact_current_Source_excerpts": [
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "first_line": 11,
+      "last_line": 45,
+      "sha256_utf8_excerpt": "2568c38f5b57c4406ddad14e7585b1f738cbcbfe508deac5672065b3be2e8c42",
+      "purpose": "Existing actual 10h owner prefix and real arrays",
+      "text": "struct NativeObserverEdgeStorage;\n// Actual game storage. No constructors, owned sidecars, or default field values.\nstruct NativeObserverEdgeSlots {\n    NativeObserverEdgeStorage** data_00;\n    std::uint32_t count_04;\n    std::uint32_t capacity_08;\n};\n// Both endpoint bases have this prefix. Pass the actual base address: native\n// VoiceAttachedEntry+18 is the callback owner; its entity pointer is an already\n// adjusted first-endpoint address. A semantic voice object still needs an\n// explicit alias to its actual embedded owner; never reinterpret its metadata.\nstruct NativeObserverOwnerStorage {\n    volatile std::uint32_t native_vtable_00;\n    NativeObserverEdgeSlots edges_04;\n};\nstruct NativeObserverEdgeStorage {\n    volatile std::uint32_t native_vtable_00;\n    NativeObserverOwnerStorage* first_04;\n    NativeObserverOwnerStorage* callback_owner_08;\n    std::uint32_t references_0c;\n};\nstruct NativeObserverLockOwner {\n    volatile std::uint32_t native_vtable_00;\n    TrackedCriticalSection* section_04;\n};\n// The live 00E198E4 object is a checked pointer-vector owner, distinct from\n// endpoint count/capacity arrays. Reuse the canonical +4/+8/+C slot projection.\nstruct NativeObserverDispatchStorage {\n    void* unconsumed_00;\n    SingletonPointerSlots slots_04;\n};\nstatic_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(NativeObserverEdgeSlots) == 0x0c);\nstatic_assert(sizeof(NativeObserverOwnerStorage) == 0x10);\nstatic_assert(offsetof(NativeObserverOwnerStorage, edges_04) == 4);\n"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "first_line": 55,
+      "last_line": 111,
+      "sha256_utf8_excerpt": "4414aeece7d0018ab31fab7d54197b53c234f1ec1b0d45ad5cad856c3e7b5874",
+      "purpose": "Actual observer services, retained lifetime construction and child interfaces",
+      "text": "class ObserverLifetimeServices {\npublic:\n    virtual ~ObserverLifetimeServices() = default;\n    // Dispatch slot zero of this freshly read native table on this actual edge.\n    // The callee owns flag1 deletion. No fake edge life or host-side reference\n    // count is allowed. Called after removal from both endpoint arrays.\n    virtual void delete_edge_virtual_00(NativeObserverEdgeStorage&,\n        std::uint32_t native_vtable, std::uint32_t flags) = 0;\n    // Native validation can return; callers continue with their saved iterator\n    // and owner identities. No synthesized restart or repaired default storage.\n    virtual void invalid_parameter_00bf6713() = 0;\n};\n\n// The following operations mutate the actual three-word count/capacity array.\n// 006944C0 ECX=left, EDX=right, RET: exchange contents through a temporary copy,\n// retaining independent allocations/capacities. This is not a pointer swap.\nvoid exchange_observer_edge_arrays_006944c0(\n    NativeObserverEdgeSlots& left, NativeObserverEdgeSlots& right);\n// 00694F60 ECX=array, EDX=edge, RET: std::remove then native resize. 00694D30 is\n// the standard remove specialization (ECX=first, EDX=end, stack=&value, RET4).\nvoid erase_observer_edge_00694f60(NativeObserverEdgeSlots&, NativeObserverEdgeStorage*);\n\nclass NativeObserverLifetime final {\npublic:\n    // Reuse the existing borrowed lifetime access: the application passes its\n    // actual01090AA0 publication; existing fixtures may pass their semantic\n    // domain through the implicit access constructor. No second domain exists.\n    // The historical SoundLifetimeAccess name does not restrict its raw manager\n    // operations to sound. See OBSERVER_RAW_LIFETIME.md.\n    NativeObserverLifetime(SoundLifetimeAccess,\n        NativeObserverLockOwner* volatile& global_00e198e0,\n        NativeObserverDispatchStorage* volatile& global_00e198e4,\n        ObserverLifetimeServices&) noexcept;\n\n    // No native inputs, EAX=singleton, RET. Captured manager lock, double-check,\n    // allocation, publication, second manager lookup/register, unlock, reload.\n    NativeObserverLockOwner* lock_owner_00694280();\n    NativeObserverLockOwner* initialize_lock_owner_00694200(void*);\n    void unwind_lock_owner_00693c50(NativeObserverLockOwner&) noexcept;\n    // Preserve existing CG_scalar_deleting_dtor identity; ECX=owner, flags on\n    // stack, EAX=original address, RET4. Bind this in singleton shutdown dispatch.\n    NativeObserverLockOwner* delete_lock_owner_00694ea0(\n        NativeObserverLockOwner*, std::uint32_t flags);\n\n    // Native ECX=first endpoint, EDX=callback owner; lookup returns EAX=edge.\n    // All three methods acquire the current shared recursive lock themselves.\n    NativeObserverEdgeStorage* find_pair_006949d0(\n        NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner);\n    void unregister_pair_006952a0(\n        NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner);\n    // Native ECX=callback-owner base, RET. Clear matching dispatch slots, move\n    // array contents out, then remove/destroy all captured edges regardless of\n    // their reference counts. Callbacks see the owner's detached count.\n    void detach_all_00695530(NativeObserverOwnerStorage&);\n    // Native ECX=callback-owner base, RET. Includes base vtable write, nested\n    // locked count query, detach-all, unlock, and array free. Does not free owner.\n    void destroy_callback_owner_00695870(NativeObserverOwnerStorage&);\n"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "first_line": 125,
+      "last_line": 139,
+      "sha256_utf8_excerpt": "f5ecf6050d324411fc14a3016a78990527fb065dc228529b3e54b361ad01ab42",
+      "purpose": "Retained borrowed state and actual backing requirements",
+      "text": "\nprivate:\n    void remove_from_endpoints_and_delete(NativeObserverEdgeStorage&);\n    void invalidate_dispatch_slots(NativeObserverEdgeStorage*, NativeObserverOwnerStorage*,\n        bool match_first_endpoint = false);\n\n    SoundLifetimeAccess domain_;\n    NativeObserverLockOwner* volatile& global_00e198e0_;\n    NativeObserverDispatchStorage* volatile& global_00e198e4_;\n    ObserverLifetimeServices& services_;\n};\n\n// Valid storage requires allocated pointer spans, counts<=capacities and a\n// live published dispatch owner. Native32 count arithmetic is retained; these\n// preconditions are not new bounds checks or corruption recovery behavior.\n"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "first_line": 10,
+      "last_line": 14,
+      "sha256_utf8_excerpt": "6a55389d500406b29f4c105958ba9dd43811fe89309b0f7489d80825dc8c7f1d",
+      "purpose": "Current numerical profile identities",
+      "text": "namespace {\nconstexpr std::uint32_t lock_table = 0x00cf7e70;\nconstexpr std::uint32_t simple_owner_table = 0x00ce3818;\nconstexpr std::uint32_t callback_owner_table = 0x00ce3cd4;\nconstexpr std::uint32_t observed_owner_table = 0x00ceccc8;\n"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "first_line": 24,
+      "last_line": 46,
+      "sha256_utf8_excerpt": "d13ef44a3f1fc337c6b21f7615cce769457d3d82f4c2d26947d46a2d0582e353",
+      "purpose": "Captured section guard and current C++ unwind policy",
+      "text": "public:\n    explicit ObserverGuard(TrackedCriticalSection* section) : section_(section) {\n        if (section_) {\n            EnterCriticalSection(&section_->native);\n            add_depth(1u);\n        }\n    }\n    ~ObserverGuard() {\n        if (section_) {\n            add_depth(0xffffffffu);\n            LeaveCriticalSection(&section_->native);\n        }\n    }\nprivate:\n    void add_depth(std::uint32_t amount) noexcept {\n        std::uint32_t bits;\n        std::memcpy(&bits, &section_->depth, 4);\n        bits += amount;\n        std::memcpy(&section_->depth, &bits, 4);\n    }\n    TrackedCriticalSection* section_;\n};\n\n"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "first_line": 56,
+      "last_line": 67,
+      "sha256_utf8_excerpt": "76594fe8f2aba88d744a7e5dba5dab3fcfb96e20fdf9b0fb049796cdda93ed1b",
+      "purpose": "Current backing free and detached array guard",
+      "text": "}\nstruct TemporarySlots final {\n    NativeObserverEdgeSlots slots{nullptr, 0, 0};\n    ~TemporarySlots() { free_slots(slots.data_00); }\n};\n\n// Inline growth sequence shared by 006944C0 and 00694F60. Store capacity\n// BEFORE allocation. The new handler can call game code; reload count and old\n// data after it returns, including the otherwise-unusual copy-after-count0.\nvoid reserve_slots(NativeObserverEdgeSlots& slots, std::uint32_t requested) {\n    if (slots.capacity_08 < requested) {\n        slots.capacity_08 = requested;\n"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "first_line": 129,
+      "last_line": 134,
+      "sha256_utf8_excerpt": "9bdbc1be1027aa567f5a0213c0e02cb3537799a1310572b7f9b84993b0753cde",
+      "purpose": "Lifetime retains actual passed domain, publication cells and services",
+      "text": "NativeObserverLifetime::NativeObserverLifetime(SoundLifetimeAccess domain,\n    NativeObserverLockOwner* volatile& lock,\n    NativeObserverDispatchStorage* volatile& dispatch,\n    ObserverLifetimeServices& services) noexcept\n    : domain_(domain), global_00e198e0_(lock), global_00e198e4_(dispatch),\n      services_(services) {}\n"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "first_line": 183,
+      "last_line": 210,
+      "sha256_utf8_excerpt": "ecc3482f7be6a613f1fa00f15bd8965d1e6073838e534ef3947a27bbbceefdb5",
+      "purpose": "Pair lookup compares actual endpoint identities",
+      "text": "NativeObserverEdgeStorage* NativeObserverLifetime::find_pair_006949d0(\n    NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner) {\n    ObserverGuard guard(lock_owner_00694280()->section_04);\n    if (first.edges_04.count_04 < callback_owner.edges_04.count_04) {\n        auto** cursor = first.edges_04.data_00;\n        auto** end = offset(cursor, first.edges_04.count_04);\n        if (cursor != end) {\n            end = offset(cursor, first.edges_04.count_04); // 00694A08 reload\n            do {\n                auto* edge = *cursor;\n                if (edge->callback_owner_08 == &callback_owner) return edge;\n                cursor = offset(cursor, 1);\n            } while (cursor != end);\n        }\n    } else {\n        auto** cursor = callback_owner.edges_04.data_00;\n        auto** end = offset(cursor, callback_owner.edges_04.count_04);\n        if (cursor != end) {\n            end = offset(cursor, callback_owner.edges_04.count_04); // 00694A2F\n            do {\n                auto* edge = *cursor;\n                if (edge->first_04 == &first) return edge;\n                cursor = offset(cursor, 1);\n            } while (cursor != end);\n        }\n    }\n    return nullptr;\n}\n"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "first_line": 212,
+      "last_line": 265,
+      "sha256_utf8_excerpt": "6b70add07d7e18a7797439f0629319a0ccbbbb591f507b8c3f0aea28d7a34907",
+      "purpose": "Current dispatch validation, edge deletion and unregister provider",
+      "text": "void NativeObserverLifetime::invalidate_dispatch_slots(\n    NativeObserverEdgeStorage* selected_edge, NativeObserverOwnerStorage* selected_owner,\n    bool match_first_endpoint) {\n    auto* const captured_owner = global_00e198e4_;\n    auto** cursor = captured_owner->slots_04.begin;\n    auto*** const captured_end_field = &captured_owner->slots_04.end;\n    if (address(cursor) > address(*captured_end_field))\n        services_.invalid_parameter_00bf6713();\n    for (;;) {\n        // Preserve the owner/end captured BEFORE each validation callback.\n        auto* const current_owner = global_00e198e4_;\n        auto** const current_end = current_owner->slots_04.end;\n        if (address(current_owner->slots_04.begin) > address(current_end))\n            services_.invalid_parameter_00bf6713();\n        if (captured_owner != current_owner)\n            services_.invalid_parameter_00bf6713();\n        if (cursor == current_end) break;\n        if (address(cursor) >= address(*captured_end_field))\n            services_.invalid_parameter_00bf6713();\n        auto* edge = static_cast<NativeObserverEdgeStorage*>(*cursor);\n        const bool matches = selected_edge ? edge == selected_edge\n            : edge && (match_first_endpoint ? edge->first_04 : edge->callback_owner_08)\n                == selected_owner;\n        if (matches) {\n            if (address(cursor) >= address(*captured_end_field))\n                services_.invalid_parameter_00bf6713();\n            *cursor = nullptr;\n        }\n        if (address(cursor) >= address(*captured_end_field))\n            services_.invalid_parameter_00bf6713();\n        cursor = offset(cursor, 1);\n    }\n}\nvoid NativeObserverLifetime::remove_from_endpoints_and_delete(NativeObserverEdgeStorage& edge) {\n    auto* const first = edge.first_04;\n    auto* const callback_owner = edge.callback_owner_08; // before first remove\n    erase_observer_edge_00694f60(first->edges_04, &edge);\n    erase_observer_edge_00694f60(callback_owner->edges_04, &edge);\n    const std::uint32_t table = edge.native_vtable_00; // after both removals\n    if (table == kObserverEdgeVtable00cf7e64) {\n        (void)delete_observer_edge_00693ca0(&edge, 1);\n    } else {\n        services_.delete_edge_virtual_00(edge, table, 1);\n    }\n}\nvoid NativeObserverLifetime::unregister_pair_006952a0(\n    NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner) {\n    ObserverGuard guard(lock_owner_00694280()->section_04);\n    auto* edge = find_pair_006949d0(first, callback_owner); // separately nested lock\n    if (!edge) return;\n    invalidate_dispatch_slots(edge, nullptr);\n    --edge->references_0c;\n    if (edge->references_0c == 0) remove_from_endpoints_and_delete(*edge);\n}\n"
+    },
+    {
+      "path": "src/observer_lifetime.cpp",
+      "first_line": 266,
+      "last_line": 297,
+      "sha256_utf8_excerpt": "7a7bec6855cbac8acfdaa9e10f109b8d2f7cb1e0824147f86bcc6d60d7ac7c25",
+      "purpose": "Current detach and owner destruction with normal/catch free",
+      "text": "void NativeObserverLifetime::detach_all_00695530(NativeObserverOwnerStorage& owner) {\n    ObserverGuard guard(lock_owner_00694280()->section_04);\n    invalidate_dispatch_slots(nullptr, &owner);\n    TemporarySlots detached;\n    exchange_observer_edge_arrays_006944c0(detached.slots, owner.edges_04);\n    auto** cursor = detached.slots.data_00;\n    auto** const end = offset(cursor, detached.slots.count_04);\n    while (cursor != end) {\n        auto* edge = *cursor;\n        remove_from_endpoints_and_delete(*edge); // no reference-count decrement\n        cursor = offset(cursor, 1);\n    }\n    // Detached allocation freed before the captured outer section is released.\n}\nvoid NativeObserverLifetime::destroy_callback_owner_00695870(NativeObserverOwnerStorage& owner) {\n    owner.native_vtable_00 = callback_owner_table;\n    try {\n        ObserverGuard outer(lock_owner_00694280()->section_04);\n        std::uint32_t count;\n        {\n            ObserverGuard nested(lock_owner_00694280()->section_04);\n            count = owner.edges_04.count_04;\n        }\n        if (count != 0) detach_all_00695530(owner);\n    } catch (...) {\n        // 00C7EA90: array cleanup after the 00C7EA9B lock unwind.\n        free_slots(owner.edges_04.data_00);\n        throw;\n    }\n    free_slots(owner.edges_04.data_00); // reload after callbacks and unlock\n    // Native leaves pointer/count/capacity bytes as they stand at destruction.\n}\n"
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "first_line": 31,
+      "last_line": 50,
+      "sha256_utf8_excerpt": "a45814890488a1f5b372b5529343225fb855648703be6f096c4717e4dee40e07",
+      "purpose": "Manager domain identity is borrowed object or publication cell",
+      "text": "// the application's actual01090AA0 cell. Borrowed publication storage must\n// outlive all sound registration/destruction. Only the caller drains it.\nclass SoundLifetimeAccess final {\npublic:\n    SoundLifetimeAccess(SingletonLifetimeDomain& domain) noexcept : semantic_(&domain) {}\n    SoundLifetimeAccess(void* volatile& actual_publication) noexcept : actual_(&actual_publication) {}\n    SoundLifetimeManagerView get_manager_00415350() const;\n    bool uses_actual_storage() const noexcept { return actual_ != nullptr; }\n    // Compare the borrowed semantic object or raw publication CELL identity.\n    // Current pointer values are irrelevant, so distinct null raw cells differ.\n    bool borrows_same_domain(const SingletonLifetimeDomain& domain) const noexcept {\n        return semantic_ == &domain;\n    }\n    bool borrows_same_domain(void* volatile& publication) const noexcept {\n        return actual_ == &publication;\n    }\nprivate:\n    SingletonLifetimeDomain* semantic_{};\n    void* volatile* actual_{};\n};\n"
+    },
+    {
+      "path": "include/bsp/game_observer_runtime.hpp",
+      "first_line": 9,
+      "last_line": 44,
+      "sha256_utf8_excerpt": "7fed6fe93b9b8096d73b62dbdc6c0e0e6afb6e432070bd9475582c0db1a5c868",
+      "purpose": "Existing application domain and lifetime storage",
+      "text": "// Application publication cells for the actual observer owners. This source\n// context is owned by GameSingletonHost and outlives its raw manager drain.\n// Native owners are created/deleted only by the recovered routines; this\n// wrapper has no independent lifetime domain or implicit native destructor.\nclass GameObserverRuntime final : private ObserverLifetimeServices {\npublic:\n    GameObserverRuntime(GameSingletonHost&, GameHostLog&) noexcept;\n    GameObserverRuntime(const GameObserverRuntime&) = delete;\n    GameObserverRuntime& operator=(const GameObserverRuntime&) = delete;\n\n    // Invoke once in the represented CRT sequence, before CD2D80 settings.\n    // Actual table slots CE2BAC/CE3054 establish this relative order.\n    void initialize_dispatch_00ccd6a0();\n    // Native teardown clears the owner cell but deliberately retains its alias.\n    bool has_live_dispatch_owner() const noexcept { return owner_00e198dc_ != nullptr; }\n    NativeObserverLifetime& lifetime() noexcept { return lifetime_; }\n    NativeObserverDispatchStorage* volatile& dispatch_publication() noexcept {\n        return dispatch_00e198e4_;\n    }\n    // Diagnostic reads only. Do not dereference the alias after native drain.\n    void record_after_singleton_drain();\n\nprivate:\n    void delete_edge_virtual_00(NativeObserverEdgeStorage&,\n        std::uint32_t native_vtable, std::uint32_t flags) override;\n    void invalid_parameter_00bf6713() override;\n\n    GameHostLog& log_;\n    SoundLifetimeAccess manager_;\n    NativeObserverDispatchOwner* volatile owner_00e198dc_{nullptr};\n    NativeObserverLockOwner* volatile lock_00e198e0_{nullptr};\n    NativeObserverDispatchStorage* volatile dispatch_00e198e4_{nullptr};\n    NativeObserverLifetime lifetime_;\n    std::uintptr_t initialized_alias_{}; // diagnostics, not native state\n};\n} // namespace bsp::game\n"
+    },
+    {
+      "path": "src/game_observer_runtime.cpp",
+      "first_line": 9,
+      "last_line": 23,
+      "sha256_utf8_excerpt": "1fc0c46e869cd9be44a649181c1bfb0b7749a8d8790bd2cbfc1259cce67adcc0",
+      "purpose": "Real validation service and retained domain binding",
+      "text": "namespace {\n// Reuse the current CRT validation service. Keep the source call capable of\n// returning when a configured handler returns, as the recovered callers do.\n__declspec(naked) void __cdecl observer_crt_invalid_parameter() {\n    __asm { jmp _invalid_parameter_noinfo }\n}\n}\n\nGameObserverRuntime::GameObserverRuntime(GameSingletonHost& singletons,\n    GameHostLog& log) noexcept\n    : log_(log), manager_(singletons.sound_lifetime()),\n      lifetime_(manager_, lock_00e198e0_, dispatch_00e198e4_, *this) {\n    singletons.bind_observer_lifetime(&lifetime_);\n    singletons.bind_observer_dispatch_owner(&owner_00e198dc_);\n}\n"
+    },
+    {
+      "path": "src/game_observer_runtime.cpp",
+      "first_line": 47,
+      "last_line": 57,
+      "sha256_utf8_excerpt": "db11fd666cd69095afa9eba8a10a88e274a78075526578275509c2abfe88dde1",
+      "purpose": "Unsupported edge profiles throw in current application provider",
+      "text": "void GameObserverRuntime::delete_edge_virtual_00(NativeObserverEdgeStorage&,\n    std::uint32_t, std::uint32_t) {\n    // CF7E64 uses the concrete recovered path inside NativeObserverLifetime.\n    // Other edge producers/slot-zero targets are not admitted by this binding.\n    throw std::logic_error(\"observer edge deleting profile is unavailable\");\n}\n\nvoid GameObserverRuntime::invalid_parameter_00bf6713() {\n    observer_crt_invalid_parameter();\n}\n} // namespace bsp::game\n"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+      "first_line": 9,
+      "last_line": 43,
+      "sha256_utf8_excerpt": "bd6f468b786f9fa01ba7331ab74e90f31a23e6c5bb7e0e9e9377230837402ca9",
+      "purpose": "Admitted Source84 explicit reference and Native ABI boundary convention",
+      "text": "namespace bsp {\n\n// Complete 00875B30..00875B83[84] through a new naked Source interface. ECX\n// supplies the actual node; EDX is unused placement. Two stack words hold the\n// actual F/M publication-cell addresses. Source RET8 consumes those references;\n// the Native entry takes no stack argument and ends in plain RET.\n//\n// Read node+8, then stamp opaque DWORD 00CFD99C at node+0 while retaining the\n// comparison flags. Only if that first read is zero, read node+C afresh. Either\n// nonzero link takes the slow path: capture node+4 parent BEFORE the getter or\n// lock; capture getter-result+4 section once; optional Enter/depth++ at +18h;\n// raw unlink on captured parent+1Ch and captured node; TEST current section,\n// clear node+4 as a full DWORD, then optional depth--/Leave. No local unwind\n// release is added. The profile write also occurs on the empty fast path.\n//\n// Borrow node backing through +0Fh, selected parent/list and neighbor backing\n// required by the admitted raw unlink, and the actual Win32 section/depth\n// backing. Keep both publication cells at stable addresses for the call; their\n// values remain mutable under the admitted getter. Use actual publications,\n// not copies or newly invented private cells. Preserve the added Source address\n// argument words until their selected loads, plus active saved-register slots\n// and return backing under aliases. The leaf's conditional EDI spill must retain\n// the captured section; this body deliberately uses actual current EDI afterward.\n//\n// No Node/class type, callable profile, owner, allocation, validation, RAII,\n// production caller or binding for the existing pure-virtual facade is supplied.\n// Source getter/CRT/Win32 policy, extra stack arguments, failures, stack aliases,\n// Original ABI/placement and runtime behavior remain separately qualified.\n// Void supplies no common EAX result; this declaration deliberately lacks noexcept.\nvoid __fastcall cleanup_native_tick_subnode_base_00875b30(\n    void* actual_node,\n    std::uint32_t unused_edx,\n    void* volatile& actual_registry_publication_00f878cc,\n    void* volatile& actual_manager_publication_01090aa0);\n\n"
+    },
+    {
+      "path": "src/native_tick_subnode_base_cleanup.cpp",
+      "first_line": 16,
+      "last_line": 61,
+      "sha256_utf8_excerpt": "a60d3938fc28406eded1c94f19df17771503a9fd67f1ea3533ee613b9743147f",
+      "purpose": "Source84 implementation is separate raw assembly adaptation",
+      "text": "// Two explicit Source publication references and cdecl getter arguments adapt\n// the owned schedule. Preserve the pre-profile comparison, captured parent,\n// raw current-EDI use after unlink, and TEST flags across the node+4 clear.\n__declspec(naked) void __fastcall cleanup_native_tick_subnode_base_00875b30(\n    void*, std::uint32_t, void* volatile&, void* volatile&) {\n    __asm {\n        push esi                              // 00875B30\n        mov esi, ecx                          // 00875B31\n        cmp dword ptr [esi + 8], 0             // 00875B33\n        mov dword ptr [esi], 0cfd99ch          // 00875B37: opaque profile DWORD\n        jnz short cleanup_slow                // 00875B3D: consumes the CMP flags\n        cmp dword ptr [esi + 0ch], 0           // 00875B3F: fresh selected link read\n        jz short cleanup_complete             // 00875B43\n    cleanup_slow:\n        push ebx                              // 00875B45\n        mov ebx, dword ptr [esi + 4]           // 00875B46: capture parent now\n        push edi                              // 00875B49\n        push dword ptr [esp + 14h]            // Source: actual M cell address\n        push dword ptr [esp + 14h]            // Source: actual F cell address\n        call get_native_pending_registry_00875280 // 00875B4A: admitted Source\n        add esp, 8                            // Source: cdecl reference arguments\n        mov edi, dword ptr [eax + 4]           // 00875B4F: capture section once\n        test edi, edi                         // 00875B52\n        jz short unlink_node                  // 00875B54\n        push edi                              // 00875B56\n        call dword ptr [EnterCriticalSection]  // 00875B57: current Win32 import\n        add dword ptr [edi + 18h], 1           // 00875B5D\n    unlink_node:\n        push esi                              // 00875B61: captured node argument\n        lea ecx, [ebx + 1ch]                   // 00875B62: captured parent list\n        call unlink_native_tick_sublist_node_00874e60 // 00875B65: admitted RET4 leaf\n        test edi, edi                         // 00875B6A: actual current section\n        mov dword ptr [esi + 4], 0             // 00875B6C: preserves TEST flags\n        jz short slow_complete                // 00875B73\n        add dword ptr [edi + 18h], -1          // 00875B75\n        push edi                              // 00875B79\n        call dword ptr [LeaveCriticalSection]  // 00875B7A: current Win32 import\n    slow_complete:\n        pop edi                               // 00875B80\n        pop ebx                               // 00875B81\n    cleanup_complete:\n        pop esi                               // 00875B82\n        ret 8                                 // 00875B83: Source two references\n    }\n}\n\n"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "first_line": 308,
+      "last_line": 314,
+      "sha256_utf8_excerpt": "c842b825b42081c68b1c4c35d6460cfb4480fa28c923f354e9a8a9dcf35db116",
+      "purpose": "Current admitted Source84 and Source70 registrations; candidate absent",
+      "text": "target_sources(bsp_core PRIVATE src/native_tick_registration_constructor.cpp)\ntarget_sources(bsp_core PRIVATE src/native_tick_sublist_unlink.cpp)\ntarget_sources(bsp_core PRIVATE src/native_tick_subnode_unlink_caller.cpp)\ntarget_sources(bsp_core PRIVATE src/native_tick_subnode_base_cleanup.cpp)\ntarget_sources(bsp_core PRIVATE src/native_tick_subnode_scalar_deletion.cpp)\ntarget_sources(bsp_core PRIVATE src/native_observer_endpoint_live_count_cleanup.cpp)\ntarget_sources(bsp_core PRIVATE src/native_invalid_parameter_noinfo_call.cpp)\n"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "first_line": 1356,
+      "last_line": 1358,
+      "sha256_utf8_excerpt": "9b1ed85340b6f50f7bf2e0b576d68276ea1c2a718c4d08cc10dbd2211c85e9a0",
+      "purpose": "Current observer provider registration",
+      "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/observer_edges.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/observer_event_producer.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/observer_lifetime.cpp)\n"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "first_line": 1660,
+      "last_line": 1660,
+      "sha256_utf8_excerpt": "f35c782ec2e3fc16d1ede42de941b356aa59ce2ffada9246bb7b2bdc043c6064",
+      "purpose": "Current game observer domain registration",
+      "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_observer_runtime.cpp)\n"
+    }
+  ],
+  "owned_candidate_pins": [
+    {
+      "path": "include/bsp/native_observer_member_cleanup.hpp",
+      "bytes": 1970,
+      "sha256": "91281fcee30b273e225f001cb273732c258a18d31e75aa93b78d436f81574025",
+      "hash_domain": "Exact candidate LF file bytes; uncommitted at generation"
+    },
+    {
+      "path": "src/native_observer_member_cleanup.cpp",
+      "bytes": 1602,
+      "sha256": "cab998a9d477d7c5b27558548951896665fdbee82251255d32c78e9f761d4dd2",
+      "hash_domain": "Exact candidate LF file bytes; uncommitted at generation"
+    },
+    {
+      "path": "docs/CC12_NATIVE_OBSERVER_MEMBER_CLEANUP_SOURCE.md",
+      "bytes": 8100,
+      "sha256": "19f8e75c129942ad69c878b929ad9f5a11643890b63388e88ed17ef0f002bd88",
+      "hash_domain": "Exact candidate LF file bytes; uncommitted at generation"
+    }
+  ],
+  "verification": {
+    "complete_Native88_identity_replay": true,
+    "current_Source80_identities": true,
+    "exact_provider_excerpt_count": 19,
+    "Source_order_and_guard_boundary_reviewed": true,
+    "single_volatile_endpoint_capture": true,
+    "normal_destroy_guard_disarmed_first": true,
+    "worker_build": false,
+    "worker_test_or_probe": false,
+    "Ghidra_mutation": false,
+    "CMake_or_ledger_change": false,
+    "emitted_Source_size_or_EH_claim": false
+  },
+  "primary_review_required": [
+    "Register and run the normal MSVC Win32 build with relevant existing checks.",
+    "Inspect the entire emitted candidate object, public function/private guard code, all sections/relocations and new EH payloads; do not infer them from this source text.",
+    "Check actual Core membership and unique public definition, plus current application map and all changed compiler/provider policy boundaries.",
+    "Keep Source admission distinct from Native ABI/FS/frame/exception identity and from eventual actual raw-member production binding or gameplay validation."
+  ],
+  "documentation": "docs/CC12_NATIVE_OBSERVER_MEMBER_CLEANUP_SOURCE.md"
+}
