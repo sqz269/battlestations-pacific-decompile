@@ -1,0 +1,458 @@
+{
+  "schema": "bsp.cc12.world_expiry_primary_review.v1",
+  "status": "whole93B_native_body_positive_concrete42B_helper_binding_and_core_reviewed_normal_win32_build_passed",
+  "created_utc": "2026-10-09T07:28:51.458504+00:00",
+  "worker_commit": "279233b2f7660c61510a0862f7d127bd5f5d4942",
+  "build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 69236,
+    "start_utc": "2026-10-09T07:25:24.702985+00:00",
+    "finish_utc": "2026-10-09T07:25:46.687641+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "before_inputs_rechecked_after_build": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "d50edc799fbe11c3b618773ab698987a39b609f5d31849ce606e7c5070281be3"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "include/bsp/native_world_expiry_pass.hpp",
+      "sha256": "de68781b1f2592c2929004cb08e3ccba3a7ae7ce754c9f62c5eaa7c70e8b736d"
+    },
+    {
+      "path": "src/native_world_expiry_pass.cpp",
+      "sha256": "fde735556c018edf5d1269f2176224da1204d53dd5855fefe3af8203267e6c4e"
+    },
+    {
+      "path": "include/bsp/native_world_child_retirement.hpp",
+      "sha256": "56e0f566df8bd731e2408e5d678e16f4db9cca10b43d113e41c6791e0ff3e7a9"
+    },
+    {
+      "path": "src/native_world_child_retirement.cpp",
+      "sha256": "54855f658d53212ab1e887173d16d4d8eccc2feaa99ed557b105cd58b5efb949"
+    }
+  ],
+  "canonical_worker_audit_pins_replayed": [
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160"
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb"
+    },
+    {
+      "path": "include/bsp/game_hosts_ready.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "include/bsp/native_world_activation_flush.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986"
+    },
+    {
+      "path": "src/native_world_activation_flush.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be"
+    },
+    {
+      "path": "reports/cc12_native_world_activation_flush_source.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b"
+    },
+    {
+      "path": "reports/cc12_entity_destroy_state_primary_review.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36"
+    },
+    {
+      "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160"
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb"
+    },
+    {
+      "path": "include/bsp/game_hosts_ready.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "include/bsp/native_world_activation_flush.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986"
+    },
+    {
+      "path": "src/native_world_activation_flush.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be"
+    },
+    {
+      "path": "reports/cc12_native_world_activation_flush_source.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b"
+    },
+    {
+      "path": "reports/cc12_entity_destroy_state_primary_review.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36"
+    },
+    {
+      "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "13522cbff8fcee73701b9e60be2f2211a419bc6f4a5bed717bb60c3d10540a1f"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "4d30c4d25439c4b91d5a42d657160932a57ac4f65a7cdde7b8615cb7c099e57a"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "reports/cc12_world_activation_service_readiness.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16"
+    },
+    {
+      "path": "docs/CC12_WORLD_ACTIVATION_SERVICE_READINESS.md",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04"
+    },
+    {
+      "path": "include/bsp/native_world_child_retirement.hpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "56e0f566df8bd731e2408e5d678e16f4db9cca10b43d113e41c6791e0ff3e7a9"
+    },
+    {
+      "path": "src/native_world_child_retirement.cpp",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "54855f658d53212ab1e887173d16d4d8eccc2feaa99ed557b105cd58b5efb949"
+    },
+    {
+      "path": "docs/CC12_NATIVE_WORLD_CHILD_RETIREMENT_SOURCE.md",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "14b5027939140d8eff955b3eb970c34bfedea428ab749443c9477a503c7f2fdb"
+    },
+    {
+      "path": "reports/cc12_native_world_child_retirement_source.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "a6056b50db86f5841457e4a6416c81d463e17e72ae9516eff15f2d176529cf75"
+    },
+    {
+      "path": "reports/cc12_native_world_child_retirement_primary_review.json",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "0f457e281c5453d627ca3e029800ff87fe200592e847d73c8fe397087dec05b7"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "f196f086b4a10a09f09cdfc1884c2e28b129f3f28b9ae8f51db3431c2912f393"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "revision": "a3203d44403369e0415d666943a723ed21c28c78",
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    }
+  ],
+  "native_body": {
+    "address": "00903610",
+    "bytes": 93,
+    "instructions": 42,
+    "branches": 9,
+    "sha256": "469147a3ef98d0e543c4194ce2392ab735ab64e64a49058bf406a52e5befec59",
+    "entire_resolved_body_equal_installed_PE": true
+  },
+  "physical_root": {
+    "symbol": "?release_native_world_expired_objects_00903610@bsp@@YIXPAX@Z",
+    "symbol_index": 8,
+    "section": 3,
+    "section_value": 0,
+    "physical_file_offset": 435,
+    "bytes": 93,
+    "instruction_count": 42
+  },
+  "sole_external_relocation": {
+    "record_file_offset": 528,
+    "raw_record_hex": "2c000000090000001400",
+    "offset": 44,
+    "type": 20,
+    "symbol_index": 9,
+    "symbol": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+    "symbol_record": {
+      "index": 9,
+      "record_file_offset": 732,
+      "raw_record_hex": "000000004100000000000000000020000200",
+      "name": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+      "value": 0,
+      "section": 0,
+      "type": 32,
+      "storage": 2,
+      "aux_count": 0,
+      "aux_records_hex": ""
+    },
+    "operand_file_offset": 479,
+    "operand_hex": "00000000",
+    "operand_u32": 0,
+    "function_offset": 44
+  },
+  "resolved_external_operand_hex": "a0ffffff",
+  "concrete_provider": {
+    "physical_root": {
+      "symbol": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+      "symbol_index": 8,
+      "section": 3,
+      "section_value": 0,
+      "physical_file_offset": 439,
+      "bytes": 42,
+      "instruction_count": 16
+    },
+    "sole_physical_self_relocation": {
+      "record_file_offset": 481,
+      "raw_record_hex": "14000000080000001400",
+      "offset": 20,
+      "type": 20,
+      "symbol_index": 8,
+      "symbol": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+      "symbol_record": {
+        "index": 8,
+        "record_file_offset": 667,
+        "raw_record_hex": "000000000400000000000000030020000200",
+        "name": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      "operand_file_offset": 459,
+      "operand_hex": "00000000",
+      "operand_u32": 0,
+      "function_offset": 20
+    },
+    "self_operand_hex": "e8ffffff",
+    "complete42B_equal_installed_PE": true,
+    "sha256": "a84482b641eec58c063a5e47549586e95b17485ffb141239c13634654f55e2f8"
+  },
+  "positive_unique_core_definitions": [
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_world_expiry_pass.obj",
+        "header_offset": 63758724,
+        "payload_file_offset": 63758784,
+        "bytes": 909,
+        "sha256": "8376cd3d5a02d2291831c87dd7e18a850874bad014e220bd010c44334effca02"
+      },
+      "definition": {
+        "name": "?release_native_world_expired_objects_00903610@bsp@@YIXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 714,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_world_child_retirement.obj",
+        "header_offset": 63759694,
+        "payload_file_offset": 63759754,
+        "bytes": 783,
+        "sha256": "d0081c0ef1ec38254ab40e6e6265eb28bcc4a0e803b4864b7d2e63555e7f42c7"
+      },
+      "definition": {
+        "name": "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 667,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    }
+  ],
+  "whole_core_members": [
+    {
+      "name": "bsp_core.dir\\Release\\native_world_expiry_pass.obj",
+      "header_offset": 63758724,
+      "payload_file_offset": 63758784,
+      "bytes": 909,
+      "sha256": "8376cd3d5a02d2291831c87dd7e18a850874bad014e220bd010c44334effca02"
+    },
+    {
+      "name": "bsp_core.dir\\Release\\native_world_child_retirement.obj",
+      "header_offset": 63759694,
+      "payload_file_offset": 63759754,
+      "bytes": 783,
+      "sha256": "d0081c0ef1ec38254ab40e6e6265eb28bcc4a0e803b4864b7d2e63555e7f42c7"
+    }
+  ],
+  "whole_objects": [
+    {
+      "bytes": 909,
+      "sha256": "8376cd3d5a02d2291831c87dd7e18a850874bad014e220bd010c44334effca02"
+    },
+    {
+      "bytes": 783,
+      "sha256": "d0081c0ef1ec38254ab40e6e6265eb28bcc4a0e803b4864b7d2e63555e7f42c7"
+    }
+  ],
+  "core_library_sha256": "fdb06d6aeb0ca8e9178da361b3d5c3b455c33c00f571abd5ce052d62745a7870",
+  "indexed_graph_external_boundaries": [
+    "?retire_native_world_child_subtree_009035e0@bsp@@YIXPAX@Z"
+  ],
+  "provider_indexed_graph_external_boundaries": [],
+  "complete_review": [
+    "All93B/42instructions/ninebranches equal installedPE after soleexternalREL32 operand44 is rebound -96 to physical qualified helper.",
+    "Current child helper all42B/16instructions equal installedPE after own physical self-reference operand20 is rebound -24; positive unique Core definition and complete matching member.",
+    "Signed initial TEST/JLE; wrapping ADD/CMP/fullcounterstore before signed JL; INT_MAX wraps to INT_MIN and ages; only aging changes retained EDI anchor.",
+    "FullDWORD50 child gate, fresh48 helper input each iteration, sameparent gate reload after entire child return; late actual ownvptr/slot0/DWORD1 CALL with callee argument cleanup4.",
+    "No released entity dereference after ownvirtualreturn; read anchor current38 or captured World fresh4/header.first; preserve EBX/ESI/EDI/plainRET.",
+    "No padding/guard/Host/token/global/context/owner/table/syntheticcounter/cleanup/noexcept/applicationwiring; root and helper absent game map."
+  ],
+  "existing_counted_function_record_preserved": {
+    "address": "00903610",
+    "name": "release_expired_world_objects_00903610",
+    "source": "src/entity_event_queues.cpp",
+    "status": "reconstructed_ledger_backfilled_from_source",
+    "evidence": "C++ body at src/entity_event_queues.cpp:153 (release_expired_world_objects_00903610), a definition named after the address. Documents: docs/ENTITY_EVENT_QUEUES.md, docs/ENTITY_THINK_DISPATCH.md, docs/FIXED_STEP_FANOUT.md, docs/IN_MISSION_SUBSYSTEM_TICK.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build.",
+    "cpp_symbol": "release_expired_world_objects_00903610",
+    "abi_compatible": false,
+    "game_validated": false,
+    "kind": "function",
+    "notes": "3 column-0 definitions carry this address suffix in src/; this record points at the first."
+  },
+  "root_and_provider_absent_game_map": true,
+  "retained_complete_evidence": "local/cc12_world_expiry_primary/whole_objects_and_physical_helper_binding.json",
+  "credit": {
+    "additional_Original_functions": 0,
+    "additional_Original_bytes": 0,
+    "new_actual_storage_fragment": 1,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "Current callable virtualslot0 must consume DWORD1/RET4 and preserve callee-saved registers; actual World/header/parent/anchor lifetime and coherent link/gate progress are caller contracts.",
+    "Whole emitted/Core/binding/build/static proof does not establish Native ABI entry, fault/SEH/EH/runtime/startup or gameplay equivalence; no new tests/probes."
+  ],
+  "ledger_fragment": "complete_actual_world_expiry_pass_00903610",
+  "worker_document_before_primary_append_sha256": "958704a80d1e4cd60368fc29acefe5c4605eea4c04c1ab2d8e7d9d64db78d018",
+  "current_document_canonical_sha256": "a30edabb388291586fff1a571aba1d8101a554db310fe75eeacdcb78b0368c72",
+  "ghidra": {
+    "saved_receipt": "local/ghidra-annotations-20261009T072953Z.json",
+    "unchanged_provisional_name": "BSP_World_ReleaseExpiredObjects",
+    "prior_comment_preserved": true,
+    "current_comment_sha256": "5ad6e8285b4f502df908fbccaebd8be811b5dcb9363cec4a9a054d70db8ec91e",
+    "forced_export_refreshed": "00903610",
+    "count": 64729
+  }
+}

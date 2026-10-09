@@ -149,3 +149,31 @@ external-binding review with the complete 42-byte concrete helper proof, build
 Win32, and run the relevant existing checks before admission. Full World
 construction, actual virtual methods, application wiring, ownership, and gameplay
 remain outside this qualified body.
+
+## Primary registration and complete emitted review
+
+The integrator registered this source in bsp_core. The normal MSVC Win32 build
+and all three existing checks passed. All 93 emitted bytes, 42 instructions,
+and nine internal branches match the installed PE and accepted live capture
+after the sole external REL32 operand44 is rebound to `A0 FF FF FF` (-96).
+
+That external reference is physical symbol index9, section0, to the concrete
+child-retirement helper. The current helper's entire 42-byte/16-instruction
+body also matches the PE after its own physical self-call operand20 is rebound
+to `E8 FF FF FF` (-24). Two exact complete archive members and two positive
+unique public definitions establish the caller/provider binding; the provider
+has no named external boundary. Whole object/graph evidence is retained in
+`local/cc12_world_expiry_primary/whole_objects_and_physical_helper_binding.json`.
+
+The signed counter gates, wrapping store before JL, age-only anchor, current
+child gate/head loop, late virtual CALL and fresh post-retirement continuation
+remain intact. The existing projected function record is preserved. Admission
+adds one actual-storage fragment and zero Original functions or bytes. Its
+existing Ghidra name/comments are preserved with appended evidence and a
+refreshed export. The root and helper are absent from the game map.
+
+Actual World/header/parent/anchor lifetime, virtual targets and argument cleanup,
+coherent hierarchy mutation/progress, production wiring, Native fault/exception
+behavior, startup and gameplay remain open. The primary report is
+`reports/cc12_native_world_expiry_pass_primary_review.json`; worker document
+pins precede this appendix and remain historical.
