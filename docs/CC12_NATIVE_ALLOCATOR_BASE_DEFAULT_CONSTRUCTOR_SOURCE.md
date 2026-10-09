@@ -1,4 +1,4 @@
-# Native allocator base default constructor: Source candidate
+# Native allocator base default constructor: reviewed Source
 
 This candidate replaces the private typed helper's volatile assignments with
 a call to a raw MSVC Win32 adapter for the complete `00BF632F..00BF633F` body.
@@ -6,10 +6,10 @@ The adapter explicitly preserves the two DWORD read-modify-write clears,
 their order before profile publication, the receiver result and final flags.
 The accepted Original body is 17 bytes and five instructions.
 
-The new Source is **unregistered and unbuilt** in this packet. Source-level
-operation mapping and pinned evidence have been checked; actual emission,
-Core membership, typed-consumer/EH behavior, normal build and admission remain
-with the primary integrator. No Original ABI or gameplay claim is made.
+The primary registered the Source, passed the normal Win32 build and all three
+existing checks, and reviewed the complete emitted leaf, typed consumers and
+EH graph. The leaf is exactly the Original 17 bytes. Original ABI, startup and
+gameplay remain unproved. The candidate audit below records its earlier phase.
 
 Baseline: `cf257e747e130480f385233b5d4b2abcaebbb0ec`, containing the reviewed
 default-constructor audit. Only the new header/source, the exact existing
@@ -38,7 +38,7 @@ DWORD widths are asserted to be four bytes. No raw `noexcept` is declared.
 Whole Original body: `8bc18360040083600800c7007093d600c3`.
 SHA-256: `3aed2bc04e920f18daf703e4b76ea0d60eb59e4977578ab35b6403cd5fd6ca70`.
 The Source statements map directly to every owned instruction, with no child
-symbol or branch substitution. Actual compiler emission is still unverified.
+symbol or branch substitution. The primary review below verifies its emission.
 
 Entry `ECX` holds the actual receiver `D`; the explicit second argument binds
 an unused incoming DWORD to `EDX`. `EAX` becomes `D`, and both `ECX` and `EDX`
@@ -118,10 +118,37 @@ receipt's reviewed Source 23-byte adapter, current UCRT import and typed EH
 effects remain qualified context. Its builds, artifacts and execution are
 not replayed by this packet.
 
-The new file is absent from explicit CMake registration, and there is no file
-glob that registers it. The existing owner is already registered. The primary
-must register the adapter before the required normal `scripts/build.ps1`
-build, review the complete emitted leaf and actual typed-consumer/EH graph,
-then decide ledger/Ghidra admission. No worker build, test or probe was run.
+At the worker's candidate phase the new file lacked explicit CMake registration;
+the existing owner was already registered. The primary subsequently registered
+the adapter, ran `scripts/build.ps1`, and reviewed the complete emitted leaf and
+actual typed-consumer/EH graph for admission. The worker ran no build, test or probe.
 Original placement, caller/runtime/exception compatibility, startup and
 gameplay remain unproved.
+
+## Primary compiled review
+
+Normal registered Win32 build: 2026-10-09T12:52:10.129039+00:00 through 2026-10-09T12:52:28.055935+00:00; exit zero and all three existing checks pass.
+
+The complete naked leaf emits 17 bytes / five operations, exactly equal to
+the owned Original body, with zero relocations and no local EH. The unique
+positive Core member is selected in the application map; its entire linked
+17-byte body also matches. This proves selection and bytes, not execution.
+
+Two actual typed Legacy direct REL32 calls deliver the existing 40-byte
+owner: the public constructor operand is at offset 53, and the private helper
+operand at 40. The helper retains void/noexcept Source policy. Its complete
+64-byte span has 59 code bytes and five trailing CC bytes; FuncInfo is 36
+bytes, flags 5/max-state 0. The compiler also inlines its call into the
+132-byte/40-operation public constructor: its 60-byte EH section now has
+flags 1/max-state 3 and an explicit std_terminate unwind entry around default
+construction, followed by the member cleanup guard. All eight physical owner
+EH sections and complete function/relocation graphs were reviewed. These are
+current Source compiler effects, distinct from Original EH/CRT behavior.
+
+The existing raw cleanup 23-byte, copy 90-byte and unlink 83-byte bodies and
+their relocation contracts remain unchanged; they receive no new credit.
+
+The primary report retains complete selected objects/graphs, physical Core
+membership/definitions, current artifact hashes, all 57 build input pins and
+the admitted audit/candidate replay. No tests were added. Source counts one
+function / 17 Original bytes only; Original ABI and game credit are zero.

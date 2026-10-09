@@ -1,10 +1,10 @@
-# CC12 native tick subnode unlink caller Source candidate
+# CC12 native tick subnode unlink caller: reviewed Source
 
-This unregistered, unbuilt candidate composes the accepted `00875960[69]`
-schedule with the current Source registry getter, admitted raw unlink leaf,
-and current Win32 section imports. Its explicit borrowed-cell API is a
-qualified Source interface. Source, Native, and Original-ABI credit remain
-false until the applicable independent gates are completed.
+The primary registered this composition of `00875960[69]`, passed the normal
+Win32 build and all three existing checks, and reviewed its full 82-byte body
+and concrete Core providers. The explicit borrowed-cell API remains qualified;
+Original ABI, startup and gameplay remain unproved. Earlier candidate details
+below retain their phase and baseline.
 
 - Header: [`native_tick_subnode_unlink_caller.hpp`](../include/bsp/native_tick_subnode_unlink_caller.hpp).
 - Implementation: [`native_tick_subnode_unlink_caller.cpp`](../src/native_tick_subnode_unlink_caller.cpp).
@@ -102,3 +102,29 @@ whole emitted-body/relocation/stack/EH review, concrete current providers,
 unique Core membership, and the current application-map result. Application
 retention is not forced. Actual producers, node/list lifetime, profiles,
 virtual-slot targets, Original ABI, and gameplay remain open.
+
+## Primary compiled review
+
+Normal registered Win32 build: 2026-10-09T12:52:10.129039+00:00 through 2026-10-09T12:52:28.055935+00:00; exit zero and all three existing checks pass.
+
+The complete naked body is 82 bytes / 29 operations, with no local EH.
+All 25 Original positions retain their bytes after accounting for two actual
+provider addresses, two current Win32 IAT addresses and RET0Ch. Four added
+Source operations supply the two getter reference addresses, clean their
+arguments and dereference the late actual node-input cell. Every instruction
+and both branch targets were reviewed; all stack merges balance.
+
+Its four exact physical relocations are REL32 getter at operand 14, DIR32
+EnterCriticalSection at 31, REL32 raw unlink at 50 and DIR32
+LeaveCriticalSection at 72. All three public Core providers have unique
+positive definitions. The raw unlink remains exactly 83 bytes; the current
+getter is the qualified 250-byte Source provider. The caller is absent from
+the final application map; no artificial retention or production caller was
+added. The application import table is separate evidence, not a linked
+caller operand or Original IAT binding. The Source input cell/ref arguments
+and RET0Ch remain distinct from the Original stack word and RET4 contract.
+
+The primary report retains complete selected objects/graphs, physical Core
+membership/definitions, current artifact hashes, all 57 build input pins and
+the admitted audit/candidate replay. No tests were added. Source counts one
+function / 69 Original bytes only; Original ABI and game credit are zero.
