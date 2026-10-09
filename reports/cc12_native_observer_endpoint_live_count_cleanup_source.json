@@ -1,0 +1,1417 @@
+{
+  "schema": "bsp.cc12.native_observer_endpoint_live_count_cleanup_source_candidate.v1",
+  "packet": "cc12_observer_endpoint_live_count_cleanup_source",
+  "status": "candidate_pending_primary_registration_build_and_review",
+  "created_utc": "2026-10-09T16:14:51.082470+00:00",
+  "baseline_commit": "bee819237cd14aa4a0ba1931286386d9f439ae9e",
+  "claimed_address": "007EE620",
+  "owned_files": [
+    "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+    "src/native_observer_endpoint_live_count_cleanup.cpp",
+    "docs/CC12_NATIVE_OBSERVER_ENDPOINT_LIVE_COUNT_CLEANUP_SOURCE.md",
+    "reports/cc12_native_observer_endpoint_live_count_cleanup_source.json"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "startup_credit": 0,
+  "gameplay_credit": 0,
+  "candidate": {
+    "function": "cleanup_native_observer_endpoint_live_count_007ee620",
+    "header": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+    "source": "src/native_observer_endpoint_live_count_cleanup.cpp",
+    "complete_owned_Native_bytes": 70,
+    "complete_owned_Native_instructions": 24,
+    "Source_instruction_text_count": 28,
+    "Source_added_instructions": 4,
+    "registered_in_CMake": false,
+    "compiled": false,
+    "production_consumer_added": false,
+    "Ghidra_or_ledger_admission": false
+  },
+  "conclusions": [
+    "Fresh whole70/24 liveGPR bytes equal original file-backed PE and Root approved owned capture.",
+    "Naked MSVCWin32 fastcall Source takes actualreceiverECX, unusedEDX, actualowners/access references on stack; SourceRET8 differs NativeplainRET.",
+    "All24 Native positions map to Source text, with four explicit added instructions for actualcdecl kill arguments/cleanup. Full8blocks11edges Source stack graph balances both skip/iteration paths.",
+    "Access reference is read fromcurrent entryS+8 immediately before causePUSH; actualECX is then pushed and owners reference is read fromcurrent entryS+4. No early reference, count, entry or predicate snapshot.",
+    "Native ordered memory reads, signed live-count loop, conditionalEDI save and finalBYTE3EC afterPOPSI-beforePOPEBP remain in sequence.",
+    "Actual admitted Source kill provider receives actualvoid* entry and rawcause1 with explicit same-owner/access domain. No type, storage, facade, validation, localEH or runtime resolver is invented.",
+    "Current67 prior compilation inputs replay, but this candidate is separately unregistered/uncompiled with zero admission and OriginalABI credit."
+  ],
+  "target_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_function_count": 64729,
+    "snapshot_function_count": 64729,
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_queries": "Owned007EE620 proto/bytes after project/program verification. No subordinateNative body query."
+  },
+  "Native_and_Source_mapping": {
+    "Native_owned": {
+      "address": "007EE620",
+      "end_inclusive": "007EE665",
+      "bytes": 70,
+      "sha256": "982a339db60ea4a42c68d12ee902902bca4d6e8b355132ed8faef1e0f328dd4f",
+      "hex": "55568be933f639b5cc0300007e2e578dbdd00300008b0f80795c00751083b9000900000175076a01e84387130083c60183c7043bb5cc0300007cda5f5ec685ec030000015dc3",
+      "PE_RVA": "003EE620",
+      "PE_file_offset": 4122144,
+      "PE_section": ".text",
+      "all_file_backed": true,
+      "instruction_count": 24,
+      "live_equal_PE_equal_Root": true,
+      "instructions": [
+        {
+          "address": "007EE620",
+          "size": 1,
+          "hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "007EE621",
+          "size": 1,
+          "hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "007EE622",
+          "size": 2,
+          "hex": "8be9",
+          "mnemonic": "mov",
+          "operands": "ebp, ecx"
+        },
+        {
+          "address": "007EE624",
+          "size": 2,
+          "hex": "33f6",
+          "mnemonic": "xor",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "007EE626",
+          "size": 6,
+          "hex": "39b5cc030000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ebp + 0x3cc], esi"
+        },
+        {
+          "address": "007EE62C",
+          "size": 2,
+          "hex": "7e2e",
+          "mnemonic": "jle",
+          "operands": "0x7ee65c"
+        },
+        {
+          "address": "007EE62E",
+          "size": 1,
+          "hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "007EE62F",
+          "size": 6,
+          "hex": "8dbdd0030000",
+          "mnemonic": "lea",
+          "operands": "edi, [ebp + 0x3d0]"
+        },
+        {
+          "address": "007EE635",
+          "size": 2,
+          "hex": "8b0f",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi]"
+        },
+        {
+          "address": "007EE637",
+          "size": 4,
+          "hex": "80795c00",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [ecx + 0x5c], 0"
+        },
+        {
+          "address": "007EE63B",
+          "size": 2,
+          "hex": "7510",
+          "mnemonic": "jne",
+          "operands": "0x7ee64d"
+        },
+        {
+          "address": "007EE63D",
+          "size": 7,
+          "hex": "83b90009000001",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ecx + 0x900], 1"
+        },
+        {
+          "address": "007EE644",
+          "size": 2,
+          "hex": "7507",
+          "mnemonic": "jne",
+          "operands": "0x7ee64d"
+        },
+        {
+          "address": "007EE646",
+          "size": 2,
+          "hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "007EE648",
+          "size": 5,
+          "hex": "e843871300",
+          "mnemonic": "call",
+          "operands": "0x926d90"
+        },
+        {
+          "address": "007EE64D",
+          "size": 3,
+          "hex": "83c601",
+          "mnemonic": "add",
+          "operands": "esi, 1"
+        },
+        {
+          "address": "007EE650",
+          "size": 3,
+          "hex": "83c704",
+          "mnemonic": "add",
+          "operands": "edi, 4"
+        },
+        {
+          "address": "007EE653",
+          "size": 6,
+          "hex": "3bb5cc030000",
+          "mnemonic": "cmp",
+          "operands": "esi, dword ptr [ebp + 0x3cc]"
+        },
+        {
+          "address": "007EE659",
+          "size": 2,
+          "hex": "7cda",
+          "mnemonic": "jl",
+          "operands": "0x7ee635"
+        },
+        {
+          "address": "007EE65B",
+          "size": 1,
+          "hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "007EE65C",
+          "size": 1,
+          "hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "007EE65D",
+          "size": 7,
+          "hex": "c685ec03000001",
+          "mnemonic": "mov",
+          "operands": "byte ptr [ebp + 0x3ec], 1"
+        },
+        {
+          "address": "007EE664",
+          "size": 1,
+          "hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "007EE665",
+          "size": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verified_program": "/battlestationspacific.exe",
+    "count": "live function count 64729; snapshot 64729; same\n",
+    "Root_owned_gate": {
+      "address": "007ee620",
+      "bytes": 70,
+      "raw_ops": 24,
+      "sha256": "982a339db60ea4a42c68d12ee902902bca4d6e8b355132ed8faef1e0f328dd4f",
+      "contract": "ECX receiver captured EBP, signed initial count3CC versus zero, ESI index zero; conditional EDI save and base3D0. Each entry ECX read then byte5C==0 and DWORD900==1 predicates before PUSH1/CALL926D90 requiring RET4. Increment ESI/EDI then reload signed current count3CC each iteration. Restore current saved EDI/ESI, write captured receiver3EC byte1 after ESI pop, restore EBP/plainRET. No local EH or child failure/nonvol/alias stability proof; current count and mutable entries are read at scheduled points."
+    },
+    "Root_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_observer_endpoint_cleanup_primary\\capture.json",
+      "bytes": 13193,
+      "sha256": "f3c77c26c184316ac8a2145681e874c57ff5bd66c814501fe5fcc1a9ac6901bc"
+    },
+    "Root_approval_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_observer_endpoint_cleanup_primary\\Root_Astra_gate_approval.json",
+      "bytes": 1537,
+      "sha256": "af32988c260376375df0dfefd57130149b1ff9c5551bbc06fb9f3787e9e10aca"
+    },
+    "Source_instruction_mapping": [
+      {
+        "instruction_index": 0,
+        "source_line": 16,
+        "assembly": "push ebp",
+        "native_address": "007EE620",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": -4,
+        "implicit_stack": {
+          "write_S_offset": -4,
+          "width": 4,
+          "value": "ebp"
+        },
+        "successor_indices": [
+          1
+        ]
+      },
+      {
+        "instruction_index": 1,
+        "source_line": 17,
+        "assembly": "push esi",
+        "native_address": "007EE621",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -4,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": {
+          "write_S_offset": -8,
+          "width": 4,
+          "value": "esi"
+        },
+        "successor_indices": [
+          2
+        ]
+      },
+      {
+        "instruction_index": 2,
+        "source_line": 18,
+        "assembly": "mov ebp, ecx",
+        "native_address": "007EE622",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": null,
+        "successor_indices": [
+          3
+        ]
+      },
+      {
+        "instruction_index": 3,
+        "source_line": 19,
+        "assembly": "xor esi, esi",
+        "native_address": "007EE624",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": null,
+        "successor_indices": [
+          4
+        ]
+      },
+      {
+        "instruction_index": 4,
+        "source_line": 20,
+        "assembly": "cmp dword ptr [ebp + 3cch], esi",
+        "native_address": "007EE626",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": null,
+        "successor_indices": [
+          5
+        ]
+      },
+      {
+        "instruction_index": 5,
+        "source_line": 21,
+        "assembly": "jle short cleanup_complete",
+        "native_address": "007EE62C",
+        "mapping": "Same conditional branch and corresponding owned target; Source encoding not compiled.",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": null,
+        "successor_indices": [
+          24,
+          6
+        ]
+      },
+      {
+        "instruction_index": 6,
+        "source_line": 22,
+        "assembly": "push edi",
+        "native_address": "007EE62E",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": {
+          "write_S_offset": -12,
+          "width": 4,
+          "value": "edi"
+        },
+        "successor_indices": [
+          7
+        ]
+      },
+      {
+        "instruction_index": 7,
+        "source_line": 23,
+        "assembly": "lea edi, [ebp + 3d0h]",
+        "native_address": "007EE62F",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          8
+        ]
+      },
+      {
+        "instruction_index": 8,
+        "source_line": 25,
+        "assembly": "mov ecx, dword ptr [edi]",
+        "native_address": "007EE635",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          9
+        ]
+      },
+      {
+        "instruction_index": 9,
+        "source_line": 26,
+        "assembly": "cmp byte ptr [ecx + 5ch], 0",
+        "native_address": "007EE637",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          10
+        ]
+      },
+      {
+        "instruction_index": 10,
+        "source_line": 27,
+        "assembly": "jnz short cleanup_next",
+        "native_address": "007EE63B",
+        "mapping": "Same conditional branch and corresponding owned target; Source encoding not compiled.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          19,
+          11
+        ]
+      },
+      {
+        "instruction_index": 11,
+        "source_line": 28,
+        "assembly": "cmp dword ptr [ecx + 900h], 1",
+        "native_address": "007EE63D",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          12
+        ]
+      },
+      {
+        "instruction_index": 12,
+        "source_line": 29,
+        "assembly": "jnz short cleanup_next",
+        "native_address": "007EE644",
+        "mapping": "Same conditional branch and corresponding owned target; Source encoding not compiled.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          19,
+          13
+        ]
+      },
+      {
+        "instruction_index": 13,
+        "source_line": 30,
+        "assembly": "push dword ptr [esp + 14h]",
+        "native_address": null,
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": {
+          "write_S_offset": -16,
+          "width": 4,
+          "value": "dword ptr [esp + 14h]"
+        },
+        "successor_indices": [
+          14
+        ]
+      },
+      {
+        "instruction_index": 14,
+        "source_line": 31,
+        "assembly": "push 1",
+        "native_address": "007EE646",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": {
+          "write_S_offset": -20,
+          "width": 4,
+          "value": "1"
+        },
+        "successor_indices": [
+          15
+        ]
+      },
+      {
+        "instruction_index": 15,
+        "source_line": 32,
+        "assembly": "push ecx",
+        "native_address": null,
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -24,
+        "implicit_stack": {
+          "write_S_offset": -24,
+          "width": 4,
+          "value": "ecx"
+        },
+        "successor_indices": [
+          16
+        ]
+      },
+      {
+        "instruction_index": 16,
+        "source_line": 33,
+        "assembly": "push dword ptr [esp + 1ch]",
+        "native_address": null,
+        "ESP_before_S_offset": -24,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": {
+          "write_S_offset": -28,
+          "width": 4,
+          "value": "dword ptr [esp + 1ch]"
+        },
+        "successor_indices": [
+          17
+        ]
+      },
+      {
+        "instruction_index": 17,
+        "source_line": 34,
+        "assembly": "call native_pending_entity_kill_00926d90",
+        "native_address": "007EE648",
+        "mapping": "Native receiver/stack1 call replaced by admitted Source cdecl(owners,actualECX,cause1,access); additional arguments explicit.",
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -28,
+        "implicit_stack": null,
+        "successor_indices": [
+          18
+        ]
+      },
+      {
+        "instruction_index": 18,
+        "source_line": 35,
+        "assembly": "add esp, 10h",
+        "native_address": null,
+        "ESP_before_S_offset": -28,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          19
+        ]
+      },
+      {
+        "instruction_index": 19,
+        "source_line": 37,
+        "assembly": "add esi, 1",
+        "native_address": "007EE64D",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          20
+        ]
+      },
+      {
+        "instruction_index": 20,
+        "source_line": 38,
+        "assembly": "add edi, 4",
+        "native_address": "007EE650",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          21
+        ]
+      },
+      {
+        "instruction_index": 21,
+        "source_line": 39,
+        "assembly": "cmp esi, dword ptr [ebp + 3cch]",
+        "native_address": "007EE653",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          22
+        ]
+      },
+      {
+        "instruction_index": 22,
+        "source_line": 40,
+        "assembly": "jl short cleanup_entry",
+        "native_address": "007EE659",
+        "mapping": "Same conditional branch and corresponding owned target; Source encoding not compiled.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "successor_indices": [
+          8,
+          23
+        ]
+      },
+      {
+        "instruction_index": 23,
+        "source_line": 41,
+        "assembly": "pop edi",
+        "native_address": "007EE65B",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": {
+          "read_S_offset": -12,
+          "register": "edi"
+        },
+        "successor_indices": [
+          24
+        ]
+      },
+      {
+        "instruction_index": 24,
+        "source_line": 43,
+        "assembly": "pop esi",
+        "native_address": "007EE65C",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -4,
+        "implicit_stack": {
+          "read_S_offset": -8,
+          "register": "esi"
+        },
+        "successor_indices": [
+          25
+        ]
+      },
+      {
+        "instruction_index": 25,
+        "source_line": 44,
+        "assembly": "mov byte ptr [ebp + 3ech], 1",
+        "native_address": "007EE65D",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -4,
+        "ESP_after_normal_completion_S_offset": -4,
+        "implicit_stack": null,
+        "successor_indices": [
+          26
+        ]
+      },
+      {
+        "instruction_index": 26,
+        "source_line": 45,
+        "assembly": "pop ebp",
+        "native_address": "007EE664",
+        "mapping": "Exact opcode/operand schedule text mapping; compiled encoding pending.",
+        "ESP_before_S_offset": -4,
+        "ESP_after_normal_completion_S_offset": 0,
+        "implicit_stack": {
+          "read_S_offset": -4,
+          "register": "ebp"
+        },
+        "successor_indices": [
+          27
+        ]
+      },
+      {
+        "instruction_index": 27,
+        "source_line": 46,
+        "assembly": "ret 8",
+        "native_address": "007EE665",
+        "mapping": "Native plainRET replaced by SourceRET8 for two added references.",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": 12,
+        "implicit_stack": {
+          "return_address_read_S_offset": 0,
+          "argument_cleanup_bytes": 8
+        },
+        "successor_indices": []
+      }
+    ],
+    "Source_instruction_count": 28,
+    "Source_native_mapped_instruction_count": 24,
+    "Source_inserted_instruction_count": 4,
+    "Source_basic_blocks": [
+      {
+        "start_instruction_index": 0,
+        "end_instruction_index": 5,
+        "instructions": 6,
+        "successor_indices": [
+          24,
+          6
+        ]
+      },
+      {
+        "start_instruction_index": 6,
+        "end_instruction_index": 7,
+        "instructions": 2,
+        "successor_indices": [
+          8
+        ]
+      },
+      {
+        "start_instruction_index": 8,
+        "end_instruction_index": 10,
+        "instructions": 3,
+        "successor_indices": [
+          19,
+          11
+        ]
+      },
+      {
+        "start_instruction_index": 11,
+        "end_instruction_index": 12,
+        "instructions": 2,
+        "successor_indices": [
+          19,
+          13
+        ]
+      },
+      {
+        "start_instruction_index": 13,
+        "end_instruction_index": 18,
+        "instructions": 6,
+        "successor_indices": [
+          19
+        ]
+      },
+      {
+        "start_instruction_index": 19,
+        "end_instruction_index": 22,
+        "instructions": 4,
+        "successor_indices": [
+          8,
+          23
+        ]
+      },
+      {
+        "start_instruction_index": 23,
+        "end_instruction_index": 23,
+        "instructions": 1,
+        "successor_indices": [
+          24
+        ]
+      },
+      {
+        "start_instruction_index": 24,
+        "end_instruction_index": 27,
+        "instructions": 4,
+        "successor_indices": []
+      }
+    ],
+    "Source_basic_block_count": 8,
+    "Source_block_edges": 11,
+    "Source_calls": [
+      {
+        "source_line": 34,
+        "callee": "native_pending_entity_kill_00926d90",
+        "caller_ESP_S_offset": -28,
+        "child_entry_ESP_S_offset": -32,
+        "callee_argument_cleanup_bytes_required": 0,
+        "return_ESP_before_caller_cleanup_S_offset": -28,
+        "caller_cleanup_bytes": 16,
+        "return_ESP_after_caller_cleanup_S_offset": -12,
+        "arguments_at_child_entry_plus": {
+          "4": "owners ref loaded fromcurrent[S+4]",
+          "8": "actualselectedECX void*",
+          "12": "fullDWORD1",
+          "16": "access ref loaded fromcurrent[S+8]"
+        }
+      }
+    ],
+    "Source_scheduled_reference_reads": [
+      {
+        "source_line": 30,
+        "ESP_before_S_offset": -12,
+        "address_displacement": 20,
+        "selected_entry_S_offset": 8,
+        "reference": "access"
+      },
+      {
+        "source_line": 33,
+        "ESP_before_S_offset": -24,
+        "address_displacement": 28,
+        "selected_entry_S_offset": 4,
+        "reference": "owners"
+      }
+    ],
+    "Source_exit_ESP_S_offset": 12,
+    "Native_exit_ESP_S_offset": 4,
+    "all_source_stack_positions_and_merges_checked": true,
+    "qualification": "Static Source text-to-owned-Native mapping and symbolic stack accounting only. No assembly, compilation, COFF, linked library, runtime or Original ABI proof."
+  },
+  "accepted_Native_contract": {
+    "report": "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json",
+    "baseline": "e115a399d53b152e3bba3b4201b814a7bf57986b",
+    "owned_record": "007EE620_contract",
+    "contract": {
+      "symbols": "S=entryESP; R=entryECX captured intoEBP; i=currentESI initially0; EDI initiallyR+3D0h, then advances4 after each iteration; P=currentDWORD[EDI].",
+      "entry_stack": "PUSH EBP atS-4, PUSH ESI atS-8. No entry argument read. Conditional PUSH EDI atS-0Ch only for initial signedcount>0. No localFS/EH frame in this owned body.",
+      "ordered_loop": [
+        {
+          "site": "007EE622",
+          "effect": "EBP=entryECX; no ownedEBP change until finalPOP."
+        },
+        {
+          "site": "007EE624",
+          "effect": "ESI=0 viaXOR."
+        },
+        {
+          "site": "007EE626",
+          "effect": "CMP currentDWORD[R+3CCh],0; JLE skips the entire iteration path for signed count<=0."
+        },
+        {
+          "site": "007EE62E",
+          "effect": "On positive initial count only, saveEDI atS-0Ch thenLEA EDI=R+3D0h; no indirect array-base load."
+        },
+        {
+          "site": "007EE635",
+          "effect": "ECX=P=currentDWORD[EDI] at each iteration."
+        },
+        {
+          "site": "007EE637",
+          "effect": "Compare currentBYTE[P+5Ch] with0; nonzero skips remaining predicate and call."
+        },
+        {
+          "site": "007EE63D",
+          "effect": "Only byte5C==0: compare currentDWORD[P+900h] with1; non1 skips call."
+        },
+        {
+          "site": "007EE646",
+          "effect": "Only both predicates passed: PUSH fullDWORD1 atS-10h; PUSH preserves predicate flags and capturedECX even if backing aliases."
+        },
+        {
+          "site": "007EE648",
+          "effect": "CALL926D90 with capturedECX=P, raw stack argument1; child entryESP=S-14h; require normalRET4-equivalent toESP=S-0Ch."
+        },
+        {
+          "site": "007EE64D",
+          "effect": "Increment currentESI by1, then currentEDI by4 at650."
+        },
+        {
+          "site": "007EE653",
+          "effect": "CMP currentESI against newly readDWORD[EBP+3CCh]; JL repeats using signed comparison. Count is not snapshotted before callbacks."
+        }
+      ],
+      "live_input_and_loop_limits": {
+        "count": "Separate initial and per-iteration count reads; child/caller-visible mutation can shorten or lengthen iteration relative to initial count. No cached count or explicit constant clamp is supplied.",
+        "entries": "Each current pointer is read from currentEDI; EDI advances from captured inline base, not from a reloadable array pointer. Entry slots and entity predicates are not snapshotted.",
+        "predicate_order": "Byte5C is always checked beforeDWORD900, andDWORD900 is read only on zero-byte arm. No null pointer check or post-child predicate revalidation occurs.",
+        "integer_semantics": "SignedJLE/JL apply to32-bit count; address/ADD instructions use machine-width arithmetic. Under preserved loop registers and normal returns, reachable index starts0 and cannot advance beyondINT_MAX before final signed guard fails; this is not a useful allocation or runtime bound.",
+        "alias_and_extent": "Selected receiver reads3CC..3CF and DWORD slots3D0+4*i, final write3EC. Slot i=7 starts3EC if a count permits reaching it; do not infer array length7 or clamp count from nearby flag placement.",
+        "receiver_prefix_extent": "Final fixed receiver write reaches3EC, so fixed selected prefix extent is3EDh. Indexed reads and child effects can require more backing; no complete class/allocation size is proved.",
+        "entry_prefix_extent": "Each selected entity reads byte5C; zero-byte arm additionally reads900..903. This is conditional selected extent904h relative toP, not type/allocation proof."
+      },
+      "kill_child_boundary": {
+        "target": "00926D90",
+        "condition": "Current byte[P+5C]==0 and currentDWORD[P+900]==1 before argument PUSH.",
+        "ECX": "capturedP",
+        "stack_argument": "fullDWORD1 at childentryESP+4",
+        "required_argument_cleanup_bytes": 4,
+        "ESP": "Parent beforePUSH S-0Ch; beforeCALL S-10h; childentry S-14h; requirednormalreturn S-0Ch.",
+        "nonvolatile": "PreserveEBP=R,ESI=i,EDI=currententryslot andEBX; this body never owns anEBX write.",
+        "EAX_EDX": "Current incoming/residual values; no ownedEAX orEDX write anywhere in70-byte body.",
+        "arithmetic_flags": "Last equalCMP DWORD[P+900],1: CF=OF=AF=SF=0, ZF=PF=1; PUSH/CALL do not replace these flags.",
+        "hidden_inputs": "Call site does not prove absence of hidden register/global/stack/FS inputs. Raw1 alone does not establish semantic cause/type.",
+        "body_opened": false,
+        "metadata_only": {
+          "name": "BSP_MissionEntity_Kill",
+          "end": "00926E7D",
+          "bytes": 238,
+          "instructions": 79,
+          "blocks": 15,
+          "edges": 23,
+          "call_count_metric": 4
+        }
+      },
+      "normal_tail": [
+        "Positive-count path POPEDI from current[S-0Ch] at65B, thenESP=S-8. Skip path never changes or savesEDI.",
+        "65C POPESI reads current[S-8] and advancesESP=S-4 on both paths.",
+        "65D BYTE[currentEBP+3EC]=1 afterESI has been restored, beforeEBP restoration. This is the sole explicit receiver-field store in70 bytes.",
+        "664 POPEBP reads current[S-4], then665 plainRET reads current[S] and leavesESP=S+4."
+      ],
+      "tail_alias_contract": "Final byte store can alter backing for not-yet-poppedEBP or return/control words. If it aliases savedESI orEDI backing already popped, it cannot retroactively change their captured restored register values. Final target uses currentEBP, normallyR only under child preservation.",
+      "normal_register_results": {
+        "EAX_EDX": "No child calls: entry values. One or more calls: last926D90 residuals, even if later iterations skip calling. No semantic result or guaranteedR result.",
+        "ECX": "Initial signedcount<=0: incomingR. Iteration path: last loadedP when last iteration skips call, otherwise last childECX residual. No common receiver result.",
+        "ESI_EBP_EDI": "Current saved words restored at stated times; EDI untouched on zero-iteration path. Alias and child preservation qualifications apply."
+      },
+      "final_arithmetic_flags": {
+        "zero_iterations": "InitialCMP n,0 remains final: CF=OF=AF=0; ZF=(n==0); SF=bit31(n); PF=even parity low8(n); n interpreted signed forJLE.",
+        "one_or_more_iterations": "FinalCMP i,n after both increments and fresh count load. r=(i-n) modulo2^32; CF=unsigned(i)<unsigned(n); OF=((i^n)&(i^r)&80000000h)!=0; AF=((i^n^r)&10h)!=0; ZF=(r==0); SF=bit31(r); PF=even parity low8(r). Exit has signed i>=signed n, equivalentlySF==OF.",
+        "tail": "POP/MOV/RET do not change arithmetic flags. Do not report ADDESI/ADDEDI or child flags as final."
+      },
+      "fault_and_EH_limits": "No local handler is installed by70 bytes. Child or memory faults/nonlocal exits may bypass final flag write; no noexcept/finally/rollback guarantee follows. Backing, reentrancy, child preservation and eventual normal return remain required."
+    },
+    "other88byte_body_not_reopened_or_reconstructed_here": true,
+    "Root_Astra_gate": {
+      "address": "007ee620",
+      "bytes": 70,
+      "raw_ops": 24,
+      "sha256": "982a339db60ea4a42c68d12ee902902bca4d6e8b355132ed8faef1e0f328dd4f",
+      "contract": "ECX receiver captured EBP, signed initial count3CC versus zero, ESI index zero; conditional EDI save and base3D0. Each entry ECX read then byte5C==0 and DWORD900==1 predicates before PUSH1/CALL926D90 requiring RET4. Increment ESI/EDI then reload signed current count3CC each iteration. Restore current saved EDI/ESI, write captured receiver3EC byte1 after ESI pop, restore EBP/plainRET. No local EH or child failure/nonvol/alias stability proof; current count and mutable entries are read at scheduled points."
+    },
+    "Native926D90_body_opened": false
+  },
+  "Source_interface": {
+    "declaration": "void __fastcall cleanup_native_observer_endpoint_live_count_007ee620(void* actual_receiver, uint32_t unused_edx, NativePendingEntityOwners& actual_pending_owners, NativePendingEntityProducerAccess& actual_producer_access)",
+    "ECX": "actual raw receiver R",
+    "EDX": "unused placement; no ownedEDX write",
+    "entry_stack": {
+      "S": "return address",
+      "S_plus4": "actualowners reference word",
+      "S_plus8": "actualaccess reference word"
+    },
+    "normal_exit": "RET8 removes own return address and two Source reference words:ESP=S+0Ch; NativeplainRET leftS+4.",
+    "raw_pointer_type": "Onlyvoid* actualreceiver and actualselectedentity supplied; no invented endpoint/entity/class type or typed storage.",
+    "platform": "Header requires _MSC_VER and _M_IX86; Source asserts sizeof(void*) anduint32_t equal4.",
+    "no_noexcept": "Void supplies no semanticEAX result; no noexcept, localRAII/catch or exception translation added."
+  },
+  "Source_eligible_call_adaptation": {
+    "before_arguments": "CallerESP=S-0Ch after NativeconditionalEDI save; ECX=currententryP and both Native predicates already passed.",
+    "ordered_arguments": [
+      {
+        "operation": "PUSH DWORD[ESP+14h]",
+        "read": "current[S+8] access reference",
+        "ESP_before_S_offset": -12,
+        "write_S_offset": -16,
+        "Native_counterpart": null
+      },
+      {
+        "operation": "PUSH1",
+        "read": "fullDWORD immediate1",
+        "ESP_before_S_offset": -16,
+        "write_S_offset": -20,
+        "Native_counterpart": "007EE646; samevalue/order relative to owned reads, changed stack placement"
+      },
+      {
+        "operation": "PUSHECX",
+        "read": "actualselectedP register",
+        "ESP_before_S_offset": -20,
+        "write_S_offset": -24,
+        "Native_counterpart": null
+      },
+      {
+        "operation": "PUSH DWORD[ESP+1Ch]",
+        "read": "current[S+4] owners reference",
+        "ESP_before_S_offset": -24,
+        "write_S_offset": -28,
+        "Native_counterpart": null
+      }
+    ],
+    "call": "CALL actual native_pending_entity_kill_00926d90; childentryESP=S-20h. Cdecl args +4owners,+8actualvoid*,+0Craw1,+10access.",
+    "return": "Require cdeclcallee zero argument cleanup, returningcallerESP=S-1Ch; ADDESP10h returnsS-0Ch before original ADDESI/ADDEDI/liveCMP.",
+    "reference_reload": "Both reference words are re-read only on each eligible iteration at their selected points. Prior child effects can change reference backing; no copies to long-lived registers or locals are introduced.",
+    "no_extra_register_saves": "Only original EBP/ESI saves plus conditionalEDI save. EBX remains untouched by owned Source; child must preserve EBX/EBP/ESI/EDI.",
+    "Source_native_stack_difference": "NativechildentryS-14h held only cause1 and requiredRET4. SourcechildentryS-20h holds four arguments, requirescdeclRET0 and callerADD10h. Source references occupy new entryS+4/S+8 slots.",
+    "alias_qualification": "Added reference loads/PUSHes and changed cause/return positions introduce new faults and aliases. Preserve valid actual objects and backing at scheduled reads; no universal Native stack-alias or binary ABI equivalence is claimed."
+  },
+  "retained_order_and_flags": {
+    "initial": "PushEBP/ESI, captureR intoEBP, zeroESI, signed initial count3CC; nonpositive count skips all Source ref loads and calls while SourceRET8 still consumes its two words.",
+    "loop": "ConditionalEDI save; inlinebaseR3D0; currentECX fromslot; byte5C comparison before conditionalDWORD900 comparison; rawcause1 only when both predicates match.",
+    "continuation": "After Sourcecdeclcleanup, originalESI++/EDI+=4 then freshsignedcount3CC comparison; no count snapshot, slot container, range clamp or added validation.",
+    "tail": "OriginalPOPEDI oniterationpath thenPOPESI; BYTEcurrentEBP3EC1 afterESIrestoration and beforePOPEBP; SourceRET8.",
+    "pre_child_flags": "AddedPUSH instructions preserve the equalDWORD900 predicate flags delivered tocallee. No new flag-changing instruction is inserted beforeCALL.",
+    "post_child_flags": "NewADDESP10h changes arithmetic flags but no ownedbranch consumes them before originalADDESI/ADDEDI and finalCMP replace them.",
+    "final_flags": "Same path-specific lastCMP flags as accepted70 contract, conditional on normal child register/stack/backing requirements. RET8, likeRET, preserves arithmetic flags.",
+    "results": "No ownedEAX/EDX writes; incoming or lastSourcechildresiduals remain. Actual Source callee/CRT residuals are not guaranteed Native child residuals."
+  },
+  "actual_Source_provider_contract": {
+    "provider": "native_pending_entity_kill_00926d90(NativePendingEntityOwners&,void* actual_entity,uint32_t cause,NativePendingEntityProducerAccess&)",
+    "current_provider_present": true,
+    "ordinary_Win32_cdecl_contract": "Four stack words in declaration order; candidate compilation and actual relocation/ABI verification are pending.",
+    "actual_identity": "SelectedECX is pushed directly asvoid*. Access must resolve same-identity live entity field lvalues and actual parent/child/sibling pointers; no copied field storage, proxy entity identities, sidecars or inferred native class layout.",
+    "owners": "Same actual shared pending destroy/kill owners with initialized valid list heads and lifetime through callbacks/recursive work. Candidate creates/initializes/destroys no owner.",
+    "access": "Existing abstractaccess supplies actual entity resolver,9248D0 lockowner, current virtual providers, node allocation and count growth. No new implementation/default runtime is supplied.",
+    "current_Source_behavior": "Captured current section guard; resolve live entity fields; killed flag gate; cause/virtual-destroy ordering; direct recursion with rawcause; append to actualkill owner through allocator/growth/link order.",
+    "Source_failure_and_exception_boundary": "Existing child may lock, allocate, call services/virtuals, recurse or throw under its admitted Source policy. Its current captured-section guard is reused; no new outer frame cleanup, finalbyte guarantee, rollback, CRT failure translation or NativeFH3/SEH proof.",
+    "other_provider_candidates": "UnitDamageHost projections and cause-only helper remain distinct; this candidate calls the explicit actual-owner/access provider directly.",
+    "other_consumer": "Existing projectile adapter is evidence of a different Source adoption and borrowed domain, not selected launch-task wiring.",
+    "Source_excerpts": [
+      {
+        "path": "include/bsp/native_pending_entity_producers.hpp",
+        "line_start": 8,
+        "line_end": 20,
+        "text": "// Borrow fields of the SAME actual entity denoted by identity. The resolver\n// must be a pure mapping to live lvalues: no copies, sidecar owners, allocation,\n// native-layout casts of semantic class metadata, or callback effects. Parent,\n// child and sibling identities are the actual pointers stored in those fields.\nstruct NativePendingProducerEntityView {\n    void* identity;\n    void* const volatile& parent_3c;\n    void* const volatile& next_sibling_44;\n    void* const volatile& first_child_48;\n    volatile std::uint8_t& byte_5f;\n    volatile std::uint8_t& byte_60;\n    volatile std::uint32_t& cause_70;\n};\n",
+        "canonical_lf_excerpt_sha256": "7a55210d7b86d57772c783100212d41e5ad5b49672b382e22946cf37e556351b",
+        "finding": "Actual entity view must borrow same-identity volatile field lvalues; explicit pure-mapping/lifetime constraints."
+      },
+      {
+        "path": "include/bsp/native_pending_entity_producers.hpp",
+        "line_start": 22,
+        "line_end": 47,
+        "text": "class NativePendingEntityProducerAccess {\npublic:\n    virtual ~NativePendingEntityProducerAccess() = default;\n    virtual NativePendingProducerEntityView resolve_entity(void* actual_entity) = 0;\n    // Actual pending lock getter, no synthetic/default owner. Null return has\n    // native invalid-memory behavior on owner+4; a null section is permitted.\n    // Compatible with NativePendingEntityLockOwner's existing storage alias.\n    virtual NativeObserverLockOwner* lock_owner_009248d0() = 0;\n    // Required ACTUAL current entity vtable providers; preserve all arguments.\n    virtual bool child_virtual_78(void* child, void* parent) = 0;\n    virtual void destroy_virtual_70(void* entity, std::uint32_t recurse) = 0;\n    // Concrete canonical reuse, not a new library port. Native ECX=list\n    // (unused in callee), stack next/previous/source-cell, RET0C, EAX node.\n    // Default implementation calls existing create_effect_deletion_node_008665f0;\n    // complete51-byte alias proof is in reports/pending_entity_library_reuse.json.\n    // Provider allocates/initializes the actual 0Ch node and must preserve its\n    // native failure behavior. Source cell is read after allocation.\n    virtual NativePendingEntityNode* call_00924b10(\n        NativePendingEntityListStorage&, NativePendingEntityNode* next,\n        NativePendingEntityNode* previous, const void* source_cell);\n    // Concrete reuse of existing grow_effect_deletion_list_count_008675e0.\n    // Complete147-byte and exception-graph alias proof is in the same report;\n    // no new generic STL length guard/count implementation is introduced.\n    // Native ECX=list, increment stack DWORD, RET4. Unsigned 3FFFFFFF-count\n    // test; count overflow throws before link publication. Do not silently cap.\n    virtual void call_009267f0(NativePendingEntityListStorage&,\n",
+        "canonical_lf_excerpt_sha256": "363f1fe1a52bf537396a6db54b61823932cf9e0c26164c61ecf90108ae4440aa",
+        "finding": "Actual producer access requires resolver, lock owner, current virtuals, allocation and count operations."
+      },
+      {
+        "path": "include/bsp/native_pending_entity_producers.hpp",
+        "line_start": 58,
+        "line_end": 68,
+        "text": "// Complete normal body00926D90..00926E7D: native ECX=actual entity, stack raw\n// cause DWORD, RET4. Stored7 becomes2; raw cause survives DIRECT recursive\n// 926D90 child calls (not virtual dispatch). Both methods retain live sibling\n// reloads after callbacks. Existing5F/60 gates still acquire/release the lock.\nvoid native_pending_entity_kill_00926d90(NativePendingEntityOwners&,\n    void* actual_entity, std::uint32_t cause, NativePendingEntityProducerAccess&);\n\n// A C++ exception releases only the captured tracked section; flags, callback\n// effects and allocated unlinked nodes are not rolled back. Native state0\n// unwind funcletsCA6DC0/CA6DE0 only invoke411EE0 on that guard. New C++ ABI;\n// full native FH3/SEH, hardware faults and game runtime behavior are not supplied.\n",
+        "canonical_lf_excerpt_sha256": "1290ea496f23e5f3977fc309e3166f9cf99e89b9c2722b28ec8c3cbdd1a61a7e",
+        "finding": "Concrete kill declaration takes owners, actual entity, raw cause and access; new C++ ABI and exception limits are explicit."
+      },
+      {
+        "path": "src/native_pending_entity_producers.cpp",
+        "line_start": 19,
+        "line_end": 43,
+        "text": "class CapturedPendingSection final {\npublic:\n    explicit CapturedPendingSection(TrackedCriticalSection* section) : section_(section) {\n        if (section_) {\n            EnterCriticalSection(&section_->native);\n            add_depth(1u);\n        }\n    }\n    ~CapturedPendingSection() {\n        if (section_) {\n            add_depth(0xffffffffu);\n            LeaveCriticalSection(&section_->native);\n        }\n    }\n    CapturedPendingSection(const CapturedPendingSection&) = delete;\n    CapturedPendingSection& operator=(const CapturedPendingSection&) = delete;\nprivate:\n    void add_depth(std::uint32_t increment) noexcept {\n        std::uint32_t bits;\n        std::memcpy(&bits, &section_->depth, 4);\n        bits += increment;\n        std::memcpy(&section_->depth, &bits, 4);\n    }\n    TrackedCriticalSection* section_;\n};\n",
+        "canonical_lf_excerpt_sha256": "60ab826d3988c95fdcad2ea1b883b272a38d2b7b15bd7409015cc1df116a1fb0",
+        "finding": "Concrete Source guard captures section, locks/depth increments and later decrements/unlocks."
+      },
+      {
+        "path": "src/native_pending_entity_producers.cpp",
+        "line_start": 45,
+        "line_end": 53,
+        "text": "void append_pending(NativePendingEntityListStorage& list, void* entity,\n    NativePendingEntityProducerAccess& access) {\n    auto* const head = list.head_04;\n    auto* const previous = head->previous_04;\n    auto* const node = access.call_00924b10(list, head, previous, &entity);\n    access.call_009267f0(list, 1);\n    head->previous_04 = node;\n    node->previous_04->next_00 = node;\n}\n",
+        "canonical_lf_excerpt_sha256": "da08a2257e0bf67c3ecc557d0f95f79fbc2d7efd3bcf4e0ada2aaa2c03fd8acc",
+        "finding": "Concrete Source queue append orders node creation, growth and link publication."
+      },
+      {
+        "path": "src/native_pending_entity_producers.cpp",
+        "line_start": 82,
+        "line_end": 100,
+        "text": "void native_pending_entity_kill_00926d90(NativePendingEntityOwners& owners,\n    void* actual_entity, std::uint32_t cause, NativePendingEntityProducerAccess& access) {\n    const auto stored_cause = cause == 7 ? 2u : cause;\n    const CapturedPendingSection guard(access.lock_owner_009248d0()->section_04);\n    const auto entity = access.resolve_entity(actual_entity);\n    if (entity.byte_5f != 0) return;\n    const auto was_destroyed = entity.byte_60; // CMP precedes killed flag store.\n    entity.byte_5f = 1;\n    if (was_destroyed == 0) {\n        entity.cause_70 = stored_cause;\n        access.destroy_virtual_70(actual_entity, 1);\n    }\n    if (cause == 7) entity.cause_70 = stored_cause;\n    for (void* child = entity.first_child_48; child;\n        child = access.resolve_entity(child).next_sibling_44) {\n        native_pending_entity_kill_00926d90(owners, child, cause, access);\n    }\n    append_pending(owners.kill_00f899b4, actual_entity, access);\n}\n",
+        "canonical_lf_excerpt_sha256": "56deb66ff1387c72100215239e0d92cdf1584fdcac61981fbfc92ae273737da2",
+        "finding": "Actual complete Source kill method; these are Source semantics, not a new926D90 Native body audit."
+      },
+      {
+        "path": "include/bsp/native_pending_entity_owners.hpp",
+        "line_start": 7,
+        "line_end": 18,
+        "text": "// Exact shared raw 0Ch layout, established from the node producers. Values are\n// borrowed entity pointers. These aliases introduce no container or ownership.\nusing NativePendingEntityNode = NativeEffectDeletionNode;\nusing NativePendingEntityListStorage = NativeEffectDeletionListStorage;\n\n// Actual adjacent owners F899A8/F899B4. No implicit initialization/destruction.\nstruct NativePendingEntityOwners {\n    NativePendingEntityListStorage destroy_00f899a8;\n    NativePendingEntityListStorage kill_00f899b4;\n};\nstatic_assert(sizeof(NativePendingEntityOwners) == 0x18);\nstatic_assert(offsetof(NativePendingEntityOwners, kill_00f899b4) == 0x0c);\n",
+        "canonical_lf_excerpt_sha256": "15547a8a877785caced44801a85bb9a06a7ccb10b7b73d000cb7beaf17fe7da5",
+        "finding": "Shared raw adjacent owner types have no implicit initialization/destruction."
+      },
+      {
+        "path": "include/bsp/native_pending_entity_owners.hpp",
+        "line_start": 20,
+        "line_end": 38,
+        "text": "// Required actual CRT domain binding. It must retain and eventually dispatch\n// the supplied native shutdown identity against these SAME owner bytes, with\n// CRT registration order/failure semantics. Context and owners must survive\n// registration through dispatch. No default callback or private exit registry.\nstruct NativePendingEntityCrtRegistration {\n    void* context;\n    int (*register_atexit)(void*, std::uint32_t native_shutdown) noexcept;\n};\n\n// Complete CD3910[37]/CD3940[37]: no native inputs, EAX _atexit status, RET.\n// Allocate/self-link 0Ch sentinel, publish head, zero count, register CDF4A0/B0.\n// Preserve owner+00 and sentinel payload+08. Registration failure retains the\n// initialized list and its actual return status; allocation failure publishes\n// nothing and does not register. A null registration callback is an unbound\n// source interface (rejected before touching storage), not a native code path.\nint initialize_native_pending_destroy_owner_00cd3910(\n    NativePendingEntityOwners&, const NativePendingEntityCrtRegistration&);\nint initialize_native_pending_kill_owner_00cd3940(\n    NativePendingEntityOwners&, const NativePendingEntityCrtRegistration&);\n",
+        "canonical_lf_excerpt_sha256": "4ea7044dfc8cbe250a521ced64b520b580c0387f3359b8e997351de376fe84b1",
+        "finding": "Actual owner registration/backing lifetime and initialized sentinel obligations remain explicit."
+      },
+      {
+        "path": "include/bsp/native_projectile_pending_entity_services.hpp",
+        "line_start": 8,
+        "line_end": 29,
+        "text": "// Connected SOURCE adoption for006E6490's expiry pair at006E659F/006E65A9.\n// Borrow the SAME actual F899A8/F899B4 owners and complete producer access;\n// neither this service nor the tick host owns/caches an entity or field view.\n// Identity must denote live mutable actual entity storage with the observer\n// prefix at offset0. Access must resolve its actual fields/current virtuals and\n// actual9248D0 lock owner, preserving the existing producer's lifetime domain.\n// No native globals, profile installation, owner initialization/drain, private\n// FH3/SEH, original binary ABI or gameplay binding is supplied by this facade.\nclass NativeProjectilePendingEntityServices final : public NativeProjectileTickObserverServices {\npublic:\n    NativeProjectilePendingEntityServices(\n        NativePendingEntityOwners&, NativePendingEntityProducerAccess&) noexcept;\n    // PURE identical-address alias: no reads, callbacks, allocations or lookup.\n    NativeObserverOwnerStorage& observed_prefix(const void* identity) const noexcept override;\n    // Direct complete926D90 reuse. Signed source code converts modulo2^32;\n    // native cause bits, flags, children, lock and deferred enqueue stay in that\n    // body. No null guard, release callback substitute or synchronous deletion.\n    void release_projectile_00926d90(const void* identity, int code) override;\nprivate:\n    NativePendingEntityOwners& owners_;\n    NativePendingEntityProducerAccess& access_;\n};\n",
+        "canonical_lf_excerpt_sha256": "d163e7c99cf155148047ef75b283ea810e6dda1fd84f377c5ef5da415f2054cb",
+        "finding": "Existing different Source consumer borrows actual owner/access domain; does not wire selected launch cleanup."
+      },
+      {
+        "path": "src/native_projectile_pending_entity_services.cpp",
+        "line_start": 8,
+        "line_end": 21,
+        "text": "NativeProjectilePendingEntityServices::NativeProjectilePendingEntityServices(\n    NativePendingEntityOwners& owners, NativePendingEntityProducerAccess& access) noexcept\n    : owners_(owners), access_(access) {}\n\nNativeObserverOwnerStorage& NativeProjectilePendingEntityServices::observed_prefix(\n    const void* identity) const noexcept {\n    return *static_cast<NativeObserverOwnerStorage*>(const_cast<void*>(identity));\n}\n\nvoid NativeProjectilePendingEntityServices::release_projectile_00926d90(\n    const void* identity, int code) {\n    native_pending_entity_kill_00926d90(\n        owners_, const_cast<void*>(identity), static_cast<std::uint32_t>(code), access_);\n}\n",
+        "canonical_lf_excerpt_sha256": "86b218fb30ea7a872040380df5c8775f57b7dcd04164155d56c5028202ce5c87",
+        "finding": "Concrete other-consumer constructor retains owner/access references and direct kill forwarding."
+      },
+      {
+        "path": "src/unit_damage.cpp",
+        "line_start": 547,
+        "line_end": 567,
+        "text": "// 00926D90. __thiscall(this, int cause), RET 4.\nvoid entity_kill_00926d90(UnitDamageHost& host, std::uint32_t entity, int cause) {\n    const int stored_cause = normalized_kill_cause_00926d90(cause);\n    host.enter_entity_lock();  // 00926DBE\n    if (!host.entity_killed(entity)) {\n        host.write_killed_flag(entity);  // 00926DEB\n        if (!host.entity_destroyed(entity)) {\n            host.write_death_cause(entity, stored_cause);\n            host.dispatch_destroy(entity, 1);  // 00926E05, vtable[70h]\n        }\n        if (cause == static_cast<int>(UnitKillCause::remapped_seven)) {\n            host.write_death_cause(entity, stored_cause);  // 00926E0F, after the destroy\n        }\n        for (std::uint32_t child = host.first_child(entity); child != 0;\n             child = host.next_sibling(child)) {\n            host.dispatch_kill(child, cause);  // 00926E19, the raw cause\n        }\n        host.queue_pending_kill(entity);  // 00926E40, the list at 00F899B4\n    }\n    host.leave_entity_lock();  // 00926E63\n}\n",
+        "canonical_lf_excerpt_sha256": "2c6f60c0787be7f0f885dff17ab35863914297668b9d423049922b004ebd5a00",
+        "finding": "Separate UnitDamageHost kill projection exists with host callback contract; not an automatic substitute for actual raw provider or selected task."
+      },
+      {
+        "path": "include/bsp/entity_event_queues.hpp",
+        "line_start": 117,
+        "line_end": 120,
+        "text": "// 00926D90: the cause 7 becomes 2, every other value passes through.\ninline constexpr int kMissionEntityKillCauseRemap = 7;         // 00926DAD\ninline constexpr int kMissionEntityKillCauseRemapped = 2;      // 00926DB5\nint mission_entity_kill_cause_00926d90(int cause) noexcept;\n",
+        "canonical_lf_excerpt_sha256": "c337911f0b9705082642346b50e9fe24d15e956876b3d8c1e6b147fff917d131",
+        "finding": "Cause-only helper is not a complete entity kill provider."
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "line_start": 1068,
+        "line_end": 1069,
+        "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_pending_entity_owners.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_pending_entity_producers.cpp)\n",
+        "canonical_lf_excerpt_sha256": "11d7a752748b6906c8b828e2f092282ca7f550d65482802af30048475ebf2cb7",
+        "finding": "Existing actual pending owner/producer sources registered in bsp_core."
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "line_start": 1101,
+        "line_end": 1101,
+        "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_projectile_pending_entity_services.cpp)\n",
+        "canonical_lf_excerpt_sha256": "70ea22c4dc996fdf1dfda34912430130db1607d1be36ae2fc2b9c3343f39bb6e",
+        "finding": "Existing different-consumer adapter registered in bsp_core."
+      }
+    ]
+  },
+  "selected_production_gap": {
+    "accepted_parent99": {
+      "report": "reports/cc12_squadron_launch_task_cleanup_ABI_readiness.json",
+      "baseline": "a158157ae5379e4a51ded478818528d8559f0092",
+      "delivery": "Normal parent passes lateTask34 rawvalue asreceiverECX to70-byte helper; matching this Source call additionally requires actualowner/access references."
+    },
+    "typed_current_route": "PlaneSquadronRegistry::records_ vector -> PlaneSquadronHostRecord -> launch_task_live, launch_task_timer_1c, launch_task_deck, launch_task_sends. This is an actual typed storage route, not raw Native Node storage.",
+    "typed_current_lifecycle": "GameUnitsHost construction projection initializes fields; run_landing_queue_006cd240 iterates squadron records and calls base_launch_task_tick_007f1f00; no-member branch clears launch_task_live. Scheduling placement is explicitly labelled in Source.",
+    "current_projection_excerpts": [
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 32771,
+        "line_end": 32780,
+        "text": "                    // set, a holder kind ([+C0h]+4h) other than 2 (every host\n                    // squadron is kind 1) and a base answering IsKindOf(9) or\n                    // IsKindOf(45h), 38h bytes -> 007F1DE0(base+310h, squadron):\n                    // +1Ch = 0, the squadron at +34h. ORDER, LABELLED: the image\n                    // builds it after the command block (007F4E06-007F4EA3);\n                    // nothing between reads it, and here the command block's\n                    // early returns would otherwise skip it. A scene squadron with\n                    // a HomeBase gets a task in the image too, whose first ready\n                    // tick finds no state-1 member and ends it; it is not built here.\n                    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();\n",
+        "canonical_lf_excerpt_sha256": "d4b432fcaf9ed53a2e600cb0141366340b7f2777b9a3e5ed923ac55c08fb694d",
+        "finding": "Existing Source construction comment, not fresh Native proof."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 32781,
+        "line_end": 32790,
+        "text": "                    for (std::size_t di = 0; di < decks.size(); ++di) {\n                        if (decks.name_at(di) != rec->bag_home_base) continue;\n                        rec->launch_task_live = true;\n                        rec->launch_task_timer_1c = 0.0f;\n                        rec->launch_task_deck = di;\n                        rec->launch_task_sends = 0;\n                        ++host.base_launch_tasks_built;\n                        host.done(\"SquadronLaunchTask::construct_007f1de0\", 0x007f1de0u);\n                        break;\n                    }\n",
+        "canonical_lf_excerpt_sha256": "beaf8e9f726cdd0753769939264522546fcb0b792a401cfeea6a0b83a144e86d",
+        "finding": "Actual typed task-state construction route in production host."
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 131,
+        "line_end": 140,
+        "text": "    // Inside the base and 007F4DA9 skips the airborne placement 007F2920.\n    bool home_launch_408{false};\n    // The launch task 007F1DE0 (38h bytes, vtable 00D08AE4) that pass C builds at\n    // 007F53FF for a squadron whose home base is a mother ship or an airfield:\n    // task+1Ch the send countdown, task+34h the squadron. `launch_task_deck` is\n    // the base's index in air_ops_decks().\n    bool launch_task_live{false};\n    float launch_task_timer_1c{0.0f};\n    std::size_t launch_task_deck{kPlaneSquadronNoUnit};\n    std::int32_t launch_task_sends{0};\n",
+        "canonical_lf_excerpt_sha256": "5e3b77c47408cb59da688206e249a9e25e3fe84314bccc7fbecd7014fdfb7801",
+        "finding": "Task fields and profile comment. Profile target remains unopened."
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 245,
+        "line_end": 246,
+        "text": "    std::vector<PlaneSquadronHostRecord>& records() noexcept { return records_; }\n    const std::vector<PlaneSquadronHostRecord>& records() const noexcept { return records_; }\n",
+        "canonical_lf_excerpt_sha256": "b76f2090fe6125db3ec7c577da8b09002c6ec32a9bc3b6192b50be5b8df946e1",
+        "finding": "Registry records are typed squadron records."
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 253,
+        "line_end": 255,
+        "text": "\n   private:\n    std::vector<PlaneSquadronHostRecord> records_;\n",
+        "canonical_lf_excerpt_sha256": "ef51f18cb64989a91334a9d1896edd948e7a45e5571ed07a62738d935cad8134",
+        "finding": "Concrete vector storage; no raw task layout is implied."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 14485,
+        "line_end": 14493,
+        "text": "        if constexpr (kBaseLaunchChainBound) {\n            // Packet cc9_base_launch_task: each squadron's launch task 007F1F00.\n            // POSITION, LABELLED: the image ticks it from its task list\n            // (00876020's registration), whose place in the frame is unread;\n            // it runs here, before the site ticks that read site+18h.\n            for (bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {\n                h.base_launch_task_tick_007f1f00(sq, dt);\n            }\n            // Packet cc9_base_launch_deck_arms: 006CDC70's site slot +4h for an\n",
+        "canonical_lf_excerpt_sha256": "60baa37e1d47d7dc1d882baf74e1b4800cb475207c61293f870ddc33304115bc",
+        "finding": "Explicit Source scheduling substitution and typed record loop."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 12875,
+        "line_end": 12885,
+        "text": "    }\n    if (pick >= slots.size()) {\n        // 007EF041: 1, none left; 007F1FB7-007F1FCF end the task.\n        sq.launch_task_live = false;\n        ++base_launch_tasks_ended;\n        log.notef(\"base launch task: squadron=%s ends at %.2f s after %d send(s) \"\n            \"(007EF010 -> 1, 007F1FCF; packet cc9_base_launch_task)\", sq.name.c_str(),\n            static_cast<double>(summary.simulated_seconds), sq.launch_task_sends);\n        done(\"SquadronLaunchTask::tick_007f1f00\", 0x007f1f00u);\n        return;\n    }\n",
+        "canonical_lf_excerpt_sha256": "875ff6dffb221a1a5573aa146684cc8af883459a90737071c69d62d1962cc2bf",
+        "finding": "Source task retirement clears live flag; no Native slot dispatch."
+      }
+    ],
+    "new_callsite_added": false,
+    "candidate_reference_searches": {
+      "candidate_declarations_and_definitions": {
+        "command": [
+          "rg",
+          "-n",
+          "cleanup_native_observer_endpoint_live_count_007ee620",
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "complete_output": [
+          "src\\native_observer_endpoint_live_count_cleanup.cpp:13:__declspec(naked) void __fastcall cleanup_native_observer_endpoint_live_count_007ee620(",
+          "include\\bsp\\native_observer_endpoint_live_count_cleanup.hpp:45:void __fastcall cleanup_native_observer_endpoint_live_count_007ee620("
+        ],
+        "qualification": "Exact current text query only; not proof about other names, generated use or runtime/link selection."
+      },
+      "candidate_build_registration": {
+        "command": [
+          "rg",
+          "-n",
+          "native_observer_endpoint_live_count_cleanup",
+          "CMakeLists.txt",
+          "cmake/startup.cmake"
+        ],
+        "returncode": 1,
+        "complete_output": [],
+        "qualification": "Exact current text query only; not proof about other names, generated use or runtime/link selection."
+      },
+      "actual_callee_uses": {
+        "command": [
+          "rg",
+          "-n",
+          "native_pending_entity_kill_00926d90",
+          "src",
+          "include"
+        ],
+        "returncode": 0,
+        "complete_output": [
+          "src\\native_observer_endpoint_live_count_cleanup.cpp:34:        call native_pending_entity_kill_00926d90 // 007EE648: admitted Source provider",
+          "src\\native_pending_entity_producers.cpp:82:void native_pending_entity_kill_00926d90(NativePendingEntityOwners& owners,",
+          "src\\native_pending_entity_producers.cpp:97:        native_pending_entity_kill_00926d90(owners, child, cause, access);",
+          "include\\bsp\\native_pending_entity_producers.hpp:62:void native_pending_entity_kill_00926d90(NativePendingEntityOwners&,",
+          "src\\native_projectile_pending_entity_services.cpp:19:    native_pending_entity_kill_00926d90("
+        ],
+        "qualification": "Exact current text query only; not proof about other names, generated use or runtime/link selection."
+      }
+    },
+    "actual_task_endpoint_storage_lifetime_and_argument_binding_proved": false,
+    "Native_parent_entry_or_binary_replacement_claim": false,
+    "653390_or_EH_candidate_added": false
+  },
+  "current_candidate_excerpts": [
+    {
+      "path": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+      "line_start": 1,
+      "line_end": 51,
+      "text": "#pragma once\n\n#include <cstdint>\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native observer endpoint live-count cleanup requires MSVC Win32.\n#endif\n\nnamespace bsp {\n\nstruct NativePendingEntityOwners;\nclass NativePendingEntityProducerAccess;\n\n// Complete 007EE620..007EE665[70] through a new naked Source interface. ECX\n// is the actual raw receiver; EDX is unused placement. Two stack words carry\n// references to the actual pending owners and producer access. Source RET8\n// consumes those references; the Native body ends in plain RET.\n//\n// Capture the receiver, read signed count+3CCh, then visit current inline\n// DWORD entries at +3D0h with a fresh signed count read after each iteration.\n// For each selected pointer, read byte+5Ch first, then DWORD+900h only when\n// that byte is zero. When the DWORD is one, call the admitted actual kill\n// provider with raw cause one. Preserve the conditional EDI save and write\n// only byte receiver+3ECh after POP ESI and before POP EBP. No count snapshot,\n// array-length clamp, pointer validation or endpoint/class type is supplied.\n//\n// Borrow the same actual receiver/entry backing and the same entity identities\n// for the full call. The access must map each selected void* to that actual\n// entity's live field lvalues and current virtual/lock providers, under the\n// admitted producer contract. Supply initialized actual shared pending owners;\n// keep both owners and access alive through calls, callbacks and recursive kill\n// work. No storage, resolver implementation or selected runtime binding is added.\n//\n// On an eligible entry, load the access reference at its scheduled stack read\n// before the Native cause push; load owners after pushing cause and actual ECX.\n// Preserve those added argument slots until their reads, and all active save,\n// return and selected-memory backing under aliases. Extra cdecl arguments and\n// caller cleanup change stack placement from the Native call's single argument.\n// No additional register save is introduced. Void promises no common EAX value.\n//\n// No local EH, RAII, catch or guaranteed final flag write is added. Existing\n// Source producer/CRT/lock/service and exception policies, stack aliases,\n// Original ABI/placement and runtime behavior remain separately qualified.\n// This declaration deliberately lacks noexcept.\nvoid __fastcall cleanup_native_observer_endpoint_live_count_007ee620(\n    void* actual_receiver,\n    std::uint32_t unused_edx,\n    NativePendingEntityOwners& actual_pending_owners,\n    NativePendingEntityProducerAccess& actual_producer_access);\n\n} // namespace bsp\n",
+      "canonical_lf_excerpt_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+      "finding": "Complete candidate interface and raw borrowing/ABI limits."
+    },
+    {
+      "path": "src/native_observer_endpoint_live_count_cleanup.cpp",
+      "line_start": 1,
+      "line_end": 50,
+      "text": "#include \"bsp/native_observer_endpoint_live_count_cleanup.hpp\"\n\n#include \"bsp/native_pending_entity_producers.hpp\"\n\nnamespace bsp {\n\nstatic_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(std::uint32_t) == 4);\n\n// Retain the complete owned raw schedule. Adapt only the explicit Source\n// lifetime arguments and the admitted cdecl kill call; do not cache the count,\n// entries, predicates or reference arguments before their selected reads.\n__declspec(naked) void __fastcall cleanup_native_observer_endpoint_live_count_007ee620(\n    void*, std::uint32_t, NativePendingEntityOwners&, NativePendingEntityProducerAccess&) {\n    __asm {\n        push ebp                               // 007EE620\n        push esi                               // 007EE621\n        mov ebp, ecx                           // 007EE622: actual raw receiver\n        xor esi, esi                           // 007EE624\n        cmp dword ptr [ebp + 3cch], esi         // 007EE626: initial live count\n        jle short cleanup_complete             // 007EE62C: signed count <= 0\n        push edi                               // 007EE62E: only iteration path\n        lea edi, [ebp + 3d0h]                   // 007EE62F: inline entry address\n    cleanup_entry:\n        mov ecx, dword ptr [edi]                // 007EE635: current selected entry\n        cmp byte ptr [ecx + 5ch], 0             // 007EE637\n        jnz short cleanup_next                 // 007EE63B\n        cmp dword ptr [ecx + 900h], 1           // 007EE63D: conditional second read\n        jnz short cleanup_next                 // 007EE644\n        push dword ptr [esp + 14h]             // Source: current access reference\n        push 1                                 // 007EE646: full DWORD cause one\n        push ecx                               // Source: actual selected void*\n        push dword ptr [esp + 1ch]             // Source: current owners reference\n        call native_pending_entity_kill_00926d90 // 007EE648: admitted Source provider\n        add esp, 10h                           // Source: four cdecl arguments\n    cleanup_next:\n        add esi, 1                             // 007EE64D\n        add edi, 4                             // 007EE650\n        cmp esi, dword ptr [ebp + 3cch]         // 007EE653: reload after child\n        jl short cleanup_entry                 // 007EE659: signed comparison\n        pop edi                                // 007EE65B\n    cleanup_complete:\n        pop esi                                // 007EE65C\n        mov byte ptr [ebp + 3ech], 1            // 007EE65D: after ESI, before EBP\n        pop ebp                                // 007EE664\n        ret 8                                  // 007EE665: Source two references\n    }\n}\n\n} // namespace bsp\n",
+      "canonical_lf_excerpt_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+      "finding": "Complete candidate Source body; no compile or runtime claim."
+    }
+  ],
+  "accepted_evidence_replays": {
+    "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json": {
+      "count": 22,
+      "equal_count": 21,
+      "differences": [
+        {
+          "path": "CMakeLists.txt",
+          "accepted_canonical_lf_sha256": "06e96153a208adbe8c8feee6ca32b8263aa33411ed8ef2d3b0d5d6b933f51d18",
+          "current_canonical_lf_sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e"
+        }
+      ]
+    },
+    "reports/cc12_squadron_launch_task_cleanup_ABI_readiness.json": {
+      "count": 17,
+      "equal_count": 16,
+      "differences": [
+        {
+          "path": "CMakeLists.txt",
+          "accepted_canonical_lf_sha256": "06e96153a208adbe8c8feee6ca32b8263aa33411ed8ef2d3b0d5d6b933f51d18",
+          "current_canonical_lf_sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e"
+        }
+      ]
+    },
+    "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json": {
+      "count": 67,
+      "equal_count": 67,
+      "differences": []
+    }
+  },
+  "expected_prior_pin_drift": {
+    "path": "CMakeLists.txt",
+    "unified_diff": [
+      "--- accepted endpoint158 baseline CMakeLists.txt\n",
+      "+++ current baseline CMakeLists.txt\n",
+      "@@ -309,4 +309,5 @@\n",
+      " target_sources(bsp_core PRIVATE src/native_tick_sublist_unlink.cpp)",
+      " target_sources(bsp_core PRIVATE src/native_tick_subnode_unlink_caller.cpp)",
+      "+target_sources(bsp_core PRIVATE src/native_tick_subnode_base_cleanup.cpp)",
+      " target_sources(bsp_core PRIVATE src/native_allocator_base_message_constructor.cpp)",
+      " target_sources(bsp_core PRIVATE src/native_allocator_base_copy_constructor.cpp)"
+    ],
+    "added_lines": [
+      "target_sources(bsp_core PRIVATE src/native_tick_subnode_base_cleanup.cpp)"
+    ],
+    "removed_lines": [],
+    "meaning": "Previously accepted Source84 registration only. Candidate remains absent fromCMake."
+  },
+  "prior_Source67_compilation_receipt": {
+    "report": "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json",
+    "input_pins_replayed": {
+      "count": 67,
+      "equal_count": 67,
+      "differences": []
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 42716,
+      "start_utc": "2026-10-09T15:51:21.776753+00:00",
+      "finish_utc": "2026-10-09T15:51:40.392145+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 67
+    },
+    "existing_checks_passed": 3,
+    "previous_objects": 12,
+    "previous_positive_Core_roots": 14,
+    "previous_new_root_absent_application_map": true,
+    "candidate_included_in_this_prior_build": false,
+    "qualification": "HistoricalSource84 admission/build/Core/map receipt with current67 input equality. Does not compile, register or admit this new70-based candidate."
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 18785,
+      "sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e",
+      "canonical_lf_sha256": "015729c9319b6ed06ce29ceeb4d6fc162d44be4d3bcdc6da5d3bb9934ac5200e"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "docs/CC12_NATIVE_OBSERVER_ENDPOINT_LIVE_COUNT_CLEANUP_SOURCE.md",
+      "bytes": 10926,
+      "sha256": "f4d46227946b2fba0433630dc9cc87b19b2e483a617bd26058bac4cba8688f03",
+      "canonical_lf_sha256": "f4d46227946b2fba0433630dc9cc87b19b2e483a617bd26058bac4cba8688f03"
+    },
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "canonical_lf_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160"
+    },
+    {
+      "path": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+      "bytes": 2600,
+      "sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+      "canonical_lf_sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_owners.hpp",
+      "bytes": 2876,
+      "sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+      "canonical_lf_sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_producers.hpp",
+      "bytes": 3874,
+      "sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+      "canonical_lf_sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be"
+    },
+    {
+      "path": "include/bsp/native_projectile_pending_entity_services.hpp",
+      "bytes": 1600,
+      "sha256": "fe1ba011c59be98f72faff6755f61782fc42071c2227ba23a6f217e94260fa49",
+      "canonical_lf_sha256": "fe1ba011c59be98f72faff6755f61782fc42071c2227ba23a6f217e94260fa49"
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "bytes": 25784,
+      "sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e",
+      "canonical_lf_sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e"
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json",
+      "bytes": 97308,
+      "sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "canonical_lf_sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7"
+    },
+    {
+      "path": "reports/cc12_observer_endpoint_cleanup_ABI_readiness.json",
+      "bytes": 120141,
+      "sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca",
+      "canonical_lf_sha256": "26d97720e19cb05d88d16b9800a3bd39f86f781ac515c032a71bb1f32669ddca"
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_cleanup_ABI_readiness.json",
+      "bytes": 136460,
+      "sha256": "070e3aa7fe27ba9803dde0213cdf9383677d526586914fa1e4fada66b009ebd2",
+      "canonical_lf_sha256": "070e3aa7fe27ba9803dde0213cdf9383677d526586914fa1e4fada66b009ebd2"
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "canonical_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999"
+    },
+    {
+      "path": "src/native_observer_endpoint_live_count_cleanup.cpp",
+      "bytes": 2755,
+      "sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+      "canonical_lf_sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a"
+    },
+    {
+      "path": "src/native_pending_entity_producers.cpp",
+      "bytes": 4026,
+      "sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc",
+      "canonical_lf_sha256": "88747021baf7d4c25ce76525efc1f3e8751a9829693fb4d24fad8b42a85ba9cc"
+    },
+    {
+      "path": "src/native_projectile_pending_entity_services.cpp",
+      "bytes": 873,
+      "sha256": "ae1da5c009acf55b36ddb4c709eec97af5e7eea649b6900097774cf34299ae1e",
+      "canonical_lf_sha256": "ae1da5c009acf55b36ddb4c709eec97af5e7eea649b6900097774cf34299ae1e"
+    },
+    {
+      "path": "src/unit_damage.cpp",
+      "bytes": 29489,
+      "sha256": "14caf47a347d8cd577b9c95ada9fc24f2f91c6a97d2005426c0cf5c93c75e577",
+      "canonical_lf_sha256": "14caf47a347d8cd577b9c95ada9fc24f2f91c6a97d2005426c0cf5c93c75e577"
+    }
+  ],
+  "validation": {
+    "whole_owned70_live_PE_Root_equal": true,
+    "all24_Native_positions_mapped": true,
+    "Source28_text_instructions_accounted": true,
+    "eight_blocks_eleven_edges_all_stack_paths": true,
+    "conditionalEDI_save_and_skip_paths": true,
+    "access_then_owners_late_reference_loads": true,
+    "cdecl_four_argument_positions_and_caller_cleanup": true,
+    "finalbyte_afterESI_beforeEBP": true,
+    "SourceRET8_exit_S_plus12": true,
+    "exact_provider_and_projection_excerpts": 21,
+    "complete_candidate_excerpts": 2,
+    "prior67_inputs_equal": true,
+    "candidate_compilation_or_assembly_performed": false,
+    "COFF_library_map_or_runtime_proved": false,
+    "new_build_tests_probes": false,
+    "CMake_Ghidra_ledger_changes": false
+  },
+  "hash_domains": {
+    "raw": "Exact current artifact bytes.",
+    "canonical_lf": "NormalizeCRLFtoLF for text comparison; Native bytes always raw."
+  },
+  "remaining": [
+    "Primary review, explicit CMake registration and normal Win32 build; whole compiled body/relocation, calling convention, actualCore selection and final application-map evidence.",
+    "Actual selected production owner/access argument binding to live rawreceiver/entry identities; no consumer or resolver/storage domain supplied by this packet.",
+    "Original stack/hidden-input/ABI equivalence, child/CRT/lock/service exception and hardware-fault behavior, NativeEH, startup and gameplay remain unproved.",
+    "Do not replace this normal-path helper or the separate653390/EH routes by inferred equivalence; this packet owns only007EE620."
+  ]
+}
