@@ -4,13 +4,15 @@
 #include "bsp/native_mesh_pool.hpp"
 #include "bsp/native_mesh_section.hpp"
 #include "bsp/native_camera_pool.hpp"
+#include "bsp/native_model_pool.hpp"
 
 #include <mutex>
 
 namespace bsp::game {
 
 // Canonical source storage for the distinct 0108FFB0 camera, 0108FFF8 mesh, 010901D4 section
-// and 0109022C hierarchy pools. All use the existing E188B4 allocator domain;
+// and 0109022C hierarchy pools, plus the separate 01090054 model and 0109008C
+// model-base node pools. All use the existing E188B4 allocator domain;
 // F8D3E4 remains a different material-parameter pool. Native startup owns
 // each real CRT exit callback.
 class GameNativeResourcePoolProcess final {
@@ -24,10 +26,17 @@ public:
     int initialize_mesh_once_00cd7e40();
     int initialize_section_once_00cd8250();
     int initialize_hierarchy_once_00cd82d0();
+    int initialize_model_once_00cd7f00();
+    int initialize_model_base_once_00cd7f20();
     NativeCameraPool& camera_pool_0108ffb0();
     NativeMeshPool& mesh_pool_0108fff8();
     NativeMeshSectionPool& section_pool_010901d4();
     NativeMaterialParameterPool& hierarchy_pool_0109022c();
+    NativeModelPool& model_pool_01090054();
+    // Actual initialized 38h pool, distinct from the plain-node 0108FF58 pool.
+    // Return every 178h slot after its 174h owner/companions finish and before
+    // CE0E60. No model object, type identity or plain-node binding is implied.
+    void* model_base_pool_storage_0109008c();
 
 private:
     friend GameNativeResourcePoolProcess& game_native_resource_pool_process();
@@ -52,6 +61,17 @@ private:
     int mesh_registration_status_{};
     int section_registration_status_{};
     int hierarchy_registration_status_{};
+
+    // Append to retain the existing process members' layout. Both cells and
+    // the model companion survive their CRT callbacks; neither C++ destructor
+    // invokes native teardown. The base header is cold until explicit startup.
+    NativeModelPoolStorage model_storage_01090054_{};
+    NativeModelPool model_;
+    alignas(4) std::byte model_base_storage_0109008c_[0x38]{};
+    StartupState model_state_{StartupState::unattempted};
+    StartupState model_base_state_{StartupState::unattempted};
+    int model_registration_status_{};
+    int model_base_registration_status_{};
 };
 
 // Construct the shared allocator owner and this process object before native

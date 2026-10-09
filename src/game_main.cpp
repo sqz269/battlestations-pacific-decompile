@@ -1096,6 +1096,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int camera_atexit = resource_pools.initialize_camera_once_00cd7dd0();
         log.notef("native camera pool CRT CD7DD0: atexit=%d", camera_atexit);
         const int mesh_atexit = resource_pools.initialize_mesh_once_00cd7e40();
+        // Explicit Source composition before any model consumer. This does not
+        // establish the original CRT-table ordering of CD7F00/CD7F20.
+        const int resource_model_atexit = resource_pools.initialize_model_once_00cd7f00();
+        const int model_base_atexit = resource_pools.initialize_model_base_once_00cd7f20();
+        log.notef("native model pools initialized: model_atexit=%d model_base_atexit=%d "
+            "storage=process_actual38h/actual38h", resource_model_atexit, model_base_atexit);
         const int section_atexit = resource_pools.initialize_section_once_00cd8250();
         log.notef("native geometry pools initialized: mesh_atexit=%d section_atexit=%d "
             "storage=process_actual38h/actual38h", mesh_atexit, section_atexit);
