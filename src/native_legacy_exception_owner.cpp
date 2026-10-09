@@ -1,5 +1,6 @@
 #include "bsp/native_legacy_exception_owner.hpp"
 
+#include "bsp/native_allocator_base_copy_constructor.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstdlib>
@@ -47,28 +48,10 @@ struct BaseUnwindCleanup {
 
 void copy_base(NativeLegacyExceptionStorage& owner,
     const NativeLegacyExceptionStorage& source) {
-    // Complete library copy body 00BF63A6..00BF63FE. Preserve its nullable
-    // _malloc contract rather than using the throwing singleton allocator.
-    volatile auto& actual = owner;
-    const volatile auto& actual_source = source;
-    actual.native_vtable_00 = exception_vtable;
-    const auto owned = actual_source.owns_base_message_08;
-    actual.owns_base_message_08 = owned;
-    auto* const captured_message = actual_source.base_message_04;
-    if (owned == 0) {
-        actual.base_message_04 = captured_message;
-    } else if (!captured_message) {
-        actual.base_message_04 = nullptr;
-    } else {
-        const auto bytes = static_cast<std::uint32_t>(std::strlen(captured_message)) + 1u;
-        auto* const replacement = static_cast<char*>(std::malloc(bytes));
-        actual.base_message_04 = replacement;
-        if (replacement) {
-            // 00BF63DE reloads source+4 after malloc and destination publication.
-            auto* const current_source_message = actual_source.base_message_04;
-            (void)strcpy_s(replacement, bytes, current_source_message);
-        }
-    }
+    // Complete library copy body 00BF63A6..00BF63FD, 88 bytes. These actual
+    // typed owners provide valid leading 0Ch backing for the raw adapter.
+    // Retain nullable CRT allocation, the null-message RMW and late reload.
+    (void)construct_native_allocator_base_copy_00bf63a6(&owner, 0u, &source);
 }
 }
 
