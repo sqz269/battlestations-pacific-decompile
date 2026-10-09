@@ -969,5 +969,34 @@
     "external_calls_and_data_not_opened": true,
     "no_inferred_allocator_domain": true,
     "doc_report_full_review_before_commit": true
+  },
+  "Root_primary_review": {
+    "decision": "Accepted as147-byte/49-instruction/11-call static evidence:5-byte thunk,133-byte/44-instruction main partition and separate9-byte/4-instruction helper. Root replayed the original bytes, every physical operation and retained Source pins. Exact serialized Ghidra AddressSet was unavailable and is not inferred as a contiguous function. The current-pointer reload after unlock and errno-accessor-before-GetLastError order remain required. Helper code is ready for a separately reviewed Source candidate; actual allocator/node/lock-acquisition/frame ownership and full destructor remain held.",
+    "worker_report_capture_sha256": "f673c5f61fcb19b98b82d394fde9022c0052ec3242bfeaa5c7bba904d381c627",
+    "verified_pin_rows": 29,
+    "independent_Native_PE_replay": {
+      "bytes": 147,
+      "instructions": 49,
+      "calls": 11,
+      "main_bytes": 133,
+      "main_instructions": 44,
+      "separate_helper_bytes": 9,
+      "separate_helper_instructions": 4,
+      "serialized_AddressSet_replayed": false
+    },
+    "local_validation_pin": {
+      "path": "local\\cc12_class_and_free_frontier_primary_review\\validation.json",
+      "sha256": "a2ee84041487f02b5355eb1b7a2401da3560e43672978364e05c746ab5ac5489"
+    },
+    "current_primary_document_pin": {
+      "path": "docs\\CC12_GUNNERY_UNSIZED_FREE_PROVIDER_READINESS.md",
+      "bytes": 9850,
+      "sha256": "927bba329a24832cd53d9229584c4751d167fb4f1fbb0e04fd905303aece7677"
+    },
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0,
+    "GPR_mutations": 0
   }
 }

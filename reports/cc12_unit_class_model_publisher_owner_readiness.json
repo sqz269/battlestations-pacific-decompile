@@ -1281,5 +1281,29 @@
     "bytes": 10121,
     "sha256": "d1b5e2f7f922a2587f4c2577e3d170993b9b9811f778837377ed23b54551ccb1",
     "canonical_lf_sha256": "d1b5e2f7f922a2587f4c2577e3d170993b9b9811f778837377ed23b54551ccb1"
+  },
+  "Root_primary_review": {
+    "decision": "Accepted as a complete533-byte/165-instruction/22-call static gate and owner-frontier refinement. Root independently replayed the original PE and retained Source pins. Publication precedes temporary cleanup, with no late resource-field recheck or rollback. Real service owners exist; the actual vehicle-class constructor/loaded descriptor/production invocation remain held. All absence statements and Source509 context are worker-capture history, not a claim about later Source packets.",
+    "worker_report_capture_sha256": "8e7cec2bfadbe7f141d9b5639c8c329c43d2734eb97c45c9a86eed2647e4e227",
+    "verified_pin_rows": 62,
+    "independent_Native_PE_replay": {
+      "bytes": 533,
+      "instructions": 165,
+      "calls": 22
+    },
+    "local_validation_pin": {
+      "path": "local\\cc12_class_and_free_frontier_primary_review\\validation.json",
+      "sha256": "a2ee84041487f02b5355eb1b7a2401da3560e43672978364e05c746ab5ac5489"
+    },
+    "current_primary_document_pin": {
+      "path": "docs\\CC12_UNIT_CLASS_MODEL_PUBLISHER_OWNER_READINESS.md",
+      "bytes": 10842,
+      "sha256": "e2299588682545855300eb217b6cd32bf9bd7b8aa457f675445931c7cf18a2af"
+    },
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0,
+    "GPR_mutations": 0
   }
 }

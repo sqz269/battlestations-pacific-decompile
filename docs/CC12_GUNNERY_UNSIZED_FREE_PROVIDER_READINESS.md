@@ -1,5 +1,9 @@
 # CC12 gunnery unsized-free provider readiness
 
+Primary acceptance: Accepted as147-byte/49-instruction/11-call static evidence:5-byte thunk,133-byte/44-instruction main partition and separate9-byte/4-instruction helper. Root replayed the original bytes, every physical operation and retained Source pins. Exact serialized Ghidra AddressSet was unavailable and is not inferred as a contiguous function. The current-pointer reload after unlock and errno-accessor-before-GetLastError order remain required. Helper code is ready for a separately reviewed Source candidate; actual allocator/node/lock-acquisition/frame ownership and full destructor remain held.
+
+No Source, Original-ABI, startup or gameplay credit is added by this readiness review. Worker document/input pins retain their immutable capture meaning; current primary document identity is recorded separately.
+
 The complete `00BF65AC` free entry and its target are understood at the byte/instruction boundary. A new free-dispatcher or gunnery-destructor Source implementation remains held: the actual node allocation domain, allocator selector/heap, descriptor lookup, lock acquisition, error services and SEH owner are not supplied by this packet. The separate nine-byte unlock helper is a concrete candidate for the next bounded Source leaf.
 
 ## Scope and evidence

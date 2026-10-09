@@ -1,5 +1,9 @@
 # Unit class-model publisher and receiver readiness
 
+Primary acceptance: Accepted as a complete533-byte/165-instruction/22-call static gate and owner-frontier refinement. Root independently replayed the original PE and retained Source pins. Publication precedes temporary cleanup, with no late resource-field recheck or rollback. Real service owners exist; the actual vehicle-class constructor/loaded descriptor/production invocation remain held. All absence statements and Source509 context are worker-capture history, not a claim about later Source packets.
+
+No Source, Original-ABI, startup or gameplay credit is added by this readiness review. Worker document/input pins retain their immutable capture meaning; current primary document identity is recorded separately.
+
 The complete `00879590` body publishes the resource at actual `class+50`
 before releasing its load-name temporary. Existing Source preserves this order,
 the current VFS publication and the captured game-factory/manager sequence.
