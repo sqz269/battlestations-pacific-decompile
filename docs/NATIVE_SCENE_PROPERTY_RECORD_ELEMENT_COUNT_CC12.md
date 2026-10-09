@@ -33,3 +33,19 @@ Readiness commit `08c78f9e11a6da10936aa9bfd04cfeffe94d1779` supplied the whole N
 The primary owns Source registration, full machine/helper/caller gates, production qualification, shared metadata, CMake, build/tests and publication. Whole clone/private allocator/EH/class/game admission does not follow from this literal integer leaf. No existing independent Source qualification is changed here.
 
 `local/cnt42s/receipt.json` and `artifact_manifest.json` use an exact recursive all-files inventory. Only those two exact root filenames are excluded; nested historical receipts/manifests, Source copies, utilities, logs, stops and commit records remain inventoried. Source credit0 persists until primary review and qualification.
+
+## Root production integration
+
+Root independently reviewed the complete Source CPP/HPP and native listing.
+The routine is registered in `bsp_core`; the fresh Win32 build and all three
+existing checks passed with 4,051 Source/header/CMake inputs unchanged.
+The actual I386 production COFF body is 42 bytes; 42 literal
+bytes match Native, with only the expected symbolic CALL operands excluded.
+Source admission remains **0**. Complete linked helpers, actual callers,
+provider/frame captures and the fresh single-process fixture still require
+primary qualification. Build/object evidence does not establish game ABI,
+class/lifetime behavior, startup or gameplay.
+
+The provisional raw-domain Ghidra name and evidence are saved in the configured
+project, with previous names/comments recorded and affected exports refreshed.
+This publication leaves Source admission at 0 and fixture/ABI qualification pending.
