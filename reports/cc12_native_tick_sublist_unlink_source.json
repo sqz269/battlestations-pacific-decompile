@@ -1,0 +1,400 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_tick_sublist_unlink_source",
+  "created_utc": "2026-10-09T12:05:41.772599+00:00",
+  "baseline_commit": "4148cb440ca8347365b320df94032f79ed6eb376",
+  "status": "Source_candidate_static_review_complete_pending_primary_registration_normal_build_and_whole_COFF_Core_review",
+  "claimed_address": "00874E60",
+  "owned_files": [
+    "include/bsp/native_tick_sublist_unlink.hpp",
+    "src/native_tick_sublist_unlink.cpp",
+    "docs/CC12_NATIVE_TICK_SUBLIST_UNLINK_SOURCE.md",
+    "reports/cc12_native_tick_sublist_unlink_source.json"
+  ],
+  "Source_credit": false,
+  "Native_credit": false,
+  "Original_ABI_credit": false,
+  "hash_domains": {
+    "accepted_Native_body": "Raw Original PE/Ghidra bytes from the accepted read-only audit; not candidate emitted code.",
+    "sha256": "Raw current worktree file bytes at candidate baseline, except explicitly named historical Native/Original fields.",
+    "canonical_lf_sha256": "Current file bytes with CRLF normalized to LF; appropriate for committed-text comparison across worktrees.",
+    "prior_input_rechecks": "Current canonical file hashes compared to accepted historical Source/evidence snapshots; not current built-artifact verification.",
+    "constructor_artifacts": "Historical artifact pins reachable through the accepted primary report are not reread or claimed current.",
+    "self_report": "JSON is parsed and checked; no recursive self-hash."
+  },
+  "accepted_Native_evidence": {
+    "report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "domain": "Historical accepted Original PE/Ghidra whole-body audit",
+    "address": "00874E60",
+    "end_inclusive": "00874EB2",
+    "bytes": 83,
+    "sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "GPR_equal_PE": true,
+    "instructions": 29,
+    "blocks": 11,
+    "internal_edges": 15,
+    "syntactic_stack_paths": 13,
+    "CALLs": 0,
+    "external_tails": 0,
+    "RET_count": 1,
+    "RET_immediate": 4,
+    "historical_full_span_hash_and_instruction_concatenation_rechecked": true,
+    "fresh_Native_queries_or_reads": 0,
+    "candidate_emitted_byte_equality_claimed": false
+  },
+  "Source_interface": {
+    "name": "bsp::unlink_native_tick_sublist_node_00874e60",
+    "platform": "MSVC Win32 only",
+    "definition": "__declspec(naked) void* __fastcall",
+    "arguments": [
+      {
+        "name": "actual_list",
+        "type": "void*",
+        "placement": "ECX",
+        "meaning": "actual borrowed raw list address L"
+      },
+      {
+        "name": "unused_edx",
+        "type": "std::uint32_t",
+        "placement": "EDX",
+        "meaning": "explicit placement argument; incoming EDX overwritten by current node previous load"
+      },
+      {
+        "name": "actual_node_first_stack_word",
+        "type": "void*",
+        "placement": "entry ESP+4",
+        "meaning": "actual borrowed raw node address N, captured once in EAX"
+      }
+    ],
+    "return": "EAX=captured N at common RET4",
+    "stack_cleanup": "One DWORD stack argument; normal ESP after RET4 = entryESP+8.",
+    "noexcept": false,
+    "extra_EH": false,
+    "Cxx_runtime_guard": false,
+    "compiled_prologue_epilogue_and_calling_convention_review": "pending primary",
+    "Original_callers_or_dynamic_slot_assignment": "unproved; no migration"
+  },
+  "Source_assembly_to_accepted_Native": [
+    {
+      "original_address": "00874E60",
+      "source_line": 13,
+      "source_assembly": "mov eax, dword ptr [esp + 4]"
+    },
+    {
+      "original_address": "00874E64",
+      "source_line": 14,
+      "source_assembly": "mov edx, dword ptr [eax + 8]"
+    },
+    {
+      "original_address": "00874E67",
+      "source_line": 15,
+      "source_assembly": "test edx, edx"
+    },
+    {
+      "original_address": "00874E69",
+      "source_line": 16,
+      "source_assembly": "jnz short unlink_mutate"
+    },
+    {
+      "original_address": "00874E6B",
+      "source_line": 17,
+      "source_assembly": "cmp dword ptr [eax + 0ch], edx"
+    },
+    {
+      "original_address": "00874E6E",
+      "source_line": 18,
+      "source_assembly": "jnz short unlink_mutate"
+    },
+    {
+      "original_address": "00874E70",
+      "source_line": 19,
+      "source_assembly": "cmp dword ptr [ecx + 8], 1"
+    },
+    {
+      "original_address": "00874E74",
+      "source_line": 20,
+      "source_assembly": "jg short unlink_return"
+    },
+    {
+      "original_address": "00874E76",
+      "source_line": 22,
+      "source_assembly": "test edx, edx"
+    },
+    {
+      "original_address": "00874E78",
+      "source_line": 23,
+      "source_assembly": "push edi"
+    },
+    {
+      "original_address": "00874E79",
+      "source_line": 24,
+      "source_assembly": "jz short unlink_head"
+    },
+    {
+      "original_address": "00874E7B",
+      "source_line": 25,
+      "source_assembly": "mov edi, dword ptr [eax + 0ch]"
+    },
+    {
+      "original_address": "00874E7E",
+      "source_line": 26,
+      "source_assembly": "mov dword ptr [edx + 0ch], edi"
+    },
+    {
+      "original_address": "00874E81",
+      "source_line": 27,
+      "source_assembly": "jmp short unlink_next"
+    },
+    {
+      "original_address": "00874E83",
+      "source_line": 29,
+      "source_assembly": "mov edx, dword ptr [eax + 0ch]"
+    },
+    {
+      "original_address": "00874E86",
+      "source_line": 30,
+      "source_assembly": "mov dword ptr [ecx], edx"
+    },
+    {
+      "original_address": "00874E88",
+      "source_line": 32,
+      "source_assembly": "mov edx, dword ptr [eax + 0ch]"
+    },
+    {
+      "original_address": "00874E8B",
+      "source_line": 33,
+      "source_assembly": "test edx, edx"
+    },
+    {
+      "original_address": "00874E8D",
+      "source_line": 34,
+      "source_assembly": "jz short unlink_tail"
+    },
+    {
+      "original_address": "00874E8F",
+      "source_line": 35,
+      "source_assembly": "mov edi, dword ptr [eax + 8]"
+    },
+    {
+      "original_address": "00874E92",
+      "source_line": 36,
+      "source_assembly": "mov dword ptr [edx + 8], edi"
+    },
+    {
+      "original_address": "00874E95",
+      "source_line": 37,
+      "source_assembly": "jmp short unlink_clear"
+    },
+    {
+      "original_address": "00874E97",
+      "source_line": 39,
+      "source_assembly": "mov edx, dword ptr [eax + 8]"
+    },
+    {
+      "original_address": "00874E9A",
+      "source_line": 40,
+      "source_assembly": "mov dword ptr [ecx + 4], edx"
+    },
+    {
+      "original_address": "00874E9D",
+      "source_line": 42,
+      "source_assembly": "mov dword ptr [eax + 0ch], 0"
+    },
+    {
+      "original_address": "00874EA4",
+      "source_line": 43,
+      "source_assembly": "mov dword ptr [eax + 8], 0"
+    },
+    {
+      "original_address": "00874EAB",
+      "source_line": 44,
+      "source_assembly": "add dword ptr [ecx + 8], -1"
+    },
+    {
+      "original_address": "00874EAF",
+      "source_line": 45,
+      "source_assembly": "pop edi"
+    },
+    {
+      "original_address": "00874EB0",
+      "source_line": 47,
+      "source_assembly": "ret 4"
+    }
+  ],
+  "Source_branch_targets": [
+    {
+      "original_address": "00874E69",
+      "target": "00874E76"
+    },
+    {
+      "original_address": "00874E6E",
+      "target": "00874E76"
+    },
+    {
+      "original_address": "00874E74",
+      "target": "00874EB0"
+    },
+    {
+      "original_address": "00874E79",
+      "target": "00874E83"
+    },
+    {
+      "original_address": "00874E81",
+      "target": "00874E88"
+    },
+    {
+      "original_address": "00874E8D",
+      "target": "00874E97"
+    },
+    {
+      "original_address": "00874E95",
+      "target": "00874E9D"
+    }
+  ],
+  "Source_label_addresses": {
+    "unlink_mutate": "00874E76",
+    "unlink_head": "00874E83",
+    "unlink_next": "00874E88",
+    "unlink_tail": "00874E97",
+    "unlink_clear": "00874E9D",
+    "unlink_return": "00874EB0"
+  },
+  "candidate_contract_qualification": "The copied accepted machine contracts are the intended complete Source assembly schedule. Static normalized equality does not establish actual compiler emission, fault behavior or runtime equivalence.",
+  "producer_profile_and_caller_scope": {
+    "Source_caller_migration": false,
+    "concrete_subnode_producer_established": false,
+    "concrete_profile_or_slot0_binding_established": false,
+    "accepted_cleanup_relation": {
+      "report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+      "section": "relation_to_accepted_cleanup",
+      "binding": "No direct cleanup call or concrete node-producer/profile/slot0 binding established."
+    },
+    "new_allocation_free_lock_callback_profile_or_owner": false,
+    "application_map_status": "unreviewed; primary owns current map review; no force-retention added"
+  },
+  "accepted_audit_current_input_pin_rechecks": {
+    "accepted_report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "accepted_rows_json_pointer": "/current_Source_and_evidence_pins",
+    "count": 20,
+    "all_current_canonical_file_hashes_equal_accepted": true,
+    "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current files compared to pinned historical report rows.",
+    "accepted_manifest_sha256": "57e16f17ba6f3934326b76097e580d29c2b04e95101eb46bbf1c9e398dd978b3",
+    "current_manifest_sha256": "57e16f17ba6f3934326b76097e580d29c2b04e95101eb46bbf1c9e398dd978b3"
+  },
+  "accepted_cleanup_historical_input_pin_rechecks": {
+    "accepted_report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "accepted_rows_json_pointer": "/accepted_cleanup_file_pin_rechecks",
+    "count": 18,
+    "all_current_canonical_file_hashes_equal_accepted": true,
+    "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current files compared to pinned historical report rows.",
+    "accepted_manifest_sha256": "88b717e8ee3e8fd804d539202c9838360ae384c4be76a5cf857f51bb1ab06fba",
+    "current_manifest_sha256": "88b717e8ee3e8fd804d539202c9838360ae384c4be76a5cf857f51bb1ab06fba"
+  },
+  "accepted_constructor_historical_Source_pin_rechecks": {
+    "accepted_report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "accepted_rows_json_pointer": "/constructor_primary_Source_pin_rechecks",
+    "count": 44,
+    "all_current_canonical_file_hashes_equal_accepted": true,
+    "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current files compared to pinned historical report rows.",
+    "accepted_manifest_sha256": "1fd5258e4d9f15fd54754fc3ab1f0d3daee8c84b23735f72fbc30ff98b478bfb",
+    "current_manifest_sha256": "1fd5258e4d9f15fd54754fc3ab1f0d3daee8c84b23735f72fbc30ff98b478bfb"
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "src/native_tick_sublist_unlink.cpp",
+      "bytes": 2257,
+      "sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "canonical_lf_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2"
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_SUBLIST_UNLINK_SOURCE.md",
+      "bytes": 6072,
+      "sha256": "794f834cd4068a36248ad242c29ba68e307787ed71bb7b4100d1686d96cfc0c3",
+      "canonical_lf_sha256": "794f834cd4068a36248ad242c29ba68e307787ed71bb7b4100d1686d96cfc0c3"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+      "bytes": 49632,
+      "sha256": "3ab2337a4fe9dc51dac05d0e4c46d6e7e9903e81d3bf4426a0a49dbe960ab323",
+      "canonical_lf_sha256": "b6373159a8eeed7118d01c0504cd225241a592c48f4e92145bc2f0ecdb42c9ff"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_SUBLIST_UNLINK_LEAF_ABI_READINESS.md",
+      "bytes": 8696,
+      "sha256": "004b2258e48d4b0d878ad97e0dbf605e0d416ca9ec4dc75f6b9ff064bf54bdc0",
+      "canonical_lf_sha256": "004b2258e48d4b0d878ad97e0dbf605e0d416ca9ec4dc75f6b9ff064bf54bdc0"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  ],
+  "validation": {
+    "complete_accepted83B_hash_and29_instruction_contiguous_coverage": true,
+    "all29_Source_operations_normalized_equal_accepted_instructions": true,
+    "all7_Source_branch_destinations_equal_accepted_targets": true,
+    "six_Source_labels_resolved_to_accepted_addresses": true,
+    "explicit_naked_fastcall_interface_static_check": true,
+    "one_RET4_no_CALL_no_DEC_SUB_no_noexcept": true,
+    "accepted_audit_current_pins_equal": 20,
+    "accepted_cleanup_historical_input_pins_equal": 18,
+    "accepted_constructor_historical_Source_pins_equal": 44,
+    "current_direct_pin_count": 6,
+    "JSON_and_embedded_current_file_pins_checked": true,
+    "exact_four_owned_files": true,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "fresh_Native_PE_Ghidra_queries": 0,
+    "Ghidra_mutations": 0,
+    "CMake_or_ledger_edits": 0,
+    "additional_credit": 0,
+    "compiled_or_linked_evidence_for_candidate": false,
+    "static_checker_is_not_Native_execution_or_compiler_review": true
+  },
+  "pending_primary_gates": [
+    "Register the source in the actual normal build without inventing callers or a production binding.",
+    "Run the normal MSVC Win32 build and applicable existing checks.",
+    "Inspect the whole emitted unique definition and actual Core member against all83 Native bytes, including all29 operations/branches, conditionalEDI stack, EAX return, RET4 and actual ADD flags.",
+    "Account for member/code extent, any padding, relocations, compiler additions, hidden cleanup and current application-map presence/absence.",
+    "Keep production callers, actual node producer/profile/slot0 target, Original placement/ABI/fault/concurrency identity and gameplay as separate gates."
+  ],
+  "limits": {
+    "Source_caller_migration": false,
+    "Ghidra_mutation": false,
+    "ledger_edit": false,
+    "CMake_edit": false,
+    "Native_child_or_caller_body_read": false,
+    "Native_handler_read": false,
+    "Native_profile_or_table_or_string_read": false,
+    "adjacent_Native_bytes_read": false,
+    "runtime_run": false,
+    "Source_admission": false,
+    "Native_admission": false,
+    "Original_ABI_admission": false,
+    "integration_credit": false,
+    "game_validation": false,
+    "only_owned_four_candidate_outputs": true
+  },
+  "accepted_contract_reference": {
+    "report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "sections": [
+      "raw_layout",
+      "exact_access_schedule",
+      "skip_path",
+      "ABI",
+      "residual_arithmetic_flags",
+      "fault_exception_and_alias_limits"
+    ],
+    "domain": "Historical accepted Native machine contract; implementation intent, not candidate compiler-emission proof."
+  }
+}
