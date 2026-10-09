@@ -1,0 +1,834 @@
+{
+  "schema": "bsp.cc12.pending_registry_getter_EH_readiness.v1",
+  "packet": "cc12_pending_registry_getter_EH_readiness",
+  "kind": "read_only_independent_getter_handler_map_direct_actions_and_qualified_cleanup_schedule",
+  "created_utc": "2026-10-09T08:14:24.772763+00:00",
+  "baseline_commit": "2e6a351a0225d06a67d6a8099e7a70d8f2861852",
+  "initial_synced_published_main": "17daf67dd022ce20f8914c94f9f1e9c2001ea8b1",
+  "synced_published_main": "86337b8ae9008cb28d2dd2f56ddcacc14de6ee3b",
+  "preserved_Source_leaf_commit": "27e5d47594ea9f45ad82261ec8842718305503f9",
+  "claimed_addresses": [
+    "00C96433",
+    "00DC853C",
+    "00DC852C",
+    "00C96420",
+    "00C96428"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "independent_getter_state_actions_established": true,
+    "encoded_chain": "state1 current allocation-spill free -> state0 current local-guard cleanup -> -1",
+    "concrete_guard_and_free_Source_services_available": true,
+    "complete_physical_allocation_action_recovered_read_only": true,
+    "Source_API_admitted": false,
+    "production_Source_binding_ready": false,
+    "held": [
+      "SharedBF6B43 recognition/frame/action invocation ABI and state-update/execution order",
+      "Normal-return/nested-cleanup-failure/original FH3/hardware-fault compatibility",
+      "Actual registry getter/constructor binding, genuineF878CC producer, callableprofiles and ownerretirement"
+    ]
+  },
+  "bounds": {
+    "handler_window_limit": 32,
+    "handler_captured": 16,
+    "handler_code": 10,
+    "FuncInfo_limit": 36,
+    "FuncInfo_captured": 36,
+    "maximum_unwind_entries": 4,
+    "unwind_entries": 2,
+    "unwind_map_bytes": 16,
+    "per_action_limit": 300,
+    "complete_action_sizes": [
+      8,
+      11
+    ],
+    "exceeded": false
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "status": "ghidra: up  /battlestationspacific.exe",
+    "count": "live function count 64729; snapshot 64729; same",
+    "target_verification": "Each bsp.py ghidra query verifies existing project/program/language/image base.",
+    "fresh_spans": [
+      {
+        "address": "00C96433",
+        "bytes": 16,
+        "purpose": "Bounded handler probe:10code,3CC padding,3excluded adjacent opaque bytes",
+        "hex": "b83c85dc00e90607f6ffcccccc8d4dec",
+        "sha256": "97d0cf50a87b0cdc381e5c76f8cda74cf1edf72844397aa937f7e78941573ae5",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 16,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00c96433  b8 3c 85 dc 00 e9 06 07 f6 ff cc cc cc 8d 4d ec  .<............M.\n"
+      },
+      {
+        "address": "00DC853C",
+        "bytes": 36,
+        "purpose": "Independent getter absolute x86 FuncInfo",
+        "hex": "22059319020000002c85dc00000000000000000000000000000000000000000001000000",
+        "sha256": "ba2156642656122a3951f056ae8aaa090c3dd710f75cc243c9b1049cacf4da0e",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".rdata",
+        "file_backed_bytes": 36,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00dc853c  22 05 93 19 02 00 00 00 2c 85 dc 00 00 00 00 00  \".......,.......\n00dc854c  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00dc855c  01 00 00 00  ....\n"
+      },
+      {
+        "address": "00DC852C",
+        "bytes": 16,
+        "purpose": "Independent two-entry getter unwind map",
+        "hex": "ffffffff2064c900000000002864c900",
+        "sha256": "2e41237d587864bafdcf183a7aefd0f3cdd75a3b6739ad701faff408b9d7071d",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".rdata",
+        "file_backed_bytes": 16,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00dc852c  ff ff ff ff 20 64 c9 00 00 00 00 00 28 64 c9 00  .... d......(d..\n"
+      },
+      {
+        "address": "00C96420",
+        "bytes": 8,
+        "purpose": "Complete directly mapped guard action",
+        "hex": "8d4dece9b8ba77ff",
+        "sha256": "4e869e28ad10f5057f82d6dc205879f4282012787125bfb0f965c73586f5d425",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 8,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00c96420  8d 4d ec e9 b8 ba 77 ff  .M....w.\n"
+      },
+      {
+        "address": "00C96428",
+        "bytes": 11,
+        "purpose": "Complete mapped allocation action, including two bytes omitted from saved function membership",
+        "hex": "8b45e850e87b01f6ff59c3",
+        "sha256": "9d423a361dbbfdf11df5c621b5f1b4f84a099a76195707816128c66ccd930020",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 11,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00c96428  8b 45 e8 50 e8 7b 01 f6 ff 59 c3  .E.P.{...Y.\n"
+      }
+    ],
+    "captured_bytes": 87,
+    "semantic_code_data_bytes": 81,
+    "semantic_code_bytes": 29,
+    "semantic_data_bytes": 52,
+    "padding_bytes": 3,
+    "excluded_adjacent_opaque_bytes": 3,
+    "all_file_backed": true,
+    "handler_instructions": [
+      {
+        "address": "00C96433",
+        "bytes": 5,
+        "hex": "b83c85dc00",
+        "mnemonic": "mov",
+        "operands": "eax, 0xdc853c"
+      },
+      {
+        "address": "00C96438",
+        "bytes": 5,
+        "hex": "e90607f6ff",
+        "mnemonic": "jmp",
+        "operands": "0xbf6b43"
+      }
+    ],
+    "guard_action_instructions": [
+      {
+        "address": "00C96420",
+        "bytes": 3,
+        "hex": "8d4dec",
+        "mnemonic": "lea",
+        "operands": "ecx, [ebp - 0x14]"
+      },
+      {
+        "address": "00C96423",
+        "bytes": 5,
+        "hex": "e9b8ba77ff",
+        "mnemonic": "jmp",
+        "operands": "0x411ee0"
+      }
+    ],
+    "allocation_action_instructions": [
+      {
+        "address": "00C96428",
+        "bytes": 3,
+        "hex": "8b45e8",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp - 0x18]"
+      },
+      {
+        "address": "00C9642B",
+        "bytes": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00C9642C",
+        "bytes": 5,
+        "hex": "e87b01f6ff",
+        "mnemonic": "call",
+        "operands": "0xbf65ac"
+      },
+      {
+        "address": "00C96431",
+        "bytes": 1,
+        "hex": "59",
+        "mnemonic": "pop",
+        "operands": "ecx"
+      },
+      {
+        "address": "00C96432",
+        "bytes": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "decoded_semantic_instructions": 9,
+    "physical_CALL_count": 1,
+    "tail_JMP_count": 2,
+    "RET_count": 1
+  },
+  "handler": {
+    "address": "00C96433",
+    "code_bytes": 10,
+    "FuncInfo_EAX": "00DC853C",
+    "tail_target": "00BF6B43",
+    "saved_listing": "No function startsC96433; lookup reports enclosing candidateC96428. No repair performed.",
+    "physical_inputs": "EAX overwritten with FuncInfo. No ECX/EDX/EBP/ESP modification or pushed return address in the two handler instructions; shared runtime stack/register protocol unexpanded.",
+    "bounded_tail": "C9643D..3F are3CC padding. C96440..42 are3excluded adjacent opaque bytes captured by the initial16B probe; neither decoded nor used as any handler/action evidence."
+  },
+  "FuncInfo": {
+    "address": "00DC853C",
+    "layout": "absolute x86,36bytes,nineDWORDs",
+    "raw_words": [
+      "19930522",
+      "00000002",
+      "00DC852C",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "magicNumber": "19930522",
+    "bbtFlags": 0,
+    "maxState": 2,
+    "pUnwindMap": "00DC852C",
+    "nTryBlocks": 0,
+    "pTryBlockMap": "00000000",
+    "nIPMapEntries": 0,
+    "pIPtoStateMap": "00000000",
+    "pESTypeList": "00000000",
+    "EHFlags_encoded": 1,
+    "interpretation": "Two indexed unwind entries; no encoded try/IP/type-list map. Flag value is not a hardware-fault-policy proof."
+  },
+  "unwind_map": [
+    {
+      "state_index": 0,
+      "address": "00DC852C",
+      "toState": -1,
+      "action": "00C96420"
+    },
+    {
+      "state_index": 1,
+      "address": "00DC8534",
+      "toState": 0,
+      "action": "00C96428"
+    }
+  ],
+  "direct_actions": [
+    {
+      "address": "00C96420",
+      "bytes": 8,
+      "saved_GPR_bytes": 8,
+      "instructions": [
+        {
+          "address": "00C96420",
+          "bytes": 3,
+          "hex": "8d4dec",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x14]"
+        },
+        {
+          "address": "00C96423",
+          "bytes": 5,
+          "hex": "e9b8ba77ff",
+          "mnemonic": "jmp",
+          "operands": "0x411ee0"
+        }
+      ],
+      "physical_inputs": "EBP supplied by runtime; LEA ECX,EBP-14h passes ADDRESS of current localraw8 guard, not its current section value.",
+      "target": "00411EE0",
+      "transfer": "TailJMP leaves incoming stack unchanged; no localCALL/RET.",
+      "current_Source": "destroy_native_singleton_guard_00411ee0",
+      "effect_boundary": "Funclet itself only computes ECX and transfers. Pinned current Source child captures guard+04, stampsCE37FC, then nonnullsection depth-- and realLeave; preserves guard+04."
+    },
+    {
+      "address": "00C96428",
+      "bytes": 11,
+      "saved_GPR_bytes": 9,
+      "saved_GPR_last": "00C96430",
+      "physical_last": "00C96432",
+      "instructions": [
+        {
+          "address": "00C96428",
+          "bytes": 3,
+          "hex": "8b45e8",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x18]"
+        },
+        {
+          "address": "00C9642B",
+          "bytes": 1,
+          "hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00C9642C",
+          "bytes": 5,
+          "hex": "e87b01f6ff",
+          "mnemonic": "call",
+          "operands": "0xbf65ac"
+        },
+        {
+          "address": "00C96431",
+          "bytes": 1,
+          "hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00C96432",
+          "bytes": 1,
+          "hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "physical_inputs": "EBP supplied by runtime; read CURRENT DWORD[EBP-18h] intoEAX, push it as sole cdecl argument, CALLBF65AC.",
+      "target": "00BF65AC",
+      "return_continuation": "If the child returns, C96431 POPECX reclaims its argument word and C96432 RET returns using the incoming helper return address. EAX is then whatever the child leaves; no action result is established.",
+      "current_Source": "singleton_lifetime_free",
+      "membership_limit": "Saved body excludes59C3 atC96431..32. Fresh GPR bytes and complete PE/Capstone decode establish the physical11-byte action. No function/listing/no-return mutation or cause inference.",
+      "effect_boundary": "Free target is captured allocation-spill value, not currentF878CC. Native free body remains unexpanded; existing currentCRTSource free boundary is reused."
+    }
+  ],
+  "parent_frame": {
+    "parent": "00875280",
+    "parent_report": "reports/cc12_pending_registry_getter_readiness.json",
+    "anchor": "S=ESP on getter entry. After state/handler/oldFS pushes, SUBESP0Ch and slowpath PUSHESI, ESP=S-28.",
+    "slots": [
+      {
+        "name": "state",
+        "entry_ESP_offset": -4,
+        "parent_access": "[ESP+18h] on slowpath"
+      },
+      {
+        "name": "handler",
+        "entry_ESP_offset": -8,
+        "parent_access": "PUSHC96433"
+      },
+      {
+        "name": "previous_exception_chain",
+        "entry_ESP_offset": -12,
+        "parent_access": "PUSH oldFS:[0]"
+      },
+      {
+        "name": "guard_section",
+        "entry_ESP_offset": -16,
+        "parent_access": "[ESP+0Ch]=captured firstmanager+10h section"
+      },
+      {
+        "name": "guard_profile",
+        "entry_ESP_offset": -20,
+        "parent_access": "[ESP+08h]=CE37FC"
+      },
+      {
+        "name": "allocation_spill",
+        "entry_ESP_offset": -24,
+        "parent_access": "[ESP+04h]=allocatorEAX at8752E4"
+      },
+      {
+        "name": "saved_caller_ESI",
+        "entry_ESP_offset": -28,
+        "parent_access": "PUSHESI8752A5"
+      }
+    ],
+    "ordinary_getter_sets_EBP": false,
+    "required_helper_relation": "EBP=S makes EBP-14h the guard address and EBP-18h the allocation slot. Both offsets corroborate the expected anchor, but BF6B43/helper ABI remains unproved.",
+    "current_frame_reads": "Allocation action rereads current spill; guard action passes current local guard address and child rereads guard+04. No immutable snapshot assumption, newmanager lookup or currentF878CC substitution."
+  },
+  "ordinary_state_timing": [
+    {
+      "address": "00875286",
+      "state": -1,
+      "meaning": "InitialFFFFFFFF before installedframe; fast path never arms guard state."
+    },
+    {
+      "address": "008752B0",
+      "state": -1,
+      "meaning": "Initialize guardprofile/section before optionalEnter; state remains-1 through ordinaryEnter and depth increment."
+    },
+    {
+      "address": "008752C9",
+      "state": 0,
+      "meaning": "Arm fullstate0 AFTER successful ordinaryEnter/depth sequence, including nullsection path; before doublecheck/allocatorcall."
+    },
+    {
+      "address": "008752DC",
+      "state": 0,
+      "meaning": "Allocator called while only guard action is encoded; allocation has not yet been captured/armed."
+    },
+    {
+      "address": "008752E4",
+      "state": 0,
+      "meaning": "Capture returned allocation in spill BEFORE setting state1."
+    },
+    {
+      "address": "008752EA",
+      "state": 1,
+      "meaning": "Lowbyte1 set before nonnullconstructorcall, also briefly on nullallocation branch."
+    },
+    {
+      "address": "008752FC",
+      "state": 0,
+      "meaning": "Lowbyte0 BEFORE F878CC publication875301, secondmanagerlookup875306 and freshcurrentpubread/registration."
+    },
+    {
+      "address": "00875319",
+      "state": 0,
+      "meaning": "No-1disarm before normaldepthdecrement/Leave. State0 remains through normalrelease/finalreload until frame removal; no fault-policy inference."
+    }
+  ],
+  "qualified_cleanup_schedule": {
+    "dispatch_condition": "Encoded next-state chain is not standalone runtime proof; requires matching shared dispatcher/frame helpers and normally returning actions.",
+    "state0": "Currentrawguard cleanup only. Capture its currentsection+04, stampguardCE37FC, then ifnonnull decrement unsigneddepth+18h once before Leave. Do not destroy/free section.",
+    "state1": "Currentallocation-spill free action first; encodednextstate0 then currentrawguard cleanup. If free fails nonlocally, subsequent cleanup is not proved.",
+    "allocator_failure": "At ordinaryallocatorcall state0: no allocation-free entry is armed. This does not promise cleanup success or hardware-fault handling.",
+    "constructor_failure": "At ordinary874BC0 call state1. Separately pinned constructor/base-cleanup context gives conditional innerF878CCclear/base-stamp, followed by outerallocation-spill free then guard cleanup if unwinding follows these maps and each cleanup returns.",
+    "post_publication_failure": "State0 is restored before publication/secondmanager/registration. Getter actions here do not arm allocation free or publication rollback; preserve whatever currentpublication state the callees left rather than restore an earlier value.",
+    "no_added_disarm": "Do not invent an early state-1 write before normalLeave, nor infer that a resulting native fault performs any particular repeated cleanup.",
+    "no_new_RAII": "No RAII/exception wrapper, catch, SourceAPI or cleanup success policy is added."
+  },
+  "current_Source_services": [
+    {
+      "symbol": "destroy_native_singleton_guard_00411ee0",
+      "header": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "source": "src/native_diagnostic_sink_lifetime.cpp",
+      "contract": "memcpy currentguard+04 to capturedsection BEFORE memcpyCE37FC toguard+00; ifsection nonnull decrement uint32depth+18h then realLeaveCriticalSection; preserveguard+04.",
+      "qualification": "Actual raw8 guard/actualWin32section contract, not SystemSingletonCriticalSection projection or section destructor; no native childbody query."
+    },
+    {
+      "symbol": "singleton_lifetime_free",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "source": "src/singleton_lifetime.cpp",
+      "contract": "Current Source CRT std::free(pointer), paired with existing malloc-backed singleton_lifetime_allocate.",
+      "prior_binding_reference": "docs/NATIVE_RENDERER_WORKER_LIFETIME.md identifies BF65AC -> BF9DC8 free boundary; no native childbody re-query.",
+      "qualification": "Current Source CRT free contract is not Original heap/CRT/exception identity or hardware-fault equivalence."
+    }
+  ],
+  "prior_constructor_context": {
+    "independent_getter_proof": "All getter handler/record/map/action bytes are fresh and independent. Constructor records are not substituted as getter proof.",
+    "constructor_EH_report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+    "base_cleanup_report": "reports/cc12_pending_registry_base_cleanup_readiness.json",
+    "actual_8748F0_effect": "Accepted17B ordinary body clearsF878CC then writesCE3818 to suppliedreceiver+00, nosection access/free/unlock.",
+    "Source_candidate_report": "reports/cc12_native_pending_registry_base_cleanup_source.json",
+    "historical_worker_status": "Source_leaf_implemented_unbuilt_unlinked_pending_primary_admission",
+    "current_primary_report": "reports/cc12_native_pending_registry_base_cleanup_primary_review.json",
+    "current_primary_status": "ordinary_explicit_borrowed_cell_Source_whole_leaf_child_and_positive_core_link_reviewed_normal_win32_build_passed",
+    "admission": "Primary8748F0 ordinary explicit-cell Source admission is published onMain86337b8. The historical worker report still records its original pending state; the current primary report supersedes that admission status.",
+    "inherited_primary_evidence": {
+      "whole_leaf_bytes": 25,
+      "whole_leaf_instructions": 9,
+      "whole_child_bytes": 14,
+      "whole_child_instructions": 6,
+      "positive_unique_Core_definitions": 2,
+      "normal_Win32_build_passed": true,
+      "existing_checks": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "source_inputs_rechecked": [
+        {
+          "path": "CMakeLists.txt",
+          "canonical_sha256": "a315c5fefbb4885f715edd4941688ae43102b9aa7ae1fd12b2d118cb2811586f",
+          "current_equal": true
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "canonical_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+          "current_equal": true
+        },
+        {
+          "path": "scripts/build.ps1",
+          "canonical_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+          "current_equal": true
+        },
+        {
+          "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+          "canonical_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+          "current_equal": true
+        },
+        {
+          "path": "src/native_pending_registry_base_cleanup.cpp",
+          "canonical_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+          "current_equal": true
+        },
+        {
+          "path": "include/bsp/native_render_service_base.hpp",
+          "canonical_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+          "current_equal": true
+        },
+        {
+          "path": "src/native_render_service_base.cpp",
+          "canonical_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+          "current_equal": true
+        }
+      ],
+      "current_Source_document_canonical_pin_equal": true,
+      "credit_already_recorded_by_primary": {
+        "additional_Original_reconstructed_functions": 1,
+        "covered_Original_bytes": 17,
+        "Native_ABI": 0,
+        "canonical_cell_producer": 0,
+        "application_wiring": 0,
+        "gameplay": 0
+      }
+    },
+    "no_inferred_outer_effects": "No new actual owner/genuinepublication producer/callabletable/retirement or Native cleanup/fault guarantee."
+  },
+  "layout_reference": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+    "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+    "inspected_ranges": [
+      [
+        87,
+        87
+      ],
+      [
+        183,
+        198
+      ],
+      [
+        240,
+        273
+      ]
+    ],
+    "role": "CurrentSDKabsolute x86 layout corroboration only; independently parsed getter fields, no original compiler/runtime/helper/fault identity claim."
+  },
+  "Source_and_prior_evidence_pins": [
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_WORKER_LIFETIME.md",
+      "bytes": 10098,
+      "sha256": "60c97fd6304962778d2be6828d627dfb56c2f1620cd56856876a5075187b7860",
+      "lf_sha256": "60c97fd6304962778d2be6828d627dfb56c2f1620cd56856876a5075187b7860"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+      "bytes": 9420,
+      "sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf",
+      "lf_sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf"
+    },
+    {
+      "path": "reports/cc12_pending_registry_getter_readiness.json",
+      "bytes": 40457,
+      "sha256": "20f2cdaf05c5799d0b81e6f8050bf8f00c89e26b259c59b5bed351fc2e4795f2",
+      "lf_sha256": "b1b279d58971fe11ddf69c4d4883be18e1535f72789519ed38bca7f713d260e5"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_OWNER_CONSTRUCTION_READINESS.md",
+      "bytes": 8133,
+      "sha256": "caefdbbdd81c5c2d72f6011da2b174fb0f6b49665f97dd37407d21bb95568c6e",
+      "lf_sha256": "caefdbbdd81c5c2d72f6011da2b174fb0f6b49665f97dd37407d21bb95568c6e"
+    },
+    {
+      "path": "reports/cc12_pending_registry_owner_construction_readiness.json",
+      "bytes": 21824,
+      "sha256": "f51550d1c2cc3e57192c3b223c6028f96948521dc6d44887ca72eaa332664a30",
+      "lf_sha256": "2af4cd5699e962e554079fa6216fe9e1ce50cdb0560ef711356a49c03a1a98ae"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_CONSTRUCTOR_EH_READINESS.md",
+      "bytes": 6873,
+      "sha256": "eadc68f4ed345216f1171bed14d905d49984843fd5b1248036652590e95bbce3",
+      "lf_sha256": "eadc68f4ed345216f1171bed14d905d49984843fd5b1248036652590e95bbce3"
+    },
+    {
+      "path": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+      "bytes": 17838,
+      "sha256": "8f9f20d14d91f38d1aca2bf2115861aaeade5206984f2d8306cbb784f97cbbd2",
+      "lf_sha256": "ee1f48f77ce3e3073fa3bf042b35563859001742049d81e7ee4a860ca5705ac5"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_BASE_CLEANUP_READINESS.md",
+      "bytes": 6324,
+      "sha256": "0183ff095b10324096754561248f97f66c51bfc3a26337628c58b94880b3b37f",
+      "lf_sha256": "0183ff095b10324096754561248f97f66c51bfc3a26337628c58b94880b3b37f"
+    },
+    {
+      "path": "reports/cc12_pending_registry_base_cleanup_readiness.json",
+      "bytes": 18260,
+      "sha256": "6fde94669c87d8062120bd070a5e928eddc8a84969cdf7dc517705aea22c52fe",
+      "lf_sha256": "72fd3080322f81ef00fe202bc65bbad09c7adee260a67e3d31685041c6c1d4b4"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "bytes": 843,
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b"
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "bytes": 403,
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597"
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_REGISTRY_BASE_CLEANUP_SOURCE.md",
+      "bytes": 6807,
+      "sha256": "f259b9711e2da5cbccc1e4d5e919a615f8cd634fdcf6a0417593142848a75ae8",
+      "lf_sha256": "f259b9711e2da5cbccc1e4d5e919a615f8cd634fdcf6a0417593142848a75ae8"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_base_cleanup_source.json",
+      "bytes": 10220,
+      "sha256": "fae628ffd335cda8274d73244815fd6791fb3188f91c9f4f61a55319ea419d3e",
+      "lf_sha256": "4a234faf64886f1642d3543270c31ac201daa77887fba43417cb2cbd790d57b4"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_base_cleanup_primary_review.json",
+      "bytes": 10497,
+      "sha256": "b4dfb672a84da81a61d8961741d04df873bbefed2dbddce88edf1d7b353c6271",
+      "lf_sha256": "b4dfb672a84da81a61d8961741d04df873bbefed2dbddce88edf1d7b353c6271"
+    }
+  ],
+  "prior_evidence": {
+    "getter_pin_rechecks": [
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/sound_lifetime_access.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/native_pending_entity_lock.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/native_pending_entity_lock.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_PRODUCER_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_SPLICE_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      }
+    ],
+    "native_windows_PE_rechecked": [
+      {
+        "report": "reports/cc12_pending_registry_getter_readiness.json",
+        "address": "00875280",
+        "bytes": 189,
+        "sha256": "bd993ecad5b81a25db47f6144f2e7a8e7208ee6c9b57569493e6eeb0ef15447b",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_getter_readiness.json",
+        "address": "00F878CC",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+        "address": "00874BC0",
+        "bytes": 69,
+        "sha256": "dbd4459a91dddfa42be5d17021ea441644245ea4f24c04bbf5f2167bcbdfbba6",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00C963E8",
+        "bytes": 16,
+        "sha256": "51d68887a5e4093adba9b4fc7c56a0b59c4a7fd1fba56cbcd1c53008683a63e6",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00DC84DC",
+        "bytes": 36,
+        "sha256": "e33515791a52b841d6f4377621e695ef4597498bdcbc87ed652ea6bd53022d0a",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00DC84D4",
+        "bytes": 8,
+        "sha256": "8e8931ec3a74526a42344924490b857413db67f84a891d0d6c6fb440db7a69ba",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+        "address": "00C963E0",
+        "bytes": 8,
+        "sha256": "b200de45417c37de51a05a8bd2ed427c144350fac9f785a58f5b467169cad716",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      },
+      {
+        "report": "reports/cc12_pending_registry_base_cleanup_readiness.json",
+        "address": "008748F0",
+        "bytes": 17,
+        "sha256": "d6b00cb7e86ca84a971ae28580fec99ba8b7de3ccaf5750da1df4bf81b0d20cb",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false
+      }
+    ],
+    "fresh_prior_live_queries": false,
+    "constructor_EH_not_getter_proof": true
+  },
+  "validation": {
+    "fresh_windows": 5,
+    "fresh_GPR_PE_bytes": 87,
+    "semantic_bytes": 81,
+    "padding_bytes": 3,
+    "excluded_adjacent_opaque_bytes": 3,
+    "complete_semantic_code_bytes": 29,
+    "decoded_instructions": 9,
+    "physical_calls": 1,
+    "tail_jumps": 2,
+    "complete_allocation_action_bytes": 11,
+    "saved_allocation_action_bytes": 9,
+    "physical_continuation_bytes": 2,
+    "full_PE_hash_rechecked": true,
+    "current_Source_prior_pins": 18,
+    "getter_inherited_pins": 16,
+    "inherited_native_windows": 8,
+    "primary_input_pins_rechecked": 7,
+    "SDK_pin": true,
+    "JSON_parse": true,
+    "bounds_pass": true,
+    "Source_edits": 0,
+    "CMake_or_ledger_mutations": 0,
+    "Ghidra_mutations": 0,
+    "shared_runtime_queries": 0,
+    "native_descendant_queries": 0,
+    "other_handler_or_caller_queries": 0,
+    "table_or_bootstrap_queries": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_runs": 0,
+    "new_Original_credit": 0
+  },
+  "limits": [
+    "Independent encoded getter EH and complete direct actions only; shared runtime/frame/fault and nested-failure protocol qualified.",
+    "Captured allocation/current guard fields/current registry publication remain distinct; no inferred rollback or early disarm.",
+    "Published8748F0 ordinary Source admission is reused with current primary pins; this audit adds no Source API, Native/Original or game credit."
+  ]
+}
