@@ -1,13 +1,12 @@
 # Native mission Lua raw variant initializer, 008849B0
 
-This packet supplies a guarded MSVC Win32 Source candidate for the complete
+This packet supplies a guarded MSVC Win32 Source leaf for the complete
 27-byte leaf at `008849B0..008849CA`. It stores five DWORDs into the incoming
 ECX receiver and returns that receiver in EAX. It makes no calls and has no
 branch, hidden input register, local exception frame or x87 operation.
 
-**Worker status: candidate pending primary admission.** The primary owns CMake
-registration, normal build, complete COFF comparison, Core review and any final
-credit. This worker claims no build, fixture, ABI compatibility, original-call,
+**Primary admission: normal build and whole object/Core review passed.** Primary CMake registration, normal build, complete COFF comparison and Core
+review are documented in the admission section below. This worker claims no build, fixture, ABI compatibility, original-call,
 runtime or game validation. No harness, test, probe or Ghidra write was made.
 
 ## Scope and evidence
@@ -113,6 +112,23 @@ report excludes a self-hash.
 Worker checks are limited to full Native span/PE agreement, instruction coverage,
 pin replay, JSON parsing, owned-file scope and `git diff --check`. The eight Source
 assembly instructions were reviewed against the eight Native instructions.
-Compilation and binary equivalence are pending the primary's integration pass.
+Primary compilation and complete byte comparison now pass, as recorded below.
 No test executable, installation change, original-call execution, fixture result,
 live game result or new reconstruction/ABI credit is claimed.
+
+
+## Primary admission
+
+The complete emitted Source leaf is 27 bytes / eight instructions, byte-for-byte
+equal to the accepted live Original span and current installed PE. It contains
+no relocation, named external boundary, child or extra instruction. Its physical
+symbol, entire object and complete Core member have one unique positive public
+definition. The normal MSVC Win32 build passed all three existing checks.
+
+This adds one bounded reconstruction covering all 27 Original bytes. The normal
+entry/register/store schedule matches statically; Original execution, binary
+placement, callable profile, owner/vector integration and gameplay remain
+unvalidated. The root is absent from the game map. Existing LNK4006 spawn-request
+duplication remains unrelated. The primary report supersedes historical worker
+pending admission. Full physical evidence and the shared build receipt are in
+the primary report and its retained local artifact set.

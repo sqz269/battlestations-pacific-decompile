@@ -1,10 +1,10 @@
 # Native pending registry scalar retirement Source candidate (CC12)
 
-This packet adds the bounded ordinary C++ candidate
+This packet adds the bounded ordinary C++ body
 `bsp::retire_native_pending_registry_scalar_00875850`. It expresses the accepted
 complete native `00875850..00875886` retirement schedule using the actual
-existing section release, base cleanup and paired free services. **The candidate
-is unbuilt, unlinked and pending primary admission.** The primary integrator
+existing section release, base cleanup and paired free services. **Primary admission has passed the normal build and complete object/Core
+review; see the admission section below.** The primary integrator
 owns CMake registration, the normal MSVC Win32 build, whole emitted function and
 actual callee review, and positive core archive membership verification.
 
@@ -132,9 +132,31 @@ pins both new source files, this document, the accepted native audit and exact
 existing service dependencies. It records the source schedule and borrowed
 input contract, validates JSON and pins, and keeps candidate status explicit.
 
-Only these four owned source/document/report files are changed. No CMake,
+At worker handoff, only four owned source/document/report files had changed. No CMake,
 ledger or Ghidra edits, new tests or ad hoc probes are part of this packet. No
-worker build or execution claim is made. Primary must register and build the
-candidate, inspect the whole emitted function and actual callees, and prove
-unique core archive membership before admission. Until then there is no new
-reconstruction, native ABI, runtime or game-validation credit.
+worker build or execution claim is made. The primary admission below completes registration, the normal build, whole
+function/callee review and unique Core verification. Native ABI, runtime and
+game-validation credit remain zero.
+
+
+## Primary admission
+
+Primary review now admits the bounded ordinary Source body. The normal MSVC
+Win32 build passed all three existing checks. Its entire emitted function is
+62 bytes / 24 instructions. Profile store precedes the actual section CALL;
+one volatile byte load into BL occurs after that return and before the actual
+base-cleanup CALL. BL survives that helper, and a bit-zero test selects the
+actual free CALL. EAX returns the captured receiver without a post-free load.
+
+The three REL32 operands at offsets 18, 32 and 49 resolve through physical
+symbol records to the actual 64-byte section helper, 25-byte base helper and
+six-byte host-free forwarding leaf. The base helper reaches the actual 14-byte
+profile helper. All five complete functions total 171 bytes / 65 instructions;
+their whole Core members and positive unique definitions are verified. Real
+Win32 Leave/Delete and host CRT free remain qualified external domains.
+
+This adds one ordinary reconstruction covering 55 Original bytes. It supplies
+no Native entry adapter, genuine publication/owner producer, callable profile,
+constructor/getter/manager integration or gameplay proof. The root is absent
+from the game map. Existing LNK4006 spawn-request duplication remains unrelated.
+The primary report supersedes the worker's historical pending admission status.

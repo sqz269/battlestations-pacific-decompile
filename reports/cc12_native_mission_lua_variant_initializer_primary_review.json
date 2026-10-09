@@ -1,0 +1,357 @@
+{
+  "schema": "bsp.cc12.mission_lua_variant_initializer_primary_review.v1",
+  "created_utc": "2026-10-09T08:55:34.554090+00:00",
+  "status": "bounded_source_admitted_whole_body_concrete_Core_reviewed_normal_win32_build_passed",
+  "build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 120556,
+    "start_utc": "2026-10-09T08:54:33.686113+00:00",
+    "finish_utc": "2026-10-09T08:54:52.841780+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "before_source_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 17614,
+      "sha256": "59302a2bad904ae2921ab0e519678cbe3ddaad867222c1d1c86eaf8052594d18",
+      "canonical_lf_sha256": "59302a2bad904ae2921ab0e519678cbe3ddaad867222c1d1c86eaf8052594d18"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+      "canonical_lf_sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_scalar_retirement.hpp",
+      "bytes": 937,
+      "sha256": "75c80c339b5d09c0cb032a5fb976273a01800f2fe2fa585b5aafec67d9a94119",
+      "canonical_lf_sha256": "75c80c339b5d09c0cb032a5fb976273a01800f2fe2fa585b5aafec67d9a94119"
+    },
+    {
+      "path": "src/native_pending_registry_scalar_retirement.cpp",
+      "bytes": 1096,
+      "sha256": "15b383a71149806a1befcdd1c584624339b0dcc33ef53897521e546b9031c0f3",
+      "canonical_lf_sha256": "15b383a71149806a1befcdd1c584624339b0dcc33ef53897521e546b9031c0f3"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_variant_initializer.hpp",
+      "bytes": 776,
+      "sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "canonical_lf_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494"
+    },
+    {
+      "path": "src/native_mission_lua_variant_initializer.cpp",
+      "bytes": 1022,
+      "sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "canonical_lf_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28"
+    },
+    {
+      "path": "include/bsp/native_tracked_critical_section_release.hpp",
+      "bytes": 794,
+      "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+      "canonical_lf_sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+    },
+    {
+      "path": "src/native_tracked_critical_section_release.cpp",
+      "bytes": 1637,
+      "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+      "canonical_lf_sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "bytes": 843,
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b"
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "bytes": 403,
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    }
+  ],
+  "core_library_sha256": "dac4794388ac8a339eb52d7d52541b1c32f57b91fdda159cac9a136327b82211",
+  "retained_complete_evidence": "local/cc12_registry_scalar_lua_initializer_primary/whole_objects_and_concrete_dependency_bindings.json",
+  "game_roots_absent_map": true,
+  "native_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "new_tests_or_probes": 0,
+  "entire_current_root": {
+    "symbol": "?initialize_native_mission_lua_variant_008849b0@bsp@@YIPAXPAX@Z",
+    "symbol_index": 8,
+    "symbol_record_file_offset": 650,
+    "section": 3,
+    "section_value": 0,
+    "physical_file_offset": 447,
+    "bytes": 27,
+    "sha256": "baf7f7266d1b1b6b17f443386b1bee21ab0c30d006e78db204d63090c3885608",
+    "hex": "8bc133c9c700f4e6d000c74004ffffffff89480889480c894810c3",
+    "instruction_count": 8,
+    "relocations": [],
+    "instructions": [
+      {
+        "offset": 0,
+        "bytes": "8bc1",
+        "mnemonic": "mov",
+        "operands": "eax, ecx"
+      },
+      {
+        "offset": 2,
+        "bytes": "33c9",
+        "mnemonic": "xor",
+        "operands": "ecx, ecx"
+      },
+      {
+        "offset": 4,
+        "bytes": "c700f4e6d000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], 0xd0e6f4"
+      },
+      {
+        "offset": 10,
+        "bytes": "c74004ffffffff",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], 0xffffffff"
+      },
+      {
+        "offset": 17,
+        "bytes": "894808",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], ecx"
+      },
+      {
+        "offset": 20,
+        "bytes": "89480c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0xc], ecx"
+      },
+      {
+        "offset": 23,
+        "bytes": "894810",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x10], ecx"
+      },
+      {
+        "offset": 26,
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "root_indexed_graph": {
+    "root_symbol_indices": [
+      8
+    ],
+    "reached_sections": [
+      3
+    ],
+    "edges": [],
+    "external_boundaries": {},
+    "whole_sections": [
+      {
+        "section": 3,
+        "header_file_offset": 100,
+        "raw_header_hex": "2e74657874246d6e00000000000000001b000000bf01000000000000000000000000000020105060",
+        "name": ".text$mn",
+        "bytes": 27,
+        "raw_file_offset": 447,
+        "relocation_file_offset": 0,
+        "characteristics": "60501020",
+        "executable": true,
+        "writable": false,
+        "payload_hex": "8bc133c9c700f4e6d000c74004ffffffff89480889480c894810c3",
+        "payload_sha256": "baf7f7266d1b1b6b17f443386b1bee21ab0c30d006e78db204d63090c3885608",
+        "relocations": []
+      }
+    ],
+    "whole_functions": [
+      {
+        "symbol": "?initialize_native_mission_lua_variant_008849b0@bsp@@YIPAXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 650,
+        "section": 3,
+        "section_value": 0,
+        "physical_file_offset": 447,
+        "bytes": 27,
+        "sha256": "baf7f7266d1b1b6b17f443386b1bee21ab0c30d006e78db204d63090c3885608",
+        "hex": "8bc133c9c700f4e6d000c74004ffffffff89480889480c894810c3",
+        "instruction_count": 8,
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "8bc1",
+            "mnemonic": "mov",
+            "operands": "eax, ecx"
+          },
+          {
+            "offset": 2,
+            "bytes": "33c9",
+            "mnemonic": "xor",
+            "operands": "ecx, ecx"
+          },
+          {
+            "offset": 4,
+            "bytes": "c700f4e6d000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], 0xd0e6f4"
+          },
+          {
+            "offset": 10,
+            "bytes": "c74004ffffffff",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 4], 0xffffffff"
+          },
+          {
+            "offset": 17,
+            "bytes": "894808",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 8], ecx"
+          },
+          {
+            "offset": 20,
+            "bytes": "89480c",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0xc], ecx"
+          },
+          {
+            "offset": 23,
+            "bytes": "894810",
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax + 0x10], ecx"
+          },
+          {
+            "offset": 26,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      }
+    ],
+    "method": "Every relocation resolves through its physical symbol-table INDEX and auxiliary fallback records, never a same-name guess"
+  },
+  "complete_dependencies": [],
+  "root_complete_core_member": {
+    "name": "bsp_core.dir\\Release\\native_mission_lua_variant_initializer.obj",
+    "header_offset": 63759712,
+    "payload_file_offset": 63759772,
+    "bytes": 772,
+    "sha256": "cf03364288d85e9061e3465335462a1fc939d5a953e9a4df7c3635ee0b4e0441"
+  },
+  "root_positive_unique_definition": {
+    "member": {
+      "name": "bsp_core.dir\\Release\\native_mission_lua_variant_initializer.obj",
+      "header_offset": 63759712,
+      "payload_file_offset": 63759772,
+      "bytes": 772,
+      "sha256": "cf03364288d85e9061e3465335462a1fc939d5a953e9a4df7c3635ee0b4e0441"
+    },
+    "definition": {
+      "name": "?initialize_native_mission_lua_variant_008849b0@bsp@@YIPAXPAX@Z",
+      "symbol_index": 8,
+      "symbol_record_file_offset": 650,
+      "section": 3,
+      "value": 0,
+      "type": 32
+    }
+  },
+  "Original_body_bytes": 27,
+  "limits": [
+    "Physical Source/Core and build/check evidence does not establish Native EH/fault/concurrency/alias/gameplay or production owner/callable profile integration.",
+    "Numeric profile stamps are recovered Native identities, not produced callable Source profiles."
+  ],
+  "interface": "guarded nakedfastcall ECX actual20B rawelement; EAXsameaddress; ECXzero; plainRET",
+  "complete_review": [
+    "Entire27B/8ins matchesliveacceptedNativeinitializer andinstalledPE byteforbyte; no relocations/externalboundaries.",
+    "Actual20B footprint allwritteninorder: profileD0E6F4 at0; FFFFFFFF at4; zerosat8/C/10. No childcall/guard/owner/global/typehierarchy/paddinghole/extra store.",
+    "No EBX/ESI/EDI/EBP modifications; arithmeticflagsfromXORECX preservedthroughstores/RET; actualrawmemorylifetime/callableprofile/fault/runtimequalifications remain."
+  ],
+  "Native_normal_entry_machine_contract_match": true,
+  "worker_commit": "5a1a5469d59a3eee5a58dff97376fdbb0e58df00",
+  "ledger_function": "initialize_native_mission_lua_variant_008849b0",
+  "ledger_record": {
+    "address": "008849B0",
+    "name": "initialize_native_mission_lua_variant_008849b0",
+    "source": "src/native_mission_lua_variant_initializer.cpp",
+    "status": "complete_bounded_source_whole_body_concrete_Core_reviewed_normal_win32_build_passed",
+    "original_bytes": 27,
+    "original_abi": "ECXactual20Breceiver,noargs/plainRET; EAXsameaddress/ECXzero, otherGPRuntouched, XORflags retained. EntireSourcebodymachine/registerschedule matchesstatically; noOriginalcallexecution/placement/callableprofile/runtimeadmission.",
+    "coverage": "All27B/8Originalins and20B orderedstorefootprint; entire27B/8ins emittedSource byteexact/zerorelocations anduniquepositivewholeCoremember.",
+    "remaining": "Genuine owner/publication/callable profile and production composition; Native execution/ABI/EH/fault/alias/concurrency/runtime/startup/gameplay.",
+    "evidence": "Provisional descriptive name, not recovered symbol. CompleteOriginal008849B0..008849CA,27B/8ins matchesentirecurrentguardednakedfastcallSource initialize_native_mission_lua_variant_008849b0 byteforbyte/currentPE; zero relocations/externalboundaries. ECX actualwritable20B receiver ->EAXsameaddress; XORECX,ECX; orderedDWORDstores [P]=D0E6F4,[P+4]=FFFFFFFF,[P+8/C/10]=0; plainRET/noargs; EDX/EBX/ESI/EDI/EBPuntouched, XORflags retained. All20B written/noholes/nochild/nullguard/allocation/cleanup/global/typehierarchy/RAII. OneuniquecompletepositiveCoremember; normalWin32build/threeexistingchecks pass; rootabsentgamemap. Staticnormalentry/machinebodymatch is notOriginalcallexecution/placement/fullABI/gameplay evidence. NumericD0E6F4 isNativeprofileidentity only, notproducedcallableSourceprofile; realstorage/lifetime andvectorreserve/virtualretirement/EH/owner/productionclosure unproved. docs/CC12_NATIVE_MISSION_LUA_VARIANT_INITIALIZER_SOURCE.md; reports/cc12_native_mission_lua_variant_initializer_primary_review.json.",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "worker_document_before_primary_sha256": "8e1613a1a2d7053a5ab4ba3966f2e20945ebfcd6df166ca25716955835de9534",
+  "current_document_canonical_sha256": "8cbad1a853c7ccc4da25b0f17cb9b889f1ded1272ec49e9cf3d374e743e48ca9",
+  "credit": {
+    "additional_Original_reconstructed_functions": 1,
+    "covered_Original_bytes": 27,
+    "Native_ABI": 0,
+    "Original_call_execution": 0,
+    "callable_profile": 0,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "Ghidra_admission": {
+    "annotation_tool": "tools/ghidra_annotate.py --apply under write lock",
+    "prior_values_receipt": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\ghidra-annotations-20261009T085947Z.json",
+    "receipt_sha256": "6b5bdd9de4db9930d341c176bea4de4e2eab1083edec8224bb162cddada2d69a",
+    "prior_comment_preserved": true,
+    "name": "BSP_MissionLuaVariant_InitializeRaw20",
+    "descriptive_name_provisional": true,
+    "project_saved": true,
+    "affected_export_refreshed": true,
+    "listing_body_flow_no_return_or_proto_mutations": 0
+  }
+}
