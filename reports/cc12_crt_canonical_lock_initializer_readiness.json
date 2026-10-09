@@ -1,0 +1,1109 @@
+{
+  "packet": "cc12_crt_canonical_lock_initializer_readiness",
+  "generated_utc": "2026-10-09T23:35:19.687769+00:00",
+  "worker_branch": "agent/cc12_unit_numbering_virtual_query_abi",
+  "base_commit": "4641874813ab8237f4a2d25571625279e35d8dc0",
+  "status": "READINESS_ONLY_FULL_SOURCE_HELD_LISTING_START_GATE_INCOMPLETE",
+  "scope": {
+    "only_Native_body": "00C11B5E",
+    "owned_files": [
+      "docs/CC12_CRT_CANONICAL_LOCK_INITIALIZER_READINESS.md",
+      "reports/cc12_crt_canonical_lock_initializer_readiness.json"
+    ],
+    "Ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "Ghidra_program": "/battlestationspacific.exe",
+    "analysis_via_verified_bsp_wrappers": true,
+    "GPR_mutated": false,
+    "callee_bodies_opened": false,
+    "fixed_data_contents_opened": false,
+    "handlers_opened": false,
+    "Source_CMake_ledger_modified": false,
+    "build_tests_probes_run": false
+  },
+  "names": {
+    "existing": "LIBCRT_unmatched_00c11b5e",
+    "existing_prototype": "undefined LIBCRT_unmatched_00c11b5e(void)",
+    "interpretation": "canonical CRT indexed lock initializer; descriptive role hypothesis, not a recovered symbol",
+    "library_child_names_preserved": true,
+    "annotation_change": false
+  },
+  "original_PE": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "x86",
+    "image_base": "00400000"
+  },
+  "complete_body_gate": {
+    "begin": "00C11B5E",
+    "end_inclusive": "00C11C17",
+    "bytes": 186,
+    "physical_ops": 62,
+    "physical_direct_calls": 13,
+    "unique_direct_targets": 11,
+    "physical_indirect_calls": 0,
+    "body_sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9",
+    "original_PE_live_bytes_equal": true,
+    "live_defined_starts": 56,
+    "live_missing_starts": 6,
+    "live_missing_bytes": 18,
+    "all_live_starts_match": false,
+    "live_metadata_call_count": 12,
+    "saved_defined_listing_matches_defined_starts": true,
+    "historical_export_exists": false,
+    "fresh_saved_listing_is_not_historical_export": true,
+    "missing": [
+      {
+        "address": "00C11BE7",
+        "size": 1,
+        "bytes": "59",
+        "asm": "pop ecx"
+      },
+      {
+        "address": "00C11BE8",
+        "size": 5,
+        "bytes": "e89edffeff",
+        "asm": "call 0xbffb8b"
+      },
+      {
+        "address": "00C11BED",
+        "size": 6,
+        "bytes": "c7000c000000",
+        "asm": "mov dword ptr [eax], 0xc"
+      },
+      {
+        "address": "00C11BF3",
+        "size": 3,
+        "bytes": "895de4",
+        "asm": "mov dword ptr [ebp - 0x1c], ebx"
+      },
+      {
+        "address": "00C11BF6",
+        "size": 2,
+        "bytes": "eb0b",
+        "asm": "jmp 0xc11c03"
+      },
+      {
+        "address": "00C11C02",
+        "size": 1,
+        "bytes": "59",
+        "asm": "pop ecx"
+      }
+    ],
+    "incomplete_gate_consequence": "No full Source/ABI admission. Root-owned listing diagnosis/repair and fresh full-start replay are still required.",
+    "cause_not_proved": "Typed read endpoint did not expose exact fallthrough/no-return/override properties. Gaps after _free do not establish CALL_RETURN or a callee no-return annotation.",
+    "decompiler_not_authority": "Two apparent extraout_EAX returns after _free omit physical errno/result/common-cleanup instructions; physical bytes govern the schedule."
+  },
+  "physical_call_sites": [
+    {
+      "site": "00C11B65",
+      "target": "00C07C00",
+      "existing_name": "__SEH_prolog4",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11B7A",
+      "target": "00C05B68",
+      "existing_name": "__FF_MSGBANNER",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11B81",
+      "target": "00C059A8",
+      "existing_name": "LIBCRT_unmatched_00c059a8",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11B8B",
+      "target": "00BFBA53",
+      "existing_name": "___crtExitProcess",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11BA6",
+      "target": "00C0481A",
+      "existing_name": "__malloc_crt",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11BB2",
+      "target": "00BFFB8B",
+      "existing_name": "LIBCRT_unmatched_00bffb8b",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11BC3",
+      "target": "00C11C21",
+      "existing_name": "__lock",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11BD6",
+      "target": "00C17653",
+      "existing_name": "___crtInitCritSecAndSpinCount",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11BE2",
+      "target": "00BF9DC8",
+      "existing_name": "_free",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11BE8",
+      "target": "00BFFB8B",
+      "existing_name": "LIBCRT_unmatched_00bffb8b",
+      "defined_live_start": false,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11BFD",
+      "target": "00BF9DC8",
+      "existing_name": "_free",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11C0A",
+      "target": "00C11C18",
+      "existing_name": "LIBCRT_unmatched_00c11c18",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    },
+    {
+      "site": "00C11C12",
+      "target": "00C07C45",
+      "existing_name": "__SEH_epilog4",
+      "defined_live_start": true,
+      "callee_body_opened_in_packet": false
+    }
+  ],
+  "normal_execution_schedule": [
+    {
+      "range": "00C11B5E..00C11B70",
+      "behavior": "Push local size 0xC and scope operand 00E03678, call __SEH_prolog4; establish EDI=1, local [EBP-0x1C]=1 and EBX=0. Prolog body, scope data and handlers remain unopened."
+    },
+    {
+      "range": "00C11B72..00C11B91",
+      "behavior": "Always test current DWORD [0109E1BC] before even a preexisting-descriptor fast path. If zero, call __FF_MSGBANNER, push 30 and call 00C059A8, then push 255 and call ___crtExitProcess. If each returns normally, two POP ECX instructions remove the two words and execution continues. The 30 word remains stacked through the final child call; no child no-return promise is admitted."
+    },
+    {
+      "range": "00C11B92..00C11BA2",
+      "behavior": "Read the original index from [EBP+8] only now, after the heap-failure children if they returned; compute and capture ESI = (00E16478 + index*8) modulo 2^32. Read [ESI]. If nonzero, use EDI=1 as EAX and branch to epilog without allocation/acquisition/cleanup."
+    },
+    {
+      "range": "00C11BA4..00C11BBF",
+      "behavior": "Push 24, call __malloc_crt and POP ECX. Capture its EAX in EDI. If zero, call 00BFFB8B, store DWORD 12 through its returned EAX, zero EAX and branch directly to epilog. No lock/free/00C11C18 call occurs on this path."
+    },
+    {
+      "range": "00C11BC1..00C11BCE",
+      "behavior": "For nonzero captured candidate EDI, push 10, call __lock and POP ECX. Set [EBP-4]=0 only after acquisition returns, then re-read the current descriptor at captured ESI. Nonzero branches to losing-candidate free."
+    },
+    {
+      "range": "00C11BD0..00C11BDF",
+      "behavior": "If the descriptor is still zero, push 4000 and EDI, call 00C17653, then POP ECX twice before TEST EAX. The observed child interface consumes two caller-owned DWORD arguments; callback selection and child internals remain unproved."
+    },
+    {
+      "range": "00C11BE1..00C11BF6",
+      "behavior": "If initializer result is zero, push captured EDI, call _free and POP ECX; call 00BFFB8B, store DWORD 12 through EAX, set result local [EBP-0x1C]=EBX (zero), and jump to common cleanup. The five starts following _free are missing from the live listing but present in all original/live bytes."
+    },
+    {
+      "range": "00C11BF8..00C11BFA",
+      "behavior": "If initializer result is nonzero, write captured EDI to [ESI] and jump to common cleanup. No additional current-descriptor check occurs after initialization; no write to descriptor +4 exists in this body."
+    },
+    {
+      "range": "00C11BFC..00C11C02",
+      "behavior": "If the post-acquisition descriptor was nonzero, push captured EDI, call _free, then POP ECX before common cleanup. The POP start is missing from the live listing. This body does not update the descriptor, set errno or replace its default success local on this race-loser path."
+    },
+    {
+      "range": "00C11C03..00C11C17",
+      "behavior": "Common cleanup sets [EBP-4]=-2, calls 00C11C18 without explicit pushed arguments, reads the CURRENT [EBP-0x1C] into EAX after that child, calls __SEH_epilog4 and RET. The cleanup child is unopened; no release-of-lock-10 or implicit-frame ABI claim is admitted merely from its position."
+    }
+  ],
+  "ABI_and_observability": {
+    "incoming": "One caller-owned DWORD index; prior accepted __lock caller and [EBP+8]/plain RET support cdecl argument cleanup. Current metadata incorrectly declares no arguments.",
+    "result": "Normal intended result is 1 for preexisting/published/race-winner descriptor and 0 for allocation/init failure, conditional on actual child contracts. On common cleanup the function loads current [EBP-0x1C] only AFTER 00C11C18; do not hoist that read or hardcode 1/0 across an unknown child.",
+    "register_frame": "Main body uses EBP, EBX=0, EDI=1 then captured allocation, ESI=captured descriptor address. Save/restore and FS/SEH construction are delegated to unopened prolog and existing Source epilog with exact frame preconditions; no new original-ABI proof.",
+    "index_capture": "Index is loaded only after heap-unavailable children. Later caller-slot changes do not change captured ESI; the caller must supply a real valid descriptor domain. Arithmetic is raw 32-bit and has no own bounds guard.",
+    "read_write_order": "Current descriptor read before allocation, fresh read after __lock(10), no recheck after initialization before publication. Candidate remains captured in EDI under required nonvolatile child ABI.",
+    "state_order": "[EBP-4]=0 after acquisition; free and errno work execute before [EBP-4]=-2 and cleanup. Full exception/unwind behavior unproved without prolog/table/handlers/children.",
+    "own_writes": "Frame result/EH state, errno pointee on failures, and descriptor first DWORD on successful initialization; no descriptor +4 or heap-handle write in this body.",
+    "callback_boundary": "13 direct calls; zero own indirect application calls. Child-selected callbacks, reentrancy, global/state mutation and faults are not replaced with a host callback or guessed atomicity.",
+    "bootstrap_cycle": "If canonical lock-10 cell is zero, historical __lock(10) calls this initializer with index 10, which may attempt __lock(10) again after allocation. 00E164C8 is only the computed descriptor address; its contents, preseed and table extent were not read.",
+    "race_boundary": "A nonzero descriptor after acquisition frees only the losing candidate. A nonzero initializer result publishes captured EDI unconditionally even if an unknown child changed the cell; preserve this exact observed order rather than add a recheck.",
+    "no_rollback_invention": "No own DeleteCriticalSection, validation, rollback, replacement lock, nullable-errno guard or free-on-acquisition-fault path is visible. Child/SEH behavior remains held."
+  },
+  "dependency_frontier": [
+    {
+      "address": "00C07C00",
+      "name": "__SEH_prolog4",
+      "required_contract": "Build the exact frame/nonvolatile/FS/exception state from pushes 0xC and 00E03678.",
+      "current_Source": "No matching implementation found by targeted address/name search. Existing epilog alone cannot provide this frame. Scope data and handlers unopened.",
+      "held": true
+    },
+    {
+      "address": "0109E1BC / 00E16478",
+      "name": "canonical heap and lock descriptor owners",
+      "required_contract": "A genuine initialized canonical heap and valid live descriptor storage, lock-10 bootstrap/publication/lifetime and actual indexed lock ownership.",
+      "current_Source": "Mutable CRT page materialization supplies addressable pages only. Canonical SBH initialization itself requires an existing valid heap. No table extent, domain bounds or lock-10 seed established. Fixed data contents unopened.",
+      "held": true
+    },
+    {
+      "address": "00C05B68 / 00C059A8 / 00BFBA53",
+      "name": "heap-unavailable diagnostic and process-exit chain",
+      "required_contract": "Full diagnostic/exit behavior and each actual ABI, residual stack/fault/callback effects and any nonreturn contract.",
+      "current_Source": "No matching implementations found by targeted address/name search; existing library labels preserved and no callee opened.",
+      "held": true
+    },
+    {
+      "address": "00C0481A",
+      "name": "__malloc_crt",
+      "required_contract": "Return candidate for a 24-byte original CRT allocation or null with the actual heap, retry/failure and callback policy.",
+      "current_Source": "singleton_lifetime_allocate uses host std::malloc/_callnewh and throws std::bad_alloc after failure; renderer worker allocates a different 28-byte tracked object. Neither closes this canonical nullable allocation domain.",
+      "held": true
+    },
+    {
+      "address": "00BFFB8B",
+      "name": "LIBCRT_unmatched_00bffb8b",
+      "required_contract": "Return the genuine writable errno DWORD for the owning CRT/thread, including full initialization/failure behavior.",
+      "current_Source": "LegacyCrtMathRuntime::errno_location is an explicit caller-provided owning-CRT service, not a reconstructed original PTD provider.",
+      "held": true
+    },
+    {
+      "address": "00C11C21",
+      "name": "__lock",
+      "required_contract": "Acquire actual canonical descriptor lock 10; full initializer/fatal/API schedule and bootstrap prerequisite.",
+      "current_Source": "Historical acquisition readiness is accepted; no full Source implementation. Its zero-descriptor branch calls this same 00C11B5E, giving a conditional recursive bootstrap dependency if lock 10 is absent.",
+      "held": true
+    },
+    {
+      "address": "00C17653",
+      "name": "___crtInitCritSecAndSpinCount",
+      "required_contract": "Initialize the captured 24-byte candidate with spin 4000 and return the exact success discriminator, preserving real dispatch/callback/error behavior.",
+      "current_Source": "Existing 00C17643 directly calls InitializeCriticalSection and returns EAX=1 with RET 8; 00C17639 stores an already-encoded borrowed word. Neither implements the unopened 00C17653 selector or its callback owner.",
+      "held": true
+    },
+    {
+      "address": "00BF9DC8",
+      "name": "_free",
+      "required_contract": "Release the original canonical candidate on init failure or a race loser, including lock/failure/errno/PTD/heap behavior.",
+      "current_Source": "Historical complete-body readiness exists but full canonical _free Source remains held. Host singleton_lifetime_free only matches its host allocation domain; the admitted 00BF9E1E helper only releases fixed lock 4.",
+      "held": true
+    },
+    {
+      "address": "00C11C18",
+      "name": "LIBCRT_unmatched_00c11c18",
+      "required_contract": "Establish the whole cleanup child and its exact implicit register/frame/stack ABI, callee provider, state effects and return behavior.",
+      "current_Source": "No matching implementation found. Existing canonical unlock is a genuine fixed-domain primitive but does not establish this unopened child; the fixed-lock-4 helper cannot substitute.",
+      "held": true
+    },
+    {
+      "address": "00C07C45",
+      "name": "__SEH_epilog4",
+      "required_contract": "Restore the exact valid prolog-built frame, FS chain and saved registers while preserving the required result state.",
+      "current_Source": "Actual native_crt_seh4_primitives Source epilog exists with explicit frame preconditions. This does not prove 00C07C00, scope data or handlers; Native epilog was not reopened.",
+      "held": true
+    }
+  ],
+  "current_Source_facts": {
+    "captured_utc": "2026-10-09T23:30:39.540270+00:00",
+    "selected_project_file_count": 16,
+    "all_Root_LF_match": true,
+    "pins": [
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/native_crt_critical_section_primitives.hpp",
+        "bytes": 1154,
+        "sha256": "fd6703d4731b2e944bf7bed000cb833e563a0210a18934698f145dbee7138326",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/native_crt_critical_section_primitives.cpp",
+        "bytes": 1449,
+        "sha256": "404b1dc6f40dbd7762f10d5f97075c0545f66e7203653d15d36a9316839db8d6",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/native_crt_canonical_unlock.hpp",
+        "bytes": 876,
+        "sha256": "161dce16976cc0c2bdc10495d5a3c733600cfc6e2d75dc07f1363e5710802cdf",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/native_crt_canonical_unlock.cpp",
+        "bytes": 760,
+        "sha256": "b2203a3e0def66f513f5bd0d8846a7ac21bb7e066015cf7f426d6e71165c6097",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/native_crt_free_unlock_helper.hpp",
+        "bytes": 864,
+        "sha256": "9cb0f84c8a7c4c08947f85c9cd2d354ee380135d35ef29be8cc842eb9b7b8753",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/native_crt_free_unlock_helper.cpp",
+        "bytes": 619,
+        "sha256": "d61d134fc001427249f89fa6fa7842bff991e2afea83c2ad000a7483c4753b1b",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/legacy_crt_math.hpp",
+        "bytes": 1108,
+        "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/legacy_crt_math.cpp",
+        "bytes": 11469,
+        "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/native_crt_seh4_primitives.hpp",
+        "bytes": 1632,
+        "sha256": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/native_crt_seh4_primitives.cpp",
+        "bytes": 1535,
+        "sha256": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/native_crt_canonical_sbh_initialization.hpp",
+        "bytes": 1030,
+        "sha256": "20770571741fc8d5762b78a27b58476c86db9f5864783193dc489afe1a44ea9a",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "bytes": 3200,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "bytes": 2431,
+        "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+        "Root_LF_matches": true
+      },
+      {
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "bytes": 6911,
+        "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+        "Root_LF_matches": true
+      }
+    ],
+    "availability_search_scope": "Targeted address and existing-name searches in current src/ and include/ plus selected corresponding Source contracts; not a whole-repository negative proof."
+  },
+  "historical_context": {
+    "receipt_pins": [
+      {
+        "worker_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\reports\\cc12_model_class_unlock_source_primary_review.json",
+          "bytes": 236728,
+          "sha256": "9fc3a11764a53ed6c100471213d97509b47f510617d6bea9c32f39c5b4c7f218"
+        },
+        "Root_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_model_class_unlock_source_primary_review.json",
+          "bytes": 236728,
+          "sha256": "9fc3a11764a53ed6c100471213d97509b47f510617d6bea9c32f39c5b4c7f218"
+        },
+        "role": "Historical accepted receipt, not current artifact/source/test replay"
+      },
+      {
+        "worker_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\reports\\cc12_crt_lock_acquisition_readiness.json",
+          "bytes": 28817,
+          "sha256": "59b21ba84e664be8db8858d26b8730cc7ff9de1d6fd5c93dd189819be7278273"
+        },
+        "Root_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_crt_lock_acquisition_readiness.json",
+          "bytes": 28817,
+          "sha256": "59b21ba84e664be8db8858d26b8730cc7ff9de1d6fd5c93dd189819be7278273"
+        },
+        "role": "Historical accepted receipt, not current artifact/source/test replay"
+      },
+      {
+        "worker_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\reports\\cc12_gunnery_unsized_free_provider_readiness.json",
+          "bytes": 38049,
+          "sha256": "4a58f4af5c0cd17fb60708061cf8e0685fd3bf031704bb9676f928253ef07a8c"
+        },
+        "Root_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_gunnery_unsized_free_provider_readiness.json",
+          "bytes": 38049,
+          "sha256": "4a58f4af5c0cd17fb60708061cf8e0685fd3bf031704bb9676f928253ef07a8c"
+        },
+        "role": "Historical accepted receipt, not current artifact/source/test replay"
+      }
+    ],
+    "Source534": {
+      "selected_project_input_count": 534,
+      "whole_Core_objects": 56,
+      "whole_App_objects": 2,
+      "positive_Core_providers": 85,
+      "checks": 3,
+      "build_begin_utc": "2026-10-09T22:50:47.603655+00:00",
+      "build_end_utc": "2026-10-09T22:51:08.134682+00:00",
+      "build_exit": 0,
+      "recorded_smoke_frames": 3,
+      "recorded_Presents": 2,
+      "recorded_state": "PressStartPoll state 2",
+      "recorded_mission_frames": 0,
+      "recorded_UNIMPLEMENTED_rows": 88,
+      "scope": "Historical selected project input union, not full compiler/SDK closure and not a current artifact/test/source replay."
+    },
+    "accepted_acquisition": "Root receipt now includes primary review of 49 bytes / 20 ops and selected evidence/Source pins; used only for the known parent-call/bootstrap contract.",
+    "accepted_free": "Complete-body _free readiness used as a pinned historical dependency frontier, not new child inspection or canonical free Source completion."
+  },
+  "next_packet": {
+    "id": "cc12_crt_lock_initializer_cleanup_readiness",
+    "kind": "readiness prerequisite to the smallest potentially complete Source child",
+    "only_address": "00C11C18",
+    "files": [
+      "docs/CC12_CRT_LOCK_INITIALIZER_CLEANUP_READINESS.md",
+      "reports/cc12_crt_lock_initializer_cleanup_readiness.json"
+    ],
+    "contract": "Whole one-body PE/live/saved gate; establish actual implicit EBP/register/stack use, every effect/call and exact genuine provider domain. Caller pushes no explicit argument at 00C11C0A. Do not presume body size, fixed index, ordinary cdecl, release-of-lock-10, or exception role.",
+    "conditional_following_Source_files": [
+      "include/bsp/native_crt_lock_initializer_cleanup.hpp",
+      "src/native_crt_lock_initializer_cleanup.cpp"
+    ],
+    "Source_ready_now": false,
+    "subsequent_named_prerequisites": [
+      "Root-owned parent listing repair and all-62-start replay",
+      "00C17653 full critical-section initialization/dispatch provider",
+      "00C0481A original nullable allocation and canonical heap owner",
+      "00C11C21 acquisition with genuine lock-10 bootstrap",
+      "00BF9DC8 canonical free plus 00BFFB8B PTD/errno",
+      "00C07C00 plus actual scope/handler ownership",
+      "heap-unavailable diagnostics and ___crtExitProcess"
+    ],
+    "restriction": "No child was opened or implemented to propose this packet. No complete Source function can safely be admitted from the present parent gate."
+  },
+  "evidence": {
+    "complete_capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_initializer_complete_capture.json",
+      "bytes": 21214,
+      "sha256": "cb607a60879e4529020d36216751886c49d7548eba832e57a642b15cb3c1a4a0"
+    },
+    "local_files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_initializer_cli_capture.json",
+        "bytes": 9219,
+        "sha256": "ea27a2a275b57e4061e0228f5b3ae7f5513a44bb52c77d21b624cb3bc94ad821"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_initializer_all_starts.json",
+        "bytes": 9284,
+        "sha256": "2fd08ef96018decaf510ab421b8e5d9606b11e67e1d03b45efefd574960a02f5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_initializer_function_documentation.json",
+        "bytes": 2196,
+        "sha256": "677c1fe61daafaaa980cc2f714a5b8be3e663439201623fccdc7da2874fbb4b7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_initializer_original.bin",
+        "bytes": 186,
+        "sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_initializer_saved_defined_listing.txt",
+        "bytes": 1547,
+        "sha256": "1c4b155466490caffa1ee3a605a456932288301de4e7e7981d4aa69736f79d01"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_crt_lock_initializer_saved_physical_decode.txt",
+        "bytes": 2119,
+        "sha256": "8090173c846ac62c1c966c4417e186203284fbb3e6698b9be9351c9c82007bc0"
+      }
+    ],
+    "physical_decode_with_each_live_start": {
+      "captured_utc": "2026-10-09T23:27:38.637599+00:00",
+      "address": "00C11B5E",
+      "end": "00C11C17",
+      "bytes": 186,
+      "physical_instructions": 62,
+      "sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9",
+      "live_defined_starts": 56,
+      "missing_starts": [
+        {
+          "address": "00C11BE7",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx"
+        },
+        {
+          "address": "00C11BE8",
+          "size": 5,
+          "bytes": "e89edffeff",
+          "asm": "call 0xbffb8b"
+        },
+        {
+          "address": "00C11BED",
+          "size": 6,
+          "bytes": "c7000c000000",
+          "asm": "mov dword ptr [eax], 0xc"
+        },
+        {
+          "address": "00C11BF3",
+          "size": 3,
+          "bytes": "895de4",
+          "asm": "mov dword ptr [ebp - 0x1c], ebx"
+        },
+        {
+          "address": "00C11BF6",
+          "size": 2,
+          "bytes": "eb0b",
+          "asm": "jmp 0xc11c03"
+        },
+        {
+          "address": "00C11C02",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx"
+        }
+      ],
+      "ops": [
+        {
+          "address": "00C11B5E",
+          "size": 2,
+          "bytes": "6a0c",
+          "asm": "push 0xc",
+          "Ghidra_instruction": "PUSH 0xc",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B60",
+          "size": 5,
+          "bytes": "687836e000",
+          "asm": "push 0xe03678",
+          "Ghidra_instruction": "PUSH 0xe03678",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B65",
+          "size": 5,
+          "bytes": "e89660ffff",
+          "asm": "call 0xc07c00",
+          "Ghidra_instruction": "CALL 0x00c07c00",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B6A",
+          "size": 2,
+          "bytes": "33ff",
+          "asm": "xor edi, edi",
+          "Ghidra_instruction": "XOR EDI,EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B6C",
+          "size": 1,
+          "bytes": "47",
+          "asm": "inc edi",
+          "Ghidra_instruction": "INC EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B6D",
+          "size": 3,
+          "bytes": "897de4",
+          "asm": "mov dword ptr [ebp - 0x1c], edi",
+          "Ghidra_instruction": "MOV dword ptr [EBP + -0x1c],EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B70",
+          "size": 2,
+          "bytes": "33db",
+          "asm": "xor ebx, ebx",
+          "Ghidra_instruction": "XOR EBX,EBX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B72",
+          "size": 6,
+          "bytes": "391dbce10901",
+          "asm": "cmp dword ptr [0x109e1bc], ebx",
+          "Ghidra_instruction": "CMP dword ptr [0x0109e1bc],EBX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B78",
+          "size": 2,
+          "bytes": "7518",
+          "asm": "jne 0xc11b92",
+          "Ghidra_instruction": "JNZ 0x00c11b92",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B7A",
+          "size": 5,
+          "bytes": "e8e93fffff",
+          "asm": "call 0xc05b68",
+          "Ghidra_instruction": "CALL 0x00c05b68",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B7F",
+          "size": 2,
+          "bytes": "6a1e",
+          "asm": "push 0x1e",
+          "Ghidra_instruction": "PUSH 0x1e",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B81",
+          "size": 5,
+          "bytes": "e8223effff",
+          "asm": "call 0xc059a8",
+          "Ghidra_instruction": "CALL 0x00c059a8",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B86",
+          "size": 5,
+          "bytes": "68ff000000",
+          "asm": "push 0xff",
+          "Ghidra_instruction": "PUSH 0xff",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B8B",
+          "size": 5,
+          "bytes": "e8c39efeff",
+          "asm": "call 0xbfba53",
+          "Ghidra_instruction": "CALL 0x00bfba53",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B90",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": "POP ECX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B91",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": "POP ECX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B92",
+          "size": 3,
+          "bytes": "8b7508",
+          "asm": "mov esi, dword ptr [ebp + 8]",
+          "Ghidra_instruction": "MOV ESI,dword ptr [EBP + 0x8]",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B95",
+          "size": 7,
+          "bytes": "8d34f57864e100",
+          "asm": "lea esi, [esi*8 + 0xe16478]",
+          "Ghidra_instruction": "LEA ESI,[ESI*0x8 + 0xe16478]",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B9C",
+          "size": 2,
+          "bytes": "391e",
+          "asm": "cmp dword ptr [esi], ebx",
+          "Ghidra_instruction": "CMP dword ptr [ESI],EBX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11B9E",
+          "size": 2,
+          "bytes": "7404",
+          "asm": "je 0xc11ba4",
+          "Ghidra_instruction": "JZ 0x00c11ba4",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BA0",
+          "size": 2,
+          "bytes": "8bc7",
+          "asm": "mov eax, edi",
+          "Ghidra_instruction": "MOV EAX,EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BA2",
+          "size": 2,
+          "bytes": "eb6e",
+          "asm": "jmp 0xc11c12",
+          "Ghidra_instruction": "JMP 0x00c11c12",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BA4",
+          "size": 2,
+          "bytes": "6a18",
+          "asm": "push 0x18",
+          "Ghidra_instruction": "PUSH 0x18",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BA6",
+          "size": 5,
+          "bytes": "e86f2cffff",
+          "asm": "call 0xc0481a",
+          "Ghidra_instruction": "CALL 0x00c0481a",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BAB",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": "POP ECX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BAC",
+          "size": 2,
+          "bytes": "8bf8",
+          "asm": "mov edi, eax",
+          "Ghidra_instruction": "MOV EDI,EAX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BAE",
+          "size": 2,
+          "bytes": "3bfb",
+          "asm": "cmp edi, ebx",
+          "Ghidra_instruction": "CMP EDI,EBX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BB0",
+          "size": 2,
+          "bytes": "750f",
+          "asm": "jne 0xc11bc1",
+          "Ghidra_instruction": "JNZ 0x00c11bc1",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BB2",
+          "size": 5,
+          "bytes": "e8d4dffeff",
+          "asm": "call 0xbffb8b",
+          "Ghidra_instruction": "CALL 0x00bffb8b",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BB7",
+          "size": 6,
+          "bytes": "c7000c000000",
+          "asm": "mov dword ptr [eax], 0xc",
+          "Ghidra_instruction": "MOV dword ptr [EAX],0xc",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BBD",
+          "size": 2,
+          "bytes": "33c0",
+          "asm": "xor eax, eax",
+          "Ghidra_instruction": "XOR EAX,EAX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BBF",
+          "size": 2,
+          "bytes": "eb51",
+          "asm": "jmp 0xc11c12",
+          "Ghidra_instruction": "JMP 0x00c11c12",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BC1",
+          "size": 2,
+          "bytes": "6a0a",
+          "asm": "push 0xa",
+          "Ghidra_instruction": "PUSH 0xa",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BC3",
+          "size": 5,
+          "bytes": "e859000000",
+          "asm": "call 0xc11c21",
+          "Ghidra_instruction": "CALL 0x00c11c21",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BC8",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": "POP ECX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BC9",
+          "size": 3,
+          "bytes": "895dfc",
+          "asm": "mov dword ptr [ebp - 4], ebx",
+          "Ghidra_instruction": "MOV dword ptr [EBP + -0x4],EBX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BCC",
+          "size": 2,
+          "bytes": "391e",
+          "asm": "cmp dword ptr [esi], ebx",
+          "Ghidra_instruction": "CMP dword ptr [ESI],EBX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BCE",
+          "size": 2,
+          "bytes": "752c",
+          "asm": "jne 0xc11bfc",
+          "Ghidra_instruction": "JNZ 0x00c11bfc",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BD0",
+          "size": 5,
+          "bytes": "68a00f0000",
+          "asm": "push 0xfa0",
+          "Ghidra_instruction": "PUSH 0xfa0",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BD5",
+          "size": 1,
+          "bytes": "57",
+          "asm": "push edi",
+          "Ghidra_instruction": "PUSH EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BD6",
+          "size": 5,
+          "bytes": "e8785a0000",
+          "asm": "call 0xc17653",
+          "Ghidra_instruction": "CALL 0x00c17653",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BDB",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": "POP ECX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BDC",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": "POP ECX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BDD",
+          "size": 2,
+          "bytes": "85c0",
+          "asm": "test eax, eax",
+          "Ghidra_instruction": "TEST EAX,EAX",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BDF",
+          "size": 2,
+          "bytes": "7517",
+          "asm": "jne 0xc11bf8",
+          "Ghidra_instruction": "JNZ 0x00c11bf8",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BE1",
+          "size": 1,
+          "bytes": "57",
+          "asm": "push edi",
+          "Ghidra_instruction": "PUSH EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BE2",
+          "size": 5,
+          "bytes": "e8e181feff",
+          "asm": "call 0xbf9dc8",
+          "Ghidra_instruction": "CALL 0x00bf9dc8",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BE7",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": null,
+          "Ghidra_error": "No instruction at address"
+        },
+        {
+          "address": "00C11BE8",
+          "size": 5,
+          "bytes": "e89edffeff",
+          "asm": "call 0xbffb8b",
+          "Ghidra_instruction": null,
+          "Ghidra_error": "No instruction at address"
+        },
+        {
+          "address": "00C11BED",
+          "size": 6,
+          "bytes": "c7000c000000",
+          "asm": "mov dword ptr [eax], 0xc",
+          "Ghidra_instruction": null,
+          "Ghidra_error": "No instruction at address"
+        },
+        {
+          "address": "00C11BF3",
+          "size": 3,
+          "bytes": "895de4",
+          "asm": "mov dword ptr [ebp - 0x1c], ebx",
+          "Ghidra_instruction": null,
+          "Ghidra_error": "No instruction at address"
+        },
+        {
+          "address": "00C11BF6",
+          "size": 2,
+          "bytes": "eb0b",
+          "asm": "jmp 0xc11c03",
+          "Ghidra_instruction": null,
+          "Ghidra_error": "No instruction at address"
+        },
+        {
+          "address": "00C11BF8",
+          "size": 2,
+          "bytes": "893e",
+          "asm": "mov dword ptr [esi], edi",
+          "Ghidra_instruction": "MOV dword ptr [ESI],EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BFA",
+          "size": 2,
+          "bytes": "eb07",
+          "asm": "jmp 0xc11c03",
+          "Ghidra_instruction": "JMP 0x00c11c03",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BFC",
+          "size": 1,
+          "bytes": "57",
+          "asm": "push edi",
+          "Ghidra_instruction": "PUSH EDI",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11BFD",
+          "size": 5,
+          "bytes": "e8c681feff",
+          "asm": "call 0xbf9dc8",
+          "Ghidra_instruction": "CALL 0x00bf9dc8",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11C02",
+          "size": 1,
+          "bytes": "59",
+          "asm": "pop ecx",
+          "Ghidra_instruction": null,
+          "Ghidra_error": "No instruction at address"
+        },
+        {
+          "address": "00C11C03",
+          "size": 7,
+          "bytes": "c745fcfeffffff",
+          "asm": "mov dword ptr [ebp - 4], 0xfffffffe",
+          "Ghidra_instruction": "MOV dword ptr [EBP + -0x4],0xfffffffe",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11C0A",
+          "size": 5,
+          "bytes": "e809000000",
+          "asm": "call 0xc11c18",
+          "Ghidra_instruction": "CALL 0x00c11c18",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11C0F",
+          "size": 3,
+          "bytes": "8b45e4",
+          "asm": "mov eax, dword ptr [ebp - 0x1c]",
+          "Ghidra_instruction": "MOV EAX,dword ptr [EBP + -0x1c]",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11C12",
+          "size": 5,
+          "bytes": "e82e60ffff",
+          "asm": "call 0xc07c45",
+          "Ghidra_instruction": "CALL 0x00c07c45",
+          "Ghidra_error": null
+        },
+        {
+          "address": "00C11C17",
+          "size": 1,
+          "bytes": "c3",
+          "asm": "ret ",
+          "Ghidra_instruction": "RET",
+          "Ghidra_error": null
+        }
+      ]
+    }
+  },
+  "review": {
+    "full_physical_186_bytes_and_62_ops_reviewed": true,
+    "all_defined_live_56_starts_reviewed": true,
+    "all_six_missing_starts_and_18_bytes_reviewed": true,
+    "13_call_schedule_reviewed": true,
+    "Source_frontier_reviewed": true,
+    "generated_document_and_report_full_readback_completed": true,
+    "owned_only_stage_diff_check_passed": true
+  },
+  "credit": {
+    "new_Source_functions": 0,
+    "whole_full_Source_owner": 0,
+    "new_build_test": 0,
+    "new_fixture_execution": 0,
+    "original_ABI_compatibility": 0,
+    "runtime_fault_unwind_proof": 0,
+    "faithful_startup": 0,
+    "gameplay": 0
+  }
+}
