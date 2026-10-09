@@ -1,0 +1,314 @@
+{
+  "schema": "CC12_Native_wrapper_readiness_v1",
+  "packet": "cc12_lua_variant_pair_retreat_wrapper_readiness",
+  "status": "complete_owned_Native12_readiness_pending_Root_wrapper_review_and_actual_Source137_admission_no_Source_implementation",
+  "created_utc": "2026-10-09T18:59:21.732122+00:00",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "branch": "agent/cc12_global_config_effect_payload",
+  "working_branch_baseline_commit": "30a13709746675e7cf7f3c4709ff6a7a08fafbe0",
+  "published_main_baseline": "30a13709746675e7cf7f3c4709ff6a7a08fafbe0",
+  "exact_owned_paths": [
+    "docs/CC12_LUA_VARIANT_PAIR_RETREAT_WRAPPER_READINESS.md",
+    "reports/cc12_lua_variant_pair_retreat_wrapper_readiness.json"
+  ],
+  "Native_evidence": {
+    "address": "006EDE90",
+    "end_inclusive": "006EDE9B",
+    "bytes": 12,
+    "operations": 6,
+    "body_sha256": "3d20fe5e8ca30c1a6d4bc3cef024ad8fdc9c398648954cd9368ea516b4fd9a3c",
+    "body_hex": "568bf1e8e8feffff8bc65ec3",
+    "image_file_offset": 3071632,
+    "image_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_image_base": "00400000",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "verified_project": "bsp",
+    "verified_program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "live_query_verification": "All live requests used tools/bsp.py ghidra; client.verify checks configured project/program/language/image base before each request batch.",
+    "saved_prototype": "undefined FUN_006ede90(void)",
+    "saved_metadata": {
+      "instructions": 6,
+      "blocks": 1,
+      "edges": 0,
+      "calls": 1,
+      "params": 0,
+      "cyclomatic_complexity": 1
+    },
+    "saved_metadata_prototype_reliable_for_ECX_contract": false,
+    "saved_listing": "006ede90: PUSH ESI\n006ede91: MOV ESI,ECX\n006ede93: CALL 0x006edd80\n006ede98: MOV EAX,ESI\n006ede9a: POP ESI\n006ede9b: RET\n",
+    "live_bytes_stdout": "006ede90  56 8b f1 e8 e8 fe ff ff 8b c6 5e c3  V.........^.",
+    "raw_instructions": [
+      {
+        "address": "006EDE90",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "006EDE91",
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "006EDE93",
+        "bytes": "e8e8feffff",
+        "mnemonic": "call",
+        "operands": "0x6edd80"
+      },
+      {
+        "address": "006EDE98",
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "006EDE9A",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "006EDE9B",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "PE_and_live_bytes_equal": true,
+    "all6_raw_and_saved_starts_equal": true,
+    "all6_raw_and_saved_operations_equal": true,
+    "complete_wrapper_read_by_worker": true,
+    "Root_complete_wrapper_read": "pending independent review before acceptance",
+    "queries": [
+      "python tools/bsp.py lookup 006EDE90",
+      "python tools/bsp.py ghidra proto 006EDE90",
+      "python tools/bsp.py ghidra disasm 006EDE90 --lines 24",
+      "python tools/bsp.py ghidra bytes 006EDE90 --length 12",
+      "python tools/bsp.py ghidra callers 006EDE90 --limit 10",
+      "python tools/bsp.py ghidra xrefs 006EDE90 --limit 16"
+    ]
+  },
+  "reachability": {
+    "index_callers": 0,
+    "index_direct_callees": [
+      "006EDD80"
+    ],
+    "live_xrefs_stdout": "No references found to address: 006ede90 FUN_006ede90",
+    "live_callers_stdout": "No callers found for function: null",
+    "live_callers_result_qualified": "Ambiguous null function label; not treated as an independent proof of absent callers.",
+    "no_runtime_unreachability_claim": true
+  },
+  "wrapper_contract": {
+    "notation": "S=entryESP, P=entryECX, I=entryESI; offsets describe normal nonfaulting control continuation only.",
+    "stack_schedule": [
+      {
+        "site": "entry",
+        "ESP": "S",
+        "memory": "[S] caller return word; no wrapper stack argument read"
+      },
+      {
+        "site": "006EDE90",
+        "ESP": "S-4",
+        "operation": "write incoming ESI I to actual [S-4]"
+      },
+      {
+        "site": "006EDE91",
+        "ESP": "S-4",
+        "operation": "ESI=P, capturing incoming ECX before child; ECX remains P"
+      },
+      {
+        "site": "006EDE93",
+        "ESP_at_child_entry": "S-8",
+        "operation": "CALL writes006EDE98 to [S-8]; child receives ECX=P and ESI=P; no pushed argument or EDX dummy"
+      },
+      {
+        "site": "006EDE98",
+        "required_ESP_for_normal_continuation": "S-4",
+        "operation": "EAX=post-child current ESI; no pair or saved-word result read"
+      },
+      {
+        "site": "006EDE9A",
+        "ESP_after": "S",
+        "operation": "ESI=then-current [S-4], read after EAX copy; corrupted save word is not corrected"
+      },
+      {
+        "site": "006EDE9B",
+        "ESP_after_ordinary_return": "S+4",
+        "operation": "read then-current [S] return word; no RET immediate/argument cleanup"
+      }
+    ],
+    "capture_and_late_reads": {
+      "pointer_capture": "Incoming ECX captured in ESI before child.",
+      "return_register_read": "Post-child current ESI is read after child and before wrapper POP.",
+      "saved_ESI_word_read": "Late read at POP, after result is already copied to EAX.",
+      "return_control_word_read": "Late read at RET.",
+      "no_post_child_ECX_reload_pair_word_read_or_child_EAX_return": true
+    },
+    "return_semantics": "Physical EAX equals post-child ESI. It equals original P only if the child preserves ESI under usable uncorrupted control/save backing and its admitted nonvolatile-register contract.",
+    "wrapper_ESI_restore": "Reads the current wrapper save word, not an immutable copy guarantee.",
+    "register_effects": "Own body leaves EBX/EDI/EBP untouched; child effects qualified. No EDX preparation. EAX overwritten from ESI; ECX/EDX may retain child effects.",
+    "arithmetic_flags": "MOV/POP/RET after child do not alter arithmetic flags; this is instruction evidence, not runtime/fault equivalence.",
+    "direct_memory": "Only save/call/return stack accesses; child owns pair-field effects.",
+    "exceptions": "No wrapper local SEH setup, validation, cleanup or recovery. Throwing/nonreturning child does not establish ordinary continuation."
+  },
+  "pending_actual_child": {
+    "address": "006EDD80",
+    "Native_gate_record": {
+      "address": "006edd80",
+      "bytes": 137,
+      "operations": 48,
+      "sha256": "82fea256088f18debecf69b5b0200be8f1a44d809fdd00f6f93483ed41f9c5d4"
+    },
+    "accepted_Native_gate_capture_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_reparent_and_reverse_pair_primary/capture.json",
+      "bytes": 27401,
+      "sha256": "2c7f9f63d8d0ad41ec3a7d16756f75840f34e40b45033c4d5099fbc4a77f19c8"
+    },
+    "accepted_Native_gate_approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_reparent_and_reverse_pair_primary/Root_Astra_gate_approval.json",
+      "bytes": 714,
+      "sha256": "bbe51c8240c5803ad916ad55cfca0355d7fbfb3c83f648888b25625e244a5593"
+    },
+    "accepted_Native_gate_hash_link_verified": true,
+    "child_gate_read_scope": "Status, 137-byte record metadata and Source policy only; no child body decode/re-audit.",
+    "Root_existing_Source_policy": "New naked fastcall void actual adjacent pair inECX; noEDXdummy/stack args/noNoexcept. Preserve all137 bytes outside3REL32 operands (oneCALL/two restored-ESI tailJMPs) to admitted Source17 invalid-parameter helper, including two exact7-byte identityLEAESP encodings, current pair+4 writes/reloads and +31 byte loops. No invented node/tree/payload ownership or semantic EAX result. Current CRT/control/backing/lifetime remains qualified.",
+    "worker": "/root/world_post_base_header_contract",
+    "worker_reported_intended_symbol": "bsp::retreat_native_lua_variant_pair_006edd80",
+    "worker_reported_intended_signature": "void __fastcall retreat_native_lua_variant_pair_006edd80(void* actual_pair); naked definition; ECX only; no EDX dummy, stack args, noexcept or semantic EAX result.",
+    "worker_reported_ESI_contract": "Each local/tail exit POPs current saved ESI word. Nominal preservation needs noncorrupted save/control backing and admitted Source17/CRT nonvolatile preservation. Pair+4 writes can alias saved ESI or return backing.",
+    "worker_statement_scope": "Worker-reported committed Source137 candidate sent to Root; pending Root build, emitted review and admission. Child body not re-audited here.",
+    "Source_provider_admitted": false,
+    "dependency_closed": false,
+    "missing_before_wrapper_Source": [
+      "Root independently reads complete owned12-byte wrapper.",
+      "Root admits actual Source137 provider and confirms selected symbol/ABI/nonvolatile and stack contract.",
+      "Any pair-identity result contract must retain post-child-ESI and alias qualifications."
+    ],
+    "worker_reported_candidate_commit": "5af22c236547a0250a7b613c7a709b84d113e4ef"
+  },
+  "scope": {
+    "separate_Source43_candidate_commit": "68763c79d3e0c999664e453c8460e8ad63584835",
+    "separate_Source43_four_files_unchanged_against_HEAD": true,
+    "new_Source_declaration_or_implementation": false,
+    "new_CMake_ledger_GPR_changes": false,
+    "new_build_tests_probes_consumers": false,
+    "new_Ghidra_mutations_or_exports": false,
+    "Source43_status": "Admitted by Root and included in final published Source107 baseline; unchanged by this readiness worker.",
+    "Source43_provider_relationship": "Separate initializer, not a provider for wrapper006EDE90; baseline artifact replay does not close actual Source137 dependency.",
+    "Source105_artifacts": "Historical; final current baseline is Source107."
+  },
+  "document_pin": {
+    "path": "docs/CC12_LUA_VARIANT_PAIR_RETREAT_WRAPPER_READINESS.md",
+    "bytes": 7306,
+    "sha256": "a9ca3c3aee9f4ed45ac9a95498b01a7892db1db667adeceee32c3f37c1d25cff"
+  },
+  "credit": {
+    "complete_owned_Native_byte_readiness": true,
+    "Root_wrapper_acceptance": false,
+    "Source_implementation": false,
+    "child_dependency_closed": false,
+    "Original_ABI_compatibility": false,
+    "runtime_startup_gameplay": false
+  },
+  "limits": [
+    "Index/xref absence is not runtime unreachability.",
+    "Saved no-argument prototype does not describe the observed register contract.",
+    "Child ESI/control backing preservation is qualified and pending Source admission.",
+    "No arbitrary save-slot/return alias repair or immutable restored-word promise.",
+    "No Original ABI/CRT binding/fault/flags timing/production-lifetime/startup/gameplay proof."
+  ],
+  "final_baseline_refresh_utc": "2026-10-09T19:00:54.993471+00:00",
+  "current_Source107_baseline": {
+    "accepted_primary_receipt_pin": {
+      "path": "reports/cc12_native_lua_variant_header_initializer_primary_review.json",
+      "bytes": 84744,
+      "sha256": "ca545cfd0fd2c8a2b71109dab0b3a9c1e3fcf907a90ab384220ce7ab37bcc8c9"
+    },
+    "actual_Source43_candidate_report_pin": {
+      "path": "reports/cc12_native_lua_variant_header_initializer_source.json",
+      "bytes": 19965,
+      "sha256": "831c77af398136c4426a0e4a09df62008e2b0496167e5a8db248ca489fed8ce4"
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 86532,
+      "start_utc": "2026-10-09T18:56:24.196838+00:00",
+      "finish_utc": "2026-10-09T18:56:40.997368+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 107
+    },
+    "source_input_pin_count": 107,
+    "source_input_manifest_canonical_JSON_sha256": "b7e5febc2c59803bb22f143812cff44bd2dce81f6ad9d26491f70b46d9445ee1",
+    "all107_canonical_LF_inputs_match": true,
+    "raw_bytes_and_hash_match_count": 105,
+    "line_ending_only_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "receipt_bytes": 51122,
+        "receipt_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "worker_bytes": 52250,
+        "worker_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "canonical_LF_equal": true,
+        "worker_primary_content_equal_after_CRLF_to_LF": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "receipt_bytes": 18326,
+        "receipt_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "worker_bytes": 17789,
+        "worker_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "canonical_LF_equal": true,
+        "worker_primary_content_equal_after_CRLF_to_LF": true
+      }
+    ],
+    "artifact_checks": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73769344,
+        "sha256": "4779da5bb661dec253e023b8a0c22384b29e44cd5e084ef77a6e0366c0ce0fa9",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "1f289c9715396b81f192be9f198e8d66f2e6da7ca4f9e5841503d990fb46c96f",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "00eb8c5ab39be196a279e4b9777705f33283be67d2a491955682304da72835dd",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "300d119d70dcbb209f67d7cc69e7a997a4e3e020b6f25cba2b1e3c37d4662034",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "exact_match": true
+      }
+    ],
+    "existing_checks_passed": 3,
+    "whole_objects_captured_or_replayed_by_Root": 29,
+    "unique_positive_Core_definitions_by_Root": 33,
+    "this_readiness_worker_redecoded_prior_objects": false,
+    "no_duplicate_prior_graph_or_full107_input_manifest": true,
+    "new_wrapper_or_Source137_admission_credit": false,
+    "new_build_or_ABI_startup_gameplay_credit": false,
+    "all28_prior_objects_unchanged_per_Root_receipt": true,
+    "unchanged_prior_object_count_from_receipt": 28
+  }
+}
