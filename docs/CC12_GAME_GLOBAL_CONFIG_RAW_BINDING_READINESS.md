@@ -74,3 +74,7 @@ All **4,115** inputs from the previous normal build snapshot still match byte-fo
 Historical R116 and R117 whole archives were copied and verified against their report manifests: respectively **167** and **376** artifact members, plus one internal `manifest.json` metadata member each. Their recorded UTC times are 2026-09-18 00:13:22 and 00:53:07. They establish the recorded field-assignment/vector and full-loader fixtures at those earlier revisions. Controlled sample/lifetime fixture providers do not establish an actual FMOD voice, raw second-array callback, full application, original EH or gameplay.
 
 All **26** retained function export triples already existed and identify saved project `bsp`, program `/battlestationspacific.exe`; this is saved metadata verification, not a new live Ghidra/PE check. The older GlobalConfig and Sound integration reports are retained as historical context. Older phase flags and source hashes must not override the current Source wiring. No new native differential result, ABI compatibility, startup or game validation is claimed.
+
+## Primary read-only review
+
+Root independently rehashed4,354 readiness/design artifacts, all7,530 members of the three retained evidence archives,4,115 worker inputs and37 selected current integrator Source files. All20 proposed edits have unique preimages. The game_hosts.cpp LF/CRLF difference normalizes to identical Source. This accepts the bounded read-only readiness and exact design evidence; it adds no Source, runtime, Raw-effects, World or startup admission.

@@ -242,3 +242,7 @@ remain separate follow-up work. No Original private CRT/heap/EH, game ABI, origi
 caller, owner/class/destructor/vtable, startup or gameplay claim follows, and no
 blanket hold or admission propagates to independently qualified Type2/reference
 families.
+
+## Primary read-only review
+
+Root reviewed this read-only design, rehashed all87 manifest artifacts, and independently reconstructed all7 complete type_info library code/data sections and their positive-index relocations against the pinned whole library, actual archive member and retained linked PE. The36-byte data-rooted destructor and its weak fallback are a real omitted frontier. The selected draft still requires the separate unapplied graph supplement and exact successor-text review; this review grants no generation, compile or process approval.

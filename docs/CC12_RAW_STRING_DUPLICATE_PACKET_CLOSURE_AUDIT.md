@@ -27,3 +27,7 @@ Root should retain the reopened state and assign a bounded **Astra complementary
 After whole fresh evidence passes, Root can review admission, update effective metadata and locked saved-analysis publication, integrate, and run relevant combined Win32/existing checks. New raw-register ABI or generated helper control-flow recovery requires Astra. No completion-state correction or Source reimplementation is justified by this audit.
 
 This audit compiled/linked/executed nothing, loaded or queried no provider, performed no Ghidra batch, and changed only its two new tracked outputs plus ignored local evidence. It establishes retained artifact identity and static coverage accounting. It does not establish original private CRT/FH3/EH, forced failure/reentry, naked-frame unwind, blanket FP/MXCSR/segment/DF preservation, class ownership, startup or gameplay.
+
+## Primary read-only review
+
+Root replayed the read-only artifact and coverage readers into a separate output directory:13,750 physical files were rehashed and the7-of28 gate coverage hold reproduced. Only the two already identified mutable CMake context pins differ. The subsequently selected four-TU design supersedes the earlier three-TU fixture recommendation; generation, compilation and execution are still unapproved. No Source reimplementation or additional Original credit follows.
