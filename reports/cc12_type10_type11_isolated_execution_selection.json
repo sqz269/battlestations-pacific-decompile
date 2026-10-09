@@ -682,8 +682,8 @@
     "candidate": "Fresh independently pinned Hostx64/x86 support-tree copy omitting optional vctip.exe; installed compiler untouched.",
     "primary_packaging_source": "https://chromium.googlesource.com/chromium/tools/depot_tools/+/refs/heads/main/win_toolchain/package_from_installed.py",
     "primary_file_blob_at_review": "f0fcd03dd5892295ba5f0ca1d13cbac2710d5194",
-    "candidate_qualified": false,
-    "new_OWN_harness_TEXT_review_and_one_bounded_compile_link_observation_required": true,
+    "candidate_qualified": true,
+    "new_OWN_harness_TEXT_review_and_one_bounded_compile_link_observation_required": false,
     "existing_F3_D02_sealed_no_replay": true,
     "no_breakaway_global_tool_change_deadline_extension_or_forcedzero_as_natural": true,
     "unexecuted_OWN_preparation_case": {
@@ -1346,7 +1346,7 @@
       "Root_final_adopter_materialized": true,
       "adoption": true,
       "candidate_executions": 1,
-      "toolchain_qualification": false,
+      "toolchain_qualification": true,
       "fixture_selection_can_advance": false,
       "limits": [
         "Finalization is DATA only. All prior failed/sealed families remain readonly; no old observation is replayed.",
@@ -1426,7 +1426,7 @@
     },
     "Own05_actual_observation": {
       "Source_credit": 0,
-      "status": "ACTUAL_TERMINAL0_AND_TIMELY_CLOSING0_ROOT_REVIEW_PASSED_COMPLETE_INDEPENDENT_PEER_PENDING",
+      "status": "COMPLETE_ROOT_AND_INDEPENDENT_PEER_ACCEPTED_EXACT_MINIMAL_OBSERVATION_QUALIFIED",
       "candidate_plan": {
         "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainOwn05\\plan.json",
         "bytes": 30056,
@@ -1599,8 +1599,8 @@
       "products_static_only_I386_PE32_resource_present": true,
       "produced_PE_executed": false,
       "fixture_constructor_or_game_executed": false,
-      "independent_peer_pending": true,
-      "exact_minimal_toolchain_observation_qualified": false,
+      "independent_peer_pending": false,
+      "exact_minimal_toolchain_observation_qualified": true,
       "universal_helper_suppression_qualified": false,
       "current_fixture_can_advance": false,
       "readonly_no_replay": true,
@@ -1623,7 +1623,306 @@
           "chunk": "ad8b5e",
           "reason": "Overstrict case-sensitive Windows ENV keys; values exact after key case normalization, two casing differences only."
         }
-      ]
-    }
+      ],
+      "Root_complete_actual_peer_acceptance": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_toolchainOwn05_adopterPreparation01\\Own05_actual_peer_Root_acceptance.json",
+        "bytes": 13148,
+        "sha256": "cda706500712245a30aca94ee4da28e367ba5835a4aa409e1f3509c6678bc5db"
+      },
+      "complete_actual_peer": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_toolchain_OWN05_actual_peer_20261009\\review.json",
+        "bytes": 3491935,
+        "sha256": "8f4a305c2d6ca60b169f11be40fdc6a5239823e70aac38682d28542afe2e999c"
+      },
+      "actual_peer_counts": {
+        "independent_consumed_named_inputs": 4965,
+        "actual_Root_selected_input_rows": 4671,
+        "candidate_files": 33,
+        "Root_adopter_files": 4,
+        "candidate_runtime_files": 98,
+        "Own_observation_sealed_rows": 283,
+        "Own_observation_files_including_seal": 284,
+        "Own_observation_whole_members": 299,
+        "Root_observation_sealed_rows": 6,
+        "Root_observation_files_whole_members": 7,
+        "installed_scopes": 9,
+        "copied_members": 74,
+        "historical_family_records": 13,
+        "separate_Own01_family": 1,
+        "additional_duplicate_historical_checks": 2,
+        "identity_snapshots": 230,
+        "retained_rows": 1775,
+        "resolved_selected_image_rows": 882,
+        "terminal_unavailable_image_rows": 893,
+        "initially_live_image_error_transition_exercised": 0,
+        "natural_candidates": 3,
+        "actual_compile_link_commands": 2,
+        "actual_products": 3
+      },
+      "actual_peer_predicate_counts": {
+        "opening_bookend": 32,
+        "closing_bookend": 32,
+        "raw_and_closure_runtime_parent_product_predicates": 13133,
+        "additional_retained_handle_PID_launch_ENV_LIB_crosslinks": 2924,
+        "direct_whole_bookend_comparisons": 2,
+        "total": 16123,
+        "itemized_actual_groups": {
+          "role_no_failure_qualification_or_PE": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "role_exact_original_deadline_maps": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "all_identity_files_count": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "snapshot_Source0_non_atomic_no_required_errors": {
+            "checked": 230,
+            "passed": 230,
+            "failed": 0
+          },
+          "snapshot_QPC_order": {
+            "checked": 230,
+            "passed": 230,
+            "failed": 0
+          },
+          "complete_PID_list_bounds": {
+            "checked": 230,
+            "passed": 230,
+            "failed": 0
+          },
+          "raw_accounting_fields_bounds": {
+            "checked": 230,
+            "passed": 230,
+            "failed": 0
+          },
+          "PID_list_all_retained_and_no_duplicate_rows": {
+            "checked": 230,
+            "passed": 230,
+            "failed": 0
+          },
+          "retained_handle_noninherit_and_wait_valid": {
+            "checked": 1775,
+            "passed": 1775,
+            "failed": 0
+          },
+          "retained_creation_same_role_stable": {
+            "checked": 1775,
+            "passed": 1775,
+            "failed": 0
+          },
+          "retained_list_membership_field_exact": {
+            "checked": 1775,
+            "passed": 1775,
+            "failed": 0
+          },
+          "retained_live_member_or_signalled_terminal": {
+            "checked": 1775,
+            "passed": 1775,
+            "failed": 0
+          },
+          "every_success_image_exact_allowed_current_pin": {
+            "checked": 882,
+            "passed": 882,
+            "failed": 0
+          },
+          "successful_image_postwait_valid": {
+            "checked": 882,
+            "passed": 882,
+            "failed": 0
+          },
+          "same_role_live_binding_creation_image_member": {
+            "checked": 882,
+            "passed": 882,
+            "failed": 0
+          },
+          "image_error_complete_preserved_terminal_requery": {
+            "checked": 893,
+            "passed": 893,
+            "failed": 0
+          },
+          "initially_signalled_error_limited_DATA_no_local_or_borrowed_claim": {
+            "checked": 893,
+            "passed": 893,
+            "failed": 0
+          },
+          "suspended_direct_root_complete_positive_before_resume": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "launch_flags_job_handle_stdio_ENV_cwd_exact": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "all_fresh_natural_candidates_captured": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "candidate_file_only_missing_own_future_completion_clock": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "standalone_raw_accounting_preserved_before_fresh": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "NEW_candidate_identity_matches_exact_raw_file": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "fresh_natural_all_actual_zeros_empty_PID_every_held_signal": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "all_actual_natural_observation_write_completion_clocks_before_original_deadline": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "natural_not_forced_held_root0_before_cleanup": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "mandatory_cleanup_actualzero_all_retained_signal_no_failures": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "cleanup20_cap_original_absolute_limit_and_completion": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "full_runtime4_fixed_sections_exact_bookends": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "runtime_only_already_selected_utf16_addition_no_removed_changed_origin": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "every_actual_runtime_file_origin_exact_selected_current_pin": {
+            "checked": 384,
+            "passed": 384,
+            "failed": 0
+          },
+          "role_postflight_cache_complete_evidence_before_original_deadline": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "role_terminal_positive_result_write_before_postflight_deadline": {
+            "checked": 3,
+            "passed": 3,
+            "failed": 0
+          },
+          "all_roles_same_originalQPC": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "root_actual_external0_after_terminal_completion": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "external_actual_WinPS0_and_host_retained_supervisor0": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "host_actual_exit_disposal_and_terminal_bounds": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "first_caller_actual_root0_unforced_identity_and_exact_planseal": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "first_caller_exit_drain_dispose_receipt_actual_timely": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "actual_API_terminal0_and_exact_session_chunk": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "actual_isolated_closing_verifier_terminal0_and_trusted_finalQPC": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "same_earliest600_supplement_and_fullclosing_time_chain": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "actual_exact2_compilelink_steps_and_return0_noPE": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "all3_real_product_pins_OBJ_EXE_MAP_and_safe_manifest_plan": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "produced_PE_static_only_Win32_signature": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          },
+          "driver_actual_clearedENV11_cwd_argv_interpreter_exact": {
+            "checked": 1,
+            "passed": 1,
+            "failed": 0
+          }
+        },
+        "itemized_crosslink_groups": {
+          "exact_launch_ENV_stdio_compiler_LIB_product_crosslinks": 23,
+          "raw_PID_query_final_success": 230,
+          "raw_same_role_retained_handle_stability": 1775,
+          "raw_terminal_error_creation_exit_membership_same_handle": 893,
+          "terminal_query_count_exact": 3
+        },
+        "all_passed": true,
+        "count_limit": "Many checks are per-file, per-snapshot or per-row assertions, not independent experiments."
+      },
+      "all_12_actual_peer_findings_and_10_limits_consumed": true,
+      "future_full_fixture_profile_counts": {
+        "root_process": 11,
+        "recipe_children": 13,
+        "external_role": 15,
+        "recipe_INCLUDE_components": 7,
+        "recipe_LIB_components": 3
+      },
+      "future_profile_current_DATA": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_toolchainOwn05_adopterPreparation01\\F4_D03_profile_count_DATA.json",
+        "bytes": 1377,
+        "sha256": "808612231cee5b4069d130258304b3eaf5344c0dc099f27b3e97701a146bcae7"
+      }
+    },
+    "candidate_qualification_scope": "Only this exact pinned minimal compile/link/observed containment; universal helper suppression and full fixture remain unqualified.",
+    "fresh_full_fixture_ENV_timing_image_review_and_selection_still_required": true
   }
 }
