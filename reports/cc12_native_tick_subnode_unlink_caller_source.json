@@ -1,0 +1,483 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_tick_subnode_unlink_caller",
+  "created_utc": "2026-10-09T12:45:47.577212+00:00",
+  "baseline_commit": "63f6de61cabb88766a98effb8f3377cd960ae0b3",
+  "status": "unregistered_unbuilt_Source_candidate_static_review_complete_pending_primary",
+  "claimed_address": "00875960",
+  "owned_files": [
+    "include/bsp/native_tick_subnode_unlink_caller.hpp",
+    "src/native_tick_subnode_unlink_caller.cpp",
+    "docs/CC12_NATIVE_TICK_SUBNODE_UNLINK_CALLER_SOURCE.md",
+    "reports/cc12_native_tick_subnode_unlink_caller_source.json"
+  ],
+  "Source_credit": false,
+  "Native_credit": false,
+  "Original_ABI_credit": false,
+  "accepted_Native_reference": {
+    "report": "reports/cc12_pending_registry_tick_subnode_unlink_caller_ABI_readiness.json",
+    "bytes": 69,
+    "instructions": 25,
+    "sha256": "c0ecd0fa7e59f3a5e2077de82b52378ca3a06fc5565f4847176556edba5e2323",
+    "domain": "Historical accepted Original whole-body audit; no new Native reads.",
+    "complete_69B_hash_and25_instruction_concatenation_rechecked": true
+  },
+  "Source_interface": {
+    "name": "bsp::unlink_native_tick_subnode_00875960",
+    "platform": "MSVC Win32",
+    "definition": "__declspec(naked) void __fastcall",
+    "ECX": "actual_receiver",
+    "EDX": "explicit unused_edx placement word",
+    "entry_stack_words": {
+      "+4": "address of actual borrowed node-input word",
+      "+8": "address of actual registry-publication cell",
+      "+C": "address of actual manager-publication cell"
+    },
+    "reference_type": "void* volatile& for each of the three actual cells",
+    "lifetime": "All three cells remain valid at stable actual addresses throughout the call; no snapshots/private publications.",
+    "normal_return": "RET0Ch; ESP after normal return = entryESP+10h",
+    "Original_return_difference": "Original RET4; Source extra references/frame do not reproduce Original stack identity.",
+    "return_type_qualification": "void avoids inventing a common semantic EAX result across the imported Leave path.",
+    "noexcept": false,
+    "Cxx_runtime_guard": false,
+    "extra_EH_or_RAII_or_helper": false
+  },
+  "Source_operation_mapping": [
+    {
+      "source_line": 22,
+      "assembly": "push ebx",
+      "Original_position": "00875960"
+    },
+    {
+      "source_line": 23,
+      "assembly": "push esi",
+      "Original_position": "00875961"
+    },
+    {
+      "source_line": 24,
+      "assembly": "push edi",
+      "Original_position": "00875962"
+    },
+    {
+      "source_line": 25,
+      "assembly": "mov ebx, ecx",
+      "Original_position": "00875963"
+    },
+    {
+      "source_line": 26,
+      "assembly": "push dword ptr [esp + 18h]",
+      "Original_position": null,
+      "Source_addition": "actual manager-cell address"
+    },
+    {
+      "source_line": 27,
+      "assembly": "push dword ptr [esp + 18h]",
+      "Original_position": null,
+      "Source_addition": "actual registry-cell address after first push"
+    },
+    {
+      "source_line": 28,
+      "assembly": "call get_native_pending_registry_00875280",
+      "Original_position": "00875965",
+      "qualification": "Current Source provider symbol; concrete emitted relocation awaits primary review."
+    },
+    {
+      "source_line": 29,
+      "assembly": "add esp, 8",
+      "Original_position": null,
+      "Source_addition": "cdecl getter argument cleanup"
+    },
+    {
+      "source_line": 30,
+      "assembly": "mov esi, dword ptr [eax + 4]",
+      "Original_position": "0087596A"
+    },
+    {
+      "source_line": 31,
+      "assembly": "test esi, esi",
+      "Original_position": "0087596D"
+    },
+    {
+      "source_line": 32,
+      "assembly": "jz short node_input",
+      "Original_position": "0087596F"
+    },
+    {
+      "source_line": 33,
+      "assembly": "push esi",
+      "Original_position": "00875971"
+    },
+    {
+      "source_line": 34,
+      "assembly": "call dword ptr [EnterCriticalSection]",
+      "Original_position": "00875972",
+      "qualification": "Current Source provider symbol; concrete emitted relocation awaits primary review."
+    },
+    {
+      "source_line": 35,
+      "assembly": "add dword ptr [esi + 18h], 1",
+      "Original_position": "00875978"
+    },
+    {
+      "source_line": 37,
+      "assembly": "mov edi, dword ptr [esp + 10h]",
+      "Original_position": "0087597C",
+      "qualification": "Same stack operand now loads the actual Source node-cell address; next instruction dereferences it late."
+    },
+    {
+      "source_line": 38,
+      "assembly": "mov edi, dword ptr [edi]",
+      "Original_position": null,
+      "Source_addition": "late current node read through actual borrowed cell"
+    },
+    {
+      "source_line": 39,
+      "assembly": "push edi",
+      "Original_position": "00875980"
+    },
+    {
+      "source_line": 40,
+      "assembly": "lea ecx, [ebx + 1ch]",
+      "Original_position": "00875981"
+    },
+    {
+      "source_line": 41,
+      "assembly": "call unlink_native_tick_sublist_node_00874e60",
+      "Original_position": "00875984",
+      "qualification": "Current Source provider symbol; concrete emitted relocation awaits primary review."
+    },
+    {
+      "source_line": 42,
+      "assembly": "test esi, esi",
+      "Original_position": "00875989"
+    },
+    {
+      "source_line": 43,
+      "assembly": "mov dword ptr [edi + 4], 0",
+      "Original_position": "0087598B"
+    },
+    {
+      "source_line": 44,
+      "assembly": "jz short unlink_complete",
+      "Original_position": "00875992"
+    },
+    {
+      "source_line": 45,
+      "assembly": "add dword ptr [esi + 18h], -1",
+      "Original_position": "00875994"
+    },
+    {
+      "source_line": 46,
+      "assembly": "push esi",
+      "Original_position": "00875998"
+    },
+    {
+      "source_line": 47,
+      "assembly": "call dword ptr [LeaveCriticalSection]",
+      "Original_position": "00875999",
+      "qualification": "Current Source provider symbol; concrete emitted relocation awaits primary review."
+    },
+    {
+      "source_line": 49,
+      "assembly": "pop edi",
+      "Original_position": "0087599F"
+    },
+    {
+      "source_line": 50,
+      "assembly": "pop esi",
+      "Original_position": "008759A0"
+    },
+    {
+      "source_line": 51,
+      "assembly": "pop ebx",
+      "Original_position": "008759A1"
+    },
+    {
+      "source_line": 52,
+      "assembly": "ret 0ch",
+      "Original_position": "008759A2",
+      "qualification": "Source RET12 for three reference-address arguments; Original RET4 differs."
+    }
+  ],
+  "Source_branch_targets": [
+    {
+      "source_line": 32,
+      "label": "node_input",
+      "Original_target_position": "0087597C"
+    },
+    {
+      "source_line": 44,
+      "label": "unlink_complete",
+      "Original_target_position": "0087599F"
+    }
+  ],
+  "Source_stack_review": {
+    "entry_ESP": "S",
+    "saved_registers": [
+      "EBX at S-4",
+      "ESI at S-8",
+      "EDI at S-0C"
+    ],
+    "first_push_ESP_plus18": "At ESP=S-0C, reads manager reference address from S+0C.",
+    "second_push_ESP_plus18": "At ESP=S-10, reads registry reference address from S+08.",
+    "getter_cdecl_cleanup": "Direct getter normally returns with ESP=S-14; ADD ESP,8 restores S-0C.",
+    "late_node_cell": "After optional Enter/depth, MOV EDI,[ESP+10] reads cell address from S+04; MOV EDI,[EDI] then reads its current node.",
+    "leaf_call": "PUSH captured EDI; LEA ECX,[EBX+1C]; direct raw leaf uses current unused EDX and RET4.",
+    "imports": "Current one-DWORD stdcall Enter/Leave; no import/body execution in this packet.",
+    "four_syntactic_paths_balanced": true,
+    "ESP_before_RET12": 0,
+    "ESP_after_normal_RET12_relative_to_entry": 16,
+    "qualification": "Static instruction-delta review assumes normal child returns and intact relevant save/control-stack backing."
+  },
+  "effect_contract": [
+    "Receiver address is captured in EBX before current getter; capture section from returned EAX+4 only after Source getter arguments are cleaned.",
+    "Capture section once in ESI; Enter then actual ADD depth+1; read actual node cell only afterward.",
+    "Push captured node, form list with LEA receiver+1C, and call current raw leaf directly with untouched volatile EDX.",
+    "TEST ESI; MOV DWORD[currentEDI+4],0; JZ. Do not reload the node cell or use returned EAX for the clear.",
+    "Nonnull section: actual ADD depth-1 after +4 clear, then Leave. Restore three saved registers and RET12.",
+    "No node/list producer, copied backing, guard, clamp, helper, RAII/catch, static owner, profile/slot binding or artificial application selection."
+  ],
+  "alias_and_failure_qualification": [
+    "Late node-cell read is preserved across getter/Enter/depth effects; the actual reference address and extra Source frame are explicitly different from Original raw stack identity.",
+    "The leaf may alter its saved EDI through allowed raw memory overlap; the caller clear deliberately uses current EDI rather than assuming it still equals captured N.",
+    "Selected receiver/node/neighbor/section backing and spill/control-stack contents must support the performed accesses and normal return.",
+    "No owned cleanup releases a section after a later fault/throw; current Source getter/import policy is not Original exception/fault identity.",
+    "Null-section EAX/flags can follow the leaf/TEST path; Leave may replace volatile register and flag residuals. No common typed return value or runtime equivalence is claimed."
+  ],
+  "current_providers": {
+    "getter": {
+      "symbol": "get_native_pending_registry_00875280",
+      "binding": "direct current cdecl Source symbol with two actual publication-cell references; caller removes8bytes",
+      "context": {
+        "primary_report": "reports/cc12_native_pending_registry_getter_primary_review.json",
+        "status": "source_admitted_complete_compiled_review_and_normal_build_passed_original_ABI_and_gameplay_unproved",
+        "all_input_manifest_recheck": {
+          "count": 38,
+          "equal_count": 37,
+          "differences": [
+            {
+              "path": "CMakeLists.txt",
+              "accepted_canonical_lf_sha256": "12b90fc33a04cb19167d3e91b37fa153a5a1e2d7a6268253a8339cc4d65d90c5",
+              "current_canonical_lf_sha256": "3ad433f48a4c865a95ed46010651ed21653c86ceb51047b47f45cb12bb263231"
+            }
+          ],
+          "accepted_manifest_sha256": "47bda050b063c40c4a66e04098422692e3f03d6e1262896eeba4e441bafeb389",
+          "current_manifest_sha256": "11d0a25588a57687660e25f5a583ae628d96d955024635c7dd1a185bb36154e6"
+        },
+        "Source_input_manifest_recheck": {
+          "count": 30,
+          "equal_count": 30,
+          "differences": [],
+          "accepted_manifest_sha256": "0d8a7fc475eb21c48a90a25630325fe22562a1ed214d18a5458c6ebf67675762",
+          "current_manifest_sha256": "0d8a7fc475eb21c48a90a25630325fe22562a1ed214d18a5458c6ebf67675762"
+        },
+        "current_doc_pin_equal": true,
+        "accepted_compiled_receipt": {
+          "domain": "Accepted primary Source compiled artifact snapshot; object/library artifacts not reread in this packet",
+          "body_bytes": 250,
+          "body_sha256": "640e03f66d07747180012ac1b275a19d56738dd71a0f3cbcd2daad66bc7c8970",
+          "instruction_count": 85,
+          "relocation_count": 10,
+          "symbol": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+          "Core_member": {
+            "name": "bsp_core.dir\\Release\\native_pending_registry_getter.obj",
+            "header_offset": 63764704,
+            "payload_file_offset": 63764764,
+            "bytes": 3703,
+            "sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113"
+          }
+        }
+      }
+    },
+    "leaf": {
+      "symbol": "unlink_native_tick_sublist_node_00874e60",
+      "binding": "direct current naked fastcall Source symbol; ECX=list, EDX unused, one stack node; RET4",
+      "context": {
+        "primary_report": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+        "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+        "all_input_manifest_recheck": {
+          "count": 53,
+          "equal_count": 53,
+          "differences": [],
+          "accepted_manifest_sha256": "7b6c1f68700e9226b86d38020e9283e35c92d2d7006e7c52b7aa557ea81fa71e",
+          "current_manifest_sha256": "7b6c1f68700e9226b86d38020e9283e35c92d2d7006e7c52b7aa557ea81fa71e"
+        },
+        "Source_input_manifest_recheck": {
+          "count": 48,
+          "equal_count": 48,
+          "differences": [],
+          "accepted_manifest_sha256": "02248512171e4f2fa649358c7a01880b1c224e8e90d8596d195fdd7ee91334e0",
+          "current_manifest_sha256": "02248512171e4f2fa649358c7a01880b1c224e8e90d8596d195fdd7ee91334e0"
+        },
+        "current_doc_pin_equal": true,
+        "accepted_compiled_receipt": {
+          "domain": "Accepted primary Source compiled artifact snapshot; object/library artifacts not reread in this packet",
+          "body_bytes": 83,
+          "body_sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
+          "instruction_count": 29,
+          "relocation_count": 0,
+          "symbol": "?unlink_native_tick_sublist_node_00874e60@bsp@@YIPAXPAXI0@Z",
+          "Core_member": {
+            "name": "bsp_core.dir\\Release\\native_tick_sublist_unlink.obj",
+            "header_offset": 63767352,
+            "payload_file_offset": 63767412,
+            "bytes": 812,
+            "sha256": "21e75aea9d833fb7d262adfa954140168f43c66efe400528ef9f959178d56f59"
+          }
+        }
+      }
+    },
+    "imports": [
+      "call dword ptr [EnterCriticalSection]",
+      "call dword ptr [LeaveCriticalSection]"
+    ],
+    "import_qualification": "Existing repository inline-assembly import spelling; concrete compiled relocation/target form remains primary-owned.",
+    "no_Original_ABI_promotion": true
+  },
+  "accepted_caller_input_pin_manifest_recheck": {
+    "count": 12,
+    "equal_count": 12,
+    "differences": [],
+    "accepted_manifest_sha256": "af507ef8c75282cab10812e41152891191708bf2262c0fdd00003d9bfc6b301c",
+    "current_manifest_sha256": "af507ef8c75282cab10812e41152891191708bf2262c0fdd00003d9bfc6b301c"
+  },
+  "hash_domains": {
+    "Original_hash": "Historical accepted raw69B Native body only.",
+    "current_pins": "Raw worktree SHA256 plus canonicalLF text SHA256 at candidate baseline.",
+    "manifest": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; primary input snapshots compared to current files.",
+    "compiled_receipts": "Historical accepted Source artifact snapshots, not reread or represented as new build evidence.",
+    "getter_CMake_drift": "Only CMakeLists differs from older getter-primary inputs; its30 Source inputs and doc match.",
+    "self_report": "Parsed/checked with no recursive self-hash."
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2"
+    },
+    {
+      "path": "src/native_tick_subnode_unlink_caller.cpp",
+      "bytes": 2743,
+      "sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9",
+      "canonical_lf_sha256": "38f01dc01a68ca3975487bafdcf57c75f7afa3d9f6a4850f08ad72878c85bcf9"
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_SUBNODE_UNLINK_CALLER_SOURCE.md",
+      "bytes": 6515,
+      "sha256": "50ab362b2791bf14637d83f559fc9e459b9e742bb19b56915de7483d971883a9",
+      "canonical_lf_sha256": "50ab362b2791bf14637d83f559fc9e459b9e742bb19b56915de7483d971883a9"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_subnode_unlink_caller_ABI_readiness.json",
+      "bytes": 30939,
+      "sha256": "09dbc0f3f4ff8030cc154a0038e86fc41c965a6d1f2f5612d2e3d23d1efc50dc",
+      "canonical_lf_sha256": "09dbc0f3f4ff8030cc154a0038e86fc41c965a6d1f2f5612d2e3d23d1efc50dc"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_SUBNODE_UNLINK_CALLER_ABI_READINESS.md",
+      "bytes": 8214,
+      "sha256": "cf34db8ac721737caa75929feb1df172da6d726b7771cc2c2cb9de6c0ad49b97",
+      "canonical_lf_sha256": "cf34db8ac721737caa75929feb1df172da6d726b7771cc2c2cb9de6c0ad49b97"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "src/native_tick_sublist_unlink.cpp",
+      "bytes": 2257,
+      "sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2",
+      "canonical_lf_sha256": "3df73f9492be2ceff71c5eb044df06b63f49fbfe5f51697fc32a09362c5e29a2"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "bytes": 853902,
+      "sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+      "canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277"
+    },
+    {
+      "path": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+      "bytes": 1101362,
+      "sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df",
+      "canonical_lf_sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df"
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_REGISTRY_GETTER_SOURCE.md",
+      "bytes": 9523,
+      "sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534",
+      "canonical_lf_sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534"
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_SUBLIST_UNLINK_SOURCE.md",
+      "bytes": 6737,
+      "sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c",
+      "canonical_lf_sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 18228,
+      "sha256": "3ad433f48a4c865a95ed46010651ed21653c86ceb51047b47f45cb12bb263231",
+      "canonical_lf_sha256": "3ad433f48a4c865a95ed46010651ed21653c86ceb51047b47f45cb12bb263231"
+    }
+  ],
+  "validation": {
+    "Source_operations": 29,
+    "mapped_Original_positions": 25,
+    "explicit_Source_additions": 4,
+    "branch_targets_checked": 2,
+    "physical_call_sites_in_Source_text": 4,
+    "moving_ESP_getter_reference_offsets_and_late_node_offset_checked": true,
+    "no_inserted_EDX_clear": true,
+    "TEST_MOV_JZ_order_preserved": true,
+    "Source_RET12_and_four_stack_paths_checked": true,
+    "accepted_caller_direct_pins_equal": "12/12",
+    "leaf_primary_inputs_equal": "53/53",
+    "getter_primary_inputs_equal": "37/38 with qualified CMake drift",
+    "child_Source_inputs_equal": "48/48 and30/30",
+    "both_primary_docs_equal": true,
+    "current_direct_pin_count": 14,
+    "JSON_and_all_current_pins_checked": true,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "fresh_Native_queries_or_reads": 0,
+    "CMake_or_ledger_or_Ghidra_mutations": 0,
+    "compiled_or_linked_candidate_evidence": false
+  },
+  "pending_primary_gates": [
+    "Register and run normal MSVC Win32 build plus applicable existing checks.",
+    "Review the whole emitted definition, both direct Source symbols, both current Win32 import relocations, all stack/reference offsets and RET12.",
+    "Verify exact effect/control-flow order, current-EDI clear, no EDX clear, no added helper/EH/cleanup, and actual unique Core member.",
+    "Report current application-map status without artificial retention; keep producers/profiles/slots, Original ABI and gameplay open."
+  ],
+  "limits": {
+    "Source_caller_migration": false,
+    "CMake_edit": false,
+    "ledger_edit": false,
+    "Ghidra_mutation": false,
+    "Native_child_or_caller_body_read": false,
+    "Native_import_or_profile_or_slot_read": false,
+    "adjacent_Native_bytes_read": false,
+    "runtime_run": false,
+    "Source_admission": false,
+    "Native_admission": false,
+    "Original_ABI_admission": false,
+    "game_validation": false,
+    "only_owned_four_candidate_files": true
+  }
+}
