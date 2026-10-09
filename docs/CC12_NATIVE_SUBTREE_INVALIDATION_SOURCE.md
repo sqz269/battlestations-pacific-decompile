@@ -92,3 +92,11 @@ This helper does not close `00904600`'s current clock, entity slots +88/+D8,
 actual nonempty matrix-list producer, allocation/free domain, World
 construction/table/lifetime, or application callers. Existing semantic or
 token callbacks are unchanged; this packet introduces no adapters for them.
+
+## Primary registration and emitted-body review
+
+The integrator registered the source in bsp_core and ran the normal MSVC Win32 build. All three existing checks passed. Complete object inspection found exactly 38 bytes and 13 instructions. The only relocation is I386_REL32 at operand offset 25, targeting the same physical function symbol at section offset 0. Resolving that self-call produces the entire Original body byte-for-byte; no external callee, frame or added instruction is present.
+
+The current canonical shard contained no function or fragment record at 0042ED50; the integrator admits one complete reconstructed function with 38 Original bytes. Static assembly and emitted code qualify its ECX receiver, absence of stack arguments and plain RET. The root is absent from the game map. Native entry execution, fault/SEH behavior, actual hierarchy production, complete World behavior and gameplay remain unvalidated.
+
+Evidence: [cc12_sample_subtree_primary_review.json](../reports/cc12_sample_subtree_primary_review.json).
