@@ -1,3 +1,9 @@
+Root primary acceptance: the complete 496 Native bytes / 133 operations and all 22 call rows were read and independently replayed against the Original PE, saved/live listing rows and the worker capture. All 52 report pin rows match; the historical Source117 context was replayed from its retained 117 inputs, worker inputs and four frozen artifacts. Its earlier build artifacts are historical after Source121.
+
+The current Source121 build has three passing existing checks, 37 whole objects and 41 selected positive Core definitions. Root replayed its 121 current input and four artifact pins. This readiness packet adds no Source, build, fixture, Original ABI, startup or gameplay credit. The exact query leaves do not establish production ownership.
+
+Root inspected the real resolver and concrete Lua lookup/userdata/release code, the selected three Ptr publication paths and the complete GameScriptEntity declaration. The receiver and number value chain is established. Actual receiver backing/lifetime, fresh current-target-to-provider binding and current model numbering services remain prerequisites; Source-held.
+
 # Unit numbering: Lua caller and production receiver readiness
 
 **Source-held.** The complete `0088FE30` Lua `SetNumbering` caller and its
