@@ -1,0 +1,1626 @@
+{
+  "schema": "bsp.cc12.world_tick_reset_frame_primary_review.v1",
+  "status": "source_complete_emitted_review_and_normal_win32_build_passed",
+  "utc": "2026-10-09T05:37:43.948740+00:00",
+  "build_exit": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 47804,
+    "start_utc": "2026-10-09T05:21:14.813676+00:00",
+    "finish_utc": "2026-10-09T05:21:35.653670+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "first_failed_build": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 53440,
+    "start_utc": "2026-10-09T05:19:43.699484+00:00",
+    "finish_utc": "2026-10-09T05:19:51.700450+00:00",
+    "exit_code": 1,
+    "success": false
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "bounded_before_input_fingerprints": {
+    "pins": [
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "6d71cd127f3d80d9079899213e07175d6b4c6eb2c6e6be86c963ed727000709a"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "include/bsp/native_world_current_tick.hpp",
+        "sha256": "d4bf7f829180eddb17e9286dfef9007e6ead92560944cb9f80e519bdca597f1b"
+      },
+      {
+        "path": "src/native_world_current_tick.cpp",
+        "sha256": "d18ae4a7e134e55f7c7d2b35b4d1eddeaf44a8058b4a9cc12cdcf866b6ce7a5b"
+      },
+      {
+        "path": "include/bsp/native_mission_clock_reset.hpp",
+        "sha256": "27d47cb37491d112eec0a4fb8b54c7beab88be1d86c92a75f5137a7728569a11"
+      },
+      {
+        "path": "src/native_mission_clock_reset.cpp",
+        "sha256": "7b19b589c9418edc8cf14c460a1bae1a6517afe377e6c335b946f253a8b9c075"
+      },
+      {
+        "path": "include/bsp/game_native_game_application_frame.hpp",
+        "sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33"
+      },
+      {
+        "path": "src/game_native_game_application_frame.cpp",
+        "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09"
+      },
+      {
+        "path": "include/bsp/native_subtree_invalidation.hpp",
+        "sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07"
+      },
+      {
+        "path": "src/native_subtree_invalidation.cpp",
+        "sha256": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959"
+      },
+      {
+        "path": "include/bsp/native_render_batch_keys.hpp",
+        "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+      },
+      {
+        "path": "src/native_render_batch_keys.cpp",
+        "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+      },
+      {
+        "path": "include/bsp/native_particle_axial_loading.hpp",
+        "sha256": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497"
+      },
+      {
+        "path": "src/native_particle_axial_loading.cpp",
+        "sha256": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d"
+      },
+      {
+        "path": "include/bsp/native_camera_matrix_math.hpp",
+        "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d"
+      },
+      {
+        "path": "src/native_camera_matrix_math.cpp",
+        "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0"
+      },
+      {
+        "path": "include/bsp/gui_widget_owner.hpp",
+        "sha256": "67ac98cc695f80f8b1112e7fc35b9b28a99efb4554a14ff9332ca89c00c54bc6"
+      },
+      {
+        "path": "src/gui_widget_owner.cpp",
+        "sha256": "7848f0c39dbff90497f3c0e6b1e5b484be736a5d8bd1c57e9164afbc37f29ecb"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "include/bsp/game_native_game_runtime.hpp",
+        "sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a"
+      },
+      {
+        "path": "src/game_native_game_runtime.cpp",
+        "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca"
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e"
+      },
+      {
+        "path": "src/native_game_construction.cpp",
+        "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e"
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889"
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      }
+    ]
+  },
+  "same_physical_inputs_rechecked_and_retained_after_build": true,
+  "source_reviews": [
+    {
+      "packet": "world_tick",
+      "current_source_evidence_pins": 31
+    },
+    {
+      "packet": "clock_reset",
+      "current_source_evidence_pins": 6,
+      "one_instruction_syntax_correction": {
+        "old_source_pin": {
+          "path": "src/native_mission_clock_reset.cpp",
+          "bytes": 3477,
+          "sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6",
+          "lf_content_sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6"
+        },
+        "old_source_assembly": "fmul st(1)",
+        "current_source_assembly": "fmul st(0), st(1)",
+        "reason": "Normal MSVC Win32 build reported C2415 for single-operand form; equivalent explicit destination form encodes Native D8C9",
+        "first_failed_build_receipt": "local/cc12_world_tick_reset_frame_primary/first_failed_build_exit.json",
+        "emitted_encoding_verified": false
+      }
+    },
+    {
+      "packet": "game_frame",
+      "new_source_pins": 2,
+      "unchanged_dependency_pins": 42
+    }
+  ],
+  "units": [
+    {
+      "source": "src/native_world_current_tick.cpp",
+      "target": "bsp_core",
+      "whole_object_sha256": "e32ebdb14953b6806ed418403bd822c2650dd909996036cbefe16e8cf68dea95",
+      "roots": [
+        {
+          "symbol": "?update_native_world_entities_00904bf0@bsp@@YAXPAXMABUNativeWorldCurrentTickContext@1@@Z",
+          "symbol_index": 25,
+          "bytes": 34,
+          "instructions": 13,
+          "relocation_targets": [
+            "?run_world_entity_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z"
+          ]
+        },
+        {
+          "symbol": "?run_native_world_matrix_pass_00904600@bsp@@YAXPAXMABUNativeWorldCurrentTickContext@1@@Z",
+          "symbol_index": 26,
+          "bytes": 34,
+          "instructions": 13,
+          "relocation_targets": [
+            "?run_world_matrix_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z"
+          ]
+        },
+        {
+          "symbol": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+          "symbol_index": 32,
+          "bytes": 18,
+          "instructions": 9,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?build_tick_rotation_z@?A0xb1dd9e0b@bsp@@YIPAXPAXPBMPDM2@Z",
+          "symbol_index": 33,
+          "bytes": 29,
+          "instructions": 14,
+          "relocation_targets": [
+            "?build_gui_rotation_z_00b64780@bsp@@YAXAAV?$array@M$0BA@@std@@ABMPDM2@Z"
+          ]
+        },
+        {
+          "symbol": "?run_world_matrix_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z",
+          "symbol_index": 34,
+          "bytes": 1801,
+          "instructions": 394,
+          "relocation_targets": [
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?build_native_particle_rotation_x_00b64640@bsp@@YIPAXPAXPBMPDM2@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?build_native_particle_rotation_y_00b646e0@bsp@@YIPAXPAXPBMPDM2@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?build_tick_rotation_z@?A0xb1dd9e0b@bsp@@YIPAXPAXPBMPDM2@Z",
+            "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          ]
+        },
+        {
+          "symbol": "?run_world_entity_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z",
+          "symbol_index": 35,
+          "bytes": 74,
+          "instructions": 32,
+          "relocation_targets": [
+            "?run_world_matrix_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_world_current_tick.obj",
+        "header_offset": 63749346,
+        "payload_file_offset": 63749406,
+        "bytes": 4925,
+        "sha256": "e32ebdb14953b6806ed418403bd822c2650dd909996036cbefe16e8cf68dea95"
+      },
+      "external_boundaries": [
+        "?build_native_particle_rotation_x_00b64640@bsp@@YIPAXPAXPBMPDM2@Z",
+        "?build_native_particle_rotation_y_00b646e0@bsp@@YIPAXPAXPBMPDM2@Z",
+        "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+        "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "?build_gui_rotation_z_00b64780@bsp@@YAXAAV?$array@M$0BA@@std@@ABMPDM2@Z"
+      ]
+    },
+    {
+      "source": "src/native_mission_clock_reset.cpp",
+      "target": "bsp_core",
+      "whole_object_sha256": "774b179d5aa51acea1876ca7b9e389f2545eed1f4f32f042b9f13554612c426d",
+      "roots": [
+        {
+          "symbol": "?reset_native_mission_clock_00874640@bsp@@YAXIABUNativeMissionClockResetContext@1@@Z",
+          "symbol_index": 10,
+          "bytes": 49,
+          "instructions": 17,
+          "relocation_targets": [
+            "?reset_kernel@?A0xdf1c768f@bsp@@YIXPBUResetAddresses@12@PAXI@Z"
+          ]
+        },
+        {
+          "symbol": "?reset_kernel@?A0xdf1c768f@bsp@@YIXPBUResetAddresses@12@PAXI@Z",
+          "symbol_index": 12,
+          "bytes": 74,
+          "instructions": 28,
+          "relocation_targets": [
+            "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_mission_clock_reset.obj",
+        "header_offset": 63748158,
+        "payload_file_offset": 63748218,
+        "bytes": 1128,
+        "sha256": "774b179d5aa51acea1876ca7b9e389f2545eed1f4f32f042b9f13554612c426d"
+      },
+      "external_boundaries": [
+        "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z"
+      ]
+    },
+    {
+      "source": "src/game_native_game_application_frame.cpp",
+      "target": "bsp_game",
+      "whole_object_sha256": "09014cfd5cea74971dbd1ea657ce7b420bb749cb3a250fa7ac1e43d39e5b8346",
+      "roots": [
+        {
+          "symbol": "??0GameNativeGameApplicationFrame@game@bsp@@QAE@AAVGameNativeGameRuntime@12@ACRAXACRADAAUNativeStringRawPoolContext@2@@Z",
+          "symbol_index": 100,
+          "bytes": 196,
+          "instructions": 46,
+          "relocation_targets": [
+            "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+            "??_C@_0EC@FCGEFFN@Application?5frame?5requires?5an?5ex@",
+            "??0invalid_argument@std@@QAE@PBD@Z",
+            "__TI3?AVinvalid_argument@std@@",
+            "__CxxThrowException@8"
+          ]
+        },
+        {
+          "symbol": "??1GameNativeGameApplicationFrame@game@bsp@@QAE@XZ",
+          "symbol_index": 101,
+          "bytes": 101,
+          "instructions": 41,
+          "relocation_targets": [
+            "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+            "__imp__terminate"
+          ]
+        },
+        {
+          "symbol": "?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ",
+          "symbol_index": 102,
+          "bytes": 405,
+          "instructions": 105,
+          "relocation_targets": [
+            "__ehhandler$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ",
+            "___security_cookie",
+            "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+            "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "_memset",
+            "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z",
+            "?construct@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@AAU43@PBX@Z",
+            "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+            "@__security_check_cookie@4",
+            "??_C@_0CL@ICBNACMM@Application?5frame?5construction?5i@",
+            "??0logic_error@std@@QAE@PBD@Z",
+            "__TI2?AVlogic_error@std@@",
+            "__CxxThrowException@8"
+          ]
+        },
+        {
+          "symbol": "?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+          "symbol_index": 103,
+          "bytes": 286,
+          "instructions": 82,
+          "relocation_targets": [
+            "__ehhandler$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+            "___security_cookie",
+            "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+            "?scalar_delete@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+            "??_C@_0EJ@GPLPFNIN@Application?5frame?5scalar?5require@",
+            "??0logic_error@std@@QAE@PBD@Z",
+            "__TI2?AVlogic_error@std@@",
+            "__CxxThrowException@8"
+          ]
+        },
+        {
+          "symbol": "?free_retained_storage@GameNativeGameApplicationFrame@game@bsp@@QAEXXZ",
+          "symbol_index": 104,
+          "bytes": 137,
+          "instructions": 46,
+          "relocation_targets": [
+            "?runtime_retired@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ",
+            "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+            "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "??_C@_0FD@ECCDKFAC@Application?5frame?5free?5requires?5@",
+            "??0logic_error@std@@QAE@PBD@Z",
+            "__TI2?AVlogic_error@std@@",
+            "__CxxThrowException@8"
+          ]
+        },
+        {
+          "symbol": "?acknowledge_name_resolution@GameNativeGameApplicationFrame@game@bsp@@QAEXXZ",
+          "symbol_index": 105,
+          "bytes": 75,
+          "instructions": 27,
+          "relocation_targets": [
+            "??_C@_0DL@MIIIKEAB@Only?5a?5pending?5application?5name?5@",
+            "??0logic_error@std@@QAE@PBD@Z",
+            "__TI2?AVlogic_error@std@@",
+            "__CxxThrowException@8"
+          ]
+        },
+        {
+          "symbol": "?acknowledge_diagnostic_retirement@GameNativeGameApplicationFrame@game@bsp@@QAEXW4DiagnosticDisposition@123@@Z",
+          "symbol_index": 106,
+          "bytes": 188,
+          "instructions": 62,
+          "relocation_targets": [
+            "?runtime_retired@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ",
+            "??_C@_0DP@OOEKBCMO@Application?5retirement?5requires?5@",
+            "??_C@_0CL@PDIKHKHL@Unknown?5application?5allocation?5d@",
+            "??0invalid_argument@std@@QAE@PBD@Z",
+            "__TI3?AVinvalid_argument@std@@",
+            "??_C@_0EN@CMKNMLOJ@Application?5diagnostic?5retiremen@",
+            "??_C@_0CG@OMNKLPPK@Application?5allocation?5was?5not?5a@",
+            "??0logic_error@std@@QAE@PBD@Z",
+            "__TI2?AVlogic_error@std@@",
+            "__CxxThrowException@8"
+          ]
+        },
+        {
+          "symbol": "?status@GameNativeGameApplicationFrame@game@bsp@@QBE?AUStatus@123@XZ",
+          "symbol_index": 107,
+          "bytes": 152,
+          "instructions": 54,
+          "relocation_targets": [
+            "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ"
+          ]
+        },
+        {
+          "symbol": "?name_header_for_diagnostics@GameNativeGameApplicationFrame@game@bsp@@QAEPAXXZ",
+          "symbol_index": 108,
+          "bytes": 12,
+          "instructions": 5,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?active@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ",
+          "symbol_index": 109,
+          "bytes": 19,
+          "instructions": 9,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?name_resolved@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ",
+          "symbol_index": 110,
+          "bytes": 23,
+          "instructions": 11,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?runtime_retired@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ",
+          "symbol_index": 111,
+          "bytes": 53,
+          "instructions": 25,
+          "relocation_targets": [
+            "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ"
+          ]
+        },
+        {
+          "symbol": "?record_failure@GameNativeGameApplicationFrame@game@bsp@@AAEXXZ",
+          "symbol_index": 112,
+          "bytes": 27,
+          "instructions": 7,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "__ehhandler$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ",
+          "symbol_index": 146,
+          "bytes": 39,
+          "instructions": 12,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ",
+            "___CxxFrameHandler3"
+          ]
+        },
+        {
+          "symbol": "__catch$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ$0",
+          "symbol_index": 149,
+          "bytes": 23,
+          "instructions": 11,
+          "relocation_targets": [
+            "?record_failure@GameNativeGameApplicationFrame@game@bsp@@AAEXXZ",
+            "__CxxThrowException@8"
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+          "symbol_index": 151,
+          "bytes": 29,
+          "instructions": 9,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+            "___CxxFrameHandler3"
+          ]
+        },
+        {
+          "symbol": "__catch$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z$0",
+          "symbol_index": 152,
+          "bytes": 23,
+          "instructions": 11,
+          "relocation_targets": [
+            "?record_failure@GameNativeGameApplicationFrame@game@bsp@@AAEXXZ",
+            "__CxxThrowException@8"
+          ]
+        }
+      ],
+      "unique_whole_core_member": null,
+      "external_boundaries": [
+        "___security_cookie",
+        "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+        "?scalar_delete@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+        "__CxxThrowException@8",
+        "___std_exception_copy",
+        "___std_exception_destroy",
+        "??3@YAXPAXI@Z",
+        "??_7type_info@@6B@",
+        "@__security_check_cookie@4",
+        "___CxxFrameHandler3",
+        "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "_memset",
+        "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z",
+        "?construct@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@AAU43@PBX@Z",
+        "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "__imp__terminate"
+      ]
+    },
+    {
+      "source": "src/native_render_batch_keys.cpp",
+      "target": "bsp_core",
+      "whole_object_sha256": "7d12094b58e96a4765edd3184bfe722746b8812ec179be2de0f9e21ff30c926f",
+      "roots": [
+        {
+          "symbol": "?native_x87_truncate_st0_00bf7456@bsp@@YA_KXZ",
+          "symbol_index": 25,
+          "bytes": 117,
+          "instructions": 37,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z",
+          "symbol_index": 26,
+          "bytes": 29,
+          "instructions": 11,
+          "relocation_targets": [
+            "?native_x87_truncate_st0_00bf7456@bsp@@YA_KXZ"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_render_batch_keys.obj",
+        "header_offset": 66752534,
+        "payload_file_offset": 66752594,
+        "bytes": 2626,
+        "sha256": "7d12094b58e96a4765edd3184bfe722746b8812ec179be2de0f9e21ff30c926f"
+      },
+      "external_boundaries": []
+    },
+    {
+      "source": "src/native_particle_axial_loading.cpp",
+      "target": "bsp_core",
+      "whole_object_sha256": "0076650d05fe8596bdb6f8b08be0d36b7b62a5c6ccaafdce5a637deab3828afd",
+      "roots": [
+        {
+          "symbol": "?build_native_particle_rotation_x_00b64640@bsp@@YIPAXPAXPBMPDM2@Z",
+          "symbol_index": 85,
+          "bytes": 176,
+          "instructions": 49,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?build_native_particle_rotation_y_00b646e0@bsp@@YIPAXPAXPBMPDM2@Z",
+          "symbol_index": 86,
+          "bytes": 176,
+          "instructions": 49,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?build_gui_rotation_z_00b64780@bsp@@YAXAAV?$array@M$0BA@@std@@ABMPDM2@Z",
+          "symbol_index": 87,
+          "bytes": 174,
+          "instructions": 47,
+          "relocation_targets": []
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_particle_axial_loading.obj",
+        "header_offset": 31849026,
+        "payload_file_offset": 31849086,
+        "bytes": 16997,
+        "sha256": "0076650d05fe8596bdb6f8b08be0d36b7b62a5c6ccaafdce5a637deab3828afd"
+      },
+      "external_boundaries": []
+    },
+    {
+      "source": "src/native_camera_matrix_math.cpp",
+      "target": "bsp_core",
+      "whole_object_sha256": "ddd3717cb4e09b95585b421be0c4dfd3534e1e9b8ef86fa4fd4dc5c3fc2a2ae8",
+      "roots": [
+        {
+          "symbol": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+          "symbol_index": 17,
+          "bytes": 874,
+          "instructions": 290,
+          "relocation_targets": []
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_camera_matrix_math.obj",
+        "header_offset": 66425366,
+        "payload_file_offset": 66425426,
+        "bytes": 3025,
+        "sha256": "ddd3717cb4e09b95585b421be0c4dfd3534e1e9b8ef86fa4fd4dc5c3fc2a2ae8"
+      },
+      "external_boundaries": []
+    },
+    {
+      "source": "src/native_subtree_invalidation.cpp",
+      "target": "bsp_core",
+      "whole_object_sha256": "14958cf9e54370af6c46152227133c428df00cee454b0b4e3dc1b4682896f82c",
+      "roots": [
+        {
+          "symbol": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+          "symbol_index": 8,
+          "bytes": 38,
+          "instructions": 13,
+          "relocation_targets": [
+            "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_subtree_invalidation.obj",
+        "header_offset": 63754332,
+        "payload_file_offset": 63754392,
+        "bytes": 776,
+        "sha256": "14958cf9e54370af6c46152227133c428df00cee454b0b4e3dc1b4682896f82c"
+      },
+      "external_boundaries": []
+    }
+  ],
+  "core_library_sha256": "4d7d25e7d6b2575fa20b5f135c2634ae9f7665da213cb6f69af515b8eaf6f38a",
+  "new_public_roots_absent_from_game_map": true,
+  "retained_local_evidence": "local/cc12_world_tick_reset_frame_primary",
+  "complete_emitted_review": {
+    "whole_reset_written_comparison": {
+      "written_instructions": 28,
+      "branches": [],
+      "direct_calls": [
+        {
+          "line": 48,
+          "offset": 40,
+          "target": "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z",
+          "symbol_index": 11
+        }
+      ],
+      "operand_differences": [],
+      "fmul_explicit_spelling_verified_encoding": "d8c9"
+    },
+    "world_private_stack_paths": [
+      {
+        "symbol": "?run_world_matrix_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z",
+        "all_encoded_instruction_starts_visited": 394,
+        "all_join_depths_equal": true,
+        "returns_at_zero_private_depth": [
+          1798
+        ],
+        "binding_reads": [
+          {
+            "offset": 32,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 61,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 82,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 116,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 152,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 211,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 237,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 260,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 291,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 499,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 549,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 747,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 797,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1037,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1087,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1439,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1500,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1536,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1568,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1604,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1676,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1700,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1723,
+            "entry_relative_address": -4
+          },
+          {
+            "offset": 1635,
+            "entry_relative_address": -4
+          }
+        ],
+        "calls": [
+          {
+            "offset": 42,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 92,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 126,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 162,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 221,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 247,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 270,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 509,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 562,
+            "target": "?build_native_particle_rotation_x_00b64640@bsp@@YIPAXPAXPBMPDM2@Z",
+            "callee_argument_bytes": 8,
+            "depth_before_call": -772
+          },
+          {
+            "offset": 757,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 810,
+            "target": "?build_native_particle_rotation_y_00b646e0@bsp@@YIPAXPAXPBMPDM2@Z",
+            "callee_argument_bytes": 8,
+            "depth_before_call": -772
+          },
+          {
+            "offset": 1047,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1100,
+            "target": "?build_tick_rotation_z@?A0xb1dd9e0b@bsp@@YIPAXPAXPBMPDM2@Z",
+            "callee_argument_bytes": 8,
+            "depth_before_call": -772
+          },
+          {
+            "offset": 1400,
+            "target": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "callee_argument_bytes": 8,
+            "depth_before_call": -796
+          },
+          {
+            "offset": 1407,
+            "target": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "callee_argument_bytes": 8,
+            "depth_before_call": -788
+          },
+          {
+            "offset": 1414,
+            "target": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "callee_argument_bytes": 8,
+            "depth_before_call": -780
+          },
+          {
+            "offset": 1421,
+            "target": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+            "callee_argument_bytes": 8,
+            "depth_before_call": -772
+          },
+          {
+            "offset": 1432,
+            "target": "entity current edx_slot88",
+            "callee_argument_bytes": 4,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1449,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1483,
+            "target": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -764
+          },
+          {
+            "offset": 1510,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1529,
+            "target": "entity current edx_slotD8",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -764
+          },
+          {
+            "offset": 1546,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1578,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1614,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1686,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1710,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1733,
+            "target": "?invoke_tick_invalid_parameter@?A0xb1dd9e0b@bsp@@YAXPBUSingletonLifetimeCallbacks@2@@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          },
+          {
+            "offset": 1768,
+            "target": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "callee_argument_bytes": 0,
+            "depth_before_call": -768
+          }
+        ],
+        "exceptional_unwind_proof": false
+      },
+      {
+        "symbol": "?run_world_entity_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z",
+        "all_encoded_instruction_starts_visited": 32,
+        "all_join_depths_equal": true,
+        "returns_at_zero_private_depth": [
+          71
+        ],
+        "binding_reads": [],
+        "calls": [
+          {
+            "offset": 42,
+            "target": "entity current eax",
+            "callee_argument_bytes": 4,
+            "depth_before_call": -16
+          },
+          {
+            "offset": 63,
+            "target": "?run_world_matrix_body@?A0xb1dd9e0b@bsp@@YIXPAXPBUTickBindings@12@I@Z",
+            "callee_argument_bytes": 4,
+            "depth_before_call": -16
+          }
+        ],
+        "exceptional_unwind_proof": false
+      }
+    ],
+    "world_adapters": "Both34-byte/13-instruction public wrappers copy16 pointer bytes and raw float DWORD without floating evaluation, call physical private target, return CDECL. Validator18B/9ins forwards current context and function+8, CALL/ADD4. Z29B/14ins passes destination/angle/current negative-zero/current one to correct concrete four-argument CDECL overload, ADD16, returns saved destination, RET8; no copy/heap/default value writes.",
+    "reset_wrappers": "Public49B/17ins copies28 pointer bytes with MOVUPS/MOVQ/MOV, pushes raw input, calls own physical74B/28ins kernel. Kernel saves/restoresESI,12x87/3MOVSS/one current-mode converter, RET4. Explicit FMUL emitsD8C9.",
+    "positive_unique_target_definitions": [
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_string.obj",
+          "header_offset": 26849292,
+          "payload_file_offset": 26849352,
+          "bytes": 18822,
+          "sha256": "5681b6ee4b81d6990148d310043d8cd4e0baf6b2ca88a3a9b35b6e789cc62445"
+        },
+        "definition": {
+          "name": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+          "symbol_index": 182,
+          "symbol_record_file_offset": 12698,
+          "section": 56,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_string.obj",
+          "header_offset": 26849292,
+          "payload_file_offset": 26849352,
+          "bytes": 18822,
+          "sha256": "5681b6ee4b81d6990148d310043d8cd4e0baf6b2ca88a3a9b35b6e789cc62445"
+        },
+        "definition": {
+          "name": "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z",
+          "symbol_index": 186,
+          "symbol_record_file_offset": 12770,
+          "section": 49,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_particle_axial_loading.obj",
+          "header_offset": 31849026,
+          "payload_file_offset": 31849086,
+          "bytes": 16997,
+          "sha256": "0076650d05fe8596bdb6f8b08be0d36b7b62a5c6ccaafdce5a637deab3828afd"
+        },
+        "definition": {
+          "name": "?build_native_particle_rotation_x_00b64640@bsp@@YIPAXPAXPBMPDM2@Z",
+          "symbol_index": 85,
+          "symbol_record_file_offset": 10343,
+          "section": 22,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_particle_axial_loading.obj",
+          "header_offset": 31849026,
+          "payload_file_offset": 31849086,
+          "bytes": 16997,
+          "sha256": "0076650d05fe8596bdb6f8b08be0d36b7b62a5c6ccaafdce5a637deab3828afd"
+        },
+        "definition": {
+          "name": "?build_native_particle_rotation_y_00b646e0@bsp@@YIPAXPAXPBMPDM2@Z",
+          "symbol_index": 86,
+          "symbol_record_file_offset": 10361,
+          "section": 23,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_particle_axial_loading.obj",
+          "header_offset": 31849026,
+          "payload_file_offset": 31849086,
+          "bytes": 16997,
+          "sha256": "0076650d05fe8596bdb6f8b08be0d36b7b62a5c6ccaafdce5a637deab3828afd"
+        },
+        "definition": {
+          "name": "?build_gui_rotation_z_00b64780@bsp@@YAXAAV?$array@M$0BA@@std@@ABMPDM2@Z",
+          "symbol_index": 87,
+          "symbol_record_file_offset": 10379,
+          "section": 21,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\game_native_game_runtime.obj",
+          "header_offset": 62026620,
+          "payload_file_offset": 62026680,
+          "bytes": 37165,
+          "sha256": "bb91c79b8b79332c72a8d3ee47f11a2589237bc1c522708d50d7538ba865fed8"
+        },
+        "definition": {
+          "name": "?construct@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@AAU43@PBX@Z",
+          "symbol_index": 230,
+          "symbol_record_file_offset": 23172,
+          "section": 92,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\game_native_game_runtime.obj",
+          "header_offset": 62026620,
+          "payload_file_offset": 62026680,
+          "bytes": 37165,
+          "sha256": "bb91c79b8b79332c72a8d3ee47f11a2589237bc1c522708d50d7538ba865fed8"
+        },
+        "definition": {
+          "name": "?scalar_delete@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+          "symbol_index": 231,
+          "symbol_record_file_offset": 23190,
+          "section": 101,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\game_native_game_runtime.obj",
+          "header_offset": 62026620,
+          "payload_file_offset": 62026680,
+          "bytes": 37165,
+          "sha256": "bb91c79b8b79332c72a8d3ee47f11a2589237bc1c522708d50d7538ba865fed8"
+        },
+        "definition": {
+          "name": "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+          "symbol_index": 233,
+          "symbol_record_file_offset": 23226,
+          "section": 98,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_subtree_invalidation.obj",
+          "header_offset": 63754332,
+          "payload_file_offset": 63754392,
+          "bytes": 776,
+          "sha256": "14958cf9e54370af6c46152227133c428df00cee454b0b4e3dc1b4682896f82c"
+        },
+        "definition": {
+          "name": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+          "symbol_index": 8,
+          "symbol_record_file_offset": 663,
+          "section": 3,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_camera_matrix_math.obj",
+          "header_offset": 66425366,
+          "payload_file_offset": 66425426,
+          "bytes": 3025,
+          "sha256": "ddd3717cb4e09b95585b421be0c4dfd3534e1e9b8ef86fa4fd4dc5c3fc2a2ae8"
+        },
+        "definition": {
+          "name": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z",
+          "symbol_index": 17,
+          "symbol_record_file_offset": 2689,
+          "section": 6,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_render_batch_keys.obj",
+          "header_offset": 66752534,
+          "payload_file_offset": 66752594,
+          "bytes": 2626,
+          "sha256": "7d12094b58e96a4765edd3184bfe722746b8812ec179be2de0f9e21ff30c926f"
+        },
+        "definition": {
+          "name": "?native_x87_truncate_st0_00bf7456@bsp@@YA_KXZ",
+          "symbol_index": 25,
+          "symbol_record_file_offset": 2004,
+          "section": 10,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\native_render_batch_keys.obj",
+          "header_offset": 66752534,
+          "payload_file_offset": 66752594,
+          "bytes": 2626,
+          "sha256": "7d12094b58e96a4765edd3184bfe722746b8812ec179be2de0f9e21ff30c926f"
+        },
+        "definition": {
+          "name": "?native_crt_truncate_st0_00bf7420@bsp@@YIHPDI@Z",
+          "symbol_index": 26,
+          "symbol_record_file_offset": 2022,
+          "section": 8,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+          "header_offset": 67801558,
+          "payload_file_offset": 67801618,
+          "bytes": 32963,
+          "sha256": "11e58d1b1de805045e08cc442049bc4babfee39c527095ee3dba0aa637219f26"
+        },
+        "definition": {
+          "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "symbol_index": 184,
+          "symbol_record_file_offset": 20276,
+          "section": 76,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "origin": "bsp_core.lib",
+        "member": {
+          "name": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+          "header_offset": 67801558,
+          "payload_file_offset": 67801618,
+          "bytes": 32963,
+          "sha256": "11e58d1b1de805045e08cc442049bc4babfee39c527095ee3dba0aa637219f26"
+        },
+        "definition": {
+          "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 185,
+          "symbol_record_file_offset": 20294,
+          "section": 77,
+          "value": 0,
+          "type": 32
+        }
+      }
+    ],
+    "existing_multiply_entire874_bytes_equal_installed_pe": true,
+    "existing_converter_review": "Complete29B selector and117B fallback inspected. Fresh mode[ECX] selects one input FSTP(double)/CVTTSD2SI or physical tail fallback. Complete fallback preserves deeper S/T and ESI; no new converter.",
+    "existing_rotation_review": "Complete X176B/49ins,Y176B/49ins and four-argument Z174B/47ins inspected; x87 sin/cos separately spill to binary32; current negative-zero/one reads;16 current destination writes; X/Y RET8 and Z CDECL.",
+    "existing_subtree_review": "Complete38B/13ins retains before-clear child capture, same-child sibling reload after recursion; self relocation at25 reaches physical own index8/section3/value0.",
+    "frame_complete_emitted_methods": {
+      "??0GameNativeGameApplicationFrame@game@bsp@@QAE@AAVGameNativeGameRuntime@12@ACRAXACRADAAUNativeStringRawPoolContext@2@@Z": {
+        "bytes": 196,
+        "instructions_including_terminal_int3_padding": 46,
+        "relocation_targets": [
+          "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+          "??_C@_0EC@FCGEFFN@Application?5frame?5requires?5an?5ex@",
+          "??0invalid_argument@std@@QAE@PBD@Z",
+          "__TI3?AVinvalid_argument@std@@",
+          "__CxxThrowException@8"
+        ]
+      },
+      "??1GameNativeGameApplicationFrame@game@bsp@@QAE@XZ": {
+        "bytes": 101,
+        "instructions_including_terminal_int3_padding": 41,
+        "relocation_targets": [
+          "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+          "__imp__terminate"
+        ]
+      },
+      "?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ": {
+        "bytes": 405,
+        "instructions_including_terminal_int3_padding": 105,
+        "relocation_targets": [
+          "__ehhandler$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ",
+          "___security_cookie",
+          "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+          "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "_memset",
+          "?construct_native_string_header_0041e870@bsp@@YAPAXPAXAAUNativeStringRawPoolContext@1@PBD@Z",
+          "?construct@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@AAU43@PBX@Z",
+          "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+          "@__security_check_cookie@4",
+          "??_C@_0CL@ICBNACMM@Application?5frame?5construction?5i@",
+          "??0logic_error@std@@QAE@PBD@Z",
+          "__TI2?AVlogic_error@std@@",
+          "__CxxThrowException@8"
+        ]
+      },
+      "?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z": {
+        "bytes": 286,
+        "instructions_including_terminal_int3_padding": 82,
+        "relocation_targets": [
+          "__ehhandler$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+          "___security_cookie",
+          "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+          "?scalar_delete@GameNativeGameRuntime@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+          "??_C@_0EJ@GPLPFNIN@Application?5frame?5scalar?5require@",
+          "??0logic_error@std@@QAE@PBD@Z",
+          "__TI2?AVlogic_error@std@@",
+          "__CxxThrowException@8"
+        ]
+      },
+      "?free_retained_storage@GameNativeGameApplicationFrame@game@bsp@@QAEXXZ": {
+        "bytes": 137,
+        "instructions_including_terminal_int3_padding": 46,
+        "relocation_targets": [
+          "?runtime_retired@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ",
+          "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ",
+          "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "??_C@_0FD@ECCDKFAC@Application?5frame?5free?5requires?5@",
+          "??0logic_error@std@@QAE@PBD@Z",
+          "__TI2?AVlogic_error@std@@",
+          "__CxxThrowException@8"
+        ]
+      },
+      "?acknowledge_name_resolution@GameNativeGameApplicationFrame@game@bsp@@QAEXXZ": {
+        "bytes": 75,
+        "instructions_including_terminal_int3_padding": 27,
+        "relocation_targets": [
+          "??_C@_0DL@MIIIKEAB@Only?5a?5pending?5application?5name?5@",
+          "??0logic_error@std@@QAE@PBD@Z",
+          "__TI2?AVlogic_error@std@@",
+          "__CxxThrowException@8"
+        ]
+      },
+      "?acknowledge_diagnostic_retirement@GameNativeGameApplicationFrame@game@bsp@@QAEXW4DiagnosticDisposition@123@@Z": {
+        "bytes": 188,
+        "instructions_including_terminal_int3_padding": 62,
+        "relocation_targets": [
+          "?runtime_retired@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ",
+          "??_C@_0DP@OOEKBCMO@Application?5retirement?5requires?5@",
+          "??_C@_0CL@PDIKHKHL@Unknown?5application?5allocation?5d@",
+          "??0invalid_argument@std@@QAE@PBD@Z",
+          "__TI3?AVinvalid_argument@std@@",
+          "??_C@_0EN@CMKNMLOJ@Application?5diagnostic?5retiremen@",
+          "??_C@_0CG@OMNKLPPK@Application?5allocation?5was?5not?5a@",
+          "??0logic_error@std@@QAE@PBD@Z",
+          "__TI2?AVlogic_error@std@@",
+          "__CxxThrowException@8"
+        ]
+      },
+      "?status@GameNativeGameApplicationFrame@game@bsp@@QBE?AUStatus@123@XZ": {
+        "bytes": 152,
+        "instructions_including_terminal_int3_padding": 54,
+        "relocation_targets": [
+          "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ"
+        ]
+      },
+      "?name_header_for_diagnostics@GameNativeGameApplicationFrame@game@bsp@@QAEPAXXZ": {
+        "bytes": 12,
+        "instructions_including_terminal_int3_padding": 5,
+        "relocation_targets": []
+      },
+      "?active@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ": {
+        "bytes": 19,
+        "instructions_including_terminal_int3_padding": 9,
+        "relocation_targets": []
+      },
+      "?name_resolved@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ": {
+        "bytes": 23,
+        "instructions_including_terminal_int3_padding": 11,
+        "relocation_targets": []
+      },
+      "?runtime_retired@GameNativeGameApplicationFrame@game@bsp@@ABE_NXZ": {
+        "bytes": 53,
+        "instructions_including_terminal_int3_padding": 25,
+        "relocation_targets": [
+          "?phase@GameNativeGameRuntime@game@bsp@@QBE?AW4Phase@123@XZ"
+        ]
+      },
+      "?record_failure@GameNativeGameApplicationFrame@game@bsp@@AAEXXZ": {
+        "bytes": 27,
+        "instructions_including_terminal_int3_padding": 7,
+        "relocation_targets": []
+      },
+      "__ehhandler$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ": {
+        "bytes": 39,
+        "instructions_including_terminal_int3_padding": 12,
+        "relocation_targets": [
+          "@__security_check_cookie@4",
+          "@__security_check_cookie@4",
+          "__ehfuncinfo$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ",
+          "___CxxFrameHandler3"
+        ]
+      },
+      "__catch$?construct@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@XZ$0": {
+        "bytes": 23,
+        "instructions_including_terminal_int3_padding": 11,
+        "relocation_targets": [
+          "?record_failure@GameNativeGameApplicationFrame@game@bsp@@AAEXXZ",
+          "__CxxThrowException@8"
+        ]
+      },
+      "__ehhandler$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z": {
+        "bytes": 29,
+        "instructions_including_terminal_int3_padding": 9,
+        "relocation_targets": [
+          "@__security_check_cookie@4",
+          "__ehfuncinfo$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z",
+          "___CxxFrameHandler3"
+        ]
+      },
+      "__catch$?scalar_delete@GameNativeGameApplicationFrame@game@bsp@@QAEPAUNativeGameStorage@3@I@Z$0": {
+        "bytes": 23,
+        "instructions_including_terminal_int3_padding": 11,
+        "relocation_targets": [
+          "?record_failure@GameNativeGameApplicationFrame@game@bsp@@AAEXXZ",
+          "__CxxThrowException@8"
+        ]
+      }
+    },
+    "frame_review": [
+      "Constructor196B checks borrowed runtime fresh, binds references and initializes only own markers; raw8-byte name header remains uninitialized until real header constructor.",
+      "Construct405B retains malloc71A0, zeroes full storage, records parent27, captures current duplicate, invokes real name constructor, ORs mask2/parent28, invokes Runtime.construct, publishes exact returned EDI through real caller reference, sets parent-1, attempts real name return once. Success returns that pointer; no dereference after name return.",
+      "Scalar286B validates runtime LIVE and resolved name; keeps full flags DWORD in EBX, marks allocation indeterminate and nulls retained pointer BEFORE concrete runtime call; lowbit success release or original retained-pointer restoration occurs only after return. No implicit retry/free.",
+      "Free137B checks retained/name-resolved/runtime-retired and flags guard, calls matching canonical free once, then clears owned pointer. Destructor101B checks completed states and terminates unresolved, without resource cleanup.",
+      "Name ack75B is state-only. Diagnostic retirement188B validates external no-allocation/already-released assertion and only mutates bookkeeping, with no allocation/free/cleanup. Status152B exposes historical bits; helpers and catch paths fully inspected.",
+      "Both emitted catch funclets call record_failure then rethrow; no application rollback, name retry, storage free or runtime acknowledgement. Two compiler frame handlers/cookie checks were inspected; Native exceptional-frame equivalence is not claimed."
+    ],
+    "original_abi_and_exception_limit": "New explicit-context C++ wrappers and retained glue are not Native binary entry points. Private naked frames/Source callback exceptions, Native SEH/fault/runtime/gameplay are unproven.",
+    "world_complete_native_site_summary": [
+      {
+        "address": "00904bf0",
+        "native_bytes": 69,
+        "native_sites": 28,
+        "emitted_bytes": 74,
+        "emitted_instructions": 32,
+        "all_written_instructions_match": true,
+        "all_internal_branch_destinations_match": true,
+        "qualified_changed_operands": [
+          {
+            "address": "00904c08",
+            "native_bytes": "d944240c",
+            "native_mnemonic": "fld",
+            "native_operands": "dword ptr [esp + 0xc]",
+            "emitted": {
+              "offset": 26,
+              "bytes": "d9442410",
+              "mnemonic": "fld",
+              "operands": "dword ptr [esp + 0x10]"
+            },
+            "comparison": "qualified: original stack argument displaced by saved EBX"
+          },
+          {
+            "address": "00904c21",
+            "native_bytes": "d944240c",
+            "native_mnemonic": "fld",
+            "native_operands": "dword ptr [esp + 0xc]",
+            "emitted": {
+              "offset": 51,
+              "bytes": "d9442410",
+              "mnemonic": "fld",
+              "operands": "dword ptr [esp + 0x10]"
+            },
+            "comparison": "qualified: original stack argument displaced by saved EBX"
+          }
+        ]
+      },
+      {
+        "address": "00904600",
+        "native_bytes": 1507,
+        "native_sites": 323,
+        "emitted_bytes": 1801,
+        "emitted_instructions": 394,
+        "all_written_instructions_match": true,
+        "all_internal_branch_destinations_match": true,
+        "qualified_changed_operands": [
+          {
+            "address": "0090462f",
+            "native_bytes": "f30f1005a476f800",
+            "native_mnemonic": "movss",
+            "native_operands": "xmm0, dword ptr [0xf876a4]",
+            "emitted": {
+              "offset": 70,
+              "bytes": "f30f1000",
+              "mnemonic": "movss",
+              "operands": "xmm0, dword ptr [eax]"
+            },
+            "comparison": "qualified: original current cell accessed through borrowed pointer at same site"
+          },
+          {
+            "address": "009046c2",
+            "native_bytes": "f30f100d4ca2d700",
+            "native_mnemonic": "movss",
+            "native_operands": "xmm1, dword ptr [0xd7a24c]",
+            "emitted": {
+              "offset": 301,
+              "bytes": "f30f1008",
+              "mnemonic": "movss",
+              "operands": "xmm1, dword ptr [eax]"
+            },
+            "comparison": "qualified: original current cell accessed through borrowed pointer at same site"
+          },
+          {
+            "address": "00904b6d",
+            "native_bytes": "f30f100d4ca2d700",
+            "native_mnemonic": "movss",
+            "native_operands": "xmm1, dword ptr [0xd7a24c]",
+            "emitted": {
+              "offset": 1645,
+              "bytes": "f30f1008",
+              "mnemonic": "movss",
+              "operands": "xmm1, dword ptr [eax]"
+            },
+            "comparison": "qualified: original current cell accessed through borrowed pointer at same site"
+          }
+        ]
+      }
+    ],
+    "complete_comparison_local_artifact": {
+      "path": "local\\cc12_world_tick_reset_frame_primary\\complete_primary_emitted_review.json",
+      "sha256": "3b807657501e053068b4e994b178c78cc19c7c4946e8651dce6352a4dc349e2d",
+      "full_instruction_and_physical_relocation_evidence": "whole_objects_and_indexed_local_graphs.json in same retained directory"
+    },
+    "whole_reset_native_sites_compared": 18
+  },
+  "credit": {
+    "additional_original_functions": 2,
+    "new_native_bytes": 1588,
+    "actual_entity_outer_fragment": 1,
+    "existing_entity_original_function_preserved": true,
+    "new_game_frame_original_functions": 0,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "New ordinary C++ interfaces are not Native binary entries; no exceptional ABI/SEH or current runtime proof.",
+    "Same actual clock/constants, coherent raw World/entity/node storage, compatible callable tables, returning validator/free domain and referent lifetimes remain caller requirements.",
+    "Fully composed retained Game runtime and genuine Application/name cells are required; frame glue supplies none of those producers.",
+    "No new tests/probes, Native-entry execution, Source callback-exception execution or gameplay validation."
+  ],
+  "source_credit_not_runtime": {
+    "matrix_new_function": true,
+    "clock_reset_new_function": true,
+    "entity_outer_already_counted_new_fragment_only": true,
+    "frame_new_original": 0
+  },
+  "worker_document_primary_appends": [
+    {
+      "path": "docs/CC12_NATIVE_WORLD_CURRENT_TICK_SOURCE.md",
+      "worker_document_sha256": "c4eeab227a45b30b8a9bf7d98c9cbd2ef41bd27851887a78372c2d389b39ec1f",
+      "current_document_sha256": "cf3efe29684a80266af48a923d1ca8a63b3004af259c7763357032d4a03e0438",
+      "original_worker_pin_is_historical_document_before_this_append": true,
+      "current_document_pin_policy": "canonical LF bytes"
+    },
+    {
+      "path": "docs/CC12_NATIVE_MISSION_CLOCK_RESET_SOURCE.md",
+      "worker_document_sha256": "09823fefec68144510317811149745a0f1b483380007c3eb567e92fd7c891171",
+      "current_document_sha256": "bd057ddacff7aca06c47fad79713afa696dea4ae121490fbb8f7768538358072",
+      "original_worker_pin_is_historical_document_before_this_append": true,
+      "current_document_pin_policy": "canonical LF bytes"
+    },
+    {
+      "path": "docs/CC12_GAME_RETAINED_APPLICATION_FRAME_SOURCE.md",
+      "worker_document_sha256": "573b228b0fb8752912eeb4f882771edeeda2dd14474b3520c05decf5bdb84b0b",
+      "current_document_sha256": "486a3f491cbe7ce92936041a8f0fd66d009fedcbad81756d50f83eef5dcef7ce",
+      "original_worker_pin_is_historical_document_before_this_append": true,
+      "current_document_pin_policy": "canonical LF bytes"
+    }
+  ],
+  "reviewed_current_source_and_document_pins": [
+    {
+      "path": "src/native_world_current_tick.cpp",
+      "sha256": "d18ae4a7e134e55f7c7d2b35b4d1eddeaf44a8058b4a9cc12cdcf866b6ce7a5b"
+    },
+    {
+      "path": "src/native_mission_clock_reset.cpp",
+      "sha256": "7b19b589c9418edc8cf14c460a1bae1a6517afe377e6c335b946f253a8b9c075"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09"
+    },
+    {
+      "path": "src/native_render_batch_keys.cpp",
+      "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+    },
+    {
+      "path": "src/native_particle_axial_loading.cpp",
+      "sha256": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d"
+    },
+    {
+      "path": "src/native_camera_matrix_math.cpp",
+      "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0"
+    },
+    {
+      "path": "src/native_subtree_invalidation.cpp",
+      "sha256": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959"
+    },
+    {
+      "path": "docs/CC12_NATIVE_WORLD_CURRENT_TICK_SOURCE.md",
+      "sha256": "cf3efe29684a80266af48a923d1ca8a63b3004af259c7763357032d4a03e0438"
+    },
+    {
+      "path": "docs/CC12_NATIVE_MISSION_CLOCK_RESET_SOURCE.md",
+      "sha256": "bd057ddacff7aca06c47fad79713afa696dea4ae121490fbb8f7768538358072"
+    },
+    {
+      "path": "docs/CC12_GAME_RETAINED_APPLICATION_FRAME_SOURCE.md",
+      "sha256": "486a3f491cbe7ce92936041a8f0fd66d009fedcbad81756d50f83eef5dcef7ce"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "6d71cd127f3d80d9079899213e07175d6b4c6eb2c6e6be86c963ed727000709a"
+    },
+    {
+      "path": "reports/cc12_native_mission_clock_reset_source.json",
+      "sha256": "8ebdbbc1931ccd49ab5e5a87ac1274310dc4275c56e98beec379d2b2d1298e30"
+    }
+  ],
+  "ghidra_annotation": {
+    "receipt": "local\\ghidra-annotations-20261009T053810Z.json",
+    "sha256": "c4f83083e7538b9db6e6b6c2d0a3bf04f12756934f349aa594be97615f063ed0",
+    "target": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe",
+    "saved_program": true,
+    "old_values_preserved": true,
+    "existing_plate_comments_preserved": true,
+    "addresses": [
+      "00874640",
+      "00904600",
+      "00904bf0"
+    ],
+    "forced_exports_refreshed": true,
+    "function_body_flow_or_signature_changes": false
+  },
+  "installed_pe_full_world_bytes_rechecked": {
+    "00904bf0": 69,
+    "00904600": 1507,
+    "both_equal_pinned_complete_native_bodies": true
+  }
+}

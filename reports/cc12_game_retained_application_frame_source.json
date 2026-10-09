@@ -1,0 +1,603 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_game_retained_application_frame_source",
+  "generated_at_utc": "2026-10-09T05:13:01.223983+00:00",
+  "base_commit": "af15a550d63ee226f3b72ef5520f7a9e1454f493",
+  "verdict": {
+    "bounded_source_composition_added": true,
+    "new_original_functions": 0,
+    "application_wired": false,
+    "missing_full_contexts_supplied": false,
+    "worker_build_run": false,
+    "worker_emitted_review_run": false,
+    "root_build_and_registration_required": true
+  },
+  "scope": {
+    "owned_paths": [
+      "include/bsp/game_native_game_application_frame.hpp",
+      "src/game_native_game_application_frame.cpp",
+      "docs/CC12_GAME_RETAINED_APPLICATION_FRAME_SOURCE.md",
+      "reports/cc12_game_retained_application_frame_source.json"
+    ],
+    "native_addresses_claimed": [],
+    "source_class": "bsp::game::GameNativeGameApplicationFrame",
+    "no_changes_to_existing_source": true,
+    "no_cmake_ledger_gpr_build_test_probe_changes": true
+  },
+  "readiness_basis": {
+    "commit": "44de6c4887f4bb0cffe8c4e57a9d985c8e0477fe",
+    "report_pin": {
+      "path": "reports/cc12_game_retained_application_frame_composition.json",
+      "physical_bytes": 69774,
+      "physical_sha256": "c898cdf10fe935e435f6abb88e7c189303a310181ddfcefefe14cd223b5d456b",
+      "physical_crlf_count": 761,
+      "normalized_lf_bytes": 69013,
+      "normalized_lf_sha256": "f138a7b863644de8c4cee6a51d64256e189b4d4c8448672ad96926709da67ee0",
+      "git_blob_oid": "0bbb83a2627e43afd1d1a7458544ab6f9df10ef6"
+    },
+    "prior_native_fragment": {
+      "address": "0073E150",
+      "end_inclusive": "0073E1D9",
+      "sha256": "d81dc741f86b6c13de99ad7fd5f7c5a157ba2e3bd96532d83d31a94b0cbf555f",
+      "bytes": 138,
+      "instructions": 39,
+      "replayed_again_in_this_source_packet": false
+    },
+    "credit": "Reuses prior inspected caller fragment and existing implementations; no new Original reconstruction."
+  },
+  "borrowed_contract": [
+    "Fresh exclusive stable GameNativeGameRuntime with all construction/lifetime contexts, actual publications, source tables, persistent operation frames, strings/resources/profile/GlobalConfig and Dyn inputs correctly composed; runtime operations are not independently invoked while borrowed.",
+    "Genuine current void* volatile Application+14 cell, distinct from the internal actual E188A8 publication. This frame cannot prove the supplied cell identity.",
+    "Current char* volatile E1AE78 duplicated-input cell. Capture once after allocation/zeroing; nonnull live NUL-terminated captured input remains borrowed and is never replaced or freed.",
+    "Stable canonical NativeStringRawPoolContext in the same actual pool/gate/manager/string/lifetime domain used by the runtime; all borrowed services survive pending name/graph/diagnostic obligations.",
+    "Canonical malloc storage must be paired with lifetime free_00bf6989. Any override must actually release on successful flags&1 and provide qualified failure/disposition knowledge; throwing may mean already freed."
+  ],
+  "normal_schedule_exact_source_tokens": [
+    "singleton_lifetime_allocate({SingletonAllocationKind::object,0x71a0,0x71a0})",
+    "allocation_address_=reinterpret_cast<std::uintptr_t>(block)",
+    "retained_=static_cast<NativeGameStorage*>(block);allocation_=Allocation::retained",
+    "::new (block) NativeGameStorage;",
+    "std::memset(block,0,0x71a0);",
+    "parent_cleanup_state_=0x27;parent_state_recorded_=true;",
+    "captured_name_=duplicate_name_00e1ae78_;",
+    "name_=Name::preparing;",
+    "construct_native_string_header_0041e870(name_header_,strings_,captured_name_);",
+    "name_=Name::complete;observed_name_mask_|=0x2;",
+    "parent_cleanup_state_=0x28;",
+    "constructor_entered_=true;",
+    "auto* result=runtime_.construct(*retained_,name_header_);",
+    "constructor_completed_=true;",
+    "application_game_14_=result;application_published_=true;",
+    "parent_cleanup_state_=-1;",
+    "name_=Name::return_attempted;",
+    "destroy_native_string_header_0041dd20(name_header_,strings_);",
+    "name_=Name::returned;",
+    "return result;"
+  ],
+  "state_precision": {
+    "name_mask": "Only observed name bit 0x2; remains set after normal return or external resolution; no Original full-mask preimage claimed.",
+    "parent_state": "Unobserved until parent_state_recorded after zeroing, then 27h during name preparation, 28h before runtime construction, and -1 after Application+14 publication before name return.",
+    "name": "Distinct unprepared, preparing, complete, return_attempted, returned and externally_resolved states. Header remains bytewise untouched by frame acknowledgment.",
+    "source_phase": "A name-return exception sets frame failed but runtime remains live; after qualified name resolution first scalar remains allowed.",
+    "native_site": "Caller/helper boundary anchor only; child operation preserves its exact internal progress.",
+    "historical_addresses": "Allocation, constructor-result and scalar-result uintptr values are historical, not ownership. retained_storage returns nonnull only for known retained outer storage.",
+    "diagnostic_header": "Unprepared accessor is null; later raw bytes can describe a partial or already returned name. Nonnull never authorizes helper replay."
+  },
+  "retirement": {
+    "scalar": "First attempt only, completed construction + live runtime + resolved name + retained allocation. Full flags forwarded once. Ownership becomes indeterminate and live storage accessor clears before entry. On success bit0 set means released; bit0 clear restores original retained allocation. No postcall Game-byte access.",
+    "free": "Explicit singleton_lifetime_free only with retained allocation and resolved name: runtime fresh and constructor never entered, runtime destroyed after completed scalar with bit0 clear, or runtime diagnostic_retired after externally resolved graph. Clears retained pointer and sets released. Indeterminate allocation is rejected.",
+    "name_ack": "External work must already have resolved pending name. The method only changes enum state, performs no header access, cleanup or helper retry.",
+    "diagnostic_ack": "Requires nonlive qualified runtime and resolved name. no_allocation requires address zero and absent state; already_released requires original allocation address and external proof of completed release, then clears retained pointer. Does not perform cleanup or alter any publication. Failed runtime must first be externally resolved/acknowledged.",
+    "destructor": "Source retained-owner rejection policy only: terminate on unresolved phase, owned/uncertain allocation, pending name or unretired runtime. No automatic cleanup and no destruction of borrowed runtime."
+  },
+  "failure_matrix": [
+    {
+      "stage": "allocation",
+      "runtime": "fresh",
+      "allocation": "absent if allocator throws before returning",
+      "name": "unprepared",
+      "resolution": "explicit diagnostic no_allocation; no retry"
+    },
+    {
+      "stage": "name_preparation",
+      "runtime": "fresh",
+      "allocation": "retained zeroed 71A0 storage",
+      "name": "exact partial header; mask0, parent27",
+      "resolution": "external name resolution + name acknowledgment + explicit retained free"
+    },
+    {
+      "stage": "game_construction",
+      "runtime": "failed with existing persistent child progress",
+      "allocation": "retained partial graph",
+      "name": "complete, mask2, parent28",
+      "resolution": "external graph/publication/name resolution + runtime acknowledgment then explicit retained free or already_released acknowledgment"
+    },
+    {
+      "stage": "name_return",
+      "runtime": "live",
+      "allocation": "retained live Game; Application+14 published",
+      "name": "return_attempted, mask2, parent-1",
+      "resolution": "external name resolution and acknowledgment then first scalar; never replay constructor/name helper"
+    },
+    {
+      "stage": "scalar_delete",
+      "runtime": "failed with lifetime progress",
+      "allocation": "indeterminate; may already be freed by throwing override",
+      "name": "resolved before entry",
+      "resolution": "external graph/allocation/publication resolution and runtime acknowledgment, then explicit already_released retirement; no blind scalar or free retry"
+    }
+  ],
+  "static_checks": [
+    {
+      "check": "twenty ordered construction actions",
+      "passed": true
+    },
+    {
+      "check": "exactly one construct call/store singleton_lifetime_allocate(",
+      "passed": true
+    },
+    {
+      "check": "exactly one construct call/store std::memset(",
+      "passed": true
+    },
+    {
+      "check": "exactly one construct call/store construct_native_string_header_0041e870(",
+      "passed": true
+    },
+    {
+      "check": "exactly one construct call/store runtime_.construct(",
+      "passed": true
+    },
+    {
+      "check": "exactly one construct call/store application_game_14_=",
+      "passed": true
+    },
+    {
+      "check": "exactly one construct call/store destroy_native_string_header_0041dd20(",
+      "passed": true
+    },
+    {
+      "check": "one current duplicate cell capture",
+      "passed": true
+    },
+    {
+      "check": "mask is set only after preparation and never cleared",
+      "passed": true
+    },
+    {
+      "check": "uninitialized actual aligned eight-byte header",
+      "passed": true
+    },
+    {
+      "check": "all copy and move operations deleted",
+      "passed": true
+    },
+    {
+      "check": "full flags forwarded once",
+      "passed": true
+    },
+    {
+      "check": "mark scalar ownership uncertain before dispatch",
+      "passed": true
+    },
+    {
+      "check": "successful bit zero selects released or retained",
+      "passed": true
+    },
+    {
+      "check": "scalar requires first attempt live runtime and resolved name",
+      "passed": true
+    },
+    {
+      "check": "canonical free checks proven ownership and resolved runtime",
+      "passed": true
+    },
+    {
+      "check": "name acknowledgment changes only name status after guard",
+      "passed": true
+    },
+    {
+      "check": "destructor rejects without any cleanup calls",
+      "passed": true
+    },
+    {
+      "check": "two supported operation catches record and rethrow",
+      "passed": true
+    },
+    {
+      "check": "no fresh reset or extra publication stores",
+      "passed": true
+    },
+    {
+      "check": "no header dereference or source table creation in frame",
+      "passed": true
+    }
+  ],
+  "new_source_pins": [
+    {
+      "path": "include/bsp/game_native_game_application_frame.hpp",
+      "physical_bytes": 4893,
+      "physical_sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 4893,
+      "normalized_lf_sha256": "888edb0cdab9adbf87935c81923890940342435840358081cf88178d0c1fcd33",
+      "git_blob_oid": "3be78aa1c3e7004e1e75a7f278a4ccfbf2e58cdf",
+      "absent_at_base": true,
+      "complete_source_text": "#pragma once\n#include \"bsp/game_native_game_runtime.hpp\"\n#include <cstddef>\n#include <cstdint>\n\nnamespace bsp { struct NativeStringRawPoolContext; }\nnamespace bsp::game {\n// Retained Source composition of 73E150..73E1D9, not an Original FH3 frame.\n// Requires an exclusive fresh runtime with every construction/lifetime service\n// composed, the genuine Application+14 and current E1AE78 cells, and the SAME\n// canonical raw string domain used by that runtime. These borrowed objects and\n// the captured nonnull C string must remain valid through their last use.\n// Lifetime free_00bf6989 must match canonical malloc and actually free on a\n// successful flags&1 call. A throwing override can leave disposition unknown.\n// No automatic cleanup, publication rollback, operation replay or pool owner.\nclass GameNativeGameApplicationFrame final {\npublic:\n    enum class Phase { fresh, constructing, live, deleting, destroyed, failed,\n        retired, diagnostic_retired };\n    enum class Stage { none, allocation, name_preparation, game_construction,\n        name_return, scalar_delete };\n    enum class Allocation { absent, retained, indeterminate, released };\n    enum class Name { unprepared, preparing, complete, return_attempted,\n        returned, externally_resolved };\n    enum class DiagnosticDisposition { no_allocation, already_released };\n    struct Status {\n        Phase phase;\n        Stage active_stage, failed_stage;\n        Allocation allocation;\n        Name name;\n        GameNativeGameRuntime::Phase runtime_phase;\n        std::uintptr_t allocation_address, constructor_result_address,\n            scalar_result_address; // Historical bits, NOT live ownership.\n        const char* captured_name; // Borrow only; never freed by this frame.\n        // Caller/helper boundary anchors; child fault progress stays in runtime.\n        std::uint32_t native_site, failed_native_site, observed_name_mask,\n            scalar_flags;\n        std::int32_t parent_cleanup_state;\n        bool parent_state_recorded, constructor_entered, constructor_completed,\n            application_published, scalar_attempted, scalar_completed;\n    };\n    GameNativeGameApplicationFrame(GameNativeGameRuntime&,\n        void* volatile& actual_application_game_14,\n        char* volatile& actual_duplicate_name_00e1ae78,\n        NativeStringRawPoolContext& canonical_strings);\n    ~GameNativeGameApplicationFrame();\n    GameNativeGameApplicationFrame(const GameNativeGameApplicationFrame&)=delete;\n    GameNativeGameApplicationFrame& operator=(const GameNativeGameApplicationFrame&)=delete;\n    GameNativeGameApplicationFrame(GameNativeGameApplicationFrame&&)=delete;\n    GameNativeGameApplicationFrame& operator=(GameNativeGameApplicationFrame&&)=delete;\n    NativeGameStorage* construct();\n    NativeGameStorage* scalar_delete(std::uint32_t flags);\n    // Only proven retained storage: never entered, scalar completed with bit 0\n    // clear, or externally resolved graph already acknowledged by the runtime.\n    void free_retained_storage();\n    // Caller has actually resolved the pending partial/completed name. This\n    // acknowledgment performs no header access, return, clear or retry.\n    void acknowledge_name_resolution();\n    // Caller has resolved graph/name/publication obligations and explicitly\n    // proves the original allocation absent or already released. No cleanup.\n    void acknowledge_diagnostic_retirement(DiagnosticDisposition);\n    Status status() const noexcept;\n    NativeGameStorage* retained_storage() const noexcept { return retained_; }\n    // Diagnostic bytes may describe a partial or ALREADY RETURNED buffer.\n    // Their nonnull value never authorizes repeating raw string cleanup.\n    void* name_header_for_diagnostics() noexcept;\nprivate:\n    bool active() const noexcept;\n    bool name_resolved() const noexcept;\n    bool runtime_retired() const noexcept;\n    void record_failure() noexcept;\n    GameNativeGameRuntime& runtime_;\n    void* volatile& application_game_14_;\n    char* volatile& duplicate_name_00e1ae78_;\n    NativeStringRawPoolContext& strings_;\n    alignas(4) std::byte name_header_[8]; // Callee initializes; no preimage claim.\n    NativeGameStorage* retained_{};\n    Phase phase_{Phase::fresh};\n    Stage active_stage_{Stage::none}, failed_stage_{Stage::none};\n    Allocation allocation_{Allocation::absent};\n    Name name_{Name::unprepared};\n    std::uintptr_t allocation_address_{}, constructor_result_address_{},\n        scalar_result_address_{};\n    const char* captured_name_{};\n    std::uint32_t native_site_{}, failed_native_site_{}, observed_name_mask_{},\n        scalar_flags_{};\n    std::int32_t parent_cleanup_state_{}; // Unobserved until state 27h.\n    bool parent_state_recorded_{}, constructor_entered_{}, constructor_completed_{},\n        application_published_{}, scalar_attempted_{}, scalar_completed_{};\n};\n} // namespace bsp::game\n"
+    },
+    {
+      "path": "src/game_native_game_application_frame.cpp",
+      "physical_bytes": 7687,
+      "physical_sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+      "physical_crlf_count": 0,
+      "normalized_lf_bytes": 7687,
+      "normalized_lf_sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+      "git_blob_oid": "965a53b7a9ecf78978677f6a930154da1bd3768c",
+      "absent_at_base": true,
+      "complete_source_text": "#include \"bsp/game_native_game_application_frame.hpp\"\n#include \"bsp/native_game_construction.hpp\"\n#include \"bsp/native_string.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include <cstring>\n#include <exception>\n#include <new>\n#include <stdexcept>\n#include <type_traits>\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native game application frame requires MSVC Win32.\n#endif\n\nnamespace bsp::game {\nGameNativeGameApplicationFrame::GameNativeGameApplicationFrame(\n    GameNativeGameRuntime& runtime,void* volatile& application,\n    char* volatile& duplicate,NativeStringRawPoolContext& strings)\n    :runtime_(runtime),application_game_14_(application),\n     duplicate_name_00e1ae78_(duplicate),strings_(strings) {\n    static_assert(sizeof(NativeGameStorage)==0x71a0);\n    static_assert(std::is_trivially_default_constructible_v<NativeGameStorage>);\n    static_assert(std::is_trivially_destructible_v<NativeGameStorage>);\n    static_assert(sizeof(void*)==4&&sizeof(name_header_)==8);\n    if(runtime_.phase()!=GameNativeGameRuntime::Phase::fresh)\n        throw std::invalid_argument(\"Application frame requires an exclusive fresh native game runtime\");\n}\nGameNativeGameApplicationFrame::~GameNativeGameApplicationFrame() {\n    // Source retained-owner rejection policy; NOT recovered native EH cleanup.\n    if((phase_!=Phase::fresh&&phase_!=Phase::destroyed&&phase_!=Phase::retired\n            &&phase_!=Phase::diagnostic_retired)\n        ||(allocation_!=Allocation::absent&&allocation_!=Allocation::released)\n        ||!name_resolved()||!runtime_retired())std::terminate();\n}\nbool GameNativeGameApplicationFrame::active() const noexcept {\n    return phase_==Phase::constructing||phase_==Phase::deleting;\n}\nbool GameNativeGameApplicationFrame::name_resolved() const noexcept {\n    return name_==Name::unprepared||name_==Name::returned||name_==Name::externally_resolved;\n}\nbool GameNativeGameApplicationFrame::runtime_retired() const noexcept {\n    const auto p=runtime_.phase();\n    return (p==GameNativeGameRuntime::Phase::fresh&&!constructor_entered_)\n        ||(p==GameNativeGameRuntime::Phase::destroyed&&scalar_completed_)\n        ||(p==GameNativeGameRuntime::Phase::diagnostic_retired&&constructor_entered_);\n}\nvoid GameNativeGameApplicationFrame::record_failure() noexcept {\n    failed_stage_=active_stage_;failed_native_site_=native_site_;\n    active_stage_=Stage::none;phase_=Phase::failed;\n}\nNativeGameStorage* GameNativeGameApplicationFrame::construct() {\n    if(phase_!=Phase::fresh||runtime_.phase()!=GameNativeGameRuntime::Phase::fresh)\n        throw std::logic_error(\"Application frame construction is one-shot\");\n    phase_=Phase::constructing;active_stage_=Stage::allocation;native_site_=0x73e150;\n    try {\n        void* block=singleton_lifetime_allocate({SingletonAllocationKind::object,0x71a0,0x71a0});\n        allocation_address_=reinterpret_cast<std::uintptr_t>(block);\n        retained_=static_cast<NativeGameStorage*>(block);allocation_=Allocation::retained;\n        ::new (block) NativeGameStorage;\n        std::memset(block,0,0x71a0);\n        parent_cleanup_state_=0x27;parent_state_recorded_=true;\n        captured_name_=duplicate_name_00e1ae78_;\n        active_stage_=Stage::name_preparation;native_site_=0x73e188;name_=Name::preparing;\n        construct_native_string_header_0041e870(name_header_,strings_,captured_name_);\n        name_=Name::complete;observed_name_mask_|=0x2;\n        parent_cleanup_state_=0x28;\n        active_stage_=Stage::game_construction;native_site_=0x73e1a1;constructor_entered_=true;\n        auto* result=runtime_.construct(*retained_,name_header_);\n        constructor_completed_=true;constructor_result_address_=reinterpret_cast<std::uintptr_t>(result);\n        native_site_=0x73e1af;application_game_14_=result;application_published_=true;\n        parent_cleanup_state_=-1;\n        active_stage_=Stage::name_return;native_site_=0x73e1ce;name_=Name::return_attempted;\n        destroy_native_string_header_0041dd20(name_header_,strings_);\n        name_=Name::returned;active_stage_=Stage::none;phase_=Phase::live;\n        return result;\n    } catch(...) {record_failure();throw;}\n}\nNativeGameStorage* GameNativeGameApplicationFrame::scalar_delete(std::uint32_t flags) {\n    if(active()||!constructor_completed_||scalar_attempted_||!name_resolved()\n        ||allocation_!=Allocation::retained||runtime_.phase()!=GameNativeGameRuntime::Phase::live)\n        throw std::logic_error(\"Application frame scalar requires its first live owner and resolved name\");\n    scalar_attempted_=true;scalar_flags_=flags;phase_=Phase::deleting;\n    active_stage_=Stage::scalar_delete;native_site_=0x4de270;\n    // A qualified override can release then throw. Never retain a supposedly\n    // live pointer across this call; success with bit 0 clear restores ownership.\n    allocation_=Allocation::indeterminate;retained_=nullptr;\n    try {\n        auto* result=runtime_.scalar_delete(flags);\n        scalar_result_address_=reinterpret_cast<std::uintptr_t>(result);scalar_completed_=true;\n        if(flags&1)allocation_=Allocation::released;\n        else {allocation_=Allocation::retained;retained_=reinterpret_cast<NativeGameStorage*>(allocation_address_);}\n        active_stage_=Stage::none;phase_=Phase::destroyed;\n        return result;\n    } catch(...) {record_failure();throw;}\n}\nvoid GameNativeGameApplicationFrame::free_retained_storage() {\n    if(active()||allocation_!=Allocation::retained||!name_resolved()||!runtime_retired()\n        ||(runtime_.phase()==GameNativeGameRuntime::Phase::destroyed&&(scalar_flags_&1)))\n        throw std::logic_error(\"Application frame free requires resolved graph/name and proven retained allocation\");\n    singleton_lifetime_free(retained_);\n    retained_=nullptr;allocation_=Allocation::released;phase_=Phase::retired;\n}\nvoid GameNativeGameApplicationFrame::acknowledge_name_resolution() {\n    if(active()||name_resolved())\n        throw std::logic_error(\"Only a pending application name can be externally resolved\");\n    name_=Name::externally_resolved;\n}\nvoid GameNativeGameApplicationFrame::acknowledge_diagnostic_retirement(DiagnosticDisposition disposition) {\n    if(active()||phase_==Phase::retired||phase_==Phase::diagnostic_retired\n        ||!name_resolved()||!runtime_retired())\n        throw std::logic_error(\"Application diagnostic retirement requires resolved name and nonlive runtime\");\n    if(disposition==DiagnosticDisposition::no_allocation) {\n        if(allocation_address_||allocation_!=Allocation::absent)\n            throw std::logic_error(\"Application allocation was not absent\");\n    } else if(disposition==DiagnosticDisposition::already_released) {\n        if(!allocation_address_||allocation_==Allocation::absent)\n            throw std::logic_error(\"Application retirement requires the original allocated address\");\n        retained_=nullptr;allocation_=Allocation::released;\n    } else throw std::invalid_argument(\"Unknown application allocation disposition\");\n    phase_=Phase::diagnostic_retired;\n}\nGameNativeGameApplicationFrame::Status GameNativeGameApplicationFrame::status() const noexcept {\n    return {phase_,active_stage_,failed_stage_,allocation_,name_,runtime_.phase(),\n        allocation_address_,constructor_result_address_,scalar_result_address_,captured_name_,\n        native_site_,failed_native_site_,observed_name_mask_,scalar_flags_,parent_cleanup_state_,\n        parent_state_recorded_,constructor_entered_,constructor_completed_,application_published_,\n        scalar_attempted_,scalar_completed_};\n}\nvoid* GameNativeGameApplicationFrame::name_header_for_diagnostics() noexcept {\n    return name_==Name::unprepared?nullptr:name_header_;\n}\n} // namespace bsp::game\n"
+    }
+  ],
+  "revalidated_dependency_pins": [
+    {
+      "group": "source_pins",
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "normalized_lf_sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "git_blob_oid": "82d6f97019a8ced315745431c1d80759d0251779",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/game_native_game_runtime.cpp",
+      "normalized_lf_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "git_blob_oid": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "include/bsp/native_game_construction.hpp",
+      "normalized_lf_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "git_blob_oid": "e83a2b3736edfb4d6fa699526a003861d3805977",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/native_game_construction.cpp",
+      "normalized_lf_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "git_blob_oid": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "normalized_lf_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+      "git_blob_oid": "6f63039a56ee19fb54ba204b18032a5a9243e78d",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/native_game_lifetime.cpp",
+      "normalized_lf_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+      "git_blob_oid": "c2bb099af6d7713d40fa43ad4aca79e9b5d813a5",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "include/bsp/native_string.hpp",
+      "normalized_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob_oid": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/native_string.cpp",
+      "normalized_lf_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob_oid": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "include/bsp/game_native_string_process.hpp",
+      "normalized_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "git_blob_oid": "84af7f1cd0a9a64323bcc3c1c4fbab783f941299",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/game_native_string_process.cpp",
+      "normalized_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "git_blob_oid": "eabbb65685dc6f301fed0b7bba7e52d2c9c188da",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "normalized_lf_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "git_blob_oid": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/singleton_lifetime.cpp",
+      "normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "normalized_lf_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "git_blob_oid": "a3c211324e0a44deab01eca75af8dfad848c516b",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/game_hosts.cpp",
+      "normalized_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "git_blob_oid": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "include/bsp/game_hosts.hpp",
+      "normalized_lf_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+      "git_blob_oid": "a777902d1207251888b81ce1ef9442864d88957f",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "source_pins",
+      "path": "src/winmain_startup.cpp",
+      "normalized_lf_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "git_blob_oid": "4dc6dd149ab3e4a76c5b5ff1633d83e3fe12f38a",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/native_game_construction.hpp",
+      "normalized_lf_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+      "git_blob_oid": "e83a2b3736edfb4d6fa699526a003861d3805977",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/native_game_construction.cpp",
+      "normalized_lf_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+      "git_blob_oid": "ad55eb59309369dff06d596cbdf3efd1e4c7037a",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/game_native_game_runtime.hpp",
+      "normalized_lf_sha256": "da151d489b0bdea13c0ac2c4ad513c4a73d9d767d9078397a72a8f8d2ed5169a",
+      "git_blob_oid": "82d6f97019a8ced315745431c1d80759d0251779",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/game_native_game_runtime.cpp",
+      "normalized_lf_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+      "git_blob_oid": "ad9f8b3518827f1b1117ea55c92a2b1de23fa78d",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "normalized_lf_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+      "git_blob_oid": "6f63039a56ee19fb54ba204b18032a5a9243e78d",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/native_game_lifetime.cpp",
+      "normalized_lf_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+      "git_blob_oid": "c2bb099af6d7713d40fa43ad4aca79e9b5d813a5",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "normalized_lf_sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+      "git_blob_oid": "8de8416376a3ec486f1bb3a6a81a8118cf041fe9",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "normalized_lf_sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f",
+      "git_blob_oid": "2bca11481b05e0cc04777e766f2652d6b3b2bd5f",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/native_string.hpp",
+      "normalized_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "git_blob_oid": "3b7af4c6508cfc1df81e913108b5162208685e97",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/native_string.cpp",
+      "normalized_lf_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "git_blob_oid": "7f24d89c9f305dda5d0f8e8d3a42256f12fe558a",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/native_string_duplicate.hpp",
+      "normalized_lf_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+      "git_blob_oid": "a3c211324e0a44deab01eca75af8dfad848c516b",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/native_string_duplicate.cpp",
+      "normalized_lf_sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+      "git_blob_oid": "f745264df105154fe437e331df18d4f2418c2160",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "normalized_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "git_blob_oid": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/singleton_lifetime.cpp",
+      "normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/game_native_string_process.hpp",
+      "normalized_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "git_blob_oid": "84af7f1cd0a9a64323bcc3c1c4fbab783f941299",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/game_native_string_process.cpp",
+      "normalized_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "git_blob_oid": "eabbb65685dc6f301fed0b7bba7e52d2c9c188da",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "normalized_lf_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "git_blob_oid": "d2d48f7cca8e08a76c98c10f2bdab9bca5cdb165",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/native_string_pool_storage.cpp",
+      "normalized_lf_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "git_blob_oid": "0e5d59593c47a3cdabaf1020adddc735141d28d3",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "normalized_lf_sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+      "git_blob_oid": "21a0950349db25c464e2c7eaa058bcd90d0ea114",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/game_native_vfs_application.cpp",
+      "normalized_lf_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+      "git_blob_oid": "32a441a593a381b649ccd89b71a6e4277e91401d",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "normalized_lf_sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7",
+      "git_blob_oid": "2fa69f0a256c502018731554aa36fa449c63020f",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/game_hosts_singletons.cpp",
+      "normalized_lf_sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1",
+      "git_blob_oid": "04fa246ee6a08551a7b70cf62ace9db7b91ec7ec",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/game_hosts.cpp",
+      "normalized_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "git_blob_oid": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "src/winmain_startup.cpp",
+      "normalized_lf_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "git_blob_oid": "4dc6dd149ab3e4a76c5b5ff1633d83e3fe12f38a",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/game_native_game_tables.hpp",
+      "normalized_lf_sha256": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb",
+      "git_blob_oid": "e5eb7b86ef82e88242a122dfa87de444d10cb8ee",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    },
+    {
+      "group": "prior_source_pins",
+      "path": "include/bsp/native_game_grid.hpp",
+      "normalized_lf_sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726",
+      "git_blob_oid": "d8eaf6e61bc5877655375157133184f34109f9cd",
+      "matches_prior_audit": true,
+      "matches_base_blob": true
+    }
+  ],
+  "verification": {
+    "ordered_actions": 20,
+    "static_assertions_passed": 21,
+    "new_source_files": 2,
+    "prior_direct_pins_rechecked": 16,
+    "prior_earlier_pins_rechecked": 26,
+    "unchanged_existing_source": true,
+    "new_native_queries_exports": 0,
+    "worker_builds_tests_probes": 0,
+    "worker_native_execution": false,
+    "game_validation": false,
+    "source_files_absent_at_base": true,
+    "physical_and_normalized_pins_recorded": true,
+    "git_diff_cached_check_passed": true,
+    "exact_four_owned_staged_paths_verified": true,
+    "two_new_source_pins_match_complete_staged_blobs": true
+  },
+  "remaining_frontier": [
+    "GameStartupHost::application_construct currently says subsystem pointers+4..+14 are unreconstructed and initializes ApplicationFrameState only. It is not the actual Application+14 producer required by this API.",
+    "GameStartupHost::application_initialize validates mode and run_initialize_phases parses that input directly. It does not provide the earlier native duplicate publication E1AE78 to the retained Game caller. Existing duplicate_native_string_00438e40 can implement that separate producer, but it is not invoked or owned by this proposed frame.",
+    "A fully composed GameNativeGameRuntime with genuine constructor/lifetime/physics/Dyn/globalconfig/load/resources/tables/grids/profile/string inputs and exact opaque descriptor/local preimages is still required. This packet supplies none of those missing contexts.",
+    "Current WinMain passes cachedload, but a later caller must read the actual current duplicated-input cell at the native point. That constant does not replace provenance or ownership.",
+    "Root must register the source in bsp_game, perform normal Win32 compilation and review emitted code before claiming build/emitted validation.",
+    "No application startup, fully composed context producer, Original FH3/SEH equivalence or game validation is supplied."
+  ]
+}

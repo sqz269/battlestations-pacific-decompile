@@ -98,3 +98,11 @@ No new Native queries, BF7456 queries, build, test, probe or execution occurred.
 This packet contains only the new header, implementation, this document and its
 report. CMake registration, compilation, complete emitted-kernel/callee review,
 ledger credit and any later caller integration belong to the primary integrator.
+
+## Primary integration and emitted review
+
+The integrator registered this unit in bsp_core. The first normal build rejected the single-operand `fmul st(1)` with C2415. The explicit `fmul st(0), st(1)` spelling emits the required `D8 C9`; the failed receipt and old source pin are retained. The corrected normal MSVC Win32 build and all three existing checks passed.
+
+Complete emitted review covers the 49-byte / 17-instruction pointer-only public wrapper, 74-byte / 28-instruction private kernel, all 18 native sites and physical concrete converter/fallback definitions. The kernel retains the 12 x87 operations, three MOVSS operations, current mode read and one raw converter call, then restores ESI and cleans its private DWORD. This admits one new 81-byte Original function. Its new explicit-context API remains unlinked to the game; actual common clock/reset/step authority, Native entry/EH/fault execution and gameplay remain unproved.
+
+Evidence: `reports/cc12_world_tick_reset_frame_primary_review.json`; complete retained artifacts under `local/cc12_world_tick_reset_frame_primary`.

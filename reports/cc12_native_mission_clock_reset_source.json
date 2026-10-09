@@ -102,7 +102,7 @@
       "mov edx, dword ptr [esi + 0ch]",
       "mov dword ptr [edx], eax",
       "fild dword ptr [edx]",
-      "fmul st(1)",
+      "fmul st(0), st(1)",
       "fsubp st(2), st(0)",
       "fxch st(1)",
       "mov edx, dword ptr [esi + 8]",
@@ -172,7 +172,7 @@
       {
         "native_address": "00874676",
         "source_line": 52,
-        "source_assembly": "fmul st(1)"
+        "source_assembly": "fmul st(0), st(1)"
       },
       {
         "native_address": "00874678",
@@ -402,8 +402,8 @@
     {
       "path": "src/native_mission_clock_reset.cpp",
       "bytes": 3477,
-      "sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6",
-      "lf_content_sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6"
+      "sha256": "7b19b589c9418edc8cf14c460a1bae1a6517afe377e6c335b946f253a8b9c075",
+      "lf_content_sha256": "7b19b589c9418edc8cf14c460a1bae1a6517afe377e6c335b946f253a8b9c075"
     },
     {
       "path": "include/bsp/native_render_batch_keys.hpp",
@@ -429,5 +429,28 @@
       "sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5",
       "lf_content_sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5"
     }
-  ]
+  ],
+  "primary_msvc_syntax_correction": {
+    "old_source_pin": {
+      "path": "src/native_mission_clock_reset.cpp",
+      "bytes": 3477,
+      "sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6",
+      "lf_content_sha256": "638f9cc7ade0bee96296d401b1d721b187617451c0470bdeb3d8b14e062a53a6"
+    },
+    "old_source_assembly": "fmul st(1)",
+    "current_source_assembly": "fmul st(0), st(1)",
+    "reason": "Normal MSVC Win32 build reported C2415 for single-operand form; equivalent explicit destination form encodes Native D8C9",
+    "first_failed_build_receipt": "local/cc12_world_tick_reset_frame_primary/first_failed_build_exit.json",
+    "emitted_encoding_verified": true,
+    "emitted_encoding": "d8c9"
+  },
+  "primary_emitted_review": {
+    "report": "reports/cc12_world_tick_reset_frame_primary_review.json",
+    "normal_build_passed": true,
+    "existing_checks_passed": 3,
+    "kernel_bytes": 74,
+    "kernel_instructions": 28,
+    "new_original_function_primary_admission": 1,
+    "native_binary_abi_or_runtime_proof": false
+  }
 }
