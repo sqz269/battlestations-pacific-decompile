@@ -1,0 +1,380 @@
+{
+  "schema": "cc12-count42-complete-helper-TEXT-peer-audit-v1",
+  "status": "independent-TEXT-consistency-review-complete-no-concrete-blocker-found",
+  "Source_credit": 0,
+  "Root_approval": false,
+  "runtime_ready_by_this_audit": false,
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_count42_complete_helper_TEXT_peer_audit",
+  "branch": "agent/cc12_count42_complete_helper_TEXT_peer_audit",
+  "base_commit": "e995b86aef0e4e503ad1a45c3e93ff513ff56afa",
+  "owned_files": [
+    "docs/CC12_COUNT42_COMPLETE_HELPER_TEXT_PEER_AUDIT.md",
+    "reports/cc12_count42_complete_helper_TEXT_peer_audit.json"
+  ],
+  "audit_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_count42_complete_helper_TEXT_peer_audit\\local\\count42peer",
+  "seal_files": [
+    "receipt.json",
+    "artifact_manifest.json"
+  ],
+  "selection": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_count42_complete_helper_TEXT_draft\\local\\count42draft",
+    "exact_files": 69,
+    "manifest_sha256": "0c1d5722342f774c22d156f32eb3de4e629b536fa6cb6c2f21bce6e269f8c183",
+    "case_files": 17,
+    "case_manifest_sha256": "f2e153b1e824a45a3638bb693797b06a2fb2688f83aec635ecc27eee619ead1a",
+    "all_selected_bytes_frozen": true,
+    "templates": [
+      {
+        "path": "template/actual_code_reader.py.txt",
+        "size": 5495,
+        "sha256": "3407288b94d7999bc6f32df810e6a4eb85e24c095ff3da6c880c65b9041cfa80"
+      },
+      {
+        "path": "template/common.py.txt",
+        "size": 4290,
+        "sha256": "bc9c7651258ad9a002c5dba0c57186b97a7ec87a64b48431180a2c36ac466dbb"
+      },
+      {
+        "path": "template/coverage_plan.schema.json.txt",
+        "size": 775,
+        "sha256": "12b1eb7f1d6ae187bcbd48bff986b101e437b5177f3baa36772f63a0c887e0ee"
+      },
+      {
+        "path": "template/gate.py.txt",
+        "size": 11032,
+        "sha256": "7803f9d3523b3acfa55a8a0823f90c972795f72a6258432bffe729a1954cee72"
+      },
+      {
+        "path": "template/inventory.py.txt",
+        "size": 5882,
+        "sha256": "a12e6bd5148a3141559a0f4bf5fa1f40d45ec4993b9f1a0aa84ca1912f442b71"
+      },
+      {
+        "path": "template/prepare_root.py.txt",
+        "size": 4358,
+        "sha256": "becec696a132a73566c25770dc1f524ca49a4530e4fe1c41b52823a24cf31a9e"
+      },
+      {
+        "path": "template/probe.cpp.txt",
+        "size": 3952,
+        "sha256": "c50bb4614923f4cc7a7e9d4e3fa8e06975c29c49b88293f3c4dcbf28f850dafc"
+      },
+      {
+        "path": "template/receipt_contract.json.txt",
+        "size": 2449,
+        "sha256": "0c3c4487b75affbaf8bc7ddb0490e08a45b9493d87447bf84db2a2a75a9c0938"
+      },
+      {
+        "path": "template/recipe.py.txt",
+        "size": 11356,
+        "sha256": "5fdda4bdca7e40e57d7a82a9f11d46d7d9e0b4f41f999c72e71b032436b6a12b"
+      },
+      {
+        "path": "template/recorded_reader.py.txt",
+        "size": 7756,
+        "sha256": "5e5eae9886698bcbfc0686a51782192d34333293c7393b67160a7ce56f837ee8"
+      },
+      {
+        "path": "template/selection.schema.json.txt",
+        "size": 563,
+        "sha256": "c5ec3fb554feb75e17d011b7ee3224212a7839305ff0864d64ffe9ceadb9742a"
+      }
+    ]
+  },
+  "Source_pins": [
+    {
+      "path": "src/native_scene_property_record_element_count.cpp",
+      "size": 1491,
+      "sha256": "da39df669bdffc0fda445dd46d5fc604f8f68ddb13c30c9465d6d968c1c7ff8c"
+    },
+    {
+      "path": "include/bsp/native_scene_property_record_element_count.hpp",
+      "size": 1456,
+      "sha256": "3ae755f3044c40fdae17d4565be1d3a53ebea34b19f74060ef91d551a6a15696"
+    }
+  ],
+  "frozen_context": "context/; generation-only snapshots, mutable originals are not strict post-pins",
+  "future_root_family": {
+    "path": "J:/PROG/battlestations-pacific-decompile/local/count42complete01",
+    "required_absent": true,
+    "absent_at_generation": true,
+    "never_created_or_opened": true
+  },
+  "leaf": {
+    "address": "008EF7F0",
+    "end": "008EF81A",
+    "bytes": 42,
+    "instructions": 17,
+    "sha256": "e84a191988638f684ec2d81e68f96fae767f4035f8d21a2ae736501afbeb8ce7",
+    "Source_symbol": "bsp::native_scene_property_record_element_count_008ef7f0",
+    "padded_fastcall": "ECX receiver / unused EDX register formal / zero stackargs / plain RET",
+    "reads": "little-endian tag DWORD+4; tag9/10/11 conditional size DWORD+24(hex36); default does not read size",
+    "writes": 0,
+    "calls": 0,
+    "providers": 0,
+    "no_unsigned_guards": true
+  },
+  "cases": [
+    {
+      "case_id": 0,
+      "tag": 9,
+      "size": 7,
+      "fill": 167,
+      "expected_eax": 1,
+      "raw_expected_edx": 3490578157,
+      "raw_flag_mask": 197,
+      "raw_flag_bits": 1,
+      "input40_expected_hex": "a7a7a7a709000000a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a707000000",
+      "read_size": true,
+      "observed": false
+    },
+    {
+      "case_id": 1,
+      "tag": 10,
+      "size": 4294967292,
+      "fill": 92,
+      "expected_eax": 1073741823,
+      "raw_expected_edx": 3490578157,
+      "raw_flag_mask": 197,
+      "raw_flag_bits": 4,
+      "input40_expected_hex": "5c5c5c5c0a0000005c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5cfcffffff",
+      "read_size": true,
+      "observed": false
+    },
+    {
+      "case_id": 2,
+      "tag": 11,
+      "size": 4294967295,
+      "fill": 210,
+      "expected_eax": 357913941,
+      "raw_expected_edx": 2863311530,
+      "raw_flag_mask": 197,
+      "raw_flag_bits": 4,
+      "input40_expected_hex": "d2d2d2d20b000000d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2ffffffff",
+      "read_size": true,
+      "observed": false
+    },
+    {
+      "case_id": 3,
+      "tag": 4294967295,
+      "size": 2808926865,
+      "fill": 105,
+      "expected_eax": 0,
+      "raw_expected_edx": 3490578157,
+      "raw_flag_mask": 2245,
+      "raw_flag_bits": 68,
+      "input40_expected_hex": "69696969ffffffff6969696969696969696969696969696969696969696969696969696991d26ca7",
+      "read_size": false,
+      "observed": false
+    }
+  ],
+  "wire": {
+    "endian": "little",
+    "header": 16,
+    "record_count": 16,
+    "record_bytes": 192,
+    "total_bytes": 3088,
+    "record_header": 32,
+    "pre_offset": 32,
+    "post_offset": 72,
+    "capture_offset": 112,
+    "before_image_offset": 112,
+    "after_image_offset": 152,
+    "image_bytes": 40,
+    "fields": [
+      "edi",
+      "esi",
+      "ebp",
+      "esp",
+      "ebx",
+      "edx",
+      "ecx",
+      "eax",
+      "eflags",
+      "es"
+    ]
+  },
+  "recorded_predicates": {
+    "mode_order": [
+      "raw-Native",
+      "raw-Source",
+      "ordinary-Native",
+      "ordinary-Source"
+    ],
+    "raw_DF": 1,
+    "ordinary_DF": 0,
+    "all_lanes": [
+      "exact full input40 before/after",
+      "observed initial GPR seeds/ECX mapped frame/nonzero ESP",
+      "EAX result",
+      "EDI/ESI/EBP/EBX/ESP and ES equality",
+      "DF equality"
+    ],
+    "raw_only": [
+      "ECX unchanged",
+      "EDX tag11 highAAAAAAAA else unchanged",
+      "defined branch flag masks",
+      "Native/Source physical parity including same captured stack at shared callsite"
+    ],
+    "ordinary_volatile_fields": "captured but ECX/EDX/arithmetic flags unasserted",
+    "ES": "actually serialized zero-extended selector and selected equality, not invented module/class ownership or a blanket ordinary ABI claim",
+    "unread_default": "Source/full literal/static Root review only; snapshots alone cannot prove absence of reads",
+    "module_pointer_claims": "ECX is recorded and compared to fixed map _g_frame; actual loader/module/file/provider identities are not serialized"
+  },
+  "evidence": [
+    {
+      "topic": "two fresh TUs and fixed subprocess gateway",
+      "files": [
+        "template/recipe.py.txt:62",
+        "template/recipe.py.txt:85",
+        "template/prepare_root.py.txt:35"
+      ],
+      "finding": "leaf.cpp and probe.cpp freshly compiled, NODEFAULTLIB/custom entry/kernel32_lib link; fixed one target argv; no shell; exclusive attempts/stdout/stderr/processes; failures consumed"
+    },
+    {
+      "topic": "capture and binary protocol",
+      "files": [
+        "template/probe.cpp.txt:6",
+        "template/probe.cpp.txt:68",
+        "template/probe.cpp.txt:120",
+        "template/recorded_reader.py.txt:50"
+      ],
+      "finding": "Record192 and Wire3088 agree; actual pushfd/pushad states plus zero-extended ES, before and after images copied without expected-value substitution; reader checks exact length/order/header and complete input40"
+    },
+    {
+      "topic": "guard before selected helper execution",
+      "files": [
+        "template/recipe.py.txt:1",
+        "template/inventory.py.txt:40",
+        "template/gate.py.txt:40"
+      ],
+      "finding": "five entries share exact guarded prefix1..38; Root TEXT receipt pins exactly eleven materialized files before common/Capstone execution; -B -E and optimization0 required; actual environment/interpreter recorded"
+    },
+    {
+      "topic": "full byte ownership and CFG stop boundaries",
+      "files": [
+        "template/common.py.txt:43",
+        "template/gate.py.txt:58",
+        "template/gate.py.txt:73",
+        "template/gate.py.txt:97",
+        "template/actual_code_reader.py.txt:48"
+      ],
+      "finding": "raw COFF sections/symbols/aux/relocations/directives and full map available; every executable raw byte must occur exactly once in Root ranges; complete literals42; explicit padding separated; all weak externals rejected; unknown register/complex edges stop; IAT three names or one four-target capture only"
+    },
+    {
+      "topic": "Root semantic review versus mechanical byte results",
+      "files": [
+        "template/gate.py.txt:125",
+        "template/actual_code_reader.py.txt:65",
+        "template/recipe.py.txt:72",
+        "template/receipt_contract.json.txt"
+      ],
+      "finding": "relocation operands, aliases/function extents, static symbols, wholeMain/helper semantics and actual caller control remain independently reviewed Root obligations; machine byte coverage and serialized booleans are not proof of those semantics and grant no credit"
+    },
+    {
+      "topic": "selection/package/toolchain/environment closure",
+      "files": [
+        "template/prepare_root.py.txt:21",
+        "template/recipe.py.txt:49",
+        "template/gate.py.txt:43",
+        "template/inventory.py.txt:43"
+      ],
+      "finding": "mandatory compiler/linker/python/kernel32_lib/original_pe pins; any additional selection.tools rows rechecked before dispatch; full recursive Capstone package and actual loaded native filename pinned; explicit child env, full actual entry env recorded. Transitive compiler backend, showIncludes headers, interpreter/native dependencies and actual environment selection are Root obligations, not supplied installed facts"
+    },
+    {
+      "topic": "linked and recorded reader execution",
+      "files": [
+        "template/recipe.py.txt:66",
+        "template/recipe.py.txt:75",
+        "template/recipe.py.txt:118",
+        "template/recorded_reader.py.txt:40"
+      ],
+      "finding": "actual byte reader dispatched as separately recorded selected Python process after gate; linked receipt mandatory process/entry/inventory/code pins and whole membership before target; recorded reader after sole target rechecks linked files and wire/process hashes; no provider decoder because leaf has no providers"
+    },
+    {
+      "topic": "failures, input bookends and final sealing",
+      "files": [
+        "template/recipe.py.txt:91",
+        "template/recipe.py.txt:97",
+        "template/recipe.py.txt:123",
+        "template/receipt_contract.json.txt"
+      ],
+      "finding": "exclusive attempts/logs; exception stop and nonzero process record retained; selected Main/cases checks at phase entry/finally; exact runtime successor set. Root must freeze evolving metadata and author final all-files seal including stops/logs; templates create no acceptance or final runtime seal"
+    }
+  ],
+  "dependency_TEXT_obligations": {
+    "mandatory_tool_selection": [
+      "compiler",
+      "linker",
+      "python",
+      "kernel32_lib",
+      "original_pe"
+    ],
+    "guarded_local_package": [
+      "recipe.py",
+      "gate.py",
+      "inventory.py",
+      "actual_code_reader.py",
+      "recorded_reader.py",
+      "common.py",
+      "probe.cpp",
+      "leaf.cpp",
+      "include/bsp/native_scene_property_record_element_count.hpp",
+      "selection.json",
+      "selected_before.json"
+    ],
+    "stdlib_import_names": [
+      "sys",
+      "os",
+      "json",
+      "hashlib",
+      "pathlib",
+      "datetime",
+      "subprocess",
+      "shutil",
+      "struct",
+      "re",
+      "importlib.util"
+    ],
+    "nonstdlib_package": "selected absolute capstone_root / all recursive capstone_pins / actual capstone._cs._name; importcapstone.x86 within that package",
+    "compile_dependency_inputs": "actual Source includes cstdint and stdint.h, chosen INCLUDE/tool backend/header/library/interpreter closure must be reviewed/pinned by Root selection; /showIncludes logs are inspection, not independently supplied hashes",
+    "not_claimed": "hermetic interpreter/toolchain, loaded kernel32 binding, future installed/provider/image results"
+  },
+  "receipt_contract": {
+    "created_here": 0,
+    "accepted_here": 0,
+    "TEXT": "Root /root count42complete01 approve-fresh-build-only; exact11 materialized pins and full control/case review",
+    "linked": "Root /root count42complete01 approve-one-target-process; all actual code/COFF/weak/relocations/helpers/callers/environment review, complete pinned prelaunch inventory and exact later successor names",
+    "gate_result": "structural source0 qualifiedfalse",
+    "actual_reader_result": "byte coverage only source0 qualifiedfalse",
+    "recorded_result": "recorded-cases-pass is not independent Root acceptance",
+    "final_seal": "Root must seal every actual runtime file including failures/stops; none authored by peer"
+  },
+  "concrete_TEXT_blockers": [],
+  "remaining_Root_prerequisites": [
+    "populate real strict selection and complete dependency/environment closure before TEXT receipt",
+    "fresh actual two-TU compile/link/COFF/map/whole byte and relocation/helper/caller inspection; stop if weak or unknown/register-held transfer appears",
+    "actual raw dispatcher/ordinary wrapper/capture and external reader execution review and linked receipt",
+    "one actual target attempt, recorded binary decoding and Root review",
+    "post-input/code/dependency bookends and exact final runtime seal; admission/publication decision"
+  ],
+  "execution_boundary": {
+    "selected_modules_imported": 0,
+    "selected_templates_executed": 0,
+    "old_helpers_executed": 0,
+    "compiler": 0,
+    "linker": 0,
+    "target": 0,
+    "Native_Ghidra_queries": 0,
+    "provider_queries": 0,
+    "Root_writes": 0,
+    "Source_edits": 0,
+    "tests": 0
+  },
+  "limits": [
+    "No future observed values, addresses, code extents or captures asserted",
+    "Weak fallback/aliases are not assumed resolved: candidate gate rejects all weak records",
+    "No class/clone/constructor/heap/ownership/numeric payload or game admission; no consumer qualification revocation",
+    "Semantic safety is independently reviewed Root work; this TEXT audit supplies no reconstruction credit"
+  ]
+}
