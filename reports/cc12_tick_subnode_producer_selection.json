@@ -1,0 +1,1422 @@
+{
+  "schema": 1,
+  "packet": "cc12_tick_subnode_producer_selection",
+  "kind": "readonly_metadata_and_current_Source_selection_no_Native_body_reads",
+  "created_utc": "2026-10-09T13:49:36.158518+00:00",
+  "baseline_commit": "12f249d3ab42e33b6ec910aafafc9eb2cd217a85",
+  "owned_files": [
+    "docs/CC12_TICK_SUBNODE_PRODUCER_SELECTION.md",
+    "reports/cc12_tick_subnode_producer_selection.json"
+  ],
+  "leased_metadata_addresses": [
+    "0071C470",
+    "00720180",
+    "007E1E20",
+    "007EABC0",
+    "007F1DE0",
+    "00818110",
+    "00876120",
+    "008FBC80"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "mechanism": "Each bsp.py ghidra invocation calls client().verify against config/target.json before metadata query. All sixteen retained proto/callees commands completed without target mismatch.",
+    "batch_discipline": "Only proto and callees Native metadata. Final proto retention uses --lines 12 to exclude constant/hash lists. One earlier full proto of 00876120 showed zero string constants; no Native body/string/profile/table/slot read was requested."
+  },
+  "metadata_candidates": [
+    {
+      "address": "0071C470",
+      "command": "python tools/bsp.py ghidra proto 0071C470 --lines 12",
+      "function": "FUN_0071c470 at 0071c470",
+      "signature": "undefined FUN_0071c470(void)",
+      "entry": "0071c470",
+      "body": "0071c470 - 0071c47c",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 4,
+      "basic_block_count": 1,
+      "edge_count": 0,
+      "call_count": 1,
+      "param_count": 0,
+      "cyclomatic_complexity": 1,
+      "body_start": "0071C470",
+      "body_end_inclusive": "0071C47C",
+      "metadata_span_bytes": 13,
+      "callees_metadata": [
+        "FUN_00876020 @ 00876020"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 0071C470 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/0071C470_proto.txt",
+        "bytes": 474,
+        "sha256": "fbe0d1d34283e7162e5bed77e8b0ac3780957a17502b938b2ba175cb91469cbb",
+        "canonical_lf_sha256": "b7bcaaa149ed578deb8c8d278f6db4c2e9a2098d9c48b46e864f51d1508abf3c"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/0071C470_callees.txt",
+        "bytes": 25,
+        "sha256": "1a046b6f260e09b160785867241bdee31d9c036ca1f3768c43c227cb72191eaf",
+        "canonical_lf_sha256": "f31a8a99314c0e46e64453f2d86f740cbad079579f813780e4be39490ea80853"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:29.426511+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "0071C470|FUN_0071c470",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 1,
+        "matches": [],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "none_found",
+        "finding": "No exact Source address or current Ghidra-name hit.",
+        "paths": [],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    },
+    {
+      "address": "00720180",
+      "command": "python tools/bsp.py ghidra proto 00720180 --lines 12",
+      "function": "BSP_CommandControllerBase_Construct at 00720180",
+      "signature": "undefined BSP_CommandControllerBase_Construct(void)",
+      "entry": "00720180",
+      "body": "00720180 - 00720442",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 153,
+      "basic_block_count": 8,
+      "edge_count": 10,
+      "call_count": 4,
+      "param_count": 0,
+      "cyclomatic_complexity": 4,
+      "body_start": "00720180",
+      "body_end_inclusive": "00720442",
+      "metadata_span_bytes": 707,
+      "callees_metadata": [
+        "FUN_00876020 @ 00876020",
+        "FUN_00876120 @ 00876120",
+        "`eh_vector_constructor_iterator' @ 00bf7cd1",
+        "operator_new @ 00bf681b"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 00720180 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/00720180_proto.txt",
+        "bytes": 546,
+        "sha256": "1e82ad29b6b8ec83499fa55b3aa963c0b8de2565b91b65d3bdaf06204e63ba85",
+        "canonical_lf_sha256": "589094afcc966bfeaab6d7b902dd0831ed258a4125f648b875289f83e2d341fe"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/00720180_callees.txt",
+        "bytes": 120,
+        "sha256": "0fa07b36aa020a17bc123b57b74faacc83cc37343a1ad9606f4c4c9c71445cb0",
+        "canonical_lf_sha256": "997918002f8b99391bfc033d04854b30c0dc6e115f0012cf84532a28efd3f2c2"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:29.906793+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "00720180|BSP_CommandControllerBase_Construct",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "matches": [
+          "include\\bsp\\director_target_gate.hpp:10://    command controller's base constructor 00720180 stores -1.0f into it at",
+          "include\\bsp\\director_target_gate.hpp:36:inline constexpr std::uint32_t kCommandControllerConstructAddress = 0x00720180u;",
+          "include\\bsp\\director_update_arms.hpp:88:// New from 00720180's tail: twenty dwords at +1D0h..+21Fh, every one written",
+          "src\\game_hosts_commands.cpp:154:    // base constructor 00720180, which 008363E0 calls at 00836403 with ECX",
+          "src\\game_hosts_commands.cpp:852:        // session object. 00720180 stores [arg+28h] there (0072020B/00720219)",
+          "src\\game_hosts_commands.cpp:1599:    // unit (00720180 from 008363E0) and destroyed with it; nothing about",
+          "src\\game_hosts_ship_ai.cpp:11116:        // base constructor 00720180, which 008363E0 reaches at 00836403 with",
+          "include\\bsp\\weapon_director.hpp:142:    virtual void construct_command_array(NativeHandle endpoint) = 0;  // 00720180 at 00836403"
+        ],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "typed_projection_and_abstract_model",
+        "finding": "GameDirector typed defaults; the production commands host resizes director records. WeaponDirectorHost has an abstract construct_command_array hook. No raw Node provider was found.",
+        "paths": [
+          "src/game_hosts_commands.cpp",
+          "include/bsp/weapon_director.hpp",
+          "src/weapon_director.cpp"
+        ],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    },
+    {
+      "address": "007E1E20",
+      "command": "python tools/bsp.py ghidra proto 007E1E20 --lines 12",
+      "function": "BSP_PlaneNeighbours_Construct at 007e1e20",
+      "signature": "undefined BSP_PlaneNeighbours_Construct(void)",
+      "entry": "007e1e20",
+      "body": "007e1e20 - 007e2006",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 114,
+      "basic_block_count": 4,
+      "edge_count": 4,
+      "call_count": 5,
+      "param_count": 0,
+      "cyclomatic_complexity": 2,
+      "body_start": "007E1E20",
+      "body_end_inclusive": "007E2006",
+      "metadata_span_bytes": 487,
+      "callees_metadata": [
+        "BSP_Math_TangentX87Float @ 00412e20",
+        "BSP_Random_UniformFloatRange @ 00bd2f10",
+        "FUN_00876020 @ 00876020"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 007E1E20 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/007E1E20_proto.txt",
+        "bytes": 527,
+        "sha256": "8680b714edd09d218924d641d5e0f39b8a326ce421d2842c2e2f8b467db6abbc",
+        "canonical_lf_sha256": "ab741955e136ab85def8558343be5555dbfade1d956213e31133dc4f954403d3"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/007E1E20_callees.txt",
+        "bytes": 103,
+        "sha256": "ccf9422e4873783dd8cd257ddd99212e3c9017e89d984b547a9e0d5f3c505211",
+        "canonical_lf_sha256": "1942b1e81c349f2b1160cd145f5198a1bb49e507c5432185e76b88ec245f139e"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:30.192672+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "007E1E20|BSP_PlaneNeighbours_Construct",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "matches": [
+          "include\\bsp\\dogfight_task.hpp:350:// 007D621F stores unit+C50h = 007E1E20(unit), a 0xCC-byte object, for a plane"
+        ],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "typed_consumer_projection",
+        "finding": "Header constructor comment; GameUnitSlot neighbor vectors and clocks implement projected behavior. No actual raw constructor or Node provider found.",
+        "paths": [
+          "include/bsp/dogfight_task.hpp",
+          "src/game_hosts_units.cpp"
+        ],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    },
+    {
+      "address": "007EABC0",
+      "command": "python tools/bsp.py ghidra proto 007EABC0 --lines 12",
+      "function": "BSP_PlaneActuatorBlock_Construct at 007eabc0",
+      "signature": "undefined BSP_PlaneActuatorBlock_Construct(void)",
+      "entry": "007eabc0",
+      "body": "007eabc0 - 007eadfe",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 154,
+      "basic_block_count": 20,
+      "edge_count": 27,
+      "call_count": 6,
+      "param_count": 0,
+      "cyclomatic_complexity": 9,
+      "body_start": "007EABC0",
+      "body_end_inclusive": "007EADFE",
+      "metadata_span_bytes": 575,
+      "callees_metadata": [
+        "BSP_NativeString_Resize @ 0041dd40",
+        "BSP_SizedStoragePool_GetSingleton @ 00419cc0",
+        "BSP_SizedStoragePool_ReturnBlock @ 00bd1510",
+        "FUN_00876020 @ 00876020",
+        "FUN_00b78670 @ 00b78670",
+        "_memcpy @ 00bf7680"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 007EABC0 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/007EABC0_proto.txt",
+        "bytes": 538,
+        "sha256": "4882cf26dcfbb7ef65a338fe239ebb92f4230878c9394586d008aa04c5a56733",
+        "canonical_lf_sha256": "ccce9eda56db7536fd087664532fbd6b11225fd8be5e9ecbe88b02804e494e89"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/007EABC0_callees.txt",
+        "bytes": 197,
+        "sha256": "34e1be1a7d43d5445f04359149bed32e53d780bfc5e567a3012dab726395413a",
+        "canonical_lf_sha256": "888e405972c539f81d9377bb414509b92499c271fcec7d2eeca472e00583588e"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:30.530896+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "007EABC0|BSP_PlaneActuatorBlock_Construct",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "matches": [
+          "src\\game_hosts_units.cpp:1496:    // docs/TORPEDO_RELEASE_SPAWN.md. Built at 007EABC0 by",
+          "src\\torpedo_release_spawn.cpp:5:// Addresses: 007DE1E0, 007DE3A0, 007BBBA0, 007BBC00, 007EABC0.",
+          "include\\bsp\\torpedo_release_spawn.hpp:6:// The block is built by 007EABC0 from BSP_Plane_ReadPropertyBag: the allocation"
+        ],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "typed_projection",
+        "finding": "GameUnitSlot::actuator_block_dec is a PlaneActuatorBlock. Source explicitly substitutes enabled channel C and nominal rate. No raw Node links/profile route found.",
+        "paths": [
+          "src/game_hosts_units.cpp",
+          "include/bsp/torpedo_release_spawn.hpp"
+        ],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    },
+    {
+      "address": "007F1DE0",
+      "command": "python tools/bsp.py ghidra proto 007F1DE0 --lines 12",
+      "function": "BSP_SquadronLaunchTask_Construct at 007f1de0",
+      "signature": "undefined BSP_SquadronLaunchTask_Construct(void)",
+      "entry": "007f1de0",
+      "body": "007f1de0 - 007f1e67",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 41,
+      "basic_block_count": 1,
+      "edge_count": 0,
+      "call_count": 2,
+      "param_count": 0,
+      "cyclomatic_complexity": 1,
+      "body_start": "007F1DE0",
+      "body_end_inclusive": "007F1E67",
+      "metadata_span_bytes": 136,
+      "callees_metadata": [
+        "FUN_007f0f80 @ 007f0f80",
+        "FUN_00876020 @ 00876020"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 007F1DE0 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/007F1DE0_proto.txt",
+        "bytes": 535,
+        "sha256": "b46b43255f159b46480f7fc0319eb961f97d4ae39dd44556099abe94ab0a6122",
+        "canonical_lf_sha256": "1cbb3fe04600775e15d00780f0301bccfe246969beb20d647a54b5d379615ee2"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/007F1DE0_callees.txt",
+        "bytes": 50,
+        "sha256": "f1449f051d0c479b795680bef9c221be90c3136da7d1dd91fd87b72d79b297f4",
+        "canonical_lf_sha256": "5c37e27ee1f78954b0112a0219f3f99540fd0511aa903f485c67d6b64c99b85b"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:30.881013+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "007F1DE0|BSP_SquadronLaunchTask_Construct",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "matches": [
+          "src\\game_hosts_units.cpp:32773:                    // IsKindOf(45h), 38h bytes -> 007F1DE0(base+310h, squadron):",
+          "src\\game_hosts_units.cpp:32788:                        host.done(\"SquadronLaunchTask::construct_007f1de0\", 0x007f1de0u);",
+          "src\\game_hosts_units.cpp:33896:            \"not_ready=%llu sends=%llu no_deck=%llu (007F1DE0 / 007F1F00 / 007EF010 / \"",
+          "include\\bsp\\plane_squadron_host.hpp:133:    // The launch task 007F1DE0 (38h bytes, vtable 00D08AE4) that pass C builds at"
+        ],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "explicit_production_construction_projection",
+        "finding": "GameUnitsHost writes launch_task_live/timer/deck/sends in a PlaneSquadronHostRecord and records construct_007f1de0. Production task tick consumes those fields. This is concrete typed storage, not Native task/Node storage.",
+        "paths": [
+          "src/game_hosts_units.cpp",
+          "include/bsp/plane_squadron_host.hpp"
+        ],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    },
+    {
+      "address": "00818110",
+      "command": "python tools/bsp.py ghidra proto 00818110 --lines 12",
+      "function": "FUN_00818110 at 00818110",
+      "signature": "undefined FUN_00818110(void)",
+      "entry": "00818110",
+      "body": "00818110 - 0081828e",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 118,
+      "basic_block_count": 18,
+      "edge_count": 28,
+      "call_count": 2,
+      "param_count": 0,
+      "cyclomatic_complexity": 12,
+      "body_start": "00818110",
+      "body_end_inclusive": "0081828E",
+      "metadata_span_bytes": 383,
+      "callees_metadata": [
+        "BSP_EffectHandle_Acquire @ 00870cd0",
+        "FUN_00876020 @ 00876020",
+        "InterlockedDecrement @ EXTERNAL:0000015d",
+        "InterlockedIncrement @ EXTERNAL:0000015c"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 00818110 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/00818110_proto.txt",
+        "bytes": 479,
+        "sha256": "63f02ea739a963d5a7d1a797c6de6471142a65b5d01d3ca593fa43e53273b2ab",
+        "canonical_lf_sha256": "a99de6e376c9e1f42010cc0d870fefa9ca0fa4331edc00cd6a6807a6dca1c957"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/00818110_callees.txt",
+        "bytes": 146,
+        "sha256": "ae4bdfc315e6511a5e6bd596c72753787c5a01cf696a7f737c731d134756acab",
+        "canonical_lf_sha256": "5fa3f4529eab68e586021b346fea10231176a75817cd267690272fc75823f6c2"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:31.211654+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "00818110|FUN_00818110",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "matches": [
+          "src\\game_hosts_gunnery.cpp:2596:    // 00818110's scheduled objects: (unit, msg+30h damage), stepped once by",
+          "src\\game_hosts_gunnery.cpp:10314:// the 38h scheduled object 00818110 whose step 0081B630 calls vtable[1ACh]"
+        ],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "typed_projection",
+        "finding": "GameGunneryHost::Impl::pending_explosions is a vector of (unit index, float damage) pairs, emplaced at failure and swapped/drained later. No Native scheduled object or raw Node backing found.",
+        "paths": [
+          "src/game_hosts_gunnery.cpp"
+        ],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    },
+    {
+      "address": "00876120",
+      "command": "python tools/bsp.py ghidra proto 00876120 --lines 12",
+      "function": "FUN_00876120 at 00876120",
+      "signature": "undefined FUN_00876120(void)",
+      "entry": "00876120",
+      "body": "00876120 - 00876175",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 31,
+      "basic_block_count": 7,
+      "edge_count": 9,
+      "call_count": 3,
+      "param_count": 0,
+      "cyclomatic_complexity": 4,
+      "body_start": "00876120",
+      "body_end_inclusive": "00876175",
+      "metadata_span_bytes": 86,
+      "callees_metadata": [
+        "BSP_PendingRegistry_Get @ 00875280 FUN_00875280",
+        "BSP_TickSubList_UnlinkNode @ 00874e60 FUN_00874e60",
+        "EnterCriticalSection @ EXTERNAL:0000015b",
+        "FUN_00876020 @ 00876020",
+        "LeaveCriticalSection @ EXTERNAL:00000159"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 00876120 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/00876120_proto.txt",
+        "bytes": 475,
+        "sha256": "b36c002e5316a354535e4d3e48ec271ac499a53d6811f91be596fd8e62fb086e",
+        "canonical_lf_sha256": "0c25f022c85c91c59e94783eafbae022eb4933ca476ac9e70668ecb8cfb198ee"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/00876120_callees.txt",
+        "bytes": 210,
+        "sha256": "b22e8e77fca8baf96acf025eba4d8ec8a25e9d6c8984cbffa674ec4bb1ea9181",
+        "canonical_lf_sha256": "5053c66be347ecc1652fbddee975771dca22f1e7b570451830d23cb35a5dd590"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:31.593111+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "00876120|FUN_00876120",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 1,
+        "matches": [],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "none_found",
+        "finding": "No exact Source address or current Ghidra-name hit.",
+        "paths": [],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    },
+    {
+      "address": "008FBC80",
+      "command": "python tools/bsp.py ghidra proto 008FBC80 --lines 12",
+      "function": "BSP_GunBot_Attach at 008fbc80",
+      "signature": "undefined BSP_GunBot_Attach(void)",
+      "entry": "008fbc80",
+      "body": "008fbc80 - 008fbcd2",
+      "program": "battlestationspacific.exe",
+      "instruction_count": 37,
+      "basic_block_count": 4,
+      "edge_count": 4,
+      "call_count": 1,
+      "param_count": 0,
+      "cyclomatic_complexity": 2,
+      "body_start": "008FBC80",
+      "body_end_inclusive": "008FBCD2",
+      "metadata_span_bytes": 83,
+      "callees_metadata": [
+        "FUN_00876020 @ 00876020"
+      ],
+      "callees_command": "python tools/bsp.py ghidra callees 008FBC80 --limit 25 --lines 55",
+      "metadata_reparent_edge_present": true,
+      "proto_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/008FBC80_proto.txt",
+        "bytes": 490,
+        "sha256": "737756e85ebe07482271170091d26a7e9ecd105ee31d5bf47a205872184f03f8",
+        "canonical_lf_sha256": "aced7bbdbcb68a44eaeb70dde1e85e46f128186c323dabdfbd601c54d52627d1"
+      },
+      "callees_capture": {
+        "path": "local/cc12_tick_subnode_producer_selection/008FBC80_callees.txt",
+        "bytes": 25,
+        "sha256": "1a046b6f260e09b160785867241bdee31d9c036ca1f3768c43c227cb72191eaf",
+        "canonical_lf_sha256": "f31a8a99314c0e46e64453f2d86f740cbad079579f813780e4be39490ea80853"
+      },
+      "metadata_capture_utc": "2026-10-09T13:40:32.075274+00:00",
+      "Source_search": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "008FBC80|BSP_GunBot_Attach",
+          "src",
+          "include",
+          "tests"
+        ],
+        "roots": [
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "matches": [
+          "include\\bsp\\gun_bot_ticks.hpp:30:inline constexpr std::uint32_t kGunBotAttachAddress = 0x008FBC80u;",
+          "include\\bsp\\gun_bot_ticks.hpp:70:inline constexpr std::size_t kGunBotSlotAttach = 0x04;       // 008FBC80"
+        ],
+        "output_complete": true,
+        "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+      },
+      "Source_counterpart": {
+        "status": "numeric_constants_only_for_attach",
+        "finding": "Gun-bot attach address/slot and field-offset constants; no Source attach implementation/provider found.",
+        "paths": [
+          "include/bsp/gun_bot_ticks.hpp"
+        ],
+        "actual_raw_node_storage_demonstrated": false
+      },
+      "Native_entry_contract_known_by_this_packet": false,
+      "Native_body_read": false,
+      "byte_equality_or_CFG_verified": false
+    }
+  ],
+  "metadata_qualification": "Inclusive body spans and instruction/block/call counts are fresh Ghidra metadata, not PE/live byte equality or complete physical CFG/call inventories. All displayed undefined(void) signatures remain non-authoritative. Imported callees may occur beyond call_count. Descriptive symbols are hypotheses.",
+  "recommendation": {
+    "first_Root_Astra_gate": "007F1DE0",
+    "end_inclusive": "007F1E67",
+    "metadata_span_bytes": 136,
+    "instruction_count": 41,
+    "basic_block_count": 1,
+    "entry_contract": "Unknown: no incoming register/stack/return/cleanup/profile/Node-placement contract is asserted before Root gate.",
+    "why": "Smallest metadata candidate with explicit production construction counterpart in current Source: typed launch-task fields in a PlaneSquadronHostRecord. The three smaller candidates have absent/constant-only construction counterparts.",
+    "actual_Source_storage": "PlaneSquadronRegistry::records_ vector -> PlaneSquadronHostRecord -> launch_task_live, launch_task_timer_1c, launch_task_deck, launch_task_sends. This is an actual typed storage route, not raw Native Node storage.",
+    "actual_raw_Node_provider_found": false,
+    "actual_Source_lifecycle": "GameUnitsHost construction projection initializes fields; run_landing_queue_006cd240 iterates squadron records and calls base_launch_task_tick_007f1f00; no-member branch clears launch_task_live. Scheduling placement is explicitly labelled in Source.",
+    "Native_constructor_or_class_proved": false,
+    "Native_profile_or_slot0_proved": false,
+    "expected_next_packet": "cc12_squadron_launch_task_constructor_ABI_readiness",
+    "expected_next_address_ownership": [
+      "007F1DE0"
+    ],
+    "expected_next_file_ownership": [
+      "docs/CC12_SQUADRON_LAUNCH_TASK_CONSTRUCTOR_ABI_READINESS.md",
+      "reports/cc12_squadron_launch_task_constructor_ABI_readiness.json"
+    ],
+    "dependencies": [
+      "Root Astra exact-owned entry/exit and complete schedule gate before worker body work.",
+      "Accepted readonly243 00876020 reparent consumer; does not provide a producer/profile.",
+      "FUN_007f0f80 is the other fresh metadata callee. Its body/entry/effects remain unopened and need a separate gate if required.",
+      "Source header comment mentioning 38h task and D08AE4 profile is a lead only; no profile/slot/target ownership is assigned by this packet.",
+      "Any actual raw Source composition needs valid stable parent/node backing, actual publication-cell domain and concrete callable deletion service; typed projection and singleton registry retirement cannot supply these automatically."
+    ],
+    "smaller_deferred_candidates": [
+      {
+        "address": "0071C470",
+        "reason": "13 B / 4 instructions but no exact Source provider or storage route. Native forwarding/producer behavior unknown."
+      },
+      {
+        "address": "00876120",
+        "reason": "86 B / 31 instructions, no Source provider/storage route; metadata getter/unlink/reparent edges are not construction proof."
+      },
+      {
+        "address": "008FBC80",
+        "reason": "83 B / 37 instructions, numeric attach constants only; not a proved producer or concrete Source attach service."
+      }
+    ],
+    "no_speculative_slot_target_or_virtual_free": true
+  },
+  "current_Source_contract_searches": {
+    "construction_host_and_tick_node": {
+      "command": [
+        "rg",
+        "-n",
+        "-i",
+        "UnitConstructionHost|UnitInstanceCreationHost|construct_tick_node",
+        "src",
+        "include",
+        "tests"
+      ],
+      "roots": [
+        "src",
+        "include",
+        "tests"
+      ],
+      "returncode": 0,
+      "matches": [
+        "src\\unit_instance_layout.cpp:49:UnitInstanceCreationResult create_unit_instance(UnitInstanceCreationHost& host,",
+        "src\\unit_instance_layout.cpp:81:        host.construct_tick_node(block + kUnitLayoutOffTickNode, block, 0);",
+        "include\\bsp\\unit_instance_layout.hpp:175:struct UnitInstanceCreationHost {",
+        "include\\bsp\\unit_instance_layout.hpp:176:    virtual ~UnitInstanceCreationHost() = default;",
+        "include\\bsp\\unit_instance_layout.hpp:207:    virtual void construct_tick_node(std::uint32_t node,",
+        "include\\bsp\\unit_instance_layout.hpp:243:UnitInstanceCreationResult create_unit_instance(UnitInstanceCreationHost& host,"
+      ],
+      "output_complete": true,
+      "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+    },
+    "construction_model_callers": {
+      "command": [
+        "rg",
+        "-n",
+        "-i",
+        "create_unit_instance\\(",
+        "src",
+        "include",
+        "tests"
+      ],
+      "roots": [
+        "src",
+        "include",
+        "tests"
+      ],
+      "returncode": 0,
+      "matches": [
+        "src\\unit_instance_layout.cpp:49:UnitInstanceCreationResult create_unit_instance(UnitInstanceCreationHost& host,",
+        "include\\bsp\\unit_instance_layout.hpp:243:UnitInstanceCreationResult create_unit_instance(UnitInstanceCreationHost& host,"
+      ],
+      "output_complete": true,
+      "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+    },
+    "destruction_hook": {
+      "command": [
+        "rg",
+        "-n",
+        "-i",
+        "destroy_tick_element_310",
+        "src",
+        "include",
+        "tests"
+      ],
+      "roots": [
+        "src",
+        "include",
+        "tests"
+      ],
+      "returncode": 0,
+      "matches": [
+        "src\\unit_destructor_levels.cpp:178:    steps.push_back(UnitReleaseStep::l3_destroy_tick_element_310);",
+        "src\\unit_destructor_levels.cpp:368:            case UnitReleaseStep::l3_destroy_tick_element_310:",
+        "src\\unit_destructor_levels.cpp:369:                host.destroy_tick_element_310();",
+        "include\\bsp\\unit_destructor_levels.hpp:109:    l3_destroy_tick_element_310,           // 0087A4B5 -> 00875490 -> 00874F00",
+        "include\\bsp\\unit_destructor_levels.hpp:244:    virtual void destroy_tick_element_310() = 0;       // 0087A4B5 -> 00875490 -> 00874F00"
+      ],
+      "output_complete": true,
+      "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+    },
+    "command_array_construction": {
+      "command": [
+        "rg",
+        "-n",
+        "-i",
+        "construct_command_array",
+        "src",
+        "include",
+        "tests"
+      ],
+      "roots": [
+        "src",
+        "include",
+        "tests"
+      ],
+      "returncode": 0,
+      "matches": [
+        "include\\bsp\\weapon_director.hpp:142:    virtual void construct_command_array(NativeHandle endpoint) = 0;  // 00720180 at 00836403",
+        "src\\weapon_director.cpp:23:    host.construct_command_array(endpoint);"
+      ],
+      "output_complete": true,
+      "qualification": "Exact text search of current Source; absence is not proof about generated code, Native bodies or alternative unnamed implementations."
+    }
+  },
+  "current_Source_excerpts": [
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "line_start": 175,
+      "line_end": 176,
+      "canonical_lf_excerpt_sha256": "3ea8b01bbd547a4d1cc4232233d44df16427f3bbdc6e98a7b06adbd34e50ebe0",
+      "text": "struct UnitInstanceCreationHost {\n    virtual ~UnitInstanceCreationHost() = default;\n",
+      "finding": "Actual Source host name."
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "line_start": 205,
+      "line_end": 209,
+      "canonical_lf_excerpt_sha256": "57364c10979b8f65a652a5d808d45105c6024a7accd476f8af2369989ad57b75",
+      "text": "    // 0087B6A9: 00875890 BSP_TickRegistration_Construct(instance+310h,\n    // instance, 0). docs/FIXED_STEP_JOB_WAVES.md owns the node.\n    virtual void construct_tick_node(std::uint32_t node,\n                                     std::uint32_t payload,\n                                     int group) = 0;\n",
+      "finding": "Pure virtual tick-node hook; comments are historical Source evidence."
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "line_start": 79,
+      "line_end": 82,
+      "canonical_lf_excerpt_sha256": "df7627793702ad15f40930554ddd68b0bee425b27df977b2406f9d1641ca7a01",
+      "text": "\n        // Level 3, 0087B670: the fixed-step node, group 0 at construction.\n        host.construct_tick_node(block + kUnitLayoutOffTickNode, block, 0);\n        result.tick_payload = block;\n",
+      "finding": "One abstract creation-model call; raw block arguments do not prove a host implementation."
+    },
+    {
+      "path": "include/bsp/unit_destructor_levels.hpp",
+      "line_start": 243,
+      "line_end": 244,
+      "canonical_lf_excerpt_sha256": "ffe35e5b3ad69c689e4022b1b759eb2f0253a3fcce1f48402bca2a54ec82eb0d",
+      "text": "    // Level 3.\n    virtual void destroy_tick_element_310() = 0;       // 0087A4B5 -> 00875490 -> 00874F00\n",
+      "finding": "Pure virtual tick-element destruction hook."
+    },
+    {
+      "path": "src/unit_destructor_levels.cpp",
+      "line_start": 368,
+      "line_end": 370,
+      "canonical_lf_excerpt_sha256": "6ae0984d55b22e9885d92b492fb4cffd093d4a52b5231f6175b9c80cc902ec68",
+      "text": "            case UnitReleaseStep::l3_destroy_tick_element_310:\n                host.destroy_tick_element_310();\n                break;\n",
+      "finding": "Modeled destruction call only."
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "line_start": 127,
+      "line_end": 140,
+      "canonical_lf_excerpt_sha256": "138a51219018fff5a54689beb57b43d8ceda1e01235a2e263deb823754973820",
+      "text": "\nbool GameFixedStepHost::next_element(std::size_t group, std::size_t position,\n    bsp::JobWaveElementView& view) {\n    static_cast<void>(group);\n    static_cast<void>(position);\n    static_cast<void>(view);\n    if (!groups_reported_) {\n        groups_reported_ = true;\n        log_.notef(\"fixed-step job waves: the five 68h groups at 00f876c0 are empty. Every \"\n            \"element comes from 00875890, whose nine construction sites are unit, aircraft \"\n            \"and objective paths this process does not run, and the splice 00874c90 is row \"\n            \"11 behind the closed world gate\");\n    }\n    return false;\n",
+      "finding": "Production element provider ignores inputs and returns false."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "line_start": 32771,
+      "line_end": 32780,
+      "canonical_lf_excerpt_sha256": "d4b432fcaf9ed53a2e600cb0141366340b7f2777b9a3e5ed923ac55c08fb694d",
+      "text": "                    // set, a holder kind ([+C0h]+4h) other than 2 (every host\n                    // squadron is kind 1) and a base answering IsKindOf(9) or\n                    // IsKindOf(45h), 38h bytes -> 007F1DE0(base+310h, squadron):\n                    // +1Ch = 0, the squadron at +34h. ORDER, LABELLED: the image\n                    // builds it after the command block (007F4E06-007F4EA3);\n                    // nothing between reads it, and here the command block's\n                    // early returns would otherwise skip it. A scene squadron with\n                    // a HomeBase gets a task in the image too, whose first ready\n                    // tick finds no state-1 member and ends it; it is not built here.\n                    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();\n",
+      "finding": "Existing Source construction comment, not fresh Native proof."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "line_start": 32781,
+      "line_end": 32790,
+      "canonical_lf_excerpt_sha256": "beaf8e9f726cdd0753769939264522546fcb0b792a401cfeea6a0b83a144e86d",
+      "text": "                    for (std::size_t di = 0; di < decks.size(); ++di) {\n                        if (decks.name_at(di) != rec->bag_home_base) continue;\n                        rec->launch_task_live = true;\n                        rec->launch_task_timer_1c = 0.0f;\n                        rec->launch_task_deck = di;\n                        rec->launch_task_sends = 0;\n                        ++host.base_launch_tasks_built;\n                        host.done(\"SquadronLaunchTask::construct_007f1de0\", 0x007f1de0u);\n                        break;\n                    }\n",
+      "finding": "Actual typed task-state construction route in production host."
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "line_start": 131,
+      "line_end": 140,
+      "canonical_lf_excerpt_sha256": "5e3b77c47408cb59da688206e249a9e25e3fe84314bccc7fbecd7014fdfb7801",
+      "text": "    // Inside the base and 007F4DA9 skips the airborne placement 007F2920.\n    bool home_launch_408{false};\n    // The launch task 007F1DE0 (38h bytes, vtable 00D08AE4) that pass C builds at\n    // 007F53FF for a squadron whose home base is a mother ship or an airfield:\n    // task+1Ch the send countdown, task+34h the squadron. `launch_task_deck` is\n    // the base's index in air_ops_decks().\n    bool launch_task_live{false};\n    float launch_task_timer_1c{0.0f};\n    std::size_t launch_task_deck{kPlaneSquadronNoUnit};\n    std::int32_t launch_task_sends{0};\n",
+      "finding": "Task fields and profile comment. Profile target remains unopened."
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "line_start": 245,
+      "line_end": 246,
+      "canonical_lf_excerpt_sha256": "b76f2090fe6125db3ec7c577da8b09002c6ec32a9bc3b6192b50be5b8df946e1",
+      "text": "    std::vector<PlaneSquadronHostRecord>& records() noexcept { return records_; }\n    const std::vector<PlaneSquadronHostRecord>& records() const noexcept { return records_; }\n",
+      "finding": "Registry records are typed squadron records."
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "line_start": 253,
+      "line_end": 255,
+      "canonical_lf_excerpt_sha256": "ef51f18cb64989a91334a9d1896edd948e7a45e5571ed07a62738d935cad8134",
+      "text": "\n   private:\n    std::vector<PlaneSquadronHostRecord> records_;\n",
+      "finding": "Concrete vector storage; no raw task layout is implied."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "line_start": 14485,
+      "line_end": 14493,
+      "canonical_lf_excerpt_sha256": "60baa37e1d47d7dc1d882baf74e1b4800cb475207c61293f870ddc33304115bc",
+      "text": "        if constexpr (kBaseLaunchChainBound) {\n            // Packet cc9_base_launch_task: each squadron's launch task 007F1F00.\n            // POSITION, LABELLED: the image ticks it from its task list\n            // (00876020's registration), whose place in the frame is unread;\n            // it runs here, before the site ticks that read site+18h.\n            for (bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {\n                h.base_launch_task_tick_007f1f00(sq, dt);\n            }\n            // Packet cc9_base_launch_deck_arms: 006CDC70's site slot +4h for an\n",
+      "finding": "Explicit Source scheduling substitution and typed record loop."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "line_start": 12875,
+      "line_end": 12885,
+      "canonical_lf_excerpt_sha256": "875ff6dffb221a1a5573aa146684cc8af883459a90737071c69d62d1962cc2bf",
+      "text": "    }\n    if (pick >= slots.size()) {\n        // 007EF041: 1, none left; 007F1FB7-007F1FCF end the task.\n        sq.launch_task_live = false;\n        ++base_launch_tasks_ended;\n        log.notef(\"base launch task: squadron=%s ends at %.2f s after %d send(s) \"\n            \"(007EF010 -> 1, 007F1FCF; packet cc9_base_launch_task)\", sq.name.c_str(),\n            static_cast<double>(summary.simulated_seconds), sq.launch_task_sends);\n        done(\"SquadronLaunchTask::tick_007f1f00\", 0x007f1f00u);\n        return;\n    }\n",
+      "finding": "Source task retirement clears live flag; no Native slot dispatch."
+    },
+    {
+      "path": "src/game_hosts_commands.cpp",
+      "line_start": 151,
+      "line_end": 160,
+      "canonical_lf_excerpt_sha256": "fe5d49cb748fca611b14e6a602d45d7cc03d69789620c6d58146cee3030cf21f",
+      "text": "    std::uint32_t last_idle_command{0};\n    // Milestone 2p: director+40h, the auto-target re-acquisition hold\n    // 0071DF70 tests first. 00720225 stores -1.0f in the command controller\n    // base constructor 00720180, which 008363E0 calls at 00836403 with ECX\n    // still the director (docs/DIRECTOR_TARGET_GATE.md), so every director in\n    // this process starts there. 0071F314's per-frame `hold -= dt` runs only\n    // while the value is at or above 0.0f, so the -1.0f sentinel never moves,\n    // and 00817031's 3.0f is the `cleartarget` arm, which this mission never\n    // issues.\n    float target_hold_0040{-1.0f};\n",
+      "finding": "Typed director target-hold initialization attributed by existing comment to 720180."
+    },
+    {
+      "path": "src/game_hosts_commands.cpp",
+      "line_start": 1598,
+      "line_end": 1605,
+      "canonical_lf_excerpt_sha256": "af63f539fd564166f20f374fed389adccb33ea95133e5fae700ad8142d420ff5",
+      "text": "    // object. In the executable a director is per-unit state created with its\n    // unit (00720180 from 008363E0) and destroyed with it; nothing about\n    // creating ANOTHER unit touches it. The units are appended, so the indices\n    // of the existing ones do not move and `resize` keeps their state and\n    // default-constructs only the new rows.\n    const std::size_t kept = host.directors.size();\n    host.directors.resize(host.units.size());\n    if (kept != 0 && kept != host.units.size()) {\n",
+      "finding": "Per-unit director vector construction route."
+    },
+    {
+      "path": "include/bsp/weapon_director.hpp",
+      "line_start": 136,
+      "line_end": 143,
+      "canonical_lf_excerpt_sha256": "36a5eb632f0aff3d7c05ec9afac87279fd78621f4fb4dc3d9d8b95cd74df2ab8",
+      "text": "struct WeaponDirectorHost {\n    virtual ~WeaponDirectorHost() = default;\n\n    // -- construction -------------------------------------------------------\n    virtual NativeHandle allocate_director(std::size_t size) = 0;     // 00BF681B at 00810F85\n    virtual NativeHandle unit_session_endpoint(NativeHandle unit) = 0; // unit vtable[60h] at 00836700\n    virtual void construct_command_array(NativeHandle endpoint) = 0;  // 00720180 at 00836403\n    virtual NativeHandle construct_subobject_38h() = 0;               // 009F6A20 at 0083676A\n",
+      "finding": "Actual WeaponDirectorHost declaration and abstract construction hook for command array."
+    },
+    {
+      "path": "src/weapon_director.cpp",
+      "line_start": 20,
+      "line_end": 24,
+      "canonical_lf_excerpt_sha256": "92df196156027a543b9297277d70789490d8a558c3bf2415e16069834830ec80",
+      "text": "// fields (00836724-00836745), the owner (0083674D), the 40h subobject (0083676A).\nWeaponDirectorState construct_director_008366d0(WeaponDirectorHost& host, NativeHandle unit) {\n    const NativeHandle endpoint = host.unit_session_endpoint(unit);\n    host.construct_command_array(endpoint);\n\n",
+      "finding": "Model invokes abstract command-array hook."
+    },
+    {
+      "path": "include/bsp/dogfight_task.hpp",
+      "line_start": 346,
+      "line_end": 356,
+      "canonical_lf_excerpt_sha256": "76fe96d87ba507627fa6ce9d9d2e4862ba7528e40c1f8ed15e61d2697d0ebc1e",
+      "text": "// The unit+C50h neighbour object and its finder, packet cc9_plane_gunfire.\n// docs/PLANE_GUNFIRE.md section 3.\n// ===========================================================================\n//\n// 007D621F stores unit+C50h = 007E1E20(unit), a 0xCC-byte object, for a plane\n// when [[00E188A8]+1FE4h] is 0 or 1 and unit+54h is not the local player's\n// ([[00E188A8]+5FCh]+908h). It keeps three lists: +30h/+34h (everything near,\n// the probe 007F0280's), +50h/+54h (enemy aircraft, the finder's) and\n// +70h/+74h (friendly aircraft). Its update 007E2010 (vtable 00D06B88 +0Ch,\n// no Ghidra function) adds dt to three clocks +7Ch/+80h/+84h and, when +7Ch >=\n// +88h (3.0, 00CE3854), calls the refresh 007E11D0 and subtracts 3.0.\n",
+      "finding": "Plane-neighbor constructor lead in existing comment only."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "line_start": 1833,
+      "line_end": 1837,
+      "canonical_lf_excerpt_sha256": "b88bec00b10cdc190686ce8573459f9397c105df0f0dcc1a2026b095628cac67",
+      "text": "    // The unit+C50h object's +30h list (007E11D0: kinds 6 and 0Fh within R)\n    // with its own copy of the +7Ch clock; the finder keeps +50h separately.\n    std::vector<std::size_t> nb_near_30;\n    float nb_clock_30{4.5f};\n    // Counters (diagnostic census only).\n",
+      "finding": "Concrete projected neighbor storage."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "line_start": 9536,
+      "line_end": 9540,
+      "canonical_lf_excerpt_sha256": "14e742706a9c03af5e0a5427fd7d1a5117ad6f058c6f2f3d7216ed0db1be86e9",
+      "text": "    u.nb_clock_30 += dt;\n    if (u.nb_clock_30 >= 3.0f) {\n        const double lim = static_cast<double>(radii.near_any) * radii.near_any;\n        auto& v = u.nb_near_30;\n        for (std::size_t k = 0; k < v.size();) {\n",
+      "finding": "Production projected neighbor list consumer."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "line_start": 1494,
+      "line_end": 1505,
+      "canonical_lf_excerpt_sha256": "438f69ab76a8f6de87d0caf8fbcfb6331661f33556157dbe0445914ec0266dd1",
+      "text": "    int torpedo_release_requests_007bbba0{0};\n    // unit+DECh, the plane's actuator block. Packet cc8_torpedo_release_spawn;\n    // docs/TORPEDO_RELEASE_SPAWN.md. Built at 007EABC0 by\n    // BSP_Plane_ReadPropertyBag and stepped by 007DE3A0. Channel C is the\n    // ordnance bay 007BBBA0 drives.\n    //\n    // SUBSTITUTION, labelled: the native writer of the channel's enabled byte\n    // at +60h and of its rate at +6Ch is unread, so channel C is enabled here\n    // with a nominal 1.0 per second travel. The request forces the value to\n    // 1.0f on the same frame regardless, so the rate only governs how long the\n    // bay takes to close again.\n    bsp::PlaneActuatorBlock actuator_block_dec{};\n",
+      "finding": "Actuator block typed storage and explicit channel substitution."
+    },
+    {
+      "path": "include/bsp/torpedo_release_spawn.hpp",
+      "line_start": 69,
+      "line_end": 75,
+      "canonical_lf_excerpt_sha256": "539140efd74c7b95d5435f57535025908c6194dc532765466f2d8af955825567",
+      "text": "// The block at unit+DECh. Channel C is the one 007BBBA0 drives.\nstruct PlaneActuatorBlock {\n    bool moving_any{true};             // +11h, the constructor leaves this set\n    PlaneActuatorChannel channel_b{};  // +28h\n    PlaneActuatorChannel channel_a{};  // +44h\n    PlaneActuatorChannel channel_c{};  // +60h, the ordnance bay\n};\n",
+      "finding": "Typed actuator fields do not provide raw Node links/profile."
+    },
+    {
+      "path": "src/game_hosts_gunnery.cpp",
+      "line_start": 2596,
+      "line_end": 2598,
+      "canonical_lf_excerpt_sha256": "022368244d69cb7980f37b1ed2dfccbbc4bc25a81edbabd7da350229db05966b",
+      "text": "    // 00818110's scheduled objects: (unit, msg+30h damage), stepped once by\n    // 0081B630 on the next scheduler pass.\n    std::vector<std::pair<std::size_t, float>> pending_explosions;\n",
+      "finding": "Scheduled explosion projection storage."
+    },
+    {
+      "path": "src/game_hosts_gunnery.cpp",
+      "line_start": 10326,
+      "line_end": 10330,
+      "canonical_lf_excerpt_sha256": "8ffcf1e746af735f2814da35e982fd26b5bcfe82b39d81a3583f7465dbf699d5",
+      "text": "    if (name == \"Explosion\") {\n        ++cf_explosions;\n        // msg+30h = unit+36Ch * settings+3C4h, taken when 00827B90 runs.\n        pending_explosions.emplace_back(unit, state.max_health * explosion_fraction);\n    } else if (name == \"Fire\") {\n",
+      "finding": "Production enqueue of typed pair."
+    },
+    {
+      "path": "src/game_hosts_gunnery.cpp",
+      "line_start": 10389,
+      "line_end": 10396,
+      "canonical_lf_excerpt_sha256": "529a4988de1996251cbf2b2cbecf0b09e778e8f8545eafee510ac3a5f4123a13",
+      "text": "    if (!pending_explosions.empty()) {\n        std::vector<std::pair<std::size_t, float>> due;\n        due.swap(pending_explosions);\n        for (const auto& [unit, amount] : due) {\n            if (unit >= unit_state.size()) continue;\n            UnitState& state = unit_state[unit];\n            if (state.dead) continue;\n            bsp::UnitHealth health;\n",
+      "finding": "Swap/drain of typed pairs, not raw node destruction."
+    },
+    {
+      "path": "include/bsp/gun_bot_ticks.hpp",
+      "line_start": 28,
+      "line_end": 31,
+      "canonical_lf_excerpt_sha256": "ecd2e3a40a35039a1fe0cbe9e1b747f0b232cb9dffb9172e6221674c1a32c713",
+      "text": "inline constexpr std::uint32_t kGunBotBaseConstructAddress = 0x0072BBD0u;\ninline constexpr std::uint32_t kGunBotFactoryAddress = 0x0072C6A0u;\ninline constexpr std::uint32_t kGunBotAttachAddress = 0x008FBC80u;\ninline constexpr std::uint32_t kGunBotIdleRestTimerAddress = 0x008FBCE0u;\n",
+      "finding": "Attach numeric address only."
+    },
+    {
+      "path": "include/bsp/gun_bot_ticks.hpp",
+      "line_start": 69,
+      "line_end": 72,
+      "canonical_lf_excerpt_sha256": "39d7d4a59b7b6e23344ae05113e8be7cf08e5aadade97e150656a95780613bc1",
+      "text": "inline constexpr std::size_t kGunBotSlotDestructor = 0x00;   // 0072BE20\ninline constexpr std::size_t kGunBotSlotAttach = 0x04;       // 008FBC80\ninline constexpr std::size_t kGunBotSlotTick = 0x0c;         // 0071C490 in the base\ninline constexpr std::size_t kGunBotSlotSetSkill = 0x18;     // 0072BC80\n",
+      "finding": "Attach slot constant, not a concrete callable Source provider."
+    },
+    {
+      "path": "include/bsp/gun_bot_ticks.hpp",
+      "line_start": 130,
+      "line_end": 132,
+      "canonical_lf_excerpt_sha256": "9bb6ab0b29776f7e8dee13bbbaa91cca21175a8a49e890ea1ac3544da8a75412",
+      "text": "// ---------------------------------------------------------------------------\ninline constexpr std::size_t kGunOffTickNode = 0x310;        // the attach argument\ninline constexpr std::size_t kGunOffTickNodePayload = 0x338; // node+28h\n",
+      "finding": "Gun tick-element offsets are numeric constants."
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "line_start": 22,
+      "line_end": 28,
+      "canonical_lf_excerpt_sha256": "f2a14a5c7f1e3ac00a735a98069809a7dcc709cae3d908767156572537a7bdca",
+      "text": "      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()) {\n    // Admit factory+4 before startup can register that exact subobject.\n    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;\n    deletion_bindings_.resource_support = &resource_support_context_;\n    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;\n    deletion_bindings_.actual_pending_registry_publication_00f878cc =\n        &pending_registry_publication_00f878cc_;\n",
+      "finding": "Canonical process F878CC cell supplied to actual singleton deletion bindings."
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "line_start": 228,
+      "line_end": 230,
+      "canonical_lf_excerpt_sha256": "7a4777bf34d96cc182d93da47aac150b38704893f9482250d7fe3282da3c23ad",
+      "text": "    // D0DEA0 retires the passed raw8 registry through 875850. Borrow the same\n    // canonical process F878CC cell used for publication; it must outlive drain.\n    void* volatile* actual_pending_registry_publication_00f878cc{};\n",
+      "finding": "Binding is specifically the raw8 registry retirement domain."
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "line_start": 274,
+      "line_end": 281,
+      "canonical_lf_excerpt_sha256": "73c29264b649149a2c5a56cda56fb77143fc6a1762c2bf6e7221346bdfaf514c",
+      "text": "    case 0x00d0dea0:\n        if (bindings.actual_pending_registry_publication_00f878cc != nullptr) {\n            retire_native_pending_registry_scalar_00875850(\n                owner, *reinterpret_cast<const volatile std::uint8_t*>(&flags),\n                *bindings.actual_pending_registry_publication_00f878cc);\n            return;\n        }\n        break;\n",
+      "finding": "Actual D0DEA0 dispatcher case is registry scalar retirement, not child-node slot0."
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "line_start": 11,
+      "line_end": 22,
+      "canonical_lf_excerpt_sha256": "ebcca2b3e0b1fbce8da59e4421d2bbd6d5edc3047afbeeb1c051b3a6a7ce7a6f",
+      "text": "// Ordinary 00875960[69] through a new explicit naked fastcall Source API.\n// ECX is the actual receiver, EDX an unused placement word. Three stack words\n// hold addresses of the actual borrowed node-input/F-publication/M-publication\n// cells. RET 0Ch pops those three references; Original instead uses RET 4.\n// Void does not invent a common semantic EAX result: Leave may replace it.\n//\n// Keep all three actual cells alive at stable addresses for the whole call;\n// do not pass snapshots or private publication cells. The current node word\n// is read only after the actual getter and optional Enter/depth increment.\n// The getter borrows both actual publication cells under its own contract.\n// Its result+4 section is captured once for Enter/depth/Leave. Depth is the\n// raw DWORD at section+18h, incremented after Enter and decremented after the\n",
+      "finding": "Current admitted Source69 cell/argument/lifetime qualification."
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "line_start": 33,
+      "line_end": 43,
+      "canonical_lf_excerpt_sha256": "9928331b8eccbb40ba9eb757e2cc0864214f503c3932e2e506b2733d17c3f447",
+      "text": "// profile, virtual-slot binding or forced application retention is supplied.\n// These extra Source cells, getter arguments and frame are not Original stack\n// identity. Current Source getter/import policy, Original ABI/placement/callers,\n// exceptions, faults, concurrency, common register residuals and gameplay\n// remain separately qualified; no Original drop-in compatibility is claimed.\nvoid __fastcall unlink_native_tick_subnode_00875960(\n    void* actual_receiver,\n    std::uint32_t unused_edx,\n    void* volatile& actual_node_input_word,\n    void* volatile& actual_registry_publication_00f878cc,\n    void* volatile& actual_manager_publication_01090aa0);\n",
+      "finding": "Current admitted Source69 boundary and declaration."
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "line_start": 11,
+      "line_end": 26,
+      "canonical_lf_excerpt_sha256": "cc927b036728bf85037e2647b06956403134eb35bfff7da28451406eca1b9b85",
+      "text": "// Complete owned 00874E60..00874EB2 schedule: 83 bytes / 29 instructions.\n// The descriptive list/node name is provisional. Explicit fastcall binds ECX\n// to the actual list, EDX to an unused placement word, and entry ESP+4 to the\n// actual node. Capture that node once in EAX; return it through common RET 4.\n// The explicit EDX argument does not request preservation of incoming EDX.\n//\n// Borrow actual raw list backing of at least 0Ch bytes and node backing of at\n// least 10h bytes. List DWORDs +0/+4/+8 and node DWORDs +8/+C must permit the\n// selected reads/writes; selected nonzero neighbors need their +C/+8 writable.\n// Preserve the captured previous word, each fresh next/previous read after\n// earlier writes, then clear node+C before node+8 and ADD current list+8,-1.\n// The zero-link/signed-count>1 path skips all writes and the EDI spill.\n// There is no count-zero guard, null/membership check, clamp, lock, free,\n// profile lookup, callback, producer binding, extra EH frame, or cleanup.\n//\n// Mutation conditionally spills EDI at entry ESP-4; normal EDI restoration\n",
+      "finding": "Admitted raw83 schedule/backing/no-producer boundary."
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "line_start": 10,
+      "line_end": 20,
+      "canonical_lf_excerpt_sha256": "8538f19dffab575aac6072e495117e5cf09bf32d0f8359dd707ef9965fc655aa",
+      "text": "// The fast path returns its first capture; the slow path rereads publication\n// after releasing the first manager's captured raw section. Allocation cleanup\n// ends before publication, the second manager lookup and current registration.\n// Source C++ failure cleanup uses the actual raw8 guard and captured allocation;\n// it does not reproduce native FH3/SEH or mutable native stack-spill aliases.\n// Production composition requires the canonical process cell and its matching\n// manager deletion binding. Numeric profiles are not callable Source vtables.\nvoid* get_native_pending_registry_00875280(\n    void* volatile& actual_registry_publication_00f878cc,\n    void* volatile& actual_manager_publication_01090aa0);\n\n",
+      "finding": "Actual-cell getter contract and numeric-profile limitation."
+    },
+    {
+      "path": "tools/bsp.py",
+      "line_start": 675,
+      "line_end": 680,
+      "canonical_lf_excerpt_sha256": "c935318bc1c19385938ef9e2f625deadbad589c5db6f881be1aeb14510d95793",
+      "text": "def client():\n    from ghidra_export import Client\n    config = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))\n    c = Client(config)\n    try:\n        c.verify()\n",
+      "finding": "CLI begins by verifying current project/program."
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "line_start": 101,
+      "line_end": 110,
+      "canonical_lf_excerpt_sha256": "4ce9f7a4d8d4c4d42c54e5f1e797ca401927f93f5ad6604d171081871f8eb011",
+      "text": "    def verify(self):\n        project = self.get('list_project_files', folder='/')\n        info = self.get('get_current_program_info')\n        expected = self.config\n        if project['project_name'] != expected['project']:\n            raise RuntimeError(f\"Wrong Ghidra project: {project['project_name']}\")\n        for key, actual in [('program_path', info['path']), ('language', info['language']), ('image_base', info['image_base'])]:\n            if actual != expected[key]:\n                raise RuntimeError(f'Wrong target {key}: {actual}')\n        return project, info\n",
+      "finding": "Verification checks project, program path, x86 language and image base."
+    }
+  ],
+  "singleton_boundary": {
+    "canonical_cell": "GameSingletonHost borrows game_native_string_process().pending_registry_00f878cc into the actual deletion binding.",
+    "actual_dispatch": "D0DEA0 case passes actual owner, low flags byte and actual F878CC cell to retire_native_pending_registry_scalar_00875850.",
+    "ownership": "Raw8 registry retirement, not child-node ownership or a generic Node slot0/free provider."
+  },
+  "accepted_consumer_boundaries": {
+    "Source83": "Admitted explicit fastcall raw-list unlink with actual list/node/selected-neighbor backing and alias-sensitive ordered accesses. No constructor/profile/free/getter/lock is supplied.",
+    "Source69": "Name denotes Original 00875960 69 B. Accepted compiled Source is 82 B / 29 instructions / 4 relocations. Source takes actual node-input and two publication-cell references, RET 0Ch; Original has node value and RET 4. No drop-in ABI identity.",
+    "readonly100": {
+      "evidence_report": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+      "known_dispatch_summary": "Captured node ECX, current profile/slot0 target, flag1. Normal target must consume flag word and preserve loop ESI/EDI. Actual target identity, deletion/reentry/exception effects unresolved.",
+      "target_identified": false,
+      "minimum_next_contract": {
+        "blocking_dependency": "Actual sublist child-node/profile producer and current slot-zero deletion target(s).",
+        "required_evidence": [
+          "bounded producer/profile ownership evidence",
+          "actual slot0 target identity and complete calling/stack preservation contract",
+          "actual deletion and list-mutation/reentry/throw behavior",
+          "concrete Source dispatch bindings with valid storage/lifetime"
+        ],
+        "no_guessed_child_address_or_scope_expansion": true,
+        "no_unrelated_pending_registry_or_entity_lock_substitution": true,
+        "Source_prototype_or_implementation_added": false
+      },
+      "Native_bytes_reopened_here": false
+    },
+    "readonly243": {
+      "evidence_report": "reports/cc12_pending_registry_tick_subnode_reparent_caller_ABI_readiness.json",
+      "known_boundary": "Current node+4 can supply old actual receiver for unlink, followed by target-parent assignment and signed-priority ordered insertion. No Node producer/profile or C964E8 EH behavior identified.",
+      "remaining_contract": {
+        "proved_at_this_boundary": "Current node+4 can supply actual old receiver for direct unlink before reattachment to target and signed ordered insertion.",
+        "not_proved": [
+          "Concrete node class/constructor/producer",
+          "Current node profile or100B cleanup slot0 deletion target",
+          "C964E8 handler cleanup edge/actions",
+          "Original runtime ABI/fault/concurrency or gameplay"
+        ],
+        "no_new_Source_prototype_or_implementation": true
+      },
+      "Native_bytes_reopened_here": false
+    },
+    "getter": "Source getter borrows actual F878CC and 1090AA0 cells; Original zero-pushed-argument calls cannot be replaced without their separate Source contract."
+  },
+  "accepted_report_pin_rechecks_at_baseline": {
+    "Source69_latest": {
+      "primary_report": "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json",
+      "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+      "input_count": 57,
+      "input_equal_count": 57,
+      "Source_input_count": 52,
+      "Source_input_equal_count": 52,
+      "differences": [],
+      "artifacts_currently_reread_or_built": false,
+      "artifact_and_build_domain": "Historical accepted snapshots only; matching baseline Source pins do not revalidate current Core/build/map/EH artifacts after ongoing Root CMake work."
+    },
+    "Source83_older": {
+      "primary_report": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+      "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+      "input_count": 53,
+      "input_equal_count": 51,
+      "Source_input_count": 48,
+      "Source_input_equal_count": 47,
+      "differences": [
+        {
+          "path": "CMakeLists.txt",
+          "accepted_canonical_lf_sha256": "3ad433f48a4c865a95ed46010651ed21653c86ceb51047b47f45cb12bb263231",
+          "current_canonical_lf_sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb"
+        },
+        {
+          "path": "src/native_legacy_exception_owner.cpp",
+          "accepted_canonical_lf_sha256": "011b97c1083164f3c47ba8873e85508acd84f1ef4a037f952641c2f29c0497db",
+          "current_canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+        }
+      ],
+      "artifacts_currently_reread_or_built": false,
+      "artifact_and_build_domain": "Historical accepted snapshots only; matching baseline Source pins do not revalidate current Core/build/map/EH artifacts after ongoing Root CMake work."
+    },
+    "getter_older": {
+      "primary_report": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "status": "source_admitted_complete_compiled_review_and_normal_build_passed_original_ABI_and_gameplay_unproved",
+      "input_count": 38,
+      "input_equal_count": 37,
+      "Source_input_count": 30,
+      "Source_input_equal_count": 30,
+      "differences": [
+        {
+          "path": "CMakeLists.txt",
+          "accepted_canonical_lf_sha256": "12b90fc33a04cb19167d3e91b37fa153a5a1e2d7a6268253a8339cc4d65d90c5",
+          "current_canonical_lf_sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb"
+        }
+      ],
+      "artifacts_currently_reread_or_built": false,
+      "artifact_and_build_domain": "Historical accepted snapshots only; matching baseline Source pins do not revalidate current Core/build/map/EH artifacts after ongoing Root CMake work."
+    }
+  },
+  "historical_compiled_receipts_only": {
+    "native_tick_subnode_unlink_caller": {
+      "symbol": "?unlink_native_tick_subnode_00875960@bsp@@YIXPAXIACRAX11@Z",
+      "bytes": 82,
+      "sha256": "c13949dbd6222fdee45e3fa3fcd552387b4b1560630740fe312c0c962d7055b5",
+      "instruction_count": 29,
+      "relocation_count": 4,
+      "accepted_Core_member": {
+        "name": "bsp_core.dir\\Release\\native_tick_subnode_unlink_caller.obj",
+        "header_offset": 63768580,
+        "payload_file_offset": 63768640,
+        "bytes": 1107,
+        "sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281"
+      },
+      "domain": "Historical accepted Source compiled snapshot, read from pinned readonly243 report. No object/library reread or build/test here; not a claim about artifacts after Root CMake work."
+    },
+    "native_pending_registry_getter": {
+      "symbol": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+      "bytes": 250,
+      "sha256": "640e03f66d07747180012ac1b275a19d56738dd71a0f3cbcd2daad66bc7c8970",
+      "instruction_count": 85,
+      "relocation_count": 10,
+      "accepted_Core_member": {
+        "name": "bsp_core.dir\\Release\\native_pending_registry_getter.obj",
+        "header_offset": 63772104,
+        "payload_file_offset": 63772164,
+        "bytes": 3703,
+        "sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113"
+      },
+      "domain": "Historical accepted Source compiled snapshot, read from pinned readonly243 report. No object/library reread or build/test here; not a claim about artifacts after Root CMake work."
+    },
+    "native_tick_sublist_unlink": {
+      "symbol": "?unlink_native_tick_sublist_node_00874e60@bsp@@YIPAXPAXI0@Z",
+      "bytes": 83,
+      "sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
+      "instruction_count": 29,
+      "relocation_count": 0,
+      "accepted_Core_member": {
+        "name": "bsp_core.dir\\Release\\native_tick_sublist_unlink.obj",
+        "header_offset": 63769748,
+        "payload_file_offset": 63769808,
+        "bytes": 812,
+        "sha256": "21e75aea9d833fb7d262adfa954140168f43c66efe400528ef9f959178d56f59"
+      },
+      "domain": "Historical accepted Source compiled snapshot, read from pinned readonly243 report. No object/library reread or build/test here; not a claim about artifacts after Root CMake work."
+    }
+  },
+  "historical_build_and_map_only": {
+    "existing_checks": 3,
+    "unique_Core_roots": 7,
+    "application_map_selection": {
+      "selected": false,
+      "map_rows": [],
+      "execution_proved": false
+    },
+    "qualification": "Read from prior accepted evidence only; no current artifact/map or run claimed. Root CMake registration work is outside this checkout baseline."
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 18386,
+      "sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb",
+      "canonical_lf_sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "docs/CC12_TICK_SUBNODE_PRODUCER_SELECTION.md",
+      "bytes": 8822,
+      "sha256": "d37dd4a516cec0fd5c5c5413a656559d8faedee2ef63d9725ef6e9f36151bacd",
+      "canonical_lf_sha256": "d37dd4a516cec0fd5c5c5413a656559d8faedee2ef63d9725ef6e9f36151bacd"
+    },
+    {
+      "path": "include/bsp/dogfight_task.hpp",
+      "bytes": 23745,
+      "sha256": "9d8eee36b7f54c1e1e1b25045a19e999ddda799c0ff494eea5ab325943f7377b",
+      "canonical_lf_sha256": "9d8eee36b7f54c1e1e1b25045a19e999ddda799c0ff494eea5ab325943f7377b"
+    },
+    {
+      "path": "include/bsp/gun_bot_ticks.hpp",
+      "bytes": 25412,
+      "sha256": "f961b992f0933d501b0601ea8584b74462a961e5fad0a57f9009e404929f87a8",
+      "canonical_lf_sha256": "f961b992f0933d501b0601ea8584b74462a961e5fad0a57f9009e404929f87a8"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 18086,
+      "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2"
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "bytes": 25784,
+      "sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e",
+      "canonical_lf_sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e"
+    },
+    {
+      "path": "include/bsp/torpedo_release_spawn.hpp",
+      "bytes": 5209,
+      "sha256": "3965bd4930a044bf98eb38a63eea7a8f15adaec07bcd1fe0f6e4adb64a8a8f0b",
+      "canonical_lf_sha256": "3965bd4930a044bf98eb38a63eea7a8f15adaec07bcd1fe0f6e4adb64a8a8f0b"
+    },
+    {
+      "path": "include/bsp/unit_destructor_levels.hpp",
+      "bytes": 15720,
+      "sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+      "canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5"
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "bytes": 18412,
+      "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+    },
+    {
+      "path": "include/bsp/weapon_director.hpp",
+      "bytes": 14053,
+      "sha256": "7108486805530fa72c3b20c754bb35a5d5b6883a4616297918a62ef6c0ee7330",
+      "canonical_lf_sha256": "7108486805530fa72c3b20c754bb35a5d5b6883a4616297918a62ef6c0ee7330"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "bytes": 853902,
+      "sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+      "canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277"
+    },
+    {
+      "path": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+      "bytes": 1101362,
+      "sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df",
+      "canonical_lf_sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df"
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json",
+      "bytes": 567071,
+      "sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0",
+      "canonical_lf_sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+      "bytes": 57016,
+      "sha256": "8605faad42e0c1a6760ca00d36626450913e867ff285f4fcb18310bc7d2e39e1",
+      "canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_subnode_reparent_caller_ABI_readiness.json",
+      "bytes": 54026,
+      "sha256": "e30c66838a4a2ceda6376c94cb80e36c6438b66b806dad5937a194618e1d0966",
+      "canonical_lf_sha256": "e30c66838a4a2ceda6376c94cb80e36c6438b66b806dad5937a194618e1d0966"
+    },
+    {
+      "path": "src/game_hosts_commands.cpp",
+      "bytes": 191876,
+      "sha256": "7900553610e7cbc0c5019307c706a4bf26d2664cfa8c3f0d22b87e343dde7b67",
+      "canonical_lf_sha256": "7900553610e7cbc0c5019307c706a4bf26d2664cfa8c3f0d22b87e343dde7b67"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "src/game_hosts_gunnery.cpp",
+      "bytes": 770945,
+      "sha256": "e2fe551ea7cc71537ff3b15330697b71342a06e299d61a91437a62ceb5427b76",
+      "canonical_lf_sha256": "e2fe551ea7cc71537ff3b15330697b71342a06e299d61a91437a62ceb5427b76"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "canonical_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 25482,
+      "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+    },
+    {
+      "path": "src/unit_destructor_levels.cpp",
+      "bytes": 18167,
+      "sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+      "canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673"
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "bytes": 10576,
+      "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+    },
+    {
+      "path": "src/weapon_director.cpp",
+      "bytes": 9295,
+      "sha256": "d590782779ca9fca9e643d4618df41b7ed298e5452c897d99b0904ea6f3f35d1",
+      "canonical_lf_sha256": "d590782779ca9fca9e643d4618df41b7ed298e5452c897d99b0904ea6f3f35d1"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "canonical_lf_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    }
+  ],
+  "hash_domains": {
+    "raw_sha256": "Actual worktree bytes at baseline for pinned existing files; owned recommendation doc is newly authored.",
+    "canonical_lf_sha256": "Raw CRLF replaced by LF, then SHA256; used for accepted report pin comparisons.",
+    "excerpt_sha256": "Selected UTF8 lines joined with LF and final LF; no whole Source bodies reproduced.",
+    "live_metadata_capture_pins": "Ignored local command outputs retained as hashes and bounded metadata contents; no Native byte hash is produced.",
+    "artifacts": "Historical report receipts only; not opened or executed.",
+    "self_report": "No recursive self hash."
+  },
+  "validation": {
+    "eight_metadata_records_complete": true,
+    "eight_reparent_edges_present": true,
+    "candidate_spans_calculated_from_inclusive_metadata": true,
+    "Source_search_outputs_complete": true,
+    "current_pins_checked": true,
+    "excerpt_pins_checked": true,
+    "JSON_parsed": true,
+    "new_tests_or_probes": false,
+    "build_run": false
+  },
+  "limits": {
+    "Native_body_decompile_bytes_disasm_read": false,
+    "Native_profile_table_slot_handler_string_neighbor_read": false,
+    "Source_CMake_ledger_GPR_edit": false,
+    "Source_or_Native_admission": false,
+    "Original_ABI_compatibility": false,
+    "runtime_or_gameplay_validation": false,
+    "only_two_owned_tracked_outputs": true
+  }
+}
