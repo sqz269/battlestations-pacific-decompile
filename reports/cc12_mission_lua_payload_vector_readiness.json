@@ -1,0 +1,1100 @@
+{
+  "schema": 1,
+  "packet": "cc12_lua_payload_vector_readiness",
+  "kind": "bounded read-only actual raw Lua payload vector resize readiness",
+  "created_utc": "2026-10-09T08:39:36.335651+00:00",
+  "worker_and_published_baseline": "365083d632ee8aaff7095a02292766b1f5271051",
+  "owned_addresses": [
+    "006B88E0"
+  ],
+  "owned_outputs": [
+    "docs/CC12_MISSION_LUA_PAYLOAD_VECTOR_READINESS.md",
+    "reports/cc12_mission_lua_payload_vector_readiness.json"
+  ],
+  "size_gate": {
+    "metadata_begin": "006b88e0",
+    "metadata_end_inclusive": "006b8983",
+    "computed_bytes": 164,
+    "maximum_authorized_whole_body_bytes": 300,
+    "passed_before_complete_read": true,
+    "metadata_and_complete_instruction_count": 58,
+    "complete_normal_epilogue_observed": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_functions": 0,
+    "new_ABI_compatible_admissions": 0,
+    "runtime_or_game_validated": false
+  },
+  "conclusion": {
+    "whole_native_body_storage_schedule_established": true,
+    "qualified_actual_Source_ready": false,
+    "missing_direct_Source_services": [
+      "006B87F0 reserve helper",
+      "008849B0 raw element initializer"
+    ],
+    "raw_entry_Source_reference_found": false,
+    "current_virtual_slot0_and_lifetimes_remain_external": true,
+    "local_handler_and_EH_compatibility_unqualified": true,
+    "no_bespoke_hidden_register_input_or_x87_or_listing_repair_identified_in_owned_body": true,
+    "descendant_register_ABIs_not_audited": true,
+    "minimal_direct_leaf_candidate": "008849B0 metadata 27 bytes; reserve 006B87F0 metadata 227 bytes is another separately owned bounded candidate.",
+    "complete_production_graph_closed": false
+  },
+  "target_verification": {
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "mechanism": "bsp.py client() performs Client.verify before every live batch; verified bsp project, /battlestationspacific.exe, x86 LE32 language and00400000 image base. Count queried before the live body batch.",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "live_function_count": 64729,
+    "snapshot_function_count": 64729,
+    "queries": [
+      "count",
+      "proto006B88E0 metadata gate",
+      "decompile006B88E0 complete",
+      "disasm006B88E0 complete for signed arithmetic, register/stack schedule and local EH frame",
+      "bytes006B88E0 length164",
+      "proto006B87F0 and008849B0 metadata only"
+    ],
+    "no_descendant_caller_handler_table_or_bootstrap_Native_expansion": true,
+    "Ghidra_mutation": false,
+    "exact_flow_flags_queried_or_inferred": false,
+    "scripts_enabled": false
+  },
+  "native_evidence": {
+    "capture_utc": "2026-10-09T08:34:36.747279+00:00",
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "span": {
+      "address": "006b88e0",
+      "end_inclusive": "006b8983",
+      "bytes": 164,
+      "sha256": "888d1861f34fc0ac3b957903eb3e266b3f661661408cf50ddb7130a374d3f319",
+      "hex": "6aff68290ec80064a100000000506489250000000083ec08538b5c241c55568bf13b5e088974240c7e0653e8e0feffff578b7e0483cdff3bfb897c24287d2d908b0e8d04bf8d0c81894c241485c9c7442420000000007405e873c01c0083c7013bfb896c2420897c24287cd43b5e045f7d1b016e048b46048d14808b068d0c908b118b026a00ffd03b5e047ce58b4c2414895e045e5d5b64890d0000000083c414c20400",
+      "instructions": [
+        {
+          "address": "006b88e0",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "006b88e2",
+          "bytes": "68290ec800",
+          "mnemonic": "push",
+          "operands": "0xc80e29"
+        },
+        {
+          "address": "006b88e7",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "006b88ed",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "006b88ee",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "006b88f5",
+          "bytes": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "006b88f8",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "006b88f9",
+          "bytes": "8b5c241c",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x1c]"
+        },
+        {
+          "address": "006b88fd",
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "006b88fe",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "006b88ff",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "006b8901",
+          "bytes": "3b5e08",
+          "mnemonic": "cmp",
+          "operands": "ebx, dword ptr [esi + 8]"
+        },
+        {
+          "address": "006b8904",
+          "bytes": "8974240c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0xc], esi"
+        },
+        {
+          "address": "006b8908",
+          "bytes": "7e06",
+          "mnemonic": "jle",
+          "operands": "0x6b8910"
+        },
+        {
+          "address": "006b890a",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "006b890b",
+          "bytes": "e8e0feffff",
+          "mnemonic": "call",
+          "operands": "0x6b87f0"
+        },
+        {
+          "address": "006b8910",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "006b8911",
+          "bytes": "8b7e04",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esi + 4]"
+        },
+        {
+          "address": "006b8914",
+          "bytes": "83cdff",
+          "mnemonic": "or",
+          "operands": "ebp, 0xffffffff"
+        },
+        {
+          "address": "006b8917",
+          "bytes": "3bfb",
+          "mnemonic": "cmp",
+          "operands": "edi, ebx"
+        },
+        {
+          "address": "006b8919",
+          "bytes": "897c2428",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x28], edi"
+        },
+        {
+          "address": "006b891d",
+          "bytes": "7d2d",
+          "mnemonic": "jge",
+          "operands": "0x6b894c"
+        },
+        {
+          "address": "006b891f",
+          "bytes": "90",
+          "mnemonic": "nop",
+          "operands": ""
+        },
+        {
+          "address": "006b8920",
+          "bytes": "8b0e",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi]"
+        },
+        {
+          "address": "006b8922",
+          "bytes": "8d04bf",
+          "mnemonic": "lea",
+          "operands": "eax, [edi + edi*4]"
+        },
+        {
+          "address": "006b8925",
+          "bytes": "8d0c81",
+          "mnemonic": "lea",
+          "operands": "ecx, [ecx + eax*4]"
+        },
+        {
+          "address": "006b8928",
+          "bytes": "894c2414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], ecx"
+        },
+        {
+          "address": "006b892c",
+          "bytes": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "006b892e",
+          "bytes": "c744242000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x20], 0"
+        },
+        {
+          "address": "006b8936",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x6b893d"
+        },
+        {
+          "address": "006b8938",
+          "bytes": "e873c01c00",
+          "mnemonic": "call",
+          "operands": "0x8849b0"
+        },
+        {
+          "address": "006b893d",
+          "bytes": "83c701",
+          "mnemonic": "add",
+          "operands": "edi, 1"
+        },
+        {
+          "address": "006b8940",
+          "bytes": "3bfb",
+          "mnemonic": "cmp",
+          "operands": "edi, ebx"
+        },
+        {
+          "address": "006b8942",
+          "bytes": "896c2420",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x20], ebp"
+        },
+        {
+          "address": "006b8946",
+          "bytes": "897c2428",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x28], edi"
+        },
+        {
+          "address": "006b894a",
+          "bytes": "7cd4",
+          "mnemonic": "jl",
+          "operands": "0x6b8920"
+        },
+        {
+          "address": "006b894c",
+          "bytes": "3b5e04",
+          "mnemonic": "cmp",
+          "operands": "ebx, dword ptr [esi + 4]"
+        },
+        {
+          "address": "006b894f",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "006b8950",
+          "bytes": "7d1b",
+          "mnemonic": "jge",
+          "operands": "0x6b896d"
+        },
+        {
+          "address": "006b8952",
+          "bytes": "016e04",
+          "mnemonic": "add",
+          "operands": "dword ptr [esi + 4], ebp"
+        },
+        {
+          "address": "006b8955",
+          "bytes": "8b4604",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 4]"
+        },
+        {
+          "address": "006b8958",
+          "bytes": "8d1480",
+          "mnemonic": "lea",
+          "operands": "edx, [eax + eax*4]"
+        },
+        {
+          "address": "006b895b",
+          "bytes": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "006b895d",
+          "bytes": "8d0c90",
+          "mnemonic": "lea",
+          "operands": "ecx, [eax + edx*4]"
+        },
+        {
+          "address": "006b8960",
+          "bytes": "8b11",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]"
+        },
+        {
+          "address": "006b8962",
+          "bytes": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        {
+          "address": "006b8964",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "006b8966",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "006b8968",
+          "bytes": "3b5e04",
+          "mnemonic": "cmp",
+          "operands": "ebx, dword ptr [esi + 4]"
+        },
+        {
+          "address": "006b896b",
+          "bytes": "7ce5",
+          "mnemonic": "jl",
+          "operands": "0x6b8952"
+        },
+        {
+          "address": "006b896d",
+          "bytes": "8b4c2414",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "006b8971",
+          "bytes": "895e04",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], ebx"
+        },
+        {
+          "address": "006b8974",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "006b8975",
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "006b8976",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "006b8977",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "006b897e",
+          "bytes": "83c414",
+          "mnemonic": "add",
+          "operands": "esp, 0x14"
+        },
+        {
+          "address": "006b8981",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_equals_installed_PE": true,
+    "complete_contiguous_decode": true,
+    "branches": [
+      {
+        "site": "006b8908",
+        "bytes": "7e06",
+        "operation": "jle",
+        "target": "006b8910"
+      },
+      {
+        "site": "006b891d",
+        "bytes": "7d2d",
+        "operation": "jge",
+        "target": "006b894c"
+      },
+      {
+        "site": "006b8936",
+        "bytes": "7405",
+        "operation": "je",
+        "target": "006b893d"
+      },
+      {
+        "site": "006b894a",
+        "bytes": "7cd4",
+        "operation": "jl",
+        "target": "006b8920"
+      },
+      {
+        "site": "006b8950",
+        "bytes": "7d1b",
+        "operation": "jge",
+        "target": "006b896d"
+      },
+      {
+        "site": "006b896b",
+        "bytes": "7ce5",
+        "operation": "jl",
+        "target": "006b8952"
+      }
+    ],
+    "calls": [
+      {
+        "site": "006b890b",
+        "bytes": "e8e0feffff",
+        "target": "0x6b87f0"
+      },
+      {
+        "site": "006b8938",
+        "bytes": "e873c01c00",
+        "target": "0x8849b0"
+      },
+      {
+        "site": "006b8966",
+        "bytes": "ffd0",
+        "target": "eax"
+      }
+    ]
+  },
+  "original_ABI": {
+    "input": "ECX actual headerH; one DWORD requested sizeR at entryESP+4, captured inEBX at006B88F9",
+    "header_hold": "ESI=H; request stays inEBX even while the original incoming stack argument slot is overwritten with the growth index.",
+    "incoming_EDX": "No owned instruction consumes incomingEDX as data; direct child register semantics remain unaudited.",
+    "normal_return": "RET4 at006B8981 consumes the one request argument. No typed return value established.",
+    "nonvolatile_registers": [
+      "EBX saved/restored",
+      "EBP saved/restored; held asFFFFFFFF during growth and retirement",
+      "ESI saved/restored; header holder",
+      "EDI saved after reserve and restored before retirement loop"
+    ],
+    "normal_FS_chain_restored": true,
+    "reserve_boundary": {
+      "site": "006b890b",
+      "target": "006b87f0",
+      "ECX": "stillH",
+      "stack_argument": "capturedR",
+      "required_callee_cleanup_bytes": 4,
+      "basis": "Fixed frame offsets and normal epilogue balance after this optional call; no separate caller cleanup."
+    },
+    "initializer_boundary": {
+      "site": "006b8938",
+      "target": "008849b0",
+      "ECX": "currentH.data +20*localindex modulo2^32",
+      "explicit_stack_arguments": 0,
+      "return_value_used": false,
+      "only_called_if_computed_address_nonzero": true
+    },
+    "virtual_boundary": {
+      "site": "006b8966",
+      "ECX": "element at currentH.data +20*decremented currentH.count",
+      "EDX": "current element vptr",
+      "EAX": "current vtable slot0 target",
+      "stack_argument": "DWORD0",
+      "required_callee_cleanup_bytes": 4,
+      "nonvolatile_holders": "EBX=R, EBP=-1, ESI=H, EDI restored incoming value; compatible targets preserve them.",
+      "concrete_virtual_target_or_free_policy_established": false
+    }
+  },
+  "header_and_element_footprint": {
+    "minimum_header_bytes": 12,
+    "header_is_complete_class_layout": false,
+    "data": {
+      "offset": 0,
+      "width": 4,
+      "reads": [
+        "006b8920 each growth iteration",
+        "006b895b each retirement iteration"
+      ],
+      "local_stores": false
+    },
+    "count": {
+      "offset": 4,
+      "width": 4,
+      "interpretation": "signed for all comparisons; DWORD wrapping for decrement",
+      "read_sites": [
+        "006b8911",
+        "006b894c",
+        "006b8955",
+        "006b8968"
+      ],
+      "write_sites": [
+        "006b8952 current-memory ADD-1 before virtual call",
+        "006b8971 final captured request store"
+      ]
+    },
+    "capacity": {
+      "offset": 8,
+      "width": 4,
+      "interpretation": "signed initial reserve gate",
+      "read_site": "006b8901",
+      "local_stores": false
+    },
+    "stride_bytes": 20,
+    "stride_derivation": "LEA index5=index+index*4; LEA element=data+index5*4, wrapping32-bit address arithmetic.",
+    "element_direct_access": "DWORD element+0 as vptr, then DWORD vptr+0 as callable target",
+    "complete_element_type_or_initializer_field_extent_proven": false,
+    "nested_payload_minimum_header_footprint": "H=P+10h implies the direct header footprint P+10h..P+1Bh. Full payload class remains separate."
+  },
+  "ordered_schedule": [
+    "Install state-1/handlerC80E29/previousFS frame, reserve8 localbytes, saveEBX/EBP/ESI, capture request/header. Compare signedR with currentcapacity and storeH in the frame without changing CMP flags.",
+    "If R>capacity, pushR and call reserve withECX=H. Then saveEDI and load currentcount intoEDI; setEBP=-1. Compare signedindex withR and overwrite original argument slot withindex beforeJGE.",
+    "Growth first-entry executes one-byteNOP891F once. Each iteration rereads currentdata, computes20-byte elementaddress, stores it to frame, TESTs it, stores EHstate0 preserving TEST flags, skips initializer only for computednull.",
+    "After initializer/skip, wrapping-incrementEDI; CMP EDI,R; setstate-1 and writeEDI over originalargument slot while preserving CMP flags. SignedJL loops to8920, not theNOP.",
+    "After growth or initial skip, compare R against currentcount; restore incomingEDI before the signed retirement branch. Growth has not locally incremented headercount.",
+    "Retirement decrements currentcount first usingEBP=-1, reloads count, forms scaledindex, reloads currentdata, loads currentelementvptr/slot0, pushes0 and calls target. Reread currentcount after fullreturn and repeat bysignedcomparison.",
+    "Load saved previousFS head intoECX before finalheaderwrite. Store capturedR intoH.count, restoreESI/EBP/EBX, restoreFS0, discard14h local/framebytes, RET4."
+  ],
+  "request_zero_cases": [
+    {
+      "observed_header": "capacity>=0 and count>=0 at reached comparisons",
+      "path": "No reserve/growth. Positive count selects reverse-index virtual-slot0(0) retirement absent callback mutation; zero count makes no element call. Final count is0."
+    },
+    {
+      "observed_header": "capacity<0",
+      "path": "Signed0>capacity calls reserve(0); subsequent count is freshly loaded. No unconditional reserve skip is valid."
+    },
+    {
+      "observed_header": "count<0 after reserve gate",
+      "path": "Signed count<0 enters growth from negative indices toward0, with computed-null-only initializer guard."
+    },
+    {
+      "observed_header": "virtual callback changescount/data",
+      "path": "Next comparison/count/data loads observe currentvalues. Callback can stop or extend retirement; finalcount still overwritten with0."
+    }
+  ],
+  "mutable_reload_and_alias_contract": {
+    "growth_index_snapshot": "Currentcount captured after reserve; EDI evolves independently of laterheadercount changes. Data is reread each iteration.",
+    "retirement_count_before_call": "Current memorycount decremented and reread before currentdata fetch and virtualdispatch.",
+    "retirement_after_call": "Currentcount reloaded; no old element dereference before newselection.",
+    "final_request": "CapturedEBX request wins over callback-modified headercount and overwrittenincomingstackslot.",
+    "saved_FS_load_before_final_count_store": true,
+    "null_header": "Faults at capacity+8 read even for request0.",
+    "growth_null_guard": "Tests full computed elementaddress, not just data base. Null data with nonzeroindex can yield nonzero pointer and be forwarded.",
+    "retirement_null_guard": false,
+    "arithmetic": "All pointer scaling/index ADD/count decrement follow x86 DWORD wrap; all gate/loop comparisons are signed. No saturation, bounds, capacity-consistency or multiplication guard.",
+    "alias_and_progress": "Header/data/element alias effects follow exact ordered loads/stores. Invalid storage can fault; callbacks may cause revisits or nontermination. No universal once-per-element or fixed-work guarantee."
+  },
+  "local_frame": {
+    "entry_stack_symbol": "S",
+    "handler_immediate": "00c80e29",
+    "handler_or_table_read": false,
+    "slots": [
+      {
+        "where": "S-4",
+        "role": "state initiallyFFFFFFFF; growth0 before initializer; thenFFFFFFFF after each normal constructor/skip"
+      },
+      {
+        "where": "S-8",
+        "role": "handler immediateC80E29"
+      },
+      {
+        "where": "S-12",
+        "role": "previousFS0 and published exception registration record base"
+      },
+      {
+        "where": "S-16",
+        "role": "computed currentconstructor address during growth"
+      },
+      {
+        "where": "S-20",
+        "role": "capturedH"
+      },
+      {
+        "where": "S-24",
+        "role": "savedEBX"
+      },
+      {
+        "where": "S-28",
+        "role": "savedEBP"
+      },
+      {
+        "where": "S-32",
+        "role": "savedESI"
+      },
+      {
+        "where": "S-36 afterreserve",
+        "role": "savedEDI; popped before retirement"
+      },
+      {
+        "where": "S+4 originalargument",
+        "role": "request captured intoEBX, then overwritten by growthindex even if initialgrowthskipped"
+      }
+    ],
+    "state_store_before_null_branch": "TEST ECX at892C; MOV[ESP+20h],0 at892E; JZ8936 preserves TESTflags.",
+    "state_restore_before_loop_branch": "CMP EDI,EBX at8940; MOV state-1 and updatedindex at8942/46; JL894A preserves CMPflags.",
+    "normal_exit": "AtESP=S-32 loadoldFS from[ESP+14h]; finalcountstore; popsESI/EBP/EBX; restoreFS; ADD ESP14h; RET4.",
+    "exception_unwind_cleanup_or_fault_equivalence_established": false
+  },
+  "descendant_metadata_only": [
+    {
+      "address": "006b87f0",
+      "name": "FUN_006b87f0",
+      "signature_metadata": "undefined FUN_006b87f0(void)",
+      "body_begin": "006b87f0",
+      "body_end_inclusive": "006b88d2",
+      "computed_bytes": 227,
+      "metadata_instruction_count": 72,
+      "metadata_direct_call_count": 3,
+      "Native_body_read": false
+    },
+    {
+      "address": "008849b0",
+      "name": "FUN_008849b0",
+      "signature_metadata": "undefined FUN_008849b0(void)",
+      "body_begin": "008849b0",
+      "body_end_inclusive": "008849ca",
+      "computed_bytes": 27,
+      "metadata_instruction_count": 8,
+      "metadata_direct_call_count": 0,
+      "Native_body_read": false
+    }
+  ],
+  "current_Source_comparison": {
+    "index_queries": [
+      "lookup006B88E0",
+      "lookup006B87F0",
+      "lookup008849B0"
+    ],
+    "address_search": "Case-insensitive exact three-address rg over include/src returned no matches. This is not a claim that unrelated generic array operations do not exist.",
+    "current_reconstruction_records_for_three_addresses": [],
+    "semantic_candidates": [
+      {
+        "paths": [
+          "include/bsp/mission_lua_host.hpp",
+          "include/bsp/mission_named_call_args.hpp",
+          "src/mission_named_call_args.cpp"
+        ],
+        "sites": [
+          "mission_lua_host161..179",
+          "named_args105..108,186..198,263..271",
+          "named_args332..350"
+        ],
+        "evidence": "MissionLuaArgument owns typed fields/string/recursivevector; DeferredCall has strings/vector; ResultVariant is filledflag plusArgument; queue drain copies/erases typedvalues. None supplies raw20-byte elementinitializer, reserve or currentvirtual retirement."
+      },
+      {
+        "path": "include/bsp/gui_lua_reader.hpp",
+        "sites": [
+          "77..85",
+          "216"
+        ],
+        "evidence": "GuiLuaVariant is an eight-byte tag/value pair, distinct from this20-byte-stride element operation; no resize Source linkage found."
+      }
+    ],
+    "no_std_vector_callback_RAII_or_owner_substitute_written": true
+  },
+  "accepted_parent_context": {
+    "prefix_report": "reports/cc12_mission_lua_deferred_payload_retirement_readiness.json",
+    "prefix_report_current_pin": {
+      "path": "reports/cc12_mission_lua_deferred_payload_retirement_readiness.json",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 42305,
+      "sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "physical_bytes": 42305,
+      "physical_sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "physical_match": "exact"
+    },
+    "proven_prefix_delivery": "008876DD ECX=EDI=P+10h, explicit pushedDWORD0; then008876E2 reads current[EDI] and passes pointer toBF6989.",
+    "new_owned_body_resolution": "Current whole vector body proves normalRET4 and restorationofEDI; its rawSource/child/EH closure still open.",
+    "new_Native_parent_or_caller_query": false,
+    "primary_unpublished_continuation_note": {
+      "provided_by": "primary assignment",
+      "reported_extent": "148 bytes throughRET00887743",
+      "reported_extra_behavior": "After currentvectorbuffer free, conditional payload+C and+4 returns through419CC0/BD1510.",
+      "used_as_worker_native_evidence": false,
+      "separate_primary_report_published_in_selected_baseline": false,
+      "old_prefix_report_rewritten": false
+    }
+  },
+  "canonical_name_and_credit_guard": {
+    "existing_name_records": [
+      {
+        "address": "006b88e0",
+        "name": "BSP_LuaVariantVector_Resize",
+        "evidence": "Hypothesis, not a recovered symbol. Packet cc2_named_call_args, read-only analysis; docs/MISSION_NAMED_CALL_ARGS.md. __thiscall(vector* this, int size). Reserves through 006b87f0 when growing, default-constructs new elements with 008849b0, and destroys surplus ones by calling vtable slot 0 with argument 0 (non-deleting). 00887750 calls it at 008877d5 as resize(0) on sink+8h, but only when the sink already carried a machine."
+      }
+    ],
+    "existing_reconstruction_records_for_owned_address": [],
+    "descriptive_name_is_hypothesis": true,
+    "virtual_flag0_is_observed_but_actual_deallocation_policy_unproved": true,
+    "ledger_modified": false
+  },
+  "remaining_qualifications": [
+    "Raw header H and its current data and elements must remain valid for every reached load and store across child returns. H must survive the final count store.",
+    "The actual reserve and element-initializer Source, register ABI, and body semantics remain missing. Their names and metadata are not implementations.",
+    "Current virtual slot 0 must accept the actual element in ECX and DWORD 0, consume four stack bytes, and preserve nonvolatile register holders. Its real class, table, retirement, and free policy remain external.",
+    "The reserve or producer allocation domain and backing-buffer ownership are not established by this function. No direct buffer free occurs locally.",
+    "The native C80E29 frame, local slots, state changes, and argument-slot overwrites are present. No handler, table, unwind body, or fault execution was inspected; do not replace them with invented RAII or omit EH for request zero.",
+    "Counter writes and callback effects are not locally rolled back. Unknown exception handling and arbitrary mutation limit progress and fault claims."
+  ],
+  "next_routing": [
+    "Own and metadata-gate the 27-byte 008849B0 leaf for a complete initializer audit.",
+    "Own and metadata-gate the 227-byte 006B87F0 body for an independent reserve, header, and allocation audit.",
+    "Keep actual virtual slot 0 and lifetime contracts qualified. Local EH and handler closure remain a separately owned primary task; no unowned native expansion here."
+  ],
+  "accepted_prefix_canonical_pins_replayed_unchanged": [
+    {
+      "path": "docs/CC12_MISSION_LUA_CURRENT_QUEUE_DRAIN_READINESS.md",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 10679,
+      "sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "physical_bytes": 10679,
+      "physical_sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_mission_lua_current_queue_drain_readiness.json",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 46482,
+      "sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "physical_bytes": 46482,
+      "physical_sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/mission_named_call_args.hpp",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 13733,
+      "sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "physical_bytes": 13733,
+      "physical_sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/mission_named_call_args.cpp",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14403,
+      "sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "physical_bytes": 14403,
+      "physical_sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/mission_lua_host.hpp",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 18733,
+      "sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "physical_bytes": 18733,
+      "physical_sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_game_container_lifetime.hpp",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 4531,
+      "sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87",
+      "physical_bytes": 4531,
+      "physical_sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_game_container_lifetime.cpp",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7364,
+      "sha256": "7004952000205f0d242248ef1d8bd60697204863055cde11b64ad91f5c1b77a4",
+      "physical_bytes": 7364,
+      "physical_sha256": "7004952000205f0d242248ef1d8bd60697204863055cde11b64ad91f5c1b77a4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/00880000.jsonl",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 48432,
+      "sha256": "f25684c6e0e2f5adc3879524eb5ae56552df7e525c541f2de9edbd91fe2dcda1",
+      "physical_bytes": 48432,
+      "physical_sha256": "f25684c6e0e2f5adc3879524eb5ae56552df7e525c541f2de9edbd91fe2dcda1",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00880000.jsonl",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 32186,
+      "sha256": "c05a4386a9f978a6def359e7d255b3a831850cb95f99166bb8979a67594497ca",
+      "physical_bytes": 32186,
+      "physical_sha256": "c05a4386a9f978a6def359e7d255b3a831850cb95f99166bb8979a67594497ca",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/bsp.py",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "physical_bytes": 72606,
+      "physical_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_match": "exact"
+    }
+  ],
+  "current_canonical_input_pins": [
+    {
+      "path": "docs/CC12_MISSION_LUA_DEFERRED_PAYLOAD_RETIREMENT_READINESS.md",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 9349,
+      "sha256": "0613d331cc3482332c4f79c8e14111949f1cbe1efe61d9891e4e1707f996075b",
+      "physical_bytes": 9349,
+      "physical_sha256": "0613d331cc3482332c4f79c8e14111949f1cbe1efe61d9891e4e1707f996075b",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_mission_lua_deferred_payload_retirement_readiness.json",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 42305,
+      "sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "physical_bytes": 42305,
+      "physical_sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_CURRENT_QUEUE_DRAIN_READINESS.md",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 10679,
+      "sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "physical_bytes": 10679,
+      "physical_sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_mission_lua_current_queue_drain_readiness.json",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 46482,
+      "sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "physical_bytes": 46482,
+      "physical_sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/mission_named_call_args.hpp",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 13733,
+      "sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "physical_bytes": 13733,
+      "physical_sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/mission_named_call_args.cpp",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14403,
+      "sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "physical_bytes": 14403,
+      "physical_sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/mission_lua_host.hpp",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 18733,
+      "sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "physical_bytes": 18733,
+      "physical_sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/gui_lua_reader.hpp",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 23275,
+      "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "physical_bytes": 23275,
+      "physical_sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/006b0000.jsonl",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 32302,
+      "sha256": "27261748d302182a30338e20a599e4e5953c8b4ba6b87babcb848653a8909da2",
+      "physical_bytes": 32302,
+      "physical_sha256": "27261748d302182a30338e20a599e4e5953c8b4ba6b87babcb848653a8909da2",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/006b0000.jsonl",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 39707,
+      "sha256": "c48c4f836565864920b54c7a4360a4d095e38451304633fbb105624081aee85d",
+      "physical_bytes": 39707,
+      "physical_sha256": "c48c4f836565864920b54c7a4360a4d095e38451304633fbb105624081aee85d",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/00880000.jsonl",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 48432,
+      "sha256": "f25684c6e0e2f5adc3879524eb5ae56552df7e525c541f2de9edbd91fe2dcda1",
+      "physical_bytes": 48432,
+      "physical_sha256": "f25684c6e0e2f5adc3879524eb5ae56552df7e525c541f2de9edbd91fe2dcda1",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00880000.jsonl",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 32186,
+      "sha256": "c05a4386a9f978a6def359e7d255b3a831850cb95f99166bb8979a67594497ca",
+      "physical_bytes": 32186,
+      "physical_sha256": "c05a4386a9f978a6def359e7d255b3a831850cb95f99166bb8979a67594497ca",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/bsp.py",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "physical_bytes": 72606,
+      "physical_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_match": "exact"
+    }
+  ],
+  "owned_doc_pin": {
+    "path": "docs/CC12_MISSION_LUA_PAYLOAD_VECTOR_READINESS.md",
+    "hash_domain": "exact written UTF-8 LF and staged Git blob bytes",
+    "bytes": 9947,
+    "sha256": "d8dbf91373672ba24b350d96a9057521460f89ee10f123fba4ea1b6f385250f4"
+  },
+  "validation": {
+    "full164_live_bytes_equal_installed_PE": "passed",
+    "complete58_instruction_decode_and_live_listing_sites": "passed",
+    "six_internal_branches_two_direct_and_one_indirect_CALL": "passed",
+    "single90_NOP_and_normal_RET4_FS_register_restoration": "passed",
+    "current_source_address_and_index_queries": "passed; no provider found for three exact addresses",
+    "14_accepted_prefix_pins_replayed_current_unchanged": "passed",
+    "15_current_canonical_pins_and_physical_files": "passed",
+    "JSON_parse": "passed by serialization and reload",
+    "staged_doc_pin_exact_two_output_scope_and_diff_check": "passed; exactly two owned outputs, staged doc hash, JSON parse, and whitespace",
+    "Source_CMake_ledger_GPR_writes": "none",
+    "build_tests_probes_or_native_execution": "none"
+  },
+  "limits": [
+    "Static whole-body storage and normal-return ABI evidence does not establish Source, emitted code, native EH or faults, real Lua/runtime ownership, startup, or gameplay.",
+    "Only the owned 164 bytes were inspected natively; children received metadata queries only. No handlers, tables, callers, named dispatcher, bootstrap, or new parent continuation were read natively.",
+    "The primary 148-byte destructor continuation remains contextual until its separate proof is published; it is not worker evidence.",
+    "No new credits or Source, CMake, ledger, or Ghidra mutations; exactly two audit outputs."
+  ]
+}
