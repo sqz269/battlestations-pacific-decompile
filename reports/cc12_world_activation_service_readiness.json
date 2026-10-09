@@ -1,0 +1,850 @@
+{
+  "schema": 1,
+  "packet": "cc12_world_activation_service_readiness",
+  "kind": "bounded read-only current-storage expiry service readiness",
+  "created_utc": "2026-10-09T06:33:49.461203+00:00",
+  "requested_published_baseline": "bab59dd4aa832fbf9a5c26b4397ac198cdec5f90",
+  "worker_baseline": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+  "preserved_pending_activation_flush_Source_commit": "e4997d8700cb759c59c9a19d5936d68679e25c04",
+  "pin_policy": "Canonical baseline blobs remain historical pins if concurrent Root admission changes later Source/docs; no silent substitution with later file bytes.",
+  "owned_addresses": [
+    "00903610"
+  ],
+  "owned_outputs": [
+    "docs/CC12_WORLD_ACTIVATION_SERVICE_READINESS.md",
+    "reports/cc12_world_activation_service_readiness.json"
+  ],
+  "body_size_gate": {
+    "metadata_begin": "00903610",
+    "metadata_end_inclusive": "0090366c",
+    "computed_bytes": 93,
+    "maximum_authorized_whole_body_bytes": 300,
+    "passed_before_whole_body_read": true,
+    "complete_body_read": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_functions": 0,
+    "new_ABI_compatible_admissions": 0,
+    "game_validated": false,
+    "existing_counted_reconstruction_preserved": true
+  },
+  "conclusion": {
+    "actual_entry_role": "World expiry service; zero-mode tail target of actual 00874D00",
+    "full_native_storage_ABI_order_established_for_owned_body": true,
+    "actual_Source_service_closure": false,
+    "minimum_Source_packet_recommended_now": false,
+    "direct_service_hold": "009035E0 actual-pointer child-subtree destruction has only WorldExpiryHost-mediated Source in the inspected baseline.",
+    "indirect_contract_hold": "Actual current vslot0 target, four-byte argument cleanup, mutation/unlink and current/anchor/World lifetime remain qualified production requirements.",
+    "neighboring_903670_or_922FD0_implementation_closes_hold": false,
+    "next_bounded_step": "Separate leased 009035E0 actual-storage readiness audit, starting metadata and body-size gate; no descendant expansion performed here."
+  },
+  "target_verification": {
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "mechanism": "bsp.py ghidra CLI Client.verify checked project/program path/language/base before metadata/count/decompile/disasm/bytes queries.",
+    "live_function_count": 64729,
+    "snapshot_function_count": 64729,
+    "queries": [
+      "brief",
+      "ghidra count",
+      "lookup 00903610",
+      "ghidra proto 00903610",
+      "ghidra decompile 00903610 complete",
+      "ghidra disasm 00903610 complete",
+      "ghidra bytes 00903610 length93"
+    ],
+    "other_native_body_or_caller_or_descendant_or_table_or_FH3_sweep": false,
+    "Ghidra_mutation": false,
+    "per_instruction_Ghidra_override_metadata_claimed": false
+  },
+  "native_evidence": {
+    "capture_utc": "2026-10-09T06:27:14.207814+00:00",
+    "live_byte_source": "bsp.py ghidra bytes 00903610 --length93; complete returned live hexdump transcribed",
+    "span": {
+      "address": "00903610",
+      "end_inclusive": "0090366c",
+      "bytes": 93,
+      "sha256": "469147a3ef98d0e543c4194ce2392ab735ab64e64a49058bf406a52e5befec59",
+      "hex": "538bd98b4304568b305733ff85f674498b466c85c07e3b83c00183f80389466c7c2e837e5000740e8b4e48e8a0ffffff837e500075f28b168b026a018bceffd085ff74058b7738eb0c8b4b048b31eb058bfe8b763885f675b75f5e5bc3",
+      "live_equals_installed_PE": true,
+      "decoded_instructions": 42,
+      "instructions": [
+        {
+          "address": "00903610",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00903611",
+          "bytes": "8bd9",
+          "mnemonic": "mov",
+          "operands": "ebx, ecx"
+        },
+        {
+          "address": "00903613",
+          "bytes": "8b4304",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "00903616",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00903617",
+          "bytes": "8b30",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [eax]"
+        },
+        {
+          "address": "00903619",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0090361a",
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "0090361c",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "0090361e",
+          "bytes": "7449",
+          "mnemonic": "je",
+          "operands": "0x903669"
+        },
+        {
+          "address": "00903620",
+          "bytes": "8b466c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x6c]"
+        },
+        {
+          "address": "00903623",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00903625",
+          "bytes": "7e3b",
+          "mnemonic": "jle",
+          "operands": "0x903662"
+        },
+        {
+          "address": "00903627",
+          "bytes": "83c001",
+          "mnemonic": "add",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0090362a",
+          "bytes": "83f803",
+          "mnemonic": "cmp",
+          "operands": "eax, 3"
+        },
+        {
+          "address": "0090362d",
+          "bytes": "89466c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x6c], eax"
+        },
+        {
+          "address": "00903630",
+          "bytes": "7c2e",
+          "mnemonic": "jl",
+          "operands": "0x903660"
+        },
+        {
+          "address": "00903632",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        {
+          "address": "00903636",
+          "bytes": "740e",
+          "mnemonic": "je",
+          "operands": "0x903646"
+        },
+        {
+          "address": "00903638",
+          "bytes": "8b4e48",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x48]"
+        },
+        {
+          "address": "0090363b",
+          "bytes": "e8a0ffffff",
+          "mnemonic": "call",
+          "operands": "0x9035e0"
+        },
+        {
+          "address": "00903640",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        {
+          "address": "00903644",
+          "bytes": "75f2",
+          "mnemonic": "jne",
+          "operands": "0x903638"
+        },
+        {
+          "address": "00903646",
+          "bytes": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00903648",
+          "bytes": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        {
+          "address": "0090364a",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "0090364c",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "0090364e",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00903650",
+          "bytes": "85ff",
+          "mnemonic": "test",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "00903652",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x903659"
+        },
+        {
+          "address": "00903654",
+          "bytes": "8b7738",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [edi + 0x38]"
+        },
+        {
+          "address": "00903657",
+          "bytes": "eb0c",
+          "mnemonic": "jmp",
+          "operands": "0x903665"
+        },
+        {
+          "address": "00903659",
+          "bytes": "8b4b04",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "0090365c",
+          "bytes": "8b31",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ecx]"
+        },
+        {
+          "address": "0090365e",
+          "bytes": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x903665"
+        },
+        {
+          "address": "00903660",
+          "bytes": "8bfe",
+          "mnemonic": "mov",
+          "operands": "edi, esi"
+        },
+        {
+          "address": "00903662",
+          "bytes": "8b7638",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esi + 0x38]"
+        },
+        {
+          "address": "00903665",
+          "bytes": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "00903667",
+          "bytes": "75b7",
+          "mnemonic": "jne",
+          "operands": "0x903620"
+        },
+        {
+          "address": "00903669",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0090366a",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0090366b",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0090366c",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "live_equals_installed_PE": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "contiguous_decode": true,
+    "branches": [
+      {
+        "site": "0090361e",
+        "bytes": "7449",
+        "operation": "je",
+        "target": "00903669"
+      },
+      {
+        "site": "00903625",
+        "bytes": "7e3b",
+        "operation": "jle",
+        "target": "00903662"
+      },
+      {
+        "site": "00903630",
+        "bytes": "7c2e",
+        "operation": "jl",
+        "target": "00903660"
+      },
+      {
+        "site": "00903636",
+        "bytes": "740e",
+        "operation": "je",
+        "target": "00903646"
+      },
+      {
+        "site": "00903644",
+        "bytes": "75f2",
+        "operation": "jne",
+        "target": "00903638"
+      },
+      {
+        "site": "00903652",
+        "bytes": "7405",
+        "operation": "je",
+        "target": "00903659"
+      },
+      {
+        "site": "00903657",
+        "bytes": "eb0c",
+        "operation": "jmp",
+        "target": "00903665"
+      },
+      {
+        "site": "0090365e",
+        "bytes": "eb05",
+        "operation": "jmp",
+        "target": "00903665"
+      },
+      {
+        "site": "00903667",
+        "bytes": "75b7",
+        "operation": "jne",
+        "target": "00903620"
+      }
+    ],
+    "encoded_CALL_count": 2,
+    "metadata_resolved_direct_call_count": 1,
+    "direct_call": {
+      "site": "0090363b",
+      "bytes": "e8a0ffffff",
+      "target": "009035e0",
+      "receiver": "fresh [current entity+48] loaded into ECX at00903638",
+      "stack_arguments": 0,
+      "continuation": "re-read same entity full DWORD+50 at00903640"
+    },
+    "indirect_call": {
+      "site": "0090364e",
+      "bytes": "ffd0",
+      "target": "current entity table slot0, fetched after child loop",
+      "table_load": "00903646 MOV EDX,[ESI]",
+      "function_load": "00903648 MOV EAX,[EDX]",
+      "stack_argument": "0090364A PUSH1: full DWORD00000001",
+      "receiver": "0090364C ECX=ESI current entity",
+      "compatible_callee_cleanup_bytes": 4,
+      "cleanup_basis": "No caller stack adjustment before continuation/pop sequence; called target must restore argument space compatibly.",
+      "typed_return_or_concrete_target_class_recovered": false
+    },
+    "entry_register_schedule": [
+      "PUSH EBX",
+      "EBX=ECX captured actual World",
+      "EAX=[EBX+4] current header",
+      "PUSH ESI",
+      "ESI=[EAX] first entity",
+      "PUSH EDI",
+      "EDI=0 resume anchor"
+    ],
+    "exit": [
+      "POP EDI",
+      "POP ESI",
+      "POP EBX",
+      "plain RET"
+    ],
+    "no_local_FPU_or_global_access": true
+  },
+  "caller_context_from_prior_evidence": {
+    "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+    "canonical_file_revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+    "prior_report_baseline": "0461e9561bc669b2258cd13de9c624bfae741229",
+    "scope": "Historical peer audit consumed from pinned repository evidence; no new native caller analysis.",
+    "owned_target_row": {
+      "entry": "00903610",
+      "end_inclusive": "0090366C",
+      "ledger_body_bytes": 93,
+      "role": "World expiry",
+      "edge_site": "00874DD1",
+      "caller_contract": "tail JMP with ECX = [fresh Game D+19CC]; only mode0",
+      "current_Source_status": "projected token/counter binding, diagnostic deletion",
+      "scope": "Existing capped ledger boundary; no complete callee body expansion in this packet."
+    },
+    "zero_exit": "ADD ESP,4; direct tail JMP00903610 with actual current World ECX.",
+    "compatibility": "Observed903610 uses actual ECX receiver and plain RET with no incoming stack arguments, matching the recorded tail boundary."
+  },
+  "ABI": {
+    "input": "ECX actual captured World pointer",
+    "incoming_EDX_semantic_input": false,
+    "explicit_incoming_stack_arguments": 0,
+    "retained_registers": {
+      "EBX": "same captured World for entire pass",
+      "ESI": "current entity until changed by traversal",
+      "EDI": "last aged entity anchor, or zero"
+    },
+    "preserved_registers": [
+      "EBX",
+      "ESI",
+      "EDI"
+    ],
+    "semantic_return": "No typed result established; volatile register residues are not invented return semantics.",
+    "direct_service_ABI_observed": "ECX current child pointer from entity48, no pushed args; complete callee ABI/body not audited in this packet.",
+    "virtual_service_ABI_observed": "ECX current entity, current slot0 called with DWORD1 and compatible callee cleanup of4; concrete implementation not recovered.",
+    "local_EH_frame_or_rollback": false,
+    "native_fault_unwind_or_runtime_execution_proven": false
+  },
+  "counter_schedule": {
+    "load_site": "00903620",
+    "width": 4,
+    "signed_initial_gate": "TEST EAX,EAX; JLE00903662 skips zero/all negative patterns without store/anchor change.",
+    "increment": "00903627 ADD EAX,1 wraps modulo2^32.",
+    "signed_release_test": "0090362A CMP EAX,3; 0090362D MOV[ESI+6C],EAX preserves flags; 00903630 JL selects age.",
+    "store_precedes_any_child_or_virtual_call": true,
+    "cases": [
+      {
+        "initial": "signed<=0",
+        "stored": "unchanged",
+        "action": "skip; anchor unchanged"
+      },
+      {
+        "initial": "1",
+        "stored": "2",
+        "action": "age; anchor=current entity"
+      },
+      {
+        "initial": "2..0x7ffffffe",
+        "stored": "incremented positive DWORD",
+        "action": "release; anchor unchanged"
+      },
+      {
+        "initial": "0x7fffffff",
+        "stored": "0x80000000",
+        "action": "age, because signed wrapped result is less than3; anchor=current entity"
+      }
+    ],
+    "Cxx_projection_gap": "Existing entity_expiry_step_00903620 uses signed counter+1; without an established range restriction it does not provide the native overflow guarantee. No speculative precondition or new test is added.",
+    "normal_1_2_3_sequence_limit": "Normal successive visits only; callback/link mutation is not constrained into a universal two-step or once-per-pass timing claim."
+  },
+  "ordered_storage_contract": [
+    {
+      "sites": "00903613/00903617",
+      "reads": "Captured World+4 then captured header.first at entry",
+      "qualification": "Null first is empty; null header is still dereferenced."
+    },
+    {
+      "sites": "00903620..00903630",
+      "reads_writes": "Current full counter6C; signed skip, wrap increment, compare, unconditional positive-input write, signed age/release branch",
+      "qualification": "Byte projection or signed-overflow assumptions are not equivalent."
+    },
+    {
+      "sites": "00903632..00903644",
+      "reads_calls": "Current full DWORD50 !=0; reload48 intoECX; direct9035E0; reload50; repeat",
+      "qualification": "Any nonzero count pattern enters; no cached count/head or null-child guard.",
+      "field_name_qualification": "Child count is the existing descriptive label for DWORD+50; producers were not audited."
+    },
+    {
+      "sites": "00903646..0090364e",
+      "reads_calls": "Late current vptr then slot0; PUSH DWORD1; ECXcurrententity; actual indirect CALL",
+      "qualification": "Child callbacks can alter the table/target before this fetch."
+    },
+    {
+      "sites": "00903650..0090365e",
+      "reads": "After retirement, nonnull anchor current38 OR reload same captured World current4 then current header.first",
+      "qualification": "No dereference of released current entity; no new global World selection and no reuse of initial header."
+    },
+    {
+      "sites": "00903660..00903667",
+      "reads_writes": "Only age updates anchor; skip/age follow current entity38; successor tested before next counter load",
+      "qualification": "Skipped nodes never become anchor; nodes between anchor and released entity can be revisited."
+    }
+  ],
+  "lifetime_and_progress": [
+    "Captured World remains valid for every reached header reload; each current header remains readable through its first-pointer load.",
+    "Current entity remains valid through positive-counter store, child-service returns/count reloads and late vslot0 dispatch.",
+    "Nonnull retained anchor remains readable for its post-retirement38 load even after callbacks; no stale-anchor guard is added.",
+    "Direct/virtual services retain compatible register/stack behavior for EBX World, ESI current entity and EDI anchor holders.",
+    "Child operations must make intended50/head48 traversal progress and retirement/unlink must leave valid anchor/head continuations; no implementation of that policy is supplied.",
+    "No current-entity dereference occurs after its own slot0 call, but external owner/caller lifetime requirements remain separate.",
+    "Null receiver/header faults; nonzero count with null child is forwarded to unresolved service; invalid/cyclic/nonprogressing state can fault or loop.",
+    "Earlier field stores and callback effects are not locally rolled back after later failure."
+  ],
+  "current_Source_dependency_matrix": [
+    {
+      "path": "src/entity_event_queues.cpp",
+      "lines": "140..150",
+      "native_target": "009035E0",
+      "provider": "destroy_child_subtree_009035e0(WorldExpiryHost&,void*)",
+      "status": "host-mediated semantic recursion",
+      "hold": "No concrete actual-pointer provider matching observed ECX-child/no-stack-argument direct boundary; cannot substitute index tokens or a new callback."
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "lines": "153..195",
+      "native_target": "00903610",
+      "provider": "release_expired_world_objects_00903610(WorldExpiryHost&)",
+      "status": "existing counted semantic algorithm",
+      "hold": "Reads/writes/traversal/deletion routed through abstract host; not raw current storage."
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "lines": "123..137",
+      "provider": "entity_expiry_step_00903620",
+      "status": "signed C++ counter projection",
+      "hold": "counter+1 has no established native wrapping guarantee at INT_MAX."
+    },
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "lines": "207..235",
+      "provider": "WorldExpiryHost and declarations",
+      "status": "abstract head/next/counter/children/delete services",
+      "hold": "No real node layout, actual current virtual method or ownership provider."
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "lines": "315..376 and608..614",
+      "provider": "WorldExpiryBinding / GameStepSubsystemsHost wrapper",
+      "status": "index+1 tokens, fixed slot-order chain, vector counters, childcount0/firstchildnull, logged delete then counter=-1",
+      "hold": "No actual unlink, free, current slot0 or raw header/entity access; -1 substitution is not in native body."
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "provider": "NativeWorldChainHeader",
+      "status": "existing actual first-member/header storage contract",
+      "hold": "Compatible first-pointer footprint only; not child retirement or entity lifetime closure."
+    }
+  ],
+  "neighboring_Source_status_at_selected_baseline": {
+    "activation_flush_00903670": {
+      "worker_commit": "e4997d8700cb759c59c9a19d5936d68679e25c04",
+      "source_hashes": {
+        "include/bsp/native_world_activation_flush.hpp": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+        "src/native_world_activation_flush.cpp": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be"
+      },
+      "assignment_status": "Root integration/emitted admission pending when this packet was assigned",
+      "worker_source_report": "reports/cc12_native_world_activation_flush_source.json",
+      "worker_report_is_not_a_Root_admission_record": true,
+      "current_use": "Not a call target of903610; later admission cannot supply9035E0 or slot0 retirement."
+    },
+    "destroy_state_00922FD0": {
+      "primary_report": "reports/cc12_entity_destroy_state_primary_review.json",
+      "primary_status": "complete_whole_emitted_body_and_self_relocation_match_normal_win32_build_passed",
+      "source_hashes": {
+        "include/bsp/native_entity_destroy_state.hpp": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+        "src/native_entity_destroy_state.cpp": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b"
+      },
+      "native_body": {
+        "address": "00922fd0",
+        "bytes": 66,
+        "instructions": 25,
+        "sha256": "29eceff51de711a90ebe3201b0f270a6cdc3febb62b1532857b5fba6301d382d",
+        "entire_resolved_Source_body_equal_installed_PE": true
+      },
+      "qualification": "Actual writable hierarchy/current callable84 methods and mutation/termination contracts remain caller qualifications.",
+      "current_use": "Concrete state mark/recursive/current84 provider; not child destruction or slot0 retirement and not called by this body."
+    }
+  },
+  "canonical_count_guard": {
+    "index_refreshed": true,
+    "records": {
+      "name": [
+        {
+          "address": "00903610",
+          "name": "BSP_World_ReleaseExpiredObjects",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_fixed_step, read-only analysis. __thiscall void(world), RET at 0090366c, body 00903610-0090366c. Caller 00875bb0 at 00875eda with ECX=[[00e188a8]+19cch], the world object; also 00874d00. Walks the list at [[this+4h]] through +38h: a node whose counter +6ch is at least 1 is incremented, and once it reaches 3 the node sub-list at +50h is drained through 009035e0 and the node destroyed through vtable[0](1), with the walk resuming from the predecessor. Objects are therefore released two fixed steps after they are marked. docs/FIXED_STEP_FANOUT.md | Packet cc2_entity_event_queues: the counter at +6Ch is set to 1 by 00922FD0 and aged once per pass, so an entity is released on the second pass after marking (1 to 2 to 3). A counter of zero or less is skipped by the signed test at 00903625 and never becomes the resume anchor, which is why after a release the walk resumes at the last aged entity and re-examines the unmarked ones in between. The chain is the world node's child list, [[world+4h]] through +38h, the one 00904BF0 walks."
+        }
+      ],
+      "reconstruction": [
+        {
+          "address": "00903610",
+          "name": "release_expired_world_objects_00903610",
+          "source": "src/entity_event_queues.cpp",
+          "status": "reconstructed_ledger_backfilled_from_source",
+          "evidence": "C++ body at src/entity_event_queues.cpp:153 (release_expired_world_objects_00903610), a definition named after the address. Documents: docs/ENTITY_EVENT_QUEUES.md, docs/ENTITY_THINK_DISPATCH.md, docs/FIXED_STEP_FANOUT.md, docs/IN_MISSION_SUBSYSTEM_TICK.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build.",
+          "cpp_symbol": "release_expired_world_objects_00903610",
+          "abi_compatible": false,
+          "game_validated": false,
+          "kind": "function",
+          "notes": "3 column-0 definitions carry this address suffix in src/; this record points at the first."
+        }
+      ]
+    },
+    "future_action": "Preserve/reconcile existing counted function; any eventual actual-storage Source should be a refinement, not another Original function."
+  },
+  "holds_and_next_routing": {
+    "blocking_direct_service": "009035E0",
+    "minimal_next_packet": "Separately claim that direct service and begin metadata/body-size gate. Establish its complete actual storage/current virtual/lifetime contract before proposing concrete Source.",
+    "no_current_Source_recommendation": true,
+    "no_broad_World_owner_or_descendant_or_table_sweep": true,
+    "production_external_obligations": [
+      "real current slot0 methods and compatible four-byte cleanup",
+      "child unlink/count/head mutation and captured World/anchor lifetimes",
+      "application caller/teardown wiring and runtime validation"
+    ]
+  },
+  "canonical_current_input_pins": [
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "observed_physical_bytes": 11448,
+      "observed_physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 7833,
+      "sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "observed_physical_bytes": 7833,
+      "observed_physical_sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/game_hosts_ready.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 7555,
+      "sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "observed_physical_bytes": 7555,
+      "observed_physical_sha256": "ef4a4fb97154254e546cb0d569643873919ec0e1db9901c1261e3f5230a702f1",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 30809,
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "observed_physical_bytes": 30809,
+      "observed_physical_sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "observed_physical_bytes": 1457,
+      "observed_physical_sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_activation_flush.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1272,
+      "sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "observed_physical_bytes": 1272,
+      "observed_physical_sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/native_world_activation_flush.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1920,
+      "sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "observed_physical_bytes": 1920,
+      "observed_physical_sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_world_activation_flush_source.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 33679,
+      "sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2",
+      "observed_physical_bytes": 33679,
+      "observed_physical_sha256": "dc4d9605ebfbad7d1ebe5c0b0c4862c827a8d76350794347ace14c82b10b95a2",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1412,
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "observed_physical_bytes": 1412,
+      "observed_physical_sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 1956,
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "observed_physical_bytes": 1956,
+      "observed_physical_sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_entity_destroy_state_primary_review.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 15403,
+      "sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "observed_physical_bytes": 15403,
+      "observed_physical_sha256": "cf4440fcb0869fe6fff03d8c11e94e9aaaf042c3bbc739ceb3f92343eb628f36",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 34812,
+      "sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f",
+      "observed_physical_bytes": 34812,
+      "observed_physical_sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 55502,
+      "sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7",
+      "observed_physical_bytes": 55502,
+      "observed_physical_sha256": "5593897757ed3549cc219acd1c467c5c12bff6bad29aa182746fca6a917f69d7",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 48004,
+      "sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9",
+      "observed_physical_bytes": 48004,
+      "observed_physical_sha256": "eaae3816a8fe73f72075e83bd4c96fd4e05522f7ccc236ea9926ca94638088c9",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "observed_physical_bytes": 455,
+      "observed_physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "observed_physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "247d24a8b4bd5b7f80e3aeddd561181232a6cd24",
+      "hash_domain": "canonical Git blob bytes at immutable audit baseline",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "observed_physical_bytes": 14411,
+      "observed_physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "observed_physical_match": "exact"
+    }
+  ],
+  "owned_doc_pin": {
+    "path": "docs/CC12_WORLD_ACTIVATION_SERVICE_READINESS.md",
+    "hash_domain": "UTF-8 LF physical bytes, must equal staged Git blob",
+    "bytes": 8086,
+    "sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04"
+  },
+  "validation": {
+    "full93_live_bytes_equal_installed_PE": true,
+    "full42_instruction_contiguous_decode": true,
+    "nine_internal_branch_destinations_and_two_call_sites": true,
+    "direct_child_call_relative_target_verified": true,
+    "current_neighbor_provider_hashes_match_their_recorded_proofs": true,
+    "canonical_baseline_inputs": true,
+    "JSON_parse": true,
+    "staged_doc_hash_and_exact_two_output_scope": true,
+    "git_diff_check": true,
+    "Source_CMake_ledger_GPR_writes": false,
+    "new_build_tests_probes_or_native_execution": false
+  },
+  "limits": [
+    "Only ordinary00903610 native body analyzed; direct child body/callers/other methods/tables/FH3 were not expanded.",
+    "Peer tail context and prior neighbor admission proofs remain attributed historical evidence at pinned revisions.",
+    "Resolved direct call count from metadata is1; actual body has that direct CALL plus an indirect vslot0 CALL.",
+    "No closure claim from semantic host interfaces, function names, vector tokens or empty-child assumptions.",
+    "Static body evidence is distinct from emitted Source, native ABI/fault/exception execution and gameplay."
+  ]
+}
