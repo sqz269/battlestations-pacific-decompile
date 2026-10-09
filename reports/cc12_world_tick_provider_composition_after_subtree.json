@@ -1,0 +1,732 @@
+{
+  "packet": "cc12_world_tick_provider_composition_after_subtree",
+  "review_utc": "2026-10-09T04:51:13.943019+00:00",
+  "status": "qualified_actual_storage_source_pair_composable; no_unresolved_ordinary_body_dependency",
+  "published_main_base": "24229ec42885160e4eb02afcdff939e4a94f2c78",
+  "retained_subtree_source_commit": "fdd610b56994605736979169b794d9b2ee444c8f",
+  "scope": "read_only_current_source_and_reused_native_evidence_composition_audit; dedicated_document_report_only",
+  "owned_addresses": [],
+  "owned_files": [
+    "docs/CC12_WORLD_TICK_PROVIDER_COMPOSITION_AFTER_SUBTREE.md",
+    "reports/cc12_world_tick_provider_composition_after_subtree.json"
+  ],
+  "decision": {
+    "qualified_source_pair_ready": true,
+    "requires_application_producer_before_bounded_consumer_source": false,
+    "requires_whole_world_table_for_these_bodies": false,
+    "unresolved_ordinary_body_dependencies": [],
+    "actual_caller_borrows_supplied_by_audit": false,
+    "production_application_composition_proven": false,
+    "reason": "Concrete42ED50 closes the missing callee; existing raw math, returning-validation and canonical free APIs compose with explicitly qualified actual storage, clock and entity-table borrows."
+  },
+  "reused_native_evidence": {
+    "report": "reports/cc12_world_current_tick_readiness.json",
+    "report_sha256": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713",
+    "target": {
+      "project": "bsp",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "bodies": [
+      {
+        "address": "00904bf0",
+        "end_inclusive": "00904c34",
+        "bytes": 69,
+        "sha256": "dc4734515d458b164c823c7c362f7fd650e204e179d1d6cfeb0498b927a8cb8f",
+        "decoded_instructions": 28,
+        "decoded_call_count": 2
+      },
+      {
+        "address": "00904600",
+        "end_inclusive": "00904be2",
+        "bytes": 1507,
+        "sha256": "ec637968d26dd858df8b964fe5972d216bc3534e3d37e37c587411df9650de79",
+        "decoded_instructions": 323,
+        "decoded_call_count": 29
+      }
+    ],
+    "whole_cached_hex_listing_and_hash_integrity": true,
+    "total_bytes": 1576,
+    "total_instructions": 351,
+    "new_live_capture_queries_or_execution": false,
+    "metadata_limit": "Previous flow-properties script-disabled result remains historical; no repeat query, changed setting or override claim in this audit."
+  },
+  "integrated_subtree_evidence": {
+    "report": "reports/cc12_sample_subtree_primary_review.json",
+    "report_sha256": "4722132f73666903a90a1d5f677a4e90321b873d59f1459ac37020ee6388095d",
+    "status": "source_whole_emitted_review_and_normal_win32_build_passed",
+    "whole_body_review": {
+      "complete_owned_native_bytes": 38,
+      "instructions": 13,
+      "sole_relocation": {
+        "record_file_offset": 477,
+        "raw_record_hex": "19000000080000001400",
+        "offset": 25,
+        "type": 20,
+        "symbol_index": 8,
+        "symbol": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+        "symbol_record": {
+          "index": 8,
+          "record_file_offset": 663,
+          "raw_record_hex": "000000000400000000000000030020000200",
+          "name": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 464,
+        "operand_hex": "00000000",
+        "operand_u32": 0,
+        "function_offset": 25
+      },
+      "resolved_rel32": -29,
+      "own_physical_symbol_index_section_value_verified": true,
+      "resolved_complete_body_hex": "568b714885f6c681c800000000c6810c01000000740e8bcee8e3ffffff8b764485f675f25ec3",
+      "resolved_body_sha256": "9dbf958d6149b06a4ac17be48853600686b35b405dbdc8812d185f78056b539d",
+      "entire_body_equals_original_after_self_relocation": true,
+      "entry_abi": "ECX actual node; no stack arguments, EDX input, defined result, frame or x87/SSE; saved ESI and plain RET",
+      "schedule": "captured/tested child48 before C8 then10C clears; flags preserved; recursive ECX call; same child44 reload after return",
+      "runtime_or_fault_execution_proven": false
+    },
+    "build_rerun_here": false,
+    "existing_checks_in_prior_integrator_build": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "entry_in_game_map": false,
+    "prior_credit": {
+      "functions": 1,
+      "original_bytes": 38
+    },
+    "new_audit_credit": 0
+  },
+  "proposed_source_packet": {
+    "files": [
+      "include/bsp/native_world_current_tick.hpp",
+      "src/native_world_current_tick.cpp"
+    ],
+    "platform": "MSVC Win32",
+    "context_name": "NativeWorldCurrentTickContext",
+    "context_fields": [
+      "const volatile float& mission_clock_00f876a4",
+      "const volatile float& negative_zero_00d7a208",
+      "const volatile float& one_00d7a24c",
+      "const SingletonLifetimeCallbacks& validation"
+    ],
+    "signatures": [
+      "void update_native_world_entities_00904bf0(void* actual_world, float delta, const NativeWorldCurrentTickContext&)",
+      "void run_native_world_matrix_pass_00904600(void* actual_world, float unused_delta, const NativeWorldCurrentTickContext&)"
+    ],
+    "native_abi": "Both original entries: ECX actual World, one float stack argument, RET4. Matrix pass ignores that float. Proposed C++ context interface is new, not an original binary entry.",
+    "ownership": "Borrow only; no retained owner, default context, new timeline, global, provider factory, type overlay, table, token adapter or rollback.",
+    "outer_inner_binding": "Outer calls this concrete inner provider unconditionally with same captured World/context; preserve FLD/FSTP argument copy even for empty chain.",
+    "implementation_constraints": "Explicit native x87/SSE groups, ordered bit/pointer loads/stores and raw current-table invocations; real local CameraMatrix objects for typed Z API; no C++ clamp/trig or projected-vector substitute.",
+    "noexcept": false,
+    "source_written_by_audit": false,
+    "build_or_emitted_review_done_for_proposed_pair": false,
+    "canonical_ledger_recheck_before_future_credit": true
+  },
+  "body_dependency_composition": [
+    {
+      "native": "00b64640",
+      "source": "build_native_particle_rotation_x_00b64640",
+      "contract": "void* fastcall(raw destination, angle pointer, current negative-zero pointer, current-one pointer); actual64B output; destination return",
+      "ready": true
+    },
+    {
+      "native": "00b646e0",
+      "source": "build_native_particle_rotation_y_00b646e0",
+      "contract": "same explicit current-operand contract as X",
+      "ready": true
+    },
+    {
+      "native": "00b64780",
+      "source": "build_gui_rotation_z_00b64780 current-operand overload",
+      "contract": "void(CameraMatrix&, const float&, const volatile float*, const volatile float*); CameraMatrix is std::array<float,16>; use actual local object and known destination instead of assuming original EAX return",
+      "ready": true
+    },
+    {
+      "native": "00413920",
+      "source": "multiply_native_camera_matrices_00413920",
+      "contract": "fastcall left in ECX; unused incoming EDX; destination/right stack arguments; RET8; EAX output; entire naked raw matrix body",
+      "ready": true
+    },
+    {
+      "native": "0042ed50",
+      "source": "invalidate_native_subtree_pose_0042ed50",
+      "contract": "fastcall actual child in ECX; no stack arguments; plain RET; exact38B/13instruction Source already integrated/admitted",
+      "ready": true
+    },
+    {
+      "native": "00bf6713",
+      "source": "SingletonLifetimeCallbacks::invalid_parameter(context)",
+      "contract": "caller borrows genuine intended non-noop service with returning continuations; no automatic VFS hard-throw substitution; unused destroy_registered is never invoked",
+      "ready": true,
+      "qualified_service_supplied_here": false
+    },
+    {
+      "native": "00bf65ac",
+      "source": "singleton_lifetime_free",
+      "contract": "actual std::free Source boundary; every erased6Ch node must belong to matching singleton_lifetime_allocate/free CRT domain",
+      "ready": true,
+      "node_provenance_supplied_here": false
+    },
+    {
+      "native": "entity current-table slotsDC/88/D8",
+      "source": "direct invocation through genuine caller-supplied actual entity tables",
+      "contract": "DC thiscall(receiver,float)/RET4;88 thiscall(receiver,matrix pointer)/RET4;D8 thiscall(receiver)/RET; results unused",
+      "ready_as_caller_qualification": true,
+      "entity_or_table_producer_supplied_here": false
+    }
+  ],
+  "current_constant_borrow": {
+    "cells": [
+      "00d7a208 negative-zero operand",
+      "00d7a24c one operand"
+    ],
+    "interface": "const volatile float references; pass their addresses into existing X/Y/Z current-operand APIs",
+    "existing_real_storage_path": "GameNativeReadOnlyData::data_at(address,4), already consumed through required<float> in GameNativeParticleRuntime",
+    "retention": "Caller retains actual mapped operand storage for every call and callback; no private literals or once-per-pass value cache.",
+    "matrix_one_load_sites": [
+      "009046c2 translation construction",
+      "00904b6d upper clamp"
+    ],
+    "mapping_or_binding_created": false
+  },
+  "validator_service_distinction": {
+    "interface": "SingletonLifetimeCallbacks {context,destroy_registered,invalid_parameter}",
+    "returning_capable_concrete_example": "src/game_native_resource_application.cpp current_resource_invalid_parameter calls _invalid_parameter_noinfo",
+    "not_automatic_substitute": "src/game_native_vfs_application.cpp reject_native_vfs_parameter always throws invalid_argument",
+    "requirement": "Borrow the intended service/context and preserve continuation after each returning call; type equality alone does not establish correct policy.",
+    "native_call_sites": 18,
+    "unreachable_site": "0090461f after CMP EDI,EDI/MOV/JZ",
+    "service_binding_provided": false
+  },
+  "actual_storage_contract": {
+    "world": "Actual valid storage at accessed offsets, retained for full call and callbacks; World vptr never read by either body.",
+    "entity_chain": "World+4 loaded once, actual0Ch header first pointer; nonempty entities have current table/active5C/next38; post-callback same-entity38 remains valid; no count/head rescan.",
+    "existing_chain_producer": "allocate_native_world_chain_headers_009037f0 supplies raw actual0Ch first/last/count headers in matching singleton domain",
+    "matrix": {
+      "world_bytes": 1212,
+      "list_base_world_offset": "4B0",
+      "current_sentinel_world_offset": "4B4",
+      "count_world_offset": "4B8",
+      "node_bytes": 108,
+      "node_fields": {
+        "next": "00",
+        "previous": "04",
+        "record": "08"
+      },
+      "record_bytes": 100,
+      "record_fields": {
+        "entity": "00",
+        "translation": "04,08,0C",
+        "angles": "10,14,18",
+        "duration": "1C",
+        "base_matrix": "20..5F",
+        "start_time": "60"
+      },
+      "initial_node": "[[World+4B4]]",
+      "retained_header_address": "EDI = World+4B0",
+      "sentinel_policy": "current header.head reloaded at every native compare/validation site"
+    },
+    "existing_sentinel_producer": "create_native_world_matrix_sentinel_004c3080 allocates6Ch with only next/previous self-links; no World publication or record owner.",
+    "rejected_projection": "world_construct.cpp layout.list_head=1 is not an actual sentinel",
+    "raw_subtree": "record.entity48 head captured before C8/10C stores; each actual child and post-recursive44 sibling read remain valid under42ED50 contract",
+    "callback_validity": "Mutations permitted only while every later native dereference remains valid; no concurrent mutation guarantee or automatic lifetime repair.",
+    "nonempty_record_producer_or_world_lifetime_supplied": false
+  },
+  "clock_worker_coordination": {
+    "worker": "/root/world_post_base_header_contract",
+    "commit": "5725b0ba071bd9dfc56899741f865e76e8537372",
+    "report": "reports/cc12_world_mission_clock_owner_readiness.json",
+    "report_git_blob_sha256": "75532b5619ff85ff2b5aae41158b1fa87db1bd0d7bae7451025811cb7223e7d5",
+    "document": "docs/CC12_WORLD_MISSION_CLOCK_OWNER_READINESS.md",
+    "document_git_blob_sha256": "98eb16dfc297100b91364ecb81e14956b77b9436a64dfc28fdf983800468b5ac",
+    "report_in_current_main": false,
+    "finding": "Genuine fixed_clock.simulation_clock storage exists, but no admitted common production F876A4 owner/reset/writer/reference binding. Separate frame/World/AI/unit times are not substitutes.",
+    "recognized_native_writers": [
+      "0087464c reset",
+      "00875c21 pullback",
+      "00875c80 step publish",
+      "00875f26 leftover addback",
+      "0087600b closed gate"
+    ],
+    "legitimate_caller_borrow": "Owner establishes same actual float cell for required reset and fixed-step writers and all consumers, initialized appropriately and alive through call/retained uses.",
+    "leaf_source_blocked_by_absent_application_owner": false,
+    "existing_consumer_precedent": "UnitGenericInputContext::mission_clock_00f876a4 is const volatile float&, with no production construction supplied by this audit.",
+    "per_record_schedule": "MOVSS current cell once per reached record, spill before validator; after validator subtract current start through x87 and binary32-spill elapsed; elapsed remains captured while next record observes callback clock changes.",
+    "volatile_limits": "No synchronization, ownership, lifetime, original ABI or x87 proof follows merely from volatile.",
+    "peer_source_pins_rechecked": [
+      {
+        "path": "include/bsp/in_mission_subsystem_tick.hpp",
+        "current_sha256": "9fc4952be598640704b8d22099b024fc34a6755b664a9d6a16529abb2a03f7fb",
+        "peer_sha256": "9fc4952be598640704b8d22099b024fc34a6755b664a9d6a16529abb2a03f7fb",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/in_mission_subsystem_tick.cpp",
+        "current_sha256": "e4ac3682ebd9ed0a0b93dff1acd630ce6d12c7dade05ad9d1ebc5828200c235d",
+        "peer_sha256": "e4ac3682ebd9ed0a0b93dff1acd630ce6d12c7dade05ad9d1ebc5828200c235d",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "include/bsp/game_hosts_mission_frame.hpp",
+        "current_sha256": "a3f31d190dfa2e4ea664d889f2f36bf45eca3dd58b8580c4d994ba584db6a0d5",
+        "peer_sha256": "a3f31d190dfa2e4ea664d889f2f36bf45eca3dd58b8580c4d994ba584db6a0d5",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/game_hosts_mission_frame.cpp",
+        "current_sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af",
+        "peer_sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/game_hosts_world.cpp",
+        "current_sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+        "peer_sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/game_hosts_ai.cpp",
+        "current_sha256": "217940cbc9ffc10547e367ec73fa227815a1cd6eb89e7e519b1a26b261a196cb",
+        "peer_sha256": "217940cbc9ffc10547e367ec73fa227815a1cd6eb89e7e519b1a26b261a196cb",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "current_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+        "peer_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "include/bsp/unit_generic_input_phase.hpp",
+        "current_sha256": "b28e44507b1836990ce311e4abfd43ed65c2f1a1c600b111536d195a137f7ae4",
+        "peer_sha256": "b28e44507b1836990ce311e4abfd43ed65c2f1a1c600b111536d195a137f7ae4",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/unit_generic_input_phase.cpp",
+        "current_sha256": "f74b50b38b84d4fdadb1048eaf11eeffafd251cd15951fd7657b6fe14eeb52fc",
+        "peer_sha256": "f74b50b38b84d4fdadb1048eaf11eeffafd251cd15951fd7657b6fe14eeb52fc",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "include/bsp/mission_scene_load.hpp",
+        "current_sha256": "5d00a69e1e5d3f878640aef78c21a3ae569b5fd1b30167a510f61bac35759207",
+        "peer_sha256": "5d00a69e1e5d3f878640aef78c21a3ae569b5fd1b30167a510f61bac35759207",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/mission_scene_load.cpp",
+        "current_sha256": "dba0de940a8f48a787ec9f20dd1350d0d524f57b9922530ef7b50388a0a6cf02",
+        "peer_sha256": "dba0de940a8f48a787ec9f20dd1350d0d524f57b9922530ef7b50388a0a6cf02",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/mission_load_path.cpp",
+        "current_sha256": "8ee2e851e0741023c02ae5c8e57b21981058b56496bb65aa5f05c42d014678a1",
+        "peer_sha256": "8ee2e851e0741023c02ae5c8e57b21981058b56496bb65aa5f05c42d014678a1",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "include/bsp/input_tick.hpp",
+        "current_sha256": "f4019636ca11edd6b75696612690d91aaba7aad9a4466340432005219ddebe98",
+        "peer_sha256": "f4019636ca11edd6b75696612690d91aaba7aad9a4466340432005219ddebe98",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "current_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "peer_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "exact_equal": true,
+        "lf_content_equal": true
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "current_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+        "peer_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+        "exact_equal": true,
+        "lf_content_equal": true
+      }
+    ],
+    "clock_writer_addresses_claimed_or_mutated": false
+  },
+  "complete_schedule_contract": {
+    "entity_walk": [
+      {
+        "sites": "00904bf4..00904bf7",
+        "effect": "read World+4 once, then header.first; no count read or null-header repair"
+      },
+      {
+        "sites": "00904c00..00904c04",
+        "effect": "read actual current entity byte+5C; skip only when zero"
+      },
+      {
+        "sites": "00904c06..00904c18",
+        "effect": "capture current entity table, FLD incoming float, load table slotDC, push/store float with FSTP, set ECX current entity and invoke"
+      },
+      {
+        "site": "00904c1a",
+        "effect": "reload same entity+38 after callback; do not capture successor early or reload World header"
+      },
+      {
+        "sites": "00904c21..00904c2b",
+        "effect": "unconditional FLD/FSTP forwarding to904600 using originally retained World receiver, including empty chain"
+      },
+      {
+        "site": "00904c32",
+        "effect": "restore saved registers and RET4"
+      }
+    ],
+    "matrix_numeric": [
+      {
+        "sites": "0090462f..0090464e",
+        "effect": "load current mission-clock bits once per reached record before the validator, subtract current start time through x87 after validation, spill elapsed to float32"
+      },
+      {
+        "sites": "00904670..00904677",
+        "effect": "divide that captured elapsed by current duration through x87 and spill quotient to float32; do not recompute clock-start"
+      },
+      {
+        "sites": "0090467b..0090468e and00904b67..00904b84",
+        "effect": "FCOMIP lower clamp plus COMISS upper clamp; both JBE keep paths take unordered, so NaN survives"
+      },
+      {
+        "sites": "009046b8..00904751",
+        "effect": "scale three translation components in native x87 order with individual float32 spills; form full translation matrix"
+      },
+      {
+        "sites": "00904795..009047ad,0090486f..0090488b,00904977..00904993",
+        "effect": "multiply each angle, float32 spill/reload, FCHS and float32 spill before X/Y/Z helper"
+      },
+      {
+        "sites": "009047b1,0090488f,00904997",
+        "effect": "call X/Y/Z raw builders and copy sixteen DWORDs from each returned output"
+      },
+      {
+        "sites": "00904ac3,00904aca,00904ad1,00904ad8",
+        "effect": "four chained raw multiplies: ((Rz*Ry)*Rx)*translation*actual record.base; final base pointer is not an earlier snapshot"
+      }
+    ],
+    "matrix_receivers": [
+      {
+        "site": "00904659",
+        "capture": "current record entity for initial active gate"
+      },
+      {
+        "site": "009046a1",
+        "capture": "entity in EBX before following returning validators"
+      },
+      {
+        "site": "00904a1e",
+        "capture": "table from that EBX entity before matrix multiplies"
+      },
+      {
+        "sites": "00904add..00904ae3",
+        "capture": "load function from retained table slot88 after multiplies; invoke on captured EBX entity"
+      },
+      {
+        "sites": "00904ae5..00904b13",
+        "capture": "validate, reload record entity, capture child head+48, clear current entity+C8/+10C, invalidate each child with post-call child+44 reload"
+      },
+      {
+        "sites": "00904b15..00904b2a",
+        "capture": "validate, reload record entity/current table/slotD8, invoke without args"
+      },
+      {
+        "sites": "00904b2c..00904b39",
+        "capture": "validate and reload record entity/current active byte for expiry"
+      }
+    ],
+    "matrix_expiry": {
+      "inactive": "expire after post-callback active-byte reload",
+      "active": "validate then load CURRENT duration; compare captured elapsed with x87 FCOMIP/JA",
+      "expires_only_when": "ordered elapsed strictly greater than current duration",
+      "equal": "retain",
+      "unordered": "retain if entity active",
+      "elapsed": "float32 captured before active gate and all entity callbacks",
+      "retained_advance": "validate then reload current node.next",
+      "scope": "matrix record retirement; no entity scalar destructor or separate entity-chain drain"
+    },
+    "matrix_erase": [
+      {
+        "sites": "00904b89..00904b90",
+        "effect": "compare current sentinel and capture node in EBP before returning validator"
+      },
+      {
+        "sites": "00904b95..00904b9b",
+        "effect": "test retained header address, capture current node.next in ESI, then call validator if header-address test was zero"
+      },
+      {
+        "sites": "00904ba0..00904bad",
+        "effect": "compare captured node with current sentinel, validate on equality, recheck; if still sentinel continue without unlink/free/decrement"
+      },
+      {
+        "sites": "00904bb3..00904bc2",
+        "effect": "write previous.next, reload both node links after that store, then write next.previous"
+      },
+      {
+        "sites": "00904bc5..00904bd1",
+        "effect": "free captured node, decrement CURRENT header count as DWORD, loop with previously captured successor; unlimited retirements per pass"
+      }
+    ],
+    "additional_exact_composition_notes": [
+      "DC call: table load4C06 precedes FLD4C08 and method load4C0C; PUSH4C12, ECX assignment4C13, FSTP4C15, CALL4C18. Tail repeats FLD/PUSH/ECX/FSTP before concrete inner call.",
+      "At462F clock MOVSS is immediately spilled4637 before validator463F; callback changes are not applied retroactively to the captured clock/elapsed.",
+      "FCOMIP lower plus COMISS upper JBE keep branches retain unordered phase; negative zero is not normalized away. Translation and angle stores retain binary32 rounding stages.",
+      "Translation begins46B8 and retains phase on x87 stack through individual X/Y/Z products and current-one/zero stores. Sentinel decision comes from46B5; failure pops phase478A before validator478C and reloads it4791.",
+      "Each angle is multiplied, binary32-spilled, reloaded, FCHS-negated and binary32-spilled before its helper. X/Y/Z current operands are reloaded according to their own bodies.",
+      "Z four-argument overload returns void; use known actual local destination for native ordered16DWORD copy. Do not claim original EAX result or cast opaque raw entity storage to CameraMatrix.",
+      "Captured entity46A1 survives later validators; table load4A1E occurs during Z-result copy. Slot88 cell address survives four multiplies; function loaded4ADD, actual captured entity used4AE3.",
+      "Actual record.base address formed4A74 is final right operand after Rz*Ry*Rx*T; do not snapshot base values earlier.",
+      "After88, entity is reloaded for inline root invalidation; new42ED50 is called on actual children with current-child44 reload. D8 and expiry then reload current entity/table/state at their own sites.",
+      "Erase retains captured node across returning callbacks, reloads links after first unlink store, frees matching-domain node only, decrements current count after free, and retains pre-captured successor. No entity scalar deletion or one-expiry cap."
+    ],
+    "matrix_call_inventory": {
+      "validator": 18,
+      "rotation": 3,
+      "multiply": 4,
+      "entity_virtual": 2,
+      "subtree": 1,
+      "free": 1,
+      "total": 29
+    }
+  },
+  "remaining_caller_and_integration_obligations": [
+    "Actually supply the shared clock with qualified reset/writer authority and lifetime; no existing projected copy is silently selected.",
+    "Supply current genuine callable Source entity tables and actual entity/child storage valid through all later post-callback reads.",
+    "Supply coherent World chain/matrix header/sentinel and nonempty records in matching node-free domain when reached; empty sentinel alone supplies no record producer.",
+    "Bind the intended current returning-capable invalid-parameter service/context; no no-op or unconditional-throw replacement merely for linkage.",
+    "Retain genuine current negative-zero/one operand storage and all borrowed owners/context through every eventual call.",
+    "Implement and review complete pair, normal Win32 build and emitted arithmetic/call/control schedule; independently assess current canonical ledger before any future credit.",
+    "Full World construction/table/destruction, production caller wiring, native EH/SEH/private-frame, concurrent mutation, runtime and gameplay remain outside this leaf audit."
+  ],
+  "validation": {
+    "json_parse": "passed",
+    "git_diff_check": "passed",
+    "prior_tick_input_hashes": 23,
+    "prior_tick_inputs_unchanged": true,
+    "clock_worker_pins_rechecked": 15,
+    "current_source_and_evidence_pins": 46,
+    "cached_tick_whole_bytes_and_listing_integrity": true,
+    "new_source_build_tests_execution_probes_or_ghidra_queries": false,
+    "cmake_config_ledger_or_ghidra_mutation": false,
+    "application_or_runtime_or_gameplay_validation": false
+  },
+  "credit": {
+    "new_source_functions": 0,
+    "new_original_functions": 0,
+    "new_original_bytes": 0,
+    "prior_subtree_admission_counted_again": false
+  },
+  "prior_tick_input_pin_recheck": [
+    {
+      "path": "include/bsp/unit_instance.hpp",
+      "expected_sha256": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+      "current_sha256": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+      "unchanged": true
+    },
+    {
+      "path": "src/unit_instance.cpp",
+      "expected_sha256": "7357739720e090d1c139195f089cbb9f4e3aa740467fe5d430b8ff96f083f769",
+      "current_sha256": "7357739720e090d1c139195f089cbb9f4e3aa740467fe5d430b8ff96f083f769",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/world_entity_update.hpp",
+      "expected_sha256": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+      "current_sha256": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+      "unchanged": true
+    },
+    {
+      "path": "src/world_entity_update.cpp",
+      "expected_sha256": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+      "current_sha256": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/game_hosts_world.hpp",
+      "expected_sha256": "b85a62b2c25887a399a389dcebcb41e7fde861bacfa33068ea9feb212339d2bf",
+      "current_sha256": "b85a62b2c25887a399a389dcebcb41e7fde861bacfa33068ea9feb212339d2bf",
+      "unchanged": true
+    },
+    {
+      "path": "src/game_hosts_world.cpp",
+      "expected_sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+      "current_sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_world_chain_headers.hpp",
+      "expected_sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "current_sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_world_chain_headers.cpp",
+      "expected_sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383",
+      "current_sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_world_matrix_sentinel.hpp",
+      "expected_sha256": "71fa406a7c9da9ee40077db67480b20a6feb80256c76db01f523a3b478717793",
+      "current_sha256": "71fa406a7c9da9ee40077db67480b20a6feb80256c76db01f523a3b478717793",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_world_matrix_sentinel.cpp",
+      "expected_sha256": "63bd07694a19e6d40f6eeb0d04aae61d3293a4e9685c9ac5e0d1956fad802451",
+      "current_sha256": "63bd07694a19e6d40f6eeb0d04aae61d3293a4e9685c9ac5e0d1956fad802451",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_world_parent_headers.hpp",
+      "expected_sha256": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba",
+      "current_sha256": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_particle_axial_loading.hpp",
+      "expected_sha256": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497",
+      "current_sha256": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_particle_axial_loading.cpp",
+      "expected_sha256": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+      "current_sha256": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_math.hpp",
+      "expected_sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+      "current_sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+      "unchanged": true
+    },
+    {
+      "path": "src/native_camera_matrix_math.cpp",
+      "expected_sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+      "current_sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+      "unchanged": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "current_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "unchanged": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "expected_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "current_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC12_WORLD_ENTITY_CHAIN_DRAIN_CONTRACT.md",
+      "expected_sha256": "ec84d57eadedd800e6675e34489c726e8d2500ad236b0df66ad6d4f6e7620861",
+      "current_sha256": "ec84d57eadedd800e6675e34489c726e8d2500ad236b0df66ad6d4f6e7620861",
+      "unchanged": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_GAME_WORLD_OWNER_CONTEXT_READINESS.md",
+      "expected_sha256": "954a7d3f097d78878ae74f2b981eb1465564265e85bdd4c59d90512fe58c968e",
+      "current_sha256": "954a7d3f097d78878ae74f2b981eb1465564265e85bdd4c59d90512fe58c968e",
+      "unchanged": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "expected_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "current_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "unchanged": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "expected_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "current_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "unchanged": true
+    },
+    {
+      "path": "tools/ghidra_flow_properties.py",
+      "expected_sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+      "current_sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+      "unchanged": true
+    },
+    {
+      "path": "tools/ghidra_flow_repair.py",
+      "expected_sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6",
+      "current_sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6",
+      "unchanged": true
+    }
+  ],
+  "source_and_evidence_sha256": {
+    "include/bsp/unit_instance.hpp": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+    "src/unit_instance.cpp": "7357739720e090d1c139195f089cbb9f4e3aa740467fe5d430b8ff96f083f769",
+    "include/bsp/world_entity_update.hpp": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+    "src/world_entity_update.cpp": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+    "include/bsp/game_hosts_world.hpp": "b85a62b2c25887a399a389dcebcb41e7fde861bacfa33068ea9feb212339d2bf",
+    "src/game_hosts_world.cpp": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+    "include/bsp/native_world_chain_headers.hpp": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+    "src/native_world_chain_headers.cpp": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383",
+    "include/bsp/native_world_matrix_sentinel.hpp": "71fa406a7c9da9ee40077db67480b20a6feb80256c76db01f523a3b478717793",
+    "src/native_world_matrix_sentinel.cpp": "63bd07694a19e6d40f6eeb0d04aae61d3293a4e9685c9ac5e0d1956fad802451",
+    "include/bsp/native_world_parent_headers.hpp": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba",
+    "include/bsp/native_particle_axial_loading.hpp": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497",
+    "src/native_particle_axial_loading.cpp": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+    "include/bsp/native_camera_matrix_math.hpp": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+    "src/native_camera_matrix_math.cpp": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "docs/CC12_WORLD_ENTITY_CHAIN_DRAIN_CONTRACT.md": "ec84d57eadedd800e6675e34489c726e8d2500ad236b0df66ad6d4f6e7620861",
+    "docs/CC12_NATIVE_GAME_WORLD_OWNER_CONTEXT_READINESS.md": "954a7d3f097d78878ae74f2b981eb1465564265e85bdd4c59d90512fe58c968e",
+    "tools/bsp.py": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+    "tools/ghidra_export.py": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+    "tools/ghidra_flow_properties.py": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+    "tools/ghidra_flow_repair.py": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6",
+    "include/bsp/native_subtree_invalidation.hpp": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07",
+    "src/native_subtree_invalidation.cpp": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959",
+    "docs/CC12_NATIVE_SUBTREE_INVALIDATION_SOURCE.md": "cec8c51b6a414bf1f6d57c33295b2947d7daf1261ecf0e654b5a465af6838a56",
+    "reports/cc12_native_subtree_invalidation_source.json": "ab9469e5ea3eec585bb884aae0d5167a622745eddef8ba1009864c15e8d01378",
+    "docs/CC12_NATIVE_SUBTREE_INVALIDATION_READINESS.md": "7433097e9bce9f21166e2ae6a8bcbf300beb9b1724e615a4ae555f519915aa23",
+    "reports/cc12_native_subtree_invalidation_readiness.json": "632b8bcb619040e83e000604831d1f5c615a6501cc47966f1ba9d56b708f1d40",
+    "reports/cc12_sample_subtree_primary_review.json": "4722132f73666903a90a1d5f677a4e90321b873d59f1459ac37020ee6388095d",
+    "reports/cc12_world_current_tick_readiness.json": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713",
+    "docs/CC12_WORLD_CURRENT_TICK_READINESS.md": "0aeb8d4e2f64da2478eb1dda6144209e49a2809ce74c1478313ba6a1cbaf57c7",
+    "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+    "include/bsp/game_native_readonly_data.hpp": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+    "src/game_native_particle_runtime.cpp": "64fde4c6a4d8938ce769828469ddcd6ca2c68e985d69e98406e8fa9893c400f1",
+    "src/game_native_resource_application.cpp": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+    "src/game_native_vfs_application.cpp": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+    "src/native_damageable_class_binding.cpp": "9f6803d39eebc32b55716bc0eb66254a9557abc74b1b1bc7a559c6fb8769e2f2",
+    "include/bsp/unit_generic_input_phase.hpp": "b28e44507b1836990ce311e4abfd43ed65c2f1a1c600b111536d195a137f7ae4",
+    "src/unit_generic_input_phase.cpp": "f74b50b38b84d4fdadb1048eaf11eeffafd251cd15951fd7657b6fe14eeb52fc",
+    "include/bsp/native_world_entity_chain_drain.hpp": "7c0e39fdb69fb1ddcefb83b16a03e52821e7520461f2c1459e2a960d1165068c",
+    "src/native_world_entity_chain_drain.cpp": "cdb95aa2c88aea1f494bb8330ce357ee50bf4228315d8c8c8cdc076d32c777bb",
+    "include/bsp/world_construct.hpp": "5f5d9bf8b44c53237fc33cd448919c80eee4731db0b9cd7dbf10a4d0ba3193dc",
+    "src/world_construct.cpp": "aa51c816692e0f65139969653706410e6343eb42eb202a293f763254b7b8b37a",
+    "reports/native_particle_axial_loading.json": "5d86c734fe85293e60f0302ef177ee118795a54fcbc1838a7f0c980ccfadcebf",
+    "docs/CC12_WORLD_TICK_PROVIDER_COMPOSITION_AFTER_SUBTREE.md": "f56a0845fc0127940d50d9ac5fdf40d19291308465c8e28b1ba1bb3f2c527f6c"
+  }
+}
