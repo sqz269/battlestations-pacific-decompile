@@ -1,0 +1,336 @@
+{
+  "schema": "CC12_naked_Source_candidate_v1",
+  "packet": "cc12_lua_pair_retreat_wrapper_Source",
+  "status": "Source12_candidate_after_Root_gate_and_Source137_admission_pending_primary_registration_build_emitted_review_Core_admission",
+  "created_utc": "2026-10-09T19:22:39.028538+00:00",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "branch": "agent/cc12_global_config_effect_payload",
+  "baseline_commit": "77da337c2b78aaae42a9009e8938ec5dd4b10a0e",
+  "exact_owned_paths": [
+    "include/bsp/native_lua_variant_pair_retreat_wrapper.hpp",
+    "src/native_lua_variant_pair_retreat_wrapper.cpp",
+    "docs/CC12_NATIVE_LUA_VARIANT_PAIR_RETREAT_WRAPPER_SOURCE.md",
+    "reports/cc12_native_lua_variant_pair_retreat_wrapper_source.json"
+  ],
+  "Native_gate": {
+    "address": "006EDE90",
+    "end_inclusive": "006EDE9B",
+    "bytes": 12,
+    "operations": 6,
+    "body_hex": "568bf1e8e8feffff8bc65ec3",
+    "body_sha256": "3d20fe5e8ca30c1a6d4bc3cef024ad8fdc9c398648954cd9368ea516b4fd9a3c",
+    "image_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_file_offset": 3071632,
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "Root_approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_native_readiness_primary/Root_Astra_gate_approval.json",
+      "bytes": 1545,
+      "sha256": "a5c1c2fa2d4a50267c2e3fa7eaca6f6db618f3e6591342bce73e4278e353359c",
+      "canonical_lf_sha256": "15f1ee00b65e1f359e8d63a7f056ad56b86b22eb2f93253fda39ca9f92740fb9"
+    },
+    "Root_saved_listing_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_native_readiness_primary/wrapper_Root_listing.txt",
+      "bytes": 133,
+      "sha256": "2f135876f514b1c4eda1c99735ad5764045ca7f60addd4a1f260fbf8c1e28723",
+      "canonical_lf_sha256": "a360af7e0fddd492424bf013cd059ca751d96b4ad0edda8b06bcd3a2cb4c672a"
+    },
+    "Root_live_bytes_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_native_readiness_primary/wrapper_Root_live.txt",
+      "bytes": 61,
+      "sha256": "10853dcd75a474023241723e0f7fdd44cdc16b0e5e3cf57abc1b3dc91c405105",
+      "canonical_lf_sha256": "94b720a9bb2fcc014bf45e91db9bf7d16cae97c7b64196bd837cd88243219036"
+    },
+    "Root_complete12bytes_6operations_independently_read": true,
+    "Root_live_PE_saved_starts_equal": true,
+    "worker_PE_against_Root_saved_live_and_6_raw_starts_replayed": true,
+    "raw_operations": [
+      {
+        "address": "006EDE90",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "006EDE91",
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "006EDE93",
+        "bytes": "e8e8feffff",
+        "mnemonic": "call",
+        "operands": "0x6edd80"
+      },
+      {
+        "address": "006EDE98",
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "006EDE9A",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "006EDE9B",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "saved_listing": "006ede90: PUSH ESI \n006ede91: MOV ESI,ECX \n006ede93: CALL 0x006edd80 \n006ede98: MOV EAX,ESI \n006ede9a: POP ESI \n006ede9b: RET \n",
+    "new_live_queries_or_Ghidra_mutations": false,
+    "new_Native_child_body_queries_or_decode": false
+  },
+  "Source_contract": {
+    "public_symbol": "retreat_native_lua_variant_pair_wrapper_006ede90",
+    "public_declaration": "void* __fastcall retreat_native_lua_variant_pair_wrapper_006ede90(void* actual_pair);",
+    "definition": "__declspec(naked), single unnamed void* formal, six inline assembly instructions",
+    "target": "MSVC Win32 with sizeof(void*)==4 asserted",
+    "placement": "actual_pair in ECX alone; no unused EDX formal, pushed argument or stack-word parameter",
+    "ordered_instructions": [
+      "PUSH ESI",
+      "MOV ESI,ECX",
+      "CALL actual admitted retreat_native_lua_variant_pair_006edd80",
+      "MOV EAX,ESI",
+      "POP ESI",
+      "RET"
+    ],
+    "expected_Native_comparison": {
+      "bytes": 12,
+      "operations": 6,
+      "only_redirected_REL32_operand_offset": 4,
+      "operand_bytes": 4,
+      "operand_offsets_inclusive": [
+        4,
+        7
+      ],
+      "actual_admitted_child_symbol": "?retreat_native_lua_variant_pair_006edd80@bsp@@YIXPAX@Z",
+      "compiled_wrapper_bytes_not_yet_observed": true
+    },
+    "return_semantics": "Physical post-child ESI copied to EAX BEFORE late POP of current wrapper saved ESI word. Original pair identity is conditional on actual child ESI preservation and control/save backing.",
+    "no_alternate_return_from_HLL_parameter_child_EAX_pair_word_or_fresh_ECX": true,
+    "stack_schedule": "S=entryESP. PUSH writes incoming ESI atS-4; MOV captures entryECX inESI; CALL continuation is atS-8. Ordinary return reaches currentESI->EAX, then POP reads currentS-4, then RET reads currentS. Source continuation address is its own call continuation.",
+    "alias_and_backing": "Borrow actual pair and selected child node/control backing; child writes may alias current save/return words. No immutable restoration or arbitrary alias/fault equivalence is promised.",
+    "arithmetic_flags": "Post-child MOV/POP/RET do not change arithmetic flags; runtime/ABI/fault equivalence still unproved.",
+    "no_noexcept_extra_validation_frame_guard_type_owner_callback_cleanup_or_consumer": true
+  },
+  "actual_Source137_provider": {
+    "address": "006EDD80",
+    "admitted_commit_prefix": "806294aa1",
+    "Source_public": "?retreat_native_lua_variant_pair_006edd80@bsp@@YIXPAX@Z",
+    "compiled_receipt_pin": {
+      "path": "reports/cc12_native_lua_variant_pair_retreat_primary_review.json",
+      "bytes": 94647,
+      "sha256": "08c8aca9449360284ba3b62ee9c9c14fef17702ab25825da2c48b36f2ac71e9a",
+      "canonical_lf_sha256": "08c8aca9449360284ba3b62ee9c9c14fef17702ab25825da2c48b36f2ac71e9a"
+    },
+    "accepted_status": "Source_admitted_complete_compiled_Core_review_normal_build_passed_Original_ABI_startup_gameplay_unproved",
+    "accepted_Source_credit": {
+      "functions": 1,
+      "Original_bytes": 137
+    },
+    "direct_provider_pins": [
+      {
+        "path": "include/bsp/native_lua_variant_pair_retreat.hpp",
+        "bytes": 2379,
+        "sha256": "0a4fcb6106332a32c6a56cd61b7d373a50e2cc7da5a5047e916d27fd84ecad8c",
+        "canonical_lf_sha256": "0a4fcb6106332a32c6a56cd61b7d373a50e2cc7da5a5047e916d27fd84ecad8c"
+      },
+      {
+        "path": "src/native_lua_variant_pair_retreat.cpp",
+        "bytes": 4034,
+        "sha256": "68ea9ea20e3490b9e9eecae3a76faf004671ba1eb8a73506c6e715b7220a7c83",
+        "canonical_lf_sha256": "68ea9ea20e3490b9e9eecae3a76faf004671ba1eb8a73506c6e715b7220a7c83"
+      },
+      {
+        "path": "docs/CC12_NATIVE_LUA_VARIANT_PAIR_RETREAT_SOURCE.md",
+        "bytes": 9151,
+        "sha256": "7561cc71b1a4f826a549b03c7fc0c1539d53333f70305e1d1e420691849961f1",
+        "canonical_lf_sha256": "7561cc71b1a4f826a549b03c7fc0c1539d53333f70305e1d1e420691849961f1"
+      },
+      {
+        "path": "reports/cc12_native_lua_variant_pair_retreat_source.json",
+        "bytes": 17287,
+        "sha256": "9e03339390439e010d2ab3de1fb1afb2c98466d51b22056f5b28f4ed632500bc",
+        "canonical_lf_sha256": "9e03339390439e010d2ab3de1fb1afb2c98466d51b22056f5b28f4ed632500bc"
+      }
+    ],
+    "actual_header_and_cpp_in_current109_manifest": true,
+    "compiled_mapping_from_accepted_receipt": {
+      "all137bytes_equal_Native_outside_three_REL32_operands": true,
+      "REL32_operand_offsets": [
+        9,
+        36,
+        128
+      ],
+      "actual_provider": "?invoke_native_invalid_parameter_00bf6713@bsp@@YAXXZ",
+      "exact_identity_LEA_ESP_offsets": [
+        57,
+        89
+      ],
+      "exact_identity_LEA_ESP_hex": "8da42400000000",
+      "all_local_branches_unchanged": true,
+      "all48_emitted_operations_read": true,
+      "restored_frame_tail_jump_offsets": [
+        35,
+        127
+      ],
+      "new_EH_guard_cleanup": false
+    },
+    "selected_unique_Core_definition": {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_lua_variant_pair_retreat.obj",
+        "header_offset": 63756962,
+        "payload_file_offset": 63757022,
+        "bytes": 971,
+        "sha256": "0585909cec15cb3b158b9c40cc10de67409c0d5d2a49c921c55ffdd8686ba2d6"
+      },
+      "definition": {
+        "name": "?retreat_native_lua_variant_pair_006edd80@bsp@@YIXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 786,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    },
+    "selected_971byte_Core_payload_hash_replayed": true,
+    "Core_replay_scope": "Byte hash at accepted receipt offset in exact current artifact; no new symbol resolution or re-audit of Native child.",
+    "preservation_contract": "Each child local/tail exit pops its current saved ESI word. Ordinary preservation needs noncorrupted control/save backing and selected Source17/CRT nonvolatile preservation. Pair writes can alter later node/save/return accesses.",
+    "actual_transitive_provider": "invoke_native_invalid_parameter_00bf6713 via accepted Source137 one CALL and two restored-ESI tail JMPs; qualified current CRT behavior inherited.",
+    "dependency_closed_for_qualified_Source_composition": true,
+    "Native_ABI_CRT_register_fault_or_production_lifetime_credit": false
+  },
+  "current_Source109_snapshot_replay": {
+    "replay_started_utc": "2026-10-09T19:22:38.866473+00:00",
+    "replay_finished_utc": "2026-10-09T19:22:39.018890+00:00",
+    "snapshot_scope": "Hashes matched the Source109 receipt at this replay time. Later Root builds may replace the same mutable artifact paths; pins record this snapshot, not a claim about later paths.",
+    "primary_receipt_pin": {
+      "path": "reports/cc12_native_lua_variant_pair_retreat_primary_review.json",
+      "bytes": 94647,
+      "sha256": "08c8aca9449360284ba3b62ee9c9c14fef17702ab25825da2c48b36f2ac71e9a",
+      "canonical_lf_sha256": "08c8aca9449360284ba3b62ee9c9c14fef17702ab25825da2c48b36f2ac71e9a"
+    },
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 11128,
+      "start_utc": "2026-10-09T19:04:50.472711+00:00",
+      "finish_utc": "2026-10-09T19:05:05.720846+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 109
+    },
+    "source_input_count": 109,
+    "source_input_manifest_canonical_JSON_sha256": "6035a5ce0bab715495538adc438a5679ff807214bde53f5ab1252e3e50c12742",
+    "all109_canonical_LF_input_hashes_match": true,
+    "raw_bytes_and_hash_match_count": 107,
+    "line_ending_only_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "receipt_bytes": 51122,
+        "receipt_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "worker_bytes": 52250,
+        "worker_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "canonical_LF_equal": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "receipt_bytes": 18326,
+        "receipt_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "worker_bytes": 17789,
+        "worker_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "canonical_LF_equal": true
+      }
+    ],
+    "artifact_checks": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73770556,
+        "sha256": "99e1e62de6a01c5661769650988c22e0fd433f89dcad2487c32b10c8528a7018",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "d8a8af4a543a62761dfb7abba7eadd1e59a80f949f99fe45ef1fe63a601dc0e1",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "e233a7f88ccd446f005f934e3999cdc8956e4261ed3f41a18510f64b3a806768",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "9395476dbfb95f74de3770a4fbc305f3e2f6a9a4e39f9b11c2b78654f376114b",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "exact_match": true
+      }
+    ],
+    "existing_checks_passed": 3,
+    "whole_objects_captured_or_replayed_by_Root": 30,
+    "positive_Core_definitions_by_Root": 34,
+    "prior29_objects_unchanged_per_accepted_Root_receipt": true,
+    "duplicated_prior_object_graphs_or_full109_manifest": false,
+    "Source107_artifacts": "Historical; not used as current snapshot.",
+    "new_wrapper_compiled_by_prior_build": false
+  },
+  "candidate_file_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_pair_retreat_wrapper.hpp",
+      "bytes": 1465,
+      "sha256": "8350a55a147be4047575e962d49d60c88d89b62ca92729a63cc2b9c06e78f9d5",
+      "canonical_lf_sha256": "8350a55a147be4047575e962d49d60c88d89b62ca92729a63cc2b9c06e78f9d5"
+    },
+    {
+      "path": "src/native_lua_variant_pair_retreat_wrapper.cpp",
+      "bytes": 944,
+      "sha256": "f1d7a05e591f40c6d9e3619056c8e254a21e88e002c22ad931237f68d8eed6e5",
+      "canonical_lf_sha256": "f1d7a05e591f40c6d9e3619056c8e254a21e88e002c22ad931237f68d8eed6e5"
+    },
+    {
+      "path": "docs/CC12_NATIVE_LUA_VARIANT_PAIR_RETREAT_WRAPPER_SOURCE.md",
+      "bytes": 5762,
+      "sha256": "c6744610db65f19678efddf3d4ce2eaee4d06c4e2cedd5cab01f481c9049317b",
+      "canonical_lf_sha256": "c6744610db65f19678efddf3d4ce2eaee4d06c4e2cedd5cab01f481c9049317b"
+    }
+  ],
+  "validation": {
+    "Root_Native12_gate_and_real_Source137_dependency_verified": true,
+    "worker_Source_six_instruction_schedule_reviewed": true,
+    "actual109_inputs_artifacts_and_selected_provider_Core_payload_hashes_replayed": true,
+    "new_build_tests_probes_CMake_ledger_GPR_consumers_or_forced_retention": false,
+    "Primary_registration_build_emitted12byte6op_and_sole_REL32_review_Core_admission": "pending"
+  },
+  "credit": {
+    "qualified_Source_candidate": true,
+    "Source_admission": false,
+    "Original_ABI": false,
+    "runtime_startup_gameplay": false
+  },
+  "limits": [
+    "Post-child ESI is returned before late saved-word restore; original-pair result is conditional.",
+    "Child control/backing/save-word aliases and current CRT provider qualification are inherited.",
+    "Source intent preserves six instructions; emitted size/bytes/relocation still require Primary build and review.",
+    "No new Native ABI, flags/fault timing, CRT/handler identity, production lifetime, consumer or startup/gameplay proof.",
+    "Prior Source107 snapshots are historical; current109 replay is time-qualified."
+  ]
+}
