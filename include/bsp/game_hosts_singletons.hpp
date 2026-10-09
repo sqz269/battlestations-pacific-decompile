@@ -78,6 +78,10 @@ public:
     void* volatile& manager_publication_01090aa0() noexcept {
         return manager_publication_01090aa0_;
     }
+    // Same retained process cell installed in this host's D0DEA0 deletion binding.
+    void* volatile& pending_registry_publication_00f878cc() noexcept {
+        return pending_registry_publication_00f878cc_;
+    }
     // Lazy diagnostic access and physical Lock contexts borrow this one cell
     // with sound_lifetime(). Its deletion binding outlives the raw drain.
     NativeDiagnosticSinkStorage* volatile& diagnostic_publication_0109cf14() noexcept {
@@ -129,5 +133,6 @@ private:
     std::unique_ptr<NativeWeakOwnerDomain> weak_owners_;
     GameNativeVfsRuntime* vfs_runtime_{};
     std::unique_ptr<GameObserverRuntime> observers_;
+    void* volatile& pending_registry_publication_00f878cc_; // canonical process cell
 };
 } // namespace bsp::game
