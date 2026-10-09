@@ -1,0 +1,115 @@
+{
+  "packet": "cc12_game_unit_rank_context_readiness",
+  "source_base_commit": "33c0a0518ff8dddedaa088bfef35d440b4a55aa7",
+  "scope": "evidence_only_current_source_constructor_context_audit",
+  "conclusion": "GameNativeGameTables already is the complete bounded unit/rank context provider; no additional provider Source is justified",
+  "constructor_field": "NativeGameConstructionContext::tables is NativeGameTablesContext&; no separate units/ranks context fields",
+  "existing_provider": {
+    "type": "bsp::game::GameNativeGameTables",
+    "owned_unit_payload_bytes": 368,
+    "unit_payload_alignment": 4,
+    "owned_unit_count": "volatile uint32_t initialized to zero",
+    "unit_frame_word_preimage": "required explicit constructor argument; no default; context preserves full word for builder's low-byte replacement",
+    "borrowed_unit_definitions": "static C++ 23-entry NativeUnitConversionDefinitions",
+    "borrowed_preference_dwords": 1164,
+    "owned_rank_dwords": 1164,
+    "owned_rank_bytes": 4656,
+    "owned_context": "NativeGameTablesContext",
+    "copy_and_move": "deleted",
+    "borrow": "same stored context issued once only while count is zero",
+    "repeat_borrow_or_nonzero_count": "logic_error",
+    "raw_replay_guard": false,
+    "dynamic_raw_headers_required": false,
+    "constructor_service_owner": "surrounding NativeGameConstructionCalls, not GameNativeGameTables"
+  },
+  "existing_calls": [
+    {
+      "native_address": "008d9150",
+      "parent_site": "004ddfa1",
+      "source_method": "NativeGameConstructionCalls::call_008d9150",
+      "implementation": "append_native_unit_conversions_008d9150",
+      "contract": "append 23 rows; preserve supplied upper 24 local-word bits; reload/increment count; no reset or capacity check",
+      "recorded_native_abi": "no consumed explicit arguments; global rows/count; incidental final factor bits in EAX; RET"
+    },
+    {
+      "native_address": "00727bd0",
+      "parent_site": "004de075",
+      "source_method": "NativeGameConstructionCalls::call_00727bd0",
+      "implementation": "build_native_gunnery_ranks_00727bd0",
+      "contract": "12 rows; clear each 97-word row then scan its 97 current preference DWORDs; preserve zero holes, duplicates and unchecked cross-row writes",
+      "recorded_native_abi": "no consumed explicit arguments; global preferences/ranks; RET"
+    }
+  ],
+  "native_data_domains": {
+    "00f88a50": "unit rows",
+    "00f88bc0": "unit count",
+    "00e092c8": "gunnery preferences; Source uses compiled authored words",
+    "00e19bf8": "rank output"
+  },
+  "native_parent": {
+    "address": "004ddb90",
+    "recorded_abi": "ECX actual 71A0h game; stack name header; EAX game; RET4",
+    "new_native_abi_proof": false
+  },
+  "source_observations": {
+    "provider_construction_calls_builders": false,
+    "provider_construction_calls_reset_import_sdk": false,
+    "provider_construction_allocates_native_objects": false,
+    "new_original_image_mapping_required": false,
+    "unit_literals_have_source_image_pointer_identity": true,
+    "application_instantiations_found": 0,
+    "application_search": "rg -n \\bGameNativeGameTables\\b src include tests; all matches are provider declaration or method definitions",
+    "build_registration_provider": "CMakeLists.txt:289, bsp_game",
+    "build_registration_native_implementations": "cmake/startup.cmake:171, bsp_core"
+  },
+  "smallest_next_source_action": [
+    "retain the existing GameNativeGameTables inside the eventual complete game construction owner",
+    "supply an explicit native local-word preimage rather than choosing a zero or inferred value",
+    "borrow its context once into NativeGameConstructionContext::tables",
+    "retain the surrounding existing NativeGameConstructionCalls and all context consumers"
+  ],
+  "not_closed_by_this_audit": [
+    "actual 71A0h caller allocation, whole-allocation zeroing and real name header",
+    "complete application construction context and canonical publication ownership",
+    "whole-game graph teardown and retained failed-operation lifetimes",
+    "natural native stack preimage, register/exception ABI and Original compatibility",
+    "startup, runtime and gameplay validation"
+  ],
+  "historical_evidence": {
+    "native_contracts_and_authored_data": "reports/native_game_tables_r114.json",
+    "historical_comparisons_rerun": false,
+    "application_baseline": "reports/cc12_game_construction_provider_refresh.json"
+  },
+  "credit": {
+    "new_native_functions": 0,
+    "new_original_bytes": 0,
+    "new_source_functions": 0
+  },
+  "validation": {
+    "bounded_source_review": "passed",
+    "json_parse": "passed",
+    "git_diff_check": "passed",
+    "source_modified": false,
+    "cmake_modified": false,
+    "config_or_ledger_modified": false,
+    "ghidra_queried_or_modified": false,
+    "build_run": false,
+    "tests_or_probes_run": false,
+    "runtime_validated": false,
+    "gameplay_validated": false
+  },
+  "evidence_sha256": {
+    "include/bsp/game_native_game_tables.hpp": "df5e57025a0c1ac61b8c9809be9bc888c0eb134ff1ee64340b576233d0f0cfeb",
+    "src/game_native_game_tables.cpp": "8d36b08e9999ac5113ceed719b743f8fd211f887b858149460835fd16aa0c489",
+    "include/bsp/native_game_tables.hpp": "f17e77015efb5ea9f1909479682bd5c602e1f5f8ac1b34e63ed852d7107e1743",
+    "src/native_game_tables.cpp": "c5f443a1b2e3b417b8885a83d24e74e212468fbc51813c809a5fe8bd705ed4b1",
+    "include/bsp/native_game_construction.hpp": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+    "src/native_game_construction.cpp": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+    "CMakeLists.txt": "243e1dd3ddadc0bdf4a71dcf2c3a8f5fe463b516a80500b66a7a752c528f3346",
+    "cmake/startup.cmake": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+    "docs/NATIVE_GAME_TABLES_R114.md": "5183673f673087ec9fee0708be2ffba494042bd4de839d2b28dd8eb3297359c1",
+    "reports/native_game_tables_r114.json": "0585ea3e92ae1e65563b6edf7908dd0b87c4bb6325dad8933c0f0f993991bce8",
+    "docs/CC12_GAME_CONSTRUCTION_PROVIDER_REFRESH.md": "888239b3bf12a0c3bd53425f783b32c84fa0a427ca5c15624cbabcf7c47791e6",
+    "reports/cc12_game_construction_provider_refresh.json": "2479f8d2480da5d8b566e4ab5681b1f30d052ef531cbe25c33a3b3643ef62b08"
+  }
+}
