@@ -1,5 +1,15 @@
 # Pending tick group sentinel initialization: Source candidate
 
+Current Source borrower is registered and build-tested as a bounded initializer fragment. Its 155-byte /32-operation body preserves all twenty Original stores after relocating the selected pointer words to the supplied base. Native entry/function creation, backing ownership, production invocation, Original ABI and execution remain open.
+
+## Integrator compiled review
+
+Root compared all twenty emitted stores against fresh complete live/PE Native153/22 evidence using symbolic base offsets. The emitted body has ten LEAs, no calls/branches/relocations/local EH and plain RET; ECX is retained, EAX is zero and final EDX is base+1A0h. Only XOR writes arithmetic flags. This is a new one-input/scratch-EDX Source interface rather than the Native absolute/no-input interface. The minimum selected written bound is 1E0h, not proof of a full208h object. Root created no Native function or listing; current entry/return instruction-context queries still report no saved instructions. The normal Win32 build passes three existing checks; all nine prior complete objects and Legacy20/eight EH contracts are unchanged. The immutable worker report below records its unregistered candidate stage. Actual backing, shared producer/iterator/flush identities, lifecycle and Source startup call are not supplied.
+
+Current evidence: `reports/cc12_native_pending_tick_group_initialization_primary_review.json`.
+
+## Worker candidate snapshot
+
 This unregistered candidate supplies the missing borrowed link-initialization
 operation identified by `CC12_PENDING_GROUP_SOURCE_BACKING_LIFECYCLE_READINESS.md`.
 It takes the actual first group head in ECX and performs exactly twenty ordered

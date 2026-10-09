@@ -1,5 +1,15 @@
 # Source candidates for the two small Lua variant link helpers
 
+Current Source is registered and build-tested. Both complete bodies emit exactly the 55 Original bytes, including the two identity LEAs. Each has a unique Core definition and is absent from the application map. Original ABI, parent integration and execution remain unproved.
+
+## Integrator compiled review
+
+Root reviewed complete live/PE windows, two whole COFF objects and their indexed graphs, all thirteen positive Core public roots and four current artifacts. The normal MSVC Win32 build passed all three existing checks. Nine previous complete objects, all twenty Legacy code/relocation bodies and all eight EH payload/relocation contracts remain byte-identical. The worker report below is an immutable pre-registration snapshot; its pending registration/build statements describe that stage. Current admission is recorded in the primary report. No new tests, probe, guard, consumer, retention or default owner was added.
+
+Current evidence: `reports/cc12_native_lua_variant_small_link_helpers_primary_review.json`.
+
+## Worker candidate snapshot
+
 Two naked Win32 fastcall candidates preserve the complete owned schedules at
 `006ED9D0..006ED9EB` and `006ED9F0..006EDA0A`. Each takes one actual node pointer
 in ECX and exposes the physical EAX pointer result. There is no dummy EDX,
