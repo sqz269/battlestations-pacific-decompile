@@ -130,21 +130,18 @@ std::size_t load_texture_atlas_00af0060(const std::string& descriptor_path,
     const std::vector<std::string> candidates =
         host.find_files_with_extension(directory, "ats");
 
-    // 00af02f0: the guard walks the manager's texture array and compares each
-    // entry against the *requested* descriptor path, not against the candidate
-    // being considered. Loaded textures carry .dds paths taken from the atlas
-    // header, so this comparison cannot succeed for a .ats request; it is
-    // reproduced because it is in the binary, not because it can fire.
-    const std::vector<std::string> registered = host.registered_atlas_texture_paths();
-    const bool already_registered = std::any_of(registered.begin(), registered.end(),
-        [&descriptor_path](const std::string& entry) {
-            return equals_ignoring_case(entry, descriptor_path);
-        });
-
     std::size_t loaded = 0;
     std::size_t missing = 0;
     for (const std::string& candidate : candidates) {
         if (!atlas_split_name_matches_00aef3c0(descriptor_path, candidate)) continue;
+        // 00af02f0: every matching candidate checks the current registry
+        // against the requested descriptor path. A preceding loader callback
+        // can change that registry before the next candidate is considered.
+        const std::vector<std::string> registered = host.registered_atlas_texture_paths();
+        const bool already_registered = std::any_of(registered.begin(), registered.end(),
+            [&descriptor_path](const std::string& entry) {
+                return equals_ignoring_case(entry, descriptor_path);
+            });
         if (already_registered) continue;
 
         // 00aef280: resolve through the VFS before parsing.

@@ -1,0 +1,79 @@
+{
+  "schema": "cc12-atlas-startup-provider-readiness-v1",
+  "decision": "Corrected concrete current-registry callback ordering in ordinary semantic Source; actual Native atlas/GUI ownership and dispatch still uncomposed.",
+  "Native_span_gates": [
+    {
+      "address": "00af0060",
+      "physical_span_bytes": 935,
+      "physical_instructions": 304,
+      "typed_function_metadata_instructions": 289,
+      "body_AddressSet_not_exposed": true,
+      "sha256": "e2007669a82f91744b8be8ac71a42d0ab376afcaf86447c3df3638d380b6ac09",
+      "fresh_saved_live_starts_match": true,
+      "historical_pre_refresh_bytes_not_retained": true
+    },
+    {
+      "address": "00aa5e20",
+      "physical_span_bytes": 1311,
+      "physical_instructions": 442,
+      "typed_function_metadata_instructions": 442,
+      "body_AddressSet_not_exposed": true,
+      "sha256": "cd4758165b406c38cc63c0560fb8e44ae8b1c6ed15b2cfd89a71afcecbf1ffdd",
+      "fresh_saved_live_starts_match": true,
+      "historical_pre_refresh_bytes_not_retained": true
+    }
+  ],
+  "fresh_complete_live_byte_replay": [
+    {
+      "address": "00af0060",
+      "bytes": 935,
+      "sha256": "e2007669a82f91744b8be8ac71a42d0ab376afcaf86447c3df3638d380b6ac09",
+      "exact_complete_live_bytes_equal_PE": true
+    },
+    {
+      "address": "00aa5e20",
+      "bytes": 1311,
+      "sha256": "cd4758165b406c38cc63c0560fb8e44ae8b1c6ed15b2cfd89a71afcecbf1ffdd",
+      "exact_complete_live_bytes_equal_PE": true
+    }
+  ],
+  "listing_qualification": "AF0060 physical span935B/304 saved/live/PE starts differs from typed metadata289; exact function AddressSet is not exposed. No whole Native body/listing repair admission. AA5E20 physical1311B/442 starts agrees with typed442. Exports were refreshed before this review; historical pre-refresh bytes were not retained, so no historical preimage independence is claimed.",
+  "Native_atlas_guard": "AF02F0 re-reads actual manager count+14 and base+10 for each matching candidate after AEF3C0; getter B33E40 supplies current texture header, equal-length guard then __stricmp compares requested EDI header. Previous AEF280 registration can change the next candidate guard.",
+  "Source_correction": "registered_atlas_texture_paths is called after each matching candidate instead of once before the loop. Ordered VFS resolution/loading and counters remain the existing semantic interface.",
+  "Native_GUI_dispatch": "AA5E60 is internal to AA5E20. Actual dispatch AA5EA2 captures current F8D394 renderer, reads slot64, passes actual name and flag0, then AA5EA4 publishes result to manager+28. No current captured target is inferred from a companion C++ type.",
+  "production_boundary": "game_hosts_frontend uses an existing D3D texture/VFS sprite bridge; that is a separate logical texture object domain. game_hosts_menu atlas loading logs/notes rather than composing F8C26C manager/AEF280 registration. Actual VFS/descriptor parser/current NativeLogicalTexture ownership and captured virtual targets remain prerequisites. No UNIMPLEMENTED label removed.",
+  "Source_boundary": "std::string and owning vector snapshots reproduce this per-candidate callback order under the existing host contract; they do not reproduce original NativeString, in-walk raw array aliasing/concurrent mutation, locale/FH3/fault or register/stack ABI.",
+  "negative_regression": {
+    "command": "./scripts/build.ps1",
+    "start_utc": "2026-10-09T23:23:11.674881+00:00",
+    "end_utc": "2026-10-09T23:23:29.318720+00:00",
+    "exit_code": 1
+  },
+  "negative_LastTest_pin": {
+    "path": "local/cc12_atlas_startup_provider_readiness/negative_LastTest.log",
+    "bytes": 2468,
+    "sha256": "6895f3ffe78dcdf0d556aae21f6bf3f4fa0a31ecc0933c676634964c0bef9825"
+  },
+  "positive_build": {
+    "command": "./scripts/build.ps1",
+    "start_utc": "2026-10-09T23:30:36.230767+00:00",
+    "end_utc": "2026-10-09T23:30:55.248261+00:00",
+    "exit_code": 0
+  },
+  "existing_checks_passed": 3,
+  "new_focused_cases": 1,
+  "Native_evidence_pin": {
+    "path": "local/cc12_atlas_startup_provider_readiness/Native_complete.json",
+    "bytes": 107561,
+    "sha256": "7902d8b01722e6cf3552f38332c43c4cd4a3c6f87015a7c9c8dc84ae8c9c648e"
+  },
+  "credit": {
+    "semantic_Source_fix": true,
+    "fixture_callback_order": true,
+    "whole_Native_function": false,
+    "original_ABI": false,
+    "production_atlas_bound": false,
+    "startup": false,
+    "gameplay": false
+  }
+}
