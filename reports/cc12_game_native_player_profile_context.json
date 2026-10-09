@@ -1,0 +1,93 @@
+{
+  "packet": "cc12_game_native_player_profile_context",
+  "scope": "source_only_retained_constructor_context_provider",
+  "source_base_commit": "6aef5b3ca",
+  "provider": "bsp::game::GameNativePlayerProfileContext",
+  "owned": [
+    "one concrete NativePlayerProfileCalls",
+    "one stable NativePlayerProfileContext"
+  ],
+  "borrowed": {
+    "strings": "exact GameNativeVfsRawServices::strings reference",
+    "actual_settings_00f88980": "address of initialized GameNativeSettingsProcess::settings() BCh owner",
+    "settings": "GameNativeSettingsProcess::profile_context() copied with its manager/game/SDK references intact",
+    "readonly": "canonical GameNativeReadOnlyData supported-image mapped spans"
+  },
+  "literal_spans": [
+    {
+      "address": "00ce3a0c",
+      "bytes": 1,
+      "hex": "00"
+    },
+    {
+      "address": "00cef794",
+      "bytes": 18,
+      "hex": "676c6f62616c732e6e6577706c6179657200"
+    },
+    {
+      "address": "00cef15c",
+      "bytes": 5,
+      "hex": "52414e4b00"
+    }
+  ],
+  "literal_evidence": {
+    "source": "reports/native_player_profile_owner_r106.json",
+    "prior_evidence": "each literal span recorded live_equals_pe=true and pe_raw_backed=true in .rdata",
+    "current_source_review": "empty helper reads NUL; reset copies 17 new-player bytes and rank length 4 plus its terminator",
+    "provider_check": "data_at checks full literal section bounds and mapped bands; readonly owner verifies supported-image SHA-256 when initialized",
+    "new_live_byte_comparison": false
+  },
+  "native_contracts": [
+    {
+      "address": "007fee20",
+      "contract": "ECX actual F8h profile, EAX same profile, plain RET"
+    },
+    {
+      "address": "007fdb20",
+      "contract": "ECX actual profile, plain RET"
+    },
+    {
+      "address": "00436710",
+      "contract": "ECX actual 8-byte output header, EAX same header, plain RET"
+    }
+  ],
+  "preserved_obligations": [
+    "provider and all borrowed owners outlive profile graph and retained failed operations",
+    "copied settings context continues to observe current manager/game publication values",
+    "SDK binding and its library lifetime remain owned by the existing process/application",
+    "caller supplies native profile preimage including valid or null progress pointer at +64h",
+    "separate profile lifetime context uses the same eventual NativeGameLifetimeCalls object as whole-game lifetime",
+    "native FH3/SEH cleanup, binary ABI compatibility, startup and gameplay remain unclaimed"
+  ],
+  "prohibited_work_performed": [],
+  "validation": {
+    "source_review": "aggregate references and complete literal spans checked against current source and recorded R106 evidence",
+    "json_parse": "passed",
+    "git_diff_check": "passed",
+    "build_registered": false,
+    "compiled": false,
+    "tests_run": false,
+    "probes_run": false,
+    "ghidra_mutated": false,
+    "application_wired": false,
+    "runtime_validated": false,
+    "gameplay_validated": false
+  },
+  "source_sha256": {
+    "include/bsp/game_native_player_profile_context.hpp": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b",
+    "src/game_native_player_profile_context.cpp": "36687e71130eac32af0ac0bec59555fd95df8496e459097d1b68630df41fb36f",
+    "include/bsp/native_player_profile_owner.hpp": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8",
+    "src/native_player_profile_owner.cpp": "58d3710ec8fdc8a6985c2da99d3addad3ff56367f7579207499b1fd49c7162d9",
+    "include/bsp/game_native_vfs_runtime.hpp": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "include/bsp/game_native_settings_process.hpp": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+    "src/game_native_settings_process.cpp": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+    "include/bsp/native_profile_settings.hpp": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+    "include/bsp/game_native_readonly_data.hpp": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+    "src/game_native_readonly_data.cpp": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+    "include/bsp/native_game_profile_lifetime.hpp": "442816524d03d361abba5134a49130e25397d3befb754c6dc0e10115514f46c5",
+    "include/bsp/native_game_lifetime.hpp": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+    "src/native_game_lifetime.cpp": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+    "reports/native_player_profile_owner_r106.json": "5c71aa293a7a2fee0c49fc7c12b64e728f397a6b59c4070d435886e28def991f"
+  }
+}
