@@ -1,0 +1,785 @@
+{
+  "schema": "cc12_type1011_job_identity_natural_closure_TEXT_proposal_v3",
+  "Source_credit": 0,
+  "Root_acceptance": false,
+  "boundary": {
+    "OWN_benign_Win32_API_only": true,
+    "selected_candidate_import_or_execution": false,
+    "Root_writes": 0,
+    "Native_compiler_provider_PE_target_constructor_execution": false,
+    "selected_fixture_qualification": false
+  },
+  "OWN_seals": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130\\seal.json",
+      "bytes": 69414,
+      "sha256": "13031d21b4d407c77da96b723e6c5f6620cca8851ba4cd581d7e7a70d50b8a65",
+      "artifacts": 135,
+      "exact_files": 136,
+      "independently_verified_all_bytes_SHA_membership": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\seal.json",
+      "bytes": 78126,
+      "sha256": "37702f847d53ff245dbcd0c2f6f92f19db1b8ec42a7c97ef5eec9d1c84d79166",
+      "artifacts": 154,
+      "exact_files": 155,
+      "independently_verified_all_bytes_SHA_membership": true
+    }
+  ],
+  "OWN2_public_observations": {
+    "Source_credit": 0,
+    "cases": {
+      "root_only": {
+        "immediate_accounting_after_root_signal": {
+          "active": 1,
+          "total": 2,
+          "limit_terminated": 0
+        },
+        "natural_zero_before_cleanup": true,
+        "shared_own_deadline_expired": false,
+        "own_natural_drain_elapsed_ms": 20,
+        "before_cleanup": {
+          "active": 0,
+          "total": 2,
+          "limit_terminated": 0
+        },
+        "final_accounting": {
+          "active": 0,
+          "total": 2,
+          "limit_terminated": 0
+        },
+        "mandatory_cleanup_closed": true,
+        "retained_process_signal_observations": [
+          {
+            "pid": 18408,
+            "wait": 0
+          },
+          {
+            "pid": 117604,
+            "wait": 0
+          }
+        ],
+        "strict_immediate_zero_observed": false,
+        "drain_snapshot_count": 1,
+        "root_signalled_live_job_identities": [
+          {
+            "pid": 18408,
+            "image_path": null,
+            "creation_FILETIME": 134360197892415901,
+            "wait_now": 0,
+            "in_current_list": false,
+            "errors": [
+              "image: [WinError 31] Own process image"
+            ]
+          },
+          {
+            "pid": 117604,
+            "image_path": "C:\\Windows\\System32\\conhost.exe",
+            "creation_FILETIME": 134360197892560219,
+            "wait_now": 258,
+            "in_current_list": true,
+            "errors": []
+          }
+        ],
+        "drain_first_last": [
+          {
+            "phase": "bounded_natural_drain_0",
+            "accounting": {
+              "active": 0,
+              "total": 2,
+              "limit_terminated": 0
+            },
+            "pids": [],
+            "all_retained_waits": [
+              0,
+              0
+            ],
+            "remaining_ms": 9905
+          },
+          {
+            "phase": "bounded_natural_drain_0",
+            "accounting": {
+              "active": 0,
+              "total": 2,
+              "limit_terminated": 0
+            },
+            "pids": [],
+            "all_retained_waits": [
+              0,
+              0
+            ],
+            "remaining_ms": 9905
+          }
+        ]
+      },
+      "root_with_child": {
+        "immediate_accounting_after_root_signal": {
+          "active": 2,
+          "total": 3,
+          "limit_terminated": 0
+        },
+        "natural_zero_before_cleanup": false,
+        "shared_own_deadline_expired": true,
+        "own_natural_drain_elapsed_ms": 9785,
+        "before_cleanup": {
+          "active": 2,
+          "total": 3,
+          "limit_terminated": 0
+        },
+        "final_accounting": {
+          "active": 0,
+          "total": 3,
+          "limit_terminated": 0
+        },
+        "mandatory_cleanup_closed": true,
+        "retained_process_signal_observations": [
+          {
+            "pid": 101808,
+            "wait": 0
+          },
+          {
+            "pid": 113636,
+            "wait": 0
+          },
+          {
+            "pid": 16976,
+            "wait": 0
+          }
+        ],
+        "strict_immediate_zero_observed": false,
+        "drain_snapshot_count": 9,
+        "root_signalled_live_job_identities": [
+          {
+            "pid": 16976,
+            "image_path": "C:\\ProgramData\\miniconda3\\python.exe",
+            "creation_FILETIME": 134360197895155900,
+            "wait_now": 258,
+            "in_current_list": true,
+            "errors": []
+          },
+          {
+            "pid": 101808,
+            "image_path": null,
+            "creation_FILETIME": 134360197893510612,
+            "wait_now": 0,
+            "in_current_list": false,
+            "errors": [
+              "image: [WinError 31] Own process image"
+            ]
+          },
+          {
+            "pid": 113636,
+            "image_path": "C:\\Windows\\System32\\conhost.exe",
+            "creation_FILETIME": 134360197894528661,
+            "wait_now": 258,
+            "in_current_list": true,
+            "errors": []
+          }
+        ],
+        "drain_first_last": [
+          {
+            "phase": "bounded_natural_drain_0",
+            "accounting": {
+              "active": 2,
+              "total": 3,
+              "limit_terminated": 0
+            },
+            "pids": [
+              113636,
+              16976
+            ],
+            "all_retained_waits": [
+              258,
+              0,
+              258
+            ],
+            "remaining_ms": 9744
+          },
+          {
+            "phase": "bounded_natural_drain_8",
+            "accounting": {
+              "active": 2,
+              "total": 3,
+              "limit_terminated": 0
+            },
+            "pids": [
+              113636,
+              16976
+            ],
+            "all_retained_waits": [
+              258,
+              0,
+              258
+            ],
+            "remaining_ms": 0
+          }
+        ]
+      }
+    },
+    "own_run_deadline_seconds": 10,
+    "own_cleanup_deadline_seconds": 5,
+    "selected560_20_540_600_runtime_validation": false,
+    "controller_standard_types": [
+      {
+        "slot": 0,
+        "file_type": 2
+      },
+      {
+        "slot": 1,
+        "file_type": 3
+      },
+      {
+        "slot": 2,
+        "file_type": 3
+      }
+    ],
+    "before_original_frozen_API_native_bookends_exact": true,
+    "image_after_exit_WinError31_preserved": true,
+    "not_an_atomic_cross_API_snapshot": true,
+    "selected_F2_extra_PID_cause_not_identified": true
+  },
+  "OWN_private_observation_checks": [
+    {
+      "role": "root_only",
+      "private_observation_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\root_only\\root_only.observation.private.json",
+        "bytes": 21234,
+        "sha256": "49b3937dbc821a71b3f7219182617240e1b5e99a5569620804f2af9a05bed1e6"
+      },
+      "ENV_names_count": 82,
+      "ENV_sha256": "3c55e4780b235da5b09a8a02fb33342e1b8a5760ffc62b882d702b963ef4e6b1",
+      "ENV_exact_controller": true,
+      "cwd_exact_expected": true,
+      "interpreter_exact_controller": true,
+      "argv_exact_expected": true,
+      "Python_module_origin_count": 64
+    },
+    {
+      "role": "root_with_child",
+      "private_observation_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\root_with_child\\root_with_child.observation.private.json",
+        "bytes": 21253,
+        "sha256": "3dab4c9b97867ac75261e37b8eece9fbc25f4ccfc6da741684f021a33ff732c8"
+      },
+      "ENV_names_count": 82,
+      "ENV_sha256": "3c55e4780b235da5b09a8a02fb33342e1b8a5760ffc62b882d702b963ef4e6b1",
+      "ENV_exact_controller": true,
+      "cwd_exact_expected": true,
+      "interpreter_exact_controller": true,
+      "argv_exact_expected": true,
+      "Python_module_origin_count": 64
+    },
+    {
+      "role": "ordinary_child",
+      "private_observation_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\root_with_child\\ordinary_child.observation.private.json",
+        "bytes": 21267,
+        "sha256": "75ff539f7790a69ac84ab48bab0671fde4388c51c1aa86e80da0bcd284526be3"
+      },
+      "ENV_names_count": 82,
+      "ENV_sha256": "3c55e4780b235da5b09a8a02fb33342e1b8a5760ffc62b882d702b963ef4e6b1",
+      "ENV_exact_controller": true,
+      "cwd_exact_expected": true,
+      "interpreter_exact_controller": true,
+      "argv_exact_expected": true,
+      "Python_module_origin_count": 64
+    }
+  ],
+  "OWN_runtime_python_pin": {
+    "path": "C:\\ProgramData\\miniconda3\\python.exe",
+    "bytes": 104264,
+    "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+  },
+  "OWN_actual_x64_layouts": {
+    "Limits": {
+      "size": 64,
+      "alignment": 8,
+      "offsets": {
+        "process_time": 0,
+        "job_time": 8,
+        "flags": 16,
+        "minimum_ws": 24,
+        "maximum_ws": 32,
+        "process_limit": 40,
+        "affinity": 48,
+        "priority": 56,
+        "scheduling": 60
+      }
+    },
+    "Counters": {
+      "size": 48,
+      "alignment": 8,
+      "offsets": {
+        "read_ops": 0,
+        "write_ops": 8,
+        "other_ops": 16,
+        "read_bytes": 24,
+        "write_bytes": 32,
+        "other_bytes": 40
+      }
+    },
+    "Extended": {
+      "size": 144,
+      "alignment": 8,
+      "offsets": {
+        "basic": 0,
+        "io": 64,
+        "process_memory": 112,
+        "job_memory": 120,
+        "peak_process_memory": 128,
+        "peak_job_memory": 136
+      }
+    },
+    "Accounting": {
+      "size": 48,
+      "alignment": 8,
+      "offsets": {
+        "user": 0,
+        "kernel": 8,
+        "period_user": 16,
+        "period_kernel": 24,
+        "page_faults": 32,
+        "total": 36,
+        "active": 40,
+        "limit_terminated": 44
+      }
+    },
+    "ProcessIds": {
+      "size": 520,
+      "alignment": 8,
+      "offsets": {
+        "assigned": 0,
+        "listed": 4,
+        "pids": 8
+      }
+    },
+    "Startup": {
+      "size": 104,
+      "alignment": 8,
+      "offsets": {
+        "cb": 0,
+        "reserved": 8,
+        "desktop": 16,
+        "title": 24,
+        "x": 32,
+        "y": 36,
+        "x_size": 40,
+        "y_size": 44,
+        "x_chars": 48,
+        "y_chars": 52,
+        "fill": 56,
+        "flags": 60,
+        "show": 64,
+        "reserved_bytes": 66,
+        "reserved_data": 72,
+        "stdin": 80,
+        "stdout": 88,
+        "stderr": 96
+      }
+    },
+    "StartupEx": {
+      "size": 112,
+      "alignment": 8,
+      "offsets": {
+        "startup": 0,
+        "attributes": 104
+      }
+    },
+    "ProcessInfo": {
+      "size": 24,
+      "alignment": 8,
+      "offsets": {
+        "process": 0,
+        "thread": 8,
+        "pid": 16,
+        "tid": 20
+      }
+    },
+    "FileTime": {
+      "size": 8,
+      "alignment": 4,
+      "offsets": {
+        "low": 0,
+        "high": 4
+      }
+    }
+  },
+  "OWN1_limit": "Immediate forced-cleanup ActiveProcesses zero sometimes preceded retained residual handle signalling. OWN2 joint cleanup requires all observed retained handles signalled before closure.",
+  "selected_F2_cause_unidentified": true,
+  "NO_WINDOW_already_present_in_old_and_new_flags_0x08080404": true,
+  "unexecuted_authoritative_supervisor_v3": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\external_job_supervisor_identity_natural_TEXT_v3.py.txt",
+    "bytes": 28850,
+    "sha256": "585e3eeee5508e0cc1eef4631b0b4e997cdceaf07e7d8a9e686f239046b427aa"
+  },
+  "retained_superseded_v2": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\external_job_supervisor_identity_natural_TEXT_v2.py.txt",
+    "bytes": 28718,
+    "sha256": "87e0cfe93f3a0060fd309e3af3f7e635a4af9bd38e711af0eb6884e6609f4625"
+  },
+  "supervisor_delta_review_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\supervisor_TEXT_delta_review_DATA_v3.json",
+    "bytes": 18852,
+    "sha256": "93626cd4e7824d9b9b629cf29ea0104093918fd340285539253db8dfd1492c5b"
+  },
+  "supervisor_contract": {
+    "Source_credit": 0,
+    "candidate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\external_job_supervisor_identity_natural_TEXT_v3.py.txt",
+      "bytes": 28850,
+      "sha256": "585e3eeee5508e0cc1eef4631b0b4e997cdceaf07e7d8a9e686f239046b427aa"
+    },
+    "SDK_bindings21": [
+      {
+        "API": "CreateJobObjectW",
+        "restype_TEXT": "HANDLE",
+        "argtypes_TEXT": "[VOID, ctypes.c_wchar_p]"
+      },
+      {
+        "API": "SetInformationJobObject",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, U32, VOID, U32]"
+      },
+      {
+        "API": "QueryInformationJobObject",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, U32, VOID, U32, ctypes.POINTER(U32)]"
+      },
+      {
+        "API": "TerminateJobObject",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, U32]"
+      },
+      {
+        "API": "GetHandleInformation",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, ctypes.POINTER(U32)]"
+      },
+      {
+        "API": "GetCurrentProcess",
+        "restype_TEXT": "HANDLE",
+        "argtypes_TEXT": "[]"
+      },
+      {
+        "API": "GetStdHandle",
+        "restype_TEXT": "HANDLE",
+        "argtypes_TEXT": "[U32]"
+      },
+      {
+        "API": "DuplicateHandle",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, HANDLE, HANDLE, ctypes.POINTER(HANDLE), U32, BOOL, U32]"
+      },
+      {
+        "API": "CloseHandle",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE]"
+      },
+      {
+        "API": "InitializeProcThreadAttributeList",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[VOID, U32, U32, ctypes.POINTER(SIZE)]"
+      },
+      {
+        "API": "UpdateProcThreadAttribute",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[VOID, U32, SIZE, VOID, SIZE, VOID, VOID]"
+      },
+      {
+        "API": "DeleteProcThreadAttributeList",
+        "restype_TEXT": "None",
+        "argtypes_TEXT": "[VOID]"
+      },
+      {
+        "API": "CreateProcessW",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[ctypes.c_wchar_p, ctypes.POINTER(ctypes.c_wchar), VOID, VOID, BOOL, U32, VOID, ctypes.c_wchar_p, ctypes.POINTER(STARTUPINFOEX), ctypes.POINTER(PROCESS_INFORMATION)]"
+      },
+      {
+        "API": "IsProcessInJob",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, HANDLE, ctypes.POINTER(BOOL)]"
+      },
+      {
+        "API": "ResumeThread",
+        "restype_TEXT": "U32",
+        "argtypes_TEXT": "[HANDLE]"
+      },
+      {
+        "API": "WaitForSingleObject",
+        "restype_TEXT": "U32",
+        "argtypes_TEXT": "[HANDLE, U32]"
+      },
+      {
+        "API": "GetExitCodeProcess",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, ctypes.POINTER(U32)]"
+      },
+      {
+        "API": "TerminateProcess",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, U32]"
+      },
+      {
+        "API": "OpenProcess",
+        "restype_TEXT": "HANDLE",
+        "argtypes_TEXT": "[U32, BOOL, U32]"
+      },
+      {
+        "API": "QueryFullProcessImageNameW",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, U32, ctypes.POINTER(ctypes.c_wchar), ctypes.POINTER(U32)]"
+      },
+      {
+        "API": "GetProcessTimes",
+        "restype_TEXT": "BOOL",
+        "argtypes_TEXT": "[HANDLE, ctypes.POINTER(IDENTITY_FILETIME), ctypes.POINTER(IDENTITY_FILETIME), ctypes.POINTER(IDENTITY_FILETIME), ctypes.POINTER(IDENTITY_FILETIME)]"
+      }
+    ],
+    "x64_IDENTITY_FILETIME": {
+      "bytes": 8,
+      "low_offset": 0,
+      "high_offset": 4
+    },
+    "x64_IDENTITY_PID_LIST64": {
+      "bytes": 520,
+      "assigned_offset": 0,
+      "listed_offset": 4,
+      "ULONG_PTR_array_offset": 8,
+      "ULONG_PTR_bytes": 8
+    },
+    "observed_query_used_lengths": {
+      "empty": 8,
+      "one": 16,
+      "two": 24
+    },
+    "identity_snapshot_schema": "type1011_job_identity_snapshot_v1; exclusive label.job_identity_PHASE.json; Source0; selection/attempt/supervisor pins; phase+flags+rootPID; first/last accounting; PID list header/complete/capacity/return length; retained perPID handle flags/member/creation and exitFILETIME/image/exit/wait/errors; non-atomic marker/time bookends",
+    "closure_additions": [
+      "creation_flags",
+      "first_root_exit_accounting",
+      "natural_quiescence_observations first/last/polls with retained signals",
+      "natural_zero_before_cleanup",
+      "identity_snapshot_pins",
+      "identity_snapshot_errors",
+      "identity_required_failures"
+    ],
+    "required_queries_or_output_errors_hold": true,
+    "image_errors_DATA": true,
+    "required_suspended_identity_failure_holds_before_resume": true,
+    "newly_opened_process_handle_rights": "QUERY_LIMITED_INFORMATION|SYNCHRONIZE; noninherited; Job membership verified; close exact extra handles",
+    "natural_and_final_all_observed_retained_signals_required_within_existing_deadlines": true,
+    "partial_capacity64_or_race_failure_conservative_hold_not_process_exemption": true,
+    "Root_selected_adoption": false,
+    "candidate_execution_or_import": false
+  },
+  "unchanged_guards": {
+    "success_AST_byte_equivalent": true,
+    "descendants_closed_AST_byte_equivalent": true,
+    "quoted_accounting_bookend_functions_AST_unchanged": true,
+    "CreateProcess_AST_unchanged_NO_WINDOW_already_present": true,
+    "policy_and_original_deadline_statement_unchanged": true
+  },
+  "v3_only_delta_from_v2": {
+    "added_statement": "need(not identity_required_failures and not identity_snapshot_errors,'required suspended identity proof failed before resume')",
+    "location": "after suspended identity snapshot, before bookend and ResumeThread",
+    "Root_authorization": "Root peer review explicitly requested fail-closed before-entry refinement",
+    "only_this_statement_changed_from_v2": true,
+    "all21_bindings_AST_unchanged": true
+  },
+  "natural_observation_schema": "first, last and poll count; no complete per-poll history claim",
+  "timeouts": {
+    "selected_run_absolute_ms": 560000,
+    "selected_cleanup_ms": 20000,
+    "original_child_compile_reader_timeout_seconds": 540,
+    "outer_seconds": 600,
+    "target_subprocess_run_inner_timeout": null,
+    "all_selected_timeout_runtime_proof": false
+  },
+  "fresh_F3_D02_literal_inventory": {
+    "Source_credit": 0,
+    "Root_acceptance": false,
+    "F3": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p3",
+    "D02": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select02",
+    "F3_absent": true,
+    "D02_initial_infrastructure_only": true,
+    "D02_snapshot_DATA": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select02\\frozen_native_exports\\snapshot.json",
+      "bytes": 321,
+      "sha256": "5ea48b1bedbf37dcb69b562260e55dd12b70fa5315cf070b0e457dde3d0e82f3"
+    },
+    "payload_literal_rows": [
+      {
+        "payload": "external_job_supervisor.py.txt",
+        "line": 48,
+        "old_TEXT_line": "future=Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/type1011p2').resolve()",
+        "proposed_TEXT_line": "future=Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/type1011p3').resolve()",
+        "worker_applied": true
+      },
+      {
+        "payload": "external_preinterpreter_guard.ps1.txt",
+        "line": 38,
+        "old_TEXT_line": " Require ($wanted.BSP_EXPORTS_DIR -ceq 'J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select01\\frozen_native_exports') 'Exact isolated historical native exports path required'",
+        "proposed_TEXT_line": " Require ($wanted.BSP_EXPORTS_DIR -ceq 'J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select02\\frozen_native_exports') 'Exact isolated historical native exports path required'",
+        "worker_applied": false
+      },
+      {
+        "payload": "external_preinterpreter_guard.ps1.txt",
+        "line": 44,
+        "old_TEXT_line": " foreach($key in @('TEMP','TMP')){$tempRoot=[IO.Path]::GetFullPath($wanted[$key]).TrimEnd('\\');$executionRoot='J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p2';Require ($tempRoot -ne $executionRoot -and -not $tempRoot.StartsWith($executionRoot+'\\',[StringComparison]::OrdinalIgnoreCase)) 'External temporary files stay outside the future execution seal'}",
+        "proposed_TEXT_line": " foreach($key in @('TEMP','TMP')){$tempRoot=[IO.Path]::GetFullPath($wanted[$key]).TrimEnd('\\');$executionRoot='J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p3';Require ($tempRoot -ne $executionRoot -and -not $tempRoot.StartsWith($executionRoot+'\\',[StringComparison]::OrdinalIgnoreCase)) 'External temporary files stay outside the future execution seal'}",
+        "worker_applied": false
+      },
+      {
+        "payload": "external_preinterpreter_guard.ps1.txt",
+        "line": 88,
+        "old_TEXT_line": "$executionFamily='J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p2'",
+        "proposed_TEXT_line": "$executionFamily='J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p3'",
+        "worker_applied": false
+      },
+      {
+        "payload": "type1011_independent_code_reader.py.txt",
+        "line": 21,
+        "old_TEXT_line": "check(len(sys.argv)==2,'exact family argument');root=Path(sys.argv[1]).resolve();check(root==Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/type1011p2'),'exact fresh family');check(Path(__file__).resolve()==root/'independent_code_reader.py','selected reader path')",
+        "proposed_TEXT_line": "check(len(sys.argv)==2,'exact family argument');root=Path(sys.argv[1]).resolve();check(root==Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/type1011p3'),'exact fresh family');check(Path(__file__).resolve()==root/'independent_code_reader.py','selected reader path')",
+        "worker_applied": false
+      },
+      {
+        "payload": "type1011_independent_recorded_reader.py.txt",
+        "line": 21,
+        "old_TEXT_line": "require(len(sys.argv)==2,'one exact family');family=Path(sys.argv[1]).resolve();require(family==Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/type1011p2'),'exact family');require(Path(__file__).resolve()==family/'independent_recorded_reader.py','selected external recorded reader')",
+        "proposed_TEXT_line": "require(len(sys.argv)==2,'one exact family');family=Path(sys.argv[1]).resolve();require(family==Path('J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution/local/type1011p3'),'exact family');require(Path(__file__).resolve()==family/'independent_recorded_reader.py','selected external recorded reader')",
+        "worker_applied": false
+      },
+      {
+        "payload": "type1011_recipe.py.txt",
+        "line": 21,
+        "old_TEXT_line": "F=ROOT/'local/type1011p2'",
+        "proposed_TEXT_line": "F=ROOT/'local/type1011p3'",
+        "worker_applied": false
+      }
+    ],
+    "no_direct_F2_D01_literal": [
+      "dependency_bootstrap.py.txt",
+      "external_python_driver.py.txt",
+      "type1011_gate.py.txt"
+    ],
+    "bootstrap_relationship": "parameterized selected_draft_root/materialization_draft, cache, records, private maps and family arguments; no F2/D01 literal to replace",
+    "role_map_public_delta": {
+      "root_process": {
+        "keys_count": 11,
+        "changed_existing_keys": [
+          "BSP_EXPORTS_DIR",
+          "TEMP",
+          "TMP"
+        ],
+        "keys_added": [],
+        "no_cleared_process_or_selected_route_observation": true
+      },
+      "recipe_children": {
+        "keys_count": 13,
+        "changed_existing_keys": [
+          "BSP_EXPORTS_DIR",
+          "INCLUDE",
+          "TEMP",
+          "TMP"
+        ],
+        "keys_added": [],
+        "no_cleared_process_or_selected_route_observation": true
+      },
+      "external_host": {
+        "keys_count": 15,
+        "changed_existing_keys": [
+          "BSP_COORDINATION_DIR",
+          "BSP_EXPORTS_DIR",
+          "TEMP",
+          "TMP"
+        ],
+        "keys_added": [],
+        "no_cleared_process_or_selected_route_observation": true
+      }
+    },
+    "future_Root_selection_path_changes": [
+      "materialization_draft -> D02/selected_draft123 directory string",
+      "all selected alias code pins -> D02/selected_entry_sources; future F code pins -> F3 after closed prepare",
+      "profile pins -> D02/selected_private_profiles; cache -> D02/selected_empty_cache; records -> D02/external_records",
+      "job policy/selected host/current Source/package/toolchain pins require fresh Root recapture; policy bytes unchanged"
+    ],
+    "scope_changes": [
+      "exports snapshot tree -> D02/frozen_native_exports",
+      "fresh full draft/entry/profile closure -> chosen D02 components; new frozen dependency originals/copies recaptured separately",
+      "stable F code/input pins -> F3 only after actual prepare; no evolving F/D umbrella membership scope",
+      "Root WT Source/helper/config, SDK/package/host scopes and optional sqlite nonrecursive Root WT scope unchanged",
+      "PS installation parent recursive allfiles, user module tree and fresh current support scopes preserved"
+    ],
+    "historical_119_and_original_draft_fixture_audit_paths_retain_identities": true,
+    "future13_Root_fields": {
+      "materialization_draft": null,
+      "selected_code": null,
+      "private_environment": null,
+      "empty_cache_prefix": null,
+      "external_driver": null,
+      "external_bootstrap": null,
+      "external_records_directory": null,
+      "external_timeout_seconds": null,
+      "external_child_timeout_seconds": null,
+      "external_powershell_host": null,
+      "private_external_environment": null,
+      "external_job_supervisor": null,
+      "external_job_policy": null
+    },
+    "Root_writes": 0
+  },
+  "literal_inventory_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\fresh_F3_D02_literal_inventory_DATA.json",
+    "bytes": 7734,
+    "sha256": "87ce7ce76c4d514a9a3ffa0a4f7c30c6b2c342d7589ca18d89c19aaec44f8209"
+  },
+  "failed_Root_authority_boundary": {
+    "Source_credit": 0,
+    "authority": "Root independently verified seals; this worker does not recapture sealed Root families",
+    "F2": {
+      "artifacts": 1482,
+      "exact_files": 1483,
+      "seal_sha256": "08fc87e9487215388bea3014fae005f277b320fda46988dab98145d7eb1ea598"
+    },
+    "D01": {
+      "artifacts": 11880,
+      "exact_files": 11881,
+      "seal_sha256": "4e891b61132b1b188469bc5f82bf5e8d4c2cfcf0ec16b09e0a4c6997b09632e8"
+    },
+    "Root_natural_contract_review_sha256": "0f11c4205a50295469831bf345e4a5a25cf2f7054cfac8db1b92e0a046396746",
+    "never_replay_or_repin_sealed_failed_families": true,
+    "Root_F3_D02_selected_fields_not_adopted": true
+  },
+  "required_Root_steps": [
+    "Review every new supervisor byte and 21 SDK bindings/output schemas; choose fresh immutable draft123/manifest and matching selected alias pins.",
+    "Apply all seven documented payload literal changes; privately concretize and observe D02 maps; recapture fresh complete Source/helper/config/host/SDK/package/dependency closure.",
+    "Keep F3 absent for one metadata prepare from selected draft; require complete Job/output/bookend closure; adopt separate immutable post-prepare selection with stable F3 executable pins, preserving original preselection and prepare closure.",
+    "Do not replay or repin sealed failed F2/D01. Any newly chosen metadata family must receive complete fresh Root review; no compiler/Native/constructor admission follows from this OWN evidence."
+  ],
+  "retained_utility_failures": [
+    {
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\retained_v3_utility_failure_DATA.json",
+        "bytes": 800,
+        "sha256": "0dba56d364f29b45959f075d26c35229735ee96f35709258a2242e52513d2662"
+      },
+      "cause": "LF expectation rejected CRLF source before writes; correction preserves v2 CRLF bytes."
+    },
+    {
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_job_identity_OWN_20261009_1130_v2\\retained_finalizer_failure_DATA.json",
+        "bytes": 833,
+        "sha256": "e9932a74dc29e47be80c494156e714cc8bb697aa7ea91bb8e8741fbcb164a0f8"
+      },
+      "cause": "psapi header resolved path spelling differs in case; all ten before/after byte counts and SHA256 values exact; both spellings retained."
+    }
+  ],
+  "read_only_review_correction": "An initial comparison used relative expected cwd and yielded false; resolved absolute expectations yield all three exact stored cwd/argv/interpreter/ENV comparisons. No process or sealed evidence changed.",
+  "primary_API_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_process_id_list",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-queryfullprocessimagenamew",
+    "https://learn.microsoft.com/en-us/windows/win32/api/jobapi2/nf-jobapi2-queryinformationjobobject"
+  ]
+}
