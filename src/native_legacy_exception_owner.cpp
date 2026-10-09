@@ -2,6 +2,7 @@
 
 #include "bsp/native_allocator_base_cleanup.hpp"
 #include "bsp/native_allocator_base_copy_constructor.hpp"
+#include "bsp/native_allocator_base_default_constructor.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstdlib>
@@ -19,11 +20,9 @@ constexpr std::uint32_t logic_error_vtable = 0x00d69248;
 constexpr std::uint32_t length_error_vtable = 0x00d69260;
 
 void construct_base(NativeLegacyExceptionStorage& owner) noexcept {
-    // Complete library constructor 00BF632F..00BF6340.
-    volatile auto& actual = owner;
-    actual.base_message_04 = nullptr;
-    actual.owns_base_message_08 = 0;
-    actual.native_vtable_00 = exception_vtable;
+    // Original constructor 00BF632F..00BF633F, 17 bytes. The actual typed
+    // owner supplies leading 0Ch backing for both ordered DWORD RMW clears.
+    (void)construct_native_allocator_base_default_00bf632f(&owner, 0u);
 }
 
 void destroy_base(NativeLegacyExceptionStorage& owner) noexcept {
