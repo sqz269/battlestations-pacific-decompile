@@ -1,8 +1,10 @@
 #include "bsp/game_native_resource_pools.hpp"
 
 #include "bsp/game_native_physical_pool.hpp"
+#include "bsp/native_model_base_bootstrap.hpp"
 #include "bsp/native_resource_hierarchy_pool.hpp"
 
+#include <new>
 #include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -12,6 +14,8 @@
 namespace bsp::game {
 namespace {
 static_assert(sizeof(void*) == 4 && sizeof(NativeMaterialParameterPoolStorage) == 0x38);
+static_assert(sizeof(NativeModelPoolStorage) == 0x38);
+static_assert(sizeof(AllocatorListElement) == 0x0c && alignof(AllocatorListElement) <= 4);
 }
 
 GameNativeResourcePoolProcess::GameNativeResourcePoolProcess()
@@ -22,7 +26,14 @@ GameNativeResourcePoolProcess::GameNativeResourcePoolProcess()
       section_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
           section_storage_010901d4_),
       hierarchy_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
-          hierarchy_storage_0109022c_) {}
+          hierarchy_storage_0109022c_),
+      model_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
+          model_storage_01090054_) {
+    // Binding takes an AllocatorListElement reference. Establish only that
+    // trivial header's lifetime here; CD7F20/B6E980 later constructs the pool,
+    // publishes the list links and initializes the real critical section.
+    ::new (model_base_storage_0109008c_) AllocatorListElement;
+}
 
 GameNativeResourcePoolProcess& game_native_resource_pool_process() {
     static GameNativeResourcePoolProcess process;
@@ -104,6 +115,45 @@ NativeMaterialParameterPool& GameNativeResourcePoolProcess::hierarchy_pool_01090
     if (hierarchy_state_ != StartupState::returned)
         throw std::logic_error("resource hierarchy pool requires completed explicit startup");
     return hierarchy_;
+}
+
+int GameNativeResourcePoolProcess::initialize_model_once_00cd7f00() {
+    std::lock_guard lock(startup_mutex_);
+    if (model_state_ == StartupState::returned) return model_registration_status_;
+    if (model_state_ == StartupState::threw)
+        throw std::logic_error("resource model pool startup previously threw");
+    model_state_ = StartupState::threw;
+    bind_static_native_model_pool_01090054(model_);
+    model_registration_status_ = initialize_static_native_model_pool_00cd7f00();
+    model_state_ = StartupState::returned;
+    return model_registration_status_;
+}
+
+int GameNativeResourcePoolProcess::initialize_model_base_once_00cd7f20() {
+    std::lock_guard lock(startup_mutex_);
+    if (model_base_state_ == StartupState::returned) return model_base_registration_status_;
+    if (model_base_state_ == StartupState::threw)
+        throw std::logic_error("resource model-base pool startup previously threw");
+    model_base_state_ = StartupState::threw;
+    bind_static_model_base_node_pool_0109008c(model_base_storage_0109008c_,
+        game_native_physical_pool_process().allocator_list_domain_00e188b4());
+    model_base_registration_status_ = initialize_static_model_base_node_pool_00cd7f20();
+    model_base_state_ = StartupState::returned;
+    return model_base_registration_status_;
+}
+
+NativeModelPool& GameNativeResourcePoolProcess::model_pool_01090054() {
+    std::lock_guard lock(startup_mutex_);
+    if (model_state_ != StartupState::returned)
+        throw std::logic_error("resource model pool requires completed explicit startup");
+    return model_;
+}
+
+void* GameNativeResourcePoolProcess::model_base_pool_storage_0109008c() {
+    std::lock_guard lock(startup_mutex_);
+    if (model_base_state_ != StartupState::returned)
+        throw std::logic_error("resource model-base pool requires completed explicit startup");
+    return model_base_storage_0109008c_;
 }
 
 } // namespace bsp::game
