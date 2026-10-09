@@ -1,3 +1,7 @@
+Primary compiled review: Registered task cleanup public body is185 bytes/65 instructions. Its complete12-function514-byte/187-instruction object and68/36/36-byte EH sections were reviewed. Member then base cleanup runs on a compatible endpoint-cleanup failure; only base remains armed once normal member cleanup begins. Each guard is disarmed before its normal child call. Current C++ termination on cleanup failure during unwind remains qualified.
+
+Normal MSVC Win32 build 2026-10-09T17:59:46.563985+00:00 to 2026-10-09T18:00:05.036630+00:00 passed three existing checks. The shared receipt pins97 Source/build inputs and four artifacts, replays all19 prior reviewed objects unchanged and captures two unchanged existing pool-provider objects plus the two new objects (23 total). Core contains27 selected positive roots, including the two existing getter overloads; this helper uses the raw-manager overload only. New public roots are absent from the application map. No Native ABI, selected production binding, startup or gameplay credit. The candidate section below is an immutable worker-time snapshot; its Source88 build artifacts are historical.
+
 # Squadron launch task cleanup: qualified Source candidate
 
 The candidate composes the admitted endpoint-loop, observer-member and tick-base

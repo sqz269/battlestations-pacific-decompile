@@ -332,3 +332,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 
 target_sources(bsp_core PRIVATE src/native_lua_variant_pair_advance.cpp)
 target_sources(bsp_core PRIVATE src/native_observer_member_cleanup.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_string_fields_cleanup.cpp)
+target_sources(bsp_core PRIVATE src/native_squadron_launch_task_cleanup.cpp)

@@ -1,3 +1,7 @@
+Primary compiled review: Registered pool helper compiled to51 bytes/24 instructions. It captures the buffer first, reads length only for a nonnull buffer and retains that length across the actual raw-manager getter. The compiler forms the pure uint32 size+1 after the getter from retained ESI; Native ADD/flags timing is not claimed. Both actual provider relocations and all instructions were reviewed.
+
+Normal MSVC Win32 build 2026-10-09T17:59:46.563985+00:00 to 2026-10-09T18:00:05.036630+00:00 passed three existing checks. The shared receipt pins97 Source/build inputs and four artifacts, replays all19 prior reviewed objects unchanged and captures two unchanged existing pool-provider objects plus the two new objects (23 total). Core contains27 selected positive roots, including the two existing getter overloads; this helper uses the raw-manager overload only. New public roots are absent from the application map. No Native ABI, selected production binding, startup or gameplay credit. The candidate section below is an immutable worker-time snapshot; its Source88 build artifacts are historical.
+
 # CC12 Lua variant string-field cleanup Source candidate
 
 `return_native_lua_variant_string_fields_006ee020` is a qualified C++
