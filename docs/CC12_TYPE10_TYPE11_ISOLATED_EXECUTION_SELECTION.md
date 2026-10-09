@@ -89,3 +89,12 @@ The separately pinned TEXT09 DATA assembler ran once (exec_command session 4723;
 Root retained its first output-reader failure: Path.resolve rendered 90 Windows casing differences in each new table. A complete independent diagnosis established declared lexical identity for every new row; a fresh immutable reader passed both complete bookends. The DATA output and old failed control01 family were never edited. The native checks read original disk bytes only.
 
 Sol is closing its independent complete output review. The concrete inert TEXT10 adopter plan is closed and pinned for a new type1011_f4_prepare02_adopted01 generation; no DATA authorization has been issued and no adopter has run. OBS contains six directories and no files, F4 remains absent, and the original fixture clock has not started. Source admission, fixture qualification, ABI compatibility and game validation remain false.
+
+
+Complete joint control02 output acceptance and actual DATA adoption
+
+Root consumed the sealed Sol output review in full: 130 predicates, 12 findings, 10 limits and all current evidence. The complete 40265 package-core pins agree across both reviewers. Root preserved an initial overly strict audit-subset reader failure: eight Root and three peer audit files differ, and their full union was rehashed. Formal joint output acceptance contains 40341 current pins at both bookends. No Root DATA defect or sealed output edit occurred.
+
+Root then closed a separate DATA-only authorization for the already pinned concrete plan (dispatch remains disabled). The selected TEXT10 adopter ran once, with genuine exec_command session 96830/terminal chunk 2133f9/exit 0, and closed type1011_f4_prepare02_adopted01/Root_seal.json. Root independently checked all 27110 directly referenced files at both bookends, 13535 adopted original/frozen pairs, 69 scopes and 29987 exact lexical memberships. All six relocations, five control copies, two null event templates and seven preserved families are exact; the four forward/self artifacts are excluded only from fixture rows and fully bound by the final seal.
+
+The generated DATA contracts/selections have DATA adoption acceptance only. Sol is independently reviewing the adopted output. F4 remains absent, OBS remains six empty directories, and no original fixture clock, prepare Dispatch, compiler/linker, Native/constructor execution, ABI or game qualification has been produced by this DATA adoption. Source admission remains zero.
