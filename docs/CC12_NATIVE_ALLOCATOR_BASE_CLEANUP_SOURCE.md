@@ -1,4 +1,4 @@
-# Native allocator base-cleanup Source candidate
+# Native allocator base-cleanup Source
 
 `bsp::cleanup_native_allocator_base_00bf6454` implements the seven physical
 operations of `00BF6454..00BF6469`, the accepted 22-byte Original cleanup.
@@ -12,10 +12,11 @@ policy is retained, and its evidence comment is corrected from `00BF646A`
 to `00BF6469` / 22 Original bytes. All other legacy-owner Source behavior is
 unchanged outside the one include and helper edit.
 
-This is an unregistered Source candidate. Primary registration, normal MSVC
-Win32 build, complete emitted adapter/typed-consumer/Core and CRT-binding
-review, and final ledger/Ghidra admission remain pending. The worker performs
-no build, probe or new test and applies no admission credit.
+Primary review registered and admitted this Source function after the normal
+MSVC Win32 build passed all three existing checks. The complete emitted adapter,
+actual typed consumers, Core membership and final UCRT binding were verified.
+The worker report retains its historical candidate state; the primary report
+records current admission. Original ABI and gameplay remain unproved.
 
 ## Raw boundary and exact operations
 
@@ -129,3 +130,20 @@ constructor routines are not counted again.
 The new file is unregistered; primary registration must precede the relevant
 normal build. No worker compile, emitted-body/Core, actual consumer-call,
 Native ABI or gameplay validation is claimed by these static checks.
+
+## Primary registered build and admission review
+
+The normal MSVC Win32 build passed all three existing checks. Primary review
+verified the complete emitted body, physical Core membership and unique public
+definition, with all selected relocations resolved by physical symbol indices.
+The raw cleanup emits 23 bytes / seven operations because its current UCRT
+free import uses a six-byte call. Existing typed cleanup calls this adapter;
+the complete typed object/EH graphs and final import were reviewed.
+The typed destructor's physical body is 93 bytes (88 code plus five alignment
+bytes), and the private helper is 64 bytes (59 code plus five alignment bytes).
+The retained typed `noexcept` policy emits FuncInfo flags `5` and terminate
+references around the non-`noexcept` raw declaration. These are current Source
+compiler effects; the naked adapter has no local EH and neither establishes
+Original exception-runtime parity.
+This is Source build/admission evidence; Original placement, caller/provider
+runtime parity, arbitrary faults/concurrency, startup and gameplay are unproved.

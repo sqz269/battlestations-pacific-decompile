@@ -1,9 +1,10 @@
-# CC12 native tick sublist unlink Source candidate
+# CC12 native tick sublist unlink Source
 
-This candidate implements the complete owned `00874E60..00874EB2` leaf through
-an explicit MSVC Win32 naked fastcall interface. It is not yet build-reviewed or
-admitted as Source. Primary integration owns build registration, the normal
-build, whole emitted COFF/Core review, and current application-map status.
+This admitted Source function implements the complete `00874E60..00874EB2` leaf
+through an explicit MSVC Win32 naked fastcall interface. The registered build
+passes all three existing checks, and its emitted body matches all 83 Original
+bytes. Primary review verified unique Core membership; the function is absent
+from the current application map. Actual producers and game use remain open.
 
 - Header: [`native_tick_sublist_unlink.hpp`](../include/bsp/native_tick_sublist_unlink.hpp).
 - Implementation: [`native_tick_sublist_unlink.cpp`](../src/native_tick_sublist_unlink.cpp).
@@ -93,3 +94,13 @@ does not assign production callers or a virtual slot. The actual sublist node
 producer, profile, and slot-zero deletion target remain open; the accepted
 `00874F00` cleanup does not directly call this leaf, and its node/flag dispatch
 inputs do not establish this leaf's list/node binding.
+
+## Primary registered build and admission review
+
+The normal MSVC Win32 build passed all three existing checks. Primary review
+verified the complete emitted body, physical Core membership and unique public
+definition, with all selected relocations resolved by physical symbol indices.
+The unlink body is exactly the original 83 bytes / 29 operations and has
+no relocations or local EH. Actual producer and application use remain open.
+This is Source build/admission evidence; Original placement, caller/provider
+runtime parity, arbitrary faults/concurrency, startup and gameplay are unproved.
