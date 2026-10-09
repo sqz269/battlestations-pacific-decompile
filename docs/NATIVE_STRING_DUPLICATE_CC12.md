@@ -1,5 +1,29 @@
 # CC12 raw native string duplicate
 
+## Fresh whole-helper qualification
+
+The current standalone qualification is `local/dup57p2`, sealed at130 exact files.
+Root independently checked all52 code spans, all retained COFF/map bodies and
+relocations, the whole2280-byte/616-instruction Main, raw/ordinary callers,
+cookie/chkstk and complete normal/cold helper closure. The only unexpanded
+frontier is GS failure, which remains unadmitted. Actual weak aliases are mode1;
+mode3 is retained policy.
+
+The sole new process passed5 entries/3 successful results/3 frees,4 actual
+Capture72 records,5 full48-byte borrowed input bookends and3 complete8-byte
+copies including NUL. Independent recorded decoding, UCRT3/VCRT1 physical
+provider and live Native57 post bookends passed;13534 prior pins are unchanged.
+The sealed family SHA256 is `63e41c374d57d2c333f235fab6a403e74377b0a6ed221bf1b5ec7eb4c473e206`.
+
+Captured pre-CALL ESP is S; target entry S-4 and copy ADD input S-32 are derived.
+Nonnull volatile ECX/EDX remain observed and unasserted; no ES is serialized.
+This admits the bounded current DF0 raw success/null entry and ordinary Source
+nonnull lane. Private CRT, allocation failure/EH/unwind, original callers, class
+behavior, whole-game ABI, startup and gameplay remain unvalidated.
+
+The earlier fixture and its coverage hold below are historical evidence. Their
+bytes, observations and separate qualified consumer families are preserved.
+
 `bsp::duplicate_native_string_00438e40(const char*)` reconstructs the complete native `[00438E40,00438E79)` entry: **57 bytes / 30 instructions**, actual text in ECX, full EAX result, no stack arguments and `RET 0`. The older plain-CDECL `bsp::duplicate_00438e40` API is unchanged. This implementation is qualified to successful/null execution using current canonical allocation/free and standard copy providers.
 
 The original body SHA-256 is `28510a4c8a423997dfca7d8e257c1b250a7bb9e79cce177fc9c501e7b64735c4`. Source preserves **49 literal bytes** and exactly two real CALL operand relocations: `[34,38)` for allocation and `[44,48)` for copy. The inline NUL scan, byte/word widths, retained allocation argument, copy argument order and final `EAX=EDI` remain literal. Live Ghidra, installed PE and saved instruction starts agree with zero gaps; the saved prototype remains incomplete and was not edited by this worker.

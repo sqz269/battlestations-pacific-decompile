@@ -33982,8 +33982,8 @@
     },
     {
       "id": "cc12_raw_native_string_duplicate_00438e40",
-      "done": false,
-      "state": "reconstructed whole native body; standalone complete-helper fixture admission reopened after independent coverage audit",
+      "done": true,
+      "state": "bounded current raw ECX/RET0 duplicate Source qualified after fresh whole-helper static, sole-process and independent recorded validation",
       "function_addresses": [
         "00438e40"
       ],
@@ -34041,19 +34041,80 @@
       "original_private_CRT_EH_admission": false,
       "game_validated": false,
       "primary_integration": {
-        "passed": false,
-        "Source_admission_credit": 0,
-        "status": "reconstructed whole native body; standalone complete-helper fixture admission reopened after independent coverage audit",
-        "Root_audit_reviewed": true,
-        "audit_report": "reports/cc12_native_string_duplicate_published_code_gate_audit.json",
-        "historical_independent_family": "local/dup57p1",
-        "historical_seal_sha256": "7a759f86390ca916952a15c7c3bb2508204472e6c2bfb346c68f453f4d85c852",
-        "historical_artifacts_preserved": true,
+        "passed": true,
+        "Source_admission_credit": 1,
+        "status": "bounded current raw ECX/RET0 duplicate Source qualified after fresh whole-helper static, sole-process and independent recorded validation",
+        "qualified_family": "local/dup57p2",
+        "exact_family_files": 130,
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\seal.json",
+          "size": 28672,
+          "sha256": "63e41c374d57d2c333f235fab6a403e74377b0a6ed221bf1b5ec7eb4c473e206"
+        },
+        "whole_runtime_code_spans": 52,
+        "physical_TU_bodies": 32,
+        "retained_TU_symbols": 34,
+        "physical_relocation_operands": 253,
+        "symbol_relocation_checks": 259,
+        "whole_Main_bytes": 2280,
+        "whole_Main_instructions": 616,
+        "raw_capture_bytes": 72,
+        "actual_target_processes": 1,
+        "entries": 5,
+        "returned": 3,
+        "frees": 3,
+        "raw_captures": 4,
+        "borrowed48_observations": 5,
+        "complete8_copies": 3,
+        "provider_records": 4,
+        "strict_prior_pins": 13534,
+        "current_Source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_duplicate.cpp",
+          "size": 1554,
+          "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+        },
+        "current_header": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_duplicate.hpp",
+          "size": 933,
+          "sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477"
+        },
+        "current_Source_association": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cc12_dup57p2_current_Source_association.json",
+          "size": 1892,
+          "sha256": "1e5c3db9fb7e384a34a4e60a743c928fba1ae34ec2e178be2593d17498b746c4"
+        },
+        "Root_TEXT_receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\Root_text_review_receipt.json",
+          "size": 1388,
+          "sha256": "bb7f789786b2454c64fd0fcc03e48350f1bb05fd18ecdb534d9599257b3ab0d3"
+        },
+        "Root_linked_receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\Root_linked_manual_gate_receipt.json",
+          "size": 3177,
+          "sha256": "39a152ce6f9d60e02bbdc06f6bdb45f50fec11ac6fee1243c85504390999d320"
+        },
+        "Root_independent_code": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\Root_independent_linked_artifact_readout.json",
+          "size": 296639,
+          "sha256": "744f37c80d5a96a7dcecf37a9753bb6db908ef5955183b6d73ec475721e2a5c7"
+        },
+        "Root_independent_recorded": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\Root_independent_recorded_capture_provider_review.json",
+          "size": 8797,
+          "sha256": "edc602b660b4f122410dcd1d646346d57f632de6ea65467922b377d029c2c4c2"
+        },
+        "Root_final_closure": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\Root_final_preseal_closure_review.json",
+          "size": 8703,
+          "sha256": "394f13c8591024cd12f7306a0b43bd81073421085cf496610438c3ce335836f7"
+        },
+        "actual_peer_report": "reports/cc12_dup57p2_actual_linked_peer_review.json",
+        "fresh_complete_helper_validation_pending": false,
+        "saved_analysis_publication_pending": false,
         "source_body_unchanged": true,
-        "recorded_behavior_retained": true,
-        "fresh_complete_helper_validation_pending": true,
         "no_blanket_consumer_family_propagation": true,
-        "qualification": "Root reviewed the independent published dup57p1 audit: the10-span gate omits15 retained probe bodies (14 normal including full Main3679B1004 and one error reporter), actual43-byte stack helper and nine6-byte normal import thunks. Six cold standard TU bodies and two cold exception thunks plus separate GS/sized-delete frontiers are also unadmitted. Standalone complete-helper fixture Source admission is reopened to0 pending a fresh complementary whole-helper gate. Whole Native57B30/physicalECX/plainRET0 reconstruction and recorded successful guarded-copy observations remain historical evidence; this hold does not invalidate separately compiled/gated Type2 t2p5 or reference ref48p2 raw consumer evidence. No Source edits, old helper/process replay or new Native/provider queries.",
+        "qualification": "Fresh dup57p2 exact130 seal 63e41c374d57d2c333f235fab6a403e74377b0a6ed221bf1b5ec7eb4c473e206. Whole57B30 leaf/49 literal bytes+two CALL operands; all52 spans,32physical TU bodies/34symbols/253operands/259symbol checks; actual two mode1 aliases, whole616 Main/raw48/ordinary2/adapter17, cookie14/chkstk43/all16 import thunks/cold delete16->5->free6. One fresh process rawOriginal/Source null+nonnull and ordinarySource nonnull:5 entries,3 returned/freed outputs,4 Capture72,5 complete borrowed48 observations,three copies8 includingNUL; actual UCRT3/VCRT1 IAT/export/FileID/path/hash/relocated32 bookends; independent frozen-only recorded reader and live Native57 post pass;13534 priors preserved. Only bounded current DF0 success/null domain; GS failure/privateCRT/OOM/EH/unwind/originalcaller/class/drop-in game ABI/startup/gameplay unadmitted.",
+        "abi_compatible": false,
         "game_validated": false
       },
       "primary_integration_history": [
@@ -34206,8 +34267,37 @@
             "local/dup57p1/Root_preservation_extension_before.json": "be4e14a4a697176b62a826fd20b11d2b427a4d3957d479b15201dd08f89754d4",
             "local/dup57p1/Root_launch_recovery_inputs.json": "b1e17010f89c8e4f765c3c8283fc0494af993578f6c62795ed9f7b877d0ff95c"
           }
+        },
+        {
+          "passed": false,
+          "Source_admission_credit": 0,
+          "status": "reconstructed whole native body; standalone complete-helper fixture admission reopened after independent coverage audit",
+          "Root_audit_reviewed": true,
+          "audit_report": "reports/cc12_native_string_duplicate_published_code_gate_audit.json",
+          "historical_independent_family": "local/dup57p1",
+          "historical_seal_sha256": "7a759f86390ca916952a15c7c3bb2508204472e6c2bfb346c68f453f4d85c852",
+          "historical_artifacts_preserved": true,
+          "source_body_unchanged": true,
+          "recorded_behavior_retained": true,
+          "fresh_complete_helper_validation_pending": true,
+          "no_blanket_consumer_family_propagation": true,
+          "qualification": "Root reviewed the independent published dup57p1 audit: the10-span gate omits15 retained probe bodies (14 normal including full Main3679B1004 and one error reporter), actual43-byte stack helper and nine6-byte normal import thunks. Six cold standard TU bodies and two cold exception thunks plus separate GS/sized-delete frontiers are also unadmitted. Standalone complete-helper fixture Source admission is reopened to0 pending a fresh complementary whole-helper gate. Whole Native57B30/physicalECX/plainRET0 reconstruction and recorded successful guarded-copy observations remain historical evidence; this hold does not invalidate separately compiled/gated Type2 t2p5 or reference ref48p2 raw consumer evidence. No Source edits, old helper/process replay or new Native/provider queries.",
+          "game_validated": false
         }
-      ]
+      ],
+      "Source_admission_credit": 1,
+      "saved_analysis_publication_pending": false,
+      "fresh_complete_helper_qualification": {
+        "family": "local/dup57p2",
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\dup57p2\\seal.json",
+          "size": 28672,
+          "sha256": "63e41c374d57d2c333f235fab6a403e74377b0a6ed221bf1b5ec7eb4c473e206"
+        },
+        "exact_files": 130,
+        "Source_admission_credit": 1,
+        "old_requirements_and_hold_retained": true
+      }
     },
     {
       "id": "cc12_raw_handle_slot_initializer_00415680",
