@@ -1,0 +1,737 @@
+{
+  "schema": "bsp.cc12.allocator_failure_object_constructor_readiness.v1",
+  "status": "read_only_complete25B_constructor_wrapper_and_direct4B_footprint_audited_transitive12B_base_pending24B_child",
+  "created_utc": "2026-10-09T09:13:52.813186+00:00",
+  "base_commit": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+  "requested_published_main": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+  "scope": {
+    "initial_address": "00bf6802",
+    "metadata_child_lease_extended_before_query": [
+      "00bf638e"
+    ],
+    "outputs": [
+      "docs/CC12_ALLOCATOR_FAILURE_OBJECT_CONSTRUCTOR_READINESS.md",
+      "reports/cc12_allocator_failure_object_constructor_readiness.json"
+    ],
+    "fresh_body_bytes": 25,
+    "fresh_body_instructions": 9,
+    "child_body_queries": 0,
+    "static_object_or_string_or_profile_or_RTTI_or_ThrowInfo_content_reads": 0,
+    "callback_handler_caller_heap_body_queries": 0,
+    "original_correct_library_names_and_prototypes_preserved": true
+  },
+  "target_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 64729,
+    "method": "Initial count and all live CLI queries verify the existing configured project/program."
+  },
+  "native_evidence": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "gate": {
+      "entry": "00bf6802",
+      "end_inclusive": "00bf681a",
+      "whole_body_bytes": 25,
+      "limit_bytes": 64,
+      "passed_before_pseudocode_and_listing": true,
+      "reported_instruction_count": 9,
+      "name_preserved": "bad_alloc",
+      "prototype_preserved": "undefined __thiscall bad_alloc(bad_alloc * this)"
+    },
+    "complete_fresh_body": {
+      "address": "00bf6802",
+      "end_inclusive": "00bf681a",
+      "bytes": 25,
+      "hex": "566a0168b454e1008bf1e87dfbffffc7063c92d6008bc65ec3",
+      "sha256": "7d11d73b61068786e29ac218765bbf3774791e6571ee7fb76a0c07853edc26e3",
+      "instructions": [
+        {
+          "address": "00bf6802",
+          "size": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00bf6803",
+          "size": 2,
+          "hex": "6a01",
+          "text": "push 1"
+        },
+        {
+          "address": "00bf6805",
+          "size": 5,
+          "hex": "68b454e100",
+          "text": "push 0xe154b4"
+        },
+        {
+          "address": "00bf680a",
+          "size": 2,
+          "hex": "8bf1",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00bf680c",
+          "size": 5,
+          "hex": "e87dfbffff",
+          "text": "call 0xbf638e"
+        },
+        {
+          "address": "00bf6811",
+          "size": 6,
+          "hex": "c7063c92d600",
+          "text": "mov dword ptr [esi], 0xd6923c"
+        },
+        {
+          "address": "00bf6817",
+          "size": 2,
+          "hex": "8bc6",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00bf6819",
+          "size": 1,
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00bf681a",
+          "size": 1,
+          "hex": "c3",
+          "text": "ret"
+        }
+      ],
+      "instruction_count": 9,
+      "live_ghidra_listing": "00bf6802: PUSH ESI\n00bf6803: PUSH 0x1\n00bf6805: PUSH 0xe154b4\n00bf680a: MOV ESI,ECX\n00bf680c: CALL 0x00bf638e\n00bf6811: MOV dword ptr [ESI],0xd6923c\n00bf6817: MOV EAX,ESI\n00bf6819: POP ESI\n00bf681a: RET",
+      "current_PE_equal": true,
+      "all_live_starts_equal_full_independent_decode": true,
+      "direct_calls": [
+        {
+          "site": "00bf680c",
+          "target": "00bf638e"
+        }
+      ],
+      "branches": [],
+      "complete_plain_return": {
+        "site": "00bf681a",
+        "hex": "c3",
+        "callee_argument_pop_bytes": 0
+      }
+    },
+    "pseudocode_library_role": {
+      "recorded_role": "std::bad_alloc::bad_alloc(void)",
+      "decompiler_type_hypothesis": "bad_alloc * __thiscall bad_alloc(bad_alloc *this)",
+      "qualification": "Saved library match/name are retained. Neither pointee contents, exact class ABI, message text nor thrown type identity is independently admitted from the labels."
+    },
+    "child_metadata_only": {
+      "address": "00bf638e",
+      "name": "exception",
+      "signature": "undefined __thiscall exception(exception * this, char * * param_1, int param_2)",
+      "body_start": "00bf638e",
+      "body_end_inclusive": "00bf63a5",
+      "metadata_span_bytes": 24,
+      "reported_instruction_count": 7,
+      "reported_call_count": 0,
+      "no_child_body_listing_bytes_or_import_query": true,
+      "next_small_ready_dependency": true
+    },
+    "opaque_operands_not_dereferenced": [
+      {
+        "address": "00e154b4",
+        "role": "First child stack argument; metadata types it char** but slot and pointed string are unread"
+      },
+      {
+        "address": "00d6923c",
+        "role": "Raw DWORD written to captured receiver+0 after child returns; profile contents unread"
+      },
+      {
+        "address": "0109dd68",
+        "role": "Receiver from previously audited parent call; actual static bytes/lifetime not freshly read"
+      }
+    ]
+  },
+  "exact_schedule": [
+    {
+      "site": "00bf6802",
+      "operation": "Push incoming ESI to preserve it on ordinary return."
+    },
+    {
+      "site": "00bf6803",
+      "operation": "Push numeric second child argument1. Its semantic meaning is not inferred."
+    },
+    {
+      "site": "00bf6805",
+      "operation": "Push opaque first child argument address00E154B4. No local dereference or string access."
+    },
+    {
+      "site": "00bf680a",
+      "operation": "Capture original receiverECX in ESI; ECX remains unchanged for child call."
+    },
+    {
+      "site": "00bf680c",
+      "operation": "Call direct00BF638E with same receiver and two pushed arguments. No local receiver check, allocation or zero-fill before it."
+    },
+    {
+      "site": "00bf6811",
+      "operation": "After child returns, unconditionally write one DWORD00D6923C to captured receiver+0. Ignore childEAX as an owner/result replacement."
+    },
+    {
+      "site": "00bf6817",
+      "operation": "Return captured original receiver in EAX, regardless of child return register value."
+    },
+    {
+      "site": "00bf6819",
+      "operation": "Pop saved ESI under the child stack-restoration contract."
+    },
+    {
+      "site": "00bf681a",
+      "operation": "Plain RET. This constructor has no own explicit stack argument and performs no immediate stack-argument pop."
+    }
+  ],
+  "ABI_and_frame": {
+    "entry": "Ordinary ECX receiver, no explicit incoming stack arguments, EAX original receiver result, plain RET. No x87 or hidden incoming register operand is selected.",
+    "stack": "Let S be entryESP. Saved ESI isS-4; pushed numeric1 atS-8; opaque pointer atS-0Ch; CALL pushes returnBF6811 atS-10h. Child sees arg1 atentryESP+4 and arg2 atentryESP+8, with sameECX.",
+    "child_cleanup": "For the observed POP ESI/RET sequence to restore the constructor frame, the child must return with both8argument bytes consumed, leavingESP=S-4. This matches metadata thiscall shape; actual childRET8 is not byte-verified in this packet.",
+    "result": "FinalEAX is captured receiverESI, not the childEAX. Parent allocator ignores this return, using its own captured static address.",
+    "register_contract": "Constructor explicitly saves/restoresESI on the qualified normal path; its use across the child relies on that child preserving the usual nonvolatile register. EBP/EBX/EDI are not written by the selected wrapper.",
+    "exceptions": "No local FS registration, catch, unwind state, reset, allocation release or destructor is present in25B. No noexcept or exceptional register/frame restoration is inferred."
+  },
+  "exact_footprint": {
+    "owned_body_direct_receiver_stores": [
+      {
+        "site": "00bf6811",
+        "offset": 0,
+        "width_bytes": 4,
+        "value": "00d6923c",
+        "when": "only after child returns"
+      }
+    ],
+    "owned_body_receiver_reads": [],
+    "owned_body_direct_4_to_7_and_8_to_11_stores": false,
+    "no_receiver_null_test": true,
+    "direct_store_precondition": "Captured receiver must designate writable storage for its first DWORD when reached. No null receiver is screened by this wrapper. Required child accesses may be wider and occur first.",
+    "transitive_total_extent_or_field_initialization_established": false,
+    "requested_12_byte_base_qualification": "The inherited failure path reserves0Ch for a later base copy, and related Source describes a leading0Ch base. This25B wrapper alone does not prove complete12B receiver initialization, exact+4/+8 stores, ownership meaning, or that the child stays within12B.",
+    "no_inferred_zero_fill_or_ownership_policy": true,
+    "remaining_producer": "24-byte00BF638E direct child: its body is deliberately not selected under this packet contract."
+  },
+  "inherited_parent_context": {
+    "parent_report": "reports/cc12_application_allocator_policy_readiness.json",
+    "accepted_parent_commit": "a536f4df2581f3a62c985c96a0240d81283a9394",
+    "new_parent_body_query": false,
+    "guard_and_receiver": "ParentBF681B tests BYTE0109DD74 bit0, sets bit in DWORD before calling, capturesESI0109DD68 and passesECXsame atBF6856.",
+    "subsequent_parent_behavior": "After constructor returns parent calls registration with opaqueCE1122, later copies static address into local0Ch frame and publishes sameD6923C atlocal+0 before terminal service. None is newly expanded here.",
+    "failure": "If this constructor or child faults/exits exceptionally, the parent already-set guard has no selected reset in its audited body. No rollback policy or static-object contents are inferred."
+  },
+  "related_current_Source": {
+    "construct_base": "Private construct_base(NativeLegacyExceptionStorage&) lines19..25 refers to a different default-base constructorBF632F. It writes message+4=null, ownership+8=0, then base profileD69370. It does not supply this childpointer/1 call or finalD6923C store.",
+    "copy_base": "Private copy_base lines48..72 refers toBF63A6, uses the same leading fields and nullable hostmalloc for an owned message. It is a related Source operation, not the newBF638E constructor.",
+    "destroy_base": "Private destroy_base lines27..35 captures ownership, publishes base profileD69370 and conditionally host-frees the message without clearing fields. No constructor ownership inference or automatic cleanup is imported from it.",
+    "exact_typed_extent": "NativeLegacyExceptionStorage is a live0x28-byte Source object: profile at0, message pointer4, ownershipDWORD8, embedded1Ch SBO member at0Ch. Its public logic/length-error constructors and copies operate on the full owner and additional member fields.",
+    "prohibition": "Do not cast the original0Ch base region/static/frame into this0x28 Source owner, use the public larger-owner constructor, invent a global, or add a catch/RAII cleanup to bridge the gap.",
+    "host_bad_alloc": "Current singleton_lifetime_allocate instead uses hostthrow std::bad_alloc() on exhausted hostnew-handler retry. Its type/constructor/runtime are not a callable reconstruction of this25B original or its static receiver.",
+    "actual_vector_provider": "The concrete raw_allocate adapter and pointer-vector callback interface remain the previously audited hostservice boundary. No binding to this native constructor is added.",
+    "bounded_exact_address_search": {
+      "command": [
+        "rg",
+        "-ni",
+        "00bf638e|00e154b4|00bf6802|0109dd68|00d6923c",
+        "src",
+        "include"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "match_count": 0,
+      "qualification": "Case-insensitive literal address search acrosssrc/include found no new constructor/child/opaque operand provider. This does not rule out external/generated or differently named consumers."
+    },
+    "valid_future_storage_contract": "Any future callable Source must use real storage of the proved complete base extent with established object lifetime and correct child arguments; preserve store order, original receiver return, and failure-side prior effects. The transitive footprint and borrowed/owned message policy must first be renewed inBF638E."
+  },
+  "next_small_ready_dependency": {
+    "address": "00bf638e",
+    "metadata_span_bytes": 24,
+    "reported_instructions": 7,
+    "reported_calls": 0,
+    "needed": "Complete base constructor stores/loads, raw extent, opaque char** operand consumption, numeric1 semantics, receiver return and expectedRET8.",
+    "not_authorized_or_performed_here": "No child body or argument-slot/string/profile contents, callback, exceptionmetadata, handler, caller or heap expansion.",
+    "no_source_implementation_ready_until_dependency_resolved": true
+  },
+  "current_repository_input_pins": [
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "physical_bytes": 5121,
+      "physical_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "canonical_lf_bytes": 5121,
+      "canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "40bba5339f57a50f769b6143085bd62062250094",
+      "excerpts": [
+        {
+          "start_line": 14,
+          "end_line": 35,
+          "text": "// Verified native table address words; never dispatched as host C++ vtables.\nconstexpr std::uint32_t exception_vtable = 0x00d69370;\nconstexpr std::uint32_t logic_error_vtable = 0x00d69248;\nconstexpr std::uint32_t length_error_vtable = 0x00d69260;\n\nvoid construct_base(NativeLegacyExceptionStorage& owner) noexcept {\n    // Complete library constructor 00BF632F..00BF6340.\n    volatile auto& actual = owner;\n    actual.base_message_04 = nullptr;\n    actual.owns_base_message_08 = 0;\n    actual.native_vtable_00 = exception_vtable;\n}\n\nvoid destroy_base(NativeLegacyExceptionStorage& owner) noexcept {\n    // 00BF6454..00BF646A tests ownership BEFORE publishing the base table.\n    // Message/ownership fields remain unchanged, including after a real free.\n    volatile auto& actual = owner;\n    const auto owned = actual.owns_base_message_08;\n    actual.native_vtable_00 = exception_vtable;\n    if (owned != 0) {\n        std::free(actual.base_message_04);\n    }"
+        },
+        {
+          "start_line": 48,
+          "end_line": 72,
+          "text": "void copy_base(NativeLegacyExceptionStorage& owner,\n    const NativeLegacyExceptionStorage& source) {\n    // Complete library copy body 00BF63A6..00BF63FE. Preserve its nullable\n    // _malloc contract rather than using the throwing singleton allocator.\n    volatile auto& actual = owner;\n    const volatile auto& actual_source = source;\n    actual.native_vtable_00 = exception_vtable;\n    const auto owned = actual_source.owns_base_message_08;\n    actual.owns_base_message_08 = owned;\n    auto* const captured_message = actual_source.base_message_04;\n    if (owned == 0) {\n        actual.base_message_04 = captured_message;\n    } else if (!captured_message) {\n        actual.base_message_04 = nullptr;\n    } else {\n        const auto bytes = static_cast<std::uint32_t>(std::strlen(captured_message)) + 1u;\n        auto* const replacement = static_cast<char*>(std::malloc(bytes));\n        actual.base_message_04 = replacement;\n        if (replacement) {\n            // 00BF63DE reloads source+4 after malloc and destination publication.\n            auto* const current_source_message = actual_source.base_message_04;\n            (void)strcpy_s(replacement, bytes, current_source_message);\n        }\n    }\n}"
+        },
+        {
+          "start_line": 75,
+          "end_line": 85,
+          "text": "NativeLegacyExceptionStorage& construct_native_legacy_logic_error_00411700(\n    NativeLegacyExceptionStorage& owner, const NativeLegacySboStringStorage& source) {\n    construct_base(owner);\n    owner.native_vtable_00 = logic_error_vtable;\n    owner.message_0c.length_14 = 0;\n    owner.message_0c.capacity_18 = 15;\n    // Native state 0 is armed before the first-byte store at 0041173E.\n    // FuncInfo D83F74 has no catch map: C5E010 unwinds the base only.\n    BaseUnwindCleanup cleanup{owner};\n    owner.message_0c.buffer_04.inline_bytes[0] = '\\0';\n    native_legacy_sbo_string_assign_substring_00408120("
+        },
+        {
+          "start_line": 108,
+          "end_line": 127,
+          "text": "NativeLegacyExceptionStorage& copy_native_legacy_logic_error_004118d0(\n    NativeLegacyExceptionStorage& owner, const NativeLegacyExceptionStorage& source) {\n    copy_base(owner, source); // Native EH state is still -1 during base copying.\n    owner.native_vtable_00 = logic_error_vtable;\n    owner.message_0c.capacity_18 = 15;\n    owner.message_0c.length_14 = 0;\n    // Native state 0 is armed before the first-byte store at 00411918.\n    // FuncInfo D84024 has no catch map: C5E050 unwinds the base only.\n    BaseUnwindCleanup cleanup{owner};\n    owner.message_0c.buffer_04.inline_bytes[0] = '\\0';\n    native_legacy_sbo_string_assign_substring_00408120(\n        owner.message_0c, source.message_0c, 0, 0xffffffffu);\n    cleanup.armed = false;\n    return owner;\n}\n\nNativeLegacyExceptionStorage& copy_native_legacy_length_error_00411940(\n    NativeLegacyExceptionStorage& owner, const NativeLegacyExceptionStorage& source) {\n    copy_native_legacy_logic_error_004118d0(owner, source);\n    owner.native_vtable_00 = length_error_vtable;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "physical_bytes": 3232,
+      "physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "canonical_lf_bytes": 3232,
+      "canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "574905ddb640b9cd3edf3cfa70feef903c165b42",
+      "excerpts": [
+        {
+          "start_line": 11,
+          "end_line": 33,
+          "text": "// Actual Win32 28h exception storage. The leading 0Ch is std::exception's\n// vtable, message pointer and ownership DWORD; the existing 1Ch SBO string\n// starts at +0Ch. Destruction is explicit and does not clear base fields.\nstruct NativeLegacyExceptionStorage {\n    std::uint32_t native_vtable_00;\n    char* base_message_04;\n    std::uint32_t owns_base_message_08;\n    NativeLegacySboStringStorage message_0c;\n};\n\nstatic_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(NativeLegacyExceptionStorage) == 0x28);\nstatic_assert(offsetof(NativeLegacyExceptionStorage, base_message_04) == 4);\nstatic_assert(offsetof(NativeLegacyExceptionStorage, owns_base_message_08) == 8);\nstatic_assert(offsetof(NativeLegacyExceptionStorage, message_0c) == 0x0c);\nstatic_assert(std::is_trivially_default_constructible_v<NativeLegacyExceptionStorage>);\nstatic_assert(std::is_trivially_copyable_v<NativeLegacyExceptionStorage>);\n\n// 00411700..0041175F, ECX destination, stack source SBO address, RET4/EAX this.\n// Initialize the base, initialize only the observed member-string fields, then\n// copy its full substring. A failed member copy cleans up the completed base.\nNativeLegacyExceptionStorage& construct_native_legacy_logic_error_00411700(\n    NativeLegacyExceptionStorage&, const NativeLegacySboStringStorage& source);"
+        },
+        {
+          "start_line": 45,
+          "end_line": 61,
+          "text": "// 004118D0..00411935, ECX destination, stack source owner, RET4/EAX this.\n// Base copying is outside the owner's state-0 unwind scope. A base-owned\n// message uses nullable CRT malloc, then reloads source.message for strcpy_s.\nNativeLegacyExceptionStorage& copy_native_legacy_logic_error_004118d0(\n    NativeLegacyExceptionStorage&, const NativeLegacyExceptionStorage& source);\n\n// 00411940..00411959: call logic-error copy, then publish length-error vtable.\n// ECX destination, stack source owner, RET4/EAX this.\nNativeLegacyExceptionStorage& copy_native_legacy_length_error_00411940(\n    NativeLegacyExceptionStorage&, const NativeLegacyExceptionStorage& source);\n\n// Native vtable DWORDs are retained as verified address data, not callable host\n// C++ vtables. These functions do not establish native throw/exception ABI.\n// The caller begins the raw storage lifetime by default-initialization without\n// parentheses, which performs no field writes. These functions preserve the member\n// string's leading DWORD and unused buffer bytes unless the string helper writes\n// them. No implicit struct construction or additional member cleanup is applied."
+        }
+      ]
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "canonical_lf_bytes": 13257,
+      "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "excerpts": [
+        {
+          "start_line": 51,
+          "end_line": 67,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "canonical_lf_bytes": 4372,
+      "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "excerpts": [
+        {
+          "start_line": 11,
+          "end_line": 20,
+          "text": "// Explicit host allocation boundary: native object sizes are evidence, while\n// host_bytes allocates the reconstructed C++ type. The returned bytes are raw.\nenum class SingletonAllocationKind { manager, pointer_slots, critical_section, object };\nstruct SingletonAllocationRequest {\n    SingletonAllocationKind kind;\n    std::size_t native_bytes;\n    std::size_t host_bytes;\n};\nvoid* singleton_lifetime_allocate(const SingletonAllocationRequest&);\nvoid singleton_lifetime_free(void*) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "physical_bytes": 36751,
+      "physical_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "canonical_lf_bytes": 36751,
+      "canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "cf5d79719ef386079e97ea68d83983de410cb08b",
+      "excerpts": [
+        {
+          "start_line": 106,
+          "end_line": 115,
+          "text": "namespace bsp::game {\nnamespace {\nusing U=std::uint32_t;\nvoid check(bool value,const char* message) { if(!value) throw std::runtime_error(message); }\nU bits(const void* p) noexcept { return reinterpret_cast<U>(p); }\ntemplate<class T> T get(const void* p,U offset=0) noexcept {\n    T value;std::memcpy(&value,static_cast<const unsigned char*>(p)+offset,sizeof value);return value;\n}\nvoid* __cdecl raw_allocate(U size) { return singleton_lifetime_allocate({SingletonAllocationKind::object,size,size}); }\nvoid __cdecl raw_free(void* p) noexcept { singleton_lifetime_free(p); }"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "physical_bytes": 3737,
+      "physical_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "canonical_lf_bytes": 3737,
+      "canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "4cb7b1e2ef254a58c18e4f71102d4920c6d5e3ca",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 27,
+          "text": "namespace bsp {\n// Actual 0Ch pointer vector at application+08; count/capacity are signed.\n// Entries own the material loader's returned caller references, including null.\nstruct NativeApplicationPointerVectorStorage {\n    void** data_00;\n    std::int32_t count_04,capacity_08;\n};\nstatic_assert(sizeof(NativeApplicationPointerVectorStorage)==12);\nstruct NativeApplicationPointerVectorAllocation {\n    void* (*allocate_00bf55be)(std::uint32_t);\n    void (*free_00bf6989)(void*);\n};\n// 735EC0: ECX actual0Ch header; stack signed request; RET4. Minimum1,\n// signed capacity comparison, wrapping request*4 allocation, live source/count\n// reads, free CURRENT old data, THEN publish new data/capacity. Count unchanged.\n// Valid readable extents and native allocator/free contracts are required.\n// No rollback or original CRT/new-handler/FH3 identity is added.\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage&,std::int32_t,\n    const NativeApplicationPointerVectorAllocation&);"
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_application_allocator_policy_readiness.json",
+      "physical_bytes": 54868,
+      "physical_sha256": "d10bd905704a5ab5cf0a1b1f94e1b7105c00e120af715e5993c58372613558d2",
+      "canonical_lf_bytes": 53841,
+      "canonical_lf_sha256": "8615dd6ec8d2be4fe96ad0317810870ab8a10c646336b6180c06cccd00c930c9",
+      "physical_crlf_count": 1027,
+      "matches_base_blob": true,
+      "git_blob_oid": "c2661f5c539ac7d821351507a8612f627b92fa21"
+    },
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_bytes": 455,
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_bytes": 14411,
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+      "excerpts": [
+        {
+          "start_line": 101,
+          "end_line": 110,
+          "text": "    def verify(self):\n        project = self.get('list_project_files', folder='/')\n        info = self.get('get_current_program_info')\n        expected = self.config\n        if project['project_name'] != expected['project']:\n            raise RuntimeError(f\"Wrong Ghidra project: {project['project_name']}\")\n        for key, actual in [('program_path', info['path']), ('language', info['language']), ('image_base', info['image_base'])]:\n            if actual != expected[key]:\n                raise RuntimeError(f'Wrong target {key}: {actual}')\n        return project, info"
+        }
+      ]
+    }
+  ],
+  "inherited_canonical_pin_replays": [
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "actual_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/game_native_renderer_application.cpp",
+      "expected_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "actual_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/native_legacy_exception_owner.cpp",
+      "expected_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "actual_canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "expected_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "actual_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "reports/cc12_application_pointer_vector_crt_boundary_readiness.json",
+      "expected_canonical_lf_sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+      "actual_canonical_lf_sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "reports/singleton_lifetime_audit.json",
+      "expected_canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "actual_canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "expected_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "actual_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/game_native_renderer_shaders.inc",
+      "expected_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "actual_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/game_native_renderer_application.cpp",
+      "expected_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "actual_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "expected_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "actual_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "actual_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+      "expected_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "actual_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_native_application_pointer_vector_resize_primary_review.json",
+      "expected_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "actual_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/native_shader_preload_r99.json",
+      "expected_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "actual_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_application_vector_retirement_readiness.json",
+      "expected_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "actual_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "expected_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "actual_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "matches": true
+    }
+  ],
+  "validation": {
+    "complete25B_current_PE_equal": true,
+    "all9live_instruction_starts_and_decode_match": true,
+    "single_direct_call_and_finalC3_checked": true,
+    "exactone_direct_object_DWORD_store_checked": true,
+    "ordinary_receiver_capture_and_return_checked": true,
+    "child_metadata_only": true,
+    "nine_direct_repository_pins_match_base": true,
+    "forty_inherited_canonical_references_replayed": true,
+    "inherited_unique_paths": 21,
+    "related_Source_snippets_and_empty_address_search_checked": true,
+    "report_json_parses": true,
+    "staged_exact_two_owned_files": true,
+    "diff_check_passed": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_functions": 0,
+    "new_fragments": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_execution": 0,
+    "Source_changes": 0,
+    "Ghidra_changes": 0,
+    "ledger_changes": 0,
+    "CMake_changes": 0,
+    "Application_wiring": 0,
+    "game_validation": 0
+  },
+  "conclusion": "The complete25B wrapper policy is established: same receiver and opaque two-argument child call, one final+0DWORD publication, original receiver return. Complete12B initialization/lifetime and exact Native exceptionidentity remain pending the bounded24B child and later explicit composition; no Source adapter or new credit is claimed."
+}
