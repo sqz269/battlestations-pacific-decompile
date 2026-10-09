@@ -1,0 +1,340 @@
+{
+  "packet": "cc12_native_subtree_invalidation_readiness",
+  "review_utc": "2026-10-09T04:28:48.128617+00:00",
+  "status": "complete_native_body_and_abi_support_minimal_independent_actual_storage_source_packet",
+  "scope": "read_only_native_and_source_audit; dedicated docs/report only",
+  "published_main_base": "7fcdd0ca55de795d9755dddbab376d4f482cdcce",
+  "worktree_base_commit": "5914320821f3bb5ce97f4ebb5e87dab7e25565ce",
+  "owned_address": "0042ed50",
+  "lease_checks": "0042ED50 and both evidence paths were unleased before claim",
+  "bounded_callees": [
+    "0042ed50"
+  ],
+  "additional_callee_claims_required": false,
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "target_verification": "Every live query used bsp.py ghidra, whose Client verifies project, program path, language and image base before querying.",
+  "native_body": {
+    "capture_utc": "2026-10-09T04:23:52.007860+00:00",
+    "address": "0042ed50",
+    "end_inclusive": "0042ed75",
+    "bytes": 38,
+    "sha256": "9dbf958d6149b06a4ac17be48853600686b35b405dbdc8812d185f78056b539d",
+    "hex": "568b714885f6c681c800000000c6810c01000000740e8bcee8e3ffffff8b764485f675f25ec3",
+    "live_equals_pe": true,
+    "decoded_instructions": 13,
+    "complete_contiguous_decode": true,
+    "control_transfers": [
+      {
+        "address": "0042ed64",
+        "mnemonic": "je",
+        "operands": "0x42ed74",
+        "target": "0042ed74"
+      },
+      {
+        "address": "0042ed68",
+        "mnemonic": "call",
+        "operands": "0x42ed50",
+        "target": "0042ed50"
+      },
+      {
+        "address": "0042ed72",
+        "mnemonic": "jne",
+        "operands": "0x42ed66",
+        "target": "0042ed66"
+      },
+      {
+        "address": "0042ed75",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "instructions": [
+      {
+        "address": "0042ed50",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "0042ed51",
+        "bytes": "8b7148",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [ecx + 0x48]"
+      },
+      {
+        "address": "0042ed54",
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "0042ed56",
+        "bytes": "c681c800000000",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ecx + 0xc8], 0"
+      },
+      {
+        "address": "0042ed5d",
+        "bytes": "c6810c01000000",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ecx + 0x10c], 0"
+      },
+      {
+        "address": "0042ed64",
+        "bytes": "740e",
+        "mnemonic": "je",
+        "operands": "0x42ed74"
+      },
+      {
+        "address": "0042ed66",
+        "bytes": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "address": "0042ed68",
+        "bytes": "e8e3ffffff",
+        "mnemonic": "call",
+        "operands": "0x42ed50"
+      },
+      {
+        "address": "0042ed6d",
+        "bytes": "8b7644",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [esi + 0x44]"
+      },
+      {
+        "address": "0042ed70",
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "0042ed72",
+        "bytes": "75f2",
+        "mnemonic": "jne",
+        "operands": "0x42ed66"
+      },
+      {
+        "address": "0042ed74",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "0042ed75",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "native_abi": {
+    "receiver": "ECX actual node",
+    "stack_arguments": [],
+    "return": "plain RET; no defined result",
+    "preserved_registers": "ESI explicitly saved/restored; body does not use other nonvolatile registers",
+    "edx_input": "not read",
+    "floating_point": "no x87 or SSE instructions",
+    "recursion": "ECX receives captured child; direct CALL to same function; successor read after complete recursive return",
+    "local_eh": "no local EH frame, catch or cleanup body",
+    "prototype_warning": "Current no-parameter prototype/fastcall pseudocode is not the receiver ABI evidence; complete machine instructions establish the boundary."
+  },
+  "complete_schedule": [
+    {
+      "address": "0042ed50",
+      "effect": "save caller ESI"
+    },
+    {
+      "address": "0042ed51",
+      "effect": "capture current receiver+48 first-child DWORD into ESI"
+    },
+    {
+      "address": "0042ed54",
+      "effect": "TEST captured child before either store"
+    },
+    {
+      "address": "0042ed56",
+      "effect": "write byte receiver+C8 = 0 unconditionally"
+    },
+    {
+      "address": "0042ed5d",
+      "effect": "write byte receiver+10C = 0 unconditionally; MOV preserves TEST flags"
+    },
+    {
+      "address": "0042ed64",
+      "effect": "branch to restore/return if captured child was null"
+    },
+    {
+      "addresses": "0042ed66..0042ed68",
+      "effect": "ECX = captured child; recursively invalidate actual child subtree"
+    },
+    {
+      "address": "0042ed6d",
+      "effect": "after recursion, reload SAME child current+44 sibling pointer"
+    },
+    {
+      "addresses": "0042ed70..0042ed72",
+      "effect": "test reloaded sibling and repeat recursive call while nonnull"
+    },
+    {
+      "addresses": "0042ed74..0042ed75",
+      "effect": "restore caller ESI and plain RET"
+    }
+  ],
+  "actual_storage_footprint": {
+    "receiver_reads": [
+      {
+        "offset": "48",
+        "bytes": 4,
+        "meaning": "first child; captured once before stores"
+      }
+    ],
+    "receiver_writes": [
+      {
+        "offset": "C8",
+        "bytes": 1,
+        "value": 0,
+        "order": 1
+      },
+      {
+        "offset": "10C",
+        "bytes": 1,
+        "value": 0,
+        "order": 2
+      }
+    ],
+    "child_reads": [
+      {
+        "offset": "44",
+        "bytes": 4,
+        "meaning": "current next sibling; loaded after recursive return"
+      }
+    ],
+    "layout_corroboration": "current kUnitOffPoseValid/child-offset interfaces and prior complete904600 inlined root schedule agree",
+    "full_node_size_or_cpp_type_recovered": false,
+    "field_10c_broader_semantics": "provisional derived-cache interpretation only",
+    "vtable_or_active_byte_read": false,
+    "allocates_frees_or_constructs_storage": false
+  },
+  "ordering_constraints": [
+    "capture/test child head before clearing C8 then10C; branch on captured child",
+    "write both bytes even on leaves or already-zero flags",
+    "finish each recursive subtree before loading that same child sibling pointer",
+    "do not reload original receiver child head after recursion",
+    "do not pre-capture successor, snapshot children, deduplicate or replace recursion with a guarded traversal"
+  ],
+  "preconditions_and_failure_boundary": [
+    "actual live receiver storage with the stated reads and writes valid; no constructed node overlay",
+    "each reached nonnull child/sibling points to another valid live receiver",
+    "current child remains readable through the parent post-recursion+44 read",
+    "finite terminating walk is a producer precondition for normal completion, not a helper-added cycle/depth/visited guard",
+    "shared descendants are revisited; cyclic storage keeps native nontermination or stack-exhaustion behavior",
+    "null receiver faults on initial+48 read rather than becoming a no-op",
+    "invalid later access may leave earlier flags/descendants changed; no rollback, catch or owning cleanup",
+    "no additional noexcept/termination policy or synchronization is inferred; native SEH, translated faults and concurrency remain unqualified"
+  ],
+  "source_surface": {
+    "raw_implementation_found": false,
+    "existing_boundaries": [
+      "EntityLocalMatrixHost::invalidate_subtree_pose(uint32_t) is abstract",
+      "MatrixInterpolatorHost::entity_invalidate_subtree_pose(uint32_t) is abstract",
+      "GameWorld matrix binding records the invalidation site",
+      "audited GameHost unit paths log the site or use an empty callback"
+    ],
+    "token_to_pointer_adaptation_acceptable": false,
+    "producer_scope": "No constructor or node lifetime is qualified here; the minimal helper borrows actual existing storage and owns nothing."
+  },
+  "proposed_source_packet": {
+    "viable": true,
+    "native_address": "0042ed50",
+    "owned_header": "include/bsp/native_subtree_invalidation.hpp",
+    "owned_cpp": "src/native_subtree_invalidation.cpp",
+    "signature": "void __fastcall invalidate_native_subtree_pose_0042ed50(void* actual_node);",
+    "implementation": "narrow MSVC Win32 naked body preserving the complete13-instruction schedule and binding its one CALL to itself",
+    "source_calling_contract": "single fastcall pointer uses ECX; no stack argument or cleanup; no fake class layout",
+    "header_platform_guard": "MSVC Win32",
+    "expected_body_bytes": 38,
+    "expected_instructions": 13,
+    "emitted_shape_verified": false,
+    "external_services_required": [],
+    "unnecessary_additions": [
+      "node struct overlay",
+      "allocation",
+      "callback class",
+      "owning wrapper",
+      "process global",
+      "current-table dispatcher",
+      "visited/depth/cycle guard"
+    ],
+    "primary_followup": "separate authorized Source addition, registration/build and complete emitted-object review",
+    "matrix_owner_clock_table_obligations_closed": false,
+    "application_ready": false
+  },
+  "ledger_credit_boundary": {
+    "lookup_command": "python tools/bsp.py lookup 0042ED50",
+    "name_record": "BSP_SceneNode_InvalidateSubtreePose",
+    "reconstruction_rows_printed": 0,
+    "lookup_behavior": "bsp.py header_lines prints every recon row for the exact address; none was returned by the current indexed lookup",
+    "semantic_callbacks_are_complete_provider": false,
+    "future_admission": "recheck canonical current record and do not duplicate Original/function credit if a semantic reconstruction is already counted",
+    "new_source_functions": 0,
+    "new_original_functions": 0,
+    "new_original_bytes": 0
+  },
+  "external_obligations": [
+    "matrix904600 full actual-storage pass and caller wiring",
+    "canonical live mission clock",
+    "genuine entity slot88/D8 and World tables",
+    "nonempty matrix-record production and allocation/free domain",
+    "actual hierarchy producers, node storage/lifetimes and complete World ownership",
+    "runtime/gameplay and full Native binary/EH compatibility"
+  ],
+  "validation": {
+    "whole_native_pseudocode_and_listing_read": true,
+    "target_verified_live_bytes_equal_installed_pe": true,
+    "contiguous_decode_bytes": 38,
+    "decoded_instructions": 13,
+    "listed_gaps": 0,
+    "only_call_target_is_self": true,
+    "all_encoded_branch_targets_internal": true,
+    "exact_ghidra_override_properties_claimed": false,
+    "json_parse": "passed",
+    "git_diff_check": "passed",
+    "source_modified": false,
+    "cmake_config_ledger_modified": false,
+    "ghidra_mutated": false,
+    "build_tests_or_execution_probes_run": false,
+    "runtime_or_gameplay_validated": false,
+    "embedded_byte_listing_and_source_hash_integrity": "passed"
+  },
+  "native_capture_artifact": {
+    "path": "local/output/cc12_native_subtree_invalidation_machine_bytes.json",
+    "sha256": "5bc0b43be173979f48bae78fde60a53ce3d14e9f9d5ea187d8865e106311fe8d",
+    "whole_native_evidence_embedded": true
+  },
+  "source_and_evidence_sha256": {
+    "include/bsp/entity_local_matrix.hpp": "71e78fe596ad8af885d37b3c027c430b87fb8bc991479d09037194a788b84f29",
+    "src/entity_local_matrix.cpp": "f2f5635efd23280750a7d067415a0e958d46bd41347f679fa6da480cd4899e76",
+    "include/bsp/world_entity_update.hpp": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+    "src/world_entity_update.cpp": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+    "src/game_hosts_world.cpp": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+    "src/game_hosts_units.cpp": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+    "include/bsp/airfield_taxi.hpp": "a29e737aae69e049babfa6025572a2b86b36d6e6559baecfeeeb61aa43a7610f",
+    "include/bsp/land_and_structures.hpp": "ddc8f59e3a954e85d1ef81a9b4e83cb3179b8d0f764aaccc4bb93d8e4be6c79d",
+    "include/bsp/unit_instance.hpp": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+    "docs/CC12_WORLD_CURRENT_TICK_READINESS.md": "0aeb8d4e2f64da2478eb1dda6144209e49a2809ce74c1478313ba6a1cbaf57c7",
+    "reports/cc12_world_current_tick_readiness.json": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713",
+    "tools/bsp.py": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+    "tools/ghidra_export.py": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+    "config/target.json": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+  }
+}
