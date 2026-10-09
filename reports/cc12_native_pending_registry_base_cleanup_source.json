@@ -1,0 +1,211 @@
+{
+  "schema": "bsp.cc12.native_pending_registry_base_cleanup_source.v1",
+  "packet": "cc12_native_pending_registry_base_cleanup_source",
+  "status": "Source_leaf_implemented_unbuilt_unlinked_pending_primary_admission",
+  "created_utc": "2026-10-09T07:55:19.199395+00:00",
+  "baseline_commit": "5db1a543115ff82ed6b42be0373ab21452ccfeed",
+  "accepted_audit_published_main": "c1893651fd351ea67c5f2bb3151fd06553112d1f",
+  "claimed_address": "008748F0",
+  "owned_outputs": [
+    "include/bsp/native_pending_registry_base_cleanup.hpp",
+    "src/native_pending_registry_base_cleanup.cpp",
+    "docs/CC12_NATIVE_PENDING_REGISTRY_BASE_CLEANUP_SOURCE.md",
+    "reports/cc12_native_pending_registry_base_cleanup_source.json"
+  ],
+  "Source_candidate_functions": 1,
+  "admitted_Source_credit": 0,
+  "Native_ABI_credit": 0,
+  "Original_credit": 0,
+  "implementation": {
+    "header": "include/bsp/native_pending_registry_base_cleanup.hpp",
+    "source": "src/native_pending_registry_base_cleanup.cpp",
+    "function": "bsp::cleanup_native_pending_registry_base_008748f0",
+    "interface": "void cleanup_native_pending_registry_base_008748f0(\n    void* actual_receiver,\n    void* volatile& actual_registry_publication_00f878cc)",
+    "body": "{\n    actual_registry_publication_00f878cc = nullptr;\n    destroy_native_generic_singleton_base_00412430(actual_receiver);\n}",
+    "executable_statements": 2,
+    "concrete_Source_calls": 1,
+    "explicit_cell_type": "void* volatile&",
+    "has_noexcept_annotation": false,
+    "order": [
+      "Store nullptr through the borrowed actual registry publication reference.",
+      "Call concrete destroy_native_generic_singleton_base_00412430 on the actual receiver."
+    ],
+    "additional_cells_or_globals": 0,
+    "owner_factories": 0,
+    "lock_providers": 0,
+    "callback_parameters": 0,
+    "conditional_identity_guards": 0,
+    "local_validation": 0,
+    "free_or_unlock": 0,
+    "manager_calls": 0,
+    "publication_restore": 0,
+    "catches_or_RAII_guards": 0
+  },
+  "borrowed_binding_contract": {
+    "receiver": "Actual writable receiver. Only firstDWORD is changed by the fixed child; actual owner section+04 remains untouched.",
+    "publication": "A stable reference to the genuine mutableF878CC cell, supplied by the caller. The name does not manufacture, identify or validate that binding.",
+    "lifetimes": "Caller owns both storage lifetimes. No process static, new cell, substitute owner, default service or internal lookup is introduced.",
+    "unconditional": "Publication is cleared regardless of its previous pointer value, with no comparison against receiver.",
+    "genuine_binding_producer": "Absent in this packet; no canonical owner integration is claimed."
+  },
+  "accepted_native_evidence": {
+    "report": "reports/cc12_pending_registry_base_cleanup_readiness.json",
+    "address": "008748F0",
+    "bytes": 17,
+    "body_hex": "c705cc78f80000000000c7011838ce00c3",
+    "body_sha256": "d6b00cb7e86ca84a971ae28580fec99ba8b7de3ccaf5750da1df4bf81b0d20cb",
+    "instruction_count": 3,
+    "ordered_instructions": [
+      "MOV DWORD[F878CC],0",
+      "MOV DWORD[ECX],CE3818",
+      "RET"
+    ],
+    "physical_CALL_count": 0,
+    "tail_transfer_count": 0,
+    "physical_inputs": "ECX receiver; no EDX/caller stack arguments; plainRET; EAX unchanged with no semantic result.",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_PE_span_replayed": true,
+    "fresh_GPR_queries": 0,
+    "provenance": "Accepted complete read-only audit; independent current installed PE byte/hash replay."
+  },
+  "concrete_Source_child": {
+    "name": "destroy_native_generic_singleton_base_00412430",
+    "declaration": "include/bsp/native_render_service_base.hpp",
+    "definition": "src/native_render_service_base.cpp",
+    "exact_effect": "*static_cast<volatile Word*>(actual_receiver) = 0x00ce3818u; Word=std::uint32_t.",
+    "scope": "Only the native second store is implemented by this current concrete child.",
+    "qualification": "Original8748F0 has no call to412430. This is Source reuse under a new interface; emitted child and actual Core linkage still require primary review.",
+    "full_current_Source_definition_pinned": true,
+    "native_child_expanded": false
+  },
+  "Source_relation": {
+    "claimed": "Ordinary two-store C++ semantic refinement through explicit actual borrowed cells.",
+    "no_native_entry": "Added cell reference and ordinary C++ ABI do not implement originalECX-only entry or register/flag preservation.",
+    "no_fake_profile": "CE3818 is an identityDWORD. Callable Source table delivery and scalar retirement dispatch are absent.",
+    "no_fault_equivalence": "No original FH3/SEH/hardware-fault equivalence, successful-cleanup promise or added rollback. Bad receiver access can follow a completed publication clear.",
+    "no_runtime_binding": "No genuinecell producer, actual owner/lifetime, canonical executable migration or runtime/game validation.",
+    "constructor_context": "Prior state0 action[EBP-10h]->ECX/tail8748F0 remains conditional on shared helper EBP anchor and current mutable spill; no native frame/helper protocol is supplied.",
+    "remaining_outer_work": "GetterC96433 EH, outer free/guard cleanup, owner retirement, constructor/getter composition and pending/group integration remain separate."
+  },
+  "evidence_pins": [
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "bytes": 843,
+      "sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b"
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "bytes": 403,
+      "sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597"
+    },
+    {
+      "path": "docs/CC12_NATIVE_PENDING_REGISTRY_BASE_CLEANUP_SOURCE.md",
+      "bytes": 5068,
+      "sha256": "628bd4eef975f5491d8d350cf32cd431e8d770ba296403881620256c46800968",
+      "lf_sha256": "628bd4eef975f5491d8d350cf32cd431e8d770ba296403881620256c46800968"
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_BASE_CLEANUP_READINESS.md",
+      "bytes": 6324,
+      "sha256": "0183ff095b10324096754561248f97f66c51bfc3a26337628c58b94880b3b37f",
+      "lf_sha256": "0183ff095b10324096754561248f97f66c51bfc3a26337628c58b94880b3b37f"
+    },
+    {
+      "path": "reports/cc12_pending_registry_base_cleanup_readiness.json",
+      "bytes": 18260,
+      "sha256": "6fde94669c87d8062120bd070a5e928eddc8a84969cdf7dc517705aea22c52fe",
+      "lf_sha256": "72fd3080322f81ef00fe202bc65bbad09c7adee260a67e3d31685041c6c1d4b4"
+    }
+  ],
+  "accepted_audit_pin_rechecks": [
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_CONSTRUCTOR_EH_READINESS.md",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_constructor_EH_readiness.json",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_OWNER_CONSTRUCTION_READINESS.md",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_owner_construction_readiness.json",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_getter_readiness.json",
+      "exact_sha256_equal": true,
+      "normalized_LF_sha256_equal": true
+    }
+  ],
+  "worker_validation": {
+    "accepted_native_complete_span_PE_equal": true,
+    "full_installed_PE_hash_equal": true,
+    "current_evidence_pins": 7,
+    "inherited_audit_pins": 8,
+    "exact_two_statement_Source_body": true,
+    "header_definition_signature_agree": true,
+    "JSON_parse": true,
+    "Source_files_added": 2,
+    "documentation_reports_added": 2,
+    "CMake_mutations": 0,
+    "ledger_mutations": 0,
+    "Ghidra_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "emitted_code_inspections": 0,
+    "actual_Core_link_checks": 0,
+    "runtime_runs": 0
+  },
+  "primary_admission_gate": {
+    "status": "pending",
+    "entire_emitted_leaf": "pending primary inspection",
+    "actual_concrete_child_body": "pending primary emitted-body inspection",
+    "actual_Core_linkage": "pending primary integration and verification",
+    "MSVC_Win32_build": "pending primary integration/build",
+    "CMake_registration": "Not edited by worker",
+    "ledger_admission": "Not edited by worker"
+  },
+  "limitations": [
+    "Source candidate exists; no build/link/emitted/native/runtime proof is claimed.",
+    "No invented canonical publication, owner, provider, callback, free/unlock, noexcept or RAII policy.",
+    "No Original credit and no production admission before primary emitted/body/link/build review."
+  ]
+}
