@@ -1,0 +1,1690 @@
+{
+  "schema": 1,
+  "packet": "cc12_lua_variant_vector_reserve_readiness",
+  "kind": "bounded read-only Native and current Source readiness audit",
+  "created_utc": "2026-10-09T09:22:18.089663+00:00",
+  "worker_and_published_baseline": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+  "owned_addresses": [
+    "006b87f0"
+  ],
+  "owned_outputs": [
+    "docs/CC12_MISSION_LUA_VARIANT_VECTOR_RESERVE_READINESS.md",
+    "reports/cc12_mission_lua_variant_vector_reserve_readiness.json"
+  ],
+  "size_gate": {
+    "maximum_bytes": 300,
+    "declared_bytes": 227,
+    "passed_before_full_read": true,
+    "metadata_instructions": 72,
+    "complete_independent_instructions": 77,
+    "metadata_blocks": 14,
+    "metadata_edges": 19,
+    "metadata_direct_calls": 3,
+    "complete_call_instructions": 4,
+    "normal_RET4_included": true
+  },
+  "credit": {
+    "read_only": true,
+    "new_reconstructed_functions": 0,
+    "Original_call_execution": 0,
+    "new_build_or_fixture_evidence": false,
+    "Native_ABI": 0,
+    "gameplay": 0,
+    "Source_reserve_implementation": false
+  },
+  "conclusion": "Complete reserve schedule established, including five instructions omitted by Ghidra after free. Source remains held by transfer00886DA0, actual virtual target/profile, local EH and raw owner contracts. The next small direct dependency is metadata84-byte00886DA0.",
+  "target_verification": {
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "mechanism": "CLI client verifies existing bsp project, /battlestationspacific.exe, x86 LE32 language and 00400000 image base before each live batch; configured bsp.gpr reused.",
+    "live_function_count": 64729,
+    "snapshot_function_count": 64729,
+    "queries": [
+      "proto 006B87F0 gate",
+      "count",
+      "decompile 006B87F0 complete",
+      "disasm 006B87F0 listing",
+      "bytes 006B87F0 length 227",
+      "proto 00886DA0 metadata only",
+      "proto BF55BE/BF6989 metadata only"
+    ],
+    "Ghidra_mutation": false,
+    "flow_repair_or_exact_no_return_flag_query": false,
+    "Native_body_expansion": "Owned 006B87F0..006B88D2 only; no child, handler, caller, profile, import target, heap or adjacent body."
+  },
+  "native_evidence": {
+    "capture_utc": "2026-10-09T09:13:38.456635+00:00",
+    "configuration": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "span": {
+      "address": "006b87f0",
+      "end_inclusive": "006b88d2",
+      "bytes": 227,
+      "sha256": "576f1a11a1fd789f562957cde4d47009f0c2e4846ffffbf64d279f6726c2a72d",
+      "hex": "64a1000000006aff68f70dc800506489250000000083ec0c538b5c242083fb01568bf17d0cc7442424010000008b5c2424395e080f8d960000008d049b5503c003c05750e885cd530033ff83c404397e048be8896c2414897c24107e3b8d49008d04bf03c003c08d0c28894c241885c9c744242400000000740a8b1603d052e82ce51c0083c7013b7e04c7442424ffffffff897c24107cc833ff397e047e1f33db8b068b14038d0c038b026a00ffd083c70183c3143b7e047ce78b5c242c8b0e51e8d3e0530083c4045f892e895e085d8b4c24145e5b64890d0000000083c418c20400",
+      "instructions": [
+        {
+          "address": "006b87f0",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]",
+          "size": 6
+        },
+        {
+          "address": "006b87f6",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1",
+          "size": 2
+        },
+        {
+          "address": "006b87f8",
+          "bytes": "68f70dc800",
+          "mnemonic": "push",
+          "operands": "0xc80df7",
+          "size": 5
+        },
+        {
+          "address": "006b87fd",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "size": 1
+        },
+        {
+          "address": "006b87fe",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp",
+          "size": 7
+        },
+        {
+          "address": "006b8805",
+          "bytes": "83ec0c",
+          "mnemonic": "sub",
+          "operands": "esp, 0xc",
+          "size": 3
+        },
+        {
+          "address": "006b8808",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "size": 1
+        },
+        {
+          "address": "006b8809",
+          "bytes": "8b5c2420",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x20]",
+          "size": 4
+        },
+        {
+          "address": "006b880d",
+          "bytes": "83fb01",
+          "mnemonic": "cmp",
+          "operands": "ebx, 1",
+          "size": 3
+        },
+        {
+          "address": "006b8810",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "006b8811",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "size": 2
+        },
+        {
+          "address": "006b8813",
+          "bytes": "7d0c",
+          "mnemonic": "jge",
+          "operands": "0x6b8821",
+          "size": 2
+        },
+        {
+          "address": "006b8815",
+          "bytes": "c744242401000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x24], 1",
+          "size": 8
+        },
+        {
+          "address": "006b881d",
+          "bytes": "8b5c2424",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x24]",
+          "size": 4
+        },
+        {
+          "address": "006b8821",
+          "bytes": "395e08",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 8], ebx",
+          "size": 3
+        },
+        {
+          "address": "006b8824",
+          "bytes": "0f8d96000000",
+          "mnemonic": "jge",
+          "operands": "0x6b88c0",
+          "size": 6
+        },
+        {
+          "address": "006b882a",
+          "bytes": "8d049b",
+          "mnemonic": "lea",
+          "operands": "eax, [ebx + ebx*4]",
+          "size": 3
+        },
+        {
+          "address": "006b882d",
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp",
+          "size": 1
+        },
+        {
+          "address": "006b882e",
+          "bytes": "03c0",
+          "mnemonic": "add",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "006b8830",
+          "bytes": "03c0",
+          "mnemonic": "add",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "006b8832",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi",
+          "size": 1
+        },
+        {
+          "address": "006b8833",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax",
+          "size": 1
+        },
+        {
+          "address": "006b8834",
+          "bytes": "e885cd5300",
+          "mnemonic": "call",
+          "operands": "0xbf55be",
+          "size": 5
+        },
+        {
+          "address": "006b8839",
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi",
+          "size": 2
+        },
+        {
+          "address": "006b883b",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "size": 3
+        },
+        {
+          "address": "006b883e",
+          "bytes": "397e04",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 4], edi",
+          "size": 3
+        },
+        {
+          "address": "006b8841",
+          "bytes": "8be8",
+          "mnemonic": "mov",
+          "operands": "ebp, eax",
+          "size": 2
+        },
+        {
+          "address": "006b8843",
+          "bytes": "896c2414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], ebp",
+          "size": 4
+        },
+        {
+          "address": "006b8847",
+          "bytes": "897c2410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], edi",
+          "size": 4
+        },
+        {
+          "address": "006b884b",
+          "bytes": "7e3b",
+          "mnemonic": "jle",
+          "operands": "0x6b8888",
+          "size": 2
+        },
+        {
+          "address": "006b884d",
+          "bytes": "8d4900",
+          "mnemonic": "lea",
+          "operands": "ecx, [ecx]",
+          "size": 3
+        },
+        {
+          "address": "006b8850",
+          "bytes": "8d04bf",
+          "mnemonic": "lea",
+          "operands": "eax, [edi + edi*4]",
+          "size": 3
+        },
+        {
+          "address": "006b8853",
+          "bytes": "03c0",
+          "mnemonic": "add",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "006b8855",
+          "bytes": "03c0",
+          "mnemonic": "add",
+          "operands": "eax, eax",
+          "size": 2
+        },
+        {
+          "address": "006b8857",
+          "bytes": "8d0c28",
+          "mnemonic": "lea",
+          "operands": "ecx, [eax + ebp]",
+          "size": 3
+        },
+        {
+          "address": "006b885a",
+          "bytes": "894c2418",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x18], ecx",
+          "size": 4
+        },
+        {
+          "address": "006b885e",
+          "bytes": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "size": 2
+        },
+        {
+          "address": "006b8860",
+          "bytes": "c744242400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x24], 0",
+          "size": 8
+        },
+        {
+          "address": "006b8868",
+          "bytes": "740a",
+          "mnemonic": "je",
+          "operands": "0x6b8874",
+          "size": 2
+        },
+        {
+          "address": "006b886a",
+          "bytes": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]",
+          "size": 2
+        },
+        {
+          "address": "006b886c",
+          "bytes": "03d0",
+          "mnemonic": "add",
+          "operands": "edx, eax",
+          "size": 2
+        },
+        {
+          "address": "006b886e",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx",
+          "size": 1
+        },
+        {
+          "address": "006b886f",
+          "bytes": "e82ce51c00",
+          "mnemonic": "call",
+          "operands": "0x886da0",
+          "size": 5
+        },
+        {
+          "address": "006b8874",
+          "bytes": "83c701",
+          "mnemonic": "add",
+          "operands": "edi, 1",
+          "size": 3
+        },
+        {
+          "address": "006b8877",
+          "bytes": "3b7e04",
+          "mnemonic": "cmp",
+          "operands": "edi, dword ptr [esi + 4]",
+          "size": 3
+        },
+        {
+          "address": "006b887a",
+          "bytes": "c7442424ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x24], 0xffffffff",
+          "size": 8
+        },
+        {
+          "address": "006b8882",
+          "bytes": "897c2410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], edi",
+          "size": 4
+        },
+        {
+          "address": "006b8886",
+          "bytes": "7cc8",
+          "mnemonic": "jl",
+          "operands": "0x6b8850",
+          "size": 2
+        },
+        {
+          "address": "006b8888",
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi",
+          "size": 2
+        },
+        {
+          "address": "006b888a",
+          "bytes": "397e04",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 4], edi",
+          "size": 3
+        },
+        {
+          "address": "006b888d",
+          "bytes": "7e1f",
+          "mnemonic": "jle",
+          "operands": "0x6b88ae",
+          "size": 2
+        },
+        {
+          "address": "006b888f",
+          "bytes": "33db",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx",
+          "size": 2
+        },
+        {
+          "address": "006b8891",
+          "bytes": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]",
+          "size": 2
+        },
+        {
+          "address": "006b8893",
+          "bytes": "8b1403",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebx + eax]",
+          "size": 3
+        },
+        {
+          "address": "006b8896",
+          "bytes": "8d0c03",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebx + eax]",
+          "size": 3
+        },
+        {
+          "address": "006b8899",
+          "bytes": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]",
+          "size": 2
+        },
+        {
+          "address": "006b889b",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0",
+          "size": 2
+        },
+        {
+          "address": "006b889d",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax",
+          "size": 2
+        },
+        {
+          "address": "006b889f",
+          "bytes": "83c701",
+          "mnemonic": "add",
+          "operands": "edi, 1",
+          "size": 3
+        },
+        {
+          "address": "006b88a2",
+          "bytes": "83c314",
+          "mnemonic": "add",
+          "operands": "ebx, 0x14",
+          "size": 3
+        },
+        {
+          "address": "006b88a5",
+          "bytes": "3b7e04",
+          "mnemonic": "cmp",
+          "operands": "edi, dword ptr [esi + 4]",
+          "size": 3
+        },
+        {
+          "address": "006b88a8",
+          "bytes": "7ce7",
+          "mnemonic": "jl",
+          "operands": "0x6b8891",
+          "size": 2
+        },
+        {
+          "address": "006b88aa",
+          "bytes": "8b5c242c",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x2c]",
+          "size": 4
+        },
+        {
+          "address": "006b88ae",
+          "bytes": "8b0e",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi]",
+          "size": 2
+        },
+        {
+          "address": "006b88b0",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx",
+          "size": 1
+        },
+        {
+          "address": "006b88b1",
+          "bytes": "e8d3e05300",
+          "mnemonic": "call",
+          "operands": "0xbf6989",
+          "size": 5
+        },
+        {
+          "address": "006b88b6",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "size": 3
+        },
+        {
+          "address": "006b88b9",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi",
+          "size": 1
+        },
+        {
+          "address": "006b88ba",
+          "bytes": "892e",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], ebp",
+          "size": 2
+        },
+        {
+          "address": "006b88bc",
+          "bytes": "895e08",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], ebx",
+          "size": 3
+        },
+        {
+          "address": "006b88bf",
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp",
+          "size": 1
+        },
+        {
+          "address": "006b88c0",
+          "bytes": "8b4c2414",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]",
+          "size": 4
+        },
+        {
+          "address": "006b88c4",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "size": 1
+        },
+        {
+          "address": "006b88c5",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx",
+          "size": 1
+        },
+        {
+          "address": "006b88c6",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx",
+          "size": 7
+        },
+        {
+          "address": "006b88cd",
+          "bytes": "83c418",
+          "mnemonic": "add",
+          "operands": "esp, 0x18",
+          "size": 3
+        },
+        {
+          "address": "006b88d0",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4",
+          "size": 3
+        }
+      ]
+    },
+    "PE": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "image_base": "00400000",
+      "span_matches_live_bytes": true
+    },
+    "listing_omission": {
+      "metadata_and_live_listing_instruction_count": 72,
+      "independent_complete_decode_count": 77,
+      "gap_start": "006b88b6",
+      "gap_end_inclusive": "006b88bf",
+      "gap_bytes": 10,
+      "omitted_instructions": [
+        {
+          "address": "006b88b6",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "size": 3
+        },
+        {
+          "address": "006b88b9",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi",
+          "size": 1
+        },
+        {
+          "address": "006b88ba",
+          "bytes": "892e",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], ebp",
+          "size": 2
+        },
+        {
+          "address": "006b88bc",
+          "bytes": "895e08",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], ebx",
+          "size": 3
+        },
+        {
+          "address": "006b88bf",
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp",
+          "size": 1
+        }
+      ],
+      "cause_not_inferred_from_import_no_return_flags": true,
+      "Ghidra_repair": false
+    },
+    "capture_method": "Complete CLI live bytes copied verbatim, then exact PE span equality and independent Capstone decode; no decoded Native bytes beyond owned body."
+  },
+  "branch_sites": [
+    {
+      "address": "006b8813",
+      "bytes": "7d0c",
+      "mnemonic": "jge",
+      "operands": "0x6b8821",
+      "size": 2
+    },
+    {
+      "address": "006b8824",
+      "bytes": "0f8d96000000",
+      "mnemonic": "jge",
+      "operands": "0x6b88c0",
+      "size": 6
+    },
+    {
+      "address": "006b884b",
+      "bytes": "7e3b",
+      "mnemonic": "jle",
+      "operands": "0x6b8888",
+      "size": 2
+    },
+    {
+      "address": "006b8868",
+      "bytes": "740a",
+      "mnemonic": "je",
+      "operands": "0x6b8874",
+      "size": 2
+    },
+    {
+      "address": "006b8886",
+      "bytes": "7cc8",
+      "mnemonic": "jl",
+      "operands": "0x6b8850",
+      "size": 2
+    },
+    {
+      "address": "006b888d",
+      "bytes": "7e1f",
+      "mnemonic": "jle",
+      "operands": "0x6b88ae",
+      "size": 2
+    },
+    {
+      "address": "006b88a8",
+      "bytes": "7ce7",
+      "mnemonic": "jl",
+      "operands": "0x6b8891",
+      "size": 2
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "006b8834",
+      "bytes": "e885cd5300",
+      "mnemonic": "call",
+      "operands": "0xbf55be",
+      "size": 5
+    },
+    {
+      "address": "006b886f",
+      "bytes": "e82ce51c00",
+      "mnemonic": "call",
+      "operands": "0x886da0",
+      "size": 5
+    },
+    {
+      "address": "006b889d",
+      "bytes": "ffd0",
+      "mnemonic": "call",
+      "operands": "eax",
+      "size": 2
+    },
+    {
+      "address": "006b88b1",
+      "bytes": "e8d3e05300",
+      "mnemonic": "call",
+      "operands": "0xbf6989",
+      "size": 5
+    }
+  ],
+  "header_and_element_footprint": {
+    "receiver": "H=entry ECX, retained in ESI",
+    "minimum_consumed_header_bytes": 12,
+    "data_H0": "Current pointer repeatedly read; final local storeA at006B88BA.",
+    "count_H4": "Current signed count repeatedly read; no local store or decrement.",
+    "capacity_H8": "Signed entry gate; final fullDWORD storeEBX at006B88BC.",
+    "element_pitch": 20,
+    "direct_element_reads": "Retirement reads element firstDWORD vptr and firstDWORD at that profile.",
+    "transfer_child_footprint": "Full source/destination byte extents and copy/move/retain semantics unproved.",
+    "full_class_or_allocation_size_proved": false,
+    "default_initializer_called": false,
+    "spare_capacity_local_initialization_pass": false
+  },
+  "request_and_arithmetic": {
+    "input": "DWORD R at entry[S+4], compared signed.",
+    "clamp": "R<1 signed writes1 to real argument slot at8815;881D reloads it. N=normalized request.",
+    "capacity_exit": "Signed current[H+8]>=N.",
+    "allocation_bytes": "20*N modulo2^32; LEA5*N then two ADD doublings.",
+    "index_arithmetic": "Transfer offset20*i and pointer sums wrap DWORD; retirement separately increments offset by20.",
+    "final_capacity_selection": "If retirement entered, reload current argument slot at88AA; otherwise EBX retainsN. Alias-induced stack changes must not be hidden by unconditional caching.",
+    "examples": [
+      {
+        "R": "00000000 or any negative signed DWORD",
+        "result": "Normalize to1."
+      },
+      {
+        "R": "40000000",
+        "result": "Positive request retained; requested byte count wraps to0 if growth taken."
+      },
+      {
+        "count": "<=0 signed at both pass gates",
+        "result": "Skip both element passes but still allocate/free/publish if capacity insufficient."
+      }
+    ],
+    "no_checks": [
+      "multiplication or pointer overflow",
+      "count<=capacity or count<=N",
+      "allocation result nonnull",
+      "source element nonnull",
+      "backing size or alignment",
+      "header/buffer/element/stack overlap"
+    ]
+  },
+  "ordered_schedule": [
+    {
+      "stage": "frame_and_request",
+      "sites": "006b87f0..006b8821",
+      "effect": "Install local FS record, reserve locals and save EBX/ESI. Retain H=entry ECX. Capture R from entry stack argument, clamp signed R<1 by writing1 to that actual argument slot and reloading EBX=N."
+    },
+    {
+      "stage": "capacity_gate",
+      "sites": "006b8821..006b8824",
+      "effect": "Signed current[H+8]>=N jumps to common normal epilogue; no data/count access, header store or child call on this path. Frame and optional stack-argument clamp still occurred."
+    },
+    {
+      "stage": "allocate",
+      "sites": "006b882a..006b883b",
+      "effect": "LEA plus two ADDs form20*N modulo2^32. Save EBP/EDI, push byte count, callBF55BE, zero EDI, clean4 stack bytes. No overflow or allocation-result-null check."
+    },
+    {
+      "stage": "capture_and_transfer_gate",
+      "sites": "006b883e..006b884d",
+      "effect": "Compare current count to0, capture returned A in EBP andS-20, initialize completed index atS-24. If count<=0 skip transfer. LEA ECX,[ECX] alignment instruction executes only on initial positive-count entry."
+    },
+    {
+      "stage": "transfer",
+      "sites": "006b8850..006b8874",
+      "effect": "Recompute offset20*i modulo2^32 and destinationA+offset; save destinationS-16, test it and set state0. Only computed zero destination skips child. Otherwise reload current[H], form source+offset, push source and call00886DA0 with destinationECX, sourceEDX and offsetEAX."
+    },
+    {
+      "stage": "transfer_progress",
+      "sites": "006b8874..006b8886",
+      "effect": "Increment indexEDI; compare against fresh current count. Reset state-1 and save completed index without changing comparison flags. Signed JL repeats at8850."
+    },
+    {
+      "stage": "retirement_gate",
+      "sites": "006b8888..006b888f",
+      "effect": "Reset index0, reread current count. If<=0 skip retirement; otherwise resetEBX byte offset0."
+    },
+    {
+      "stage": "retire_current_element",
+      "sites": "006b8891..006b889d",
+      "effect": "Reload current data, read vptr from currentdata+offset, ECX=element, EAX=profile slot0, push0 and indirect call. No element null guard or local count decrement."
+    },
+    {
+      "stage": "retirement_progress",
+      "sites": "006b889f..006b88aa",
+      "effect": "Increment index and offset by1 and20; compare with fresh count and repeat. After an entered loop completes, reloadEBX from current incoming argument slotS+4. If loop skipped, retainN."
+    },
+    {
+      "stage": "free_current_buffer",
+      "sites": "006b88ae..006b88b6",
+      "effect": "Reload current[H] immediately before push; callBF6989; then clean4 argument bytes after normal return."
+    },
+    {
+      "stage": "publication",
+      "sites": "006b88b9..006b88bf",
+      "effect": "RestoreEDI; store A toH0, then selectedEBX toH8; restoreEBP. No local H4 store."
+    },
+    {
+      "stage": "normal_epilogue",
+      "sites": "006b88c0..006b88d2",
+      "effect": "Reload saved oldFS head, restoreESI/EBX, restoreFS0, discard24 frame bytes and RET4."
+    }
+  ],
+  "boundary_contracts": [
+    {
+      "site": "006b8834",
+      "target": "00bf55be",
+      "inputs": {
+        "stackDWORD": "20*N modulo2^32",
+        "EAX": "same byte count",
+        "ESI": "H",
+        "EBX": "N"
+      },
+      "result": "EAX retained asA inEBP andS-20.",
+      "cleanup": "Caller ADD ESP,4 at883B.",
+      "limit": "Native allocator/import/heap body unopened; actual normal-return and throwing behavior not established from caller alone."
+    },
+    {
+      "site": "006b886f",
+      "target": "00886da0",
+      "inputs": {
+        "ECX": "A+20*i modulo2^32",
+        "EDX": "current[H]+20*i modulo2^32",
+        "EAX": "20*i modulo2^32",
+        "stackDWORD": "same source asEDX",
+        "ESI": "H",
+        "EBP": "A",
+        "EBX": "N",
+        "EDI": "i"
+      },
+      "guard": "Only computed destination!=0.",
+      "cleanup": "Compatible callee cleanup4 required; no caller ADD.",
+      "state": 0,
+      "limit": "Transfer-like boundary only; actual semantics, byte footprint and any additional child register uses unknown."
+    },
+    {
+      "site": "006b889d",
+      "target": "current element profile slot0",
+      "inputs": {
+        "ECX": "current data+current offset",
+        "EDX": "element vptr",
+        "EAX": "target loaded from vptr+0",
+        "stackDWORD": "0",
+        "ESI": "H",
+        "EBP": "A",
+        "EBX": "byte offset",
+        "EDI": "index"
+      },
+      "cleanup": "Compatible callee cleanup4 required; no caller ADD.",
+      "state": -1,
+      "limit": "Flag0 does not prove non-deleting behavior. No local count decrement and no resolved actual target/profile."
+    },
+    {
+      "site": "006b88b1",
+      "target": "00bf6989",
+      "inputs": {
+        "ECX": "current[H] loaded immediately before push",
+        "stackDWORD": "that current data pointer",
+        "ESI": "H",
+        "EBP": "A",
+        "EBX": "N if retirement skipped; reloaded stack argument if it ran"
+      },
+      "cleanup": "Caller ADD ESP,4 in ten-byte listing gap.",
+      "state": -1,
+      "publication": "After full return only: H0=A, H8=EBX; no H4 write."
+    }
+  ],
+  "mutation_and_lifetime": {
+    "reloads": [
+      "Capacity once before allocation.",
+      "Count after allocation and after each transfer/skip.",
+      "Data each non-skipped transfer.",
+      "Count at retirement entry and after each retirement.",
+      "Data each retirement.",
+      "Argument slot after entered retirement.",
+      "Data immediately before final free."
+    ],
+    "captured": [
+      "H inESI",
+      "A inEBP",
+      "transfer indexEDI",
+      "retirement indexEDI and independent byte offsetEBX"
+    ],
+    "count_write": "None locally; children can mutate it.",
+    "header_store_order": [
+      "H0=A",
+      "H8=selectedEBX"
+    ],
+    "no_inferred_guarantee": [
+      "fixed initial count",
+      "stable data/element identity across child boundaries",
+      "once-only retirement",
+      "finite callback-mutated loops",
+      "alias safety"
+    ],
+    "lifetime": "Keep H live/writable through current-data free and final publication; supply valid selected element/profile/backing lifetimes. No alias guard."
+  },
+  "failure_cases": [
+    {
+      "case": "capacity sufficient",
+      "observed": "No children or header stores, but exception frame and optional argument normalization still execute."
+    },
+    {
+      "case": "stable valid successful growth",
+      "observed": "Ascending transfer pass; then separate ascending retirement pass; then free current data; then publication. No local count write or spare-capacity initializer."
+    },
+    {
+      "case": "allocator throws or never returns",
+      "observed": "No local H0/H8 publication yet. Callee effects and local handler behavior unproved; no rollback guarantee."
+    },
+    {
+      "case": "allocator hypothetically returns null",
+      "observed": "No whole-buffer failure branch. Destination0 skips only that transfer. Positive offset from0 may call child with invalid nonzero destination. If passes skip, normal path still frees current data and publishes null/capacity. This is not a claim that actual allocator returns null."
+    },
+    {
+      "case": "transfer/retirement/free throws or faults",
+      "observed": "Local publication not yet performed. Partial child effects and retained replacement may exist; unopened EH handler may clean up. No leak, no-cleanup or RAII inference."
+    },
+    {
+      "case": "null/malformed/overflow/overlap",
+      "observed": "Null H faults on capacity read; other invalid data only meets documented gates. No Original exception/fault execution or safety guarantee."
+    }
+  ],
+  "local_frame_and_ABI": {
+    "entry": "ECX=H, entryESP=S, publicDWORD atS+4.",
+    "stack_words_relative_to_S": [
+      {
+        "offset": -4,
+        "role": "State-1 initially;0 before transfer gate;-1 after iteration."
+      },
+      {
+        "offset": -8,
+        "role": "Handler00C80DF7, not inspected."
+      },
+      {
+        "offset": -12,
+        "role": "Saved oldFS0; record published atS-12."
+      },
+      {
+        "offset": -16,
+        "role": "Current destination; set during transfer iteration."
+      },
+      {
+        "offset": -20,
+        "role": "CapturedA after allocation."
+      },
+      {
+        "offset": -24,
+        "role": "Completed transfer index, starts0 after allocation."
+      },
+      {
+        "offset": -28,
+        "role": "Saved incomingEBX."
+      },
+      {
+        "offset": -32,
+        "role": "Saved incomingESI."
+      },
+      {
+        "offset": -36,
+        "role": "Saved incomingEBP on growth only."
+      },
+      {
+        "offset": -40,
+        "role": "Saved incomingEDI on growth only."
+      }
+    ],
+    "reserved_local_bytes": 12,
+    "frame_on_capacity_exit": true,
+    "growth_ESP_after_child_cleanup": "S-40.",
+    "common_epilogue_ESP": "S-32; [ESP+14h] now selects oldFS atS-12, while the same offset selectedA atS-20 in growth.",
+    "normal_preserved_registers": [
+      "EBX",
+      "ESI",
+      "EBP",
+      "EDI"
+    ],
+    "return": "RET4; no meaningful typed result established.",
+    "EAX_no_growth": "Entry oldFS head.",
+    "EAX_growth": "Residual from final free; tail does not replace withH orA.",
+    "ECX_exit": "Reloaded oldFS head.",
+    "callee_requirements": "Allocator/free caller cleanup4; transfer/virtual compatible callee cleanup4. Callees must preserve live nonvolatiles. Full child ABI not proved.",
+    "owned_bespoke_hidden_input_or_x87": "None found; no x87/SSE operations.",
+    "EH_limit": "State/local schedule alone does not prove handler cleanup, unwind/fault ABI or failure ownership."
+  },
+  "descendant_metadata_only": [
+    {
+      "address": "00886da0",
+      "name": "FUN_00886da0",
+      "body": [
+        "00886da0",
+        "00886df3"
+      ],
+      "bytes": 84,
+      "instructions": 24,
+      "blocks": 1,
+      "direct_calls": 1,
+      "named_child": "00886c10 FUN_00886c10",
+      "prototype": "undefined FUN_00886da0(void)",
+      "body_opened": false,
+      "child_of_child_queried": false
+    },
+    {
+      "address": "00bf55be",
+      "name": "operator_new",
+      "body": [
+        "00bf55be",
+        "00bf55c2"
+      ],
+      "bytes": 5,
+      "instructions": 1,
+      "prototype": "undefined operator_new(void)",
+      "body_or_import_target_opened": false
+    },
+    {
+      "address": "00bf6989",
+      "name": "_free",
+      "body": [
+        "00bf6989",
+        "00bf698d"
+      ],
+      "bytes": 5,
+      "instructions": 1,
+      "prototype": "void __cdecl _free(void*)",
+      "body_or_import_target_opened": false
+    }
+  ],
+  "current_Source_comparison": {
+    "index_queries": [
+      "006b87f0",
+      "00886da0",
+      "00bf55be",
+      "00bf6989",
+      "008849b0"
+    ],
+    "reserve_and_transfer": "Exact-address search across include/src and relevant reconstruction shards found no006B87F0/00886DA0 implementation. No assertion about unrelated array utilities.",
+    "actual_services": [
+      {
+        "paths": [
+          "include/bsp/native_game_container_lifetime.hpp",
+          "src/native_game_container_lifetime.cpp"
+        ],
+        "sites": [
+          "header7,9,13..14",
+          "source39,41"
+        ],
+        "evidence": "Concrete defaults allocate via singleton_lifetime_allocate({object,n,n}) and free via std::free. Class still has pure virtual dispatch methods; no mission-vector provider constructed."
+      },
+      {
+        "paths": [
+          "include/bsp/singleton_lifetime.hpp",
+          "src/singleton_lifetime.cpp"
+        ],
+        "sites": [
+          "header11..21",
+          "source51..67"
+        ],
+        "evidence": "Source loops malloc(host_bytes), calls _callnewh on null, retries on nonzero and otherwise throws bad_alloc. Normal return nonnull. Source free uses std::free. No Native heap/import reopen or heap-identity proof for vector."
+      },
+      {
+        "paths": [
+          "src/native_mpkg_runtime.cpp"
+        ],
+        "sites": [
+          "24..26"
+        ],
+        "evidence": "Index-recorded BF55BE method delegates to pool_.allocate_scratch_00bf55be. This does not bind the mission vector."
+      }
+    ],
+    "initializer": {
+      "address": "008849b0",
+      "header": "include/bsp/native_mission_lua_variant_initializer.hpp",
+      "source": "src/native_mission_lua_variant_initializer.cpp",
+      "primary_report": "reports/cc12_native_mission_lua_variant_initializer_primary_review.json",
+      "published_status": "bounded_source_admitted_whole_body_concrete_Core_reviewed_normal_win32_build_passed",
+      "accepted_body_bytes": 27,
+      "accepted_zero_relocations": true,
+      "accepted_unique_positive_Core_definition": true,
+      "accepted_normal_build_passed": true,
+      "accepted_existing_checks": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "worker_reran_build_or_Core": false,
+      "reserve_calls_this_initializer": false,
+      "callable_Source_profile_established": false,
+      "limit": "NumericalD0E6F4 stamp supplies neither transfer child nor virtual target/provider; no transitive vector ownership closure."
+    },
+    "std_vector_memcpy_placement_types_callbacks_default_owner_RAII_added": false
+  },
+  "accepted_parent_context": {
+    "report": "reports/cc12_mission_lua_payload_vector_readiness.json",
+    "parent_address": "006b88e0",
+    "call_site": "006b890b",
+    "delivery": "When requested size exceeds signed current capacity, parent delivers ECX=H and pushed request. This is accepted-report context; caller not reopened.",
+    "new_resolution": "Reserve normal RET4 and preservation ofEDI/other nonvolatiles are established subject to compatible callees; Source/child/profile/EH closure remains open.",
+    "parent_or_prefix_reports_rewritten": false
+  },
+  "Source_closure_holds": [
+    "00886DA0 element transfer semantics/full ABI and named child00886C10.",
+    "Actual virtual-slot0 target, callable profile and flag0 policy.",
+    "LocalEH00C80DF7 cleanup and allocator/callee failure contracts.",
+    "Raw storage/heap compatibility, lifetimes and concrete owner integration."
+  ],
+  "next_routing": {
+    "first_ready_dependency": "00886da0",
+    "metadata_bytes": 84,
+    "reason": "Small direct unresolved transfer child with no current Source implementation.",
+    "next_scope": "Fresh lease and metadata gate, complete84-byte body/ABI/footprint and direct-child classification. Small body is not assumed closure.",
+    "named_dependency": "00886c10 metadata name only; size/semantics not inferred.",
+    "separate_holds": [
+      "00c80df7 handler",
+      "actual profile/virtual targets",
+      "raw backing and allocator compatibility",
+      "owner integration"
+    ],
+    "no_expansion_authorized_by_report": true
+  },
+  "accepted_parent_input_pins_replayed": [
+    {
+      "path": "docs/CC12_MISSION_LUA_DEFERRED_PAYLOAD_RETIREMENT_READINESS.md",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 9349,
+      "accepted_sha256": "0613d331cc3482332c4f79c8e14111949f1cbe1efe61d9891e4e1707f996075b",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 9349,
+      "current_sha256": "0613d331cc3482332c4f79c8e14111949f1cbe1efe61d9891e4e1707f996075b",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "reports/cc12_mission_lua_deferred_payload_retirement_readiness.json",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 42305,
+      "accepted_sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 42305,
+      "current_sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_CURRENT_QUEUE_DRAIN_READINESS.md",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 10679,
+      "accepted_sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 10679,
+      "current_sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "reports/cc12_mission_lua_current_queue_drain_readiness.json",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 46482,
+      "accepted_sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 46482,
+      "current_sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "include/bsp/mission_named_call_args.hpp",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 13733,
+      "accepted_sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 13733,
+      "current_sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "src/mission_named_call_args.cpp",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 14403,
+      "accepted_sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 14403,
+      "current_sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "include/bsp/mission_lua_host.hpp",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 18733,
+      "accepted_sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 18733,
+      "current_sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "include/bsp/gui_lua_reader.hpp",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 23275,
+      "accepted_sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 23275,
+      "current_sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "config/names/006b0000.jsonl",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 32302,
+      "accepted_sha256": "27261748d302182a30338e20a599e4e5953c8b4ba6b87babcb848653a8909da2",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 32302,
+      "current_sha256": "27261748d302182a30338e20a599e4e5953c8b4ba6b87babcb848653a8909da2",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "config/reconstruction/006b0000.jsonl",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 39707,
+      "accepted_sha256": "c48c4f836565864920b54c7a4360a4d095e38451304633fbb105624081aee85d",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 39707,
+      "current_sha256": "c48c4f836565864920b54c7a4360a4d095e38451304633fbb105624081aee85d",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "config/names/00880000.jsonl",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 48432,
+      "accepted_sha256": "f25684c6e0e2f5adc3879524eb5ae56552df7e525c541f2de9edbd91fe2dcda1",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 50569,
+      "current_sha256": "76537d9f68c15dd0e138f1953d8e79f86936aeb2f9ee9b3c127f7c3c09928519",
+      "changed_since_accepted_pin": true
+    },
+    {
+      "path": "config/reconstruction/00880000.jsonl",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 32186,
+      "accepted_sha256": "c05a4386a9f978a6def359e7d255b3a831850cb95f99166bb8979a67594497ca",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 34120,
+      "current_sha256": "92e3359d4dcfbf75a1a622111209b906fea7807538d0092a272bd756dc0cb6ae",
+      "changed_since_accepted_pin": true
+    },
+    {
+      "path": "config/target.json",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 455,
+      "accepted_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 455,
+      "current_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "tools/bsp.py",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 72606,
+      "accepted_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 72606,
+      "current_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "changed_since_accepted_pin": false
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "accepted_revision": "365083d632ee8aaff7095a02292766b1f5271051",
+      "accepted_bytes": 14411,
+      "accepted_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "historical_replay": "exact",
+      "current_revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "current_bytes": 14411,
+      "current_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "changed_since_accepted_pin": false
+    }
+  ],
+  "accepted_initializer_primary_selected_Source_pins_replayed": [
+    {
+      "path": "include/bsp/native_mission_lua_variant_initializer.hpp",
+      "accepted_primary_canonical_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "current_bytes": 776,
+      "current_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "matches_published_primary_pin": true
+    },
+    {
+      "path": "src/native_mission_lua_variant_initializer.cpp",
+      "accepted_primary_canonical_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "current_bytes": 1022,
+      "current_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "matches_published_primary_pin": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "accepted_primary_canonical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "current_bytes": 4372,
+      "current_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches_published_primary_pin": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "accepted_primary_canonical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "current_bytes": 13257,
+      "current_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches_published_primary_pin": true
+    }
+  ],
+  "current_canonical_input_pins": [
+    {
+      "path": "docs/CC12_MISSION_LUA_PAYLOAD_VECTOR_READINESS.md",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 9947,
+      "sha256": "d8dbf91373672ba24b350d96a9057521460f89ee10f123fba4ea1b6f385250f4",
+      "physical_bytes": 9947,
+      "physical_sha256": "d8dbf91373672ba24b350d96a9057521460f89ee10f123fba4ea1b6f385250f4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_mission_lua_payload_vector_readiness.json",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 43216,
+      "sha256": "4517933a02b1908b3ab4d4c73a7ee1665bf7c7295af6319a94c23f68e569a02a",
+      "physical_bytes": 43216,
+      "physical_sha256": "4517933a02b1908b3ab4d4c73a7ee1665bf7c7295af6319a94c23f68e569a02a",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_DEFERRED_PAYLOAD_RETIREMENT_READINESS.md",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 9349,
+      "sha256": "0613d331cc3482332c4f79c8e14111949f1cbe1efe61d9891e4e1707f996075b",
+      "physical_bytes": 9349,
+      "physical_sha256": "0613d331cc3482332c4f79c8e14111949f1cbe1efe61d9891e4e1707f996075b",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_mission_lua_deferred_payload_retirement_readiness.json",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 42305,
+      "sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "physical_bytes": 42305,
+      "physical_sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_CURRENT_QUEUE_DRAIN_READINESS.md",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 10679,
+      "sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "physical_bytes": 10679,
+      "physical_sha256": "2f051591f2f75fc94fc4128fbfe86eb54b461bd23a6341cb12e0a79341ebab33",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_mission_lua_current_queue_drain_readiness.json",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 46482,
+      "sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "physical_bytes": 46482,
+      "physical_sha256": "7959a5628de91665a8a70df441d985494d8c04786e0b6f0b88991786184c43a4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/mission_named_call_args.hpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 13733,
+      "sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "physical_bytes": 13733,
+      "physical_sha256": "b1aca20ea030b30b0bb1dcf63671448ea64169aa57ccf9d0774d2bab7210c2be",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/mission_named_call_args.cpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14403,
+      "sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "physical_bytes": 14403,
+      "physical_sha256": "b68f0a3c20c44f975835ba83ec3c3ae658b5da26eab085dd3f68bf9d115c4bc3",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/mission_lua_host.hpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 18733,
+      "sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "physical_bytes": 18733,
+      "physical_sha256": "68fad8b1e0d2eb88e87c313b318bffbdcb7812e417f15173118f4c1f87fee013",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/gui_lua_reader.hpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 23275,
+      "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "physical_bytes": 23275,
+      "physical_sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/006b0000.jsonl",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 32302,
+      "sha256": "27261748d302182a30338e20a599e4e5953c8b4ba6b87babcb848653a8909da2",
+      "physical_bytes": 32302,
+      "physical_sha256": "27261748d302182a30338e20a599e4e5953c8b4ba6b87babcb848653a8909da2",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/006b0000.jsonl",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 39707,
+      "sha256": "c48c4f836565864920b54c7a4360a4d095e38451304633fbb105624081aee85d",
+      "physical_bytes": 39707,
+      "physical_sha256": "c48c4f836565864920b54c7a4360a4d095e38451304633fbb105624081aee85d",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/00880000.jsonl",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 50569,
+      "sha256": "76537d9f68c15dd0e138f1953d8e79f86936aeb2f9ee9b3c127f7c3c09928519",
+      "physical_bytes": 50569,
+      "physical_sha256": "76537d9f68c15dd0e138f1953d8e79f86936aeb2f9ee9b3c127f7c3c09928519",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00880000.jsonl",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 34120,
+      "sha256": "92e3359d4dcfbf75a1a622111209b906fea7807538d0092a272bd756dc0cb6ae",
+      "physical_bytes": 34120,
+      "physical_sha256": "92e3359d4dcfbf75a1a622111209b906fea7807538d0092a272bd756dc0cb6ae",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/bsp.py",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "physical_bytes": 72606,
+      "physical_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_mission_lua_variant_initializer.hpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 776,
+      "sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "physical_bytes": 776,
+      "physical_sha256": "b648ca0d15c70d6a78a4006e23798b6187bba70a63f70bc8c5f86c54d615c494",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_mission_lua_variant_initializer.cpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1022,
+      "sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "physical_bytes": 1022,
+      "physical_sha256": "3d8c5e4e5e04a4408e3d0ae8135c56cc03c4a05b3bdf4f1a1cf0e80e371f5c28",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_NATIVE_MISSION_LUA_VARIANT_INITIALIZER_SOURCE.md",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7808,
+      "sha256": "8cbad1a853c7ccc4da25b0f17cb9b889f1ded1272ec49e9cf3d374e743e48ca9",
+      "physical_bytes": 7808,
+      "physical_sha256": "8cbad1a853c7ccc4da25b0f17cb9b889f1ded1272ec49e9cf3d374e743e48ca9",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_mission_lua_variant_initializer_source.json",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 40142,
+      "sha256": "e123ac259c93d9d7b777822c64efc2a0be4ec8690243be0ef54c9a23d304431a",
+      "physical_bytes": 41012,
+      "physical_sha256": "44a540979c5725e67c81c4afdf4c71f664d44b58b0aa02152ace0bfdd90c4a5e",
+      "physical_match": "physical CRLF differs; LF normalization equals canonical"
+    },
+    {
+      "path": "reports/cc12_native_mission_lua_variant_initializer_primary_review.json",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14767,
+      "sha256": "71210663b0866adf874584423a27581da73903a5afd6b2f82ac31b68389b9df8",
+      "physical_bytes": 14767,
+      "physical_sha256": "71210663b0866adf874584423a27581da73903a5afd6b2f82ac31b68389b9df8",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_game_container_lifetime.hpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 4531,
+      "sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87",
+      "physical_bytes": 4531,
+      "physical_sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_game_container_lifetime.cpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7364,
+      "sha256": "7004952000205f0d242248ef1d8bd60697204863055cde11b64ad91f5c1b77a4",
+      "physical_bytes": 7364,
+      "physical_sha256": "7004952000205f0d242248ef1d8bd60697204863055cde11b64ad91f5c1b77a4",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_mpkg_runtime.cpp",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 2104,
+      "sha256": "1bb999000ed354502376f79bb1eafde6c3eab48002da7ba71681ba378ad8b6b9",
+      "physical_bytes": 2104,
+      "physical_sha256": "1bb999000ed354502376f79bb1eafde6c3eab48002da7ba71681ba378ad8b6b9",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00bf0000.jsonl",
+      "revision": "2fa724372622e47bb1b10a9feb5c25492e5402a1",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 123527,
+      "sha256": "5d94fa76d323c2c6f97a602628a9b83956342d1d086d6bd8704c6793e9535296",
+      "physical_bytes": 123527,
+      "physical_sha256": "5d94fa76d323c2c6f97a602628a9b83956342d1d086d6bd8704c6793e9535296",
+      "physical_match": "exact"
+    }
+  ],
+  "owned_doc_pin": {
+    "path": "docs/CC12_MISSION_LUA_VARIANT_VECTOR_RESERVE_READINESS.md",
+    "hash_domain": "exact prospective Git blob bytes; staged equality checked before commit",
+    "bytes": 12063,
+    "sha256": "5c7a1b791bb97b5d5bfef52cdeb14571d6fa379075b217f342551e55121380d2"
+  },
+  "validation": {
+    "all_227_live_bytes_equal_PE": true,
+    "complete77_instructions_RET4": true,
+    "seven_branches_four_calls": true,
+    "listing_gap_five_instructions_decoded_without_repair": true,
+    "parent_pins_replayed": 15,
+    "primary_Source_pins_replayed": 4,
+    "current_pins": 28,
+    "current_Source_physical_equal_canonical": true,
+    "physical_CRLF_exception": [
+      "reports/cc12_native_mission_lua_variant_initializer_source.json"
+    ],
+    "canonical_physical_domains_recorded_separately": true,
+    "JSON_scope_diffcheck": "checked before commit",
+    "build_tests_probes": "not run; read-only packet"
+  },
+  "limits": [
+    "Only227 owned Native bytes decoded; children metadata only.",
+    "No flow/no-return repair, Ghidra mutation, annotation or export.",
+    "No C++/CMake/ledger edits, tests/probes/builds, new credit or Original/game execution.",
+    "Published initializer admission is contextual; not new callable-profile, reserve closure, ABI or gameplay evidence."
+  ]
+}
