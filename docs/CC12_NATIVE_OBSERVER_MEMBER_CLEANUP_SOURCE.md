@@ -1,3 +1,7 @@
+Primary compiled review: Registered observer cleanup uses explicit actual storage/cell/lifetime references. Its115-byte public body disarms the guard before normal destruction; the complete285-byte/seven-function object and both52/36-byte EH sections were reviewed. Original FS/frame/register ABI, interpreter policy, production task binding and gameplay remain unproved.
+
+Normal MSVC Win32 build 2026-10-09T17:23:29.234687+00:00 to 2026-10-09T17:23:47.076256+00:00 passed three existing checks. The shared receipt captures88 inputs,19 whole objects and22 unique public Core roots. All16 prior objects and the existing67-function observer provider are byte-identical, including EH payloads and indexed relocations. New public roots are absent from the application map; no consumer or forced retention was added. The candidate section below is an immutable worker-time snapshot; its older build artifacts are historical.
+
 # Observer member cleanup: qualified Source candidate
 
 `cleanup_native_observer_member_00653390` composes the existing observer methods

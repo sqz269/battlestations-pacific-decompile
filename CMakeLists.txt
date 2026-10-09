@@ -329,3 +329,6 @@ target_sources(bsp_core PRIVATE src/native_application_pointer_vector_resize.cpp
 target_sources(bsp_core PRIVATE src/native_world_current_tick.cpp)
 target_sources(bsp_core PRIVATE src/native_mission_clock_reset.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_game_application_frame.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_pair_advance.cpp)
+target_sources(bsp_core PRIVATE src/native_observer_member_cleanup.cpp)

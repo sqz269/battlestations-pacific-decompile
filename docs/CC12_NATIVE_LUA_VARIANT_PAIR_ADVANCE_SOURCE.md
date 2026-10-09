@@ -1,3 +1,7 @@
+Primary compiled review: Registered Source pair helper compiled to99 bytes/38 instructions. Every byte matches Native outside two REL32 redirects to the admitted Source17 validation entry. No Native CRT-policy, binary-binding or gameplay equivalence is established.
+
+Normal MSVC Win32 build 2026-10-09T17:23:29.234687+00:00 to 2026-10-09T17:23:47.076256+00:00 passed three existing checks. The shared receipt captures88 inputs,19 whole objects and22 unique public Core roots. All16 prior objects and the existing67-function observer provider are byte-identical, including EH payloads and indexed relocations. New public roots are absent from the application map; no consumer or forced retention was added. The candidate section below is an immutable worker-time snapshot; its older build artifacts are historical.
+
 # CC12 raw Lua variant pair-advance Source candidate
 
 This packet adds `advance_native_lua_variant_pair_006eda20(void*)` as a
