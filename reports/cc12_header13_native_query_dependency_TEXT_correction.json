@@ -1,0 +1,470 @@
+{
+  "schema": "bsp.cc12.header13.native_query_dependency_TEXT_correction.v1",
+  "packet": "cc12_header13_native_query_dependency_TEXT_correction",
+  "Source_credit": 0,
+  "status": "Versioned TEXT correction ready for independent Root review; no Root acceptance or runtime qualification",
+  "base_main_commit": "5d944c774e670c803da27ca658a57ecf319dac36",
+  "scope": {
+    "owned_metadata": [
+      "docs/CC12_HEADER13_NATIVE_QUERY_DEPENDENCY_TEXT_CORRECTION.md",
+      "reports/cc12_header13_native_query_dependency_TEXT_correction.json"
+    ],
+    "addresses": [],
+    "Source_CMake_ledgers_Ghidra_tests_changed": false,
+    "Type10_11_draft": "Paused clean/unwritten with lease released; resume only after this packet closes or Root followup"
+  },
+  "trigger": {
+    "reported_by": "Root",
+    "description": "Root metadata preparation could not find ghidra_bridge or jfx_bridge; current supported query tools do not import them.",
+    "Root_reported_interpreter": "C:/ProgramData/miniconda3/python.exe",
+    "Root_reported_state": "Main/local/h13p2 materialized78 plus bookkeeping/selection=80; no Root TEXT receipt and no selected recipe execution.",
+    "worker_verified_Root_state": false,
+    "worker_executed_find_spec": false
+  },
+  "old_selected_family": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_final_generator_text_proposal\\local\\h13gen20261008a",
+    "exact_count": 88,
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_final_generator_text_proposal\\local\\h13gen20261008a\\seal.json",
+      "size": 15590,
+      "sha256": "590cfaef35e7627c36d5b7e317980fcf5cad7e41bece461a4bd495c9b375793b"
+    },
+    "candidate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_final_generator_text_proposal\\local\\h13gen20261008a\\header13_final_generator.r01.py.txt",
+      "size": 131276,
+      "sha256": "88b0939b5e0ec8397bf41f0d5ea10acb031b339af606c766e7472c489d9b64a8"
+    },
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_final_generator_text_proposal\\local\\h13gen20261008a\\Root_generation_selection.proposed.json",
+      "size": 48283,
+      "sha256": "f0b49a1edc7694db5cbb8a664eb0892e81d7a827128eb8129bf412d9503c9e8d"
+    },
+    "immutable_copy": "in/selected_r01",
+    "before_after_exact": true
+  },
+  "correction": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\local\\h13gen_depfix",
+    "candidate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\local\\h13gen_depfix\\header13_final_generator.r02.py.txt",
+      "size": 130936,
+      "sha256": "c30a8e242ec0432bacbf38d76199dfffc244220970620cb81b4b1b5a1b7dbbc4"
+    },
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\local\\h13gen_depfix\\Root_generation_selection.proposed.r02.json",
+      "size": 48590,
+      "sha256": "08c5a1a6af098103b89352510844b6fc852844e557cd37de222f5a4ba06c9ab1"
+    },
+    "only_changed_function": "native_query_helper_files",
+    "old_function_lines": [
+      152,
+      161
+    ],
+    "new_function_lines": [
+      152,
+      156
+    ],
+    "behavior": "Retain exact tools/**/*.py discovery and ordering; remove only lookups for two nondependencies.",
+    "all_other_candidate_bytes_and_AST_unchanged": true,
+    "optimization_guards_unchanged": true,
+    "Root_receipt_guard_unchanged": true,
+    "analysis_packages_capstone_pefile_ordlookup_unchanged": true,
+    "toolchain_environment_compiler_linker_guard_unchanged": true,
+    "launch_AST_and_six_key_order_unchanged": true,
+    "CFG_and_full_helper_gate_contract_unchanged": true
+  },
+  "selection_delta": {
+    "old_reviewed_artifacts": 67,
+    "retained_old_reviewed_artifacts": 67,
+    "new_candidate_rows": 1,
+    "new_reviewed_artifacts": 68,
+    "materialization_rows": 78,
+    "unchanged_materialization_rows": 77,
+    "changed_materialization": "recipe.py origin points to r02",
+    "identity_fixed_Main_local_h13p2_unchanged": true,
+    "draft39_Q15_currentSource10_context1_pattern1_unchanged": true,
+    "accepted": false,
+    "all_other_selection_fields_unchanged": true
+  },
+  "actual_dependency_frontier": {
+    "all_Main_tools_python_count": 46,
+    "all_frozen_as_exact_Main_bytes": true,
+    "conservative_local_module_closure": [
+      "branch_sync",
+      "bsp",
+      "coordination",
+      "ghidra_export",
+      "ghidra_launch",
+      "ledger",
+      "workspace"
+    ],
+    "selected_query_external_packages": [],
+    "transport": "ghidra_export.Client uses standard-library urllib to the configured loopback HTTP backend",
+    "route": "count/proto/bytes/disasm through bsp.client and connect(required=False); no index rebuild or lazy PE/disassembly imports on this route",
+    "error_path": "ghidra_launch import uses repository/stdlib only; BSP_GHIDRA_AUTOSTART=0 short-circuits before probe/ensure",
+    "other_bsp_commands_external_imports": [
+      {
+        "file": "bsp",
+        "module": "pefile",
+        "top": "pefile",
+        "line": 147,
+        "owner": "load_strings",
+        "kind": "external"
+      },
+      {
+        "file": "bsp",
+        "module": "pefile",
+        "top": "pefile",
+        "line": 357,
+        "owner": "mark_asm_gaps",
+        "kind": "external"
+      },
+      {
+        "file": "bsp",
+        "module": "capstone",
+        "top": "capstone",
+        "line": 358,
+        "owner": "mark_asm_gaps",
+        "kind": "external"
+      },
+      {
+        "file": "bsp",
+        "module": "pefile",
+        "top": "pefile",
+        "line": 502,
+        "owner": "disasm_raw",
+        "kind": "external"
+      },
+      {
+        "file": "bsp",
+        "module": "capstone",
+        "top": "capstone",
+        "line": 503,
+        "owner": "disasm_raw",
+        "kind": "external"
+      },
+      {
+        "file": "bsp",
+        "module": "pefile",
+        "top": "pefile",
+        "line": 533,
+        "owner": "scan_bytes",
+        "kind": "external"
+      }
+    ],
+    "external_analysis_dependencies_retained_elsewhere": [
+      "capstone",
+      "pefile",
+      "ordlookup"
+    ],
+    "Main_worktree_newline_only_differences": [
+      {
+        "Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\check_ledger_bodies.py",
+          "size": 7869,
+          "sha256": "5bea0d0770de18d1346aa334cbbbec4fb9abef8055fe5241843e7521b6901f62"
+        },
+        "worktree": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\tools\\check_ledger_bodies.py",
+          "size": 7694,
+          "sha256": "7da1ef0b800ffa20709b29c3e6dae9f6fb6da9b49c3b4156486d05d237ec4b1f"
+        },
+        "LF_normalized_equal": true,
+        "frozen_bytes": "Exact Main bytes, no normalization"
+      },
+      {
+        "Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\pe_section_of.py",
+          "size": 1524,
+          "sha256": "306db3ea75eff43ef2d049b59dc20993f928abf07eee8c5eb969ed86a44e79f6"
+        },
+        "worktree": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\tools\\pe_section_of.py",
+          "size": 1491,
+          "sha256": "cd12b4cd6040154f056bdc874cc9b6e5a3dfd73f8fe5ee7498b564945169da89"
+        },
+        "LF_normalized_equal": true,
+        "frozen_bytes": "Exact Main bytes, no normalization"
+      },
+      {
+        "Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\progress_board.py",
+          "size": 18716,
+          "sha256": "ff455d6f24d51849d5b2696cc8e5c917a8839fe4fd955b7fd9123919614f1b40"
+        },
+        "worktree": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\tools\\progress_board.py",
+          "size": 18364,
+          "sha256": "28ae3f13512b7728e3a6b54ca2df5b935c3102285daa7b97e3387a51d3cebfeb"
+        },
+        "LF_normalized_equal": true,
+        "frozen_bytes": "Exact Main bytes, no normalization"
+      },
+      {
+        "Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\stack_frame_walk.py",
+          "size": 9348,
+          "sha256": "e596c7c38a001b7c2e2074ed549a577fcc8d122c2239ce95001142900778b2e5"
+        },
+        "worktree": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\tools\\stack_frame_walk.py",
+          "size": 9143,
+          "sha256": "61ad5b2c88867f147db52dc3b83acd9160190ec184ff6c012224e3222b8a6f45"
+        },
+        "LF_normalized_equal": true,
+        "frozen_bytes": "Exact Main bytes, no normalization"
+      },
+      {
+        "Main": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\verify_timestamp_reference.py",
+          "size": 3990,
+          "sha256": "a7df56042c692f269ccd606bcdc9aa41505cd265da7920aece100b60ce9f56c1"
+        },
+        "worktree": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\tools\\verify_timestamp_reference.py",
+          "size": 3989,
+          "sha256": "45eeb87a4cc21eb2c5335b09eeaa3dd5f82bff38255e7918d4043d2d0187f47e"
+        },
+        "LF_normalized_equal": true,
+        "frozen_bytes": "Exact Main bytes, no normalization"
+      }
+    ],
+    "supported_query_route_executed": false,
+    "stdlib_or_interpreter_wide_hermeticity_claimed": false,
+    "workspace_git_subprocess_runtime_proof_claimed": false
+  },
+  "validation": {
+    "kind": "independent_TEXT_AST_bytes_and_selection_comparison",
+    "Source_credit": 0,
+    "candidate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\local\\h13gen_depfix\\header13_final_generator.r02.py.txt",
+      "size": 130936,
+      "sha256": "c30a8e242ec0432bacbf38d76199dfffc244220970620cb81b4b1b5a1b7dbbc4"
+    },
+    "proposed_selection": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\local\\h13gen_depfix\\Root_generation_selection.proposed.r02.json",
+      "size": 48590,
+      "sha256": "08c5a1a6af098103b89352510844b6fc852844e557cd37de222f5a4ba06c9ab1"
+    },
+    "only_AST_change": "native_query_helper_files",
+    "replacement_matches_exact_two_statement_expected_AST": true,
+    "all_other_raw_bytes_identical": true,
+    "guard_AST_identity": {
+      "analysis_dependency_files": {
+        "AST_sha256": "664e40d7209912bb0d1eaebd5670403cbb2c84ce9b5b5534a5aa8af3f26f20fb",
+        "old_lines": [
+          134,
+          143
+        ],
+        "new_lines": [
+          134,
+          143
+        ]
+      },
+      "toolchain_files": {
+        "AST_sha256": "cb01020bcf50e2856df07a7c37e358d6d86728456c1b18264243b64ef3170899",
+        "old_lines": [
+          145,
+          150
+        ],
+        "new_lines": [
+          145,
+          150
+        ]
+      },
+      "launch_ast_identity": {
+        "AST_sha256": "fd937ca70903605e5b99b4335c8867b17bba055094f85ebf9d8ad877dd950f61",
+        "old_lines": [
+          163,
+          186
+        ],
+        "new_lines": [
+          158,
+          181
+        ]
+      },
+      "require_root_text_acceptance": {
+        "AST_sha256": "454693df7223fd8c16a8785f608a393a7e9e95b2ecd2be5e1268b0f5dd914760",
+        "old_lines": [
+          188,
+          250
+        ],
+        "new_lines": [
+          183,
+          245
+        ]
+      },
+      "load_analysis_tools": {
+        "AST_sha256": "1670a081cef76bd1ce1d35ce09593167b5ca28a08f75a3f1687990eac7495ebf",
+        "old_lines": [
+          252,
+          260
+        ],
+        "new_lines": [
+          247,
+          255
+        ]
+      },
+      "invoke_tool": {
+        "AST_sha256": "fecb2fc0e5be30a1c096d2bcff535d093298a88d0fed8a8d57f3224888ebadc5",
+        "old_lines": [
+          269,
+          306
+        ],
+        "new_lines": [
+          264,
+          301
+        ]
+      },
+      "compile_tus": {
+        "AST_sha256": "3470c9589cf6abe93541414c4e34fb4a3a39c55dc998b59b60eced314c50a2a5",
+        "old_lines": [
+          1340,
+          1381
+        ],
+        "new_lines": [
+          1335,
+          1376
+        ]
+      },
+      "link_image": {
+        "AST_sha256": "76946e4fc633711155e3291cd2c7f7fb066998fc202ee458c4e585c141193195",
+        "old_lines": [
+          1383,
+          1413
+        ],
+        "new_lines": [
+          1378,
+          1408
+        ]
+      },
+      "require_linked_manual_acceptance": {
+        "AST_sha256": "56331c9a7442a598119a3162b2aca5e55269bb982f714d36f4c23056e039d0e7",
+        "old_lines": [
+          1689,
+          1713
+        ],
+        "new_lines": [
+          1684,
+          1708
+        ]
+      },
+      "launch": {
+        "AST_sha256": "efec4d037b4f66d81f70680189c49287157d733910a4f20f5f05e3baaff658ce",
+        "old_lines": [
+          1763,
+          1770
+        ],
+        "new_lines": [
+          1758,
+          1765
+        ]
+      },
+      "dispatch": {
+        "AST_sha256": "551d3d6b9fd433dc4c517c9a4144099985d6caa2474bf3b6ea086ed695ef8d20",
+        "old_lines": [
+          1819,
+          1854
+        ],
+        "new_lines": [
+          1814,
+          1849
+        ]
+      }
+    },
+    "module_Assert_nodes": 0,
+    "selection_exactly_old_plus_candidate_and_recipe_origin": true,
+    "reviewed_rows": 68,
+    "retained_old_rows": 67,
+    "materialization_rows": 78,
+    "unchanged_materialization_rows": 77,
+    "identity_constants_and_draft_Q_Source_context_pattern_rows_unchanged": true,
+    "C_exact_before_after": 88,
+    "actual_Main_tool_python_before_after": 46,
+    "frozen_copy_count": 134,
+    "all_frozen_input_bytes_equal_actual_origins": true,
+    "Main_worktree_newline_only_differences": 5,
+    "selected_command_external_python_packages": [],
+    "authoritative_dispatch_line_ranges": {
+      "tools/bsp.py": {
+        "imports": [
+          18,
+          38
+        ],
+        "connect": [
+          280,
+          287
+        ],
+        "client": [
+          675,
+          691
+        ],
+        "count_and_proto": [
+          756,
+          787
+        ],
+        "bytes": [
+          837,
+          844
+        ],
+        "disasm": [
+          845,
+          873
+        ],
+        "dispatch": [
+          1280,
+          1280
+        ]
+      },
+      "tools/ghidra_export.py": {
+        "imports": [
+          6,
+          15
+        ],
+        "Client": [
+          72,
+          111
+        ]
+      },
+      "tools/workspace.py": {
+        "git_and_export_resolution": [
+          16,
+          32
+        ]
+      }
+    },
+    "line_range_note": "These exact ranges supersede broad descriptive spans in actual_query_import_frontier.json; no source or candidate difference.",
+    "selected_code_imported_or_executed": false,
+    "Root_family_accessed": false,
+    "bounds": "Repository Python TEXT frontier only; interpreter/site/stdlib and subprocess executable/load dependencies are not hermetic."
+  },
+  "retained_own_utility_stops": [
+    {
+      "file": "preparation_stop_r01.txt",
+      "cause": "Own metadata compared file ordering rather than keyed exact inventory; corrected to path/size/SHA map equality."
+    },
+    {
+      "file": "preparation_stop_r02.txt",
+      "cause": "Own metadata required Main/worktree raw equality for tools; five checked-in contents differ only by line endings. Exact current Main bytes frozen; no normalization of inputs."
+    }
+  ],
+  "Root_followup": [
+    "Independently verify this new seal and r02 delta, immutable C88 and46 actual tool copies.",
+    "Retain unaccepted materialized r01 recipe/selection under explicit historical filenames before selecting r02.",
+    "Materialize r02 recipe and proposed selection only under Root control; selection remains accepted:false.",
+    "Produce a real new Root TEXT review receipt including all68 reviewed rows and actual46 tool-source pins if still unchanged.",
+    "Only then execute the reviewed fresh stages; independently verify linked artifacts and author the distinct linked receipt before the sole target attempt."
+  ],
+  "not_done": [
+    "No candidate/helper/reader/pattern import or execution",
+    "No package installation",
+    "No Root family read/write or Root acceptance receipt",
+    "No compiler/linker/provider/Native/target operations",
+    "No Source/build/ABI/runtime/game qualification"
+  ],
+  "seal_contract": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_native_query_dependency_TEXT_correction\\local\\h13gen_depfix\\seal.json",
+    "exact_recursive_inventory_includes_all_utilities_logs_stops_inputs_metadata_and_git_records": true,
+    "only_excluded_self": "seal.json",
+    "final_count_and_hash": "Computed after commit and lease release; provided in handoff, never guessed or circularly embedded."
+  }
+}
