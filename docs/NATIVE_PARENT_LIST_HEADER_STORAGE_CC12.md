@@ -2,8 +2,8 @@
 
 Implemented whole `[004B 7EC0, 004B 7ECD)` as the literal **13-byte / 6-instruction**
 MSVC Win32 naked function `initialize_native_parent_list_header_storage_004b7ec0`.
-The name is a hypothesis. Worker Source admission credit is **0 pending Root's
-independent family, combined-main build, annotation, and integration**.
+The name is a hypothesis. Root Source admission credit is **1** for the fresh,
+unowned writable 12-byte interface qualified below. Worker credit remains 0.
 
 Native SHA-256: `1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d`.
 Whole hex: `8B C1 33 C9 89 08 89 48 04 89 48 08 C3`.
@@ -38,7 +38,46 @@ in the genuine owner descriptor and documents one real iterator invocation.
 The owning iterator frame, exception cleanup, sentinel/private heap, class
 destructor, and parent/subject relationship remain outside this raw interface.
 
-## Fresh connected validation
+## Current complete-helper qualification
+
+Root's fresh `local/h13p4` contains exactly **610 sealed files**. Its seal SHA256
+is `cfac97ba8a6c7d587995ceb77320d5369f5104658f70155d908a80b6c5985a49`. Current Main's entire leaf/header and
+canonical allocation TUs match the fresh compiled inputs. Root and an external
+reader checked all **41 complete linked spans / 6,697 bytes / 2,045 instructions**,
+including the complete **2,615-byte / 719-instruction Main**, raw 173B63 and
+ordinary 6B2 callers, actual cookie14/chkstk43, nine normal import thunks, and
+the cold standard/delete16-to-5-to-free6 chain. GS failure is the only retained
+unexpanded frontier; its execution remains outside this qualification.
+
+The sole new process passed raw Source DF1, raw Original DF0 and ordinary Source
+DF0: **three calls, three allocations and three frees**. Root directly decoded
+all three full CaptureBox96 records and full live 44-byte buffers. Each fresh
+12-byte header was zeroed with both surrounding 16-byte regions preserved.
+Defined XOR flags, unused EDX, nonvolatile registers, ESP/EBP, ES and DF passed;
+undefined AF is excluded. DF0 was restored before current CRT operations.
+
+The actual external recorded reader passed without a new target or provider
+query. Recorded UCRT malloc/free/new-handler IAT/export bindings, physical file
+identity/path and loaded-base-adjusted 32-byte prefixes agree with frozen
+evidence. Its IAT column is a resolved pointer; module base is derived, and
+MEM_IMAGE was checked by the gated probe but not separately serialized.
+Native13, six instruction starts, project/program, installed game PE, physical
+provider and selected-input post bookends passed. **21,630 prior pins** and
+the terminal R03 **540-file family** remain unchanged. Earlier inspector stops
+and corrected own utilities are retained in the new seal; no old stage ran.
+
+The current combined Main build at `0b2eede1007b74f45a1a85622f359a288a4fbd89`
+passed all three existing checks. No production code or tracked tests changed
+for this qualification. Saved-analysis publication is recorded separately.
+The historical sections below retain their original fixture and coverage hold;
+their pending statements describe those older attempts.
+
+This admits only fresh unowned writable12 supplied storage. Owning parent/World,
+sentinel/private heap, iterator/EH/class lifetime, allocation failure, general
+binary replacement, startup and gameplay remain unvalidated. Consumer families
+retain their separate evidence and qualifications.
+
+## Historical worker connected validation
 
 Baseline `1c027b594dbad3b4ae7cc5cba03281320e7a8f40`. Accepted ignored family:
 `local/h13/r02`. It compiled exactly three new TUs: this leaf, unchanged current
@@ -123,12 +162,21 @@ qualification. It does not admit native owning parent/World, private heap,
 sentinel, array iterator/EH/class teardown, observers, registration, or gameplay.
 Root's separate complementary family and full combined build remain required.
 
-## Primary integration
+## Historical primary integration
 
 Whole supplied-storage header initializer[004B7EC0,004B7ECD)13B6 literal MOV EAX,ECX/XOR ECX/threezeroDWORDstores/plainRET, sameOriginal/COFF/uniqueLinked13;0calls/relocs. Hypothetical paddedfastcall interface ECXactualfreshunownedwritable12header/unusedEDXregister/noStackargs; EAXroot ECX0 EDX/allnonvols/ESP/ES/DF preserved, XORdefined8C5=44 AFundefinedexcluded. Currentcoherentempty{count,head,tail} layout only, no resettingpopulatedowner. Root complementary3freshTUs/184headers7libs/BSParchives0/oldobjects0 at2Ebase:3actual44buffers with12header+16+16inallocationcanaries; SourceDF1/OriginalDF0/ordinarySourceDF0, newD5/E9/72poisons and GPR/EDXsentinels,3actualalloc/3entries/3actualbasefrees. Original13 isunmodifiedRXcopy. All96capture/full44buffer/header12/guard32 independentlydecoded; EAXfullroot/ECX0/EDXseed/allnonvols/ESP/ES/definedflags/DF PASS. Whole25linkedapplication/canonical/probe/helpercodegates incl2454B682main106relocs, realordinary6B2directCALL/RET andraw172B62, complete14B4cookie/externalfailuretailJMP; physicalI386matchingUCRTmalloc/free/newhandler IAT/export/NTpath/fileID/fullSHA/normalized32code before0alloc/targets andafterfrees, Native/source/headers/libs/tools/input/code/priorbookendsPASS. Exact133listed+seal134,16385olderpins preserved. No oldsuccessfulstage/recipe/helper/process replay. CombinedMainWin32/all3existingchecksPASS. Actualgenuineownerdescriptor/iteratorcallback staticassociation retained, owningparent/iteratorEH/sentinel/privateheap/fullclass/World/game ABI/gameplay remain unadmitted.
 
 Independent seal `3a0957e45617408c9fce00c33892cb8ca55a1fc507104567e66b27ffaacd3f11`.
 
-## Standalone fixture helper coverage reopened
+## Historical standalone fixture helper coverage hold
 
 Root reviewed the independent Header13 audit: all26 retained symbols/24 physical TU bodies and whole literal13B6 constructor are gated, but ten normal external spans are absent: actual43-byte stack helper (five further alignment bytes separately classified) and nine6-byte import thunks. Six cold exception/delete-chain spans are also absent; separate GS failure remains unadmitted. Standalone complete-helper fixture Source admission is reopened to0 pending fresh normal-helper coverage. Three full96-byte captures,44-byte caller buffers and rawSourceDF1/Original and ordinaryDF0 observations remain historical evidence; definedXOR flags mask8C5 excludes undefinedAF. This hold makes no blanket later clear70 or callback family claim. No Source edits, old helper/process replay or new Native/provider queries.
+
+## Current saved-analysis publication
+
+The supported annotation tool retained the prior name/comment, appended current
+qualification evidence, and saved `bsp.gpr` / `/battlestationspacific.exe`.
+Affected exports were refreshed. Snapshotting correctly skipped the unchanged
+64,728-function project, and the index was rebuilt. Prior values are preserved
+in `local/ghidra-annotations-20261009T024236Z.json`. The exact raw-storage name
+remains provisional.
