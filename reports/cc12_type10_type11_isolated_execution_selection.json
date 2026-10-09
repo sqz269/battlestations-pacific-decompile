@@ -877,7 +877,7 @@
     },
     "own03_held_and_own04_fresh_preparation": {
       "Source_credit": 0,
-      "status": "OWN03_SEALED_UNEXECUTED_POLICY_HOLD_OWN04_SEALED_UNEXECUTED_PENDING_FRESH_ROOT_ADOPTER_AND_PEER",
+      "status": "OWN04_ADOPTED_ONCE_COMPILE0_LINK0_JOB_CORROBORATION_AND_AST_ORIGIN_FAILURE_SEALED_NO_REPLAY",
       "Own03_complete_peer": {
         "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_toolchain_OWN03_TEXT_peer_20261009\\review.json",
         "bytes": 2515004,
@@ -936,11 +936,7 @@
       ],
       "runtime_selected_files": 97,
       "copied_toolchain_files": 73,
-      "fresh_observation_members": 14,
-      "fresh_console_files_zero_bytes": 2,
-      "fresh_work_and_cache_empty": true,
-      "Root_adoption": false,
-      "compiler_linker_WinPS_PE_fixture_or_constructor_execution": false,
+      "Root_adoption": true,
       "toolchain_qualification": false,
       "fixture_selection_can_advance": false,
       "limits": [
@@ -948,7 +944,262 @@
         "OWN INCLUDE4 remains different from fixture INCLUDE7; LIB3 equality does not qualify the fixture ENV",
         "No exhaustive historical image census or universal VCTIP suppression",
         "Previous immutable families remain read-only; no replay or same-family repair"
-      ]
+      ],
+      "actual_execution": {
+        "harness": true,
+        "WinPS": true,
+        "compiler": true,
+        "linker": true,
+        "produced_PE": false,
+        "fixture": false,
+        "constructor": false
+      },
+      "complete_candidate_peer": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_toolchain_OWN04_TEXT_peer_20261009\\review.json",
+        "bytes": 2568747,
+        "sha256": "718cf68da94bc4f3eda16249e4b06e88515c838c0408f2c1e8564592a61ca3c0"
+      },
+      "complete_adopter_peer": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_toolchain_ROOT_OWN04_adopter01_peer_20261009\\review.json",
+        "bytes": 2722348,
+        "sha256": "2dea776ef03153b9b2c21f3cab9d9d70e8c30648c1defb6938201c9d362909d2"
+      },
+      "peer_checks": {
+        "candidate": 58,
+        "adopter_scalar": 50,
+        "adopter_duplicate_conflict": 258
+      },
+      "adopter_preparation_seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_toolchainOwn04_adopter01\\seal.json",
+        "bytes": 1283,
+        "sha256": "4d8ae56af89b38521d7f0da0b70e2a296f1b431582045300eacf3c42737d9af1"
+      },
+      "actual_terminal": {
+        "session_id": 80572,
+        "terminal_chunk_id": "aa7cef",
+        "exit_code": 1,
+        "record": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_toolchainOwn04_adopterObservation01\\tool_terminal.json",
+          "bytes": 621,
+          "sha256": "e524ee8dd4caeebfe9779098fce7ddfc8a2f7aa1b03f4e54c4638f2714d357df"
+        }
+      },
+      "first_Root": {
+        "pid": 13896,
+        "exit": 1,
+        "forced": false,
+        "original_QPC": 996409.4381363,
+        "exit_observed_QPC": 996430.7013827,
+        "elapsed_seconds": 21.263246400048956
+      },
+      "actual_build": {
+        "Source_credit": 0,
+        "steps": [
+          {
+            "label": "compile",
+            "argv": [
+              "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainOwn01\\toolchain\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+              "/nologo",
+              "/c",
+              "/std:c++17",
+              "/MD",
+              "/O2",
+              "/W4",
+              "/WX",
+              "/fp:strict",
+              "/permissive-",
+              "/EHsc",
+              "/Gy",
+              "/GL-",
+              "/showIncludes",
+              "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work\\toolchain_probe.obj",
+              "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainOwn04\\toolchain_probe.cpp"
+            ],
+            "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work",
+            "child_pid": 80980,
+            "returncode": 0,
+            "log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\inner_records\\compile.log",
+              "bytes": 21,
+              "sha256": "f731291f8f8295ccdb2505caec0e5514dcbf0dc7f189795274f40f490879dcee"
+            }
+          },
+          {
+            "label": "link",
+            "argv": [
+              "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainOwn01\\toolchain\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+              "/NOLOGO",
+              "/MACHINE:X86",
+              "/SUBSYSTEM:CONSOLE",
+              "/INCREMENTAL:NO",
+              "/OPT:REF",
+              "/OPT:NOICF",
+              "/DYNAMICBASE:NO",
+              "/FIXED",
+              "/BASE:0x52000000",
+              "/MANIFEST:EMBED",
+              "/MAP:J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work\\toolchain_probe.map",
+              "/OUT:J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work\\toolchain_probe.exe",
+              "/VERBOSE:LIB",
+              "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work\\toolchain_probe.obj",
+              "kernel32.lib"
+            ],
+            "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work",
+            "child_pid": 82468,
+            "returncode": 0,
+            "log": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\inner_records\\link.log",
+              "bytes": 3559,
+              "sha256": "044ab37d375b5908e6551ff8f40ae18ad108d4383b7733f2bfc1039ea7a8ac2f"
+            }
+          }
+        ],
+        "products": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work\\toolchain_probe.obj",
+            "bytes": 806,
+            "sha256": "7c7ad6de396c13edef944ef6279b026bfa205332e821e612e10498bd003656d1"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work\\toolchain_probe.exe",
+            "bytes": 8704,
+            "sha256": "e07664666e7639c9fa6e439e0f28a094895758cffc633c8819a45392024bbc7e"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\work\\toolchain_probe.map",
+            "bytes": 21953,
+            "sha256": "3098d251f4d871d0a720f063bda03b86d71c403224cd7bf5608279035aeced0c"
+          }
+        ],
+        "probe_executed": false
+      },
+      "failure": {
+        "primary": "Inner driver exit0, but OWN corroborating natural zero failed at sealed source747",
+        "recorded_boundary": {
+          "snapshot": "inner_records/identity_0007.json",
+          "QPC": 996420.6802314,
+          "active_before_after": [
+            1,
+            1
+          ],
+          "PID_list": [
+            72000
+          ],
+          "selected_image": "C:/Windows/System32/conhost.exe",
+          "retained_wait": 258
+        },
+        "inference": "The later standalone accounting return0 is implied by fixed source/traceback control flow, not retained as raw DATA. The earlier complete snapshot still had a live selected conhost. No natural success can be inferred from later mandatory cleanup.",
+        "postflight": "All three Python supervisor roles reject unselected C:/ProgramData/miniconda3/Lib/ast.py",
+        "cleanup": {
+          "inner_root_external_held_wait_counts": [
+            6,
+            11,
+            8
+          ],
+          "all_final_waits_zero": true,
+          "all_final_accounting_after_waits_zero": true,
+          "all_Job_handles_closed": true,
+          "identity_failures": [],
+          "cleanup_failures": [],
+          "timely_cleanup_all_roles": true
+        },
+        "qualification": false
+      },
+      "failed_closing_DATA": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_toolchainOwn04_adopterObservation01\\failed_closing_DATA.json",
+        "bytes": 1066160,
+        "sha256": "1e19d7b807d30490f291fdd7f36bf1f78a1425667133aac221fb966e62f808a4"
+      },
+      "Root_closing_files": {
+        "preflight_rows_rehashed_and_equal": 4327,
+        "additional_current_Own04_seal": 1,
+        "additional_seal_separately_verified_against_original_reviewed_d350_constant": true,
+        "all_declared_old_and_prepared_memberships_unchanged": true,
+        "cache_empty": true,
+        "positive_closing_verifier_executed": false
+      },
+      "failed_observation_seals": {
+        "Own04": {
+          "file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011toolchainObservation03\\Root_failed_observation_seal.json",
+            "bytes": 101413,
+            "sha256": "35e96b8678832394e33017ca20db6caf160c8e510420f985d9cd11506c14c772"
+          },
+          "artifact_rows": 258,
+          "whole_members": 274
+        },
+        "Root": {
+          "file": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_toolchainOwn04_adopterObservation01\\seal.json",
+            "bytes": 2014,
+            "sha256": "0cbe5d62a4dd56905de0dcd1373679cc46a065dba9582606c5b1f7ed2dd6ebac"
+          },
+          "artifact_rows": 5,
+          "whole_members": 6
+        }
+      },
+      "future_full_fixture_prerequisites": {
+        "timing_plan": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F4D03timingPlan02\\plan.json",
+          "bytes": 22669,
+          "sha256": "97081cf189dcefd39b0c532f8bd870702e6fbc16b0a806fee52307e20e452092"
+        },
+        "identity_policy_hold": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F4IdentityPlan03\\findings.json",
+          "bytes": 13436,
+          "sha256": "b257bcdde7603b77f25679a847eec7f8c2e45e0e926f00e60c708428b7c516a6"
+        },
+        "timing": "One original QPC: driver540, natural whole-Job560, cleanup min(start+20,original580), reserved supervisor/guard/tool/closing actual terminals and writes before600",
+        "identity": "Old F3 image errors are nonfatal and successful images lack exact selected file-pin admission; fresh F4 needs full separately reviewed terminal/live identity policy and fresh D03 allowed-image selection before materialization/adoption",
+        "full_ENV": "Keep INCLUDE7/LIB3, Source14/dependency1453; minimal OWN INCLUDE4 cannot supply equivalence",
+        "F4_D03_materialized": false
+      },
+      "actual_failure_peer_pending": false,
+      "complete_failed_observation_peer": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_toolchain_OWN04_failed_observation_peer_20261009\\review.json",
+        "bytes": 2832243,
+        "sha256": "b895e8a6e293e4231d93d8f8c783886898cdebdb23cf1c3780e8ff22d501efe7"
+      },
+      "actual_failure_peer": {
+        "DATA_review_passed": true,
+        "predicates": 67,
+        "findings": 9,
+        "all_current_consumed_pins_each_bookend": 4595,
+        "all_opening4327_underlying_rows_independently_current_rehashed": true,
+        "all_identity_snapshots": 214,
+        "image_error_events": 585,
+        "initial_wait258_image_error_branch_exercised": false,
+        "all_image_errors_initial_wait0": true,
+        "qualification": false,
+        "Source_credit": 0
+      },
+      "Astra_complete_failed_diagnosis": {
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011Own04failedDiagnosis01\\seal.json",
+          "bytes": 2146,
+          "sha256": "4a1bada80e25b7661c7e579fb76ae6f928b61252409b8d9f2ca0dec18049bf84"
+        },
+        "report": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011Own04failedDiagnosis01\\diagnosis_report.json",
+          "bytes": 13737,
+          "sha256": "b4418e041f6fa5100328e7898b9862485d1938eeb7fa4f089ef9f72ff5950e1a"
+        },
+        "minimum_actual_ASCII_RuntimeError_reporting_correction": "Fresh runtime98 selects/preloads exact ast.py with explicit _ast builtin admission; conditional non-ASCII/suggestion paths are separate, not universal closure",
+        "natural_corroboration_correction": "Persist standalone accounting/QPC and require a new complete same-iteration zero/list/held-waits/accounting tuple. Valid transient nonzero mismatch continues fresh observation only within original deadline; invalid/API/identity errors stay fatal. Mandatory cleanup cannot supply natural success.",
+        "new_Own05_preparation": "Authorized fresh unsealed draft only after full diagnosis; no final seal/adoption/execution authority"
+      },
+      "produced_PE_static_DATA": {
+        "machine": "I386",
+        "format": "PE32",
+        "sections": 4,
+        "resource_directory_RVA": 16384,
+        "resource_directory_bytes": 480,
+        "executed": false,
+        "static_resource_directory_is_not_manifest_or_runtime_proof": true
+      },
+      "initial_observation_members": 14,
+      "initial_console_files_zero_bytes": 2,
+      "initial_work_and_cache_empty": true
     }
   }
 }
