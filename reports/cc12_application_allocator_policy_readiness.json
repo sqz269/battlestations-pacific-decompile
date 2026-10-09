@@ -1,0 +1,1027 @@
+{
+  "schema": "bsp.cc12.application_allocator_policy_readiness.v1",
+  "status": "read_only_complete105B_allocator_outer_policy_and1B_tail_audited_host_Source_loop_qualified_native_failure_identity_open",
+  "created_utc": "2026-10-09T08:57:07.111410+00:00",
+  "base_commit": "c9c6808db971c603e57a469500ad3f7c24b69be5",
+  "requested_published_main": "c9c6808db971c603e57a469500ad3f7c24b69be5",
+  "scope": {
+    "initial_owned_address": "00bf681b",
+    "lease_extended_before_reads": [
+      "00bf6884",
+      "00c055b1",
+      "00bf9f1a",
+      "00bf6802",
+      "00bf6ff5",
+      "00bf63a6",
+      "00bf6885"
+    ],
+    "outputs": [
+      "docs/CC12_APPLICATION_ALLOCATOR_POLICY_READINESS.md",
+      "reports/cc12_application_allocator_policy_readiness.json"
+    ],
+    "selected_body_bytes": 105,
+    "selected_body_instructions": 33,
+    "adjacent_tail_byte_count": 1,
+    "complete_fresh_capture_bytes": 106,
+    "child_native_bodies_read": 0,
+    "native_handlers_read": 0,
+    "caller_queries": 0,
+    "table_or_global_data_capture_queries": 0,
+    "import_queries": 0,
+    "heap_internal_body_queries": 0,
+    "no_Ghidra_names_prototypes_flags_or_listing_changed": true
+  },
+  "target_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 64729,
+    "method": "Initial count and every bsp.py ghidra query verify the configured project and program; terminal-flow attempt retained before/after verification."
+  },
+  "native_evidence": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "gate": {
+      "entry": "00bf681b",
+      "end_inclusive": "00bf6883",
+      "whole_body_bytes": 105,
+      "limit_bytes": 160,
+      "passed_before_pseudocode_and_listing": true,
+      "name_preserved": "operator_new",
+      "signature_preserved": "undefined operator_new(void)",
+      "reported_instruction_count": 33
+    },
+    "fresh_whole_body": {
+      "address": "00bf681b",
+      "end_inclusive": "00bf6883",
+      "bytes": 105,
+      "hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "instructions": [
+        {
+          "address": "00bf681b",
+          "size": 1,
+          "hex": "55",
+          "text": "push ebp"
+        },
+        {
+          "address": "00bf681c",
+          "size": 2,
+          "hex": "8bec",
+          "text": "mov ebp, esp"
+        },
+        {
+          "address": "00bf681e",
+          "size": 3,
+          "hex": "83ec0c",
+          "text": "sub esp, 0xc"
+        },
+        {
+          "address": "00bf6821",
+          "size": 2,
+          "hex": "eb0d",
+          "text": "jmp 0xbf6830"
+        },
+        {
+          "address": "00bf6823",
+          "size": 3,
+          "hex": "ff7508",
+          "text": "push dword ptr [ebp + 8]"
+        },
+        {
+          "address": "00bf6826",
+          "size": 5,
+          "hex": "e886ed0000",
+          "text": "call 0xc055b1"
+        },
+        {
+          "address": "00bf682b",
+          "size": 2,
+          "hex": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00bf682d",
+          "size": 1,
+          "hex": "59",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00bf682e",
+          "size": 2,
+          "hex": "740f",
+          "text": "je 0xbf683f"
+        },
+        {
+          "address": "00bf6830",
+          "size": 3,
+          "hex": "ff7508",
+          "text": "push dword ptr [ebp + 8]"
+        },
+        {
+          "address": "00bf6833",
+          "size": 5,
+          "hex": "e8e2360000",
+          "text": "call 0xbf9f1a"
+        },
+        {
+          "address": "00bf6838",
+          "size": 2,
+          "hex": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00bf683a",
+          "size": 1,
+          "hex": "59",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00bf683b",
+          "size": 2,
+          "hex": "74e6",
+          "text": "je 0xbf6823"
+        },
+        {
+          "address": "00bf683d",
+          "size": 1,
+          "hex": "c9",
+          "text": "leave"
+        },
+        {
+          "address": "00bf683e",
+          "size": 1,
+          "hex": "c3",
+          "text": "ret"
+        },
+        {
+          "address": "00bf683f",
+          "size": 7,
+          "hex": "f60574dd090101",
+          "text": "test byte ptr [0x109dd74], 1"
+        },
+        {
+          "address": "00bf6846",
+          "size": 5,
+          "hex": "be68dd0901",
+          "text": "mov esi, 0x109dd68"
+        },
+        {
+          "address": "00bf684b",
+          "size": 2,
+          "hex": "7519",
+          "text": "jne 0xbf6866"
+        },
+        {
+          "address": "00bf684d",
+          "size": 7,
+          "hex": "830d74dd090101",
+          "text": "or dword ptr [0x109dd74], 1"
+        },
+        {
+          "address": "00bf6854",
+          "size": 2,
+          "hex": "8bce",
+          "text": "mov ecx, esi"
+        },
+        {
+          "address": "00bf6856",
+          "size": 5,
+          "hex": "e8a7ffffff",
+          "text": "call 0xbf6802"
+        },
+        {
+          "address": "00bf685b",
+          "size": 5,
+          "hex": "682211ce00",
+          "text": "push 0xce1122"
+        },
+        {
+          "address": "00bf6860",
+          "size": 5,
+          "hex": "e890070000",
+          "text": "call 0xbf6ff5"
+        },
+        {
+          "address": "00bf6865",
+          "size": 1,
+          "hex": "59",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00bf6866",
+          "size": 1,
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00bf6867",
+          "size": 3,
+          "hex": "8d4df4",
+          "text": "lea ecx, [ebp - 0xc]"
+        },
+        {
+          "address": "00bf686a",
+          "size": 5,
+          "hex": "e837fbffff",
+          "text": "call 0xbf63a6"
+        },
+        {
+          "address": "00bf686f",
+          "size": 5,
+          "hex": "68c03ce000",
+          "text": "push 0xe03cc0"
+        },
+        {
+          "address": "00bf6874",
+          "size": 3,
+          "hex": "8d45f4",
+          "text": "lea eax, [ebp - 0xc]"
+        },
+        {
+          "address": "00bf6877",
+          "size": 1,
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00bf6878",
+          "size": 7,
+          "hex": "c745f43c92d600",
+          "text": "mov dword ptr [ebp - 0xc], 0xd6923c"
+        },
+        {
+          "address": "00bf687f",
+          "size": 5,
+          "hex": "e801000000",
+          "text": "call 0xbf6885"
+        }
+      ],
+      "instruction_count": 33,
+      "live_ghidra_listing": "00bf681b: PUSH EBP\n00bf681c: MOV EBP,ESP\n00bf681e: SUB ESP,0xc\n00bf6821: JMP 0x00bf6830\n00bf6823: PUSH dword ptr [EBP + 0x8]\n00bf6826: CALL 0x00c055b1\n00bf682b: TEST EAX,EAX\n00bf682d: POP ECX\n00bf682e: JZ 0x00bf683f\n00bf6830: PUSH dword ptr [EBP + 0x8]\n00bf6833: CALL 0x00bf9f1a\n00bf6838: TEST EAX,EAX\n00bf683a: POP ECX\n00bf683b: JZ 0x00bf6823\n00bf683d: LEAVE\n00bf683e: RET\n00bf683f: TEST byte ptr [0x0109dd74],0x1\n00bf6846: MOV ESI,0x109dd68\n00bf684b: JNZ 0x00bf6866\n00bf684d: OR dword ptr [0x0109dd74],0x1\n00bf6854: MOV ECX,ESI\n00bf6856: CALL 0x00bf6802\n00bf685b: PUSH 0xce1122\n00bf6860: CALL 0x00bf6ff5\n00bf6865: POP ECX\n00bf6866: PUSH ESI\n00bf6867: LEA ECX,[EBP + -0xc]\n00bf686a: CALL 0x00bf63a6\n00bf686f: PUSH 0xe03cc0\n00bf6874: LEA EAX,[EBP + -0xc]\n00bf6877: PUSH EAX\n00bf6878: MOV dword ptr [EBP + -0xc],0xd6923c\n00bf687f: CALL 0x00bf6885",
+      "live_bytes_match_current_PE": true,
+      "all_live_starts_match_full_independent_decode": true,
+      "four_internal_branches": [
+        {
+          "address": "00bf6821",
+          "size": 2,
+          "hex": "eb0d",
+          "text": "jmp 0xbf6830"
+        },
+        {
+          "address": "00bf682e",
+          "size": 2,
+          "hex": "740f",
+          "text": "je 0xbf683f"
+        },
+        {
+          "address": "00bf683b",
+          "size": 2,
+          "hex": "74e6",
+          "text": "je 0xbf6823"
+        },
+        {
+          "address": "00bf684b",
+          "size": 2,
+          "hex": "7519",
+          "text": "jne 0xbf6866"
+        }
+      ],
+      "six_direct_calls": [
+        {
+          "address": "00bf6826",
+          "size": 5,
+          "hex": "e886ed0000",
+          "text": "call 0xc055b1"
+        },
+        {
+          "address": "00bf6833",
+          "size": 5,
+          "hex": "e8e2360000",
+          "text": "call 0xbf9f1a"
+        },
+        {
+          "address": "00bf6856",
+          "size": 5,
+          "hex": "e8a7ffffff",
+          "text": "call 0xbf6802"
+        },
+        {
+          "address": "00bf6860",
+          "size": 5,
+          "hex": "e890070000",
+          "text": "call 0xbf6ff5"
+        },
+        {
+          "address": "00bf686a",
+          "size": 5,
+          "hex": "e837fbffff",
+          "text": "call 0xbf63a6"
+        },
+        {
+          "address": "00bf687f",
+          "size": 5,
+          "hex": "e801000000",
+          "text": "call 0xbf6885"
+        }
+      ],
+      "no_selected_indirect_calls": true,
+      "no_x87": true,
+      "no_hidden_entry_register_input_established": true
+    },
+    "adjacent_tail": {
+      "address": "00bf6884",
+      "bytes": 1,
+      "hex": "cc",
+      "sha256": "1dd8312636f6a0bf3d21fa2855e63072507453e93a5ced4301b364e91c9d87d6",
+      "captured_after_separate_lease": true,
+      "live_byte_matches_current_PE": true,
+      "independent_decode": "int3",
+      "outside_function_extent": true,
+      "next_address": "00bf6885",
+      "next_address_metadata_only": true,
+      "interpretation": "Terminal E8 ends atBF6883 and pushes return addressBF6884. If that call returned, first physical instruction would be INT3, not an omitted LEAVE/RET. No repair or executable continuation claim is made."
+    },
+    "direct_child_metadata": [
+      {
+        "address": "00c055b1",
+        "name": "__callnewh",
+        "signature": "int __cdecl __callnewh(size_t _Size)",
+        "body_end_inclusive": "00c055d2",
+        "reported_instructions": 15,
+        "callsite": "00bf6826",
+        "caller_operands": "Current caller stack size DWORD; result tested in EAX; POP ECX removes4 without changing TEST flags.",
+        "body_start": "00c055b1",
+        "metadata_span_bytes": 34,
+        "metadata_only": true,
+        "no_child_body_listing_bytes_handler_or_import_query": true
+      },
+      {
+        "address": "00bf9f1a",
+        "name": "_malloc",
+        "signature": "void * __cdecl _malloc(size_t _Size)",
+        "body_end_inclusive": "00bf9fdc",
+        "reported_instructions": 78,
+        "callsite": "00bf6833",
+        "caller_operands": "Current caller stack size DWORD; nonzero EAX returned unchanged; POP ECX removes4 without changing TEST flags.",
+        "body_start": "00bf9f1a",
+        "metadata_span_bytes": 195,
+        "metadata_only": true,
+        "no_child_body_listing_bytes_handler_or_import_query": true
+      },
+      {
+        "address": "00bf6802",
+        "name": "bad_alloc",
+        "signature": "undefined __thiscall bad_alloc(bad_alloc * this)",
+        "body_end_inclusive": "00bf681a",
+        "reported_instructions": 9,
+        "callsite": "00bf6856",
+        "caller_operands": "ECX=0109DD68; no explicit stack arguments. Guard bit was already set. Result not consumed.",
+        "body_start": "00bf6802",
+        "metadata_span_bytes": 25,
+        "metadata_only": true,
+        "no_child_body_listing_bytes_handler_or_import_query": true
+      },
+      {
+        "address": "00bf6ff5",
+        "name": "_atexit",
+        "signature": "int __cdecl _atexit(_func_4879 * param_1)",
+        "body_end_inclusive": "00bf7006",
+        "reported_instructions": 8,
+        "callsite": "00bf6860",
+        "caller_operands": "One stack callback address00CE1122; POP ECX removes4; EAX status ignored.",
+        "body_start": "00bf6ff5",
+        "metadata_span_bytes": 18,
+        "metadata_only": true,
+        "no_child_body_listing_bytes_handler_or_import_query": true
+      },
+      {
+        "address": "00bf63a6",
+        "name": "exception",
+        "signature": "undefined __thiscall exception(exception * this, exception * param_1)",
+        "body_end_inclusive": "00bf63fd",
+        "reported_instructions": 38,
+        "callsite": "00bf686a",
+        "caller_operands": "ECX=EBP-0C; one pushed source pointer ESI=0109DD68. No explicit caller cleanup before next pushes; metadata indicates thiscall. No child RET/cleanup body verified.",
+        "body_start": "00bf63a6",
+        "metadata_span_bytes": 88,
+        "metadata_only": true,
+        "no_child_body_listing_bytes_handler_or_import_query": true
+      },
+      {
+        "address": "00bf6885",
+        "name": "__CxxThrowException@8",
+        "signature": "noreturn undefined __CxxThrowException@8(void)",
+        "body_end_inclusive": "00bf68ce",
+        "reported_instructions": 29,
+        "callsite": "00bf687f",
+        "caller_operands": "Two pushed DWORDs: metadata address00E03CC0 first, local addressEBP-0C second. Exact child cleanup, EH dispatcher behavior and thrown class identity are not audited.",
+        "body_start": "00bf6885",
+        "metadata_span_bytes": 74,
+        "metadata_only": true,
+        "no_child_body_listing_bytes_handler_or_import_query": true
+      }
+    ],
+    "opaque_operands_not_dereferenced": [
+      {
+        "address": "0109dd74",
+        "role": "Low-bit guard BYTE read and DWORD OR destination"
+      },
+      {
+        "address": "0109dd68",
+        "role": "Captured static constructor/copy-source address"
+      },
+      {
+        "address": "00ce1122",
+        "role": "Passed callback pointer to registration service; not a direct child query"
+      },
+      {
+        "address": "00e03cc0",
+        "role": "First pushed opaque terminal-call metadata pointer"
+      },
+      {
+        "address": "00d6923c",
+        "role": "Opaque first-DWORD publication into stack local after copy"
+      }
+    ]
+  },
+  "terminal_flow_qualification": {
+    "callee_metadata_reports_noreturn": true,
+    "current_call_override_fallthrough_or_function_flag_properties_available": false,
+    "attempted_read_only_command": "bsp.py ghidra flow-properties 0x00BF687F --output local/cc12_allocator_terminal_flow.json",
+    "retained_response_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_allocator_terminal_flow.json",
+      "physical_bytes": 7860,
+      "physical_sha256": "25c09f3a176e4a4868f4bb7eb3af3a259ff7694a5c2edd0a92dffab98c253c09",
+      "canonical_lf_bytes": 7749,
+      "canonical_lf_sha256": "a082cca49d71f4eb846ce51207f945dde94239cddf63e927f78b282c8a27e2f3",
+      "physical_crlf_count": 111
+    },
+    "http_status": 200,
+    "response_error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.",
+    "flags_not_assumed_from_decompiler": true,
+    "no_permission_or_config_change_attempted": true,
+    "no_mutation_fallback": true,
+    "conclusion": "Physical body/tail coverage is independent of current no-return/flow overrides. Metadata role is recorded, while original throw/termination/return behavior remains a child/runtime contract."
+  },
+  "normal_and_failure_schedule": [
+    {
+      "sites": [
+        "00bf681b",
+        "00bf681c",
+        "00bf681e",
+        "00bf6821"
+      ],
+      "operation": "Save EBP, establish ordinary frame, reserve0Ch local bytes, jump directly to first allocation attempt. There is no native request clamp or zero-size adjustment in this body."
+    },
+    {
+      "sites": [
+        "00bf6830",
+        "00bf6833",
+        "00bf6838",
+        "00bf683a",
+        "00bf683b",
+        "00bf683d",
+        "00bf683e"
+      ],
+      "operation": "Push CURRENT dword[EBP+8] for every malloc attempt. Test EAX, POP ECX cleans4 while preserving flags, and branch to new-handler only for zero. Nonzero EAX survives LEAVE/RET unchanged; caller owns original size cleanup."
+    },
+    {
+      "sites": [
+        "00bf6823",
+        "00bf6826",
+        "00bf682b",
+        "00bf682d",
+        "00bf682e"
+      ],
+      "operation": "After a zero allocation result, reread CURRENT dword[EBP+8] for callnewh. Test EAX then POP ECX without changing flags. Zero goes to error construction; any nonzero result, including negative, falls through to another separately reread malloc size. No retry count limit or catch is present."
+    },
+    {
+      "sites": [
+        "00bf683f",
+        "00bf6846",
+        "00bf684b",
+        "00bf684d"
+      ],
+      "operation": "Read only bit0 of BYTE[0109DD74]; MOV ESI,0109DD68 preserves those TEST flags. If bit already set skip initialization. Otherwise OR bit0 into DWORD[0109DD74] before child construction. No atomic/lock instruction or rollback of this store exists locally."
+    },
+    {
+      "sites": [
+        "00bf6854",
+        "00bf6856",
+        "00bf685b",
+        "00bf6860",
+        "00bf6865"
+      ],
+      "operation": "ECX=static address0109DD68 into directBF6802. Then push callback address00CE1122 and callBF6FF5; POP ECX cleans4. Return status from registration is ignored. Static address remains captured in ESI under ordinary child-preservation assumptions."
+    },
+    {
+      "sites": [
+        "00bf6866",
+        "00bf6867",
+        "00bf686a"
+      ],
+      "operation": "Push captured static-source pointer and set ECX to reserved localEBP-0C before BF63A6. No zeroing of the local0Ch occurs in this body before the child call. Source content, field ownership and actual copied extent remain child contracts."
+    },
+    {
+      "sites": [
+        "00bf686f",
+        "00bf6874",
+        "00bf6877",
+        "00bf6878",
+        "00bf687f"
+      ],
+      "operation": "Push opaque address00E03CC0 and localEBP-0C pointer; overwrite local first DWORD with00D6923C after the copy; callBF6885. There is no local epilogue/catch/destructor after this call in the105B body."
+    }
+  ],
+  "stack_register_and_fault_contract": {
+    "frame": "Let S be entryESP. Saved EBP atS-4; EBP=S-4; local baseL=EBP-0C=S-10h; incoming size word atEBP+8=S+4. Quiescent ESP=L after0Ch allocation.",
+    "argument": "Every malloc/new-handler push independently reads the original size argument word[EBP+8]. It is not cached in a preserved register or private size local.",
+    "normal_return": "Only nonzero malloc EAX follows LEAVE/RET. EAX is not overwritten by TEST or POP ECX. No return-value validation or adjustment is made.",
+    "flags": "Both allocation and new-handler branches use TEST flags across POP ECX. Guard branch uses TEST flags across MOV ESI. POP/MOV do not change those flags.",
+    "nonvolatile_registers": "Normal success path preserves EBP and never touches ESI/EBX/EDI. Failure path writes ESI without a save/restore and has no selected normal-return epilogue; no exceptional register-state equivalence is claimed.",
+    "local_exception_cleanup": "No local FS registration, try/catch, unwind-state store, cleanup funclet call or destructor is selected in105B. Child/helper/caller runtime ownership and cleanup remain external.",
+    "effects_before_failure": "Guard bit is set before static construction/registration; if those calls fail no local reset occurs. If copy/terminal service fails, prior effects remain without a selected local rollback.",
+    "invalid_and_concurrent_access": "No guarantees for arbitrary stack/global mutation, corrupt pointers, concurrent first failure, asynchronous faults or handler reentrancy are established."
+  },
+  "current_Source_comparison": {
+    "interface": "singleton_lifetime_allocate(const SingletonAllocationRequest&) uses request.host_bytes; kind/native_bytes do not select a different allocator in its body.",
+    "concrete_vector_provider": "raw_allocate(uint32 size) constructs {object,size,size}; the previously pinned Renderer ShaderGraph binds that concrete adapter for array/object allocation. Vector wrapper still takes an external allocation callback.",
+    "matched_outer_policy": "Current Source calls std::malloc; returns only nonnull; otherwise calls _callnewh with host_bytes, retries on any nonzero result and throws std::bad_alloc on zero. No explicit retry bound or zero-size normalization in this helper.",
+    "stable_size_qualification": "For the vector producer host_bytes equals incoming32-bit size, including already-wrapped zero. Source rereads a request-object field expression; Native physically rereads its own argument stack word. The adapter materializes a distinct request object. Arbitrary alias/custom-handler mutation and emitted instruction identity are not established.",
+    "child_identity_qualification": "Native BF9F1A/C055B1 bodies were not read; their internal heap/new-mode/custom handler/zero-size semantics may add behavior. Host std::malloc/_callnewh binding and current exception runtime do not establish Original service/global-handler identity.",
+    "failure_object_difference": "Native selected failure path guards a static address, calls a constructor, registers a callback, copies to a0Ch stack reservation, overwrites its first DWORD and passes two opaque operands to a terminal service. Source directly throws the current host std::bad_alloc; it does not reproduce those native addresses/storage/state/registration/metadata.",
+    "null_qualification": "Native normal-return edge requires nonzero allocation result. A zero malloc result invokes the external new-handler service even for size0. Ultimate malloc size0/new-handler behavior is not established here; selected body itself never normally returns a zero allocation.",
+    "no_new_build_or_emitted_graph_review": true,
+    "no_native_Cpp_EH_FH3_type_layout_destructor_profile_or_throwInfo_identity": true
+  },
+  "existing_exception_Source_and_remaining_work": {
+    "exact_search": {
+      "command": [
+        "rg",
+        "-ni",
+        "00bf6802|00bf63a6|00ce1122|0109dd68|0109dd74|00e03cc0|00d6923c|00bf6885",
+        "src",
+        "include"
+      ],
+      "match_count": 1,
+      "output": "src\\native_legacy_exception_owner.cpp:50:    // Complete library copy body 00BF63A6..00BF63FE. Preserve its nullable\n",
+      "qualification": "Case-insensitive exact-address search across src/include; not a proof against unknown generated/external or differently named providers."
+    },
+    "existing_source": "src/native_legacy_exception_owner.cpp has private construct_base/destroy_base/copy_base helpers for its NativeLegacyExceptionStorage logic/length-error owners.",
+    "existing_copy": "Private copy_base lines48..72 explicitly refers toBF63A6 and uses nullable host malloc, ownership/message fields and current-source reload. Private destroy_base lines27..35 publishes a base profile then conditionally host-frees its message. These are Source observations, not renewed Native child contracts.",
+    "owner_extent": "Public NativeLegacyExceptionStorage is0x28 bytes with a leading0Ch base. It is not a newly proved0Ch bad-allocation object type; do not bind an0Ch stack reservation by pretending it is a live0x28 owner.",
+    "unreconciled_child_extent": "Existing copy_base comment saysBF63A6..BF63FE (89-byte span); fresh child metadata saysBF63A6..BF63FD (88-byte span). No child bytes/listing or repair was authorized, so no reconciliation or completeness conclusion is made here.",
+    "needed_bounded_work": [
+      "Native BF6802 constructor25-byte metadata body and actualstatic storage/profile/message ownership contract.",
+      "Renew BF63A6 copy extent/ABI/body versus existing private Source, before treating it as the0Ch failure-frame producer.",
+      "Separate scope for registered callbackCE1122 and any destructor/retirement edge it actually selects; not inferred solely from atexit or class labels.",
+      "Separate scope for opaqueD6923C/E03CC0 data and BF6885 runtime/EH contracts; direct child metadata/name is not exception-type identity.",
+      "Explicit actual0Ch failure-owner lifetime/composition and appropriate callable Source interfaces if binary/exceptional equivalence is sought."
+    ],
+    "no_new_exception_adapter_or_constructor_destructor_source_written": true
+  },
+  "current_repository_input_pins": [
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "physical_bytes": 13257,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "canonical_lf_bytes": 13257,
+      "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 16,
+          "text": "#include \"bsp/singleton_lifetime.hpp\"\n\n#define WIN32_LEAN_AND_MEAN\n#define NOMINMAX\n#include <windows.h>\n#include <new.h>\n\n#include <cstdlib>\n#include <cstring>\n#include <limits>\n#include <new>\n#include <stdexcept>\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Singleton lifetime reconstruction requires MSVC Win32.\n#endif"
+        },
+        {
+          "start_line": 51,
+          "end_line": 67,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "physical_bytes": 4372,
+      "physical_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "canonical_lf_bytes": 4372,
+      "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "excerpts": [
+        {
+          "start_line": 11,
+          "end_line": 20,
+          "text": "// Explicit host allocation boundary: native object sizes are evidence, while\n// host_bytes allocates the reconstructed C++ type. The returned bytes are raw.\nenum class SingletonAllocationKind { manager, pointer_slots, critical_section, object };\nstruct SingletonAllocationRequest {\n    SingletonAllocationKind kind;\n    std::size_t native_bytes;\n    std::size_t host_bytes;\n};\nvoid* singleton_lifetime_allocate(const SingletonAllocationRequest&);\nvoid singleton_lifetime_free(void*) noexcept;"
+        }
+      ]
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "physical_bytes": 36751,
+      "physical_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "canonical_lf_bytes": 36751,
+      "canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "cf5d79719ef386079e97ea68d83983de410cb08b",
+      "excerpts": [
+        {
+          "start_line": 106,
+          "end_line": 115,
+          "text": "namespace bsp::game {\nnamespace {\nusing U=std::uint32_t;\nvoid check(bool value,const char* message) { if(!value) throw std::runtime_error(message); }\nU bits(const void* p) noexcept { return reinterpret_cast<U>(p); }\ntemplate<class T> T get(const void* p,U offset=0) noexcept {\n    T value;std::memcpy(&value,static_cast<const unsigned char*>(p)+offset,sizeof value);return value;\n}\nvoid* __cdecl raw_allocate(U size) { return singleton_lifetime_allocate({SingletonAllocationKind::object,size,size}); }\nvoid __cdecl raw_free(void* p) noexcept { singleton_lifetime_free(p); }"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_shader_preload.hpp",
+      "physical_bytes": 3737,
+      "physical_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "canonical_lf_bytes": 3737,
+      "canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "4cb7b1e2ef254a58c18e4f71102d4920c6d5e3ca",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 27,
+          "text": "namespace bsp {\n// Actual 0Ch pointer vector at application+08; count/capacity are signed.\n// Entries own the material loader's returned caller references, including null.\nstruct NativeApplicationPointerVectorStorage {\n    void** data_00;\n    std::int32_t count_04,capacity_08;\n};\nstatic_assert(sizeof(NativeApplicationPointerVectorStorage)==12);\nstruct NativeApplicationPointerVectorAllocation {\n    void* (*allocate_00bf55be)(std::uint32_t);\n    void (*free_00bf6989)(void*);\n};\n// 735EC0: ECX actual0Ch header; stack signed request; RET4. Minimum1,\n// signed capacity comparison, wrapping request*4 allocation, live source/count\n// reads, free CURRENT old data, THEN publish new data/capacity. Count unchanged.\n// Valid readable extents and native allocator/free contracts are required.\n// No rollback or original CRT/new-handler/FH3 identity is added.\nvoid reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage&,std::int32_t,\n    const NativeApplicationPointerVectorAllocation&);"
+        }
+      ]
+    },
+    {
+      "path": "src/native_shader_preload.cpp",
+      "physical_bytes": 9265,
+      "physical_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "canonical_lf_bytes": 9265,
+      "canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "8f03277c0e7fa740e636fd51cfe5ffbe885047dc",
+      "excerpts": [
+        {
+          "start_line": 23,
+          "end_line": 41,
+          "text": "void reserve_native_application_pointer_vector_00735ec0(\n    NativeApplicationPointerVectorStorage& rows,I requested,\n    const NativeApplicationPointerVectorAllocation& allocation) {\n    if(requested<1)requested=1;\n    if(read<I>(&rows,8)>=requested)return;\n    void* const fresh=allocation.allocate_00bf55be(static_cast<U>(requested)*4u);\n    auto cursor=reinterpret_cast<std::uintptr_t>(fresh);\n    U index=0;\n    while(signed_bits(index)<read<I>(&rows,4)) {\n        if(cursor) {\n            const auto source=read<std::uintptr_t>(&rows);\n            put<U>(reinterpret_cast<void*>(cursor),0,\n                read<U>(reinterpret_cast<const void*>(source+index*4u)));\n        }\n        ++index;cursor+=4u;\n    }\n    allocation.free_00bf6989(read<void*>(&rows));\n    put<void*>(&rows,0,fresh);put<I>(&rows,8,requested);\n}"
+        }
+      ]
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "physical_bytes": 5121,
+      "physical_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "canonical_lf_bytes": 5121,
+      "canonical_lf_sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "40bba5339f57a50f769b6143085bd62062250094",
+      "excerpts": [
+        {
+          "start_line": 14,
+          "end_line": 35,
+          "text": "// Verified native table address words; never dispatched as host C++ vtables.\nconstexpr std::uint32_t exception_vtable = 0x00d69370;\nconstexpr std::uint32_t logic_error_vtable = 0x00d69248;\nconstexpr std::uint32_t length_error_vtable = 0x00d69260;\n\nvoid construct_base(NativeLegacyExceptionStorage& owner) noexcept {\n    // Complete library constructor 00BF632F..00BF6340.\n    volatile auto& actual = owner;\n    actual.base_message_04 = nullptr;\n    actual.owns_base_message_08 = 0;\n    actual.native_vtable_00 = exception_vtable;\n}\n\nvoid destroy_base(NativeLegacyExceptionStorage& owner) noexcept {\n    // 00BF6454..00BF646A tests ownership BEFORE publishing the base table.\n    // Message/ownership fields remain unchanged, including after a real free.\n    volatile auto& actual = owner;\n    const auto owned = actual.owns_base_message_08;\n    actual.native_vtable_00 = exception_vtable;\n    if (owned != 0) {\n        std::free(actual.base_message_04);\n    }"
+        },
+        {
+          "start_line": 48,
+          "end_line": 72,
+          "text": "void copy_base(NativeLegacyExceptionStorage& owner,\n    const NativeLegacyExceptionStorage& source) {\n    // Complete library copy body 00BF63A6..00BF63FE. Preserve its nullable\n    // _malloc contract rather than using the throwing singleton allocator.\n    volatile auto& actual = owner;\n    const volatile auto& actual_source = source;\n    actual.native_vtable_00 = exception_vtable;\n    const auto owned = actual_source.owns_base_message_08;\n    actual.owns_base_message_08 = owned;\n    auto* const captured_message = actual_source.base_message_04;\n    if (owned == 0) {\n        actual.base_message_04 = captured_message;\n    } else if (!captured_message) {\n        actual.base_message_04 = nullptr;\n    } else {\n        const auto bytes = static_cast<std::uint32_t>(std::strlen(captured_message)) + 1u;\n        auto* const replacement = static_cast<char*>(std::malloc(bytes));\n        actual.base_message_04 = replacement;\n        if (replacement) {\n            // 00BF63DE reloads source+4 after malloc and destination publication.\n            auto* const current_source_message = actual_source.base_message_04;\n            (void)strcpy_s(replacement, bytes, current_source_message);\n        }\n    }\n}"
+        },
+        {
+          "start_line": 108,
+          "end_line": 127,
+          "text": "NativeLegacyExceptionStorage& copy_native_legacy_logic_error_004118d0(\n    NativeLegacyExceptionStorage& owner, const NativeLegacyExceptionStorage& source) {\n    copy_base(owner, source); // Native EH state is still -1 during base copying.\n    owner.native_vtable_00 = logic_error_vtable;\n    owner.message_0c.capacity_18 = 15;\n    owner.message_0c.length_14 = 0;\n    // Native state 0 is armed before the first-byte store at 00411918.\n    // FuncInfo D84024 has no catch map: C5E050 unwinds the base only.\n    BaseUnwindCleanup cleanup{owner};\n    owner.message_0c.buffer_04.inline_bytes[0] = '\\0';\n    native_legacy_sbo_string_assign_substring_00408120(\n        owner.message_0c, source.message_0c, 0, 0xffffffffu);\n    cleanup.armed = false;\n    return owner;\n}\n\nNativeLegacyExceptionStorage& copy_native_legacy_length_error_00411940(\n    NativeLegacyExceptionStorage& owner, const NativeLegacyExceptionStorage& source) {\n    copy_native_legacy_logic_error_004118d0(owner, source);\n    owner.native_vtable_00 = length_error_vtable;"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "physical_bytes": 3232,
+      "physical_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "canonical_lf_bytes": 3232,
+      "canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "574905ddb640b9cd3edf3cfa70feef903c165b42",
+      "excerpts": [
+        {
+          "start_line": 11,
+          "end_line": 27,
+          "text": "// Actual Win32 28h exception storage. The leading 0Ch is std::exception's\n// vtable, message pointer and ownership DWORD; the existing 1Ch SBO string\n// starts at +0Ch. Destruction is explicit and does not clear base fields.\nstruct NativeLegacyExceptionStorage {\n    std::uint32_t native_vtable_00;\n    char* base_message_04;\n    std::uint32_t owns_base_message_08;\n    NativeLegacySboStringStorage message_0c;\n};\n\nstatic_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(NativeLegacyExceptionStorage) == 0x28);\nstatic_assert(offsetof(NativeLegacyExceptionStorage, base_message_04) == 4);\nstatic_assert(offsetof(NativeLegacyExceptionStorage, owns_base_message_08) == 8);\nstatic_assert(offsetof(NativeLegacyExceptionStorage, message_0c) == 0x0c);\nstatic_assert(std::is_trivially_default_constructible_v<NativeLegacyExceptionStorage>);\nstatic_assert(std::is_trivially_copyable_v<NativeLegacyExceptionStorage>);"
+        },
+        {
+          "start_line": 45,
+          "end_line": 61,
+          "text": "// 004118D0..00411935, ECX destination, stack source owner, RET4/EAX this.\n// Base copying is outside the owner's state-0 unwind scope. A base-owned\n// message uses nullable CRT malloc, then reloads source.message for strcpy_s.\nNativeLegacyExceptionStorage& copy_native_legacy_logic_error_004118d0(\n    NativeLegacyExceptionStorage&, const NativeLegacyExceptionStorage& source);\n\n// 00411940..00411959: call logic-error copy, then publish length-error vtable.\n// ECX destination, stack source owner, RET4/EAX this.\nNativeLegacyExceptionStorage& copy_native_legacy_length_error_00411940(\n    NativeLegacyExceptionStorage&, const NativeLegacyExceptionStorage& source);\n\n// Native vtable DWORDs are retained as verified address data, not callable host\n// C++ vtables. These functions do not establish native throw/exception ABI.\n// The caller begins the raw storage lifetime by default-initialization without\n// parentheses, which performs no field writes. These functions preserve the member\n// string's leading DWORD and unused buffer bytes unless the string helper writes\n// them. No implicit struct construction or additional member cleanup is applied."
+        }
+      ]
+    },
+    {
+      "path": "reports/cc12_application_pointer_vector_crt_boundary_readiness.json",
+      "physical_bytes": 47520,
+      "physical_sha256": "aa6d873b885f6ddb1d6780c895911b0430b5320ef4211e23c0211380cd0504f3",
+      "canonical_lf_bytes": 46765,
+      "canonical_lf_sha256": "4237079b104bf0fad0173e88c9f87170607c001f565eba2109b952e24ab84e0e",
+      "physical_crlf_count": 755,
+      "matches_base_blob": true,
+      "git_blob_oid": "baed503972d5d180db2f51202a470a8b4589a4db"
+    },
+    {
+      "path": "reports/singleton_lifetime_audit.json",
+      "physical_bytes": 28284,
+      "physical_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "canonical_lf_bytes": 28284,
+      "canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "d52f6a8e6dbbab41c89787606cb8ca23349f767b"
+    },
+    {
+      "path": "config/target.json",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_bytes": 455,
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "a46b97705f35162ba70bfbd4909788d11bb188b4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "canonical_lf_bytes": 14411,
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_crlf_count": 0,
+      "matches_base_blob": true,
+      "git_blob_oid": "0056201883c1594d9267d2fcf4990385461f0857",
+      "excerpts": [
+        {
+          "start_line": 101,
+          "end_line": 110,
+          "text": "    def verify(self):\n        project = self.get('list_project_files', folder='/')\n        info = self.get('get_current_program_info')\n        expected = self.config\n        if project['project_name'] != expected['project']:\n            raise RuntimeError(f\"Wrong Ghidra project: {project['project_name']}\")\n        for key, actual in [('program_path', info['path']), ('language', info['language']), ('image_base', info['image_base'])]:\n            if actual != expected[key]:\n                raise RuntimeError(f'Wrong target {key}: {actual}')\n        return project, info"
+        }
+      ]
+    }
+  ],
+  "inherited_canonical_pin_replays": [
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_shader_binary_cache.hpp",
+      "expected_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "actual_canonical_lf_sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/game_native_renderer_shaders.inc",
+      "expected_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "actual_canonical_lf_sha256": "5cb082bb29b485ff08a53ae59b8db1601b836b387dba934328ae53374f58ea8e",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/game_native_renderer_application.cpp",
+      "expected_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "actual_canonical_lf_sha256": "96cbcffd1ec7ae34c3504b9805f5a2b095da999d7b123a243eabf12cfaa6bb38",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "expected_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "actual_canonical_lf_sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/singleton_lifetime.cpp",
+      "expected_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "actual_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "expected_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "actual_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "reports/cc12_application_pointer_vector_reserve_native_readiness.json",
+      "expected_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "actual_canonical_lf_sha256": "466642c03d65f2e1de53d456f18d1552a57d2928a78502080ca4ff6b0be9c8aa",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "current_repository_input_pins",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_native_application_pointer_vector_resize_primary_review.json",
+      "expected_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "actual_canonical_lf_sha256": "9e67da3ac4ced2b0ebf643f9c503d861b2d2034eb2d14c1d501255666e687d38",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/native_shader_preload_r99.json",
+      "expected_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "actual_canonical_lf_sha256": "26432c3cf6708f042c77f45b3fc2e41303f6becb4a730a5252661cb9bcee63cc",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_application_pointer_vector_resize.hpp",
+      "expected_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "actual_canonical_lf_sha256": "aa94e3a6d705a95233482429616e7eecbf14c3213b826af71a8278f85081ab58",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_application_pointer_vector_resize.cpp",
+      "expected_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "actual_canonical_lf_sha256": "1dffc9e05866bce16220c520f45039986b9220caa76e6e698bf71cfa7718e02b",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "include/bsp/native_shader_preload.hpp",
+      "expected_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "actual_canonical_lf_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "src/native_shader_preload.cpp",
+      "expected_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "actual_canonical_lf_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "config/target.json",
+      "expected_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "actual_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "tools/ghidra_export.py",
+      "expected_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "actual_canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "reports/cc12_application_vector_retirement_readiness.json",
+      "expected_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "actual_canonical_lf_sha256": "3619fa7459bd10fb878911a500272f07af63496ba587612eda08cc19385d8cb7",
+      "matches": true
+    },
+    {
+      "parent_field": "inherited_canonical_pin_replays",
+      "path": "docs/CC12_APPLICATION_VECTOR_RETIREMENT_READINESS.md",
+      "expected_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "actual_canonical_lf_sha256": "e9d0d61adba51164c92d6a6822d4d00bbc7352723a0af4c063ad109ce1c3e02e",
+      "matches": true
+    }
+  ],
+  "historical_context_only": {
+    "path": "reports/singleton_lifetime_audit.json",
+    "allocator_record": {
+      "address": "00bf681b",
+      "proposed_name": "operator_new",
+      "cpp": "singleton_lifetime_allocate",
+      "native_abi": "cdecl size on stack; EAX raw pointer; RET; throws on exhausted allocation.",
+      "reconstruction_scope": "host_crt_service_boundary",
+      "evidence": "malloc then __callnewh(size) retry loop verified in assembly; host std::malloc/_callnewh/std::bad_alloc implement allocator service with host_bytes. CRT exception/vtable/global handler identity not replaced. Proposed library-role name remains descriptive."
+    },
+    "existing_scope": "host_crt_service_boundary",
+    "historical_tests_or_native_lifecycle_not_rerun": true,
+    "existing_exclusion": "new-handler exhaustion fixture",
+    "no_historical_dynamic_claim_renewed": true
+  },
+  "validation": {
+    "complete105B_matches_current_PE": true,
+    "all33live_starts_and_decode_match": true,
+    "all_four_internal_branch_targets_checked": true,
+    "all_six_direct_calls_checked": true,
+    "adjacent1B_live_CC_equals_PE_and_decodes_INT3": true,
+    "direct_children_metadata_only": true,
+    "eleven_repository_pins_match_base": true,
+    "twenty_nine_inherited_canonical_references_replayed": true,
+    "inherited_unique_paths": 17,
+    "Source_helper_and_related_exception_owner_excerpts_checked": true,
+    "no_flow_flag_assumption_or_mutation": true,
+    "report_json_parses": true,
+    "staged_exact_two_owned_files": true,
+    "diff_check_passed": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_functions": 0,
+    "new_fragments": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_execution": 0,
+    "Source_changes": 0,
+    "Ghidra_changes": 0,
+    "ledger_changes": 0,
+    "CMake_changes": 0,
+    "Application_wiring": 0,
+    "game_validation": 0
+  },
+  "conclusion": "The complete Native allocator outer loop and physical failure schedule are freshly established. Current host Source matches the qualified stable-size outer malloc/new-handler policy, while fixed child identities and native error-owner/registration/throw/runtime behavior remain separate bounded work. No new implementation or Original credit is admitted."
+}
