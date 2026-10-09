@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_global_config_sample_zero_adapter_source",
+  "generated_at_utc": "2026-10-09T04:32:32.714917+00:00",
+  "base_commit": "f444d328c6846e43e06f36dc022f3c08e65fbc2b",
+  "main_at_start": "8f5a02d0a0c67ce474873f8bf06c1ae10848f924",
+  "readiness_commit": "884e8f4229597305fb3d5a16535ec1445f130402",
+  "status": "source_implemented_static_inspection_only_pending_primary_registration_build_and_emitted_review",
+  "additional_original_functions": 0,
+  "implementation": {
+    "class_name": "NativeGlobalConfigSampleDispatch final : GlobalConfigEffects",
+    "borrowed_state": "SoundSampleRuntime& canonical_samples_",
+    "owned_state": "NativeGlobalConfigCurrentDispatch current_dispatch_ (stateless)",
+    "constructor": "Explicit borrowed-reference initialization only; no service initialization, cache lookup, reference-count operation, registration or ownership transfer.",
+    "identity_stability": "All four copy/move constructor and assignment operations deleted; no default constructor.",
+    "stop": "Explicitly qualified current_dispatch_.NativeGlobalConfigCurrentDispatch::stop_slot_08(actual_object, flag); original flag unchanged.",
+    "zero": "Copy the actual receiver first DWORD with std::memcpy into uint32_t profile. Current D5B074 selects explicitly qualified canonical_samples_.SoundSampleRuntime::zero_references_slot_00(actual_object), then immediate return. The alternate arm explicitly calls current_dispatch_.NativeGlobalConfigCurrentDispatch::zero_references_slot_00(actual_object).",
+    "payload_post_call_access": false,
+    "extra_increment_or_decrement": false,
+    "slot_writes": false,
+    "cache_lookup_as_proof": false,
+    "payload_table_installation": false,
+    "exception_swallowing": false,
+    "no_op_default": false,
+    "application_assignment": false
+  },
+  "preconditions_before_dispatch": [
+    "Actual receivers are non-null and live at entry. The existing GlobalConfig owner controls the real aligned actual+4 reference-count decrement; zero is entered only on its zero result.",
+    "The domain is an explicitly admitted union: complete actual Source 0x7C samples whose current first DWORD is D5B074, or separately admitted raw objects whose current table word is distinct from D5B074 and names a compatible genuine callable current-process table.",
+    "The current numeric D5B074 branch is only a representation selector after provenance has been established. It does not validate type, size, allocation base, ownership or lifetime.",
+    "Samples must originate from this exact retained canonical SoundSampleRuntime factory/cache domain, with the same current cache/publication, strings, resource runtime/owner, FMOD state, accounting/null words and matching Source allocator. Cache membership alone is not provenance; a valid fresh miss can be absent after duplicate insertion.",
+    "The complete sample base is required. Sample+8 options, another subobject, foreign-cache samples, SoundOwnedResource, cache owners, projected SoundInstance/SoundLevelEntry or raw tables copied from Original data are not admitted.",
+    "For the raw alternative, no numeric Original identity is treated as a callable table. Its current zero method uses ECX actual receiver and no stack flag; stop additionally requires the actual current+8 method accepting one DWORD flag.",
+    "Stop admits only the raw callable second-domain object. Source D5B074 sample v8 is literal 6F6F4C0A and cannot be used as a stop method.",
+    "Retain the adapter and exact canonical SoundSampleRuntime plus all its borrowed services/publications through GlobalConfig drain and the last sample release. Sound runtime shutdown must not destroy the needed cache/owner/resources first.",
+    "Existing GlobalConfigEffects methods are noexcept. Actual selected callbacks, including Source sample cleanup, must satisfy a concrete nonthrowing service contract; existing sample helpers can otherwise throw. No catch converts a failure to success."
+  ],
+  "existing_behavior_preserved": [
+    "GlobalConfig actual+4 decrement and loop/slot ordering remain in existing Source, unchanged.",
+    "The sample route already profile-checks and calls scalar_delete_sound_sample_00a82e80(sample,1,sample_) with no extra sample decrement. It performs full sample cleanup and matching scalar free.",
+    "The owned generic provider still fetches the actual current table/method for each call. Both adapter arms use explicitly qualified methods to select their concrete implementations.",
+    "GlobalConfig/Singleton/Sound source files, allocator/string services and all existing app assignments remain unchanged. No CMake registration was performed by this worker."
+  ],
+  "limits": [
+    "The non-null second-array producer and its actual raw callable representation remain unresolved admission work; second arrays are not assumed empty.",
+    "Unchecked ObjectiveSounds indices can place sample pointers in stop-bearing second slots. This adapter does not make sample stop legal or validate loader inputs.",
+    "No general native EH/SEH equivalence, emitted ABI qualification, complete application wiring, shutdown ordering or gameplay validation is claimed.",
+    "Primary integrator owns source registration, normal build and emitted-code review. No worker build, test, probe, Ghidra or ledger mutation occurred."
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_global_config_sample_dispatch.hpp",
+      "absent_at_base": true,
+      "physical_sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498",
+      "physical_bytes": 1731,
+      "crlf_count": 0,
+      "lf_only_count": 34,
+      "normalized_lf_sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498",
+      "normalized_lf_bytes": 1731,
+      "worktree_blob_oid": "8005173515da82b82804c785f3ea53cb2d0a68a2",
+      "content": "#pragma once\n\n#include \"bsp/global_config.hpp\"\n\nnamespace bsp {\nclass SoundSampleRuntime;\n\n// The caller admits this union before dispatch: complete Source 7Ch samples\n// with current D5B074 from the retained canonical runtime/factory/cache, with\n// the same strings, resources and allocator; or actual raw objects with\n// compatible callable current-process tables whose current table word differs\n// from D5B074. A numeric stamp alone proves neither provenance nor lifetime,\n// and a numeric profile identity is not a callable table.\n// Stop accepts only the admitted raw domain; Source D5B074 samples have no\n// valid stop slot. Retain the canonical services through every callback, which\n// must be nonthrowing. The caller owns all reference operations and slot writes.\n// Receivers are non-null and live at entry. Zero is called only after the\n// caller's real actual+4 decrement reaches zero.\nclass NativeGlobalConfigSampleDispatch final : public GlobalConfigEffects {\npublic:\n    explicit NativeGlobalConfigSampleDispatch(SoundSampleRuntime& canonical_samples) noexcept;\n    NativeGlobalConfigSampleDispatch(const NativeGlobalConfigSampleDispatch&) = delete;\n    NativeGlobalConfigSampleDispatch& operator=(const NativeGlobalConfigSampleDispatch&) = delete;\n    NativeGlobalConfigSampleDispatch(NativeGlobalConfigSampleDispatch&&) = delete;\n    NativeGlobalConfigSampleDispatch& operator=(NativeGlobalConfigSampleDispatch&&) = delete;\n\n    void stop_slot_08(void* actual_object, std::uint32_t flag) noexcept override;\n    void zero_references_slot_00(void* actual_object) noexcept override;\n\nprivate:\n    SoundSampleRuntime& canonical_samples_;\n    NativeGlobalConfigCurrentDispatch current_dispatch_;\n};\n} // namespace bsp\n"
+    },
+    {
+      "path": "src/native_global_config_sample_dispatch.cpp",
+      "absent_at_base": true,
+      "physical_sha256": "3a25139152e76046b256130f93b22b06170ea85f7769cd081ce7dd1e1f6e6db8",
+      "physical_bytes": 951,
+      "crlf_count": 0,
+      "lf_only_count": 26,
+      "normalized_lf_sha256": "3a25139152e76046b256130f93b22b06170ea85f7769cd081ce7dd1e1f6e6db8",
+      "normalized_lf_bytes": 951,
+      "worktree_blob_oid": "25527e0da9337d652384479f1148d157f6f9801a",
+      "content": "#include \"bsp/native_global_config_sample_dispatch.hpp\"\n#include \"bsp/sound_sample_runtime.hpp\"\n\n#include <cstring>\n\nnamespace bsp {\nNativeGlobalConfigSampleDispatch::NativeGlobalConfigSampleDispatch(\n    SoundSampleRuntime& canonical_samples) noexcept\n    : canonical_samples_(canonical_samples) {}\n\nvoid NativeGlobalConfigSampleDispatch::stop_slot_08(void* actual_object,\n    std::uint32_t flag) noexcept {\n    current_dispatch_.NativeGlobalConfigCurrentDispatch::stop_slot_08(actual_object, flag);\n}\n\nvoid NativeGlobalConfigSampleDispatch::zero_references_slot_00(\n    void* actual_object) noexcept {\n    std::uint32_t profile;\n    std::memcpy(&profile, actual_object, sizeof(profile));\n    if (profile == 0x00d5b074u) {\n        canonical_samples_.SoundSampleRuntime::zero_references_slot_00(actual_object);\n        return;\n    }\n    current_dispatch_.NativeGlobalConfigCurrentDispatch::zero_references_slot_00(actual_object);\n}\n} // namespace bsp\n"
+    }
+  ],
+  "readiness_pin": {
+    "path": "reports/cc12_global_config_sample_zero_adapter_readiness.json",
+    "physical_sha256": "d4606fc21f5b12281ca62daa9682bbcabe8e3fc9155d63949da12e63920a8ad0",
+    "normalized_lf_sha256": "dddbfae9f9182fa67e2c3922c772a5dd4693ce4b7d21791c6e7b40b80ba7a7aa",
+    "git_blob_oid": "8195411e52caaa1cbfd47a6ad27c6f1d6ad1daa2"
+  },
+  "preserved_readiness_source_pins": [
+    {
+      "path": "include/bsp/sound_sample.hpp",
+      "normalized_lf_sha256": "43cdd558fa7135ed708b468e79f1104fc87e58ecfbe122d0cea94e5ae461f117",
+      "git_blob_oid": "abbfe14ea47117463aa80515dacc4f83bb6f0d6b",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/sound_sample_runtime.hpp",
+      "normalized_lf_sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123",
+      "git_blob_oid": "1630dbb61c3d0eb956fa559f8a9ad50eba48b1f9",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_sample_runtime.cpp",
+      "normalized_lf_sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837",
+      "git_blob_oid": "2720f31f8c84398c504fbda6ab9b51edb49670fc",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/sound_sample_cache.hpp",
+      "normalized_lf_sha256": "2fbe6d92bbfa4d04c2ed03124fb5e739bb883568547be174a112f0b9c17213e2",
+      "git_blob_oid": "56d27eec8437a43e2f10a73769bc751b948523e9",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_sample_cache.cpp",
+      "normalized_lf_sha256": "2050d68340afef08411e483c65f637917c81c301b17314d9d2e1f8e21d0bf364",
+      "git_blob_oid": "07de91a05a3dbdcd393f9fb59d0315e9005c01e8",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_sample.cpp",
+      "normalized_lf_sha256": "e804f9109d495ce292680d899da4b704241198ced6e4d441f977a29ed490099f",
+      "git_blob_oid": "44daaa5840eeb9da5987ffe80692b2f28f18e443",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/native_global_config_fields.hpp",
+      "normalized_lf_sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803",
+      "git_blob_oid": "9d47937ea57c05a4742f6ae2d37dfa16e3aa9e8c",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/native_global_config_fields.cpp",
+      "normalized_lf_sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+      "git_blob_oid": "781de7128109686318b8cc9f08be63688f150141",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/native_global_config_load.cpp",
+      "normalized_lf_sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b",
+      "git_blob_oid": "42f6c44fdd60659d4096a64a7c6b2d3b8709120e",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/global_config.hpp",
+      "normalized_lf_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "git_blob_oid": "ecd627f026e2821bfe6dc87583f99fd3d04f9283",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/global_config.cpp",
+      "normalized_lf_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "git_blob_oid": "551550917f25cf96ba756cebc77815424062d29c",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/game_sound_runtime.hpp",
+      "normalized_lf_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+      "git_blob_oid": "82568ef1384e93785a93eba2a220d5084bba348b",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/game_sound_runtime.cpp",
+      "normalized_lf_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+      "git_blob_oid": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/sound_system_owner.hpp",
+      "normalized_lf_sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215",
+      "git_blob_oid": "31094e55e31ba307184980116b8abd90e66ebe09",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_system_owner.cpp",
+      "normalized_lf_sha256": "12e542bf188c8fed05436ebfcee955504bef2317b5eb922b0844b1fb709a507b",
+      "git_blob_oid": "88e87370a2d7e64b8dc6d53b395752b7b68864ee",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_startup.cpp",
+      "normalized_lf_sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+      "git_blob_oid": "21801a5d338081a3c31daf77014fd8753b6384a4",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_sample_cache_shutdown.cpp",
+      "normalized_lf_sha256": "ef763412066de4f8cbb887f20833a3c14ac970e99ad8efdc429114c0a0f3f34c",
+      "git_blob_oid": "9515495f4126f3d804c554ce619a54b6f154a9b3",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/sound_resource_runtime.hpp",
+      "normalized_lf_sha256": "1d47b5b5d1f9c908ec481dfac76ec53b4b82ced579f7eb9a5ec983a1fb282529",
+      "git_blob_oid": "d96015e9981241f49ea6d6625d2be0e5243d2f03",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_resource_runtime.cpp",
+      "normalized_lf_sha256": "701461386a7667940f6f88a78dc2d794355f4e5452668682c797b1e883606058",
+      "git_blob_oid": "14ecfb176b06807d68483568c3bf199d4d6831d6",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_resource_cleanup.cpp",
+      "normalized_lf_sha256": "97933fd4cefc38f72212fc573a545d0364d0077315c7cb20d3cf9d45678b9d94",
+      "git_blob_oid": "c82409895c7a64d72af1700b3751a6c56eac5b98",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "git_blob_oid": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/game_sound_dialog_runtime.cpp",
+      "normalized_lf_sha256": "f440574dac1cd16f00b89f9062ecfab370eb9b47160dda708ad24797c77edf45",
+      "git_blob_oid": "2257038781ddd8757a8436d0d0841c89e24bfd05",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "include/bsp/sound_instance.hpp",
+      "normalized_lf_sha256": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948",
+      "git_blob_oid": "c507ddae58017f82a77c516683f8ccf58f77209b",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_channel_runtime.cpp",
+      "normalized_lf_sha256": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57",
+      "git_blob_oid": "0a50a79c9d9ab6e4f078179b97055f0e5ace8953",
+      "unchanged_from_readiness": true
+    },
+    {
+      "path": "src/sound_shutdown.cpp",
+      "normalized_lf_sha256": "145f36ad339a500cf9445b0e5810ca214221d27fb22025e2e25302757b7cf26b",
+      "git_blob_oid": "9961de655c61b7cb1640d12c83583efb4f6d27a4",
+      "unchanged_from_readiness": true
+    }
+  ],
+  "validation": {
+    "new_source_files": 2,
+    "existing_source_files_rechecked": 25,
+    "all_previous_source_pins_match": true,
+    "new_file_absence_at_base_checked": true,
+    "explicitly_qualified_dispatch_targets": 3,
+    "zero_first_dword_copy_count": 1,
+    "copy_move_declarations_deleted": 4,
+    "post_call_payload_access": false,
+    "reference_count_operations_added": 0,
+    "source_registration": false,
+    "build_performed": false,
+    "tests_or_probes_performed": false,
+    "ghidra_queries_or_mutations": false,
+    "native_execution": false,
+    "game_validation": false
+  }
+}
