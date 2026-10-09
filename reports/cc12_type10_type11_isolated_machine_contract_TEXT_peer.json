@@ -1,0 +1,251 @@
+{
+  "schema": "cc12_type1011_isolated_machine_contract_TEXT_peer_v1",
+  "status": "STATIC_TEXT_DATA_REVIEW_COMPLETE_NO_MACHINE_CONTRACT_BLOCKER_FOUND",
+  "Source_credit": 0,
+  "Root_receipts_issued": 0,
+  "candidate_programs_imported_or_executed": 0,
+  "Native_queries": 0,
+  "compiler_linker_runs": 0,
+  "target_processes": 0,
+  "provider_calls": 0,
+  "canonical_own_static_result": "own_run05/static_result.json",
+  "canonical_own_bookends": [
+    "own_run05/bookend_before.json",
+    "own_run05/bookend_after.json"
+  ],
+  "candidate": {
+    "seal_sha256": "db51a89661172d267ee74f22875ea2939ad9c5a1dfb232003dd8c682b81ac4d4",
+    "exact_files": 173,
+    "artifacts": 172,
+    "final_manifest_sha256": "9699c6578d43d06f15d06b2100946eecf867cf54128fa581d26d4a5ef5caf87a",
+    "payload_files": 8,
+    "historical_draft_files": 119,
+    "unadopted_Root_fields": 13,
+    "note": "All adoption statements concern this frozen candidate; this peer does not inspect or issue a later Root receipt."
+  },
+  "input_evidence": {
+    "original_frozen_file_pairs": 2301,
+    "sha256_file_checks_per_bookend": 4602,
+    "own_analysis_files": 2102,
+    "own_analysis_scopes": 16,
+    "own_analysis_memberships": 3588,
+    "candidate_files": 173,
+    "authority_files": 2,
+    "current_source_helper_and_contract_files": 20,
+    "saved_Native_listing_and_metadata_files": 4
+  },
+  "retained_guards": {
+    "Python_named_guard_calls": 381,
+    "Python_AST_equal_after_explicit_root_and_family_relocation": "all payloads except recipe.prepare strengthened current-config predicate",
+    "Python_byte_identical": [
+      "dependency_bootstrap.py.txt",
+      "external_python_driver.py.txt",
+      "type1011_gate.py.txt"
+    ],
+    "PowerShell_Require_before_after": [
+      47,
+      48
+    ],
+    "PowerShell_Check_before_after": [
+      15,
+      15
+    ],
+    "PowerShell_only_addition": "exact isolated BSP_EXPORTS_DIR constraint and corresponding allowed environment key",
+    "launch_compile_link_runtime_identity_Native_functions": "AST retained after authorized root/family relocation"
+  },
+  "Native_contract": {
+    "type10": {
+      "address": "008EF3E0",
+      "bytes": 116,
+      "instructions": 36,
+      "stride": 4,
+      "CALL_operand_offsets": [
+        51,
+        66
+      ]
+    },
+    "type11": {
+      "address": "008EF460",
+      "bytes": 119,
+      "instructions": 37,
+      "stride": 12,
+      "CALL_operand_offsets": [
+        54,
+        69
+      ]
+    },
+    "original_CALL_targets": [
+      "00BF55BE",
+      "00BF7680"
+    ],
+    "original_target_roles": [
+      "operator_new",
+      "memcpy"
+    ],
+    "register_ABI": "ECX=root56; entry EDX unused; stack COUNT, INPUT, full FLAGT; EAX=root; RET12",
+    "branch": "Only low FLAGT byte selects retain zero versus copy nonzero",
+    "root_written_half_open": [
+      [
+        0,
+        8
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        44,
+        45
+      ],
+      [
+        52,
+        56
+      ]
+    ],
+    "root_written_bytes": 29,
+    "root_preserved_bytes": 27,
+    "owner30": "preserved four bytes",
+    "marker2c": "one on both branches",
+    "source_match": "All73 Source assembly instructions match frozen saved Native listing semantics, after only immediate spelling and symbolic CALL/local JZ normalization; fixed CALL targets checked separately",
+    "fresh_Native_raw_bytes": "Not queried by this peer. Historical raw SHA pins remain required by the proposed fresh Native and machine gates."
+  },
+  "planned_cases": {
+    "matrix_probe_reader_and_frozen_binary_agreement": true,
+    "unique_cases": 8,
+    "lanes": {
+      "raw_Source": 8,
+      "raw_rebound_Native": 8,
+      "ordinary_Source": 8
+    },
+    "calls": 24,
+    "roots": 24,
+    "children": 12,
+    "root_frees_completion": 24,
+    "child_frees_completion": 12,
+    "type10_counts": [
+      4,
+      1,
+      4,
+      1
+    ],
+    "type10_FLAGT_hex": [
+      "73A9D500",
+      "C41E6800",
+      "9B2F7180",
+      "E063AC01"
+    ],
+    "type11_counts": [
+      2,
+      1,
+      2,
+      1
+    ],
+    "type11_FLAGT_hex": [
+      "D862A100",
+      "45BC7900",
+      "A71DE380",
+      "6FC95401"
+    ],
+    "binary_schema": "40-byte header +24*352 records +8*580 providers +2*139 code =13406 bytes",
+    "raw_observation_boundaries": "16 cases capture entry and return registers, full stack words, physical RET12 mapping and six arithmetic flags. Eight ordinary calls explicitly carry zero raw-capture fields. Copy ECX/EDX and all-EFLAGS preservation are not claimed.",
+    "memory_boundaries": "Full root56 and input40 with inside-array guards; opaque copied bytes through embedded NUL; all live root/input/child extents pairwise disjoint and outside active stack. No heap redzone claim.",
+    "cleanup_boundaries": "Free counts follow completed explicit cleanup loops and completion output; the format contains no independent per-free event transcript or provider-internal malloc retry count."
+  },
+  "complete_machine_gate_obligations": [
+    "All four fresh ordinary Win32 COFFs: primary/aux symbols, every relocation, overflow sentinel, weak TagIndex fallback modes1/3, associative COMDAT bases and complete retained section bytes after relocation; unsupported forms stop.",
+    "Root must supply actual complete support extents and map bindings, not adjacent-symbol guesses; required fresh Source constructors/adapters/canonical allocator/free/main/raw_call/ordinary callers must be present.",
+    "Whole linear decode and CFG, direct targets within decoded instructions or complete helpers, recursive normal/cold/cookie/chkstk/import-thunk coverage, no internal unreachable nonpadding bytes; only maximal trailing NOP/INT3 suffixes allowed.",
+    "Every fixed-memory IAT edge retains import identity; register-indirect edges need all-predecessor IAT provenance with register-write/call-clobber invalidation. Exactly one bounded raw-call target slot is allowed. Unknown edges stop.",
+    "Exactly one unexpanded report_gsfailure frontier is allowed only from the security-cookie failure jump. External IAT providers remain external boundaries, not complete provider-body coverage.",
+    "Independent reader recomputes COFF/map/PE/CFG/relocations before comparing primary coverage and packed gate. Neither reader imports the other or executes a target.",
+    "Fresh Native bodies must match disk and live saved-program reads and historical hashes. Source emitted bytes must differ only in the two genuine E8 operands; any extra Source suffix must be maximal unreachable padding.",
+    "Both rebound original and Source bind the same current size adapter/canonical allocator and current memcpy thunk. Current-provider success is not original private game allocator equivalence.",
+    "Exact six ordered launch inputs and two Root receipts remain mandatory. Exclusive attempts, one target launch, Native before/prelaunch/after and all dependency/provider bookends remain intact."
+  ],
+  "provider_observation_boundary": {
+    "functions": [
+      "malloc",
+      "free",
+      "memcpy",
+      "_callnewh"
+    ],
+    "snapshots": "four before allocations and four after all explicit frees",
+    "evidence_fields": "actual resolved external function and module addresses, canonical handle path, volume/file identity, file size, and32 loaded entry bytes",
+    "recorded_reader_checks": "selected full disk-file hash and handle identity; x86 export address; no forwarder; executable section; relocated disk entry32 equals loaded32; before/after provider records equal",
+    "excluded_claims": "No runtime snapshot for every imported/cold helper; no full DLL body or OS-wide mapped image proof; entry identity is not provider-wide semantics, private-game CRT/EH/OOM, class ownership or startup/game equivalence. _callnewh entry identity does not mean new-handler execution was observed."
+  },
+  "isolation": {
+    "historical_scope_categories_retained": 45,
+    "added_scopes": [
+      "isolated_native_exports_snapshot_DATA",
+      "isolated_optional_local_sqlite_absence"
+    ],
+    "environment_keys_external_root_recipe": [
+      [
+        14,
+        15
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        12,
+        13
+      ]
+    ],
+    "fresh_Source_and_query_route": "Explicit isolated Root Source12 plus current ghidra_export.py and target.json; no implicit Main Source lookup. Current target455 bytes is SHA-pinned and JSON-equal to historical467-byte CRLF copy.",
+    "include_environment": "Staged futureF/include first; exact separately pinned compiler/SDK include and library search profiles; root-to-recipe environment relation checked; implicit CL/LINK/Python/library overrides forbidden.",
+    "Native_transport": "q.Client(cfg) with explicit project bsp and program /battlestationspacific.exe; helper CLI defaults/snapshot/index are not called by recipe.native; BSP_GHIDRA_AUTOSTART=0.",
+    "exports": "All three proposed profiles explicitly choose isolated frozen_native_exports; workspace.exports_dir returns this override before Main fallback. Historical Main report paths remain explicit DATA pins only.",
+    "qualification": "Candidate files/memberships are deliberately empty and13 concrete fields null. Root must populate and adopt the current isolated closure, selected program pins, package/Capstone pin, actual host/environment and Job policy before selected imports.",
+    "live_path_note": "futureF and optional local SQLite remained absent in own_run05. futureD was absent at initial freeze and present by own_run05 during independent Root work; this peer neither wrote it nor inferred admission."
+  },
+  "not_admitted": [
+    "fresh machine-gate PASS",
+    "actual runtime case PASS",
+    "private game CRT equivalence",
+    "OOM/new-handler execution or exception equivalence",
+    "whole class/vtable/literal ownership dispatch",
+    "owner attachment and destructor graph",
+    "startup",
+    "gameplay",
+    "Source publication"
+  ],
+  "own_utility_history": "Own Python attempts01-03 stopped on reader normalization/schema mistakes (root/family spelling, decimal/hex operands, exact_files integer); attempt04 passed and was superseded by expanded final attempt05. Own PowerShell normalization spelling was corrected before final PASS. No candidate program ran in any attempt; earlier own outputs remain retained as noncanonical history.",
+  "decision": "No new blocker was found in this frozen machine-contract/path proposal. It is suitable for independent fresh Root qualification, subject to every retained pre-interpreter, complete linked-machine, current-provider and observation gate. This Source0 peer is not permission to bypass a gate or a Root admission receipt.",
+  "peer_package": {
+    "artifacts": 2359,
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011machinePeer01",
+    "exact_files": 2360,
+    "seal": {
+      "sha256": "4278232fdb1d94c18697be4f6cc7c3dfb642b2607facd160ff08244c248d3b5d",
+      "size": 436913,
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\t1011machinePeer01\\seal.json"
+    }
+  },
+  "arithmetic_flags_followup": {
+    "evidence": "existing sealed static_native_data and own_run05/saved_native_DATA_comparison.json; no new Native query",
+    "retain_low_byte_zero": "CMP 0,0 defines AF=0 and six arithmetic bits 0x44; all later retain MOV/POP/RET preserve flags",
+    "retain_final_flag_writers": [
+      "008EF3F9 CMP byte ptr [ESP+14h],0",
+      "008EF47C CMP byte ptr [ESP+14h],0"
+    ],
+    "copy_input": "observed target entry T minus24 before final ADD16",
+    "probe_lines": [
+      156,
+      157
+    ],
+    "XOR_in_complete_bodies": 0,
+    "copy_final_flag_writers": [
+      "008EF426 ADD ESP,10h",
+      "008EF4A9 ADD ESP,10h"
+    ],
+    "unconditional_mask_0x8D5_is_valid": true,
+    "recorded_reader_lines": [
+      89,
+      90
+    ],
+    "conditional_mask_correction_required": false
+  }
+}
