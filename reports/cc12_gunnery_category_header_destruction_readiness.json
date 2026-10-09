@@ -801,5 +801,43 @@
     "bytes": 9275,
     "sha256": "27c3df96e6f36810f36ec307155e06bc2da0dae134e344da87588be7e2660a5e",
     "canonical_lf_sha256": "27c3df96e6f36810f36ec307155e06bc2da0dae134e344da87588be7e2660a5e"
+  },
+  "Root_primary_review": {
+    "decision": "Accepted as physical-byte evidence with the complete live listing gate still failed. The primary independently decoded all 75 bytes / 30 physical instructions; the worker capture contains only 27 defined starts and explicitly omits three loop-tail instructions. Current-memory link/count rereads and release order are retained requirements. Exact flow flags and actual gunnery allocation provenance remain open; no destructor Source admission is made.",
+    "worker_report_capture_sha256": "cd3ff1770864a04e76d88b9758a538d06401d3df6d3b1336b6669db40fae8b41",
+    "verified_pin_rows": 29,
+    "independent_PE_replay": [
+      {
+        "address": "00957080",
+        "bytes": 5,
+        "physical_instructions": 1,
+        "defined_live_starts": 1,
+        "missing_live_starts": []
+      },
+      {
+        "address": "00955EB0",
+        "bytes": 70,
+        "physical_instructions": 29,
+        "defined_live_starts": 26,
+        "missing_live_starts": [
+          "00955eec",
+          "00955eef",
+          "00955ef2"
+        ]
+      }
+    ],
+    "local_validation": {
+      "path": "local\\cc12_remaining_readiness_primary_review\\validation.json",
+      "sha256": "05898a80130108febd0f77a10c4652536110bde0fe83e9321323cf99db4c9461"
+    },
+    "current_primary_document_pin": {
+      "path": "docs\\CC12_GUNNERY_CATEGORY_HEADER_DESTRUCTION_READINESS.md",
+      "bytes": 9942,
+      "sha256": "22eba2701de7cc191e257d67dd21992af7e677f74cc7e22a0b10e3d0b3270152"
+    },
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0
   }
 }

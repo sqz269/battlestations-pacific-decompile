@@ -1,5 +1,9 @@
 # Unit class-resource selection readiness
 
+Primary acceptance: Accepted as a complete 692-byte / 232-instruction / 21-call static gate and one conditional four-byte profile witness. The primary reproduced the PE body, instruction starts and cell, and checked the retained Source pins. The resource identity and table are captured before the unit selector; the saved table entry is read after that callback. Actual production class/resource lifetime and current entry provenance remain unbound; there is no unconditional profile or selected-set ownership claim.
+
+Worker-capture pins below remain immutable capture context. Current primary document identity is recorded separately in the report. This packet adds no Source, ABI, startup or gameplay credit.
+
 The complete `0087BCC0` gate confirms how the initializer captures a class
 resource, calls its selected-instance provider and publishes the constructed
 unit model. One approved profile cell establishes a **conditional** target:

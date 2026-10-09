@@ -1,5 +1,9 @@
 # Gunnery category header destruction readiness
 
+Primary acceptance: Accepted as physical-byte evidence with the complete live listing gate still failed. The primary independently decoded all 75 bytes / 30 physical instructions; the worker capture contains only 27 defined starts and explicitly omits three loop-tail instructions. Current-memory link/count rereads and release order are retained requirements. Exact flow flags and actual gunnery allocation provenance remain open; no destructor Source admission is made.
+
+Worker-capture pins below remain immutable capture context. Current primary document identity is recorded separately in the report. This packet adds no Source, ABI, startup or gameplay credit.
+
 Packet: `cc12_gunnery_category_header_destruction_readiness`.
 
 The 5-byte destructor thunk at `00957080` jumps directly to the 70-byte clear routine at `00955EB0`. The original bytes describe a count-controlled unlink/free loop. The current Ghidra listing omits three instructions after the free call, so the complete saved/live instruction gate is **not passed**. Both routines remain Source-held in this packet; no new Source-ready destructor or prerequisite is admitted.

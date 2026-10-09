@@ -1,5 +1,9 @@
 # Model descriptor CRT placement readiness
 
+Primary acceptance: Accepted as data-backed relative placement only. The primary independently reproduced all seven pointer cells (28 bytes) from the unchanged original PE and checked retained Source/historical pins. The historical CRT traversal is pinned evidence, not freshly replayed instruction or runtime evidence. Camera precedes model and model-base, which precede animation in this selected slice; omitted initializer consumers still prevent full counter/CRT parity.
+
+Worker-capture pins below remain immutable capture context. Current primary document identity is recorded separately in the report. This packet adds no Source, ABI, startup or gameplay credit.
+
 The original model initializer has a verified static-table position: cell
 `00CE3568`, zero-based slot **909**, points to `00CD7E60`. Current original-PE
 and live-Ghidra data establish the represented type order

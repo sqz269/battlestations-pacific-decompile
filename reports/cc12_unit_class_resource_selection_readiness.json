@@ -1102,5 +1102,31 @@
     "bytes": 8873,
     "sha256": "fb5150c2a6ed574720e0918171b4c07fb42ade07b269104d38b338ecc28cb171",
     "canonical_lf_sha256": "fb5150c2a6ed574720e0918171b4c07fb42ade07b269104d38b338ecc28cb171"
+  },
+  "Root_primary_review": {
+    "decision": "Accepted as a complete 692-byte / 232-instruction / 21-call static gate and one conditional four-byte profile witness. The primary reproduced the PE body, instruction starts and cell, and checked the retained Source pins. The resource identity and table are captured before the unit selector; the saved table entry is read after that callback. Actual production class/resource lifetime and current entry provenance remain unbound; there is no unconditional profile or selected-set ownership claim.",
+    "worker_report_capture_sha256": "44f4336a47ad25360f6a852ac08a6f7b3a32ef367b8c46f9de1f82e8cd02d240",
+    "verified_pin_rows": 46,
+    "independent_PE_replay": [
+      {
+        "bytes": 692,
+        "instructions": 232,
+        "calls": 21,
+        "profile_cell_bytes": 4
+      }
+    ],
+    "local_validation": {
+      "path": "local\\cc12_remaining_readiness_primary_review\\validation.json",
+      "sha256": "05898a80130108febd0f77a10c4652536110bde0fe83e9321323cf99db4c9461"
+    },
+    "current_primary_document_pin": {
+      "path": "docs\\CC12_UNIT_CLASS_RESOURCE_SELECTION_READINESS.md",
+      "bytes": 9586,
+      "sha256": "207ff17f65e60b5ed22e7d716f4c6630f68d26cf91cedbf22e3496a908ba8994"
+    },
+    "Source_credit": 0,
+    "Original_ABI_credit": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0
   }
 }
