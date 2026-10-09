@@ -11,6 +11,9 @@ public:
     GameNativeStringProcess(const GameNativeStringProcess&) = delete;
     GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;
     void* volatile& manager_01090aa0() noexcept { return manager_; }
+    // Actual pending-registry publication shares this retained process lifetime.
+    // Accessing the cell does not construct or register a registry owner.
+    void* volatile& pending_registry_00f878cc() noexcept;
     NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }
     volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }
     NativeStringRawPoolContext& raw_context() noexcept { return raw_; }
@@ -31,6 +34,8 @@ private:
     // Append after every established publication/context/storage field.
     const char property_empty_00e177e4_{};
     const char query_empty_00e17654_{};
+    // Append after every established authority; do not reuse another raw8 owner.
+    void* volatile pending_registry_00f878cc_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor

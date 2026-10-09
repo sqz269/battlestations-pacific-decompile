@@ -18,11 +18,14 @@ GameSingletonHost::GameSingletonHost(GameHostLog& log)
     : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),
       input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),
       deletion_bindings_{&effect_publication_00f87664_, nullptr},
-      observers_(std::make_unique<GameObserverRuntime>(*this, log)) {
+      observers_(std::make_unique<GameObserverRuntime>(*this, log)),
+      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()) {
     // Admit factory+4 before startup can register that exact subobject.
     deletion_bindings_.game_resource_factory = &game_resource_factory_context_;
     deletion_bindings_.resource_support = &resource_support_context_;
     deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;
+    deletion_bindings_.actual_pending_registry_publication_00f878cc =
+        &pending_registry_publication_00f878cc_;
 }
 
 GameSingletonHost::~GameSingletonHost() {

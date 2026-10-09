@@ -7,6 +7,7 @@
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/native_pending_entity_lock.hpp"
+#include "bsp/native_pending_registry_scalar_retirement.hpp"
 #include "bsp/native_entity_registry_lifetime.hpp"
 #include "bsp/native_mission_entity_lock.hpp"
 #include "bsp/game_sound_runtime.hpp"
@@ -267,6 +268,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     case 0x00d630b4: case 0x00d630c4: case 0x00d630d4:
         if (bindings.resource_manager != nullptr) {
             delete_native_resource_registered_owner(profile, owner, flags, *bindings.resource_manager);
+            return;
+        }
+        break;
+    case 0x00d0dea0:
+        if (bindings.actual_pending_registry_publication_00f878cc != nullptr) {
+            retire_native_pending_registry_scalar_00875850(
+                owner, *reinterpret_cast<const volatile std::uint8_t*>(&flags),
+                *bindings.actual_pending_registry_publication_00f878cc);
             return;
         }
         break;
