@@ -1,3 +1,7 @@
+Primary compiled review: Registered scalar deletion is65 bytes/26 instructions. Its actual Source99 relocation, nine passed inputs, single post-cleanup BYTE read, mask01 and optional real CRT free relocation were reviewed. The opaque task value is returned without dereference. Original raw30/11 versus saved10 gap at007F1EF5 remains explicit; the correct generated name is retained.
+
+Normal MSVC Win32 build 2026-10-09T18:27:44.966886+00:00 to 2026-10-09T18:28:02.224133+00:00 passed three existing checks. Shared evidence pins105 Source/build inputs and four artifacts, replays all23 prior objects unchanged and captures two unchanged existing provider objects plus three new objects (28 total). Core contains32 selected positive roots. New public roots are absent from the application map; no consumer or forced retention was added. Original ABI, production lifetime, startup and gameplay are unproved. The candidate section below is an immutable worker-time snapshot; its Source97 artifacts are historical.
+
 # Squadron launch task scalar deletion: qualified Source candidate
 
 The new cdecl Source function captures the actual task pointer, invokes the

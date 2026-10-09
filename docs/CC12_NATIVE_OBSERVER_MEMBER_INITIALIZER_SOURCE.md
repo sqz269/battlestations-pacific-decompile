@@ -1,3 +1,7 @@
+Primary compiled review: Registered initializer public body is155 bytes/52 instructions; its complete7-function325-byte/116-instruction object and52/36-byte EH sections were reviewed. Three zeros precede the sole incoming-cell read. Registration uses the captured endpoint. Normal guard disarm/destruction is optimized away; normal returns perform no owner cleanup. The compiler stores profile before its EH state0, whereas Original state0 precedes profile: Original hardware-fault/frame timing remains unproved.
+
+Normal MSVC Win32 build 2026-10-09T18:27:44.966886+00:00 to 2026-10-09T18:28:02.224133+00:00 passed three existing checks. Shared evidence pins105 Source/build inputs and four artifacts, replays all23 prior objects unchanged and captures two unchanged existing provider objects plus three new objects (28 total). Core contains32 selected positive roots. New public roots are absent from the application map; no consumer or forced retention was added. Original ABI, production lifetime, startup and gameplay are unproved. The candidate section below is an immutable worker-time snapshot; its Source97 artifacts are historical.
+
 # Qualified Source observer member initialization
 
 Candidate for `007F0F80..007F0FDB` (92 bytes, 28 instructions). The complete

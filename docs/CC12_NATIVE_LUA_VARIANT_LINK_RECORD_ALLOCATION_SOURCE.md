@@ -1,3 +1,7 @@
+Primary compiled review: Registered allocation helper is91 bytes/24 instructions and uses the actual singleton allocator. All five narrow stores occur in the required order and preserve the other38 block bytes. The actual request, three indexed relocations and complete body were reviewed.
+
+Normal MSVC Win32 build 2026-10-09T18:27:44.966886+00:00 to 2026-10-09T18:28:02.224133+00:00 passed three existing checks. Shared evidence pins105 Source/build inputs and four artifacts, replays all23 prior objects unchanged and captures two unchanged existing provider objects plus three new objects (28 total). Core contains32 selected positive roots. New public roots are absent from the application map; no consumer or forced retention was added. Original ABI, production lifetime, startup and gameplay are unproved. The candidate section below is an immutable worker-time snapshot; its Source97 artifacts are historical.
+
 # Qualified Lua link-record allocation Source candidate
 
 `006EDEA0..006EDED6` allocates 52 bytes, clears three DWORDs, writes two
