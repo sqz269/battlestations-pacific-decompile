@@ -1,0 +1,2865 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_global_config_lifetime_owner_escape",
+  "generated_at_utc": "2026-10-09T03:30:27.638128+00:00",
+  "base_commit": "5296c2b72690fea4b562f481896646659db4e677",
+  "evidence_kind": "bounded_read_only_native_whole_owner_registration_escape",
+  "scope": {
+    "native_root": "004326E7 -> 00BD0C30",
+    "core_registration_and_slot_construction_bodies": [
+      "00BD0C30",
+      "00BD0BC0",
+      "00BD08D0",
+      "00BD0700",
+      "00BD0500",
+      "00BD0560",
+      "00BD0160",
+      "00BD0180"
+    ],
+    "callback_and_failure_boundary_bodies": [
+      "00BCFEB0",
+      "00BD0590",
+      "00BF6713",
+      "00BF66EF",
+      "00BF67A7",
+      "00BF681B",
+      "00C055B1",
+      "00BF65AC",
+      "00C04FDE"
+    ],
+    "caller_body": "00432650",
+    "terminal_registered_owner_deletion": "outside this inspected registration contract",
+    "tracked_outputs": [
+      "docs/CC12_GLOBAL_CONFIG_LIFETIME_OWNER_ESCAPE.md",
+      "reports/cc12_global_config_lifetime_owner_escape.json"
+    ],
+    "no_source_ghidra_or_build_changes": true
+  },
+  "verdict": {
+    "whole_owner_address_escapes": true,
+    "persistent_destination": "One DWORD in the singleton lifetime manager pointer-slot vector.",
+    "owner_pointer_is_dereferenced_by_core_registration_bodies": false,
+    "native_owner_method_table_read_by_core_registration_bodies": false,
+    "owner_refcount_adjustment_by_core_registration_bodies": false,
+    "second_array_publication_by_core_registration_stores": false,
+    "second_array_publication_explanation": "For the attributed getter call, the registration/entry-storage code treats GlobalConfig as a DWORD value. Destinations are lifetime manager vector storage, manager header fields or invocation/iterator-result stack words; no destination is derived from the GlobalConfig owner value.",
+    "qualification": "This closes the direct registration-store classification, not the complete escaped-owner graph. Current CRT handlers/decoder services, allocator/exception internals, future consumers and eventual current-method-table scalar deletion remain open. Malformed vector pointers aliasing arbitrary memory are not proved impossible."
+  },
+  "identities": {
+    "G": "Native GlobalConfig owner returned/published by 00432650; allocation size 0x2E8.",
+    "M": "Native singleton lifetime manager returned by 00415350. Distinct from G.",
+    "manager_layout": {
+      "plus_0": "untouched by these vector entries",
+      "plus_4": "begin",
+      "plus_8": "end",
+      "plus_C": "capacity_end",
+      "plus_10": "section pointer used by getter, untouched by registration entries"
+    },
+    "slot_width_bytes": 4,
+    "global_config_second_array_offsets": [
+      "0x2CC",
+      "0x2D0",
+      "0x2D4"
+    ]
+  },
+  "getter_escape": {
+    "abi": "00432650 consumes no input and returns published owner in EAX, plain RET.",
+    "publication": "004326D4 writes the constructor result G (or zero) to 00F878E4 before registration.",
+    "call_setup": [
+      "004326D9 calls 00415350 for M.",
+      "004326DE loads current 00F878E4 into ECX.",
+      "004326E4 pushes that owner value.",
+      "004326E5 puts M into ECX.",
+      "004326E7 calls 00BD0C30(M, G)."
+    ],
+    "lock_boundary": "Getter captures the first manager section at +0x10, enters it and increments section+0x18 before rechecking/constructing. After normal registration it decrements that captured section counter and leaves. BD0C30 and its vector wrappers add no internal lock.",
+    "limits": "Constructor effects, manager construction, OS section internals and getter exceptional unwind were not re-audited. The captured G pointer publication precedes error-handler or allocator callbacks reached by registration."
+  },
+  "core_contracts": [
+    {
+      "address": "00BD0C30",
+      "name": "register",
+      "abi": "ECX=M, stack object DWORD G; RET 4.",
+      "behavior": [
+        "Capture current M+8 and compare unsigned M+4 <= end. On failure call 00BF6713 and continue if it returns.",
+        "Only after validation, test the current object stack argument for zero. Null skips append.",
+        "For non-null, pass the address of that actual object argument word to 00BD0BC0."
+      ],
+      "stores": "No non-stack store in this body. It does not read [G] or any field of G.",
+      "callback_sites": [
+        "00BD0C3B -> 00BF6713"
+      ]
+    },
+    {
+      "address": "00BD0BC0",
+      "name": "append",
+      "abi": "ECX=M, stack pointer to value word; RET 4.",
+      "behavior": [
+        "Capture M+4; compute raw modulo32 size/capacity using subtraction then SAR 2.",
+        "A non-null begin with unsigned size below capacity uses the direct path: capture M+8, load *value_slot, store it at the captured end, then publish captured end+4 to M+8.",
+        "Otherwise capture end, validate captured begin <= captured end, then call 00BD08D0 with an eight-byte local result buffer, iterator owner M, captured position=end and the current value-slot argument."
+      ],
+      "stores": [
+        {
+          "at": "00BD0BF2",
+          "destination": "[captured M.end]",
+          "value": "G loaded from registration stack word"
+        },
+        {
+          "at": "00BD0BF7",
+          "destination": "M+8",
+          "value": "captured end+4"
+        }
+      ],
+      "callback_sites": [
+        "00BD0C09 -> 00BF6713"
+      ]
+    },
+    {
+      "address": "00BD08D0",
+      "name": "checked_insert_one",
+      "abi": "ECX=M; stack result, iterator_owner, position, value_slot; EAX=result; RET 0x10.",
+      "behavior": [
+        "Capture begin and derive index zero for null/empty begin; otherwise validate begin/end and non-null same iterator owner, then derive (position-begin) SAR 2.",
+        "00BD0920 calls 00BD0700 using original M, passed iterator owner/position, literal count 1 and value-slot pointer.",
+        "After insertion capture current begin; validate begin/end, derive result position using saved index, validate resulting range. Returning validators continue with the native captures/reloads.",
+        "Write result.position at result+4 before result.owner at result+0. In the actual append caller this result is stack storage."
+      ],
+      "stores": [
+        {
+          "at": "00BD0932",
+          "destination": "own position argument word",
+          "value": "captured current begin"
+        },
+        {
+          "at": "00BD094C",
+          "destination": "result+4",
+          "value": "derived iterator position"
+        },
+        {
+          "at": "00BD0950",
+          "destination": "result+0",
+          "value": "M"
+        }
+      ],
+      "callback_sites": [
+        "00BD08F6 -> 00BF6713",
+        "00BD0903 -> 00BF6713",
+        "00BD092D -> 00BF6713",
+        "00BD0943 -> 00BF6713"
+      ]
+    },
+    {
+      "address": "00BD0700",
+      "name": "insert_count",
+      "abi": "ECX=M; stack iterator_owner, position, count, value_slot; RET 0x10. Incoming iterator_owner word is not loaded by this body.",
+      "registered_owner_capture": "00BD0708 loads the DWORD through value_slot; 00BD070A replaces its own value-slot argument word with that captured value before count test and before allocation/copy/free. At this call value_slot points to registration stack storage, not to G itself.",
+      "growth": [
+        "Check count against 0x3FFFFFFF - current size and call length throw 00BD0590 on failure. For registration count is exactly 1.",
+        "Grow capacity to max(size+count, capacity+capacity/2), with the native limit-overflow candidate reset to zero.",
+        "Allocate raw slots through 00BCFEB0; copy prefix through 00BD0500; fill count copies from captured value through 00BD0560; copy suffix through 00BD0500.",
+        "Reload current begin/end to derive current count, then free current non-null begin through 00BF65AC.",
+        "Publish replacement begin, capacity_end, end at 00BD080C/00BD0811/00BD0814, in that order."
+      ],
+      "in_place": [
+        "Tail shorter than count: copy tail to position+count*4, fill excess at current end, advance M.end and assign insertion range.",
+        "Tail at least count: copy last count slots to old end, publish returned end, shift middle backward, assign insertion range.",
+        "Both native branches are retained in this audit; no callback or malformed-state assumptions are used to erase a branch."
+      ],
+      "stores": [
+        {
+          "at": "00BD070A",
+          "destination": "own value argument word",
+          "value": "captured G DWORD"
+        },
+        {
+          "at": "00BD080C",
+          "destination": "M+4",
+          "value": "replacement begin"
+        },
+        {
+          "at": "00BD0811",
+          "destination": "M+0xC",
+          "value": "replacement capacity_end"
+        },
+        {
+          "at": "00BD0814",
+          "destination": "M+8",
+          "value": "replacement end"
+        },
+        {
+          "at": "00BD0863",
+          "destination": "M+8",
+          "value": "current end plus insertion byte count"
+        },
+        {
+          "at": "00BD0890",
+          "destination": "M+8",
+          "value": "copy helper returned end"
+        }
+      ],
+      "exception_boundary": "No local FS registration or replacement-buffer cleanup is added by BD0700. Allocation/copy/failure providers are explicit boundaries; getter unwind is outside this packet."
+    }
+  ],
+  "entry_storage_leaves": [
+    {
+      "address": "00BD0500",
+      "abi": "stdcall(first,last,destination), RET 0xC; EAX advanced destination",
+      "effect": "Raw (last-first) SAR2 then *4; only zero skips 00BF67A7. Copy addresses are vector storage. Captured return destination is retained; service status ignored."
+    },
+    {
+      "address": "00BD0560",
+      "abi": "stdcall(destination,count,value_slot), RET 0xC; EAX advanced destination",
+      "effect": "Reload *value_slot for each DWORD store at 00BD0579. For the registration invocation the pointer value came from BD0700 stack capture; the value is not dereferenced as an object."
+    },
+    {
+      "address": "00BD0160",
+      "abi": "cdecl(first,last,value_slot), RET",
+      "effect": "Until address equality, reload *value_slot and store at current destination at 00BD0173, advancing 4. Destinations are vector slot ranges supplied by insertion."
+    },
+    {
+      "address": "00BD0180",
+      "abi": "cdecl(first,last,destination_end), RET; EAX derived destination_begin",
+      "effect": "Derive raw destination begin; signed-positive count calls 00BF67A7, service status ignored. Copies vector bytes only under the attributed provenance."
+    }
+  ],
+  "callbacks_and_services": [
+    {
+      "entry": "00BF6713 -> 00BF66EF",
+      "sites": [
+        "00BD0C3B",
+        "00BD0C09",
+        "00BD08F6",
+        "00BD0903",
+        "00BD092D",
+        "00BD0943"
+      ],
+      "native_arguments": "BF6713 pushes five zero DWORDs.",
+      "dispatch": "BF66EF reads 0109DD64, passes it to 00C04FDE, and if result is non-null tail-jumps EAX at 00BF6703. Otherwise it calls 00C04EF3 with 2 then jumps 00BF65BB.",
+      "boundary": "Handler may return. Its current identity, body, and side effects are not established. No registered-owner pointer is explicitly supplied as an argument."
+    },
+    {
+      "entry": "00BF67A7",
+      "native_arguments": "destination, destination_bytes, source, count_bytes from vector copy leaves",
+      "dispatch": "Count zero returns success. Null destination/source or too-small destination writes errno through 00BFFB8B and calls 00BF66EF with five zero words. The valid branch calls 00BF87E0 memmove.",
+      "boundary": "Underlying memmove, errno provider and current invalid handler are not expanded. Caller ignores status; no silent early-exit repair is inferred."
+    },
+    {
+      "entry": "00BCFEB0 -> 00BF681B -> 00C055B1",
+      "native_arguments": "BCFEB0 receives count in ECX and allocates count*4 after unsigned overflow check; operator_new receives byte size.",
+      "dispatch": "BF681B calls BF9F1A malloc; on failure C055B1 rereads 0109DE44, obtains a current pointer through 00C04FDE and calls it at 00C055C5 with the byte size. A nonzero result retries allocation.",
+      "boundary": "Original malloc/heap/free internals and any additional heap/newmode handlers remain outside. The failure branch constructs/throws library bad_alloc through BF6885; current handler and exception effects are open."
+    },
+    {
+      "entry": "00C04FDE",
+      "native_arguments": "encoded/current pointer argument from handler dispatchers",
+      "dispatch": "Reads current TLS/IAT/PTD state or Win32 module path, obtains a decoder callback, optionally calls it with the argument, writes that result back to its own stack argument, then reloads it.",
+      "indirect_sites": [
+        "00C04FEB CALL ESI",
+        "00C05002 CALL ESI",
+        "00C05004 CALL EAX",
+        "00C05017 CALL [00CE215C]",
+        "00C05032 CALL [00CE20F4]",
+        "00C05040 CALL EAX"
+      ],
+      "boundary": "Those current service identities and service side effects are not resolved by this packet. Decoding is not treated as a pure identity operation."
+    },
+    {
+      "entry": "00BD0590",
+      "native_arguments": "no owner input",
+      "dispatch": "Builds a temporary legacy string from literal 00CE37E0 using 00408720, constructs a local exception payload through 00411700, installs 00D69260 and calls BF6885 with metadata 00D83F98.",
+      "boundary": "Existing canonical allocation/throw review covers its implementation. String/exception/runtime provider closure and caller unwind effects are not reconstructed again here."
+    },
+    {
+      "entry": "00BF65AC",
+      "native_arguments": "current vector allocation to free",
+      "dispatch": "Tail-jumps 00BF9DC8.",
+      "boundary": "It is a real CRT free dependency, not a no-op; no G pointer is passed by BD0700 on the attributed vector path."
+    }
+  ],
+  "lifecycle_boundaries": {
+    "registration": "Stores one exact object pointer for later manager consumption, with no per-owner entry constructor, callback record, type check, duplicate suppression or AddRef.",
+    "normal_fast_path": "With a valid manager vector and available capacity, registration performs no registered-owner method call or CRT validation/allocation callback.",
+    "error_and_growth_paths": "Service callbacks may run, and returning handlers continue. G was already published in 00F878E4, so possible external service reentry or side effects cannot be excluded merely because G is not an explicit callback argument.",
+    "future_owner_use": "Eventual lifetime-manager draining, current owner method-table lookup and terminal scalar-deletion behavior are explicitly outside the inspected registration contract. Existing lifecycle/source reviews describe that separate consumer boundary; they are not promoted to GlobalConfig terminal-path proof.",
+    "not_established": [
+      "GlobalConfig second-array permanent emptiness",
+      "No whole-program writers through other escapes",
+      "GlobalConfig current-table terminal scalar deletion",
+      "Original CRT/FH3/SEH closure or native binary compatibility",
+      "Any runtime or gameplay result"
+    ]
+  },
+  "current_source_reuse": {
+    "reviewed_source_files": [
+      {
+        "path": "src/global_config.cpp",
+        "sha256": "8a34e935abc406255558c213a8cc0e3fa11b76e8af5c355ad8d1c93d8f3b4741",
+        "reviewed_lines": [
+          109,
+          131
+        ]
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "reviewed_lines": [
+          1,
+          165
+        ]
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "reviewed_lines": [
+          129,
+          209
+        ]
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "reviewed_lines": [
+          22,
+          28
+        ]
+      }
+    ],
+    "facts": [
+      "src/global_config.cpp publishes context.singleton_00f878e4 then obtains a second manager and calls its register_object interface.",
+      "The typed ConcreteSingletonLifetimeManager contains the register/append implementation and a distinct required destroy_registered callback.",
+      "Complete raw vector registration wrappers, insertion, leaf and allocation source modules already exist with dedicated prior audits. No duplicate implementation or new test is added.",
+      "These source observations are separate from native pointer provenance and do not resolve a current executable terminal deletion profile or bind every source provider."
+    ],
+    "existing_reviews": [
+      "docs/NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.md",
+      "docs/NATIVE_SINGLETON_VECTOR_INSERT_COUNT.md",
+      "docs/NATIVE_SINGLETON_VECTOR_LEAVES.md",
+      "docs/NATIVE_SINGLETON_VECTOR_ALLOCATION.md",
+      "docs/SINGLETON_LIFETIME.md",
+      "docs/NATIVE_SINGLETON_RUNTIME.md"
+    ]
+  },
+  "validation": {
+    "target": {
+      "project": "bsp",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program_path": "/battlestationspacific.exe",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "every_live_query_uses_bsp_target_verification": true,
+    "native_span_count": 18,
+    "native_bytes": 1667,
+    "complete_linear_body_decodes": 18,
+    "decoded_instruction_count": 616,
+    "all_spans_live_equal_installed_pe": true,
+    "instruction_context_count": 28,
+    "core_entry_direct_validation_calls": 6,
+    "insert_count_direct_call_sites": 12,
+    "no_source_or_ghidra_mutation": true,
+    "build_tested": false,
+    "runtime_tested": false,
+    "game_validated": false,
+    "validation_limits": "Full byte/linear decode preservation includes return, tail-jump and final throw-call entries; it is not transitive service closure or execution."
+  },
+  "native_bytes": [
+    {
+      "name": "global_config_getter",
+      "address": "00432650",
+      "size": 192,
+      "hex": "64a1000000006aff6853edc5005064892500000000a1e478f80083ec0c85c00f858c00000056e8d52cfeff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833de478f80000754268e8020000e867417c0083c4048944240485c0c64424180174098bc8e815feffffeb0233c0c644241800a3e478f800e8722cfeff8b0de478f800518bc8e844e5790085f6740b834618ff56ff151022ce00a1e478f8005e8b4c240c64890d0000000083c418c3",
+      "sha256": "f7f3f520a192b4cba16b87807e14bbfe7535c6c40d44de621aff5efa980ade6f",
+      "live_matches_installed_pe": true,
+      "instruction_count": 51
+    },
+    {
+      "name": "register",
+      "address": "00BD0C30",
+      "size": 39,
+      "hex": "568bf18b46083946047605e8d35a0200837c240800740c8d442408508bcee86dffffff5ec20400",
+      "sha256": "cd39b3d75a0ef04a9d9debfad5958c9464abb74a44bf4ff92f7e32d7aae5b402",
+      "live_matches_installed_pe": true,
+      "instruction_count": 14
+    },
+    {
+      "name": "append",
+      "address": "00BD0BC0",
+      "size": 105,
+      "hex": "83ec08568bf18b560485d2750433c9eb088b4e082bcac1f90285d274248b460c2bc2c1f8023bc873188b46088b4c24108b11891083c0048946085e83c408c20400578b7e083bd77605e8055b02008b4424145057568d4c2414518bcee8affcffff5f5e83c408c20400",
+      "sha256": "f37263ed8274b5056237b3a1ea6941496d03ffd7883c24c6915bd4c1a3efc08f",
+      "live_matches_installed_pe": true,
+      "instruction_count": 44
+    },
+    {
+      "name": "insert_one_checked",
+      "address": "00BD08D0",
+      "size": 137,
+      "hex": "5153558b6c2414568bf1578b7e0485ff740c8b46088bc82bcfc1f902750433dbeb1f3bf87605e8185e020085ed74043bee7405e80b5e02008b5c24202bdfc1fb028b5424248b442420526a0150558bcee8dbfdffff8b7e043b7e087605e8e15d0200897c24208d3c9f3b7e0877053b7e047305e8cb5d02008b4424188978045f89305e5d5b59c21000",
+      "sha256": "5fccfe9a8a8943194b628bf68f54086167e11bed3e8d6d45d4f62df026bba238",
+      "live_matches_installed_pe": true,
+      "instruction_count": 56
+    },
+    {
+      "name": "insert_count",
+      "address": "00BD0700",
+      "size": 436,
+      "hex": "8b44241053568bf18b08894c24188b4e0485c957750433ffeb088b7e0c2bf9c1ff028b5c241885db0f848001000085c9750433c0eb088b46082bc1c1f802baffffff3f2bd03bd37305e842feffff85c9750433c0eb088b46082bc1c1f80203c33bf8550f83b30000008bc7d1e8baffffff3f2bd03bd7730433ffeb0203f885c9750433c0eb088b46082bc1c1f80203c33bf8731385c9750433c0eb088b46082bc1c1f8028d3c1833d28bcfe800f7ffff8b4e048be88b4424185550518bcee83dfdffff8d5424205253508bcee88ffdffff8b4c2418508b460850518bcee81efdffff8b460485c0750433c9eb088b4e082bc8c1f90203d985c0740950e8ab5d020083c4048d54bd008d449d00896e045d5f89560c8946085e5bc210008b6e088b7c24188bcd2bcfc1f9028d049d000000003bcb8944241c8bce734603c7505557e8bbfcffff8b46088bc82bcfc1f9028d542420522bd953508bcee801fdffff8b44241c0146088b76088d542420522bf05657e8e9f8ffff83c40c5d5f5e5bc21000558bdd2bd85553e873fcffff555357894608e8e8f8ffff8b4c24288d44242c5003cf5157e8b6f8ffff83c4185d5f5e5bc21000",
+      "sha256": "ce4e00c505c0a5ba1eac1a43c6a95c395e75e8484b94ecef5d114da75275ccfa",
+      "live_matches_installed_pe": true,
+      "instruction_count": 181
+    },
+    {
+      "name": "copy_slots",
+      "address": "00BD0500",
+      "size": 48,
+      "hex": "8b4424088b4c24048b54240c2bc1c1f8028d048500000000568d3410740c50515052e88062020083c4108bc65ec20c00",
+      "sha256": "aaf6ebf1932295279fc1abd2df5897017f0ca40663e737300063d062019c057e",
+      "live_matches_installed_pe": true,
+      "instruction_count": 18
+    },
+    {
+      "name": "fill_slots",
+      "address": "00BD0560",
+      "size": 46,
+      "hex": "568b74240c85f6578b7c240c8bc68bcf76148b542414538b1a891983e80183c10485c077f25b8d04b75f5ec20c00",
+      "sha256": "e6d4b9ce8c62170127c124969eb0a3018f99c8e4d1308e5f259b14bdce15995e",
+      "live_matches_installed_pe": true,
+      "instruction_count": 21
+    },
+    {
+      "name": "assign_slots",
+      "address": "00BD0160",
+      "size": 30,
+      "hex": "8b4424048b4c24083bc174118b54240c568b32893083c0043bc175f55ec3",
+      "sha256": "fe5e96b5969e5ae6c7b3311b02a5760fbe387efaa07f367300af69fce91960e0",
+      "live_matches_installed_pe": true,
+      "instruction_count": 13
+    },
+    {
+      "name": "copy_backward",
+      "address": "00BD0180",
+      "size": 47,
+      "hex": "8b4424088b5424042bc2c1f802568b7424108d0c85000000002bf185c07e0c51525156e8ff65020083c4108bc65ec3",
+      "sha256": "4b8c14b908de6c06ebaeb098155441c2a640bcf7fc20578eecd9bf8580a8a58d",
+      "live_matches_installed_pe": true,
+      "instruction_count": 19
+    },
+    {
+      "name": "allocate_slots",
+      "address": "00BCFEB0",
+      "size": 85,
+      "hex": "83ec1085c9771633c98d148d0000000052e85569020083c40483c410c383c8ff33d2f7f183f80473e08d0424508d4c2408c744240400000000e85264020068c03ce0008d4c240851c744240c3c92d600e880690200",
+      "sha256": "c598c145591727617fb54eefaa1c217f671e94b5006c05b21bc6dcd600075603",
+      "live_matches_installed_pe": true,
+      "instruction_count": 25
+    },
+    {
+      "name": "length_throw_boundary",
+      "address": "00BD0590",
+      "size": 105,
+      "hex": "6aff687854cc0064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e8538183ff8d0424508d4c2420c744245000000000e81e1184ff68983fd8008d4c242051c74424246092d600e88c620200",
+      "sha256": "867e54dad740442bfe261cae2e65739d00a71fa4051273401505d399b436cde9",
+      "live_matches_installed_pe": true,
+      "instruction_count": 23
+    },
+    {
+      "name": "invalid_parameter_noinfo",
+      "address": "00BF6713",
+      "size": 16,
+      "hex": "33c05050505050e8d0ffffff83c414c3",
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "live_matches_installed_pe": true,
+      "instruction_count": 9
+    },
+    {
+      "name": "invalid_parameter_dispatch",
+      "address": "00BF66EF",
+      "size": 36,
+      "hex": "558becff3564dd0901e8e1e8000085c05974035dffe06a02e8e7e70000595de9a8feffff",
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "live_matches_installed_pe": true,
+      "instruction_count": 14
+    },
+    {
+      "name": "memmove_s",
+      "address": "00BF67A7",
+      "size": 91,
+      "hex": "558bec8b4514565733ff3bc77447397d08751be8cc9300006a165e89305757575757e821ffffff83c4148bc6eb29397d1074e039450c730ee8a79300006a225989088bf1ebd750ff7510ff7508e8e71f000083c40c33c05f5e5dc3",
+      "sha256": "c4830b17566680e561e647a6a2c9c105c69377e05e0cb10957814fa6cbf43885",
+      "live_matches_installed_pe": true,
+      "instruction_count": 43
+    },
+    {
+      "name": "operator_new_boundary",
+      "address": "00BF681B",
+      "size": 105,
+      "hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "live_matches_installed_pe": true,
+      "instruction_count": 33
+    },
+    {
+      "name": "new_handler_dispatch",
+      "address": "00C055B1",
+      "size": 34,
+      "hex": "ff3544de0901e822faffff85c059740fff742404ffd085c059740433c040c333c0c3",
+      "sha256": "ee46ba523d066e7aa16ef3d636e1869ecfeab38fec0c26e9b02266b6e44f42e1",
+      "live_matches_installed_pe": true,
+      "instruction_count": 15
+    },
+    {
+      "name": "free_thunk",
+      "address": "00BF65AC",
+      "size": 5,
+      "hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_installed_pe": true,
+      "instruction_count": 1
+    },
+    {
+      "name": "current_pointer_decoder",
+      "address": "00C04FDE",
+      "size": 110,
+      "hex": "56ff35005be1008b35bc20ce00ffd685c07421a1fc5ae10083f8ff741750ff35005be100ffd6ffd085c074088b80fc010000eb2668d09fd600ff155c21ce008bf085f67423e8d3feffff85c0741a68e09fd60056ff15f420ce0085c0740aff742408ffd0894424088b4424085ec3",
+      "sha256": "eb47f22d9b2b8faa38544703069e34befb7aafc724f67b5d1e15fcf1058fcaa5",
+      "live_matches_installed_pe": true,
+      "instruction_count": 36
+    }
+  ],
+  "native_body_decodes": [
+    {
+      "name": "global_config_getter",
+      "address": "00432650",
+      "size": 192,
+      "instruction_count": 51,
+      "instructions": [
+        "00432650: mov eax, dword ptr fs:[0]",
+        "00432656: push -1",
+        "00432658: push 0xc5ed53",
+        "0043265D: push eax",
+        "0043265E: mov dword ptr fs:[0], esp",
+        "00432665: mov eax, dword ptr [0xf878e4]",
+        "0043266A: sub esp, 0xc",
+        "0043266D: test eax, eax",
+        "0043266F: jne 0x432701",
+        "00432675: push esi",
+        "00432676: call 0x415350",
+        "0043267B: mov esi, dword ptr [eax + 0x10]",
+        "0043267E: test esi, esi",
+        "00432680: mov dword ptr [esp + 8], 0xce37fc",
+        "00432688: mov dword ptr [esp + 0xc], esi",
+        "0043268C: je 0x432699",
+        "0043268E: push esi",
+        "0043268F: call dword ptr [0xce2218]",
+        "00432695: add dword ptr [esi + 0x18], 1",
+        "00432699: mov dword ptr [esp + 0x18], 0",
+        "004326A1: cmp dword ptr [0xf878e4], 0",
+        "004326A8: jne 0x4326ec",
+        "004326AA: push 0x2e8",
+        "004326AF: call 0xbf681b",
+        "004326B4: add esp, 4",
+        "004326B7: mov dword ptr [esp + 4], eax",
+        "004326BB: test eax, eax",
+        "004326BD: mov byte ptr [esp + 0x18], 1",
+        "004326C2: je 0x4326cd",
+        "004326C4: mov ecx, eax",
+        "004326C6: call 0x4324e0",
+        "004326CB: jmp 0x4326cf",
+        "004326CD: xor eax, eax",
+        "004326CF: mov byte ptr [esp + 0x18], 0",
+        "004326D4: mov dword ptr [0xf878e4], eax",
+        "004326D9: call 0x415350",
+        "004326DE: mov ecx, dword ptr [0xf878e4]",
+        "004326E4: push ecx",
+        "004326E5: mov ecx, eax",
+        "004326E7: call 0xbd0c30",
+        "004326EC: test esi, esi",
+        "004326EE: je 0x4326fb",
+        "004326F0: add dword ptr [esi + 0x18], -1",
+        "004326F4: push esi",
+        "004326F5: call dword ptr [0xce2210]",
+        "004326FB: mov eax, dword ptr [0xf878e4]",
+        "00432700: pop esi",
+        "00432701: mov ecx, dword ptr [esp + 0xc]",
+        "00432705: mov dword ptr fs:[0], ecx",
+        "0043270C: add esp, 0x18",
+        "0043270F: ret"
+      ],
+      "call_edges": [
+        {
+          "at": "00432676",
+          "instruction": "call 0x415350"
+        },
+        {
+          "at": "0043268F",
+          "instruction": "call dword ptr [0xce2218]"
+        },
+        {
+          "at": "004326AF",
+          "instruction": "call 0xbf681b"
+        },
+        {
+          "at": "004326C6",
+          "instruction": "call 0x4324e0"
+        },
+        {
+          "at": "004326D9",
+          "instruction": "call 0x415350"
+        },
+        {
+          "at": "004326E7",
+          "instruction": "call 0xbd0c30"
+        },
+        {
+          "at": "004326F5",
+          "instruction": "call dword ptr [0xce2210]"
+        }
+      ]
+    },
+    {
+      "name": "register",
+      "address": "00BD0C30",
+      "size": 39,
+      "instruction_count": 14,
+      "instructions": [
+        "00BD0C30: push esi",
+        "00BD0C31: mov esi, ecx",
+        "00BD0C33: mov eax, dword ptr [esi + 8]",
+        "00BD0C36: cmp dword ptr [esi + 4], eax",
+        "00BD0C39: jbe 0xbd0c40",
+        "00BD0C3B: call 0xbf6713",
+        "00BD0C40: cmp dword ptr [esp + 8], 0",
+        "00BD0C45: je 0xbd0c53",
+        "00BD0C47: lea eax, [esp + 8]",
+        "00BD0C4B: push eax",
+        "00BD0C4C: mov ecx, esi",
+        "00BD0C4E: call 0xbd0bc0",
+        "00BD0C53: pop esi",
+        "00BD0C54: ret 4"
+      ],
+      "call_edges": [
+        {
+          "at": "00BD0C3B",
+          "instruction": "call 0xbf6713"
+        },
+        {
+          "at": "00BD0C4E",
+          "instruction": "call 0xbd0bc0"
+        }
+      ]
+    },
+    {
+      "name": "append",
+      "address": "00BD0BC0",
+      "size": 105,
+      "instruction_count": 44,
+      "instructions": [
+        "00BD0BC0: sub esp, 8",
+        "00BD0BC3: push esi",
+        "00BD0BC4: mov esi, ecx",
+        "00BD0BC6: mov edx, dword ptr [esi + 4]",
+        "00BD0BC9: test edx, edx",
+        "00BD0BCB: jne 0xbd0bd1",
+        "00BD0BCD: xor ecx, ecx",
+        "00BD0BCF: jmp 0xbd0bd9",
+        "00BD0BD1: mov ecx, dword ptr [esi + 8]",
+        "00BD0BD4: sub ecx, edx",
+        "00BD0BD6: sar ecx, 2",
+        "00BD0BD9: test edx, edx",
+        "00BD0BDB: je 0xbd0c01",
+        "00BD0BDD: mov eax, dword ptr [esi + 0xc]",
+        "00BD0BE0: sub eax, edx",
+        "00BD0BE2: sar eax, 2",
+        "00BD0BE5: cmp ecx, eax",
+        "00BD0BE7: jae 0xbd0c01",
+        "00BD0BE9: mov eax, dword ptr [esi + 8]",
+        "00BD0BEC: mov ecx, dword ptr [esp + 0x10]",
+        "00BD0BF0: mov edx, dword ptr [ecx]",
+        "00BD0BF2: mov dword ptr [eax], edx",
+        "00BD0BF4: add eax, 4",
+        "00BD0BF7: mov dword ptr [esi + 8], eax",
+        "00BD0BFA: pop esi",
+        "00BD0BFB: add esp, 8",
+        "00BD0BFE: ret 4",
+        "00BD0C01: push edi",
+        "00BD0C02: mov edi, dword ptr [esi + 8]",
+        "00BD0C05: cmp edx, edi",
+        "00BD0C07: jbe 0xbd0c0e",
+        "00BD0C09: call 0xbf6713",
+        "00BD0C0E: mov eax, dword ptr [esp + 0x14]",
+        "00BD0C12: push eax",
+        "00BD0C13: push edi",
+        "00BD0C14: push esi",
+        "00BD0C15: lea ecx, [esp + 0x14]",
+        "00BD0C19: push ecx",
+        "00BD0C1A: mov ecx, esi",
+        "00BD0C1C: call 0xbd08d0",
+        "00BD0C21: pop edi",
+        "00BD0C22: pop esi",
+        "00BD0C23: add esp, 8",
+        "00BD0C26: ret 4"
+      ],
+      "call_edges": [
+        {
+          "at": "00BD0C09",
+          "instruction": "call 0xbf6713"
+        },
+        {
+          "at": "00BD0C1C",
+          "instruction": "call 0xbd08d0"
+        }
+      ]
+    },
+    {
+      "name": "insert_one_checked",
+      "address": "00BD08D0",
+      "size": 137,
+      "instruction_count": 56,
+      "instructions": [
+        "00BD08D0: push ecx",
+        "00BD08D1: push ebx",
+        "00BD08D2: push ebp",
+        "00BD08D3: mov ebp, dword ptr [esp + 0x14]",
+        "00BD08D7: push esi",
+        "00BD08D8: mov esi, ecx",
+        "00BD08DA: push edi",
+        "00BD08DB: mov edi, dword ptr [esi + 4]",
+        "00BD08DE: test edi, edi",
+        "00BD08E0: je 0xbd08ee",
+        "00BD08E2: mov eax, dword ptr [esi + 8]",
+        "00BD08E5: mov ecx, eax",
+        "00BD08E7: sub ecx, edi",
+        "00BD08E9: sar ecx, 2",
+        "00BD08EC: jne 0xbd08f2",
+        "00BD08EE: xor ebx, ebx",
+        "00BD08F0: jmp 0xbd0911",
+        "00BD08F2: cmp edi, eax",
+        "00BD08F4: jbe 0xbd08fb",
+        "00BD08F6: call 0xbf6713",
+        "00BD08FB: test ebp, ebp",
+        "00BD08FD: je 0xbd0903",
+        "00BD08FF: cmp ebp, esi",
+        "00BD0901: je 0xbd0908",
+        "00BD0903: call 0xbf6713",
+        "00BD0908: mov ebx, dword ptr [esp + 0x20]",
+        "00BD090C: sub ebx, edi",
+        "00BD090E: sar ebx, 2",
+        "00BD0911: mov edx, dword ptr [esp + 0x24]",
+        "00BD0915: mov eax, dword ptr [esp + 0x20]",
+        "00BD0919: push edx",
+        "00BD091A: push 1",
+        "00BD091C: push eax",
+        "00BD091D: push ebp",
+        "00BD091E: mov ecx, esi",
+        "00BD0920: call 0xbd0700",
+        "00BD0925: mov edi, dword ptr [esi + 4]",
+        "00BD0928: cmp edi, dword ptr [esi + 8]",
+        "00BD092B: jbe 0xbd0932",
+        "00BD092D: call 0xbf6713",
+        "00BD0932: mov dword ptr [esp + 0x20], edi",
+        "00BD0936: lea edi, [edi + ebx*4]",
+        "00BD0939: cmp edi, dword ptr [esi + 8]",
+        "00BD093C: ja 0xbd0943",
+        "00BD093E: cmp edi, dword ptr [esi + 4]",
+        "00BD0941: jae 0xbd0948",
+        "00BD0943: call 0xbf6713",
+        "00BD0948: mov eax, dword ptr [esp + 0x18]",
+        "00BD094C: mov dword ptr [eax + 4], edi",
+        "00BD094F: pop edi",
+        "00BD0950: mov dword ptr [eax], esi",
+        "00BD0952: pop esi",
+        "00BD0953: pop ebp",
+        "00BD0954: pop ebx",
+        "00BD0955: pop ecx",
+        "00BD0956: ret 0x10"
+      ],
+      "call_edges": [
+        {
+          "at": "00BD08F6",
+          "instruction": "call 0xbf6713"
+        },
+        {
+          "at": "00BD0903",
+          "instruction": "call 0xbf6713"
+        },
+        {
+          "at": "00BD0920",
+          "instruction": "call 0xbd0700"
+        },
+        {
+          "at": "00BD092D",
+          "instruction": "call 0xbf6713"
+        },
+        {
+          "at": "00BD0943",
+          "instruction": "call 0xbf6713"
+        }
+      ]
+    },
+    {
+      "name": "insert_count",
+      "address": "00BD0700",
+      "size": 436,
+      "instruction_count": 181,
+      "instructions": [
+        "00BD0700: mov eax, dword ptr [esp + 0x10]",
+        "00BD0704: push ebx",
+        "00BD0705: push esi",
+        "00BD0706: mov esi, ecx",
+        "00BD0708: mov ecx, dword ptr [eax]",
+        "00BD070A: mov dword ptr [esp + 0x18], ecx",
+        "00BD070E: mov ecx, dword ptr [esi + 4]",
+        "00BD0711: test ecx, ecx",
+        "00BD0713: push edi",
+        "00BD0714: jne 0xbd071a",
+        "00BD0716: xor edi, edi",
+        "00BD0718: jmp 0xbd0722",
+        "00BD071A: mov edi, dword ptr [esi + 0xc]",
+        "00BD071D: sub edi, ecx",
+        "00BD071F: sar edi, 2",
+        "00BD0722: mov ebx, dword ptr [esp + 0x18]",
+        "00BD0726: test ebx, ebx",
+        "00BD0728: je 0xbd08ae",
+        "00BD072E: test ecx, ecx",
+        "00BD0730: jne 0xbd0736",
+        "00BD0732: xor eax, eax",
+        "00BD0734: jmp 0xbd073e",
+        "00BD0736: mov eax, dword ptr [esi + 8]",
+        "00BD0739: sub eax, ecx",
+        "00BD073B: sar eax, 2",
+        "00BD073E: mov edx, 0x3fffffff",
+        "00BD0743: sub edx, eax",
+        "00BD0745: cmp edx, ebx",
+        "00BD0747: jae 0xbd074e",
+        "00BD0749: call 0xbd0590",
+        "00BD074E: test ecx, ecx",
+        "00BD0750: jne 0xbd0756",
+        "00BD0752: xor eax, eax",
+        "00BD0754: jmp 0xbd075e",
+        "00BD0756: mov eax, dword ptr [esi + 8]",
+        "00BD0759: sub eax, ecx",
+        "00BD075B: sar eax, 2",
+        "00BD075E: add eax, ebx",
+        "00BD0760: cmp edi, eax",
+        "00BD0762: push ebp",
+        "00BD0763: jae 0xbd081c",
+        "00BD0769: mov eax, edi",
+        "00BD076B: shr eax, 1",
+        "00BD076D: mov edx, 0x3fffffff",
+        "00BD0772: sub edx, eax",
+        "00BD0774: cmp edx, edi",
+        "00BD0776: jae 0xbd077c",
+        "00BD0778: xor edi, edi",
+        "00BD077A: jmp 0xbd077e",
+        "00BD077C: add edi, eax",
+        "00BD077E: test ecx, ecx",
+        "00BD0780: jne 0xbd0786",
+        "00BD0782: xor eax, eax",
+        "00BD0784: jmp 0xbd078e",
+        "00BD0786: mov eax, dword ptr [esi + 8]",
+        "00BD0789: sub eax, ecx",
+        "00BD078B: sar eax, 2",
+        "00BD078E: add eax, ebx",
+        "00BD0790: cmp edi, eax",
+        "00BD0792: jae 0xbd07a7",
+        "00BD0794: test ecx, ecx",
+        "00BD0796: jne 0xbd079c",
+        "00BD0798: xor eax, eax",
+        "00BD079A: jmp 0xbd07a4",
+        "00BD079C: mov eax, dword ptr [esi + 8]",
+        "00BD079F: sub eax, ecx",
+        "00BD07A1: sar eax, 2",
+        "00BD07A4: lea edi, [eax + ebx]",
+        "00BD07A7: xor edx, edx",
+        "00BD07A9: mov ecx, edi",
+        "00BD07AB: call 0xbcfeb0",
+        "00BD07B0: mov ecx, dword ptr [esi + 4]",
+        "00BD07B3: mov ebp, eax",
+        "00BD07B5: mov eax, dword ptr [esp + 0x18]",
+        "00BD07B9: push ebp",
+        "00BD07BA: push eax",
+        "00BD07BB: push ecx",
+        "00BD07BC: mov ecx, esi",
+        "00BD07BE: call 0xbd0500",
+        "00BD07C3: lea edx, [esp + 0x20]",
+        "00BD07C7: push edx",
+        "00BD07C8: push ebx",
+        "00BD07C9: push eax",
+        "00BD07CA: mov ecx, esi",
+        "00BD07CC: call 0xbd0560",
+        "00BD07D1: mov ecx, dword ptr [esp + 0x18]",
+        "00BD07D5: push eax",
+        "00BD07D6: mov eax, dword ptr [esi + 8]",
+        "00BD07D9: push eax",
+        "00BD07DA: push ecx",
+        "00BD07DB: mov ecx, esi",
+        "00BD07DD: call 0xbd0500",
+        "00BD07E2: mov eax, dword ptr [esi + 4]",
+        "00BD07E5: test eax, eax",
+        "00BD07E7: jne 0xbd07ed",
+        "00BD07E9: xor ecx, ecx",
+        "00BD07EB: jmp 0xbd07f5",
+        "00BD07ED: mov ecx, dword ptr [esi + 8]",
+        "00BD07F0: sub ecx, eax",
+        "00BD07F2: sar ecx, 2",
+        "00BD07F5: add ebx, ecx",
+        "00BD07F7: test eax, eax",
+        "00BD07F9: je 0xbd0804",
+        "00BD07FB: push eax",
+        "00BD07FC: call 0xbf65ac",
+        "00BD0801: add esp, 4",
+        "00BD0804: lea edx, [ebp + edi*4]",
+        "00BD0808: lea eax, [ebp + ebx*4]",
+        "00BD080C: mov dword ptr [esi + 4], ebp",
+        "00BD080F: pop ebp",
+        "00BD0810: pop edi",
+        "00BD0811: mov dword ptr [esi + 0xc], edx",
+        "00BD0814: mov dword ptr [esi + 8], eax",
+        "00BD0817: pop esi",
+        "00BD0818: pop ebx",
+        "00BD0819: ret 0x10",
+        "00BD081C: mov ebp, dword ptr [esi + 8]",
+        "00BD081F: mov edi, dword ptr [esp + 0x18]",
+        "00BD0823: mov ecx, ebp",
+        "00BD0825: sub ecx, edi",
+        "00BD0827: sar ecx, 2",
+        "00BD082A: lea eax, [ebx*4]",
+        "00BD0831: cmp ecx, ebx",
+        "00BD0833: mov dword ptr [esp + 0x1c], eax",
+        "00BD0837: mov ecx, esi",
+        "00BD0839: jae 0xbd0881",
+        "00BD083B: add eax, edi",
+        "00BD083D: push eax",
+        "00BD083E: push ebp",
+        "00BD083F: push edi",
+        "00BD0840: call 0xbd0500",
+        "00BD0845: mov eax, dword ptr [esi + 8]",
+        "00BD0848: mov ecx, eax",
+        "00BD084A: sub ecx, edi",
+        "00BD084C: sar ecx, 2",
+        "00BD084F: lea edx, [esp + 0x20]",
+        "00BD0853: push edx",
+        "00BD0854: sub ebx, ecx",
+        "00BD0856: push ebx",
+        "00BD0857: push eax",
+        "00BD0858: mov ecx, esi",
+        "00BD085A: call 0xbd0560",
+        "00BD085F: mov eax, dword ptr [esp + 0x1c]",
+        "00BD0863: add dword ptr [esi + 8], eax",
+        "00BD0866: mov esi, dword ptr [esi + 8]",
+        "00BD0869: lea edx, [esp + 0x20]",
+        "00BD086D: push edx",
+        "00BD086E: sub esi, eax",
+        "00BD0870: push esi",
+        "00BD0871: push edi",
+        "00BD0872: call 0xbd0160",
+        "00BD0877: add esp, 0xc",
+        "00BD087A: pop ebp",
+        "00BD087B: pop edi",
+        "00BD087C: pop esi",
+        "00BD087D: pop ebx",
+        "00BD087E: ret 0x10",
+        "00BD0881: push ebp",
+        "00BD0882: mov ebx, ebp",
+        "00BD0884: sub ebx, eax",
+        "00BD0886: push ebp",
+        "00BD0887: push ebx",
+        "00BD0888: call 0xbd0500",
+        "00BD088D: push ebp",
+        "00BD088E: push ebx",
+        "00BD088F: push edi",
+        "00BD0890: mov dword ptr [esi + 8], eax",
+        "00BD0893: call 0xbd0180",
+        "00BD0898: mov ecx, dword ptr [esp + 0x28]",
+        "00BD089C: lea eax, [esp + 0x2c]",
+        "00BD08A0: push eax",
+        "00BD08A1: add ecx, edi",
+        "00BD08A3: push ecx",
+        "00BD08A4: push edi",
+        "00BD08A5: call 0xbd0160",
+        "00BD08AA: add esp, 0x18",
+        "00BD08AD: pop ebp",
+        "00BD08AE: pop edi",
+        "00BD08AF: pop esi",
+        "00BD08B0: pop ebx",
+        "00BD08B1: ret 0x10"
+      ],
+      "call_edges": [
+        {
+          "at": "00BD0749",
+          "instruction": "call 0xbd0590"
+        },
+        {
+          "at": "00BD07AB",
+          "instruction": "call 0xbcfeb0"
+        },
+        {
+          "at": "00BD07BE",
+          "instruction": "call 0xbd0500"
+        },
+        {
+          "at": "00BD07CC",
+          "instruction": "call 0xbd0560"
+        },
+        {
+          "at": "00BD07DD",
+          "instruction": "call 0xbd0500"
+        },
+        {
+          "at": "00BD07FC",
+          "instruction": "call 0xbf65ac"
+        },
+        {
+          "at": "00BD0840",
+          "instruction": "call 0xbd0500"
+        },
+        {
+          "at": "00BD085A",
+          "instruction": "call 0xbd0560"
+        },
+        {
+          "at": "00BD0872",
+          "instruction": "call 0xbd0160"
+        },
+        {
+          "at": "00BD0888",
+          "instruction": "call 0xbd0500"
+        },
+        {
+          "at": "00BD0893",
+          "instruction": "call 0xbd0180"
+        },
+        {
+          "at": "00BD08A5",
+          "instruction": "call 0xbd0160"
+        }
+      ]
+    },
+    {
+      "name": "copy_slots",
+      "address": "00BD0500",
+      "size": 48,
+      "instruction_count": 18,
+      "instructions": [
+        "00BD0500: mov eax, dword ptr [esp + 8]",
+        "00BD0504: mov ecx, dword ptr [esp + 4]",
+        "00BD0508: mov edx, dword ptr [esp + 0xc]",
+        "00BD050C: sub eax, ecx",
+        "00BD050E: sar eax, 2",
+        "00BD0511: lea eax, [eax*4]",
+        "00BD0518: push esi",
+        "00BD0519: lea esi, [eax + edx]",
+        "00BD051C: je 0xbd052a",
+        "00BD051E: push eax",
+        "00BD051F: push ecx",
+        "00BD0520: push eax",
+        "00BD0521: push edx",
+        "00BD0522: call 0xbf67a7",
+        "00BD0527: add esp, 0x10",
+        "00BD052A: mov eax, esi",
+        "00BD052C: pop esi",
+        "00BD052D: ret 0xc"
+      ],
+      "call_edges": [
+        {
+          "at": "00BD0522",
+          "instruction": "call 0xbf67a7"
+        }
+      ]
+    },
+    {
+      "name": "fill_slots",
+      "address": "00BD0560",
+      "size": 46,
+      "instruction_count": 21,
+      "instructions": [
+        "00BD0560: push esi",
+        "00BD0561: mov esi, dword ptr [esp + 0xc]",
+        "00BD0565: test esi, esi",
+        "00BD0567: push edi",
+        "00BD0568: mov edi, dword ptr [esp + 0xc]",
+        "00BD056C: mov eax, esi",
+        "00BD056E: mov ecx, edi",
+        "00BD0570: jbe 0xbd0586",
+        "00BD0572: mov edx, dword ptr [esp + 0x14]",
+        "00BD0576: push ebx",
+        "00BD0577: mov ebx, dword ptr [edx]",
+        "00BD0579: mov dword ptr [ecx], ebx",
+        "00BD057B: sub eax, 1",
+        "00BD057E: add ecx, 4",
+        "00BD0581: test eax, eax",
+        "00BD0583: ja 0xbd0577",
+        "00BD0585: pop ebx",
+        "00BD0586: lea eax, [edi + esi*4]",
+        "00BD0589: pop edi",
+        "00BD058A: pop esi",
+        "00BD058B: ret 0xc"
+      ],
+      "call_edges": []
+    },
+    {
+      "name": "assign_slots",
+      "address": "00BD0160",
+      "size": 30,
+      "instruction_count": 13,
+      "instructions": [
+        "00BD0160: mov eax, dword ptr [esp + 4]",
+        "00BD0164: mov ecx, dword ptr [esp + 8]",
+        "00BD0168: cmp eax, ecx",
+        "00BD016A: je 0xbd017d",
+        "00BD016C: mov edx, dword ptr [esp + 0xc]",
+        "00BD0170: push esi",
+        "00BD0171: mov esi, dword ptr [edx]",
+        "00BD0173: mov dword ptr [eax], esi",
+        "00BD0175: add eax, 4",
+        "00BD0178: cmp eax, ecx",
+        "00BD017A: jne 0xbd0171",
+        "00BD017C: pop esi",
+        "00BD017D: ret"
+      ],
+      "call_edges": []
+    },
+    {
+      "name": "copy_backward",
+      "address": "00BD0180",
+      "size": 47,
+      "instruction_count": 19,
+      "instructions": [
+        "00BD0180: mov eax, dword ptr [esp + 8]",
+        "00BD0184: mov edx, dword ptr [esp + 4]",
+        "00BD0188: sub eax, edx",
+        "00BD018A: sar eax, 2",
+        "00BD018D: push esi",
+        "00BD018E: mov esi, dword ptr [esp + 0x10]",
+        "00BD0192: lea ecx, [eax*4]",
+        "00BD0199: sub esi, ecx",
+        "00BD019B: test eax, eax",
+        "00BD019D: jle 0xbd01ab",
+        "00BD019F: push ecx",
+        "00BD01A0: push edx",
+        "00BD01A1: push ecx",
+        "00BD01A2: push esi",
+        "00BD01A3: call 0xbf67a7",
+        "00BD01A8: add esp, 0x10",
+        "00BD01AB: mov eax, esi",
+        "00BD01AD: pop esi",
+        "00BD01AE: ret"
+      ],
+      "call_edges": [
+        {
+          "at": "00BD01A3",
+          "instruction": "call 0xbf67a7"
+        }
+      ]
+    },
+    {
+      "name": "allocate_slots",
+      "address": "00BCFEB0",
+      "size": 85,
+      "instruction_count": 25,
+      "instructions": [
+        "00BCFEB0: sub esp, 0x10",
+        "00BCFEB3: test ecx, ecx",
+        "00BCFEB5: ja 0xbcfecd",
+        "00BCFEB7: xor ecx, ecx",
+        "00BCFEB9: lea edx, [ecx*4]",
+        "00BCFEC0: push edx",
+        "00BCFEC1: call 0xbf681b",
+        "00BCFEC6: add esp, 4",
+        "00BCFEC9: add esp, 0x10",
+        "00BCFECC: ret",
+        "00BCFECD: or eax, 0xffffffff",
+        "00BCFED0: xor edx, edx",
+        "00BCFED2: div ecx",
+        "00BCFED4: cmp eax, 4",
+        "00BCFED7: jae 0xbcfeb9",
+        "00BCFED9: lea eax, [esp]",
+        "00BCFEDC: push eax",
+        "00BCFEDD: lea ecx, [esp + 8]",
+        "00BCFEE1: mov dword ptr [esp + 4], 0",
+        "00BCFEE9: call 0xbf6340",
+        "00BCFEEE: push 0xe03cc0",
+        "00BCFEF3: lea ecx, [esp + 8]",
+        "00BCFEF7: push ecx",
+        "00BCFEF8: mov dword ptr [esp + 0xc], 0xd6923c",
+        "00BCFF00: call 0xbf6885"
+      ],
+      "call_edges": [
+        {
+          "at": "00BCFEC1",
+          "instruction": "call 0xbf681b"
+        },
+        {
+          "at": "00BCFEE9",
+          "instruction": "call 0xbf6340"
+        },
+        {
+          "at": "00BCFF00",
+          "instruction": "call 0xbf6885"
+        }
+      ]
+    },
+    {
+      "name": "length_throw_boundary",
+      "address": "00BD0590",
+      "size": 105,
+      "instruction_count": 23,
+      "instructions": [
+        "00BD0590: push -1",
+        "00BD0592: push 0xcc5478",
+        "00BD0597: mov eax, dword ptr fs:[0]",
+        "00BD059D: push eax",
+        "00BD059E: mov dword ptr fs:[0], esp",
+        "00BD05A5: sub esp, 0x44",
+        "00BD05A8: push 0x12",
+        "00BD05AA: push 0xce37e0",
+        "00BD05AF: lea ecx, [esp + 8]",
+        "00BD05B3: mov dword ptr [esp + 0x20], 0xf",
+        "00BD05BB: mov dword ptr [esp + 0x1c], 0",
+        "00BD05C3: mov byte ptr [esp + 0xc], 0",
+        "00BD05C8: call 0x408720",
+        "00BD05CD: lea eax, [esp]",
+        "00BD05D0: push eax",
+        "00BD05D1: lea ecx, [esp + 0x20]",
+        "00BD05D5: mov dword ptr [esp + 0x50], 0",
+        "00BD05DD: call 0x411700",
+        "00BD05E2: push 0xd83f98",
+        "00BD05E7: lea ecx, [esp + 0x20]",
+        "00BD05EB: push ecx",
+        "00BD05EC: mov dword ptr [esp + 0x24], 0xd69260",
+        "00BD05F4: call 0xbf6885"
+      ],
+      "call_edges": [
+        {
+          "at": "00BD05C8",
+          "instruction": "call 0x408720"
+        },
+        {
+          "at": "00BD05DD",
+          "instruction": "call 0x411700"
+        },
+        {
+          "at": "00BD05F4",
+          "instruction": "call 0xbf6885"
+        }
+      ]
+    },
+    {
+      "name": "invalid_parameter_noinfo",
+      "address": "00BF6713",
+      "size": 16,
+      "instruction_count": 9,
+      "instructions": [
+        "00BF6713: xor eax, eax",
+        "00BF6715: push eax",
+        "00BF6716: push eax",
+        "00BF6717: push eax",
+        "00BF6718: push eax",
+        "00BF6719: push eax",
+        "00BF671A: call 0xbf66ef",
+        "00BF671F: add esp, 0x14",
+        "00BF6722: ret"
+      ],
+      "call_edges": [
+        {
+          "at": "00BF671A",
+          "instruction": "call 0xbf66ef"
+        }
+      ]
+    },
+    {
+      "name": "invalid_parameter_dispatch",
+      "address": "00BF66EF",
+      "size": 36,
+      "instruction_count": 14,
+      "instructions": [
+        "00BF66EF: push ebp",
+        "00BF66F0: mov ebp, esp",
+        "00BF66F2: push dword ptr [0x109dd64]",
+        "00BF66F8: call 0xc04fde",
+        "00BF66FD: test eax, eax",
+        "00BF66FF: pop ecx",
+        "00BF6700: je 0xbf6705",
+        "00BF6702: pop ebp",
+        "00BF6703: jmp eax",
+        "00BF6705: push 2",
+        "00BF6707: call 0xc04ef3",
+        "00BF670C: pop ecx",
+        "00BF670D: pop ebp",
+        "00BF670E: jmp 0xbf65bb"
+      ],
+      "call_edges": [
+        {
+          "at": "00BF66F8",
+          "instruction": "call 0xc04fde"
+        },
+        {
+          "at": "00BF6703",
+          "instruction": "jmp eax"
+        },
+        {
+          "at": "00BF6707",
+          "instruction": "call 0xc04ef3"
+        }
+      ]
+    },
+    {
+      "name": "memmove_s",
+      "address": "00BF67A7",
+      "size": 91,
+      "instruction_count": 43,
+      "instructions": [
+        "00BF67A7: push ebp",
+        "00BF67A8: mov ebp, esp",
+        "00BF67AA: mov eax, dword ptr [ebp + 0x14]",
+        "00BF67AD: push esi",
+        "00BF67AE: push edi",
+        "00BF67AF: xor edi, edi",
+        "00BF67B1: cmp eax, edi",
+        "00BF67B3: je 0xbf67fc",
+        "00BF67B5: cmp dword ptr [ebp + 8], edi",
+        "00BF67B8: jne 0xbf67d5",
+        "00BF67BA: call 0xbffb8b",
+        "00BF67BF: push 0x16",
+        "00BF67C1: pop esi",
+        "00BF67C2: mov dword ptr [eax], esi",
+        "00BF67C4: push edi",
+        "00BF67C5: push edi",
+        "00BF67C6: push edi",
+        "00BF67C7: push edi",
+        "00BF67C8: push edi",
+        "00BF67C9: call 0xbf66ef",
+        "00BF67CE: add esp, 0x14",
+        "00BF67D1: mov eax, esi",
+        "00BF67D3: jmp 0xbf67fe",
+        "00BF67D5: cmp dword ptr [ebp + 0x10], edi",
+        "00BF67D8: je 0xbf67ba",
+        "00BF67DA: cmp dword ptr [ebp + 0xc], eax",
+        "00BF67DD: jae 0xbf67ed",
+        "00BF67DF: call 0xbffb8b",
+        "00BF67E4: push 0x22",
+        "00BF67E6: pop ecx",
+        "00BF67E7: mov dword ptr [eax], ecx",
+        "00BF67E9: mov esi, ecx",
+        "00BF67EB: jmp 0xbf67c4",
+        "00BF67ED: push eax",
+        "00BF67EE: push dword ptr [ebp + 0x10]",
+        "00BF67F1: push dword ptr [ebp + 8]",
+        "00BF67F4: call 0xbf87e0",
+        "00BF67F9: add esp, 0xc",
+        "00BF67FC: xor eax, eax",
+        "00BF67FE: pop edi",
+        "00BF67FF: pop esi",
+        "00BF6800: pop ebp",
+        "00BF6801: ret"
+      ],
+      "call_edges": [
+        {
+          "at": "00BF67BA",
+          "instruction": "call 0xbffb8b"
+        },
+        {
+          "at": "00BF67C9",
+          "instruction": "call 0xbf66ef"
+        },
+        {
+          "at": "00BF67DF",
+          "instruction": "call 0xbffb8b"
+        },
+        {
+          "at": "00BF67F4",
+          "instruction": "call 0xbf87e0"
+        }
+      ]
+    },
+    {
+      "name": "operator_new_boundary",
+      "address": "00BF681B",
+      "size": 105,
+      "instruction_count": 33,
+      "instructions": [
+        "00BF681B: push ebp",
+        "00BF681C: mov ebp, esp",
+        "00BF681E: sub esp, 0xc",
+        "00BF6821: jmp 0xbf6830",
+        "00BF6823: push dword ptr [ebp + 8]",
+        "00BF6826: call 0xc055b1",
+        "00BF682B: test eax, eax",
+        "00BF682D: pop ecx",
+        "00BF682E: je 0xbf683f",
+        "00BF6830: push dword ptr [ebp + 8]",
+        "00BF6833: call 0xbf9f1a",
+        "00BF6838: test eax, eax",
+        "00BF683A: pop ecx",
+        "00BF683B: je 0xbf6823",
+        "00BF683D: leave",
+        "00BF683E: ret",
+        "00BF683F: test byte ptr [0x109dd74], 1",
+        "00BF6846: mov esi, 0x109dd68",
+        "00BF684B: jne 0xbf6866",
+        "00BF684D: or dword ptr [0x109dd74], 1",
+        "00BF6854: mov ecx, esi",
+        "00BF6856: call 0xbf6802",
+        "00BF685B: push 0xce1122",
+        "00BF6860: call 0xbf6ff5",
+        "00BF6865: pop ecx",
+        "00BF6866: push esi",
+        "00BF6867: lea ecx, [ebp - 0xc]",
+        "00BF686A: call 0xbf63a6",
+        "00BF686F: push 0xe03cc0",
+        "00BF6874: lea eax, [ebp - 0xc]",
+        "00BF6877: push eax",
+        "00BF6878: mov dword ptr [ebp - 0xc], 0xd6923c",
+        "00BF687F: call 0xbf6885"
+      ],
+      "call_edges": [
+        {
+          "at": "00BF6826",
+          "instruction": "call 0xc055b1"
+        },
+        {
+          "at": "00BF6833",
+          "instruction": "call 0xbf9f1a"
+        },
+        {
+          "at": "00BF6856",
+          "instruction": "call 0xbf6802"
+        },
+        {
+          "at": "00BF6860",
+          "instruction": "call 0xbf6ff5"
+        },
+        {
+          "at": "00BF686A",
+          "instruction": "call 0xbf63a6"
+        },
+        {
+          "at": "00BF687F",
+          "instruction": "call 0xbf6885"
+        }
+      ]
+    },
+    {
+      "name": "new_handler_dispatch",
+      "address": "00C055B1",
+      "size": 34,
+      "instruction_count": 15,
+      "instructions": [
+        "00C055B1: push dword ptr [0x109de44]",
+        "00C055B7: call 0xc04fde",
+        "00C055BC: test eax, eax",
+        "00C055BE: pop ecx",
+        "00C055BF: je 0xc055d0",
+        "00C055C1: push dword ptr [esp + 4]",
+        "00C055C5: call eax",
+        "00C055C7: test eax, eax",
+        "00C055C9: pop ecx",
+        "00C055CA: je 0xc055d0",
+        "00C055CC: xor eax, eax",
+        "00C055CE: inc eax",
+        "00C055CF: ret",
+        "00C055D0: xor eax, eax",
+        "00C055D2: ret"
+      ],
+      "call_edges": [
+        {
+          "at": "00C055B7",
+          "instruction": "call 0xc04fde"
+        },
+        {
+          "at": "00C055C5",
+          "instruction": "call eax"
+        }
+      ]
+    },
+    {
+      "name": "free_thunk",
+      "address": "00BF65AC",
+      "size": 5,
+      "instruction_count": 1,
+      "instructions": [
+        "00BF65AC: jmp 0xbf9dc8"
+      ],
+      "call_edges": []
+    },
+    {
+      "name": "current_pointer_decoder",
+      "address": "00C04FDE",
+      "size": 110,
+      "instruction_count": 36,
+      "instructions": [
+        "00C04FDE: push esi",
+        "00C04FDF: push dword ptr [0xe15b00]",
+        "00C04FE5: mov esi, dword ptr [0xce20bc]",
+        "00C04FEB: call esi",
+        "00C04FED: test eax, eax",
+        "00C04FEF: je 0xc05012",
+        "00C04FF1: mov eax, dword ptr [0xe15afc]",
+        "00C04FF6: cmp eax, -1",
+        "00C04FF9: je 0xc05012",
+        "00C04FFB: push eax",
+        "00C04FFC: push dword ptr [0xe15b00]",
+        "00C05002: call esi",
+        "00C05004: call eax",
+        "00C05006: test eax, eax",
+        "00C05008: je 0xc05012",
+        "00C0500A: mov eax, dword ptr [eax + 0x1fc]",
+        "00C05010: jmp 0xc05038",
+        "00C05012: push 0xd69fd0",
+        "00C05017: call dword ptr [0xce215c]",
+        "00C0501D: mov esi, eax",
+        "00C0501F: test esi, esi",
+        "00C05021: je 0xc05046",
+        "00C05023: call 0xc04efb",
+        "00C05028: test eax, eax",
+        "00C0502A: je 0xc05046",
+        "00C0502C: push 0xd69fe0",
+        "00C05031: push esi",
+        "00C05032: call dword ptr [0xce20f4]",
+        "00C05038: test eax, eax",
+        "00C0503A: je 0xc05046",
+        "00C0503C: push dword ptr [esp + 8]",
+        "00C05040: call eax",
+        "00C05042: mov dword ptr [esp + 8], eax",
+        "00C05046: mov eax, dword ptr [esp + 8]",
+        "00C0504A: pop esi",
+        "00C0504B: ret"
+      ],
+      "call_edges": [
+        {
+          "at": "00C04FEB",
+          "instruction": "call esi"
+        },
+        {
+          "at": "00C05002",
+          "instruction": "call esi"
+        },
+        {
+          "at": "00C05004",
+          "instruction": "call eax"
+        },
+        {
+          "at": "00C05017",
+          "instruction": "call dword ptr [0xce215c]"
+        },
+        {
+          "at": "00C05023",
+          "instruction": "call 0xc04efb"
+        },
+        {
+          "at": "00C05032",
+          "instruction": "call dword ptr [0xce20f4]"
+        },
+        {
+          "at": "00C05040",
+          "instruction": "call eax"
+        }
+      ]
+    }
+  ],
+  "instruction_contexts": {
+    "004326d4": {
+      "address": "004326d4",
+      "instruction": "MOV [0x00f878e4],EAX",
+      "context_before": [
+        "004326cf: MOV byte ptr [ESP + 0x18],0x0",
+        "004326cd: XOR EAX,EAX",
+        "004326cb: JMP 0x004326cf",
+        "004326c6: CALL 0x004324e0",
+        "004326c4: MOV ECX,EAX",
+        "004326c2: JZ 0x004326cd",
+        "004326bd: MOV byte ptr [ESP + 0x18],0x1",
+        "004326bb: TEST EAX,EAX",
+        "004326b7: MOV dword ptr [ESP + 0x4],EAX",
+        "004326b4: ADD ESP,0x4",
+        "004326af: CALL 0x00bf681b",
+        "004326aa: PUSH 0x2e8",
+        "004326a8: JNZ 0x004326ec",
+        "004326a1: CMP dword ptr [0x00f878e4],0x0",
+        "00432699: MOV dword ptr [ESP + 0x18],0x0",
+        "00432695: ADD dword ptr [ESI + 0x18],0x1",
+        "0043268f: CALL dword ptr [0x00ce2218]",
+        "0043268e: PUSH ESI",
+        "0043268c: JZ 0x00432699",
+        "00432688: MOV dword ptr [ESP + 0xc],ESI"
+      ],
+      "context_after": [
+        "004326d9: CALL 0x00415350",
+        "004326de: MOV ECX,dword ptr [0x00f878e4]",
+        "004326e4: PUSH ECX",
+        "004326e5: MOV ECX,EAX",
+        "004326e7: CALL 0x00bd0c30",
+        "004326ec: TEST ESI,ESI",
+        "004326ee: JZ 0x004326fb",
+        "004326f0: ADD dword ptr [ESI + 0x18],-0x1",
+        "004326f4: PUSH ESI",
+        "004326f5: CALL dword ptr [0x00ce2210]",
+        "004326fb: MOV EAX,[0x00f878e4]",
+        "00432700: POP ESI",
+        "00432701: MOV ECX,dword ptr [ESP + 0xc]",
+        "00432705: MOV dword ptr FS:[0x0],ECX",
+        "0043270c: ADD ESP,0x18",
+        "0043270f: RET",
+        "00432710: PUSH ESI",
+        "00432711: MOV ESI,ECX",
+        "00432713: CALL 0x004325b0",
+        "00432718: TEST byte ptr [ESP + 0x8],0x1"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "004326e7": {
+      "address": "004326e7",
+      "instruction": "CALL 0x00bd0c30",
+      "context_before": [
+        "004326e5: MOV ECX,EAX",
+        "004326e4: PUSH ECX",
+        "004326de: MOV ECX,dword ptr [0x00f878e4]",
+        "004326d9: CALL 0x00415350",
+        "004326d4: MOV [0x00f878e4],EAX",
+        "004326cf: MOV byte ptr [ESP + 0x18],0x0",
+        "004326cd: XOR EAX,EAX",
+        "004326cb: JMP 0x004326cf",
+        "004326c6: CALL 0x004324e0",
+        "004326c4: MOV ECX,EAX",
+        "004326c2: JZ 0x004326cd",
+        "004326bd: MOV byte ptr [ESP + 0x18],0x1",
+        "004326bb: TEST EAX,EAX",
+        "004326b7: MOV dword ptr [ESP + 0x4],EAX",
+        "004326b4: ADD ESP,0x4",
+        "004326af: CALL 0x00bf681b",
+        "004326aa: PUSH 0x2e8",
+        "004326a8: JNZ 0x004326ec",
+        "004326a1: CMP dword ptr [0x00f878e4],0x0",
+        "00432699: MOV dword ptr [ESP + 0x18],0x0"
+      ],
+      "context_after": [
+        "004326ec: TEST ESI,ESI",
+        "004326ee: JZ 0x004326fb",
+        "004326f0: ADD dword ptr [ESI + 0x18],-0x1",
+        "004326f4: PUSH ESI",
+        "004326f5: CALL dword ptr [0x00ce2210]",
+        "004326fb: MOV EAX,[0x00f878e4]",
+        "00432700: POP ESI",
+        "00432701: MOV ECX,dword ptr [ESP + 0xc]",
+        "00432705: MOV dword ptr FS:[0x0],ECX",
+        "0043270c: ADD ESP,0x18",
+        "0043270f: RET",
+        "00432710: PUSH ESI",
+        "00432711: MOV ESI,ECX",
+        "00432713: CALL 0x004325b0",
+        "00432718: TEST byte ptr [ESP + 0x8],0x1",
+        "0043271d: JZ 0x00432728",
+        "0043271f: PUSH ESI",
+        "00432720: CALL 0x00bf65ac",
+        "00432725: ADD ESP,0x4",
+        "00432728: MOV EAX,ESI"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd0c4e": {
+      "address": "00bd0c4e",
+      "instruction": "CALL 0x00bd0bc0",
+      "context_before": [
+        "00bd0c4c: MOV ECX,ESI",
+        "00bd0c4b: PUSH EAX",
+        "00bd0c47: LEA EAX,[ESP + 0x8]",
+        "00bd0c45: JZ 0x00bd0c53",
+        "00bd0c40: CMP dword ptr [ESP + 0x8],0x0",
+        "00bd0c3b: CALL 0x00bf6713",
+        "00bd0c39: JBE 0x00bd0c40",
+        "00bd0c36: CMP dword ptr [ESI + 0x4],EAX",
+        "00bd0c33: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd0c31: MOV ESI,ECX",
+        "00bd0c30: PUSH ESI",
+        "00bd0c26: RET 0x4",
+        "00bd0c23: ADD ESP,0x8",
+        "00bd0c22: POP ESI",
+        "00bd0c21: POP EDI",
+        "00bd0c1c: CALL 0x00bd08d0",
+        "00bd0c1a: MOV ECX,ESI",
+        "00bd0c19: PUSH ECX",
+        "00bd0c15: LEA ECX,[ESP + 0x14]",
+        "00bd0c14: PUSH ESI"
+      ],
+      "context_after": [
+        "00bd0c53: POP ESI",
+        "00bd0c54: RET 0x4",
+        "00bd0c60: SUB ESP,0x8",
+        "00bd0c63: PUSH EBX",
+        "00bd0c64: PUSH EBP",
+        "00bd0c65: PUSH ESI",
+        "00bd0c66: PUSH EDI",
+        "00bd0c67: MOV EDI,ECX",
+        "00bd0c69: MOV EBP,dword ptr [EDI + 0x8]",
+        "00bd0c6c: CMP dword ptr [EDI + 0x4],EBP",
+        "00bd0c6f: JBE 0x00bd0c76",
+        "00bd0c71: CALL 0x00bf6713",
+        "00bd0c76: MOV ESI,dword ptr [EDI + 0x4]",
+        "00bd0c79: CMP ESI,dword ptr [EDI + 0x8]",
+        "00bd0c7c: JBE 0x00bd0c83",
+        "00bd0c7e: CALL 0x00bf6713",
+        "00bd0c83: MOV EBX,dword ptr [ESP + 0x1c]",
+        "00bd0c87: TEST EDI,EDI",
+        "00bd0c89: JZ 0x00bd0c8f",
+        "00bd0c8b: CMP EDI,EDI"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd0bf2": {
+      "address": "00bd0bf2",
+      "instruction": "MOV dword ptr [EAX],EDX",
+      "context_before": [
+        "00bd0bf0: MOV EDX,dword ptr [ECX]",
+        "00bd0bec: MOV ECX,dword ptr [ESP + 0x10]",
+        "00bd0be9: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd0be7: JNC 0x00bd0c01",
+        "00bd0be5: CMP ECX,EAX",
+        "00bd0be2: SAR EAX,0x2",
+        "00bd0be0: SUB EAX,EDX",
+        "00bd0bdd: MOV EAX,dword ptr [ESI + 0xc]",
+        "00bd0bdb: JZ 0x00bd0c01",
+        "00bd0bd9: TEST EDX,EDX",
+        "00bd0bd6: SAR ECX,0x2",
+        "00bd0bd4: SUB ECX,EDX",
+        "00bd0bd1: MOV ECX,dword ptr [ESI + 0x8]",
+        "00bd0bcf: JMP 0x00bd0bd9",
+        "00bd0bcd: XOR ECX,ECX",
+        "00bd0bcb: JNZ 0x00bd0bd1",
+        "00bd0bc9: TEST EDX,EDX",
+        "00bd0bc6: MOV EDX,dword ptr [ESI + 0x4]",
+        "00bd0bc4: MOV ESI,ECX",
+        "00bd0bc3: PUSH ESI"
+      ],
+      "context_after": [
+        "00bd0bf4: ADD EAX,0x4",
+        "00bd0bf7: MOV dword ptr [ESI + 0x8],EAX",
+        "00bd0bfa: POP ESI",
+        "00bd0bfb: ADD ESP,0x8",
+        "00bd0bfe: RET 0x4",
+        "00bd0c01: PUSH EDI",
+        "00bd0c02: MOV EDI,dword ptr [ESI + 0x8]",
+        "00bd0c05: CMP EDX,EDI",
+        "00bd0c07: JBE 0x00bd0c0e",
+        "00bd0c09: CALL 0x00bf6713",
+        "00bd0c0e: MOV EAX,dword ptr [ESP + 0x14]",
+        "00bd0c12: PUSH EAX",
+        "00bd0c13: PUSH EDI",
+        "00bd0c14: PUSH ESI",
+        "00bd0c15: LEA ECX,[ESP + 0x14]",
+        "00bd0c19: PUSH ECX",
+        "00bd0c1a: MOV ECX,ESI",
+        "00bd0c1c: CALL 0x00bd08d0",
+        "00bd0c21: POP EDI",
+        "00bd0c22: POP ESI"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bd0c1c": {
+      "address": "00bd0c1c",
+      "instruction": "CALL 0x00bd08d0",
+      "context_before": [
+        "00bd0c1a: MOV ECX,ESI",
+        "00bd0c19: PUSH ECX",
+        "00bd0c15: LEA ECX,[ESP + 0x14]",
+        "00bd0c14: PUSH ESI",
+        "00bd0c13: PUSH EDI",
+        "00bd0c12: PUSH EAX",
+        "00bd0c0e: MOV EAX,dword ptr [ESP + 0x14]",
+        "00bd0c09: CALL 0x00bf6713",
+        "00bd0c07: JBE 0x00bd0c0e",
+        "00bd0c05: CMP EDX,EDI",
+        "00bd0c02: MOV EDI,dword ptr [ESI + 0x8]",
+        "00bd0c01: PUSH EDI",
+        "00bd0bfe: RET 0x4",
+        "00bd0bfb: ADD ESP,0x8",
+        "00bd0bfa: POP ESI",
+        "00bd0bf7: MOV dword ptr [ESI + 0x8],EAX",
+        "00bd0bf4: ADD EAX,0x4",
+        "00bd0bf2: MOV dword ptr [EAX],EDX",
+        "00bd0bf0: MOV EDX,dword ptr [ECX]",
+        "00bd0bec: MOV ECX,dword ptr [ESP + 0x10]"
+      ],
+      "context_after": [
+        "00bd0c21: POP EDI",
+        "00bd0c22: POP ESI",
+        "00bd0c23: ADD ESP,0x8",
+        "00bd0c26: RET 0x4",
+        "00bd0c30: PUSH ESI",
+        "00bd0c31: MOV ESI,ECX",
+        "00bd0c33: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd0c36: CMP dword ptr [ESI + 0x4],EAX",
+        "00bd0c39: JBE 0x00bd0c40",
+        "00bd0c3b: CALL 0x00bf6713",
+        "00bd0c40: CMP dword ptr [ESP + 0x8],0x0",
+        "00bd0c45: JZ 0x00bd0c53",
+        "00bd0c47: LEA EAX,[ESP + 0x8]",
+        "00bd0c4b: PUSH EAX",
+        "00bd0c4c: MOV ECX,ESI",
+        "00bd0c4e: CALL 0x00bd0bc0",
+        "00bd0c53: POP ESI",
+        "00bd0c54: RET 0x4",
+        "00bd0c60: SUB ESP,0x8",
+        "00bd0c63: PUSH EBX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd0920": {
+      "address": "00bd0920",
+      "instruction": "CALL 0x00bd0700",
+      "context_before": [
+        "00bd091e: MOV ECX,ESI",
+        "00bd091d: PUSH EBP",
+        "00bd091c: PUSH EAX",
+        "00bd091a: PUSH 0x1",
+        "00bd0919: PUSH EDX",
+        "00bd0915: MOV EAX,dword ptr [ESP + 0x20]",
+        "00bd0911: MOV EDX,dword ptr [ESP + 0x24]",
+        "00bd090e: SAR EBX,0x2",
+        "00bd090c: SUB EBX,EDI",
+        "00bd0908: MOV EBX,dword ptr [ESP + 0x20]",
+        "00bd0903: CALL 0x00bf6713",
+        "00bd0901: JZ 0x00bd0908",
+        "00bd08ff: CMP EBP,ESI",
+        "00bd08fd: JZ 0x00bd0903",
+        "00bd08fb: TEST EBP,EBP",
+        "00bd08f6: CALL 0x00bf6713",
+        "00bd08f4: JBE 0x00bd08fb",
+        "00bd08f2: CMP EDI,EAX",
+        "00bd08f0: JMP 0x00bd0911",
+        "00bd08ee: XOR EBX,EBX"
+      ],
+      "context_after": [
+        "00bd0925: MOV EDI,dword ptr [ESI + 0x4]",
+        "00bd0928: CMP EDI,dword ptr [ESI + 0x8]",
+        "00bd092b: JBE 0x00bd0932",
+        "00bd092d: CALL 0x00bf6713",
+        "00bd0932: MOV dword ptr [ESP + 0x20],EDI",
+        "00bd0936: LEA EDI,[EDI + EBX*0x4]",
+        "00bd0939: CMP EDI,dword ptr [ESI + 0x8]",
+        "00bd093c: JA 0x00bd0943",
+        "00bd093e: CMP EDI,dword ptr [ESI + 0x4]",
+        "00bd0941: JNC 0x00bd0948",
+        "00bd0943: CALL 0x00bf6713",
+        "00bd0948: MOV EAX,dword ptr [ESP + 0x18]",
+        "00bd094c: MOV dword ptr [EAX + 0x4],EDI",
+        "00bd094f: POP EDI",
+        "00bd0950: MOV dword ptr [EAX],ESI",
+        "00bd0952: POP ESI",
+        "00bd0953: POP EBP",
+        "00bd0954: POP EBX",
+        "00bd0955: POP ECX",
+        "00bd0956: RET 0x10"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd094c": {
+      "address": "00bd094c",
+      "instruction": "MOV dword ptr [EAX + 0x4],EDI",
+      "context_before": [
+        "00bd0948: MOV EAX,dword ptr [ESP + 0x18]",
+        "00bd0943: CALL 0x00bf6713",
+        "00bd0941: JNC 0x00bd0948",
+        "00bd093e: CMP EDI,dword ptr [ESI + 0x4]",
+        "00bd093c: JA 0x00bd0943",
+        "00bd0939: CMP EDI,dword ptr [ESI + 0x8]",
+        "00bd0936: LEA EDI,[EDI + EBX*0x4]",
+        "00bd0932: MOV dword ptr [ESP + 0x20],EDI",
+        "00bd092d: CALL 0x00bf6713",
+        "00bd092b: JBE 0x00bd0932",
+        "00bd0928: CMP EDI,dword ptr [ESI + 0x8]",
+        "00bd0925: MOV EDI,dword ptr [ESI + 0x4]",
+        "00bd0920: CALL 0x00bd0700",
+        "00bd091e: MOV ECX,ESI",
+        "00bd091d: PUSH EBP",
+        "00bd091c: PUSH EAX",
+        "00bd091a: PUSH 0x1",
+        "00bd0919: PUSH EDX",
+        "00bd0915: MOV EAX,dword ptr [ESP + 0x20]",
+        "00bd0911: MOV EDX,dword ptr [ESP + 0x24]"
+      ],
+      "context_after": [
+        "00bd094f: POP EDI",
+        "00bd0950: MOV dword ptr [EAX],ESI",
+        "00bd0952: POP ESI",
+        "00bd0953: POP EBP",
+        "00bd0954: POP EBX",
+        "00bd0955: POP ECX",
+        "00bd0956: RET 0x10",
+        "00bd0960: PUSH -0x1",
+        "00bd0962: PUSH 0xcc5498",
+        "00bd0967: MOV EAX,FS:[0x0]",
+        "00bd096d: PUSH EAX",
+        "00bd096e: MOV dword ptr FS:[0x0],ESP",
+        "00bd0975: PUSH ECX",
+        "00bd0976: XOR EAX,EAX",
+        "00bd0978: PUSH ESI",
+        "00bd0979: MOV ESI,ECX",
+        "00bd097b: MOV dword ptr [ESP + 0x4],ESI",
+        "00bd097f: MOV dword ptr [ESI + 0x4],EAX",
+        "00bd0982: MOV dword ptr [ESI + 0x8],EAX",
+        "00bd0985: MOV dword ptr [ESI + 0xc],EAX"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bd0950": {
+      "address": "00bd0950",
+      "instruction": "MOV dword ptr [EAX],ESI",
+      "context_before": [
+        "00bd094f: POP EDI",
+        "00bd094c: MOV dword ptr [EAX + 0x4],EDI",
+        "00bd0948: MOV EAX,dword ptr [ESP + 0x18]",
+        "00bd0943: CALL 0x00bf6713",
+        "00bd0941: JNC 0x00bd0948",
+        "00bd093e: CMP EDI,dword ptr [ESI + 0x4]",
+        "00bd093c: JA 0x00bd0943",
+        "00bd0939: CMP EDI,dword ptr [ESI + 0x8]",
+        "00bd0936: LEA EDI,[EDI + EBX*0x4]",
+        "00bd0932: MOV dword ptr [ESP + 0x20],EDI",
+        "00bd092d: CALL 0x00bf6713",
+        "00bd092b: JBE 0x00bd0932",
+        "00bd0928: CMP EDI,dword ptr [ESI + 0x8]",
+        "00bd0925: MOV EDI,dword ptr [ESI + 0x4]",
+        "00bd0920: CALL 0x00bd0700",
+        "00bd091e: MOV ECX,ESI",
+        "00bd091d: PUSH EBP",
+        "00bd091c: PUSH EAX",
+        "00bd091a: PUSH 0x1",
+        "00bd0919: PUSH EDX"
+      ],
+      "context_after": [
+        "00bd0952: POP ESI",
+        "00bd0953: POP EBP",
+        "00bd0954: POP EBX",
+        "00bd0955: POP ECX",
+        "00bd0956: RET 0x10",
+        "00bd0960: PUSH -0x1",
+        "00bd0962: PUSH 0xcc5498",
+        "00bd0967: MOV EAX,FS:[0x0]",
+        "00bd096d: PUSH EAX",
+        "00bd096e: MOV dword ptr FS:[0x0],ESP",
+        "00bd0975: PUSH ECX",
+        "00bd0976: XOR EAX,EAX",
+        "00bd0978: PUSH ESI",
+        "00bd0979: MOV ESI,ECX",
+        "00bd097b: MOV dword ptr [ESP + 0x4],ESI",
+        "00bd097f: MOV dword ptr [ESI + 0x4],EAX",
+        "00bd0982: MOV dword ptr [ESI + 0x8],EAX",
+        "00bd0985: MOV dword ptr [ESI + 0xc],EAX",
+        "00bd0988: PUSH 0x100",
+        "00bd098d: MOV dword ptr [ESP + 0x14],EAX"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bd0708": {
+      "address": "00bd0708",
+      "instruction": "MOV ECX,dword ptr [EAX]",
+      "context_before": [
+        "00bd0706: MOV ESI,ECX",
+        "00bd0705: PUSH ESI",
+        "00bd0704: PUSH EBX",
+        "00bd0700: MOV EAX,dword ptr [ESP + 0x10]",
+        "00bd06a2: RET 0x4",
+        "00bd06a1: POP ESI",
+        "00bd06a0: POP EBX",
+        "00bd069d: MOV dword ptr [ESI + 0x8],EDX",
+        "00bd069a: MOV dword ptr [ESI + 0xc],ECX",
+        "00bd0697: MOV dword ptr [ESI + 0x4],EBX",
+        "00bd0696: POP EDI",
+        "00bd0693: LEA ECX,[EBX + EAX*0x4]",
+        "00bd0690: LEA EDX,[EBX + EDI*0x4]",
+        "00bd068c: MOV EAX,dword ptr [ESP + 0x10]",
+        "00bd0689: ADD ESP,0x4",
+        "00bd0684: CALL 0x00bf65ac"
+      ],
+      "context_after": [
+        "00bd070a: MOV dword ptr [ESP + 0x18],ECX",
+        "00bd070e: MOV ECX,dword ptr [ESI + 0x4]",
+        "00bd0711: TEST ECX,ECX",
+        "00bd0713: PUSH EDI",
+        "00bd0714: JNZ 0x00bd071a",
+        "00bd0716: XOR EDI,EDI",
+        "00bd0718: JMP 0x00bd0722",
+        "00bd071a: MOV EDI,dword ptr [ESI + 0xc]",
+        "00bd071d: SUB EDI,ECX",
+        "00bd071f: SAR EDI,0x2",
+        "00bd0722: MOV EBX,dword ptr [ESP + 0x18]",
+        "00bd0726: TEST EBX,EBX",
+        "00bd0728: JZ 0x00bd08ae",
+        "00bd072e: TEST ECX,ECX",
+        "00bd0730: JNZ 0x00bd0736",
+        "00bd0732: XOR EAX,EAX"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bd070a": {
+      "address": "00bd070a",
+      "instruction": "MOV dword ptr [ESP + 0x18],ECX",
+      "context_before": [
+        "00bd0708: MOV ECX,dword ptr [EAX]",
+        "00bd0706: MOV ESI,ECX",
+        "00bd0705: PUSH ESI",
+        "00bd0704: PUSH EBX",
+        "00bd0700: MOV EAX,dword ptr [ESP + 0x10]",
+        "00bd06a2: RET 0x4",
+        "00bd06a1: POP ESI",
+        "00bd06a0: POP EBX",
+        "00bd069d: MOV dword ptr [ESI + 0x8],EDX",
+        "00bd069a: MOV dword ptr [ESI + 0xc],ECX",
+        "00bd0697: MOV dword ptr [ESI + 0x4],EBX",
+        "00bd0696: POP EDI",
+        "00bd0693: LEA ECX,[EBX + EAX*0x4]",
+        "00bd0690: LEA EDX,[EBX + EDI*0x4]",
+        "00bd068c: MOV EAX,dword ptr [ESP + 0x10]",
+        "00bd0689: ADD ESP,0x4"
+      ],
+      "context_after": [
+        "00bd070e: MOV ECX,dword ptr [ESI + 0x4]",
+        "00bd0711: TEST ECX,ECX",
+        "00bd0713: PUSH EDI",
+        "00bd0714: JNZ 0x00bd071a",
+        "00bd0716: XOR EDI,EDI",
+        "00bd0718: JMP 0x00bd0722",
+        "00bd071a: MOV EDI,dword ptr [ESI + 0xc]",
+        "00bd071d: SUB EDI,ECX",
+        "00bd071f: SAR EDI,0x2",
+        "00bd0722: MOV EBX,dword ptr [ESP + 0x18]",
+        "00bd0726: TEST EBX,EBX",
+        "00bd0728: JZ 0x00bd08ae",
+        "00bd072e: TEST ECX,ECX",
+        "00bd0730: JNZ 0x00bd0736",
+        "00bd0732: XOR EAX,EAX",
+        "00bd0734: JMP 0x00bd073e"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bd07ab": {
+      "address": "00bd07ab",
+      "instruction": "CALL 0x00bcfeb0",
+      "context_before": [
+        "00bd07a9: MOV ECX,EDI",
+        "00bd07a7: XOR EDX,EDX",
+        "00bd07a4: LEA EDI,[EAX + EBX*0x1]",
+        "00bd07a1: SAR EAX,0x2",
+        "00bd079f: SUB EAX,ECX",
+        "00bd079c: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd079a: JMP 0x00bd07a4",
+        "00bd0798: XOR EAX,EAX",
+        "00bd0796: JNZ 0x00bd079c",
+        "00bd0794: TEST ECX,ECX",
+        "00bd0792: JNC 0x00bd07a7",
+        "00bd0790: CMP EDI,EAX",
+        "00bd078e: ADD EAX,EBX",
+        "00bd078b: SAR EAX,0x2",
+        "00bd0789: SUB EAX,ECX",
+        "00bd0786: MOV EAX,dword ptr [ESI + 0x8]"
+      ],
+      "context_after": [
+        "00bd07b0: MOV ECX,dword ptr [ESI + 0x4]",
+        "00bd07b3: MOV EBP,EAX",
+        "00bd07b5: MOV EAX,dword ptr [ESP + 0x18]",
+        "00bd07b9: PUSH EBP",
+        "00bd07ba: PUSH EAX",
+        "00bd07bb: PUSH ECX",
+        "00bd07bc: MOV ECX,ESI",
+        "00bd07be: CALL 0x00bd0500",
+        "00bd07c3: LEA EDX,[ESP + 0x20]",
+        "00bd07c7: PUSH EDX",
+        "00bd07c8: PUSH EBX",
+        "00bd07c9: PUSH EAX",
+        "00bd07ca: MOV ECX,ESI",
+        "00bd07cc: CALL 0x00bd0560",
+        "00bd07d1: MOV ECX,dword ptr [ESP + 0x18]",
+        "00bd07d5: PUSH EAX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd07be": {
+      "address": "00bd07be",
+      "instruction": "CALL 0x00bd0500",
+      "context_before": [
+        "00bd07bc: MOV ECX,ESI",
+        "00bd07bb: PUSH ECX",
+        "00bd07ba: PUSH EAX",
+        "00bd07b9: PUSH EBP",
+        "00bd07b5: MOV EAX,dword ptr [ESP + 0x18]",
+        "00bd07b3: MOV EBP,EAX",
+        "00bd07b0: MOV ECX,dword ptr [ESI + 0x4]",
+        "00bd07ab: CALL 0x00bcfeb0",
+        "00bd07a9: MOV ECX,EDI",
+        "00bd07a7: XOR EDX,EDX",
+        "00bd07a4: LEA EDI,[EAX + EBX*0x1]",
+        "00bd07a1: SAR EAX,0x2",
+        "00bd079f: SUB EAX,ECX",
+        "00bd079c: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd079a: JMP 0x00bd07a4",
+        "00bd0798: XOR EAX,EAX"
+      ],
+      "context_after": [
+        "00bd07c3: LEA EDX,[ESP + 0x20]",
+        "00bd07c7: PUSH EDX",
+        "00bd07c8: PUSH EBX",
+        "00bd07c9: PUSH EAX",
+        "00bd07ca: MOV ECX,ESI",
+        "00bd07cc: CALL 0x00bd0560",
+        "00bd07d1: MOV ECX,dword ptr [ESP + 0x18]",
+        "00bd07d5: PUSH EAX",
+        "00bd07d6: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd07d9: PUSH EAX",
+        "00bd07da: PUSH ECX",
+        "00bd07db: MOV ECX,ESI",
+        "00bd07dd: CALL 0x00bd0500",
+        "00bd07e2: MOV EAX,dword ptr [ESI + 0x4]",
+        "00bd07e5: TEST EAX,EAX",
+        "00bd07e7: JNZ 0x00bd07ed"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd07cc": {
+      "address": "00bd07cc",
+      "instruction": "CALL 0x00bd0560",
+      "context_before": [
+        "00bd07ca: MOV ECX,ESI",
+        "00bd07c9: PUSH EAX",
+        "00bd07c8: PUSH EBX",
+        "00bd07c7: PUSH EDX",
+        "00bd07c3: LEA EDX,[ESP + 0x20]",
+        "00bd07be: CALL 0x00bd0500",
+        "00bd07bc: MOV ECX,ESI",
+        "00bd07bb: PUSH ECX",
+        "00bd07ba: PUSH EAX",
+        "00bd07b9: PUSH EBP",
+        "00bd07b5: MOV EAX,dword ptr [ESP + 0x18]",
+        "00bd07b3: MOV EBP,EAX",
+        "00bd07b0: MOV ECX,dword ptr [ESI + 0x4]",
+        "00bd07ab: CALL 0x00bcfeb0",
+        "00bd07a9: MOV ECX,EDI",
+        "00bd07a7: XOR EDX,EDX"
+      ],
+      "context_after": [
+        "00bd07d1: MOV ECX,dword ptr [ESP + 0x18]",
+        "00bd07d5: PUSH EAX",
+        "00bd07d6: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd07d9: PUSH EAX",
+        "00bd07da: PUSH ECX",
+        "00bd07db: MOV ECX,ESI",
+        "00bd07dd: CALL 0x00bd0500",
+        "00bd07e2: MOV EAX,dword ptr [ESI + 0x4]",
+        "00bd07e5: TEST EAX,EAX",
+        "00bd07e7: JNZ 0x00bd07ed",
+        "00bd07e9: XOR ECX,ECX",
+        "00bd07eb: JMP 0x00bd07f5",
+        "00bd07ed: MOV ECX,dword ptr [ESI + 0x8]",
+        "00bd07f0: SUB ECX,EAX",
+        "00bd07f2: SAR ECX,0x2",
+        "00bd07f5: ADD EBX,ECX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd07dd": {
+      "address": "00bd07dd",
+      "instruction": "CALL 0x00bd0500",
+      "context_before": [
+        "00bd07db: MOV ECX,ESI",
+        "00bd07da: PUSH ECX",
+        "00bd07d9: PUSH EAX",
+        "00bd07d6: MOV EAX,dword ptr [ESI + 0x8]",
+        "00bd07d5: PUSH EAX",
+        "00bd07d1: MOV ECX,dword ptr [ESP + 0x18]",
+        "00bd07cc: CALL 0x00bd0560",
+        "00bd07ca: MOV ECX,ESI",
+        "00bd07c9: PUSH EAX",
+        "00bd07c8: PUSH EBX",
+        "00bd07c7: PUSH EDX",
+        "00bd07c3: LEA EDX,[ESP + 0x20]",
+        "00bd07be: CALL 0x00bd0500",
+        "00bd07bc: MOV ECX,ESI",
+        "00bd07bb: PUSH ECX",
+        "00bd07ba: PUSH EAX"
+      ],
+      "context_after": [
+        "00bd07e2: MOV EAX,dword ptr [ESI + 0x4]",
+        "00bd07e5: TEST EAX,EAX",
+        "00bd07e7: JNZ 0x00bd07ed",
+        "00bd07e9: XOR ECX,ECX",
+        "00bd07eb: JMP 0x00bd07f5",
+        "00bd07ed: MOV ECX,dword ptr [ESI + 0x8]",
+        "00bd07f0: SUB ECX,EAX",
+        "00bd07f2: SAR ECX,0x2",
+        "00bd07f5: ADD EBX,ECX",
+        "00bd07f7: TEST EAX,EAX",
+        "00bd07f9: JZ 0x00bd0804",
+        "00bd07fb: PUSH EAX",
+        "00bd07fc: CALL 0x00bf65ac",
+        "00bd0801: ADD ESP,0x4",
+        "00bd0804: LEA EDX,[EBP + EDI*0x4]",
+        "00bd0808: LEA EAX,[EBP + EBX*0x4]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd07fc": {
+      "address": "00bd07fc",
+      "instruction": "CALL 0x00bf65ac",
+      "context_before": [
+        "00bd07fb: PUSH EAX",
+        "00bd07f9: JZ 0x00bd0804",
+        "00bd07f7: TEST EAX,EAX",
+        "00bd07f5: ADD EBX,ECX",
+        "00bd07f2: SAR ECX,0x2",
+        "00bd07f0: SUB ECX,EAX",
+        "00bd07ed: MOV ECX,dword ptr [ESI + 0x8]",
+        "00bd07eb: JMP 0x00bd07f5",
+        "00bd07e9: XOR ECX,ECX",
+        "00bd07e7: JNZ 0x00bd07ed",
+        "00bd07e5: TEST EAX,EAX",
+        "00bd07e2: MOV EAX,dword ptr [ESI + 0x4]",
+        "00bd07dd: CALL 0x00bd0500",
+        "00bd07db: MOV ECX,ESI",
+        "00bd07da: PUSH ECX",
+        "00bd07d9: PUSH EAX"
+      ],
+      "context_after": [
+        "00bd0801: ADD ESP,0x4",
+        "00bd0804: LEA EDX,[EBP + EDI*0x4]",
+        "00bd0808: LEA EAX,[EBP + EBX*0x4]",
+        "00bd080c: MOV dword ptr [ESI + 0x4],EBP",
+        "00bd080f: POP EBP",
+        "00bd0810: POP EDI",
+        "00bd0811: MOV dword ptr [ESI + 0xc],EDX",
+        "00bd0814: MOV dword ptr [ESI + 0x8],EAX",
+        "00bd0817: POP ESI",
+        "00bd0818: POP EBX",
+        "00bd0819: RET 0x10",
+        "00bd081c: MOV EBP,dword ptr [ESI + 0x8]",
+        "00bd081f: MOV EDI,dword ptr [ESP + 0x18]",
+        "00bd0823: MOV ECX,EBP",
+        "00bd0825: SUB ECX,EDI",
+        "00bd0827: SAR ECX,0x2"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd080c": {
+      "address": "00bd080c",
+      "instruction": "MOV dword ptr [ESI + 0x4],EBP",
+      "context_before": [
+        "00bd0808: LEA EAX,[EBP + EBX*0x4]",
+        "00bd0804: LEA EDX,[EBP + EDI*0x4]",
+        "00bd0801: ADD ESP,0x4",
+        "00bd07fc: CALL 0x00bf65ac",
+        "00bd07fb: PUSH EAX",
+        "00bd07f9: JZ 0x00bd0804",
+        "00bd07f7: TEST EAX,EAX",
+        "00bd07f5: ADD EBX,ECX",
+        "00bd07f2: SAR ECX,0x2",
+        "00bd07f0: SUB ECX,EAX",
+        "00bd07ed: MOV ECX,dword ptr [ESI + 0x8]",
+        "00bd07eb: JMP 0x00bd07f5",
+        "00bd07e9: XOR ECX,ECX",
+        "00bd07e7: JNZ 0x00bd07ed",
+        "00bd07e5: TEST EAX,EAX",
+        "00bd07e2: MOV EAX,dword ptr [ESI + 0x4]"
+      ],
+      "context_after": [
+        "00bd080f: POP EBP",
+        "00bd0810: POP EDI",
+        "00bd0811: MOV dword ptr [ESI + 0xc],EDX",
+        "00bd0814: MOV dword ptr [ESI + 0x8],EAX",
+        "00bd0817: POP ESI",
+        "00bd0818: POP EBX",
+        "00bd0819: RET 0x10",
+        "00bd081c: MOV EBP,dword ptr [ESI + 0x8]",
+        "00bd081f: MOV EDI,dword ptr [ESP + 0x18]",
+        "00bd0823: MOV ECX,EBP",
+        "00bd0825: SUB ECX,EDI",
+        "00bd0827: SAR ECX,0x2",
+        "00bd082a: LEA EAX,[EBX*0x4 + 0x0]",
+        "00bd0831: CMP ECX,EBX",
+        "00bd0833: MOV dword ptr [ESP + 0x1c],EAX",
+        "00bd0837: MOV ECX,ESI"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bd0811": {
+      "address": "00bd0811",
+      "instruction": "MOV dword ptr [ESI + 0xc],EDX",
+      "context_before": [
+        "00bd0810: POP EDI",
+        "00bd080f: POP EBP",
+        "00bd080c: MOV dword ptr [ESI + 0x4],EBP",
+        "00bd0808: LEA EAX,[EBP + EBX*0x4]",
+        "00bd0804: LEA EDX,[EBP + EDI*0x4]",
+        "00bd0801: ADD ESP,0x4",
+        "00bd07fc: CALL 0x00bf65ac",
+        "00bd07fb: PUSH EAX",
+        "00bd07f9: JZ 0x00bd0804",
+        "00bd07f7: TEST EAX,EAX",
+        "00bd07f5: ADD EBX,ECX",
+        "00bd07f2: SAR ECX,0x2",
+        "00bd07f0: SUB ECX,EAX",
+        "00bd07ed: MOV ECX,dword ptr [ESI + 0x8]",
+        "00bd07eb: JMP 0x00bd07f5",
+        "00bd07e9: XOR ECX,ECX"
+      ],
+      "context_after": [
+        "00bd0814: MOV dword ptr [ESI + 0x8],EAX",
+        "00bd0817: POP ESI",
+        "00bd0818: POP EBX",
+        "00bd0819: RET 0x10",
+        "00bd081c: MOV EBP,dword ptr [ESI + 0x8]",
+        "00bd081f: MOV EDI,dword ptr [ESP + 0x18]",
+        "00bd0823: MOV ECX,EBP",
+        "00bd0825: SUB ECX,EDI",
+        "00bd0827: SAR ECX,0x2",
+        "00bd082a: LEA EAX,[EBX*0x4 + 0x0]",
+        "00bd0831: CMP ECX,EBX",
+        "00bd0833: MOV dword ptr [ESP + 0x1c],EAX",
+        "00bd0837: MOV ECX,ESI",
+        "00bd0839: JNC 0x00bd0881",
+        "00bd083b: ADD EAX,EDI",
+        "00bd083d: PUSH EAX"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bd0814": {
+      "address": "00bd0814",
+      "instruction": "MOV dword ptr [ESI + 0x8],EAX",
+      "context_before": [
+        "00bd0811: MOV dword ptr [ESI + 0xc],EDX",
+        "00bd0810: POP EDI",
+        "00bd080f: POP EBP",
+        "00bd080c: MOV dword ptr [ESI + 0x4],EBP",
+        "00bd0808: LEA EAX,[EBP + EBX*0x4]",
+        "00bd0804: LEA EDX,[EBP + EDI*0x4]",
+        "00bd0801: ADD ESP,0x4",
+        "00bd07fc: CALL 0x00bf65ac",
+        "00bd07fb: PUSH EAX",
+        "00bd07f9: JZ 0x00bd0804",
+        "00bd07f7: TEST EAX,EAX",
+        "00bd07f5: ADD EBX,ECX",
+        "00bd07f2: SAR ECX,0x2",
+        "00bd07f0: SUB ECX,EAX",
+        "00bd07ed: MOV ECX,dword ptr [ESI + 0x8]",
+        "00bd07eb: JMP 0x00bd07f5"
+      ],
+      "context_after": [
+        "00bd0817: POP ESI",
+        "00bd0818: POP EBX",
+        "00bd0819: RET 0x10",
+        "00bd081c: MOV EBP,dword ptr [ESI + 0x8]",
+        "00bd081f: MOV EDI,dword ptr [ESP + 0x18]",
+        "00bd0823: MOV ECX,EBP",
+        "00bd0825: SUB ECX,EDI",
+        "00bd0827: SAR ECX,0x2",
+        "00bd082a: LEA EAX,[EBX*0x4 + 0x0]",
+        "00bd0831: CMP ECX,EBX",
+        "00bd0833: MOV dword ptr [ESP + 0x1c],EAX",
+        "00bd0837: MOV ECX,ESI",
+        "00bd0839: JNC 0x00bd0881",
+        "00bd083b: ADD EAX,EDI",
+        "00bd083d: PUSH EAX",
+        "00bd083e: PUSH EBP"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00bf671a": {
+      "address": "00bf671a",
+      "instruction": "CALL 0x00bf66ef",
+      "context_before": [
+        "00bf6719: PUSH EAX",
+        "00bf6718: PUSH EAX",
+        "00bf6717: PUSH EAX",
+        "00bf6716: PUSH EAX",
+        "00bf6715: PUSH EAX",
+        "00bf6713: XOR EAX,EAX",
+        "00bf670e: JMP 0x00bf65bb",
+        "00bf670d: POP EBP",
+        "00bf670c: POP ECX",
+        "00bf6707: CALL 0x00c04ef3",
+        "00bf6705: PUSH 0x2",
+        "00bf6703: JMP EAX",
+        "00bf6702: POP EBP",
+        "00bf6700: JZ 0x00bf6705",
+        "00bf66ff: POP ECX",
+        "00bf66fd: TEST EAX,EAX"
+      ],
+      "context_after": [
+        "00bf671f: ADD ESP,0x14",
+        "00bf6722: RET",
+        "00bf6723: PUSH EBP",
+        "00bf6724: MOV EBP,ESP",
+        "00bf6726: POP EBP",
+        "00bf6727: JMP 0x00bf66ef",
+        "00bf672c: PUSH EBP",
+        "00bf672d: MOV EBP,ESP",
+        "00bf672f: PUSH ESI",
+        "00bf6730: MOV ESI,dword ptr [EBP + 0x14]",
+        "00bf6733: PUSH EDI",
+        "00bf6734: XOR EDI,EDI",
+        "00bf6736: CMP ESI,EDI",
+        "00bf6738: JNZ 0x00bf673e",
+        "00bf673a: XOR EAX,EAX",
+        "00bf673c: JMP 0x00bf67a3"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bf6703": {
+      "address": "00bf6703",
+      "instruction": "JMP EAX",
+      "context_before": [
+        "00bf6702: POP EBP",
+        "00bf6700: JZ 0x00bf6705",
+        "00bf66ff: POP ECX",
+        "00bf66fd: TEST EAX,EAX",
+        "00bf66f8: CALL 0x00c04fde",
+        "00bf66f2: PUSH dword ptr [0x0109dd64]",
+        "00bf66f0: MOV EBP,ESP",
+        "00bf66ef: PUSH EBP",
+        "00bf66ea: JMP 0x00bf65bb",
+        "00bf66e9: POP EBP",
+        "00bf66e7: MOV EBP,ESP",
+        "00bf66e6: PUSH EBP",
+        "00bf66b6: RET",
+        "00bf66b5: LEAVE",
+        "00bf66af: ADD EBP,0x2a8",
+        "00bf66aa: CALL 0x00bfe120"
+      ],
+      "context_after": [
+        "00bf6705: PUSH 0x2",
+        "00bf6707: CALL 0x00c04ef3",
+        "00bf670c: POP ECX",
+        "00bf670d: POP EBP",
+        "00bf670e: JMP 0x00bf65bb",
+        "00bf6713: XOR EAX,EAX",
+        "00bf6715: PUSH EAX",
+        "00bf6716: PUSH EAX",
+        "00bf6717: PUSH EAX",
+        "00bf6718: PUSH EAX",
+        "00bf6719: PUSH EAX",
+        "00bf671a: CALL 0x00bf66ef",
+        "00bf671f: ADD ESP,0x14",
+        "00bf6722: RET",
+        "00bf6723: PUSH EBP",
+        "00bf6724: MOV EBP,ESP"
+      ],
+      "mnemonic": "JMP",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bf67c9": {
+      "address": "00bf67c9",
+      "instruction": "CALL 0x00bf66ef",
+      "context_before": [
+        "00bf67c8: PUSH EDI",
+        "00bf67c7: PUSH EDI",
+        "00bf67c6: PUSH EDI",
+        "00bf67c5: PUSH EDI",
+        "00bf67c4: PUSH EDI",
+        "00bf67c2: MOV dword ptr [EAX],ESI",
+        "00bf67c1: POP ESI",
+        "00bf67bf: PUSH 0x16",
+        "00bf67ba: CALL 0x00bffb8b",
+        "00bf67b8: JNZ 0x00bf67d5",
+        "00bf67b5: CMP dword ptr [EBP + 0x8],EDI",
+        "00bf67b3: JZ 0x00bf67fc",
+        "00bf67b1: CMP EAX,EDI",
+        "00bf67af: XOR EDI,EDI",
+        "00bf67ae: PUSH EDI",
+        "00bf67ad: PUSH ESI"
+      ],
+      "context_after": [
+        "00bf67ce: ADD ESP,0x14",
+        "00bf67d1: MOV EAX,ESI",
+        "00bf67d3: JMP 0x00bf67fe",
+        "00bf67d5: CMP dword ptr [EBP + 0x10],EDI",
+        "00bf67d8: JZ 0x00bf67ba",
+        "00bf67da: CMP dword ptr [EBP + 0xc],EAX",
+        "00bf67dd: JNC 0x00bf67ed",
+        "00bf67df: CALL 0x00bffb8b",
+        "00bf67e4: PUSH 0x22",
+        "00bf67e6: POP ECX",
+        "00bf67e7: MOV dword ptr [EAX],ECX",
+        "00bf67e9: MOV ESI,ECX",
+        "00bf67eb: JMP 0x00bf67c4",
+        "00bf67ed: PUSH EAX",
+        "00bf67ee: PUSH dword ptr [EBP + 0x10]",
+        "00bf67f1: PUSH dword ptr [EBP + 0x8]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bf67f4": {
+      "address": "00bf67f4",
+      "instruction": "CALL 0x00bf87e0",
+      "context_before": [
+        "00bf67f1: PUSH dword ptr [EBP + 0x8]",
+        "00bf67ee: PUSH dword ptr [EBP + 0x10]",
+        "00bf67ed: PUSH EAX",
+        "00bf67eb: JMP 0x00bf67c4",
+        "00bf67e9: MOV ESI,ECX",
+        "00bf67e7: MOV dword ptr [EAX],ECX",
+        "00bf67e6: POP ECX",
+        "00bf67e4: PUSH 0x22",
+        "00bf67df: CALL 0x00bffb8b",
+        "00bf67dd: JNC 0x00bf67ed",
+        "00bf67da: CMP dword ptr [EBP + 0xc],EAX",
+        "00bf67d8: JZ 0x00bf67ba",
+        "00bf67d5: CMP dword ptr [EBP + 0x10],EDI",
+        "00bf67d3: JMP 0x00bf67fe",
+        "00bf67d1: MOV EAX,ESI",
+        "00bf67ce: ADD ESP,0x14"
+      ],
+      "context_after": [
+        "00bf67f9: ADD ESP,0xc",
+        "00bf67fc: XOR EAX,EAX",
+        "00bf67fe: POP EDI",
+        "00bf67ff: POP ESI",
+        "00bf6800: POP EBP",
+        "00bf6801: RET",
+        "00bf6802: PUSH ESI",
+        "00bf6803: PUSH 0x1",
+        "00bf6805: PUSH 0xe154b4",
+        "00bf680a: MOV ESI,ECX",
+        "00bf680c: CALL 0x00bf638e",
+        "00bf6811: MOV dword ptr [ESI],0xd6923c",
+        "00bf6817: MOV EAX,ESI",
+        "00bf6819: POP ESI",
+        "00bf681a: RET",
+        "00bf681b: PUSH EBP"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bf6826": {
+      "address": "00bf6826",
+      "instruction": "CALL 0x00c055b1",
+      "context_before": [
+        "00bf6823: PUSH dword ptr [EBP + 0x8]",
+        "00bf6821: JMP 0x00bf6830",
+        "00bf681e: SUB ESP,0xc",
+        "00bf681c: MOV EBP,ESP",
+        "00bf681b: PUSH EBP",
+        "00bf681a: RET",
+        "00bf6819: POP ESI",
+        "00bf6817: MOV EAX,ESI",
+        "00bf6811: MOV dword ptr [ESI],0xd6923c",
+        "00bf680c: CALL 0x00bf638e",
+        "00bf680a: MOV ESI,ECX",
+        "00bf6805: PUSH 0xe154b4",
+        "00bf6803: PUSH 0x1",
+        "00bf6802: PUSH ESI",
+        "00bf6801: RET",
+        "00bf6800: POP EBP"
+      ],
+      "context_after": [
+        "00bf682b: TEST EAX,EAX",
+        "00bf682d: POP ECX",
+        "00bf682e: JZ 0x00bf683f",
+        "00bf6830: PUSH dword ptr [EBP + 0x8]",
+        "00bf6833: CALL 0x00bf9f1a",
+        "00bf6838: TEST EAX,EAX",
+        "00bf683a: POP ECX",
+        "00bf683b: JZ 0x00bf6823",
+        "00bf683d: LEAVE",
+        "00bf683e: RET",
+        "00bf683f: TEST byte ptr [0x0109dd74],0x1",
+        "00bf6846: MOV ESI,0x109dd68",
+        "00bf684b: JNZ 0x00bf6866",
+        "00bf684d: OR dword ptr [0x0109dd74],0x1",
+        "00bf6854: MOV ECX,ESI",
+        "00bf6856: CALL 0x00bf6802"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00c055c5": {
+      "address": "00c055c5",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "00c055c1: PUSH dword ptr [ESP + 0x4]",
+        "00c055bf: JZ 0x00c055d0",
+        "00c055be: POP ECX",
+        "00c055bc: TEST EAX,EAX",
+        "00c055b7: CALL 0x00c04fde",
+        "00c055b1: PUSH dword ptr [0x0109de44]",
+        "00c05569: RET",
+        "00c05564: MOV [0x0109de44],EAX",
+        "00c05560: MOV EAX,dword ptr [ESP + 0x4]",
+        "00c0555f: RET",
+        "00c0555e: POP EDI",
+        "00c0555d: POP ESI",
+        "00c0555b: XOR EAX,EAX",
+        "00c05556: CALL 0x00c050bb",
+        "00c05554: JMP 0x00c0555d",
+        "00c05553: INC EAX"
+      ],
+      "context_after": [
+        "00c055c7: TEST EAX,EAX",
+        "00c055c9: POP ECX",
+        "00c055ca: JZ 0x00c055d0",
+        "00c055cc: XOR EAX,EAX",
+        "00c055ce: INC EAX",
+        "00c055cf: RET",
+        "00c055d0: XOR EAX,EAX",
+        "00c055d2: RET",
+        "00c055d3: PUSH 0xc",
+        "00c055d5: PUSH 0xe032f8",
+        "00c055da: CALL 0x00c07c00",
+        "00c055df: PUSH 0xe",
+        "00c055e1: CALL 0x00c11c21",
+        "00c055e6: POP ECX",
+        "00c055e7: AND dword ptr [EBP + -0x4],0x0",
+        "00c055eb: MOV ESI,dword ptr [EBP + 0x8]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00c05004": {
+      "address": "00c05004",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "00c05002: CALL ESI",
+        "00c04ffc: PUSH dword ptr [0x00e15b00]",
+        "00c04ffb: PUSH EAX",
+        "00c04ff9: JZ 0x00c05012",
+        "00c04ff6: CMP EAX,-0x1",
+        "00c04ff1: MOV EAX,[0x00e15afc]",
+        "00c04fef: JZ 0x00c05012",
+        "00c04fed: TEST EAX,EAX",
+        "00c04feb: CALL ESI",
+        "00c04fe5: MOV ESI,dword ptr [0x00ce20bc]",
+        "00c04fdf: PUSH dword ptr [0x00e15b00]",
+        "00c04fde: PUSH ESI",
+        "00c04fdd: RET",
+        "00c04fdc: POP ECX",
+        "00c04fd7: CALL 0x00c04f67",
+        "00c04fd5: PUSH 0x0"
+      ],
+      "context_after": [
+        "00c05006: TEST EAX,EAX",
+        "00c05008: JZ 0x00c05012",
+        "00c0500a: MOV EAX,dword ptr [EAX + 0x1fc]",
+        "00c05010: JMP 0x00c05038",
+        "00c05012: PUSH 0xd69fd0",
+        "00c05017: CALL dword ptr [0x00ce215c]",
+        "00c0501d: MOV ESI,EAX",
+        "00c0501f: TEST ESI,ESI",
+        "00c05021: JZ 0x00c05046",
+        "00c05023: CALL 0x00c04efb",
+        "00c05028: TEST EAX,EAX",
+        "00c0502a: JZ 0x00c05046",
+        "00c0502c: PUSH 0xd69fe0",
+        "00c05031: PUSH ESI",
+        "00c05032: CALL dword ptr [0x00ce20f4]",
+        "00c05038: TEST EAX,EAX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00c05040": {
+      "address": "00c05040",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "00c0503c: PUSH dword ptr [ESP + 0x8]",
+        "00c0503a: JZ 0x00c05046",
+        "00c05038: TEST EAX,EAX",
+        "00c05032: CALL dword ptr [0x00ce20f4]",
+        "00c05031: PUSH ESI",
+        "00c0502c: PUSH 0xd69fe0",
+        "00c0502a: JZ 0x00c05046",
+        "00c05028: TEST EAX,EAX",
+        "00c05023: CALL 0x00c04efb",
+        "00c05021: JZ 0x00c05046",
+        "00c0501f: TEST ESI,ESI",
+        "00c0501d: MOV ESI,EAX",
+        "00c05017: CALL dword ptr [0x00ce215c]",
+        "00c05012: PUSH 0xd69fd0",
+        "00c05010: JMP 0x00c05038",
+        "00c0500a: MOV EAX,dword ptr [EAX + 0x1fc]"
+      ],
+      "context_after": [
+        "00c05042: MOV dword ptr [ESP + 0x8],EAX",
+        "00c05046: MOV EAX,dword ptr [ESP + 0x8]",
+        "00c0504a: POP ESI",
+        "00c0504b: RET",
+        "00c0504c: CALL dword ptr [0x00ce20b8]",
+        "00c05052: RET 0x4",
+        "00c05055: PUSH dword ptr [ESP + 0x4]",
+        "00c05059: PUSH dword ptr [0x00e15b00]",
+        "00c0505f: CALL dword ptr [0x00ce20bc]",
+        "00c05065: CALL EAX",
+        "00c05067: RET 0x4",
+        "00c0506a: MOV EAX,[0x00e15afc]",
+        "00c0506f: RET",
+        "00c05070: PUSH ESI",
+        "00c05071: PUSH dword ptr [0x00e15b00]",
+        "00c05077: CALL dword ptr [0x00ce20bc]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bd05f4": {
+      "address": "00bd05f4",
+      "instruction": "CALL 0x00bf6885",
+      "context_before": [
+        "00bd05ec: MOV dword ptr [ESP + 0x24],0xd69260",
+        "00bd05eb: PUSH ECX",
+        "00bd05e7: LEA ECX,[ESP + 0x20]",
+        "00bd05e2: PUSH 0xd83f98",
+        "00bd05dd: CALL 0x00411700",
+        "00bd05d5: MOV dword ptr [ESP + 0x50],0x0",
+        "00bd05d1: LEA ECX,[ESP + 0x20]",
+        "00bd05d0: PUSH EAX",
+        "00bd05cd: LEA EAX,[ESP]",
+        "00bd05c8: CALL 0x00408720",
+        "00bd05c3: MOV byte ptr [ESP + 0xc],0x0",
+        "00bd05bb: MOV dword ptr [ESP + 0x1c],0x0",
+        "00bd05b3: MOV dword ptr [ESP + 0x20],0xf",
+        "00bd05af: LEA ECX,[ESP + 0x8]",
+        "00bd05aa: PUSH 0xce37e0",
+        "00bd05a8: PUSH 0x12"
+      ],
+      "context_after": [
+        "00bd0600: PUSH ESI",
+        "00bd0601: MOV ESI,ECX",
+        "00bd0603: MOV ECX,dword ptr [ESP + 0x8]",
+        "00bd0607: CMP ECX,0x3fffffff",
+        "00bd060d: JBE 0x00bd0614",
+        "00bd060f: CALL 0x00bd0590",
+        "00bd0614: MOV EDX,dword ptr [ESI + 0x4]",
+        "00bd0617: TEST EDX,EDX",
+        "00bd0619: JNZ 0x00bd061f",
+        "00bd061b: XOR EAX,EAX",
+        "00bd061d: JMP 0x00bd0627",
+        "00bd061f: MOV EAX,dword ptr [ESI + 0xc]",
+        "00bd0622: SUB EAX,EDX",
+        "00bd0624: SAR EAX,0x2",
+        "00bd0627: CMP EAX,ECX",
+        "00bd0629: JNC 0x00bd06a1"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00bcff00": {
+      "address": "00bcff00",
+      "instruction": "CALL 0x00bf6885",
+      "context_before": [
+        "00bcfef8: MOV dword ptr [ESP + 0xc],0xd6923c",
+        "00bcfef7: PUSH ECX",
+        "00bcfef3: LEA ECX,[ESP + 0x8]",
+        "00bcfeee: PUSH 0xe03cc0",
+        "00bcfee9: CALL 0x00bf6340",
+        "00bcfee1: MOV dword ptr [ESP + 0x4],0x0",
+        "00bcfedd: LEA ECX,[ESP + 0x8]",
+        "00bcfedc: PUSH EAX",
+        "00bcfed9: LEA EAX,[ESP]",
+        "00bcfed7: JNC 0x00bcfeb9",
+        "00bcfed4: CMP EAX,0x4",
+        "00bcfed2: DIV ECX",
+        "00bcfed0: XOR EDX,EDX",
+        "00bcfecd: OR EAX,0xffffffff",
+        "00bcfecc: RET",
+        "00bcfec9: ADD ESP,0x10"
+      ],
+      "context_after": [
+        "00bcffc0: PUSH ESI",
+        "00bcffc1: MOV ESI,ECX",
+        "00bcffc3: MOV EAX,dword ptr [ESI]",
+        "00bcffc5: TEST EAX,EAX",
+        "00bcffc7: MOV ECX,dword ptr [ESI + 0x4]",
+        "00bcffca: PUSH EDI",
+        "00bcffcb: MOV EDI,dword ptr [ESP + 0xc]",
+        "00bcffcf: MOV dword ptr [EDI],EAX",
+        "00bcffd1: MOV dword ptr [EDI + 0x4],ECX",
+        "00bcffd4: JNZ 0x00bcffdb",
+        "00bcffd6: CALL 0x00bf6713",
+        "00bcffdb: MOV EDX,dword ptr [ESI]",
+        "00bcffdd: MOV EAX,dword ptr [ESI + 0x4]",
+        "00bcffe0: CMP EAX,dword ptr [EDX + 0x8]",
+        "00bcffe3: JC 0x00bcffea",
+        "00bcffe5: CALL 0x00bf6713"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    }
+  },
+  "references": [
+    "docs/CC12_GLOBAL_CONFIG_SECOND_ARRAY_DIRECT_CALLERS.md",
+    "reports/cc12_global_config_second_array_direct_callers.json",
+    "docs/CC12_GLOBAL_CONFIG_COLOR_SETTER_FRONTIER.md",
+    "reports/cc12_global_config_color_setter_frontier.json"
+  ]
+}
