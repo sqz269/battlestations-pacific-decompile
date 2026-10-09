@@ -1105,5 +1105,26 @@
     "runtime_fault_unwind_proof": 0,
     "faithful_startup": 0,
     "gameplay": 0
+  },
+  "primary_review": {
+    "worker_commit": "9e43ca591d66d69bd6e8612047f20ac96a560918",
+    "worker_report_sha256": "2e297ac15d7c3b9dabcd598bfec80a9952f09ab7e55590e897b69445d9ee612f",
+    "pin_occurrences_replayed": 30,
+    "whole_PE_and_fresh_live_bytes_equal": true,
+    "physical_decode_bytes": 186,
+    "physical_decode_starts": 62,
+    "missing_starts": [
+      "00c11be7",
+      "00c11be8",
+      "00c11bed",
+      "00c11bf3",
+      "00c11bf6",
+      "00c11c02"
+    ],
+    "decision": "Accept readiness and failed live-start gate. No Source/listing repair/ABI/runtime/gameplay admission; complete real bootstrap, allocation, errno/free/init dispatch, cleanup and listing repair prerequisites remain.",
+    "local_live_bytes_pin": {
+      "path": "local\\cc12_crt_initializer_primary\\live_bytes.txt",
+      "sha256": "252d8343110fd8c1ff0228ab5defe845808ad9dff07d02538da01ca24e80a6c7"
+    }
   }
 }
