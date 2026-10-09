@@ -1,0 +1,1578 @@
+{
+  "schema": 1,
+  "packet": "cc12_tick_subnode_reparent_caller_ABI_readiness",
+  "kind": "read_only_complete_owned_Native_body_and_qualified_current_Source_contract_audit",
+  "created_utc": "2026-10-09T13:27:13.854365+00:00",
+  "baseline_commit": "fccaff11e849bd760a6384c25a3762345addfe41",
+  "claimed_address": "00876020",
+  "owned_files": [
+    "docs/CC12_PENDING_REGISTRY_TICK_SUBNODE_REPARENT_CALLER_ABI_READINESS.md",
+    "reports/cc12_pending_registry_tick_subnode_reparent_caller_ABI_readiness.json"
+  ],
+  "Source_credit": false,
+  "Native_credit": false,
+  "Original_ABI_credit": false,
+  "conclusions": [
+    "All243B,80 reachable instructions,23blocks/32edges and four physical CALLs are accounted for, including one zero-stack-delta scan cycle and one RET4.",
+    "Node+4 is captured as oldParent and delivered in ECX to direct00875960 with the captured node on the stack when oldParent is nonzero and differs from target receiver.",
+    "Nonzero same-parent skips the direct node/list mutation phase; otherwise parent assignment precedes current head/search/link/count accesses.",
+    "Node+18 ordering word is captured once before scanning; candidate+18 is read on each signed comparison, with first strictly greater candidate selected.",
+    "Pointer aliases require all fresh previous/next/head/tail/count reads and the exact write order; zero count does not force old tail or new node previous to zero.",
+    "Visible Native FS/frame/guard/state timing is established; handlerC964E8 remains unopened and no unwind action is invented.",
+    "Final ECX is current saved prior FS-chain word and final arithmetic flags come from ADD ESP,14h, regardless of the optional Leave path.",
+    "Current57 primary pins all match; older53 and38 snapshots have explicitly recorded CMake/legacy-owner drift. No qualified Source API is promoted to Original drop-in ABI."
+  ],
+  "target_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "method": "Project-aware live proto before owned decompile/listing/bytes; CLI verifies configured target. Primary Astra had independently reviewed whole80 listing and input gate before assignment.",
+    "accepted_primary_and_snapshot_function_count": 64729,
+    "config_pin": {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "Ghidra_mutations": 0
+  },
+  "metadata_gate": {
+    "name": "FUN_00876020",
+    "signature": "undefined FUN_00876020(void)",
+    "live_body": [
+      "00876020",
+      "00876112"
+    ],
+    "bytes": 243,
+    "listed_instructions": 80,
+    "basic_blocks": 23,
+    "edges": 32,
+    "cyclomatic_complexity": 11,
+    "param_count": 0,
+    "named_call_count": 2,
+    "named_callees": [
+      "BSP_TickSubList_UnlinkFromReceiver",
+      "BSP_PendingRegistry_Get"
+    ],
+    "actual_architectural_inputs": "Incoming ECX receiver, late first stack argument, current FS:[0] frame chain and selected raw memory.",
+    "receiver_and_stack_gate": "Already independently reviewed by Root Astra; worker whole listing/decode agrees, with no additional hidden semantic input, x87 or flow gap.",
+    "decompiler_qualification": "Pseudocode suggests repeated node-priority reads and repeated old-parent expressions; assembly captures oldParent before state0 and node priority once before the loop.",
+    "current_index_callees": [
+      "00875280",
+      "00875960"
+    ],
+    "current_index_callers_metadata_only": [
+      "0071C470",
+      "00720180",
+      "007E1E20",
+      "007EABC0",
+      "007F1DE0",
+      "00818110",
+      "00876120",
+      "008FBC80"
+    ],
+    "index_name_qualification": "Cached FUN labels and descriptive caller names are not producer/type/constructor proof.",
+    "physical_call_count_qualification": "Two direct named CALLs plus two IAT CALLs; no indirect target slot contents or bodies read."
+  },
+  "native_evidence": {
+    "address": "00876020",
+    "end_inclusive": "00876112",
+    "bytes": 243,
+    "hex": "6aff68e864c90064a100000000506489250000000083ec085356578bf9e83ef2ffff8b580485dbc744240cfc37ce00895c2410740b53ff151822ce00834318018b7424248b4e0485c9c744241c00000000740a3bcf747956e8e3f8ffff897e048b471c85c074158b4e188d9b000000003948187f158b400c85c075f4837f240074378b472089700ceb328b400885c0894608740b8b480c894e0c89700ceb098b571c89560c89771c8b460c85c07405897008eb18897720eb1389771c8b4f20894e08897720c7460c000000008347240185db740b834318ff53ff151022ce008b4c24145f5e5b64890d0000000083c414c20400",
+    "sha256": "f66358eff6131f7f5dc84feccbed5c0361386fb02db26f74420a3bbb3d907b99",
+    "GPR_equal_PE": true,
+    "all_file_backed": true,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_section": ".text",
+    "PE_RVA": 4677664,
+    "PE_file_offset": 4677664,
+    "instructions": [
+      {
+        "address": "00876020",
+        "bytes": 2,
+        "hex": "6aff",
+        "mnemonic": "push",
+        "operands": "-1"
+      },
+      {
+        "address": "00876022",
+        "bytes": 5,
+        "hex": "68e864c900",
+        "mnemonic": "push",
+        "operands": "0xc964e8"
+      },
+      {
+        "address": "00876027",
+        "bytes": 6,
+        "hex": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "0087602D",
+        "bytes": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "0087602E",
+        "bytes": 7,
+        "hex": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp"
+      },
+      {
+        "address": "00876035",
+        "bytes": 3,
+        "hex": "83ec08",
+        "mnemonic": "sub",
+        "operands": "esp, 8"
+      },
+      {
+        "address": "00876038",
+        "bytes": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00876039",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "0087603A",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "0087603B",
+        "bytes": 2,
+        "hex": "8bf9",
+        "mnemonic": "mov",
+        "operands": "edi, ecx"
+      },
+      {
+        "address": "0087603D",
+        "bytes": 5,
+        "hex": "e83ef2ffff",
+        "mnemonic": "call",
+        "operands": "0x875280"
+      },
+      {
+        "address": "00876042",
+        "bytes": 3,
+        "hex": "8b5804",
+        "mnemonic": "mov",
+        "operands": "ebx, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00876045",
+        "bytes": 2,
+        "hex": "85db",
+        "mnemonic": "test",
+        "operands": "ebx, ebx"
+      },
+      {
+        "address": "00876047",
+        "bytes": 8,
+        "hex": "c744240cfc37ce00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0xc], 0xce37fc"
+      },
+      {
+        "address": "0087604F",
+        "bytes": 4,
+        "hex": "895c2410",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x10], ebx"
+      },
+      {
+        "address": "00876053",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x876060"
+      },
+      {
+        "address": "00876055",
+        "bytes": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00876056",
+        "bytes": 6,
+        "hex": "ff151822ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "0087605C",
+        "bytes": 4,
+        "hex": "83431801",
+        "mnemonic": "add",
+        "operands": "dword ptr [ebx + 0x18], 1"
+      },
+      {
+        "address": "00876060",
+        "bytes": 4,
+        "hex": "8b742424",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [esp + 0x24]"
+      },
+      {
+        "address": "00876064",
+        "bytes": 3,
+        "hex": "8b4e04",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esi + 4]"
+      },
+      {
+        "address": "00876067",
+        "bytes": 2,
+        "hex": "85c9",
+        "mnemonic": "test",
+        "operands": "ecx, ecx"
+      },
+      {
+        "address": "00876069",
+        "bytes": 8,
+        "hex": "c744241c00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x1c], 0"
+      },
+      {
+        "address": "00876071",
+        "bytes": 2,
+        "hex": "740a",
+        "mnemonic": "je",
+        "operands": "0x87607d"
+      },
+      {
+        "address": "00876073",
+        "bytes": 2,
+        "hex": "3bcf",
+        "mnemonic": "cmp",
+        "operands": "ecx, edi"
+      },
+      {
+        "address": "00876075",
+        "bytes": 2,
+        "hex": "7479",
+        "mnemonic": "je",
+        "operands": "0x8760f0"
+      },
+      {
+        "address": "00876077",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00876078",
+        "bytes": 5,
+        "hex": "e8e3f8ffff",
+        "mnemonic": "call",
+        "operands": "0x875960"
+      },
+      {
+        "address": "0087607D",
+        "bytes": 3,
+        "hex": "897e04",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], edi"
+      },
+      {
+        "address": "00876080",
+        "bytes": 3,
+        "hex": "8b471c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [edi + 0x1c]"
+      },
+      {
+        "address": "00876083",
+        "bytes": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "00876085",
+        "bytes": 2,
+        "hex": "7415",
+        "mnemonic": "je",
+        "operands": "0x87609c"
+      },
+      {
+        "address": "00876087",
+        "bytes": 3,
+        "hex": "8b4e18",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esi + 0x18]"
+      },
+      {
+        "address": "0087608A",
+        "bytes": 6,
+        "hex": "8d9b00000000",
+        "mnemonic": "lea",
+        "operands": "ebx, [ebx]"
+      },
+      {
+        "address": "00876090",
+        "bytes": 3,
+        "hex": "394818",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [eax + 0x18], ecx"
+      },
+      {
+        "address": "00876093",
+        "bytes": 2,
+        "hex": "7f15",
+        "mnemonic": "jg",
+        "operands": "0x8760aa"
+      },
+      {
+        "address": "00876095",
+        "bytes": 3,
+        "hex": "8b400c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [eax + 0xc]"
+      },
+      {
+        "address": "00876098",
+        "bytes": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "0087609A",
+        "bytes": 2,
+        "hex": "75f4",
+        "mnemonic": "jne",
+        "operands": "0x876090"
+      },
+      {
+        "address": "0087609C",
+        "bytes": 4,
+        "hex": "837f2400",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [edi + 0x24], 0"
+      },
+      {
+        "address": "008760A0",
+        "bytes": 2,
+        "hex": "7437",
+        "mnemonic": "je",
+        "operands": "0x8760d9"
+      },
+      {
+        "address": "008760A2",
+        "bytes": 3,
+        "hex": "8b4720",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [edi + 0x20]"
+      },
+      {
+        "address": "008760A5",
+        "bytes": 3,
+        "hex": "89700c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0xc], esi"
+      },
+      {
+        "address": "008760A8",
+        "bytes": 2,
+        "hex": "eb32",
+        "mnemonic": "jmp",
+        "operands": "0x8760dc"
+      },
+      {
+        "address": "008760AA",
+        "bytes": 3,
+        "hex": "8b4008",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [eax + 8]"
+      },
+      {
+        "address": "008760AD",
+        "bytes": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "008760AF",
+        "bytes": 3,
+        "hex": "894608",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], eax"
+      },
+      {
+        "address": "008760B2",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x8760bf"
+      },
+      {
+        "address": "008760B4",
+        "bytes": 3,
+        "hex": "8b480c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [eax + 0xc]"
+      },
+      {
+        "address": "008760B7",
+        "bytes": 3,
+        "hex": "894e0c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0xc], ecx"
+      },
+      {
+        "address": "008760BA",
+        "bytes": 3,
+        "hex": "89700c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0xc], esi"
+      },
+      {
+        "address": "008760BD",
+        "bytes": 2,
+        "hex": "eb09",
+        "mnemonic": "jmp",
+        "operands": "0x8760c8"
+      },
+      {
+        "address": "008760BF",
+        "bytes": 3,
+        "hex": "8b571c",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [edi + 0x1c]"
+      },
+      {
+        "address": "008760C2",
+        "bytes": 3,
+        "hex": "89560c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0xc], edx"
+      },
+      {
+        "address": "008760C5",
+        "bytes": 3,
+        "hex": "89771c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edi + 0x1c], esi"
+      },
+      {
+        "address": "008760C8",
+        "bytes": 3,
+        "hex": "8b460c",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 0xc]"
+      },
+      {
+        "address": "008760CB",
+        "bytes": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "008760CD",
+        "bytes": 2,
+        "hex": "7405",
+        "mnemonic": "je",
+        "operands": "0x8760d4"
+      },
+      {
+        "address": "008760CF",
+        "bytes": 3,
+        "hex": "897008",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], esi"
+      },
+      {
+        "address": "008760D2",
+        "bytes": 2,
+        "hex": "eb18",
+        "mnemonic": "jmp",
+        "operands": "0x8760ec"
+      },
+      {
+        "address": "008760D4",
+        "bytes": 3,
+        "hex": "897720",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edi + 0x20], esi"
+      },
+      {
+        "address": "008760D7",
+        "bytes": 2,
+        "hex": "eb13",
+        "mnemonic": "jmp",
+        "operands": "0x8760ec"
+      },
+      {
+        "address": "008760D9",
+        "bytes": 3,
+        "hex": "89771c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edi + 0x1c], esi"
+      },
+      {
+        "address": "008760DC",
+        "bytes": 3,
+        "hex": "8b4f20",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [edi + 0x20]"
+      },
+      {
+        "address": "008760DF",
+        "bytes": 3,
+        "hex": "894e08",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], ecx"
+      },
+      {
+        "address": "008760E2",
+        "bytes": 3,
+        "hex": "897720",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edi + 0x20], esi"
+      },
+      {
+        "address": "008760E5",
+        "bytes": 7,
+        "hex": "c7460c00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0xc], 0"
+      },
+      {
+        "address": "008760EC",
+        "bytes": 4,
+        "hex": "83472401",
+        "mnemonic": "add",
+        "operands": "dword ptr [edi + 0x24], 1"
+      },
+      {
+        "address": "008760F0",
+        "bytes": 2,
+        "hex": "85db",
+        "mnemonic": "test",
+        "operands": "ebx, ebx"
+      },
+      {
+        "address": "008760F2",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x8760ff"
+      },
+      {
+        "address": "008760F4",
+        "bytes": 4,
+        "hex": "834318ff",
+        "mnemonic": "add",
+        "operands": "dword ptr [ebx + 0x18], -1"
+      },
+      {
+        "address": "008760F8",
+        "bytes": 1,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "008760F9",
+        "bytes": 6,
+        "hex": "ff151022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2210]"
+      },
+      {
+        "address": "008760FF",
+        "bytes": 4,
+        "hex": "8b4c2414",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "00876103",
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "00876104",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00876105",
+        "bytes": 1,
+        "hex": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "00876106",
+        "bytes": 7,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "0087610D",
+        "bytes": 3,
+        "hex": "83c414",
+        "mnemonic": "add",
+        "operands": "esp, 0x14"
+      },
+      {
+        "address": "00876110",
+        "bytes": 3,
+        "hex": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "instruction_count": 80,
+    "reachable_instructions": 80,
+    "unclassified_or_unreachable_bytes": 0,
+    "reachable_six_byte_noop": {
+      "address": "0087608A",
+      "hex": "8d9b00000000",
+      "operation": "LEA EBX,[EBX]"
+    },
+    "basic_blocks": [
+      {
+        "start": "00876020",
+        "end_inclusive": "00876054",
+        "instruction_addresses": [
+          "00876020",
+          "00876022",
+          "00876027",
+          "0087602D",
+          "0087602E",
+          "00876035",
+          "00876038",
+          "00876039",
+          "0087603A",
+          "0087603B",
+          "0087603D",
+          "00876042",
+          "00876045",
+          "00876047",
+          "0087604F",
+          "00876053"
+        ],
+        "successors": [
+          "00876060",
+          "00876055"
+        ]
+      },
+      {
+        "start": "00876055",
+        "end_inclusive": "0087605F",
+        "instruction_addresses": [
+          "00876055",
+          "00876056",
+          "0087605C"
+        ],
+        "successors": [
+          "00876060"
+        ]
+      },
+      {
+        "start": "00876060",
+        "end_inclusive": "00876072",
+        "instruction_addresses": [
+          "00876060",
+          "00876064",
+          "00876067",
+          "00876069",
+          "00876071"
+        ],
+        "successors": [
+          "0087607D",
+          "00876073"
+        ]
+      },
+      {
+        "start": "00876073",
+        "end_inclusive": "00876076",
+        "instruction_addresses": [
+          "00876073",
+          "00876075"
+        ],
+        "successors": [
+          "008760F0",
+          "00876077"
+        ]
+      },
+      {
+        "start": "00876077",
+        "end_inclusive": "0087607C",
+        "instruction_addresses": [
+          "00876077",
+          "00876078"
+        ],
+        "successors": [
+          "0087607D"
+        ]
+      },
+      {
+        "start": "0087607D",
+        "end_inclusive": "00876086",
+        "instruction_addresses": [
+          "0087607D",
+          "00876080",
+          "00876083",
+          "00876085"
+        ],
+        "successors": [
+          "0087609C",
+          "00876087"
+        ]
+      },
+      {
+        "start": "00876087",
+        "end_inclusive": "0087608F",
+        "instruction_addresses": [
+          "00876087",
+          "0087608A"
+        ],
+        "successors": [
+          "00876090"
+        ]
+      },
+      {
+        "start": "00876090",
+        "end_inclusive": "00876094",
+        "instruction_addresses": [
+          "00876090",
+          "00876093"
+        ],
+        "successors": [
+          "008760AA",
+          "00876095"
+        ]
+      },
+      {
+        "start": "00876095",
+        "end_inclusive": "0087609B",
+        "instruction_addresses": [
+          "00876095",
+          "00876098",
+          "0087609A"
+        ],
+        "successors": [
+          "00876090",
+          "0087609C"
+        ]
+      },
+      {
+        "start": "0087609C",
+        "end_inclusive": "008760A1",
+        "instruction_addresses": [
+          "0087609C",
+          "008760A0"
+        ],
+        "successors": [
+          "008760D9",
+          "008760A2"
+        ]
+      },
+      {
+        "start": "008760A2",
+        "end_inclusive": "008760A9",
+        "instruction_addresses": [
+          "008760A2",
+          "008760A5",
+          "008760A8"
+        ],
+        "successors": [
+          "008760DC"
+        ]
+      },
+      {
+        "start": "008760AA",
+        "end_inclusive": "008760B3",
+        "instruction_addresses": [
+          "008760AA",
+          "008760AD",
+          "008760AF",
+          "008760B2"
+        ],
+        "successors": [
+          "008760BF",
+          "008760B4"
+        ]
+      },
+      {
+        "start": "008760B4",
+        "end_inclusive": "008760BE",
+        "instruction_addresses": [
+          "008760B4",
+          "008760B7",
+          "008760BA",
+          "008760BD"
+        ],
+        "successors": [
+          "008760C8"
+        ]
+      },
+      {
+        "start": "008760BF",
+        "end_inclusive": "008760C7",
+        "instruction_addresses": [
+          "008760BF",
+          "008760C2",
+          "008760C5"
+        ],
+        "successors": [
+          "008760C8"
+        ]
+      },
+      {
+        "start": "008760C8",
+        "end_inclusive": "008760CE",
+        "instruction_addresses": [
+          "008760C8",
+          "008760CB",
+          "008760CD"
+        ],
+        "successors": [
+          "008760D4",
+          "008760CF"
+        ]
+      },
+      {
+        "start": "008760CF",
+        "end_inclusive": "008760D3",
+        "instruction_addresses": [
+          "008760CF",
+          "008760D2"
+        ],
+        "successors": [
+          "008760EC"
+        ]
+      },
+      {
+        "start": "008760D4",
+        "end_inclusive": "008760D8",
+        "instruction_addresses": [
+          "008760D4",
+          "008760D7"
+        ],
+        "successors": [
+          "008760EC"
+        ]
+      },
+      {
+        "start": "008760D9",
+        "end_inclusive": "008760DB",
+        "instruction_addresses": [
+          "008760D9"
+        ],
+        "successors": [
+          "008760DC"
+        ]
+      },
+      {
+        "start": "008760DC",
+        "end_inclusive": "008760EB",
+        "instruction_addresses": [
+          "008760DC",
+          "008760DF",
+          "008760E2",
+          "008760E5"
+        ],
+        "successors": [
+          "008760EC"
+        ]
+      },
+      {
+        "start": "008760EC",
+        "end_inclusive": "008760EF",
+        "instruction_addresses": [
+          "008760EC"
+        ],
+        "successors": [
+          "008760F0"
+        ]
+      },
+      {
+        "start": "008760F0",
+        "end_inclusive": "008760F3",
+        "instruction_addresses": [
+          "008760F0",
+          "008760F2"
+        ],
+        "successors": [
+          "008760FF",
+          "008760F4"
+        ]
+      },
+      {
+        "start": "008760F4",
+        "end_inclusive": "008760FE",
+        "instruction_addresses": [
+          "008760F4",
+          "008760F8",
+          "008760F9"
+        ],
+        "successors": [
+          "008760FF"
+        ]
+      },
+      {
+        "start": "008760FF",
+        "end_inclusive": "00876112",
+        "instruction_addresses": [
+          "008760FF",
+          "00876103",
+          "00876104",
+          "00876105",
+          "00876106",
+          "0087610D",
+          "00876110"
+        ],
+        "successors": []
+      }
+    ],
+    "basic_block_count": 23,
+    "internal_CFG_edges": 32,
+    "conditional_branches": 10,
+    "unconditional_internal_JMPs": 4,
+    "backedges": [
+      {
+        "site": "0087609A",
+        "target": "00876090",
+        "source_entry_ESP_delta": -32,
+        "target_entry_ESP_delta": -32
+      }
+    ],
+    "physical_CALLs": [
+      {
+        "site": "0087603D",
+        "kind": "direct",
+        "target": "00875280"
+      },
+      {
+        "site": "00876056",
+        "kind": "indirect_absolute_IAT",
+        "slot_address": "00CE2218",
+        "name_from_decompiler_metadata": "EnterCriticalSection"
+      },
+      {
+        "site": "00876078",
+        "kind": "direct",
+        "target": "00875960"
+      },
+      {
+        "site": "008760F9",
+        "kind": "indirect_absolute_IAT",
+        "slot_address": "00CE2210",
+        "name_from_decompiler_metadata": "LeaveCriticalSection"
+      }
+    ],
+    "direct_CALL_count": 2,
+    "indirect_import_CALL_count": 2,
+    "total_CALL_count": 4,
+    "RET_count": 1,
+    "RET_immediate": 4,
+    "all_branch_targets_owned_instruction_boundaries": true,
+    "stack_fixed_point": {
+      "instructions_checked": 80,
+      "every_reachable_merge_has_equal_ESP_delta": true,
+      "scan_cycle_ESP_delta": 0,
+      "body_ESP_relative_to_entry": -32,
+      "before_final_ADD_ESP14": -20,
+      "before_RET4": 0,
+      "after_normal_RET4": 8,
+      "call_cleanup_bytes": {
+        "0087603D": 0,
+        "00876056": 4,
+        "00876078": 4,
+        "008760F9": 4
+      },
+      "qualification": "Normal Original zero-argument getter, Original unlink69 RET4 and one-word stdcall imports required. This is finite static stack-delta propagation over the cycle, not proof of termination, intact stack or Native execution."
+    },
+    "no_inline_table_or_outside_target_bytes_read": true,
+    "handler_and_profile_immediates_are_not_opened_bodies_or_tables": true
+  },
+  "raw_layout": {
+    "receiver": {
+      "register": "EDI=R after0087603B",
+      "head": "+1C",
+      "tail": "+20",
+      "count": "+24",
+      "minimum_extent": "0x28"
+    },
+    "node": {
+      "register": "ESI=N after late00876060 load",
+      "old_or_new_parent": "+4",
+      "previous": "+8",
+      "next": "+C",
+      "signed_ordering_word": "+18",
+      "minimum_extent": "0x1C"
+    },
+    "section": {
+      "register": "EBX=K from getter result+4",
+      "raw_depth": "+18",
+      "minimum_depth_extent": "0x1C",
+      "normal_cleanup_uses_captured_register": true
+    },
+    "guard": {
+      "extent": 8,
+      "address": "S-14h = bodyESP+0Ch",
+      "profile_word": "00CE37FC",
+      "captured_section_offset": 4
+    },
+    "explicit_node_profile_offset0_access": false,
+    "class_or_constructor_recovered": false,
+    "field_labels_are_descriptive": true,
+    "alias_qualification": "Selected indirect and frame stores can overlap other listed fields; minimum extents and labels do not assert nonaliasing or type identity."
+  },
+  "entry_frame_and_guard": {
+    "variables": "S=entry ESP; body T=S-20h.",
+    "ordered_setup": [
+      "876020 PUSH FFFFFFFF -> state at S-4.",
+      "876022 PUSH 00C964E8 -> handler word at S-8; only immediate observed, handler unopened.",
+      "876027 load old FS:[0] into EAX;87602D PUSH EAX -> old chain at S-0C.",
+      "87602E publish ESP=S-0C to FS:[0].",
+      "876035 SUB ESP,8 allocates raw guard at S-14..S-0D.",
+      "876038/39/3A save EBX/ESI/EDI at S-18/S-1C/S-20.",
+      "87603B capture incoming ECX receiver into EDI before getter."
+    ],
+    "after_getter": "876042 captures EBX=DWORD[get EAX+4]; no null getter-result guard.",
+    "flag_preserving_guard_stores": "TEST EBX at876045; MOV profile00CE37FC to[T+C] and EBX to[T+10] preserve flags used by JZ876053.",
+    "enter_and_late_capture": "Optional PUSH K/Enter at876055/56; ADD current[K+18],1 at87605C; only then ESI=DWORD[T+24]=current[S+4] at876060.",
+    "old_parent_and_state": "876064 captures ECX=DWORD[N+4]; TEST ECX at876067; MOV[T+1C]=0 at876069 preserves flags for JZ876071.",
+    "state_timing_limit": "State -1 remains through getter, optional Enter/depth, node load and old-parent read. Explicit state0 store follows them; no later explicit state store/reset in owned normal body. Aliases can still modify its backing.",
+    "handler_or_unwind_action_established": false
+  },
+  "old_parent_boundary": {
+    "capture_site": "00876064",
+    "captured_word": "oldParent=DWORD[currentESI+4] before state0 store",
+    "same_parent_skip": "Only if captured oldParent is nonzero AND equals currentEDI=R; jump8760F0 skips direct node/list mutation, not surrounding lock/frame effects.",
+    "both_parent_values_zero": "Does not take same-parent skip; zero oldParent branches to assignment even if R is zero.",
+    "different_nonzero_parent_call": {
+      "site": "00876078",
+      "Original_target": "00875960",
+      "ECX": "captured oldParent, unchanged by state store/TEST/CMP",
+      "stack_argument": "currentESI pushed at876077"
+    },
+    "proved_relation": "Node+4 supplies the receiver of the known Original unlink wrapper, whose embedded list is receiver+1C. This is a concrete relationship at this call site only.",
+    "after_normal_child_return": "87607D stores currentEDI to[currentESI+4] before reading head; ordinary callee-save/spill conditions are required to identify these as original R/N.",
+    "nested_lookup_lock_qualification": "Original child69 may perform another getter and Enter/Leave while outer K is held. No equality of section addresses or added lock substitution is inferred.",
+    "no_producer_profile_constructor_or_slot_assignment": true
+  },
+  "scan_contract": {
+    "head_capture": "876080 EAX=current[R+1C] after N+4 assignment; zero bypasses priority read.",
+    "node_priority_capture": "876087 ECX=current[N+18] once, only if head nonzero.",
+    "reachable_noop": "87608A LEA EBX,[EBX],6bytes, preserves captured section/flags and is fully accounted.",
+    "comparison": "876090 CMP current[candidate+18],captured ECX; signed JG876093 selects first candidate strictly greater than captured node word.",
+    "advance": "876095 EAX=current[candidate+C]; TEST and JNZ87609A ->876090; captured node word is not reloaded.",
+    "valid_consistent_list_consequence": "For an acyclic ascending list and stable consistent backing, equal-key candidates are passed, so insertion follows existing equals.",
+    "no_termination_or_membership_guard": "No count bound, cycle detector, membership or sortedness validation; malformed cycles may not terminate."
+  },
+  "before_candidate_insertion_schedule": [
+    {
+      "at": "008760AA..008760B2",
+      "operation": "EAX=P=current[candidate+8]; TEST P; MOV[currentESI+8],P; JZ uses preserved TEST flags."
+    },
+    {
+      "at": "008760B4..008760BD",
+      "condition": "P nonzero",
+      "operation": "ECX=current[P+C] after the node previous store; node+C=ECX; then[P+C]=currentESI; jump8760C8."
+    },
+    {
+      "at": "008760BF..008760C5",
+      "condition": "P zero",
+      "operation": "EDX=current[R+1C] after node+8 store; node+C=EDX; then[R+1C]=currentESI."
+    },
+    {
+      "at": "008760C8..008760D7",
+      "operation": "Fresh EAX=current[node+C] after both writes; nonzero writes[EAX+8]=currentESI, zero writes[R+20]=currentESI; both branch to count update."
+    },
+    {
+      "at": "008760EC",
+      "operation": "ADD current DWORD[R+24],1 only after all link writes."
+    }
+  ],
+  "append_schedule": [
+    {
+      "at": "0087609C..008760A0",
+      "operation": "Compare current DWORD[R+24] against zero; nonzero includes raw negative counts."
+    },
+    {
+      "at": "008760A2..008760A8",
+      "condition": "count nonzero",
+      "operation": "EAX=current[R+20]; store[EAX+C]=currentESI without null-tail guard; jump8760DC."
+    },
+    {
+      "at": "008760D9",
+      "condition": "count zero",
+      "operation": "Store[R+1C]=currentESI."
+    },
+    {
+      "at": "008760DC..008760EC",
+      "operation": "Reread ECX=current[R+20] after head or tail-next store; node+8=ECX; R+20=currentESI; node+C=0; ADD current[R+24],1."
+    }
+  ],
+  "ordering_and_alias_limits": [
+    "Node+4 assignment precedes head and ordering-word reads and can alias their backing.",
+    "The state0 store occurs after capturing oldParent; aliases may change its backing without changing the captured ECX oldParent.",
+    "Before-candidate insertion rereads previous+C or current head after node+8 store, then rereads current node+C after the following writes; do not substitute the initially selected candidate.",
+    "Append rereads current tail after head/tail-next store; zero count does not imply null tail or a zero new-node previous word.",
+    "Count ADD+1 reads only after link writes; section depth ADDs read at their own sites. Raw32 overflow/underflow is unguarded.",
+    "Same-parent skip suppresses the explicit mutation phase but earlier frame/guard/lock stores can still alias supplied memory.",
+    "Children can affect saved nonvolatile slots or raw node/receiver/section backing; exact current-register/store behavior is qualified by their ordinary return contracts.",
+    "No guard rejects null receiver/node/old parent result, stale nonzero-count tail, corrupt neighbors, duplicate membership or cyclic traversal."
+  ],
+  "normal_exit_and_ABI": {
+    "lock_exit": "TEST EBX at8760F0; if nonzero ADD current[K+18],FFFFFFFF; PUSH capturedK; CALL[CE2210]. Does not reload local guard+4.",
+    "frame_exit": "8760FF ECX=current[T+14]=current[S-0C]; POP EDI/ESI/EBX; MOV FS:[0],ECX; ADD ESP,14h; RET4.",
+    "normal_ESP_after_return": "S+8 under recorded Original callee stack contracts",
+    "ECX_residual": "Current saved prior FS-chain word, also written back to FS:[0].",
+    "EBX_ESI_EDI": "Restore current save-slot contents, ordinary incoming values only with intact backing; EBP has no owned write.",
+    "EAX_null_section": {
+      "nonzero_same_parent_skip": "Getter result retained.",
+      "append_count_zero": "Zero from exhausted/empty scan retained.",
+      "append_count_nonzero": "Tail capture loaded at8760A2 retained, not necessarily later reread tail.",
+      "before_candidate_insertion": "Fresh node+C capture at8760C8 retained, possibly zero."
+    },
+    "EAX_EDX_nonnull_section": "Imported Leave may replace volatile residuals; later epilogue does not overwrite EAX/EDX.",
+    "EDX_null_section": "Explicitly assigned only on previous-zero insertion at8760BF; otherwise residual from prior calls, without a common promise.",
+    "common_semantic_return_or_caller_use_proven": false,
+    "Original_drop_in_ABI_proven": false
+  },
+  "final_arithmetic_flags": {
+    "last_flag_writer": "0087610D ADD ESP,14h, bytes83c414, after optional Leave and FS restore.",
+    "variables": "k=actual raw32 ESP immediately before ADD; r=(k+0x14)&FFFFFFFF. Under normal stack contracts k=S-0x14 and r=S.",
+    "CF": "1 iff k>FFFFFFEB",
+    "OF": "1 iff 7FFFFFEC<=k<=7FFFFFFF",
+    "AF": "1 iff(k & F)>=C",
+    "ZF": "1 iff r==0",
+    "SF": "bit31 of r",
+    "PF": "even parity of low8 bits of r",
+    "qualification": "All ordinary return paths use this ADD; RET preserves these flags. Earlier scan, count, TEST and import flag residuals are overwritten. Other EFLAGS/faulted exits unclaimed."
+  },
+  "Native_EH_and_known_guard_boundary": {
+    "handler_immediate": "00C964E8",
+    "handler_opened": false,
+    "guard_profile_immediate": "00CE37FC",
+    "profile_table_opened": false,
+    "normal_guard_destructor_direct_call": false,
+    "known_guard_Source_contract": {
+      "address": "00411EE0",
+      "function": "destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard)",
+      "header": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "source": "src/native_diagnostic_sink_lifetime.cpp",
+      "observed_current_Source": "Capture raw guard+4 before profileCE37FC store; nonnull captured section decrements depth then Leave; guard+4 preserved.",
+      "qualification": "Compatible raw layout is not a proved C964E8-to-411EE0 cleanup edge or Native EH/fault equivalence."
+    },
+    "failure_limits": [
+      "Getter/Enter/depth and node/oldParent reads precede explicit state0; do not invent cleanup coverage from a presumed RAII lifetime.",
+      "No body evidence proves rollback of parent/link/count writes or balanced release after a fault/throw.",
+      "State, guard, handler/chain words and saved registers can alias raw writes; owned normal exit uses captured K and reloads current old-chain memory.",
+      "Unopened handler/funclets/tables may define exception behavior; none is reconstructed or inferred here."
+    ]
+  },
+  "current_Source_context": {
+    "primary_versions": {
+      "current57": {
+        "primary_report": "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json",
+        "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 57,
+          "equal_count": 57,
+          "differences": [],
+          "accepted_manifest_sha256": "c6aa785afaeebb96d3a20dc0fdac4b76f65721e0b2ffdd4b07281796ab0b1269",
+          "current_manifest_sha256": "c6aa785afaeebb96d3a20dc0fdac4b76f65721e0b2ffdd4b07281796ab0b1269"
+        },
+        "Source_input_rechecks": {
+          "count": 52,
+          "equal_count": 52,
+          "differences": [],
+          "accepted_manifest_sha256": "80bc717d8bfba24e6e1dc05c528efe8f82db48d0481144b828d4e0fed4c937cb",
+          "current_manifest_sha256": "80bc717d8bfba24e6e1dc05c528efe8f82db48d0481144b828d4e0fed4c937cb"
+        },
+        "current_doc_pin": {
+          "path": "docs/CC12_NATIVE_TICK_SUBNODE_UNLINK_CALLER_SOURCE.md",
+          "bytes": 8090,
+          "sha256": "5d01f0a652abf5edad6ab1ff2560a9a089620c2f0e8858f89bf8be79d7cf54eb",
+          "canonical_lf_sha256": "5d01f0a652abf5edad6ab1ff2560a9a089620c2f0e8858f89bf8be79d7cf54eb"
+        },
+        "current_doc_pin_equal": true
+      },
+      "older53": {
+        "primary_report": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+        "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 53,
+          "equal_count": 51,
+          "differences": [
+            {
+              "path": "CMakeLists.txt",
+              "accepted_canonical_lf_sha256": "3ad433f48a4c865a95ed46010651ed21653c86ceb51047b47f45cb12bb263231",
+              "current_canonical_lf_sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb"
+            },
+            {
+              "path": "src/native_legacy_exception_owner.cpp",
+              "accepted_canonical_lf_sha256": "011b97c1083164f3c47ba8873e85508acd84f1ef4a037f952641c2f29c0497db",
+              "current_canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+            }
+          ],
+          "accepted_manifest_sha256": "7b6c1f68700e9226b86d38020e9283e35c92d2d7006e7c52b7aa557ea81fa71e",
+          "current_manifest_sha256": "c7ab20ef56c2d95f271d872d8d2f86196776920a60d49428955c849ddb161774"
+        },
+        "Source_input_rechecks": {
+          "count": 48,
+          "equal_count": 47,
+          "differences": [
+            {
+              "path": "src/native_legacy_exception_owner.cpp",
+              "accepted_canonical_lf_sha256": "011b97c1083164f3c47ba8873e85508acd84f1ef4a037f952641c2f29c0497db",
+              "current_canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+            }
+          ],
+          "accepted_manifest_sha256": "02248512171e4f2fa649358c7a01880b1c224e8e90d8596d195fdd7ee91334e0",
+          "current_manifest_sha256": "853930f448266ac57e0accf477bf8aa290bb641dc5fc2112fe308d55f58de116"
+        },
+        "current_doc_pin": {
+          "path": "docs/CC12_NATIVE_TICK_SUBLIST_UNLINK_SOURCE.md",
+          "bytes": 6737,
+          "sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c",
+          "canonical_lf_sha256": "1b9baceaacfdbdeb87db3da8429d973985f78968da47d89c95256c4c70f9cd9c"
+        },
+        "current_doc_pin_equal": true
+      },
+      "older38": {
+        "primary_report": "reports/cc12_native_pending_registry_getter_primary_review.json",
+        "status": "source_admitted_complete_compiled_review_and_normal_build_passed_original_ABI_and_gameplay_unproved",
+        "input_rechecks": {
+          "count": 38,
+          "equal_count": 37,
+          "differences": [
+            {
+              "path": "CMakeLists.txt",
+              "accepted_canonical_lf_sha256": "12b90fc33a04cb19167d3e91b37fa153a5a1e2d7a6268253a8339cc4d65d90c5",
+              "current_canonical_lf_sha256": "456ed0293c83d9f1b0a15a86e6496f090ce9bcc7e07c2fb1796c2f58c32271eb"
+            }
+          ],
+          "accepted_manifest_sha256": "47bda050b063c40c4a66e04098422692e3f03d6e1262896eeba4e441bafeb389",
+          "current_manifest_sha256": "411b853f670c7b87d2361689dda10958c2b1193c8e5c7fef90047cc5fbc07c9e"
+        },
+        "Source_input_rechecks": {
+          "count": 30,
+          "equal_count": 30,
+          "differences": [],
+          "accepted_manifest_sha256": "0d8a7fc475eb21c48a90a25630325fe22562a1ed214d18a5458c6ebf67675762",
+          "current_manifest_sha256": "0d8a7fc475eb21c48a90a25630325fe22562a1ed214d18a5458c6ebf67675762"
+        },
+        "current_doc_pin": {
+          "path": "docs/CC12_NATIVE_PENDING_REGISTRY_GETTER_SOURCE.md",
+          "bytes": 9523,
+          "sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534",
+          "canonical_lf_sha256": "868a950a24f7fa1d244f3880dfe2ab2554839bd99df61db31ccc69bd298c2534"
+        },
+        "current_doc_pin_equal": true
+      }
+    },
+    "latest_compiled_receipts": {
+      "native_tick_subnode_unlink_caller": {
+        "symbol": "?unlink_native_tick_subnode_00875960@bsp@@YIXPAXIACRAX11@Z",
+        "bytes": 82,
+        "sha256": "c13949dbd6222fdee45e3fa3fcd552387b4b1560630740fe312c0c962d7055b5",
+        "instruction_count": 29,
+        "relocation_count": 4,
+        "accepted_Core_member": {
+          "name": "bsp_core.dir\\Release\\native_tick_subnode_unlink_caller.obj",
+          "header_offset": 63768580,
+          "payload_file_offset": 63768640,
+          "bytes": 1107,
+          "sha256": "57ca6a2821f9a80676d2e226dc10882668288ba979f97cabc4cede0b41476281"
+        },
+        "domain": "Latest accepted Source compiled snapshot; object/library bytes not reread by this audit."
+      },
+      "native_pending_registry_getter": {
+        "symbol": "?get_native_pending_registry_00875280@bsp@@YAPAXACRAX0@Z",
+        "bytes": 250,
+        "sha256": "640e03f66d07747180012ac1b275a19d56738dd71a0f3cbcd2daad66bc7c8970",
+        "instruction_count": 85,
+        "relocation_count": 10,
+        "accepted_Core_member": {
+          "name": "bsp_core.dir\\Release\\native_pending_registry_getter.obj",
+          "header_offset": 63772104,
+          "payload_file_offset": 63772164,
+          "bytes": 3703,
+          "sha256": "6c58ca7fbcfd8cfc41c1bd89c585a8814486b029b058d9d04a70bbc111a9b113"
+        },
+        "domain": "Latest accepted Source compiled snapshot; object/library bytes not reread by this audit."
+      },
+      "native_tick_sublist_unlink": {
+        "symbol": "?unlink_native_tick_sublist_node_00874e60@bsp@@YIPAXPAXI0@Z",
+        "bytes": 83,
+        "sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
+        "instruction_count": 29,
+        "relocation_count": 0,
+        "accepted_Core_member": {
+          "name": "bsp_core.dir\\Release\\native_tick_sublist_unlink.obj",
+          "header_offset": 63769748,
+          "payload_file_offset": 63769808,
+          "bytes": 812,
+          "sha256": "21e75aea9d833fb7d262adfa954140168f43c66efe400528ef9f959178d56f59"
+        },
+        "domain": "Latest accepted Source compiled snapshot; object/library bytes not reread by this audit."
+      }
+    },
+    "latest_build_checks": 3,
+    "latest_unique_Core_roots": 7,
+    "latest_raw_adapters_no_local_EH": true,
+    "latest_application_map_selection": {
+      "selected": false,
+      "map_rows": [],
+      "execution_proved": false
+    },
+    "getter_API": "Current ordinary Source function needs two actual publication-cell references, unlike the Original zero-pushed-argument getter call here.",
+    "unlink_caller_API": "Current naked void fastcall Source function takes receiver, unusedEDX, actual node-cell reference and two publication-cell references; Source RET0Ch differs from Original875960 RET4.",
+    "node_input_qualification": "Original6078 pushes a captured node value; the admitted Source adapter requires a borrowed cell and has additional frame/argument storage. No drop-in prototype substitution is made.",
+    "versioned_typed_owner_EH": {
+      "current_Source_change": "native_legacy_exception_owner.cpp construct_base routes through construct_native_allocator_base_default_00bf632f(&owner,0u); current raw default Source has two ordered DWORD AND-zero operations then numeric profile store.",
+      "actual_default_direct_calls": [
+        {
+          "caller": "?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z",
+          "bytes": 132,
+          "instructions": 40,
+          "target": "?construct_native_allocator_base_default_00bf632f@bsp@@YIPAXPAXI@Z"
+        },
+        {
+          "caller": "?construct_base@?A0x48aa704d@bsp@@YAXAAUNativeLegacyExceptionStorage@2@@Z",
+          "bytes": 64,
+          "instructions": 25,
+          "target": "?construct_native_allocator_base_default_00bf632f@bsp@@YIPAXPAXI@Z"
+        }
+      ],
+      "current_Source_EH_section_summary": [
+        {
+          "section": 22,
+          "bytes": 60,
+          "max_state": 3,
+          "flags": 1
+        },
+        {
+          "section": 23,
+          "bytes": 44,
+          "max_state": 1,
+          "flags": 5
+        },
+        {
+          "section": 24,
+          "bytes": 44,
+          "max_state": 1,
+          "flags": 5
+        },
+        {
+          "section": 25,
+          "bytes": 52,
+          "max_state": 2,
+          "flags": 1
+        },
+        {
+          "section": 26,
+          "bytes": 52,
+          "max_state": 2,
+          "flags": 1
+        },
+        {
+          "section": 27,
+          "bytes": 36,
+          "max_state": 0,
+          "flags": 5
+        },
+        {
+          "section": 28,
+          "bytes": 36,
+          "max_state": 0,
+          "flags": 5
+        },
+        {
+          "section": 29,
+          "bytes": 44,
+          "max_state": 1,
+          "flags": 5
+        }
+      ],
+      "latest_typed_owner_Core_member": {
+        "name": "bsp_core.dir\\Release\\native_legacy_exception_owner.obj",
+        "header_offset": 65788532,
+        "payload_file_offset": 65788592,
+        "bytes": 10071,
+        "sha256": "7019ec2d8a61caba7231ca895df5efd08a95635c2edfb11922abdf85a17478ae"
+      },
+      "latest_default_Core_member": {
+        "name": "bsp_core.dir\\Release\\native_allocator_base_default_constructor.obj",
+        "header_offset": 63765898,
+        "payload_file_offset": 63765958,
+        "bytes": 769,
+        "sha256": "dcaa160405efdcba05e6adbdad4b1c9059afa7de56bff8867522eb690fadc37f"
+      },
+      "qualification": "These are accepted current Source compiler/CRT EH and terminate-map snapshots. Unchanged getter250/raw83 does not freeze the older typed-owner context or establish NativeC964E8 behavior."
+    },
+    "exact_address_Source_search": {
+      "matches": 1,
+      "path": "src/game_hosts_units.cpp",
+      "line": 14488,
+      "kind": "Comment reference only, no 876020 implementation"
+    },
+    "artifacts_reread_or_executed_by_worker": false
+  },
+  "remaining_contract": {
+    "proved_at_this_boundary": "Current node+4 can supply actual old receiver for direct unlink before reattachment to target and signed ordered insertion.",
+    "not_proved": [
+      "Concrete node class/constructor/producer",
+      "Current node profile or100B cleanup slot0 deletion target",
+      "C964E8 handler cleanup edge/actions",
+      "Original runtime ABI/fault/concurrency or gameplay"
+    ],
+    "no_new_Source_prototype_or_implementation": true
+  },
+  "hash_domains": {
+    "Native": "Fresh raw243B Original PE/live Ghidra comparison.",
+    "current_pins": "Raw worktree SHA256 and canonicalLF text SHA256 at stated baseline.",
+    "manifests": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; accepted input snapshots compared to current files.",
+    "compiled_receipts": "Latest accepted Source artifact snapshots reused from pinned primary report; no object/library binary reread or runtime promotion.",
+    "self_report": "JSON parsed and current input pins validated; no recursive self-hash."
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_SUBNODE_REPARENT_CALLER_ABI_READINESS.md",
+      "bytes": 9969,
+      "sha256": "065dbf056515258b6f457fef62d222cfcec7722b88bc3a9331e0d23369aa1f57",
+      "canonical_lf_sha256": "065dbf056515258b6f457fef62d222cfcec7722b88bc3a9331e0d23369aa1f57"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_unlink_caller_primary_review.json",
+      "bytes": 567071,
+      "sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0",
+      "canonical_lf_sha256": "5e8572f2ec8e23f7252c34fe047a30fbd0641ff417e0c13b0d079745e0b8b0a0"
+    },
+    {
+      "path": "reports/cc12_native_tick_sublist_unlink_primary_review.json",
+      "bytes": 1101362,
+      "sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df",
+      "canonical_lf_sha256": "ad7572389361ffaf9a67bc27bbafbe6b45923b68d531b3339c4dab331e9fb4df"
+    },
+    {
+      "path": "reports/cc12_native_pending_registry_getter_primary_review.json",
+      "bytes": 853902,
+      "sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277",
+      "canonical_lf_sha256": "370c627a5098da1e5269e030762fdbc90b6639af4a3b3b614a121be924ea8277"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_subnode_unlink_caller_ABI_readiness.json",
+      "bytes": 30939,
+      "sha256": "09dbc0f3f4ff8030cc154a0038e86fc41c965a6d1f2f5612d2e3d23d1efc50dc",
+      "canonical_lf_sha256": "09dbc0f3f4ff8030cc154a0038e86fc41c965a6d1f2f5612d2e3d23d1efc50dc"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_unlink_caller.hpp",
+      "bytes": 2322,
+      "sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2",
+      "canonical_lf_sha256": "9919f2ab1611b1b95875f00034988b9670dcc76ae2ac2214e1c5d0ac84bd3bf2"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "include/bsp/native_tick_sublist_unlink.hpp",
+      "bytes": 1882,
+      "sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40",
+      "canonical_lf_sha256": "308c94862979f5ef9e59b1a978cdc50eeaeb0177b155ed557f92c432c66eda40"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "bytes": 4352,
+      "sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33",
+      "canonical_lf_sha256": "2dd4680a5370d0bf8e9a733ab33b33e9ed30e9067206fbb906025c173ad4cf33"
+    },
+    {
+      "path": "src/native_allocator_base_default_constructor.cpp",
+      "bytes": 755,
+      "sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908",
+      "canonical_lf_sha256": "9ca96dad27e6bc6285cde8d131d982ebcf0d57544dfc144efef288df60fe3908"
+    }
+  ],
+  "validation": {
+    "whole243B_GPR_PE_equal": true,
+    "all80_instructions_23blocks_32edges_accounted": true,
+    "four_physical_calls_and_single_RET4": true,
+    "all80_stack_states_and_zero_delta_loop_merges_checked": true,
+    "current57_input_pins_equal": "57/57;52/52 Source",
+    "older53_qualified": "51/53;47/48 Source; CMake and legacy-owner drift",
+    "older38_qualified": "37/38;30/30 Source; CMake drift",
+    "three_current_primary_docs_match": true,
+    "current_direct_pin_count": 13,
+    "JSON_and_current_pins_checked": true,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_runs": 0,
+    "Ghidra_mutations": 0
+  },
+  "limits": {
+    "Source_edit": false,
+    "CMake_edit": false,
+    "ledger_edit": false,
+    "Ghidra_mutation": false,
+    "Native_child_or_caller_body_read": false,
+    "Native_handler_or_cleanup_funclet_read": false,
+    "Native_profile_or_table_or_string_read": false,
+    "adjacent_Native_bytes_read": false,
+    "Source_admission": false,
+    "Native_admission": false,
+    "Original_ABI_admission": false,
+    "integration_credit": false,
+    "game_validation": false,
+    "only_owned_two_outputs": true
+  }
+}
