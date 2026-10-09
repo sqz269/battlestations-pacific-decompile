@@ -1,0 +1,223 @@
+{
+  "schema": "bsp.cc12.game_current_virtual_dispatch_source.v1",
+  "packet": "cc12_game_current_virtual_dispatch_source",
+  "status": "NEW_SOURCE_GLUE_IMPLEMENTED_REGISTRATION_BUILD_WHOLE_EMITTED_REVIEW_PENDING",
+  "baseline_revision": "1e56ac768590258075d0d1e1ba681f6d27508288",
+  "observed_utc": "2026-10-09T03:59:09.889160+00:00",
+  "provider": {
+    "name": "NativeGameCurrentVirtualCalls",
+    "base": "NativeGameLifetimeCalls",
+    "final": true,
+    "header": "include/bsp/native_game_current_virtual_calls.hpp",
+    "implementation": "src/native_game_current_virtual_calls.cpp",
+    "new_source_glue_methods": 3,
+    "Original_function_credit": 0,
+    "original_binary_abi_replacement": false,
+    "target": "MSVC Win32",
+    "compile_time_requirements": [
+      "MSVC and _M_IX86",
+      "sizeof(void*) == 4",
+      "sizeof(std::uint32_t) == 4",
+      "sizeof(TerminalMethod) == 4",
+      "sizeof(PeerRecordMethod) == 4",
+      "!std::is_abstract_v<NativeGameCurrentVirtualCalls>"
+    ],
+    "compile_time_assertions_executed": false
+  },
+  "methods": [
+    {
+      "signature": "void virtual_scalar(void* captured, std::uint32_t byte_slot, std::uint32_t flags) override",
+      "implementation": "Explicitly qualified inherited NativeGamePhysicsLifetimeCalls::physics_virtual_scalar(captured, byte_slot, flags)",
+      "exact_byte_offset_preserved": true,
+      "full_flags_word_preserved": true,
+      "existing_concrete_service_reused": true,
+      "service_override_substituted": false,
+      "noexcept": false,
+      "post_call_receiver_access": false
+    },
+    {
+      "signature": "void virtual_terminal(void* captured) override",
+      "implementation": "Fresh actual primary-table pointer and byte-slot0 entry copied by representation; invoke void (__thiscall*)(void*)",
+      "stack_arguments": 0,
+      "caller_already_decremented": true,
+      "extra_decrement": false,
+      "new_count_check": false,
+      "fixed_BD30E0_substitution": false,
+      "caller_cell_clear": false,
+      "noexcept": false,
+      "post_call_receiver_access": false
+    },
+    {
+      "signature": "void virtual_04(void* receiver, void* record) override",
+      "implementation": "Fresh actual primary-table pointer and byte-slot4 entry copied by representation; invoke void (__thiscall*)(void*, void*)",
+      "receiver_unchanged": true,
+      "record_unchanged": true,
+      "stack_arguments": 1,
+      "stack_cleanup": "callee pops one 32-bit record pointer",
+      "peer_list_lock_action": false,
+      "noexcept": false,
+      "post_call_receiver_or_record_access": false
+    }
+  ],
+  "raw_access": {
+    "new_terminal_and_peer_bridges": "std::memcpy pointer object representations through unsigned-char byte storage",
+    "fabricated_typed_object_references": false,
+    "cached_table": false,
+    "profile_ID_translation": false,
+    "new_method_table": false,
+    "synchronization_or_concurrency_claim": false
+  },
+  "preconditions": [
+    "Live actual receiver with readable current primary table and genuinely callable entries matching the documented Win32 argument/cleanup shape.",
+    "Table and method code remain live across each call; the actual method may retire its receiver.",
+    "Actual method behavior is qualified for the exact owner, construction and destruction/free allocation domain.",
+    "The captured record pointer meets the selected actual method access and lifetime contract.",
+    "The concrete call service outlives every borrowing context and retained operation.",
+    "Numeric Original-PE profile identities or copied Original table-entry values do not establish rebuilt callable addresses.",
+    "Single-threaded valid-storage schedule; byte copies do not establish native invalid-storage fault or SEH equivalence."
+  ],
+  "failure_behavior": {
+    "exception_propagation": "Actual method exceptions propagate to the existing caller without interception.",
+    "catch_rollback_or_owning_cleanup": false,
+    "successful_empty_callback": false
+  },
+  "evidence": {
+    "readiness_report_pin": {
+      "path": "reports/cc12_game_current_virtual_dispatch_readiness.json",
+      "bytes": 16298,
+      "sha256": "ccfbe57e6451e680b1c027ec698dcc8467bb8b8513f8ff79bc822a26d0ee5311"
+    },
+    "inherited_native_live_disk_bytes_equal": 109,
+    "inherited_native_live_disk_spans": [
+      {
+        "address": "00784AA4",
+        "length": 18,
+        "purpose": "peer current receiver/table slot4 with one captured record pointer",
+        "hex": "8b4c24108b49048b118b47088b520450ffd2",
+        "sha256": "4c250828298240c8a2963b5daf7281f955ea27e515de9b9ace2601a21790a18b",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004DCFFF",
+        "length": 8,
+        "purpose": "parent scalar slot0 flags1",
+        "hex": "8b018b106a01ffd2",
+        "sha256": "a893ffaa990479887be803ccaa7ae4cc40031cf5a6488bc1b1d3dcad7e60fdf9",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004DD055",
+        "length": 9,
+        "purpose": "parent scalar byte slot0C flags1",
+        "hex": "8b018b500c6a01ffd2",
+        "sha256": "0d2a1f3df901f8c8c7232534fd70688bac57ffaf862ea01a668501b29d91646e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004CC778",
+        "length": 18,
+        "purpose": "pointer range decrement then current slot0 terminal",
+        "hex": "8d470450ffd585c075088b178b028bcfffd0",
+        "sha256": "0803d717a5f0c88b2b72fd9550c4dab10eadb00e5e02d587d4d908336582346c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "007F819B",
+        "length": 18,
+        "purpose": "participant decrement then current slot0 terminal",
+        "hex": "8d460450ffd585c075088b168b028bceffd0",
+        "sha256": "e0a2c1ebfaf2d92758af864e782e1475593ace8e739d846e0241d26148819743",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004C8743",
+        "length": 22,
+        "purpose": "container decrement then current slot0 terminal",
+        "hex": "8d470450ff152022ce0085c075088b178b028bcfffd0",
+        "sha256": "823a30227401533295f73a6d5814039636c42b3cd844d41ee990d984932c665f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00784B04",
+        "length": 8,
+        "purpose": "peer fixed caller epilogue",
+        "hex": "5f5e5d5b83c424c3",
+        "sha256": "ec9b347ce5ecf1794d0d52d4f0fecebf1fdd161e957cd4a4f1fdb6e342a7bebb",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004BF94A",
+        "length": 8,
+        "purpose": "scene payload scalar slot0 flags1",
+        "hex": "8b018b106a01ffd2",
+        "sha256": "a893ffaa990479887be803ccaa7ae4cc40031cf5a6488bc1b1d3dcad7e60fdf9",
+        "live_disk_equal": true
+      }
+    ],
+    "inherited_binary_pin": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "new_native_analysis_or_execution": false,
+    "native_evidence_provenance": "Prior read-only readiness audit, independently reviewed by integrator before this Source packet."
+  },
+  "verification": {
+    "source_signature_and_call_schedule_review": "Worker inspection completed; integrator review pending.",
+    "json_and_pins": "passed: six Source pins, readiness report pin, eight inherited native hashes totaling109 bytes",
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "ghidra_mutations": 0,
+    "cmake_config_ledger_changes": 0,
+    "registration_build_whole_emitted_review": "integrator next"
+  },
+  "admission": {
+    "new_concrete_provider_implemented": true,
+    "source_build_tested": false,
+    "whole_emitted_code_reviewed": false,
+    "actual_child_owner_table_lifetime_produced": false,
+    "allocation_pairing_qualified_by_this_glue": false,
+    "full_game_contexts_or_caller_composed": false,
+    "original_binary_abi_compatible": false,
+    "application_startup_or_gameplay_ready": false
+  },
+  "owned_files": [
+    "include/bsp/native_game_current_virtual_calls.hpp",
+    "src/native_game_current_virtual_calls.cpp",
+    "docs/CC12_GAME_CURRENT_VIRTUAL_DISPATCH_SOURCE.md",
+    "reports/cc12_game_current_virtual_dispatch_source.json"
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_game_current_virtual_calls.hpp",
+      "bytes": 2159,
+      "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46"
+    },
+    {
+      "path": "src/native_game_current_virtual_calls.cpp",
+      "bytes": 1691,
+      "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f"
+    },
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9292,
+      "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889"
+    },
+    {
+      "path": "include/bsp/native_game_embedded_lifetime.hpp",
+      "bytes": 3447,
+      "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a"
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "bytes": 6288,
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+    },
+    {
+      "path": "src/native_game_physics_lifetime.cpp",
+      "bytes": 13632,
+      "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+    }
+  ]
+}
