@@ -1,5 +1,16 @@
 # World constant-byte Source (CC12)
 
+Primary integration: registered and build-tested. All three existing checks
+passed. The whole emitted function is exactly `B0 01 C3`, with no relocations,
+calls or graph edges, and appears in one exact core-library member. This gives
+static whole-body identity for this compiler output; the ordinary C++ API
+still promises only its bool result. The root is absent from the game map and
+was not executed. The Ghidra function was boundedly defined, named provisionally,
+commented and saved; no World table was fabricated. See the
+[primary receipt](../reports/cc12_world_constant_byte_primary_review.json).
+
+The unbuilt/missing-function statements below retain the worker's earlier phase.
+
 **IMPLEMENTED_UNBUILT:** the genuine Native `009035D0` constant-byte leaf now
 has a dedicated ordinary C++ Source interface. It returns `true` and does not
 read its receiver. It creates no World table or owner and changes no broader

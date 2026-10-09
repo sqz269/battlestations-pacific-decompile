@@ -290,3 +290,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 target_sources(bsp_core PRIVATE src/native_world_matrix_sentinel.cpp)
 target_sources(bsp_core PRIVATE src/native_world_chain_headers.cpp)
 target_sources(bsp_core PRIVATE src/native_world_parent_headers.cpp)
+target_sources(bsp_core PRIVATE src/native_world_constant_byte.cpp)

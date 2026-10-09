@@ -1,0 +1,95 @@
+{
+  "status": "whole_body_source_build_tested_static_native_byte_identity_runtime_unexecuted",
+  "worker_commit": "64b3e7a524b06a82fbf01865bc03fdd35f7c58dc",
+  "native": {
+    "address": "009035D0",
+    "end_exclusive": "009035D3",
+    "hex": "b001c3",
+    "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+    "instructions": 2
+  },
+  "source": "src/native_world_constant_byte.cpp",
+  "header": "include/bsp/native_world_constant_byte.hpp",
+  "interface": "bool __fastcall(void* unused_ecx_receiver, uint32_t unused_edx) noexcept; no stackedargs; AL1 only, no full EAX1 result",
+  "emitted_body": {
+    "symbol": "?native_world_constant_byte_009035d0@bsp@@YI_NPAXI@Z",
+    "object_sha256": "8b1fb63458a0953f260d8dd871a29e99c73fa58e037fb04e37e5580d21492096",
+    "bytes": 3,
+    "hex": "b001c3",
+    "relocations": 0,
+    "positive_local_graph_edges": 0,
+    "unique_core_member": {
+      "name": "bsp_core.dir\\Release\\native_world_constant_byte.obj",
+      "header_offset": 63741552,
+      "payload_file_offset": 63741612,
+      "bytes": 835,
+      "sha256": "8b1fb63458a0953f260d8dd871a29e99c73fa58e037fb04e37e5580d21492096"
+    }
+  },
+  "build": {
+    "started_utc": "2026-10-09T03:05:52.473031+00:00",
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "build_pid": 102360,
+    "exit_code": 0,
+    "finished_utc": "2026-10-09T03:06:11.218779+00:00"
+  },
+  "checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "source_fingerprints_before_build": {
+    "utc": "2026-10-09T03:05:52.463548+00:00",
+    "pins": [
+      {
+        "path": "include/bsp/native_world_constant_byte.hpp",
+        "sha256": "2f0665c29c2b0aced9e37ace905b4b573839e172de9e8a35af5a88a0c725c014"
+      },
+      {
+        "path": "src/native_world_constant_byte.cpp",
+        "sha256": "2ecbde35c2f5eb1614b199897e6ca20949a44ed23b71758b57449e756b8e8c54"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "4f87eaa629a523a881fe568ffe1241db047de03b0afb85f1f6cadcc7b5d3dfc6"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      }
+    ]
+  },
+  "source_rechecked_unchanged_after_build": true,
+  "application_root_absent_from_map": true,
+  "qualifications": [
+    "Native fullbody separately pinned/live/disk by worker. Exact current whole emitted3B body has Native AL/upperEAX/flags/unused-register behavior statically, not a broader C++ semantic guarantee or executed differential.",
+    "No current runtime call, World table publication, fullWorld lifetime or gameplay credit. Prior three-tick title observation used its separately retained pre-leaf executable.",
+    "No new tests/probe/fixture. Existing LNK4006 duplicate spawn helper warning remains."
+  ],
+  "credit": {
+    "original_source_function": 1,
+    "current_source_runtime": 0,
+    "fullWorld_table": 0,
+    "gameplay": 0
+  },
+  "saved_analysis": {
+    "function_definition_record": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_constant_byte_primary\\function_definition.json",
+    "annotation_preimage_record": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\ghidra-annotations-20261009T030907Z.json",
+    "name": "BSP_World_ReturnConstantByteOne",
+    "name_is_provisional": true,
+    "bounded_function_body": "[009035D0,009035D3)",
+    "explicit_source_export_refreshed": true,
+    "snapshot_function_count": 64729,
+    "snapshot_internal_function_count": 64287,
+    "native_high_level_prototype_not_recovered": true
+  }
+}
