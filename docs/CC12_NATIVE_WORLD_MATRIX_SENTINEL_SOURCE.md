@@ -1,6 +1,6 @@
 # Native World matrix sentinel producer
 
-The approved Source implements the complete `004C3080` raw allocation leaf and one concrete allocator adapter. The single authorized normal build and all three existing checks passed. Whole emitted code, physical symbol-index relocations, actual core members and CRT origins are sealed; independent primary merged review remains pending. **World, full-game and startup readiness remain false.**
+The approved Source implements the complete `004C3080` raw allocation leaf and one concrete allocator adapter. The single authorized normal build and all three existing checks passed. Whole emitted code, physical symbol-index relocations, actual core members and CRT origins are sealed; independent primary merged build and whole static review passed. **World, full-game and startup readiness remain false.**
 
 ## Behavior and ownership
 
@@ -47,4 +47,34 @@ Evidence: `local/cc12_native_world_matrix_sentinel_source_evidence.zip`, 159,140
 
 Local verifier draft failures and their exact logs are retained. They concerned path joining, a comment included in a callsite count, historical JSON schema and duplicate retained header copies. None changed Source, compiler policy, allocator behavior or build count. The one normal build passed on its first invocation.
 
-This closes the worker's bounded raw-sentinel implementation proof. Actual World vtable/constructor/unwind/destructor ownership, publication, original caller integration and game validation remain separate work. Primary merged-build review is still required before packet acceptance.
+This closes the worker's bounded raw-sentinel implementation proof. Actual World vtable/constructor/unwind/destructor ownership, publication, original caller integration and game validation remain separate work. The bounded Source packet is accepted after the independent primary merged-build/static review below.
+
+
+## Independent primary review
+
+Root built the merged registration once; all three existing checks passed.
+Its whole sentinel object is 1,573 bytes and its reused allocator object is
+32,963 bytes. The difference from worker artifact hashes is retained debug,
+checksum and compiler private-name metadata. Every other complete code/data
+section, ordered relocation operand, physical target index, full allocator
+graph and six complete CRT providers passed independent review. The helper
+again matches all 22 Native bytes outside its qualified allocator operand.
+
+Root's own capture job overlapped compilation: 81 of 84 consumed-input images
+predated launch; its Source CPP and two Windows-resource copies were late.
+All 84 also match retained worker images that predate this primary build:
+82 byte-for-byte and only the new CPP/HPP after explicit CRLF normalization.
+These are separate provenance claims; complete primary compiler-input
+reproducibility is not claimed. The worker's independent all-84 exact
+prefreeze proof remains intact. Root also rehashed all 9,371 family payloads
+and all 9,372 ZIP entries/CRCs independently.
+
+Primary receipt SHA-256:
+`2188e168eb3a7b6849508d9e73443c6c62327514d182839012a9ea3cdf7000d0`.
+Family rehash receipt SHA-256:
+`70ee6acced30df93b9949c6581ce00e6eaad2893d17c00a80ae4093c60db2f92`.
+Both are retained under `local/cc12_sentinel_source_primary_review/`.
+One previously absent Original-function record is added for 004C3080; the
+adapter and existing allocator receive no additional Original-function credit.
+The name remains a descriptive hypothesis. Sentinel still has no normal game
+map entry, Source World caller, runtime or Original allocator/EH/ABI claim.

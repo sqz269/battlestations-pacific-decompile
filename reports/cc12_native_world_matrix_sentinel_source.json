@@ -1,6 +1,6 @@
 {
   "packet": "cc12_native_world_matrix_sentinel_source",
-  "status": "worker_static_Source_proof_complete_primary_merged_review_pending",
+  "status": "bounded_raw_source_primary_build_and_static_review_accepted_not_executed",
   "utc": "2026-10-09T00:06:06.020202+00:00",
   "Source_files": {
     "include/bsp/native_world_matrix_sentinel.hpp": {
@@ -289,5 +289,47 @@
     "whole_Native_originals.json",
     "verification_attempts.json"
   ],
-  "followup": "Independent primary normal-build review required before packet acceptance. This leaf does not admit either original caller or any World owner lifetime."
+  "followup": "Independent primary normal-build review required before packet acceptance. This leaf does not admit either original caller or any World owner lifetime.",
+  "primary_review": {
+    "passed": true,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sentinel_source_primary_review\\receipt.json",
+      "bytes": 125447,
+      "sha256": "2188e168eb3a7b6849508d9e73443c6c62327514d182839012a9ea3cdf7000d0"
+    },
+    "worker_artifact_rehash": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sentinel_source_primary_review\\worker_artifact_rehash.json",
+      "bytes": 400,
+      "sha256": "70ee6acced30df93b9949c6581ce00e6eaad2893d17c00a80ae4093c60db2f92"
+    },
+    "normal_checks": 3,
+    "new_original_function_records": 1,
+    "new_allocator_or_adapter_Original_credit": 0,
+    "new_entry_execution": 0,
+    "own_capture_before_launch": 81,
+    "own_late_inputs": 3,
+    "shared_exact_inputs": 82,
+    "shared_normalized_Source_files": 2,
+    "current_objects": {
+      "sentinel": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sentinel_source_primary_review\\current\\native_world_matrix_sentinel.obj",
+        "bytes": 1573,
+        "sha256": "3108ba444765a11fbc21e4dd60a7a4b95adfb0715a673e5f199a1ae7cd24d31a"
+      },
+      "allocator": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_sentinel_source_primary_review\\current\\singleton_lifetime.obj",
+        "bytes": 32963,
+        "sha256": "11e58d1b1de805045e08cc442049bc4babfee39c527095ee3dba0aa637219f26"
+      }
+    },
+    "comparison": "All non-debug/checksum code/data bytes and ordered positive-index target bindings match worker; anonymous namespace/lambda path hashes and debug offsets differ. Full physical current graphs retained.",
+    "Ghidra_publication": {
+      "status": "guarded annotation, project save and fresh export complete",
+      "address": "004c3080",
+      "prior_values": "local/ghidra-annotations-20261009T001751Z.json",
+      "library_allocator_name_preserved": true
+    },
+    "World_ready": false,
+    "game_ready": false
+  }
 }
