@@ -1,0 +1,210 @@
+{
+  "schema": "cc12-count42-complete05-actual-code-peer-v1",
+  "packet": "cc12_count42_complete05_actual_code_peer",
+  "status": "PASS_STATIC_REVIEW_ONLY",
+  "Source_credit": 0,
+  "owned_addresses": [],
+  "owned_tracked_files": [
+    "docs/CC12_COUNT42_COMPLETE05_ACTUAL_CODE_PEER.md",
+    "reports/cc12_count42_complete05_actual_code_peer.json"
+  ],
+  "Root_family": "J:/PROG/battlestations-pacific-decompile/local/count42complete05",
+  "Root_subset_files": 38,
+  "full_Root_family_guarded": false,
+  "selected_subset_and_dependencies": {
+    "total_original_frozen_pairs": 1784,
+    "fresh_dependency_files": 1746,
+    "complete_Capstone_package_files": 95,
+    "distribution_files": 7,
+    "scopes": 8,
+    "content_membership_bookends": "unchanged",
+    "private_environment": "unchanged",
+    "imports_guarded": true,
+    "strict_flags": [
+      "-I",
+      "-B",
+      "-E",
+      "-S"
+    ],
+    "empty_bytecode_prefix": true,
+    "LIBCAPSTONE_PATH_absent": true
+  },
+  "evidence_family": "J:\\PROG\\battlestations-pacific-decompile-cc12_count42_complete05_actual_code_peer\\local\\c42c05peer",
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_count42_complete05_actual_code_peer\\local\\c42c05peer\\family_seal.json",
+    "sha256": "24a13f1b1d0922e4064c1634e18d0ec374afa7be0dc69813065599ac521d8c63",
+    "listed_files": 1814,
+    "total_files": 1815,
+    "contains_private_environment_snapshots": true
+  },
+  "input_pins": [
+    {
+      "relative": "count42_complete_probe.exe",
+      "bytes": 3072,
+      "sha256": "11732148dea3b3ef2e22a84d64f62c9ffe2f76801b10a38f471f6a6ab050ce1d"
+    },
+    {
+      "relative": "count42_complete_probe.map",
+      "bytes": 5391,
+      "sha256": "4aa1bb98b2862d8f261dcae18544c30864e764589c462d3a443b2b0c722accc5"
+    },
+    {
+      "relative": "leaf.obj",
+      "bytes": 683,
+      "sha256": "0d8c24eb33c561b0bb22fe18d07e3e2663ac5e57155f1b6134f2d0b82ccb958f"
+    },
+    {
+      "relative": "probe.obj",
+      "bytes": 2458,
+      "sha256": "af71a023787fbb55be00d3d9e392da44371cf338a70ab97aa4aab7f5d9c8b586"
+    },
+    {
+      "relative": "probe.cpp",
+      "bytes": 3952,
+      "sha256": "c50bb4614923f4cc7a7e9d4e3fa8e06975c29c49b88293f3c4dcbf28f850dafc"
+    },
+    {
+      "relative": "leaf.cpp",
+      "bytes": 1491,
+      "sha256": "da39df669bdffc0fda445dd46d5fc604f8f68ddb13c30c9465d6d968c1c7ff8c"
+    },
+    {
+      "relative": "original_native42.bin",
+      "bytes": 42,
+      "sha256": "e84a191988638f684ec2d81e68f96fae767f4035f8d21a2ae736501afbeb8ce7"
+    }
+  ],
+  "artifacts": [
+    {
+      "relative_path": "after_inventory.json",
+      "bytes": 1100546,
+      "sha256": "e22ea2dceef87fff24258ab50c6c3629e6a386858a75a120c8cb6a945adaab6b"
+    },
+    {
+      "relative_path": "after_memberships.json",
+      "bytes": 145083,
+      "sha256": "3c7555c1cbd8398cd189b83eac1aa438cb140a581bd019d9393f6b66ed1e5e1f"
+    },
+    {
+      "relative_path": "before_inventory.json",
+      "bytes": 1100546,
+      "sha256": "e22ea2dceef87fff24258ab50c6c3629e6a386858a75a120c8cb6a945adaab6b"
+    },
+    {
+      "relative_path": "final_bookend.json",
+      "bytes": 483,
+      "sha256": "6636d6df003edf6ed6fb135c76883302ca1be67831a44f97725af6c34469464e"
+    },
+    {
+      "relative_path": "independent_CFG_control_review.json",
+      "bytes": 20574,
+      "sha256": "5c78708b1fec5595329aed8153fbfe1dc64381055cbf3fbc888566f17a781094"
+    },
+    {
+      "relative_path": "independent_decoded_instructions.json",
+      "bytes": 133564,
+      "sha256": "985a76d47ed6f51abcb2e2d8178ed99df04c4795cabac6dbe864962be13f53b7"
+    },
+    {
+      "relative_path": "independent_disassembly.txt",
+      "bytes": 15455,
+      "sha256": "c2186233b0fcb4787bc4c3c69ca48a8db4aa03efa558841aee6c0dceaf31c9e0"
+    },
+    {
+      "relative_path": "independent_noncode_and_expectations.json",
+      "bytes": 8541,
+      "sha256": "4e60c2df55b8b50736c97d59fe9d2d06da02e7e77183a96f22776a09ba5d108a"
+    },
+    {
+      "relative_path": "independent_PE_COFF_MAP.json",
+      "bytes": 51588,
+      "sha256": "ae231ce2b27453437aa557fd53483689d122782f611fcf4a03532cd47a38d207"
+    },
+    {
+      "relative_path": "manual_actual_code_semantics.json",
+      "bytes": 8220,
+      "sha256": "da98542f38d1d95badd69d8048fdd0d82d5003c256b975b06bb3c9db4e9d5c4a"
+    },
+    {
+      "relative_path": "membership_scopes.json",
+      "bytes": 3743,
+      "sha256": "5f31a4cbc09d5b1fc6c6bec3cf50876eb1fb507b47e77f440642e1db00a612a1"
+    },
+    {
+      "relative_path": "own_decoder_runtime.json",
+      "bytes": 37542,
+      "sha256": "59e42c8bcdee108b95be5bb6dda2bdb1d88803800230a2ec59725e25718be235"
+    },
+    {
+      "relative_path": "own_metadata_crosscheck.json",
+      "bytes": 6824,
+      "sha256": "c125e9da6247dc59bb878ae359768ca9482688360730cdcdbf8e757b27336500"
+    },
+    {
+      "relative_path": "own_supplement_runtime.json",
+      "bytes": 11504,
+      "sha256": "24db9b66c93c6860f612698600dfe1132b28b99b0f7fd60a062b67eed54aaa84"
+    }
+  ],
+  "actual_code": {
+    "image_bytes": 3072,
+    "image_base": "00400000",
+    "entry": "00401310",
+    "functions": 10,
+    "executable_raw_bytes": 1024,
+    "function_bytes": 771,
+    "padding_bytes": 253,
+    "reachable_instructions": 240,
+    "control_edges": 35,
+    "unknown_bytes": 0,
+    "unknown_control_operands": 0,
+    "COFF_primary_symbols": 33,
+    "COFF_records_with_aux": 43,
+    "section_auxiliary_records": 10,
+    "executable_relocations": 34,
+    "noncode_DIR32NB_relocations": 3,
+    "weak_externals": 0,
+    "COMDAT_sections": 0,
+    "drectve": "three ASCII spaces per object",
+    "BSS_logical_size": 3148,
+    "BSS_stored_bytes": 0,
+    "Native42_Source42_identical": true,
+    "ordinary_wrappers": "two single five-byte E9 tail jumps",
+    "capture_Main_and_all_thunks_reviewed": true,
+    "imports": [
+      "KERNEL32!GetStdHandle",
+      "KERNEL32!WriteFile",
+      "KERNEL32!ExitProcess"
+    ],
+    "asInvoker_manifest": true
+  },
+  "recorded_Root_build": {
+    "processes": 4,
+    "returncodes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "log_hashes_and_child_environments_match": true,
+    "materialization_and_Root_TEXT_pin_comparisons": 22,
+    "Root_TEXT_scope": "fresh build only",
+    "peer_reran_processes": false
+  },
+  "static_blockers": [],
+  "limits": [
+    "Source 0; no target authorization or Root receipt.",
+    "No target execution, runtime acceptance, general ABI, owning lifetime or game validation.",
+    "No original game PE, Native/Ghidra/provider queries or mutations.",
+    "Root owns selected Native provenance and current compiler/header/tool provenance outside this peer subset.",
+    "Capstone explicit packaged DLL requested path and hash are verified; OS mapped module identity is not asserted.",
+    "Readable 40-byte input and conforming Win32 host DS/ES/DF assumptions remain fixture requirements.",
+    "Recorded process results are evidence, not peer reruns.",
+    "Only 38 selected Root files are guarded; later Root family appends are outside scope."
+  ],
+  "target_executed": false,
+  "Root_helpers_executed": false,
+  "Root_receipts_issued": 0,
+  "Source_files_changed": 0,
+  "new_tests": 0
+}
