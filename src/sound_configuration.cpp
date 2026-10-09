@@ -68,12 +68,13 @@ bool listener_matches(const NativeString& stored, const char* name,
 }
 
 struct NativeName {
+    NativeStringStorage& strings;
     NativeString value;
-    explicit NativeName(const char* text)
+    explicit NativeName(const char* text, NativeStringStorage& storage) : strings(storage)
     {
-        value.assign_0041e870(crt_string_storage(), text);
+        value.assign_0041e870(strings, text);
     }
-    ~NativeName() { value.release_to(crt_string_storage()); }
+    ~NativeName() { value.release_to(strings); }
 };
 
 struct ConfiguredListenerTemporary {
@@ -236,7 +237,8 @@ void* find_sound_channel_group_00a7b120(const SoundConfigurationState& state,
 
 void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
     SoundConfigurationState& state, SoundClassOwnership& classes,
-    SoundConfigurationFmodHost& fmod, GuiLuaHost& lua)
+    SoundConfigurationFmodHost& fmod, GuiLuaHost& lua,
+    NativeStringStorage& owning_strings)
 {
     struct ScalarField { const char* key; float SoundConfigurationScalars::* field; };
     constexpr ScalarField fields[]{
@@ -318,7 +320,7 @@ void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
         each_lua_entry(lua, categories.ref, [&](const GuiLuaRef&, const GuiLuaRef& value) {
             auto release = [](SoundClassDescriptor* descriptor) { descriptor->release(); };
             std::unique_ptr<SoundClassDescriptor, decltype(release)> descriptor(
-                create_sound_class_00a7c350(), release);
+                create_sound_class_00a7c350(owning_strings), release);
             {
                 LuaRefOwner name{lua, lua.get_by_name(value, "Name")};
                 const char* text = lua.to_string(name.ref);
@@ -343,8 +345,8 @@ void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
             SoundConfiguredType type;
             if (const char* text = lua.to_string(key)) type.name = text;
             each_lua_entry(lua, value, [&](const GuiLuaRef& listener, const GuiLuaRef& group) {
-                NativeName listener_name(lua.to_string(listener));
-                NativeName group_name(lua.to_string(group));
+                NativeName listener_name(lua.to_string(listener), owning_strings);
+                NativeName group_name(lua.to_string(group), owning_strings);
                 const char* name = listener_name.value.data();
                 const auto index = find_sound_listener_00a7ae00(state, name ? name : "", fmod);
                 if (type.by_listener.size() <= static_cast<std::size_t>(index))
@@ -363,7 +365,8 @@ void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
 
 void initialize_sound_configuration_00a7ff80(SoundSystemState& system,
     SoundConfigurationState& state, SoundClassOwnership& classes,
-    SoundConfigurationFmodHost& fmod, SoundConfigurationLuaOwner& lua_owner)
+    SoundConfigurationFmodHost& fmod, SoundConfigurationLuaOwner& lua_owner,
+    NativeStringStorage& owning_strings)
 {
     check_memory(fmod.get_master_channel_group(system.system,
         &state.master_channel_group_140), fmod);
@@ -373,7 +376,7 @@ void initialize_sound_configuration_00a7ff80(SoundSystemState& system,
         ~CloseOwner() { owner.close(); }
     } close{lua_owner};
     lua_owner.load_and_call_chunk(kSoundConfigurationPath, 0);
-    apply_sound_configuration_lua_00a7ff80_fragment(system, state, classes, fmod, lua);
+    apply_sound_configuration_lua_00a7ff80_fragment(system, state, classes, fmod, lua, owning_strings);
 }
 
 } // namespace bsp

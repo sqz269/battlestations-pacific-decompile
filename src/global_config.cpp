@@ -28,21 +28,6 @@ void destroy_slot(void* slot, GlobalConfigEffects& effects) noexcept {
         write<void*>(slot, 0, nullptr);
     }
 }
-struct CapturedSection {
-    SystemSingletonCriticalSection* section;
-    explicit CapturedSection(SystemSingletonCriticalSection* captured) : section(captured) {
-        if (section) {
-            singleton_enter_critical_section(*section);
-            ++section->recursion_18;
-        }
-    }
-    ~CapturedSection() {
-        if (section) {
-            --section->recursion_18;
-            singleton_leave_critical_section(*section);
-        }
-    }
-};
 } // namespace
 
 void destroy_global_config_pointer_slot_004c3810(void* slot,
@@ -124,8 +109,7 @@ GlobalConfigOwner& construct_global_config_004324e0(GlobalConfigOwner& owner,
 GlobalConfigOwner* get_global_config_00432650(GlobalConfigContext& context) {
     if (auto* const existing = context.singleton_00f878e4) return existing;
     {
-        auto& first_manager = context.lifetime.get_manager_00415350()->system_owner();
-        CapturedSection lock(first_manager.section_10);
+        CapturedSoundLifetimeSection lock(context.lifetime);
         if (!context.singleton_00f878e4) {
             void* const storage = singleton_lifetime_allocate(
                 {SingletonAllocationKind::object, 0x2e8, sizeof(GlobalConfigOwner)});
@@ -140,7 +124,7 @@ GlobalConfigOwner* get_global_config_00432650(GlobalConfigContext& context) {
                 construct_global_config_004324e0(*owner, context.effects);
             }
             context.singleton_00f878e4 = owner;
-            auto* const second_manager = context.lifetime.get_manager_00415350();
+            auto second_manager = context.lifetime.get_manager_00415350();
             second_manager->register_object(context.singleton_00f878e4);
         }
     } // decrement captured recursion counter and leave before FINAL slot reload

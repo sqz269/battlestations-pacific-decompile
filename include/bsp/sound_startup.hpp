@@ -35,6 +35,6 @@ SoundSystemOwner& construct_sound_system_00a88770(SoundSystemOwner&,
     bool sound_disabled, std::uint32_t unused_08, std::uint32_t unused_0c,
     SoundStartupClockHost&, SoundResourceLoadHost&, FmodStartupHost&,
     SoundConfigurationFmodHost&, SoundConfigurationLuaOwner&,
-    SoundSystemShutdownContext&);
+    SoundSystemShutdownContext&, NativeStringStorage& strings = crt_string_storage());
 
 } // namespace bsp

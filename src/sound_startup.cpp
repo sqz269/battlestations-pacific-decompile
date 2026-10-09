@@ -23,7 +23,8 @@ SoundSystemOwner& construct_sound_system_00a88770(SoundSystemOwner& owner,
     bool sound_disabled, std::uint32_t, std::uint32_t,
     SoundStartupClockHost& clock, SoundResourceLoadHost& resources,
     FmodStartupHost& fmod_startup, SoundConfigurationFmodHost& fmod_configuration,
-    SoundConfigurationLuaOwner& lua, SoundSystemShutdownContext& shutdown)
+    SoundConfigurationLuaOwner& lua, SoundSystemShutdownContext& shutdown,
+    NativeStringStorage& strings)
 {
     construct_sound_system_owner_00a81480(owner, lifetime); // 00A88791
     SoundStartupBaseUnwind unwind{owner, shutdown}; // state 0 only after base returns
@@ -37,9 +38,9 @@ SoundSystemOwner& construct_sound_system_00a88770(SoundSystemOwner& owner,
     lifetime.domain.get_manager_00415350()->move_object_after_00bd0d70(&owner, auxiliary);
     owner.time_118 = clock.sample_time_14(); // four literal word copies
     initialize_sound_library_00a8881e_fragment(fmod_startup, owner.system);
-    owner.resource_owner_54 = create_sound_resource_owner_00a858f0(resources);
+    owner.resource_owner_54 = create_sound_resource_owner_00a858f0(resources, strings);
     initialize_sound_configuration_00a7ff80(owner.system, owner.configuration,
-        owner.classes, fmod_configuration, lua);
+        owner.classes, fmod_configuration, lua, strings);
     unwind.armed = false;
     return owner;
 }

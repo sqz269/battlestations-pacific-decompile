@@ -1,7 +1,7 @@
 #pragma once
 
 #include "bsp/native_string.hpp"
-#include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 #include <array>
 #include <cstddef>
@@ -27,7 +27,7 @@ struct GlobalConfigEffects {
 };
 struct GlobalConfigContext {
     // Same01090AA0 lifetime domain as every other startup singleton.
-    SingletonLifetimeDomain& lifetime;
+    SoundLifetimeAccess lifetime;
     GlobalConfigOwner* volatile& singleton_00f878e4;
     NativeStringStorage& strings;
     GlobalConfigEffects& effects;

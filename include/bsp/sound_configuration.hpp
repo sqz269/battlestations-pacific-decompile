@@ -118,13 +118,15 @@ inline constexpr char kSoundConfigurationPath[] = "sound/soundsetup.lua";
 // and absent/non-number scalar values leave existing values unchanged.
 void initialize_sound_configuration_00a7ff80(SoundSystemState& system,
     SoundConfigurationState& state, SoundClassOwnership& classes,
-    SoundConfigurationFmodHost& fmod, SoundConfigurationLuaOwner& lua_owner);
+    SoundConfigurationFmodHost& fmod, SoundConfigurationLuaOwner& lua_owner,
+    NativeStringStorage& owning_strings = crt_string_storage());
 
 // 00A800D3..00A813F8: same recovered policy with an already loaded Lua host.
 // Does not query the master group or own/close the supplied interpreter.
 void apply_sound_configuration_lua_00a7ff80_fragment(SoundSystemState& system,
     SoundConfigurationState& state, SoundClassOwnership& classes,
-    SoundConfigurationFmodHost& fmod, GuiLuaHost& lua);
+    SoundConfigurationFmodHost& fmod, GuiLuaHost& lua,
+    NativeStringStorage& owning_strings = crt_string_storage());
 
 // 00A7C740: native __thiscall(manager, LuaObject*), RET4, DSP* in EAX.
 // Only five case-insensitive Type strings are accepted; unknown -> null.

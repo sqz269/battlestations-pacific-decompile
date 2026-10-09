@@ -314,7 +314,7 @@ void GameSoundRuntime::startup(bool disabled) {
     try {
         construct_sound_system_00a88770(*self.manager, self.lifetime, self.cache,
             disabled, 0, 0, self.clock, self.resources, self.library, self.library,
-            self.lua, self.shutdown_context);
+            self.lua, self.shutdown_context, self.services.strings);
         self.running = true;
         self.rethrow_file_error();
     } catch (...) {
