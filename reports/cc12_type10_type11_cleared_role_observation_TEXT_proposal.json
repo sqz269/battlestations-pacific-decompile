@@ -1,0 +1,455 @@
+{
+  "schema": "cc12_type1011_cleared_role_observation_TEXT_proposal_v1",
+  "status": "UNADOPTED_TEXT_ONLY",
+  "Source_credit": 0,
+  "Root_acceptance": false,
+  "Root_adoption": false,
+  "worker": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer",
+    "branch": "agent/cc12_type1011_job_peer",
+    "base_commit": "541c9b30ffab0cf8e79a233346bd01293ed6004a",
+    "lease": "cc12_type1011_cleared_role_observation_TEXT_proposal",
+    "addresses": [],
+    "owned_files": [
+      "docs/CC12_TYPE10_TYPE11_CLEARED_ROLE_OBSERVATION_TEXT_PROPOSAL.md",
+      "reports/cc12_type10_type11_cleared_role_observation_TEXT_proposal.json"
+    ]
+  },
+  "retained_proposals": {
+    "superseded_v1": {
+      "namespace": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930",
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930\\seal.json",
+        "bytes": 6373,
+        "sha256": "849a0bb50c4395a060674c688fd35d872f57e0e294b5047de1aa454613446f63"
+      },
+      "artifacts": 17,
+      "exact_files": 18,
+      "independent_verification": {
+        "missing": [],
+        "extra": [],
+        "hash_failures": []
+      }
+    },
+    "final_v2": {
+      "namespace": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2",
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\seal.json",
+        "bytes": 5709,
+        "sha256": "1ea616ea8e38e1e18d2c4c021e7b9599534b78b68c70f80014ae9b0c164c3bb3"
+      },
+      "artifacts": 15,
+      "exact_files": 16,
+      "independent_verification": {
+        "missing": [],
+        "extra": [],
+        "hash_failures": []
+      }
+    }
+  },
+  "final_helper_TEXT": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\helper_TEXT\\observe_cleared_roles.ps1.txt",
+      "bytes": 11106,
+      "sha256": "a28372928f5fe2c2e9a1d0de0e46b7984e1729ab6e62a23070d8fd0b76b8a680"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\helper_TEXT\\observe_python_role.py.txt",
+      "bytes": 8825,
+      "sha256": "b8ff8dd4a7008c78187fa0f588e5460c0c839278a15ad97856fd12dbba1b4d04"
+    }
+  ],
+  "Root_inputs_UNFILLED": {
+    "pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\Root_observation_inputs_UNFILLED.json",
+      "bytes": 1808,
+      "sha256": "70bac9f51779e1be4936405ad35a4803f041a5a6eb72af82b27e22ece0665d62"
+    },
+    "fields": {
+      "schema": "unadopted_Type1011_cleared_observation_inputs_v1",
+      "Source_credit": 0,
+      "Root_concrete_fields": {
+        "materialization_draft": null,
+        "selected_code": null,
+        "private_environment": null,
+        "empty_cache_prefix": null,
+        "external_driver": null,
+        "external_bootstrap": null,
+        "external_records_directory": null,
+        "external_timeout_seconds": null,
+        "external_child_timeout_seconds": null,
+        "external_powershell_host": null,
+        "private_external_environment": null,
+        "external_job_supervisor": null,
+        "external_job_policy": null
+      },
+      "Root_observation_selection": {
+        "authorization": null,
+        "helper_powershell": null,
+        "helper_python": null,
+        "powershell_executable": null,
+        "python_executable": null,
+        "private_role_maps": null,
+        "isolated_recipe_TEXT": null,
+        "frozen_snapshot_pin": null,
+        "private_records_directory": null,
+        "empty_cache_prefix": null
+      },
+      "contract": {
+        "runtime_root": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_fixture_execution",
+        "authoritative_Python_executable_path": "C:/ProgramData/miniconda3/python.exe",
+        "future_family_suffix": "local/type1011p2",
+        "future_frozen_exports_suffix": "local/type1011select01/frozen_native_exports",
+        "TEMP_TMP_suffix": "local/type1011select01/temp",
+        "external_coordination_suffix": "local/type1011select01/coordination",
+        "sqlite_absence_suffix": "local/bsp_index.sqlite",
+        "future_family_must_remain_absent": true,
+        "private_role_file_schema": "exact roles external_host/root_process/recipe_children, each complete uppercase string map",
+        "private_records_require_fresh_owned_Root_local_directory": true,
+        "helper_materialization_selected_by_Root_only": true,
+        "no_selected_payload_import_or_execution": true
+      }
+    },
+    "fixture_concrete_null_count": 13,
+    "observation_selection_null_count": 10
+  },
+  "static_review": {
+    "schema": "Type1011_cleared_role_observer_TEXT_review_v1",
+    "Source_credit": 0,
+    "prior_final_record": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_isolated_path_TEXT_20261009_0845\\FINAL_UNADOPTED_ISOLATED_TEXT_INPUTS_v2.json",
+      "bytes": 5420,
+      "sha256": "9699c6578d43d06f15d06b2100946eecf867cf54128fa581d26d4a5ef5caf87a"
+    },
+    "prior_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_isolated_path_TEXT_20261009_0845\\seal.json",
+      "bytes": 69549,
+      "sha256": "db51a89661172d267ee74f22875ea2939ad9c5a1dfb232003dd8c682b81ac4d4"
+    },
+    "formula_AST_sha256": "b50b411e307c07715b822cf32c3afa04b67574a44e5cc9a528e7e9852dd19a40",
+    "formula_node_count": 10,
+    "literal_binding_AST_equal": {
+      "VC": true,
+      "SDKVER": true,
+      "INC": true,
+      "ROOT": true,
+      "LIB": true,
+      "F": true,
+      "BIN": true,
+      "SDK": true
+    },
+    "effective_ENV_return_AST_equals_recipe_ENV_after_os_environ_to_observed_base": true,
+    "helper_python_parse": "PASS_AST_ONLY",
+    "helper_imports": [
+      "ast",
+      "hashlib",
+      "json",
+      "os",
+      "pathlib",
+      "sys"
+    ],
+    "helper_child_spawning_or_selected_exec_import_calls": 0,
+    "public_print_only_public_summary": true,
+    "helper_execution": 0,
+    "PowerShell_helper_execution": 0,
+    "Type5_inspector_read_or_adapted": false,
+    "adaptations_from_Type1011": [
+      "cleared ProcessStartInfo.Environment and ArgumentList method from external guard; independent benign images only",
+      "Python -I -B -E -S -X pycache_prefix flags from external guard/supervisor; own observer substitutes for selected supervisor/driver",
+      "recipe ROOT/F/VC/SDK/SDKVER/BIN/INC/LIB bindings preserved as AST",
+      "recipe dict(os.environ,...) adapted solely to dict(observed_base,...) with exact return AST"
+    ],
+    "illustrative_UNADOPTED_role_counts_and_names": {
+      "external_host": {
+        "key_count": 15,
+        "key_names": [
+          "BSP_COORDINATION_DIR",
+          "BSP_EXPORTS_DIR",
+          "BSP_GHIDRA_AUTOSTART",
+          "COMSPEC",
+          "NO_PROXY",
+          "PATH",
+          "PATHEXT",
+          "PSMODULEPATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "SYSTEMROOT",
+          "TEMP",
+          "TMP",
+          "USERPROFILE",
+          "VSLANG",
+          "WINDIR"
+        ],
+        "actual_observed": false
+      },
+      "root_process": {
+        "key_count": 11,
+        "key_names": [
+          "BSP_EXPORTS_DIR",
+          "BSP_GHIDRA_AUTOSTART",
+          "COMSPEC",
+          "NO_PROXY",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "SYSTEMROOT",
+          "TEMP",
+          "TMP",
+          "VSLANG",
+          "WINDIR"
+        ],
+        "actual_observed": false
+      },
+      "recipe_children": {
+        "key_count": 13,
+        "key_names": [
+          "BSP_EXPORTS_DIR",
+          "BSP_GHIDRA_AUTOSTART",
+          "COMSPEC",
+          "INCLUDE",
+          "LIB",
+          "NO_PROXY",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "SYSTEMROOT",
+          "TEMP",
+          "TMP",
+          "VSLANG",
+          "WINDIR"
+        ],
+        "actual_observed": false
+      }
+    },
+    "full_reference_maps_private": true,
+    "actual_role_processes_observed": 0,
+    "private_reference_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\private_reference_DATA\\private_proposed_external_host_UNADOPTED.json",
+        "bytes": 1160,
+        "sha256": "cec1e3d0d229e2fd2fb50e7cadf3a9455c2e45990d56dd8ab94b360d653c75fd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\private_reference_DATA\\private_proposed_Python_roles_UNADOPTED.json",
+        "bytes": 2597,
+        "sha256": "7516fd9e8113332f53cfc2e0dd591f250ad701a650df4137444f0636c7743590"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\private_reference_DATA\\snapshot.json",
+        "bytes": 321,
+        "sha256": "5ea48b1bedbf37dcb69b562260e55dd12b70fa5315cf070b0e457dde3d0e82f3"
+      }
+    ],
+    "authority_DATA_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\authority_DATA\\external_job_supervisor.py.txt",
+        "bytes": 18974,
+        "sha256": "c94be28583bf162ee76a3ffdba9c2dcac7944dd6b368cf076ca0b5f6f56a405d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\authority_DATA\\external_preinterpreter_guard.ps1.txt",
+        "bytes": 18106,
+        "sha256": "deade6e5a6374e22be6778d8247557eb5cfaef5018dac740976666243953a7a6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\authority_DATA\\external_python_driver.py.txt",
+        "bytes": 1899,
+        "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930_v2\\authority_DATA\\type1011_recipe.py.txt",
+        "bytes": 24183,
+        "sha256": "cb2bc179bc5f872505b173c203e8ea68b8cb44269c1a6fad652078b0dbe0f28a"
+      }
+    ],
+    "proposed_process_tree": "Root caller -> OWN cleared PowerShell host -> sequential OWN Python root observer then OWN Python effective observer; Python helpers spawn nothing",
+    "process_timeouts_ms": {
+      "outer_host": 60000,
+      "each_Python_child": 12000,
+      "kill_wait": 5000,
+      "each_stream_wait": 2000
+    },
+    "timeouts_and_managed_kill_behavior_unexecuted": true,
+    "cleanup_scope": "only Process objects started by own helper; Kill(true) scoped to their descendant tree; no named/global process kills",
+    "cleanup_is_not_selected_Job_closure_evidence": true,
+    "early_authorization_or_preflight_failure_requires_Root_caller_private_log": true,
+    "public_data_contract": "names/counts/hashes and consumer relationship flags; no full ENV/argv/cwd/module-origin path values",
+    "private_data_contract": "full actual/expected maps, argv/cwd/runtime/origins and exact process/stdout/stderr records",
+    "limitations": [
+      "No cleared host or Python process has run; illustrative counts15/11/13 are DATA only.",
+      "This independent route replaces selected supervisor/driver/program with own observers; custom selected quoting, Job assignment/closure and Root admission remain untested.",
+      "Python sys.modules gives resident Python module origins, not a complete OS mapped-DLL inventory.",
+      "Actual PowerShell7/.NET argument serialization, ENV key spelling, lazy stdlib/module bookends and failure paths require Root execution.",
+      "No original540/560/600 timeout behavior is claimed.",
+      "Future fixture include directory is expected absent; vendor directory relationships are observations, not compilation or dependency admission."
+    ]
+  },
+  "PowerShell_parse_review": {
+    "Source_credit": 0,
+    "review": "PARSE_ONLY",
+    "helper_execution": 0,
+    "syntax_error_count": 0,
+    "syntax_errors": [],
+    "command_names": [
+      "ActualEnvironment",
+      "ConvertFrom-Json",
+      "ConvertTo-Json",
+      "EnvironmentEqual",
+      "Get-ChildItem",
+      "Get-Content",
+      "Get-FileHash",
+      "Get-Item",
+      "Join-Path",
+      "Need",
+      "Out-Null",
+      "Pin",
+      "Put",
+      "RequirePin",
+      "Resolve-Path",
+      "RunCleared",
+      "Set-StrictMode",
+      "Sort-Object",
+      "Test-Path"
+    ],
+    "Add_Type_calls": 0,
+    "Job_PInvoke_or_selected_payload_execution": 0
+  },
+  "v1_to_v2_guard_delta": {
+    "Source_credit": 0,
+    "superseded_v1_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930\\seal.json",
+      "bytes": 6373,
+      "sha256": "849a0bb50c4395a060674c688fd35d872f57e0e294b5047de1aa454613446f63"
+    },
+    "reason": "bind original Type1011 fixed Python executable rather than accepting arbitrary Root-chosen interpreter",
+    "Python_v2_reverts_to_v1_AST_after_removing_one_path_guard": true,
+    "PowerShell_v2_reverts_to_v1_bytes_after_removing_one_path_guard": true,
+    "helper_execution": 0,
+    "retained_failed_review_utility": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_cleared_role_TEXT_20261009_0930\\utility_failures_DATA.json",
+      "bytes": 484,
+      "sha256": "95769674d81431ae1195d4ce4f40fa8fe34539f57f372742d21dd7d00f2c7171"
+    }
+  },
+  "utility_failure_retained": {
+    "Source_credit": 0,
+    "helper_execution": 0,
+    "failures": [
+      {
+        "utility": "review_TEXT_only_attempt1_FAILED_DATA.py",
+        "exit_code": 1,
+        "location": "line50 execution-call substring assertion",
+        "exception": "AssertionError",
+        "cause": "substring exec falsely matched sys.executable inside Path(sys.executable).resolve() AST",
+        "correction": "exact AST call-name checks; strict helper stdlib import allowlist retained",
+        "selected_payload_execution": 0
+      }
+    ]
+  },
+  "closure_DATA": {
+    "Source_credit": 0,
+    "actual_cleared_role_processes": 0,
+    "helper_execution": 0,
+    "Native_compiler_provider_PE_fixture_game_or_Win32_API_execution": 0,
+    "Root_writes": 0,
+    "Root_future_absence": {
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011p2": true,
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\type1011select01": true,
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\bsp_index.sqlite": true
+    },
+    "all13_concrete_fields_null": true,
+    "all10_observation_fields_null": true,
+    "PowerShell_parse_errors": 0
+  },
+  "execution_boundary": {
+    "proposed_helper_execution": 0,
+    "cleared_role_process_instantiation": 0,
+    "selected_payload_import_or_execution": 0,
+    "Native_compiler_provider_PE_fixture_game_or_Win32_API_execution": 0,
+    "Root_writes": 0,
+    "Root_maps_receipts_or_draft_materialization": 0,
+    "Ghidra_mutation": 0,
+    "syntax_AST_review_only": true
+  },
+  "proposed_observation_route": {
+    "roles": [
+      "external_host",
+      "root_process",
+      "recipe_children"
+    ],
+    "hierarchy": "Root caller -> OWN cleared PowerShell host -> sequential OWN root Python observer, then OWN effective Python observer; Python helpers spawn nothing",
+    "cleared_environment_method": "ProcessStartInfo.Environment.Clear followed by full chosen map insertion",
+    "argument_method": "ProcessStartInfo.ArgumentList",
+    "Python_flags": [
+      "-I",
+      "-B",
+      "-E",
+      "-S",
+      "-X",
+      "pycache_prefix=Root-selected-empty-prefix"
+    ],
+    "authoritative_interpreter_path": "C:/ProgramData/miniconda3/python.exe",
+    "cwd_consumer": "isolated Type1011 execution worktree root",
+    "effective_derivation_source": "actual observed root os.environ, compared against full Root-chosen recipe_children map",
+    "combined_private_role_file_schema": "exact external_host/root_process/recipe_children dictionaries, complete uppercase string ENV maps",
+    "Role_counts_not_hardcoded": true,
+    "actual_observations_to_be_created_only_by_Root": true
+  },
+  "private_output_contract": {
+    "full_values": [
+      "actual and expected ENV maps",
+      "derived effective ENV",
+      "sys.argv and sys.orig_argv",
+      "cwd/sys.path/cache prefix",
+      "Python interpreter and resident module origins/pins",
+      "PowerShell argv/cwd/image/metadata",
+      "per-process planned ENV/argv/start/exit/cleanup/stdout/stderr"
+    ],
+    "new_files_only": true,
+    "Root_caller_stdout_stderr_retained_privately_required": true,
+    "early_preflight_failure_can_precede_records_directory_creation": true
+  },
+  "public_output_contract": {
+    "allowed": [
+      "names",
+      "counts",
+      "hashes",
+      "path consumer relationship flags"
+    ],
+    "full_ENV_argv_cwd_or_module_origin_values": false,
+    "no_public_map_values": true,
+    "stdout_only_structured_public_summary": true,
+    "helper_runtime_failure_messages_publish_type_only": true
+  },
+  "consumer_relationship_contract": {
+    "INCLUDE": "future family/include + VC/include + five original SDK include directories",
+    "LIB": "VC/lib/x86 + SDK ucrt/um x86",
+    "PATH": "compiler BIN + SDK x86 BIN + complete observed root PATH",
+    "TEMP_TMP": "isolated Root local/type1011select01/temp",
+    "BSP_EXPORTS_DIR": "isolated Root local/type1011select01/frozen_native_exports",
+    "snapshot": "Root-selected exact snapshot.json DATA pin within that exports directory",
+    "BSP_COORDINATION_DIR": "existing external key at isolated Root local/type1011select01/coordination",
+    "optional_sqlite": "isolated Root local/bsp_index.sqlite absent",
+    "future_fixture_family": "isolated Root local/type1011p2 absent",
+    "directory_existence_only_is_not_compilation_or_dependency_admission": true
+  },
+  "bounded_failure_design": {
+    "outer_host_timeout_ms": 60000,
+    "each_Python_child_timeout_ms": 12000,
+    "kill_wait_ms": 5000,
+    "each_stream_wait_ms": 2000,
+    "cleanup_only_started_Process_objects_and_their_descendant_trees": true,
+    "broad_process_name_kill": false,
+    "selected_Job_closure_claim": false,
+    "runtime_failure_and_cleanup_behavior_tested": false,
+    "original540_560_600_timeout_behavior_claimed": false
+  },
+  "remaining_Root_checks": [
+    "Review both helper sources, combined-map schema, null input template and v1-to-v2 path guard delta.",
+    "Independently concretize/pin helper materializations, PowerShell7/.NET host, authoritative interpreter, complete private role maps, recipe TEXT DATA, frozen snapshot, fresh owned records path and empty cache.",
+    "Capture caller logs privately; execute only chosen OWN observer tools and retain full actual/private process records and public hashes.",
+    "Check actual complete ENV including key spelling/startup additions, host/Python argv/cwd/image identities, isolated flags/cache, effective formula, resident module origins/bookends and path consumers.",
+    "Check finite wait/kill/stream handling on the independent benign route before relying on its failure records.",
+    "Do not use illustrative15/11/13 counts as actual cleared process evidence.",
+    "Decide any later profile/dependency selection separately; no fixture receipt or selected-route admission is supplied here.",
+    "Selected custom quoting, actual supervisor/driver/program routing, atomic Job membership and observed zero-process closure remain unexecuted.",
+    "Native/compiler/provider/PE/fixture/game behavior, Source credit/publication and original timeout behavior remain pending."
+  ]
+}
