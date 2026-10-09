@@ -1,0 +1,351 @@
+{
+  "schema": "bsp.cc12.native_unit_gunnery_category_header_source_candidate.v1",
+  "created_utc": "2026-10-09T21:41:56.885026+00:00",
+  "status": "complete_Source_candidate_unregistered_unbuilt_pending_Root_emitted_review_and_admission",
+  "packet": "cc12_native_unit_gunnery_category_header_constructor",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi",
+  "branch": "agent/cc12_unit_numbering_virtual_query_abi",
+  "parent_commit": "fa9178ebcbd15369d5aa46357b73f5f572c300b5",
+  "parent_readiness_pin": {
+    "path": "reports/cc12_unit_numbering_shared_receiver_base_constructor_readiness.json",
+    "bytes": 29214,
+    "sha256": "198dea2824efa872113f8efbc230d84a30bbc32a0ff1fdd23d98ce591e88d168",
+    "canonical_lf_sha256": "198dea2824efa872113f8efbc230d84a30bbc32a0ff1fdd23d98ce591e88d168"
+  },
+  "scope": {
+    "only_Native_address": "00952640",
+    "exact_tracked_files": [
+      "include/bsp/native_unit_gunnery_category_header.hpp",
+      "src/native_unit_gunnery_category_header.cpp",
+      "docs/CC12_NATIVE_UNIT_GUNNERY_CATEGORY_HEADER_SOURCE.md",
+      "reports/cc12_native_unit_gunnery_category_header_source.json"
+    ],
+    "additional_Native_bodies_or_globals_opened": false,
+    "CMake_registration": false,
+    "new_tests_or_probes": false,
+    "build_performed": false,
+    "ledger_mutation": false,
+    "Ghidra_mutation_or_function_creation": false,
+    "parent_readiness_commit_retained_per_Root_instruction": true
+  },
+  "Native_evidence": {
+    "observed_utc": "2026-10-09T21:40:37.707313+00:00",
+    "original_image_pin": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "body_hex": "8bc133c98908894804894808c3",
+    "body_sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d",
+    "address": "00952640",
+    "end_inclusive": "0095264C",
+    "bytes": 13,
+    "operations": 6,
+    "all_operations": [
+      {
+        "address": "00952640",
+        "bytes": "8bc1",
+        "mnemonic": "mov",
+        "operands": "eax, ecx"
+      },
+      {
+        "address": "00952642",
+        "bytes": "33c9",
+        "mnemonic": "xor",
+        "operands": "ecx, ecx"
+      },
+      {
+        "address": "00952644",
+        "bytes": "8908",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], ecx"
+      },
+      {
+        "address": "00952646",
+        "bytes": "894804",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], ecx"
+      },
+      {
+        "address": "00952649",
+        "bytes": "894808",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], ecx"
+      },
+      {
+        "address": "0095264C",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "fresh_live_bytes_cli": "00952640  8b c1 33 c9 89 08 89 48 04 89 48 08 c3",
+    "all_PE_prior_saved_and_fresh_live_instruction_starts_equal": true,
+    "all_PE_prior_saved_and_fresh_live_bytes_equal": true,
+    "fresh_live_instruction_context_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_gunnery_header_constructor_live_starts.json",
+      "bytes": 939,
+      "sha256": "52b36c5f76e0544b95ee3a6be1c9f6c45ae44a037c4d636b1a333c8a9cdf2fb4"
+    },
+    "prior_saved_body_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_unit_numbering_virtual_query_abi\\local\\cc12_array_element_00952640.bin",
+      "bytes": 13,
+      "sha256": "1e09d34a9de7a48bd061703ef73f341df8596595468b282c5f19c36b6bf0b98d"
+    },
+    "current_Ghidra_function_start": false,
+    "proto_cli_result": "No function found for 00952640",
+    "Ghidra_mutations": false
+  },
+  "capture_pin": {
+    "path": "local/cc12_gunnery_header_candidate_capture.json",
+    "bytes": 27386,
+    "sha256": "80b01898b69b39046dfc615aff33b871f197a367d9839d3eefcc9e956a62a597",
+    "canonical_lf_sha256": "80b01898b69b39046dfc615aff33b871f197a367d9839d3eefcc9e956a62a597"
+  },
+  "complete_Native_gate": {
+    "bytes": 13,
+    "instructions": 6,
+    "physical_calls": 0,
+    "branches": 0,
+    "normal_returns": 1,
+    "receiver_writes": 3,
+    "receiver_write_widths": [
+      4,
+      4,
+      4
+    ],
+    "PE_live_saved_all_bytes_equal": true,
+    "PE_live_fresh_saved_all_instruction_starts_equal": true,
+    "all_instructions_read": true,
+    "Ghidra_has_function_at_entry": false,
+    "function_export_boundary": "Fresh local instruction listing and byte capture only; no historical standalone function export or newly created function is claimed."
+  },
+  "Source_public": {
+    "header": "include/bsp/native_unit_gunnery_category_header.hpp",
+    "implementation": "src/native_unit_gunnery_category_header.cpp",
+    "symbol": "construct_native_unit_gunnery_category_header_00952640",
+    "storage": "NativeUnitGunneryCategoryHeaderStorage",
+    "fields": [
+      {
+        "name": "word_00",
+        "type": "std::uint32_t",
+        "offset": 0
+      },
+      {
+        "name": "word_04",
+        "type": "std::uint32_t",
+        "offset": 4
+      },
+      {
+        "name": "word_08",
+        "type": "std::uint32_t",
+        "offset": 8
+      }
+    ],
+    "storage_size": 12,
+    "storage_alignment": 4,
+    "field_semantics_recovered_from_leaf": false,
+    "entry": "MSVC Win32 __fastcall, actual storage pointer inECX, no other formal or stack argument.",
+    "definition": "__declspec(naked) with the exact six reviewed instruction operations.",
+    "layout_assertions_present": [
+      "sizeof(void*)==4",
+      "sizeof(uint32_t)==4",
+      "standard-layout storage",
+      "storage size0Ch",
+      "alignment4",
+      "offsets0/4/8"
+    ],
+    "layout_assertions_compiled": false,
+    "noexcept_declared": false,
+    "actual_three_field_storage_not_complete_receiver_or_semantic_facade": true
+  },
+  "complete_behavior": {
+    "entry_requirements": "Actual writable storage for all three DWORDs and valid return-address backing; ordinary typed callers supply the explicit header object.",
+    "ordered_operations": [
+      "EAX := entryECX",
+      "ECX := 0 via XOR ECX,ECX",
+      "DWORD[EAX+0] := ECX",
+      "DWORD[EAX+4] := ECX",
+      "DWORD[EAX+8] := ECX",
+      "RET with no stack-argument pop"
+    ],
+    "normal_result": "Same actual receiver inEAX; ECX=0.",
+    "unchanged_registers": [
+      "EDX",
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP"
+    ],
+    "stack": "No stack arguments, no local frame or saved registers; RET consumes only return address.",
+    "flags": "XOR zero-result flags (CF=0,OF=0,ZF=1,SF=0,PF=1; AF undefined); subsequent MOV/RET do not change them.",
+    "memory_reads_other_than_return_address": 0,
+    "global_accesses": 0,
+    "allocation": false,
+    "calls": 0,
+    "branching": false,
+    "error_checks_or_exceptions_added": false,
+    "fault_boundary": "No pointer/alignment/range check. Invalid backing can fault during ordered stores; no cleanup or rollback is added.",
+    "preexisting_ownership": "No read or release of prior words; not an operation to destroy/reinitialize a populated owned list.",
+    "exception_chain_modified": false,
+    "unwind_or_hardware_fault_equivalence_validated": false
+  },
+  "parent_placement_witness": {
+    "source": "Pinned preceding complete shared-base readiness report",
+    "parent_address": "0095CC90",
+    "constructor_argument_site": "0095CCBD",
+    "array_call_site": "0095CD23",
+    "storage": "actualR+394h",
+    "stride": 12,
+    "count": 12,
+    "parent_Native_body_reopened_in_this_packet": false,
+    "iterator_or_destructor_pair_supported_by_this_candidate": false
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_unit_gunnery_category_header.hpp",
+      "bytes": 1167,
+      "sha256": "158d5bfb8720947f26570b3c1e807b6e93db262a161cb24d958058be42c059fc",
+      "canonical_lf_sha256": "158d5bfb8720947f26570b3c1e807b6e93db262a161cb24d958058be42c059fc"
+    },
+    {
+      "path": "src/native_unit_gunnery_category_header.cpp",
+      "bytes": 1184,
+      "sha256": "0427775fa3ea984f94932f1d3c1bff625525c6580bf389f3f98f18d536a766df",
+      "canonical_lf_sha256": "0427775fa3ea984f94932f1d3c1bff625525c6580bf389f3f98f18d536a766df"
+    }
+  ],
+  "convention_pins": [
+    {
+      "path": "include/bsp/native_mlandfort_kind.hpp",
+      "bytes": 1240,
+      "sha256": "5183daceb6614777c5902a7cbe490b6baf66043fd353403a09b18d275b864d0f",
+      "canonical_lf_sha256": "5183daceb6614777c5902a7cbe490b6baf66043fd353403a09b18d275b864d0f"
+    },
+    {
+      "path": "src/native_mlandfort_kind.cpp",
+      "bytes": 1426,
+      "sha256": "d9169250a9c6ddf0ab79d13dfbbf10eb9950071bd0cd5af710680c526a7beb37",
+      "canonical_lf_sha256": "d9169250a9c6ddf0ab79d13dfbbf10eb9950071bd0cd5af710680c526a7beb37"
+    }
+  ],
+  "frozen_Source121_context": {
+    "manifest_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\Source121_frozen.json",
+      "bytes": 35190,
+      "sha256": "e6d4c72b9b12b5ed559ff7d1c95e61adc38e2c4ef054cda9846abf2a63275613"
+    },
+    "frozen_utc": "2026-10-09T21:32:54.126656+00:00",
+    "retained_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\Source121_retained",
+    "frozen_source_inputs_checked": 121,
+    "frozen_raw_inputs_equal": 121,
+    "worker_LF_inputs_equal": 121,
+    "worker_raw_mismatches": [
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json"
+    ],
+    "retained_artifact_checks": [
+      {
+        "original_pin": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73781594,
+          "sha256": "b0d5120be850c18391097da87ca49d0b814e845189b8cae55c07709e4ed91366"
+        },
+        "retained_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\Source121_retained\\build\\win32\\Release\\bsp_core.lib",
+          "bytes": 73781594,
+          "sha256": "b0d5120be850c18391097da87ca49d0b814e845189b8cae55c07709e4ed91366"
+        },
+        "retained_raw_equal": true
+      },
+      {
+        "original_pin": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39"
+        },
+        "retained_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\Source121_retained\\build\\win32\\Release\\bsp_game.exe",
+          "bytes": 5080576,
+          "sha256": "47b7f1b50976229168c952497f760c5282c7b88d2bc966b51635f3baadf4ba39"
+        },
+        "retained_raw_equal": true
+      },
+      {
+        "original_pin": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "29ca7b93292cf99c5789ccc0a74604a89efc51553a65679b7f465d41ff36e656"
+        },
+        "retained_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\Source121_retained\\build\\win32\\bsp_game.map",
+          "bytes": 7502887,
+          "sha256": "29ca7b93292cf99c5789ccc0a74604a89efc51553a65679b7f465d41ff36e656"
+        },
+        "retained_raw_equal": true
+      },
+      {
+        "original_pin": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "e222d06f94c4a165466a467e34b7741461e54e60fd048135231156425cc5ab42"
+        },
+        "retained_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_self_refresh_renderer_Source_primary\\Source121_retained\\build\\win32\\Testing\\Temporary\\LastTest.log",
+          "bytes": 2448,
+          "sha256": "e222d06f94c4a165466a467e34b7741461e54e60fd048135231156425cc5ab42"
+        },
+        "retained_raw_equal": true
+      }
+    ],
+    "historical_artifact_context_only": true,
+    "current_Root_artifacts_compared": false,
+    "current_Root_artifact_equality_claimed": false
+  },
+  "worker_validation": {
+    "complete_Native_operations_reviewed": true,
+    "static_original_byte_and_instruction_comparison": true,
+    "normal_build_run": false,
+    "emitted_candidate_body_read": false,
+    "Core_indexed_definition_reviewed": false,
+    "new_tests_or_probes": 0,
+    "fixture_runs": 0,
+    "runtime_runs": 0,
+    "Original_ABI_compatibility_proved": false,
+    "complete_header_CPP_doc_report_reviewed": true
+  },
+  "Root_admission_prerequisites": [
+    "Review complete header/CPP/document/report and Native evidence.",
+    "Register the candidate source in the configured Core build.",
+    "Run the normal scripts/build.ps1 and relevant existing checks.",
+    "Inspect complete emitted candidate body, normal instruction semantics and the indexed Core definition.",
+    "Assign bounded Source status and pins after Root acceptance; keep Original ABI/runtime/startup/gameplay separate."
+  ],
+  "does_not_supply": [
+    "complete0095CC90 parent or0087B670 base owner",
+    "00BF7CD1 original array iterator/unwind",
+    "00957080 destructor",
+    "004C2D40/004BD350 callback pair",
+    "supported game-array callback facade",
+    "complete receiver/model/numbering service",
+    "production publication or actual teardown",
+    "Native Ghidra function creation"
+  ],
+  "credits": {
+    "candidate_Source_functions": 1,
+    "Original_bytes_reconstructed_in_candidate": 13,
+    "admitted_Source_functions": 0,
+    "Original_ABI_admissions": 0,
+    "new_builds": 0,
+    "tests_or_probes": 0,
+    "startup_credit": 0,
+    "gameplay_credit": 0
+  },
+  "doc_pin": {
+    "path": "docs/CC12_NATIVE_UNIT_GUNNERY_CATEGORY_HEADER_SOURCE.md",
+    "bytes": 4977,
+    "sha256": "12e082801e1de572330b4bc5b57683a756ed8ca3637f9c026a6286323a37b82d",
+    "canonical_lf_sha256": "12e082801e1de572330b4bc5b57683a756ed8ca3637f9c026a6286323a37b82d"
+  }
+}
