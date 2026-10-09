@@ -1,0 +1,498 @@
+{
+  "schema": "cc12_type1011_fresh_materialization_TEXT_proposal_v1",
+  "status": "UNADOPTED_SEALED_TEXT_DATA_PACKAGE",
+  "Source_credit": 0,
+  "Root_acceptance": false,
+  "Root_authorization": null,
+  "Root_selected_SHA_assertions": false,
+  "Root_concrete_fields": {
+    "materialization_draft": null,
+    "selected_code": null,
+    "private_environment": null,
+    "empty_cache_prefix": null,
+    "external_driver": null,
+    "external_bootstrap": null,
+    "external_records_directory": null,
+    "external_timeout_seconds": null,
+    "external_child_timeout_seconds": null,
+    "external_powershell_host": null,
+    "private_external_environment": null,
+    "external_job_supervisor": null,
+    "external_job_policy": null
+  },
+  "files": [],
+  "memberships": [],
+  "package_modules": {},
+  "worktree_base_DATA": "571bcdab0",
+  "scope": "fresh draft/package completeness, materialization consumers and draft-to-F admission; no raw machine ABI/probe/gate reanalysis",
+  "package": {
+    "namespace": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\seal.json",
+      "bytes": 266543,
+      "sha256": "0ee3f6c266c491b6839cc1556e17dc3bedf21f3250ab1151e40e1a24d391e4ae"
+    },
+    "artifacts": 510,
+    "exact_files": 511,
+    "independent_exact_membership_and_all_hashes_verified": true,
+    "artifact_bytes": 16478522,
+    "sealed_namespace_writes_after_seal": 0
+  },
+  "input_authority": {
+    "isolated_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_isolated_path_TEXT_20261009_0845\\seal.json",
+      "bytes": 69549,
+      "sha256": "db51a89661172d267ee74f22875ea2939ad9c5a1dfb232003dd8c682b81ac4d4"
+    },
+    "isolated_final_v2_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_isolated_path_TEXT_20261009_0845\\FINAL_UNADOPTED_ISOLATED_TEXT_INPUTS_v2.json",
+      "bytes": 5420,
+      "sha256": "9699c6578d43d06f15d06b2100946eecf867cf54128fa581d26d4a5ef5caf87a"
+    },
+    "original_author_seal_SHA256": "3b4b64201752fcd96204b05c15685c77e0fbaf68d60ef70594b6dfeb81aeb418",
+    "candidate_payloads8_exact": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\dependency_bootstrap.py.txt",
+        "bytes": 15638,
+        "sha256": "5f366715e70485ff2c2936df0a9f2dcef6dc60fa350e1543a977d53c90f9a8f9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\external_job_supervisor.py.txt",
+        "bytes": 18974,
+        "sha256": "c94be28583bf162ee76a3ffdba9c2dcac7944dd6b368cf076ca0b5f6f56a405d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\external_preinterpreter_guard.ps1.txt",
+        "bytes": 18106,
+        "sha256": "deade6e5a6374e22be6778d8247557eb5cfaef5018dac740976666243953a7a6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\external_python_driver.py.txt",
+        "bytes": 1899,
+        "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\type1011_gate.py.txt",
+        "bytes": 23804,
+        "sha256": "3b9bdc4f00f34af1498d385b13baa2ab0cd6dd5b41e9cbeef913ad276bfe83d5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\type1011_independent_code_reader.py.txt",
+        "bytes": 22443,
+        "sha256": "26a371774fe004b70fbee7a2564263ae21b71bc68b4df7d4204d44d37be20247"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\type1011_independent_recorded_reader.py.txt",
+        "bytes": 14026,
+        "sha256": "412ff2e63a0e6ea9ad44835f23eed098548ad45f0d08d8c5757f1face51a6ebf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\type1011_recipe.py.txt",
+        "bytes": 24183,
+        "sha256": "cb2bc179bc5f872505b173c203e8ea68b8cb44269c1a6fad652078b0dbe0f28a"
+      }
+    ]
+  },
+  "fresh_draft": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\artifact_manifest.json",
+      "bytes": 22792,
+      "sha256": "9ea62f3f06e699cd0397e572aec4a9c26d3f1a13795497e3124c542befb7eaa8"
+    },
+    "exact_files": 123,
+    "listed_files": 121,
+    "root_exclusions": [
+      "artifact_manifest.json",
+      "receipt.json"
+    ],
+    "historical119_copy_all_equal": true,
+    "fresh_historical_files_unchanged": 115,
+    "replaced": [
+      "type1011_recipe.py.txt",
+      "type1011_independent_code_reader.py.txt",
+      "type1011_independent_recorded_reader.py.txt"
+    ],
+    "regenerated": [
+      "artifact_manifest.json"
+    ],
+    "added": [
+      "dependency_bootstrap.py.txt",
+      "external_job_supervisor.py.txt",
+      "external_python_driver.py.txt",
+      "external_preinterpreter_guard.ps1.txt"
+    ],
+    "gate_probe_and_all_other_historical_files_unchanged": true,
+    "historical119_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\historical119_DATA\\artifact_manifest.json",
+      "bytes": 21228,
+      "sha256": "642e102e0ca3161e147c6471e0b31a6ff9f3f8b463b67bcf94f03948779ecadd"
+    },
+    "literal_original_draft_guard_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\original_guard_manifest_DATA.json",
+      "bytes": 21239,
+      "sha256": "be3e8a16721849eee13fd27a71b3c17d750a20cd9c1dce91459146aef9be8e28"
+    },
+    "historical_receipt_DATA": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\receipt.json",
+      "bytes": 367,
+      "sha256": "0c8196b90d800e436f40b3962b881677ff57712dc015f2083e492af746e68bb4"
+    },
+    "receipt_role": "unchanged historical119 DATA only; copied but not interpreted by prepare; no new acceptance/123 receipt",
+    "obsolete_historical_root_files": [
+      "audit_TEXT_only.py",
+      "commit_console.txt",
+      "commit_message.txt",
+      "current_dependency_TEXT_discovery.json",
+      "dependency_TEXT_inputs_before.json",
+      "generation_context.json",
+      "handoff.json",
+      "input_bookends_after.json",
+      "input_bookends_after_r02.json",
+      "input_bookends_at_seal.json",
+      "input_bookends_before.json",
+      "lease_release_console.txt",
+      "linked_plan.schema.json",
+      "prepare_dependency_text_inputs.py",
+      "prepare_text_inputs.py",
+      "seal_TEXT_family.py",
+      "STOP_worker_seal_r01.json",
+      "TEXT_static_audit.json",
+      "TEXT_static_audit_r02.json",
+      "worker_completion.json",
+      "write_report_metadata.py"
+    ],
+    "obsolete_path_role": "immutable DATA/audit identities only; never silently selected executable routes"
+  },
+  "external_aliases": [
+    {
+      "TEXT": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\dependency_bootstrap.py.txt",
+        "bytes": 15638,
+        "sha256": "5f366715e70485ff2c2936df0a9f2dcef6dc60fa350e1543a977d53c90f9a8f9"
+      },
+      "alias": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\entry_aliases_DATA\\dependency_bootstrap.py",
+        "bytes": 15638,
+        "sha256": "5f366715e70485ff2c2936df0a9f2dcef6dc60fa350e1543a977d53c90f9a8f9"
+      },
+      "byte_identical": true
+    },
+    {
+      "TEXT": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\external_python_driver.py.txt",
+        "bytes": 1899,
+        "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+      },
+      "alias": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\entry_aliases_DATA\\external_python_driver.py",
+        "bytes": 1899,
+        "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"
+      },
+      "byte_identical": true
+    },
+    {
+      "TEXT": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\external_job_supervisor.py.txt",
+        "bytes": 18974,
+        "sha256": "c94be28583bf162ee76a3ffdba9c2dcac7944dd6b368cf076ca0b5f6f56a405d"
+      },
+      "alias": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\entry_aliases_DATA\\external_job_supervisor.py",
+        "bytes": 18974,
+        "sha256": "c94be28583bf162ee76a3ffdba9c2dcac7944dd6b368cf076ca0b5f6f56a405d"
+      },
+      "byte_identical": true
+    },
+    {
+      "TEXT": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\candidate_draft123\\external_preinterpreter_guard.ps1.txt",
+        "bytes": 18106,
+        "sha256": "deade6e5a6374e22be6778d8247557eb5cfaef5018dac740976666243953a7a6"
+      },
+      "alias": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\entry_aliases_DATA\\external_preinterpreter_guard.ps1",
+        "bytes": 18106,
+        "sha256": "deade6e5a6374e22be6778d8247557eb5cfaef5018dac740976666243953a7a6"
+      },
+      "byte_identical": true
+    }
+  ],
+  "loader_relation": {
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\utility_dependency_DATA\\importlib_bootstrap_external.py.DATA",
+      "bytes": 73219,
+      "sha256": "a97a03ea9f9d38d90c8a50942183382ff5a479e7c4c5163c2ac5bae3561444ae"
+    },
+    "constraint": "implicit spec_from_file_location loader needs supported suffix; byte-identical bootstrap.py alias; .py.txt has none",
+    "draft_recipe_relation": "selected driver explicitly compiles recipe TEXT bytes",
+    "candidate_aliases_executed_or_imported": false
+  },
+  "materialization": {
+    "complete_file_plan": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\complete_materialization_file_plan_UNADOPTED.json",
+      "bytes": 34360,
+      "sha256": "b5880e340047113ff7dedd3e1ed12c5d32faa1ca7d2eb66423d3418190ac58b5"
+    },
+    "fixed_outputs": 23,
+    "generated_metadata_outputs": 6,
+    "dynamic_dependency_freeze_families": 1,
+    "fixed_output_roles": "exclusive prepare metadata; draft manifest/receipt; five code/probe files; Source12; cases; helper; config",
+    "generated_metadata": [
+      "Source_external.json",
+      "dependency_roots.json",
+      "dependency_inputs.json",
+      "toolchain_inputs.json",
+      "dependency_frozen.json",
+      "staged_inputs.json"
+    ],
+    "consumer_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\static_consumption_review_DATA.json",
+      "bytes": 2410,
+      "sha256": "18ff6dce2a04470ba2578587c8659825b5a2b61e3fe8deaedde5bb4b1346d361"
+    },
+    "runnable_materializer_TEXT_required": false,
+    "reason": "unchanged guarded prepare performs all required materialization"
+  },
+  "phase_transition": {
+    "contract": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\phase_transition_UNADOPTED.json",
+      "bytes": 2079,
+      "sha256": "38afa8fce4ee20ddfc139e44ce251241585df6c7a70ceb6959de046d91ec43b2"
+    },
+    "prepare_existing_selected_code_locations": 8,
+    "post_prepare_selected_code_locations": 13,
+    "prepare_F_absent": true,
+    "no_F_selected_code_pins_before_creation": true,
+    "Root_post_prepare_selection_is_new_immutable_authority": true,
+    "prepare_selection_retained_immutable": true,
+    "no_precreate_F_no_repin_no_replay": true,
+    "transition_closure": "mandatory TerminateJob and actual observed ActiveProcesses0 before fresh selection/next dispatch",
+    "post_prepare_F_code": [
+      "recipe.py",
+      "gate.py",
+      "independent_code_reader.py",
+      "independent_recorded_reader.py",
+      "query_helper.py"
+    ],
+    "stable_F_input_pins_and_staged_guard_preserved": true,
+    "evolving_F_blanket_membership_scope": false
+  },
+  "selection_templates": {
+    "prepare": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\selection_prepare_UNADOPTED_template.json",
+      "bytes": 34498,
+      "sha256": "96b56f77544dc2f216f7c810ae370db315a7fe07f853e95399188a6c7df49ef3"
+    },
+    "post_prepare": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\selection_post_prepare_UNADOPTED_template.json",
+      "bytes": 34503,
+      "sha256": "3c5d08fa7d70aa603a3938642cba90659018b0b7261442395ba1871bb0e6b327"
+    },
+    "scopes_each": 49,
+    "composition": "base47 plus worker complete draft and entry scopes",
+    "all13_null_empty_inventories": true,
+    "historical_capstone_native_DATA_not_admitted": true,
+    "Root_actual_recapture_and_root_concretization_required": true,
+    "complete_null_field_relationship_plan": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\Root_selection_field_plan_UNADOPTED.json",
+      "bytes": 7138,
+      "sha256": "4d73a5b670ecb8dff500aea80a14e86d6d675731479654b4e56388bd3d8d86c8"
+    }
+  },
+  "current_Root_inputs_DATA_only": {
+    "source_files12": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\src\\native_scene_property_record_type11_raw_array_storage.cpp",
+        "bytes": 2275,
+        "sha256": "77579cc3a2c4caa3ef07c19c458dc52b8db2f22fa0ea7743b7dc5953ac604306"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\native_scene_property_record_type11_raw_array_storage.hpp",
+        "bytes": 2779,
+        "sha256": "92d8cf0801c951a04f6beb8f1038607344b2d5fdea41fc405ca293453ca113b6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\src\\native_scene_property_record_type10_raw_array_storage.cpp",
+        "bytes": 2244,
+        "sha256": "cdaba66d272be20645bc3237ffdd0f27feba861054a66ec1a087ffe759d2bbbe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\include\\bsp\\native_scene_property_record_type10_raw_array_storage.hpp",
+        "bytes": 2695,
+        "sha256": "d9f5f671dc4c138e9fefcfd4eb9af29acfaad449a4a5d549fd830537900c080e"
+      }
+    ],
+    "source12_equal_historical_and_utility_bookends": true,
+    "helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\tools\\ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    "helper_historical_byte_equality": true,
+    "config": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\config\\target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "config_historical_parsed_JSON_equality": true,
+    "current455_config_binding_preserved": true,
+    "installed_helper_TEXT42_before_after_equal": true,
+    "Root_selected_admission": false
+  },
+  "Root_OWN_role_DATA_boundary": {
+    "cases": {
+      "Root_type1011_roles01": {
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011_roles01\\seal.json",
+          "bytes": 2740,
+          "sha256": "ae40589dd5e897edddc0406c621bd7c52a31bb296d51060fc0476fb8d56a1bd1"
+        },
+        "artifacts": 15,
+        "exact_files": 16,
+        "hash_failures": []
+      },
+      "Root_type1011_roles02": {
+        "seal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011_roles02\\seal.json",
+          "bytes": 5417,
+          "sha256": "a181481dd585241a9d5ee20f4e017ea9d323edb1525a1c98072e88dccdfe3202"
+        },
+        "artifacts": 30,
+        "exact_files": 31,
+        "hash_failures": []
+      }
+    },
+    "actual_own_counts": {
+      "root_process": 11,
+      "external_host": 15,
+      "recipe_children": 13
+    },
+    "existing_external_key_delta": [
+      "PATH"
+    ],
+    "external_PATH_relationship": "PS_HOME prefix plus original illustrative external PATH",
+    "root_effective_maps_unchanged": true,
+    "full_private_maps_retained_not_public": true,
+    "private_worker_format_adaptations": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\private_profiles_DATA\\Python_roles_from_Root_OWN_case_UNADOPTED.json",
+        "bytes": 2567,
+        "sha256": "55b01a28ecf0a13eeaa095c14d2b604d859c10f11035e49b2eac8ccc2817c4f6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\private_profiles_DATA\\external_role_from_Root_OWN_case_UNADOPTED.json",
+        "bytes": 1176,
+        "sha256": "530a1c4e6c286c7508037aaef89e046711e774f844ccfdebf18b49c22157167f"
+      }
+    ],
+    "selected_Job_fixture_route_evidence": false
+  },
+  "Root_preselection_DATA_boundary": {
+    "Source_credit": 0,
+    "closure_DATA": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011_dependency_preselection01\\Root_fresh_preselection_closure.json",
+      "bytes": 8954862,
+      "sha256": "40683c98e2a7ae6064be9c915e8c2d244526187b3a51515e1d405b14f9d9da4e"
+    },
+    "private_full_closure_DATA_retained": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_fresh_materialization_TEXT_20261009_1030\\Root_preselection_closure_DATA.json",
+      "bytes": 8954862,
+      "sha256": "40683c98e2a7ae6064be9c915e8c2d244526187b3a51515e1d405b14f9d9da4e"
+    },
+    "files": 10427,
+    "memberships": 13368,
+    "scopes": 47,
+    "D_top_level_current_names": [
+      "coordination",
+      "frozen_native_exports",
+      "preselection_frozen_inputs",
+      "temp"
+    ],
+    "F_absent": true,
+    "optional_sqlite_absent": true,
+    "chosen_fixture_selection": false,
+    "all13_actual_Root_fixture_fields_remain_null": true,
+    "Root_future_stage1": "independently recapture/recheck base47 and add actual draft/entry/profile/host/current-code closures",
+    "underlying10427_file_reverification_by_this_worker": false
+  },
+  "guard_and_timeout_preservation": {
+    "all8_exact_v2_payloads": true,
+    "all_guards_preserved": true,
+    "current_helper_exact_and_config455_JSON_guard_delta_already_authorized": true,
+    "original_child_timeout_seconds": 540,
+    "outer_timeout_seconds": 600,
+    "owned_Job_run_ms": 560000,
+    "owned_Job_cleanup_ms": 20000,
+    "owned_Job_poll_ms": 100,
+    "target_subprocess_inner_timeout": null,
+    "target_bound": "owned Job run/cleanup plus outer600",
+    "AF_hold": "resolved by Root and machine peer; retain CMP and copy ADD final writers make unchanged0x8D5 valid for both branches; no new mask delta"
+  },
+  "review": {
+    "exact_seal510_and_membership511": true,
+    "draft_all121_hashes_and_exact123": true,
+    "payload8_alias4_exact": true,
+    "AST_syntax_only_candidates_never_imported": true,
+    "stdlib_DATA_utilities_with_frozen_dependency_bookends": true,
+    "utility_failures_observed": [],
+    "independent_review_raw_stdout_stderr_exit_retained": true,
+    "first_builder_raw_stdout_separate_file": false,
+    "first_builder_tool_summary_explicitly_labeled": true,
+    "Root_failed_OWN_case01_retained": true
+  },
+  "actions": {
+    "Root_writes": 0,
+    "source_changes": 0,
+    "Root_receipts_created": 0,
+    "candidate_imports_or_execution": 0,
+    "selected_API_Native_compiler_provider_PE_target_execution": 0
+  },
+  "remaining_Root_decisions_and_checks": [
+    "choose actual complete immutable draft/entry/profile/cache/record/host locations and complete fresh base47 plus new closure",
+    "independently admit current Source12/helper/config/package/runtime/toolchain/host/profile/snapshot identities in prepare phase",
+    "review and dispatch unchanged metadata prepare only from selected draft, retain closure and never replay a failed family",
+    "independently verify actual materialization outputs and author separate postprepare selection with F code/input pins",
+    "execute real selected Job routing/quoting and verify every mandatory closure; benign OWN platform/role observations do not substitute",
+    "Root alone reviews actual text/link receipts and performs authorized Native/build/fixture/target runtime checks"
+  ]
+}
