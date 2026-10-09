@@ -1,0 +1,455 @@
+{
+  "schema": "CC12_qualified_Source_candidate_v1",
+  "packet": "cc12_lua_variant_header_initializer_Source",
+  "status": "Source_candidate_written_after_Root_full43_gate_and_Source55_admission_pending_primary_build_emitted_review_Core_admission",
+  "created_utc": "2026-10-09T18:45:05.094673+00:00",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "branch": "agent/cc12_global_config_effect_payload",
+  "baseline_commit": "07bb58abdc19981d07acd4c849bfed2a99efbce4",
+  "exact_owned_paths": [
+    "include/bsp/native_lua_variant_header_initializer.hpp",
+    "src/native_lua_variant_header_initializer.cpp",
+    "docs/CC12_NATIVE_LUA_VARIANT_HEADER_INITIALIZER_SOURCE.md",
+    "reports/cc12_native_lua_variant_header_initializer_source.json"
+  ],
+  "Native": {
+    "address": "006EEAF0",
+    "end_inclusive": "006EEB1A",
+    "bytes": 43,
+    "operations": 15,
+    "body_sha256": "7ce75a0835bee066890295059ce0366d7f72b8c36b47e319df4cd56c5d3a5bff",
+    "bytes_hex": "568bf1e8a8f3ffff894604c64031018b46048940048b460489008b4604894008c74608000000008bc65ec3",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "image_file_offset": 3074800,
+    "gate_capture_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_lua_container_initializer_primary/capture.json",
+      "bytes": 4505,
+      "sha256": "81a7e817add57762463ea15d3ebce9fab9060979a938e3b4521471c6ab28d99a",
+      "canonical_lf_sha256": "fc9c5d8563f5c5657af098b987e6ad24e2b8c812cb4ee30cf9b8e9435cdfc3e2"
+    },
+    "gate_approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_lua_container_initializer_primary/Root_Astra_gate_approval.json",
+      "bytes": 507,
+      "sha256": "5dee446d0bc96662b0cf6670475a0ea1936aa5c095760b132ae6482ef5120613",
+      "canonical_lf_sha256": "e7c8fb62ec8f2ecb302cd42b000d7971d3fc4407bb70f5b66bbeb38f03dd2bbf"
+    },
+    "Root_Astra_complete_body_and_saved_starts_read": true,
+    "Root_PE_live_equal": true,
+    "worker_capture_approval_hash_verified": true,
+    "worker_installed_image_hash_verified": true,
+    "worker_PE43_bytes_equal_capture": true,
+    "worker_Capstone43bytes_15operations_and_starts_equal_capture": true,
+    "raw_operations": [
+      {
+        "address": "006eeaf0",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "006eeaf1",
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "006eeaf3",
+        "bytes": "e8a8f3ffff",
+        "mnemonic": "call",
+        "operands": "0x6edea0"
+      },
+      {
+        "address": "006eeaf8",
+        "bytes": "894604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], eax"
+      },
+      {
+        "address": "006eeafb",
+        "bytes": "c6403101",
+        "mnemonic": "mov",
+        "operands": "byte ptr [eax + 0x31], 1"
+      },
+      {
+        "address": "006eeaff",
+        "bytes": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006eeb02",
+        "bytes": "894004",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], eax"
+      },
+      {
+        "address": "006eeb05",
+        "bytes": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006eeb08",
+        "bytes": "8900",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], eax"
+      },
+      {
+        "address": "006eeb0a",
+        "bytes": "8b4604",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]"
+      },
+      {
+        "address": "006eeb0d",
+        "bytes": "894008",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], eax"
+      },
+      {
+        "address": "006eeb10",
+        "bytes": "c7460800000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], 0"
+      },
+      {
+        "address": "006eeb17",
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "006eeb19",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "006eeb1a",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "entry": "Incoming ECX receiver retained in saved ESI; direct child006EDEA0; receiver pointer survives as EAX at RET. Original ABI not claimed by new plain C++ explicit-reference entry.",
+    "direct_children": [
+      "006EDEA0"
+    ],
+    "fresh_Native_child_queries_or_decoding": false,
+    "new_Ghidra_mutations": false
+  },
+  "dependency_closure": {
+    "gate_historical_pending_flag": true,
+    "gate_historical_text": "006EDEA0 pending Source candidate/build/admission",
+    "immutable_gate_not_rewritten": true,
+    "current_status": "Source55 admitted, built and reviewed before this Source43 candidate",
+    "Root_admission_commit_prefix": "42212ad35",
+    "published_baseline": "07bb58abdc19981d07acd4c849bfed2a99efbce4",
+    "accepted_primary_receipt_pin": {
+      "path": "reports/cc12_native_lua_variant_link_record_allocation_primary_review.json",
+      "bytes": 66796,
+      "sha256": "124f095781a24455ce5828cfb0c6b5c522bacf5863538e1bcc29effd6c8ce5ab",
+      "canonical_lf_sha256": "124f095781a24455ce5828cfb0c6b5c522bacf5863538e1bcc29effd6c8ce5ab"
+    },
+    "accepted_Source_credit": {
+      "functions": 1,
+      "Original_bytes": 55
+    },
+    "accepted_status": "Source_admitted_complete_compiled_Core_review_normal_build_passed_Original_ABI_startup_gameplay_unproved",
+    "selected_unique_Core_definition_from_accepted_receipt": {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_lua_variant_link_record_allocation.obj",
+        "header_offset": 63762072,
+        "payload_file_offset": 63762132,
+        "bytes": 1430,
+        "sha256": "7a6fd93b4dc47c0a6c8e0614e79bcdc858d835b0faf87131385609e97aa0bcb3"
+      },
+      "definition": {
+        "name": "?allocate_native_lua_variant_link_record_006edea0@bsp@@YAPAXXZ",
+        "symbol_index": 11,
+        "symbol_record_file_offset": 1108,
+        "section": 4,
+        "value": 0,
+        "type": 32
+      }
+    },
+    "selected_Core_member_payload_hash_replayed": true,
+    "accepted_Source_public": {
+      "symbol": "?allocate_native_lua_variant_link_record_006edea0@bsp@@YAPAXXZ",
+      "bytes": 91,
+      "sha256": "091d009aa156a7caefd11a0f77aa0b0b21cf4a2844affc76157450ed174c2545",
+      "instruction_count": 24,
+      "physical_file_offset": 749
+    },
+    "selected_Source_public_byte_range_hash_replayed": true,
+    "Core_replay_scope": "Hash checks at accepted receipt offsets in the exact current Core artifact; no new independent symbol resolution, function-body interpretation or ABI claim."
+  },
+  "Source_contract": {
+    "symbol": "initialize_native_lua_variant_header_006eeaf0",
+    "declaration": "void* initialize_native_lua_variant_header_006eeaf0(void* actual_header, void* volatile& actual_head_04, volatile std::uint32_t& actual_count_08);",
+    "interface": "plain C++ may-throw; opaque original header identity plus actual cell references; no fabricated whole header or node",
+    "target": "MSVC Win32; pointer and uint32 widths asserted4bytes",
+    "backing": "Actual head and count references bind the same real header+4/+8; live aligned type-compatible cells. Each reloaded pointer supplies writable pointer-cell backing for its selected offset.",
+    "ordered_operations": [
+      {
+        "order": 1,
+        "operation": "call actual allocate_native_lua_variant_link_record_006edea0 once",
+        "site": "006EEAF3"
+      },
+      {
+        "order": 2,
+        "operation": "volatile publish returned allocation to actual_head_04",
+        "site": "006EEAF8"
+      },
+      {
+        "order": 3,
+        "operation": "volatile BYTE allocation_result+31h=1; uses captured allocation, not reloaded head",
+        "site": "006EEAFB"
+      },
+      {
+        "order": 4,
+        "operation": "fresh volatile head read then volatile DWORD pointer store at read_pointer+4 of that same pointer",
+        "read_site": "006EEAFF",
+        "write_site": "006EEB02"
+      },
+      {
+        "order": 5,
+        "operation": "fresh volatile head read then volatile DWORD pointer store at read_pointer+0 of that same pointer",
+        "read_site": "006EEB05",
+        "write_site": "006EEB08"
+      },
+      {
+        "order": 6,
+        "operation": "fresh volatile head read then volatile DWORD pointer store at read_pointer+8 of that same pointer",
+        "read_site": "006EEB0A",
+        "write_site": "006EEB0D"
+      },
+      {
+        "order": 7,
+        "operation": "volatile actual_count_08=0",
+        "site": "006EEB10"
+      },
+      {
+        "order": 8,
+        "operation": "return original actual_header identity",
+        "site": "006EEB17..006EEB1A"
+      }
+    ],
+    "separate_volatile_head_reads": 3,
+    "self_link_target_offsets": [
+      4,
+      0,
+      8
+    ],
+    "self_link_width_bytes": 4,
+    "each_target_and_value_use_same_individual_reload": true,
+    "all_three_reads_hoisted_to_one_capture": false,
+    "header_zero_offset": "No direct access; preserving it under compatible aliases requires that other specified targets do not alias it.",
+    "other_bytes": "Beyond the admitted allocator stores, only new allocation BYTE31h and the three reloaded pointer slots are written; no broad clearing. Untouched-location claims require those actual targets not alias the locations.",
+    "compatible_aliases": "Separately sequenced volatile reads retained; no arbitrary raw alias, concurrent synchronization or fault-timing proof.",
+    "allocation_failure": "Precedes this caller body header writes; actual provider/new-handler side effects remain possible and are not rolled back.",
+    "no_guard_catch_rollback_cleanup_noexcept_type_owner_copy_or_consumer": true
+  },
+  "actual_Source55_provider": {
+    "address": "006EDEA0",
+    "symbol": "allocate_native_lua_variant_link_record_006edea0",
+    "direct_pins": [
+      {
+        "path": "include/bsp/native_lua_variant_link_record_allocation.hpp",
+        "bytes": 1395,
+        "sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d",
+        "canonical_lf_sha256": "7981f4745307349729690d0c2e1e2a0b8526a0829e3778d1c1b55f91c832f52d"
+      },
+      {
+        "path": "src/native_lua_variant_link_record_allocation.cpp",
+        "bytes": 1101,
+        "sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9",
+        "canonical_lf_sha256": "6724c0bc953776268b22b310341b3e847495b94a247a37918af3f7b9590d01e9"
+      },
+      {
+        "path": "docs/CC12_NATIVE_LUA_VARIANT_LINK_RECORD_ALLOCATION_SOURCE.md",
+        "bytes": 6742,
+        "sha256": "40a18885568192c4c1a3811e03c62347dd5d82050e1a7a0c8b7e9375a4bc757f",
+        "canonical_lf_sha256": "40a18885568192c4c1a3811e03c62347dd5d82050e1a7a0c8b7e9375a4bc757f"
+      },
+      {
+        "path": "reports/cc12_native_lua_variant_link_record_allocation_source.json",
+        "bytes": 15972,
+        "sha256": "a41c14f80988f96e69901b3bfc3a96c12e3cb55e23d42e649718adf4cb4eea6e",
+        "canonical_lf_sha256": "a41c14f80988f96e69901b3bfc3a96c12e3cb55e23d42e649718adf4cb4eea6e"
+      }
+    ],
+    "underlying_actual_allocator_pins": [
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "reports/singleton_lifetime_audit.json",
+        "bytes": 28284,
+        "sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c",
+        "canonical_lf_sha256": "8b69c0c67e958eb3e49c5cb155e790a2d3c41b29cf1e08dbf8def9ecdd7d1f9c"
+      }
+    ],
+    "provider_cpp_and_hpp_and_underlying_cpp_hpp_in_current105_manifest": true,
+    "allocation_domain": "Actual singleton_lifetime_allocate({SingletonAllocationKind::object,52,52}) returns usable aligned nonnull52-byte raw storage or throws under current host CRT policy.",
+    "initialization": "Provider DWORD0/4/8=0 then BYTE30h=1/BYTE31h=0; other38bytes untouched; raw pointer identity retained.",
+    "inherited_limits": "Native null/wrapped-interior behavior, BF681B allocator/new-handler/CRT binding, EH/ABI/fault/register/flags/stack and production lifetime not established.",
+    "historical_source_candidate_report_scope": "Pinned as immutable provenance; its old Source97 baseline and pre-admission status are historical and superseded by current105 compiled receipt."
+  },
+  "current_Source105_baseline_replay": {
+    "shared_primary_receipt_pins": [
+      {
+        "path": "reports/cc12_native_lua_variant_link_record_allocation_primary_review.json",
+        "bytes": 66796,
+        "sha256": "124f095781a24455ce5828cfb0c6b5c522bacf5863538e1bcc29effd6c8ce5ab",
+        "canonical_lf_sha256": "124f095781a24455ce5828cfb0c6b5c522bacf5863538e1bcc29effd6c8ce5ab"
+      },
+      {
+        "path": "reports/cc12_native_observer_member_initializer_primary_review.json",
+        "bytes": 361159,
+        "sha256": "b248278c9c7b8db912f7b5a9aaffe72162b538f891a3b115c084f8760752b57f",
+        "canonical_lf_sha256": "b248278c9c7b8db912f7b5a9aaffe72162b538f891a3b115c084f8760752b57f"
+      },
+      {
+        "path": "reports/cc12_native_squadron_launch_task_scalar_deletion_primary_review.json",
+        "bytes": 66852,
+        "sha256": "8c83735050c41e8d74db7c482f0ac7a222af6c99828cafca16cc956d9f07bad5",
+        "canonical_lf_sha256": "8c83735050c41e8d74db7c482f0ac7a222af6c99828cafca16cc956d9f07bad5"
+      }
+    ],
+    "shared_source_inputs_artifacts_and_build_equal": true,
+    "shared_normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 109620,
+      "start_utc": "2026-10-09T18:27:44.966886+00:00",
+      "finish_utc": "2026-10-09T18:28:02.224133+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 105
+    },
+    "source_input_pin_count": 105,
+    "source_input_manifest_canonical_JSON_sha256": "904bd34fcefa67a407f6f059a2f831e9b37ae18f7acc6eed4b0d435d5637448e",
+    "worker_all105_canonical_LF_hashes_match": true,
+    "worker_raw_bytes_hash_match_count": 103,
+    "worker_line_ending_only_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "receipt_bytes": 51122,
+        "receipt_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "worker_bytes": 52250,
+        "worker_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "canonical_LF_equal": true,
+        "worker_primary_content_equal_after_CRLF_to_LF": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "receipt_bytes": 18326,
+        "receipt_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "worker_bytes": 17789,
+        "worker_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "canonical_LF_equal": true,
+        "worker_primary_content_equal_after_CRLF_to_LF": true
+      }
+    ],
+    "artifact_checks": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73768180,
+        "sha256": "108ce9c1ac86acda9b06eb579d78f36dd4e065c8caa95c9cb520bfa4a19a3365",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_core.lib",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "2be882fbebc2cb6922a331c94c8e8a9390dfc5f7697de2371d4b6415bf5baf4f",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Release/bsp_game.exe",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "5758d71ae7433503811508a156702e120b26b2ac06fc00b68a1af5b8df261151",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/bsp_game.map",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "06e17de2ecd7eacbf57a4cd3fc1b94c87d5ca3f27d7b520376227ebd52fc0da1",
+        "replayed_from": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/Testing/Temporary/LastTest.log",
+        "exact_match": true
+      }
+    ],
+    "existing_checks_passed": 3,
+    "whole_objects_captured_or_replayed_by_primary": 28,
+    "unique_positive_Core_definitions_by_primary": 32,
+    "prior_object_graphs_or105_manifest_duplicated": false,
+    "Source97_and_Source88": "Historical, not the current baseline.",
+    "new_Source43_candidate_compiled_by_prior_build": false
+  },
+  "candidate_file_pins": [
+    {
+      "path": "include/bsp/native_lua_variant_header_initializer.hpp",
+      "bytes": 1998,
+      "sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596",
+      "canonical_lf_sha256": "de307db13063f3a5b775c9c2ee775b8a11f475944705bdda7860ef8a0af2a596"
+    },
+    {
+      "path": "src/native_lua_variant_header_initializer.cpp",
+      "bytes": 1351,
+      "sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96",
+      "canonical_lf_sha256": "113c184fca2a7c20e1da61cf310913eec074d03835f767ef4f07d6b9deab1f96"
+    },
+    {
+      "path": "docs/CC12_NATIVE_LUA_VARIANT_HEADER_INITIALIZER_SOURCE.md",
+      "bytes": 6656,
+      "sha256": "5e1cbb5b7fa5324648a14c82cb530445b25319b9a2ca67021c2e18d6a2388f0a",
+      "canonical_lf_sha256": "5e1cbb5b7fa5324648a14c82cb530445b25319b9a2ca67021c2e18d6a2388f0a"
+    }
+  ],
+  "worker_validation": {
+    "Root43_gate_image_and15_starts_replayed": true,
+    "Source55_actual_dependency_and_current105_evidence_replayed": true,
+    "Source_schedule_reviewed_against_owned15_operations": true,
+    "new_build": false,
+    "new_tests": false,
+    "new_probes": false,
+    "CMake_ledger_GPR_or_consumer_changes": false,
+    "Primary_registration_build_emitted_body_review_and_Core_admission": "pending"
+  },
+  "credit": {
+    "qualified_Source_candidate": true,
+    "Source_admission": false,
+    "Original_ABI": false,
+    "Native_execution": false,
+    "startup": false,
+    "gameplay": false
+  },
+  "limits": [
+    "Current actual Source55 usable aligned nonnull52-byte storage/current-host-CRT domain inherited.",
+    "Actual typed cell references must correspond to real header+4/+8; no detached or complete-type projection.",
+    "Head is reloaded before each self-link store. Compatible changes/aliases retain schedule; arbitrary Native aliases and synchronization are not proved.",
+    "No Native allocation/new-handler/CRT, EH, frame/register/flags/stack/fault timing or original caller ABI equivalence.",
+    "No complete header/node, ownership, production-lifetime or consumer binding; no startup/gameplay evidence.",
+    "No new compilation or emitted ordering/Core admission yet; Root owns that next validation step."
+  ]
+}
