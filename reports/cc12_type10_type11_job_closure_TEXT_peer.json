@@ -1,0 +1,151 @@
+{
+  "schema": "type1011_owned_job_closure_TEXT_peer_review_v1",
+  "packet": "cc12_type1011_job_TEXT_peer",
+  "Source_credit": 0,
+  "status": "UNADOPTED_TEXT_review_completed_runtime_pending",
+  "reviewed_worker_commit": "049e1f4417dd762f08a72d5f999dff4b9a2c57ac",
+  "peer_starting_Main_commit": "29aeaf6f7aa4cbf45e6a3b32ff3c65d80b347399",
+  "peer_branch": "agent/cc12_type1011_job_peer",
+  "addresses": [],
+  "owned_files": [
+    "docs/CC12_TYPE10_TYPE11_JOB_CLOSURE_TEXT_PEER.md",
+    "reports/cc12_type10_type11_job_closure_TEXT_peer.json"
+  ],
+  "passed_passive_TEXT_review": true,
+  "confirmed_concrete_defects": [],
+  "Root_acceptance": false,
+  "Root_adopted_fields": false,
+  "Root_admission_granted": false,
+  "ABI_or_actual_API_validation": false,
+  "runtime_descendant_closure_proven": false,
+  "fixture_or_game_validation": false,
+  "input_family": "J:/PROG/battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT/local/t1011jobTEXT",
+  "seal": {
+    "bytes": 428873,
+    "sha256": "3b4b64201752fcd96204b05c15685c77e0fbaf68d60ef70594b6dfeb81aeb418",
+    "listed_artifacts": 2294,
+    "exact_recursive_files": 2295,
+    "independently_hashed_artifacts": 2294,
+    "artifact_hash_failures": 0,
+    "missing_files": 0,
+    "extra_files": 0,
+    "total_artifact_bytes_read": 159541849
+  },
+  "final_input_record": {
+    "path_relative_to_family": "FINAL_UNADOPTED_TEXT_INPUTS_v2.json",
+    "bytes": 4306,
+    "sha256": "1d7228181155a45c9d3637dbb208472d37fe2c1e4597b720a7c35bb35cf7f621"
+  },
+  "payload_pins_reverified": [
+    {"name": "dependency_bootstrap.py.txt", "bytes": 15638, "sha256": "5f366715e70485ff2c2936df0a9f2dcef6dc60fa350e1543a977d53c90f9a8f9"},
+    {"name": "external_preinterpreter_guard.ps1.txt", "bytes": 17775, "sha256": "e3a74da3e7cd4ab5727bc308464e702749461d5a3e438439732d49e9f0025e38"},
+    {"name": "external_python_driver.py.txt", "bytes": 1899, "sha256": "9b1795ef8ee9ef8fcba53134e7ab6049b9d4f685d13444667a04d8d0d68dc803"},
+    {"name": "type1011_gate.py.txt", "bytes": 23804, "sha256": "3b9bdc4f00f34af1498d385b13baa2ab0cd6dd5b41e9cbeef913ad276bfe83d5"},
+    {"name": "type1011_independent_code_reader.py.txt", "bytes": 22411, "sha256": "1b4bfc2c66632c315a4b1ea2d49d66bcea927e4a589d9e52dcca6cfcf0a9b6cf"},
+    {"name": "type1011_independent_recorded_reader.py.txt", "bytes": 13994, "sha256": "4cf7660bbabb831f141b4c92f6c568084eb7d35db55ab11885dc194fb8e06bf5"},
+    {"name": "type1011_recipe.py.txt", "bytes": 23899, "sha256": "1f0c5a391a4ff09dfad68978cfd9334222e5432a0f7b6bba96213d4dbdd093d1"},
+    {"name": "external_job_supervisor.py.txt", "bytes": 18910, "sha256": "2fe6ffb82fae33f55d3631f348e5efc08eca0a42dd0d46d23014e5206c552ccd"}
+  ],
+  "policy_pin_reverified": {"name": "proposed_job_policy_UNADOPTED.json", "bytes": 490, "sha256": "b117b7541f0eb4e93a0fed835cf3e5c59198286f8feaad34368bf7e214268796"},
+  "template_pin_reverified": {"name": "proposed_dependency_selection_template_v5.json", "bytes": 8959335, "sha256": "49b9a88b2a6a7be0f0b183d2fd67d88909d4dfb8ec282cdf7ebfea87bcbe6c6e"},
+  "preservation": {
+    "previous_payloads": 7,
+    "byte_identical_previous_payloads": 5,
+    "changed_previous_payloads": ["dependency_bootstrap.py.txt", "external_preinterpreter_guard.ps1.txt"],
+    "bootstrap_changed_AST_nodes": ["initialize", "verify_snapshot"],
+    "bootstrap_new_AST_nodes": [],
+    "original_named_Python_guard_calls": 340,
+    "retained_original_named_Python_guard_call_ASTs": 340,
+    "current_prior_payload_named_Python_guard_calls": 341,
+    "Python_AST_parse_count": 7,
+    "PowerShell_parse_errors": 0,
+    "original_Require_calls": 36,
+    "current_Require_calls": 47,
+    "original_Require_sequence_retained": true,
+    "original_Check_calls": 11,
+    "current_Check_calls": 15,
+    "original_Check_sequence_retained": true,
+    "fixed_original_frozen_pairs_reverified": 131,
+    "fixed_pair_pin_failures": 0,
+    "previous_materialization_files": 119,
+    "current_materialization_files": 119,
+    "materialization_exact_membership_equal": true,
+    "materialization_changed_files": [],
+    "previous_full_13047_artifact_audit_repeated_by_peer": false
+  },
+  "TEXT_findings": [
+    {"id": "atomic_assignment", "evidence": "supervisor:129-165", "finding": "Noninherited anonymous job, verified KILL_ON_JOB_CLOSE, creation-time JOB_LIST and suspended creation; membership verified before resume."},
+    {"id": "handle_list_lifetime", "evidence": "supervisor:139-160,204-213", "finding": "Only three inheritable standard-handle duplicates enter HANDLE_LIST. Both attribute-value arrays remain live. Job handle is excluded; cleanup closes duplicate, process and thread handles, deletes attributes and closes the job."},
+    {"id": "mandatory_cleanup", "evidence": "supervisor:179-218", "finding": "Every handled post-job exit requests job termination. Positive closure requires zero-active accounting, signaled root when created, closed job handle and no cleanup failures."},
+    {"id": "residual_success_hold", "evidence": "supervisor:218; PowerShell:133,139,143", "finding": "A zero root exit with residual descendants before cleanup remains unsuccessful after cleanup."},
+    {"id": "missing_record_hold", "evidence": "PowerShell:46-55,131-143", "finding": "Both recorded outer success and final advancement require matching observed closure and successful supervision. Missing, malformed or unsuccessful records hold."},
+    {"id": "failure_records", "evidence": "supervisor:217-232", "finding": "An unsuccessful record may contain missing final accounting. That record is retained as failure evidence and does not establish closure."},
+    {"id": "argv_ENV_cwd", "evidence": "supervisor:45,55-62,112-120,154-160; PowerShell:114-124", "finding": "Original child argv, explicit application, cwd and root ENV remain. No static quote/backslash encoder defect found; actual round trips remain open."},
+    {"id": "timeout_budget", "evidence": "supervisor:40,45-46,166,192; PowerShell:127", "finding": "Original inner 540 and outer 600 seconds remain; unadopted policy proposes 560 seconds after resume and 20 seconds cleanup. Setup/postflight are outside the supervisor run deadline; nominal margin is not runtime completion evidence."},
+    {"id": "supervisor_death", "evidence": "supervisor:130-136,150-160; PowerShell:47,127,137-143", "finding": "Last noninherited job-handle close is the proposed abrupt-death fallback. It does not supply a positive closure observation or permit admission without a valid record."},
+    {"id": "accounting_counter_scope", "evidence": "supervisor:111; Microsoft accounting documentation", "finding": "The shortened terminated counter is TotalTerminatedProcesses, a limit-violation counter. No admission condition incorrectly relies on it as an explicit job-kill count."}
+  ],
+  "API_review": {
+    "bindings_compared_to_SDK": 18,
+    "binding_names": ["CreateJobObjectW", "SetInformationJobObject", "QueryInformationJobObject", "TerminateJobObject", "GetHandleInformation", "GetCurrentProcess", "GetStdHandle", "DuplicateHandle", "CloseHandle", "InitializeProcThreadAttributeList", "UpdateProcThreadAttribute", "DeleteProcThreadAttributeList", "CreateProcessW", "IsProcessInJob", "ResumeThread", "WaitForSingleObject", "GetExitCodeProcess", "TerminateProcess"],
+    "confirmed_signature_or_field_order_mismatches": [],
+    "model_assumption": "Windows SDK/MSVC default packing; arithmetic model only, no selected ctypes class evaluation, compiler or API call",
+    "x86_supervisor_explicitly_rejected": true,
+    "structure_models": [
+      {"name": "BASIC_LIMIT", "x64_bytes": 64, "x86_model_bytes": 48},
+      {"name": "IO_COUNTERS", "x64_bytes": 48, "x86_model_bytes": 48},
+      {"name": "EXTENDED_LIMIT", "x64_bytes": 144, "x86_model_bytes": 112},
+      {"name": "ACCOUNTING", "x64_bytes": 48, "x86_model_bytes": 48},
+      {"name": "STARTUPINFO", "x64_bytes": 104, "x86_model_bytes": 68},
+      {"name": "STARTUPINFOEX", "x64_bytes": 112, "x86_model_bytes": 72},
+      {"name": "PROCESS_INFORMATION", "x64_bytes": 24, "x86_model_bytes": 16}
+    ],
+    "critical_x64_offsets": {"ACCOUNTING.ActiveProcesses": 40, "STARTUPINFO.hStdInput": 80, "STARTUPINFO.hStdOutput": 88, "STARTUPINFO.hStdError": 96, "STARTUPINFOEX.lpAttributeList": 104, "PROCESS_INFORMATION.dwProcessId": 16, "PROCESS_INFORMATION.dwThreadId": 20},
+    "frozen_header_pins": [
+      {"name": "WinNT.h", "bytes": 876258, "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8"},
+      {"name": "WinBase.h", "bytes": 271704, "sha256": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192"},
+      {"name": "Processthreadsapi.h", "bytes": 37180, "sha256": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540"},
+      {"name": "jobapi2.h", "bytes": 2976, "sha256": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549"},
+      {"name": "handleapi.h", "bytes": 2578, "sha256": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc"},
+      {"name": "synchapi.h", "bytes": 15696, "sha256": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5"}
+    ],
+    "additional_live_SDK_headers_read_as_data": [
+      {"path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processenv.h", "bytes": 7427, "sha256": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd", "contract": "GetStdHandle"},
+      {"path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/jobapi.h", "bytes": 1307, "sha256": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1", "contract": "IsProcessInJob"}
+    ]
+  },
+  "primary_official_sources_read": [
+    {"url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute", "contract": "Creation-time job-list assignment, inherited handle requirements and attribute-value storage lifetime"},
+    {"url": "https://learn.microsoft.com/en-us/windows/win32/procthread/nested-jobs", "contract": "Nested hierarchy association, accounting and termination; no-breakaway scope"},
+    {"url": "https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_accounting_information", "contract": "ActiveProcesses and limit-violation termination-counter semantics"}
+  ],
+  "remaining_runtime_checks": [
+    "Actual selected x64 ctypes field offsets and Win32 signatures/return/error behavior; real outer-job compatibility and assignment-before-resume",
+    "Normal zero exit, early nonzero exit, and zero exit with a lingering ordinary descendant; residual descendant must clean up and hold success",
+    "Original inner 540-second timeout, proposed 560-second supervisor deadline and 20-second cleanup, unchanged 600-second outer watchdog including setup/postflight overhead",
+    "Setup/API failures, membership failure, termination/accounting/handle errors, and root-signal timing; missing observation must hold",
+    "Supervisor death during setup, suspended creation, execution and cleanup; fallback termination is not positive closure evidence",
+    "Outer watchdog, missing/malformed/partial record, pipe failure, actual child argv/ENV/cwd and inherited standard-handle/EOF behavior"
+  ],
+  "remaining_Root_work": [
+    "Refresh and independently select the complete current dependency closure; old content and membership holds are unchanged",
+    "Independently select and adopt supervisor, policy, code, environment and all original required concrete fields and receipts",
+    "Keep ordinary descendant evidence distinct from services and independently brokered processes"
+  ],
+  "template_concrete_fields_still_null": 13,
+  "execution_and_mutation_counts": {
+    "selected_payload_imports": 0,
+    "selected_payload_execution": 0,
+    "selected_functions_evaluated": 0,
+    "Win32_Job_API_calls": 0,
+    "compiler_execution": 0,
+    "Add_Type_compilation": 0,
+    "Native_queries": 0,
+    "fixture_or_game_execution": 0,
+    "Root_admission_or_receipts": 0,
+    "author_immutable_family_writes": 0,
+    "Root_type5select02_writes": 0,
+    "Cpp_changes": 0,
+    "tests_added_or_run": 0
+  }
+}
