@@ -1,0 +1,1075 @@
+{
+  "schema": "bsp.cc12.pending_registry_getter_readiness.v1",
+  "packet": "cc12_pending_registry_getter_readiness",
+  "kind": "read_only_complete_ordinary_getter_and_binding_contract",
+  "created_utc": "2026-10-09T06:29:47.559054+00:00",
+  "baseline_commit": "bab59dd4aa832fbf9a5c26b4397ac198cdec5f90",
+  "claimed_address": "00875280",
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "complete_ordinary_getter_established": true,
+    "native_explicit_inputs": "none",
+    "actual_publication": "00F878CC",
+    "production_Source_binding_ready": false,
+    "admitted_Source_API": false,
+    "held_dependencies": [
+      "00874BC0 raw8 constructor: returned identity, owner profile and section publication",
+      "00C96433 handler and relevant cleanup paths for this getter, with constructor EH separately owned",
+      "actual F878CC mutable publication and coherent owner lifetime/destruction",
+      "common pending registration storage, callable node profile and producer/consumer phase",
+      "independent group bootstrap/current-owner contract"
+    ]
+  },
+  "size_gate": {
+    "maximum_bytes": 300,
+    "saved_body_first": "00875280",
+    "saved_body_last": "0087533C",
+    "bytes": 189,
+    "passed": true,
+    "saved_prototype": "undefined FUN_00875280(void)",
+    "prototype_alone_used_as_ABI_proof": false
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verification": "Every bsp.py ghidra live query verifies project/program/language/image base through Client.verify.",
+    "status": "ghidra: up  /battlestationspacific.exe",
+    "count": "live function count 64729; snapshot 64729; same",
+    "fresh_spans": [
+      {
+        "address": "00875280",
+        "bytes": 189,
+        "purpose": "complete ordinary getter through RET",
+        "hex": "64a1000000006aff683364c9005064892500000000a1cc78f80083ec0c85c00f858900000056e8a500baff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833dcc78f80000753f6a08e83a15380083c4048944240485c0c64424180174098bc8e8c8f8ffffeb0233c0c644241800a3cc78f800e84500baff8b0dcc78f800518bc8e817b9350085f6740b834618ff56ff151022ce00a1cc78f8005e8b4c240c64890d0000000083c418c3",
+        "sha256": "bd993ecad5b81a25db47f6144f2e7a8e7208ee6c9b57569493e6eeb0ef15447b",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 189,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00875280  64 a1 00 00 00 00 6a ff 68 33 64 c9 00 50 64 89  d.....j.h3d..Pd.\n00875290  25 00 00 00 00 a1 cc 78 f8 00 83 ec 0c 85 c0 0f  %......x........\n008752a0  85 89 00 00 00 56 e8 a5 00 ba ff 8b 70 10 85 f6  .....V......p...\n008752b0  c7 44 24 08 fc 37 ce 00 89 74 24 0c 74 0b 56 ff  .D$..7...t$.t.V.\n008752c0  15 18 22 ce 00 83 46 18 01 c7 44 24 18 00 00 00  ..\"...F...D$....\n008752d0  00 83 3d cc 78 f8 00 00 75 3f 6a 08 e8 3a 15 38  ..=.x...u?j..:.8\n008752e0  00 83 c4 04 89 44 24 04 85 c0 c6 44 24 18 01 74  .....D$....D$..t\n008752f0  09 8b c8 e8 c8 f8 ff ff eb 02 33 c0 c6 44 24 18  ..........3..D$.\n00875300  00 a3 cc 78 f8 00 e8 45 00 ba ff 8b 0d cc 78 f8  ...x...E......x.\n00875310  00 51 8b c8 e8 17 b9 35 00 85 f6 74 0b 83 46 18  .Q.....5...t..F.\n00875320  ff 56 ff 15 10 22 ce 00 a1 cc 78 f8 00 5e 8b 4c  .V...\"....x..^.L\n00875330  24 0c 64 89 0d 00 00 00 00 83 c4 18 c3  $.d..........\n"
+      },
+      {
+        "address": "00F878CC",
+        "bytes": 4,
+        "purpose": "actual publication initial image; not runtime value",
+        "hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 4,
+        "cli_output": "00f878cc  00 00 00 00  ....\n"
+      }
+    ],
+    "fresh_GPR_PE_bytes": 193,
+    "body_bytes": 189,
+    "instruction_count": 51,
+    "physical_CALL_count": 7,
+    "direct_CALL_count": 5,
+    "indirect_IAT_CALL_count": 2,
+    "instructions": [
+      {
+        "address": "00875280",
+        "bytes": 6,
+        "hex": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "00875286",
+        "bytes": 2,
+        "hex": "6aff",
+        "mnemonic": "push",
+        "operands": "-1"
+      },
+      {
+        "address": "00875288",
+        "bytes": 5,
+        "hex": "683364c900",
+        "mnemonic": "push",
+        "operands": "0xc96433"
+      },
+      {
+        "address": "0087528D",
+        "bytes": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "0087528E",
+        "bytes": 7,
+        "hex": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp"
+      },
+      {
+        "address": "00875295",
+        "bytes": 5,
+        "hex": "a1cc78f800",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [0xf878cc]"
+      },
+      {
+        "address": "0087529A",
+        "bytes": 3,
+        "hex": "83ec0c",
+        "mnemonic": "sub",
+        "operands": "esp, 0xc"
+      },
+      {
+        "address": "0087529D",
+        "bytes": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "0087529F",
+        "bytes": 6,
+        "hex": "0f8589000000",
+        "mnemonic": "jne",
+        "operands": "0x87532e"
+      },
+      {
+        "address": "008752A5",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "008752A6",
+        "bytes": 5,
+        "hex": "e8a500baff",
+        "mnemonic": "call",
+        "operands": "0x415350"
+      },
+      {
+        "address": "008752AB",
+        "bytes": 3,
+        "hex": "8b7010",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [eax + 0x10]"
+      },
+      {
+        "address": "008752AE",
+        "bytes": 2,
+        "hex": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "008752B0",
+        "bytes": 8,
+        "hex": "c7442408fc37ce00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 8], 0xce37fc"
+      },
+      {
+        "address": "008752B8",
+        "bytes": 4,
+        "hex": "8974240c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0xc], esi"
+      },
+      {
+        "address": "008752BC",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x8752c9"
+      },
+      {
+        "address": "008752BE",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "008752BF",
+        "bytes": 6,
+        "hex": "ff151822ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "008752C5",
+        "bytes": 4,
+        "hex": "83461801",
+        "mnemonic": "add",
+        "operands": "dword ptr [esi + 0x18], 1"
+      },
+      {
+        "address": "008752C9",
+        "bytes": 8,
+        "hex": "c744241800000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x18], 0"
+      },
+      {
+        "address": "008752D1",
+        "bytes": 7,
+        "hex": "833dcc78f80000",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [0xf878cc], 0"
+      },
+      {
+        "address": "008752D8",
+        "bytes": 2,
+        "hex": "753f",
+        "mnemonic": "jne",
+        "operands": "0x875319"
+      },
+      {
+        "address": "008752DA",
+        "bytes": 2,
+        "hex": "6a08",
+        "mnemonic": "push",
+        "operands": "8"
+      },
+      {
+        "address": "008752DC",
+        "bytes": 5,
+        "hex": "e83a153800",
+        "mnemonic": "call",
+        "operands": "0xbf681b"
+      },
+      {
+        "address": "008752E1",
+        "bytes": 3,
+        "hex": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "008752E4",
+        "bytes": 4,
+        "hex": "89442404",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 4], eax"
+      },
+      {
+        "address": "008752E8",
+        "bytes": 2,
+        "hex": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "008752EA",
+        "bytes": 5,
+        "hex": "c644241801",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esp + 0x18], 1"
+      },
+      {
+        "address": "008752EF",
+        "bytes": 2,
+        "hex": "7409",
+        "mnemonic": "je",
+        "operands": "0x8752fa"
+      },
+      {
+        "address": "008752F1",
+        "bytes": 2,
+        "hex": "8bc8",
+        "mnemonic": "mov",
+        "operands": "ecx, eax"
+      },
+      {
+        "address": "008752F3",
+        "bytes": 5,
+        "hex": "e8c8f8ffff",
+        "mnemonic": "call",
+        "operands": "0x874bc0"
+      },
+      {
+        "address": "008752F8",
+        "bytes": 2,
+        "hex": "eb02",
+        "mnemonic": "jmp",
+        "operands": "0x8752fc"
+      },
+      {
+        "address": "008752FA",
+        "bytes": 2,
+        "hex": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "008752FC",
+        "bytes": 5,
+        "hex": "c644241800",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esp + 0x18], 0"
+      },
+      {
+        "address": "00875301",
+        "bytes": 5,
+        "hex": "a3cc78f800",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xf878cc], eax"
+      },
+      {
+        "address": "00875306",
+        "bytes": 5,
+        "hex": "e84500baff",
+        "mnemonic": "call",
+        "operands": "0x415350"
+      },
+      {
+        "address": "0087530B",
+        "bytes": 6,
+        "hex": "8b0dcc78f800",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [0xf878cc]"
+      },
+      {
+        "address": "00875311",
+        "bytes": 1,
+        "hex": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00875312",
+        "bytes": 2,
+        "hex": "8bc8",
+        "mnemonic": "mov",
+        "operands": "ecx, eax"
+      },
+      {
+        "address": "00875314",
+        "bytes": 5,
+        "hex": "e817b93500",
+        "mnemonic": "call",
+        "operands": "0xbd0c30"
+      },
+      {
+        "address": "00875319",
+        "bytes": 2,
+        "hex": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "0087531B",
+        "bytes": 2,
+        "hex": "740b",
+        "mnemonic": "je",
+        "operands": "0x875328"
+      },
+      {
+        "address": "0087531D",
+        "bytes": 4,
+        "hex": "834618ff",
+        "mnemonic": "add",
+        "operands": "dword ptr [esi + 0x18], -1"
+      },
+      {
+        "address": "00875321",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00875322",
+        "bytes": 6,
+        "hex": "ff151022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2210]"
+      },
+      {
+        "address": "00875328",
+        "bytes": 5,
+        "hex": "a1cc78f800",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [0xf878cc]"
+      },
+      {
+        "address": "0087532D",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "0087532E",
+        "bytes": 4,
+        "hex": "8b4c240c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "00875332",
+        "bytes": 7,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "00875339",
+        "bytes": 3,
+        "hex": "83c418",
+        "mnemonic": "add",
+        "operands": "esp, 0x18"
+      },
+      {
+        "address": "0087533C",
+        "bytes": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "calls": [
+      {
+        "address": "008752A6",
+        "bytes": 5,
+        "hex": "e8a500baff",
+        "mnemonic": "call",
+        "operands": "0x415350"
+      },
+      {
+        "address": "008752BF",
+        "bytes": 6,
+        "hex": "ff151822ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "008752DC",
+        "bytes": 5,
+        "hex": "e83a153800",
+        "mnemonic": "call",
+        "operands": "0xbf681b"
+      },
+      {
+        "address": "008752F3",
+        "bytes": 5,
+        "hex": "e8c8f8ffff",
+        "mnemonic": "call",
+        "operands": "0x874bc0"
+      },
+      {
+        "address": "00875306",
+        "bytes": 5,
+        "hex": "e84500baff",
+        "mnemonic": "call",
+        "operands": "0x415350"
+      },
+      {
+        "address": "00875314",
+        "bytes": 5,
+        "hex": "e817b93500",
+        "mnemonic": "call",
+        "operands": "0xbd0c30"
+      },
+      {
+        "address": "00875322",
+        "bytes": 6,
+        "hex": "ff151022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2210]"
+      }
+    ],
+    "IAT_imports": {
+      "00CE2210": {
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      "00CE2218": {
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      }
+    },
+    "not_live_game_runtime_data": true
+  },
+  "native_ABI": {
+    "entry_registers": "No explicit register argument. Entry EAX is overwritten by FS:[0]; entry ECX/EDX are never ordinary data operands before overwrite or established calls.",
+    "call_graph_reason": "00415350 consumes no input by pinned current Source contract; operator_new receives only pushed8; 00874BC0 receives newly allocated ECX; BD0C30 receives newly returned manager ECX and fresh publication on stack.",
+    "stack": "Plain RET. Stack-relative loads/stores are local EH frame, captured allocation, guard and saved ESI; no caller stack argument is read.",
+    "result": "EAX: fast path captured first F878CC load; slow path fresh F878CC load after release.",
+    "preservation": "ESI is saved/restored on slow path and untouched on fast path. Body does not modify EBX/EDI/EBP; nested service ABI remains inherited.",
+    "incoming_875890": "Pinned producer reaches call8758BA with ECX=payload and EAX=rawgroup, but neither is an input to this getter.",
+    "implicit_dependencies": [
+      "FS:[0] exception chain",
+      "actual F878CC cell",
+      "00415350 actual01090AA0 manager service",
+      "native allocation/constructor/registration/critical-section providers"
+    ]
+  },
+  "ordered_ordinary_operations": [
+    {
+      "address": "00875280",
+      "operation": "Save old FS:[0], push stateFFFFFFFF and handlerC96433, install frame; overwrite incoming EAX."
+    },
+    {
+      "address": "00875295",
+      "operation": "Capture F878CC in EAX. Nonzero branch reaches epilogue without manager lookup, section access, allocation or registration; returns this capture."
+    },
+    {
+      "address": "008752A6",
+      "operation": "First00415350 call. Unguarded read of returned manager+10h into ESI; capture that section once."
+    },
+    {
+      "address": "008752B0",
+      "operation": "Store CE37FC in local guard profile and ESI in local guard section. CE37FC is not an owner profile."
+    },
+    {
+      "address": "008752BC",
+      "operation": "If captured section is nonnull: EnterCriticalSection(ESI), then add1 to DWORD[ESI+18h] modulo2^32."
+    },
+    {
+      "address": "008752C9",
+      "operation": "Write full EH state0, then reread F878CC. If nonzero skip allocation/construction/publication/registration."
+    },
+    {
+      "address": "008752DA",
+      "operation": "Push8 and call BF681B operator_new, caller pops4, capture EAX raw allocation at local ESP+4; allocator runs while EH state0."
+    },
+    {
+      "address": "008752EA",
+      "operation": "Set state low byte1, even on the null-allocation path. Nonnull allocation becomes ECX for874BC0; use returned EAX. Null allocation synthesizes EAX0."
+    },
+    {
+      "address": "008752FC",
+      "operation": "Set state low byte0 BEFORE F878CC publication; publish returned constructor EAX or zero. No comparison with allocation or prior publication."
+    },
+    {
+      "address": "00875306",
+      "operation": "Second00415350 call THEN reread F878CC into ECX, push that current value, set ECX to second manager EAX and call BD0C30. Registration argument may differ from constructed result."
+    },
+    {
+      "address": "00875319",
+      "operation": "If originally captured ESI is nonnull: subtract1 modulo2^32 from section+18h BEFORE LeaveCriticalSection(ESI). No manager/section re-fetch."
+    },
+    {
+      "address": "00875328",
+      "operation": "Slow path reloads F878CC AFTER release, restores ESI, then common epilogue restores old FS:[0], restores ESP and RETs."
+    }
+  ],
+  "owner_and_storage": {
+    "publication": "Actual mutable DWORD cell00F878CC, same identity used by875890 consumers.",
+    "initial_image": "Four virtual-zero-fill bytes in PE .data; saved GPR zero does not prove live-game initialization/current value.",
+    "allocation": "Eight raw bytes, not the52-byte pending registration node, pending sentinel pair or group headers.",
+    "returned_identity": "Getter publishes constructor return EAX; allocation==return is not proved without874BC0.",
+    "owner_profile": "No owner-profile store or profile-table read in this getter. CE37FC is only the local section guard profile.",
+    "owner_section": "Getter does not read/write owner+04 or allocate its section. Prior875890 consumes returned owner+04; construction and publication ordering inside874BC0 remain held.",
+    "manager_section": "First manager+10h, distinct from registry owner+04; capture remains live through normal release.",
+    "distinct_identities": [
+      "F899E8/009248D0 destroy/kill pending lock",
+      "E198E0/00694280 observer lock",
+      "E0B6D0/E0B704 pending registration sentinels",
+      "F876C0 + rawgroup*68h fixed-step group headers"
+    ]
+  },
+  "failure_and_concurrency": {
+    "null_manager": "First manager return is dereferenced without a guard; null is invalid at this body boundary.",
+    "null_section": "Allowed; neither enter/depth update nor leave is attempted. No replacement lock or assertion is inserted.",
+    "null_allocation": "Ordinary branch explicitly publishes0 and still executes second manager lookup/registration. Existing allocator normally throws on failure; retain the observed branch in the contract.",
+    "exception_states": "Frame handlerC96433; initialFFFFFFFF; guard state0 is armed only after successful normal acquire/depth increment; allocation result is captured before state1; state0 restored before owner publication/registration.",
+    "exception_boundary": "No handler, unwind map, landing pad, constructor or destructor body inspected. Free-on-constructor-failure, captured-section cleanup, publication rollback/retention and original SEH behavior are not established by the ordinary body.",
+    "reentrancy": "Second manager and publication may differ from first captures. Register the fresh post-second-getter value, release first section, then reread result. No identity check, CAS or duplicate suppression in this body.",
+    "lifetime": "Captured first section must remain valid through normal leave; owner/cell lifetime and retirement require their own coherent contract."
+  },
+  "current_Source_reuse": [
+    {
+      "paths": [
+        "include/bsp/native_singleton_publication.hpp",
+        "src/native_singleton_publication.cpp"
+      ],
+      "service": "get_native_singleton_manager_00415350(actual01090AA0)",
+      "reuse": "Existing no-input native contract and actual shared manager storage service; Source adds explicit borrowed cell reference."
+    },
+    {
+      "paths": [
+        "include/bsp/sound_lifetime_access.hpp",
+        "src/sound_lifetime_access.cpp"
+      ],
+      "service": "SoundLifetimeAccess raw storage, SoundLifetimeManagerView, CapturedSoundLifetimeSection",
+      "reuse": "Borrow actual01090AA0; preserve first section and second-getter-before-current-registration ordering with raw unsigned depth. RAII destructor is a candidate only after THIS getter EH is proved."
+    },
+    {
+      "paths": [
+        "include/bsp/observer_lifetime.hpp",
+        "include/bsp/random_threads.hpp"
+      ],
+      "service": "NativeObserverLockOwner raw8 and TrackedCriticalSection raw1Ch",
+      "reuse": "Existing projection can be reused after constructor establishes profile/section layout. Same shape does not license another publication identity."
+    },
+    {
+      "paths": [
+        "include/bsp/native_pending_entity_lock.hpp",
+        "src/native_pending_entity_lock.cpp"
+      ],
+      "service": "get_native_pending_entity_lock_009248d0",
+      "reuse": "Current analogous raw8 lazy construction flow, distinct F899E8 cell and924180 constructor; cannot substitute its process singleton or transfer EH proof to875280."
+    },
+    {
+      "paths": [
+        "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "src/native_singleton_vector_registration_wrappers.cpp"
+      ],
+      "service": "register_native_singleton_object_00bd0c30",
+      "reuse": "Existing actual manager ECX + object stack argument service; current wrapper contract preserves validation-before-null and has no added lock."
+    },
+    {
+      "paths": [
+        "include/bsp/singleton_lifetime.hpp",
+        "src/singleton_lifetime.cpp"
+      ],
+      "service": "singleton_lifetime_allocate object/native8/host8",
+      "reuse": "Existing source CRT raw allocation service. Original allocator ABI/exception identity and this getter failure cleanup remain separate limits."
+    }
+  ],
+  "Source_search": {
+    "paths": [
+      "include",
+      "src"
+    ],
+    "extensions": [
+      ".hpp",
+      ".cpp",
+      ".inc"
+    ],
+    "patterns": [
+      "875280",
+      "874bc0",
+      "f878cc"
+    ],
+    "matches": 0,
+    "conclusion": "No actual875280/874BC0/F878CC implementation or binding found at this baseline."
+  },
+  "minimum_next_packet": {
+    "address": "00874BC0",
+    "purpose": "Size-gate and recover only raw8 ordinary constructor, actual owner profile/section publication and returned identity; keep getter EH a separate explicit dependency.",
+    "exclusions": [
+      "No descendant sweep",
+      "No group bootstrap expansion",
+      "No Source getter until constructor/EH/owner lifetimes are supported",
+      "No fabricated default owner/service or private manager"
+    ]
+  },
+  "prior_evidence": {
+    "producer_report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+    "splice_report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+    "inherited_native_spans": [
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "address": "00875890",
+        "bytes": 139,
+        "sha256": "d17e4ff8218fd03c637068901fbb7d034c7990dde9ff6ebd0b462df652f3aa1e",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 139,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "address": "00D7A260",
+        "bytes": 4,
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 4,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "address": "00D0DEC8",
+        "bytes": 24,
+        "sha256": "e411d3855e66292155e01e61e271eedc44d7bd99b49a32d78de36875bbe25cbc",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 24,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "address": "00874C90",
+        "bytes": 111,
+        "sha256": "20d76aa83478f647278e9739557d3521cbe5067bf3a8ba7becceea26848bffa8",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 111,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "address": "00E0B6D0",
+        "bytes": 12,
+        "sha256": "0836a45f4cf885f04aafd07fead7691b215c6f053c2a239c6952fb6b0d541fc2",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 12,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "address": "00E0B704",
+        "bytes": 12,
+        "sha256": "b2e49bc8d81a5a3902d6c26ff6a4ebfd86ba3e965c2597da141b31f10816238e",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 12,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "address": "00F876C0",
+        "bytes": 12,
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 12
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "address": "00F876F4",
+        "bytes": 12,
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 12
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "address": "00CD27D6",
+        "bytes": 10,
+        "sha256": "a7f85ab8f9ff402536fbe7446e71335050695e03401736a66069dec4f39ab012",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 10,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "address": "008758D3",
+        "bytes": 33,
+        "sha256": "07b1c6c942711800a0f7c0a3dd092d4ee0d6f0b99544612fd9285d8fd050bf1c",
+        "PE_rechecked": true,
+        "live_GPR_requeried": false,
+        "file_backed_bytes": 33,
+        "virtual_zero_fill_bytes": 0
+      }
+    ],
+    "inherited_pin_rechecks": [
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/random_threads.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "src/random_threads.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/observer_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "src/native_pending_entity_producers.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/native_pending_entity_producers.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/native_pending_entity_lock.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/tick_element_overrides.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "src/tick_element_overrides.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/fixed_step_job_waves.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "src/game_hosts_fixed_step.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/game_hosts_fixed_step.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/unit_instance_layout.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_SPLICE_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_producer_readiness.json",
+        "path": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "include/bsp/fixed_step_job_waves.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "src/game_hosts_fixed_step.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "include/bsp/game_hosts_fixed_step.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "include/bsp/fixed_step_fanout.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "src/fixed_step_fanout.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "include/bsp/unit_instance_layout.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "src/unit_instance_layout.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "src/game_native_readonly_data.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "docs/FIXED_STEP_JOB_WAVES.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "docs/CC12_WORLD_CURRENT_SHUTDOWN_STEP_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "report": "reports/cc12_pending_entity_registration_splice_readiness.json",
+        "path": "include/bsp/game_pending_entity_runtime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      }
+    ],
+    "pending_append_and_group_bootstrap_requeried": false
+  },
+  "Source_and_prior_evidence_pins": [
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "bytes": 3039,
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "lf_sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "bytes": 2751,
+      "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+      "lf_sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_lock.hpp",
+      "bytes": 3445,
+      "sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6",
+      "lf_sha256": "1d370ec58a8a82d659d906086b61e245c46a81b5ef19206c5880da311a7739c6"
+    },
+    {
+      "path": "src/native_pending_entity_lock.cpp",
+      "bytes": 3613,
+      "sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb",
+      "lf_sha256": "c1c51ba0ccced0cf7cf440bffdcd282923296980731fbcb9d588886a10615cbb"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "bytes": 7290,
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "lf_sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_PRODUCER_READINESS.md",
+      "bytes": 7986,
+      "sha256": "12cc573f0e05490e86efe977857301c098cbca32873d9a3c2ecdabb72dbae5e3",
+      "lf_sha256": "12cc573f0e05490e86efe977857301c098cbca32873d9a3c2ecdabb72dbae5e3"
+    },
+    {
+      "path": "reports/cc12_pending_entity_registration_producer_readiness.json",
+      "bytes": 28758,
+      "sha256": "ddb3177e8421287aaeaa3b1265b69c9f50b20322598b3e7e5f64fe67dcd0e6dc",
+      "lf_sha256": "929ec69d3e02d899513b64aec4af27baac5e6007c29f6e378dee0b43f9ee018a"
+    },
+    {
+      "path": "docs/CC12_PENDING_ENTITY_REGISTRATION_SPLICE_READINESS.md",
+      "bytes": 8156,
+      "sha256": "18310573ebe042411e2fbf2168c7a97318af0a384d6f45c5d15e1c5897c52c53",
+      "lf_sha256": "18310573ebe042411e2fbf2168c7a97318af0a384d6f45c5d15e1c5897c52c53"
+    },
+    {
+      "path": "reports/cc12_pending_entity_registration_splice_readiness.json",
+      "bytes": 25496,
+      "sha256": "be854387995a78d3d0344291245e9ca6f0d09d426db079e470b2d4b671576840",
+      "lf_sha256": "894016d4ca5cceaae4be56cdfa95cf0c85172a06f29b15d320c9ab95dab1eebd"
+    }
+  ],
+  "validation": {
+    "fresh_windows": 2,
+    "fresh_GPR_PE_bytes": 193,
+    "body_instructions": 51,
+    "physical_calls": 7,
+    "independent_body_decode": true,
+    "full_PE_hash_rechecked": true,
+    "source_and_prior_pins": 16,
+    "inherited_pin_rechecks": 29,
+    "inherited_native_windows_rechecked": 10,
+    "JSON_parse": true,
+    "Source_edits": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_CMake_mutations": 0,
+    "descendant_bodies": 0,
+    "EH_body_expansions": 0,
+    "caller_sweeps": 0,
+    "group_bootstrap_sweeps": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_runs": 0,
+    "new_Original_credit": 0
+  },
+  "limits": [
+    "Complete ordinary getter evidence only.",
+    "No Source implementation, Native/Original ABI credit, game startup or gameplay validation.",
+    "Profile constants and source representations are not callable native-vtable proof.",
+    "Fresh GPR values are saved analysis; installed PE is initial image, not live game storage."
+  ]
+}
