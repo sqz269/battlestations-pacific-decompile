@@ -1,0 +1,377 @@
+{
+  "schema": "bsp.cc12.game_current_virtual_dispatch_readiness.v1",
+  "packet": "cc12_game_current_virtual_dispatch_readiness",
+  "status": "READ_ONLY_CONDITIONAL_CURRENT_TABLE_CALL_SHAPES_READY_REAL_OBJECT_TABLE_LIFETIME_COMPOSITION_EXTERNAL",
+  "baseline_revision": "27a38930bd42bfbcc7146cdc9ffffe050b9695da",
+  "observed_utc": "2026-10-09T03:54:01.128798+00:00",
+  "abstract_methods": [
+    {
+      "name": "virtual_scalar",
+      "signature": "void(void* captured, std::uint32_t byte_slot, std::uint32_t flags)",
+      "declared_by": "NativeGameLifetimeCalls",
+      "shared_pure_bases": [
+        "NativeGameEmbeddedLifetimeCalls",
+        "NativeGameContainerLifetimeCalls",
+        "NativeGameSingletonLifetimeCalls",
+        "NativeGameClassCleanupCalls"
+      ],
+      "native_shape": "ECX actual captured receiver; one DWORD flags stack argument, callee cleanup; current table byte slot; result ignored",
+      "ready": "Existing concrete qualified physics dispatcher can be reused; forward byte slot and every flag bit unchanged."
+    },
+    {
+      "name": "virtual_terminal",
+      "signature": "void(void* captured)",
+      "declared_by": "NativeGameLifetimeCalls",
+      "shared_pure_bases": [
+        "NativeGameArrayLifetimeCalls",
+        "NativeGameContainerLifetimeCalls"
+      ],
+      "native_shape": "ECX actual captured receiver; no stacked argument; current primary-table slot0; result ignored",
+      "ready": "Small genuine raw current-slot0 bridge viable; caller has already decremented reference count. No decrement or fixed BD30E0 substitution."
+    },
+    {
+      "name": "virtual_04",
+      "signature": "void(void* receiver, void* record)",
+      "declared_by": "NativeGameEmbeddedLifetimeCalls (inherited)",
+      "shared_pure_bases": [],
+      "native_shape": "ECX current peer+4 receiver; current table byte slot4; one captured record pointer stacked; callee cleanup; result ignored",
+      "ready": "Consumer ABI established from live caller and fixed epilogue; a thiscall pointer-argument bridge is viable conditional on a real compatible target. Concrete receiver family, target and semantic return type remain unqualified."
+    }
+  ],
+  "proposed_minimal_provider": {
+    "name": "NativeGameCurrentVirtualCalls final : NativeGameLifetimeCalls",
+    "overrides": [
+      "void virtual_scalar(void*, std::uint32_t byte_slot, std::uint32_t flags) override;",
+      "void virtual_terminal(void*) override;",
+      "void virtual_04(void*, void*) override;"
+    ],
+    "scalar_body_boundary": "NativeGamePhysicsLifetimeCalls::physics_virtual_scalar(captured, byte_slot, flags), explicitly qualified through inherited service",
+    "terminal_target_type": "void (__thiscall*)(void*)",
+    "peer_record_target_type": "void (__thiscall*)(void*, void*)",
+    "table_loads": "Read receiver current primary-table pointer and selected entry at invocation using actual pointer object representations.",
+    "noexcept": false,
+    "new_callback_registry": false,
+    "owns_objects_or_contexts": false,
+    "implementation_added_here": false
+  },
+  "native_consumer_evidence": {
+    "scalar_sites": {
+      "004DD005": "parent slot0/flags1",
+      "004DD05C": "parent byte slot0C/flags1",
+      "004BF950": "scene payload slot0/flags1"
+    },
+    "terminal_sites": {
+      "004CC77C/004CC788": "pointer-range decrement then current-v0 terminal",
+      "007F819F/007F81AB": "participant direct Win32 decrement then current-v0 terminal",
+      "004C8747/004C8757": "container decrement then current-v0 terminal"
+    },
+    "peer_record": {
+      "receiver_load": "00784AA4..AA8",
+      "current_table_and_record": "00784AAB..AB0",
+      "record_push": "00784AB3",
+      "indirect_call": "00784AB4",
+      "normal_continuation": "00784AB6..AC2 without caller argument cleanup",
+      "fixed_epilogue": "00784B04..B0B pops registers, adds fixed24h, RET",
+      "consumed_return": "none",
+      "caller_contract_recovered": true,
+      "concrete_callee_semantics_recovered": false
+    },
+    "terminal_cell_semantics": [
+      "Game+21F4 remains untouched",
+      "Five Game+19D4..19E4 cells clear after callback",
+      "Pointer-range cells clear after callback",
+      "Participant+104/+108/+10C cells clear after callback",
+      "Container callers own their decrement and clear schedule"
+    ]
+  },
+  "existing_helper_comparison": [
+    {
+      "source": "src/native_game_physics_lifetime.cpp:49",
+      "helper": "NativeGamePhysicsLifetimeCalls::physics_virtual_scalar",
+      "reuse": "Direct qualified scalar implementation; actual current table, byte offset and full flags; ignores return."
+    },
+    {
+      "source": "src/native_particle_component_lifetime.cpp:97",
+      "helper": "destroy_component_with_context current-slot0 fallback",
+      "reuse": "Shows genuine no-argument terminal call; surrounding routine decrements first and must not be reused as already-decremented terminal."
+    },
+    {
+      "source": "src/native_particle_resource_lifetime.cpp:52",
+      "helper": "release_child",
+      "reuse": "Decrements and includes specific profile/scalar handling; not a generic already-zero current-slot0 service."
+    },
+    {
+      "source": "src/native_online_notification_dispatch.cpp:43",
+      "helper": "current_client28",
+      "reuse": "File-local byte-copy pointer/entry loading with thiscall no-argument target, fixed byte slot28; pattern only."
+    },
+    {
+      "source": "src/native_render_resources_lifetime.cpp:138",
+      "helper": "dispatch_native_render_resource_zero_terminal",
+      "reuse": "Already-zero terminal helper, restricted to canonical render contexts/profile IDs/actual owners; not arbitrary current-table dispatch."
+    },
+    {
+      "source": "src/native_ref_counted.cpp:4",
+      "helper": "invoke_native_ref_counted_delete_00bd30e0",
+      "reuse": "Specific BD30E0 slot4(flags1) body via abstract binding; would incorrectly assume every current slot0 equals BD30E0."
+    }
+  ],
+  "preconditions": [
+    "Receiver is actual live object storage with a readable current primary table containing genuine callable addresses, not a token or profile-ID projection.",
+    "Selected method conforms to the documented Win32 receiver/stack/cleanup shape; ordinary cdecl callbacks and arbitrary C++ member pointers do not qualify.",
+    "Receiver table and code remain live across call; selected method may retire receiver, and bridge performs no later receiver access.",
+    "Scalar destruction/free is compatible with the exact construction allocation domain and all retained contexts.",
+    "Peer record pointer is the exact captured actual record; its access and lifetime requirements belong to the real selected method.",
+    "Single-threaded valid-storage schedule; pointer byte copies do not supply synchronization or invalid-storage fault equivalence.",
+    "Exceptions propagate to existing caller diagnostics without new catch, rollback or cleanup substitution."
+  ],
+  "identity_boundary": {
+    "original_numeric_profiles": [
+      "00CE7CB8",
+      "00D039CC"
+    ],
+    "numeric_original_profile_is_callable_source_table": false,
+    "copied_ro_original_entries_become_rebuilt_code_addresses": false,
+    "loaded_original_code_execution_environment_qualified": false,
+    "fabricated_table_or_unknown_profile_fallback_allowed": false,
+    "game_native_runtime_table": "Existing rebuilt Game-specific fastcall scalar shim accepts thiscall-shaped receiver/flags and enforces exact constructed owner; not a child-family substitute."
+  },
+  "full_game_limits": {
+    "concrete_production_lifetime_calls_provider_found": false,
+    "application_game_native_runtime_instantiation_found": false,
+    "runtime_accepts_external_lifetime_context": true,
+    "needs_matching_contexts": [
+      "arrays",
+      "embedded",
+      "profile",
+      "singletons",
+      "lua_globals",
+      "resources",
+      "classes",
+      "physics"
+    ],
+    "context_identity_checks": "Same eventual call service; canonical game/grid and Dyn ownership, string/manager/publication references where checked.",
+    "player_profile_provider": "Construction context only; teardown explicitly requires eventual same NativeGameLifetimeCalls object.",
+    "allocator_defaults": "NativeGameLifetimeCalls free65 uses operator delete; free69 uses std::free; allocate55 delegates to singleton allocation; physics uses borrowed engine/scene memory services.",
+    "allocator_pairing_qualified_by_dispatch": false,
+    "child_payload_owner_family_qualified": false,
+    "full_game_caller_composition_ready": false,
+    "application_startup_or_gameplay_ready": false
+  },
+  "verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_target_verified_by_cli_requests": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "native_live_disk_bytes_equal": 109,
+    "native_live_disk_spans": [
+      {
+        "address": "00784AA4",
+        "length": 18,
+        "purpose": "peer current receiver/table slot4 with one captured record pointer",
+        "hex": "8b4c24108b49048b118b47088b520450ffd2",
+        "sha256": "4c250828298240c8a2963b5daf7281f955ea27e515de9b9ace2601a21790a18b",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004DCFFF",
+        "length": 8,
+        "purpose": "parent scalar slot0 flags1",
+        "hex": "8b018b106a01ffd2",
+        "sha256": "a893ffaa990479887be803ccaa7ae4cc40031cf5a6488bc1b1d3dcad7e60fdf9",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004DD055",
+        "length": 9,
+        "purpose": "parent scalar byte slot0C flags1",
+        "hex": "8b018b500c6a01ffd2",
+        "sha256": "0d2a1f3df901f8c8c7232534fd70688bac57ffaf862ea01a668501b29d91646e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004CC778",
+        "length": 18,
+        "purpose": "pointer range decrement then current slot0 terminal",
+        "hex": "8d470450ffd585c075088b178b028bcfffd0",
+        "sha256": "0803d717a5f0c88b2b72fd9550c4dab10eadb00e5e02d587d4d908336582346c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "007F819B",
+        "length": 18,
+        "purpose": "participant decrement then current slot0 terminal",
+        "hex": "8d460450ffd585c075088b168b028bceffd0",
+        "sha256": "e0a2c1ebfaf2d92758af864e782e1475593ace8e739d846e0241d26148819743",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004C8743",
+        "length": 22,
+        "purpose": "container decrement then current slot0 terminal",
+        "hex": "8d470450ff152022ce0085c075088b178b028bcfffd0",
+        "sha256": "823a30227401533295f73a6d5814039636c42b3cd844d41ee990d984932c665f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00784B04",
+        "length": 8,
+        "purpose": "peer fixed caller epilogue",
+        "hex": "5f5e5d5b83c424c3",
+        "sha256": "ec9b347ce5ecf1794d0d52d4f0fecebf1fdd161e957cd4a4f1fdb6e342a7bebb",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004BF94A",
+        "length": 8,
+        "purpose": "scene payload scalar slot0 flags1",
+        "hex": "8b018b106a01ffd2",
+        "sha256": "a893ffaa990479887be803ccaa7ae4cc40031cf5a6488bc1b1d3dcad7e60fdf9",
+        "live_disk_equal": true
+      }
+    ],
+    "json_and_source_pin_check": "passed: 25 Source pins and eight native span hashes totaling109 live/disk-matched bytes",
+    "Source_credit": 0,
+    "source_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "ghidra_mutations": 0,
+    "cmake_config_ledger_changes": 0
+  },
+  "owned_files": [
+    "docs/CC12_GAME_CURRENT_VIRTUAL_DISPATCH_READINESS.md",
+    "reports/cc12_game_current_virtual_dispatch_readiness.json"
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_game_lifetime.hpp",
+      "bytes": 9292,
+      "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889"
+    },
+    {
+      "path": "src/native_game_lifetime.cpp",
+      "bytes": 21673,
+      "sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d"
+    },
+    {
+      "path": "include/bsp/native_game_embedded_lifetime.hpp",
+      "bytes": 3447,
+      "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a"
+    },
+    {
+      "path": "src/native_game_embedded_lifetime.cpp",
+      "bytes": 6650,
+      "sha256": "3e5dff12ffd864f86d15af9f7089b14709f30fb4607934d9938d8d1fdc9815b9"
+    },
+    {
+      "path": "include/bsp/native_game_array_lifetime.hpp",
+      "bytes": 3035,
+      "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa"
+    },
+    {
+      "path": "src/native_game_array_lifetime.cpp",
+      "bytes": 5559,
+      "sha256": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e"
+    },
+    {
+      "path": "include/bsp/native_game_container_lifetime.hpp",
+      "bytes": 4531,
+      "sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87"
+    },
+    {
+      "path": "src/native_game_container_lifetime.cpp",
+      "bytes": 7364,
+      "sha256": "7004952000205f0d242248ef1d8bd60697204863055cde11b64ad91f5c1b77a4"
+    },
+    {
+      "path": "include/bsp/native_game_singleton_lifetime.hpp",
+      "bytes": 2916,
+      "sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c"
+    },
+    {
+      "path": "src/native_game_singleton_lifetime.cpp",
+      "bytes": 4151,
+      "sha256": "fffeccd7bf5f34e3f7129e0a5034cad0b97c09fdda8b89977d7e6d23c9ca8574"
+    },
+    {
+      "path": "include/bsp/native_game_class_cleanup.hpp",
+      "bytes": 6159,
+      "sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76"
+    },
+    {
+      "path": "src/native_game_class_cleanup.cpp",
+      "bytes": 13682,
+      "sha256": "b2bddd47b55db619fc2e2f345fce67a1c9d8f9c3af3d3a434a2937289bff877c"
+    },
+    {
+      "path": "include/bsp/native_game_physics_lifetime.hpp",
+      "bytes": 6288,
+      "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+    },
+    {
+      "path": "src/native_game_physics_lifetime.cpp",
+      "bytes": 13632,
+      "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "bytes": 1226,
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "bytes": 822,
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "src/native_online_notification_dispatch.cpp",
+      "bytes": 9833,
+      "sha256": "7a4fba7612cdd337bdad1e5a41e8e9e59f41ac93ae56da8b441d0d1ad547299e"
+    },
+    {
+      "path": "src/native_particle_component_lifetime.cpp",
+      "bytes": 5864,
+      "sha256": "4fa608de0a0d1638567b6ce5ea454175d180079a86d1b0b234a6c77eeff1a9e9"
+    },
+    {
+      "path": "src/native_particle_resource_lifetime.cpp",
+      "bytes": 5969,
+      "sha256": "3207ec36f12f264a778e667b948b2c5fb2e210f7592949e6a246b1153d94f282"
+    },
+    {
+      "path": "src/native_render_resources_lifetime.cpp",
+      "bytes": 10467,
+      "sha256": "7a7ac91d7695ab86c13b699b31e11df06d63cbd6fb4ade22a3823e7915439337"
+    },
+    {
+      "path": "src/game_native_game_runtime.cpp",
+      "bytes": 4780,
+      "sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca"
+    },
+    {
+      "path": "include/bsp/game_native_player_profile_context.hpp",
+      "bytes": 1667,
+      "sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b"
+    },
+    {
+      "path": "include/bsp/native_game_construction.hpp",
+      "bytes": 7095,
+      "sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e"
+    },
+    {
+      "path": "include/bsp/native_profile_collections.hpp",
+      "bytes": 2989,
+      "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+    },
+    {
+      "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+      "bytes": 3135,
+      "sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1"
+    }
+  ]
+}
