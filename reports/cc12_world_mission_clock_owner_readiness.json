@@ -1,0 +1,566 @@
+{
+  "packet": "cc12_world_mission_clock_owner_readiness",
+  "status": "read_only_audit_complete_shared_source_owner_not_admitted",
+  "baseline_commit": "c0798f344901389adc6e9f1d503b185661adee3f",
+  "original_function_credit": 0,
+  "scope": {
+    "owned_outputs": [
+      "docs/CC12_WORLD_MISSION_CLOCK_OWNER_READINESS.md",
+      "reports/cc12_world_mission_clock_owner_readiness.json"
+    ],
+    "owned_native_addresses": [
+      "00F876A4",
+      "00874640",
+      "00875BB0",
+      "004DAD52",
+      "004E0194",
+      "004E1890",
+      "006B5A85",
+      "007714E7",
+      "00771FDC"
+    ],
+    "excluded_addresses": [
+      "00904600",
+      "0042ED50"
+    ],
+    "changes": "documentation/report only",
+    "no_source_gpr_ledger_cmake_build_test_probe_or_game_mutation": true
+  },
+  "decision": {
+    "genuine_mutable_source_storage_exists": true,
+    "candidate": "GameMissionFrameHost::Impl::fixed_clock.simulation_clock",
+    "shared_native_mission_clock_owner_established": false,
+    "production_owner_or_reference_binding_recommended": false,
+    "reason": [
+      "Existing fixed-step Source field is genuinely written by its driver, but Native reset00874640 is not bound to it.",
+      "Frame, World, AI and unit summary clocks are distinct values/storage with different schedules.",
+      "No Source production UnitGenericInputContext construction supplies its borrowed live mission-clock reference.",
+      "Existing Impl ownership does not establish common reset/write authority or lifetime across all proposed consumers."
+    ],
+    "matrix_consumer_constraint": "Parent-supplied00904600 contract needs same live float reloaded per record; a by-value snapshot is insufficient. This packet did not inspect that owned consumer.",
+    "not_admitted": [
+      "PE/BSS-derived initial value",
+      "current Ghidra data value as live mission state",
+      "a second clock/private timeline",
+      "a new provider defaulting to zero",
+      "frame-boundary copying as shared identity",
+      "full World/Game/application readiness"
+    ],
+    "required_external_precondition": "One actual shared mutable float with established setter/driver authority and lifetime, borrowed by all admitted consumers; absent in current production composition."
+  },
+  "native_writer_inventory": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "query": "python tools/bsp.py ghidra xrefs 00F876A4 --limit 1000 --lines 1000",
+    "xref_count": 226,
+    "xref_kinds": {
+      "READ": 221,
+      "WRITE": 5
+    },
+    "writers": [
+      {
+        "from": "0087464C",
+        "function": "FUN_00874640",
+        "kind": "WRITE"
+      },
+      {
+        "from": "00875C21",
+        "function": "BSP_Game_RunFixedSimulationSteps",
+        "kind": "WRITE"
+      },
+      {
+        "from": "00875C80",
+        "function": "BSP_Game_RunFixedSimulationSteps",
+        "kind": "WRITE"
+      },
+      {
+        "from": "00875F26",
+        "function": "BSP_Game_RunFixedSimulationSteps",
+        "kind": "WRITE"
+      },
+      {
+        "from": "0087600B",
+        "function": "BSP_Game_RunFixedSimulationSteps",
+        "kind": "WRITE"
+      }
+    ],
+    "limitation": "Complete returned direct references under1000 limit, not a proof against unresolved indirect/alias/external writers.",
+    "clock_cell_initial_or_runtime_value_read": false
+  },
+  "setter_reset": {
+    "address": "00874640",
+    "range_inclusive": [
+      "00874640",
+      "00874690"
+    ],
+    "abi": "One stack binary32 argument; ECX unused; RET 4. Current Ghidra undefined(void) is not accepted as the ABI.",
+    "writes_in_order": [
+      "MOVSS input bits to F876A4",
+      "MOVSS input bits to F876A8",
+      "EAX from BF7420 to F876B0",
+      "x87 remainder rounded to F876AC",
+      "Step minus stored remainder rounded to F876B4"
+    ],
+    "integer_conversion": "Input/step remains on the x87 stack until BF7420; the caller consumes EAX and reloads its stored DWORD using signed FILD. General conversion-helper behavior is not newly admitted.",
+    "preserved_cells": [
+      "F876A1 stepping byte",
+      "E0B6CC buffer index",
+      "F876B8 previous buffer"
+    ],
+    "zero_reset_observation": "All six recovered call sites supply positive zero. With a zero conversion result, count/remainder are zero but interpolation F876B4 becomes the nonzero step; aggregate zeroing differs.",
+    "callsite_count": 6,
+    "enclosing_function_count": 5,
+    "callers": [
+      {
+        "call": "004DAD52",
+        "function": "004DA780",
+        "role": "reached session teardown path",
+        "input_sequence": [
+          "004DAD4C FLDZ",
+          "004DAD4E PUSH ECX",
+          "004DAD4F FSTP float[ESP]"
+        ]
+      },
+      {
+        "call": "004E0194",
+        "function": "004DFB70",
+        "role": "first mission-load site",
+        "input_sequence": [
+          "004E018E FLDZ",
+          "004E0190 PUSH ECX",
+          "004E0191 FSTP float[ESP]"
+        ]
+      },
+      {
+        "call": "004E1890",
+        "function": "004DFB70",
+        "role": "second mission-load site",
+        "input_sequence": [
+          "004E188A FLDZ",
+          "004E188C PUSH ECX",
+          "004E188D FSTP float[ESP]"
+        ]
+      },
+      {
+        "call": "006B5A85",
+        "function": "006B5960",
+        "role": "broader role unexpanded",
+        "input_sequence": [
+          "006B5A7C FLDZ",
+          "006B5A7E PUSH ECX",
+          "006B5A7F FSTP float[ESP]",
+          "006B5A82 MOV[ESI+5C],EAX"
+        ]
+      },
+      {
+        "call": "007714E7",
+        "function": "007713A0",
+        "role": "broader role unexpanded",
+        "input_sequence": [
+          "007714E1 FLDZ",
+          "007714E3 PUSH ECX",
+          "007714E4 FSTP float[ESP]"
+        ]
+      },
+      {
+        "call": "00771FDC",
+        "function": "00771FC0",
+        "role": "broader role unexpanded",
+        "input_sequence": [
+          "00771FD0 FLDZ",
+          "00771FD2 PUSH ECX",
+          "00771FD3 FSTP float[ESP]",
+          "00771FD6 MOV[ESI+248],EAX"
+        ]
+      }
+    ],
+    "caller_scope": "Reached call input/order only; no whole-caller branch/lifecycle sweep."
+  },
+  "fixed_step_writer": {
+    "address": "00875BB0",
+    "caller": "004C40A0",
+    "abi": "Incoming ECX is replaced by current Game E188A8; one stack float; RET 4.",
+    "gate": [
+      "Game is nonnull",
+      "Selected local-player slot is nonnull",
+      "Signed short at slot+10h is greater than zero",
+      "When Game+1FE4h is 2, session+9Ch is at least 8"
+    ],
+    "closed_gate": "Positive-zero stores to F876AC, F876A4 and F876A8 only; no count, flag, interpolation or buffer reset.",
+    "ordered_open_schedule": [
+      "Store the binary32 clock after subtracting the previous binary32 leftover.",
+      "Add the supplied delta separately to leftover and parallel accumulated delta; store each as binary32.",
+      "For each admitted step, add the retained actual step to the current clock and store before countdown, waves and subsystems. Increment the DWORD count, set stepping and save/flip buffers.",
+      "After callbacks, reload the current leftover, subtract the step and store binary32. Zero interpolation; reload and test leftover.",
+      "Clear stepping only after an entered loop; add final leftover back to the current clock and store binary32.",
+      "If delta and leftover are above zero, run the interpolation wave; afterwards copy current leftover to the interpolation cell."
+    ],
+    "non_equivalence_of_host_delta_add": "End-of-frame rough time accumulation does not preserve resets, gated zeroing or intermediate observer phases.",
+    "unexpanded": "Whole job scheduler, each callback ownership/concurrency, actual Game gate provider."
+  },
+  "floating_point": {
+    "native_double_step": {
+      "address": "00D7A270",
+      "hex_bytes": "000000a09999a93f",
+      "hex_value": "0x1.99999a0000000p-5",
+      "value": 0.05000000074505806
+    },
+    "native_float_step": {
+      "address": "00D0DE84",
+      "hex_bytes": "cdcc4c3d",
+      "promoted_hex_value": "0x1.99999a0000000p-5",
+      "value": 0.05000000074505806
+    },
+    "native_constants_equal_when_float_promoted": true,
+    "source_driver_float_cast_matches_native_step_value": true,
+    "standalone_source_double_literal_0_05_matches_native_double_bits": false,
+    "limits": [
+      "No step-value mismatch is claimed for the current Source driver.",
+      "Native x87 retained values, comparison flags, binary32 spills/reloads and control-word/exception behavior are not established by portable arithmetic alone.",
+      "A const volatile float reference describes explicit access, not synchronization, lifetime ownership, Native ABI or floating-point equivalence.",
+      "No compiler output, Native execution, differential arithmetic or gameplay check was run."
+    ]
+  },
+  "source_storage": [
+    {
+      "path": "include/bsp/in_mission_subsystem_tick.hpp",
+      "lines": [
+        104,
+        122
+      ],
+      "role": "FixedStepClock aggregate",
+      "finding": "Genuine float simulation_clock; new Source interface/layout, not an overlay of Native globals."
+    },
+    {
+      "path": "src/in_mission_subsystem_tick.cpp",
+      "lines": [
+        66,
+        155
+      ],
+      "role": "clock helpers",
+      "finding": "Both functions mutate the caller-provided aggregate; the actual driver includes callbacks. No setter 00874640 implementation."
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "lines": [
+        264,
+        305,
+        966,
+        1673,
+        2886,
+        2897
+      ],
+      "role": "frame owner",
+      "finding": "Heap-owned Impl fixed_clock is passed to the driver. Independent world_clock adds raw delta and copies it; no reset binding or public live-cell provider."
+    },
+    {
+      "path": "src/game_hosts_world.cpp",
+      "lines": [
+        74,
+        170,
+        177,
+        342
+      ],
+      "role": "World clock",
+      "finding": "Independent float advanced by scaled delta and passed by value to the projected matrix consumer."
+    },
+    {
+      "path": "src/game_hosts_ai.cpp",
+      "lines": [
+        1144,
+        3518,
+        6105
+      ],
+      "role": "AI clock",
+      "finding": "Independent clock_seconds advanced by the AI step."
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "lines": [
+        15789,
+        15790
+      ],
+      "role": "unit mission_clock getter",
+      "finding": "Returns summary.simulated_seconds by value."
+    },
+    {
+      "path": "include/bsp/unit_generic_input_phase.hpp",
+      "lines": [
+        31,
+        35
+      ],
+      "role": "Existing live-reference consumer",
+      "finding": "const volatile float& mission_clock_00f876a4; no production construction found in src/ or include/."
+    },
+    {
+      "path": "src/unit_generic_input_phase.cpp",
+      "lines": [
+        145,
+        153
+      ],
+      "role": "existing live-reference read",
+      "finding": "Reads the supplied cell; does not produce or reset it."
+    },
+    {
+      "path": "include/bsp/mission_scene_load.hpp",
+      "lines": [
+        193
+      ],
+      "role": "Abstract load reset hook",
+      "finding": "reset_render_scene comments identify 00874640(0)."
+    },
+    {
+      "path": "src/mission_scene_load.cpp",
+      "lines": [
+        217,
+        380
+      ],
+      "role": "Projected load reset calls",
+      "finding": "Two abstract hook calls; no concrete override found implementing the actual clock reset."
+    },
+    {
+      "path": "src/mission_load_path.cpp",
+      "lines": [
+        396
+      ],
+      "role": "Earlier owner row",
+      "finding": "The renderer label and empty source-body field do not establish an actual clock owner."
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "lines": [
+        1220,
+        1231
+      ],
+      "role": "Existing frame-clock owner",
+      "finding": "NativeFrameClock publication 01090AB0/profile D68D50: a different object, not an established mission-clock alias."
+    },
+    {
+      "path": "include/bsp/input_tick.hpp",
+      "lines": [
+        137,
+        140
+      ],
+      "role": "earlier writer comment",
+      "finding": "The one-writer/five-sites statement does not capture the current five-write/six-call inventory. Left unchanged in this read-only packet."
+    }
+  ],
+  "verification": {
+    "native_image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "image_base": "00400000",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "native_live_disk_spans": [
+      {
+        "address": "00874640",
+        "length": 81,
+        "purpose": "whole reset/set helper, including RET4",
+        "hex": "d9442404f30f10442404d9c0f30f1105a476f800dd0570a2d700f30f1105a876f800dcf9d9c9e8b52d3800a3b076f800db05b076f800d8c9deead9c9d91dac76f800d825ac76f800d91db476f800c20400",
+        "sha256": "a0bef200fc1854e9df3faea97321b407d15d802b76dbbbcec80cfdcbc6759656",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00875BB0",
+        "length": 250,
+        "purpose": "gate, pullback and per-step clock publication through first step call",
+        "hex": "518b0da888e10085c90f84410400008b81ec18000083bc81cc180000008d8481cc1800000f84260400008b1066837a10000f9ec084c00f851404000083b9e41f00000275138b817c20000083b89c000000080f8cf8030000d905a476f8000f57c0d905ac76f80053d9c055deea56d9c957d91da476f800d9442418d9c0dec2d9c9d91dac76f800d805a876f800d91da876f800dd0570a2d700d905ac76f800dbf10f82be020000dbf10f82af020000668b0dccb6e000ddd8d805a476f8008305b076f80001ba010000002b15ccb6e000d91da476f800c605a176f80001d90584ded00066890db876f800668915ccb6e00051d91c24e8061df9ff",
+        "sha256": "04f1e2c54374cef78a7342baf701242132ff76c7d7359691ccd4c68156d0d16e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00875EDF",
+        "length": 100,
+        "purpose": "per-step remainder store, loop test and final remainder clock addition",
+        "hex": "d905ac76f800dd0570a2d7000f57c0dce9f30f1105b476f800d9c9d91dac76f800d905ac76f800dbf10f8351fdffffc605a176f80000f30f104c2418ddd90f2fc8d805a476f800d91da476f8000f869f000000f30f100dac76f8000f2fc80f868e000000",
+        "sha256": "7db5aa38f61177974f0e4ee023dc2b2efb01b26891f90b77c39119f8f43f8447",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00875FC1",
+        "length": 16,
+        "purpose": "post-interpolation remaining-fraction publication",
+        "hex": "f30f1005ac76f800f30f1105b476f800",
+        "sha256": "c235b7d793eadc99789f0bcb9edb94070a158f62243787ab67e126568c3a054b",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00876000",
+        "length": 31,
+        "purpose": "closed-gate three-cell zeroing and RET4",
+        "hex": "0f57c0f30f1105ac76f800f30f1105a476f800f30f1105a876f80059c20400",
+        "sha256": "89546b6d8a46c789abe0c6ff1c046746215f7678f4830805e9902f40f7170605",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004DAD4C",
+        "length": 11,
+        "purpose": "session teardown zero reset call",
+        "hex": "d9ee51d91c24e8e9983900",
+        "sha256": "e7c61fe3a507cd0f2b1532ebe6ea0599614d47f1e71e905e752226b6651817a5",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004E018E",
+        "length": 11,
+        "purpose": "first mission-load zero reset call",
+        "hex": "d9ee51d91c24e8a7443900",
+        "sha256": "c8d041ef2520a3d98e22901481cf28dd50837087d9e20c7fc7293282b85e5cc6",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004E188A",
+        "length": 11,
+        "purpose": "second mission-load zero reset call",
+        "hex": "d9ee51d91c24e8ab2d3900",
+        "sha256": "e1835312fbe55468663ae837db958f40dbf0562f87367c9ca4b3f1d2d4a30ecd",
+        "live_disk_equal": true
+      },
+      {
+        "address": "006B5A7C",
+        "length": 14,
+        "purpose": "zero reset in006B5960",
+        "hex": "d9ee51d91c2489465ce8b6eb1b00",
+        "sha256": "5528cc45631244c0309053a8b7b5804643b8ab8980f28830c1963b7b3656b791",
+        "live_disk_equal": true
+      },
+      {
+        "address": "007714E1",
+        "length": 11,
+        "purpose": "zero reset in007713A0",
+        "hex": "d9ee51d91c24e854311000",
+        "sha256": "4bd7e354c24bd84a48b1f9a44420aa8b391714c411ae5547da6d5854621e29a6",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00771FD0",
+        "length": 17,
+        "purpose": "zero reset in00771FC0",
+        "hex": "d9ee51d91c24898648020000e85f261000",
+        "sha256": "f8615e896c491a5eb17aa093e5f3ddcf7cab16e57c1139b691f03cd1deca0fe2",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00D7A270",
+        "length": 8,
+        "purpose": "actual binary64 step constant",
+        "hex": "000000a09999a93f",
+        "sha256": "f6695ce73944e91633628832ea0c0f88a3ea4f28087ed24fa862b40ffeec8154",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00D0DE84",
+        "length": 4,
+        "purpose": "actual binary32 per-step argument constant",
+        "hex": "cdcc4c3d",
+        "sha256": "0b9d79ff0fc4d0a77ef398763bbe45c445501e826219f2b6a1aa709411ab631d",
+        "live_disk_equal": true
+      }
+    ],
+    "native_live_disk_span_count": 13,
+    "native_live_disk_bytes_equal": 565,
+    "source_pin_count": 15,
+    "checks": [
+      "All 13 live/disk spans identical: 565 bytes",
+      "All 15 physical and LF-normalized Source hashes matched",
+      "Exact Native constant value and equality decoded",
+      "All 226 direct xrefs classified",
+      "JSON decoding and git diff checks passed"
+    ],
+    "build_test_probe_native_execution_gameplay": "Not performed; read-only audit.",
+    "source_changes": 0,
+    "gpr_mutations": 0
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/in_mission_subsystem_tick.hpp",
+      "bytes": 9286,
+      "sha256": "9fc4952be598640704b8d22099b024fc34a6755b664a9d6a16529abb2a03f7fb",
+      "lf_content_sha256": "9fc4952be598640704b8d22099b024fc34a6755b664a9d6a16529abb2a03f7fb"
+    },
+    {
+      "path": "src/in_mission_subsystem_tick.cpp",
+      "bytes": 6281,
+      "sha256": "e4ac3682ebd9ed0a0b93dff1acd630ce6d12c7dade05ad9d1ebc5828200c235d",
+      "lf_content_sha256": "e4ac3682ebd9ed0a0b93dff1acd630ce6d12c7dade05ad9d1ebc5828200c235d"
+    },
+    {
+      "path": "include/bsp/game_hosts_mission_frame.hpp",
+      "bytes": 13444,
+      "sha256": "a3f31d190dfa2e4ea664d889f2f36bf45eca3dd58b8580c4d994ba584db6a0d5",
+      "lf_content_sha256": "a3f31d190dfa2e4ea664d889f2f36bf45eca3dd58b8580c4d994ba584db6a0d5"
+    },
+    {
+      "path": "src/game_hosts_mission_frame.cpp",
+      "bytes": 197476,
+      "sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af",
+      "lf_content_sha256": "4957f8389e34615c8d88af8ba6257b78c76ccf4836b8df3e4182a604748e18af"
+    },
+    {
+      "path": "src/game_hosts_world.cpp",
+      "bytes": 22955,
+      "sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+      "lf_content_sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829"
+    },
+    {
+      "path": "src/game_hosts_ai.cpp",
+      "bytes": 352392,
+      "sha256": "217940cbc9ffc10547e367ec73fa227815a1cd6eb89e7e519b1a26b261a196cb",
+      "lf_content_sha256": "217940cbc9ffc10547e367ec73fa227815a1cd6eb89e7e519b1a26b261a196cb"
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "lf_content_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999"
+    },
+    {
+      "path": "include/bsp/unit_generic_input_phase.hpp",
+      "bytes": 2596,
+      "sha256": "b28e44507b1836990ce311e4abfd43ed65c2f1a1c600b111536d195a137f7ae4",
+      "lf_content_sha256": "b28e44507b1836990ce311e4abfd43ed65c2f1a1c600b111536d195a137f7ae4"
+    },
+    {
+      "path": "src/unit_generic_input_phase.cpp",
+      "bytes": 6739,
+      "sha256": "f74b50b38b84d4fdadb1048eaf11eeffafd251cd15951fd7657b6fe14eeb52fc",
+      "lf_content_sha256": "f74b50b38b84d4fdadb1048eaf11eeffafd251cd15951fd7657b6fe14eeb52fc"
+    },
+    {
+      "path": "include/bsp/mission_scene_load.hpp",
+      "bytes": 17753,
+      "sha256": "5d00a69e1e5d3f878640aef78c21a3ae569b5fd1b30167a510f61bac35759207",
+      "lf_content_sha256": "5d00a69e1e5d3f878640aef78c21a3ae569b5fd1b30167a510f61bac35759207"
+    },
+    {
+      "path": "src/mission_scene_load.cpp",
+      "bytes": 13997,
+      "sha256": "dba0de940a8f48a787ec9f20dd1350d0d524f57b9922530ef7b50388a0a6cf02",
+      "lf_content_sha256": "dba0de940a8f48a787ec9f20dd1350d0d524f57b9922530ef7b50388a0a6cf02"
+    },
+    {
+      "path": "src/mission_load_path.cpp",
+      "bytes": 23338,
+      "sha256": "8ee2e851e0741023c02ae5c8e57b21981058b56496bb65aa5f05c42d014678a1",
+      "lf_content_sha256": "8ee2e851e0741023c02ae5c8e57b21981058b56496bb65aa5f05c42d014678a1"
+    },
+    {
+      "path": "include/bsp/input_tick.hpp",
+      "bytes": 11822,
+      "sha256": "f4019636ca11edd6b75696612690d91aaba7aad9a4466340432005219ddebe98",
+      "lf_content_sha256": "f4019636ca11edd6b75696612690d91aaba7aad9a4466340432005219ddebe98"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "lf_content_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 38481,
+      "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+      "lf_content_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+    }
+  ]
+}
