@@ -1,0 +1,392 @@
+{
+  "schema": "bsp.cc12.native_squadron_launch_task_scalar_deletion_source.v1",
+  "packet": "cc12_squadron_launch_task_scalar_deletion_Source",
+  "created_utc": "2026-10-09T18:21:50.243922+00:00",
+  "baseline_commit": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+  "owned_address": "007F1EE0",
+  "owned_files": [
+    "include/bsp/native_squadron_launch_task_scalar_deletion.hpp",
+    "src/native_squadron_launch_task_scalar_deletion.cpp",
+    "docs/CC12_NATIVE_SQUADRON_LAUNCH_TASK_SCALAR_DELETION_SOURCE.md",
+    "reports/cc12_native_squadron_launch_task_scalar_deletion_source.json"
+  ],
+  "status": "Qualified may-throw cdecl Source candidate; unregistered/uncompiled, awaiting primary compiled-object/Core review",
+  "credit": {
+    "Source_admission": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "interface": {
+    "symbol": "bsp::scalar_delete_native_squadron_launch_task_007f1ee0",
+    "calling_convention": "__cdecl",
+    "return_type": "void* retained opaque Task identity, possibly already freed",
+    "public_noexcept": false,
+    "inputs": "The exact Source99 nine inputs, in the same order, followed by volatile std::uint8_t& actual_deletion_flags_low_byte.",
+    "task_capture": "void* const captured_task = actual_task_base; same identity passed to cleanup, optional std::free and return.",
+    "cleanup_forwarding": [
+      "captured_task",
+      "actual_task_profile_00",
+      "actual_member_owner_20",
+      "actual_endpoint_cell_34",
+      "retained_lifetime",
+      "actual_pending_owners",
+      "actual_pending_access",
+      "pending_flag_publication",
+      "pending_manager_publication"
+    ],
+    "flags_backing": "Actual caller-supplied volatile low-byte cell, kept live through its late read; no copied value, fake flags receiver or inferred Original stack placement.",
+    "deletion_predicate": "(late_flags & 0x01u) != 0u; bit zero, mask one; other bits ignored",
+    "new_storage_or_domain": false
+  },
+  "Source_schedule": [
+    {
+      "phase": "capture actual Task identity",
+      "Native_context": "007F1EE1 ECX capture into ESI",
+      "Source_line": 20
+    },
+    {
+      "phase": "call actual Source99 with all real inputs",
+      "Native_site": "007F1EE3",
+      "Source_line": 21
+    },
+    {
+      "phase": "single late volatile flags-byte read",
+      "Native_site": "007F1EE8",
+      "Source_line": 25
+    },
+    {
+      "phase": "mask01 and optional actual Source CRT free",
+      "Native_sites": [
+        "007F1EED",
+        "007F1EF0"
+      ],
+      "Source_line": 26
+    },
+    {
+      "phase": "return retained opaque pointer without dereference",
+      "Native_context": "007F1EF8 current ESI to EAX",
+      "Source_line": 27
+    }
+  ],
+  "failure_and_allocation_contract": {
+    "cleanup_failure": "No flags read or wrapper free unless real Source99 returns normally. Its admitted nested guard/exception policy remains unchanged.",
+    "free": "Actual current std::free from <cstdlib>, supplied with captured Task. No callback, alternate heap or hand-declared Native entry.",
+    "eligibility": "When mask01 selects deletion, actual captured Task must still be compatible with this Source CRT free; allocation provenance, backing and lifetime are caller prerequisites.",
+    "after_free": "Retained pointer value is returned without dereferencing it; return type does not establish live Task storage.",
+    "public_policy": "May throw because actual Source99 may throw; no noexcept, catch, retry, unconditional finally-free or exception translation.",
+    "Source_boundary": "Current Source allocator/free, C++ pointer/call/exception policies and explicit input cell are qualified; no Original free-domain, register/frame/flag alias or ABI equivalence."
+  },
+  "actual_cleanup_provider": {
+    "header": "include/bsp/native_squadron_launch_task_cleanup.hpp",
+    "implementation": "src/native_squadron_launch_task_cleanup.cpp",
+    "admission_receipt": "reports/cc12_native_squadron_launch_task_cleanup_primary_review.json",
+    "actual_identity_requirements": "Same Task base/profile+0/member+20/endpoint+34=member+14; retained observer lifetime, actual initialized pending owners/access and actual mutable publication cells.",
+    "composition": "Real Source70 optional endpoint loop, Source88 late member-cell capture/cleanup, Source84 base cleanup; member/base guards disarmed before their normal child calls.",
+    "no_raw_ECX_stub": true,
+    "separate_tick_scalar_context": "Existing 0071C4D0 Source helper has a different naked fastcall flags/publication interface. Its presence does not adapt the nine-input Source99 to a Native ECX-only ABI."
+  },
+  "Native30_gate_and_identity": {
+    "address": "007F1EE0",
+    "end_inclusive": "007F1EFD",
+    "bytes": 30,
+    "raw_operations": 11,
+    "sha256": "61c4f6a149a32ebf0082d04b56f3bc34fdd1f78355cd94a3711f810ff5095d18",
+    "hex": "568bf1e888fffffff644240801740956e8b746400083c4048bc65ec20400",
+    "raw_instructions": [
+      {
+        "address": "007f1ee0",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "007f1ee1",
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx"
+      },
+      {
+        "address": "007f1ee3",
+        "bytes": "e888ffffff",
+        "mnemonic": "call",
+        "operands": "0x7f1e70"
+      },
+      {
+        "address": "007f1ee8",
+        "bytes": "f644240801",
+        "mnemonic": "test",
+        "operands": "byte ptr [esp + 8], 1"
+      },
+      {
+        "address": "007f1eed",
+        "bytes": "7409",
+        "mnemonic": "je",
+        "operands": "0x7f1ef8"
+      },
+      {
+        "address": "007f1eef",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "007f1ef0",
+        "bytes": "e8b7464000",
+        "mnemonic": "call",
+        "operands": "0xbf65ac"
+      },
+      {
+        "address": "007f1ef5",
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": "007f1ef8",
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "007f1efa",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "007f1efb",
+        "bytes": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "Root_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_launch_scalar_and_member_initializer_primary\\capture.json",
+      "bytes": 9726,
+      "sha256": "e95c0b61cd58a7ecc7b43c9b10d50c4eb1e05313d2edb1ceb9d55e55d933ca6e",
+      "domain": "Exact physical file bytes"
+    },
+    "Root_approval_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_launch_scalar_and_member_initializer_primary\\Root_Astra_gate_approval.json",
+      "bytes": 792,
+      "sha256": "6a36d7f1e890eb463d8bd256dda97cb479db45e825926153e00de7f27d028649",
+      "domain": "Exact physical file bytes"
+    },
+    "Root_owned_approval": {
+      "address": "007f1ee0",
+      "bytes": 30,
+      "operations": 11,
+      "sha256": "61c4f6a149a32ebf0082d04b56f3bc34fdd1f78355cd94a3711f810ff5095d18",
+      "saved_instruction_count": 10,
+      "missing_saved_starts": [
+        "007f1ef5"
+      ]
+    },
+    "other_gate_records_not_reaudited": true,
+    "accepted_prior_receipt": "reports/cc12_squadron_launch_task_scalar_deletion_readiness.json",
+    "all_raw_bytes_equal_Root_prior_receipt_and_current_PE": true,
+    "PE_RVA": "003F1EE0",
+    "PE_file_offset": 4136672,
+    "all_file_backed": true,
+    "Original_image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "Original_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_worker_Ghidra_query": false,
+    "normal_stack_context": "Under compatible child preservation and normal returns: cleanup child pops0; free leaves its one pushed argument for raw ADD ESP,4; final Native RET4 leaves caller ESP at entry+8. Source cdecl input placement is different."
+  },
+  "saved_listing_and_name_boundary": {
+    "saved_instruction_starts": 10,
+    "raw_instruction_starts": 11,
+    "missing_saved_start": "007F1EF5",
+    "missing_raw_instruction": "83 C4 04 / ADD ESP,4",
+    "saved_listing_complete": false,
+    "raw_owned_window_complete": true,
+    "exact_NoReturn_or_flow_property_proved": false,
+    "cause_of_saved_gap_proved": false,
+    "Ghidra_listing_flow_extent_name_changes": false,
+    "existing_correct_compiler_name": "CG_scalar_deleting_dtor_007f1ee0",
+    "name_evidence": "Accepted metadata and current bounded repository lookup; compiler-generated name is retained. No new live name/prototype claim.",
+    "existing_Native_free_label": "_free",
+    "prototype_boundary": "Saved undefined(void) metadata does not recover the physical flags/receiver ABI. The candidate C++ symbol is a separate Source interface.",
+    "Native_child_free_body_opened": false
+  },
+  "current_Source97_build_context": {
+    "receipt": "reports/cc12_native_squadron_launch_task_cleanup_primary_review.json",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 112244,
+      "start_utc": "2026-10-09T17:59:46.563985+00:00",
+      "finish_utc": "2026-10-09T18:00:05.036630+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 97
+    },
+    "current_input_count": 97,
+    "all_current_canonical_inputs_replayed": true,
+    "compact_manifest_sha256": "d8160f84ae3f41d7f65e8086fe710548a033641fcf830203326e1986df4c8719",
+    "digest_domain": "UTF-8 compact sorted-key JSON of receipt-ordered {path,canonical_lf_bytes,canonical_lf_sha256} list.",
+    "existing_checks_passed": 3,
+    "whole_objects_captured_or_replayed": 23,
+    "positive_Core_public_roots": 27,
+    "prior_Source99_admission": {
+      "functions": 1,
+      "Original_bytes": 99
+    },
+    "historical_boundary": "Prior build/artifacts predate this candidate. Only Source input identities replayed; no worker build, compiled artifact recapture or executable run, no old object graph/input-array duplication."
+  },
+  "current_input_pins": [
+    {
+      "path": "include/bsp/native_squadron_launch_task_cleanup.hpp",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 2717,
+      "sha256": "4bbd2647510cc485653f4753bd8fb4755d61063e0a6b50170b55ab3fd3df4776",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_squadron_launch_task_cleanup.cpp",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 3436,
+      "sha256": "722cd387d093e040aa00b569f062d9d34bf0c0cff9bddcfce3fc069cc4e86926",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_squadron_launch_task_cleanup_primary_review.json",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 372268,
+      "sha256": "1a56cf831cd7f39868bc39b04c38e1c6b8fe14448d8ca116df5cce803fdebb01",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_scalar_deletion_readiness.json",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 21286,
+      "sha256": "385ba0af2321f531c12df94886192141abc5f6cb163a23b11de03a587fa1322f",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_squadron_launch_task_cleanup_source.json",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 30958,
+      "sha256": "d68bc47c56cbc718a728b563108e7d29dc39c31e1fa9828016e98108299e1c2e",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_SQUADRON_LAUNCH_TASK_CLEANUP_SOURCE.md",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 9505,
+      "sha256": "d29674e8b488758a4d7090b8471c32c58665b72efc8fed91cc74ecf2be5dfe73",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_SCALAR_DELETION_READINESS.md",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 4119,
+      "sha256": "553b076b3149ad173f2e30d2e3615e827dc82e6e59ce2c901974a2edd24adcb5",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_scalar_deletion.hpp",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 2017,
+      "sha256": "cdff0c71713deafd74526cde482e752f5b531712bc1cb9ece87a52e19ba4785a",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_tick_subnode_scalar_deletion.cpp",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 1687,
+      "sha256": "0341f4f599f49f73d94c80631717e1fe7f139f7de0d822af8c46b4a8a0bb41eb",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 19331,
+      "sha256": "66a200cdfe10a17043f73a79839299e579b9632e8e8f9fb09345c86de03b9bb1",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "a3050906bc33e514f0299280c60cc4c4da3e9a30",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    }
+  ],
+  "bounded_current_excerpts": [
+    {
+      "path": "include/bsp/native_squadron_launch_task_cleanup.hpp",
+      "first_line": 40,
+      "last_line": 49,
+      "sha256": "e0cdec08b1beff140d7f4899484487a08c3e6dc0a0569ce5168b13505c673ca1",
+      "purpose": "Actual nine-input Source99 declaration",
+      "text": "void cleanup_native_squadron_launch_task_007f1e70(\n    void* actual_task_base,\n    volatile std::uint32_t& actual_task_profile_00,\n    NativeObserverOwnerStorage& actual_member_owner_20,\n    NativeObserverOwnerStorage* volatile& actual_endpoint_cell_34,\n    NativeObserverLifetime& retained_lifetime,\n    NativePendingEntityOwners& actual_pending_owners,\n    NativePendingEntityProducerAccess& actual_pending_access,\n    void* volatile& pending_flag_publication,\n    void* volatile& pending_manager_publication);\n"
+    },
+    {
+      "path": "src/native_squadron_launch_task_cleanup.cpp",
+      "first_line": 62,
+      "last_line": 89,
+      "sha256": "b4eac534ed67ad9c910a60ea0cca1c75caf96f79f989d93bc90c6a96770f2276",
+      "purpose": "Actual Source99 normal sequence and disarming boundaries",
+      "text": "void cleanup_native_squadron_launch_task_007f1e70(\n    void* actual_task_base,\n    volatile std::uint32_t& actual_task_profile_00,\n    NativeObserverOwnerStorage& actual_member_owner_20,\n    NativeObserverOwnerStorage* volatile& actual_endpoint_cell_34,\n    NativeObserverLifetime& retained_lifetime,\n    NativePendingEntityOwners& actual_pending_owners,\n    NativePendingEntityProducerAccess& actual_pending_access,\n    void* volatile& pending_flag_publication,\n    void* volatile& pending_manager_publication) {\n    actual_task_profile_00 = 0x00d08ae4u;\n    auto* const captured_endpoint = actual_endpoint_cell_34;\n    // Reverse destruction order makes member cleanup precede base cleanup.\n    LaunchTaskBaseCleanupGuard base_cleanup(actual_task_base,\n        pending_flag_publication, pending_manager_publication);\n    LaunchTaskMemberCleanupGuard member_cleanup(actual_member_owner_20,\n        actual_endpoint_cell_34, retained_lifetime);\n    if (captured_endpoint) {\n        cleanup_native_observer_endpoint_live_count_007ee620(\n            captured_endpoint, 0u, actual_pending_owners, actual_pending_access);\n    }\n    member_cleanup.disarm();\n    cleanup_native_observer_member_00653390(\n        actual_member_owner_20, actual_endpoint_cell_34, retained_lifetime);\n    base_cleanup.disarm();\n    cleanup_native_tick_subnode_base_00875b30(actual_task_base, 0u,\n        pending_flag_publication, pending_manager_publication);\n}\n"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_scalar_deletion.hpp",
+      "first_line": 12,
+      "last_line": 40,
+      "sha256": "03421815a84174bde02efe15686e58486f39292ab39f25f5de0f4b73619ddd82",
+      "purpose": "Separate admitted scalar context and its different raw interface",
+      "text": "// supplies the actual receiver; EDX is unused placement. The three stack words\n// are the actual flags DWORD followed by the actual F/M publication addresses.\n// Source RET0C consumes all three; Native RET4 consumes only the flags word.\n//\n// Forward both actual publication references to the admitted raw 00875B30\n// Source cleanup. AFTER normal child return, test bit zero of the current low\n// byte of the flags word. If set, pass actual current ESI to current CRT free\n// and execute ADD ESP,4. Return actual current ESI in EAX on both paths, then\n// restore ESI from the actual current saved word. A freed return value is only\n// an opaque address. Do not infer a live receiver from the return type.\n//\n// All raw backing and alias/preservation conditions of that cleanup remain\n// required. Borrow the actual stable F/M cells, whose values remain mutable.\n// Preserve added publication-address words until their selected loads, plus\n// the active return backing and required child saved words. The flags word is\n// deliberately read late and may change during cleanup. Extra Source argument\n// pushes change stack-alias placement; this is not a Native ABI replacement.\n// If free is selected, the current pointer must be eligible for this Source\n// CRT's free. Native 00BF65AC implementation/allocator/failure policy is open.\n// No owned unwind handling, noexcept, storage, profile binding, or production\n// consumer is supplied. The 007F1EE0 wrapper remains separately deferred.\nvoid* __fastcall scalar_delete_native_tick_subnode_0071c4d0(\n    void* actual_receiver,\n    std::uint32_t unused_edx,\n    std::uint32_t actual_flags,\n    void* volatile& actual_registry_publication_00f878cc,\n    void* volatile& actual_manager_publication_01090aa0);\n\n} // namespace bsp\n"
+    }
+  ],
+  "owned_candidate_pins": [
+    {
+      "path": "include/bsp/native_squadron_launch_task_scalar_deletion.hpp",
+      "bytes": 2335,
+      "sha256": "5d06ca5c8d21a61739419a088a48348b87c4a49ff6626c90eed01246a5ed3645",
+      "domain": "Exact physical file bytes"
+    },
+    {
+      "path": "src/native_squadron_launch_task_scalar_deletion.cpp",
+      "bytes": 1255,
+      "sha256": "36a0517f555098c4dc5f741e6468eefb6fb04786aca77c21ace113e0c42d552e",
+      "domain": "Exact physical file bytes"
+    },
+    {
+      "path": "docs/CC12_NATIVE_SQUADRON_LAUNCH_TASK_SCALAR_DELETION_SOURCE.md",
+      "bytes": 5729,
+      "sha256": "72c76435ae841f351d34a9daf466a6e03ab9feac4caf126c7445e36e0ff23858",
+      "domain": "Exact physical file bytes"
+    }
+  ],
+  "validation": {
+    "full_raw30_and11_starts": true,
+    "exact_saved10_vs_raw11_gap": true,
+    "current_Source97_identity_replay": true,
+    "actual_nine_argument_call_then_one_late_flags_read_reviewed": true,
+    "mask01_free_retained_identity_order_reviewed": true,
+    "worker_build_test_probe": false,
+    "CMake_ledger_Ghidra_changes": false,
+    "new_consumer": false,
+    "candidate_registered": false
+  },
+  "primary_review_required": "Register/build and inspect the whole emitted object, actual Source99/free targets/imports and argument forwarding, all sections/relocations/EH, Core definition and application map. Keep current Source policy distinct from Original ABI, actual production allocation/binding and gameplay.",
+  "documentation": "docs/CC12_NATIVE_SQUADRON_LAUNCH_TASK_SCALAR_DELETION_SOURCE.md"
+}
