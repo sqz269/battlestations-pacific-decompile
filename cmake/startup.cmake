@@ -110,6 +110,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_model.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_mesh_fragment.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_comment_fragment.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_crt_lock10_unlock_helper.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_debug_feature_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_box_box.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_collision_pass.cpp)
