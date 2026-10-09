@@ -1,0 +1,315 @@
+{
+  "schema": "bsp.cc12.mission_lua_payload_destructor_EH_readiness.v1",
+  "created_utc": "2026-10-09T08:38:13.447276+00:00",
+  "root_revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+  "status": "readonly_encoded_two_string_tail_actions_qualified_frame_and_dispatch_contract",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "count": 64729,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "bounds": {
+    "handler_max": 32,
+    "handler_window": 16,
+    "record_max": 36,
+    "record_bytes": 36,
+    "maximum_map_entries": 4,
+    "map_entries": 2,
+    "per_action_max": 64,
+    "action_sizes": [
+      8,
+      11
+    ],
+    "exceeded": false
+  },
+  "fresh_native_spans": [
+    {
+      "address": "00C97543",
+      "bytes": 16,
+      "purpose": "handler10B; padding3B; excluded adjacent opaque3B",
+      "hex": "b8a49adc00e9f6f5f5ffcccccc8d4de0",
+      "sha256": "63442acac9041474ec93727eb9a6d681853d938512ca875fe3ea889d07224248",
+      "live_GPR_equal_PE": true,
+      "file_backed_bytes": 16,
+      "PE_section": ".text",
+      "cli_output": "00c97543  b8 a4 9a dc 00 e9 f6 f5 f5 ff cc cc cc 8d 4d e0  ..............M.\n"
+    },
+    {
+      "address": "00DC9AA4",
+      "bytes": 36,
+      "purpose": "absolute x86 FuncInfo",
+      "hex": "2205931902000000949adc00000000000000000000000000000000000000000001000000",
+      "sha256": "0bb9298bf31187a59845373901d54cdc87386ecaf10dc1f17f148daaccc7ad12",
+      "live_GPR_equal_PE": true,
+      "file_backed_bytes": 36,
+      "PE_section": ".rdata",
+      "cli_output": "00dc9aa4  22 05 93 19 02 00 00 00 94 9a dc 00 00 00 00 00  \"...............\n00dc9ab4  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00dc9ac4  01 00 00 00  ....\n"
+    },
+    {
+      "address": "00DC9A94",
+      "bytes": 16,
+      "purpose": "two-entry absolute unwind map",
+      "hex": "ffffffff3075c900000000003875c900",
+      "sha256": "7ec064cbedf9c6c472f54f7ce4eabebb92b3475930a65308c633a88d034585ee",
+      "live_GPR_equal_PE": true,
+      "file_backed_bytes": 16,
+      "PE_section": ".rdata",
+      "cli_output": "00dc9a94  ff ff ff ff 30 75 c9 00 00 00 00 00 38 75 c9 00  ....0u......8u..\n"
+    },
+    {
+      "address": "00C97530",
+      "bytes": 19,
+      "purpose": "two complete direct tail actions:8B and11B",
+      "hex": "8b4df0e9e86778ff8b4df083c108e9dd6778ff",
+      "sha256": "c21263fad35bf24cd3d708fa7b4412f7c6d4ebeb3d92b3f67a6a50a7506a937e",
+      "live_GPR_equal_PE": true,
+      "file_backed_bytes": 19,
+      "PE_section": ".text",
+      "cli_output": "00c97530  8b 4d f0 e9 e8 67 78 ff 8b 4d f0 83 c1 08 e9 dd  .M...gx..M......\n00c97540  67 78 ff  gx.\n"
+    }
+  ],
+  "native_semantic_code": {
+    "bytes": 29,
+    "instruction_count": 7,
+    "handler": [
+      {
+        "address": "00C97543",
+        "bytes": "b8a49adc00",
+        "mnemonic": "mov",
+        "operands": "eax, 0xdc9aa4"
+      },
+      {
+        "address": "00C97548",
+        "bytes": "e9f6f5f5ff",
+        "mnemonic": "jmp",
+        "operands": "0xbf6b43"
+      }
+    ],
+    "action0": [
+      {
+        "address": "00C97530",
+        "bytes": "8b4df0",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": "00C97533",
+        "bytes": "e9e86778ff",
+        "mnemonic": "jmp",
+        "operands": "0x41dd20"
+      }
+    ],
+    "action1": [
+      {
+        "address": "00C97538",
+        "bytes": "8b4df0",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": "00C9753B",
+        "bytes": "83c108",
+        "mnemonic": "add",
+        "operands": "ecx, 8"
+      },
+      {
+        "address": "00C9753E",
+        "bytes": "e9dd6778ff",
+        "mnemonic": "jmp",
+        "operands": "0x41dd20"
+      }
+    ],
+    "tail_JMPs": 3,
+    "CALLs": 0
+  },
+  "FuncInfo": {
+    "address": "00DC9AA4",
+    "words": [
+      429065506,
+      2,
+      14457492,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "magicNumber": "19930522",
+    "bbtFlags": 0,
+    "maxState": 2,
+    "pUnwindMap": "00DC9A94",
+    "try_IP_type_fields": 0,
+    "EHFlags_encoded": 1
+  },
+  "unwind_map": [
+    {
+      "state": 0,
+      "next_state": -1,
+      "action": "00C97530",
+      "operand": "current [helper EBP-10h] payload header+0",
+      "target": "0041DD20"
+    },
+    {
+      "state": 1,
+      "next_state": 0,
+      "action": "00C97538",
+      "operand": "current [helper EBP-10h] payload header+8",
+      "target": "0041DD20"
+    }
+  ],
+  "frame": {
+    "parent": "008876B0",
+    "entry_ESP": "S",
+    "payload_spill": "S-10h",
+    "state": "S-04h",
+    "ordinary_parent_sets_EBP": false,
+    "conditional_helper_relation": "helper EBP=S corroborates saved payload offset; runtime body not expanded",
+    "actions_read": "Both reread the mutable frame slot independently; no immutable incoming-ESI capture proof."
+  },
+  "state_schedule": [
+    {
+      "address": "008876D5",
+      "state": 1,
+      "timing": "after receiver spill, before vector child6B88E0; remains1 during freeBF6989"
+    },
+    {
+      "address": "008876F2",
+      "state": 0,
+      "timing": "low-byte store after current first buffer+0Ch load/test, before conditional pool getter/return for string header+8"
+    },
+    {
+      "address": "00887714",
+      "state": -1,
+      "timing": "full DWORD store after current second buffer+04h load/test, before conditional pool getter/return for string header+0"
+    }
+  ],
+  "qualified_schedule": [
+    "If runtime selects state1 and supplies expected helper frame, actionC97538 rereads current saved payload, wraps+8 and tails to concrete string destructor; after successful completion encoded next0 selects current saved payload+0 string cleanup, then-1.",
+    "State0 selects only payload+0 string cleanup. The ordinary first string release executes while state0 is selected; the ordinary second executes afterstate-1.",
+    "The map encodes no direct vector-buffer free, vector-element cleanup or outer queue-node free. Child vector exceptional behavior belongs to its independent handler; caller node lifetime is separate.",
+    "Tail actions preserve incoming return stack for the selected string destructor. State1 ADD ECX8 wraps and changes arithmetic flags; otherwise no local profile/header stores, local frame or callback adapter appears."
+  ],
+  "existing_Source": {
+    "header_destructor": "destroy_native_string_header_0041dd20(void*,NativeStringRawPoolContext&) captures current data then current length+1 with wrap; null skips getter; no header writes.",
+    "raw_context": "RawStringPoolAccess::release always gets current419CC0 pool before nonnull return, even large or shutdown-disabled return. It borrows actual pool/manager/gate cells. This overload is not noexcept and getter exceptions propagate.",
+    "distinct_storage_overload": "NativeStringStorage& overload and ActualNativeStringPoolStorage::release have noexcept interfaces; they are not automatically substituted for Native exceptional destructor composition.",
+    "integration": "Existing game process owns Source publication cells/raw context; no payload/vector owner construction or EH wrapper admitted here."
+  },
+  "metadata_only_descendant": {
+    "address": "0041DD20",
+    "proto": "Function: BSP_NativeString_DestroyStorage at 0041dd20\nSignature: void __thiscall BSP_NativeString_DestroyStorage(void * this)\nEntry: 0041dd20\nBody: 0041dd20 - 0041dd3c\n{\n \"function_name\": \"BSP_NativeString_DestroyStorage\",\n \"address\": \"0041dd20\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 12,\n \"basic_block_count\": 3,\n \"edge_count\": 3,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 1,\n \"cyclomatic_complexity\": 2,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_SizedStoragePool_GetSingleton\",\n  \"BSP_SizedStoragePool_ReturnBlock\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1\n... 7 more lines of 27 (use --start 20 or --lines)\n",
+    "native_body_queried": false
+  },
+  "layout_reference": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+    "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+    "role": "current absolute x86 FuncInfo/UnwindMap layout corroboration; not original compiler or shared-runtime compatibility"
+  },
+  "canonical_input_pins": [
+    {
+      "path": "reports/cc12_mission_lua_payload_body_extent_readiness.json",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "2c70250e3b68a9550fa2271add63bc6c4b6b7f7ca06f0dd3c277d5c9e790fc2c",
+      "canonical_lf_bytes": 22034,
+      "physical_sha256": "b2aa4b1e5c80613870a94113a0021706a7aa32c308f3935ab139a9845215b14f"
+    },
+    {
+      "path": "docs/CC12_MISSION_LUA_PAYLOAD_BODY_EXTENT_READINESS.md",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "d7bb6b6fd923b34de30046e3cec2c0dbc5d4f153d8ce7e88c60ab19b80a0b53b",
+      "canonical_lf_bytes": 5291,
+      "physical_sha256": "d7bb6b6fd923b34de30046e3cec2c0dbc5d4f153d8ce7e88c60ab19b80a0b53b"
+    },
+    {
+      "path": "reports/cc12_mission_lua_deferred_payload_retirement_readiness.json",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5",
+      "canonical_lf_bytes": 42305,
+      "physical_sha256": "dd6ce6b786e9b7d0bfbdf392cecdf094f29b0054cee002eb82fe120793f889d5"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "canonical_lf_bytes": 8771,
+      "physical_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "canonical_lf_bytes": 9121,
+      "physical_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "canonical_lf_bytes": 5893,
+      "physical_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "canonical_lf_bytes": 8443,
+      "physical_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "canonical_lf_bytes": 2805,
+      "physical_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "canonical_lf_bytes": 5103,
+      "physical_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c",
+      "canonical_lf_bytes": 2017,
+      "physical_sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c"
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "revision": "7f38fc629dbbaf482b46df659ffad1d81ddce690",
+      "canonical_lf_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993",
+      "canonical_lf_bytes": 471,
+      "physical_sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993"
+    }
+  ],
+  "parent_physical_body_replay": {
+    "address": "008876B0",
+    "bytes": 148,
+    "sha256": "8d56710334051e14b4203db8b1e68b182368ec9403a84553d391d6357ab51b25",
+    "live_requeried": false,
+    "PE_equal": true
+  },
+  "qualifications": [
+    "Shared BF6B43 recognition, helper EBP setup, state-update/dispatch timing, fault filtering and nested cleanup failure are not proved.",
+    "Action order is encoded conditional behavior, not a guarantee both cleanups run after a failing child.",
+    "Current Source pool/CRT/Win32 domains and C++ interfaces are not Native register-ABI/EH/fault/concurrency identity.",
+    "No catch block, try-map entry, rethrow, rollback, early disarm or successful later action is inferred."
+  ],
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source": 0,
+    "new_fragments": 0,
+    "Ghidra_mutations": 0,
+    "ledger_mutations": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "native_execution": 0,
+    "gameplay": 0
+  }
+}
