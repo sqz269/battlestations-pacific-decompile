@@ -1,0 +1,1272 @@
+{
+  "packet": "cc12_world_current_tick_readiness",
+  "review_utc": "2026-10-09T04:10:30.089833+00:00",
+  "status": "native_bodies_evidenced_actual_storage_provider_closure_open",
+  "worktree_base_commit": "bc90576c37de1e82885c339d44f1829d5baadd25",
+  "synced_main_commit": "c58ab3a32e220bb11e1c369616953bdd00c28c59",
+  "scope": "read_only_native_and_current_source_audit; only dedicated docs/report are versioned changes",
+  "owned_native_addresses": [
+    "00904bf0",
+    "00904600"
+  ],
+  "root_owned_dependency": {
+    "address": "009041a0",
+    "access": "recorded contract and current header interface read only; not claimed or mutated"
+  },
+  "target": {
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "target_verification": "Every bsp.py ghidra call constructs Client and verifies configured project/program/language/base before the query.",
+  "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+  "native_bodies": [
+    {
+      "address": "00904bf0",
+      "end_inclusive": "00904c34",
+      "bytes": 69,
+      "sha256": "dc4734515d458b164c823c7c362f7fd650e204e179d1d6cfeb0498b927a8cb8f",
+      "hex": "56578bf98b47048b3085f674248d4900807e5c0074148b16d944240c8b82dc000000518bced91c24ffd08b763885f675dfd944240c518bcfd91c24e8d0f9ffff5f5ec20400",
+      "live_equals_pe": true,
+      "decoded_instructions": 28,
+      "complete_contiguous_decode": true,
+      "control_transfers": [
+        {
+          "address": "00904bfb",
+          "mnemonic": "je",
+          "operands": "0x904c21",
+          "immediate": "00904c21"
+        },
+        {
+          "address": "00904c04",
+          "mnemonic": "je",
+          "operands": "0x904c1a",
+          "immediate": "00904c1a"
+        },
+        {
+          "address": "00904c18",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00904c1f",
+          "mnemonic": "jne",
+          "operands": "0x904c00",
+          "immediate": "00904c00"
+        },
+        {
+          "address": "00904c2b",
+          "mnemonic": "call",
+          "operands": "0x904600",
+          "immediate": "00904600"
+        },
+        {
+          "address": "00904c32",
+          "mnemonic": "ret",
+          "operands": "4",
+          "immediate": "00000004"
+        }
+      ],
+      "complete_instruction_listing": [
+        "00904bf0 56 push esi",
+        "00904bf1 57 push edi",
+        "00904bf2 8bf9 mov edi, ecx",
+        "00904bf4 8b4704 mov eax, dword ptr [edi + 4]",
+        "00904bf7 8b30 mov esi, dword ptr [eax]",
+        "00904bf9 85f6 test esi, esi",
+        "00904bfb 7424 je 0x904c21",
+        "00904bfd 8d4900 lea ecx, [ecx]",
+        "00904c00 807e5c00 cmp byte ptr [esi + 0x5c], 0",
+        "00904c04 7414 je 0x904c1a",
+        "00904c06 8b16 mov edx, dword ptr [esi]",
+        "00904c08 d944240c fld dword ptr [esp + 0xc]",
+        "00904c0c 8b82dc000000 mov eax, dword ptr [edx + 0xdc]",
+        "00904c12 51 push ecx",
+        "00904c13 8bce mov ecx, esi",
+        "00904c15 d91c24 fstp dword ptr [esp]",
+        "00904c18 ffd0 call eax",
+        "00904c1a 8b7638 mov esi, dword ptr [esi + 0x38]",
+        "00904c1d 85f6 test esi, esi",
+        "00904c1f 75df jne 0x904c00",
+        "00904c21 d944240c fld dword ptr [esp + 0xc]",
+        "00904c25 51 push ecx",
+        "00904c26 8bcf mov ecx, edi",
+        "00904c28 d91c24 fstp dword ptr [esp]",
+        "00904c2b e8d0f9ffff call 0x904600",
+        "00904c30 5f pop edi",
+        "00904c31 5e pop esi",
+        "00904c32 c20400 ret 4"
+      ],
+      "all_non_call_branch_targets_inside_body": true,
+      "decoded_call_count": 2
+    },
+    {
+      "address": "00904600",
+      "end_inclusive": "00904be2",
+      "bytes": 1507,
+      "sha256": "ec637968d26dd858df8b964fe5972d216bc3534e3d37e37c587411df9650de79",
+      "hex": "8b81b404000081ece80200005355568b30578db9b00400003bff8b5f047405e8ef202f003bf30f84aa0500003b7704f30f1005a476f800f30f1144241c7505e8cf202f003b7704d944241cd86668d95c24187505e8ba202f008b4e0880795c000f84c60400003b77047505e8a3202f00d9442418d87624d95c2410d9442410d9eedff1ddd80f86dc0400000f57c0f30f114424143b77047505e875202f003b77048b5e08750fe868202f003b77047505e85e202f003b7704d9460cd94424140f57c0f30f100d4ca2d700d9c0decaf30f118424bc000000d9c9f30f118424c0000000f30f118424c4000000d95c242cf30f118424c8000000d94610f30f118424d0000000d8c9f30f118424d4000000f30f118424d8000000f30f118424dc000000d95c2430f30f118424e4000000d94614f30f1044242cd8c9f30f118424e8000000f30f10442430f30f118424ec000000d95c2434f30f118c24b8000000f30f10442434f30f118c24cc000000f30f118c24e0000000f30f118424f0000000f30f118c24f4000000750bddd8e8821f2f00d9442414d84e188d5424288d8c2478020000d95c2410d9442410d9e0d95c2428e88afe25003b7704f30f1000f30f11442438f30f104004f30f1144243cf30f104008f30f11442440f30f10400cf30f11442444f30f104010f30f11442448f30f104014f30f1144244cf30f104018f30f11442450f30f10401cf30f11442454f30f104020f30f11442458f30f104024f30f1144245cf30f104028f30f11442460f30f10402cf30f11442464f30f104030f30f11442468f30f104034f30f1144246cf30f104038f30f11442470f30f10403cf30f114424747505e8a41e2f00d9461c8d542420d84c24148d8c2438010000d95c2410d9442410d9e0d95c2420e84cfe25003b7704f30f1000f30f11442478f30f104004f30f1144247cf30f104008f30f11842480000000f30f10400cf30f11842484000000f30f104010f30f11842488000000f30f104014f30f1184248c000000f30f104018f30f11842490000000f30f10401cf30f11842494000000f30f104020f30f11842498000000f30f104024f30f1184249c000000f30f104028f30f118424a0000000f30f10402cf30f118424a4000000f30f104030f30f118424a8000000f30f104034f30f118424ac000000f30f104038f30f118424b0000000f30f10403cf30f118424b40000007505e89c1d2f00d946208d542424d84c24148d8c24f8010000d95c2410d9442410d9e0d95c2424e8e4fd2500f30f1000f30f118424f8000000f30f104004f30f118424fc000000f30f104008f30f11842400010000f30f10400cf30f11842404010000f30f104010f30f11842408010000f30f104014f30f1184240c010000f30f104018f30f11842410010000f30f10401cf30f11842414010000f30f104020f30f11842418010000f30f1040248b2bf30f1184241c010000f30f104028f30f11842420010000f30f10402cf30f11842424010000f30f104030f30f11842428010000f30f104034f30f1184242c010000f30f104038f30f11842430010000f30f10403c8d5628528d84247c010000508d8c24c0000000518d9424c4010000528d442448508d8c244c020000518d942490000000528d8424d4020000508d8c2418010000f30f1184245401000081c588000000e858eeb0ff8bc8e851eeb0ff8bc8e84aeeb0ff8bc8e843eeb0ff8b5500508bcbffd23b77047505e8241c2f008b46088b684885edc680c800000000c6800c01000000740e8bcde842a2b2ff8b6d4485ed75f23b77047505e8f41b2f008b4e088b018b90d8000000ffd23b77047505e8dd1b2f008b460880785c00744a3b77047505e8ca1b2f00d94624d9442418dff1ddd877333b77047505e8b31b2f008b36e9b1fafffff30f10442410f30f100d4ca2d7000f2fc10f8610fbfffff30f114c2414e90bfbffff3b77048bee7505e87e1b2f0085ff8b367505e8731b2f003b6f04750ee8691b2f003b6f040f8465faffff8b4d048b550089118b45008b4d0455894804e8e2192f0083c404834708ffe942faffff5f5e5d5b81c4e8020000c20400",
+      "live_equals_pe": true,
+      "decoded_instructions": 323,
+      "complete_contiguous_decode": true,
+      "control_transfers": [
+        {
+          "address": "0090461d",
+          "mnemonic": "je",
+          "operands": "0x904624",
+          "immediate": "00904624"
+        },
+        {
+          "address": "0090461f",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904626",
+          "mnemonic": "je",
+          "operands": "0x904bd6",
+          "immediate": "00904bd6"
+        },
+        {
+          "address": "0090463d",
+          "mnemonic": "jne",
+          "operands": "0x904644",
+          "immediate": "00904644"
+        },
+        {
+          "address": "0090463f",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904652",
+          "mnemonic": "jne",
+          "operands": "0x904659",
+          "immediate": "00904659"
+        },
+        {
+          "address": "00904654",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904660",
+          "mnemonic": "je",
+          "operands": "0x904b2c",
+          "immediate": "00904b2c"
+        },
+        {
+          "address": "00904669",
+          "mnemonic": "jne",
+          "operands": "0x904670",
+          "immediate": "00904670"
+        },
+        {
+          "address": "0090466b",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904685",
+          "mnemonic": "jbe",
+          "operands": "0x904b67",
+          "immediate": "00904b67"
+        },
+        {
+          "address": "00904697",
+          "mnemonic": "jne",
+          "operands": "0x90469e",
+          "immediate": "0090469e"
+        },
+        {
+          "address": "00904699",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "009046a4",
+          "mnemonic": "jne",
+          "operands": "0x9046b5",
+          "immediate": "009046b5"
+        },
+        {
+          "address": "009046a6",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "009046ae",
+          "mnemonic": "jne",
+          "operands": "0x9046b5",
+          "immediate": "009046b5"
+        },
+        {
+          "address": "009046b0",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904788",
+          "mnemonic": "jne",
+          "operands": "0x904795",
+          "immediate": "00904795"
+        },
+        {
+          "address": "0090478c",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "009047b1",
+          "mnemonic": "call",
+          "operands": "0xb64640",
+          "immediate": "00b64640"
+        },
+        {
+          "address": "00904868",
+          "mnemonic": "jne",
+          "operands": "0x90486f",
+          "immediate": "0090486f"
+        },
+        {
+          "address": "0090486a",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "0090488f",
+          "mnemonic": "call",
+          "operands": "0xb646e0",
+          "immediate": "00b646e0"
+        },
+        {
+          "address": "00904970",
+          "mnemonic": "jne",
+          "operands": "0x904977",
+          "immediate": "00904977"
+        },
+        {
+          "address": "00904972",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904997",
+          "mnemonic": "call",
+          "operands": "0xb64780",
+          "immediate": "00b64780"
+        },
+        {
+          "address": "00904ac3",
+          "mnemonic": "call",
+          "operands": "0x413920",
+          "immediate": "00413920"
+        },
+        {
+          "address": "00904aca",
+          "mnemonic": "call",
+          "operands": "0x413920",
+          "immediate": "00413920"
+        },
+        {
+          "address": "00904ad1",
+          "mnemonic": "call",
+          "operands": "0x413920",
+          "immediate": "00413920"
+        },
+        {
+          "address": "00904ad8",
+          "mnemonic": "call",
+          "operands": "0x413920",
+          "immediate": "00413920"
+        },
+        {
+          "address": "00904ae3",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00904ae8",
+          "mnemonic": "jne",
+          "operands": "0x904aef",
+          "immediate": "00904aef"
+        },
+        {
+          "address": "00904aea",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904b05",
+          "mnemonic": "je",
+          "operands": "0x904b15",
+          "immediate": "00904b15"
+        },
+        {
+          "address": "00904b09",
+          "mnemonic": "call",
+          "operands": "0x42ed50",
+          "immediate": "0042ed50"
+        },
+        {
+          "address": "00904b13",
+          "mnemonic": "jne",
+          "operands": "0x904b07",
+          "immediate": "00904b07"
+        },
+        {
+          "address": "00904b18",
+          "mnemonic": "jne",
+          "operands": "0x904b1f",
+          "immediate": "00904b1f"
+        },
+        {
+          "address": "00904b1a",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904b2a",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00904b2f",
+          "mnemonic": "jne",
+          "operands": "0x904b36",
+          "immediate": "00904b36"
+        },
+        {
+          "address": "00904b31",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904b3d",
+          "mnemonic": "je",
+          "operands": "0x904b89",
+          "immediate": "00904b89"
+        },
+        {
+          "address": "00904b42",
+          "mnemonic": "jne",
+          "operands": "0x904b49",
+          "immediate": "00904b49"
+        },
+        {
+          "address": "00904b44",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904b54",
+          "mnemonic": "ja",
+          "operands": "0x904b89",
+          "immediate": "00904b89"
+        },
+        {
+          "address": "00904b59",
+          "mnemonic": "jne",
+          "operands": "0x904b60",
+          "immediate": "00904b60"
+        },
+        {
+          "address": "00904b5b",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904b62",
+          "mnemonic": "jmp",
+          "operands": "0x904618",
+          "immediate": "00904618"
+        },
+        {
+          "address": "00904b78",
+          "mnemonic": "jbe",
+          "operands": "0x90468e",
+          "immediate": "0090468e"
+        },
+        {
+          "address": "00904b84",
+          "mnemonic": "jmp",
+          "operands": "0x904694",
+          "immediate": "00904694"
+        },
+        {
+          "address": "00904b8e",
+          "mnemonic": "jne",
+          "operands": "0x904b95",
+          "immediate": "00904b95"
+        },
+        {
+          "address": "00904b90",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904b99",
+          "mnemonic": "jne",
+          "operands": "0x904ba0",
+          "immediate": "00904ba0"
+        },
+        {
+          "address": "00904b9b",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904ba3",
+          "mnemonic": "jne",
+          "operands": "0x904bb3",
+          "immediate": "00904bb3"
+        },
+        {
+          "address": "00904ba5",
+          "mnemonic": "call",
+          "operands": "0xbf6713",
+          "immediate": "00bf6713"
+        },
+        {
+          "address": "00904bad",
+          "mnemonic": "je",
+          "operands": "0x904618",
+          "immediate": "00904618"
+        },
+        {
+          "address": "00904bc5",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "immediate": "00bf65ac"
+        },
+        {
+          "address": "00904bd1",
+          "mnemonic": "jmp",
+          "operands": "0x904618",
+          "immediate": "00904618"
+        },
+        {
+          "address": "00904be0",
+          "mnemonic": "ret",
+          "operands": "4",
+          "immediate": "00000004"
+        }
+      ],
+      "complete_instruction_listing": [
+        "00904600 8b81b4040000 mov eax, dword ptr [ecx + 0x4b4]",
+        "00904606 81ece8020000 sub esp, 0x2e8",
+        "0090460c 53 push ebx",
+        "0090460d 55 push ebp",
+        "0090460e 56 push esi",
+        "0090460f 8b30 mov esi, dword ptr [eax]",
+        "00904611 57 push edi",
+        "00904612 8db9b0040000 lea edi, [ecx + 0x4b0]",
+        "00904618 3bff cmp edi, edi",
+        "0090461a 8b5f04 mov ebx, dword ptr [edi + 4]",
+        "0090461d 7405 je 0x904624",
+        "0090461f e8ef202f00 call 0xbf6713",
+        "00904624 3bf3 cmp esi, ebx",
+        "00904626 0f84aa050000 je 0x904bd6",
+        "0090462c 3b7704 cmp esi, dword ptr [edi + 4]",
+        "0090462f f30f1005a476f800 movss xmm0, dword ptr [0xf876a4]",
+        "00904637 f30f1144241c movss dword ptr [esp + 0x1c], xmm0",
+        "0090463d 7505 jne 0x904644",
+        "0090463f e8cf202f00 call 0xbf6713",
+        "00904644 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904647 d944241c fld dword ptr [esp + 0x1c]",
+        "0090464b d86668 fsub dword ptr [esi + 0x68]",
+        "0090464e d95c2418 fstp dword ptr [esp + 0x18]",
+        "00904652 7505 jne 0x904659",
+        "00904654 e8ba202f00 call 0xbf6713",
+        "00904659 8b4e08 mov ecx, dword ptr [esi + 8]",
+        "0090465c 80795c00 cmp byte ptr [ecx + 0x5c], 0",
+        "00904660 0f84c6040000 je 0x904b2c",
+        "00904666 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904669 7505 jne 0x904670",
+        "0090466b e8a3202f00 call 0xbf6713",
+        "00904670 d9442418 fld dword ptr [esp + 0x18]",
+        "00904674 d87624 fdiv dword ptr [esi + 0x24]",
+        "00904677 d95c2410 fstp dword ptr [esp + 0x10]",
+        "0090467b d9442410 fld dword ptr [esp + 0x10]",
+        "0090467f d9ee fldz",
+        "00904681 dff1 fcompi st(1)",
+        "00904683 ddd8 fstp st(0)",
+        "00904685 0f86dc040000 jbe 0x904b67",
+        "0090468b 0f57c0 xorps xmm0, xmm0",
+        "0090468e f30f11442414 movss dword ptr [esp + 0x14], xmm0",
+        "00904694 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904697 7505 jne 0x90469e",
+        "00904699 e875202f00 call 0xbf6713",
+        "0090469e 3b7704 cmp esi, dword ptr [edi + 4]",
+        "009046a1 8b5e08 mov ebx, dword ptr [esi + 8]",
+        "009046a4 750f jne 0x9046b5",
+        "009046a6 e868202f00 call 0xbf6713",
+        "009046ab 3b7704 cmp esi, dword ptr [edi + 4]",
+        "009046ae 7505 jne 0x9046b5",
+        "009046b0 e85e202f00 call 0xbf6713",
+        "009046b5 3b7704 cmp esi, dword ptr [edi + 4]",
+        "009046b8 d9460c fld dword ptr [esi + 0xc]",
+        "009046bb d9442414 fld dword ptr [esp + 0x14]",
+        "009046bf 0f57c0 xorps xmm0, xmm0",
+        "009046c2 f30f100d4ca2d700 movss xmm1, dword ptr [0xd7a24c]",
+        "009046ca d9c0 fld st(0)",
+        "009046cc deca fmulp st(2)",
+        "009046ce f30f118424bc000000 movss dword ptr [esp + 0xbc], xmm0",
+        "009046d7 d9c9 fxch st(1)",
+        "009046d9 f30f118424c0000000 movss dword ptr [esp + 0xc0], xmm0",
+        "009046e2 f30f118424c4000000 movss dword ptr [esp + 0xc4], xmm0",
+        "009046eb d95c242c fstp dword ptr [esp + 0x2c]",
+        "009046ef f30f118424c8000000 movss dword ptr [esp + 0xc8], xmm0",
+        "009046f8 d94610 fld dword ptr [esi + 0x10]",
+        "009046fb f30f118424d0000000 movss dword ptr [esp + 0xd0], xmm0",
+        "00904704 d8c9 fmul st(1)",
+        "00904706 f30f118424d4000000 movss dword ptr [esp + 0xd4], xmm0",
+        "0090470f f30f118424d8000000 movss dword ptr [esp + 0xd8], xmm0",
+        "00904718 f30f118424dc000000 movss dword ptr [esp + 0xdc], xmm0",
+        "00904721 d95c2430 fstp dword ptr [esp + 0x30]",
+        "00904725 f30f118424e4000000 movss dword ptr [esp + 0xe4], xmm0",
+        "0090472e d94614 fld dword ptr [esi + 0x14]",
+        "00904731 f30f1044242c movss xmm0, dword ptr [esp + 0x2c]",
+        "00904737 d8c9 fmul st(1)",
+        "00904739 f30f118424e8000000 movss dword ptr [esp + 0xe8], xmm0",
+        "00904742 f30f10442430 movss xmm0, dword ptr [esp + 0x30]",
+        "00904748 f30f118424ec000000 movss dword ptr [esp + 0xec], xmm0",
+        "00904751 d95c2434 fstp dword ptr [esp + 0x34]",
+        "00904755 f30f118c24b8000000 movss dword ptr [esp + 0xb8], xmm1",
+        "0090475e f30f10442434 movss xmm0, dword ptr [esp + 0x34]",
+        "00904764 f30f118c24cc000000 movss dword ptr [esp + 0xcc], xmm1",
+        "0090476d f30f118c24e0000000 movss dword ptr [esp + 0xe0], xmm1",
+        "00904776 f30f118424f0000000 movss dword ptr [esp + 0xf0], xmm0",
+        "0090477f f30f118c24f4000000 movss dword ptr [esp + 0xf4], xmm1",
+        "00904788 750b jne 0x904795",
+        "0090478a ddd8 fstp st(0)",
+        "0090478c e8821f2f00 call 0xbf6713",
+        "00904791 d9442414 fld dword ptr [esp + 0x14]",
+        "00904795 d84e18 fmul dword ptr [esi + 0x18]",
+        "00904798 8d542428 lea edx, [esp + 0x28]",
+        "0090479c 8d8c2478020000 lea ecx, [esp + 0x278]",
+        "009047a3 d95c2410 fstp dword ptr [esp + 0x10]",
+        "009047a7 d9442410 fld dword ptr [esp + 0x10]",
+        "009047ab d9e0 fchs",
+        "009047ad d95c2428 fstp dword ptr [esp + 0x28]",
+        "009047b1 e88afe2500 call 0xb64640",
+        "009047b6 3b7704 cmp esi, dword ptr [edi + 4]",
+        "009047b9 f30f1000 movss xmm0, dword ptr [eax]",
+        "009047bd f30f11442438 movss dword ptr [esp + 0x38], xmm0",
+        "009047c3 f30f104004 movss xmm0, dword ptr [eax + 4]",
+        "009047c8 f30f1144243c movss dword ptr [esp + 0x3c], xmm0",
+        "009047ce f30f104008 movss xmm0, dword ptr [eax + 8]",
+        "009047d3 f30f11442440 movss dword ptr [esp + 0x40], xmm0",
+        "009047d9 f30f10400c movss xmm0, dword ptr [eax + 0xc]",
+        "009047de f30f11442444 movss dword ptr [esp + 0x44], xmm0",
+        "009047e4 f30f104010 movss xmm0, dword ptr [eax + 0x10]",
+        "009047e9 f30f11442448 movss dword ptr [esp + 0x48], xmm0",
+        "009047ef f30f104014 movss xmm0, dword ptr [eax + 0x14]",
+        "009047f4 f30f1144244c movss dword ptr [esp + 0x4c], xmm0",
+        "009047fa f30f104018 movss xmm0, dword ptr [eax + 0x18]",
+        "009047ff f30f11442450 movss dword ptr [esp + 0x50], xmm0",
+        "00904805 f30f10401c movss xmm0, dword ptr [eax + 0x1c]",
+        "0090480a f30f11442454 movss dword ptr [esp + 0x54], xmm0",
+        "00904810 f30f104020 movss xmm0, dword ptr [eax + 0x20]",
+        "00904815 f30f11442458 movss dword ptr [esp + 0x58], xmm0",
+        "0090481b f30f104024 movss xmm0, dword ptr [eax + 0x24]",
+        "00904820 f30f1144245c movss dword ptr [esp + 0x5c], xmm0",
+        "00904826 f30f104028 movss xmm0, dword ptr [eax + 0x28]",
+        "0090482b f30f11442460 movss dword ptr [esp + 0x60], xmm0",
+        "00904831 f30f10402c movss xmm0, dword ptr [eax + 0x2c]",
+        "00904836 f30f11442464 movss dword ptr [esp + 0x64], xmm0",
+        "0090483c f30f104030 movss xmm0, dword ptr [eax + 0x30]",
+        "00904841 f30f11442468 movss dword ptr [esp + 0x68], xmm0",
+        "00904847 f30f104034 movss xmm0, dword ptr [eax + 0x34]",
+        "0090484c f30f1144246c movss dword ptr [esp + 0x6c], xmm0",
+        "00904852 f30f104038 movss xmm0, dword ptr [eax + 0x38]",
+        "00904857 f30f11442470 movss dword ptr [esp + 0x70], xmm0",
+        "0090485d f30f10403c movss xmm0, dword ptr [eax + 0x3c]",
+        "00904862 f30f11442474 movss dword ptr [esp + 0x74], xmm0",
+        "00904868 7505 jne 0x90486f",
+        "0090486a e8a41e2f00 call 0xbf6713",
+        "0090486f d9461c fld dword ptr [esi + 0x1c]",
+        "00904872 8d542420 lea edx, [esp + 0x20]",
+        "00904876 d84c2414 fmul dword ptr [esp + 0x14]",
+        "0090487a 8d8c2438010000 lea ecx, [esp + 0x138]",
+        "00904881 d95c2410 fstp dword ptr [esp + 0x10]",
+        "00904885 d9442410 fld dword ptr [esp + 0x10]",
+        "00904889 d9e0 fchs",
+        "0090488b d95c2420 fstp dword ptr [esp + 0x20]",
+        "0090488f e84cfe2500 call 0xb646e0",
+        "00904894 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904897 f30f1000 movss xmm0, dword ptr [eax]",
+        "0090489b f30f11442478 movss dword ptr [esp + 0x78], xmm0",
+        "009048a1 f30f104004 movss xmm0, dword ptr [eax + 4]",
+        "009048a6 f30f1144247c movss dword ptr [esp + 0x7c], xmm0",
+        "009048ac f30f104008 movss xmm0, dword ptr [eax + 8]",
+        "009048b1 f30f11842480000000 movss dword ptr [esp + 0x80], xmm0",
+        "009048ba f30f10400c movss xmm0, dword ptr [eax + 0xc]",
+        "009048bf f30f11842484000000 movss dword ptr [esp + 0x84], xmm0",
+        "009048c8 f30f104010 movss xmm0, dword ptr [eax + 0x10]",
+        "009048cd f30f11842488000000 movss dword ptr [esp + 0x88], xmm0",
+        "009048d6 f30f104014 movss xmm0, dword ptr [eax + 0x14]",
+        "009048db f30f1184248c000000 movss dword ptr [esp + 0x8c], xmm0",
+        "009048e4 f30f104018 movss xmm0, dword ptr [eax + 0x18]",
+        "009048e9 f30f11842490000000 movss dword ptr [esp + 0x90], xmm0",
+        "009048f2 f30f10401c movss xmm0, dword ptr [eax + 0x1c]",
+        "009048f7 f30f11842494000000 movss dword ptr [esp + 0x94], xmm0",
+        "00904900 f30f104020 movss xmm0, dword ptr [eax + 0x20]",
+        "00904905 f30f11842498000000 movss dword ptr [esp + 0x98], xmm0",
+        "0090490e f30f104024 movss xmm0, dword ptr [eax + 0x24]",
+        "00904913 f30f1184249c000000 movss dword ptr [esp + 0x9c], xmm0",
+        "0090491c f30f104028 movss xmm0, dword ptr [eax + 0x28]",
+        "00904921 f30f118424a0000000 movss dword ptr [esp + 0xa0], xmm0",
+        "0090492a f30f10402c movss xmm0, dword ptr [eax + 0x2c]",
+        "0090492f f30f118424a4000000 movss dword ptr [esp + 0xa4], xmm0",
+        "00904938 f30f104030 movss xmm0, dword ptr [eax + 0x30]",
+        "0090493d f30f118424a8000000 movss dword ptr [esp + 0xa8], xmm0",
+        "00904946 f30f104034 movss xmm0, dword ptr [eax + 0x34]",
+        "0090494b f30f118424ac000000 movss dword ptr [esp + 0xac], xmm0",
+        "00904954 f30f104038 movss xmm0, dword ptr [eax + 0x38]",
+        "00904959 f30f118424b0000000 movss dword ptr [esp + 0xb0], xmm0",
+        "00904962 f30f10403c movss xmm0, dword ptr [eax + 0x3c]",
+        "00904967 f30f118424b4000000 movss dword ptr [esp + 0xb4], xmm0",
+        "00904970 7505 jne 0x904977",
+        "00904972 e89c1d2f00 call 0xbf6713",
+        "00904977 d94620 fld dword ptr [esi + 0x20]",
+        "0090497a 8d542424 lea edx, [esp + 0x24]",
+        "0090497e d84c2414 fmul dword ptr [esp + 0x14]",
+        "00904982 8d8c24f8010000 lea ecx, [esp + 0x1f8]",
+        "00904989 d95c2410 fstp dword ptr [esp + 0x10]",
+        "0090498d d9442410 fld dword ptr [esp + 0x10]",
+        "00904991 d9e0 fchs",
+        "00904993 d95c2424 fstp dword ptr [esp + 0x24]",
+        "00904997 e8e4fd2500 call 0xb64780",
+        "0090499c f30f1000 movss xmm0, dword ptr [eax]",
+        "009049a0 f30f118424f8000000 movss dword ptr [esp + 0xf8], xmm0",
+        "009049a9 f30f104004 movss xmm0, dword ptr [eax + 4]",
+        "009049ae f30f118424fc000000 movss dword ptr [esp + 0xfc], xmm0",
+        "009049b7 f30f104008 movss xmm0, dword ptr [eax + 8]",
+        "009049bc f30f11842400010000 movss dword ptr [esp + 0x100], xmm0",
+        "009049c5 f30f10400c movss xmm0, dword ptr [eax + 0xc]",
+        "009049ca f30f11842404010000 movss dword ptr [esp + 0x104], xmm0",
+        "009049d3 f30f104010 movss xmm0, dword ptr [eax + 0x10]",
+        "009049d8 f30f11842408010000 movss dword ptr [esp + 0x108], xmm0",
+        "009049e1 f30f104014 movss xmm0, dword ptr [eax + 0x14]",
+        "009049e6 f30f1184240c010000 movss dword ptr [esp + 0x10c], xmm0",
+        "009049ef f30f104018 movss xmm0, dword ptr [eax + 0x18]",
+        "009049f4 f30f11842410010000 movss dword ptr [esp + 0x110], xmm0",
+        "009049fd f30f10401c movss xmm0, dword ptr [eax + 0x1c]",
+        "00904a02 f30f11842414010000 movss dword ptr [esp + 0x114], xmm0",
+        "00904a0b f30f104020 movss xmm0, dword ptr [eax + 0x20]",
+        "00904a10 f30f11842418010000 movss dword ptr [esp + 0x118], xmm0",
+        "00904a19 f30f104024 movss xmm0, dword ptr [eax + 0x24]",
+        "00904a1e 8b2b mov ebp, dword ptr [ebx]",
+        "00904a20 f30f1184241c010000 movss dword ptr [esp + 0x11c], xmm0",
+        "00904a29 f30f104028 movss xmm0, dword ptr [eax + 0x28]",
+        "00904a2e f30f11842420010000 movss dword ptr [esp + 0x120], xmm0",
+        "00904a37 f30f10402c movss xmm0, dword ptr [eax + 0x2c]",
+        "00904a3c f30f11842424010000 movss dword ptr [esp + 0x124], xmm0",
+        "00904a45 f30f104030 movss xmm0, dword ptr [eax + 0x30]",
+        "00904a4a f30f11842428010000 movss dword ptr [esp + 0x128], xmm0",
+        "00904a53 f30f104034 movss xmm0, dword ptr [eax + 0x34]",
+        "00904a58 f30f1184242c010000 movss dword ptr [esp + 0x12c], xmm0",
+        "00904a61 f30f104038 movss xmm0, dword ptr [eax + 0x38]",
+        "00904a66 f30f11842430010000 movss dword ptr [esp + 0x130], xmm0",
+        "00904a6f f30f10403c movss xmm0, dword ptr [eax + 0x3c]",
+        "00904a74 8d5628 lea edx, [esi + 0x28]",
+        "00904a77 52 push edx",
+        "00904a78 8d84247c010000 lea eax, [esp + 0x17c]",
+        "00904a7f 50 push eax",
+        "00904a80 8d8c24c0000000 lea ecx, [esp + 0xc0]",
+        "00904a87 51 push ecx",
+        "00904a88 8d9424c4010000 lea edx, [esp + 0x1c4]",
+        "00904a8f 52 push edx",
+        "00904a90 8d442448 lea eax, [esp + 0x48]",
+        "00904a94 50 push eax",
+        "00904a95 8d8c244c020000 lea ecx, [esp + 0x24c]",
+        "00904a9c 51 push ecx",
+        "00904a9d 8d942490000000 lea edx, [esp + 0x90]",
+        "00904aa4 52 push edx",
+        "00904aa5 8d8424d4020000 lea eax, [esp + 0x2d4]",
+        "00904aac 50 push eax",
+        "00904aad 8d8c2418010000 lea ecx, [esp + 0x118]",
+        "00904ab4 f30f11842454010000 movss dword ptr [esp + 0x154], xmm0",
+        "00904abd 81c588000000 add ebp, 0x88",
+        "00904ac3 e858eeb0ff call 0x413920",
+        "00904ac8 8bc8 mov ecx, eax",
+        "00904aca e851eeb0ff call 0x413920",
+        "00904acf 8bc8 mov ecx, eax",
+        "00904ad1 e84aeeb0ff call 0x413920",
+        "00904ad6 8bc8 mov ecx, eax",
+        "00904ad8 e843eeb0ff call 0x413920",
+        "00904add 8b5500 mov edx, dword ptr [ebp]",
+        "00904ae0 50 push eax",
+        "00904ae1 8bcb mov ecx, ebx",
+        "00904ae3 ffd2 call edx",
+        "00904ae5 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904ae8 7505 jne 0x904aef",
+        "00904aea e8241c2f00 call 0xbf6713",
+        "00904aef 8b4608 mov eax, dword ptr [esi + 8]",
+        "00904af2 8b6848 mov ebp, dword ptr [eax + 0x48]",
+        "00904af5 85ed test ebp, ebp",
+        "00904af7 c680c800000000 mov byte ptr [eax + 0xc8], 0",
+        "00904afe c6800c01000000 mov byte ptr [eax + 0x10c], 0",
+        "00904b05 740e je 0x904b15",
+        "00904b07 8bcd mov ecx, ebp",
+        "00904b09 e842a2b2ff call 0x42ed50",
+        "00904b0e 8b6d44 mov ebp, dword ptr [ebp + 0x44]",
+        "00904b11 85ed test ebp, ebp",
+        "00904b13 75f2 jne 0x904b07",
+        "00904b15 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904b18 7505 jne 0x904b1f",
+        "00904b1a e8f41b2f00 call 0xbf6713",
+        "00904b1f 8b4e08 mov ecx, dword ptr [esi + 8]",
+        "00904b22 8b01 mov eax, dword ptr [ecx]",
+        "00904b24 8b90d8000000 mov edx, dword ptr [eax + 0xd8]",
+        "00904b2a ffd2 call edx",
+        "00904b2c 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904b2f 7505 jne 0x904b36",
+        "00904b31 e8dd1b2f00 call 0xbf6713",
+        "00904b36 8b4608 mov eax, dword ptr [esi + 8]",
+        "00904b39 80785c00 cmp byte ptr [eax + 0x5c], 0",
+        "00904b3d 744a je 0x904b89",
+        "00904b3f 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904b42 7505 jne 0x904b49",
+        "00904b44 e8ca1b2f00 call 0xbf6713",
+        "00904b49 d94624 fld dword ptr [esi + 0x24]",
+        "00904b4c d9442418 fld dword ptr [esp + 0x18]",
+        "00904b50 dff1 fcompi st(1)",
+        "00904b52 ddd8 fstp st(0)",
+        "00904b54 7733 ja 0x904b89",
+        "00904b56 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904b59 7505 jne 0x904b60",
+        "00904b5b e8b31b2f00 call 0xbf6713",
+        "00904b60 8b36 mov esi, dword ptr [esi]",
+        "00904b62 e9b1faffff jmp 0x904618",
+        "00904b67 f30f10442410 movss xmm0, dword ptr [esp + 0x10]",
+        "00904b6d f30f100d4ca2d700 movss xmm1, dword ptr [0xd7a24c]",
+        "00904b75 0f2fc1 comiss xmm0, xmm1",
+        "00904b78 0f8610fbffff jbe 0x90468e",
+        "00904b7e f30f114c2414 movss dword ptr [esp + 0x14], xmm1",
+        "00904b84 e90bfbffff jmp 0x904694",
+        "00904b89 3b7704 cmp esi, dword ptr [edi + 4]",
+        "00904b8c 8bee mov ebp, esi",
+        "00904b8e 7505 jne 0x904b95",
+        "00904b90 e87e1b2f00 call 0xbf6713",
+        "00904b95 85ff test edi, edi",
+        "00904b97 8b36 mov esi, dword ptr [esi]",
+        "00904b99 7505 jne 0x904ba0",
+        "00904b9b e8731b2f00 call 0xbf6713",
+        "00904ba0 3b6f04 cmp ebp, dword ptr [edi + 4]",
+        "00904ba3 750e jne 0x904bb3",
+        "00904ba5 e8691b2f00 call 0xbf6713",
+        "00904baa 3b6f04 cmp ebp, dword ptr [edi + 4]",
+        "00904bad 0f8465faffff je 0x904618",
+        "00904bb3 8b4d04 mov ecx, dword ptr [ebp + 4]",
+        "00904bb6 8b5500 mov edx, dword ptr [ebp]",
+        "00904bb9 8911 mov dword ptr [ecx], edx",
+        "00904bbb 8b4500 mov eax, dword ptr [ebp]",
+        "00904bbe 8b4d04 mov ecx, dword ptr [ebp + 4]",
+        "00904bc1 55 push ebp",
+        "00904bc2 894804 mov dword ptr [eax + 4], ecx",
+        "00904bc5 e8e2192f00 call 0xbf65ac",
+        "00904bca 83c404 add esp, 4",
+        "00904bcd 834708ff add dword ptr [edi + 8], -1",
+        "00904bd1 e942faffff jmp 0x904618",
+        "00904bd6 5f pop edi",
+        "00904bd7 5e pop esi",
+        "00904bd8 5d pop ebp",
+        "00904bd9 5b pop ebx",
+        "00904bda 81c4e8020000 add esp, 0x2e8",
+        "00904be0 c20400 ret 4"
+      ],
+      "all_non_call_branch_targets_inside_body": true,
+      "decoded_call_count": 29
+    }
+  ],
+  "native_abi": {
+    "00904bf0": {
+      "receiver": "ECX actual World",
+      "stack_arguments": [
+        "one float32 delta"
+      ],
+      "return": "RET4; return value not consumed",
+      "preserved_registers": [
+        "ESI",
+        "EDI"
+      ],
+      "argument_forwarding": "each active slotDC call and unconditional904600 tail receive an FLD/FSTP float32 round trip"
+    },
+    "00904600": {
+      "receiver": "ECX actual World",
+      "stack_arguments": [
+        "one unused float32 delta"
+      ],
+      "return": "RET4",
+      "preserved_registers": [
+        "EBX",
+        "EBP",
+        "ESI",
+        "EDI"
+      ],
+      "local_frame_bytes": 744,
+      "unused_argument_frame_offset": "ESP+2FC after local frame and four register saves; no read in body"
+    },
+    "entity_slot_dc": {
+      "receiver": "ECX current entity",
+      "stack_arguments": [
+        "one FLD/FSTP-forwarded float32"
+      ],
+      "cleanup": "callee consumes 4 bytes",
+      "return_value": "ignored"
+    },
+    "entity_slot_88": {
+      "receiver": "ECX captured entity",
+      "stack_arguments": [
+        "pointer to actual computed 64-byte matrix"
+      ],
+      "cleanup": "callee consumes 4 bytes",
+      "return_value": "ignored"
+    },
+    "entity_slot_d8": {
+      "receiver": "ECX freshly reloaded record entity",
+      "stack_arguments": [],
+      "cleanup": "no arguments",
+      "return_value": "ignored"
+    },
+    "rotation_helpers": {
+      "addresses": [
+        "00b64640",
+        "00b646e0",
+        "00b64780"
+      ],
+      "receiver": "ECX 64-byte output",
+      "angle": "EDX float pointer",
+      "return": "EAX output; no native stack argument"
+    },
+    "matrix_multiply": {
+      "address": "00413920",
+      "left": "ECX",
+      "stack_arguments": [
+        "destination",
+        "right"
+      ],
+      "return": "EAX destination; RET8"
+    }
+  },
+  "ghidra_metadata_limits": {
+    "live_prototypes": "No-parameter prototype metadata and decompiler fastcall inference are superseded by the complete native instruction evidence for the two owned entries.",
+    "matrix_signature_metric_instruction_count": 320,
+    "matrix_complete_live_listing_and_pe_decode_instruction_count": 323,
+    "listed_gaps": {
+      "00904bf0": 0,
+      "00904600": 0
+    },
+    "stale_projection_comment": "World projected header still calls904BCA..904BD5 undisassembled; current listing and bytes include all three instructions.",
+    "exact_flow_properties_verified": false,
+    "flow_properties_read_only": true,
+    "flow_properties_query_utc": "2026-10-09T03:52:42.745864+00:00",
+    "flow_properties_endpoint": "run_script_inline",
+    "flow_properties_http_status": 200,
+    "flow_properties_error": {
+      "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process."
+    },
+    "verified_before": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4636,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64729,
+        "symbol_count": 145557,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "verified_after": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 4636,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64729,
+        "symbol_count": 145557,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "mutation_fallback_attempted": false,
+    "analysis_repair_admitted": false,
+    "machine_control_flow_distinction": "Encoded branch/call/RET schedule is fully retained and decoded independently. This does not establish Ghidra override/no-return metadata or Native exception behavior."
+  },
+  "entity_walk_schedule": [
+    {
+      "sites": "00904bf4..00904bf7",
+      "effect": "read World+4 once, then header.first; no count read or null-header repair"
+    },
+    {
+      "sites": "00904c00..00904c04",
+      "effect": "read actual current entity byte+5C; skip only when zero"
+    },
+    {
+      "sites": "00904c06..00904c18",
+      "effect": "capture current entity table, FLD incoming float, load table slotDC, push/store float with FSTP, set ECX current entity and invoke"
+    },
+    {
+      "site": "00904c1a",
+      "effect": "reload same entity+38 after callback; do not capture successor early or reload World header"
+    },
+    {
+      "sites": "00904c21..00904c2b",
+      "effect": "unconditional FLD/FSTP forwarding to904600 using originally retained World receiver, including empty chain"
+    },
+    {
+      "site": "00904c32",
+      "effect": "restore saved registers and RET4"
+    }
+  ],
+  "matrix_storage": {
+    "world_bytes": 1212,
+    "list_base_world_offset": "4B0",
+    "current_sentinel_world_offset": "4B4",
+    "count_world_offset": "4B8",
+    "node_bytes": 108,
+    "node_fields": {
+      "next": "00",
+      "previous": "04",
+      "record": "08"
+    },
+    "record_bytes": 100,
+    "record_fields": {
+      "entity": "00",
+      "translation": "04,08,0C",
+      "angles": "10,14,18",
+      "duration": "1C",
+      "base_matrix": "20..5F",
+      "start_time": "60"
+    },
+    "initial_node": "[[World+4B4]]",
+    "retained_header_address": "EDI = World+4B0",
+    "sentinel_policy": "current header.head reloaded at every native compare/validation site"
+  },
+  "matrix_numeric_schedule": [
+    {
+      "sites": "0090462f..0090464e",
+      "effect": "load current mission-clock bits once per reached record before the validator, subtract current start time through x87 after validation, spill elapsed to float32"
+    },
+    {
+      "sites": "00904670..00904677",
+      "effect": "divide that captured elapsed by current duration through x87 and spill quotient to float32; do not recompute clock-start"
+    },
+    {
+      "sites": "0090467b..0090468e and00904b67..00904b84",
+      "effect": "FCOMIP lower clamp plus COMISS upper clamp; both JBE keep paths take unordered, so NaN survives"
+    },
+    {
+      "sites": "009046b8..00904751",
+      "effect": "scale three translation components in native x87 order with individual float32 spills; form full translation matrix"
+    },
+    {
+      "sites": "00904795..009047ad,0090486f..0090488b,00904977..00904993",
+      "effect": "multiply each angle, float32 spill/reload, FCHS and float32 spill before X/Y/Z helper"
+    },
+    {
+      "sites": "009047b1,0090488f,00904997",
+      "effect": "call X/Y/Z raw builders and copy sixteen DWORDs from each returned output"
+    },
+    {
+      "sites": "00904ac3,00904aca,00904ad1,00904ad8",
+      "effect": "four chained raw multiplies: ((Rz*Ry)*Rx)*translation*actual record.base; final base pointer is not an earlier snapshot"
+    }
+  ],
+  "matrix_receiver_schedule": [
+    {
+      "site": "00904659",
+      "capture": "current record entity for initial active gate"
+    },
+    {
+      "site": "009046a1",
+      "capture": "entity in EBX before following returning validators"
+    },
+    {
+      "site": "00904a1e",
+      "capture": "table from that EBX entity before matrix multiplies"
+    },
+    {
+      "sites": "00904add..00904ae3",
+      "capture": "load function from retained table slot88 after multiplies; invoke on captured EBX entity"
+    },
+    {
+      "sites": "00904ae5..00904b13",
+      "capture": "validate, reload record entity, capture child head+48, clear current entity+C8/+10C, invalidate each child with post-call child+44 reload"
+    },
+    {
+      "sites": "00904b15..00904b2a",
+      "capture": "validate, reload record entity/current table/slotD8, invoke without args"
+    },
+    {
+      "sites": "00904b2c..00904b39",
+      "capture": "validate and reload record entity/current active byte for expiry"
+    }
+  ],
+  "matrix_expiry_selector": {
+    "inactive": "expire after post-callback active-byte reload",
+    "active": "validate then load CURRENT duration; compare captured elapsed with x87 FCOMIP/JA",
+    "expires_only_when": "ordered elapsed strictly greater than current duration",
+    "equal": "retain",
+    "unordered": "retain if entity active",
+    "elapsed": "float32 captured before active gate and all entity callbacks",
+    "retained_advance": "validate then reload current node.next",
+    "scope": "matrix record retirement; no entity scalar destructor or separate entity-chain drain"
+  },
+  "matrix_erase_schedule": [
+    {
+      "sites": "00904b89..00904b90",
+      "effect": "compare current sentinel and capture node in EBP before returning validator"
+    },
+    {
+      "sites": "00904b95..00904b9b",
+      "effect": "test retained header address, capture current node.next in ESI, then call validator if header-address test was zero"
+    },
+    {
+      "sites": "00904ba0..00904bad",
+      "effect": "compare captured node with current sentinel, validate on equality, recheck; if still sentinel continue without unlink/free/decrement"
+    },
+    {
+      "sites": "00904bb3..00904bc2",
+      "effect": "write previous.next, reload both node links after that store, then write next.previous"
+    },
+    {
+      "sites": "00904bc5..00904bd1",
+      "effect": "free captured node, decrement CURRENT header count as DWORD, loop with previously captured successor; unlimited retirements per pass"
+    }
+  ],
+  "validator_contract": {
+    "native_address": "00bf6713",
+    "call_sites": 18,
+    "structurally_unreachable_site": "0090461f after CMP EDI,EDI/MOV/JZ",
+    "remaining_sites": "returning callbacks; preserve captures and required fresh header/record loads around them",
+    "source_interface": "SingletonLifetimeCallbacks::invalid_parameter exists; borrow genuine existing service rather than inventing no-op or exception-only behavior"
+  },
+  "source_interfaces_rejected_as_raw_providers": [
+    {
+      "name": "update_world_entities_00904bf0",
+      "reason": "vector<bool> and index callbacks do not represent intrusive entity identity, post-callback+38 reloads or actual table slots"
+    },
+    {
+      "name": "run_matrix_interpolator_pass_00904600",
+      "reason": "vector of projected records and by-value clock cannot supply actual node/sentinel/current-clock/allocator behavior"
+    },
+    {
+      "name": "GameWorld MatrixInterpolatorBinding",
+      "reason": "entity is an index token; entity_active always returns true; invalidation and refresh only record sites"
+    },
+    {
+      "name": "matrix_interpolator_rotation_x/y/z copies",
+      "reason": "std::sin/std::cos projection is not replacement evidence for exact native raw FSIN/FCOS services"
+    }
+  ],
+  "existing_concrete_dependencies": [
+    {
+      "name": "allocate_native_world_chain_headers_009037f0",
+      "provides": "two actual0Ch first/last/count headers in singleton allocation domain",
+      "does_not_provide": "World table, entity owners or tick implementation"
+    },
+    {
+      "name": "create_native_world_matrix_sentinel_004c3080",
+      "provides": "actual6Ch sentinel self-links in singleton domain",
+      "does_not_provide": "World publication, nonempty list producer or record payloads"
+    },
+    {
+      "name": "build_native_particle_rotation_x_00b64640 and build_native_particle_rotation_y_00b646e0",
+      "provides": "raw64-byte output with native x87/SSE stages and borrowed current constant pointers"
+    },
+    {
+      "name": "build_gui_rotation_z_00b64780 current-global overload",
+      "provides": "actual matrix arithmetic using borrowed current negative-zero/one operands"
+    },
+    {
+      "name": "multiply_native_camera_matrices_00413920",
+      "provides": "raw matrix storage interface with ECX/stack/RET8 behavior"
+    },
+    {
+      "name": "singleton_lifetime_allocate/free",
+      "provides": "actual host CRT allocation/free boundary",
+      "condition": "every released node must genuinely come from matching domain; no vector/token reinterpretation"
+    },
+    {
+      "name": "SingletonLifetimeCallbacks",
+      "provides": "returning invalid-parameter callback interface",
+      "condition": "actual retained callback service must be bound"
+    }
+  ],
+  "unresolved_preconditions": [
+    "concrete actual-storage0042ED50 subtree invalidation; currently abstract or logging interfaces in searched Source",
+    "canonical retained current mission-clock float reference for00F876A4, not a by-value projected clock",
+    "genuine current callable entity table slotsDC/88/D8 with the decoded thiscall contracts",
+    "valid actual intrusive chain/current entity storage through post-callback reads",
+    "stable real World/list/sentinel/nonempty-record storage with producer and matching free domain",
+    "complete World table/construction/destruction and entity allocation/deletion lifetimes",
+    "partial-effects and diagnostic lifetimes across thrown Source calls; no invented rollback",
+    "application wiring, Original register/EH/private-frame compatibility, runtime and gameplay"
+  ],
+  "smallest_source_recommendation": {
+    "native_body_abi_control_flow_evidence": "complete for the two owned normal bodies",
+    "minimum_complete_tick_scope": [
+      "00904bf0 actual entity walk",
+      "00904600 actual matrix-list pass"
+    ],
+    "prerequisite": "qualify and bind real0042ED50 plus current clock, returning validator/free and callable-entity contracts",
+    "reuse": "existing raw rotation/multiply and genuine allocation-domain services",
+    "not_recommended": "69-byte loop around the projected tail, token callbacks, fake World table or empty-only success",
+    "separate_expiry_selector": "Source fragment only; cannot close904600 active path or gain a complete Native-function credit",
+    "provider_closure_ready": false,
+    "application_ready": false
+  },
+  "validation": {
+    "whole_owned_native_bodies_read": true,
+    "live_bytes_equal_installed_pe": true,
+    "total_compared_body_bytes": 1576,
+    "total_contiguous_decoded_instructions": 351,
+    "json_parse": "passed",
+    "git_diff_check": "passed",
+    "source_modified": false,
+    "cmake_config_ledger_modified": false,
+    "ghidra_mutated": false,
+    "build_tests_or_native_execution_probes_run": false,
+    "runtime_validated": false,
+    "gameplay_validated": false,
+    "embedded_native_bytes_listings_and_source_hash_integrity": "passed"
+  },
+  "credit": {
+    "new_native_functions": 0,
+    "new_original_bytes": 0,
+    "new_source_functions": 0
+  },
+  "read_only_capture_artifacts": {
+    "machine_bytes": {
+      "path": "local/output/cc12_world_current_tick_machine_bytes.json",
+      "sha256": "5dfc25a38725c6a9c6e94221838105c03d4976858dee3f4d199c8755cff29f54",
+      "full_body_bytes_and_listing_embedded_above": true
+    },
+    "flow_properties": {
+      "path": "local/output/cc12_world_current_tick_flow_properties.json",
+      "sha256": "b5449b3b1b51371c6ccb092c757077520f25e395a1ec23a6dc2f0d05b1b4a4ed",
+      "failure_and_verified_target_embedded_above": true
+    }
+  },
+  "source_and_evidence_sha256": {
+    "include/bsp/unit_instance.hpp": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+    "src/unit_instance.cpp": "7357739720e090d1c139195f089cbb9f4e3aa740467fe5d430b8ff96f083f769",
+    "include/bsp/world_entity_update.hpp": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+    "src/world_entity_update.cpp": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+    "include/bsp/game_hosts_world.hpp": "b85a62b2c25887a399a389dcebcb41e7fde861bacfa33068ea9feb212339d2bf",
+    "src/game_hosts_world.cpp": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+    "include/bsp/native_world_chain_headers.hpp": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714",
+    "src/native_world_chain_headers.cpp": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383",
+    "include/bsp/native_world_matrix_sentinel.hpp": "71fa406a7c9da9ee40077db67480b20a6feb80256c76db01f523a3b478717793",
+    "src/native_world_matrix_sentinel.cpp": "63bd07694a19e6d40f6eeb0d04aae61d3293a4e9685c9ac5e0d1956fad802451",
+    "include/bsp/native_world_parent_headers.hpp": "88d4a93b104d2a309fee7a115278c2a999a30e2b1667a004bf83f1f2928e25ba",
+    "include/bsp/native_particle_axial_loading.hpp": "32bc421933d557541a5676f4a569ffd261763bde4ff404745e3953c724a1e497",
+    "src/native_particle_axial_loading.cpp": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+    "include/bsp/native_camera_matrix_math.hpp": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+    "src/native_camera_matrix_math.cpp": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "docs/CC12_WORLD_ENTITY_CHAIN_DRAIN_CONTRACT.md": "ec84d57eadedd800e6675e34489c726e8d2500ad236b0df66ad6d4f6e7620861",
+    "docs/CC12_NATIVE_GAME_WORLD_OWNER_CONTEXT_READINESS.md": "954a7d3f097d78878ae74f2b981eb1465564265e85bdd4c59d90512fe58c968e",
+    "tools/bsp.py": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+    "tools/ghidra_export.py": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+    "tools/ghidra_flow_properties.py": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+    "tools/ghidra_flow_repair.py": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6"
+  }
+}
