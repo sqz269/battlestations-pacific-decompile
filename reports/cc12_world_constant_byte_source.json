@@ -1,0 +1,117 @@
+{
+  "schema": "bsp.cc12.world_constant_byte_source.v1",
+  "packet": "cc12_world_constant_byte_source",
+  "status": "IMPLEMENTED_UNBUILT",
+  "native": {
+    "address": "009035D0",
+    "end_exclusive": "009035D3",
+    "bytes": 3,
+    "instructions": 2,
+    "hex": "b001c3",
+    "body": [
+      "009035D0 MOV AL,1",
+      "009035D2 RET"
+    ],
+    "table_target_evidence": "00CE7784+8 ->009035D0, previous bounded method-table packet",
+    "next_thirteen_bytes": "CC padding through009035DF",
+    "next_catalogued_function": "009035E0",
+    "previous_catalogued_function": "009035A0",
+    "native_result": "AL=1; upper24 EAX bits unchanged",
+    "flags": "unchanged",
+    "other_registers": "EBX/ECX/EDX/ESI/EDI/EBP unchanged",
+    "native_ret_stack_effect": "entryESP+4, consumes only return address",
+    "stack_arguments": 0,
+    "callees": [],
+    "argument_or_world_storage_read": false,
+    "allocation_or_ownership": false,
+    "full_EAX_integer1_asserted": false,
+    "semantic_slot_meaning": "unknown",
+    "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+    "live_disk_body_equal": true,
+    "boundary_evidence": {
+      "address": "009035D0",
+      "bytes": 16,
+      "hex": "b001c3cccccccccccccccccccccccccc",
+      "sha256": "28cf35ca20ab81145888939f458aa7ea20071702d666a8c9049eef19ce7dccc3",
+      "live_disk_equal": true,
+      "code_bytes": 3,
+      "trailing_padding_bytes": 13,
+      "padding_value": "CC"
+    }
+  },
+  "source": {
+    "header": "include/bsp/native_world_constant_byte.hpp",
+    "body": "src/native_world_constant_byte.cpp",
+    "symbol": "bsp::native_world_constant_byte_009035d0",
+    "name_is_provisional": true,
+    "declaration": "bool __fastcall native_world_constant_byte_009035d0(void* unused_ecx_receiver, std::uint32_t unused_edx) noexcept",
+    "implementation": "return true;",
+    "machine_family": "MSVC Win32 x86",
+    "formals": {
+      "ECX": "unused receiver",
+      "EDX": "unused uint32_t"
+    },
+    "stacked_arguments": 0,
+    "result_contract": "bool models true in AL only",
+    "pointer_size_assertion": 4,
+    "bool_size_assertion": 1,
+    "upper_EAX_preservation_promised": false,
+    "flags_preservation_promised": false,
+    "unused_volatile_register_preservation_promised": false,
+    "original_binary_ABI_replacement_claimed": false,
+    "assembly_added": false,
+    "callees_added": false,
+    "registered": false,
+    "built": false,
+    "whole_emitted_body_review": "pending Root normal build and independent review"
+  },
+  "readiness": {
+    "constant_byte_source_implemented_unbuilt": true,
+    "world_table_created_or_published": false,
+    "full_world_constructor_ready": false,
+    "normal_world_lifetime_ready": false,
+    "startup_or_game_ready": false,
+    "new_original_function_credit": 0,
+    "Source_admission_credit": 0
+  },
+  "verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "live_target_verified_by_each_cli_request": true,
+    "writes": [
+      "include/bsp/native_world_constant_byte.hpp",
+      "src/native_world_constant_byte.cpp",
+      "docs/CC12_WORLD_CONSTANT_BYTE_SOURCE.md",
+      "reports/cc12_world_constant_byte_source.json"
+    ],
+    "source_changes": 2,
+    "cmake_changes": 0,
+    "config_changes": 0,
+    "ledger_changes": 0,
+    "ghidra_mutations": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "native_entry_executions": 0,
+    "observed_utc": "2026-10-09T03:03:42.643509+00:00",
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "baseline_revision": "4285c36e7d8e2180e296fbe72cb777d6f967bcec",
+  "implementation_file_pins": [
+    {
+      "path": "include/bsp/native_world_constant_byte.hpp",
+      "bytes": 842,
+      "sha256": "2f0665c29c2b0aced9e37ace905b4b573839e172de9e8a35af5a88a0c725c014"
+    },
+    {
+      "path": "src/native_world_constant_byte.cpp",
+      "bytes": 289,
+      "sha256": "2ecbde35c2f5eb1614b199897e6ca20949a44ed23b71758b57449e756b8e8c54"
+    }
+  ]
+}
