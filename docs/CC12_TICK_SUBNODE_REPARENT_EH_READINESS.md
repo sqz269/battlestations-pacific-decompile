@@ -1,3 +1,7 @@
+Primary review: Root independently read the selected18B/four-op handler/action and44B descriptor/map, replayed live/PE bytes, and read/replayed the already admitted25B/eight-op cleanup provider. Root also read all31B/12 selected Source provider operations and verified its whole object unchanged in the Source109 build. Normal cleanup uses captured K, while unwind reads current actual guard+4; cleanup remains armed through normal release. New Source composition must state its own guard-storage and C++ failure policy. No new Native discovery or implementation credit is supplied.
+
+The current registered build snapshot is Source109:109 inputs, four artifacts,30 captured/replayed objects,34 positive selected Core roots and three existing checks passed. The worker section below is an immutable Source107 snapshot; its frozen Core/provider captures remain verified historical evidence. Other provider bodies/EH, Original interpreter/frame/CRT ABI, startup and gameplay remain unproved.
+
 # Tick subnode reparent failure-cleanup readiness refresh
 
 This refresh confirms the existing encoded unwind edge for Native

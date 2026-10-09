@@ -1,3 +1,7 @@
+Primary review: Root independently read and replayed all12 wrapper bytes/six operations against the Original PE, live bytes and saved starts. The actual Source137 child is now admitted in806294aa1, with complete137/48 emitted review. A Source wrapper can now call that actual provider while preserving post-child ESI as the physical result. No wrapper implementation or ABI/runtime credit is supplied by this readiness packet.
+
+The current registered build snapshot is Source109:109 inputs, four artifacts,30 captured/replayed objects,34 positive selected Core roots and three existing checks passed. The worker section below is an immutable Source107 snapshot; its frozen Core/provider captures remain verified historical evidence. Other provider bodies/EH, Original interpreter/frame/CRT ABI, startup and gameplay remain unproved.
+
 # Lua pair retreat wrapper readiness
 
 `006EDE90..006EDE9B` is a complete 12-byte, six-instruction wrapper around
