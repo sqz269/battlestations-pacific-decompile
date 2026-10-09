@@ -1,0 +1,126 @@
+{
+  "schema": "cc12_type5_isolated_execution_selection_Source0_v1",
+  "Root_author": "/root",
+  "packet": "cc12_type5_isolated_fixture_execution",
+  "Source_credit": 0,
+  "goal_remains_active": true,
+  "checkout": {
+    "starting_commit": "7e4d26f1b550d623d1cba8304fbefd1dad0f798d",
+    "branch": "agent/cc12_type5_fixture_execution",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution"
+  },
+  "address": "008EF2B0",
+  "Native_contract": {
+    "Capture_bytes": 132,
+    "instructions": 19,
+    "bytes": 63,
+    "RET_cleanup_bytes": 12
+  },
+  "Root_selection": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5select02\\current_dependency_selection.json",
+    "size": 10722896,
+    "sha256": "7f0ddecb4cf51286c63a4ebeffe5d38ed616c1d14b9e00625656f69da92e4b5d"
+  },
+  "captured_closure": {
+    "files": 12051,
+    "loaded_review_origins_verified": true,
+    "complete_current_and_frozen_pre_post_passed": true,
+    "membership_records": 14512,
+    "private_ENV_values_published": false,
+    "scopes": 51
+  },
+  "actual_closed_profile_inspectors": {
+    "this_does_not_prove_recipe_derived_profile_consistency": true,
+    "count": 3,
+    "root_python_keys": 16,
+    "effective_python_keys": 16,
+    "external_host_keys": 14,
+    "exact_complete_maps_observed": true
+  },
+  "materialization": {
+    "complete_pre_post_passed": true,
+    "exact_files": 16,
+    "process_closed": true,
+    "timeout": false,
+    "exit_code": 0
+  },
+  "failed_preparation": {
+    "original_PE_execution": 0,
+    "additional_peer_defect": "selection include_roots[0] and both 16-key profiles retain Main include, outside guarded isolated header scope and differing from recipe ROOT-derived INC",
+    "UTC": "2026-10-09T07:47:00.6914952Z",
+    "Native_queries": 0,
+    "closed_prepare": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5select02\\Root_prepare_01_process_closed.json",
+      "size": 1706,
+      "sha256": "c24b322a4dc5ccbb27c5cc4ed7d4cbc2159637b5a87856e720bdf363f118312c"
+    },
+    "selection": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5select02\\current_dependency_selection.json",
+      "size": 10722896,
+      "sha256": "7f0ddecb4cf51286c63a4ebeffe5d38ed616c1d14b9e00625656f69da92e4b5d"
+    },
+    "target_execution": 0,
+    "complete_outer_pre_post_passed": true,
+    "dependent_stages_held": true,
+    "goal_remains_active": true,
+    "root_child_exit_code": 1,
+    "corrected_fresh_family_required": true,
+    "compiler_execution": 0,
+    "provider_execution": 0,
+    "whole_materialization_passed": true,
+    "original_PE_read": 0,
+    "actual_failure": "complete_guard EXPECTED_FAMILY retains Main/local/type5p1, rejects isolated type5p2 before Native/compiler/probe",
+    "Source_credit": 0,
+    "old_consumed_stages_replayed": false,
+    "Root_author": "/root"
+  },
+  "additional_peer_defects": [
+    "complete_guard.py EXPECTED_FAMILY retains Main/local/type5p1",
+    "include_roots[0] and root/effective INCLUDE retain mutable Main/include outside isolated captured scope and recipe-derived INC",
+    "guarded_tool_entry.py fixed BSP path retains Main/tools/bsp.py while dispatch and 46 mappings select isolated tool"
+  ],
+  "include_inventory": {
+    "isolated_include_files": 2024,
+    "Main_include_files": 0
+  },
+  "relocation_review_limitation": "Unchanged payload bytes and actual ENV equality did not verify all consumer paths",
+  "seals": [
+    {
+      "artifacts": 28,
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5p2\\failed_preparation_seal.json",
+        "size": 7566,
+        "sha256": "b5bf4d12050c6de9d12e5bca7a61f43b4847fa7d566df0ea21dedf164bb365d3"
+      },
+      "folder": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5p2",
+      "all_artifacts_and_membership_reverified": true,
+      "exact_recursive_files": 29
+    },
+    {
+      "artifacts": 12106,
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5select02\\seal.json",
+        "size": 3439684,
+        "sha256": "d413f88b44b261b03ab00fbddfab23828e86dbb8a059e97447bbf5c6038b2fa9"
+      },
+      "folder": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_fixture_execution\\local\\type5select02",
+      "all_artifacts_and_membership_reverified": true,
+      "exact_recursive_files": 12107
+    }
+  ],
+  "corrected_fresh_family": "local/type5p3",
+  "corrected_fresh_selection_required": true,
+  "dependent_stages_held": true,
+  "Cpp_changes": 0,
+  "new_tests": 0,
+  "Native_queries": 0,
+  "compiler_execution": 0,
+  "original_PE_read": 0,
+  "provider_execution": 0,
+  "target_execution": 0,
+  "Source_admission": false,
+  "ABI_qualification": false,
+  "game_validation": false,
+  "old_consumed_stages_replayed": false,
+  "UTC": "2026-10-09T07:49:32.5469727Z"
+}
