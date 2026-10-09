@@ -1,0 +1,315 @@
+{
+  "schema": "cc12_type10_type11_complete_guard_materialization_TEXT_v1",
+  "packet": "cc12_type1011_complete_guard_materialization_TEXT_ROOT",
+  "state": "complete_unadopted_TEXT_candidate_with_current_membership_hold",
+  "Source_credit": 0,
+  "Source_admission_credit": 0,
+  "Root_acceptance": false,
+  "Root_receipts_issued": 0,
+  "current_execution_admission": false,
+  "main_head_before_fresh_freeze": "8f5a02d0a0c67ce474873f8bf06c1ae10848f924",
+  "main_head_at_metadata": "4652b343c640eb3f4f955f9323ae657e44752379",
+  "owner": "main",
+  "lease_scope": "zero-address; assigned document and report only",
+  "family": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01",
+  "exact_recursive_files": 10594,
+  "seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\seal.json",
+    "bytes": 2029480,
+    "sha256": "2ac0ce5032ef89c871fd335c13d370c812592d62732c9a576abdc4b6c5a2b646"
+  },
+  "fresh_selection": {
+    "unique_files": 10422,
+    "memberships": 13363,
+    "scopes": 45,
+    "initial_unique_files": 10324,
+    "additional_literal_files_before_optional_imports": 98,
+    "all_literal_complements_frozen_before_optional_imports": true,
+    "previous_selections_repinned": false,
+    "full_MSVC_bin_files": 74,
+    "full_SDK_bin_files": 231,
+    "recursive_all_files_libraries": {
+      "MSVC": 148,
+      "SDK_ucrt": 8,
+      "SDK_um": 481,
+      "total": 637
+    },
+    "literal_python_Lib_non_site_allfiles": 1504,
+    "literal_python_DLLs_allfiles": 36,
+    "capstone_package_files": 95,
+    "ordlookup_package_files": 8,
+    "pefile_module_and_cache_files": 2,
+    "Main_tools_python_files": 46,
+    "Main_tools_bytecode_files": 17,
+    "Main_include_initial_files": 2016,
+    "Main_include_after_files": 2018,
+    "full_cache_metadata_startup_Source_and_planned_include_guards_preserved": true
+  },
+  "current_bookend": {
+    "original_files_unchanged": 10422,
+    "frozen_files_unchanged": 10422,
+    "changed_originals": 0,
+    "new_members": 2,
+    "exact_scopes": 44,
+    "scopes": 45,
+    "drift_hold": true,
+    "added_members": [
+      {
+        "kind": "new_scope_member",
+        "before": null,
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_global_config_sample_dispatch.hpp",
+          "bytes": 1731,
+          "sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498"
+        },
+        "separate_after_copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\after_drift_copies\\000_native_global_config_sample_dispatch.hpp",
+          "bytes": 1731,
+          "sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498"
+        },
+        "adopted_into_initial_selection": false
+      },
+      {
+        "kind": "new_scope_member",
+        "before": null,
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_subtree_invalidation.hpp",
+          "bytes": 851,
+          "sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07"
+        },
+        "separate_after_copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\after_drift_copies\\001_native_subtree_invalidation.hpp",
+          "bytes": 851,
+          "sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07"
+        },
+        "adopted_into_initial_selection": false
+      }
+    ],
+    "initial_selection_rewritten_or_repinned": false,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\preservation_receipt.json",
+      "bytes": 10270,
+      "sha256": "0e60a502c039db3d5691cf806ede207c77cacfe39998f334ccb4bf2e0274d532"
+    }
+  },
+  "historical_origins": {
+    "selected_paths": 89,
+    "current_literal_pins_matching": 89,
+    "selected_Source_closure_files": 12,
+    "duplicate_provider_qualification_preserved_separately": true,
+    "historical_Source0_associations_rewritten": false,
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\historical_origin_literal_guard_audit.json",
+      "bytes": 55455,
+      "sha256": "806093c8c2798dcdcf03ea330cf66e6578e7c116aa4c6cac14571c301a77cff3"
+    }
+  },
+  "materialization_candidate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\materialization_draft119",
+    "exact_recursive_files": 119,
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\materialization_draft119\\artifact_manifest.json",
+      "bytes": 21228,
+      "sha256": "642e102e0ca3161e147c6471e0b31a6ff9f3f8b463b67bcf94f03948779ecadd"
+    },
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\materialization_draft119\\receipt.json",
+      "bytes": 367,
+      "sha256": "0c8196b90d800e436f40b3962b881677ff57712dc015f2083e492af746e68bb4"
+    },
+    "original119_family_unchanged": true,
+    "case28_family_unchanged": true,
+    "Cpp_probe_Source_headers_cases_contract_bytes_unchanged": true,
+    "future_Main_family": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011p1",
+    "future_Main_family_absent": true,
+    "adopted_by_Root": false
+  },
+  "preservation": {
+    "all_original_explicit_guards": 280,
+    "all_original_guards_preserved": true,
+    "roles": [
+      {
+        "role": "recipe",
+        "original_guard_calls": 49,
+        "candidate_guard_calls": 50,
+        "all_original_explicit_guards_preserved": true,
+        "selected_original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\draft119\\type1011_recipe.py.txt",
+          "bytes": 22727,
+          "sha256": "d9c6313d8986c0f0886b349ea1ffbde4e84020eb3f20cb331e72010cd59704c5"
+        },
+        "previous_unexecuted_proposal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\historical_dependency_guard_proposals\\004_proposed_type1011_recipe.py.txt",
+          "bytes": 23562,
+          "sha256": "a0bf051445174472f1d820fc4d61f931a35bf8e948553af42954595e06ec4c99"
+        },
+        "new_unexecuted_candidate": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\materialization_draft119\\type1011_recipe.py.txt",
+          "bytes": 23899,
+          "sha256": "1f0c5a391a4ff09dfad68978cfd9334222e5432a0f7b6bba96213d4dbdd093d1"
+        }
+      },
+      {
+        "role": "gate",
+        "original_guard_calls": 87,
+        "candidate_guard_calls": 89,
+        "all_original_explicit_guards_preserved": true,
+        "selected_original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\draft119\\type1011_gate.py.txt",
+          "bytes": 22788,
+          "sha256": "c06d00eb79e70591d11da0b3a60ce0a74c85da762ee8c307fe841089685795ce"
+        },
+        "previous_unexecuted_proposal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\historical_dependency_guard_proposals\\005_proposed_type1011_gate.py.txt",
+          "bytes": 23174,
+          "sha256": "449e1ee3dc1a90ab1d9fe3891591990c35e2dfd810f74f15725d7e1396db8619"
+        },
+        "new_unexecuted_candidate": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\materialization_draft119\\type1011_gate.py.txt",
+          "bytes": 23804,
+          "sha256": "3b9bdc4f00f34af1498d385b13baa2ab0cd6dd5b41e9cbeef913ad276bfe83d5"
+        }
+      },
+      {
+        "role": "independent_code_reader",
+        "original_guard_calls": 86,
+        "candidate_guard_calls": 88,
+        "all_original_explicit_guards_preserved": true,
+        "selected_original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\draft119\\type1011_independent_code_reader.py.txt",
+          "bytes": 21457,
+          "sha256": "c80dcbb97d57262aecc926af2b2b874430aa307e5360cb73ab5537403a53d457"
+        },
+        "previous_unexecuted_proposal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\historical_dependency_guard_proposals\\006_proposed_type1011_independent_code_reader.py.txt",
+          "bytes": 21808,
+          "sha256": "026599311e8d20196e1ad7321d491787d06975d144ac82aaf3226b96a07d6ffb"
+        },
+        "new_unexecuted_candidate": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\materialization_draft119\\type1011_independent_code_reader.py.txt",
+          "bytes": 22411,
+          "sha256": "1b4bfc2c66632c315a4b1ea2d49d66bcea927e4a589d9e52dcca6cfcf0a9b6cf"
+        }
+      },
+      {
+        "role": "independent_recorded_reader",
+        "original_guard_calls": 58,
+        "candidate_guard_calls": 58,
+        "all_original_explicit_guards_preserved": true,
+        "selected_original": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\draft119\\type1011_independent_recorded_reader.py.txt",
+          "bytes": 13400,
+          "sha256": "e79084ffa203cdb25973e1645c0d755212bd0a1c62deabeddea84e204e55b458"
+        },
+        "previous_unexecuted_proposal": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\frozen\\historical_dependency_guard_proposals\\007_proposed_type1011_independent_recorded_reader.py.txt",
+          "bytes": 13708,
+          "sha256": "b2cc7901ea6f09f4ffa683ff9de822e3129ed71418e45a7fd2861298c15a0dd0"
+        },
+        "new_unexecuted_candidate": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\materialization_draft119\\type1011_independent_recorded_reader.py.txt",
+          "bytes": 13994,
+          "sha256": "4cf7660bbabb831f141b4c92f6c568084eb7d35db55ab11885dc194fb8e06bf5"
+        }
+      }
+    ],
+    "launch_launch_AST_compile_link_AST_unchanged": true,
+    "Cxx17_retained": true,
+    "SDK_resource_PATH_retained": true,
+    "embedded_manifest_retained": true,
+    "destroy_registered_noexcept_member_unchanged": true,
+    "constructors_have_no_noexcept_or_unwind_promise": true,
+    "original_Root_TEXT_and_linked_receipt_gates_preserved": true,
+    "sole_target_attempt_gate_preserved": true,
+    "original_six_ordered_launch_keys_preserved": true,
+    "independent_readers_do_not_import_recipe_or_gate": true
+  },
+  "complete_guard_changes": {
+    "exact_I_B_E_S_optimize_zero_before_helper_imports": true,
+    "forbidden_override_keys_absent_even_when_empty": [
+      "CL",
+      "_CL_",
+      "LINK",
+      "_LINK_",
+      "LIBPATH",
+      "LIBCAPSTONE_PATH",
+      "PYTHONPATH",
+      "PYTHONHOME",
+      "PYTHONSTARTUP",
+      "PYTHONOPTIMIZE"
+    ],
+    "exact_package_mapping_and_restricted_loader": true,
+    "fresh_Capstone_namespace_and_requested_packaged_DLL": true,
+    "empty_bytecode_lookup_prefix": true,
+    "full_content_and_membership_checks_before_after_dispatch": true,
+    "exclusive_attempt_preflight_and_closed_outer_context": true,
+    "proposed_outer_timeout_seconds": 600,
+    "proposed_child_timeout_seconds": 540,
+    "child_timeout_descendant_closure_claimed": false,
+    "driver_finally_post_checks_on_failure": true,
+    "external_records_and_temp_paths_disjoint_from_eventual_execution_seal": true,
+    "explicit_strict_BSS_no_stored_file_or_reloc_or_executable_or_initialized_flags": true,
+    "BSS_logical_zero_backed_extent_retained_for_linked_image_comparison": true,
+    "initialized_section_bounds_not_weakened": true,
+    "actual_OS_loaded_module_file_identity_proven": false
+  },
+  "unadopted_Root_fields": {
+    "selected_code": null,
+    "private_environment": null,
+    "external_driver": null,
+    "external_bootstrap": null,
+    "empty_cache_prefix": null,
+    "materialization_draft": null,
+    "external_records_directory": null,
+    "outer_timeout": null,
+    "child_timeout": null,
+    "template": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\proposed_dependency_selection_template.json",
+      "bytes": 8957464,
+      "sha256": "0624aae62e1b4613411da8d7f04879470a945a28d80ab057ac032f900b3873cc"
+    },
+    "private_environment_proposal_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\private_proposed_environment_profiles_UNADOPTED.json",
+      "bytes": 2113,
+      "sha256": "f2e9f68fedd375386895440ae2cbe4b91599740b1df96fed998fd6cf285554e0"
+    }
+  },
+  "contract_retained": {
+    "Native_type10_address": "008EF3E0",
+    "Native_type10_bytes": 116,
+    "Native_type10_instructions": 36,
+    "Native_type11_address": "008EF460",
+    "Native_type11_bytes": 119,
+    "Native_type11_instructions": 37,
+    "physical_inputs": "ECX root / EDX pad / RET12",
+    "cases": 8,
+    "planned_calls": 24,
+    "planned_roots": 24,
+    "planned_children": 12,
+    "planned_allocate_free_pairs": 36,
+    "planned_binary_record_bytes": 13406,
+    "allocator_private_heap_owner_EH_class_game_claims": false
+  },
+  "validation": {
+    "own_passive_AST_and_literal_byte_derivation": "PASS",
+    "own_analysis_outer_process_closed_exit0": true,
+    "own_pre_and_post_selection_pins_passed": true,
+    "own_passive_membership_definition_derived_from_candidate_evaluated": true,
+    "selected_recipe_gate_reader_bootstrap_driver_and_external_launcher_entrypoints_executed": 0,
+    "compiler_linker_calls": 0,
+    "Native_Ghidra_provider_original_game_PE_target_accesses": 0,
+    "prior_runtime_replays": 0,
+    "Root_execution_materialization_writes": 0,
+    "Root_own_ignored_TEXT_family_written": true,
+    "new_tests": 0,
+    "Cpp_changes": 0,
+    "own_capture_utility_stop_retained": "STOP_own_literal_capture_r01.json",
+    "own_capture_correction_completed_before_optional_imports": true,
+    "own_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\own_analysis_closure.json",
+      "bytes": 829,
+      "sha256": "cc5291d49fbf8b1a8921cd95bb186236c310b4901a7744b2ad6e00e08bd34562"
+    }
+  },
+  "next_required": "Preserve the two-header current membership hold. Freeze a separate complete current Root selection; fully review all entry text and private ENV, adopt concrete pins, then materialize into a new exclusive execution family. No old family or consumed stage may be replayed."
+}
