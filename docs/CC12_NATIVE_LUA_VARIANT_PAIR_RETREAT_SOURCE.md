@@ -1,3 +1,7 @@
+Primary compiled review: the registered naked Source entry is137 bytes/48 instructions. Root read every emitted operation and the physical indexed relocation graph. Every byte matches the owned Native137 body outside exactly three REL32 operands at9/36/128, which all target the actual admitted Source17 invalid-parameter helper. Both seven-byte LEA ESP encodings, all local branch displacements, current-pair stores/reloads, byte31h tests and restored-frame tail transfers are preserved. No EH or new consumer is added.
+
+Normal MSVC Win32 build 2026-10-09T19:04:50.472711+00:00 to 2026-10-09T19:05:05.720846+00:00 passed all three existing checks. The evidence pins109 Source/build inputs and four artifacts, replays all29 prior objects byte-identically, captures this new object (30 total), and resolves34 selected positive Core roots. The new public root is absent from the application map; no forced retention was added. Native CRT binding, whole-call ABI, production lifetime, startup and gameplay remain unproved. The candidate section below is an immutable worker-time snapshot; its Source107 artifacts are now historical.
+
 # Lua variant pair retreat Source candidate
 
 This packet reconstructs the complete `006EDD80..006EDE08` body: 137 bytes,
