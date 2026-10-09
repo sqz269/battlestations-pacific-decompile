@@ -1,0 +1,227 @@
+{
+  "schema": "bsp.cc12.application_retirement_EH_readiness.v1",
+  "kind": "bounded_readonly_handler_map_actions",
+  "created_utc": "2026-10-09T07:08:48.342318+00:00",
+  "baseline": "8cc7d006ad7b007c5429c0d96a40c4689c94b0ae",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_count": 64729
+  },
+  "installed_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "fresh_spans": [
+    {
+      "address": "00CC7260",
+      "bytes": 16,
+      "hex": "b8f81ce000e9d9f8f2ffcccccccccccc",
+      "sha256": "001012fb0e24f279a874b9aa6125594cf78b7f70b1d113c87f658cfb81d2acd2",
+      "live_capture_raw_PE_equal": true,
+      "code_bytes": 10,
+      "alignment_bytes": 6,
+      "instructions": [
+        {
+          "address": "00CC7260",
+          "hex": "b8f81ce000",
+          "text": "mov eax, 0xe01cf8"
+        },
+        {
+          "address": "00CC7265",
+          "hex": "e9d9f8f2ff",
+          "text": "jmp 0xbf6b43"
+        }
+      ]
+    },
+    {
+      "address": "00E01CF8",
+      "bytes": 36,
+      "hex": "2205931902000000e81ce000000000000000000000000000000000000000000001000000",
+      "sha256": "80401bfe0037352f1a02577638b0a4415526464ed2ef6dddac0d6c086950f37e",
+      "live_capture_raw_PE_equal": true,
+      "code_bytes": 0,
+      "alignment_bytes": 0,
+      "instructions": []
+    },
+    {
+      "address": "00E01CE8",
+      "bytes": 16,
+      "hex": "ffffffff5072cc00000000005872cc00",
+      "sha256": "fac6b1316f227a2a7427025f6f5cf1c12ab488733be6ec2ced2b1eb4e1da82d0",
+      "live_capture_raw_PE_equal": true,
+      "code_bytes": 0,
+      "alignment_bytes": 0,
+      "instructions": []
+    },
+    {
+      "address": "00CC7250",
+      "bytes": 8,
+      "hex": "8b4de8e9d8b174ff",
+      "sha256": "b6b56048a6585691e22f6af850b96f434e2239275a5a668b01af25d5efe57287",
+      "live_capture_raw_PE_equal": true,
+      "code_bytes": 8,
+      "alignment_bytes": 0,
+      "instructions": [
+        {
+          "address": "00CC7250",
+          "hex": "8b4de8",
+          "text": "mov ecx, dword ptr [ebp - 0x18]"
+        },
+        {
+          "address": "00CC7253",
+          "hex": "e9d8b174ff",
+          "text": "jmp 0x412430"
+        }
+      ]
+    },
+    {
+      "address": "00CC7258",
+      "bytes": 8,
+      "hex": "8d4dece980ac74ff",
+      "sha256": "6995b7f3a1d38cb7b55acffeb143d4c2baa582989f62beca60785f356f2d75cd",
+      "live_capture_raw_PE_equal": true,
+      "code_bytes": 8,
+      "alignment_bytes": 0,
+      "instructions": [
+        {
+          "address": "00CC7258",
+          "hex": "8d4dec",
+          "text": "lea ecx, [ebp - 0x14]"
+        },
+        {
+          "address": "00CC725B",
+          "hex": "e980ac74ff",
+          "text": "jmp 0x411ee0"
+        }
+      ]
+    }
+  ],
+  "fresh_bytes": 84,
+  "selected_code_and_data_bytes": 78,
+  "captured_alignment_bytes": 6,
+  "handler": {
+    "entry": "00CC7260",
+    "code_bytes": 10,
+    "instructions": 2,
+    "FuncInfo_EAX": "00E01CF8",
+    "shared_tail": "00BF6B43",
+    "Ghidra_function_start_present": false,
+    "listing_or_function_created": false
+  },
+  "FuncInfo": {
+    "address": "00E01CF8",
+    "bytes": 36,
+    "dwords": [
+      "19930522",
+      "00000002",
+      "00E01CE8",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "maxState": 2,
+    "try_blocks": 0,
+    "IP_map_entries": 0,
+    "EHFlags_encoded": 1,
+    "original_runtime_semantics_expanded": false
+  },
+  "unwind_states": [
+    {
+      "state": 0,
+      "to_state": -1,
+      "action": "00CC7250",
+      "tail": "00412430",
+      "ECX": "current[helperEBP-18h]"
+    },
+    {
+      "state": 1,
+      "to_state": 0,
+      "action": "00CC7258",
+      "tail": "00411EE0",
+      "ECX": "helperEBP-14h address"
+    }
+  ],
+  "parent_replay": {
+    "report": "reports/cc12_application_ordinary_retirement_readiness.json",
+    "bytes": 153,
+    "sha256": "04dc76c92828c3d9b89e312125e4dcfbc262ba609dfc1fc231b3c2a0000fab43",
+    "current_raw_PE_equal": true
+  },
+  "parent_frame_slots_from_incoming_ESP": {
+    "state": -4,
+    "previous_registration": -12,
+    "handler": -8,
+    "actual_receiver": -24,
+    "guard_profile": -20,
+    "guard_section": -16
+  },
+  "frame_alignment_qualification": "Actions align with capturedreceiver/localguard if sharedhelperEBP equals parentincomingESP; helperABI not independently expanded.",
+  "state_timing": [
+    "State0 beforefirstmanagergetter/optionalEnter/depthincrement.",
+    "Lowbyte1 afteracquire/depth, also onnullsectionpath; beforeM2/currentpubread/removal.",
+    "No lowerstate write afterpubclear or before ordinarydecrement/Leave/finalprofile."
+  ],
+  "layout_reference": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+    "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+    "ranges": [
+      [
+        183,
+        198
+      ],
+      [
+        240,
+        273
+      ]
+    ],
+    "role": "CurrentSDKabsolute x86layout corroboration only; originalcompiler/runtime/ABI not inferred."
+  },
+  "concrete_Source_services": [
+    "destroy_native_singleton_guard_00411ee0 actualrawguard=currentsection4, resetCE37FC, unsigneddepth--, realLeavewhen nonnull.",
+    "destroy_native_generic_singleton_base_00412430 actualreceiver firstDWORD=CE3818."
+  ],
+  "current_input_pins": [
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+    },
+    {
+      "path": "reports/cc12_application_ordinary_retirement_readiness.json",
+      "canonical_lf_sha256": "2ed2f89783d764afcd1ebbdaa02d3552f8ec727d3620be8593fa9232c5bc5a69"
+    },
+    {
+      "path": "reports/cc12_application_scalar_table_entry_readiness.json",
+      "canonical_lf_sha256": "fe34126f2b67e70b2a0c6adadb7e858a0db89040766414a47c4812a9961d6e2a"
+    },
+    {
+      "path": "config/target.json",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "canonical_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_RETIREMENT_EH_READINESS.md",
+      "canonical_lf_sha256": "a5483cec5d8827bcc6add8d5a45e2c1aedb0bed611b3143f5a5d44b38391bcf1"
+    }
+  ],
+  "direct_native_cleanup_or_runtime_body_queries": 0,
+  "holds": [
+    "Sharedhandlerrecognition/frameABI/actioninvocation/nestedcleanupfailure/NativeFH3/SEH/hardwarefaultbehavior.",
+    "ActualApplicationowner/callableprofiles/commonpublication/productionstartup/gameplay."
+  ],
+  "credit": {
+    "Source": 0,
+    "Original": 0,
+    "GPR_mutations": 0,
+    "CMake_ledger": 0,
+    "builds_tests_probes": 0,
+    "runtime_gameplay": 0
+  }
+}
