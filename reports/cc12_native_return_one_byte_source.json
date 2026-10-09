@@ -1,0 +1,169 @@
+{
+  "schema": "CC12_small_leaf_Source_candidate_v1",
+  "packet": "cc12_return_one_byte_Source",
+  "status": "uncompiled_candidate_pending_Root_registration_build_emitted_review_admission",
+  "baseline_commit": "c43f5e7678598c03c3b4e168e5f382fc6a312f8d",
+  "exact_owned_paths": [
+    "include/bsp/native_return_one_byte.hpp",
+    "src/native_return_one_byte.cpp",
+    "docs/CC12_NATIVE_RETURN_ONE_BYTE_SOURCE.md",
+    "reports/cc12_native_return_one_byte_source.json"
+  ],
+  "Native_gate": {
+    "existing_name": "TRIV_body_00876180",
+    "address": "00876180",
+    "end_inclusive": "00876182",
+    "Original_bytes": 3,
+    "operations": 2,
+    "hex": "b001c3",
+    "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+    "instructions": [
+      "MOV AL,1",
+      "RET"
+    ],
+    "saved_listing": "00876180: MOV AL,0x1 \n00876182: RET \n",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "file_offset": 4678016,
+    "capture_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_tick_adjacent_Native_gate/capture.json",
+      "bytes": 12856,
+      "sha256": "b381b76eb8966f0479ab5f0532986cab8f005c79547ab97a8db9a06615d5516d"
+    },
+    "approval_pin": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/local/cc12_tick_adjacent_Native_gate/Root_Astra_gate_approval.json",
+      "bytes": 500,
+      "sha256": "c6a9fa39def3adf557560314f936d89922b22261bd75c68173236bba10006574"
+    },
+    "Root_all3bytes_2operations_read_live_PE_saved_starts_agree": true,
+    "worker_all3bytes_2operations_read_and_PE_replay_passed": true,
+    "other86_and76_bodies_reviewed_or_owned": false
+  },
+  "Source": {
+    "API": "std::uint8_t return_native_one_byte_00876180();",
+    "result": "byte value1; no argument, call, field, type, global or inferred object role",
+    "definition": "ordinary C++ return1; no noexcept or naked wrapper",
+    "width_qualification": "C++ promises uint8_t result only. Native MOV AL,1 preserves upper EAX and arithmetic flags; no full-EAX==1 or expanded C++ register/flags promise.",
+    "Original_size_is_not_compiled_size": true,
+    "compiled_size": null,
+    "Root_expected_emitted_check": "exact B0 01 C3 after registration/build; not yet observed",
+    "no_consumer_probe_or_forced_retention": true
+  },
+  "Source113_snapshot": {
+    "receipt_pins": [
+      {
+        "path": "reports/cc12_native_tick_subnode_reparent_primary_review.json",
+        "bytes": 219046,
+        "sha256": "53aea370bc3be4b76512821a5967e47ace72629ee11d7d0f762ee36370441bf4"
+      },
+      {
+        "path": "reports/cc12_native_lua_variant_pair_retreat_wrapper_primary_review.json",
+        "bytes": 88207,
+        "sha256": "09efe2fca6407e90cac683c6fb2aac2d2bf06701fc8e8a3224640d16b195078e"
+      }
+    ],
+    "shared_build_inputs_and_artifacts_equal": true,
+    "integrator_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 97596,
+      "start_utc": "2026-10-09T19:35:55.717080+00:00",
+      "finish_utc": "2026-10-09T19:36:12.082131+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 113
+    },
+    "integrator_artifact_root": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator",
+    "replay_started_utc": "2026-10-09T20:06:32.439027+00:00",
+    "replay_finished_utc": "2026-10-09T20:06:32.513831+00:00",
+    "input_count": 113,
+    "input_manifest_canonical_JSON_sha256": "ec6b48c68c5c92fb4f0d1ff1dbbc5701dd36f2bec28adc3c7a1087d4fdd0b2d7",
+    "all113_normalized_LF_hashes_match": true,
+    "raw_match_count": 111,
+    "line_ending_only_differences": [
+      {
+        "path": "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+        "receipt_sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c",
+        "worker_sha256": "d71db57835333567de90ae37ba93ee88018b9a04b1f0c300f204ee8d49d79bed",
+        "worker_bytes": 52250,
+        "receipt_bytes": 51122,
+        "only_CRLF_LF_different": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+        "receipt_sha256": "2fe167a673cf139230a8220bf5b4884cbe28c2aa648b53e162252841f7016e8d",
+        "worker_sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b",
+        "worker_bytes": 17789,
+        "receipt_bytes": 18326,
+        "only_CRLF_LF_different": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 73776562,
+        "sha256": "c36ae4b3ab2ef290446407c0973d1d4b88de4c0d0ed0766255b59ceaefa57c0c",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 5080576,
+        "sha256": "242eedcff8abbf7ae13a98e4bab4d19b55cc1db4a6aba6b7b05b98334a6a10f1",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "bytes": 7502887,
+        "sha256": "237ce1c39ad2e01dd301cfd37ff78fe46ac2ba8eb104fecba0ddff97c03615c4",
+        "exact_match": true
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "f3ecdc12fba4e2c6c32535e94f122248e66d2e5e38c59f556bafb86d2c950e8a",
+        "exact_match": true
+      }
+    ],
+    "existing_checks": 3,
+    "whole_objects_per_Root": 33,
+    "public_Core_roots_per_Root": 37,
+    "no_prior_graph_or_full_manifest_copy": true,
+    "scope": "Integrator-specific snapshot at replay time; later builds may replace these paths. This build did not compile the new leaf. Older baselines remain historical."
+  },
+  "candidate_file_pins": [
+    {
+      "path": "include/bsp/native_return_one_byte.hpp",
+      "bytes": 188,
+      "sha256": "9f3f43bd528918097973f0a56b6cd2ff2b89f45633a64ed7f2ef9d20a39560b7"
+    },
+    {
+      "path": "src/native_return_one_byte.cpp",
+      "bytes": 145,
+      "sha256": "b4ed2347c3d15d3286ea8e6477b36463eedcacf2b52e655f9de7b3e5df3d1b20"
+    },
+    {
+      "path": "docs/CC12_NATIVE_RETURN_ONE_BYTE_SOURCE.md",
+      "bytes": 1899,
+      "sha256": "67bf89cb94e32b0fbc6f26d10417bc3d5816af2d8186a79671bd08ce01bd3d87"
+    }
+  ],
+  "validation": {
+    "complete_header_CPP_and_doc_review": "performed before candidate commit",
+    "new_build_tests_CMake_ledger_GPR_Ghidra_writes": false,
+    "Primary_build_and_emitted_review": "pending"
+  },
+  "credit": {
+    "Source_candidate": true,
+    "Source_admitted": false,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0
+  }
+}
