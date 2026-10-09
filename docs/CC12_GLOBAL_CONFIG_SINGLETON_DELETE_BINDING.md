@@ -68,3 +68,9 @@ Primary integration, the normal build, and emitted-code review remain pending;
 this is not runtime or game validation.
 
 Evidence: [cc12_global_config_singleton_delete_binding.json](../reports/cc12_global_config_singleton_delete_binding.json).
+
+## Primary build and case review
+
+The primary independently replayed all 34 native bytes, both exact Source preimage reversals and five observation pins/excerpts. Win32 offset/size assertions pass. The compiled switch selects CE3D98, loads context at B4h, sends null to the existing failure, and otherwise pushes context/full flags/captured owner for the named scalar call. It then goes directly to the common frame epilogue. The complete existing scalar is 39 bytes / 17 instructions and preserves flags bit0/free/captured-pointer return. Its presence in the game map follows static dispatcher linkage; no application assigns this context or demonstrates that the case executes. The whole 3193-byte dispatcher span includes embedded switch data; manual instruction review covers the changed case and its selection/failure/return paths, not all existing cases.
+
+The normal MSVC Win32 build exited zero and all three existing checks passed. Seventeen bounded physical Source/recipe fingerprints were captured before the build, rechecked afterward and retained with whole objects, unique exact Core members, library, map and logs in `local/cc12_current_dispatch_primary_review`. No new tests/probes or current application runtime checks were performed. See `reports/cc12_current_dispatch_primary_review.json`.

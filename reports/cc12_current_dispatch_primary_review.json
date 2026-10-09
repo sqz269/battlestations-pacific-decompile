@@ -1,0 +1,813 @@
+{
+  "schema": "bsp.cc12.current_dispatch_primary_review.v1",
+  "status": "source_review_and_normal_win32_build_passed",
+  "utc": "2026-10-09T04:06:39.071219+00:00",
+  "build_exit": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 117076,
+    "start_utc": "2026-10-09T04:05:22.681584+00:00",
+    "finish_utc": "2026-10-09T04:06:02.918477+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "bounded_before_input_fingerprints": {
+    "pins": [
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "d89b517a3baff40f3afe98c5bd551b256e499178271bd25efb30f265c244d4fd"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "include/bsp/global_config.hpp",
+        "sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76"
+      },
+      {
+        "path": "src/global_config.cpp",
+        "sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc"
+      },
+      {
+        "path": "include/bsp/native_game_current_virtual_calls.hpp",
+        "sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46"
+      },
+      {
+        "path": "src/native_game_current_virtual_calls.cpp",
+        "sha256": "4de2e297c9dcfbcb37a79644ad9c10ebab011b52f8654866fa3bbff80316c80f"
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889"
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d"
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+      },
+      {
+        "path": "include/bsp/native_game_embedded_lifetime.hpp",
+        "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a"
+      },
+      {
+        "path": "src/native_game_embedded_lifetime.cpp",
+        "sha256": "3e5dff12ffd864f86d15af9f7089b14709f30fb4607934d9938d8d1fdc9815b9"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "sha256": "a1b7233f61544b51628af292801286e2cc9296a232fc71d923d170e28a2c1638"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ]
+  },
+  "same_physical_inputs_rechecked_and_retained_after_build": true,
+  "exact_global_added_block_restoration": [
+    {
+      "path": "include/bsp/global_config.hpp",
+      "removed_exact_added_block_equals_base_blob": true
+    },
+    {
+      "path": "src/global_config.cpp",
+      "removed_exact_added_block_equals_base_blob": true
+    }
+  ],
+  "game_source_pins_rechecked": true,
+  "readiness_primary_receipts": [
+    {
+      "worker_commit": "6942b3cc1dd0e293cebe4176d91495259431d4b6",
+      "native_spans": [
+        {
+          "address": "008DBDB0",
+          "bytes": 218,
+          "passed": true
+        },
+        {
+          "address": "004325B0",
+          "bytes": 155,
+          "passed": true
+        },
+        {
+          "address": "00524180",
+          "bytes": 41,
+          "passed": true
+        },
+        {
+          "address": "004C3810",
+          "bytes": 41,
+          "passed": true
+        },
+        {
+          "address": "00BD30E0",
+          "bytes": 14,
+          "passed": true
+        },
+        {
+          "address": "00CE2220",
+          "bytes": 4,
+          "passed": true
+        }
+      ],
+      "source_pins_and_exact_excerpts": [
+        {
+          "path": "include/bsp/global_config.hpp",
+          "physical_sha256": "069906ade9426e27615d582ecd9ab20ade0a8c4ad4653a85470f4961a1019896",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/global_config.cpp",
+          "physical_sha256": "094451ea73103dd50df83a59a50a3fb8137187924dd4e09f710265983c05df22",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "include/bsp/native_game_physics_lifetime.hpp",
+          "physical_sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/native_game_physics_lifetime.cpp",
+          "physical_sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/native_damageable_section.cpp",
+          "physical_sha256": "ba7208b253dc9a3f8fd761bfc4e1ce9123f5a1dde0dce811f1c4f722be39b0c0",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/native_particle_component_lifetime.cpp",
+          "physical_sha256": "4fa608de0a0d1638567b6ce5ea454175d180079a86d1b0b234a6c77eeff1a9e9",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/native_online_notification_dispatch.cpp",
+          "physical_sha256": "7a4fba7612cdd337bdad1e5a41e8e9e59f41ac93ae56da8b441d0d1ad547299e",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "include/bsp/sound_instance.hpp",
+          "physical_sha256": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "include/bsp/sound_channel_runtime.hpp",
+          "physical_sha256": "ece72ded94c356ecfce4599c0764786d9c4ab637f80baa357a3a2866d2f53b03",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/sound_channel_runtime.cpp",
+          "physical_sha256": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/sound_sample.cpp",
+          "physical_sha256": "e804f9109d495ce292680d899da4b704241198ced6e4d441f977a29ed490099f",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/sound_sample_runtime.cpp",
+          "physical_sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "include/bsp/sound_sample.hpp",
+          "physical_sha256": "43cdd558fa7135ed708b468e79f1104fc87e58ecfbe122d0cea94e5ae461f117",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/native_global_config_fields.cpp",
+          "physical_sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/native_ref_counted.cpp",
+          "physical_sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "include/bsp/native_ref_counted.hpp",
+          "physical_sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "src/native_game_construction.cpp",
+          "physical_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        },
+        {
+          "path": "include/bsp/native_game_construction.hpp",
+          "physical_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+          "LF_normalized_pin_passed": true,
+          "exact_excerpts_passed": true
+        }
+      ],
+      "review": "Two current-table call shapes reviewed against interface, real atomic release and existing actual-dispatch patterns. Source-only nonthrowing callable-table contract viable; payload/Sound admission remains external."
+    },
+    {
+      "worker_commit": "bf6568a6b",
+      "native_spans": [
+        {
+          "address": "00784AA4",
+          "bytes": 18,
+          "passed": true
+        },
+        {
+          "address": "004DCFFF",
+          "bytes": 8,
+          "passed": true
+        },
+        {
+          "address": "004DD055",
+          "bytes": 9,
+          "passed": true
+        },
+        {
+          "address": "004CC778",
+          "bytes": 18,
+          "passed": true
+        },
+        {
+          "address": "007F819B",
+          "bytes": 18,
+          "passed": true
+        },
+        {
+          "address": "004C8743",
+          "bytes": 22,
+          "passed": true
+        },
+        {
+          "address": "00784B04",
+          "bytes": 8,
+          "passed": true
+        },
+        {
+          "address": "004BF94A",
+          "bytes": 8,
+          "passed": true
+        }
+      ],
+      "source_pins": [
+        {
+          "path": "include/bsp/native_game_lifetime.hpp",
+          "physical_sha256": "44f3465992db1d4e5e5ca117a21d25bb1cdfe7e1aa1ef9d62026ba4f1a3c9889",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_game_lifetime.cpp",
+          "physical_sha256": "ad7d204ebd321e2e0b54f2cae918185a728eb353512832a801944f24f76bb50d",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_game_embedded_lifetime.hpp",
+          "physical_sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_game_embedded_lifetime.cpp",
+          "physical_sha256": "3e5dff12ffd864f86d15af9f7089b14709f30fb4607934d9938d8d1fdc9815b9",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_game_array_lifetime.hpp",
+          "physical_sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_game_array_lifetime.cpp",
+          "physical_sha256": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_game_container_lifetime.hpp",
+          "physical_sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_game_container_lifetime.cpp",
+          "physical_sha256": "7004952000205f0d242248ef1d8bd60697204863055cde11b64ad91f5c1b77a4",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_game_singleton_lifetime.hpp",
+          "physical_sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_game_singleton_lifetime.cpp",
+          "physical_sha256": "fffeccd7bf5f34e3f7129e0a5034cad0b97c09fdda8b89977d7e6d23c9ca8574",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_game_class_cleanup.hpp",
+          "physical_sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_game_class_cleanup.cpp",
+          "physical_sha256": "b2bddd47b55db619fc2e2f345fce67a1c9d8f9c3af3d3a434a2937289bff877c",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_game_physics_lifetime.hpp",
+          "physical_sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_game_physics_lifetime.cpp",
+          "physical_sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_ref_counted.hpp",
+          "physical_sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_ref_counted.cpp",
+          "physical_sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_online_notification_dispatch.cpp",
+          "physical_sha256": "7a4fba7612cdd337bdad1e5a41e8e9e59f41ac93ae56da8b441d0d1ad547299e",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_particle_component_lifetime.cpp",
+          "physical_sha256": "4fa608de0a0d1638567b6ce5ea454175d180079a86d1b0b234a6c77eeff1a9e9",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_particle_resource_lifetime.cpp",
+          "physical_sha256": "3207ec36f12f264a778e667b948b2c5fb2e210f7592949e6a246b1153d94f282",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/native_render_resources_lifetime.cpp",
+          "physical_sha256": "7a7ac91d7695ab86c13b699b31e11df06d63cbd6fb4ade22a3823e7915439337",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "src/game_native_game_runtime.cpp",
+          "physical_sha256": "1e205d8375994a80cbc5d15a5270b9281f2e9c073a039c3b614535933c068bca",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/game_native_player_profile_context.hpp",
+          "physical_sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_game_construction.hpp",
+          "physical_sha256": "cbb9cc070906f50970a5845533963e3651419602654d25435ee13c14a175e65e",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_profile_collections.hpp",
+          "physical_sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0",
+          "worker_pin_matched_physical_or_LF_content": true
+        },
+        {
+          "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+          "physical_sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1",
+          "worker_pin_matched_physical_or_LF_content": true
+        }
+      ],
+      "review": "Pure signatures and Source/native consumers reviewed. Scalar qualified concrete dispatcher; current-v0 terminal without decrement; peer current+4 receiver/table+4 record argument and callee cleanup. Actual compatible target/owner/allocation domain remains precondition."
+    }
+  ],
+  "units": [
+    {
+      "source": "src/global_config.cpp",
+      "whole_object_sha256": "4f5eb55b2797c966a28b4c8cb6bd10dc30bccd8ac9a7c1039b421729fa7d50b2",
+      "roots": [
+        {
+          "symbol": "?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+          "bytes": 69,
+          "instructions": 27,
+          "relocation_targets": [
+            "__ehhandler$?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+            "___security_cookie"
+          ]
+        },
+        {
+          "symbol": "?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+          "bytes": 65,
+          "instructions": 26,
+          "relocation_targets": [
+            "__ehhandler$?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+            "___security_cookie"
+          ]
+        },
+        {
+          "symbol": "?scalar_delete_global_config_00432710@bsp@@YAPAUGlobalConfigOwner@1@PAU21@IAAUGlobalConfigContext@1@@Z",
+          "bytes": 39,
+          "instructions": 17,
+          "relocation_targets": [
+            "?destroy_global_config_004325b0@bsp@@YAXAAUGlobalConfigOwner@1@AAUGlobalConfigContext@1@@Z",
+            "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+          "bytes": 29,
+          "instructions": 9,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+            "___CxxFrameHandler3"
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+          "bytes": 29,
+          "instructions": 9,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+            "___CxxFrameHandler3"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\global_config.obj",
+        "header_offset": 51347790,
+        "payload_file_offset": 51347850,
+        "bytes": 10139,
+        "sha256": "4f5eb55b2797c966a28b4c8cb6bd10dc30bccd8ac9a7c1039b421729fa7d50b2"
+      },
+      "external_boundaries": [
+        "@__security_check_cookie@4",
+        "___CxxFrameHandler3",
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "___security_cookie"
+      ]
+    },
+    {
+      "source": "src/native_game_current_virtual_calls.cpp",
+      "whole_object_sha256": "79b60c5c95cd4021e5eefcbd771e79a3eb651a26d5f4070e4aa7458f3ead35b1",
+      "roots": [
+        {
+          "symbol": "?virtual_scalar@NativeGameCurrentVirtualCalls@bsp@@UAEXPAXII@Z",
+          "bytes": 12,
+          "instructions": 5,
+          "relocation_targets": [
+            "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z"
+          ]
+        },
+        {
+          "symbol": "?virtual_terminal@NativeGameCurrentVirtualCalls@bsp@@UAEXPAX@Z",
+          "bytes": 16,
+          "instructions": 8,
+          "relocation_targets": []
+        },
+        {
+          "symbol": "?virtual_04@NativeGameCurrentVirtualCalls@bsp@@UAEXPAX0@Z",
+          "bytes": 20,
+          "instructions": 9,
+          "relocation_targets": []
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_game_current_virtual_calls.obj",
+        "header_offset": 63744382,
+        "payload_file_offset": 63744442,
+        "bytes": 2122,
+        "sha256": "79b60c5c95cd4021e5eefcbd771e79a3eb651a26d5f4070e4aa7458f3ead35b1"
+      },
+      "external_boundaries": [
+        "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z"
+      ]
+    },
+    {
+      "source": "src/native_game_physics_lifetime.cpp",
+      "whole_object_sha256": "2c42f59acc81da04e78b311f7534a33e56674c6422dee40e0f15281f9e0f391c",
+      "roots": [
+        {
+          "symbol": "?physics_virtual_scalar@NativeGamePhysicsLifetimeCalls@bsp@@UAEXPAXII@Z",
+          "bytes": 23,
+          "instructions": 10,
+          "relocation_targets": []
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_game_physics_lifetime.obj",
+        "header_offset": 59355022,
+        "payload_file_offset": 59355082,
+        "bytes": 24475,
+        "sha256": "2c42f59acc81da04e78b311f7534a33e56674c6422dee40e0f15281f9e0f391c"
+      },
+      "external_boundaries": []
+    },
+    {
+      "source": "src/native_singleton_destruction.cpp",
+      "whole_object_sha256": "3b998e2f61788d79988765a1b70eb2a1fb9b15b5f07e526176f2dce52c347741",
+      "roots": [
+        {
+          "symbol": "?delete_current_profile@?A0x5c59d620@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z",
+          "bytes": 3193,
+          "instructions": 984,
+          "relocation_targets": [
+            "__ehhandler$?delete_current_profile@?A0x5c59d620@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z",
+            "___security_cookie",
+            "?delete_native_profile_hints_owner_00426320@bsp@@YAPAXPAXIAAUNativeProfileHintsOwnerContext@1@@Z",
+            "?delete_native_singleton_base_00412440@bsp@@YIPAXPAX0I@Z",
+            "?scalar_delete_global_config_00432710@bsp@@YAPAUGlobalConfigOwner@1@PAU21@IAAUGlobalConfigContext@1@@Z",
+            "?process_native_device_registry_00e17bf4@bsp@@YAACRAUNativeDeviceRegistryStorage@1@XZ",
+            "?delete_native_device_registry_00441840@bsp@@YAPAUNativeDeviceRegistryStorage@1@PAU21@IACRAU21@@Z",
+            "?delete_native_game_class_registered_owner@bsp@@YAXPAXIAAUNativeGameClassCleanupContext@1@@Z",
+            "?process_native_mission_entity_lock_00f878fc@bsp@@YAACRAUNativeObserverLockOwner@1@XZ",
+            "?delete_native_mission_entity_lock_004c4890@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+            "?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z",
+            "?delete_native_frame_job_owner_004bfb30@bsp@@YAPAUNativeFrameJobOwnerStorage@1@PAU21@IACRAU21@AAVNativeFrameJobLifetimeBindings@1@@Z",
+            "?delete_native_particle_clock_004de340@bsp@@YIPAXPAXAAUNativeParticleClockShutdownContext@1@I@Z",
+            "?delete_lock_owner_00694ea0@NativeObserverLifetime@bsp@@QAEPAUNativeObserverLockOwner@2@PAU32@I@Z",
+            "?scalar_delete_native_input_settings_006ab800@bsp@@YAPAXPAXIAAUNativeInputSettingsLifetimeContext@1@@Z",
+            "?delete_observer_dispatch_owner_00695f40@bsp@@YAPAUNativeObserverDispatchOwner@1@PAU21@IACRAU21@@Z",
+            "?deleting_destructor_006fad40@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@PAU32@I@Z",
+            "?delete_native_game_resource_registered_owner@bsp@@YAXIPAXIAAUNativeGameResourceParserContexts@1@@Z",
+            "$LN190",
+            "$LN191",
+            "?delete_native_game_resource_factory_secondary_00716520@bsp@@YAPAXPAXIAAUNativeGameResourceFactoryContext@1@@Z",
+            "?delete_native_mpkg_factory_secondary_00735d00@bsp@@YAPAXPAXIAAUNativeMpkgFactoryContext@1@@Z",
+            "?delete_native_resource_extra_registered_owner@bsp@@YAXIPAXIAAUNativeResourceExtraParserContexts@1@@Z",
+            "?delete_native_mpak_factory_secondary_00735d30@bsp@@YAPAXPAXIAAUNativeMpakFactoryContext@1@@Z",
+            "?delete_native_gameplay_effect_manager_008703e0@bsp@@YIPAXPAXACRAXI@Z",
+            "?delete_lock_owner_00925430@NativeWeakOwnerDomain@bsp@@QAEPAUNativeWeakMutexOwner@2@PAU32@I@Z",
+            "?process_native_pending_entity_lock_00f899e8@bsp@@YAACRAUNativeObserverLockOwner@1@XZ",
+            "?delete_native_pending_entity_lock_009256d0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+            "?native_entity_registry_process@bsp@@YAAAVNativeEntityRegistryProcess@1@XZ",
+            "?delete_native_pending_init_lock_00925660@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+            "?native_entity_registry_process@bsp@@YAAAVNativeEntityRegistryProcess@1@XZ",
+            "?delete_native_scene_registry_lock_009285f0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+            "?delete_native_online_manager_base_00a3f670@bsp@@YAPAUNativeOnlineManagerStorage@1@AAU21@IAAUNativeOnlineManagerBaseContext@1@@Z",
+            "?delete_xlive_manager_base_00a3f670@bsp@@YAPAXAAVXLiveOwnerAllocation@1@E@Z",
+            "?delete_native_online_manager_00a3fdc0@bsp@@YAPAUNativeOnlineManagerStorage@1@AAU21@IAAUNativeOnlineManagerLifetimeContext@1@@Z",
+            "?delete_xlive_manager_00a3fdc0@bsp@@YAPAXAAVXLiveOwnerAllocation@1@E@Z",
+            "?scalar_delete_native_media_manager_00a4c620@bsp@@YAPAXPAXIAAUNativePlatformFocusOwnersContext@1@@Z",
+            "?owns_registered@GameSoundRuntime@game@bsp@@QBE_NPAX@Z",
+            "?delete_registered@GameSoundRuntime@game@bsp@@QAEXPAXI@Z",
+            "?scalar_delete_native_input_backend_base_00a909e0@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z",
+            "?delete_native_shadow_depth_target_00a900c0@bsp@@YAPAXPAXIAAVNativeShadowDepthTargetContext@1@@Z",
+            "?delete_native_shadow_job_secondary_00a8ddb0@bsp@@YIPAXPAXAAUNativeShadowJobContext@1@I@Z",
+            "?scalar_delete_native_input_backend_groups_00a91150@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z",
+            "?scalar_delete_native_input_backend_00a97c00@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z",
+            "?scalar_delete_native_input_action_owner_00a93e50@bsp@@YAPAXPAXIAAUNativeInputActionOwnerContext@1@@Z",
+            "?scalar_delete_native_gui_manager_00aa6540_fragment@bsp@@YAPAXPAXIAAUNativeGuiMediaFocusLifetimeContext@1@@Z",
+            "?delete_native_preparation_job_secondary_actual_00b0f1c0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@PAUNativeRenderPreparationJobSecondary@1@IAAUNativeRenderJobPublicationContext@1@@Z",
+            "?delete_native_render_resources_00b151c0@bsp@@YAPAXPAXIAAUNativeRenderResourcesLifetimeContext@1@@Z",
+            "$LN192",
+            "$LN193",
+            "?scalar_delete_native_renderer_lua_base_00b1bb70@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z",
+            "?scalar_delete_native_renderer_lua_owner_00b1bc50@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z",
+            "?delete_native_resource_registry_00b1b660@bsp@@YIPAXPAXPBUNativeResourceRegistryDeleteBindings@1@I@Z",
+            "?delete_native_resource_registry_00b1b710@bsp@@YIPAXPAXPBUNativeResourceRegistryDeleteBindings@1@I@Z",
+            "?delete_lock_owner_00b1d530@NativeRenderBatchLifetime@bsp@@QAEPAUNativeRenderBatchLockOwner@2@PAU32@I@Z",
+            "?delete_native_render_queue_00b1f6b0@bsp@@YAPAUNativeRenderCommandQueueStorage@1@AAU21@IAAUNativeRenderQueueDestructionContext@1@@Z",
+            "?delete_pool_00b1e930@NativeRenderBatchLifetime@bsp@@QAEPAUNativeRenderBatchPoolStorage@2@PAU32@I@Z",
+            "?delete_native_renderer_record_guard_00b26130@bsp@@YAPAXPAXIAAUNativeRendererRecordGuardContext@1@@Z",
+            "?delete_native_renderer_secondary_00b32900@bsp@@YIPAXPAXPAUNativeRendererDestructorContext@1@I@Z",
+            "?delete_native_system_constant_base_00b5bb20@bsp@@YAPAUNativeSystemConstantRegistryStorage@1@PAU21@AAUNativeSystemConstantRegistryRawContext@1@I@Z",
+            "?delete_native_system_constant_registry_00b5df70@bsp@@YAPAUNativeSystemConstantRegistryStorage@1@PAU21@AAUNativeSystemConstantRegistryRawContext@1@I@Z",
+            "?delete_native_shader_state_definition_base_00b56750@bsp@@YAPAUNativeShaderStateDefinitionsStorage@1@PAU21@ACRAU21@VSoundLifetimeAccess@1@I@Z",
+            "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z",
+            "?delete_native_shader_state_definitions_00b59e50@bsp@@YAPAUNativeShaderStateDefinitionsStorage@1@PAU21@ACRAU21@VSoundLifetimeAccess@1@AAVNativeStringStorage@1@I@Z",
+            "?delete_native_resource_support_00b61d60@bsp@@YAPAUNativeResourceSupportStorage@1@AAU21@IACRAU21@@Z",
+            "?delete_native_lua_fundamentals_00b66b80@bsp@@YAPAUNativeLuaFundamentalsView@1@AAU21@IACRAU21@@Z",
+            "?delete_native_resource_registered_owner@bsp@@YAXIPAXIAAUNativeResourceManagerContext@1@@Z",
+            "?delete_native_pak_registry_secondary_00bb4ff0@bsp@@YAPAXPAXIAAUNativePakRegistryContext@1@@Z",
+            "?delete_native_string_pool_00bd1730@bsp@@YAPAUNativeStringPoolStorage@1@AAU21@IACRAU21@ACI@Z",
+            "?delete_native_debug_feature_owner_00be9600@bsp@@YAPAXPAXIAAUNativeDebugFeatureOwnerContext@1@@Z",
+            "?delete_native_filestore_factory_secondary_00be5340@bsp@@YAPAXPAXIAAUNativeFileStoreFactoryContext@1@@Z",
+            "?delete_native_render_entry_cache_base_00bec6f0@bsp@@YAPAXPAXIAAUNativeRenderEntryCacheContext@1@@Z",
+            "?delete_native_render_entry_cache_00bec910@bsp@@YAPAXPAXIAAUNativeRenderEntryCacheContext@1@@Z",
+            "?delete_native_physical_factory_secondary_00bed910@bsp@@YAPAXPAXIAAUNativePhysicalFactoryContext@1@@Z",
+            "?delete_native_physical_stream_pool_00bf4370@bsp@@YAPAXPAXIAAUNativePhysicalStreamOpenContext@1@@Z",
+            "?delete_native_frame_clock_00bee110@bsp@@YIPAXPAXAAUNativeFrameClockLifetimeContext@1@I@Z",
+            "?delete_native_vfs_derived_manager_00bedac0@bsp@@YAPAXPAXIAAUNativeVfsManagerLifetimeContext@1@@Z",
+            "??_C@_0EM@OBNKJAIB@raw?5singleton?5deletion?5requires?5@",
+            "??0logic_error@std@@QAE@PBD@Z",
+            "__TI2?AVlogic_error@std@@",
+            "__CxxThrowException@8",
+            "$LN55",
+            "$LN138",
+            "$LN119",
+            "$LN75",
+            "$LN77",
+            "$LN39",
+            "$LN41",
+            "$LN119"
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?delete_current_profile@?A0x5c59d620@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z",
+          "bytes": 29,
+          "instructions": 9,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?delete_current_profile@?A0x5c59d620@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z",
+            "___CxxFrameHandler3"
+          ]
+        },
+        {
+          "symbol": "__unwindfunclet$?delete_current_profile@?A0x5c59d620@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z$0",
+          "bytes": 13,
+          "instructions": 7,
+          "relocation_targets": [
+            "??1ActualNativeStringPoolStorage@bsp@@UAE@XZ"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_singleton_destruction.obj",
+        "header_offset": 66064064,
+        "payload_file_offset": 66064124,
+        "bytes": 25955,
+        "sha256": "3b998e2f61788d79988765a1b70eb2a1fb9b15b5f07e526176f2dce52c347741"
+      },
+      "external_boundaries": [
+        "@__security_check_cookie@4",
+        "___CxxFrameHandler3",
+        "___security_cookie",
+        "?delete_native_profile_hints_owner_00426320@bsp@@YAPAXPAXIAAUNativeProfileHintsOwnerContext@1@@Z",
+        "?scalar_delete_global_config_00432710@bsp@@YAPAUGlobalConfigOwner@1@PAU21@IAAUGlobalConfigContext@1@@Z",
+        "?process_native_device_registry_00e17bf4@bsp@@YAACRAUNativeDeviceRegistryStorage@1@XZ",
+        "?delete_native_device_registry_00441840@bsp@@YAPAUNativeDeviceRegistryStorage@1@PAU21@IACRAU21@@Z",
+        "?delete_native_game_class_registered_owner@bsp@@YAXPAXIAAUNativeGameClassCleanupContext@1@@Z",
+        "?process_native_mission_entity_lock_00f878fc@bsp@@YAACRAUNativeObserverLockOwner@1@XZ",
+        "?delete_native_mission_entity_lock_004c4890@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+        "?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z",
+        "?delete_native_frame_job_owner_004bfb30@bsp@@YAPAUNativeFrameJobOwnerStorage@1@PAU21@IACRAU21@AAVNativeFrameJobLifetimeBindings@1@@Z",
+        "?delete_native_particle_clock_004de340@bsp@@YIPAXPAXAAUNativeParticleClockShutdownContext@1@I@Z",
+        "?delete_lock_owner_00694ea0@NativeObserverLifetime@bsp@@QAEPAUNativeObserverLockOwner@2@PAU32@I@Z",
+        "?scalar_delete_native_input_settings_006ab800@bsp@@YAPAXPAXIAAUNativeInputSettingsLifetimeContext@1@@Z",
+        "?delete_observer_dispatch_owner_00695f40@bsp@@YAPAUNativeObserverDispatchOwner@1@PAU21@IACRAU21@@Z",
+        "?deleting_destructor_006fad40@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@PAU32@I@Z",
+        "?delete_native_game_resource_registered_owner@bsp@@YAXIPAXIAAUNativeGameResourceParserContexts@1@@Z",
+        "?delete_native_game_resource_factory_secondary_00716520@bsp@@YAPAXPAXIAAUNativeGameResourceFactoryContext@1@@Z",
+        "?delete_native_mpkg_factory_secondary_00735d00@bsp@@YAPAXPAXIAAUNativeMpkgFactoryContext@1@@Z",
+        "?delete_native_resource_extra_registered_owner@bsp@@YAXIPAXIAAUNativeResourceExtraParserContexts@1@@Z",
+        "?delete_native_mpak_factory_secondary_00735d30@bsp@@YAPAXPAXIAAUNativeMpakFactoryContext@1@@Z",
+        "?delete_native_gameplay_effect_manager_008703e0@bsp@@YIPAXPAXACRAXI@Z",
+        "?delete_lock_owner_00925430@NativeWeakOwnerDomain@bsp@@QAEPAUNativeWeakMutexOwner@2@PAU32@I@Z",
+        "?process_native_pending_entity_lock_00f899e8@bsp@@YAACRAUNativeObserverLockOwner@1@XZ",
+        "?delete_native_pending_entity_lock_009256d0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+        "?native_entity_registry_process@bsp@@YAAAVNativeEntityRegistryProcess@1@XZ",
+        "?delete_native_pending_init_lock_00925660@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+        "?delete_native_scene_registry_lock_009285f0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z",
+        "?delete_native_online_manager_base_00a3f670@bsp@@YAPAUNativeOnlineManagerStorage@1@AAU21@IAAUNativeOnlineManagerBaseContext@1@@Z",
+        "?delete_xlive_manager_base_00a3f670@bsp@@YAPAXAAVXLiveOwnerAllocation@1@E@Z",
+        "?delete_native_online_manager_00a3fdc0@bsp@@YAPAUNativeOnlineManagerStorage@1@AAU21@IAAUNativeOnlineManagerLifetimeContext@1@@Z",
+        "?delete_xlive_manager_00a3fdc0@bsp@@YAPAXAAVXLiveOwnerAllocation@1@E@Z",
+        "?scalar_delete_native_media_manager_00a4c620@bsp@@YAPAXPAXIAAUNativePlatformFocusOwnersContext@1@@Z",
+        "?owns_registered@GameSoundRuntime@game@bsp@@QBE_NPAX@Z",
+        "?delete_registered@GameSoundRuntime@game@bsp@@QAEXPAXI@Z",
+        "?scalar_delete_native_input_backend_base_00a909e0@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z",
+        "?delete_native_shadow_depth_target_00a900c0@bsp@@YAPAXPAXIAAVNativeShadowDepthTargetContext@1@@Z",
+        "?delete_native_shadow_job_secondary_00a8ddb0@bsp@@YIPAXPAXAAUNativeShadowJobContext@1@I@Z",
+        "?scalar_delete_native_input_backend_groups_00a91150@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z",
+        "?scalar_delete_native_input_backend_00a97c00@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z",
+        "?scalar_delete_native_input_action_owner_00a93e50@bsp@@YAPAXPAXIAAUNativeInputActionOwnerContext@1@@Z",
+        "?scalar_delete_native_gui_manager_00aa6540_fragment@bsp@@YAPAXPAXIAAUNativeGuiMediaFocusLifetimeContext@1@@Z",
+        "?delete_native_preparation_job_secondary_actual_00b0f1c0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@PAUNativeRenderPreparationJobSecondary@1@IAAUNativeRenderJobPublicationContext@1@@Z",
+        "?delete_native_render_resources_00b151c0@bsp@@YAPAXPAXIAAUNativeRenderResourcesLifetimeContext@1@@Z",
+        "?scalar_delete_native_renderer_lua_base_00b1bb70@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z",
+        "?scalar_delete_native_renderer_lua_owner_00b1bc50@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z",
+        "?delete_native_resource_registry_00b1b660@bsp@@YIPAXPAXPBUNativeResourceRegistryDeleteBindings@1@I@Z",
+        "?delete_native_resource_registry_00b1b710@bsp@@YIPAXPAXPBUNativeResourceRegistryDeleteBindings@1@I@Z",
+        "?delete_lock_owner_00b1d530@NativeRenderBatchLifetime@bsp@@QAEPAUNativeRenderBatchLockOwner@2@PAU32@I@Z",
+        "?delete_native_render_queue_00b1f6b0@bsp@@YAPAUNativeRenderCommandQueueStorage@1@AAU21@IAAUNativeRenderQueueDestructionContext@1@@Z",
+        "?delete_pool_00b1e930@NativeRenderBatchLifetime@bsp@@QAEPAUNativeRenderBatchPoolStorage@2@PAU32@I@Z",
+        "?delete_native_renderer_record_guard_00b26130@bsp@@YAPAXPAXIAAUNativeRendererRecordGuardContext@1@@Z",
+        "?delete_native_renderer_secondary_00b32900@bsp@@YIPAXPAXPAUNativeRendererDestructorContext@1@I@Z",
+        "?delete_native_system_constant_base_00b5bb20@bsp@@YAPAUNativeSystemConstantRegistryStorage@1@PAU21@AAUNativeSystemConstantRegistryRawContext@1@I@Z",
+        "?delete_native_system_constant_registry_00b5df70@bsp@@YAPAUNativeSystemConstantRegistryStorage@1@PAU21@AAUNativeSystemConstantRegistryRawContext@1@I@Z",
+        "?delete_native_shader_state_definition_base_00b56750@bsp@@YAPAUNativeShaderStateDefinitionsStorage@1@PAU21@ACRAU21@VSoundLifetimeAccess@1@I@Z",
+        "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z",
+        "?delete_native_shader_state_definitions_00b59e50@bsp@@YAPAUNativeShaderStateDefinitionsStorage@1@PAU21@ACRAU21@VSoundLifetimeAccess@1@AAVNativeStringStorage@1@I@Z",
+        "?delete_native_resource_support_00b61d60@bsp@@YAPAUNativeResourceSupportStorage@1@AAU21@IACRAU21@@Z",
+        "?delete_native_lua_fundamentals_00b66b80@bsp@@YAPAUNativeLuaFundamentalsView@1@AAU21@IACRAU21@@Z",
+        "?delete_native_resource_registered_owner@bsp@@YAXIPAXIAAUNativeResourceManagerContext@1@@Z",
+        "?delete_native_pak_registry_secondary_00bb4ff0@bsp@@YAPAXPAXIAAUNativePakRegistryContext@1@@Z",
+        "?delete_native_string_pool_00bd1730@bsp@@YAPAUNativeStringPoolStorage@1@AAU21@IACRAU21@ACI@Z",
+        "?delete_native_debug_feature_owner_00be9600@bsp@@YAPAXPAXIAAUNativeDebugFeatureOwnerContext@1@@Z",
+        "?delete_native_filestore_factory_secondary_00be5340@bsp@@YAPAXPAXIAAUNativeFileStoreFactoryContext@1@@Z",
+        "?delete_native_render_entry_cache_base_00bec6f0@bsp@@YAPAXPAXIAAUNativeRenderEntryCacheContext@1@@Z",
+        "?delete_native_render_entry_cache_00bec910@bsp@@YAPAXPAXIAAUNativeRenderEntryCacheContext@1@@Z",
+        "?delete_native_physical_factory_secondary_00bed910@bsp@@YAPAXPAXIAAUNativePhysicalFactoryContext@1@@Z",
+        "?delete_native_physical_stream_pool_00bf4370@bsp@@YAPAXPAXIAAUNativePhysicalStreamOpenContext@1@@Z",
+        "?delete_native_frame_clock_00bee110@bsp@@YIPAXPAXAAUNativeFrameClockLifetimeContext@1@I@Z",
+        "?delete_native_vfs_derived_manager_00bedac0@bsp@@YAPAXPAXIAAUNativeVfsManagerLifetimeContext@1@@Z",
+        "__CxxThrowException@8",
+        "___std_exception_copy",
+        "___std_exception_destroy",
+        "??3@YAXPAXI@Z",
+        "??_7type_info@@6B@",
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+      ]
+    }
+  ],
+  "core_library_sha256": "2508414c5ac29e54852efa5c4d1c585cbb330f387a70bf49f0a1fa12d4c95bf0",
+  "five_new_provider_roots_absent_from_game_map": true,
+  "existing_global_config_scalar_present_in_game_map": true,
+  "whole_emitted_provider_review": {
+    "passed": true,
+    "GlobalConfig_stop": "COFF span69B/27 decoded instructions includes5CC padding; normal code64B/22ins. Payload ECX, full flag pushed, fresh vptr/entry+8, service RET8. No decrement or post-call payload read.",
+    "GlobalConfig_zero": "COFF span65B/26 decoded instructions includes5CC padding; normal code60B/21ins. Payload ECX, current vptr/entry0, no argument pushed; service RET4. No decrement or post-call payload read.",
+    "GlobalConfig_EH": "Both complete29B/9ins compiler handlers and symbol-index graphs reviewed: security cookie/check plus CxxFrameHandler3 runtime remain explicit boundaries. Existing noexcept contract requires nonthrowing targets, no Original EH equivalence.",
+    "Game_scalar": "12B/5ins; add service ECX18h for inherited physics subobject, direct named tail relocation; all three explicit stack words unchanged. Real concrete dispatcher23B/10ins separately retained/reviewed.",
+    "Game_terminal": "16B/8ins; fresh actual receiver/table/slot0, no argument pushed, service RET4; no count check/decrement or post-call receiver read.",
+    "Game_peer": "20B/9ins; actual receiver ECX, captured record pushed, fresh table/slot4, service RET8; no post-call receiver/record read.",
+    "existing_GlobalConfig_scalar": "39B/17ins complete; unconditional Source destructor, flags bit0 selects canonical free, return captured pointer with no after-free owner read."
+  },
+  "singleton_new_case_review": {
+    "passed": true,
+    "native_full_scalar_and_profile_bytes_replayed": 34,
+    "exact_source_restoration": [
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "exact_reverse_edits_equal_base_blob": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "exact_reverse_edits_equal_base_blob": true
+      }
+    ],
+    "existing_source_observation_pins_and_excerpts_replayed": 5,
+    "layout": "Win32 old180/new184bytes;45 previous fields preserved; new context+180 decimal/B4h. Compile assertions pass; all consumers must recompile.",
+    "selection": "Compare exact CE3D98 at+77h; equality reaches+E2h. Load bindings+B4, zero reaches old common logic_error path; nonzero pushes context, full flags and captured owner then direct scalar relocation.",
+    "return": "After scalar call, common+ADh epilogue cleans12 argument bytes and restores frame. No after-call owner read or publication identity check.",
+    "scope": "Whole dispatcher object and mixed code/table3193B span retained and linearly decoded; manual instruction review covers new selection/case/failure/epilogue only. Linear count984 includes embedded switch data and is not a full CFG/code-instruction claim.",
+    "application_assignment": false
+  },
+  "credit": {
+    "additional_original_functions": 0,
+    "new_dispatch_glue_bodies": 5,
+    "full_game_application": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "Actual compatible callable methods, real object/record lifetime and allocation domain remain preconditions.",
+    "GlobalConfig existing noexcept interface requires nonthrowing callbacks; no Native exceptional EH/SEH equivalence.",
+    "Game service propagates target exceptions but does not synthesize child tables or compose full retained contexts.",
+    "Raw Sound projection/numeric sample identity and unknown second-array producer remain external.",
+    "No new tests/probes, Native-entry execution or current game runtime validation."
+  ],
+  "worker_commits": [
+    "ae67efb63aa35116ddcd26449fa101a3570b574c",
+    "17b205196",
+    "d9796ee82e339217f189489fe0b81faedd72ad19"
+  ],
+  "existing_warning": "LNK4006 duplicate spawn_request_id_matches remains."
+}

@@ -66,3 +66,9 @@ performed. Root owns the normal Win32 build, emitted receiver/stack-call review
 and integration. The preceding readiness evidence contains six native spans
 totaling 473 bytes; this packet reuses that reviewed contract without claiming
 another native capture, emitted-code verification or runtime result.
+
+## Primary build and emitted review
+
+The primary reviewed both complete compiled methods and their compiler EH handlers. Stop uses actual payload ECX and one full flags word through current table+8; zero uses actual payload ECX and current table+0 with no argument. Neither decrements or reads the payload after return. COFF spans are 69/65 bytes including five CC padding bytes each; normal code is 64/60 bytes. Compiler cookie/FH3 support is retained as an explicit runtime boundary. The five provider roots remain absent from the game map; nonthrowing payload admission and complete context/application binding remain external.
+
+The normal MSVC Win32 build exited zero and all three existing checks passed. Seventeen bounded physical Source/recipe fingerprints were captured before the build, rechecked afterward and retained with whole objects, unique exact Core members, library, map and logs in `local/cc12_current_dispatch_primary_review`. No new tests/probes or current application runtime checks were performed. See `reports/cc12_current_dispatch_primary_review.json`.

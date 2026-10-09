@@ -82,3 +82,9 @@ Only the new header, implementation and this document/report change. No CMake,
 ledger, configuration or Ghidra mutation, build, test, probe or native execution
 was performed. No Original ABI replacement, full Game composition, application
 startup or gameplay readiness is claimed.
+
+## Primary build and emitted review
+
+Core registration and the concrete-class/Win32 assertions now compile. The complete scalar bridge is 12 bytes / 5 instructions: its18h service-base adjustment and direct physics tail call retain all explicit argument words. Terminal is 16 bytes / 8 instructions and peer is 20 bytes / 9 instructions; current table/slot loads, payload ECX, record forwarding and argument cleanup match their Source contracts, with no after-call receiver access. The concrete physics dispatcher is separately retained/reviewed at 23 bytes / 10 instructions. These three roots remain absent from the game map.
+
+The normal MSVC Win32 build exited zero and all three existing checks passed. Seventeen bounded physical Source/recipe fingerprints were captured before the build, rechecked afterward and retained with whole objects, unique exact Core members, library, map and logs in `local/cc12_current_dispatch_primary_review`. No new tests/probes or current application runtime checks were performed. See `reports/cc12_current_dispatch_primary_review.json`.
