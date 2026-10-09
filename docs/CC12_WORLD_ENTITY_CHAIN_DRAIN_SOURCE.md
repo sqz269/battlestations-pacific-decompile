@@ -4,8 +4,8 @@
 drain using the existing concrete lifetime dispatcher. It borrows the genuine
 12-byte `NativeWorldChainHeader` supplied by the existing World chain-header
 producer and retains that same header throughout the call. This packet adds
-one ordinary C++ body; primary review, CMake registration and the Win32 build
-remain with the integrator.
+one ordinary C++ body. Primary review and CMake registration are complete;
+the normal MSVC Win32 build and all three existing checks passed.
 
 ```cpp
 void drain_native_world_entity_chain_009041a0(
@@ -88,3 +88,30 @@ No worker CMake/ledger/config/Ghidra mutation, build, test, probe or native-entr
 execution was performed. Build and runtime results are not claimed. Production
 entity ownership, the normal World destructor, the full World table, application
 startup and gameplay remain outside this packet.
+
+## Primary review and build
+
+The primary independently replayed the complete 100-byte disk span against the
+worker pin and reread the target-verified live instruction listing. The whole
+emitted drain is 115 bytes /46 instructions. Its sole external relocation calls
+the concrete `NativeGamePhysicsLifetimeCalls::physics_virtual_scalar` symbol;
+there is no service-table dispatch. That existing method's complete emitted
+body is 23 bytes /10 instructions, loads the receiver's current table and byte
+slot, calls with the flags word, and returns with stack cleanup of its three
+explicit arguments. Both whole objects occur exactly once in `bsp_core.lib`.
+
+The emitted drain retains signed JG, unlink-before-call, next/previous clearing,
+DWORD decrement and current-header reload after deletion. It never reads the
+deleted entity after the call. The compiler reads previous before testing the
+reloaded next during reciprocal-link selection; this is qualified valid-storage
+behavior, not exact native instruction ordering or fault equivalence.
+
+Eight bounded Source/recipe fingerprints were captured before the normal build,
+rechecked afterward and retained with the whole objects, library, game map and
+test log in `local/cc12_world_entity_chain_drain_primary`. The build exited zero;
+`reconstructed_math`, `native_math_differential` and `tool_tests` all passed.
+The existing duplicate-symbol LNK4006 warning remains. No new test or probe was
+added. The drain root is absent from the game map, so this is Source/build
+evidence, not application runtime evidence. The existing Original function is
+already counted; this actual-storage fragment adds no new Original-function
+credit. See `reports/cc12_world_entity_chain_drain_primary_review.json`.

@@ -97,3 +97,13 @@ This audit performs bounded Source inspection, records evidence-file hashes,
 parses its JSON report and checks the diff. It changes no Source, CMake,
 configuration, ledger or Ghidra state and runs no build, test or probe. Runtime
 and gameplay behavior are unvalidated by this packet.
+
+## Primary review
+
+The primary reread the existing table-owner declaration and implementation and
+verified all six Source pins against the stated source base. The current CMake
+file adds only the separately reviewed World drain registration. One worker
+hash for the construction-readiness report was stale; the primary corrected it
+to the same physical hash present at the stated source base and current Root.
+The old value is retained in the JSON correction record. No native comparison,
+new build or runtime check is attributed to this read-only audit.
