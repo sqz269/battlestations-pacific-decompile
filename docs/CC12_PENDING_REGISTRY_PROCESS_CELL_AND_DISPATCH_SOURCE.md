@@ -146,3 +146,21 @@ FH3/SEH, mutable frame aliases, hardware-fault behavior, arbitrary concurrency,
 binary compatibility and game behavior are not established by this packet.
 No original executable code is run or changed, and no Ghidra, CMake or ledger
 mutation, new test or ad hoc probe is added.
+
+## Primary merged review
+
+The [primary review](../reports/cc12_pending_registry_process_cell_and_dispatch_primary_review.json)
+independently checks the merged Win32 build, 2026-10-09 09:53:26.587893 through
+09:54:05.206191 UTC. All three configured existing checks passed, including
+`native_math_differential`. All twelve complete selected bodies match the worker
+review. The full dispatcher code, padding and tables were independently decoded
+and classified; actual flags-address/owner delivery, scalar call relocation,
+complete Core members and unique public definitions were checked.
+
+The final game map selects the real process accessor/factory, host constructor/
+shutdown, manager drain and scalar helper. Process/host objects belong to the
+application target; scalar providers belong to Core. The same fresh build also
+revalidated the separate constructor's complete 85-byte Source body unchanged.
+This admits finite Source cell/deletion composition with zero new Original
+function or ABI/gameplay credit. No pending registry getter, registration,
+owner lifecycle execution or startup/gameplay proof is added.

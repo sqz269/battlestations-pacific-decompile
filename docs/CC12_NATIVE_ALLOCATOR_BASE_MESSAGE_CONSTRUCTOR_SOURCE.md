@@ -5,11 +5,12 @@ This packet implements the complete `00BF638E..00BF63A5` leaf as
 body is 24 bytes / seven instructions. Its saved library name, `exception`, is
 preserved; the Source descriptive name is provisional.
 
-The worker provides a static candidate only. The new file is not registered in
-the worker's CMake base. The primary integrator owns registration, the required
-normal MSVC Win32 build, whole emitted-body review, Core validation and final
-ledger/Ghidra review. No compilation, fixture execution, ABI admission or game
-validation is claimed by this packet. No Original credit is applied here.
+The primary has registered and admitted this Source leaf after the normal MSVC
+Win32 build and all three existing checks. The complete emitted 24-byte body
+matches the Original PE, has no relocations or children, and has one unique
+positive definition in its complete Core member. The worker's static candidate
+report remains historical; the newer primary review records final admission.
+Original ABI and game validation remain unproved.
 
 ## Raw interface and ABI
 
@@ -91,6 +92,22 @@ No ad hoc compiler probe or new test is added. The worker intentionally does
 not build an unregistered file. After registration, the primary must verify
 the complete emitted function, including `RET 8`, the real DWORD RMW, register
 effects and literal profile word, and complete the normal build/Core review.
-Only then may the primary consider one Original function / 24 bytes for
-admission. Wider allocator/exception/runtime, startup and game behavior remain
-unclaimed.
+The primary review below completes that gate. Wider allocator/exception/runtime,
+startup and game behavior remain unclaimed.
+
+## Primary admission
+
+[Primary review](../reports/cc12_native_allocator_base_message_constructor_primary_review.json):
+the registered merged build ran 2026-10-09 09:53:26.587893 through
+09:54:05.206191 UTC and passed `reconstructed_math`,
+`native_math_differential` and `tool_tests`. All 24 emitted bytes / seven
+instructions equal the unchanged installed PE. No child, external relocation,
+extra instruction or handler was added. Complete object/Core-member identity
+and unique positive public definition were checked. One Original function /
+24 Original bytes is admitted; Original ABI/gameplay credit is zero.
+
+The saved Ghidra library name remains `exception`. The sanctioned annotation
+tool adds qualified evidence while preserving prior names/comments in its
+receipt, saves the project and refreshes this export. No body, flow, prototype
+or no-return property is changed. The game map does not select this new leaf;
+this build adds no runtime failure-object, startup or gameplay proof.
