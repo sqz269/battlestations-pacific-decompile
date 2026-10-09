@@ -1,5 +1,9 @@
 # Native allocator owned-message constructor: Source candidate
 
+The registered MSVC Win32 build passes all three existing checks. Primary review verifies 1 complete Core definitions covering 78 Original bytes; ABI, production startup and gameplay remain open.
+
+The following candidate receipt is historical; registration and compiled review are recorded below.
+
 This candidate implements the complete `00BF6340..00BF638D` schedule in a raw
 MSVC Win32 naked adapter: 33 Source assembly operations corresponding to the
 78-byte Original body. It borrows the actual receiver and pointer-slot address,
@@ -161,3 +165,23 @@ the primary's emitted/linked review and admission. No worker build, tests,
 probes, Ghidra/ledger edits or production consumer were added. Original
 placement, callers, actual runtime/storage/lifecycle, startup and gameplay
 remain unproved.
+
+## Primary compiled review
+
+Normal registered build: `2026-10-09T13:39:47Z..13:40:03Z`, exit 0; all three
+existing checks pass. The primary retains 61 Source/build input pins, four
+artifact pins, nine complete COFF objects and every physical relocation
+graph, with ten unique positive Core roots. No tests or probes were added.
+
+The naked constructor emits 80 bytes / 33 operations. strlen is REL32 at
+operand 23; malloc and strcpy_s are DIR32 IAT operands 33 and 52. Every
+noncall/nonbranch instruction matches the Original, and all branch target
+indices match after the two longer Source calls. The selected current CRT
+context uses UCRT heap/string imports; the new constructor is absent from
+the application map, so these are not its final linked-operand bindings.
+
+The prior typed owner has identical complete code/relocation contracts
+for all 20 functions and identical payload/relocation contracts for all
+eight EH sections. This Source context remains distinct from Original EH.
+No production consumer, Native profile binding, default storage or lifecycle
+was added. Core membership and build results do not prove execution.

@@ -311,6 +311,8 @@ target_sources(bsp_core PRIVATE src/native_tick_subnode_unlink_caller.cpp)
 target_sources(bsp_core PRIVATE src/native_allocator_base_message_constructor.cpp)
 target_sources(bsp_core PRIVATE src/native_allocator_base_copy_constructor.cpp)
 target_sources(bsp_core PRIVATE src/native_allocator_base_default_constructor.cpp)
+target_sources(bsp_core PRIVATE src/native_lua_variant_link_repair_helpers.cpp)
+target_sources(bsp_core PRIVATE src/native_allocator_owned_message_constructor.cpp)
 target_sources(bsp_core PRIVATE src/native_allocator_base_cleanup.cpp)
 target_sources(bsp_core PRIVATE src/native_allocator_failure_object_constructor.cpp)
 

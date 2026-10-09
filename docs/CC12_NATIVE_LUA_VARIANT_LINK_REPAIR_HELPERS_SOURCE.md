@@ -1,5 +1,9 @@
 # Native Lua variant link-repair Source candidates
 
+The registered MSVC Win32 build passes all three existing checks. Primary review verifies 2 complete Core definitions covering 160 Original bytes; ABI, production startup and gameplay remain open.
+
+The following candidate receipt is historical; registration and compiled review are recorded below.
+
 `repair_native_lua_variant_links_006edc80` and
 `repair_native_lua_variant_links_006edcd0` implement the reviewed instruction
 schedules of the two raw link helpers as separate naked MSVC Win32 functions.
@@ -193,3 +197,21 @@ No CMake, ledger or Ghidra mutation, Native body expansion, worker build,
 test, probe or annotation was performed. This candidate records zero new
 Source-function/byte, Original ABI, runtime or gameplay credit. The existing
 default, cleanup, copy and caller admissions are not counted again.
+
+## Primary compiled review
+
+Normal registered build: `2026-10-09T13:39:47Z..13:40:03Z`, exit 0; all three
+existing checks pass. The primary retains 61 Source/build input pins, four
+artifact pins, nine complete COFF objects and every physical relocation
+graph, with ten unique positive Core roots. No tests or probes were added.
+
+Both naked helpers emit exactly the owned 78 and 82 Original bytes, 30
+operations each, with no relocation or local EH. All six RET4 sites, late
+reloads, CMP/POP/JNE order and branch targets match. Each has one actual
+Core definition; both are absent from the application map.
+
+The prior typed owner has identical complete code/relocation contracts
+for all 20 functions and identical payload/relocation contracts for all
+eight EH sections. This Source context remains distinct from Original EH.
+No production consumer, Native profile binding, default storage or lifecycle
+was added. Core membership and build results do not prove execution.
