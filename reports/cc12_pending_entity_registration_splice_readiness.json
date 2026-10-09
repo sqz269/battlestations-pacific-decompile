@@ -1,0 +1,734 @@
+{
+  "schema": "bsp.cc12.pending_entity_registration_splice_readiness.v1",
+  "packet": "cc12_pending_entity_registration_splice_readiness",
+  "kind": "read_only_actual_storage_leaf_and_owner_readiness",
+  "created_utc": "2026-10-09T05:52:22.213757+00:00",
+  "baseline_commit": "bc1035d807341063aefad3d062955d834cbbbc64",
+  "synced_published_main": "4b8c9780ad27ad881ff99528c79d1168d712086e",
+  "preserved_prior_audits": [
+    "18203a7f5be5c0882af2c09404acb91d5378629b",
+    "0476fcefcf9f0041f90e1900e46006884829c134"
+  ],
+  "claimed_address": "00874C90",
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "consumer_contract_established": true,
+    "actual_storage_Source_packet_ready": false,
+    "reason": "No demonstrated common mutable Source pending/group registry owner or actual00875890 registration producer. Existing fields are layout constants, positional projections and assumed-empty host paths.",
+    "no_registration_count_access": true,
+    "bounded_next_packet": "Read-only00875890 producer/shared-owner contract139B, retaining875280 lock boundary without expanding its callees or all nine callers. Group bootstrap initializer also needs a separately qualified owner/lifetime contract."
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verified_via": "tools/bsp.py ghidra disasm/bytes/proto/xrefs; no inline Ghidra mutation",
+    "spans": [
+      {
+        "address": "00874C90",
+        "bytes": 111,
+        "purpose": "complete splice body",
+        "hex": "a1d8b6e0003d04b7e0007442568d49008b50088b48048951088b48088b70048971048b48146bc96881c1c076f80081fa04b7e0008b71388970048d71348970088b71388946088941388bc275c35e33c0a3d4b6e000c705d8b6e00004b7e000a30cb7e000c70508b7e000d0b6e000c3",
+        "sha256": "20d76aa83478f647278e9739557d3521cbe5067bf3a8ba7becceea26848bffa8",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 111,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "00E0B6D0",
+        "bytes": 12,
+        "purpose": "pending head initial image prefix",
+        "hex": "000000000000000004b7e000",
+        "sha256": "0836a45f4cf885f04aafd07fead7691b215c6f053c2a239c6952fb6b0d541fc2",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 12,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "00E0B704",
+        "bytes": 12,
+        "purpose": "pending tail initial image prefix",
+        "hex": "00000000d0b6e00000000000",
+        "sha256": "b2e49bc8d81a5a3902d6c26ff6a4ebfd86ba3e965c2597da141b31f10816238e",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 12,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "00F876C0",
+        "bytes": 12,
+        "purpose": "group0 head initial image prefix",
+        "hex": "000000000000000000000000",
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 12
+      },
+      {
+        "address": "00F876F4",
+        "bytes": 12,
+        "purpose": "group0 tail initial image prefix",
+        "hex": "000000000000000000000000",
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".data",
+        "file_backed_bytes": 0,
+        "virtual_zero_fill_bytes": 12
+      },
+      {
+        "address": "00CD27D6",
+        "bytes": 10,
+        "purpose": "bounded startup store of group0 tail.prev=head; not a complete initializer",
+        "hex": "c705f876f800c076f800",
+        "sha256": "a7f85ab8f9ff402536fbe7446e71335050695e03401736a66069dec4f39ab012",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 10,
+        "virtual_zero_fill_bytes": 0
+      },
+      {
+        "address": "008758D3",
+        "bytes": 33,
+        "purpose": "bounded producer append boundary; complete producer not expanded",
+        "hex": "8b1508b7e0000f57c0895604c7460804b7e000a108b7e000897008893508b7e000",
+        "sha256": "07b1c6c942711800a0f7c0a3dd092d4ee0d6f0b99544612fd9285d8fd050bf1c",
+        "live_GPR_equal_PE_initial_image": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 33,
+        "virtual_zero_fill_bytes": 0,
+        "live_capture_command": "python tools/bsp.py ghidra bytes 008758D3 --length 33"
+      }
+    ],
+    "GPR_PE_initial_image_bytes": 202,
+    "file_backed_bytes": 178,
+    "PE_virtual_zero_fill_bytes": 24,
+    "not_live_game_runtime_data": true,
+    "body_instructions": [
+      {
+        "address": "00874C90",
+        "bytes": 5,
+        "hex": "a1d8b6e000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [0xe0b6d8]"
+      },
+      {
+        "address": "00874C95",
+        "bytes": 5,
+        "hex": "3d04b7e000",
+        "mnemonic": "cmp",
+        "operands": "eax, 0xe0b704"
+      },
+      {
+        "address": "00874C9A",
+        "bytes": 2,
+        "hex": "7442",
+        "mnemonic": "je",
+        "operands": "0x874cde"
+      },
+      {
+        "address": "00874C9C",
+        "bytes": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00874C9D",
+        "bytes": 3,
+        "hex": "8d4900",
+        "mnemonic": "lea",
+        "operands": "ecx, [ecx]"
+      },
+      {
+        "address": "00874CA0",
+        "bytes": 3,
+        "hex": "8b5008",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [eax + 8]"
+      },
+      {
+        "address": "00874CA3",
+        "bytes": 3,
+        "hex": "8b4804",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00874CA6",
+        "bytes": 3,
+        "hex": "895108",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx + 8], edx"
+      },
+      {
+        "address": "00874CA9",
+        "bytes": 3,
+        "hex": "8b4808",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [eax + 8]"
+      },
+      {
+        "address": "00874CAC",
+        "bytes": 3,
+        "hex": "8b7004",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00874CAF",
+        "bytes": 3,
+        "hex": "897104",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx + 4], esi"
+      },
+      {
+        "address": "00874CB2",
+        "bytes": 3,
+        "hex": "8b4814",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [eax + 0x14]"
+      },
+      {
+        "address": "00874CB5",
+        "bytes": 3,
+        "hex": "6bc968",
+        "mnemonic": "imul",
+        "operands": "ecx, ecx, 0x68"
+      },
+      {
+        "address": "00874CB8",
+        "bytes": 6,
+        "hex": "81c1c076f800",
+        "mnemonic": "add",
+        "operands": "ecx, 0xf876c0"
+      },
+      {
+        "address": "00874CBE",
+        "bytes": 6,
+        "hex": "81fa04b7e000",
+        "mnemonic": "cmp",
+        "operands": "edx, 0xe0b704"
+      },
+      {
+        "address": "00874CC4",
+        "bytes": 3,
+        "hex": "8b7138",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [ecx + 0x38]"
+      },
+      {
+        "address": "00874CC7",
+        "bytes": 3,
+        "hex": "897004",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], esi"
+      },
+      {
+        "address": "00874CCA",
+        "bytes": 3,
+        "hex": "8d7134",
+        "mnemonic": "lea",
+        "operands": "esi, [ecx + 0x34]"
+      },
+      {
+        "address": "00874CCD",
+        "bytes": 3,
+        "hex": "897008",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], esi"
+      },
+      {
+        "address": "00874CD0",
+        "bytes": 3,
+        "hex": "8b7138",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [ecx + 0x38]"
+      },
+      {
+        "address": "00874CD3",
+        "bytes": 3,
+        "hex": "894608",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], eax"
+      },
+      {
+        "address": "00874CD6",
+        "bytes": 3,
+        "hex": "894138",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx + 0x38], eax"
+      },
+      {
+        "address": "00874CD9",
+        "bytes": 2,
+        "hex": "8bc2",
+        "mnemonic": "mov",
+        "operands": "eax, edx"
+      },
+      {
+        "address": "00874CDB",
+        "bytes": 2,
+        "hex": "75c3",
+        "mnemonic": "jne",
+        "operands": "0x874ca0"
+      },
+      {
+        "address": "00874CDD",
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00874CDE",
+        "bytes": 2,
+        "hex": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "00874CE0",
+        "bytes": 5,
+        "hex": "a3d4b6e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xe0b6d4], eax"
+      },
+      {
+        "address": "00874CE5",
+        "bytes": 10,
+        "hex": "c705d8b6e00004b7e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xe0b6d8], 0xe0b704"
+      },
+      {
+        "address": "00874CEF",
+        "bytes": 5,
+        "hex": "a30cb7e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xe0b70c], eax"
+      },
+      {
+        "address": "00874CF4",
+        "bytes": 10,
+        "hex": "c70508b7e000d0b6e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xe0b708], 0xe0b6d0"
+      },
+      {
+        "address": "00874CFE",
+        "bytes": 1,
+        "hex": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "body_bytes": 111,
+    "body_instruction_count": 31,
+    "physical_calls": 0,
+    "producer_append_boundary_instructions": [
+      {
+        "address": "008758D3",
+        "bytes": 6,
+        "hex": "8b1508b7e000",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [0xe0b708]"
+      },
+      {
+        "address": "008758D9",
+        "bytes": 3,
+        "hex": "0f57c0",
+        "mnemonic": "xorps",
+        "operands": "xmm0, xmm0"
+      },
+      {
+        "address": "008758DC",
+        "bytes": 3,
+        "hex": "895604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], edx"
+      },
+      {
+        "address": "008758DF",
+        "bytes": 7,
+        "hex": "c7460804b7e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], 0xe0b704"
+      },
+      {
+        "address": "008758E6",
+        "bytes": 5,
+        "hex": "a108b7e000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [0xe0b708]"
+      },
+      {
+        "address": "008758EB",
+        "bytes": 3,
+        "hex": "897008",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], esi"
+      },
+      {
+        "address": "008758EE",
+        "bytes": 6,
+        "hex": "893508b7e000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [0xe0b708], esi"
+      }
+    ]
+  },
+  "actual_storage": {
+    "pending_head": {
+      "address": "00E0B6D0",
+      "node_bytes": 52,
+      "prev_cell": "00E0B6D4",
+      "next_cell": "00E0B6D8"
+    },
+    "pending_tail": {
+      "address": "00E0B704",
+      "relative_to_head": 52,
+      "prev_cell": "00E0B708",
+      "next_cell": "00E0B70C"
+    },
+    "pending_kind": "linear doubly linked list bounded by two34h sentinel nodes, not a count header or circular one-sentinel ring",
+    "group_array": {
+      "base": "00F876C0",
+      "stride": 104,
+      "count_from_existing_wave_contract": 5,
+      "head_offset": 0,
+      "first_offset": 8,
+      "tail_offset": 52,
+      "last_offset": 56,
+      "consumer_bounds_check": false
+    },
+    "registration": {
+      "bytes": 52,
+      "prev_offset": 4,
+      "next_offset": 8,
+      "raw_group_index_offset": 20,
+      "same_node_moved": true,
+      "copied_or_allocated": false,
+      "freed": false,
+      "untouched_fields": [
+        "profile+0",
+        "linked byte+18",
+        "sub-list fields+1C/+20/+24",
+        "payload+28",
+        "timer+30"
+      ]
+    },
+    "registration_count_field": "None accessed. Reset zeros are head.prev and tail.next. Node+24 belongs to its separate sub-list and is untouched."
+  },
+  "ordered_operations": [
+    {
+      "sites": [
+        "00874C90",
+        "00874C95",
+        "00874C9A"
+      ],
+      "operation": "Read H.next once as N; compare with actual tail identity T; empty skips movement but not endpoint reset."
+    },
+    {
+      "sites": [
+        "00874CA0",
+        "00874CA3",
+        "00874CA6"
+      ],
+      "operation": "Capture saved_next=N.next; read N.prev; write that previous node next=saved_next."
+    },
+    {
+      "sites": [
+        "00874CA9",
+        "00874CAC",
+        "00874CAF"
+      ],
+      "operation": "Reload N.next and N.prev, then next.prev=reloaded previous."
+    },
+    {
+      "sites": [
+        "00874CB2",
+        "00874CB5",
+        "00874CB8"
+      ],
+      "operation": "Read raw N+14 DWORD after unlink; low32 multiply0x68 and wrapping add baseF876C0 -> G."
+    },
+    {
+      "sites": [
+        "00874CBE"
+      ],
+      "operation": "Compare captured saved_next with T; retain its integer flags through intervening MOV/LEA until JNZ."
+    },
+    {
+      "sites": [
+        "00874CC4",
+        "00874CC7"
+      ],
+      "operation": "Read G+38 (tail.prev) and store into N.prev."
+    },
+    {
+      "sites": [
+        "00874CCA",
+        "00874CCD"
+      ],
+      "operation": "Compute G+34 tail identity and store into N.next."
+    },
+    {
+      "sites": [
+        "00874CD0",
+        "00874CD3",
+        "00874CD6"
+      ],
+      "operation": "Reload G+38; old_last.next=N; then G.tail.prev=N."
+    },
+    {
+      "sites": [
+        "00874CD9",
+        "00874CDB"
+      ],
+      "operation": "N=saved_next; repeat when saved comparison was non-equal; no post-append N.next read."
+    },
+    {
+      "sites": [
+        "00874CE0",
+        "00874CE5",
+        "00874CEF",
+        "00874CF4"
+      ],
+      "operation": "Always H.prev=0, H.next=T, T.next=0, T.prev=H, in that order."
+    }
+  ],
+  "ABI_and_invalid_storage": {
+    "inputs": "No receiver or stack arguments established; no meaningful ECX input (LEA ECX,[ECX] is alignment instruction).",
+    "return": "Plain RET00874CFE; EAX0 on ordinary return, no semantic return type inferred.",
+    "registers": "Nonempty PUSH/POP ESI; EBX/EDI/EBP untouched; ECX/EDX scratch. Empty path leaves ECX/EDX/ESI unchanged.",
+    "flags": "Final XOR EAX,EAX establishes arithmetic flags; subsequent MOV stores and RET do not change them. No native ABI implementation admitted.",
+    "address_expression": "G=(base + raw_index*0x68) mod2^32. No signed/unsigned range check and no overflow branch.",
+    "null_assumptions": "Empty H.next must equal T, not null; nonempty node/prev/next and selected group links are dereferenced without guards.",
+    "no_added_mechanisms": [
+      "count guard",
+      "null-list return",
+      "index clamp",
+      "overflow recovery",
+      "malformed-link repair",
+      "allocation/free",
+      "callback",
+      "lock",
+      "private list copy"
+    ],
+    "ordinary_Source_preconditions": [
+      "same actual pending sentinel identities as producer",
+      "same actual destination group storage as wave consumers",
+      "live writable real nodes with coherent previous/next links",
+      "valid producer-selected group and mapped32bit arithmetic result",
+      "ordinary non-overlapping sentinel/node identities",
+      "qualified producer/consumer phase and lifetimes"
+    ],
+    "concurrency": "Consumer takes no lock. Producer documentation records875280 lock-owner boundary; exact shared phase/lifetime contract must be qualified. Volatile or added locking alone is not proof."
+  },
+  "initialization_evidence": {
+    "pending_image": "File-backed .data initial head.prev0/head.nextE0B704/tail.prevE0B6D0/tail.next0.",
+    "group0_image": "Both12B prefixes are PE virtual zero-fill; no live game state was sampled.",
+    "bounded_bootstrap_store": {
+      "address": "00CD27D6",
+      "operation": "MOV DWORD[F876F8],F876C0",
+      "bytes": 10,
+      "full_initializer_recovered": false,
+      "true_function_boundary_repaired": false
+    },
+    "consequence": "Zero-filled Source groups are not coherent empty lists. Original numeric pointer bytes do not initialize an unrelated host owner."
+  },
+  "producer_boundary": {
+    "entry": "00875890",
+    "end_inclusive": "0087591A",
+    "body_bytes": 139,
+    "fresh_live_metadata_instruction_count": 42,
+    "named_internal_callee": "00875280",
+    "internal_callee_count_from_index": 1,
+    "full_body_expanded": false,
+    "all_nine_callers_expanded": false,
+    "lock_getter_callees_expanded": false,
+    "bounded_append_span": "008758D3..008758F3,33B7instructions",
+    "actual_append": "ReadE0B708 -> node.prev; node.next=E0B704; reloadE0B708 -> old_last; old_last.next=node; E0B708=node. XORPS for later constructor work also lies in the window.",
+    "xref_correction": "Ghidra associates8758EB withE0B6D8 through initial-data propagation; the actual instruction writes[old_last+8], equal to head.next only for an empty list.",
+    "remaining_contract": [
+      "actual node initialization versus publication order",
+      "actual payload/group ABI and index provenance",
+      "process pending owner identity/lifetime",
+      "875280 lock owner and producer/consumer phase",
+      "group owner bootstrap and same-identity wave consumption"
+    ]
+  },
+  "current_Source_review": [
+    {
+      "component": "fixed_step_job_waves.hpp",
+      "finding": "Correct layout constants and five-group count; FixedStepJobWaveHost enumerates(group,position,view), does not own raw registry cells."
+    },
+    {
+      "component": "GameFixedStepHost",
+      "finding": "next_element always returns false; flush_pending_tick_registrations only records assumed-empty branch, no actual endpoint stores."
+    },
+    {
+      "component": "UnitInstanceLayoutHost::construct_tick_node",
+      "finding": "Abstract hook; source call atunit_instance_layout.cpp81 is not the actual875890 producer."
+    },
+    {
+      "component": "GameNativeReadOnlyData",
+      "finding": "Only verified .rdata CE2000..E07B23; explicit exclusion of mutable globals/owners; cannot supply this pending/group registry."
+    },
+    {
+      "component": "GameNativeMutableCrtData",
+      "finding": "Specific CRT cell service, no registry owner API."
+    },
+    {
+      "component": "game_pending_entity_owners",
+      "finding": "Actual destroy/kill queuesF899A8/F899B4 have different owner/node identities; not compatible substitutes."
+    }
+  ],
+  "search_scope": {
+    "directories": [
+      "src",
+      "include/bsp"
+    ],
+    "terms": [
+      "E0B6D0/E0B6D4/E0B6D8",
+      "E0B704/E0B708/E0B70C",
+      "F876C0",
+      "00875890",
+      "NativeTick/TickRegistration/pending_tick/JobWaveGroup",
+      "construct_tick_node"
+    ],
+    "result": "No demonstrated actual process registry owner or registration producer; relevant hits are constants, abstract interfaces, projected hosts and documentation."
+  },
+  "minimum_next_packet": {
+    "mode": "read_only_producer_and_shared_owner_contract",
+    "address": "00875890",
+    "native_bytes": 139,
+    "owned_scope": "Complete producer only and explicit external875280 boundary; do not sweep all callers or getter callees.",
+    "why_ready_to_audit": "Known139B/42instruction boundary and fresh33B append span prove same pending sentinel cells.",
+    "Source_consumer_ready_after_this_packet": false,
+    "additional_owner_hold": "Identify and qualify complete group bootstrap/lifetime; the singleCD27D6 store is insufficient.",
+    "no_Source_signature_admitted": true
+  },
+  "Source_and_prior_evidence_pins": [
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "bytes": 23671,
+      "sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278"
+    },
+    {
+      "path": "include/bsp/game_hosts_fixed_step.hpp",
+      "bytes": 18004,
+      "sha256": "cd47c5dd49d9e618461768cdff3a0a26541a9457168094234b531699b103c0b2",
+      "lf_sha256": "cd47c5dd49d9e618461768cdff3a0a26541a9457168094234b531699b103c0b2"
+    },
+    {
+      "path": "include/bsp/fixed_step_fanout.hpp",
+      "bytes": 9128,
+      "sha256": "aef3d72096ecb17571c628250fa13a32c44032aacd045d0bb48cac498341bae3",
+      "lf_sha256": "aef3d72096ecb17571c628250fa13a32c44032aacd045d0bb48cac498341bae3"
+    },
+    {
+      "path": "src/fixed_step_fanout.cpp",
+      "bytes": 5126,
+      "sha256": "8819c6d3f05c4c41574ac780f5042763092ab3dfe5d66c54da8f3a0fb29c4ae9",
+      "lf_sha256": "8819c6d3f05c4c41574ac780f5042763092ab3dfe5d66c54da8f3a0fb29c4ae9"
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "bytes": 18412,
+      "sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb"
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "bytes": 10576,
+      "sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "lf_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "lf_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "include/bsp/game_native_mutable_crt_data.hpp",
+      "bytes": 3200,
+      "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "lf_sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+    },
+    {
+      "path": "docs/FIXED_STEP_JOB_WAVES.md",
+      "bytes": 17135,
+      "sha256": "0a468e71090f5367fbfb6bc208fe4074949303b54ba8adb450dcb8072bc3dcea",
+      "lf_sha256": "0a468e71090f5367fbfb6bc208fe4074949303b54ba8adb450dcb8072bc3dcea"
+    },
+    {
+      "path": "docs/CC12_WORLD_CURRENT_SHUTDOWN_STEP_READINESS.md",
+      "bytes": 10783,
+      "sha256": "c2b4333c0d2e3288f6363c1496437158911fa7fd54290d7591fa094132c3c4ce",
+      "lf_sha256": "c2b4333c0d2e3288f6363c1496437158911fa7fd54290d7591fa094132c3c4ce"
+    },
+    {
+      "path": "reports/cc12_world_current_shutdown_step_readiness.json",
+      "bytes": 35818,
+      "sha256": "68d1c5b13ca01df70964406027d7c8b081ef37e1703a6df2f7a646824771e18e",
+      "lf_sha256": "437414faa1de513f82f2792b08b15dbd35e036d00d91f0a1864f5551230be72f"
+    },
+    {
+      "path": "include/bsp/game_pending_entity_runtime.hpp",
+      "bytes": 1827,
+      "sha256": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+      "lf_sha256": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303"
+    }
+  ],
+  "validation": {
+    "GPR_PE_initial_image_bytes": 202,
+    "native_windows": 7,
+    "file_backed_bytes": 178,
+    "virtual_zero_bytes": 24,
+    "target_instructions": 31,
+    "physical_calls": 0,
+    "source_and_prior_pins": 14,
+    "JSON_parse": true,
+    "Source_edits": 0,
+    "Ghidra_mutations": 0,
+    "CMake_or_ledger_mutations": 0,
+    "flow_repairs": 0,
+    "deeper_callee_expansions": 0,
+    "whole_producer_sweeps": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "new_Original_credit": 0,
+    "live_game_runs": 0,
+    "pin_recompute": true,
+    "independent_decode": true
+  },
+  "limits": [
+    "Read-only consumer contract plus bounded owner/producer evidence",
+    "Not a Source implementation or actual owner construction",
+    "Saved image/static bytes differ from initialized live process state",
+    "No World shutdown/table/application/gameplay readiness"
+  ]
+}
