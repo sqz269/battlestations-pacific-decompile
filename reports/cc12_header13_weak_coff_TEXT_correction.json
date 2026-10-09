@@ -1,0 +1,247 @@
+{
+  "schema": "cc12-header13-weak-coff-text-correction-v1",
+  "status": "bounded-r03-TEXT-correction-pending-Root-independent-review",
+  "Source_credit": 0,
+  "base_main": "e995b86ae",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction",
+  "branch": "agent/cc12_header13_weak_coff_TEXT_correction",
+  "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix",
+  "owned_files": [
+    "docs/CC12_HEADER13_WEAK_COFF_TEXT_CORRECTION.md",
+    "reports/cc12_header13_weak_coff_TEXT_correction.json"
+  ],
+  "scope": "Individually authorized read-only Root subset and named selected TEXT; no whole Root-family exact claim.",
+  "selected_inputs": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\selected_before.json",
+    "size": 10433,
+    "sha256": "0ecc323bc01df99cf712ebc95993c6a9ef6dba2446e34080eb75eba85a6a28ed"
+  },
+  "authorized_input_count": 29,
+  "authorized_Root_subset_count": 18,
+  "selected_inputs_before_after_exact": true,
+  "root_failure": {
+    "stage": "static",
+    "recipe_line": 706,
+    "exception": "KeyError",
+    "message": "weak_target_index",
+    "frozen_failure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\in\\h13p2\\failure_static_1791507359806170000.json",
+      "size": 800,
+      "sha256": "7de8c7a2c6fc62203297d77c16d0a6bfbc776a82c00bbc1ef0d6c7f422531a88"
+    },
+    "Root_reported_compile_link_complete": true,
+    "Root_reported_target_processes": 0
+  },
+  "selected_r02": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\in\\selected_r02\\header13_final_generator.r02.py.txt",
+    "size": 130936,
+    "sha256": "c30a8e242ec0432bacbf38d76199dfffc244220970620cb81b4b1b5a1b7dbbc4"
+  },
+  "correction": {
+    "schema": "cc12-header13-weak-r03-text-delta-v1",
+    "Source_credit": 0,
+    "candidate": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\header13_final_generator.r03.py.txt",
+      "size": 130933,
+      "sha256": "620d000036b570ae8b64a10f1e519916456b8eaa96a77d2d6434b599b8ac85c5"
+    },
+    "input_contract": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\input_contract.r02.py.txt",
+      "size": 4425,
+      "sha256": "103aa82c1f46f40be5d78b21966df1798939b4407092165ac3aaa9efd3fab403"
+    },
+    "proposal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\Root_generation_selection.proposed.r03.json",
+      "size": 49072,
+      "sha256": "c605b790441b60d06c551a520d55295d9c5e2bef3156c7289987c98314cb7384"
+    },
+    "changed_generator_functions": [
+      "enumerate_retained_tu_bodies"
+    ],
+    "generator_active_path_occurrences": 2,
+    "generator_bad_key_occurrences_corrected": 1,
+    "input_contract_active_path_occurrences": 1,
+    "input_functions_unchanged": true,
+    "all_other_generator_functions_and_classes_unchanged": true,
+    "raw_reverse_exact": true,
+    "old_Q15_records_unchanged": true,
+    "old_D39_records_unchanged": true,
+    "Source10_records_unchanged": true,
+    "old_Q15_source_bytes_never_modified": true,
+    "active_reader_set": "14 original Q entries plus one path-only input_contract variant; all old15 retained as historical reviewed inputs",
+    "old_reviewed_rows": 68,
+    "new_reviewed_rows": 70,
+    "materialization_rows": 78,
+    "changed_materializations": [
+      "input_contract.py",
+      "recipe.py"
+    ],
+    "unchanged_materializations": 76,
+    "historical_context_origin_pins_unchanged": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\h13p2\\Root_selection_generation_context.json",
+        "size": 17228,
+        "sha256": "ec1db0a4fc1bbdd07f2db4d27fd20fbfdb713383424690f222ff54f8789919be"
+      }
+    ],
+    "producer_wrapper_keys": [
+      "aux_count",
+      "function_aux_total_size",
+      "terminal_COFF_index",
+      "validated_weak_chain",
+      "weak_characteristics",
+      "weak_tag_index"
+    ],
+    "corrected_consumer_target_keys": [
+      "index",
+      "name",
+      "storage",
+      "weak_characteristics",
+      "weak_tag_index"
+    ],
+    "active_family": "J:\\PROG\\battlestations-pacific-decompile\\local\\h13p3",
+    "selected_modules_imported": 0,
+    "selected_modules_executed": 0,
+    "Root_receipts_created_or_accepted": 0,
+    "concrete_additional_schema_mismatches": []
+  },
+  "independent_TEXT_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\independent_TEXT_review.json",
+    "size": 4383,
+    "sha256": "d16fd375c809d0cee2dbf251acc9fda2624bf4845df4857bb6201913b87b8a2f"
+  },
+  "raw_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\raw_weak_evidence.json",
+    "size": 15115,
+    "sha256": "830440b779b97976e8a80693d6029b15c5f5775175724e17463f5031d53d0f88"
+  },
+  "actual_objects": [
+    {
+      "file": "leaf.obj",
+      "size": 690,
+      "sha256": "fad6513dac01324d865bfa1e54de5136f4f25a9ee88f4504b4f2133478eeec60",
+      "sections": 4,
+      "primary_symbols": 7,
+      "symbol_slots": 11,
+      "weak_records": 0,
+      "mapped_weak_records": 0,
+      "mode_counts": {
+        "1": 0,
+        "3": 0
+      }
+    },
+    {
+      "file": "canonical.obj",
+      "size": 36799,
+      "sha256": "c32a5034bc3382b125d1aacc4700fa71ccc97c2dad8314713c0f77663e094865",
+      "sections": 184,
+      "primary_symbols": 359,
+      "symbol_slots": 550,
+      "weak_records": 7,
+      "mapped_weak_records": 2,
+      "mode_counts": {
+        "1": 7,
+        "3": 0
+      }
+    },
+    {
+      "file": "probe.obj",
+      "size": 22212,
+      "sha256": "3b126e8fcd98ef673bc5eafbf4b72129c0c05aafe71ba3e8a54832892f029784",
+      "sections": 78,
+      "primary_symbols": 171,
+      "symbol_slots": 249,
+      "weak_records": 0,
+      "mapped_weak_records": 0,
+      "mode_counts": {
+        "1": 0,
+        "3": 0
+      }
+    }
+  ],
+  "actual_mapped_weak": [
+    {
+      "weak_name": "??_Eexception@std@@UAEPAXI@Z",
+      "weak_index": 293,
+      "TagIndex": 292,
+      "mode": 1,
+      "defined_fallback": "??_Gexception@std@@UAEPAXI@Z",
+      "address": 1258295520,
+      "size": 45,
+      "linked_sha256": "9e16ace1488ca2b15dd674e86ce2e388fe5e91de091f67e2ee00e7183883f4fb",
+      "relocations": 3,
+      "all_full_extent_bytes_match": true
+    },
+    {
+      "weak_name": "??_Ebad_alloc@std@@UAEPAXI@Z",
+      "weak_index": 299,
+      "TagIndex": 298,
+      "mode": 1,
+      "defined_fallback": "??_Gbad_alloc@std@@UAEPAXI@Z",
+      "address": 1258295472,
+      "size": 45,
+      "linked_sha256": "7c1eec7740ca527d5739f4381e44181623dc5827016cdcf565de1d722e13de79",
+      "relocations": 3,
+      "all_full_extent_bytes_match": true
+    }
+  ],
+  "actual_weak_modes": {
+    "1": 7,
+    "3": 0
+  },
+  "mode3_policy": "preserved unchanged; no actual mode3 record in these objects",
+  "all_raw_chains_bounded_defined": true,
+  "all_mapped_aliases_same_VA_full_extent_verified": true,
+  "relocation_checks": 6,
+  "preserved_policies": {
+    "exact_mode1_mode3_chains": true,
+    "defined_terminal_fallback": true,
+    "same_VA_full_extent_and_bytes": true,
+    "full_relocations": true,
+    "map_CFG": true,
+    "receipt_guards": true,
+    "optimization_guards": true,
+    "launch_AST": true,
+    "providers": true,
+    "strict_trailing_data": true
+  },
+  "diffs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\generator_r02_to_r03.diff",
+      "size": 2397,
+      "sha256": "b054688baeb68c8f1447483f2c5f5d2760941bd5230c8095ba4d5a6cf868d1ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_header13_weak_coff_TEXT_correction\\local\\h13weakfix\\input_contract_r01_to_r02.diff",
+      "size": 518,
+      "sha256": "6b0e5bbf99b04a5b656c956340cd846d0894af2ef8979eee9b7312466eb72e62"
+    }
+  ],
+  "new_family": "J:/PROG/battlestations-pacific-decompile/local/h13p3",
+  "new_family_created": false,
+  "root_writes": 0,
+  "worker_execution": {
+    "selected_imports": 0,
+    "selected_modules": 0,
+    "compiler": 0,
+    "linker": 0,
+    "Native_queries": 0,
+    "Ghidra_queries": 0,
+    "provider": 0,
+    "target": 0,
+    "old_runtime_stage_replay": 0
+  },
+  "root_receipts_authored_or_accepted": 0,
+  "historical_root_receipt": "Frozen as authorized read-only evidence only",
+  "Source_or_ledger_changes": 0,
+  "further_concrete_schema_mismatches": [],
+  "pending": [
+    "Root independent complete r03/input-contract/proposed-selection TEXT review",
+    "fresh h13p3 materialization and new text receipt",
+    "fresh compile/link; no h13p2 object/process reuse",
+    "complete actual static helper/map/CFG qualification",
+    "Root new linked receipt and runtime validation if approved"
+  ],
+  "final_seal": "seal.json; final count/hash delivered after commit; excludes only itself",
+  "game_validated": false
+}
