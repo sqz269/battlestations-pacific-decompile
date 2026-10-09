@@ -57,8 +57,8 @@ The mutation path pops its conditional EDI spill before the common return;
 the skip path never pushes or pops EDI. The accepted arithmetic-flag formulas
 remain those of CMP count,1 on the skip path and ADD count,FFFFFFFF on the
 mutation path. ADD's carry/auxiliary-carry effects must not be replaced with
-SUB or DEC. The complete formulas and register residuals are pinned in the
-accepted audit and carried into the candidate report for primary review.
+SUB or DEC. The complete formulas and register residuals remain in the pinned
+accepted audit, referenced by the candidate report for primary review.
 
 Aliasing can make an earlier splice change a later link read, or either clear
 change the count before its read/modify/write. The conditional stack spill
@@ -75,7 +75,8 @@ The static checker verifies the exact 29-operation sequence, branch-label
 destinations, naked fastcall declaration/definition, single `RET 4`, current
 source hashes, all 20 direct accepted-audit pins, all 18 accepted cleanup pins,
 and all 44 constructor Source pins. Every pin records its current or historical
-domain. Historical constructor artifact hashes are not current-build evidence.
+domain. Unchanged historical pin sets are summarized by count and canonical
+manifest hash. Historical constructor artifact hashes are not current-build evidence.
 The candidate report pins these three current Source/document files; its own
 JSON is parsed and checked without introducing a recursive self-hash.
 

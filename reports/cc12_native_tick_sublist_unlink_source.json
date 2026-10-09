@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "cc12_native_tick_sublist_unlink_source",
-  "created_utc": "2026-10-09T12:02:49.973900+00:00",
+  "created_utc": "2026-10-09T12:05:41.772599+00:00",
   "baseline_commit": "4148cb440ca8347365b320df94032f79ed6eb376",
   "status": "Source_candidate_static_review_complete_pending_primary_registration_normal_build_and_whole_COFF_Core_review",
   "claimed_address": "00874E60",
@@ -28,7 +28,6 @@
     "address": "00874E60",
     "end_inclusive": "00874EB2",
     "bytes": 83,
-    "hex": "8b4424048b500885d2750b39500c7506837908017f3a85d25774088b780c897a0ceb058b500c89118b500c85d274088b7808897a08eb068b5008895104c7400c00000000c7400800000000834108ff5fc20400",
     "sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
     "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
     "GPR_equal_PE": true,
@@ -78,286 +77,178 @@
   },
   "Source_assembly_to_accepted_Native": [
     {
-      "source_line": 13,
       "original_address": "00874E60",
-      "source_assembly": "mov eax, dword ptr [esp + 4]",
-      "accepted_Native_hex": "8b442404",
-      "accepted_Native_instruction": "mov eax, dword ptr [esp + 4]",
-      "normalized_operation_and_target_equal": true
+      "source_line": 13,
+      "source_assembly": "mov eax, dword ptr [esp + 4]"
     },
     {
-      "source_line": 14,
       "original_address": "00874E64",
-      "source_assembly": "mov edx, dword ptr [eax + 8]",
-      "accepted_Native_hex": "8b5008",
-      "accepted_Native_instruction": "mov edx, dword ptr [eax + 8]",
-      "normalized_operation_and_target_equal": true
+      "source_line": 14,
+      "source_assembly": "mov edx, dword ptr [eax + 8]"
     },
     {
-      "source_line": 15,
       "original_address": "00874E67",
-      "source_assembly": "test edx, edx",
-      "accepted_Native_hex": "85d2",
-      "accepted_Native_instruction": "test edx, edx",
-      "normalized_operation_and_target_equal": true
+      "source_line": 15,
+      "source_assembly": "test edx, edx"
     },
     {
-      "source_line": 16,
       "original_address": "00874E69",
-      "source_assembly": "jnz short unlink_mutate",
-      "accepted_Native_hex": "750b",
-      "accepted_Native_instruction": "jne 0x874e76",
-      "normalized_operation_and_target_equal": true
+      "source_line": 16,
+      "source_assembly": "jnz short unlink_mutate"
     },
     {
-      "source_line": 17,
       "original_address": "00874E6B",
-      "source_assembly": "cmp dword ptr [eax + 0ch], edx",
-      "accepted_Native_hex": "39500c",
-      "accepted_Native_instruction": "cmp dword ptr [eax + 0xc], edx",
-      "normalized_operation_and_target_equal": true
+      "source_line": 17,
+      "source_assembly": "cmp dword ptr [eax + 0ch], edx"
     },
     {
-      "source_line": 18,
       "original_address": "00874E6E",
-      "source_assembly": "jnz short unlink_mutate",
-      "accepted_Native_hex": "7506",
-      "accepted_Native_instruction": "jne 0x874e76",
-      "normalized_operation_and_target_equal": true
+      "source_line": 18,
+      "source_assembly": "jnz short unlink_mutate"
     },
     {
-      "source_line": 19,
       "original_address": "00874E70",
-      "source_assembly": "cmp dword ptr [ecx + 8], 1",
-      "accepted_Native_hex": "83790801",
-      "accepted_Native_instruction": "cmp dword ptr [ecx + 8], 1",
-      "normalized_operation_and_target_equal": true
+      "source_line": 19,
+      "source_assembly": "cmp dword ptr [ecx + 8], 1"
     },
     {
-      "source_line": 20,
       "original_address": "00874E74",
-      "source_assembly": "jg short unlink_return",
-      "accepted_Native_hex": "7f3a",
-      "accepted_Native_instruction": "jg 0x874eb0",
-      "normalized_operation_and_target_equal": true
+      "source_line": 20,
+      "source_assembly": "jg short unlink_return"
     },
     {
-      "source_line": 22,
       "original_address": "00874E76",
-      "source_assembly": "test edx, edx",
-      "accepted_Native_hex": "85d2",
-      "accepted_Native_instruction": "test edx, edx",
-      "normalized_operation_and_target_equal": true
+      "source_line": 22,
+      "source_assembly": "test edx, edx"
     },
     {
-      "source_line": 23,
       "original_address": "00874E78",
-      "source_assembly": "push edi",
-      "accepted_Native_hex": "57",
-      "accepted_Native_instruction": "push edi",
-      "normalized_operation_and_target_equal": true
+      "source_line": 23,
+      "source_assembly": "push edi"
     },
     {
-      "source_line": 24,
       "original_address": "00874E79",
-      "source_assembly": "jz short unlink_head",
-      "accepted_Native_hex": "7408",
-      "accepted_Native_instruction": "je 0x874e83",
-      "normalized_operation_and_target_equal": true
+      "source_line": 24,
+      "source_assembly": "jz short unlink_head"
     },
     {
-      "source_line": 25,
       "original_address": "00874E7B",
-      "source_assembly": "mov edi, dword ptr [eax + 0ch]",
-      "accepted_Native_hex": "8b780c",
-      "accepted_Native_instruction": "mov edi, dword ptr [eax + 0xc]",
-      "normalized_operation_and_target_equal": true
+      "source_line": 25,
+      "source_assembly": "mov edi, dword ptr [eax + 0ch]"
     },
     {
-      "source_line": 26,
       "original_address": "00874E7E",
-      "source_assembly": "mov dword ptr [edx + 0ch], edi",
-      "accepted_Native_hex": "897a0c",
-      "accepted_Native_instruction": "mov dword ptr [edx + 0xc], edi",
-      "normalized_operation_and_target_equal": true
+      "source_line": 26,
+      "source_assembly": "mov dword ptr [edx + 0ch], edi"
     },
     {
-      "source_line": 27,
       "original_address": "00874E81",
-      "source_assembly": "jmp short unlink_next",
-      "accepted_Native_hex": "eb05",
-      "accepted_Native_instruction": "jmp 0x874e88",
-      "normalized_operation_and_target_equal": true
+      "source_line": 27,
+      "source_assembly": "jmp short unlink_next"
     },
     {
-      "source_line": 29,
       "original_address": "00874E83",
-      "source_assembly": "mov edx, dword ptr [eax + 0ch]",
-      "accepted_Native_hex": "8b500c",
-      "accepted_Native_instruction": "mov edx, dword ptr [eax + 0xc]",
-      "normalized_operation_and_target_equal": true
+      "source_line": 29,
+      "source_assembly": "mov edx, dword ptr [eax + 0ch]"
     },
     {
-      "source_line": 30,
       "original_address": "00874E86",
-      "source_assembly": "mov dword ptr [ecx], edx",
-      "accepted_Native_hex": "8911",
-      "accepted_Native_instruction": "mov dword ptr [ecx], edx",
-      "normalized_operation_and_target_equal": true
+      "source_line": 30,
+      "source_assembly": "mov dword ptr [ecx], edx"
     },
     {
-      "source_line": 32,
       "original_address": "00874E88",
-      "source_assembly": "mov edx, dword ptr [eax + 0ch]",
-      "accepted_Native_hex": "8b500c",
-      "accepted_Native_instruction": "mov edx, dword ptr [eax + 0xc]",
-      "normalized_operation_and_target_equal": true
+      "source_line": 32,
+      "source_assembly": "mov edx, dword ptr [eax + 0ch]"
     },
     {
-      "source_line": 33,
       "original_address": "00874E8B",
-      "source_assembly": "test edx, edx",
-      "accepted_Native_hex": "85d2",
-      "accepted_Native_instruction": "test edx, edx",
-      "normalized_operation_and_target_equal": true
+      "source_line": 33,
+      "source_assembly": "test edx, edx"
     },
     {
-      "source_line": 34,
       "original_address": "00874E8D",
-      "source_assembly": "jz short unlink_tail",
-      "accepted_Native_hex": "7408",
-      "accepted_Native_instruction": "je 0x874e97",
-      "normalized_operation_and_target_equal": true
+      "source_line": 34,
+      "source_assembly": "jz short unlink_tail"
     },
     {
-      "source_line": 35,
       "original_address": "00874E8F",
-      "source_assembly": "mov edi, dword ptr [eax + 8]",
-      "accepted_Native_hex": "8b7808",
-      "accepted_Native_instruction": "mov edi, dword ptr [eax + 8]",
-      "normalized_operation_and_target_equal": true
+      "source_line": 35,
+      "source_assembly": "mov edi, dword ptr [eax + 8]"
     },
     {
-      "source_line": 36,
       "original_address": "00874E92",
-      "source_assembly": "mov dword ptr [edx + 8], edi",
-      "accepted_Native_hex": "897a08",
-      "accepted_Native_instruction": "mov dword ptr [edx + 8], edi",
-      "normalized_operation_and_target_equal": true
+      "source_line": 36,
+      "source_assembly": "mov dword ptr [edx + 8], edi"
     },
     {
-      "source_line": 37,
       "original_address": "00874E95",
-      "source_assembly": "jmp short unlink_clear",
-      "accepted_Native_hex": "eb06",
-      "accepted_Native_instruction": "jmp 0x874e9d",
-      "normalized_operation_and_target_equal": true
+      "source_line": 37,
+      "source_assembly": "jmp short unlink_clear"
     },
     {
-      "source_line": 39,
       "original_address": "00874E97",
-      "source_assembly": "mov edx, dword ptr [eax + 8]",
-      "accepted_Native_hex": "8b5008",
-      "accepted_Native_instruction": "mov edx, dword ptr [eax + 8]",
-      "normalized_operation_and_target_equal": true
+      "source_line": 39,
+      "source_assembly": "mov edx, dword ptr [eax + 8]"
     },
     {
-      "source_line": 40,
       "original_address": "00874E9A",
-      "source_assembly": "mov dword ptr [ecx + 4], edx",
-      "accepted_Native_hex": "895104",
-      "accepted_Native_instruction": "mov dword ptr [ecx + 4], edx",
-      "normalized_operation_and_target_equal": true
+      "source_line": 40,
+      "source_assembly": "mov dword ptr [ecx + 4], edx"
     },
     {
-      "source_line": 42,
       "original_address": "00874E9D",
-      "source_assembly": "mov dword ptr [eax + 0ch], 0",
-      "accepted_Native_hex": "c7400c00000000",
-      "accepted_Native_instruction": "mov dword ptr [eax + 0xc], 0",
-      "normalized_operation_and_target_equal": true
+      "source_line": 42,
+      "source_assembly": "mov dword ptr [eax + 0ch], 0"
     },
     {
-      "source_line": 43,
       "original_address": "00874EA4",
-      "source_assembly": "mov dword ptr [eax + 8], 0",
-      "accepted_Native_hex": "c7400800000000",
-      "accepted_Native_instruction": "mov dword ptr [eax + 8], 0",
-      "normalized_operation_and_target_equal": true
+      "source_line": 43,
+      "source_assembly": "mov dword ptr [eax + 8], 0"
     },
     {
-      "source_line": 44,
       "original_address": "00874EAB",
-      "source_assembly": "add dword ptr [ecx + 8], -1",
-      "accepted_Native_hex": "834108ff",
-      "accepted_Native_instruction": "add dword ptr [ecx + 8], -1",
-      "normalized_operation_and_target_equal": true
+      "source_line": 44,
+      "source_assembly": "add dword ptr [ecx + 8], -1"
     },
     {
-      "source_line": 45,
       "original_address": "00874EAF",
-      "source_assembly": "pop edi",
-      "accepted_Native_hex": "5f",
-      "accepted_Native_instruction": "pop edi",
-      "normalized_operation_and_target_equal": true
+      "source_line": 45,
+      "source_assembly": "pop edi"
     },
     {
-      "source_line": 47,
       "original_address": "00874EB0",
-      "source_assembly": "ret 4",
-      "accepted_Native_hex": "c20400",
-      "accepted_Native_instruction": "ret 4",
-      "normalized_operation_and_target_equal": true
+      "source_line": 47,
+      "source_assembly": "ret 4"
     }
   ],
   "Source_branch_targets": [
     {
-      "source_line": 16,
       "original_address": "00874E69",
-      "mnemonic": "jne",
-      "source_label": "unlink_mutate",
       "target": "00874E76"
     },
     {
-      "source_line": 18,
       "original_address": "00874E6E",
-      "mnemonic": "jne",
-      "source_label": "unlink_mutate",
       "target": "00874E76"
     },
     {
-      "source_line": 20,
       "original_address": "00874E74",
-      "mnemonic": "jg",
-      "source_label": "unlink_return",
       "target": "00874EB0"
     },
     {
-      "source_line": 24,
       "original_address": "00874E79",
-      "mnemonic": "je",
-      "source_label": "unlink_head",
       "target": "00874E83"
     },
     {
-      "source_line": 27,
       "original_address": "00874E81",
-      "mnemonic": "jmp",
-      "source_label": "unlink_next",
       "target": "00874E88"
     },
     {
-      "source_line": 34,
       "original_address": "00874E8D",
-      "mnemonic": "je",
-      "source_label": "unlink_tail",
       "target": "00874E97"
     },
     {
-      "source_line": 37,
       "original_address": "00874E95",
-      "mnemonic": "jmp",
-      "source_label": "unlink_clear",
       "target": "00874E9D"
     }
   ],
@@ -369,867 +260,46 @@
     "unlink_clear": "00874E9D",
     "unlink_return": "00874EB0"
   },
-  "exact_borrowed_layout_and_access_contract": {
-    "list": {
-      "captured_address": "entry ECX = L",
-      "head_offset": "0x00",
-      "tail_offset": "0x04",
-      "count_offset": "0x08",
-      "minimum_touched_extent": "0x0C"
-    },
-    "node": {
-      "captured_address": "DWORD[entry ESP+4] = N, captured in EAX at00874E60",
-      "previous_offset": "0x08",
-      "next_offset": "0x0C",
-      "minimum_touched_extent": "0x10"
-    },
-    "field_width": "DWORD; 32-bit raw address/count words",
-    "count_semantics": "Signed comparison only for the skip condition; mutation is a modulo2^32 ADD -1.",
-    "explicit_node_offset0_or4_access": false,
-    "labels_are_hypotheses": true,
-    "alias_qualification": "No explicit node+0/+4 access does not forbid aliasing list/neighbor stores from touching those bytes."
-  },
-  "exact_access_schedule": [
-    {
-      "at": "00874E60",
-      "operation": "EAX=N=DWORD[entryESP+4]; sole node argument load."
-    },
-    {
-      "at": "00874E64",
-      "operation": "EDX=P=DWORD[N+8]; previous captured once for the first splice."
-    },
-    {
-      "at": "00874E67..00874E69",
-      "operation": "TEST P; if nonzero branch to00874E76 without the following next/count guard reads."
-    },
-    {
-      "at": "00874E6B..00874E6E",
-      "operation": "P is zero: CMP DWORD[N+C],EDX; if current next nonzero branch to00874E76."
-    },
-    {
-      "at": "00874E70..00874E74",
-      "operation": "Both link tests zero: CMP DWORD[L+8],1; signed JG to00874EB0 skips all writes."
-    },
-    {
-      "at": "00874E76..00874E79",
-      "operation": "TEST captured P; PUSH incoming EDI at[entryESP-4]; JZ uses TEST flags, preserved by PUSH."
-    },
-    {
-      "at": "00874E7B..00874E81",
-      "condition": "captured P nonzero",
-      "operation": "Fresh load DWORD[N+C] into EDI, then DWORD[P+C]=EDI; JMP00874E88."
-    },
-    {
-      "at": "00874E83..00874E86",
-      "condition": "captured P zero",
-      "operation": "Fresh load DWORD[N+C] into EDX, then DWORD[L+0]=EDX."
-    },
-    {
-      "at": "00874E88..00874E8D",
-      "operation": "After first write, EDX=Q=the then-current DWORD[N+C]; TEST Q."
-    },
-    {
-      "at": "00874E8F..00874E95",
-      "condition": "captured Q nonzero",
-      "operation": "Fresh DWORD[N+8] into EDI, then DWORD[Q+8]=EDI; JMP00874E9D."
-    },
-    {
-      "at": "00874E97..00874E9A",
-      "condition": "captured Q zero",
-      "operation": "Fresh DWORD[N+8] into EDX, then DWORD[L+4]=EDX."
-    },
-    {
-      "at": "00874E9D",
-      "operation": "DWORD[N+C]=0."
-    },
-    {
-      "at": "00874EA4",
-      "operation": "DWORD[N+8]=0."
-    },
-    {
-      "at": "00874EAB",
-      "operation": "ADD DWORD[L+8],FFFFFFFF; read current count only now, after both clears; wrap modulo2^32."
-    },
-    {
-      "at": "00874EAF",
-      "operation": "POP EDI from the then-current DWORD[entryESP-4]."
-    },
-    {
-      "at": "00874EB0",
-      "operation": "Common RET4; pop current return address and discard one DWORD argument."
-    }
-  ],
-  "signed_skip_contract": {
-    "condition": "Captured DWORD[N+8]==0, subsequent DWORD[N+C] guard read==0, and signed DWORD[L+8]>1.",
-    "count_raw_range": [
-      "00000002",
-      "7FFFFFFF"
-    ],
-    "count_read_conditional_on_both_zero_link_tests": true,
-    "field_writes": 0,
-    "EDI_push_or_pop": false,
-    "zero_or_negative_count_guard": false,
-    "registers_at_RET": {
-      "EAX": "N",
-      "ECX": "L",
-      "EDX": "0",
-      "EDI": "incoming EDI"
-    }
-  },
-  "accepted_register_stack_contract": {
-    "recovered_architectural_inputs": {
-      "ECX": "L",
-      "[entryESP+4]": "N"
-    },
-    "incoming_EAX_or_EDX_data_dependency": false,
-    "entry_EDI_role": "Ordinary callee-saved state, conditionally spilled only on the mutation path; raw overlap with that spill remains an alias effect.",
-    "return_instruction": "RET4 at00874EB0 on both paths",
-    "registers_at_RET": {
-      "EAX": "Captured N, unchanged after00874E60.",
-      "ECX": "Captured L; never written.",
-      "EDX_skip": "0.",
-      "EDX_mutation": "Q from00874E88 when Q nonzero; otherwise current previous from00874E97. Subsequent field clears/count ADD do not change EDX.",
-      "EBX_ESI_EBP": "No owned write.",
-      "EDI_skip": "Unchanged, no spill.",
-      "EDI_mutation": "Reloads current[entryESP-4]; equals incoming EDI only when no intervening field store overwrites the spill."
-    },
-    "stack": {
-      "entry_ESP": "S",
-      "mutation_push": "00874E78 writes incoming EDI to[S-4], ESP=S-4.",
-      "mutation_pop": "00874EAF reads current[S-4], ESP=S.",
-      "skip_frame": "No push or pop; ESP=S at RET.",
-      "ESP_after_normal_RET4": "S+8",
-      "callee_popped_stack_argument_bytes": 4,
-      "all_syntactic_path_instruction_deltas_balanced": true,
-      "ordinary_return_conditions": "Accessible memory and intact return-address/control-stack state; arbitrary field aliases can overwrite saved EDI or return-address/argument memory.",
-      "argument_slot_reloaded_after_capture": false
-    },
-    "return_use_in_callers_proven": false,
-    "native_calling_convention_drop_in_compatibility_proven": false,
-    "Source_interface_added": false,
-    "domain": "Historical accepted audit ABI findings; Source_interface_added reflects that historical audit only."
-  },
-  "accepted_residual_arithmetic_flags": {
-    "scope": "CF PF AF ZF SF OF on reaching the common RET normally; POP and RET do not change these flags. Other EFLAGS and faulted paths are not claimed.",
-    "skip": {
-      "last_flag_writer": "CMP DWORD[L+8],1 at00874E70",
-      "variables": "c is the count read by CMP; c in00000002..7FFFFFFF; r=c-1.",
-      "CF": "0",
-      "OF": "0",
-      "SF": "0",
-      "ZF": "0",
-      "PF": "even parity of the low8 bits of r",
-      "AF": "1 iff(c & 0xF)==0"
-    },
-    "mutation": {
-      "last_flag_writer": "ADD DWORD[L+8],FFFFFFFF at00874EAB, bytes834108ff",
-      "variables": "k is the current raw32 count immediately at ADD, after both clears; r=(k-1)&FFFFFFFF.",
-      "CF": "1 iff k!=0 (ADD carry, not SUB borrow or DEC carry preservation)",
-      "OF": "1 iff k==80000000",
-      "AF": "1 iff(k & 0xF)!=0 (ADD low-nibble carry)",
-      "ZF": "1 iff r==0",
-      "SF": "bit31 of r",
-      "PF": "even parity of the low8 bits of r"
-    }
-  },
-  "Source_alias_and_failure_limits": [
-    "No null, membership, underflow, saturation, or concurrency guard is present.",
-    "No entry count-zero guard: zero/one/negative count with zero link tests enters mutation.",
-    "No allocation/free/lock/virtual-profile/slot lookup/callback/loop/CALL/tail transfer is present.",
-    "The first splice can alter current next/previous; preserve the reload at00874E88 and the later previous load.",
-    "Clear next at+0C before previous at+08; either can alter an aliased list count before its read/modify/write.",
-    "The conditional PUSH may itself alter aliased list/node backing used by later reads.",
-    "Field writes can overwrite saved EDI, return-address, or argument-stack memory. Balanced instruction deltas do not prove intact control-stack contents.",
-    "No owned exception frame/handler or hardware-fault recovery is present; a later access fault need not undo earlier writes.",
-    "Static byte/CFG/flag reasoning does not establish valid memory, caller return use, race behavior, or execution equivalence."
-  ],
   "candidate_contract_qualification": "The copied accepted machine contracts are the intended complete Source assembly schedule. Static normalized equality does not establish actual compiler emission, fault behavior or runtime equivalence.",
   "producer_profile_and_caller_scope": {
     "Source_caller_migration": false,
     "concrete_subnode_producer_established": false,
     "concrete_profile_or_slot0_binding_established": false,
     "accepted_cleanup_relation": {
-      "accepted_report": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
-      "accepted_body": {
-        "address": "00874F00",
-        "end_inclusive": "00874F63",
-        "bytes": 100,
-        "sha256": "e3f7894ef6fe0b62f548fa5841e8dcfa2144db535e47de0545c6877e2b0ef611"
-      },
-      "accepted_body_Native_reread_this_packet": false,
-      "matching_behavior": "Same raw first splice, fresh next/previous reloads, clear+C then+8, current count ADD-1 and signed skip shape in the cleanup inlined mutation phase.",
-      "direct_cleanup_to_leaf_call": false,
-      "cleanup_extra_behavior": "Initial count-zero guard; capture current list head; after both unlink-mutation and signed-skip paths dispatch current node profile slot0 with ECX=node and stack flag1; test count and loop.",
-      "leaf_behavior": "ECX=list and one stack node argument; no entry count-zero guard, no profile/slot dispatch, no loop, one RET4.",
-      "slot0_binding_qualification": "Cleanup outgoing ECX=node/stack flag1 is not this leaf ECX=list/stack node input contract. RET4 alone cannot establish membership in that dispatch.",
-      "shared_compiler_provenance_or_containing_type_proven": false,
-      "concrete_subnode_producer_or_profile_or_slot0_target_established": false
+      "report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+      "section": "relation_to_accepted_cleanup",
+      "binding": "No direct cleanup call or concrete node-producer/profile/slot0 binding established."
     },
     "new_allocation_free_lock_callback_profile_or_owner": false,
     "application_map_status": "unreviewed; primary owns current map review; no force-retention added"
   },
-  "accepted_audit_current_input_pin_rechecks": [
-    {
-      "path": "docs/CC12_PENDING_REGISTRY_TICK_SUBLIST_UNLINK_LEAF_ABI_READINESS.md",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "004b2258e48d4b0d878ad97e0dbf605e0d416ca9ec4dc75f6b9ff064bf54bdc0",
-      "current_canonical_lf_sha256": "004b2258e48d4b0d878ad97e0dbf605e0d416ca9ec4dc75f6b9ff064bf54bdc0",
-      "equal": true
-    },
-    {
-      "path": "config/target.json",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
-      "current_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
-      "equal": true
-    },
-    {
-      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a",
-      "current_canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a",
-      "equal": true
-    },
-    {
-      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
-      "current_canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
-      "equal": true
-    },
-    {
-      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
-      "current_canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
-      "equal": true
-    },
-    {
-      "path": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
-      "current_canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
-      "equal": true
-    },
-    {
-      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
-      "current_canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
-      "equal": true
-    },
-    {
-      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
-      "current_canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_tick_registration_constructor.hpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
-      "current_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
-      "equal": true
-    },
-    {
-      "path": "src/native_tick_registration_constructor.cpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
-      "current_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_pending_registry_getter.hpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
-      "current_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
-      "equal": true
-    },
-    {
-      "path": "src/native_pending_registry_getter.cpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
-      "current_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/unit_destructor_levels.hpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
-      "current_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
-      "equal": true
-    },
-    {
-      "path": "src/unit_destructor_levels.cpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
-      "current_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/fixed_step_job_waves.hpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
-      "current_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
-      "equal": true
-    },
-    {
-      "path": "src/fixed_step_job_waves.cpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
-      "current_canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/tick_element_overrides.hpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
-      "current_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
-      "equal": true
-    },
-    {
-      "path": "src/tick_element_overrides.cpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
-      "current_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_singleton_destruction.hpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
-      "current_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
-      "equal": true
-    },
-    {
-      "path": "src/native_singleton_destruction.cpp",
-      "accepted_domain": "accepted_unlink_Native_audit_current_inputs",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
-      "current_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
-      "equal": true
-    }
-  ],
-  "accepted_cleanup_historical_input_pin_rechecks": [
-    {
-      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
-      "current_canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
-      "equal": true
-    },
-    {
-      "path": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
-      "current_canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
-      "equal": true
-    },
-    {
-      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
-      "current_canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
-      "equal": true
-    },
-    {
-      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
-      "current_canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
-      "equal": true
-    },
-    {
-      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
-      "current_canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_tick_registration_constructor.hpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
-      "current_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
-      "equal": true
-    },
-    {
-      "path": "src/native_tick_registration_constructor.cpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
-      "current_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_pending_registry_getter.hpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
-      "current_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
-      "equal": true
-    },
-    {
-      "path": "src/native_pending_registry_getter.cpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
-      "current_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/unit_destructor_levels.hpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
-      "current_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
-      "equal": true
-    },
-    {
-      "path": "src/unit_destructor_levels.cpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
-      "current_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/fixed_step_job_waves.hpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
-      "current_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
-      "equal": true
-    },
-    {
-      "path": "src/fixed_step_job_waves.cpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
-      "current_canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/tick_element_overrides.hpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
-      "current_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
-      "equal": true
-    },
-    {
-      "path": "src/tick_element_overrides.cpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
-      "current_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_singleton_destruction.hpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
-      "current_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
-      "equal": true
-    },
-    {
-      "path": "src/native_singleton_destruction.cpp",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
-      "current_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
-      "equal": true
-    },
-    {
-      "path": "config/target.json",
-      "accepted_domain": "accepted_100B_cleanup_report_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
-      "current_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
-      "equal": true
-    }
-  ],
-  "accepted_constructor_historical_Source_pin_rechecks": [
-    {
-      "path": "include/bsp/fixed_step_job_waves.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
-      "current_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/game_hosts_singletons.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
-      "current_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/game_native_string_process.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
-      "current_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
-      "current_canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
-      "current_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
-      "current_canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
-      "current_canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_legacy_exception_owner.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
-      "current_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
-      "current_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_pending_registry_constructor.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
-      "current_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_pending_registry_getter.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
-      "current_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_render_service_base.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
-      "current_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
-      "current_canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_singleton_destruction.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
-      "current_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_singleton_publication.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
-      "current_canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
-      "current_canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
-      "current_canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/native_tick_registration_constructor.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
-      "current_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/plane_squadron.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
-      "current_canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/random_threads.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
-      "current_canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/singleton_lifetime.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
-      "current_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/tick_element_overrides.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
-      "current_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
-      "equal": true
-    },
-    {
-      "path": "include/bsp/unit_instance_layout.hpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
-      "current_canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
-      "equal": true
-    },
-    {
-      "path": "src/game_hosts_fixed_step.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
-      "current_canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
-      "equal": true
-    },
-    {
-      "path": "src/game_hosts_singletons.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
-      "current_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
-      "equal": true
-    },
-    {
-      "path": "src/game_native_string_process.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
-      "current_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
-      "equal": true
-    },
-    {
-      "path": "src/native_allocator_base_copy_constructor.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
-      "current_canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
-      "equal": true
-    },
-    {
-      "path": "src/native_allocator_base_message_constructor.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
-      "current_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
-      "equal": true
-    },
-    {
-      "path": "src/native_allocator_failure_object_constructor.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
-      "current_canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
-      "equal": true
-    },
-    {
-      "path": "src/native_diagnostic_sink_lifetime.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
-      "current_canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
-      "equal": true
-    },
-    {
-      "path": "src/native_legacy_exception_owner.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "333a051dc86c6b10c7e09b61220feef3b5f36d5d4ba870b6174a9feb2f3682a5",
-      "current_canonical_lf_sha256": "333a051dc86c6b10c7e09b61220feef3b5f36d5d4ba870b6174a9feb2f3682a5",
-      "equal": true
-    },
-    {
-      "path": "src/native_pending_registry_base_cleanup.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
-      "current_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
-      "equal": true
-    },
-    {
-      "path": "src/native_pending_registry_constructor.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
-      "current_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
-      "equal": true
-    },
-    {
-      "path": "src/native_pending_registry_getter.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
-      "current_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
-      "equal": true
-    },
-    {
-      "path": "src/native_render_service_base.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
-      "current_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
-      "equal": true
-    },
-    {
-      "path": "src/native_renderer_worker_lifetime.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
-      "current_canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
-      "equal": true
-    },
-    {
-      "path": "src/native_singleton_publication.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
-      "current_canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
-      "equal": true
-    },
-    {
-      "path": "src/native_singleton_vector_registration_wrappers.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
-      "current_canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
-      "equal": true
-    },
-    {
-      "path": "src/native_singleton_vector_reserve_construct.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
-      "current_canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
-      "equal": true
-    },
-    {
-      "path": "src/native_tick_registration_constructor.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
-      "current_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
-      "equal": true
-    },
-    {
-      "path": "src/plane_squadron.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
-      "current_canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
-      "equal": true
-    },
-    {
-      "path": "src/singleton_lifetime.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
-      "current_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
-      "equal": true
-    },
-    {
-      "path": "src/tick_element_overrides.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
-      "current_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
-      "equal": true
-    },
-    {
-      "path": "src/unit_instance_layout.cpp",
-      "accepted_domain": "accepted_constructor_primary_Source_input_snapshot",
-      "comparison_domain": "canonical_LF_file_contents_at_candidate_baseline",
-      "accepted_canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
-      "current_canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
-      "equal": true
-    }
-  ],
+  "accepted_audit_current_input_pin_rechecks": {
+    "accepted_report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "accepted_rows_json_pointer": "/current_Source_and_evidence_pins",
+    "count": 20,
+    "all_current_canonical_file_hashes_equal_accepted": true,
+    "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current files compared to pinned historical report rows.",
+    "accepted_manifest_sha256": "57e16f17ba6f3934326b76097e580d29c2b04e95101eb46bbf1c9e398dd978b3",
+    "current_manifest_sha256": "57e16f17ba6f3934326b76097e580d29c2b04e95101eb46bbf1c9e398dd978b3"
+  },
+  "accepted_cleanup_historical_input_pin_rechecks": {
+    "accepted_report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "accepted_rows_json_pointer": "/accepted_cleanup_file_pin_rechecks",
+    "count": 18,
+    "all_current_canonical_file_hashes_equal_accepted": true,
+    "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current files compared to pinned historical report rows.",
+    "accepted_manifest_sha256": "88b717e8ee3e8fd804d539202c9838360ae384c4be76a5cf857f51bb1ab06fba",
+    "current_manifest_sha256": "88b717e8ee3e8fd804d539202c9838360ae384c4be76a5cf857f51bb1ab06fba"
+  },
+  "accepted_constructor_historical_Source_pin_rechecks": {
+    "accepted_report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "accepted_rows_json_pointer": "/constructor_primary_Source_pin_rechecks",
+    "count": 44,
+    "all_current_canonical_file_hashes_equal_accepted": true,
+    "manifest_domain": "SHA256 of ASCII compact JSON sorted [path,canonicalLFsha256] pairs; current files compared to pinned historical report rows.",
+    "accepted_manifest_sha256": "1fd5258e4d9f15fd54754fc3ab1f0d3daee8c84b23735f72fbc30ff98b478bfb",
+    "current_manifest_sha256": "1fd5258e4d9f15fd54754fc3ab1f0d3daee8c84b23735f72fbc30ff98b478bfb"
+  },
   "current_Source_and_evidence_pins": [
     {
       "path": "include/bsp/native_tick_sublist_unlink.hpp",
@@ -1245,9 +315,9 @@
     },
     {
       "path": "docs/CC12_NATIVE_TICK_SUBLIST_UNLINK_SOURCE.md",
-      "bytes": 5988,
-      "sha256": "0adc218b373996d2c80fd71e6db3bea9d4fed521fda946c3b711efadaa560cd4",
-      "canonical_lf_sha256": "0adc218b373996d2c80fd71e6db3bea9d4fed521fda946c3b711efadaa560cd4"
+      "bytes": 6072,
+      "sha256": "794f834cd4068a36248ad242c29ba68e307787ed71bb7b4100d1686d96cfc0c3",
+      "canonical_lf_sha256": "794f834cd4068a36248ad242c29ba68e307787ed71bb7b4100d1686d96cfc0c3"
     },
     {
       "path": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
@@ -1266,114 +336,6 @@
       "bytes": 455,
       "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
       "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
-    },
-    {
-      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
-      "bytes": 57016,
-      "sha256": "8605faad42e0c1a6760ca00d36626450913e867ff285f4fcb18310bc7d2e39e1",
-      "canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a"
-    },
-    {
-      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
-      "bytes": 102583,
-      "sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
-      "canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae"
-    },
-    {
-      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
-      "bytes": 10868,
-      "sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
-      "canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9"
-    },
-    {
-      "path": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
-      "bytes": 40375,
-      "sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
-      "canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd"
-    },
-    {
-      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
-      "bytes": 8676,
-      "sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
-      "canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd"
-    },
-    {
-      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
-      "bytes": 8308,
-      "sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
-      "canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746"
-    },
-    {
-      "path": "include/bsp/native_tick_registration_constructor.hpp",
-      "bytes": 1247,
-      "sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
-      "canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee"
-    },
-    {
-      "path": "src/native_tick_registration_constructor.cpp",
-      "bytes": 3108,
-      "sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
-      "canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a"
-    },
-    {
-      "path": "include/bsp/native_pending_registry_getter.hpp",
-      "bytes": 963,
-      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
-      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
-    },
-    {
-      "path": "src/native_pending_registry_getter.cpp",
-      "bytes": 3449,
-      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
-      "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
-    },
-    {
-      "path": "include/bsp/unit_destructor_levels.hpp",
-      "bytes": 15720,
-      "sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
-      "canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5"
-    },
-    {
-      "path": "src/unit_destructor_levels.cpp",
-      "bytes": 18167,
-      "sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
-      "canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673"
-    },
-    {
-      "path": "include/bsp/fixed_step_job_waves.hpp",
-      "bytes": 11060,
-      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
-      "canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
-    },
-    {
-      "path": "src/fixed_step_job_waves.cpp",
-      "bytes": 5564,
-      "sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
-      "canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda"
-    },
-    {
-      "path": "include/bsp/tick_element_overrides.hpp",
-      "bytes": 18720,
-      "sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
-      "canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54"
-    },
-    {
-      "path": "src/tick_element_overrides.cpp",
-      "bytes": 12785,
-      "sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
-      "canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17"
-    },
-    {
-      "path": "include/bsp/native_singleton_destruction.hpp",
-      "bytes": 18086,
-      "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
-      "canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
-    },
-    {
-      "path": "src/native_singleton_destruction.cpp",
-      "bytes": 25482,
-      "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
-      "canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
     }
   ],
   "validation": {
@@ -1386,7 +348,7 @@
     "accepted_audit_current_pins_equal": 20,
     "accepted_cleanup_historical_input_pins_equal": 18,
     "accepted_constructor_historical_Source_pins_equal": 44,
-    "current_direct_pin_count": 24,
+    "current_direct_pin_count": 6,
     "JSON_and_embedded_current_file_pins_checked": true,
     "exact_four_owned_files": true,
     "builds": 0,
@@ -1422,5 +384,17 @@
     "integration_credit": false,
     "game_validation": false,
     "only_owned_four_candidate_outputs": true
+  },
+  "accepted_contract_reference": {
+    "report": "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json",
+    "sections": [
+      "raw_layout",
+      "exact_access_schedule",
+      "skip_path",
+      "ABI",
+      "residual_arithmetic_flags",
+      "fault_exception_and_alias_limits"
+    ],
+    "domain": "Historical accepted Native machine contract; implementation intent, not candidate compiler-emission proof."
   }
 }
