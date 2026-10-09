@@ -533,7 +533,49 @@
     "cached_tick_whole_bytes_and_listing_integrity": true,
     "new_source_build_tests_execution_probes_or_ghidra_queries": false,
     "cmake_config_ledger_or_ghidra_mutation": false,
-    "application_or_runtime_or_gameplay_validation": false
+    "application_or_runtime_or_gameplay_validation": false,
+    "pin_correction_recheck": {
+      "published_baseline_git_blobs_matched": 45,
+      "current_integrator_files_physical_equal": 42,
+      "current_integrator_files_requiring_only_crlf_to_lf": 3,
+      "revised_owned_document_pin_matched": true,
+      "prior_tick_pins_matched_worker_published_and_integrator": 23,
+      "clock_peer_inputs_matched_worker_published_and_integrator": 15,
+      "cached_native_bytes_integrity": 1576,
+      "cached_native_instructions": 351,
+      "source_or_reference_report_modified": false,
+      "build_or_ghidra_or_native_execution": false,
+      "integrator_files_requiring_lf_normalization": [
+        {
+          "path": "docs/CC12_NATIVE_GAME_WORLD_OWNER_CONTEXT_READINESS.md",
+          "published_sha256": "954a7d3f097d78878ae74f2b981eb1465564265e85bdd4c59d90512fe58c968e",
+          "integrator_physical_sha256": "a316e29a0bef627f873fc523f6c47f1297f4f6d4491b240fbc8765ca18a5b0ef",
+          "integrator_lf_sha256": "954a7d3f097d78878ae74f2b981eb1465564265e85bdd4c59d90512fe58c968e",
+          "integrator_crlf": 106,
+          "physical_equal": false,
+          "lf_equal": true
+        },
+        {
+          "path": "docs/CC12_NATIVE_SUBTREE_INVALIDATION_SOURCE.md",
+          "published_sha256": "cec8c51b6a414bf1f6d57c33295b2947d7daf1261ecf0e654b5a465af6838a56",
+          "integrator_physical_sha256": "a7859f7fce161c8f522a7abe20c04b431b019882b292a576744fd8e188704f4d",
+          "integrator_lf_sha256": "cec8c51b6a414bf1f6d57c33295b2947d7daf1261ecf0e654b5a465af6838a56",
+          "integrator_crlf": 100,
+          "physical_equal": false,
+          "lf_equal": true
+        },
+        {
+          "path": "reports/cc12_sample_subtree_primary_review.json",
+          "published_sha256": "4722132f73666903a90a1d5f677a4e90321b873d59f1459ac37020ee6388095d",
+          "integrator_physical_sha256": "c2ace42b3ed4e5005fb4b6b816e2c38b3c9b1513c336561a75692a5f3da8e875",
+          "integrator_lf_sha256": "4722132f73666903a90a1d5f677a4e90321b873d59f1459ac37020ee6388095d",
+          "integrator_crlf": 657,
+          "physical_equal": false,
+          "lf_equal": true
+        }
+      ],
+      "exact_integrator_inputs_reference": "The remaining42 physical digests exactly equal the corresponding canonical entries in source_and_evidence_sha256; the revised owned document is verified separately."
+    }
   },
   "credit": {
     "new_source_functions": 0,
@@ -708,7 +750,7 @@
     "include/bsp/native_subtree_invalidation.hpp": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07",
     "src/native_subtree_invalidation.cpp": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959",
     "docs/CC12_NATIVE_SUBTREE_INVALIDATION_SOURCE.md": "cec8c51b6a414bf1f6d57c33295b2947d7daf1261ecf0e654b5a465af6838a56",
-    "reports/cc12_native_subtree_invalidation_source.json": "ab9469e5ea3eec585bb884aae0d5167a622745eddef8ba1009864c15e8d01378",
+    "reports/cc12_native_subtree_invalidation_source.json": "9a1c5323011dc3d09136c017e2b97d353125225ef73e8b1d4d76dea49024c785",
     "docs/CC12_NATIVE_SUBTREE_INVALIDATION_READINESS.md": "7433097e9bce9f21166e2ae6a8bcbf300beb9b1724e615a4ae555f519915aa23",
     "reports/cc12_native_subtree_invalidation_readiness.json": "632b8bcb619040e83e000604831d1f5c615a6501cc47966f1ba9d56b708f1d40",
     "reports/cc12_sample_subtree_primary_review.json": "4722132f73666903a90a1d5f677a4e90321b873d59f1459ac37020ee6388095d",
@@ -727,6 +769,51 @@
     "include/bsp/world_construct.hpp": "5f5d9bf8b44c53237fc33cd448919c80eee4731db0b9cd7dbf10a4d0ba3193dc",
     "src/world_construct.cpp": "aa51c816692e0f65139969653706410e6343eb42eb202a293f763254b7b8b37a",
     "reports/native_particle_axial_loading.json": "5d86c734fe85293e60f0302ef177ee118795a54fcbc1838a7f0c980ccfadcebf",
-    "docs/CC12_WORLD_TICK_PROVIDER_COMPOSITION_AFTER_SUBTREE.md": "f56a0845fc0127940d50d9ac5fdf40d19291308465c8e28b1ba1bb3f2c527f6c"
+    "docs/CC12_WORLD_TICK_PROVIDER_COMPOSITION_AFTER_SUBTREE.md": "57148992b79fb0d1e443b1a867f392e0fa66712ac68e79a349d19b4bc6fccd27"
+  },
+  "input_pin_corrections": [
+    {
+      "utc": "2026-10-09T04:58:53.566774+00:00",
+      "superseded_audit_commit": "d91fe01937c4569d71780d242fdc16853f4859a4",
+      "path": "reports/cc12_native_subtree_invalidation_source.json",
+      "superseded_pin": "ab9469e5ea3eec585bb884aae0d5167a622745eddef8ba1009864c15e8d01378",
+      "superseded_pin_origin": "Raw worker bytes retained after the original Windows Path.write_text generated CRLF; initial audit and verification both hashed that same local physical file.",
+      "worker_physical_copy": {
+        "bytes": 12803,
+        "sha256": "ab9469e5ea3eec585bb884aae0d5167a622745eddef8ba1009864c15e8d01378",
+        "crlf": 298,
+        "lf": 298
+      },
+      "corrected_pin": "9a1c5323011dc3d09136c017e2b97d353125225ef73e8b1d4d76dea49024c785",
+      "corrected_pin_origin": "Exact published24229 Git blob, independently identical to current integrator and main physical files.",
+      "published_copy": {
+        "bytes": 12505,
+        "sha256": "9a1c5323011dc3d09136c017e2b97d353125225ef73e8b1d4d76dea49024c785",
+        "crlf": 0,
+        "lf": 298
+      },
+      "published_base": "24229ec42885160e4eb02afcdff939e4a94f2c78",
+      "original_source_commit": "fdd610b56994605736979169b794d9b2ee444c8f",
+      "original_source_commit_blob_identical_to_published_base": true,
+      "integrator_file": "J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/reports/cc12_native_subtree_invalidation_source.json",
+      "main_file": "J:/PROG/battlestations-pacific-decompile/reports/cc12_native_subtree_invalidation_source.json",
+      "integrator_and_main_exact_byte_equal_to_published_blob": true,
+      "worker_crlf_to_lf_exact_byte_equal_to_published_blob": true,
+      "parsed_json_equal": true,
+      "git_eol_evidence": "i/lf w/crlf attr/text=auto eol=lf; core.autocrlf=true from system Git config",
+      "why_initial_check_missed_it": "Rehashing the same physical worker file verified the captured local digest but never compared staged/committed publication bytes. Git had normalized its index/blob to LF; the fast-forward retained the unchanged physical worker file.",
+      "semantic_content_drift": false,
+      "referenced_report_edited_by_correction": false,
+      "scope": "Only composition docs/report changed; preserve both raw and published provenance."
+    }
+  ],
+  "input_pin_basis": {
+    "baseline_input_count": 45,
+    "baseline_input_basis": "Exact published24229 Git blobs; current integrator physical hashes and LF-normalized hashes recorded separately below.",
+    "revised_document": "docs/CC12_WORLD_TICK_PROVIDER_COMPOSITION_AFTER_SUBTREE.md",
+    "revised_document_basis": "Current owned LF document; staged blob checked before commit.",
+    "total_pins": 46,
+    "worker_physical_bytes_not_universally_equal_to_publication": true,
+    "known_worker_only_crlf_path": "reports/cc12_native_subtree_invalidation_source.json"
   }
 }

@@ -211,3 +211,26 @@ gameplay equivalence are not established here. Partial completed writes must
 remain on a throwing Source call; no owning rollback or termination policy
 belongs in the leaf. This audit changes exactly its dedicated document/report
 and awards zero new Source or Original-function credit.
+
+## Evidence-pin correction
+
+Primary review found that the original audit pinned the worker's physical
+CRLF copy of `reports/cc12_native_subtree_invalidation_source.json`:
+`ab9469e5ea3eec585bb884aae0d5167a622745eddef8ba1009864c15e8d01378`
+(12,803 bytes, 298 CRLF endings). The published `24229ec42` Git blob and both
+the integrator and main checkouts instead contain the identical text in LF:
+`9a1c5323011dc3d09136c017e2b97d353125225ef73e8b1d4d76dea49024c785`
+(12,505 bytes, 298 LF endings). Replacing CRLF with LF gives exact byte equality,
+and the parsed JSON is also identical. Git reports `i/lf w/crlf` with
+`text=auto eol=lf`; the worker file retained its original Windows text-write
+line endings after Git normalized the staged content.
+
+The first validation rehashed only those same worker files, so it reproduced
+the local digest without checking publication bytes. The corrected report
+preserves that superseded digest and its provenance, pins the actual published
+LF blob, and verifies all 45 baseline inputs against `24229ec42` Git blobs and
+current integrator files, recording CRLF-to-LF normalization where needed.
+Its 46th pin covers this revised document. The
+23 prior tick inputs, 15 clock inputs and cached 1,576-byte native evidence
+are also rechecked. The referenced report itself is unchanged; only this
+composition document/report receive the correction.
