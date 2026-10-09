@@ -1,0 +1,1193 @@
+{
+  "schema": 1,
+  "packet": "cc12_tick_sublist_unlink_leaf_ABI_readiness",
+  "kind": "read_only_complete_owned_Native_body_and_current_Source_contract_audit",
+  "created_utc": "2026-10-09T11:54:06.185400+00:00",
+  "baseline_commit": "cc2ce843bc3af96242a0beb901dc33f4b82bc7c2",
+  "claimed_address": "00874E60",
+  "owned_files": [
+    "docs/CC12_PENDING_REGISTRY_TICK_SUBLIST_UNLINK_LEAF_ABI_READINESS.md",
+    "reports/cc12_pending_registry_tick_sublist_unlink_leaf_ABI_readiness.json"
+  ],
+  "Source_credit": false,
+  "Native_credit": false,
+  "Original_ABI_credit": false,
+  "conclusions": [
+    "Owned full83B is a zero-CALL raw list/node unlink leaf with complete29-instruction/11-block/15-edge coverage.",
+    "ECX supplies list address L; DWORD[entryESP+4] is captured once in EAX as node N; entry EAX/EDX are overwritten before data use.",
+    "The signed previous=next=0/count>1 path performs no mutation or EDI spill; other paths preserve fresh link reloads, clear next before previous, and ADD current count,-1.",
+    "EAX remains captured N at common RET4. Stack instruction deltas balance on all13 syntactic entry-return paths; ordinary return and EDI preservation require intact control-stack/spill memory.",
+    "No hidden incoming data-register, x87, or listing/control-flow omission gate was found; no gate-driven scope expansion was required.",
+    "Similarity to accepted874F00 inlined unlink phase establishes neither a direct call nor producer/profile/slot-zero binding.",
+    "No Source prototype or implementation is added. Separate primary review and assignment precede a later bounded Source candidate."
+  ],
+  "target_verification": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 64729,
+    "snapshot_function_count": 64729,
+    "method": "Project-aware bsp.py ghidra proto gate before owned decompile/bytes/listing; CLI verifies configured target before live queries.",
+    "config_pin": {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "Ghidra_mutations": 0
+  },
+  "metadata_gate": {
+    "name": "FUN_00874e60",
+    "live_body": [
+      "00874E60",
+      "00874EB2"
+    ],
+    "bytes": 83,
+    "listed_instructions": 29,
+    "basic_blocks": 11,
+    "edges": 15,
+    "cyclomatic_complexity": 6,
+    "param_count": 0,
+    "call_count": 0,
+    "resolved_callees": [],
+    "current_index_callers_metadata_only": [
+      "00875960",
+      "00875B30",
+      "00876120"
+    ],
+    "caller_names_remain_FUN": true,
+    "decompiler_interpretation": "thiscall list receiver plus one stack node argument; no incoming hidden data register.",
+    "hidden_input_gate": "clear; EAX and EDX assigned before use, EDI saved as ordinary callee-saved state",
+    "x87_gate": "clear; no x87 instruction",
+    "listing_or_flow_omission_gate": "clear; full83B decodes contiguously into all29 reachable instructions",
+    "qualifications": [
+      "Zero metadata parameters is not zero argument proof: machine operands establish ECX and entry stack+4.",
+      "Zero metadata calls is independently supported by full physical decoding.",
+      "Caller metadata does not establish argument values, ownership domain, or dynamic dispatch membership."
+    ]
+  },
+  "native_evidence": {
+    "address": "00874E60",
+    "end_inclusive": "00874EB2",
+    "bytes": 83,
+    "hex": "8b4424048b500885d2750b39500c7506837908017f3a85d25774088b780c897a0ceb058b500c89118b500c85d274088b7808897a08eb068b5008895104c7400c00000000c7400800000000834108ff5fc20400",
+    "sha256": "a83a36e95a4ff5d860bd6334753ab50c03fc0c7b4c7b5aedaec5f97bd3a04652",
+    "GPR_equal_PE": true,
+    "all_file_backed": true,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_section": ".text",
+    "PE_RVA": 4673120,
+    "PE_file_offset": 4673120,
+    "instructions": [
+      {
+        "address": "00874E60",
+        "bytes": 4,
+        "hex": "8b442404",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 4]"
+      },
+      {
+        "address": "00874E64",
+        "bytes": 3,
+        "hex": "8b5008",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [eax + 8]"
+      },
+      {
+        "address": "00874E67",
+        "bytes": 2,
+        "hex": "85d2",
+        "mnemonic": "test",
+        "operands": "edx, edx"
+      },
+      {
+        "address": "00874E69",
+        "bytes": 2,
+        "hex": "750b",
+        "mnemonic": "jne",
+        "operands": "0x874e76"
+      },
+      {
+        "address": "00874E6B",
+        "bytes": 3,
+        "hex": "39500c",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [eax + 0xc], edx"
+      },
+      {
+        "address": "00874E6E",
+        "bytes": 2,
+        "hex": "7506",
+        "mnemonic": "jne",
+        "operands": "0x874e76"
+      },
+      {
+        "address": "00874E70",
+        "bytes": 4,
+        "hex": "83790801",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [ecx + 8], 1"
+      },
+      {
+        "address": "00874E74",
+        "bytes": 2,
+        "hex": "7f3a",
+        "mnemonic": "jg",
+        "operands": "0x874eb0"
+      },
+      {
+        "address": "00874E76",
+        "bytes": 2,
+        "hex": "85d2",
+        "mnemonic": "test",
+        "operands": "edx, edx"
+      },
+      {
+        "address": "00874E78",
+        "bytes": 1,
+        "hex": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "00874E79",
+        "bytes": 2,
+        "hex": "7408",
+        "mnemonic": "je",
+        "operands": "0x874e83"
+      },
+      {
+        "address": "00874E7B",
+        "bytes": 3,
+        "hex": "8b780c",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [eax + 0xc]"
+      },
+      {
+        "address": "00874E7E",
+        "bytes": 3,
+        "hex": "897a0c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edx + 0xc], edi"
+      },
+      {
+        "address": "00874E81",
+        "bytes": 2,
+        "hex": "eb05",
+        "mnemonic": "jmp",
+        "operands": "0x874e88"
+      },
+      {
+        "address": "00874E83",
+        "bytes": 3,
+        "hex": "8b500c",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [eax + 0xc]"
+      },
+      {
+        "address": "00874E86",
+        "bytes": 2,
+        "hex": "8911",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx], edx"
+      },
+      {
+        "address": "00874E88",
+        "bytes": 3,
+        "hex": "8b500c",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [eax + 0xc]"
+      },
+      {
+        "address": "00874E8B",
+        "bytes": 2,
+        "hex": "85d2",
+        "mnemonic": "test",
+        "operands": "edx, edx"
+      },
+      {
+        "address": "00874E8D",
+        "bytes": 2,
+        "hex": "7408",
+        "mnemonic": "je",
+        "operands": "0x874e97"
+      },
+      {
+        "address": "00874E8F",
+        "bytes": 3,
+        "hex": "8b7808",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [eax + 8]"
+      },
+      {
+        "address": "00874E92",
+        "bytes": 3,
+        "hex": "897a08",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edx + 8], edi"
+      },
+      {
+        "address": "00874E95",
+        "bytes": 2,
+        "hex": "eb06",
+        "mnemonic": "jmp",
+        "operands": "0x874e9d"
+      },
+      {
+        "address": "00874E97",
+        "bytes": 3,
+        "hex": "8b5008",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [eax + 8]"
+      },
+      {
+        "address": "00874E9A",
+        "bytes": 3,
+        "hex": "895104",
+        "mnemonic": "mov",
+        "operands": "dword ptr [ecx + 4], edx"
+      },
+      {
+        "address": "00874E9D",
+        "bytes": 7,
+        "hex": "c7400c00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0xc], 0"
+      },
+      {
+        "address": "00874EA4",
+        "bytes": 7,
+        "hex": "c7400800000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], 0"
+      },
+      {
+        "address": "00874EAB",
+        "bytes": 4,
+        "hex": "834108ff",
+        "mnemonic": "add",
+        "operands": "dword ptr [ecx + 8], -1"
+      },
+      {
+        "address": "00874EAF",
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "00874EB0",
+        "bytes": 3,
+        "hex": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "instruction_count": 29,
+    "reachable_instructions": 29,
+    "unclassified_or_unreachable_bytes": 0,
+    "basic_blocks": [
+      {
+        "start": "00874E60",
+        "end_inclusive": "00874E6A",
+        "instruction_addresses": [
+          "00874E60",
+          "00874E64",
+          "00874E67",
+          "00874E69"
+        ],
+        "successors": [
+          "00874E76",
+          "00874E6B"
+        ]
+      },
+      {
+        "start": "00874E6B",
+        "end_inclusive": "00874E6F",
+        "instruction_addresses": [
+          "00874E6B",
+          "00874E6E"
+        ],
+        "successors": [
+          "00874E76",
+          "00874E70"
+        ]
+      },
+      {
+        "start": "00874E70",
+        "end_inclusive": "00874E75",
+        "instruction_addresses": [
+          "00874E70",
+          "00874E74"
+        ],
+        "successors": [
+          "00874EB0",
+          "00874E76"
+        ]
+      },
+      {
+        "start": "00874E76",
+        "end_inclusive": "00874E7A",
+        "instruction_addresses": [
+          "00874E76",
+          "00874E78",
+          "00874E79"
+        ],
+        "successors": [
+          "00874E83",
+          "00874E7B"
+        ]
+      },
+      {
+        "start": "00874E7B",
+        "end_inclusive": "00874E82",
+        "instruction_addresses": [
+          "00874E7B",
+          "00874E7E",
+          "00874E81"
+        ],
+        "successors": [
+          "00874E88"
+        ]
+      },
+      {
+        "start": "00874E83",
+        "end_inclusive": "00874E87",
+        "instruction_addresses": [
+          "00874E83",
+          "00874E86"
+        ],
+        "successors": [
+          "00874E88"
+        ]
+      },
+      {
+        "start": "00874E88",
+        "end_inclusive": "00874E8E",
+        "instruction_addresses": [
+          "00874E88",
+          "00874E8B",
+          "00874E8D"
+        ],
+        "successors": [
+          "00874E97",
+          "00874E8F"
+        ]
+      },
+      {
+        "start": "00874E8F",
+        "end_inclusive": "00874E96",
+        "instruction_addresses": [
+          "00874E8F",
+          "00874E92",
+          "00874E95"
+        ],
+        "successors": [
+          "00874E9D"
+        ]
+      },
+      {
+        "start": "00874E97",
+        "end_inclusive": "00874E9C",
+        "instruction_addresses": [
+          "00874E97",
+          "00874E9A"
+        ],
+        "successors": [
+          "00874E9D"
+        ]
+      },
+      {
+        "start": "00874E9D",
+        "end_inclusive": "00874EAF",
+        "instruction_addresses": [
+          "00874E9D",
+          "00874EA4",
+          "00874EAB",
+          "00874EAF"
+        ],
+        "successors": [
+          "00874EB0"
+        ]
+      },
+      {
+        "start": "00874EB0",
+        "end_inclusive": "00874EB2",
+        "instruction_addresses": [
+          "00874EB0"
+        ],
+        "successors": []
+      }
+    ],
+    "basic_block_count": 11,
+    "internal_CFG_edges": 15,
+    "conditional_branches": 5,
+    "unconditional_internal_JMPs": 2,
+    "CALL_count": 0,
+    "RET_count": 1,
+    "RET_immediate": 4,
+    "all_branch_targets_owned_instruction_boundaries": true,
+    "all13_syntactic_entry_return_paths_stack_balanced": true,
+    "syntactic_path_count": 13,
+    "stack_path_qualification": "Some syntactic branch combinations are data-infeasible; auditing all proves balanced ESP for the feasible subset. This is static byte/CFG analysis, not execution.",
+    "no_inline_table_or_outside_target_bytes_read": true
+  },
+  "raw_layout": {
+    "list": {
+      "captured_address": "entry ECX = L",
+      "head_offset": "0x00",
+      "tail_offset": "0x04",
+      "count_offset": "0x08",
+      "minimum_touched_extent": "0x0C"
+    },
+    "node": {
+      "captured_address": "DWORD[entry ESP+4] = N, captured in EAX at00874E60",
+      "previous_offset": "0x08",
+      "next_offset": "0x0C",
+      "minimum_touched_extent": "0x10"
+    },
+    "field_width": "DWORD; 32-bit raw address/count words",
+    "count_semantics": "Signed comparison only for the skip condition; mutation is a modulo2^32 ADD -1.",
+    "explicit_node_offset0_or4_access": false,
+    "labels_are_hypotheses": true,
+    "alias_qualification": "No explicit node+0/+4 access does not forbid aliasing list/neighbor stores from touching those bytes."
+  },
+  "exact_access_schedule": [
+    {
+      "at": "00874E60",
+      "operation": "EAX=N=DWORD[entryESP+4]; sole node argument load."
+    },
+    {
+      "at": "00874E64",
+      "operation": "EDX=P=DWORD[N+8]; previous captured once for the first splice."
+    },
+    {
+      "at": "00874E67..00874E69",
+      "operation": "TEST P; if nonzero branch to00874E76 without the following next/count guard reads."
+    },
+    {
+      "at": "00874E6B..00874E6E",
+      "operation": "P is zero: CMP DWORD[N+C],EDX; if current next nonzero branch to00874E76."
+    },
+    {
+      "at": "00874E70..00874E74",
+      "operation": "Both link tests zero: CMP DWORD[L+8],1; signed JG to00874EB0 skips all writes."
+    },
+    {
+      "at": "00874E76..00874E79",
+      "operation": "TEST captured P; PUSH incoming EDI at[entryESP-4]; JZ uses TEST flags, preserved by PUSH."
+    },
+    {
+      "at": "00874E7B..00874E81",
+      "condition": "captured P nonzero",
+      "operation": "Fresh load DWORD[N+C] into EDI, then DWORD[P+C]=EDI; JMP00874E88."
+    },
+    {
+      "at": "00874E83..00874E86",
+      "condition": "captured P zero",
+      "operation": "Fresh load DWORD[N+C] into EDX, then DWORD[L+0]=EDX."
+    },
+    {
+      "at": "00874E88..00874E8D",
+      "operation": "After first write, EDX=Q=the then-current DWORD[N+C]; TEST Q."
+    },
+    {
+      "at": "00874E8F..00874E95",
+      "condition": "captured Q nonzero",
+      "operation": "Fresh DWORD[N+8] into EDI, then DWORD[Q+8]=EDI; JMP00874E9D."
+    },
+    {
+      "at": "00874E97..00874E9A",
+      "condition": "captured Q zero",
+      "operation": "Fresh DWORD[N+8] into EDX, then DWORD[L+4]=EDX."
+    },
+    {
+      "at": "00874E9D",
+      "operation": "DWORD[N+C]=0."
+    },
+    {
+      "at": "00874EA4",
+      "operation": "DWORD[N+8]=0."
+    },
+    {
+      "at": "00874EAB",
+      "operation": "ADD DWORD[L+8],FFFFFFFF; read current count only now, after both clears; wrap modulo2^32."
+    },
+    {
+      "at": "00874EAF",
+      "operation": "POP EDI from the then-current DWORD[entryESP-4]."
+    },
+    {
+      "at": "00874EB0",
+      "operation": "Common RET4; pop current return address and discard one DWORD argument."
+    }
+  ],
+  "skip_path": {
+    "condition": "Captured DWORD[N+8]==0, subsequent DWORD[N+C] guard read==0, and signed DWORD[L+8]>1.",
+    "count_raw_range": [
+      "00000002",
+      "7FFFFFFF"
+    ],
+    "count_read_conditional_on_both_zero_link_tests": true,
+    "field_writes": 0,
+    "EDI_push_or_pop": false,
+    "zero_or_negative_count_guard": false,
+    "registers_at_RET": {
+      "EAX": "N",
+      "ECX": "L",
+      "EDX": "0",
+      "EDI": "incoming EDI"
+    }
+  },
+  "ABI": {
+    "recovered_architectural_inputs": {
+      "ECX": "L",
+      "[entryESP+4]": "N"
+    },
+    "incoming_EAX_or_EDX_data_dependency": false,
+    "entry_EDI_role": "Ordinary callee-saved state, conditionally spilled only on the mutation path; raw overlap with that spill remains an alias effect.",
+    "return_instruction": "RET4 at00874EB0 on both paths",
+    "registers_at_RET": {
+      "EAX": "Captured N, unchanged after00874E60.",
+      "ECX": "Captured L; never written.",
+      "EDX_skip": "0.",
+      "EDX_mutation": "Q from00874E88 when Q nonzero; otherwise current previous from00874E97. Subsequent field clears/count ADD do not change EDX.",
+      "EBX_ESI_EBP": "No owned write.",
+      "EDI_skip": "Unchanged, no spill.",
+      "EDI_mutation": "Reloads current[entryESP-4]; equals incoming EDI only when no intervening field store overwrites the spill."
+    },
+    "stack": {
+      "entry_ESP": "S",
+      "mutation_push": "00874E78 writes incoming EDI to[S-4], ESP=S-4.",
+      "mutation_pop": "00874EAF reads current[S-4], ESP=S.",
+      "skip_frame": "No push or pop; ESP=S at RET.",
+      "ESP_after_normal_RET4": "S+8",
+      "callee_popped_stack_argument_bytes": 4,
+      "all_syntactic_path_instruction_deltas_balanced": true,
+      "ordinary_return_conditions": "Accessible memory and intact return-address/control-stack state; arbitrary field aliases can overwrite saved EDI or return-address/argument memory.",
+      "argument_slot_reloaded_after_capture": false
+    },
+    "return_use_in_callers_proven": false,
+    "native_calling_convention_drop_in_compatibility_proven": false,
+    "Source_interface_added": false
+  },
+  "residual_arithmetic_flags": {
+    "scope": "CF PF AF ZF SF OF on reaching the common RET normally; POP and RET do not change these flags. Other EFLAGS and faulted paths are not claimed.",
+    "skip": {
+      "last_flag_writer": "CMP DWORD[L+8],1 at00874E70",
+      "variables": "c is the count read by CMP; c in00000002..7FFFFFFF; r=c-1.",
+      "CF": "0",
+      "OF": "0",
+      "SF": "0",
+      "ZF": "0",
+      "PF": "even parity of the low8 bits of r",
+      "AF": "1 iff(c & 0xF)==0"
+    },
+    "mutation": {
+      "last_flag_writer": "ADD DWORD[L+8],FFFFFFFF at00874EAB, bytes834108ff",
+      "variables": "k is the current raw32 count immediately at ADD, after both clears; r=(k-1)&FFFFFFFF.",
+      "CF": "1 iff k!=0 (ADD carry, not SUB borrow or DEC carry preservation)",
+      "OF": "1 iff k==80000000",
+      "AF": "1 iff(k & 0xF)!=0 (ADD low-nibble carry)",
+      "ZF": "1 iff r==0",
+      "SF": "bit31 of r",
+      "PF": "even parity of the low8 bits of r"
+    }
+  },
+  "fault_exception_and_alias_limits": [
+    "No null, membership, underflow, saturation, or concurrency guard is present.",
+    "No entry count-zero guard: zero/one/negative count with zero link tests enters mutation.",
+    "No allocation/free/lock/virtual-profile/slot lookup/callback/loop/CALL/tail transfer is present.",
+    "The first splice can alter current next/previous; preserve the reload at00874E88 and the later previous load.",
+    "Clear next at+0C before previous at+08; either can alter an aliased list count before its read/modify/write.",
+    "The conditional PUSH may itself alter aliased list/node backing used by later reads.",
+    "Field writes can overwrite saved EDI, return-address, or argument-stack memory. Balanced instruction deltas do not prove intact control-stack contents.",
+    "No owned exception frame/handler or hardware-fault recovery is present; a later access fault need not undo earlier writes.",
+    "Static byte/CFG/flag reasoning does not establish valid memory, caller return use, race behavior, or execution equivalence."
+  ],
+  "relation_to_accepted_cleanup": {
+    "accepted_report": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+    "accepted_body": {
+      "address": "00874F00",
+      "end_inclusive": "00874F63",
+      "bytes": 100,
+      "sha256": "e3f7894ef6fe0b62f548fa5841e8dcfa2144db535e47de0545c6877e2b0ef611"
+    },
+    "accepted_body_Native_reread_this_packet": false,
+    "matching_behavior": "Same raw first splice, fresh next/previous reloads, clear+C then+8, current count ADD-1 and signed skip shape in the cleanup inlined mutation phase.",
+    "direct_cleanup_to_leaf_call": false,
+    "cleanup_extra_behavior": "Initial count-zero guard; capture current list head; after both unlink-mutation and signed-skip paths dispatch current node profile slot0 with ECX=node and stack flag1; test count and loop.",
+    "leaf_behavior": "ECX=list and one stack node argument; no entry count-zero guard, no profile/slot dispatch, no loop, one RET4.",
+    "slot0_binding_qualification": "Cleanup outgoing ECX=node/stack flag1 is not this leaf ECX=list/stack node input contract. RET4 alone cannot establish membership in that dispatch.",
+    "shared_compiler_provenance_or_containing_type_proven": false,
+    "concrete_subnode_producer_or_profile_or_slot0_target_established": false
+  },
+  "accepted_outer_parent_context": {
+    "accepted_report": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
+    "address": "00875490",
+    "end_inclusive": "008754AF",
+    "bytes": 32,
+    "sha256": "467c74d1ee7fcb9f8c2c2bb983d52e5245e0d0246a6b3dc1a143e6cc96002ff5",
+    "instructions": 9,
+    "physical_CALLs": 0,
+    "sole_tail": "00874F00",
+    "tail_input": "ECX=outer receiver+1C; original stack unchanged.",
+    "Native_body_reread_this_packet": false,
+    "no_new_parent_binding_in_this_packet": true
+  },
+  "admitted_constructor_Source_context": {
+    "primary_review": "reports/cc12_native_tick_registration_constructor_primary_review.json",
+    "status": "Source_admitted_complete_compiled_review_normal_build_passed_Original_ABI_and_gameplay_unproved",
+    "current_Source_pin_count": 44,
+    "all_Source_pins_match": true,
+    "scope_qualification": "Accepted constructor Source covers its own registration node/layout and does not bind this leaf or the concrete sublist deletion target.",
+    "artifact_or_runtime_revalidation_claimed": false
+  },
+  "current_Source_contracts": {
+    "exact_address_search": "rg -n -i -g '*.hpp' -g '*.cpp' -g '*.inc' '00874e60|874e60' include/bsp src",
+    "matching_source_rows": 0,
+    "new_Source_files": 0,
+    "Source_prototype_from_metadata_only": false,
+    "shared_RET4_is_not_dispatch_binding": true
+  },
+  "accepted_cleanup_file_pin_rechecks": [
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
+      "accepted_canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
+      "current_canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
+      "equal": true
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
+      "accepted_canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
+      "current_canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
+      "equal": true
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
+      "accepted_canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
+      "current_canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
+      "equal": true
+    },
+    {
+      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
+      "accepted_canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
+      "current_canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
+      "equal": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
+      "accepted_canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
+      "current_canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "accepted_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "current_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "equal": true
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "accepted_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "current_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "accepted_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "current_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "equal": true
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "accepted_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "current_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/unit_destructor_levels.hpp",
+      "accepted_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+      "current_canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+      "equal": true
+    },
+    {
+      "path": "src/unit_destructor_levels.cpp",
+      "accepted_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+      "current_canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "accepted_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "current_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "equal": true
+    },
+    {
+      "path": "src/fixed_step_job_waves.cpp",
+      "accepted_canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
+      "current_canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "accepted_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "current_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "equal": true
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "accepted_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "current_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "accepted_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "current_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "equal": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "accepted_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "current_canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "equal": true
+    },
+    {
+      "path": "config/target.json",
+      "accepted_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "current_canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "equal": true
+    }
+  ],
+  "constructor_primary_Source_pin_rechecks": [
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "accepted_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "current_canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "accepted_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "current_canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/game_native_string_process.hpp",
+      "accepted_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "current_canonical_lf_sha256": "a3c96d776e7d49dd52d4ae148f17e6a74e064c3ab09d0aeabef4289c765f63b9",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_copy_constructor.hpp",
+      "accepted_canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "current_canonical_lf_sha256": "8111c083b6c5062578b261004b792b3e33f07b46295e9d72e3782bd529171ad8",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_allocator_base_message_constructor.hpp",
+      "accepted_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "current_canonical_lf_sha256": "66e1d73db88cebb5415f21e59587661807aa2c0d2e786148c1208d86ec27a008",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_allocator_failure_object_constructor.hpp",
+      "accepted_canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "current_canonical_lf_sha256": "29c8baca8b738191e5b7c3e02060c213fa1e3236a8bf13f7224e6560aaf55e01",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "accepted_canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "current_canonical_lf_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "accepted_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "current_canonical_lf_sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_base_cleanup.hpp",
+      "accepted_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "current_canonical_lf_sha256": "7b36a1489f734218668a6f371a2147c48512b963269b275f9db9399dfb927e4b",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_constructor.hpp",
+      "accepted_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "current_canonical_lf_sha256": "3d4f6b341dc3181f5de87a5e9ae2eff4e31347d0cb9aff6b135250d5388bd9aa",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "accepted_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "current_canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_render_service_base.hpp",
+      "accepted_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "current_canonical_lf_sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "accepted_canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "current_canonical_lf_sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "accepted_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "current_canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "accepted_canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "current_canonical_lf_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "accepted_canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "current_canonical_lf_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "accepted_canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "current_canonical_lf_sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "accepted_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "current_canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/plane_squadron.hpp",
+      "accepted_canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "current_canonical_lf_sha256": "5389adb081682548d2a85852b117340f1ac0cec2efc6d5ad9399a5293a9408c9",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "accepted_canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "current_canonical_lf_sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "accepted_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "current_canonical_lf_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "accepted_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "current_canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "equal": true
+    },
+    {
+      "path": "include/bsp/unit_instance_layout.hpp",
+      "accepted_canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "current_canonical_lf_sha256": "2ac8ea0bed4a4c464dc888fbf2543f5256f243c5d90549dd22fb08daec30a4fb",
+      "equal": true
+    },
+    {
+      "path": "src/game_hosts_fixed_step.cpp",
+      "accepted_canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "current_canonical_lf_sha256": "8aaff06fcc3f65cec99620ef9819a3cc9568b871315f2cb133631c87ce2e8278",
+      "equal": true
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "accepted_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "current_canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "equal": true
+    },
+    {
+      "path": "src/game_native_string_process.cpp",
+      "accepted_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "current_canonical_lf_sha256": "f6c49d1da60858369076303a3e70a95258db809c7dbeaecb1b9f7ac066193c9e",
+      "equal": true
+    },
+    {
+      "path": "src/native_allocator_base_copy_constructor.cpp",
+      "accepted_canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "current_canonical_lf_sha256": "400a1d0f6046b38c833f6a994ce705cb41b20433a8272c1e5151cd3ef281b6ee",
+      "equal": true
+    },
+    {
+      "path": "src/native_allocator_base_message_constructor.cpp",
+      "accepted_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "current_canonical_lf_sha256": "8ebad0c0d65478e125dccf243d7db17a5820a980dd52fecb8ba33393203934fe",
+      "equal": true
+    },
+    {
+      "path": "src/native_allocator_failure_object_constructor.cpp",
+      "accepted_canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "current_canonical_lf_sha256": "44afdaba435f6d703a3d842359faabf4c9e6366ad7ae44e1c56e55d0eb989eed",
+      "equal": true
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "accepted_canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "current_canonical_lf_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "equal": true
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "accepted_canonical_lf_sha256": "333a051dc86c6b10c7e09b61220feef3b5f36d5d4ba870b6174a9feb2f3682a5",
+      "current_canonical_lf_sha256": "333a051dc86c6b10c7e09b61220feef3b5f36d5d4ba870b6174a9feb2f3682a5",
+      "equal": true
+    },
+    {
+      "path": "src/native_pending_registry_base_cleanup.cpp",
+      "accepted_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "current_canonical_lf_sha256": "e7cf347e084059bc1263d3948079cff7956037fe2f714caab798b207e2628597",
+      "equal": true
+    },
+    {
+      "path": "src/native_pending_registry_constructor.cpp",
+      "accepted_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "current_canonical_lf_sha256": "0edd9115413eb45002ddc6a2ae934043b12bac21be32a4c12f72a2cebd0e4968",
+      "equal": true
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "accepted_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "current_canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "equal": true
+    },
+    {
+      "path": "src/native_render_service_base.cpp",
+      "accepted_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "current_canonical_lf_sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "equal": true
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "accepted_canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "current_canonical_lf_sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd",
+      "equal": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "accepted_canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "current_canonical_lf_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "equal": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "accepted_canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "current_canonical_lf_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "equal": true
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "accepted_canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "current_canonical_lf_sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "equal": true
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "accepted_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "current_canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "equal": true
+    },
+    {
+      "path": "src/plane_squadron.cpp",
+      "accepted_canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "current_canonical_lf_sha256": "639cf4cac2bd7e7d4cad694593b7578ec17c3f781a1ac07770e6747da8d07d6b",
+      "equal": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "accepted_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "current_canonical_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "equal": true
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "accepted_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "current_canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "equal": true
+    },
+    {
+      "path": "src/unit_instance_layout.cpp",
+      "accepted_canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "current_canonical_lf_sha256": "b766be0b0548a25facfe0167bfec00b785d7b0dc388da886020b0d4b52453e6a",
+      "equal": true
+    }
+  ],
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_SUBLIST_UNLINK_LEAF_ABI_READINESS.md",
+      "bytes": 8696,
+      "sha256": "004b2258e48d4b0d878ad97e0dbf605e0d416ca9ec4dc75f6b9ff064bf54bdc0",
+      "canonical_lf_sha256": "004b2258e48d4b0d878ad97e0dbf605e0d416ca9ec4dc75f6b9ff064bf54bdc0"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_sublist_cleanup_ABI_readiness.json",
+      "bytes": 57016,
+      "sha256": "8605faad42e0c1a6760ca00d36626450913e867ff285f4fcb18310bc7d2e39e1",
+      "canonical_lf_sha256": "3daa685a8d185baced411b7d9c4fa1204fadc53e2d14f303475425dea986f84a"
+    },
+    {
+      "path": "reports/cc12_native_tick_registration_constructor_primary_review.json",
+      "bytes": 102583,
+      "sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae",
+      "canonical_lf_sha256": "6b0f01ceb768848ca479f1d3850d8289b4cb74b5a9b3408acb2a389de01059ae"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_SUBLIST_CLEANUP_ABI_READINESS.md",
+      "bytes": 10868,
+      "sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9",
+      "canonical_lf_sha256": "56baade18c435a21a08f9791646788b5631d1beca9ae86d10a2c41e9ad051bc9"
+    },
+    {
+      "path": "reports/cc12_pending_registry_tick_element_destructor_readiness.json",
+      "bytes": 40375,
+      "sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd",
+      "canonical_lf_sha256": "41e427e5cb6ad4ff5683ef4fec7bcc124160ea25c8c8b1421c0a4f4f98475ffd"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_TICK_ELEMENT_DESTRUCTOR_READINESS.md",
+      "bytes": 8676,
+      "sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd",
+      "canonical_lf_sha256": "ad9210296931cc2eaaa5f5a197aee8d7a271e17cdf6ad7f836a3a087cd7815cd"
+    },
+    {
+      "path": "docs/CC12_NATIVE_TICK_REGISTRATION_CONSTRUCTOR_SOURCE.md",
+      "bytes": 8308,
+      "sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746",
+      "canonical_lf_sha256": "b39a1747ed49667227ee8e539cfd27bb7ac9928c8931fcd58b445f785b8b3746"
+    },
+    {
+      "path": "include/bsp/native_tick_registration_constructor.hpp",
+      "bytes": 1247,
+      "sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee",
+      "canonical_lf_sha256": "d504bf461c5d42dc9e35628b2cd8c849f97fec9134609a448e4ab835af0347ee"
+    },
+    {
+      "path": "src/native_tick_registration_constructor.cpp",
+      "bytes": 3108,
+      "sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a",
+      "canonical_lf_sha256": "31cd9d7dea6b9345fd54a3357167fd23e1f9daddd2d8769633f4b80a8b44f68a"
+    },
+    {
+      "path": "include/bsp/native_pending_registry_getter.hpp",
+      "bytes": 963,
+      "sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b",
+      "canonical_lf_sha256": "af11f6ef0eaaeb4faa0b8077f782b118a86ff4c2e864cc84802494eb23514c7b"
+    },
+    {
+      "path": "src/native_pending_registry_getter.cpp",
+      "bytes": 3449,
+      "sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea",
+      "canonical_lf_sha256": "ef1de8aba70195ce2f5784ee676c32548210291b25b1123ea60d75b2cae39fea"
+    },
+    {
+      "path": "include/bsp/unit_destructor_levels.hpp",
+      "bytes": 15720,
+      "sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5",
+      "canonical_lf_sha256": "b2dbe4fcba8153e07adb744245f24882d3e6bc72bb6a906bc34278771d4119d5"
+    },
+    {
+      "path": "src/unit_destructor_levels.cpp",
+      "bytes": 18167,
+      "sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673",
+      "canonical_lf_sha256": "bed0ec3d8174adb76bc5e2972c94a31c86617c14d6adf645b742f2b755f35673"
+    },
+    {
+      "path": "include/bsp/fixed_step_job_waves.hpp",
+      "bytes": 11060,
+      "sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d",
+      "canonical_lf_sha256": "d1e5a5fe71c68526a7221e75dc6270c33a8e7f6ce156135041512431c918b63d"
+    },
+    {
+      "path": "src/fixed_step_job_waves.cpp",
+      "bytes": 5564,
+      "sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda",
+      "canonical_lf_sha256": "a0e9daf6023853e234b712d35bf2bc0de386c53475ac14e581c4648790a74fda"
+    },
+    {
+      "path": "include/bsp/tick_element_overrides.hpp",
+      "bytes": 18720,
+      "sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54",
+      "canonical_lf_sha256": "79c383d8bdfe98debd783588187449b24d22f3cee39c3fcb9f1497b6e0405b54"
+    },
+    {
+      "path": "src/tick_element_overrides.cpp",
+      "bytes": 12785,
+      "sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17",
+      "canonical_lf_sha256": "005906a47b358cdb3781933521c3a7ed4d69680e1a4e6e14fe9b58f21bc82a17"
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 18086,
+      "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+      "canonical_lf_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 25482,
+      "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "canonical_lf_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+    }
+  ],
+  "minimum_next_contract": {
+    "leaf_candidate": "Independent raw list/node Source candidate after primary review and a separate bounded assignment.",
+    "remaining_cleanup_dependency": "Actual sublist node/profile producer and concrete current slot-zero deletion target(s).",
+    "no_assumed_producer_or_slot0_binding": true,
+    "no_Source_or_lease_expansion_this_packet": true
+  },
+  "validation": {
+    "whole_GPR_PE_83B_equal": true,
+    "full29_instruction_11block_15edge_coverage": true,
+    "zero_physical_CALLs_or_external_tail_targets": true,
+    "all13_syntactic_stack_paths_balanced": true,
+    "accepted_cleanup_direct_pins_checked": 18,
+    "accepted_cleanup_direct_pins_matched": 18,
+    "constructor_Source_pins_checked": 44,
+    "constructor_Source_pins_matched": 44,
+    "current_direct_pin_count": 20,
+    "JSON_parsed_and_all_embedded_current_pins_rechecked": true,
+    "build_run": false,
+    "probe_run": false,
+    "new_test_added": false,
+    "runtime_run": false,
+    "qualification": "Static evidence accounting, file hashing and JSON validation only; no Native execution or C++ build."
+  },
+  "limits": {
+    "Ghidra_mutation": false,
+    "ledger_edit": false,
+    "CMake_edit": false,
+    "Source_edit": false,
+    "Native_child_or_caller_body_read": false,
+    "Native_handler_read": false,
+    "Native_profile_or_table_or_string_read": false,
+    "adjacent_Native_bytes_read": false,
+    "Source_admission": false,
+    "Native_admission": false,
+    "Original_ABI_admission": false,
+    "integration_credit": false,
+    "game_validation": false,
+    "only_owned_two_documentation_outputs": true
+  }
+}
