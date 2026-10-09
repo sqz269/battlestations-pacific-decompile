@@ -120,6 +120,9 @@ GuiTextNativeLayoutServices::~GuiTextNativeLayoutServices() {
 const GuiTextNativeLayoutAcquired& GuiTextNativeLayoutServices::acquired() const noexcept {
     return impl_->acquisition;
 }
+bool GuiTextNativeLayoutServices::has_live_companions() const noexcept {
+    return !impl_->entries.empty();
+}
 void* GuiTextNativeLayoutServices::current_stream_descriptor_virtual24(void* stream) {
     auto& s = *impl_;
     s.require_domain();
