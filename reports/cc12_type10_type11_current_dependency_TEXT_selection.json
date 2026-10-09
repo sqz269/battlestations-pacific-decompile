@@ -1,0 +1,514 @@
+{
+  "schema": "type1011_current_dependency_TEXT_selection_v1",
+  "packet": "cc12_type10_type11_current_dependency_TEXT_selection",
+  "Source_credit": 0,
+  "Root_acceptance": false,
+  "current_execution_admission": false,
+  "address_count": 0,
+  "ownership_context_addresses": [
+    "008EF3E0",
+    "008EF460"
+  ],
+  "baseline": "dc156671891c6ebe1261157842e287f48c052b5c",
+  "result": "Bounded dependency snapshot and unexecuted guard TEXT complete; hold for current Main membership drift and late literal library closure",
+  "local_evidence": {
+    "family": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps",
+    "exact_recursive_files": 10413,
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\seal.json",
+      "bytes": 2030555,
+      "sha256": "4b9cc2c73f8b5a01a96c1ddd1b12d0359f722779814b5aa4ca1774a39209a8ff"
+    },
+    "conclusions": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\packet_conclusions.json",
+      "bytes": 30882,
+      "sha256": "53d2fa24d95707dcdb7e3adb574bb0a9f925a353149e9706855a8055722c91c0"
+    },
+    "initial_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\before_inventory.json",
+      "bytes": 6207562,
+      "sha256": "2d11c529c69291765d065eb9a24d34e1756c944c2723c3db0f4ecc60aa0885f1"
+    },
+    "before_optional_imports_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\combined_before_inventory.json",
+      "bytes": 6255995,
+      "sha256": "17cc4d1bcf7a2059ae2b74e3e9ef6601f5ba8453930373c4d1a419f1ef86d8d9"
+    },
+    "after_inventory": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\after_inventory.json",
+      "bytes": 6255995,
+      "sha256": "17cc4d1bcf7a2059ae2b74e3e9ef6601f5ba8453930373c4d1a419f1ef86d8d9"
+    },
+    "preservation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\preservation_receipt.json",
+      "bytes": 7547,
+      "sha256": "492e35be3aed03b5a49a3cc2363b9dddb6ddc6bf168f11d1a5d3b82a4dd0ecda"
+    },
+    "drift_stop": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\STOP_current_dependency_drift.json",
+      "bytes": 1408,
+      "sha256": "e8be30ddbf1533fe3bafb3edaead94ab13358840f2e5ce3c69ffb14757e9b26f"
+    },
+    "late_library_stop": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\STOP_late_literal_library_scope.json",
+      "bytes": 650,
+      "sha256": "2854dc84b8f81b14fb9ee73af500230b01d9276e770acc59d8ba6c4a89fe4b02"
+    },
+    "guard_preservation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\guard_delta_preservation.json",
+      "bytes": 20764,
+      "sha256": "05699e15e2811bfa9155d71fd6a8affe0f930e8def81deab942581cf390cb268"
+    }
+  },
+  "chosen_families": [
+    {
+      "category": "draft119",
+      "exact_files": 119,
+      "listed_files": 117,
+      "exclusions": [
+        "artifact_manifest.json",
+        "receipt.json"
+      ],
+      "manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\artifact_manifest.json",
+        "bytes": 21239,
+        "sha256": "be3e8a16721849eee13fd27a71b3c17d750a20cd9c1dce91459146aef9be8e28"
+      },
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\receipt.json",
+        "bytes": 734,
+        "sha256": "af5e52fe73e25ef99d8a9011dd83e23fb6d19f5d843752e2bb0a42083c566d26"
+      },
+      "exact_membership_and_hashes": true
+    },
+    {
+      "category": "cases28",
+      "exact_files": 28,
+      "listed_files": 26,
+      "exclusions": [
+        "artifact_manifest.json",
+        "receipt.json"
+      ],
+      "manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\cases28\\artifact_manifest.json",
+        "bytes": 4852,
+        "sha256": "791bae6e107512ddb0db06dd06d444b05e5b823666f2220b32023cd988e20457"
+      },
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\cases28\\receipt.json",
+        "bytes": 4550,
+        "sha256": "53823ac9da9960e0a391aea7bc4cbd6c9fddcf07c1a91a0ddc3cb652bb6ab646"
+      },
+      "exact_membership_and_hashes": true
+    }
+  ],
+  "selected_original_text": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\type1011_recipe.py.txt",
+      "bytes": 22727,
+      "sha256": "d9c6313d8986c0f0886b349ea1ffbde4e84020eb3f20cb331e72010cd59704c5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\type1011_probe.cpp.txt",
+      "bytes": 13404,
+      "sha256": "cbada3a571fa725e696bd8dc815fa981130c75ada775f78b472521a655483e7c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\type1011_gate.py.txt",
+      "bytes": 22788,
+      "sha256": "c06d00eb79e70591d11da0b3a60ce0a74c85da762ee8c307fe841089685795ce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\type1011_independent_code_reader.py.txt",
+      "bytes": 21457,
+      "sha256": "c80dcbb97d57262aecc926af2b2b874430aa307e5360cb73ab5537403a53d457"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\type1011_independent_recorded_reader.py.txt",
+      "bytes": 13400,
+      "sha256": "e79084ffa203cdb25973e1645c0d755212bd0a1c62deabeddea84e204e55b458"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\frozen\\draft119\\linked_plan.schema.json",
+      "bytes": 2319,
+      "sha256": "128ba082c4cb8200d996a82a7128abe9d47c94c0c25f4f809919eadd75902d1f"
+    }
+  ],
+  "Source_closure": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\camera_transform.hpp",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\render_tail.hpp",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\frame_clock.hpp",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_entry.hpp",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type11_raw_array_storage.cpp",
+      "bytes": 2275,
+      "sha256": "77579cc3a2c4caa3ef07c19c458dc52b8db2f22fa0ea7743b7dc5953ac604306"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type11_raw_array_storage.hpp",
+      "bytes": 2779,
+      "sha256": "92d8cf0801c951a04f6beb8f1038607344b2d5fdea41fc405ca293453ca113b6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_scene_property_record_type10_raw_array_storage.cpp",
+      "bytes": 2244,
+      "sha256": "cdaba66d272be20645bc3237ffdd0f27feba861054a66ec1a087ffe759d2bbbe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_scene_property_record_type10_raw_array_storage.hpp",
+      "bytes": 2695,
+      "sha256": "d9f5f671dc4c138e9fefcfd4eb9af29acfaad449a4a5d549fd830537900c080e"
+    }
+  ],
+  "counts": {
+    "original_selected_origins": 89,
+    "original_selected_copies": 47,
+    "installed_TEXT_copies": 42,
+    "initial_files": 10174,
+    "tool_complement_before_imports": 78,
+    "combined_before_imports_files": 10252,
+    "late_library_complement_files": 97,
+    "initial_memberships": 10573,
+    "after_memberships": 10574,
+    "scopes": 35,
+    "matching_scopes": 34,
+    "unchanged_originals": 10252,
+    "unchanged_frozen": 10252,
+    "dependency_AST_files": 814,
+    "selected_AST_files": 4,
+    "AST_errors": 0,
+    "PE_files": 413,
+    "PE_errors": 0,
+    "PE_edges": 2621,
+    "preserved_original_guards": 280,
+    "tools_py": 46,
+    "tool_caches": 17
+  },
+  "holds": {
+    "current_Main_header_membership": [
+      {
+        "kind": "new_scope_member",
+        "before": null,
+        "after": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_native_player_profile_context.hpp",
+          "bytes": 1667,
+          "sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b"
+        },
+        "separate_after_copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\after_drift_copies\\000_game_native_player_profile_context.hpp",
+          "bytes": 1667,
+          "sha256": "e28106bdf2a14bb82fa35a0fd4b465422e6081488b831f77515b690c7f8a373b"
+        },
+        "adopted_into_initial_selection": false
+      }
+    ],
+    "changed_original_file_count": 0,
+    "late_library_scope": {
+      "Source_credit": 0,
+      "current_execution_admission": false,
+      "initial_top_level_library_candidates": 540,
+      "literal_recursive_library_rows": 637,
+      "complementary_files": 97,
+      "captured_before_own_optional_analysis_imports": false,
+      "initial_selection_rewritten_or_repinned": false,
+      "late_content_and_membership_bookends_passed": true,
+      "capture_is_supplemental_evidence_only": true,
+      "required_action": "A later independently selected complete dependency snapshot must include the literal recursive library rows before its interpreter/analysis imports. This packet retains both original scopes and the timing gap as a hold."
+    },
+    "initial_selection_intact": true,
+    "silent_repin_or_scope_reduction": false,
+    "new_Root_selection_required": true
+  },
+  "compiler_and_linker": {
+    "explicit_CXX17_was_already_present": true,
+    "compile_plan_AST_unchanged": true,
+    "noexcept_pointer_member_preserved": true,
+    "Type10_Type11_fastcall_no_noexcept_promise_preserved": true,
+    "embedded_manifest_preserved": true,
+    "selected_PATH_already_MSVC_then_SDK_x86": true,
+    "filtered_tool_counts": {
+      "SDK": 156,
+      "MSVC": 71
+    },
+    "literal_tool_counts": {
+      "SDK": 231,
+      "MSVC": 74
+    },
+    "both_literal_tool_scopes_frozen_before_optional_imports": true,
+    "literal_library_rows": {
+      "ucrt": 8,
+      "MSVC": 148,
+      "um": 481
+    },
+    "initial_top_level_library_candidates": 540,
+    "late_complement": 97,
+    "actual_compiler_linker_invoked": false
+  },
+  "planned_consumption": {
+    "staged_include_headers": 9,
+    "external_header_members": 5124,
+    "planned_header_universe": 5133,
+    "broad_Main_include_guard_before": 2013,
+    "broad_Main_include_guard_after": 2014,
+    "actual_compiler_includes_observed": false,
+    "initial_top_level_lib_candidates": 540,
+    "selected_literal_recursive_library_rows": 637,
+    "libraries_are_search_set_not_exact_consumption": true,
+    "compile_standard": "/std:c++17 already present",
+    "embedded_manifest": true,
+    "resource_PATH_already_selected": true
+  },
+  "PE_text_summary": {
+    "files": 413,
+    "parse_errors": 0,
+    "import_delay_edges": 2621,
+    "frozen_basename_candidate_edges": 1460,
+    "external_resolution_edges": 1161,
+    "late_library_PE_bodies_not_part_of_initial413": true
+  },
+  "proposals": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_type1011_recipe.py.txt",
+      "bytes": 23562,
+      "sha256": "a0bf051445174472f1d820fc4d61f931a35bf8e948553af42954595e06ec4c99"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_type1011_gate.py.txt",
+      "bytes": 23174,
+      "sha256": "449e1ee3dc1a90ab1d9fe3891591990c35e2dfd810f74f15725d7e1396db8619"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_type1011_independent_code_reader.py.txt",
+      "bytes": 21808,
+      "sha256": "026599311e8d20196e1ad7321d491787d06975d144ac82aaf3226b96a07d6ffb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_type1011_independent_recorded_reader.py.txt",
+      "bytes": 13708,
+      "sha256": "b2cc7901ea6f09f4ffa683ff9de822e3129ed71418e45a7fd2861298c15a0dd0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_dependency_bootstrap.py.txt",
+      "bytes": 9968,
+      "sha256": "9e7429d2effd7fcd91faa6cc616bb27c0a9746d977f036cf7fb6047d1a62d49e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_external_python_driver.py.txt",
+      "bytes": 1877,
+      "sha256": "f0952216186fa79d4deb31114e21cf482b48b26a177db9155941e14f95c44499"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_external_preinterpreter_guard.ps1.txt",
+      "bytes": 6196,
+      "sha256": "c2fcbc0c34bdde88ab5fad12d3263aa8ae776710a80f82bceb258793b034e9c9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_current_dependency_TEXT_selection\\local\\t1011deps\\proposed_dependency_selection_template.json",
+      "bytes": 8674522,
+      "sha256": "24cf5405bf0ef1d77d4202f6bf65124718f62986aaa4dea267f6245ea2d3a2c6"
+    }
+  ],
+  "guard_preservation": {
+    "original_explicit_guard_calls": 280,
+    "per_file": {
+      "independent_code": 86,
+      "independent_recorded": 58,
+      "primary_gate": 87,
+      "recipe": 49
+    },
+    "all_preserved": true,
+    "original_asserts": 0,
+    "full_launch_AST_unchanged": true,
+    "full_compile_plan_AST_unchanged": true,
+    "all_original_Source_case_probe_noexcept_fastcall_assembly_contracts_unchanged": true,
+    "AST_only": true,
+    "PowerShell_AST_errors": 0
+  },
+  "fixture_contract": {
+    "Type10": {
+      "call_operand_offsets": [
+        51,
+        66
+      ],
+      "bytes": 116,
+      "instructions": 36,
+      "address": "008EF3E0"
+    },
+    "Type11": {
+      "call_operand_offsets": [
+        54,
+        69
+      ],
+      "bytes": 119,
+      "instructions": 37,
+      "address": "008EF460"
+    },
+    "ECX": "root",
+    "EDX": "pad",
+    "RET": 12,
+    "cases": 8,
+    "fresh_TUs_proposed": 4,
+    "calls": 24,
+    "roots": 24,
+    "root_bytes": 56,
+    "children": 12,
+    "allocation_free_pairs": 36,
+    "header_bytes": 40,
+    "record_bytes": 352,
+    "records": 24,
+    "provider_bytes": 580,
+    "providers": 8,
+    "Native_record_bytes": 139,
+    "Native_records": 2,
+    "binary_bytes": 13406,
+    "actual_weak_modes_must_be_resolved_from_fresh_COFF": true,
+    "no_mode3_assumption": true
+  },
+  "tools": {
+    "python_sources": 46,
+    "bytecode_files": 17,
+    "selected_route": "fresh staged ghidra_export.Client -> standard-library urllib HTTP; no call in this packet",
+    "query_helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type10_type11_complete_helper_TEXT_draft\\local\\t1011draft\\frozen_context\\tools\\ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    "flow_repair_broad_guard_only": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\tools\\ghidra_flow_repair.py",
+      "bytes": 6756,
+      "sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6"
+    }
+  },
+  "issues": [
+    {
+      "id": "current_membership_hold",
+      "evidence": "preservation_receipt.json and STOP_current_dependency_drift.json",
+      "finding": "All 10252 selected originals/frozen copies match, but Main/include added game_native_player_profile_context.hpp; 34 of 35 memberships match",
+      "action": "Preserve initial selection and separate after copy; a new independent selection is needed, never repin this snapshot"
+    },
+    {
+      "id": "late_literal_library_scope_hold",
+      "evidence": "STOP_late_literal_library_scope.json and late_literal_library_* bookends",
+      "finding": "Initial top-level .lib candidates total540; selected prepare() literally takes637 recursive rows: MSVC148/UCRT8/UM481. The complementary97 were captured after own optional AST imports",
+      "action": "Retain original540 and initial selection; label97 as later evidence only. A future complete selection must freeze all637 before its interpreter/imports. Do not claim initial completeness"
+    },
+    {
+      "id": "startup_preinterpreter",
+      "evidence": "selected recipe and all three helpers already reject optimization and require -B -E before helper use",
+      "finding": "Those in-module checks run after interpreter startup, do not require -S/-I, and cannot establish pre-interpreter integrity",
+      "action": "Proposed independently pinned external PowerShell/driver/bootstrap checks before Python and at every selected script; -I -B -E -S; original Root receipts remain required"
+    },
+    {
+      "id": "bytecode",
+      "evidence": "17 current Main tools cache files plus stdlib/package caches are freshly pinned",
+      "finding": "-B suppresses writes but allows reads",
+      "action": "Proposed reviewed empty pycache_prefix for parent and both independent children, with empty membership checks; current caches stay recorded"
+    },
+    {
+      "id": "package_resolution_and_namespace",
+      "evidence": "42 installed Python texts, full Capstone95/ordlookup8/pefile2, metadata and native DLL pinned",
+      "finding": "PathFinder.find_spec(name) relies on ambient sys.path; -S hides the current user site. Empty LIBCAPSTONE_PATH keys and a preloaded Capstone namespace are not explicitly forbidden by selected guards",
+      "action": "Proposed exact module map/finder without whole-site insertion, absent LIBCAPSTONE_PATH key, fresh Capstone namespace, exact lib/capstone.dll pin and requested filename. Actual mapped Windows module identity remains unproved"
+    },
+    {
+      "id": "environment",
+      "evidence": "selected ENV inherits os.environ, then prepends BIN and SDK x86 bin and sets VSLANG1033/autostart0",
+      "finding": "Original override list omits LIBPATH and full inherited ENV is not sanitized; -E only ignores Python configuration variables",
+      "action": "Proposed two independently pinned private ENV profiles, no override keys, exact recipe child ENV and resource PATH validation; original full ENV remains ignored/private"
+    },
+    {
+      "id": "CXX17_and_type_contract",
+      "evidence": "compile_plan line63 already contains /std:c++17; singleton_lifetime.hpp line26 has a noexcept pointer member",
+      "finding": "The reported Count01 omission is absent from this selected recipe. Type10/11 fastcall constructors expressly have no noexcept/unwind promise",
+      "action": "Keep compile_plan AST, all Source/header/probe bytes and signatures unchanged; add explicit C++17 presence check in build. Do not remove noexcept or alter assembly"
+    },
+    {
+      "id": "SDK_resource_link",
+      "evidence": "link_plan has /MANIFEST:EMBED; ENV prepends MSVC then SDK/bin/10.0.26100.0/x86",
+      "finding": "The selected recipe already provides the SDK path that the reported Count02 attempt lacked. Literal tool scopes are MSVC74 and SDK231, while initial filtered predicates remain71/156",
+      "action": "78 complementary tool files were frozen before optional analysis imports, preserving both scope definitions. Propose exact PATH and rc.exe/rcdll.dll/mt.exe pin checks; no link was attempted"
+    },
+    {
+      "id": "header_and_library_consumption",
+      "evidence": "prepare() pins INC[1:] external headers; build() parses literal English Note: including file: lines and checks against external headers plus staged inputs",
+      "finding": "Future F/include contains9 selected closure headers; external header roots contain5124 files. Actual /showIncludes data is absent. Libraries are frozen as a searched recursive set, not claimed as exact consumed libraries",
+      "action": "Retain literal VSLANG1033/parser/subset/frozen-copy predicates. Planned header universe is5133, separate from broad Main/include2013 guard members"
+    },
+    {
+      "id": "query_and_native_boundary",
+      "evidence": "fresh broad46 tools .py and17 caches; selected query_helper is copied from current ghidra_export.py",
+      "finding": "Native recipe uses its current Client/urllib HTTP read_memory hex schema. It does not use a ghidra_bridge/jfx_bridge package or the bsp.py flow-repair child",
+      "action": "Preserve Client project/program/schema predicates and autostart0; broad ghidra_flow_repair pin remains context only. No Native/target query is performed"
+    },
+    {
+      "id": "new_materialization_required",
+      "evidence": "original119 manifest and all47+42 copies remain exact; four proposed script hashes differ",
+      "finding": "The immutable original draft cannot contain the proposed replacements without invalidating its manifest",
+      "action": "Proposal retains original manifest pin and requires a distinct independently selected materialization draft. Future selected-code/environment/driver/cache fields remain null; no worker Root receipt or executable adoption"
+    },
+    {
+      "id": "static_PE_limit",
+      "evidence": "413 raw PE files,2621 import/delay edges,zero parse errors",
+      "finding": "1460 edges have frozen basename candidates and1161 retain OS/API-set or external resolution boundaries; this is not a loaded-module inventory",
+      "action": "Actual mapped Windows runtime/provider identity, linked whole-helper closure, actual weak modes and one-process recorded evidence require later authorized work"
+    }
+  ],
+  "boundaries": {
+    "Source_credit": 0,
+    "new_functions": 0,
+    "new_fragments": 0,
+    "new_names": 0,
+    "new_Source_CMake_or_tests": 0,
+    "Root_receipts": 0,
+    "selected_helper_imports_execution": 0,
+    "compiler_linker": 0,
+    "Native_Ghidra_provider_original_game_PE_target_queries_or_accesses": 0,
+    "prior_runtime_replays": 0,
+    "Main_local_writes": 0,
+    "future_Main_type1011p1_absent": true,
+    "build_runtime_ABI_startup_gameplay_qualification": false
+  },
+  "Root_remaining": [
+    "Review and integrate this Source0 snapshot with both holds; it gives no execution admission.",
+    "Create a separate complete current dependency selection after Main settles, with all637 literal library rows frozen before its interpreter/imports; keep this family immutable.",
+    "Independently select a distinct materialization draft and exact proposed-code/launcher/bootstrap/dependency/private ENV/cache pins. Future template fields are deliberately null.",
+    "Retain original Root TEXT and linked receipts, all280 predicates, unchanged launch AST, exclusive attempts, source/case/ABI/provider gates and actual weak-COFF resolution.",
+    "Verify actual compiler consumption, complete actual linked helpers, loaded Windows/provider identity and the one-process recorded data only in separately authorized future work."
+  ]
+}
