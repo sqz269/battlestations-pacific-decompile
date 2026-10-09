@@ -74,3 +74,11 @@ No CMake registration, app assignment, build, test, probe, Ghidra or ledger work
 occurred here. The primary integrator owns registration, normal build and
 emitted-code review; this packet makes no emitted ABI, runtime or game claim.
 Evidence: [cc12_global_config_sample_zero_adapter_source.json](../reports/cc12_global_config_sample_zero_adapter_source.json).
+
+## Primary registration and emitted-code review
+
+The integrator registered the source in bsp_core and ran the normal MSVC Win32 build; all three existing checks passed. Complete emitted methods show a 28-byte constructor that binds the runtime, a 12-byte stop tail-call preserving receiver and flag, and 99 bytes of zero-method code plus 5 bytes of alignment padding. The sample arm directly calls the concrete canonical sample zero method; the other arm directly calls the owned current provider. Positive physical COFF definitions and unique whole-library members establish each named target. Neither arm adds a sample decrement or a payload read after dispatch.
+
+The compiler adds a 29-byte security-cookie/CxxFrameHandler3 boundary; this does not prove Native EH equivalence. The adapter public roots are absent from the game map. It remains caller-admitted glue with zero new Original-function credit; canonical runtime lifetime, nonthrowing selected targets, raw second-array provenance and application drain ordering remain requirements.
+
+Evidence: [cc12_sample_subtree_primary_review.json](../reports/cc12_sample_subtree_primary_review.json).

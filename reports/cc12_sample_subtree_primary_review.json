@@ -1,0 +1,657 @@
+{
+  "schema": "bsp.cc12.sample_subtree_primary_review.v1",
+  "status": "source_whole_emitted_review_and_normal_win32_build_passed",
+  "utc": "2026-10-09T04:40:38.048818+00:00",
+  "build_exit": {
+    "command": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 118948,
+    "start_utc": "2026-10-09T04:39:46.045356+00:00",
+    "finish_utc": "2026-10-09T04:40:06.279884+00:00",
+    "exit_code": 0,
+    "success": true
+  },
+  "existing_checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "bounded_before_input_fingerprints": {
+    "pins": [
+      {
+        "path": "CMakeLists.txt",
+        "sha256": "72a927c4d9a08e5d1f6dfe96a8ac12605f7b957aa6100aa9d0f922af343bbcfd"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "include/bsp/native_subtree_invalidation.hpp",
+        "sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07"
+      },
+      {
+        "path": "src/native_subtree_invalidation.cpp",
+        "sha256": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959"
+      },
+      {
+        "path": "include/bsp/native_global_config_sample_dispatch.hpp",
+        "sha256": "8657e8f424294ccf42a9bd334aa93c5a95a410d38a43c0ebcac0e2e2a9363498"
+      },
+      {
+        "path": "src/native_global_config_sample_dispatch.cpp",
+        "sha256": "3a25139152e76046b256130f93b22b06170ea85f7769cd081ce7dd1e1f6e6db8"
+      },
+      {
+        "path": "include/bsp/global_config.hpp",
+        "sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76"
+      },
+      {
+        "path": "src/global_config.cpp",
+        "sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc"
+      },
+      {
+        "path": "include/bsp/sound_sample_runtime.hpp",
+        "sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123"
+      },
+      {
+        "path": "src/sound_sample_runtime.cpp",
+        "sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837"
+      },
+      {
+        "path": "include/bsp/sound_sample.hpp",
+        "sha256": "43cdd558fa7135ed708b468e79f1104fc87e58ecfbe122d0cea94e5ae461f117"
+      },
+      {
+        "path": "src/sound_sample.cpp",
+        "sha256": "e804f9109d495ce292680d899da4b704241198ced6e4d441f977a29ed490099f"
+      }
+    ]
+  },
+  "same_physical_inputs_rechecked_and_retained_after_build": true,
+  "sample_source_and_readiness_pins_rechecked": 28,
+  "units": [
+    {
+      "source": "src/native_subtree_invalidation.cpp",
+      "whole_object_sha256": "14958cf9e54370af6c46152227133c428df00cee454b0b4e3dc1b4682896f82c",
+      "roots": [
+        {
+          "symbol": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+          "bytes": 38,
+          "instructions": 13,
+          "relocation_targets": [
+            "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_subtree_invalidation.obj",
+        "header_offset": 63747502,
+        "payload_file_offset": 63747562,
+        "bytes": 776,
+        "sha256": "14958cf9e54370af6c46152227133c428df00cee454b0b4e3dc1b4682896f82c"
+      },
+      "external_boundaries": []
+    },
+    {
+      "source": "src/native_global_config_sample_dispatch.cpp",
+      "whole_object_sha256": "4e1de234e50c2f83c65f4857c7e607282cb7d7df8da13051dfeda513bd983069",
+      "roots": [
+        {
+          "symbol": "??0NativeGlobalConfigSampleDispatch@bsp@@QAE@AAVSoundSampleRuntime@1@@Z",
+          "bytes": 28,
+          "instructions": 9,
+          "relocation_targets": [
+            "??_7NativeGlobalConfigSampleDispatch@bsp@@6B@",
+            "??_7NativeGlobalConfigCurrentDispatch@bsp@@6B@"
+          ]
+        },
+        {
+          "symbol": "?stop_slot_08@NativeGlobalConfigSampleDispatch@bsp@@UAEXPAXI@Z",
+          "bytes": 12,
+          "instructions": 5,
+          "relocation_targets": [
+            "?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z"
+          ]
+        },
+        {
+          "symbol": "?zero_references_slot_00@NativeGlobalConfigSampleDispatch@bsp@@UAEXPAX@Z",
+          "bytes": 104,
+          "instructions": 37,
+          "relocation_targets": [
+            "__ehhandler$?zero_references_slot_00@NativeGlobalConfigSampleDispatch@bsp@@UAEXPAX@Z",
+            "___security_cookie",
+            "?zero_references_slot_00@SoundSampleRuntime@bsp@@UAEXPAX@Z",
+            "?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z"
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?zero_references_slot_00@NativeGlobalConfigSampleDispatch@bsp@@UAEXPAX@Z",
+          "bytes": 29,
+          "instructions": 9,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?zero_references_slot_00@NativeGlobalConfigSampleDispatch@bsp@@UAEXPAX@Z",
+            "___CxxFrameHandler3"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\native_global_config_sample_dispatch.obj",
+        "header_offset": 63748338,
+        "payload_file_offset": 63748398,
+        "bytes": 9471,
+        "sha256": "4e1de234e50c2f83c65f4857c7e607282cb7d7df8da13051dfeda513bd983069"
+      },
+      "external_boundaries": [
+        "@__security_check_cookie@4",
+        "___CxxFrameHandler3",
+        "___security_cookie",
+        "?zero_references_slot_00@SoundSampleRuntime@bsp@@UAEXPAX@Z",
+        "?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+        "?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+        "??3@YAXPAXI@Z",
+        "??_7type_info@@6B@"
+      ]
+    },
+    {
+      "source": "src/sound_sample_runtime.cpp",
+      "whole_object_sha256": "3a2de6ef38debfa5c48f79218e7e65e0ba1ade8199f7ce6ab198729e1dbee269",
+      "roots": [
+        {
+          "symbol": "?zero_references_slot_00@SoundSampleRuntime@bsp@@UAEXPAX@Z",
+          "bytes": 66,
+          "instructions": 23,
+          "relocation_targets": [
+            "?scalar_delete_sound_sample_00a82e80@bsp@@YAPAXPAXIAAUSoundSampleContext@1@@Z",
+            "??_C@_0DL@NHFABLPJ@Sample?5final?5release?5requires?5th@",
+            "??0logic_error@std@@QAE@PBD@Z",
+            "__TI2?AVlogic_error@std@@",
+            "__CxxThrowException@8"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\sound_sample_runtime.obj",
+        "header_offset": 62407254,
+        "payload_file_offset": 62407314,
+        "bytes": 102122,
+        "sha256": "3a2de6ef38debfa5c48f79218e7e65e0ba1ade8199f7ce6ab198729e1dbee269"
+      },
+      "external_boundaries": [
+        "?scalar_delete_sound_sample_00a82e80@bsp@@YAPAXPAXIAAUSoundSampleContext@1@@Z",
+        "__CxxThrowException@8",
+        "___std_exception_copy",
+        "___std_exception_destroy",
+        "??3@YAXPAXI@Z",
+        "??_7type_info@@6B@"
+      ]
+    },
+    {
+      "source": "src/global_config.cpp",
+      "whole_object_sha256": "4f5eb55b2797c966a28b4c8cb6bd10dc30bccd8ac9a7c1039b421729fa7d50b2",
+      "roots": [
+        {
+          "symbol": "?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+          "bytes": 69,
+          "instructions": 27,
+          "relocation_targets": [
+            "__ehhandler$?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+            "___security_cookie"
+          ]
+        },
+        {
+          "symbol": "?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+          "bytes": 65,
+          "instructions": 26,
+          "relocation_targets": [
+            "__ehhandler$?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+            "___security_cookie"
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+          "bytes": 29,
+          "instructions": 9,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+            "___CxxFrameHandler3"
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+          "bytes": 29,
+          "instructions": 9,
+          "relocation_targets": [
+            "@__security_check_cookie@4",
+            "__ehfuncinfo$?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+            "___CxxFrameHandler3"
+          ]
+        }
+      ],
+      "unique_whole_core_member": {
+        "name": "bsp_core.dir\\Release\\global_config.obj",
+        "header_offset": 51350910,
+        "payload_file_offset": 51350970,
+        "bytes": 10139,
+        "sha256": "4f5eb55b2797c966a28b4c8cb6bd10dc30bccd8ac9a7c1039b421729fa7d50b2"
+      },
+      "external_boundaries": [
+        "@__security_check_cookie@4",
+        "___CxxFrameHandler3",
+        "___security_cookie"
+      ]
+    }
+  ],
+  "core_library_sha256": "18777ab62e181d7c5202cd7de76f777f060ea41b4e859900b0d0b00d845320d9",
+  "four_new_public_roots_absent_from_game_map": true,
+  "retained_local_evidence": "local/cc12_sample_subtree_primary_review",
+  "whole_emitted_review": "passed complete new public methods, compiler handler/destructors, concrete sample target and unchanged current targets",
+  "credit": {
+    "additional_original_functions": 1,
+    "original_address": "0042ed50",
+    "original_owned_bytes": 38,
+    "sample_adapter_original_functions": 0,
+    "new_sample_glue_methods": 3,
+    "application_wiring": 0,
+    "gameplay": 0
+  },
+  "limits": [
+    "No new tests/probes, Native-entry execution or current game runtime validation.",
+    "Actual valid hierarchy storage, post-recursion lifetime and finite termination are caller preconditions.",
+    "Sample representation/provenance and raw table admission precede adapter dispatch; numeric stamp alone is insufficient.",
+    "Canonical Sound runtime and all its services must outlive final release; noexcept interface requires nonthrowing targets.",
+    "Complete World matrix pass, clock ownership, Game contexts, startup and gameplay remain open."
+  ],
+  "subtree_primary_body_review": {
+    "complete_owned_native_bytes": 38,
+    "instructions": 13,
+    "sole_relocation": {
+      "record_file_offset": 477,
+      "raw_record_hex": "19000000080000001400",
+      "offset": 25,
+      "type": 20,
+      "symbol_index": 8,
+      "symbol": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+      "symbol_record": {
+        "index": 8,
+        "record_file_offset": 663,
+        "raw_record_hex": "000000000400000000000000030020000200",
+        "name": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_records_hex": ""
+      },
+      "operand_file_offset": 464,
+      "operand_hex": "00000000",
+      "operand_u32": 0,
+      "function_offset": 25
+    },
+    "resolved_rel32": -29,
+    "own_physical_symbol_index_section_value_verified": true,
+    "resolved_complete_body_hex": "568b714885f6c681c800000000c6810c01000000740e8bcee8e3ffffff8b764485f675f25ec3",
+    "resolved_body_sha256": "9dbf958d6149b06a4ac17be48853600686b35b405dbdc8812d185f78056b539d",
+    "entire_body_equals_original_after_self_relocation": true,
+    "entry_abi": "ECX actual node; no stack arguments, EDX input, defined result, frame or x87/SSE; saved ESI and plain RET",
+    "schedule": "captured/tested child48 before C8 then10C clears; flags preserved; recursive ECX call; same child44 reload after return",
+    "runtime_or_fault_execution_proven": false
+  },
+  "sample_primary_body_review": {
+    "constructor": {
+      "span_bytes": 28,
+      "instructions": 9,
+      "review": "retains runtime reference at service+4; installs only legitimate service vptrs at0/+8; RET4"
+    },
+    "stop": {
+      "span_bytes": 12,
+      "instructions": 5,
+      "review": "adjusts service ECX+8 and tail-jumps to exact CurrentDispatch method, preserving receiver/flag stack words"
+    },
+    "zero": {
+      "span_bytes": 104,
+      "code_bytes": 99,
+      "code_instructions": 32,
+      "trailing_int3_padding_bytes": 5,
+      "review": "single first-DWORD compare; sample arm loads retained runtime/service adjustment+8 and direct-calls concrete sample method; other arm direct-calls owned current provider; no payload reads after either return"
+    },
+    "compiler_eh_handler": {
+      "bytes": 29,
+      "instructions": 9,
+      "external_boundaries": [
+        "__security_check_cookie",
+        "__CxxFrameHandler3"
+      ],
+      "native_exception_equivalence_claimed": false
+    },
+    "sample_runtime_zero": {
+      "span_bytes": 66,
+      "review": "current profile recheck; concrete scalar(flags1, same retained context) without another sample decrement; invalid profile has existing logic_error path"
+    },
+    "ordinary_destructor": "3-byte RET0; no canonical runtime release",
+    "generated_service_scalar_destructor": "30 bytes; flag1 frees only the12-byte service via sized operator delete, not borrowed runtime or payload",
+    "current_provider_whole_method_bytes_unchanged_from_previous_review": true,
+    "reference_operations_or_post_call_payload_reads_added": false,
+    "numeric_profile_alone_proves_provenance": false
+  },
+  "positive_unique_core_target_definitions": [
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\global_config.obj",
+        "header_offset": 51350910,
+        "payload_file_offset": 51350970,
+        "bytes": 10139,
+        "sha256": "4f5eb55b2797c966a28b4c8cb6bd10dc30bccd8ac9a7c1039b421729fa7d50b2"
+      },
+      "definition": {
+        "name": "?stop_slot_08@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAXI@Z",
+        "symbol_index": 80,
+        "symbol_record_file_offset": 6553,
+        "section": 30,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\global_config.obj",
+        "header_offset": 51350910,
+        "payload_file_offset": 51350970,
+        "bytes": 10139,
+        "sha256": "4f5eb55b2797c966a28b4c8cb6bd10dc30bccd8ac9a7c1039b421729fa7d50b2"
+      },
+      "definition": {
+        "name": "?zero_references_slot_00@NativeGlobalConfigCurrentDispatch@bsp@@UAEXPAX@Z",
+        "symbol_index": 81,
+        "symbol_record_file_offset": 6571,
+        "section": 32,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\sound_sample_runtime.obj",
+        "header_offset": 62407254,
+        "payload_file_offset": 62407314,
+        "bytes": 102122,
+        "sha256": "3a2de6ef38debfa5c48f79218e7e65e0ba1ade8199f7ce6ab198729e1dbee269"
+      },
+      "definition": {
+        "name": "?zero_references_slot_00@SoundSampleRuntime@bsp@@UAEXPAX@Z",
+        "symbol_index": 926,
+        "symbol_record_file_offset": 62039,
+        "section": 380,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\sound_sample.obj",
+        "header_offset": 62509436,
+        "payload_file_offset": 62509496,
+        "bytes": 100215,
+        "sha256": "1e43d8631ce90d8517c7a7f8fce757c8ddb9f3458f70747e95a74b4657914fb0"
+      },
+      "definition": {
+        "name": "?scalar_delete_sound_sample_00a82e80@bsp@@YAPAXPAXIAAUSoundSampleContext@1@@Z",
+        "symbol_index": 841,
+        "symbol_record_file_offset": 60519,
+        "section": 348,
+        "value": 0,
+        "type": 32
+      }
+    },
+    {
+      "member": {
+        "name": "bsp_core.dir\\Release\\native_subtree_invalidation.obj",
+        "header_offset": 63747502,
+        "payload_file_offset": 63747562,
+        "bytes": 776,
+        "sha256": "14958cf9e54370af6c46152227133c428df00cee454b0b4e3dc1b4682896f82c"
+      },
+      "definition": {
+        "name": "?invalidate_native_subtree_pose_0042ed50@bsp@@YIXPAX@Z",
+        "symbol_index": 8,
+        "symbol_record_file_offset": 663,
+        "section": 3,
+        "value": 0,
+        "type": 32
+      }
+    }
+  ],
+  "native_readiness_primary_replay": {
+    "status": "passed",
+    "bytes": 38,
+    "instructions": 13,
+    "pins": [
+      {
+        "path": "include/bsp/entity_local_matrix.hpp",
+        "physical_sha256": "71e78fe596ad8af885d37b3c027c430b87fb8bc991479d09037194a788b84f29",
+        "matched": true
+      },
+      {
+        "path": "src/entity_local_matrix.cpp",
+        "physical_sha256": "f2f5635efd23280750a7d067415a0e958d46bd41347f679fa6da480cd4899e76",
+        "matched": true
+      },
+      {
+        "path": "include/bsp/world_entity_update.hpp",
+        "physical_sha256": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+        "matched": true
+      },
+      {
+        "path": "src/world_entity_update.cpp",
+        "physical_sha256": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+        "matched": true
+      },
+      {
+        "path": "src/game_hosts_world.cpp",
+        "physical_sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+        "matched": true
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "physical_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+        "matched": true
+      },
+      {
+        "path": "include/bsp/airfield_taxi.hpp",
+        "physical_sha256": "a29e737aae69e049babfa6025572a2b86b36d6e6559baecfeeeb61aa43a7610f",
+        "matched": true
+      },
+      {
+        "path": "include/bsp/land_and_structures.hpp",
+        "physical_sha256": "ddc8f59e3a954e85d1ef81a9b4e83cb3179b8d0f764aaccc4bb93d8e4be6c79d",
+        "matched": true
+      },
+      {
+        "path": "include/bsp/unit_instance.hpp",
+        "physical_sha256": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+        "matched": true
+      },
+      {
+        "path": "docs/CC12_WORLD_CURRENT_TICK_READINESS.md",
+        "physical_sha256": "0aeb8d4e2f64da2478eb1dda6144209e49a2809ce74c1478313ba6a1cbaf57c7",
+        "matched": true
+      },
+      {
+        "path": "reports/cc12_world_current_tick_readiness.json",
+        "physical_sha256": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713",
+        "matched": true
+      },
+      {
+        "path": "tools/bsp.py",
+        "physical_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+        "matched": true
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "matched": true
+      },
+      {
+        "path": "config/target.json",
+        "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "matched": true
+      }
+    ],
+    "native_hex": "568b714885f6c681c800000000c6810c01000000740e8bcee8e3ffffff8b764485f675f25ec3",
+    "decoded": [
+      "0042ed50 push esi",
+      "0042ed51 mov esi, dword ptr [ecx + 0x48]",
+      "0042ed54 test esi, esi",
+      "0042ed56 mov byte ptr [ecx + 0xc8], 0",
+      "0042ed5d mov byte ptr [ecx + 0x10c], 0",
+      "0042ed64 je 0x42ed74",
+      "0042ed66 mov ecx, esi",
+      "0042ed68 call 0x42ed50",
+      "0042ed6d mov esi, dword ptr [esi + 0x44]",
+      "0042ed70 test esi, esi",
+      "0042ed72 jne 0x42ed66",
+      "0042ed74 pop esi",
+      "0042ed75 ret "
+    ]
+  },
+  "subtree_source_and_readiness_input_pins_rechecked": [
+    {
+      "path": "include/bsp/entity_local_matrix.hpp",
+      "expected": "71e78fe596ad8af885d37b3c027c430b87fb8bc991479d09037194a788b84f29",
+      "sha256": "71e78fe596ad8af885d37b3c027c430b87fb8bc991479d09037194a788b84f29",
+      "normalized_lf_sha256": "71e78fe596ad8af885d37b3c027c430b87fb8bc991479d09037194a788b84f29"
+    },
+    {
+      "path": "src/entity_local_matrix.cpp",
+      "expected": "f2f5635efd23280750a7d067415a0e958d46bd41347f679fa6da480cd4899e76",
+      "sha256": "f2f5635efd23280750a7d067415a0e958d46bd41347f679fa6da480cd4899e76",
+      "normalized_lf_sha256": "f2f5635efd23280750a7d067415a0e958d46bd41347f679fa6da480cd4899e76"
+    },
+    {
+      "path": "include/bsp/world_entity_update.hpp",
+      "expected": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+      "sha256": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+      "normalized_lf_sha256": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf"
+    },
+    {
+      "path": "src/world_entity_update.cpp",
+      "expected": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+      "sha256": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+      "normalized_lf_sha256": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f"
+    },
+    {
+      "path": "src/game_hosts_world.cpp",
+      "expected": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+      "sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+      "normalized_lf_sha256": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829"
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "expected": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "normalized_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999"
+    },
+    {
+      "path": "include/bsp/airfield_taxi.hpp",
+      "expected": "a29e737aae69e049babfa6025572a2b86b36d6e6559baecfeeeb61aa43a7610f",
+      "sha256": "a29e737aae69e049babfa6025572a2b86b36d6e6559baecfeeeb61aa43a7610f",
+      "normalized_lf_sha256": "a29e737aae69e049babfa6025572a2b86b36d6e6559baecfeeeb61aa43a7610f"
+    },
+    {
+      "path": "include/bsp/land_and_structures.hpp",
+      "expected": "ddc8f59e3a954e85d1ef81a9b4e83cb3179b8d0f764aaccc4bb93d8e4be6c79d",
+      "sha256": "ddc8f59e3a954e85d1ef81a9b4e83cb3179b8d0f764aaccc4bb93d8e4be6c79d",
+      "normalized_lf_sha256": "ddc8f59e3a954e85d1ef81a9b4e83cb3179b8d0f764aaccc4bb93d8e4be6c79d"
+    },
+    {
+      "path": "include/bsp/unit_instance.hpp",
+      "expected": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+      "sha256": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+      "normalized_lf_sha256": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42"
+    },
+    {
+      "path": "docs/CC12_WORLD_CURRENT_TICK_READINESS.md",
+      "expected": "0aeb8d4e2f64da2478eb1dda6144209e49a2809ce74c1478313ba6a1cbaf57c7",
+      "sha256": "0aeb8d4e2f64da2478eb1dda6144209e49a2809ce74c1478313ba6a1cbaf57c7",
+      "normalized_lf_sha256": "0aeb8d4e2f64da2478eb1dda6144209e49a2809ce74c1478313ba6a1cbaf57c7"
+    },
+    {
+      "path": "reports/cc12_world_current_tick_readiness.json",
+      "expected": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713",
+      "sha256": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713",
+      "normalized_lf_sha256": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713"
+    },
+    {
+      "path": "tools/bsp.py",
+      "expected": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "normalized_lf_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "expected": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "normalized_lf_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "config/target.json",
+      "expected": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "normalized_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "include/bsp/native_subtree_invalidation.hpp",
+      "expected": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07",
+      "sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07",
+      "normalized_lf_sha256": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07"
+    },
+    {
+      "path": "src/native_subtree_invalidation.cpp",
+      "expected": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959",
+      "sha256": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959",
+      "normalized_lf_sha256": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959"
+    },
+    {
+      "path": "docs/CC12_NATIVE_SUBTREE_INVALIDATION_SOURCE.md",
+      "expected": "130a0c78ddac5cbc9eed31bb652cd138f35be69c4c71603502f38c49bbe67f60",
+      "sha256": "130a0c78ddac5cbc9eed31bb652cd138f35be69c4c71603502f38c49bbe67f60",
+      "normalized_lf_sha256": "130a0c78ddac5cbc9eed31bb652cd138f35be69c4c71603502f38c49bbe67f60"
+    },
+    {
+      "path": "docs/CC12_NATIVE_SUBTREE_INVALIDATION_READINESS.md",
+      "expected": "7433097e9bce9f21166e2ae6a8bcbf300beb9b1724e615a4ae555f519915aa23",
+      "sha256": "7433097e9bce9f21166e2ae6a8bcbf300beb9b1724e615a4ae555f519915aa23",
+      "normalized_lf_sha256": "7433097e9bce9f21166e2ae6a8bcbf300beb9b1724e615a4ae555f519915aa23"
+    },
+    {
+      "path": "reports/cc12_native_subtree_invalidation_readiness.json",
+      "expected": "632b8bcb619040e83e000604831d1f5c615a6501cc47966f1ba9d56b708f1d40",
+      "sha256": "632b8bcb619040e83e000604831d1f5c615a6501cc47966f1ba9d56b708f1d40",
+      "normalized_lf_sha256": "632b8bcb619040e83e000604831d1f5c615a6501cc47966f1ba9d56b708f1d40"
+    }
+  ],
+  "ledger_admission": {
+    "function": "0042ed50 invalidate_native_subtree_pose_0042ed50",
+    "new_original_functions": 1,
+    "native_owned_bytes": 38,
+    "prior_canonical_address_record_absent": true,
+    "naming_evidence_appended_preserving_previous_text": true,
+    "ghidra_target": "bsp /battlestationspacific.exe",
+    "write_lock": "ghidra_annotate --apply",
+    "old_annotations_receipt": "local/ghidra-annotations-20261009T044429Z.json",
+    "saved_project": true,
+    "snapshot_function_count_unchanged": true
+  }
+}
