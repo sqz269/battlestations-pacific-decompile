@@ -1,0 +1,298 @@
+{
+  "packet": "cc12_native_subtree_invalidation_source",
+  "review_utc": "2026-10-09T04:38:07.601597+00:00",
+  "status": "bounded_source_written_pending_integrator_registration_build_and_whole_object_review",
+  "scope": "one_complete_actual_pointer_instruction_schedule; implementation_pair_and_dedicated_document_report_only",
+  "published_main_base": "d5f2598c4021c24a77f783cbf0d23966792ae5f2",
+  "owned_address": "0042ed50",
+  "owned_files": [
+    "include/bsp/native_subtree_invalidation.hpp",
+    "src/native_subtree_invalidation.cpp",
+    "docs/CC12_NATIVE_SUBTREE_INVALIDATION_SOURCE.md",
+    "reports/cc12_native_subtree_invalidation_source.json"
+  ],
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_evidence_origin": {
+    "readiness_commit": "cc5dee45159fb72ce61f4ec15c959d826b7d1d97",
+    "readiness_report": "reports/cc12_native_subtree_invalidation_readiness.json",
+    "provenance": "Prior readiness captured the whole target-verified live body and matched every byte to the installed PE; this Source packet reuses that evidence.",
+    "integrator_replay": "Integrator stated whole installed PE38B/13instructions and all14Source/evidencepins independently replayed before authorizing this Source packet.",
+    "new_live_capture_or_native_execution_in_this_packet": false
+  },
+  "native_body": {
+    "capture_utc": "2026-10-09T04:23:52.007860+00:00",
+    "address": "0042ed50",
+    "end_inclusive": "0042ed75",
+    "bytes": 38,
+    "sha256": "9dbf958d6149b06a4ac17be48853600686b35b405dbdc8812d185f78056b539d",
+    "hex": "568b714885f6c681c800000000c6810c01000000740e8bcee8e3ffffff8b764485f675f25ec3",
+    "live_equals_pe": true,
+    "decoded_instructions": 13,
+    "complete_contiguous_decode": true,
+    "control_transfers": [
+      {
+        "address": "0042ed64",
+        "mnemonic": "je",
+        "operands": "0x42ed74",
+        "target": "0042ed74"
+      },
+      {
+        "address": "0042ed68",
+        "mnemonic": "call",
+        "operands": "0x42ed50",
+        "target": "0042ed50"
+      },
+      {
+        "address": "0042ed72",
+        "mnemonic": "jne",
+        "operands": "0x42ed66",
+        "target": "0042ed66"
+      },
+      {
+        "address": "0042ed75",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "instructions": [
+      {
+        "address": "0042ed50",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "0042ed51",
+        "bytes": "8b7148",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [ecx + 0x48]"
+      },
+      {
+        "address": "0042ed54",
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "0042ed56",
+        "bytes": "c681c800000000",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ecx + 0xc8], 0"
+      },
+      {
+        "address": "0042ed5d",
+        "bytes": "c6810c01000000",
+        "mnemonic": "mov",
+        "operands": "byte ptr [ecx + 0x10c], 0"
+      },
+      {
+        "address": "0042ed64",
+        "bytes": "740e",
+        "mnemonic": "je",
+        "operands": "0x42ed74"
+      },
+      {
+        "address": "0042ed66",
+        "bytes": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "address": "0042ed68",
+        "bytes": "e8e3ffffff",
+        "mnemonic": "call",
+        "operands": "0x42ed50"
+      },
+      {
+        "address": "0042ed6d",
+        "bytes": "8b7644",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [esi + 0x44]"
+      },
+      {
+        "address": "0042ed70",
+        "bytes": "85f6",
+        "mnemonic": "test",
+        "operands": "esi, esi"
+      },
+      {
+        "address": "0042ed72",
+        "bytes": "75f2",
+        "mnemonic": "jne",
+        "operands": "0x42ed66"
+      },
+      {
+        "address": "0042ed74",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "0042ed75",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "native_abi": {
+    "receiver": "ECX actual node",
+    "stack_arguments": [],
+    "return": "plain RET; no defined result",
+    "preserved_registers": "ESI explicitly saved/restored; body does not use other nonvolatile registers",
+    "edx_input": "not read",
+    "floating_point": "no x87 or SSE instructions",
+    "recursion": "ECX receives captured child; direct CALL to same function; successor read after complete recursive return",
+    "local_eh": "no local EH frame, catch or cleanup body",
+    "prototype_warning": "Current no-parameter prototype/fastcall pseudocode is not the receiver ABI evidence; complete machine instructions establish the boundary."
+  },
+  "implementation": {
+    "header": "include/bsp/native_subtree_invalidation.hpp",
+    "source": "src/native_subtree_invalidation.cpp",
+    "qualified_signature": "void __fastcall bsp::invalidate_native_subtree_pose_0042ed50(void* actual_node)",
+    "platform_guard": "!defined(_MSC_VER) || !defined(_M_IX86) => #error",
+    "body": "__declspec(naked), sole inline-assembly block, explicit short branches, exact native 13-instruction schedule",
+    "receiver": "ECX; single explicit pointer argument, no stack argument",
+    "return": "void; plain RET",
+    "self_call_symbol": "invalidate_native_subtree_pose_0042ed50",
+    "external_calls": [],
+    "preserved_register": "ESI saved before first receiver access and restored before RET",
+    "floating_point_or_global_or_vtable_access": false,
+    "noexcept_declared": false,
+    "node_overlay_token_adapter_context_table_global_guard_or_owner_added": false,
+    "source_functions_written": 1,
+    "instruction_schedule": [
+      "PUSH ESI",
+      "MOV ESI,DWORD PTR [ECX+48h]",
+      "TEST ESI,ESI",
+      "MOV BYTE PTR [ECX+C8h],0",
+      "MOV BYTE PTR [ECX+10Ch],0",
+      "JZ SHORT subtree_done",
+      "MOV ECX,ESI",
+      "CALL invalidate_native_subtree_pose_0042ed50",
+      "MOV ESI,DWORD PTR [ESI+44h]",
+      "TEST ESI,ESI",
+      "JNZ SHORT subtree_child",
+      "POP ESI",
+      "RET"
+    ],
+    "instruction_count": 13,
+    "expected_emitted_bytes": 38,
+    "expected_emitted_shape_verified": false,
+    "self_relocation_verified": false,
+    "linked_entry_or_callers_verified": false
+  },
+  "actual_storage_footprint": {
+    "receiver_reads": [
+      {
+        "offset": "48",
+        "bytes": 4,
+        "meaning": "first child; captured once before stores"
+      }
+    ],
+    "receiver_writes": [
+      {
+        "offset": "C8",
+        "bytes": 1,
+        "value": 0,
+        "order": 1
+      },
+      {
+        "offset": "10C",
+        "bytes": 1,
+        "value": 0,
+        "order": 2
+      }
+    ],
+    "child_reads": [
+      {
+        "offset": "44",
+        "bytes": 4,
+        "meaning": "current next sibling; loaded after recursive return"
+      }
+    ],
+    "layout_corroboration": "current kUnitOffPoseValid/child-offset interfaces and prior complete904600 inlined root schedule agree",
+    "full_node_size_or_cpp_type_recovered": false,
+    "field_10c_broader_semantics": "provisional derived-cache interpretation only",
+    "vtable_or_active_byte_read": false,
+    "allocates_frees_or_constructs_storage": false
+  },
+  "ordering_constraints": [
+    "capture/test child head before clearing C8 then10C; branch on captured child",
+    "write both bytes even on leaves or already-zero flags",
+    "finish each recursive subtree before loading that same child sibling pointer",
+    "do not reload original receiver child head after recursion",
+    "do not pre-capture successor, snapshot children, deduplicate or replace recursion with a guarded traversal"
+  ],
+  "preconditions_and_failure_boundary": [
+    "actual live receiver storage with the stated reads and writes valid; no constructed node overlay",
+    "each reached nonnull child/sibling points to another valid live receiver",
+    "current child remains readable through the parent post-recursion+44 read",
+    "finite terminating walk is a producer precondition for normal completion, not a helper-added cycle/depth/visited guard",
+    "shared descendants are revisited; cyclic storage keeps native nontermination or stack-exhaustion behavior",
+    "null receiver faults on initial+48 read rather than becoming a no-op",
+    "invalid later access may leave earlier flags/descendants changed; no rollback, catch or owning cleanup",
+    "no additional noexcept/termination policy or synchronization is inferred; native SEH, translated faults and concurrency remain unqualified"
+  ],
+  "validation": {
+    "prior_readiness_input_hashes_revalidated": 14,
+    "native_embedded_bytes_listing_count_and_sha256_revalidated": true,
+    "source_schedule_reviewed_against_complete_native_listing": true,
+    "json_parse": "passed",
+    "git_diff_check": "passed",
+    "build_run": false,
+    "tests_added_or_run": false,
+    "execution_probes_run": false,
+    "emitted_object_examined": false,
+    "cmake_config_or_ledger_modified": false,
+    "ghidra_queried_or_mutated_in_this_packet": false,
+    "runtime_or_gameplay_validated": false
+  },
+  "credit_boundary": {
+    "new_source_bodies_written": 1,
+    "worker_canonical_ledger_admissions": 0,
+    "worker_original_functions": 0,
+    "worker_original_bytes": 0,
+    "primary_followup": "Register/build the Source, independently inspect the entire emitted object and CALL self-relocation against all native bytes, then assess current canonical ledger/admission and avoid duplicate credit.",
+    "drop_in_binary_runtime_or_gameplay_compatibility_claimed": false
+  },
+  "external_obligations": [
+    "matrix904600 full actual-storage pass and caller wiring",
+    "canonical live mission clock",
+    "genuine entity slot88/D8 and World tables",
+    "nonempty matrix-record production and allocation/free domain",
+    "actual hierarchy producers, node storage/lifetimes and complete World ownership",
+    "runtime/gameplay and full Native binary/EH compatibility"
+  ],
+  "prior_readiness_source_and_evidence_sha256": {
+    "include/bsp/entity_local_matrix.hpp": "71e78fe596ad8af885d37b3c027c430b87fb8bc991479d09037194a788b84f29",
+    "src/entity_local_matrix.cpp": "f2f5635efd23280750a7d067415a0e958d46bd41347f679fa6da480cd4899e76",
+    "include/bsp/world_entity_update.hpp": "9dafc939d7b32e1e96e9653578764ca790a8ca2c9d92556b937d0f1b4dfddecf",
+    "src/world_entity_update.cpp": "dac334879290577337846d7da45a057a073551e9db6c1e6b210ccf9f837bc53f",
+    "src/game_hosts_world.cpp": "5411fb7c0b9a8de9561f70caab5164c9580f58f9f52679d42b9c0b8543ef2829",
+    "src/game_hosts_units.cpp": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+    "include/bsp/airfield_taxi.hpp": "a29e737aae69e049babfa6025572a2b86b36d6e6559baecfeeeb61aa43a7610f",
+    "include/bsp/land_and_structures.hpp": "ddc8f59e3a954e85d1ef81a9b4e83cb3179b8d0f764aaccc4bb93d8e4be6c79d",
+    "include/bsp/unit_instance.hpp": "2be13e97ac71e48786c5e66f3baab469fb8c4ae77c49fc0d71a4992b0654fa42",
+    "docs/CC12_WORLD_CURRENT_TICK_READINESS.md": "0aeb8d4e2f64da2478eb1dda6144209e49a2809ce74c1478313ba6a1cbaf57c7",
+    "reports/cc12_world_current_tick_readiness.json": "056f1f1e1fe2cd0843f115d3a0c7c0dedcf61e29a583e91a6088e2b0d59f5713",
+    "tools/bsp.py": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+    "tools/ghidra_export.py": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+    "config/target.json": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+  },
+  "source_and_evidence_sha256": {
+    "include/bsp/native_subtree_invalidation.hpp": "83f9317178b0254488387b2f40b48461608c09821f2403b4c303d2b2267b8c07",
+    "src/native_subtree_invalidation.cpp": "52977180d83d3d6eb895f6eaa79452a465a4a03872af395534087c378ab1f959",
+    "docs/CC12_NATIVE_SUBTREE_INVALIDATION_SOURCE.md": "130a0c78ddac5cbc9eed31bb652cd138f35be69c4c71603502f38c49bbe67f60",
+    "docs/CC12_NATIVE_SUBTREE_INVALIDATION_READINESS.md": "7433097e9bce9f21166e2ae6a8bcbf300beb9b1724e615a4ae555f519915aa23",
+    "reports/cc12_native_subtree_invalidation_readiness.json": "632b8bcb619040e83e000604831d1f5c615a6501cc47966f1ba9d56b708f1d40"
+  }
+}
