@@ -25,6 +25,14 @@ struct GlobalConfigEffects {
     //after a real InterlockedDecrement(object+4) reaches zero.
     virtual void zero_references_slot_00(void* actual_object) noexcept = 0;
 };
+// Actual raw objects must expose callable current-process method tables and
+// nonthrowing callbacks. Numeric profile identities and Sound projections do
+// not satisfy this contract. The caller owns the object+4 decrement and slots.
+class NativeGlobalConfigCurrentDispatch final : public GlobalConfigEffects {
+public:
+    void stop_slot_08(void* actual_object, std::uint32_t flag) noexcept override;
+    void zero_references_slot_00(void* actual_object) noexcept override;
+};
 struct GlobalConfigContext {
     // Same01090AA0 lifetime domain as every other startup singleton.
     SoundLifetimeAccess lifetime;
