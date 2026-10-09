@@ -1,0 +1,1507 @@
+{
+  "schema": 1,
+  "packet": "cc12_squadron_launch_task_member_constructor_ABI_readiness",
+  "kind": "readonly_complete_owned_Native_member_constructor_and_Source_provider_boundary",
+  "created_utc": "2026-10-09T14:51:05.474978+00:00",
+  "baseline_commit": "ac9205e2864b6d8604955dcd16a7032b8cc6d313",
+  "claimed_address": "007F0F80",
+  "owned_files": [
+    "docs/CC12_SQUADRON_LAUNCH_TASK_MEMBER_CONSTRUCTOR_ABI_READINESS.md",
+    "reports/cc12_squadron_launch_task_member_constructor_ABI_readiness.json"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusions": [
+    "Whole92 live GPR/PE/Root-record equality; all28 instructions,3 blocks/3 edges,one branch/CALL/RET4 accounted.",
+    "Member4/8/C zero stores precede the actual stack-word capture; CMP of captured endpoint survives state/profile/endpoint/flag stores into JZ.",
+    "Nonzero registration call uses ECX=captured endpoint, EDX=actual member, no pushed arguments and required plain-RET-equivalent normal cleanup. Child body remains unopened.",
+    "Member direct writes end+17h; parent placement atTask+20h yields selected combined extent38h, with51 distinct directly written byte offsets and five holes. No allocation/full-class proof.",
+    "A concrete Source register-pair provider and raw16 owner prefix exist, but require an explicit borrowed lifetime domain. No selected raw launch-task Source route or Original register-ABI bridge is established.",
+    "Late saved-chain capture, current-ESI EAX result, saved-ESI alias qualification, finalADDESP10 flags and NativeC8F398 EH uncertainty remain explicit."
+  ],
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "mechanism": "Every bsp.py ghidra invocation verifies current project/program/language/image base against target config.",
+    "queries": [
+      "python tools/bsp.py ghidra proto 007F0F80 00694A60 --lines 12",
+      "python tools/bsp.py ghidra disasm 007F0F80 --lines 50",
+      "python tools/bsp.py ghidra bytes 007F0F80 --length 92",
+      "python tools/bsp.py ghidra callees 00694A60 --limit 15 --lines 30"
+    ],
+    "config_pin": {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  },
+  "Root_gate": {
+    "scope": "Parent reported whole28 assembly/hiddenEDX/stack gate complete before assignment.",
+    "capture_pin_at_worker_read": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_launch_task_deletion_primary\\capture.json",
+      "bytes": 14316,
+      "sha256": "f8dce935e09c3c264bc9c6a54bf225c4ec9950f865f51fda26e8b94eb64a5460"
+    },
+    "owned_record": {
+      "address": "007f0f80",
+      "length": 92,
+      "sha256": "733be1e59ad190e42f0a18c88b426e879a2c3c13b562c12c59c449b0ad33cd88"
+    },
+    "verified_program": "/battlestationspacific.exe",
+    "only_owned_record_extracted_for_evidence": true
+  },
+  "owned_metadata": {
+    "name": "FUN_007f0f80",
+    "signature": "undefined FUN_007f0f80(void)",
+    "start": "007F0F80",
+    "end_inclusive": "007F0FDB",
+    "span": 92,
+    "instruction_count": 28,
+    "basic_block_count": 3,
+    "edge_count": 3,
+    "call_count": 1,
+    "qualification": "Metadata void signature does not express physical receiver/argument/return/register contracts."
+  },
+  "native_evidence": {
+    "address": "007F0F80",
+    "end_inclusive": "007F0FDB",
+    "bytes": 92,
+    "hex": "6aff6898f3c80064a10000000050648925000000005133c0568bf18974240489460489460889460c8b4c24183bc889442410c7069464cf00894e14c646100174078bd6e8983aeaff8b4c24088bc65e64890d0000000083c410c20400",
+    "sha256": "733be1e59ad190e42f0a18c88b426e879a2c3c13b562c12c59c449b0ad33cd88",
+    "live_GPR_equal_PE_equal_Root_owned_record": true,
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_RVA": "003F0F80",
+    "PE_file_offset": 4132736,
+    "PE_section": ".text",
+    "all_file_backed": true,
+    "instruction_count": 28,
+    "basic_blocks": [
+      {
+        "start": "007F0F80",
+        "end_inclusive": "007F0FC0",
+        "instructions": 20,
+        "successors": [
+          "007F0FC8",
+          "007F0FC1"
+        ]
+      },
+      {
+        "start": "007F0FC1",
+        "end_inclusive": "007F0FC7",
+        "instructions": 2,
+        "successors": [
+          "007F0FC8"
+        ]
+      },
+      {
+        "start": "007F0FC8",
+        "end_inclusive": "007F0FDB",
+        "instructions": 6,
+        "successors": []
+      }
+    ],
+    "basic_block_count": 3,
+    "block_edges": 3,
+    "conditional_branches": 1,
+    "direct_CALLs": [
+      {
+        "site": "007F0FC3",
+        "target": "00694A60",
+        "caller_ESP_before_S_offset": -20,
+        "child_entry_ESP_S_offset": -24,
+        "child_return_address": "007F0FC8",
+        "pushed_argument_words": 0,
+        "required_normal_child_argument_cleanup_bytes": 0,
+        "required_return_ESP_S_offset": -20,
+        "child_body_opened": false
+      }
+    ],
+    "RET4_count": 1,
+    "padding_or_unclassified_bytes": 0,
+    "x87_or_SSE_operations": 0,
+    "instructions": [
+      {
+        "address": "007F0F80",
+        "offset": 0,
+        "size": 2,
+        "hex": "6aff",
+        "mnemonic": "push",
+        "operands": "-1",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": -4,
+        "implicit_stack": {
+          "write_S_offset": -4,
+          "bytes": 4,
+          "value": "-1"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0F82"
+        ]
+      },
+      {
+        "address": "007F0F82",
+        "offset": 2,
+        "size": 5,
+        "hex": "6898f3c800",
+        "mnemonic": "push",
+        "operands": "0xc8f398",
+        "ESP_before_S_offset": -4,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": {
+          "write_S_offset": -8,
+          "bytes": 4,
+          "value": "0xc8f398"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0F87"
+        ]
+      },
+      {
+        "address": "007F0F87",
+        "offset": 7,
+        "size": 6,
+        "hex": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -8,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": true,
+            "access_write": false
+          }
+        ],
+        "normal_successors": [
+          "007F0F8D"
+        ]
+      },
+      {
+        "address": "007F0F8D",
+        "offset": 13,
+        "size": 1,
+        "hex": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "ESP_before_S_offset": -8,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": {
+          "write_S_offset": -12,
+          "bytes": 4,
+          "value": "eax"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0F8E"
+        ]
+      },
+      {
+        "address": "007F0F8E",
+        "offset": 14,
+        "size": 7,
+        "hex": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -12,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0F95"
+        ]
+      },
+      {
+        "address": "007F0F95",
+        "offset": 21,
+        "size": 1,
+        "hex": "51",
+        "mnemonic": "push",
+        "operands": "ecx",
+        "ESP_before_S_offset": -12,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": {
+          "write_S_offset": -16,
+          "bytes": 4,
+          "value": "ecx"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0F96"
+        ]
+      },
+      {
+        "address": "007F0F96",
+        "offset": 22,
+        "size": 2,
+        "hex": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0F98"
+        ]
+      },
+      {
+        "address": "007F0F98",
+        "offset": 24,
+        "size": 1,
+        "hex": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": {
+          "write_S_offset": -20,
+          "bytes": 4,
+          "value": "esi"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0F99"
+        ]
+      },
+      {
+        "address": "007F0F99",
+        "offset": 25,
+        "size": 2,
+        "hex": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0F9B"
+        ]
+      },
+      {
+        "address": "007F0F9B",
+        "offset": 27,
+        "size": 4,
+        "hex": "89742404",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 4], esi",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 4,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0F9F"
+        ]
+      },
+      {
+        "address": "007F0F9F",
+        "offset": 31,
+        "size": 3,
+        "hex": "894604",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 4], eax",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 4,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FA2"
+        ]
+      },
+      {
+        "address": "007F0FA2",
+        "offset": 34,
+        "size": 3,
+        "hex": "894608",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 8], eax",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 8,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FA5"
+        ]
+      },
+      {
+        "address": "007F0FA5",
+        "offset": 37,
+        "size": 3,
+        "hex": "89460c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0xc], eax",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 12,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FA8"
+        ]
+      },
+      {
+        "address": "007F0FA8",
+        "offset": 40,
+        "size": 4,
+        "hex": "8b4c2418",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x18]",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 24,
+            "segment": null,
+            "access_read": true,
+            "access_write": false
+          }
+        ],
+        "normal_successors": [
+          "007F0FAC"
+        ]
+      },
+      {
+        "address": "007F0FAC",
+        "offset": 44,
+        "size": 2,
+        "hex": "3bc8",
+        "mnemonic": "cmp",
+        "operands": "ecx, eax",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0FAE"
+        ]
+      },
+      {
+        "address": "007F0FAE",
+        "offset": 46,
+        "size": 4,
+        "hex": "89442410",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x10], eax",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FB2"
+        ]
+      },
+      {
+        "address": "007F0FB2",
+        "offset": 50,
+        "size": 6,
+        "hex": "c7069464cf00",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], 0xcf6494",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FB8"
+        ]
+      },
+      {
+        "address": "007F0FB8",
+        "offset": 56,
+        "size": 3,
+        "hex": "894e14",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi + 0x14], ecx",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 20,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FBB"
+        ]
+      },
+      {
+        "address": "007F0FBB",
+        "offset": 59,
+        "size": 4,
+        "hex": "c6461001",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x10], 1",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 1,
+            "base": "esi",
+            "index": null,
+            "scale": 1,
+            "displacement": 16,
+            "segment": null,
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FBF"
+        ]
+      },
+      {
+        "address": "007F0FBF",
+        "offset": 63,
+        "size": 2,
+        "hex": "7407",
+        "mnemonic": "je",
+        "operands": "0x7f0fc8",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0FC8",
+          "007F0FC1"
+        ]
+      },
+      {
+        "address": "007F0FC1",
+        "offset": 65,
+        "size": 2,
+        "hex": "8bd6",
+        "mnemonic": "mov",
+        "operands": "edx, esi",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0FC3"
+        ]
+      },
+      {
+        "address": "007F0FC3",
+        "offset": 67,
+        "size": 5,
+        "hex": "e8983aeaff",
+        "mnemonic": "call",
+        "operands": "0x694a60",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0FC8"
+        ]
+      },
+      {
+        "address": "007F0FC8",
+        "offset": 72,
+        "size": 4,
+        "hex": "8b4c2408",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 8]",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": "esp",
+            "index": null,
+            "scale": 1,
+            "displacement": 8,
+            "segment": null,
+            "access_read": true,
+            "access_write": false
+          }
+        ],
+        "normal_successors": [
+          "007F0FCC"
+        ]
+      },
+      {
+        "address": "007F0FCC",
+        "offset": 76,
+        "size": 2,
+        "hex": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -20,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0FCE"
+        ]
+      },
+      {
+        "address": "007F0FCE",
+        "offset": 78,
+        "size": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi",
+        "ESP_before_S_offset": -20,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": {
+          "read_S_offset": -20,
+          "bytes": 4,
+          "destination": "esi"
+        },
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0FCF"
+        ]
+      },
+      {
+        "address": "007F0FCF",
+        "offset": 79,
+        "size": 7,
+        "hex": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": -16,
+        "implicit_stack": null,
+        "memory_operands": [
+          {
+            "width": 4,
+            "base": null,
+            "index": null,
+            "scale": 1,
+            "displacement": 0,
+            "segment": "fs",
+            "access_read": false,
+            "access_write": true
+          }
+        ],
+        "normal_successors": [
+          "007F0FD6"
+        ]
+      },
+      {
+        "address": "007F0FD6",
+        "offset": 86,
+        "size": 3,
+        "hex": "83c410",
+        "mnemonic": "add",
+        "operands": "esp, 0x10",
+        "ESP_before_S_offset": -16,
+        "ESP_after_normal_completion_S_offset": 0,
+        "implicit_stack": null,
+        "memory_operands": [],
+        "normal_successors": [
+          "007F0FD9"
+        ]
+      },
+      {
+        "address": "007F0FD9",
+        "offset": 89,
+        "size": 3,
+        "hex": "c20400",
+        "mnemonic": "ret",
+        "operands": "4",
+        "ESP_before_S_offset": 0,
+        "ESP_after_normal_completion_S_offset": 8,
+        "implicit_stack": {
+          "return_address_read_S_offset": 0,
+          "argument_cleanup_bytes": 4
+        },
+        "memory_operands": [],
+        "normal_successors": []
+      }
+    ],
+    "stack_validation": {
+      "all28_instruction_positions_accounted": true,
+      "merge_007F0FC8_S_offset": -20,
+      "normal_child_stack_cleanup_requirement": 0,
+      "before_final_ADD_S_offset": -16,
+      "before_RET4_S_offset": 0,
+      "after_RET4_S_offset": 8,
+      "qualification": "Static own-op accounting; no child body or execution. Require plain-RET-equivalent normal child return and valid selected/control-stack backing."
+    },
+    "owned_member_writes": [
+      {
+        "site": "007F0F9F",
+        "offset": 4,
+        "width": 4
+      },
+      {
+        "site": "007F0FA2",
+        "offset": 8,
+        "width": 4
+      },
+      {
+        "site": "007F0FA5",
+        "offset": 12,
+        "width": 4
+      },
+      {
+        "site": "007F0FB2",
+        "offset": 0,
+        "width": 4
+      },
+      {
+        "site": "007F0FB8",
+        "offset": 20,
+        "width": 4
+      },
+      {
+        "site": "007F0FBB",
+        "offset": 16,
+        "width": 1
+      }
+    ],
+    "combined_parent_member_selected_extent": {
+      "parent_report": "reports/cc12_squadron_launch_task_constructor_ABI_readiness.json",
+      "placement_condition": "M is the current parent Task+20h and required child/register/control-stack contracts hold.",
+      "member_direct_extent_bytes": 24,
+      "member_direct_highest_offset": "17",
+      "combined_extent_bytes": 56,
+      "combined_highest_offset": "37",
+      "distinct_directly_written_offsets": 51,
+      "directly_unwritten_holes_hex": [
+        "12",
+        "13",
+        "31",
+        "32",
+        "33"
+      ],
+      "allocation_or_full_class_layout_proved": false,
+      "child_effects_or_aliases_can_change_field_values": true
+    },
+    "Root_capture_pin_at_read": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_launch_task_deletion_primary\\capture.json",
+      "bytes": 14316,
+      "sha256": "f8dce935e09c3c264bc9c6a54bf225c4ec9950f865f51fda26e8b94eb64a5460"
+    },
+    "Root_owned_record": {
+      "address": "007f0f80",
+      "length": 92,
+      "sha256": "733be1e59ad190e42f0a18c88b426e879a2c3c13b562c12c59c449b0ad33cd88"
+    },
+    "Root_program_verification": "/battlestationspacific.exe"
+  },
+  "entry_and_frame": {
+    "S": "entry ESP",
+    "M": "entry ECX captured in ESI at007F0F99",
+    "A": "current [S+4] captured into ECX at007F0FA8 after M4/8/C stores",
+    "owned_argument_contract": "ECX actual member, one stack word, RET4. No inferred source-language class/prototype.",
+    "frame": [
+      {
+        "S_offset": 4,
+        "meaning": "input word captured after three zero stores"
+      },
+      {
+        "S_offset": 0,
+        "meaning": "current return-address backing"
+      },
+      {
+        "S_offset": -4,
+        "meaning": "state initially-1, then zero at0FAE"
+      },
+      {
+        "S_offset": -8,
+        "meaning": "numeric handlerC8F398, unopened"
+      },
+      {
+        "S_offset": -12,
+        "meaning": "saved priorFS0, registration node starts here"
+      },
+      {
+        "S_offset": -16,
+        "meaning": "PUSH entryECX then rewrite captured M at0F9B"
+      },
+      {
+        "S_offset": -20,
+        "meaning": "saved incoming ESI"
+      },
+      {
+        "S_offset": -24,
+        "meaning": "child return address only on nonzero arm"
+      }
+    ],
+    "FS_registration_publish": {
+      "site": "007F0F8E",
+      "value": "S-0Ch"
+    },
+    "zero_register": {
+      "site": "007F0F96",
+      "instruction": "XOR EAX,EAX"
+    },
+    "saved_this_rewrite": {
+      "site": "007F0F9B",
+      "destination": "[S-10h]",
+      "value": "captured M"
+    },
+    "state_zero_write": {
+      "site": "007F0FAE",
+      "destination": "[S-4]",
+      "value": 0,
+      "occurs_after_actual_argument_load_and_CMP": true,
+      "occurs_before_profile_endpoint_flag_writes_and_JZ": true
+    }
+  },
+  "ordered_member_writes": [
+    {
+      "site": "007F0F9F",
+      "destination": "M+04h",
+      "width": 4,
+      "value": 0,
+      "phase": "before argument read"
+    },
+    {
+      "site": "007F0FA2",
+      "destination": "M+08h",
+      "width": 4,
+      "value": 0,
+      "phase": "before argument read"
+    },
+    {
+      "site": "007F0FA5",
+      "destination": "M+0Ch",
+      "width": 4,
+      "value": 0,
+      "phase": "before argument read"
+    },
+    {
+      "site": "007F0FB2",
+      "destination": "M+00h",
+      "width": 4,
+      "value": "00CF6494",
+      "phase": "after argument CMP and state store, before branch"
+    },
+    {
+      "site": "007F0FB8",
+      "destination": "M+14h",
+      "width": 4,
+      "value": "captured A",
+      "phase": "after profile store, before branch"
+    },
+    {
+      "site": "007F0FBB",
+      "destination": "M+10h",
+      "width": 1,
+      "value": 1,
+      "phase": "after endpoint store, before branch"
+    }
+  ],
+  "captured_test_and_alias_contract": {
+    "late_read": {
+      "site": "007F0FA8",
+      "source": "[ESP+18h]=[S+4]",
+      "destination": "ECX"
+    },
+    "comparison": {
+      "site": "007F0FAC",
+      "left": "captured A",
+      "right": "EAX=0"
+    },
+    "flag_preserving_writes_before_JZ": [
+      "007F0FAE state0",
+      "007F0FB2 profileCF6494",
+      "007F0FB8 M14=A",
+      "007F0FBB M10byte1"
+    ],
+    "branch": {
+      "site": "007F0FBF",
+      "zero_target": "007F0FC8",
+      "nonzero_target": "007F0FC1",
+      "tests_captured_A_not_current_memory": true
+    },
+    "early_alias_effect": "An M4/8/C zero write can change [S+4] before capture. A may differ from entry or parent Q.",
+    "late_alias_effect": "State/profile/endpoint/flag writes can change source/target backing, but do not reload ECX or alter CMP flags. No fresh argument/field test is substituted.",
+    "zero_arm_still_performs_all_six_member_writes": true,
+    "no_self_pair_identity_or_endpoint_class_check": true,
+    "no_null_member_or_extent_validation": true,
+    "explicit_owned_member_field_reads": 0
+  },
+  "nonzero_child_boundary": {
+    "register_setup": {
+      "site": "007F0FC1",
+      "instruction": "MOV EDX,ESI",
+      "actual_hidden_register_input": "EDX=M"
+    },
+    "call_site": "007F0FC3",
+    "target": "00694A60",
+    "outgoing_registers": {
+      "ECX": "captured A",
+      "EDX": "captured M",
+      "ESI": "captured M",
+      "EAX": 0,
+      "EBX_EDI_EBP": "incoming values, no owned writes"
+    },
+    "outgoing_arithmetic_flags": {
+      "source": "CMP A,0",
+      "CF": 0,
+      "OF": 0,
+      "AF": 0,
+      "ZF": 0,
+      "SF": "high bit of A",
+      "PF": "even parity of low byte A"
+    },
+    "pushed_argument_words": 0,
+    "caller_ESP_S_offset": -20,
+    "child_entry_ESP_S_offset": -24,
+    "required_normal_child_argument_cleanup_bytes": 0,
+    "required_return_ESP_S_offset": -20,
+    "required_nonvolatile_preservation": [
+      "ESI=M for returned member and saved-register composition",
+      "EBX",
+      "EDI",
+      "EBP"
+    ],
+    "required_normal_control_backing": "Selected memory and return/frame backing must support normal return. Native handler/exception/reentry and alias-mutated saves are not certified.",
+    "Native_child_body_opened": false,
+    "fresh_metadata_only": {
+      "name": "BSP_Observer_RegisterPair",
+      "signature": "undefined BSP_Observer_RegisterPair(void)",
+      "start": "00694A60",
+      "end_inclusive": "00694AE6",
+      "span_bytes": 135,
+      "instruction_count": 43,
+      "basic_block_count": 8,
+      "edge_count": 10,
+      "call_count": 3,
+      "callees": [
+        "BSP_ObserverEdge_Create @00694850",
+        "BSP_ObserverLockOwner_Get @00694280",
+        "BSP_Observer_FindPair @006949D0",
+        "EnterCriticalSection @EXTERNAL:0000015B",
+        "LeaveCriticalSection @EXTERNAL:00000159"
+      ],
+      "qualification": "Callee metadata and existing Source comments do not establish a newly verified whole Native child ABI, physical call count, EH or effects."
+    }
+  },
+  "normal_exit_and_flags": {
+    "merge": {
+      "address": "007F0FC8",
+      "ESP": "S-14h",
+      "zero_and_normal_call_arm_agree": true
+    },
+    "late_chain_capture": {
+      "site": "007F0FC8",
+      "destination": "ECX",
+      "source": "current [ESP+8]=[S-0Ch]",
+      "precedes_EAX_copy_and_ESI_POP": true
+    },
+    "EAX": "Current ESI at007F0FCC, normally M under child preservation; copied before POP ESI.",
+    "incoming_ESI_restore": "POP current [S-14h]; alias/child changes to that saved word can alter restored value.",
+    "ECX": "Late saved-chain capture, not endpoint A.",
+    "EDX_zero_arm": "Incoming EDX; no owned write on that arm.",
+    "EDX_nonzero_arm": "Set to M before child; final value is child residual.",
+    "EBX_EDI_EBP": "No owned writes; require child preservation on nonzero arm.",
+    "child_EAX_result_discarded": true,
+    "FS_restore": {
+      "site": "007F0FCF",
+      "value": "captured ECX"
+    },
+    "no_explicit_member_write_after_chain_capture": true,
+    "final_ADD": {
+      "site": "007F0FD6",
+      "immediate_hex": "10",
+      "ESP_before": "S-10h",
+      "ESP_after": "S"
+    },
+    "RET": {
+      "site": "007F0FD9",
+      "argument_cleanup": 4,
+      "ESP_after": "S+8",
+      "reads_current_return_address": true
+    },
+    "final_arithmetic_flags": {
+      "source": "ADD ESP,10h on both arms",
+      "x": "actual32-bit pre-ADD ESP",
+      "r": "(x+0x10) modulo2^32, normally S",
+      "CF": "x>=0xFFFFFFF0",
+      "OF": "0x7FFFFFF0<=x<=0x7FFFFFFF",
+      "AF": 0,
+      "ZF": "r==0",
+      "SF": "high bit r",
+      "PF": "even parity of low byte r",
+      "RET_preserves_flags": true
+    }
+  },
+  "Native_EH_and_fault_boundary": {
+    "handler": "00C8F398",
+    "handler_table_funclet_bytes_read": false,
+    "state_schedule": "Push-1 first; zero after actual late argument read/CMP and before profile/endpoint/flag writes. No later explicit reset.",
+    "frame_and_control_aliases": "PUSH/CALL/frame writes can affect M; M writes can affect input/frame/savedESI/chain/state/endpoint/return backing. Valid selected memory and intact code/control stack are required for normal composition.",
+    "zero_endpoint_does_not_validate_member": true,
+    "no_cleanup_rollback_unwind_order_or_recovery_inferred": true,
+    "prior_writes_may_remain_after_fault_or_child_failure": true,
+    "parent_handler_and_Source_guard_are_different_domains": true
+  },
+  "accepted_parent_composition": {
+    "report": "reports/cc12_squadron_launch_task_constructor_ABI_readiness.json",
+    "baseline": "a1e8251119f4712e0fabd5b9d1669e1659c41dc1",
+    "owned_body": "007F1DE0..007F1E67",
+    "bytes": 136,
+    "instructions": 41,
+    "parent_input_pin_rechecks": {
+      "count": 27,
+      "equal_count": 27,
+      "differences": []
+    },
+    "placement": "Parent007F1E32 computes current task+20h in EDI;007F1E36 copies it to ECX;007F1E47 calls this member constructor.",
+    "two_late_argument_captures": "Parent Q is read after reparent; this A is read after member4/8/C stores. Equality requires intact argument backing through both schedules.",
+    "task_offset_mapping_under_placement": {
+      "member_00": "Task20 profileCF6494 then parent currentEDI CF6514",
+      "member_04_08_0C": "Task24/28/2C zeros before A capture",
+      "member_10": "Task30 byte1",
+      "member_14": "Task34 captured A"
+    },
+    "combined_selected_extent": {
+      "parent_report": "reports/cc12_squadron_launch_task_constructor_ABI_readiness.json",
+      "placement_condition": "M is the current parent Task+20h and required child/register/control-stack contracts hold.",
+      "member_direct_extent_bytes": 24,
+      "member_direct_highest_offset": "17",
+      "combined_extent_bytes": 56,
+      "combined_highest_offset": "37",
+      "distinct_directly_written_offsets": 51,
+      "directly_unwritten_holes_hex": [
+        "12",
+        "13",
+        "31",
+        "32",
+        "33"
+      ],
+      "allocation_or_full_class_layout_proved": false,
+      "child_effects_or_aliases_can_change_field_values": true
+    },
+    "Task34_type_not_identified": "Owned store now established; a squadron or endpoint class identity is not proved solely by the raw word/store or existing Source labels.",
+    "normal_stack_relation": "If parent entry is P, member entry S=P-24h; member RET4 returns parent ESP=P-1Ch.",
+    "parent_tail": "After member returns, parent captures its chain then writes CF6514 through current EDI; member EAX is ignored by parent return-result MOV.",
+    "post_child_root_profile_still_qualified": "This body has no explicit store at parent Task0 under placement, but Native694A60 effects and aliases remain unopened. Do not certify later D08AE4 identity from direct-store coverage alone.",
+    "no_new_parent_Native_bytes_opened": true
+  },
+  "actual_Source_registration_provider": {
+    "present": true,
+    "header": "include/bsp/observer_edges.hpp",
+    "implementation": "src/observer_edges.cpp",
+    "name": "register_observer_pair_00694a60",
+    "Source_arguments": [
+      "NativeObserverOwnerStorage& first",
+      "NativeObserverOwnerStorage& callback_owner",
+      "NativeObserverLifetime& lifetime"
+    ],
+    "Source_behavior": "Captured actual lock section via ObserverEdgeGuard; nested find; increment existing uint32 references or create/append edge to both endpoint arrays. Guard cleanup and partial allocation/append effects are Source semantics only.",
+    "actual_owner_storage": {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "size": 16,
+      "profile_offset": 0,
+      "edge_data_offset": 4,
+      "edge_count_offset": 8,
+      "edge_capacity_offset": 12
+    },
+    "prefix_correspondence": "Member0/4/8/C offsets correspond to the generic raw owner prefix. Member10 flag and14 endpoint are outside that16-byte prefix. Correspondence does not create C++ lifetime, ownership or a callable profile.",
+    "lifetime_domain": "GameObserverRuntime retains actual manager access, E198E0 lock publication, E198E4 dispatch publication and services; GameSingletonHost binds its lifetime and dispatch-owner pointers.",
+    "other_Source_callers": [
+      "native_session_participant_binding.cpp",
+      "native_landing_queue.cpp"
+    ],
+    "other_callers_qualification": "These concrete Source functions pass their borrowed lifetime/context to the provider. They do not establish a selected launch-task production owner or runtime execution.",
+    "Source_build_registration": {
+      "bsp_core": [
+        "src/observer_edges.cpp",
+        "src/observer_lifetime.cpp"
+      ],
+      "bsp_game": [
+        "src/game_observer_runtime.cpp"
+      ],
+      "path": "cmake/startup.cmake"
+    },
+    "compiled_provider_or_final_library_selection_verified_here": false,
+    "Original_register_ABI_bridge_or_dropin_proved": false,
+    "no_automatic_substitution": "Existing C++ explicit-lifetime three-reference interface does not itself supply Native ECX/EDX/no-pushed-argument placement or C8F398 EH. Actual selected backing/domain and argument-capture ordering need separate composition.",
+    "Source_excerpts": [
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "line_start": 12,
+        "line_end": 25,
+        "text": "// Actual game storage. No constructors, owned sidecars, or default field values.\nstruct NativeObserverEdgeSlots {\n    NativeObserverEdgeStorage** data_00;\n    std::uint32_t count_04;\n    std::uint32_t capacity_08;\n};\n// Both endpoint bases have this prefix. Pass the actual base address: native\n// VoiceAttachedEntry+18 is the callback owner; its entity pointer is an already\n// adjusted first-endpoint address. A semantic voice object still needs an\n// explicit alias to its actual embedded owner; never reinterpret its metadata.\nstruct NativeObserverOwnerStorage {\n    volatile std::uint32_t native_vtable_00;\n    NativeObserverEdgeSlots edges_04;\n};\n",
+        "canonical_lf_excerpt_sha256": "105d96c37f5ba92e1cefa58673dbcfd13f8127dcd41101a51c66d14ad9dbe554",
+        "finding": "Actual raw owner prefix: numeric profile plus pointer/count/capacity, no implicit constructor or sidecar."
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "line_start": 42,
+        "line_end": 45,
+        "text": "static_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(NativeObserverEdgeSlots) == 0x0c);\nstatic_assert(sizeof(NativeObserverOwnerStorage) == 0x10);\nstatic_assert(offsetof(NativeObserverOwnerStorage, edges_04) == 4);\n",
+        "canonical_lf_excerpt_sha256": "95c28f9802c721f9d0331e65f2623cd8985507eeb07b291d0fa9d01136ccc388",
+        "finding": "Win32 prefix size and offset assertions."
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "line_start": 79,
+        "line_end": 88,
+        "text": "    // Reuse the existing borrowed lifetime access: the application passes its\n    // actual01090AA0 publication; existing fixtures may pass their semantic\n    // domain through the implicit access constructor. No second domain exists.\n    // The historical SoundLifetimeAccess name does not restrict its raw manager\n    // operations to sound. See OBSERVER_RAW_LIFETIME.md.\n    NativeObserverLifetime(SoundLifetimeAccess,\n        NativeObserverLockOwner* volatile& global_00e198e0,\n        NativeObserverDispatchStorage* volatile& global_00e198e4,\n        ObserverLifetimeServices&) noexcept;\n\n",
+        "canonical_lf_excerpt_sha256": "c13a82db6c6eb79e92f7a06ef509c34d5a30adc2dc8b2c7b01093df47a7a498b",
+        "finding": "Explicit borrowed manager/lock/dispatch/service lifetime domain."
+      },
+      {
+        "path": "include/bsp/observer_edges.hpp",
+        "line_start": 21,
+        "line_end": 26,
+        "text": "// Native ECX=first, EDX=callback owner; RET, no promised EAX result. Capture\n// outer shared lock, nested find_pair, then nested create if absent or modulo32\n// increment of the existing edge count. Existing registrations keep both arrays.\nvoid register_observer_pair_00694a60(\n    NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner,\n    NativeObserverLifetime&);\n",
+        "canonical_lf_excerpt_sha256": "202cbfacb94bd138a94d6cb70b12247fd70cf2534c59397b4dc80eb99d16ca2f",
+        "finding": "Actual Source registration declaration requires two endpoint refs and explicit lifetime. Native ABI comment is prior Source evidence, not a new child-body audit."
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "line_start": 7,
+        "line_end": 28,
+        "text": "class ObserverEdgeGuard final {\npublic:\n    explicit ObserverEdgeGuard(TrackedCriticalSection* section) : section_(section) {\n        if (section_) {\n            EnterCriticalSection(&section_->native);\n            add_depth(1u);\n        }\n    }\n    ~ObserverEdgeGuard() {\n        if (section_) {\n            add_depth(0xffffffffu);\n            LeaveCriticalSection(&section_->native);\n        }\n    }\nprivate:\n    void add_depth(std::uint32_t amount) noexcept {\n        std::uint32_t bits;\n        std::memcpy(&bits, &section_->depth, 4);\n        bits += amount;\n        std::memcpy(&section_->depth, &bits, 4);\n    }\n    TrackedCriticalSection* section_;\n",
+        "canonical_lf_excerpt_sha256": "51a681355e591d80490e67dbd3967b869ace94f5bcdb5eb6965844fc8a009cc1",
+        "finding": "Concrete Source guard captures the current section, enters/increments and decrements/leaves on destruction."
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "line_start": 62,
+        "line_end": 80,
+        "text": "NativeObserverEdgeStorage* create_observer_edge_00694850(\n    NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner,\n    NativeObserverLifetime& lifetime) {\n    ObserverEdgeGuard guard(lifetime.lock_owner_00694280()->section_04);\n    void* storage = singleton_lifetime_allocate({\n        SingletonAllocationKind::object, 0x10, sizeof(NativeObserverEdgeStorage)});\n    NativeObserverEdgeStorage* edge = nullptr;\n    if (storage) {\n        edge = ::new (storage) NativeObserverEdgeStorage;\n        edge->native_vtable_00 = kObserverEdgeVtable00cf7e64;\n        edge->first_04 = &first;\n        edge->callback_owner_08 = &callback_owner;\n        edge->references_0c = 1;\n    }\n    append_edge(first.edges_04, edge);\n    append_edge(callback_owner.edges_04, edge);\n    // Native EH00C7E970 only releases the captured section. An array allocation\n    // exception leaves any completed earlier append and allocated edge intact.\n    return edge;\n",
+        "canonical_lf_excerpt_sha256": "f31e65461b609b5e28d58f0e1b35badcdd2dcc2df43bcffe622d30f825fd72e0",
+        "finding": "Concrete Source edge allocation, fields, and ordered endpoint append calls."
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "line_start": 83,
+        "line_end": 93,
+        "text": "void register_observer_pair_00694a60(\n    NativeObserverOwnerStorage& first, NativeObserverOwnerStorage& callback_owner,\n    NativeObserverLifetime& lifetime) {\n    ObserverEdgeGuard guard(lifetime.lock_owner_00694280()->section_04);\n    if (auto* edge = lifetime.find_pair_006949d0(first, callback_owner)) {\n        ++edge->references_0c;\n    } else {\n        (void)create_observer_edge_00694850(first, callback_owner, lifetime);\n    }\n}\n\n",
+        "canonical_lf_excerpt_sha256": "b33eeca62b290c7a9caf3c667f24caf871d0e16474d0276e79ebad68081f8e4e",
+        "finding": "Concrete Source register-pair implementation."
+      },
+      {
+        "path": "src/game_observer_runtime.cpp",
+        "line_start": 17,
+        "line_end": 23,
+        "text": "GameObserverRuntime::GameObserverRuntime(GameSingletonHost& singletons,\n    GameHostLog& log) noexcept\n    : log_(log), manager_(singletons.sound_lifetime()),\n      lifetime_(manager_, lock_00e198e0_, dispatch_00e198e4_, *this) {\n    singletons.bind_observer_lifetime(&lifetime_);\n    singletons.bind_observer_dispatch_owner(&owner_00e198dc_);\n}\n",
+        "canonical_lf_excerpt_sha256": "8619e70391cd6b9db96ee6e69536eefbd7b1db54b76e81be674605d0c5729cc6",
+        "finding": "Application runtime retains and binds a lifetime domain."
+      },
+      {
+        "path": "include/bsp/game_observer_runtime.hpp",
+        "line_start": 22,
+        "line_end": 27,
+        "text": "    // Native teardown clears the owner cell but deliberately retains its alias.\n    bool has_live_dispatch_owner() const noexcept { return owner_00e198dc_ != nullptr; }\n    NativeObserverLifetime& lifetime() noexcept { return lifetime_; }\n    NativeObserverDispatchStorage* volatile& dispatch_publication() noexcept {\n        return dispatch_00e198e4_;\n    }\n",
+        "canonical_lf_excerpt_sha256": "2373ba338288a6e147cef75b2cb6a6f6ed2950d07852a9d14d50a835baa55400",
+        "finding": "Runtime exposes actual retained lifetime and dispatch publication."
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "line_start": 17,
+        "line_end": 22,
+        "text": "GameSingletonHost::GameSingletonHost(GameHostLog& log)\n    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),\n      input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),\n      deletion_bindings_{&effect_publication_00f87664_, nullptr},\n      observers_(std::make_unique<GameObserverRuntime>(*this, log)),\n      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()) {\n",
+        "canonical_lf_excerpt_sha256": "7b1b53b6e053a6abcc0367e6e5716ea6b7c686985f9222260b02b60bc54b7974",
+        "finding": "Actual runtime object construction in singleton host."
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "line_start": 97,
+        "line_end": 104,
+        "text": "void GameSingletonHost::bind_observer_lifetime(NativeObserverLifetime* lifetime) noexcept {\n    deletion_bindings_.observer_lifetime = lifetime;\n}\n\nvoid GameSingletonHost::bind_observer_dispatch_owner(\n    NativeObserverDispatchOwner* volatile* publication) noexcept {\n    deletion_bindings_.actual_observer_dispatch_owner_00e198dc = publication;\n}\n",
+        "canonical_lf_excerpt_sha256": "f1066ee747066e3a833c004dc35621143f09f63ad612d6decaa14234b958c0fe",
+        "finding": "Binding writes actual deletion-domain lifetime and dispatch-owner pointers."
+      },
+      {
+        "path": "src/native_session_participant_binding.cpp",
+        "line_start": 7,
+        "line_end": 19,
+        "text": "void bind_native_session_participant_0077cc50(void* actual_participant,\n    NativeObserverOwnerStorage* requested_first, NativeObserverLifetime& lifetime) {\n    auto* const bytes = static_cast<std::uint8_t*>(actual_participant);\n    auto& callback = *reinterpret_cast<NativeObserverOwnerStorage*>(bytes + 0x38);\n    NativeObserverOwnerStorage* captured_old;\n    std::memcpy(&captured_old, bytes + 0x4c, sizeof(captured_old));\n    if (captured_old == requested_first) return;\n    if (captured_old) lifetime.unregister_pair_006952a0(*captured_old, callback);\n    // Native 0077CC6D stores even when the requested endpoint is null, and\n    // only after unregister returns. A registration failure retains this store.\n    std::memcpy(bytes + 0x4c, &requested_first, sizeof(requested_first));\n    if (requested_first) register_observer_pair_00694a60(*requested_first, callback, lifetime);\n}\n",
+        "canonical_lf_excerpt_sha256": "27413e59f4d12c4684da5d6b66bd79ef059838b2c8ce367fd72c6571d332b351",
+        "finding": "Existing other Source caller passes actual embedded owner and borrowed lifetime; does not bind the selected launch task."
+      },
+      {
+        "path": "src/native_landing_queue.cpp",
+        "line_start": 41,
+        "line_end": 45,
+        "text": "void NativeLandingQueueCalls::append_record_006bf720(NativeLandingQueueVectorStorage& queue,\n                                                   const NativeLandingQueueRecord& input) {\n    register_observer_pair_00694a60(*static_cast<NativeObserverOwnerStorage*>(input.first_00),\n                                   queue.observer_00, queue_context_.registration);\n    volatile auto& q = queue;\n",
+        "canonical_lf_excerpt_sha256": "ef0d9d4df2d607b084ecb36ea20ef707dcd5754ce145aa0bc0f2a3e4afc35114",
+        "finding": "Existing other Source caller supplies context.registration explicitly."
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "line_start": 1356,
+        "line_end": 1358,
+        "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/observer_edges.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/observer_event_producer.cpp)\ncmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/observer_lifetime.cpp)\n",
+        "canonical_lf_excerpt_sha256": "9b1ed85340b6f50f7bf2e0b576d68276ea1c2a718c4d08cc10dbd2211c85e9a0",
+        "finding": "Provider and lifetime Source registration in bsp_core."
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "line_start": 1660,
+        "line_end": 1660,
+        "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/game_observer_runtime.cpp)\n",
+        "canonical_lf_excerpt_sha256": "f35c782ec2e3fc16d1ede42de941b356aa59ce2ffada9246bb7b2bdc043c6064",
+        "finding": "Runtime Source registration in bsp_game."
+      }
+    ]
+  },
+  "selected_production_and_library_gap": {
+    "actual_selected_Source_route": "PlaneSquadronRegistry::records_ vector -> PlaneSquadronHostRecord -> launch_task_live, launch_task_timer_1c, launch_task_deck, launch_task_sends. This is an actual typed storage route, not raw Native Node storage.",
+    "actual_selected_Source_lifecycle": "GameUnitsHost construction projection initializes fields; run_landing_queue_006cd240 iterates squadron records and calls base_launch_task_tick_007f1f00; no-member branch clears launch_task_live. Scheduling placement is explicitly labelled in Source.",
+    "raw_member_and_actual_endpoint_lifetime_binding_proved": false,
+    "projection_excerpts_rechecked_current": [
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 32771,
+        "line_end": 32780,
+        "text": "                    // set, a holder kind ([+C0h]+4h) other than 2 (every host\n                    // squadron is kind 1) and a base answering IsKindOf(9) or\n                    // IsKindOf(45h), 38h bytes -> 007F1DE0(base+310h, squadron):\n                    // +1Ch = 0, the squadron at +34h. ORDER, LABELLED: the image\n                    // builds it after the command block (007F4E06-007F4EA3);\n                    // nothing between reads it, and here the command block's\n                    // early returns would otherwise skip it. A scene squadron with\n                    // a HomeBase gets a task in the image too, whose first ready\n                    // tick finds no state-1 member and ends it; it is not built here.\n                    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();\n",
+        "canonical_lf_excerpt_sha256": "d4b432fcaf9ed53a2e600cb0141366340b7f2777b9a3e5ed923ac55c08fb694d",
+        "finding": "Existing Source construction comment, not fresh Native proof."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 32781,
+        "line_end": 32790,
+        "text": "                    for (std::size_t di = 0; di < decks.size(); ++di) {\n                        if (decks.name_at(di) != rec->bag_home_base) continue;\n                        rec->launch_task_live = true;\n                        rec->launch_task_timer_1c = 0.0f;\n                        rec->launch_task_deck = di;\n                        rec->launch_task_sends = 0;\n                        ++host.base_launch_tasks_built;\n                        host.done(\"SquadronLaunchTask::construct_007f1de0\", 0x007f1de0u);\n                        break;\n                    }\n",
+        "canonical_lf_excerpt_sha256": "beaf8e9f726cdd0753769939264522546fcb0b792a401cfeea6a0b83a144e86d",
+        "finding": "Actual typed task-state construction route in production host."
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 131,
+        "line_end": 140,
+        "text": "    // Inside the base and 007F4DA9 skips the airborne placement 007F2920.\n    bool home_launch_408{false};\n    // The launch task 007F1DE0 (38h bytes, vtable 00D08AE4) that pass C builds at\n    // 007F53FF for a squadron whose home base is a mother ship or an airfield:\n    // task+1Ch the send countdown, task+34h the squadron. `launch_task_deck` is\n    // the base's index in air_ops_decks().\n    bool launch_task_live{false};\n    float launch_task_timer_1c{0.0f};\n    std::size_t launch_task_deck{kPlaneSquadronNoUnit};\n    std::int32_t launch_task_sends{0};\n",
+        "canonical_lf_excerpt_sha256": "5e3b77c47408cb59da688206e249a9e25e3fe84314bccc7fbecd7014fdfb7801",
+        "finding": "Task fields and profile comment. Profile target remains unopened."
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 245,
+        "line_end": 246,
+        "text": "    std::vector<PlaneSquadronHostRecord>& records() noexcept { return records_; }\n    const std::vector<PlaneSquadronHostRecord>& records() const noexcept { return records_; }\n",
+        "canonical_lf_excerpt_sha256": "b76f2090fe6125db3ec7c577da8b09002c6ec32a9bc3b6192b50be5b8df946e1",
+        "finding": "Registry records are typed squadron records."
+      },
+      {
+        "path": "include/bsp/plane_squadron_host.hpp",
+        "line_start": 253,
+        "line_end": 255,
+        "text": "\n   private:\n    std::vector<PlaneSquadronHostRecord> records_;\n",
+        "canonical_lf_excerpt_sha256": "ef51f18cb64989a91334a9d1896edd948e7a45e5571ed07a62738d935cad8134",
+        "finding": "Concrete vector storage; no raw task layout is implied."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 14485,
+        "line_end": 14493,
+        "text": "        if constexpr (kBaseLaunchChainBound) {\n            // Packet cc9_base_launch_task: each squadron's launch task 007F1F00.\n            // POSITION, LABELLED: the image ticks it from its task list\n            // (00876020's registration), whose place in the frame is unread;\n            // it runs here, before the site ticks that read site+18h.\n            for (bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {\n                h.base_launch_task_tick_007f1f00(sq, dt);\n            }\n            // Packet cc9_base_launch_deck_arms: 006CDC70's site slot +4h for an\n",
+        "canonical_lf_excerpt_sha256": "60baa37e1d47d7dc1d882baf74e1b4800cb475207c61293f870ddc33304115bc",
+        "finding": "Explicit Source scheduling substitution and typed record loop."
+      },
+      {
+        "path": "src/game_hosts_units.cpp",
+        "line_start": 12875,
+        "line_end": 12885,
+        "text": "    }\n    if (pick >= slots.size()) {\n        // 007EF041: 1, none left; 007F1FB7-007F1FCF end the task.\n        sq.launch_task_live = false;\n        ++base_launch_tasks_ended;\n        log.notef(\"base launch task: squadron=%s ends at %.2f s after %d send(s) \"\n            \"(007EF010 -> 1, 007F1FCF; packet cc9_base_launch_task)\", sq.name.c_str(),\n            static_cast<double>(summary.simulated_seconds), sq.launch_task_sends);\n        done(\"SquadronLaunchTask::tick_007f1f00\", 0x007f1f00u);\n        return;\n    }\n",
+        "canonical_lf_excerpt_sha256": "875ff6dffb221a1a5573aa146684cc8af883459a90737071c69d62d1962cc2bf",
+        "finding": "Source task retirement clears live flag; no Native slot dispatch."
+      }
+    ],
+    "Source_searches": {
+      "exact_owned_constructor_and_member_profiles": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "007f0f80|cf6494|cf6514",
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 1,
+        "complete_output": [],
+        "qualification": "Exact current Source text search only; absence is not proof about differently named or generated implementations."
+      },
+      "actual_registration_provider_and_callers": {
+        "command": [
+          "rg",
+          "-n",
+          "-i",
+          "register_observer_pair_00694a60",
+          "src",
+          "include",
+          "tests"
+        ],
+        "returncode": 0,
+        "complete_output": [
+          "src\\native_landing_queue.cpp:43:    register_observer_pair_00694a60(*static_cast<NativeObserverOwnerStorage*>(input.first_00),",
+          "src\\native_land_moveto_constructor.cpp:59:        register_observer_pair_00694a60(*first, state.callback_18, lifetime);",
+          "src\\native_land_state_entries.cpp:53:                register_observer_pair_00694a60(",
+          "src\\native_land_state_lifetime.cpp:31:    if (first) register_observer_pair_00694a60(*first, destination.callback_00, lifetime);",
+          "src\\native_session_participant_binding.cpp:18:    if (requested_first) register_observer_pair_00694a60(*requested_first, callback, lifetime);",
+          "src\\native_ship_ai_obstacle_node.cpp:20:            register_observer_pair_00694a60(*owner, node.callback_owner_00, lifetime);",
+          "src\\observer_edges.cpp:83:void register_observer_pair_00694a60(",
+          "include\\bsp\\observer_edges.hpp:24:void register_observer_pair_00694a60("
+        ],
+        "qualification": "Exact current Source text search only; absence is not proof about differently named or generated implementations."
+      }
+    },
+    "latest_primary_report": "reports/cc12_native_allocator_owned_message_constructor_primary_review.json",
+    "latest61_input_rechecks": {
+      "count": 61,
+      "equal_count": 61,
+      "differences": []
+    },
+    "prior_build_receipt": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "start_utc": "2026-10-09T13:39:47.093038+00:00",
+      "finish_utc": "2026-10-09T13:40:03.116307+00:00",
+      "exit_code": 0,
+      "success": true
+    },
+    "prior_build_checks": 3,
+    "qualification": "Current Source pins and build registration are checked; prior compiled/Core/EH/build receipts remain Source snapshots only. No observer provider object/library/link selection or runtime execution was newly audited."
+  },
+  "current_Source_and_evidence_pins": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 18550,
+      "sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5",
+      "canonical_lf_sha256": "6a3b026c274a2f0933236392117a907a73949457f96c301ea2c069b0a260b0d5"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "canonical_lf_sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "canonical_lf_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_CONSTRUCTOR_ABI_READINESS.md",
+      "bytes": 11332,
+      "sha256": "674c09ef8cb1569aa2a8eae8bc3099422414277229bb18f4fbfc8860e3b085ed",
+      "canonical_lf_sha256": "674c09ef8cb1569aa2a8eae8bc3099422414277229bb18f4fbfc8860e3b085ed"
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_MEMBER_CONSTRUCTOR_ABI_READINESS.md",
+      "bytes": 10153,
+      "sha256": "e8a6c4e555ebc9be7510e3e4a2ce83498472f812d7b3c2fe18e24b5a535d2e08",
+      "canonical_lf_sha256": "e8a6c4e555ebc9be7510e3e4a2ce83498472f812d7b3c2fe18e24b5a535d2e08"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "bytes": 7776,
+      "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+      "canonical_lf_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+    },
+    {
+      "path": "include/bsp/game_observer_runtime.hpp",
+      "bytes": 1967,
+      "sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6",
+      "canonical_lf_sha256": "8022cbbd226696c9f94c4c1bc7e16be9c9cf1dbac7ca38e27c54e5161e703ba6"
+    },
+    {
+      "path": "include/bsp/observer_edges.hpp",
+      "bytes": 2548,
+      "sha256": "7c6ec51a0a98a3e1033d32ab1b88d1ab03987088025b6343575093c752e7d3fe",
+      "canonical_lf_sha256": "7c6ec51a0a98a3e1033d32ab1b88d1ab03987088025b6343575093c752e7d3fe"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "bytes": 7290,
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "canonical_lf_sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+    },
+    {
+      "path": "include/bsp/plane_squadron_host.hpp",
+      "bytes": 25784,
+      "sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e",
+      "canonical_lf_sha256": "a95fdf45337b07728cede99fb4608da3104636145f1e593b687ef3f872cd266e"
+    },
+    {
+      "path": "reports/cc12_native_allocator_owned_message_constructor_primary_review.json",
+      "bytes": 1889046,
+      "sha256": "2ca2f35dd8959800e20117fdf4041a2cf663891a355ce3e74716de29b1712695",
+      "canonical_lf_sha256": "2ca2f35dd8959800e20117fdf4041a2cf663891a355ce3e74716de29b1712695"
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_constructor_ABI_readiness.json",
+      "bytes": 86726,
+      "sha256": "1959d5d59a305b5bab2373c8f09fc98301b11e39d06b9915ac96393f1fdada6e",
+      "canonical_lf_sha256": "1959d5d59a305b5bab2373c8f09fc98301b11e39d06b9915ac96393f1fdada6e"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "canonical_lf_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+    },
+    {
+      "path": "src/game_hosts_units.cpp",
+      "bytes": 2234182,
+      "sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999",
+      "canonical_lf_sha256": "5b1109f78022eafe2e5eb08dd38a4a1bf9fa1409d07144e52e73b4cae9cae999"
+    },
+    {
+      "path": "src/game_observer_runtime.cpp",
+      "bytes": 2390,
+      "sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1",
+      "canonical_lf_sha256": "d17a0b51f3c6d991c90dcff85efeaa40b73226d6ef23fb2ca8197f313482d0d1"
+    },
+    {
+      "path": "src/native_landing_queue.cpp",
+      "bytes": 8555,
+      "sha256": "5156d00cf8a56d3d79fdc5e19c276cdb41e57c2e4f229e2bc492cf55bdad555f",
+      "canonical_lf_sha256": "5156d00cf8a56d3d79fdc5e19c276cdb41e57c2e4f229e2bc492cf55bdad555f"
+    },
+    {
+      "path": "src/native_session_participant_binding.cpp",
+      "bytes": 1048,
+      "sha256": "886f7a0ed733080d9d9d61d04c1e1efea3b4800ce253bb57ec67511ede4ab85b",
+      "canonical_lf_sha256": "886f7a0ed733080d9d9d61d04c1e1efea3b4800ce253bb57ec67511ede4ab85b"
+    },
+    {
+      "path": "src/observer_edges.cpp",
+      "bytes": 4203,
+      "sha256": "95f2700be5f8621b620b3a4df6b7e0cd708e0a358b73d2ebde7660b41ddfd225",
+      "canonical_lf_sha256": "95f2700be5f8621b620b3a4df6b7e0cd708e0a358b73d2ebde7660b41ddfd225"
+    }
+  ],
+  "hash_domains": {
+    "owned_Native": "All92 owned live/PE/Root-record bytes and28 instruction boundaries; no unowned Native byte decode.",
+    "image_identity": "Full original PE file SHA256 is identity only.",
+    "Source_and_reports": "Raw bytes and CRLF-to-LF SHA256 at stated baseline.",
+    "excerpts": "Selected UTF8 lines joined with LF and final LF; current Source confirmed.",
+    "artifacts": "Accepted prior reports only; no current object/library/map reread or execution.",
+    "self": "No recursive self hash."
+  },
+  "validation": {
+    "all92_bytes_classified": true,
+    "all28_boundaries_match_live_and_Root": true,
+    "three_blocks_three_edges_and_both_stack_arms_accounted": true,
+    "CMP_to_JZ_four_MOVs_preserve_flags": true,
+    "ECX_EDX_no_pushed_argument_boundary_accounted": true,
+    "six_member_writes_and_combined38h_extent_accounted": true,
+    "parent27_and_primary61_pins_equal": true,
+    "current_Source_pins_and_excerpts_checked": true,
+    "JSON_parsed": true
+  },
+  "limits": {
+    "Source_CMake_ledger_GPR_mutation": false,
+    "build_probe_tests": false,
+    "new_Native_child_profile_table_slot_handler_caller_neighbor_read": false,
+    "Source_admission": false,
+    "Native_admission": false,
+    "Original_ABI_admission": false,
+    "gameplay_or_runtime_lifecycle_validation": false,
+    "only_owned_two_outputs": true
+  }
+}
