@@ -1,7 +1,7 @@
 {
   "schema": "bsp.cc12.world_post_base_header_contract.v1",
   "packet": "cc12_world_post_base_header_contract",
-  "status": "IMPLEMENTED_UNBUILT",
+  "status": "IMPLEMENTED_BUILD_TESTED_APPLICATION_BINDING_OPEN",
   "addresses": [
     "009037F0",
     "00904C40",
@@ -26,13 +26,14 @@
       "stack_4": "active byte from low byte of first 32-bit argument",
       "stack_8": "second 32-bit argument ignored",
       "stack_pop_bytes": 8,
-      "eax": "second allocation result, including explicit null branch",
+      "eax": "Observed second allocation result in EAX; no recovered nonvoid return contract",
       "explicitly_saved_nonvolatiles": [
         "ESI",
         "EDI"
       ],
       "edx_input": false,
-      "local_eh_frame": false
+      "local_eh_frame": false,
+      "return_contract": "void; ECX=World, two stack words, RET8"
     },
     "ordered_effects": [
       {
@@ -374,5 +375,7 @@
       "bytes": 2305,
       "sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383"
     }
-  ]
+  ],
+  "worker_status": "IMPLEMENTED_UNBUILT",
+  "primary_review": "reports/cc12_world_chain_headers_primary_review.json"
 }

@@ -1,0 +1,117 @@
+{
+  "status": "ACTUAL_WORLD_HEADER_STORAGE_FRAGMENT_BUILD_TESTED_APPLICATION_BINDING_OPEN",
+  "worker_commit": "f7d37c33aa6bfddea1818044fecceffd2d0d035b",
+  "source": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\native_world_chain_headers.hpp",
+      "bytes": 1457,
+      "sha256": "0dcee7324448292df7aaa06a95cdb53e4d21ff4ff22b8343bf15a3c747368714"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\native_world_chain_headers.cpp",
+      "bytes": 2305,
+      "sha256": "419eb80e4cc40861520e614bfb76d173f355bcaedc8b672a81973c8cf4821383"
+    }
+  ],
+  "recipe": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\CMakeLists.txt",
+    "bytes": 16023,
+    "sha256": "9d959d8f86629c12efbd9c2ebe4cd837ecc7e67686e56a5b91945f273be4fc43"
+  },
+  "worker_phase_preimages": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\before\\docs\\CC12_WORLD_POST_BASE_HEADER_CONTRACT.md",
+      "bytes": 11139,
+      "sha256": "7875b881d57f727df0db66fe9c421989345e4c30cb145415c3891b8d170cab81"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\before\\reports\\cc12_world_post_base_header_contract.json",
+      "bytes": 13242,
+      "sha256": "c8a5abf6b501674484fcc145aa61565e5163a418779a33acbab9b23bdaa08763"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\before.json",
+      "bytes": 1318206,
+      "sha256": "8e073d21202cd1b667d22e0fd8b00dd6d31f66204cdbb07dfdebb513b3dac3ad"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\normal_build.log",
+      "bytes": 3261,
+      "sha256": "7bbf154f3531026352c8c427dd21bdb1df10b7c8465fd62e72ac61fadeee0653"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\build_exit.json",
+      "bytes": 124,
+      "sha256": "81d10f6721e8e458626ee101c9edbef77a62b74ee96dd38706ba5fb34ca4e231"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\build_primary_review.json",
+      "bytes": 59956,
+      "sha256": "fe66a777278456ff7f92c255bd5dbd4510efffc68c504b5c4d0413c5ec0aa7ef"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\whole_current_coff_and_indexed_graph.json",
+      "bytes": 53525,
+      "sha256": "50920391b794bddd67e9ec2ea2f75cc55af1b535ff9ff5192b724a327f9b73d7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\native_world_chain_headers.obj",
+      "bytes": 1676,
+      "sha256": "6cea897a275cba0516c4245270d4c8419edf4084951975e4a933d9a092f9b851"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\singleton_lifetime.obj",
+      "bytes": 32963,
+      "sha256": "11e58d1b1de805045e08cc442049bc4babfee39c527095ee3dba0aa637219f26"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_world_chain_headers_primary_review\\bsp_core.lib",
+      "bytes": 73670824,
+      "sha256": "a93ab2682b089f1776e7678ac3588dd4773dc1ddca1fbdd72e260dfce8158470"
+    }
+  ],
+  "actual_input_count": 89,
+  "historical_support_rows_without_fresh_before_bookend": 18,
+  "source_body_bytes": 181,
+  "source_body_instructions": 52,
+  "allocator_relocation_offsets": [
+    65,
+    108
+  ],
+  "native_body_bytes": 89,
+  "native_body_instructions": 34,
+  "original_return_contract": "void; ECX owner; RET8",
+  "cpp_return_contract": "CDECL; three stack words; second pointer in EAX; plain RET",
+  "emitted_order_qualification": "Byte+4A4 precedes DWORD+4A8; both precede first allocation. Header stores4/0/8 and first-publication/second-call ordering retained.",
+  "tests_passed": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "exit_code": 0,
+  "credit": {
+    "actual_storage_source_fragments": 1,
+    "extra_original_functions": 0,
+    "source_fixture_executions": 0,
+    "original_abi_validation": false,
+    "application_caller_wiring": false,
+    "full_world_lifetime_ready": false,
+    "startup": false,
+    "gameplay": false
+  },
+  "ghidra_metadata": {
+    "annotation_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\ghidra-annotations-20261009T021102Z.json",
+      "bytes": 2307,
+      "sha256": "79b8efa248391120020fb83077b556c356fff05b9bd06cc8693d66d041c95fea"
+    },
+    "previous_comments_preserved": true,
+    "existing_name_preserved": true,
+    "saved_same_program": true,
+    "affected_export_refreshed": true,
+    "function_count": 64728,
+    "prototype_or_listing_changes": false
+  }
+}

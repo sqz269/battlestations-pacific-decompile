@@ -1,13 +1,13 @@
 # World post-base entity-header contract (CC12)
 
-**IMPLEMENTED_UNBUILT:** a bounded C++ helper now implements `009037F0`'s storage
+**IMPLEMENTED_BUILD_TESTED:** a bounded C++ helper now implements `009037F0`'s storage
 and publication schedule over supplied actual World storage. Its entire Native
 89-byte/34-instruction body has one allocation dependency, already represented
 by the qualified host CRT boundary. The helper neither creates the World owner
 nor makes the full World lifetime ready. It is a new C++ Source interface, not
 a binary replacement. Original-function credit remains 0: this address already
-has a projected reconstruction. Actual-storage fragment acceptance, CMake
-registration and build validation remain with the integrator.
+has a projected reconstruction. The integrator registered and compiled the actual-storage fragment; all three
+existing CTests passed. See the primary review at the end of this document.
 
 The earlier [base-constructor audit](CC12_RAW_WORLD_BASE_CONSTRUCTOR_READINESS.md)
 retains authority for `004CB030`, its 97 category headers and matrix sentinel.
@@ -21,8 +21,9 @@ caller unwind boundary; it does not repeat or admit either larger owner.
 The hypothetical name is `BSP_World_AllocateEntityChains`. The original ABI is
 Win32 member-call style: ECX is the borrowed actual World, the low byte of the
 first 32-bit stack argument is the active byte, and the second 32-bit stack
-argument is ignored. Both normal exits consume eight bytes with RET8. EAX is
-the second allocation result. ESI/EDI are explicitly saved/restored; the usual
+argument is ignored. The recovered Native return contract remains void. Both normal exits consume
+eight bytes with RET8. EAX retains the second allocation result as observed
+register contents; no caller consumption establishes a nonvoid return contract. ESI/EDI are explicitly saved/restored; the usual
 EBX/EBP nonvolatile contract is retained. EDX is not an input. This is not a
 two-argument CDECL routine, despite the incomplete Ghidra prototype.
 
@@ -36,7 +37,7 @@ two-argument CDECL routine, despite the incomplete Ghidra prototype.
 | `00903822` | Publish the first result at World+4, including a returned null. |
 | `00903825` | Call the same CDECL allocator again with 0x0C. |
 | `00903831`, `34`, `36` | For a nonnull second allocation, zero DWORDs header+4, +0, +8 in this order. |
-| `0090383A` / `00903841` | Publish the second pointer / null at World+8; return that value in EAX. |
+| `0090383A` / `00903841` | Publish the second pointer / null at World+8; EAX retains that register value. |
 
 The first pointer is published **before** the second allocator is entered.
 There is no table install, callback registration, entity traversal, reference
@@ -156,8 +157,7 @@ The Source preserves this storage/exception schedule; native register behavior,
 RET8, exact instruction emission and original CRT object identity are not
 claimed. No assembly was added. The public helper requires actual supplied
 post-base World storage and does not substitute a vector, opaque token,
-test-owned World producer or generic callback facade. Compilation and build
-acceptance remain pending; full World admission still depends on actual
+test-owned World producer or generic callback facade. Compilation and existing build checks passed; full World admission still depends on actual
 owner/base/table/EH contracts and normal teardown providers. This fragment
 does not advance startup or game readiness.
 
@@ -174,8 +174,35 @@ path, x86 language and image base via `Client.verify`; no imports, annotations,
 flow repairs or other project writes occurred. The machine-readable
 [report](../reports/cc12_world_post_base_header_contract.json) retains exact
 Native spans, SHA-256 hashes, the live/disk comparisons and current Source pins.
-This packet changes exactly the new dedicated header/source and this
-document/report. No CMake/config/ledger edits, builds, tests, fixtures, probes
-or Native entry execution occurred. The integrator will register the helper
-and perform the normal build. Source review and JSON/diff checks do not
-constitute build or runtime evidence.
+The worker phase changed exactly the new dedicated header/source and this
+document/report. It performed no CMake/config/ledger edits, builds, tests,
+fixtures, probes or Native entry execution. The primary phase below supplies
+registration and build acceptance; worker Source review and JSON/diff checks
+alone do not constitute build or runtime evidence.
+
+## Primary build acceptance
+
+The primary registered the new source in `CMakeLists.txt` and ran one normal
+MSVC Win32 build, retaining exit code 0 and three passing existing CTests.
+All 89 actual compiler input rows match retained physical images; 18 older
+compiler/header/OS support images were rechecked after this build rather than
+freshly checked immediately before it. This is input identity evidence, not
+a trace of loaded compiler DLLs. Whole COFF and physical core-library/member
+records retain the 181-byte/52-instruction C++ body and two allocator calls.
+
+The emitted helper uses CDECL with three stack words and plain RET, unlike
+the Native void/ECX/RET8 interface. It publishes World+4 between allocator
+calls and World+8 after the second, preserving null branches and the lack of
+local second-allocation rollback. Header zero stores remain +4/+0/+8. The
+compiler places the active-byte store before the +4A8 zero store; both occur
+before the first allocator. Exact instruction/store ordering, asynchronous
+observation and Original ABI equivalence are not claimed. A valid fresh
+owner exposes both initialized fields at the first allocation boundary.
+
+The helper has no application caller yet; full World lifetime, startup and
+gameplay remain unvalidated. The [primary report](../reports/cc12_world_chain_headers_primary_review.json)
+binds the build, indexed object graph and retained library evidence.
+The primary appended this qualified Source evidence to the existing Ghidra
+function comment, preserved its established name and prior comments, saved the
+same program, and refreshed the affected export. No listing, ABI prototype or
+function count was changed.
