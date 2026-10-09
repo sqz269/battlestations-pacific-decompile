@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "audit_id": "cc12_dup57_final_recorded_schema_TEXT_review",
+  "kind": "independent_selected_TEXT_JSON_schema_peer_review",
+  "Source_credit": 0,
+  "Root_acceptance": false,
+  "baseline": "13b6379729eac71c4c6eca33ea55b061d031402b",
+  "address_leases": [],
+  "result": "No concrete writer/parser field, encoding, count or width contradiction found in the reviewed success schema.",
+  "chosen_D": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc12_dup57_final_guarded_TEXT_draft/local/dup57draft",
+    "actual_files": 62,
+    "listed_artifacts": 61,
+    "seal_sha256": "8807486f8aeaa90b0f8c2131171725b936a5fa28cae6e6e5b07d35a450ee6376"
+  },
+  "selected_TEXT": [
+    {
+      "name": "seal.json",
+      "sha256": "8807486f8aeaa90b0f8c2131171725b936a5fa28cae6e6e5b07d35a450ee6376",
+      "size": 16209,
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_dup57_final_guarded_TEXT_draft\\local\\dup57draft\\seal.json",
+      "frozen_relative": "local/dupschema/frozen_TEXT/seal.json"
+    },
+    {
+      "name": "probe.cpp",
+      "sha256": "22b1c767e79a0ce9b04cf0a07c188ae6a9248d5597b112598035c9707608b2d1",
+      "size": 25928,
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_dup57_final_guarded_TEXT_draft\\local\\dup57draft\\probe.cpp",
+      "frozen_relative": "local/dupschema/frozen_TEXT/probe.cpp"
+    },
+    {
+      "name": "root_recipe.py",
+      "sha256": "ee643106b669e3ddd338225b177db370e9b1c0fb842bfe2f29a3425b7df8583a",
+      "size": 29977,
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_dup57_final_guarded_TEXT_draft\\local\\dup57draft\\root_recipe.py",
+      "frozen_relative": "local/dupschema/frozen_TEXT/root_recipe.py"
+    },
+    {
+      "name": "contract.hpp",
+      "sha256": "2b98eecbe5712dc91c74efcd5549773f1a8d1e5d0e278905901655d47106ab5d",
+      "size": 715,
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_dup57_final_guarded_TEXT_draft\\local\\dup57draft\\contract.hpp",
+      "frozen_relative": "local/dupschema/frozen_TEXT/contract.hpp"
+    },
+    {
+      "name": "protocol.json",
+      "sha256": "48cd14e6c2319ac60fa40b00fb6fc9ccbd960d10506f94f1d93219220dbb2caf",
+      "size": 3881,
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_dup57_final_guarded_TEXT_draft\\local\\dup57draft\\protocol.json",
+      "frozen_relative": "local/dupschema/frozen_TEXT/protocol.json"
+    }
+  ],
+  "counts_and_encodings": {
+    "U32_and_DWORD": "unsigned decimal JSON integer; 32-bit writer types",
+    "hex": "lowercase two hex characters per byte",
+    "capture": {
+      "count": 4,
+      "before_words": 8,
+      "after_words": 8,
+      "flag_words": 2,
+      "byte_count": 72,
+      "raw_json_hex_field": false,
+      "post_derived_hex_field": "serialized_words72",
+      "post_hex_char_count": 144,
+      "packing": "<18I"
+    },
+    "observation": {
+      "count": 5,
+      "before_bytes": 48,
+      "after_bytes": 48,
+      "snapshot_hex_chars": 96,
+      "copy_bytes_nonnull": 8,
+      "copy_hex_chars_nonnull": 16,
+      "copy_null": ""
+    },
+    "provider": {
+      "count": 4,
+      "sha256_bytes": 32,
+      "sha256_hex_chars": 64,
+      "relocated_prefix_bytes": 32,
+      "relocated_prefix_hex_chars": 64,
+      "machine_serialized_literal": 332
+    }
+  },
+  "selected_counts": {
+    "entries": 5,
+    "returned": 3,
+    "frees": 3,
+    "phases": [
+      0,
+      0,
+      1,
+      1,
+      2
+    ],
+    "null_indices": [
+      0,
+      2
+    ]
+  },
+  "borrowed": {
+    "layout": "pre16/text16/post16 = 48 bytes; payload occupies text[0:8]",
+    "payload_hex": "6c018e925b3d7f00",
+    "NUL_offset": 7,
+    "unused_and_guard_byte_hex": "38",
+    "source_JSON_identity": "borrowed_allocation + 16; borrowed text, not the Source function"
+  },
+  "missing_writer_keys": {
+    "runtime_top": [],
+    "capture": [],
+    "observation": [],
+    "provider": []
+  },
+  "provider_fields": [
+    "IAT",
+    "RVA",
+    "actual",
+    "export",
+    "file_size",
+    "identity_and_prefix_before_after_equal",
+    "index_high",
+    "index_low",
+    "machine",
+    "mapped_nt",
+    "module",
+    "module_path",
+    "name",
+    "physical_nt",
+    "relocated_prefix32",
+    "sha256",
+    "volume"
+  ],
+  "provider_prefix_semantics": "32 physical export bytes with overlapping HIGHLOW relocations adjusted to actual load base, compared with actual IAT-memory bytes; post derives the same representation from its frozen provider file.",
+  "observation_limits": {
+    "ES_field_or_equality": "absent from Capture72, JSON writer and selected post decoder",
+    "null_flags": "selected mask 0x8C5 = 0x44, AF excluded",
+    "nonnull_flags": "selected mask 0x8D5 compares add_flags; AF included; formula correctness not reviewed here",
+    "flags_before": "selected literal 0xA93 and DF-clear predicate",
+    "flags_after_DF": "not an explicit equality predicate in selected mask checks",
+    "inferred_frame_fields": "post-only derivations, not raw writer fields or independently validated machine facts",
+    "success_booleans_and_machine": "writer literals after checks, not independent direct observations of those JSON literals"
+  },
+  "selection_prerequisites": {
+    "launch_contract": {
+      "function": "launch",
+      "callee": "run_owned_process",
+      "keyword_order": [
+        "label",
+        "args",
+        "cwd"
+      ],
+      "label": "target_once",
+      "argv0_basename": "duplicate57_complete_probe.exe",
+      "argv_count": 1,
+      "manual_gate_callee": "accept_linked_manual_gate",
+      "manual_gate_precedes_target": true,
+      "compiler_function": "compile_stage",
+      "text_receipt_callee": "require_text_review",
+      "text_receipt_precedes_compiler": true,
+      "gate_basename": "gate.bin",
+      "coverage_basename": "coverage.json"
+    },
+    "four_object_order": [
+      "duplicate",
+      "adapter",
+      "canonical",
+      "probe"
+    ],
+    "AST_guard_lines": {
+      "manual_before_target": [
+        329
+      ],
+      "target": 332,
+      "text_before_compiler": [
+        249
+      ],
+      "compiler_dispatch": [
+        260,
+        258
+      ]
+    },
+    "ten_required_Root_manual_checks": [
+      "every_retained_TU_function_full_bytes_size_relocations",
+      "whole_main_and_all_observers",
+      "weak_mode1_or3_actual_defined_fallback_sameVA_fullbody",
+      "cookie14_and_chkstk43_with_padding_separate",
+      "all_normal_import_thunks",
+      "cold_delete16_to_delete5_to_free6_if_retained",
+      "GS_failure_frontier_explicitly_unadmitted",
+      "native57B30_ECX_RET0_and_real_size_DWORD",
+      "actual_four_provider_files_IAT_export_domain",
+      "AST_exact_launch_basename_keyword_order"
+    ],
+    "actual_receipts_or_process_results_not_created_or_approved": true
+  },
+  "text_locations": {
+    "probe.cpp": [
+      "270-300",
+      "342-394"
+    ],
+    "contract.hpp": [
+      "9-19"
+    ],
+    "root_recipe.py": [
+      "32-100",
+      "116-169",
+      "301-420"
+    ],
+    "protocol.json": [
+      "launch_contract",
+      "complements",
+      "admission_limits"
+    ]
+  },
+  "local_evidence": {
+    "family": "local/dupschema",
+    "schema_readout_sha256": "bc09c773db5fdd7237c02654d932c8cac3731057c7dca732f93fc11ac6359b8b",
+    "chosen_before": "chosen_D_inventory_before.json",
+    "chosen_after": "chosen_D_inventory_after.json",
+    "strict_selected_before": "selected_TEXT_before.json",
+    "strict_selected_after": "selected_TEXT_after.json",
+    "receipt": "receipt.json",
+    "manifest": "artifact_manifest.json",
+    "schema_readout": "schema_readout_r02.json"
+  },
+  "limits": [
+    "TEXT writer/parser/schema only",
+    "No machine ABI/frame/control-flow or emitted-helper review",
+    "No installed provider or process observations",
+    "No Source edits, tests, implementation/admission credit or change to existing qualified domains",
+    "No selected helper import/execution or old runtime-family access",
+    "Chosen old family immutable; evolving Main is generation context only"
+  ],
+  "key_accounting": {
+    "runtime_top": {
+      "writer_count": 16,
+      "reader_count": 16,
+      "writer_only": []
+    },
+    "capture": {
+      "writer_count": 4,
+      "reader_count": 4,
+      "writer_only": []
+    },
+    "observation": {
+      "writer_count": 7,
+      "reader_count": 7,
+      "writer_only": []
+    },
+    "provider": {
+      "writer_count": 17,
+      "reader_count": 16,
+      "writer_only": [
+        "module_path"
+      ]
+    }
+  },
+  "provider_module_path": "Serialized UTF-8 diagnostic, not compared by post; mapped_nt and physical_nt are compared.",
+  "audit_utility_recovery": {
+    "initial_capture_variable": "cap",
+    "actual_selected_capture_variable": "c",
+    "new_corrected_readout": "schema_readout_r02.json",
+    "initial_utility_readout_and_metadata_preserved": true,
+    "selected_TEXT_changed": false,
+    "selected_helper_replay_or_import": false
+  }
+}
