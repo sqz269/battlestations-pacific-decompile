@@ -1,8 +1,18 @@
 # Type10/11 isolated Root execution selection
 
-Root's fresh Type10/11 metadata preparation closed successfully in `local/type1011p3`, with an immutable prepare selection and a separate post-prepare selection in `local/type1011select02`. Source admission remains zero. Root has verified the actual process closure and all prepared files; Native, compilation and constructor execution still require the later reviews and receipts. The earlier failed F2/D01 case remains sealed and is retained below.
+The Type10/11 TEXT and Native reviews passed, and all four Win32 compilers plus the linker returned zero. The selected build dispatch then failed its outer deadline with a live compiler auxiliary process and no owned-Job closure record. Source admission remains zero; no constructor ran. `local/type1011p3` and `local/type1011select02` are now sealed and cannot advance or be replayed. The earlier failed F2/D01 case also remains sealed.
 
-## Fresh closed metadata preparation and selection transition
+## Actual postprepare reviews and failed build
+
+The guarded recipe review and corrected `native` dispatch both closed successfully through the selected external route. Root issued the exact TEXT receipt after checking complete dependency/provenance inputs, private ENV formula, launch AST and four-TU build plan; the independent peer passed 46 checks. Its mandatory COFF labels describe reviewed TEXT algorithms and planned obligations, not proof that unbuilt machine artifacts had been examined. The earlier two-argument caller error stopped before Native phase entry, was assessed separately and remains retained.
+
+Root matched all 235 Native bytes to the original game file, captured Ghidra replies and exported bodies. The independent Astra peer decoded all 73 instructions and confirmed ECX/stack inputs, full-DWORD FLAGT transport with a low-byte branch, RET12, 29 written/27 preserved root bytes, and the valid arithmetic mask `0x8D5` on both branches. This does not establish current linked helper equivalence, private game CRT behavior, a usable vtable/ownership graph, drop-in ABI or gameplay.
+
+All four compiler statuses and the linker returned zero and produced the four objects, PE32 probe and map. At root-exit observation, root PID1160 was signalled with exit0, while retained Job-associated PID42380 identified the installed `vctip.exe`, remained unsignalled and had exit259; accounting was active1/total10. The outer PowerShell wait timed out at 600 seconds. Root's parent caller closed with exit1 after 617.551 seconds; it did not hit its own parent timeout. The supervisor produced no owned-Job closure record, and the outer result explicitly records descendants_closed=false. Later PID absence and kill-on-close do not prove the missing accounting/retained-handle closure. The full post-bookend passed 13,239 files, 16,380 memberships and 58 scopes, but it cannot make this dispatch successful. No static gate, provider selection, linked receipt or constructor execution followed.
+
+Root sealed F3 with 2,344 artifacts/exact2,345 files: 1,014,366-byte seal SHA256 `1170a74c0fb660438a11542c09555a7b76573264bf2f321870b7773e00e00f54`. D02 retains 1,845 artifacts/exact1,846 files: 855,183-byte seal SHA256 `0a94231ddd6110cab35f04865f75d2ac30b633cf95a9bbac297eb8d35750c078`. Both seals were checked for exact membership and every recorded size/SHA. Future work requires a supported compiler auxiliary prevention method and a fresh independently reviewed selection; natural-zero predicates, retained handles, no breakaway and original deadlines remain intact.
+
+## Closed metadata preparation before the later build failure
 
 The sole fresh prepare returned zero through the external PowerShell guard, owned Job supervisor and Root caller, without timeout. The caller retained 127.697 seconds. Initial root-exit accounting showed active1/total2, but the subsequent identity PID list was already empty. Natural shutdown reached actual active0 within the original absolute deadline (513,056 ms remained at the successful poll). Actual accounting remained zero before mandatory TerminateJob and after cleanup; every retained observed process handle signalled, the Job handle closed, and content/membership bookends passed. Only the root PID was retained, so the extra lifetime association's identity and cause remain unproven. These calls form separate observations, not an atomic snapshot.
 
@@ -10,7 +20,7 @@ Root independently verified all 1,482 prepared files, all 1,481 staged pins, 1,4
 
 Fresh own-role observations retained complete external 15/root 11/effective 13 maps and 70 Python module origins per Python role, with actual image/argv/cwd and file bookends verified. The new PowerShell host observation retained 124 native resident files and passed current file checks. Full environment values remain private. The fresh 123-file draft retains117 byte-identical files, changes five payloads, and regenerates one manifest; all 121 listed pins and the seven path corrections passed independent review. The supervisor's suspended-proof guard, original quoting/creation flags, no-residual predicates and 540/560+20/600-second bounds are preserved.
 
-No Root fixture TEXT or linked receipt has been issued at this boundary. No Native, compiler, provider, PE target or constructor execution occurred. This is metadata and process-control evidence only; current C++ interfaces, ownership, private CRT/EH, OOM, drop-in ABI, startup and gameplay limits remain unchanged.
+At this earlier metadata boundary, no Root fixture TEXT or linked receipt had been issued. No Native, compiler, provider, PE target or constructor execution occurred. This is metadata and process-control evidence only; current C++ interfaces, ownership, private CRT/EH, OOM, drop-in ABI, startup and gameplay limits remain unchanged.
 
 ## Historical F2/D01 observations and failed prepare
 
