@@ -1,0 +1,639 @@
+{
+  "packet": "cc12_game_global_config_raw_binding_readiness",
+  "status": "READONLY_SOURCE_PROPOSALS_READY_RAW_GLOBAL_CONFIG_SOUND_FULL_APPLICATION_UNREADY",
+  "utc": "2026-10-08T23:30:42.886286+00:00",
+  "source_head": "6ccb74bca52c03d3e9188520c14a5f03f08546d9",
+  "scope": {
+    "new_owned_paths": [
+      "docs/CC12_GAME_GLOBAL_CONFIG_RAW_BINDING_READINESS.md",
+      "reports/cc12_game_global_config_raw_binding_readiness.json"
+    ],
+    "source_edits": false,
+    "cmake_edits": false,
+    "build_or_test_execution": false,
+    "new_probe": false,
+    "new_native_or_register_x87_abi_eh_recovery": false,
+    "ghidra_mutation_or_new_export": false,
+    "ledger_or_packet_state_edits": false,
+    "game_execution": false,
+    "qualified_existing_exports_only": true
+  },
+  "decision": {
+    "normal_getter_already_complete": true,
+    "bounded_lifetime_source_adapter_admissible": true,
+    "bounded_explicit_canonical_sound_storage_threading_admissible": true,
+    "full_raw_global_config_admissible": false,
+    "full_sound_integration_ready": false,
+    "full_application_ready": false,
+    "limiting_contract": "Actual GlobalConfig second-array producer/current raw profile and stop/final-release callbacks are not positively attributed; projected channel/event objects are not native layout payloads."
+  },
+  "global_config_context": [
+    {
+      "field": "lifetime",
+      "current_type": "SingletonLifetimeDomain&",
+      "existing_source": "SoundLifetimeAccess borrows either semantic domain or actual void* volatile& AA0 cell; CapturedSoundLifetimeSection captures first resolved manager section.",
+      "raw_producer": "GameNativeStringProcess.manager_01090aa0 as already borrowed by GameSingletonHost",
+      "proposal": "Store existing borrowed access by value; preserve implicit semantic aggregate conversion and exact first guard/second getter ordering.",
+      "new_native_recovery_required": false
+    },
+    {
+      "field": "singleton_00f878e4",
+      "current_type": "GlobalConfigOwner* volatile&",
+      "existing_source": "Actual caller-provided publication cell is read/written by current full getter/destructor.",
+      "current_production_composition_exists": false,
+      "required_owner": "One retained actual application publication cell and context; no sibling manager/domain."
+    },
+    {
+      "field": "strings",
+      "current_type": "NativeStringStorage&",
+      "required_producer": "Exact app.vfs_->borrow_raw_services().strings ActualNativeStringPoolStorage object",
+      "identity_requirement": "Same storage object used by NativeGlobalConfigLoadContext and SoundSampleCacheContext, not just matching pool/global references.",
+      "lifetime": "VFS owner and canonical storage wrapper remain alive through config destruction, Sound cleanup and retained loader failure."
+    },
+    {
+      "field": "effects",
+      "current_type": "GlobalConfigEffects&",
+      "current_production_implementation_exists": false,
+      "first_array_sample_provider": "SoundSampleRuntime current D5B074 final-release helper calls 00A82E80 with flags1 without a second decrement.",
+      "second_array_provider": "UNQUALIFIED actual producer/profile/stop and final-release callees",
+      "callback_contract": "Both GlobalConfigEffects callbacks are noexcept; future forwarding must honor the existing actual-object and failure contracts."
+    }
+  ],
+  "established_normal_lifecycle": {
+    "004324E0": {
+      "source": "src/global_config.cpp:112",
+      "actual_bytes": 744,
+      "profile": "00CE3D98",
+      "writes": "Five vector triples, seven native string headers, embedded +2C0 effects; untouched allocation bytes remain."
+    },
+    "00432650": {
+      "source": "src/global_config.cpp:124",
+      "complete_existing_body": true,
+      "ordered_contract": [
+        "Captured nonnull fast return",
+        "Resolve first manager and capture/enter its section",
+        "Reread publication under guard",
+        "Allocate actual 2E8h and preserve allocation preimage around placement shell",
+        "Construct and publish",
+        "Resolve second manager before rereading publication as registration argument",
+        "Register with established manager implementation",
+        "Exit captured section before final publication reload"
+      ]
+    },
+    "004325B0": {
+      "source": "src/global_config.cpp:149",
+      "ordered_contract": [
+        "Embedded effect destruction",
+        "Seven string headers reverse destruction",
+        "Four raw vectors in reverse",
+        "Captured forward name-range destruction",
+        "Reload name buffer for free; zero first triple",
+        "Unconditional F878E4 clear",
+        "Write base CE3818 last"
+      ],
+      "manager_unregister": false
+    },
+    "00432710": {
+      "source": "src/global_config.cpp:167",
+      "behavior": "Normal destroy; flags&1 destroys shell and frees original allocation; return original address."
+    },
+    "construction_parent": "NativeGameConstructionCalls directly invokes existing getter and full loader on returned actual owner."
+  },
+  "global_config_effect_payloads": {
+    "raw_release": "Actual InterlockedDecrement(object+4), then current virtual+0 callback only on zero.",
+    "embedded_destroy_008DBDB0": [
+      "Ascending three pairs: capture second pointer, stop(current object,0)",
+      "Reload second slot before release; clear after callback",
+      "Release/clear first pointer",
+      "Reverse second-array then first-array passes preserve callback repopulation"
+    ],
+    "slot_destructors_004C3810_00524180": "Capture pointer; if nonnull release then clear after callback; initial null slot is not cleared.",
+    "sample_final_release": {
+      "provider": "SoundSampleRuntime::zero_references_slot_00",
+      "profile": "00D5B074",
+      "source": "src/sound_sample_runtime.cpp:55",
+      "delete": "scalar_delete_sound_sample_00a82e80 with flags1",
+      "already_decremented": true,
+      "extra_decrement_permitted": false,
+      "qualification": "Existing actual sample contract; not proof for all second-array objects or noexcept adapter closure."
+    },
+    "unresolved": {
+      "actual_slots": [
+        "GlobalConfigOwner+2CC",
+        "GlobalConfigOwner+2D0",
+        "GlobalConfigOwner+2D4"
+      ],
+      "actual_producer_address": null,
+      "current_raw_profiles": null,
+      "stop_virtual_08_callee": null,
+      "zero_virtual_00_callee": null,
+      "known_assignment": "008DBE90 unchecked indexed assignment from owner+2C0; full normal loader increments ObjectiveSounds index.",
+      "no_inference": "Do not infer array contents or second-slot profiles from shape, assumed authored count, empty fixture slots or projected channel dispatch."
+    },
+    "rejected_projection": {
+      "types": [
+        "SoundLevelEntry",
+        "SoundInstance",
+        "SoundEventInstance"
+      ],
+      "source": "include/bsp/sound_instance.hpp",
+      "layout": "Explicitly projected C++ layout, not native raw profile-at0/reference-at4; SoundInstance has base state before named native fields.",
+      "release": "SoundChannelRuntime::release_reference also decrements, which is wrong after GlobalConfig raw decrement.",
+      "stop": "Existing channel/event profile dispatch does not positively attribute actual GlobalConfig second-array payloads."
+    },
+    "future_astra_boundary": {
+      "known_consumer_addresses": [
+        "008DBDB0",
+        "004C3810",
+        "00524180"
+      ],
+      "task": "Attribute actual producer and current raw profile, then qualify its exact stop and final-release callees and mutation contract.",
+      "projected_candidates_not_proof": [
+        "00A7A570",
+        "00A7D5A0"
+      ],
+      "unattributed_general_followup": "00871BA0 is not established as this producer.",
+      "analysis_performed_here": false
+    }
+  },
+  "canonical_sound_construction": {
+    "current_application_argument": "src/game_hosts.cpp:1358 crt_string_storage()",
+    "required_argument": "app.vfs_->borrow_raw_services().strings",
+    "must_bind_before": "GameSoundRuntime::Impl owning-member construction",
+    "retained_services_first": true,
+    "dependent_owning_members": [
+      "configuration",
+      "resources",
+      "samples",
+      "instance",
+      "shutdown",
+      "files"
+    ],
+    "sample_runtime": "cache_ and sample_ contexts both use its input storage in initializers.",
+    "wrapper_identity": "GameNativeStringProcess::strings() is a different wrapper even if AA0/AA8/AA4 match; exact cache.strings identity guard remains.",
+    "existing_core_views": {
+      "current_cache_00f8bbe8": "core.lifetime_bindings().global_00f8bbe8",
+      "cache": "core.samples().sample_cache_context()",
+      "sample_lifetime": "core.samples() as GameplayEffectComponentLifetime"
+    },
+    "startup_order": [
+      "Live VFS and canonical wrapper exist",
+      "Native Lua services bind VFS strings",
+      "Construct SoundServices/Core with exact storage",
+      "Attach dialog provider",
+      "Bind runtime pointer into shared manager deletion services",
+      "Run real one-shot core.startup",
+      "Use actual published cache/runtime for load and sample acquisition"
+    ],
+    "disabled_audio_limit": "Disabled FMOD hardware path is not authorization to invent a cache or null ownership provider.",
+    "remaining_default_crt_sites": [
+      {
+        "source": "src/sound_startup.cpp:40",
+        "operation": "create_sound_resource_owner_00a858f0(resources)",
+        "effect": "Temporary resource path chooses existing default CRT storage.",
+        "fix": "Pass explicit runtime strings to already storage-taking factory.",
+        "not_claimed": "Current temporary allocate/free is internally consistent; no demonstrated mismatched free."
+      },
+      {
+        "source": "src/sound_configuration.cpp:70",
+        "operation": "NativeName used for SoundTypes listener/group names",
+        "effect": "Constructor and destructor hardcode CRT.",
+        "fix": "RAII helper retains explicit storage; both temporary sites use runtime strings."
+      },
+      {
+        "source": "src/sound_configuration.cpp:321",
+        "operation": "create_sound_class_00a7c350()",
+        "effect": "Descriptor name storage chooses factory default CRT.",
+        "fix": "Pass runtime strings explicitly; existing descriptor retains it for release."
+      }
+    ],
+    "no_postconstruction_rebinding": true,
+    "no_header_copy_migration": true,
+    "exact_guard_unchanged": true
+  },
+  "loader_context": [
+    {
+      "field": "strings",
+      "producer": "Exact retained VFS raw-services storage wrapper"
+    },
+    {
+      "field": "bootstrap",
+      "producer": "GameNativeLuaServices::bootstrap()"
+    },
+    {
+      "field": "files",
+      "producer": "GameNativeLuaServices::binding().files()",
+      "guard": "bootstrap.do_file == files.do_file"
+    },
+    {
+      "field": "sound",
+      "producer": "Retained NativeGlobalConfigSoundContext with existing core cache/lifetime views",
+      "guard": "&sound.cache.strings == &strings"
+    },
+    {
+      "field": "fov_divisor_00f889b4",
+      "type": "const volatile float&",
+      "producer": "Actual NativeGameSettingsStorage owner+34h, initialized by native_game_settings_owner Source from video_bits_00ce7d20.",
+      "gap": "Retained application view/accessor not composed; do not replace with constant or PE BSS zero.",
+      "new_x87_recovery_required_for_storage_identification": false
+    }
+  ],
+  "retained_lifetime": {
+    "lua": "Retain NativeLuaServiceBindings::Activation around interpreter entry and live services/state through unprotected loader failure.",
+    "current_shutdown": "Raw manager drain while Sound/Lua/VFS alive; Sound reset before manager deletion; Lua services retired before VFS deletion.",
+    "required_global_config_owner": "Publication/context/effects survive full raw manager drain and any failed construction, with exact VFS wrapper and Sound runtime alive.",
+    "process_cells_limit": "Persistent AA0/AA8/AA4 cells do not extend the wrapper or runtime lifetime."
+  },
+  "proposed_source_packets": [
+    {
+      "id": "proposal_global_config_borrowed_lifetime_access",
+      "implemented": false,
+      "admission": "READY_FOR_BOUNDED_SOURCE_IMPLEMENTATION_ONLY",
+      "likely_files": [
+        "include/bsp/global_config.hpp",
+        "src/global_config.cpp"
+      ],
+      "changes": [
+        "Use existing SoundLifetimeAccess by value",
+        "Use existing captured guard",
+        "Preserve separate second manager evaluation and current publication argument reload"
+      ],
+      "ordinary_client_compatibility": "Keep existing semantic four-field aggregate construction via implicit conversion.",
+      "excluded": [
+        "Production raw owner admission",
+        "Deletion router case before concrete effects",
+        "New manager/domain",
+        "Ctor/dtor behavior changes"
+      ],
+      "validation_when_authorized": "Normal Win32 build and relevant existing checks; no new broad fixture suite."
+    },
+    {
+      "id": "proposal_explicit_canonical_sound_storage",
+      "implemented": false,
+      "admission": "READY_FOR_BOUNDED_SOURCE_IMPLEMENTATION_ONLY",
+      "likely_files": [
+        "src/game_hosts.cpp",
+        "src/game_sound_runtime.cpp",
+        "include/bsp/sound_startup.hpp",
+        "src/sound_startup.cpp",
+        "include/bsp/sound_configuration.hpp",
+        "src/sound_configuration.cpp"
+      ],
+      "changes": [
+        "Select exact canonical VFS wrapper in SoundServices constructor",
+        "Thread explicit storage from runtime startup through sound construction/configuration calls",
+        "Pass storage to existing resource and class factories and NativeName temporary helper"
+      ],
+      "ordinary_client_compatibility": "Add final default-CRT arguments or compatible overloads; preserve existing standalone/semantic caller defaults.",
+      "excluded": [
+        "Global replacement of unrelated defaults",
+        "Weakening exact cache/storage guard",
+        "After-construction storage rebinding",
+        "Full application readiness claim"
+      ],
+      "validation_when_authorized": "Normal Win32 build and existing Sound checks; verify storage identity and allocation ownership without running full game."
+    }
+  ],
+  "future_router_condition": {
+    "current_global_config_binding_or_CE3D98_case": false,
+    "needed": "Retained complete GlobalConfigContext with positively attributed concrete effect callbacks first.",
+    "eventual_source_route": "Current CE3D98 profile -> existing scalar_delete_global_config_00432710(popped_actual_owner, flags, retained_context).",
+    "forbidden": [
+      "Current-publication substitution for popped owner",
+      "Invented unregister",
+      "Unsupported-profile guard weakening",
+      "Base CE3818 admission as derived profile"
+    ]
+  },
+  "evidence": {
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a",
+    "current_source_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\current_source_manifest.json",
+      "size": 2567505,
+      "sha256": "92cc38f32203760ca58d2b9786be19c790911de196bb727ab375fe89641d5b40"
+    },
+    "whole_current_inputs_equal_prior_normal_build": 4115,
+    "prior_normal_build": {
+      "qualification": "Prior normal Win32 build; no build or test executed in this packet. Current whole input files match its prebuild snapshot.",
+      "head": "94e38c65ebfc4bbfffc1e027c2ab96da7742a266",
+      "build_receipt": {
+        "command": "./scripts/build.ps1",
+        "configuration": "Release",
+        "platform": "Win32",
+        "started_utc": "2026-10-08T22:53:21.5347153Z",
+        "finished_utc": "2026-10-08T22:54:03.3076717Z",
+        "exit_code": 0,
+        "complete_log": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\build.log",
+        "new_test_or_probe": false,
+        "game_entry_execution": false
+      },
+      "archive": {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_native_table_context_owner_source_20261008a\\normal_win32_build_20261008.zip",
+          "size": 67886208,
+          "sha256": "efa1e204344da532bc59c17d49bd2ebbaac6a1681a1ab61f7e5568aa24ecb3e2"
+        },
+        "retained": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\prior_normal_build\\normal_win32_build_20261008.zip",
+          "size": 67886208,
+          "sha256": "efa1e204344da532bc59c17d49bd2ebbaac6a1681a1ab61f7e5568aa24ecb3e2"
+        }
+      },
+      "whole_members_verified": 6985,
+      "separately_retained_whole_coff_objects": 20,
+      "existing_checks_passed_in_prior_build": 3,
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\prior_normal_build_receipt.json",
+        "size": 14609,
+        "sha256": "01d2ae5b6484bbfa04b32b37e5c9884acf78058f61bfd3d8e4279bb57e7f028c"
+      }
+    },
+    "historical": [
+      {
+        "qualification": "Historical whole tested artifact, not current execution, raw callback attribution, original EH, full application or gameplay proof.",
+        "key": "r116",
+        "archive_utc": "2026-09-18T00:13:22.482454+00:00",
+        "head": "07826a0e26ad5cef204a44c2c98084846203349a",
+        "historical_scope": "Complete171B sound assignment and float end-insertion source storage adapter; copied1001B/23directCALLs+5indirect;10sound+17vector snapshots/19220bytes,2source unwind checks and DWORD regression. No original FH3/application/runtime/gameplay proof.",
+        "archive": {
+          "source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r116\\native-global-config-fields-tested-r116.zip",
+            "size": 21016332,
+            "sha256": "cf60d441c45576d81bc24018aaf55846f0d5071ced5b2a040178bfe2f4278068"
+          },
+          "retained": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\historical_r116\\native-global-config-fields-tested-r116.zip",
+            "size": 21016332,
+            "sha256": "cf60d441c45576d81bc24018aaf55846f0d5071ced5b2a040178bfe2f4278068"
+          }
+        },
+        "reported_artifact_members_verified": 167,
+        "whole_members_verified": 168,
+        "supplemental_metadata": [
+          {
+            "archive_member": "manifest.json",
+            "size": 28568,
+            "sha256": "d02f81a438eaf36b297e82f0394e403f107f5185f1769f5e3d95c3a761c708be",
+            "qualification": "Archive metadata outside report artifact manifest; covered by whole archive SHA256 and CRC."
+          }
+        ]
+      },
+      {
+        "qualification": "Historical whole tested artifact, not current execution, raw callback attribution, original EH, full application or gameplay proof.",
+        "key": "r117",
+        "archive_utc": "2026-09-18T00:53:07.923469+00:00",
+        "head": "6bc3e3024dcd6e77a96306accc9c3e69c72cc015",
+        "historical_scope": "Complete8640B global config normal loader and concrete game parent defaults;325CALL copied-loader fixture with36loads/7560snapshots/13668480bytes per side;33parent cases/121405968bytes;4world/280buffer genuineDyn fixture. No originalFH3/application/gameplay proof.",
+        "archive": {
+          "source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r117\\native-global-config-load-tested-r117.zip",
+            "size": 35686044,
+            "sha256": "15eb7968c4a6e12405ef968c091211b4ac6c4d163ce8b9115f72fcc1cbd3d7f2"
+          },
+          "retained": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\historical_r117\\native-global-config-load-tested-r117.zip",
+            "size": 35686044,
+            "sha256": "15eb7968c4a6e12405ef968c091211b4ac6c4d163ce8b9115f72fcc1cbd3d7f2"
+          }
+        },
+        "reported_artifact_members_verified": 376,
+        "whole_members_verified": 377,
+        "supplemental_metadata": [
+          {
+            "archive_member": "manifest.json",
+            "size": 64865,
+            "sha256": "ee592405551628ce24803671e3f12d0f299b3faec62d5812393ffcb8317cb451",
+            "qualification": "Archive metadata outside report artifact manifest; covered by whole archive SHA256 and CRC."
+          }
+        ]
+      }
+    ],
+    "historical_limits": "Controlled field/vector/full-loader fixtures at prior heads, not live FMOD/raw channel callbacks, original EH, full application or gameplay.",
+    "existing_exports": {
+      "functions": 26,
+      "receipt": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\qualified_existing_exports_receipt.json",
+        "size": 56815,
+        "sha256": "47c61523f6f6fed9c7f4f677b4a4f5f5e4002cb4f7fbeb110db54db430b3d1d0"
+      },
+      "saved_project": "bsp",
+      "saved_program": "/battlestationspacific.exe",
+      "live_program_or_pe_checked_this_packet": false,
+      "new_export": false
+    },
+    "old_report_staleness": "Prior GlobalConfig/Sound source hashes and phase integration flags are historical; current Source construction and bindings control this readiness assessment.",
+    "capture_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\capture_receipt.json",
+      "size": 26682,
+      "sha256": "932fe7fbc1a8d66da23f01162d045ee7f13bcea0249ad9a97039d27dcf7d1d84"
+    },
+    "whole_artifact_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\local\\cc12_game_global_config_raw_binding_readiness_20261008a\\whole_artifact_manifest.json"
+  },
+  "source_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\global_config.hpp",
+      "size": 3836,
+      "sha256": "27644005624b594fbbc8b1c771223f9f7f36edfb05aa3d47ac2a3be5c1b9c5cd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\global_config.cpp",
+      "size": 7802,
+      "sha256": "ae283bcfb87fdac2cd24257624fcfeff50b477f480770eceadaf476f5aecb913"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\sound_lifetime_access.hpp",
+      "size": 3039,
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\sound_lifetime_access.cpp",
+      "size": 2751,
+      "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_singleton_destruction.hpp",
+      "size": 17272,
+      "sha256": "a4a03c710aaea8bffef99e9327246692e5065aff0ae1c1120691dc65da58ab94"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_singleton_destruction.cpp",
+      "size": 24745,
+      "sha256": "e41a6f0f9f618c5b6af88e567240ce62781dd66e38a5c405adacfda81aa793a3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_hosts_singletons.hpp",
+      "size": 7474,
+      "sha256": "70b566a382344a792883a994401b3e976fd66f283a176781bbac1c541644d1c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts_singletons.cpp",
+      "size": 6608,
+      "sha256": "ebc156367d000db996cde18308a72fa01792ac526601d594c222ab34cf573fb1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_native_string_process.hpp",
+      "size": 2017,
+      "sha256": "19890bafc2f8bcff4fe18dcd5ff6641184b6dd271c38f76f11a0a452965e4d9c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_string_process.cpp",
+      "size": 471,
+      "sha256": "e41b5848b3e5fda80376bacd2a2aa846cb9fded91e6cf371236df549e070d993"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_native_vfs_application.hpp",
+      "size": 3022,
+      "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_vfs_application.cpp",
+      "size": 8470,
+      "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_vfs_owner_services.hpp",
+      "size": 3548,
+      "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_vfs_owner_services.cpp",
+      "size": 1236,
+      "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_native_lua_services.hpp",
+      "size": 1332,
+      "sha256": "8f3944745d91adeedfd48964026f5506fb6116c2ae49b7e796802b890b7f4707"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_native_lua_services.cpp",
+      "size": 3183,
+      "sha256": "9a8b02210f9274fa18e30454fc5e0ae2e6649820145aa623d933b614af406bb7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_game_settings_owner.hpp",
+      "size": 4855,
+      "sha256": "f34fc7f768b785334a2c1432f1fe0a235aa6c2edb7c9c84a83b0a08a049b88f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_settings_owner.cpp",
+      "size": 7785,
+      "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\game_sound_runtime.hpp",
+      "size": 5374,
+      "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_sound_runtime.cpp",
+      "size": 20078,
+      "sha256": "9999a87458b0c069d12bbe1b6be6c8154db00949654b3a05dd2c3b930b2fd3d1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\sound_sample_runtime.hpp",
+      "size": 2285,
+      "sha256": "56d9973e57397b155d36b5b14d3d66cec31522946e3a3a007c3635b4cd7fd123"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\sound_sample_runtime.cpp",
+      "size": 6059,
+      "sha256": "5947d8359105d82371b8af8d9e3f58bd2d12b05c87f5475ac37ae06727c8d837"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\sound_instance.hpp",
+      "size": 5323,
+      "sha256": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\sound_channel_runtime.cpp",
+      "size": 8827,
+      "sha256": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\sound_startup.hpp",
+      "size": 2147,
+      "sha256": "e40f978b6234fa9fb60a403b14c6a2523bb3ed0b628518ad2d4de0dba63bbcf7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\sound_startup.cpp",
+      "size": 2169,
+      "sha256": "df982f9b8cfd8c4451ec540750f5f41b0c45b14bae43210043c04f54df0b27e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\sound_configuration.hpp",
+      "size": 6716,
+      "sha256": "06f3585b512506defb15fce912350febdefd09353efd832bdfe48c6aa9272874"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\sound_configuration.cpp",
+      "size": 16866,
+      "sha256": "5728388a223d9f39acd061117e5527f7e0fc564e8c3e0eeabad24cb1e9e10066"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\sound_system_owner.hpp",
+      "size": 9465,
+      "sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\sound_system_owner.cpp",
+      "size": 7279,
+      "sha256": "12e542bf188c8fed05436ebfcee955504bef2317b5eb922b0844b1fb709a507b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\sound_class_ownership.hpp",
+      "size": 4116,
+      "sha256": "d1a5733899f1f6e51e06e838561682aa2564a9f693124df7749e8cd937a074d6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\sound_class_ownership.cpp",
+      "size": 4399,
+      "sha256": "d11a1e40852965f86e5053684a05056c50712c7082ceee1a3337af33532d6885"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_global_config_fields.hpp",
+      "size": 1473,
+      "sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_global_config_fields.cpp",
+      "size": 1898,
+      "sha256": "c56c9b51411b3c549859dd2e094d50c5a96c3ff87d716f302641b34ded863017"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\include\\bsp\\native_global_config_load.hpp",
+      "size": 2693,
+      "sha256": "ee56688b89c34e85b12718de2c308c1d574fcb739c7d44e7d874ae1f12d079dd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_global_config_load.cpp",
+      "size": 20907,
+      "sha256": "93b022c7bddc29753e9e0c20e1a6867c0166d5842f45fbfa6597389fafb24c1b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_game_construction.cpp",
+      "size": 14665,
+      "sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts.cpp",
+      "size": 123278,
+      "sha256": "79a94372c8eefa87be3292e58ae4ce8816bfda387244e6a69a02ce1d6f67adfd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_hosts_vfs.cpp",
+      "size": 21158,
+      "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\game_sound_dialog_runtime.cpp",
+      "size": 10044,
+      "sha256": "f440574dac1cd16f00b89f9062ecfab370eb9b47160dda708ad24797c77edf45"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_substream_queries\\src\\native_string.cpp",
+      "size": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    }
+  ]
+}
