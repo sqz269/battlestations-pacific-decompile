@@ -30,6 +30,23 @@ void destroy_slot(void* slot, GlobalConfigEffects& effects) noexcept {
 }
 } // namespace
 
+void NativeGlobalConfigCurrentDispatch::stop_slot_08(void* actual_object,
+    std::uint32_t flag) noexcept {
+    using Method = void (__thiscall*)(void*, std::uint32_t);
+    static_assert(sizeof(Method) == 4 && sizeof(void*) == 4);
+    void* const table = read<void*>(actual_object, 0);
+    const auto method = read<Method>(table, 8);
+    method(actual_object, flag);
+}
+void NativeGlobalConfigCurrentDispatch::zero_references_slot_00(
+    void* actual_object) noexcept {
+    using Method = void (__thiscall*)(void*);
+    static_assert(sizeof(Method) == 4 && sizeof(void*) == 4);
+    void* const table = read<void*>(actual_object, 0);
+    const auto method = read<Method>(table, 0);
+    method(actual_object);
+}
+
 void destroy_global_config_pointer_slot_004c3810(void* slot,
     GlobalConfigEffects& effects) noexcept { destroy_slot(slot, effects); }
 void destroy_global_config_pointer_slot_00524180(void* slot,

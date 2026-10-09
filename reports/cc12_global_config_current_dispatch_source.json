@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_global_config_current_dispatch_source",
+  "generated_at_utc": "2026-10-09T03:55:58.751167+00:00",
+  "base_commit": "c182414efb1760a05ad72965b1c67214efe0fd86",
+  "status": "source_implemented_static_inspection_only_pending_primary_build_and_emitted_review",
+  "source_change": {
+    "class": "NativeGlobalConfigCurrentDispatch final : public GlobalConfigEffects",
+    "added_methods": 2,
+    "additional_original_functions": 0,
+    "callsite_substitution": false,
+    "context_instantiation_added": false,
+    "stop": "Fresh actual-object table read, fresh byte+8 method read, void(__thiscall*)(void*,uint32_t), then method(actual_object,flag).",
+    "zero": "Fresh actual-object table read, fresh byte+0 method read, void(__thiscall*)(void*), then method(actual_object), no stack flags.",
+    "compile_time_contract": "Each method asserts four-byte object and function pointers. The build target remains MSVC Win32.",
+    "after_call_receiver_access": false,
+    "extra_decrement": false,
+    "fixed_profile_selection": false,
+    "fake_or_numeric_table_installation": false,
+    "new_runtime_storage": false
+  },
+  "preserved_behavior": {
+    "proof": "For each source file, remove its one added declaration/definition block and the resulting normalized bytes exactly equal the base Git blob.",
+    "release": "Existing actual object+4 InterlockedDecrement remains the sole source decrement, called once per non-null release operation. Provider zero dispatch is post-decrement only.",
+    "aggregate": "Post-stop current slot reload, after-callback clearing, paired order and both reverse cleanup passes remain byte-for-byte unchanged.",
+    "other_existing_functions": "Constructor/getter/string/vector/scalar behavior and all call sites remain unchanged."
+  },
+  "required_external_contract": [
+    "Non-null payloads must be valid raw objects with an aligned four-byte intrusive counter at actual+4.",
+    "Current table words must be genuine callable addresses in this process; first-array objects need no-argument zero v+0, second-array objects also need v+8 taking one DWORD flag.",
+    "Any replacement installed during stop independently satisfies the raw layout, reference and lifetime contract.",
+    "Method-table targets and their contexts/allocators remain live through the call; providers do not access a receiver after the target returns.",
+    "Actual callbacks must not throw across the existing noexcept interface. Original exceptional native EH/SEH equivalence is not claimed.",
+    "Unknown second-array producer and actual runtime table/ownership admission remain unresolved. No empty-array or D5ABF8 assumption is made.",
+    "Current projected SoundInstance/SoundLevelEntry objects are not admitted as native-prefix objects. SoundChannelRuntime::release_reference would add another decrement.",
+    "Raw SoundSampleStorage currently carries numeric D5B074 identity plus its separate source scalar adapter. This new provider does not make that identity a callable table or replace its adapter.",
+    "GlobalConfigContext construction, shared manager/string bindings and outer-owner scalar dispatch remain separate integration obligations."
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/global_config.hpp",
+      "before": {
+        "path": "include/bsp/global_config.hpp",
+        "physical_sha256": "ee2b789c8a6485e57e7ccab3b9c75c61d49a39a2bf22600b0ea6082306bb255f",
+        "physical_bytes": 3834,
+        "crlf_count": 0,
+        "lf_only_count": 74,
+        "normalized_lf_sha256": "ee2b789c8a6485e57e7ccab3b9c75c61d49a39a2bf22600b0ea6082306bb255f",
+        "normalized_lf_bytes": 3834,
+        "head_blob_sha256": "ee2b789c8a6485e57e7ccab3b9c75c61d49a39a2bf22600b0ea6082306bb255f",
+        "head_blob_oid": "3578215cb667e32e499e53b6d023dd62a460074e"
+      },
+      "after": {
+        "physical_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+        "physical_bytes": 4312,
+        "crlf_count": 0,
+        "lf_only_count": 82,
+        "normalized_lf_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+        "normalized_lf_bytes": 4312,
+        "index_blob_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+        "index_blob_oid": "ecd627f026e2821bfe6dc87583f99fd3d04f9283"
+      },
+      "added_first_line": 28,
+      "added_block": "// Actual raw objects must expose callable current-process method tables and\n// nonthrowing callbacks. Numeric profile identities and Sound projections do\n// not satisfy this contract. The caller owns the object+4 decrement and slots.\nclass NativeGlobalConfigCurrentDispatch final : public GlobalConfigEffects {\npublic:\n    void stop_slot_08(void* actual_object, std::uint32_t flag) noexcept override;\n    void zero_references_slot_00(void* actual_object) noexcept override;\n};\n",
+      "removing_added_block_restores_base_blob_exactly": true,
+      "normalized_physical_equals_staged_blob": true
+    },
+    {
+      "path": "src/global_config.cpp",
+      "before": {
+        "path": "src/global_config.cpp",
+        "physical_sha256": "8a34e935abc406255558c213a8cc0e3fa11b76e8af5c355ad8d1c93d8f3b4741",
+        "physical_bytes": 7258,
+        "crlf_count": 0,
+        "lf_only_count": 161,
+        "normalized_lf_sha256": "8a34e935abc406255558c213a8cc0e3fa11b76e8af5c355ad8d1c93d8f3b4741",
+        "normalized_lf_bytes": 7258,
+        "head_blob_sha256": "8a34e935abc406255558c213a8cc0e3fa11b76e8af5c355ad8d1c93d8f3b4741",
+        "head_blob_oid": "22d3dcc08bb4f62e41d35ba6ba309de483da5f20"
+      },
+      "after": {
+        "physical_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+        "physical_bytes": 7970,
+        "crlf_count": 0,
+        "lf_only_count": 178,
+        "normalized_lf_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+        "normalized_lf_bytes": 7970,
+        "index_blob_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+        "index_blob_oid": "551550917f25cf96ba756cebc77815424062d29c"
+      },
+      "added_first_line": 33,
+      "added_block": "void NativeGlobalConfigCurrentDispatch::stop_slot_08(void* actual_object,\n    std::uint32_t flag) noexcept {\n    using Method = void (__thiscall*)(void*, std::uint32_t);\n    static_assert(sizeof(Method) == 4 && sizeof(void*) == 4);\n    void* const table = read<void*>(actual_object, 0);\n    const auto method = read<Method>(table, 8);\n    method(actual_object, flag);\n}\nvoid NativeGlobalConfigCurrentDispatch::zero_references_slot_00(\n    void* actual_object) noexcept {\n    using Method = void (__thiscall*)(void*);\n    static_assert(sizeof(Method) == 4 && sizeof(void*) == 4);\n    void* const table = read<void*>(actual_object, 0);\n    const auto method = read<Method>(table, 0);\n    method(actual_object);\n}\n\n",
+      "removing_added_block_restores_base_blob_exactly": true,
+      "normalized_physical_equals_staged_blob": true
+    }
+  ],
+  "pin_semantics": {
+    "physical_sha256": "SHA-256 of actual worker filesystem bytes at capture time.",
+    "normalized_lf_sha256": "SHA-256 after replacing CRLF pairs with LF, without any other normalization.",
+    "index_blob_sha256": "SHA-256 of the exact staged Git blob bytes; asserted equal to normalized worker bytes.",
+    "index_blob_oid": "Git object identifier of the exact staged source blob.",
+    "worker_line_endings": "Both inspected source files have LF-only physical bytes before and after this edit. Another checkout with CRLF has different physical hashes while its normalized content/Git blobs may match.",
+    "source_delta": "One pure addition in each source file; no preexisting normalized byte changes."
+  },
+  "validation": {
+    "source_delta_roundtrip_passed": true,
+    "normalized_physical_vs_index_blobs_passed": true,
+    "two_current_load_and_call_bodies_inspected": true,
+    "sole_existing_interlocked_decrement_preserved": true,
+    "build_run_by_worker": false,
+    "tests_or_probe_run_by_worker": false,
+    "ghidra_mutated": false,
+    "cmake_changed": false,
+    "ledger_changed": false,
+    "game_validated": false,
+    "emitted_code_review_complete": false,
+    "primary_followup": "Root owns the normal MSVC Win32 build, emitted thiscall/stack review and integration. Source inspection is not ABI/runtime proof."
+  },
+  "readiness_evidence": {
+    "commit": "6942b3cc1dd0e293cebe4176d91495259431d4b6",
+    "document": "docs/CC12_GLOBAL_CONFIG_CURRENT_DISPATCH_PROVIDER_READINESS.md",
+    "report": "reports/cc12_global_config_current_dispatch_provider_readiness.json",
+    "native_replay": "Readiness preserved six spans/473 bytes and 18 source excerpt pins; Root independently replayed them before authorizing this source packet. This packet does not claim another live native capture."
+  },
+  "owned_files": [
+    "include/bsp/global_config.hpp",
+    "src/global_config.cpp",
+    "docs/CC12_GLOBAL_CONFIG_CURRENT_DISPATCH_SOURCE.md",
+    "reports/cc12_global_config_current_dispatch_source.json"
+  ]
+}
