@@ -339,3 +339,5 @@ target_sources(bsp_core PRIVATE src/native_squadron_launch_task_cleanup.cpp)
 target_sources(bsp_core PRIVATE src/native_lua_variant_link_record_allocation.cpp)
 target_sources(bsp_core PRIVATE src/native_observer_member_initializer.cpp)
 target_sources(bsp_core PRIVATE src/native_squadron_launch_task_scalar_deletion.cpp)
+
+target_sources(bsp_core PRIVATE src/native_lua_variant_header_initializer.cpp)

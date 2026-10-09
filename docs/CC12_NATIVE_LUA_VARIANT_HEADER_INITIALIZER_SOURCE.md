@@ -1,3 +1,7 @@
+Primary compiled review: the registered Source initializer is45 bytes/17 instructions in one complete COFF function. Root read every emitted instruction and the physical indexed relocation graph. The sole child relocation resolves to the admitted actual Source55 allocator. Head publication at offset11, allocation BYTE31h at13, three fresh head reads at17/22/26 with ordered pointer stores at19/24/28, count zero at34 and opaque header return at40 preserve the selected schedule. There is no new EH payload, guard, cleanup or consumer.
+
+Normal MSVC Win32 build 2026-10-09T18:56:24.196838+00:00 to 2026-10-09T18:56:40.997368+00:00 passed all three existing checks. The shared evidence pins107 Source/build inputs and four artifacts, replays all28 prior objects byte-identically, captures this new object (29 total), and resolves33 selected positive Core roots. The new public root is absent from the application map; no forced retention was added. Original ABI, Native allocator/CRT policy, production lifetime, startup and gameplay are unproved. The candidate section below is an immutable worker-time snapshot; its Source105 build receipts are now historical.
+
 # Qualified Lua header initializer Source candidate
 
 `006EEAF0..006EEB1A` allocates a link record, publishes it through the actual
