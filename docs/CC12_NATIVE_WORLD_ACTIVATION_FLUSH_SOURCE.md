@@ -85,3 +85,31 @@ are checked. Written instructions are not emitted-code evidence. No CMake,
 ledger, GPR, tests, probes, standalone build or native execution was performed.
 The integrator must inspect the full emitted caller and resolve its external
 CALL to the positive concrete helper definition before admitting the refinement.
+
+## Primary registration and complete emitted review
+
+The integrator registered this unit in bsp_core. The normal MSVC Win32 build
+passed all three existing checks. The complete emitted body has exactly 57
+bytes and 22 instructions. Its sole external REL32 operand at offset44 names
+the concrete destroy-state helper. Both roots have unique positive physical
+definitions and exact complete object members in the built core library.
+Rebinding the caller operand to the original comparison addresses gives
+`30 F9 01 00`; all 57 bytes then match the installed PE and accepted live
+capture, including the six-byte LEA and all six conditional branches.
+
+The current helper's entire 66-byte/25-instruction body and physical self-call
+binding were checked again against the accepted PE proof. The flush still
+reads the same entity's current successor only after the complete helper
+returns. There is no additional external graph boundary in that helper.
+
+The counted projected function is preserved. Admission adds one actual-storage
+fragment and zero new Original functions or bytes. The existing Ghidra name
+and older evidence are preserved with appended qualification. Both roots are
+absent from the game map; this build does not exercise them in the application.
+Actual hierarchy, callable virtual methods, Native exception/fault behavior,
+production integration and gameplay remain open.
+
+Primary evidence: `reports/cc12_native_world_activation_flush_primary_review.json`;
+complete objects, library, map, executable and receipts are retained under
+`local/cc12_world_activation_flush_primary`. Worker document pins describe
+the historical document before this appended review.
