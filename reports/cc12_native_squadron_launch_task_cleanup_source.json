@@ -1,0 +1,522 @@
+{
+  "schema": "bsp.cc12.native_squadron_launch_task_cleanup_source.v1",
+  "packet": "cc12_squadron_launch_task_cleanup_source",
+  "created_utc": "2026-10-09T17:49:41.754113+00:00",
+  "baseline_commit": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+  "owned_address": "007F1E70",
+  "owned_files": [
+    "include/bsp/native_squadron_launch_task_cleanup.hpp",
+    "src/native_squadron_launch_task_cleanup.cpp",
+    "docs/CC12_NATIVE_SQUADRON_LAUNCH_TASK_CLEANUP_SOURCE.md",
+    "reports/cc12_native_squadron_launch_task_cleanup_source.json"
+  ],
+  "status": "Qualified HLL Source candidate; unregistered and uncompiled, awaiting primary emitted code/EH/Core review",
+  "credit": {
+    "Source_admission": 0,
+    "Original_ABI": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "interface": {
+    "symbol": "bsp::cleanup_native_squadron_launch_task_007f1e70",
+    "return_type": "void",
+    "public_noexcept": false,
+    "parameters": [
+      "void* actual_task_base",
+      "volatile std::uint32_t& actual_task_profile_00",
+      "NativeObserverOwnerStorage& actual_member_owner_20",
+      "NativeObserverOwnerStorage* volatile& actual_endpoint_cell_34",
+      "NativeObserverLifetime& retained_lifetime",
+      "NativePendingEntityOwners& actual_pending_owners",
+      "NativePendingEntityProducerAccess& actual_pending_access",
+      "void* volatile& pending_flag_publication",
+      "void* volatile& pending_manager_publication"
+    ],
+    "required_identity_equations": [
+      "actual_task_base = actual Task address",
+      "actual_task_profile_00 names actual Task+0",
+      "actual_member_owner_20 names actual Task+20h owner prefix",
+      "actual_endpoint_cell_34 names actual Task+34h = actual member+14h"
+    ],
+    "identity_enforcement": "Caller conditions; no offset-derived casts, dynamic check, copied owner/cell, 38h Task or 18h member type, allocation or production binding.",
+    "unused_EDX_placement": "Source70 and Source84 actual declarations receive 0u in their explicitly unused EDX parameter. This is not preserved Native incoming EDX or hidden-register identity."
+  },
+  "Source_order": [
+    {
+      "phase": "profile",
+      "Native_site": "007F1E8D",
+      "Source_line": 72
+    },
+    {
+      "phase": "outer endpoint capture",
+      "Native_site": "007F1E93",
+      "Source_line": 73
+    },
+    {
+      "phase": "arm base guard first",
+      "Native_state_context": "007F1E98 full state1",
+      "Source_line": 75
+    },
+    {
+      "phase": "arm member guard second",
+      "Native_state_context": "007F1E98 full state1",
+      "Source_line": 77
+    },
+    {
+      "phase": "optional Source70",
+      "Native_site": "007F1EA2",
+      "Source_line": 80
+    },
+    {
+      "phase": "disarm member",
+      "Native_state_context": "007F1EAA byte-only state0",
+      "Source_line": 83
+    },
+    {
+      "phase": "normal Source88 with actual cell",
+      "Native_site": "007F1EAF",
+      "Source_line": 84
+    },
+    {
+      "phase": "disarm base",
+      "Native_state_context": "007F1EB6 full stateFFFFFFFF",
+      "Source_line": 86
+    },
+    {
+      "phase": "normal Source84",
+      "Native_site": "007F1EBE",
+      "Source_line": 87
+    }
+  ],
+  "captured_values_and_live_references": {
+    "outer_endpoint": "Exactly one volatile cell read after task profile write; only this value selects and receives optional Source70.",
+    "member_endpoint": "Normal or guard-invoked Source88 receives the actual cell reference and captures it later after its own profile store. No reuse of the outer endpoint snapshot.",
+    "base": "Both normal and guard Source84 calls receive the same actual Task pointer and actual publication references. Guard construction does not read publication values.",
+    "references": "Private guards borrow actual owner/cell/lifetime and publication references; the base guard retains the actual Task pointer value. Native late saved-frame reads are not emulated.",
+    "profile": "00D08AE4 is an opaque numerical initial store, not a callable Source profile or promised final value."
+  },
+  "Source_guard_policy": {
+    "construction_order": [
+      "base guard",
+      "member guard"
+    ],
+    "construction_time": "After task profile write and the outer volatile endpoint capture",
+    "constructors_and_disarm": "Nonthrowing, private Source state only",
+    "copying": "Both guard copy constructors and assignments deleted",
+    "member_guard_scope": "Only optional Source70 phase; disarmed before normal Source88 begins",
+    "base_guard_scope": "Optional Source70 and normal Source88 phases; disarmed before normal Source84 begins",
+    "Source70_failure": "C++ unwinding invokes member cleanup first, then base cleanup if member cleanup returns and unwinding continues.",
+    "Source88_normal_failure": "Member guard already disarmed; base cleanup runs under current C++ unwinding. No outer member retry.",
+    "Source84_normal_failure": "Both guards disarmed; no retry of begun normal cleanup.",
+    "guard_failure": "Both destructors explicitly noexcept. Throwing guard cleanup invokes current C++ termination; later cleanup is not guaranteed.",
+    "Source88_nested_policy": "The admitted child has its own unregister-phase guard, disarmed before owner destruction; its actual destroy provider already frees current array on Source exceptions.",
+    "Source84_policy": "The admitted base child adds no local unwind-release wrapper. This candidate neither repairs nor overrides that policy.",
+    "not_claimed": [
+      "Original frame-handler dispatch or double-exception semantics",
+      "Native FS/state-slot/register ABI",
+      "fault recovery",
+      "rollback",
+      "endpoint/header reset",
+      "guaranteed final profile or flag write"
+    ]
+  },
+  "actual_children": [
+    {
+      "provider": "Source70",
+      "header": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+      "implementation": "src/native_observer_endpoint_live_count_cleanup.cpp",
+      "receipt": "reports/cc12_native_observer_endpoint_live_count_cleanup_primary_review.json",
+      "call": "cleanup_native_observer_endpoint_live_count_007ee620(captured_endpoint, 0u, actual_pending_owners, actual_pending_access)",
+      "contract": "Current signed count and inline entries, byte+5C then conditional DWORD+900 predicate, real pending kill with cause1, late count reread and final byte+3EC; explicit actual owners/access and no added local EH."
+    },
+    {
+      "provider": "Source88",
+      "header": "include/bsp/native_observer_member_cleanup.hpp",
+      "implementation": "src/native_observer_member_cleanup.cpp",
+      "receipt": "reports/cc12_native_observer_member_cleanup_primary_review.json",
+      "call": "cleanup_native_observer_member_00653390(actual_member_owner_20, actual_endpoint_cell_34, retained_lifetime)",
+      "contract": "Actual owner profile then late cell capture, conditional unregister, owner destruction; approved private guard and no retry after normal destruction starts."
+    },
+    {
+      "provider": "Source84",
+      "header": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+      "implementation": "src/native_tick_subnode_base_cleanup.cpp",
+      "receipt": "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json",
+      "call": "cleanup_native_tick_subnode_base_00875b30(actual_task_base, 0u, pending_flag_publication, pending_manager_publication)",
+      "contract": "Actual raw base plus actual F/M publication references; preserves admitted conditional links/getter/lock/unlink/clear schedule, without a new local unwind release."
+    }
+  ],
+  "storage_and_lifetime_requirements": [
+    "The typed observer endpoint prefix alone is insufficient for Source70. Supply its real wider receiver/count/inline-entry/final-flag backing and all selected entity backing; no fixed capacity or class is inferred.",
+    "Actual pending owners are initialized/shared and the producer access maps the same actual selected entity identities to live fields, lock owners and current virtual providers through recursive work.",
+    "Retain the actual member prefix, endpoint cell, selected endpoint and real observer service/domain through both normal calls and reached cleanup; existing array/dispatch/lock requirements still apply.",
+    "Pass actual pending registry and manager publication cells with stable addresses and mutable values. The guard retains references rather than early snapshots or private cells.",
+    "Actual Task base, profile cell and member/cell relationship remain valid under the child contracts and represent the same registered lifetime. There is no production adopter here."
+  ],
+  "accepted_Native99": {
+    "receipt": "reports/cc12_squadron_launch_task_cleanup_ABI_readiness.json",
+    "address": "007F1E70",
+    "end_inclusive": "007F1ED2",
+    "bytes": 99,
+    "operations": 26,
+    "sha256": "c87c2a32db8f6b74332559fed6393c4501089bef0af42b1ffec175617c664731",
+    "hex": "6aff68e3f3c80064a100000000506489250000000051568bf189742404c706e48ad0008b4e3485c9c7442410010000007405e879c7ffff8d4e20c644241000e8dc14e6ff8bcec7442410ffffffffe86d3c08008b4c24085e64890d0000000083c410c3",
+    "all_26_instruction_starts_equal_Root": true,
+    "Root_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_launch_task_cleanup_primary\\capture.json",
+      "bytes": 15029,
+      "sha256": "4ea2f1de7e869aa07abf92b4a6b8686e1535c79c8b115e6e1b05930455e3cb4d",
+      "domain": "Exact physical file bytes"
+    },
+    "Root_approval_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_launch_task_cleanup_primary\\Root_Astra_gate_approval.json",
+      "bytes": 1615,
+      "sha256": "68ca45c7dea07e2a83683b1143b112c0ad55c586e4f7717db62d610a9c53447b",
+      "domain": "Exact physical file bytes"
+    },
+    "Root_owned_gate": {
+      "address": "007f1e70",
+      "bytes": 99,
+      "raw_ops": 26,
+      "sha256": "c87c2a32db8f6b74332559fed6393c4501089bef0af42b1ffec175617c664731",
+      "contract": "EntryECXTask capturedESI; NativeFS frameC8F3E3,localThis; stampD08AE4 thenlateTask34 endpointECX. TEST survives state1DWORDstore intoconditional7EE620(no args). LateLEAECXtask20 thenBYTEstate0 preservesupperstatebytes before653390(no args); ECXtask/currentESI thenfullDWORDstate-1 before875B30(no args). PriorFSword read beforePOPSI; restoreFS thenADDESP10/finalflags/plainRET. Handler andchildbodiesunopened, no fixedclass/allocation/typedSourceABI inferred."
+    },
+    "other_gate_records_not_reaudited": true,
+    "current_physical_replay": {
+      "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "PE_RVA": "003F1E70",
+      "PE_file_offset": 4136560,
+      "all_file_backed": true,
+      "all_bytes_equal_Root_and_accepted_receipt": true,
+      "fresh_Ghidra_query": false
+    },
+    "exact_state_boundary": "Full DWORD1 -> byte0 preserving current upper24 bits -> full DWORDFFFFFFFF. Source guard booleans do not reproduce these Native stores or their aliases.",
+    "remaining_frame_boundary": "Native current receiver formation before state writes, saved-chain read before ESI pop, plain RET and volatile results/flags remain accepted Native facts, not this HLL ABI."
+  },
+  "accepted_EH_and_tail_context": {
+    "EH_receipt": "reports/cc12_squadron_launch_task_EH_handler_readiness.json",
+    "total_audited_code_bytes": 119,
+    "total_operations": 42,
+    "selected_descriptor_map_bytes": 140,
+    "selected_cleanup_descriptor": "00DBFE28",
+    "selected_cleanup_map": "00DBFE18",
+    "selected_map_records": [
+      [
+        "FFFFFFFF",
+        "00C8F3D0"
+      ],
+      [
+        "00000000",
+        "00C8F3D8"
+      ]
+    ],
+    "base_action": "Reload current [EBP-10h] into ECX and tail00875B30.",
+    "member_action": "Reload current [EBP-10h] into ECX, add20h, tail006569A0.",
+    "tail_receipt": "reports/cc12_task_member_unwind_tail_binding_readiness.json",
+    "tail_edge": "006569A0 is exactly five bytes E9 EB C9 FF FF, direct JMP00653390; no other owned effects.",
+    "member_child_EH_receipt": "reports/cc12_observer_member_cleanup_EH_readiness.json",
+    "policy": "Primary explicitly approved qualified C++ member/base guards and noexcept cleanup-failure termination. Interpreter EBP basis, selection, Native exactly-once policy and frame aliases remain unproved.",
+    "worker_Native_child_handler_or_interpreter_opens": false,
+    "historical_Source_absence_notes": "Old audits predate Source70/88/84 admission. Their former absence statements are not repeated as current evidence."
+  },
+  "current_Source88_build_replay": {
+    "receipt": "reports/cc12_native_observer_member_cleanup_primary_review.json",
+    "normal_build": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+      "pid": 121784,
+      "start_utc": "2026-10-09T17:23:29.234687+00:00",
+      "finish_utc": "2026-10-09T17:23:47.076256+00:00",
+      "exit_code": 0,
+      "success": true,
+      "before_source_pins": 88
+    },
+    "current_input_count": 88,
+    "all_canonical_inputs_match_current_baseline_and_normalized_files": true,
+    "compact_manifest_sha256": "852cf9d804709953e64a41369ec0b61aad63c6b718342ea060df7447018ded3f",
+    "digest_domain": "UTF-8 json.dumps(list in receipt input order of {path,canonical_lf_bytes,canonical_lf_sha256}, sort_keys=True,separators=(comma,colon))",
+    "existing_checks_passed": 3,
+    "whole_objects_recorded": 19,
+    "positive_Core_public_roots_recorded": 22,
+    "prior_source_admission": {
+      "functions": 1,
+      "Original_bytes": 88
+    },
+    "limits": "Only current Source input identities replayed; no old graph/input arrays copied, no artifact recapture, build or execution. This build predates the new candidate."
+  },
+  "current_input_pins": [
+    {
+      "path": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 2600,
+      "sha256": "57e77a10b306254e79bccc584548b6afa7ca2b480e1427793be5f4bb82b525fc",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_observer_endpoint_live_count_cleanup.cpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 2755,
+      "sha256": "e2dddab730226e6b5e59d7bd41869739b3ca690556ee3ffd28d66a8119a6715a",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_observer_member_cleanup.hpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 1970,
+      "sha256": "91281fcee30b273e225f001cb273732c258a18d31e75aa93b78d436f81574025",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_observer_member_cleanup.cpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 1602,
+      "sha256": "cab998a9d477d7c5b27558548951896665fdbee82251255d32c78e9f761d4dd2",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 2315,
+      "sha256": "5ceb36b49e1e364e645b8f04581bdd86b5fc65e323101febed207b84ca12316e",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "src/native_tick_subnode_base_cleanup.cpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 3164,
+      "sha256": "e444a3e42605c955327023f6f53405743ecf8aabc60b6b61b6aee85e635f25b3",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_cleanup_ABI_readiness.json",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 136460,
+      "sha256": "070e3aa7fe27ba9803dde0213cdf9383677d526586914fa1e4fada66b009ebd2",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_squadron_launch_task_EH_handler_readiness.json",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 48363,
+      "sha256": "5b41939d6300e92174497cc179b3edf5d4f9c4f13f78d97713196d05d533175e",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_task_member_unwind_tail_binding_readiness.json",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 157952,
+      "sha256": "d9bf8a491f5c4a372326883a4eddf4e9598b44512b21615acb35e2510441b943",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_observer_member_cleanup_EH_readiness.json",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 101565,
+      "sha256": "5027241a843f133ab1e5cab901bd24ab6d3a375767479283b33afba370f73e06",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_observer_endpoint_live_count_cleanup_primary_review.json",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 521711,
+      "sha256": "a5c1533ad44f69fc49115c0b1b0dfe8ab5121506d652f600d59fdf49e527007b",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_tick_subnode_base_cleanup_primary_review.json",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 97308,
+      "sha256": "2c615a8313fa45ad110974fd7600bc523f66bc9c421c88e124b4c1642b27f7e7",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "reports/cc12_native_observer_member_cleanup_primary_review.json",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 11354583,
+      "sha256": "19545aa8e68c9c3f10777542903df951a903b11b49f3c4a7aff338055877d49a",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_CLEANUP_ABI_READINESS.md",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 13302,
+      "sha256": "3cf3eb282d667e4c22355c005f41f8153be342a6666d8dbdb6e2509d3cd56af0",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_SQUADRON_LAUNCH_TASK_EH_HANDLER_READINESS.md",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 6159,
+      "sha256": "1376d6ce624faf050ede980676b2dbebf10edfa4227b0ca24fb66a8c80b2e060",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_TASK_MEMBER_UNWIND_TAIL_BINDING_READINESS.md",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 8967,
+      "sha256": "da7a78a8a28fb005891fdb1d7fb63e50a93e20034bd15c7cfd765f282dc56dd3",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "docs/CC12_OBSERVER_MEMBER_CLEANUP_EH_READINESS.md",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 10868,
+      "sha256": "7dc0435e8ab67d7e389f06f08af15c2fe2fedf04a0f9870230721f9571d2621f",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 7290,
+      "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_pending_entity_owners.hpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 2876,
+      "sha256": "c4fd2c73c490e70893410fb1979767041a6506202f781495d3ebcb299d592959",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "include/bsp/native_pending_entity_producers.hpp",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 3874,
+      "sha256": "f4c2d352eed703c735d41468a161a81ff74b1abec0c544913ca0eae8a3c3a2be",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 19171,
+      "sha256": "3f14248851edbef50685beb3e84247021da9ef6c6cdc0b19954d3c3255180075",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "revision": "e585bda8178d152fdda52c69de6d5ecfbace4336",
+      "bytes": 198705,
+      "sha256": "265bb0d5409c14260068c5df89735e1e32d4dbe12034d555351d7b8153d944dd",
+      "domain": "Exact canonical Git blob bytes",
+      "current_file_equal_after_CRLF_to_LF": true
+    }
+  ],
+  "bounded_current_declaration_and_storage_excerpts": [
+    {
+      "path": "include/bsp/native_observer_endpoint_live_count_cleanup.hpp",
+      "first_line": 44,
+      "last_line": 49,
+      "sha256": "a19402078e70cd1539bf4a202dd4ebfe24562d00169142724a0dd4f65b9a4147",
+      "purpose": "Exact Source70 declaration, including unused EDX placement and actual pending references",
+      "text": "// This declaration deliberately lacks noexcept.\nvoid __fastcall cleanup_native_observer_endpoint_live_count_007ee620(\n    void* actual_receiver,\n    std::uint32_t unused_edx,\n    NativePendingEntityOwners& actual_pending_owners,\n    NativePendingEntityProducerAccess& actual_producer_access);\n"
+    },
+    {
+      "path": "include/bsp/native_observer_member_cleanup.hpp",
+      "first_line": 32,
+      "last_line": 35,
+      "sha256": "48f32f95342139e403698a43ba67cbdfe7939f934a2b3f35ab5bec202fab4f3e",
+      "purpose": "Exact Source88 actual-owner/cell/lifetime declaration",
+      "text": "void cleanup_native_observer_member_00653390(\n    NativeObserverOwnerStorage& actual_member_owner,\n    NativeObserverOwnerStorage* volatile& actual_endpoint_cell,\n    NativeObserverLifetime& retained_lifetime);\n"
+    },
+    {
+      "path": "include/bsp/native_tick_subnode_base_cleanup.hpp",
+      "first_line": 38,
+      "last_line": 42,
+      "sha256": "12264338d25f5f2143865e9609901abc23b4985fa5b75e768ccb6b112644cb5b",
+      "purpose": "Exact Source84 base/publication declaration",
+      "text": "void __fastcall cleanup_native_tick_subnode_base_00875b30(\n    void* actual_node,\n    std::uint32_t unused_edx,\n    void* volatile& actual_registry_publication_00f878cc,\n    void* volatile& actual_manager_publication_01090aa0);\n"
+    },
+    {
+      "path": "include/bsp/observer_lifetime.hpp",
+      "first_line": 11,
+      "last_line": 45,
+      "sha256": "2568c38f5b57c4406ddad14e7585b1f738cbcbfe508deac5672065b3be2e8c42",
+      "purpose": "Existing actual owner prefix and size assertions",
+      "text": "struct NativeObserverEdgeStorage;\n// Actual game storage. No constructors, owned sidecars, or default field values.\nstruct NativeObserverEdgeSlots {\n    NativeObserverEdgeStorage** data_00;\n    std::uint32_t count_04;\n    std::uint32_t capacity_08;\n};\n// Both endpoint bases have this prefix. Pass the actual base address: native\n// VoiceAttachedEntry+18 is the callback owner; its entity pointer is an already\n// adjusted first-endpoint address. A semantic voice object still needs an\n// explicit alias to its actual embedded owner; never reinterpret its metadata.\nstruct NativeObserverOwnerStorage {\n    volatile std::uint32_t native_vtable_00;\n    NativeObserverEdgeSlots edges_04;\n};\nstruct NativeObserverEdgeStorage {\n    volatile std::uint32_t native_vtable_00;\n    NativeObserverOwnerStorage* first_04;\n    NativeObserverOwnerStorage* callback_owner_08;\n    std::uint32_t references_0c;\n};\nstruct NativeObserverLockOwner {\n    volatile std::uint32_t native_vtable_00;\n    TrackedCriticalSection* section_04;\n};\n// The live 00E198E4 object is a checked pointer-vector owner, distinct from\n// endpoint count/capacity arrays. Reuse the canonical +4/+8/+C slot projection.\nstruct NativeObserverDispatchStorage {\n    void* unconsumed_00;\n    SingletonPointerSlots slots_04;\n};\nstatic_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(NativeObserverEdgeSlots) == 0x0c);\nstatic_assert(sizeof(NativeObserverOwnerStorage) == 0x10);\nstatic_assert(offsetof(NativeObserverOwnerStorage, edges_04) == 4);\n"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_producers.hpp",
+      "first_line": 8,
+      "last_line": 20,
+      "sha256": "7a55210d7b86d57772c783100212d41e5ad5b49672b382e22946cf37e556351b",
+      "purpose": "Actual live entity-field view; no copied entity storage",
+      "text": "// Borrow fields of the SAME actual entity denoted by identity. The resolver\n// must be a pure mapping to live lvalues: no copies, sidecar owners, allocation,\n// native-layout casts of semantic class metadata, or callback effects. Parent,\n// child and sibling identities are the actual pointers stored in those fields.\nstruct NativePendingProducerEntityView {\n    void* identity;\n    void* const volatile& parent_3c;\n    void* const volatile& next_sibling_44;\n    void* const volatile& first_child_48;\n    volatile std::uint8_t& byte_5f;\n    volatile std::uint8_t& byte_60;\n    volatile std::uint32_t& cause_70;\n};\n"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_producers.hpp",
+      "first_line": 58,
+      "last_line": 68,
+      "sha256": "1290ea496f23e5f3977fc309e3166f9cf99e89b9c2722b28ec8c3cbdd1a61a7e",
+      "purpose": "Actual producer cleanup contract",
+      "text": "// Complete normal body00926D90..00926E7D: native ECX=actual entity, stack raw\n// cause DWORD, RET4. Stored7 becomes2; raw cause survives DIRECT recursive\n// 926D90 child calls (not virtual dispatch). Both methods retain live sibling\n// reloads after callbacks. Existing5F/60 gates still acquire/release the lock.\nvoid native_pending_entity_kill_00926d90(NativePendingEntityOwners&,\n    void* actual_entity, std::uint32_t cause, NativePendingEntityProducerAccess&);\n\n// A C++ exception releases only the captured tracked section; flags, callback\n// effects and allocated unlinked nodes are not rolled back. Native state0\n// unwind funcletsCA6DC0/CA6DE0 only invoke411EE0 on that guard. New C++ ABI;\n// full native FH3/SEH, hardware faults and game runtime behavior are not supplied.\n"
+    },
+    {
+      "path": "include/bsp/native_pending_entity_owners.hpp",
+      "first_line": 7,
+      "last_line": 38,
+      "sha256": "91d65fa59d8e1a2ca448b1ae44ee9add05b13597f9c618cfa055e57e6f4cc6e8",
+      "purpose": "Actual shared pending owners and initialization/lifetime requirements",
+      "text": "// Exact shared raw 0Ch layout, established from the node producers. Values are\n// borrowed entity pointers. These aliases introduce no container or ownership.\nusing NativePendingEntityNode = NativeEffectDeletionNode;\nusing NativePendingEntityListStorage = NativeEffectDeletionListStorage;\n\n// Actual adjacent owners F899A8/F899B4. No implicit initialization/destruction.\nstruct NativePendingEntityOwners {\n    NativePendingEntityListStorage destroy_00f899a8;\n    NativePendingEntityListStorage kill_00f899b4;\n};\nstatic_assert(sizeof(NativePendingEntityOwners) == 0x18);\nstatic_assert(offsetof(NativePendingEntityOwners, kill_00f899b4) == 0x0c);\n\n// Required actual CRT domain binding. It must retain and eventually dispatch\n// the supplied native shutdown identity against these SAME owner bytes, with\n// CRT registration order/failure semantics. Context and owners must survive\n// registration through dispatch. No default callback or private exit registry.\nstruct NativePendingEntityCrtRegistration {\n    void* context;\n    int (*register_atexit)(void*, std::uint32_t native_shutdown) noexcept;\n};\n\n// Complete CD3910[37]/CD3940[37]: no native inputs, EAX _atexit status, RET.\n// Allocate/self-link 0Ch sentinel, publish head, zero count, register CDF4A0/B0.\n// Preserve owner+00 and sentinel payload+08. Registration failure retains the\n// initialized list and its actual return status; allocation failure publishes\n// nothing and does not register. A null registration callback is an unbound\n// source interface (rejected before touching storage), not a native code path.\nint initialize_native_pending_destroy_owner_00cd3910(\n    NativePendingEntityOwners&, const NativePendingEntityCrtRegistration&);\nint initialize_native_pending_kill_owner_00cd3940(\n    NativePendingEntityOwners&, const NativePendingEntityCrtRegistration&);\n"
+    }
+  ],
+  "owned_candidate_pins": [
+    {
+      "path": "include/bsp/native_squadron_launch_task_cleanup.hpp",
+      "bytes": 2717,
+      "sha256": "4bbd2647510cc485653f4753bd8fb4755d61063e0a6b50170b55ab3fd3df4776",
+      "domain": "Exact physical file bytes"
+    },
+    {
+      "path": "src/native_squadron_launch_task_cleanup.cpp",
+      "bytes": 3436,
+      "sha256": "722cd387d093e040aa00b569f062d9d34bf0c0cff9bddcfce3fc069cc4e86926",
+      "domain": "Exact physical file bytes"
+    },
+    {
+      "path": "docs/CC12_NATIVE_SQUADRON_LAUNCH_TASK_CLEANUP_SOURCE.md",
+      "bytes": 8352,
+      "sha256": "1c3e70a1af3cb3746172e0f65eb4ba1bb7ed6b373942b6887b86e54c33e42603",
+      "domain": "Exact physical file bytes"
+    }
+  ],
+  "validation": {
+    "whole_Native99_identity_and_26_instruction_starts": true,
+    "current_Source88_identity_replay": true,
+    "actual_child_API_order_and_identity_reviewed": true,
+    "private_guard_disarm_before_each_normal_cleanup": true,
+    "worker_build_test_probe": false,
+    "candidate_registered": false,
+    "CMake_ledger_Ghidra_mutation": false,
+    "new_consumer_or_production_binding": false,
+    "emitted_code_or_EH_claim": false
+  },
+  "primary_review_required": "Register and run normal Win32 build/existing checks; review entire emitted code, all new EH/section/relocation data, Core membership/unique definition and application map. Keep Source admission separate from Native ABI, actual production binding and gameplay.",
+  "documentation": "docs/CC12_NATIVE_SQUADRON_LAUNCH_TASK_CLEANUP_SOURCE.md"
+}
