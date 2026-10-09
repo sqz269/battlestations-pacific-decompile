@@ -272,6 +272,16 @@
       "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\type1011guardTEXT01\\private_proposed_environment_profiles_UNADOPTED.json",
       "bytes": 2113,
       "sha256": "f2e9f68fedd375386895440ae2cbe4b91599740b1df96fed998fd6cf285554e0"
+    },
+    "Windows_environment_normalization": {
+      "installed_source": "C:\\ProgramData\\miniconda3\\Lib\\os.py",
+      "evidence_lines": "777-790",
+      "Windows_os_environ_uppercases_keys": true,
+      "sealed_profile_illustration_contains_mixed_case_SystemRoot": true,
+      "illustration_remains_unadopted": true,
+      "fresh_Root_concrete_profiles_must_use_uppercase_keys_including_SYSTEMROOT": true,
+      "sealed_family_modified": false,
+      "actual_proposed_profile_execution": 0
     }
   },
   "contract_retained": {
