@@ -1,0 +1,484 @@
+{
+  "schema_version": 1,
+  "packet": "cc12_global_config_singleton_delete_binding",
+  "generated_at_utc": "2026-10-09T04:03:02.899623+00:00",
+  "base_commit": "ae67efb63aa35116ddcd26449fa101a3570b574c",
+  "status": "source_implemented_static_and_native_byte_verified_pending_primary_build_and_emitted_review",
+  "additional_original_functions": 0,
+  "source_change": {
+    "forward_declaration": "struct GlobalConfigContext;",
+    "appended_binding": "GlobalConfigContext* global_configuration{};",
+    "include": "bsp/global_config.hpp",
+    "profile": "00CE3D98",
+    "dispatch": "scalar_delete_global_config_00432710(static_cast<GlobalConfigOwner*>(owner), flags, *bindings.global_configuration)",
+    "guard": "bindings.global_configuration != nullptr",
+    "null_binding": "break then existing std::logic_error; no successful no-op",
+    "full_flags_forwarded": true,
+    "owner_is_popped_pointer": true,
+    "current_publication_identity_comparison": false,
+    "post_delete_owner_access": false,
+    "app_assignment_added": false,
+    "context_creation_or_registration_added": false,
+    "effects_substitution": false,
+    "method_table_installation": false
+  },
+  "cpp_abi": {
+    "target": "MSVC Win32 x86",
+    "evidence": "Source declaration and unchanged existing offsetof assertions; all fields are four-byte pointers in the target ABI. No compiler/layout probe was run in this worker packet.",
+    "old_sizeof": 180,
+    "new_sizeof": 184,
+    "old_alignment": 4,
+    "new_alignment": 4,
+    "old_member_count": 45,
+    "new_member_count": 46,
+    "new_member": {
+      "name": "global_configuration",
+      "type": "GlobalConfigContext*",
+      "win32_offset": 180
+    },
+    "old_members_preserved": [
+      {
+        "name": "actual_effect_publication_00f87664",
+        "type": "void* volatile*",
+        "win32_offset": 0
+      },
+      {
+        "name": "resource_registry",
+        "type": "const NativeResourceRegistryDeleteBindings*",
+        "win32_offset": 4
+      },
+      {
+        "name": "sound_runtime",
+        "type": "game::GameSoundRuntime*",
+        "win32_offset": 8
+      },
+      {
+        "name": "xlive_owner",
+        "type": "XLiveOwnerAllocation*",
+        "win32_offset": 12
+      },
+      {
+        "name": "input_backend",
+        "type": "NativeInputBackendOwnerContext*",
+        "win32_offset": 16
+      },
+      {
+        "name": "input_actions",
+        "type": "NativeInputActionOwnerContext*",
+        "win32_offset": 20
+      },
+      {
+        "name": "actual_string_pool_publication_01090aa8",
+        "type": "NativeStringPoolStorage* volatile*",
+        "win32_offset": 24
+      },
+      {
+        "name": "actual_string_returns_disabled_01090aa4",
+        "type": "volatile std::uint32_t*",
+        "win32_offset": 28
+      },
+      {
+        "name": "physical_factory",
+        "type": "NativePhysicalFactoryContext*",
+        "win32_offset": 32
+      },
+      {
+        "name": "vfs_manager",
+        "type": "NativeVfsManagerLifetimeContext*",
+        "win32_offset": 36
+      },
+      {
+        "name": "filestore_factory",
+        "type": "NativeFileStoreFactoryContext*",
+        "win32_offset": 40
+      },
+      {
+        "name": "mpak_factory",
+        "type": "NativeMpakFactoryContext*",
+        "win32_offset": 44
+      },
+      {
+        "name": "pak_registry",
+        "type": "NativePakRegistryContext*",
+        "win32_offset": 48
+      },
+      {
+        "name": "observer_lifetime",
+        "type": "NativeObserverLifetime*",
+        "win32_offset": 52
+      },
+      {
+        "name": "actual_observer_dispatch_owner_00e198dc",
+        "type": "NativeObserverDispatchOwner* volatile*",
+        "win32_offset": 56
+      },
+      {
+        "name": "input_settings",
+        "type": "NativeInputSettingsLifetimeContext*",
+        "win32_offset": 60
+      },
+      {
+        "name": "debug_features",
+        "type": "NativeDebugFeatureOwnerContext*",
+        "win32_offset": 64
+      },
+      {
+        "name": "game_resource_factory",
+        "type": "NativeGameResourceFactoryContext*",
+        "win32_offset": 68
+      },
+      {
+        "name": "actual_lua_fundamentals_publication_0108ff1c",
+        "type": "NativeLuaFundamentalsView* volatile*",
+        "win32_offset": 72
+      },
+      {
+        "name": "physical_stream_pool",
+        "type": "NativePhysicalStreamOpenContext*",
+        "win32_offset": 76
+      },
+      {
+        "name": "render_batch_lifetime",
+        "type": "NativeRenderBatchLifetime*",
+        "win32_offset": 80
+      },
+      {
+        "name": "type_id_counter_lifetime",
+        "type": "TypeIdCounterLifetime*",
+        "win32_offset": 84
+      },
+      {
+        "name": "mpkg_factory",
+        "type": "NativeMpkgFactoryContext*",
+        "win32_offset": 88
+      },
+      {
+        "name": "resource_manager",
+        "type": "NativeResourceManagerContext*",
+        "win32_offset": 92
+      },
+      {
+        "name": "shadow_job",
+        "type": "NativeShadowJobContext*",
+        "win32_offset": 96
+      },
+      {
+        "name": "resource_extra_parsers",
+        "type": "NativeResourceExtraParserContexts*",
+        "win32_offset": 100
+      },
+      {
+        "name": "resource_support",
+        "type": "NativeResourceSupportRawContext*",
+        "win32_offset": 104
+      },
+      {
+        "name": "frame_clock",
+        "type": "NativeFrameClockLifetimeContext*",
+        "win32_offset": 108
+      },
+      {
+        "name": "actual_diagnostic_publication_0109cf14",
+        "type": "NativeDiagnosticSinkStorage* volatile*",
+        "win32_offset": 112
+      },
+      {
+        "name": "renderer_record_guard",
+        "type": "NativeRendererRecordGuardContext*",
+        "win32_offset": 116
+      },
+      {
+        "name": "render_jobs",
+        "type": "NativeRenderJobPublicationContext*",
+        "win32_offset": 120
+      },
+      {
+        "name": "renderer_lua_owner",
+        "type": "NativeRendererLuaOwnerContext*",
+        "win32_offset": 124
+      },
+      {
+        "name": "renderer_owner",
+        "type": "NativeRendererDestructorContext*",
+        "win32_offset": 128
+      },
+      {
+        "name": "render_entry_cache",
+        "type": "NativeRenderEntryCacheContext*",
+        "win32_offset": 132
+      },
+      {
+        "name": "render_queue",
+        "type": "NativeRenderQueueDestructionContext*",
+        "win32_offset": 136
+      },
+      {
+        "name": "weak_owner_domain",
+        "type": "NativeWeakOwnerDomain*",
+        "win32_offset": 140
+      },
+      {
+        "name": "render_resources",
+        "type": "NativeRenderResourcesLifetimeContext*",
+        "win32_offset": 144
+      },
+      {
+        "name": "native_online",
+        "type": "NativeOnlineManagerLifetimeContext*",
+        "win32_offset": 148
+      },
+      {
+        "name": "game_resource_parsers",
+        "type": "NativeGameResourceParserContexts*",
+        "win32_offset": 152
+      },
+      {
+        "name": "game_classes",
+        "type": "NativeGameClassCleanupContext*",
+        "win32_offset": 156
+      },
+      {
+        "name": "native_profile_hints",
+        "type": "NativeProfileHintsOwnerContext*",
+        "win32_offset": 160
+      },
+      {
+        "name": "native_media",
+        "type": "NativePlatformFocusOwnersContext*",
+        "win32_offset": 164
+      },
+      {
+        "name": "native_gui",
+        "type": "NativeGuiMediaFocusLifetimeContext*",
+        "win32_offset": 168
+      },
+      {
+        "name": "shadow_depth_target",
+        "type": "NativeShadowDepthTargetContext*",
+        "win32_offset": 172
+      },
+      {
+        "name": "particle_clock",
+        "type": "NativeParticleClockShutdownContext*",
+        "win32_offset": 176
+      }
+    ],
+    "every_previous_offset_preserved": true,
+    "default_initialization": "{} leaves the appended borrowed pointer null",
+    "recompile_requirement": "Recompile all producers and consumers of NativeSingletonDeletionBindings together. Prefix offsets remain stable, but an older 180-byte object is too short for the new dispatcher to access +180. This is an appended C++ source ABI change, not compatibility with older compiled bindings."
+  },
+  "native_evidence": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "target_verification": "Read-only bsp.py ghidra bytes calls verify configured project and program before querying; full scalar and slot-zero bytes independently match this PE.",
+    "rows": [
+      {
+        "name": "complete_scalar_deleter",
+        "address": "00432710",
+        "size": 30,
+        "last_byte": "0043272D",
+        "hex": "568bf1e898fefffff644240801740956e8873e7c0083c4048bc65ec20400",
+        "sha256": "c8729bfea389b9d63512f16d2bd1009a1cc612a14362804a6731c050594055c3",
+        "live_matches_installed_pe": true,
+        "live_query_command": "python tools/bsp.py ghidra bytes 00432710 --length 30",
+        "live_query_hex_rows": "00432710  56 8b f1 e8 98 fe ff ff f6 44 24 08 01 74 09 56\n00432720  e8 87 3e 7c 00 83 c4 04 8b c6 5e c2 04 00",
+        "instruction_count": 11,
+        "instructions": [
+          "00432710: push esi",
+          "00432711: mov esi, ecx",
+          "00432713: call 0x4325b0",
+          "00432718: test byte ptr [esp + 8], 1",
+          "0043271D: je 0x432728",
+          "0043271F: push esi",
+          "00432720: call 0xbf65ac",
+          "00432725: add esp, 4",
+          "00432728: mov eax, esi",
+          "0043272A: pop esi",
+          "0043272B: ret 4"
+        ]
+      },
+      {
+        "name": "current_profile_slot_zero",
+        "address": "00CE3D98",
+        "size": 4,
+        "last_byte": "00CE3D9B",
+        "hex": "10274300",
+        "sha256": "cca4bf02736f2b7eed9f317efd2303d1ddc20670408aeee3e33d5034cd944d18",
+        "live_matches_installed_pe": true,
+        "live_query_command": "python tools/bsp.py ghidra bytes 00CE3D98 --length 4",
+        "live_query_hex_rows": "00ce3d98  10 27 43 00",
+        "instruction_count": 0,
+        "instructions": []
+      }
+    ]
+  },
+  "native_scalar_contract": {
+    "span": "00432710..0043272D inclusive, complete 30 bytes",
+    "abi": "ECX owner; one stack DWORD flags; returns captured original address bits in EAX; RET 4",
+    "sequence": [
+      "00432710 saves ESI; 00432711 captures ECX into ESI.",
+      "00432713 calls 004325B0 unconditionally.",
+      "00432718 tests only flags bit zero; 0043271D skips free if clear.",
+      "0043271F pushes captured ESI; 00432720 calls 00BF65AC; 00432725 discards its one cdecl argument.",
+      "00432728 returns captured address without dereferencing it; restores ESI and RET 4."
+    ],
+    "table": "00CE3D98[0] is 00432710; the numeric identity is mapped to recovered Source code, not invoked as an Original-process code address."
+  },
+  "source_scalar_contract": [
+    "Existing GlobalConfigOwner is alignas(4) actual 0x2E8 bytes, with an unchanged sizeof assertion.",
+    "Existing scalar calls destroy_global_config_004325b0 for any flags; flags&1 controls only shell destruction and singleton_lifetime_free.",
+    "Existing destructor executes effects, strings, vectors and names, clears context.singleton_00f878e4 unconditionally, then stamps base CE3818.",
+    "The raw construction allocates 0x2E8 through singleton_lifetime_allocate; the scalar frees through singleton_lifetime_free (matching Source malloc/free domain).",
+    "The adapter discards the scalar address return and immediately returns; it does not access the potentially freed owner."
+  ],
+  "required_external_contract": [
+    "The popped owner must be the actual complete raw GlobalConfigOwner allocation with current profile CE3D98; secondaries or projected substitutes are not admitted.",
+    "global_configuration must point to the SAME retained GlobalConfigContext used for actual construction, publication and manager registration, including its raw lifetime/publication cells, NativeStringStorage, effects and allocation domain.",
+    "Retain the context and all borrowed providers/publication storage through the complete manager drain, including any string-driven registrations/reentry.",
+    "Do not require popped owner == current F878E4. Existing destruction unconditionally clears that bound publication even if it changed after registration.",
+    "The GlobalConfig payload contract remains independent: the existing actual object+4 release and current callbacks require valid layout/lifetime. NativeGlobalConfigCurrentDispatch additionally requires callable current-process method tables and nonthrowing callbacks. Numeric Sound identities and projected SoundInstance storage alone do not meet it.",
+    "The unknown non-null second-array producer/current payload admission remains unresolved; this binding makes no empty-array or fixed-profile assumption.",
+    "All callbacks reached through the existing GlobalConfig noexcept contract must satisfy it. Original EH/SEH or exceptional native equivalence is not established.",
+    "App GameSingletonHost assignment and context construction are absent; merely appending a default-null field does not wire startup/drain."
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "before": {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "physical_sha256": "a4a03c710aaea8bffef99e9327246692e5065aff0ae1c1120691dc65da58ab94",
+        "physical_bytes": 17272,
+        "crlf_count": 0,
+        "lf_only_count": 269,
+        "normalized_lf_sha256": "a4a03c710aaea8bffef99e9327246692e5065aff0ae1c1120691dc65da58ab94",
+        "normalized_lf_bytes": 17272,
+        "head_blob_oid": "86f49b34927cf42e9331450a541c49011ccade28"
+      },
+      "after": {
+        "physical_sha256": "a1b7233f61544b51628af292801286e2cc9296a232fc71d923d170e28a2c1638",
+        "physical_bytes": 17746,
+        "crlf_count": 0,
+        "lf_only_count": 276,
+        "normalized_lf_sha256": "a1b7233f61544b51628af292801286e2cc9296a232fc71d923d170e28a2c1638",
+        "normalized_lf_bytes": 17746,
+        "worktree_blob_oid": "cb6a755140c8e72de9d35d5bbbd9f0e1615ef1bd"
+      },
+      "reverse_edits": [
+        {
+          "remove_or_replace": "struct GlobalConfigContext;\n",
+          "restore": ""
+        },
+        {
+          "remove_or_replace": "    // CE3D98 -> 432710: actual2E8h GlobalConfig owner. Retain the SAME raw\n    // construction/publication, strings, effects and lifetime domain through\n    // drain. Pass the popped owner even when F878E4 changed. Payload callable\n    // method-table admission remains a separate requirement of the effects.\n    GlobalConfigContext* global_configuration{};\n",
+          "restore": ""
+        },
+        {
+          "remove_or_replace": "static_assert(offsetof(NativeSingletonDeletionBindings, global_configuration) == 180);\n",
+          "restore": ""
+        },
+        {
+          "remove_or_replace": "static_assert(sizeof(NativeSingletonDeletionBindings) == 184);",
+          "restore": "static_assert(sizeof(NativeSingletonDeletionBindings) == 180);"
+        }
+      ],
+      "reverse_edits_restore_base_blob_exactly": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "before": {
+        "path": "src/native_singleton_destruction.cpp",
+        "physical_sha256": "e41a6f0f9f618c5b6af88e567240ce62781dd66e38a5c405adacfda81aa793a3",
+        "physical_bytes": 24745,
+        "crlf_count": 0,
+        "lf_only_count": 667,
+        "normalized_lf_sha256": "e41a6f0f9f618c5b6af88e567240ce62781dd66e38a5c405adacfda81aa793a3",
+        "normalized_lf_bytes": 24745,
+        "head_blob_oid": "63f728ce2e5cbac688b3d9d2017fba1025f153b7"
+      },
+      "after": {
+        "physical_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+        "physical_bytes": 25062,
+        "crlf_count": 0,
+        "lf_only_count": 676,
+        "normalized_lf_sha256": "21a8fafd65f1e8583f75a21c5737bf6195c494d5852b2267dca11153d0828bc1",
+        "normalized_lf_bytes": 25062,
+        "worktree_blob_oid": "d1e9bb6f5e839b66741571814d06aec9d63117a3"
+      },
+      "reverse_edits": [
+        {
+          "remove_or_replace": "#include \"bsp/global_config.hpp\"\n",
+          "restore": ""
+        },
+        {
+          "remove_or_replace": "    case 0x00ce3d98:\n        if (bindings.global_configuration != nullptr) {\n            scalar_delete_global_config_00432710(\n                static_cast<GlobalConfigOwner*>(owner), flags,\n                *bindings.global_configuration);\n            return;\n        }\n        break;\n",
+          "restore": ""
+        }
+      ],
+      "reverse_edits_restore_base_blob_exactly": true
+    }
+  ],
+  "source_observations": [
+    {
+      "path": "include/bsp/global_config.hpp",
+      "start_line": 11,
+      "end_line": 17,
+      "physical_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "normalized_lf_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "excerpt": "// Actual2E8h allocation, including unconsumed fields. No value initialization:\n//004324E0 writes only its vtable, five vector triples, seven strings and the\n//embedded effect slots. Readers/loaders retain this same native storage.\nstruct alignas(4) GlobalConfigOwner {\n    std::array<std::byte, 0x2e8> native;\n};\nstatic_assert(sizeof(GlobalConfigOwner) == 0x2e8);"
+    },
+    {
+      "path": "include/bsp/global_config.hpp",
+      "start_line": 36,
+      "end_line": 42,
+      "physical_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "normalized_lf_sha256": "6a3d0de7a38939e9dc275df4b3d733f7bad53444526c587113dae880e827bf76",
+      "excerpt": "struct GlobalConfigContext {\n    // Same01090AA0 lifetime domain as every other startup singleton.\n    SoundLifetimeAccess lifetime;\n    GlobalConfigOwner* volatile& singleton_00f878e4;\n    NativeStringStorage& strings;\n    GlobalConfigEffects& effects;\n};"
+    },
+    {
+      "path": "src/global_config.cpp",
+      "start_line": 127,
+      "end_line": 148,
+      "physical_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "normalized_lf_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "excerpt": "    if (auto* const existing = context.singleton_00f878e4) return existing;\n    {\n        CapturedSoundLifetimeSection lock(context.lifetime);\n        if (!context.singleton_00f878e4) {\n            void* const storage = singleton_lifetime_allocate(\n                {SingletonAllocationKind::object, 0x2e8, sizeof(GlobalConfigOwner)});\n            GlobalConfigOwner* owner = nullptr;\n            if (storage) {\n                // Preserve representation bytes before beginning the C++ shell's\n                //lifetime. No float load or blanket zero initialization.\n                std::array<std::byte, 0x2e8> preimage;\n                std::memcpy(preimage.data(), storage, preimage.size());\n                owner = ::new (storage) GlobalConfigOwner;\n                std::memcpy(owner->native.data(), preimage.data(), preimage.size());\n                construct_global_config_004324e0(*owner, context.effects);\n            }\n            context.singleton_00f878e4 = owner;\n            auto second_manager = context.lifetime.get_manager_00415350();\n            second_manager->register_object(context.singleton_00f878e4);\n        }\n    } // decrement captured recursion counter and leave before FINAL slot reload\n    return context.singleton_00f878e4;"
+    },
+    {
+      "path": "src/global_config.cpp",
+      "start_line": 149,
+      "end_line": 177,
+      "physical_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "normalized_lf_sha256": "0110127a72de3f23319f78155196528b1f49d29d7aa78df36d0c107d1c8d17dc",
+      "excerpt": "}\nvoid destroy_global_config_004325b0(GlobalConfigOwner& owner,\n    GlobalConfigContext& context) noexcept {\n    auto* data = owner.native.data();\n    destroy_global_config_effects_008dbdb0(data + 0x2c0, context.effects);\n    destroy_global_config_strings_004312b0(data + 0xa8, context.strings);\n    destroy_global_config_vectors_00431210(data + 0x1c);\n    void* const begin = read<void*>(data, 0x10);\n    if (begin) {\n        void* const end = read<void*>(data, 0x14);\n        destroy_global_config_name_range_00432050(begin, end, context.strings);\n        singleton_lifetime_free(read<void*>(data, 0x10)); // reload after strings\n    }\n    write<void*>(data, 0x10, nullptr);\n    write<void*>(data, 0x14, nullptr);\n    write<void*>(data, 0x18, nullptr);\n    context.singleton_00f878e4 = nullptr; // unconditional, not identity-checked\n    write<std::uint32_t>(data, 0, 0x00ce3818);\n}\nGlobalConfigOwner* scalar_delete_global_config_00432710(GlobalConfigOwner* owner,\n    std::uint32_t flags, GlobalConfigContext& context) noexcept {\n    auto* const original = owner;\n    destroy_global_config_004325b0(*owner, context);\n    if ((flags & 1u) != 0) {\n        owner->~GlobalConfigOwner();\n        singleton_lifetime_free(owner);\n    }\n    return original;\n}"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "start_line": 51,
+      "end_line": 67,
+      "physical_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "normalized_lf_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "excerpt": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}"
+    }
+  ],
+  "exact_source_diff": "diff --git a/include/bsp/native_singleton_destruction.hpp b/include/bsp/native_singleton_destruction.hpp\nindex 86f49b349..cb6a75514 100644\n--- a/include/bsp/native_singleton_destruction.hpp\n+++ b/include/bsp/native_singleton_destruction.hpp\n@@ -4,6 +4,7 @@\n #include <cstdint>\n \n namespace bsp {\n+struct GlobalConfigContext;\n struct NativeGameClassCleanupContext;\n struct NativeProfileHintsOwnerContext;\n struct NativePlatformFocusOwnersContext;\n@@ -219,6 +220,11 @@ struct NativeSingletonDeletionBindings {\n     // through manager drain; pass the popped owner even if publication changed.\n     // CE7D24 is a secondary profile and is not admitted by this binding.\n     NativeParticleClockShutdownContext* particle_clock{};\n+    // CE3D98 -> 432710: actual2E8h GlobalConfig owner. Retain the SAME raw\n+    // construction/publication, strings, effects and lifetime domain through\n+    // drain. Pass the popped owner even when F878E4 changed. Payload callable\n+    // method-table admission remains a separate requirement of the effects.\n+    GlobalConfigContext* global_configuration{};\n };\n static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);\n static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);\n@@ -243,7 +249,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, native_media) == 164);\n static_assert(offsetof(NativeSingletonDeletionBindings, native_gui) == 168);\n static_assert(offsetof(NativeSingletonDeletionBindings, shadow_depth_target) == 172);\n static_assert(offsetof(NativeSingletonDeletionBindings, particle_clock) == 176);\n-static_assert(sizeof(NativeSingletonDeletionBindings) == 180);\n+static_assert(offsetof(NativeSingletonDeletionBindings, global_configuration) == 180);\n+static_assert(sizeof(NativeSingletonDeletionBindings) == 184);\n \n // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX\n // owner, RET; new EDX reference to stable bindings above. Pop before deleting\ndiff --git a/src/native_singleton_destruction.cpp b/src/native_singleton_destruction.cpp\nindex 63f728ce2..d1e9bb6f5 100644\n--- a/src/native_singleton_destruction.cpp\n+++ b/src/native_singleton_destruction.cpp\n@@ -1,4 +1,5 @@\n #include \"bsp/native_singleton_destruction.hpp\"\n+#include \"bsp/global_config.hpp\"\n #include \"bsp/native_game_class_cleanup.hpp\"\n #include \"bsp/native_profile_hints_owner.hpp\"\n #include \"bsp/native_gui_media_focus_lifetime.hpp\"\n@@ -98,6 +99,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,\n             return;\n         }\n         break;\n+    case 0x00ce3d98:\n+        if (bindings.global_configuration != nullptr) {\n+            scalar_delete_global_config_00432710(\n+                static_cast<GlobalConfigOwner*>(owner), flags,\n+                *bindings.global_configuration);\n+            return;\n+        }\n+        break;\n     case 0x00ce3a44:\n         if (bindings.native_profile_hints != nullptr) {\n             delete_native_profile_hints_owner_00426320(owner, flags,\n",
+  "verification": {
+    "json_parse": true,
+    "complete_scalar_decode": true,
+    "scalar_instruction_count": 11,
+    "native_spans": 2,
+    "native_bytes": 34,
+    "live_installed_pe_match": true,
+    "table_target_verified": true,
+    "existing_45_offsets_preserved": true,
+    "exact_source_preimage_restoration": true,
+    "full_flags_and_failure_path_inspected": true,
+    "build_performed": false,
+    "tests_or_probes_performed": false,
+    "primary_normal_build_pending": true,
+    "primary_emitted_code_review_pending": true,
+    "game_validation": false,
+    "gpr_or_ledger_mutation": false
+  }
+}

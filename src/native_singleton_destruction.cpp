@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/global_config.hpp"
 #include "bsp/native_game_class_cleanup.hpp"
 #include "bsp/native_profile_hints_owner.hpp"
 #include "bsp/native_gui_media_focus_lifetime.hpp"
@@ -95,6 +96,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.native_gui != nullptr) {
             scalar_delete_native_gui_manager_00aa6540_fragment(owner, flags,
                 *bindings.native_gui);
+            return;
+        }
+        break;
+    case 0x00ce3d98:
+        if (bindings.global_configuration != nullptr) {
+            scalar_delete_global_config_00432710(
+                static_cast<GlobalConfigOwner*>(owner), flags,
+                *bindings.global_configuration);
             return;
         }
         break;
