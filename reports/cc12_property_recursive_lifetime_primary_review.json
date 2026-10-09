@@ -1,0 +1,81 @@
+{
+  "utc": "2026-10-09T00:48:45.399465+00:00",
+  "status": "PRIMARY_REVIEW_ACCEPTED_ONE_ORDINARY_SOURCE_CASE",
+  "case_final_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type6_source_readiness_ast\\local\\cc12_property_recursive_lifetime_execution_design_update\\execution_attempt01\\final_receipt.json",
+    "bytes": 4285,
+    "sha256": "6e6a4d539865cd692696104839326f8e9029ef2a55d57c0f78c17ac2d1b9dc7a"
+  },
+  "filesystem_only_reader": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type6_source_readiness_ast\\local\\cc12_property_recursive_lifetime_execution_design_update\\execution_attempt01\\ordinary_case_reader.py",
+    "bytes": 4619,
+    "sha256": "86dbddde646bdec5adbf5e28069e71339c6d16be9d70654d64a55039c5b469b8"
+  },
+  "primary_replay": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_property_ordinary_case_primary_replay.txt",
+    "bytes": 527,
+    "sha256": "327d16077ce6ba27373bdfd478f61ff52bb78f82f4c7a1b748f44e3451c7c180"
+  },
+  "raw_execution_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type6_source_readiness_ast\\local\\cc12_property_recursive_lifetime_execution_design_update\\execution_attempt01\\execution_receipt.json",
+    "bytes": 2036,
+    "sha256": "79ed1cb7fbdf23356271642e8e32798b9373f4e1a83a722ffa1416f30da78be9"
+  },
+  "post_run_bookend": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_property_type6_source_readiness_ast\\local\\cc12_property_recursive_lifetime_execution_design_update\\execution_attempt01\\post_bookend.json",
+    "bytes": 1985452,
+    "sha256": "123a6f551393bcc71773b784fd6e5384bfcbc3bbb4e8bb1eee5bfe5d0e6664f2"
+  },
+  "witnesses": [
+    {
+      "phase": "live_graph",
+      "roots": [
+        10284616,
+        10269944,
+        10256632,
+        10256312,
+        10270232
+      ],
+      "node_pool": 8819472,
+      "table": 10243520,
+      "page": 10276808,
+      "string_pool": 15581216,
+      "manager": 10220232,
+      "property_empty": 10267756,
+      "query_empty": 10267757,
+      "registered_callback": 8599728
+    },
+    {
+      "phase": "payloads_released_and_trimmed",
+      "returned_P_bits": 10284616,
+      "roots_released": 5,
+      "keys_returned": 4,
+      "node_pages": 0,
+      "retained_table": 10243520,
+      "retained_capacity": 32,
+      "section_unchanged": true,
+      "same_list_owner": 8819472,
+      "string_infrastructure_retained": true,
+      "normal_CRT_teardown_pending": true
+    }
+  ],
+  "target_processes": 1,
+  "Root_additional_target_processes": 0,
+  "exit_code": 0,
+  "unique_files_rehashed_in_primary_replay": 19630,
+  "current_input_checks_at_review": 3062,
+  "current_input_unique_files": 2203,
+  "credit": {
+    "ordinary_Source_case_execution": 1,
+    "additional_Original_functions": 0,
+    "additional_Source_functions": 0,
+    "additional_fragments": 0,
+    "Original_ABI": 0,
+    "whole_application": 0,
+    "startup": 0,
+    "gameplay": 0
+  },
+  "new_builds": 0,
+  "qualification": "Root reviewed the full case document/reader, independently checked the finite witness relationships and replayed the sealed run plus all three earlier seals/current inputs before admitting later sound Source edits. File bookends do not trace loaded DLLs or callback/free order. The 24-header historical preimage limit remains. No new function, Original ABI, full application, startup or gameplay admission.",
+  "earlier_case_summaries_and_seals_edited": false
+}
