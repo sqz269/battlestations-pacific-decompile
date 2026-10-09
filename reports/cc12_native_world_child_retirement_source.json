@@ -1,0 +1,952 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_world_child_retirement_source",
+  "kind": "qualified actual-pointer Source implementation; primary emitted review pending",
+  "created_utc": "2026-10-09T07:00:01.753363+00:00",
+  "worker_and_published_baseline": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+  "owned_addresses": [
+    "009035E0"
+  ],
+  "owned_outputs": [
+    "include/bsp/native_world_child_retirement.hpp",
+    "src/native_world_child_retirement.cpp",
+    "docs/CC12_NATIVE_WORLD_CHILD_RETIREMENT_SOURCE.md",
+    "reports/cc12_native_world_child_retirement_source.json"
+  ],
+  "status": {
+    "Source_written": true,
+    "registered_in_CMake_by_worker": false,
+    "worker_build_tested": false,
+    "worker_emitted_body_reviewed": false,
+    "primary_Source_admission_pending": true,
+    "complete_production_graph_closed": false
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_Original_bytes": 0,
+    "new_Source_function_credit_by_worker": 0,
+    "new_ABI_compatible_admissions": 0,
+    "game_validated": false,
+    "existing_counted_function_preserved": true
+  },
+  "accepted_readiness": {
+    "path": "reports/cc12_world_child_retirement_readiness.json",
+    "published_main": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+    "audit_worker_baseline": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+    "whole_body_readiness_review_accepted_by_primary": true,
+    "current_report_pin": {
+      "path": "reports/cc12_world_child_retirement_readiness.json",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 26817,
+      "sha256": "8afe0132380484fae480ef1d33efa3e1d40563efbeb8d441de443565dd1b120d",
+      "physical_bytes": 26817,
+      "physical_sha256": "8afe0132380484fae480ef1d33efa3e1d40563efbeb8d441de443565dd1b120d",
+      "physical_match": "exact"
+    },
+    "prior_target_verification": {
+      "configuration": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "mechanism": "bsp.py ghidra CLI Client.verify checks project, program path, language and image base before every live query batch.",
+      "live_function_count": 64729,
+      "snapshot_function_count": 64729,
+      "queries": [
+        "lookup009035E0",
+        "ghidra count",
+        "ghidra proto009035E0",
+        "ghidra decompile009035E0 complete",
+        "ghidra disasm009035E0 complete",
+        "ghidra bytes009035E0 length42"
+      ],
+      "other_native_bodies_callers_descendants_tables_or_FH3_expanded": false,
+      "Ghidra_mutation": false,
+      "per_instruction_flow_override_metadata_claimed": false
+    },
+    "current_packet_live_Ghidra_queries": false,
+    "current_packet_Ghidra_mutation": false
+  },
+  "native_evidence": {
+    "capture_utc": "2026-10-09T06:42:27.420930+00:00",
+    "live_byte_source": "bsp.py ghidra bytes 009035E0 --length42; complete returned live hexdump transcribed",
+    "span": {
+      "address": "009035e0",
+      "end_inclusive": "00903609",
+      "bytes": 42,
+      "sha256": "a84482b641eec58c063a5e47549586e95b17485ffb141239c13634654f55e2f8",
+      "hex": "568bf1837e500074158da424000000008b4e48e8e8ffffff837e500075f28b068b106a018bceffd25ec3",
+      "live_equals_installed_PE": true,
+      "decoded_instructions": 16,
+      "instructions": [
+        {
+          "address": "009035e0",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "009035e1",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "009035e3",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        {
+          "address": "009035e7",
+          "bytes": "7415",
+          "mnemonic": "je",
+          "operands": "0x9035fe"
+        },
+        {
+          "address": "009035e9",
+          "bytes": "8da42400000000",
+          "mnemonic": "lea",
+          "operands": "esp, [esp]"
+        },
+        {
+          "address": "009035f0",
+          "bytes": "8b4e48",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x48]"
+        },
+        {
+          "address": "009035f3",
+          "bytes": "e8e8ffffff",
+          "mnemonic": "call",
+          "operands": "0x9035e0"
+        },
+        {
+          "address": "009035f8",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        {
+          "address": "009035fc",
+          "bytes": "75f2",
+          "mnemonic": "jne",
+          "operands": "0x9035f0"
+        },
+        {
+          "address": "009035fe",
+          "bytes": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00903600",
+          "bytes": "8b10",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax]"
+        },
+        {
+          "address": "00903602",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00903604",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00903606",
+          "bytes": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00903608",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00903609",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "live_equals_installed_PE": true,
+    "installed_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "complete_contiguous_decode": true,
+    "branches": [
+      {
+        "site": "009035e7",
+        "bytes": "7415",
+        "operation": "je",
+        "target": "009035fe"
+      },
+      {
+        "site": "009035fc",
+        "bytes": "75f2",
+        "operation": "jne",
+        "target": "009035f0"
+      }
+    ],
+    "encoded_CALLs": 2,
+    "metadata_direct_resolved_calls": 1,
+    "recursive_call": {
+      "site": "009035f3",
+      "bytes": "e8e8ffffff",
+      "target": "009035e0",
+      "receiver_setup": "009035F0 ECX=[ESI+48] fresh current child",
+      "explicit_stack_arguments": 0,
+      "continuation": "009035F8 rereads same parent DWORD+50"
+    },
+    "virtual_call": {
+      "site": "00903606",
+      "bytes": "ffd2",
+      "kind": "ordinary CALL EDX, not tail JMP",
+      "table_load": "009035FE EAX=[ESI] current receiver table after child loop",
+      "target_load": "00903600 EDX=[EAX] current slot0",
+      "argument": "00903602 PUSH1, full DWORD00000001",
+      "receiver_setup": "00903604 ECX=ESI original receiver",
+      "compatible_callee_cleanup_bytes": 4,
+      "cleanup_basis": "No caller adjustment between CALL and POP ESI/RET.",
+      "continuation": [
+        "00903608 POP ESI",
+        "00903609 RET"
+      ],
+      "own_receiver_dereference_after_virtual_return": false,
+      "typed_return_or_concrete_target_body_recovered": false
+    },
+    "no_op": {
+      "site": "009035e9",
+      "bytes": "8da42400000000",
+      "length": 7,
+      "operation": "LEA ESP,[ESP+00000000]",
+      "effects": "ESP and flags unchanged; only the initial nonzero-child-gate path reaches it."
+    }
+  },
+  "current_static_PE_revalidation": {
+    "whole_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "whole_PE_matches_accepted_capture": true,
+    "complete42_byte_span_matches_accepted_live_bytes": true,
+    "complete16_instruction_decode_revalidated": true,
+    "two_internal_branch_targets_revalidated": true,
+    "direct_recursive_CALL_target_revalidated": true,
+    "new_live_Ghidra_capture": false,
+    "new_emitted_or_runtime_evidence": false
+  },
+  "source": {
+    "header": "include/bsp/native_world_child_retirement.hpp",
+    "implementation": "src/native_world_child_retirement.cpp",
+    "symbol": "bsp::retire_native_world_child_subtree_009035e0",
+    "declaration": "void __fastcall retire_native_world_child_subtree_009035e0(void* actual_node);",
+    "definition": "__declspec(naked) void __fastcall retire_native_world_child_subtree_009035e0(void*)",
+    "platform_guard": "defined(_MSC_VER) && defined(_M_IX86)",
+    "semantic_input": "ECX actual node; incoming EDX and explicit stack arguments not consumed",
+    "typed_return_claim": false,
+    "direct_source_dependencies": [
+      "physical self through direct symbolic CALL at009035F3"
+    ],
+    "source_instruction_mapping": [
+      {
+        "native": {
+          "address": "009035e0",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 10,
+        "source_operation": "push esi"
+      },
+      {
+        "native": {
+          "address": "009035e1",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 11,
+        "source_operation": "mov esi, ecx"
+      },
+      {
+        "native": {
+          "address": "009035e3",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 12,
+        "source_operation": "cmp dword ptr [esi + 50h], 0"
+      },
+      {
+        "native": {
+          "address": "009035e7",
+          "bytes": "7415",
+          "mnemonic": "je",
+          "operands": "0x9035fe"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 13,
+        "source_operation": "jz own_dispatch"
+      },
+      {
+        "native": {
+          "address": "009035e9",
+          "bytes": "8da42400000000",
+          "mnemonic": "lea",
+          "operands": "esp, [esp]"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 15,
+        "source_operation": "seven _emit bytes 8D A4 24 00 00 00 00"
+      },
+      {
+        "native": {
+          "address": "009035f0",
+          "bytes": "8b4e48",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x48]"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 25,
+        "source_operation": "mov ecx, dword ptr [esi + 48h]"
+      },
+      {
+        "native": {
+          "address": "009035f3",
+          "bytes": "e8e8ffffff",
+          "mnemonic": "call",
+          "operands": "0x9035e0"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 26,
+        "source_operation": "call retire_native_world_child_subtree_009035e0"
+      },
+      {
+        "native": {
+          "address": "009035f8",
+          "bytes": "837e5000",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [esi + 0x50], 0"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 27,
+        "source_operation": "cmp dword ptr [esi + 50h], 0"
+      },
+      {
+        "native": {
+          "address": "009035fc",
+          "bytes": "75f2",
+          "mnemonic": "jne",
+          "operands": "0x9035f0"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 28,
+        "source_operation": "jnz child_loop"
+      },
+      {
+        "native": {
+          "address": "009035fe",
+          "bytes": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 31,
+        "source_operation": "mov eax, dword ptr [esi]"
+      },
+      {
+        "native": {
+          "address": "00903600",
+          "bytes": "8b10",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax]"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 32,
+        "source_operation": "mov edx, dword ptr [eax]"
+      },
+      {
+        "native": {
+          "address": "00903602",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 33,
+        "source_operation": "push 1"
+      },
+      {
+        "native": {
+          "address": "00903604",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 34,
+        "source_operation": "mov ecx, esi"
+      },
+      {
+        "native": {
+          "address": "00903606",
+          "bytes": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 35,
+        "source_operation": "call edx"
+      },
+      {
+        "native": {
+          "address": "00903608",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 36,
+        "source_operation": "pop esi"
+      },
+      {
+        "native": {
+          "address": "00903609",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        "source_path": "src/native_world_child_retirement.cpp",
+        "source_line": 37,
+        "source_operation": "ret"
+      }
+    ],
+    "source_asm_statement_count": 22,
+    "native_instruction_count": 16,
+    "explicit_noop_bytes": "8da42400000000",
+    "ordinary_virtual_call_followed_by_saved_ESI_restore_and_plain_RET": true,
+    "post_own_virtual_receiver_read": false,
+    "added_overlay_context_global_table_owner_guard_token_callback_unlink_cleanup_noexcept_or_binding": false
+  },
+  "ABI_contract": {
+    "input": "ECX actual receiver",
+    "incoming_EDX_semantic_input": false,
+    "explicit_incoming_stack_arguments": 0,
+    "explicit_saved_registers": [
+      "ESI"
+    ],
+    "receiver_hold": "ESI from entry MOV until final virtual call",
+    "recursive_boundary": "Same entry with fresh actual child in ECX and no stacked args; returns through its own POP ESI/RET before parent gate reload.",
+    "virtual_boundary": "Late actual current vslot0 with ECXreceiver/EAXtable/EDXtarget and DWORD1; compatible argument cleanup and normal return required.",
+    "return": "Ordinary local POP ESI then plain RET; no meaningful typed result inferred.",
+    "direct_object_writes": 0,
+    "direct_global_or_FPU_accesses": 0,
+    "direct_allocation_or_free_calls": 0,
+    "local_EH_frame_or_catch": false
+  },
+  "storage_footprint": [
+    {
+      "base": "receiver",
+      "offset": "0x50",
+      "width": 4,
+      "access": "Initial full DWORD compare with zero and fresh reread after each recursive return."
+    },
+    {
+      "base": "receiver",
+      "offset": "0x48",
+      "width": 4,
+      "access": "Read a fresh child pointer on each nonzero-gate iteration; not read when initial gate is zero."
+    },
+    {
+      "base": "receiver",
+      "offset": "0x0",
+      "width": 4,
+      "access": "Late current vptr after child loop completes."
+    },
+    {
+      "base": "current receiver table",
+      "offset": "0x0",
+      "width": 4,
+      "access": "Late current target before ordinary virtual CALL."
+    }
+  ],
+  "ordered_behavior": [
+    {
+      "sites": "009035e0..009035e7",
+      "behavior": "Save caller ESI, capture receiver, compare full DWORD50. Zero goes straight to own current virtual dispatch."
+    },
+    {
+      "sites": "009035e9..009035f3",
+      "behavior": "Exact seven-byte ESP LEA no-op, then load current child48 intoECX and call this same entry."
+    },
+    {
+      "sites": "009035f8..009035fc",
+      "behavior": "After full recursive child and its final virtual method return, reread same parent current50; if nonzero reload parent current48. No returned-child or sibling access."
+    },
+    {
+      "sites": "009035fe..00903606",
+      "behavior": "Late current receiver vptr/slot0 fetch; full DWORD1 argument; original receiver ECX; ordinary indirect CALL."
+    },
+    {
+      "sites": "00903608..00903609",
+      "behavior": "Restore saved caller ESI and RET only. No local node access, cleanup, unlink or synthetic success after virtual return."
+    }
+  ],
+  "unresolved_external_contracts": [
+    {
+      "boundary": "actual current virtual slot0",
+      "required": "Callable target compatible with the preserved ECX/table/target/stack schedule and four-byte argument cleanup; concrete class, return semantics, allocator/free and destructor body remain unqualified."
+    },
+    {
+      "boundary": "parent count/head and retirement",
+      "required": "Actual virtual methods/hierarchy producers leave coherent current50/48 and make desired child-loop progress. This body itself performs no count decrement or unlink."
+    },
+    {
+      "boundary": "parent lifetime across recursive return",
+      "required": "Every active parent remains readable through post-child50, next48 and late own vptr/slot reads."
+    },
+    {
+      "boundary": "retired receiver and external owners",
+      "required": "This body reads no receiver fields after its own virtual call; other callers/owners may still impose lifetime constraints. No blanket deallocation permission or ownership model is created."
+    },
+    {
+      "boundary": "termination/alias behavior",
+      "required": "No visited/mark guard is present. Cycles can recurse forever and a nonprogressing nonzero gate can repeat or encounter retired storage; valid progress belongs to supplied hierarchy and methods."
+    }
+  ],
+  "null_and_failure_behavior": {
+    "null_receiver": "Fault at first full DWORD+50 comparison after ESI save/capture; no null success path.",
+    "zero_gate": "Own virtual dispatch without reading48.",
+    "nonnull_gate_null_child": "Forward null ECX into same routine, which reaches its first+50 access; no child guard.",
+    "nonzero_gate_patterns": "Every nonzero DWORD enters, independent of signed interpretation.",
+    "partial_effects": "Previous child/virtual effects are not locally rolled back by later failure.",
+    "policy": "No catch, fallback pointer, synthetic updates, exception translation, cleanup or new noexcept promise.",
+    "Native_EH_unwind_fault_or_runtime_proven": false
+  },
+  "existing_projected_function": {
+    "unchanged": true,
+    "canonical_record": [
+      {
+        "address": "009035e0",
+        "name": "destroy_child_subtree_009035e0",
+        "source": "src/entity_event_queues.cpp",
+        "status": "reconstructed_ledger_backfilled_from_source",
+        "evidence": "C++ body at src/entity_event_queues.cpp:140 (destroy_child_subtree_009035e0), a definition named after the address. Documents: docs/ENTITY_EVENT_QUEUES.md, docs/ENTITY_LIFECYCLE_TAILS.md, docs/FIXED_STEP_FANOUT.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build.",
+        "cpp_symbol": "destroy_child_subtree_009035e0",
+        "abi_compatible": false,
+        "game_validated": false,
+        "kind": "function"
+      }
+    ],
+    "relationship": "New actual-pointer qualified Source refines the existing address; preserve projected API and count without duplicate Original credit."
+  },
+  "current_dependency_findings": {
+    "additional_direct_service_required": false,
+    "sole_direct_callee": "self009035E0",
+    "actual_current_virtual_slot0_remains_external": true,
+    "actual_hierarchy_lifetime_progress_and_ownership_remain_external": true,
+    "parent_00903610_direct_service_hold_closure": "Only after primary registration, complete emitted body/self-reference/core definition review, and build admission; no00903610 Source in this packet.",
+    "neighboring_admission_context": {
+      "primary_report": "reports/cc12_native_world_activation_flush_primary_review.json",
+      "current_status": "complete_whole_emitted_body_and_concrete_external_binding_reviewed_build_passed",
+      "build_success": true,
+      "existing_checks": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "caller_native_body": {
+        "address": "00903670",
+        "bytes": 57,
+        "instructions": 22,
+        "sha256": "1711b2cb01a1341d6bbecc164337978395150304375ea23838060ec319e769b1",
+        "entire_rebound_Source_body_equal_installed_PE": true
+      },
+      "qualified_concrete_dependency": {
+        "address": "00922FD0",
+        "bytes": 66,
+        "instructions": 25,
+        "sha256": "29eceff51de711a90ebe3201b0f270a6cdc3febb62b1532857b5fba6301d382d",
+        "current_emitted_and_Source_match_prior_admission": true
+      },
+      "current_Source_pins_match_report": {
+        "include/bsp/native_world_activation_flush.hpp": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+        "src/native_world_activation_flush.cpp": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+        "include/bsp/native_entity_destroy_state.hpp": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+        "src/native_entity_destroy_state.cpp": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b"
+      },
+      "worker_reran_prior_build_or_emitted_review": false,
+      "relation": "Published903670/922FD0 now have completed prior emitted/binding/build evidence; neither is a direct callee of009035E0 or an implementation of current slot0 retirement. Prior903610 audit pending status remains historical, not rewritten."
+    }
+  },
+  "accepted_canonical_input_pins": [
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "physical_bytes": 11448,
+      "physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7833,
+      "sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "physical_bytes": 7833,
+      "physical_sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 30809,
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_bytes": 30809,
+      "physical_sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_WORLD_ACTIVATION_SERVICE_READINESS.md",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 8086,
+      "sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04",
+      "physical_bytes": 8086,
+      "physical_sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_world_activation_service_readiness.json",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 35673,
+      "sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_bytes": 35673,
+      "physical_sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_activation_flush.hpp",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1272,
+      "sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "physical_bytes": 1272,
+      "physical_sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_world_activation_flush.cpp",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1920,
+      "sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "physical_bytes": 1920,
+      "physical_sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1412,
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_bytes": 1412,
+      "physical_sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1956,
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_bytes": 1956,
+      "physical_sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_world_activation_flush_primary_review.json",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 25021,
+      "sha256": "86f1cfc8a566cac181136d95c0291dc37fa218ebe10fde724bfa9fccb6484e87",
+      "physical_bytes": 25021,
+      "physical_sha256": "86f1cfc8a566cac181136d95c0291dc37fa218ebe10fde724bfa9fccb6484e87",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 56968,
+      "sha256": "a157acbd8bec71e1ef444858a79e5c94a3b3bd6e762c18abde8e2735eb869dc5",
+      "physical_bytes": 56968,
+      "physical_sha256": "a157acbd8bec71e1ef444858a79e5c94a3b3bd6e762c18abde8e2735eb869dc5",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 50195,
+      "sha256": "60e6688298ee675ab16f1a3f7834a06d8cc55072048ec08e8be8be01e821cfba",
+      "physical_bytes": 50195,
+      "physical_sha256": "60e6688298ee675ab16f1a3f7834a06d8cc55072048ec08e8be8be01e821cfba",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "3b9c2575e65bd32a0f45f9727ee7a4a06107054c",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_match": "exact"
+    }
+  ],
+  "accepted_audit_doc_pin": {
+    "path": "docs/CC12_WORLD_CHILD_RETIREMENT_READINESS.md",
+    "hash_domain": "UTF-8 LF bytes must equal staged Git blob",
+    "bytes": 7279,
+    "sha256": "3a538212653d12070f3668bb83a38129fcd265af1c94f94274688e04c928ff1c"
+  },
+  "current_canonical_input_pins": [
+    {
+      "path": "include/bsp/entity_event_queues.hpp",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 11448,
+      "sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "physical_bytes": 11448,
+      "physical_sha256": "94f8178234421a2411cf0ecb4c04b64ded6f1dd9db2c8db8f34402aae7329160",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/entity_event_queues.cpp",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7833,
+      "sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "physical_bytes": 7833,
+      "physical_sha256": "037ea11fc093a578b0fc8cd549018a22a3462b168e8b2fb6af9a62ea67dac7eb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 30809,
+      "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_bytes": 30809,
+      "physical_sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_WORLD_ACTIVATION_SERVICE_READINESS.md",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 8086,
+      "sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04",
+      "physical_bytes": 8086,
+      "physical_sha256": "9e9050cec897007a55775b94950e1f16a7fc01f7069f51f719296ee02bce0f04",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_world_activation_service_readiness.json",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 35673,
+      "sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_bytes": 35673,
+      "physical_sha256": "60134b7b55a74c4ce5633189cffbe2f4bf0446ac6a3c8a618ae166112007eb16",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_world_activation_flush.hpp",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1272,
+      "sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "physical_bytes": 1272,
+      "physical_sha256": "04172aace057f7dee4511aad8cf07b7c6e262c4baca8144f1831397335b53986",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_world_activation_flush.cpp",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1920,
+      "sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "physical_bytes": 1920,
+      "physical_sha256": "1603d27d130ca3d712e79c5f7f18bf9f3b414c0b4c11cd079029dc101b1608be",
+      "physical_match": "exact"
+    },
+    {
+      "path": "include/bsp/native_entity_destroy_state.hpp",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1412,
+      "sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_bytes": 1412,
+      "physical_sha256": "b7c7eea7cc7fd1ba3c0359345e5f73fb3534f61f1c0e228d88d4f56cabd74e8f",
+      "physical_match": "exact"
+    },
+    {
+      "path": "src/native_entity_destroy_state.cpp",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 1956,
+      "sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_bytes": 1956,
+      "physical_sha256": "8a063f13033de8418cf27510d6d2dd2c5ff0e0557ddf076f452cde0a7fcecd7b",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_native_world_activation_flush_primary_review.json",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 25021,
+      "sha256": "86f1cfc8a566cac181136d95c0291dc37fa218ebe10fde724bfa9fccb6484e87",
+      "physical_bytes": 25021,
+      "physical_sha256": "86f1cfc8a566cac181136d95c0291dc37fa218ebe10fde724bfa9fccb6484e87",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/names/00900000.jsonl",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 56968,
+      "sha256": "a157acbd8bec71e1ef444858a79e5c94a3b3bd6e762c18abde8e2735eb869dc5",
+      "physical_bytes": 56968,
+      "physical_sha256": "a157acbd8bec71e1ef444858a79e5c94a3b3bd6e762c18abde8e2735eb869dc5",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/reconstruction/00900000.jsonl",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 50195,
+      "sha256": "60e6688298ee675ab16f1a3f7834a06d8cc55072048ec08e8be8be01e821cfba",
+      "physical_bytes": 50195,
+      "physical_sha256": "60e6688298ee675ab16f1a3f7834a06d8cc55072048ec08e8be8be01e821cfba",
+      "physical_match": "exact"
+    },
+    {
+      "path": "config/target.json",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_bytes": 455,
+      "physical_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "physical_match": "exact"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_bytes": 14411,
+      "physical_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "physical_match": "exact"
+    },
+    {
+      "path": "docs/CC12_WORLD_CHILD_RETIREMENT_READINESS.md",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 7279,
+      "sha256": "3a538212653d12070f3668bb83a38129fcd265af1c94f94274688e04c928ff1c",
+      "physical_bytes": 7279,
+      "physical_sha256": "3a538212653d12070f3668bb83a38129fcd265af1c94f94274688e04c928ff1c",
+      "physical_match": "exact"
+    },
+    {
+      "path": "reports/cc12_world_child_retirement_readiness.json",
+      "revision": "683057d6d91f3d12c4e8c1299d8ff6ee75cff68f",
+      "hash_domain": "exact canonical Git blob bytes",
+      "bytes": 26817,
+      "sha256": "8afe0132380484fae480ef1d33efa3e1d40563efbeb8d441de443565dd1b120d",
+      "physical_bytes": 26817,
+      "physical_sha256": "8afe0132380484fae480ef1d33efa3e1d40563efbeb8d441de443565dd1b120d",
+      "physical_match": "exact"
+    }
+  ],
+  "owned_source_and_doc_pins": [
+    {
+      "path": "include/bsp/native_world_child_retirement.hpp",
+      "hash_domain": "exact written LF and staged Git blob bytes",
+      "bytes": 984,
+      "sha256": "56e0f566df8bd731e2408e5d678e16f4db9cca10b43d113e41c6791e0ff3e7a9"
+    },
+    {
+      "path": "src/native_world_child_retirement.cpp",
+      "hash_domain": "exact written LF and staged Git blob bytes",
+      "bytes": 1277,
+      "sha256": "54855f658d53212ab1e887173d16d4d8eccc2feaa99ed557b105cd58b5efb949"
+    },
+    {
+      "path": "docs/CC12_NATIVE_WORLD_CHILD_RETIREMENT_SOURCE.md",
+      "hash_domain": "exact written LF and staged Git blob bytes",
+      "bytes": 5890,
+      "sha256": "c643991c82146fbe7aa5fd54629f096d0edc39c1fd55c2ae815979da57507814"
+    }
+  ],
+  "validation": {
+    "complete_native42_byte_PE_revalidation": "passed",
+    "complete16_instruction_mapping_and_all_native_tags": "passed",
+    "exact22_source_asm_statements_15_mnemonics_plus7_emit": "passed",
+    "branch_labels_and_direct_self_call": "passed",
+    "no_added_asm_statements_or_local_receiver_post_virtual_read": "passed",
+    "current16_canonical_input_pins": "passed; all14 accepted inputs unchanged",
+    "JSON_parse": "passed by serialization and immediate reload",
+    "staged_owned_pins_exact_four_output_scope_and_diff_check": "passed; exact four owned outputs and three staged source/doc pins",
+    "build_tests_probes": "not run by worker authorization",
+    "CMake_ledger_GPR_writes": "none"
+  },
+  "primary_followup": [
+    "Register source serially in the core build.",
+    "Build MSVC Win32 and inspect the entire emitted42 bytes and16 instructions.",
+    "Verify direct self-reference with correct offset20 REL32 handling and the physical core-library definition.",
+    "Run relevant existing checks and reconcile the existing counted ledger record without duplicate Original credit."
+  ],
+  "limits": [
+    "Written Source and static native/source mapping do not prove emitted instruction identity.",
+    "No build, test, probe, live native execution, ABI admission, EH/unwind/fault equivalence, or gameplay proof by this worker.",
+    "Actual virtual target, hierarchy mutation, ownership and parent lifetimes remain caller supplied contracts.",
+    "No application wiring or other Native bodies, callers, descendants, tables, or FH3 expansion."
+  ]
+}
