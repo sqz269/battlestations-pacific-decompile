@@ -1,0 +1,452 @@
+{
+  "schema": "bsp.cc12.pending_registry_constructor_EH_readiness.v1",
+  "packet": "cc12_pending_registry_constructor_EH_readiness",
+  "kind": "read_only_independent_constructor_handler_record_and_direct_action",
+  "created_utc": "2026-10-09T07:25:18.198089+00:00",
+  "baseline_commit": "15cc2cc1e9c1403c83618589333d1b42a998305f",
+  "claimed_addresses": [
+    "00C963E8",
+    "00DC84DC",
+    "00DC84D4",
+    "00C963E0"
+  ],
+  "Source_credit": 0,
+  "Native_credit": 0,
+  "Original_ABI_credit": 0,
+  "conclusion": {
+    "encoded_state0_action_identified": true,
+    "action_count": 1,
+    "state_transition": "0 -> -1",
+    "action": "00C963E0 current[EBP-10h] -> ECX; tailJMP008748F0",
+    "concrete_Source_cleanup_service_found": false,
+    "production_Source_binding_ready": false,
+    "admitted_Source_API": false,
+    "held_dependencies": [
+      "Actual008748F0 cleanup ordinary effects and concrete Source binding",
+      "SharedBF6B43 handler recognition/frame/helper invocation ABI",
+      "Nested cleanup failure and original FH3/hardware-fault compatibility",
+      "Separate getterC96433 EH and canonicalF878CC ownership",
+      "Owner retirement/callabletable delivery and prior pending/group contracts"
+    ]
+  },
+  "bounds": {
+    "handler_window_limit": 32,
+    "captured_handler_window": 16,
+    "actual_handler_code": 10,
+    "FuncInfo_limit": 36,
+    "captured_FuncInfo": 36,
+    "maximum_unwind_entries": 4,
+    "captured_unwind_entries": 1,
+    "captured_unwind_map_bytes": 8,
+    "per_action_limit": 300,
+    "complete_action_bytes": [
+      8
+    ],
+    "exceeded": false
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "PE_machine": "014C x86",
+    "PE_optional_header_magic": "010B PE32",
+    "target_verification": "Every bsp.py ghidra live query verifies existing project/program/language/image base.",
+    "status": "ghidra: up  /battlestationspacific.exe",
+    "count": "live function count 64729; snapshot 64729; same",
+    "fresh_spans": [
+      {
+        "address": "00C963E8",
+        "bytes": 16,
+        "purpose": "Handler10 plus6 trailingCC alignment, within32-byte window",
+        "hex": "b8dc84dc00e95107f6ffcccccccccccc",
+        "sha256": "51d68887a5e4093adba9b4fc7c56a0b59c4a7fd1fba56cbcd1c53008683a63e6",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 16,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00c963e8  b8 dc 84 dc 00 e9 51 07 f6 ff cc cc cc cc cc cc  ......Q.........\n"
+      },
+      {
+        "address": "00DC84DC",
+        "bytes": 36,
+        "purpose": "Absolute x86 FuncInfo record",
+        "hex": "2205931901000000d484dc00000000000000000000000000000000000000000001000000",
+        "sha256": "e33515791a52b841d6f4377621e695ef4597498bdcbc87ed652ea6bd53022d0a",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".rdata",
+        "file_backed_bytes": 36,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00dc84dc  22 05 93 19 01 00 00 00 d4 84 dc 00 00 00 00 00  \"...............\n00dc84ec  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................\n00dc84fc  01 00 00 00  ....\n"
+      },
+      {
+        "address": "00DC84D4",
+        "bytes": 8,
+        "purpose": "One UnwindMapEntry; maxState1",
+        "hex": "ffffffffe063c900",
+        "sha256": "8e8931ec3a74526a42344924490b857413db67f84a891d0d6c6fb440db7a69ba",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".rdata",
+        "file_backed_bytes": 8,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00dc84d4  ff ff ff ff e0 63 c9 00  .....c..\n"
+      },
+      {
+        "address": "00C963E0",
+        "bytes": 8,
+        "purpose": "Complete directly mapped action funclet",
+        "hex": "8b4df0e908e5bdff",
+        "sha256": "b200de45417c37de51a05a8bd2ed427c144350fac9f785a58f5b467169cad716",
+        "live_GPR_equal_PE": true,
+        "PE_section": ".text",
+        "file_backed_bytes": 8,
+        "virtual_zero_fill_bytes": 0,
+        "cli_output": "00c963e0  8b 4d f0 e9 08 e5 bd ff  .M......\n"
+      }
+    ],
+    "total_captured_bytes": 68,
+    "semantic_code_data_bytes": 62,
+    "alignment_bytes": 6,
+    "total_file_backed_bytes": 68,
+    "handler_instructions": [
+      {
+        "address": "00C963E8",
+        "bytes": 5,
+        "hex": "b8dc84dc00",
+        "mnemonic": "mov",
+        "operands": "eax, 0xdc84dc"
+      },
+      {
+        "address": "00C963ED",
+        "bytes": 5,
+        "hex": "e95107f6ff",
+        "mnemonic": "jmp",
+        "operands": "0xbf6b43"
+      }
+    ],
+    "action_instructions": [
+      {
+        "address": "00C963E0",
+        "bytes": 3,
+        "hex": "8b4df0",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": "00C963E3",
+        "bytes": 5,
+        "hex": "e908e5bdff",
+        "mnemonic": "jmp",
+        "operands": "0x8748f0"
+      }
+    ],
+    "physical_CALL_count": 0,
+    "direct_tail_JMP_count": 2,
+    "total_decoded_instructions": 4
+  },
+  "handler": {
+    "address": "00C963E8",
+    "code_bytes": 10,
+    "code_sha256": "221c9f315465e885251a4313a15908675cf2f00da017b716f20258b4bd7ca4b9",
+    "Ghidra_start": "No function starts atC963E8; lookup reports enclosing candidateC963E0. No listing repair performed.",
+    "FuncInfo_EAX": "00DC84DC",
+    "tail_target": "00BF6B43",
+    "physical_inputs": "Entry EAX overwritten with FuncInfo. The two instructions do not alter ECX/EDX/EBP/ESP or push a new return address. Other ambient runtime/stack inputs to BF6B43 remain unproved.",
+    "trailing_bytes": "C963F2..C963F7 are sixCC alignment bytes captured but not counted as handler instructions.",
+    "shared_runtime_expanded": false
+  },
+  "FuncInfo": {
+    "address": "00DC84DC",
+    "layout": "absolute x86, nine DWORDs,36bytes",
+    "raw_words": [
+      "19930522",
+      "00000001",
+      "00DC84D4",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "magicNumber": "19930522",
+    "bbtFlags": 0,
+    "maxState": 1,
+    "pUnwindMap": "00DC84D4",
+    "nTryBlocks": 0,
+    "pTryBlockMap": "00000000",
+    "nIPMapEntries": 0,
+    "pIPtoStateMap": "00000000",
+    "pESTypeList": "00000000",
+    "EHFlags_encoded": 1,
+    "interpretation": "One indexed unwind entry. No try/catch or IP map is encoded in this record. EHFlags1 is retained as data, not proof of original hardware-fault policy."
+  },
+  "unwind_map": [
+    {
+      "state_index": 0,
+      "address": "00DC84D4",
+      "toState": -1,
+      "action": "00C963E0"
+    }
+  ],
+  "action": {
+    "address": "00C963E0",
+    "complete_bytes": 8,
+    "instructions": [
+      {
+        "address": "00C963E0",
+        "bytes": 3,
+        "hex": "8b4df0",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [ebp - 0x10]"
+      },
+      {
+        "address": "00C963E3",
+        "bytes": 5,
+        "hex": "e908e5bdff",
+        "mnemonic": "jmp",
+        "operands": "0x8748f0"
+      }
+    ],
+    "physical_inputs": "Requires runtime-supplied EBP anchor and readable currentDWORD[EBP-10h]; loaded into ECX immediately before tail transfer.",
+    "tail_target": "008748F0",
+    "Source_binding": "Not found by current targeted include/src search.",
+    "stack": "No PUSH/POP/CALL/RET and no ESP/EBP write. TailJMP leaves the incoming stack unchanged, including any helper-supplied return address; the helper invocation protocol remains unproved.",
+    "direct_effects": "Only current frame-slot read, ECX replacement and tail transfer. No direct owner/global write, free, unlock, manager/publication lookup, catch or rollback.",
+    "descendant_effects": "Target8748F0 is not expanded; its side effects, return/throw behavior and Source contract remain unknown in this packet."
+  },
+  "parent_frame": {
+    "parent": "00874BC0",
+    "prior_report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+    "anchor": "Let S be ESP on ordinary constructor entry, before its first PUSH.",
+    "ordinary_body_sets_EBP": false,
+    "slots": [
+      {
+        "name": "state",
+        "entry_ESP_offset": -4,
+        "source": "PUSHFFFFFFFF; full0at874BDD"
+      },
+      {
+        "name": "handler",
+        "entry_ESP_offset": -8,
+        "source": "PUSHC963E8"
+      },
+      {
+        "name": "previous_exception_chain",
+        "entry_ESP_offset": -12,
+        "source": "PUSH oldFS:[0]"
+      },
+      {
+        "name": "current_receiver_spill",
+        "entry_ESP_offset": -16,
+        "source": "PUSHECX then MOV[ESP+4],ESI at874BD9"
+      },
+      {
+        "name": "saved_caller_ESI",
+        "entry_ESP_offset": -20,
+        "source": "PUSHESI at874BD6"
+      }
+    ],
+    "qualification": "If shared helper supplies EBP=S, action[EBP-10h] reads the constructor receiver spill. That equality is a required helper contract, not independently established by unexpandedBF6B43.",
+    "current_not_frozen": "Funclet rereads the current frame slot. Do not replace it with a fresh F878CC lookup or assume a mutable spill can never change."
+  },
+  "state_timing": [
+    "Initial stateFFFFFFFF is pushed before frame installation.",
+    "Full state0 is written at874BDD before profileD0DEA0 store874BE5 and section call874BEB.",
+    "Section+04 is written only after service normal return; no lowerstate write is present before that store or the ordinary epilogue.",
+    "The sole map pair for index0 is{-1,C963E0}, whose action tail-target is8748F0; native runtime state-update versus action-execution order remains outside scope.",
+    "No additional constructor state/action is encoded for a newly returned section. This does not establish global/outer getter cleanup or target8748F0 effects."
+  ],
+  "layout_reference": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\ehdata.h",
+    "bytes": 21203,
+    "sha256": "9b1a482479e67e9918726d803f157f00c41ac54f6eee42fb331752ad994940c3",
+    "inspected_ranges": [
+      [
+        87,
+        87
+      ],
+      [
+        183,
+        198
+      ],
+      [
+        240,
+        273
+      ]
+    ],
+    "interpretation": "CurrentSDK __ehstate_t=int, absolute32 UnwindMapEntry{signedstate,actionpointer}8B and FuncInfo9DWORD36B alternative layout.",
+    "role": "Layout corroboration only. CurrentSDK is not proof of original compiler, shared runtime recognition, helperABI, actual EHFlags behavior or fault compatibility."
+  },
+  "concrete_Source_services": {
+    "found_for_actual_action_target": false,
+    "services": [],
+    "reason": "No8748F0/C963E0/C963E8/DC84DC/DC84D4 match in include/src .hpp/.cpp/.inc. Existing cleanup of another same-layout owner is not substituted.",
+    "ordinary_provider_pins": "Parent constructor/provider files are rechecked as prior evidence only; their section-construction contract does not establish this cleanup target."
+  },
+  "failure_and_compatibility": {
+    "no_guessed_cleanup": "No publication clear/restoration, profile restamp, section unlock/release, owner/allocation free or RAII catch is inferred from the action wrapper.",
+    "nested_failure": "Target8748F0 may fail nonlocally; preservation/replacement of the original exception, termination or remaining unwinds are not established.",
+    "native_runtime": "BF6B43 body and invocation protocol are excluded; no standalone native function ABI, actual helper EBP/ESP setup or Original equivalence is claimed.",
+    "hardware_faults": "Flags and state ordering alone do not establish access-violation/SEH behavior; original fault compatibility remains held.",
+    "outer_getter": "C96433 and getter cleanup remain outside this packet. Absence of a free/unlock instruction in this funclet is not a whole-call-chain no-cleanup guarantee."
+  },
+  "Source_search": {
+    "paths": [
+      "include",
+      "src"
+    ],
+    "extensions": [
+      ".hpp",
+      ".cpp",
+      ".inc"
+    ],
+    "patterns": [
+      "8748f0",
+      "c963e0",
+      "c963e8",
+      "dc84dc",
+      "dc84d4"
+    ],
+    "matches": 0
+  },
+  "Source_and_prior_evidence_pins": [
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_OWNER_CONSTRUCTION_READINESS.md",
+      "bytes": 8133,
+      "sha256": "caefdbbdd81c5c2d72f6011da2b174fb0f6b49665f97dd37407d21bb95568c6e",
+      "lf_sha256": "caefdbbdd81c5c2d72f6011da2b174fb0f6b49665f97dd37407d21bb95568c6e"
+    },
+    {
+      "path": "reports/cc12_pending_registry_owner_construction_readiness.json",
+      "bytes": 21824,
+      "sha256": "f51550d1c2cc3e57192c3b223c6028f96948521dc6d44887ca72eaa332664a30",
+      "lf_sha256": "2af4cd5699e962e554079fa6216fe9e1ce50cdb0560ef711356a49c03a1a98ae"
+    },
+    {
+      "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+      "bytes": 9420,
+      "sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf",
+      "lf_sha256": "c4bce5d0fadaab7f91c47861e71f63513d61b9aaf07f628b105f3d379f0f52cf"
+    },
+    {
+      "path": "reports/cc12_pending_registry_getter_readiness.json",
+      "bytes": 40457,
+      "sha256": "20f2cdaf05c5799d0b81e6f8050bf8f00c89e26b259c59b5bed351fc2e4795f2",
+      "lf_sha256": "b1b279d58971fe11ddf69c4d4883be18e1535f72789519ed38bca7f713d260e5"
+    },
+    {
+      "path": "docs/CC12_APPLICATION_RETIREMENT_EH_READINESS.md",
+      "bytes": 5138,
+      "sha256": "a5483cec5d8827bcc6add8d5a45e2c1aedb0bed611b3143f5a5d44b38391bcf1",
+      "lf_sha256": "a5483cec5d8827bcc6add8d5a45e2c1aedb0bed611b3143f5a5d44b38391bcf1"
+    },
+    {
+      "path": "reports/cc12_application_retirement_EH_readiness.json",
+      "bytes": 7034,
+      "sha256": "0ecb227614e96a4155f72acb2c65eb571d7118638ce6a21eddac43b5de7d2837",
+      "lf_sha256": "0ecb227614e96a4155f72acb2c65eb571d7118638ce6a21eddac43b5de7d2837"
+    }
+  ],
+  "prior_evidence": {
+    "parent_report": "reports/cc12_pending_registry_owner_construction_readiness.json",
+    "parent_span": {
+      "address": "00874BC0",
+      "bytes": 69,
+      "sha256": "dbd4459a91dddfa42be5d17021ea441644245ea4f24c04bbf5f2167bcbdfbba6",
+      "PE_rechecked": true,
+      "live_GPR_requeried": false
+    },
+    "inherited_pin_rechecks": [
+      {
+        "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/native_renderer_worker_lifetime.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "docs/NATIVE_RENDERER_WORKER_LIFETIME.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "reports/native_renderer_worker_lifetime_audit.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "docs/CC12_PENDING_REGISTRY_GETTER_READINESS.md",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      },
+      {
+        "path": "reports/cc12_pending_registry_getter_readiness.json",
+        "exact_sha256_equal": true,
+        "normalized_LF_sha256_equal": true
+      }
+    ],
+    "example_only": "ApplicationCC7260 audit supplied SDK/layout/qualification precedent; no Application native bytes, states or actions are reused as constructor proof."
+  },
+  "minimum_next_packet": {
+    "address": "008748F0",
+    "purpose": "Separately size-gate actual directly targeted cleanup implementation and its canonical storage/profile effects; do not assume another owner unwind is equivalent.",
+    "not_expanded_in_this_packet": true
+  },
+  "validation": {
+    "fresh_windows": 4,
+    "fresh_GPR_PE_bytes": 68,
+    "semantic_bytes": 62,
+    "alignment_bytes": 6,
+    "all_file_backed": true,
+    "independently_decoded_code_bytes": 18,
+    "decoded_instructions": 4,
+    "physical_calls": 0,
+    "tails": 2,
+    "absolute_record_parse": true,
+    "bounds_pass": true,
+    "full_PE_hash_rechecked": true,
+    "current_prior_pins": 6,
+    "inherited_pins": 9,
+    "SDK_pin": true,
+    "parent_PE_windows": 1,
+    "JSON_parse": true,
+    "Source_edits": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_CMake_mutations": 0,
+    "shared_runtime_queries": 0,
+    "cleanup_descendant_queries": 0,
+    "getter_EH_queries": 0,
+    "caller_or_table_or_bootstrap_sweeps": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "runtime_runs": 0,
+    "new_Original_credit": 0
+  },
+  "limits": [
+    "Independent constructor handler/record/map/direct-funclet evidence only.",
+    "Actual8748F0 cleanup remains held; no guessed owner/section/publication effects.",
+    "No Source API, native helper/fault compatibility, runtime validation or new Original credit."
+  ]
+}
