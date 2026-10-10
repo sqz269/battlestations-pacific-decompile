@@ -1,0 +1,1826 @@
+{
+  "schema": 1,
+  "packet": "cc12_gameplay_effect_id_wrapper_source",
+  "utc": "2026-10-10T05:01:09.923414+00:00",
+  "baseline_main": "b8ac06b7b13557f4a2698cce0693342047804dad",
+  "owned_tracked_files": [
+    "include/bsp/gameplay_effect_id_wrapper.hpp",
+    "src/gameplay_effect_id_wrapper.cpp",
+    "docs/CC12_GAMEPLAY_EFFECT_ID_WRAPPER_SOURCE.md",
+    "reports/cc12_gameplay_effect_id_wrapper_source.json"
+  ],
+  "lease": {
+    "id": "agent/cc12_atlas_item_listing:cc12_gameplay_effect_id_wrapper_source",
+    "owner": "agent/cc12_atlas_item_listing",
+    "packet": "cc12_gameplay_effect_id_wrapper_source",
+    "addresses": [
+      "00870cd0"
+    ],
+    "ranges": [],
+    "files": [
+      "docs/CC12_GAMEPLAY_EFFECT_ID_WRAPPER_SOURCE.md",
+      "include/bsp/gameplay_effect_id_wrapper.hpp",
+      "local/cc12_gameplay_effect_id_wrapper_source",
+      "reports/cc12_gameplay_effect_id_wrapper_source.json",
+      "src/gameplay_effect_id_wrapper.cpp"
+    ],
+    "claimed": "2026-10-10T04:48:02+00:00",
+    "expires": "2026-10-10T10:48:02+00:00",
+    "status": "active",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing",
+    "note": ""
+  },
+  "ordinary_Source_api": {
+    "name": "bsp::acquire_gameplay_effect_by_id_00870cd0",
+    "inputs": [
+      "actual live void*& output object",
+      "signed int32 ID",
+      "actual borrowed const volatile uint32 flag word",
+      "genuine compatible GameplayEffectAcquisitionContext&"
+    ],
+    "return": "captured output address, independent of lower return",
+    "sequence": [
+      "capture output address and ID",
+      "unconditional genuine canonical manager getter",
+      "load actual volatile full flag after successful getter",
+      "genuine lower call with returned compatible manager and captured output/ID/current flag",
+      "ignore lower return; return captured output address"
+    ],
+    "allowed_alias_mutation": "Genuine provider may mutate valid borrowed flag storage before its post-getter load",
+    "excluded_aliases": [
+      "private wrapper frame/locals",
+      "private reference bindings",
+      "context metadata",
+      "incompatible C++ objects"
+    ],
+    "preconditions": [
+      "real compatible live manager after successful getter",
+      "stable valid output/flag/context binding lifetimes",
+      "genuine Lua/string/component/lifetime/error services and obligations"
+    ],
+    "no_early_output_clear_flag_copy_narrowing_or_ID0_bypass": true,
+    "no_wrapper_catch_check_retry_rollback_fake_provider_or_representation_cast": true,
+    "new_Cpp_ABI_not_original_register_stack_ABI": true,
+    "raw_parent_profile_table_binding_admitted": false
+  },
+  "candidate_Source": [
+    {
+      "path": "j:\\prog\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include\\bsp\\gameplay_effect_id_wrapper.hpp",
+      "bytes": 1551,
+      "sha256": "80864e4e34ef130c6e4d5d382548ce83936cf7e73b416c9a40f21ba0419ae66d",
+      "repository_path": "include/bsp/gameplay_effect_id_wrapper.hpp",
+      "whole_current_file": true,
+      "compiler_dependency": true,
+      "additional_uncompiled_frontier_Source": false,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\current_source\\include\\bsp\\gameplay_effect_id_wrapper.hpp",
+        "bytes": 1551,
+        "sha256": "80864e4e34ef130c6e4d5d382548ce83936cf7e73b416c9a40f21ba0419ae66d"
+      },
+      "new_owned_candidate": true,
+      "baseline_git_blob": null,
+      "current_git_blob_if_added": "ce87289b5077c049441938fdaac0aa509974a885"
+    },
+    {
+      "path": "j:\\prog\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\gameplay_effect_id_wrapper.cpp",
+      "bytes": 631,
+      "sha256": "af3454a15bbb32406a14dfbc9a1eaedc9c072075c5cf7b980fbab21431d6bc44",
+      "repository_path": "src/gameplay_effect_id_wrapper.cpp",
+      "whole_current_file": true,
+      "compiler_dependency": true,
+      "additional_uncompiled_frontier_Source": false,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\current_source\\src\\gameplay_effect_id_wrapper.cpp",
+        "bytes": 631,
+        "sha256": "af3454a15bbb32406a14dfbc9a1eaedc9c072075c5cf7b980fbab21431d6bc44"
+      },
+      "new_owned_candidate": true,
+      "baseline_git_blob": null,
+      "current_git_blob_if_added": "b4e919db33ffcfcb8643971d1ce7e887fa92a219"
+    }
+  ],
+  "retained_Native": {
+    "scope": "Previously accepted 42 bytes / 18 operations, no fresh Native access",
+    "historical_epoch": "10",
+    "artifacts": [
+      {
+        "historical_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_damageable_effect_id_wrapper_identity_readiness\\evidence_bundle.zip",
+          "bytes": 777431,
+          "sha256": "d2e8f34d43d34c37e50fb134e5da32ac57750ed4b27e2393499bf0a9d5e68224"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_native\\evidence_bundle.zip",
+          "bytes": 777431,
+          "sha256": "d2e8f34d43d34c37e50fb134e5da32ac57750ed4b27e2393499bf0a9d5e68224"
+        },
+        "historical_epoch": "10",
+        "new_Native_query_or_read": false
+      },
+      {
+        "historical_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_damageable_effect_id_wrapper_identity_readiness\\original_00870cd0_42.bin",
+          "bytes": 42,
+          "sha256": "c7496df13da7da597978d5e88061aa915aedfc9d6d061b1aff570ff9019aaa60"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_native\\original_00870cd0_42.bin",
+          "bytes": 42,
+          "sha256": "c7496df13da7da597978d5e88061aa915aedfc9d6d061b1aff570ff9019aaa60"
+        },
+        "historical_epoch": "10",
+        "new_Native_query_or_read": false
+      },
+      {
+        "historical_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_damageable_effect_id_wrapper_identity_readiness\\ghidra_00870cd0_42.bin",
+          "bytes": 42,
+          "sha256": "c7496df13da7da597978d5e88061aa915aedfc9d6d061b1aff570ff9019aaa60"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_native\\ghidra_00870cd0_42.bin",
+          "bytes": 42,
+          "sha256": "c7496df13da7da597978d5e88061aa915aedfc9d6d061b1aff570ff9019aaa60"
+        },
+        "historical_epoch": "10",
+        "new_Native_query_or_read": false
+      },
+      {
+        "historical_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_damageable_effect_id_wrapper_identity_readiness\\physical_comparison.json",
+          "bytes": 25050,
+          "sha256": "3f41254a9d154c5cf6e24d8e34c1ed7c7dfba817dfd663f01518b708859922b1"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_native\\physical_comparison.json",
+          "bytes": 25050,
+          "sha256": "3f41254a9d154c5cf6e24d8e34c1ed7c7dfba817dfd663f01518b708859922b1"
+        },
+        "historical_epoch": "10",
+        "new_Native_query_or_read": false
+      },
+      {
+        "historical_file": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_damageable_effect_id_wrapper_identity_readiness\\typed_body_instructions.json",
+          "bytes": 106608,
+          "sha256": "5561a8eac501a891f6569343a57602a5f34f941d78c19dbe52c5d416b1e2db99"
+        },
+        "copy": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_native\\typed_body_instructions.json",
+          "bytes": 106608,
+          "sha256": "5561a8eac501a891f6569343a57602a5f34f941d78c19dbe52c5d416b1e2db99"
+        },
+        "historical_epoch": "10",
+        "new_Native_query_or_read": false
+      }
+    ],
+    "body_sha256": "c7496df13da7da597978d5e88061aa915aedfc9d6d061b1aff570ff9019aaa60"
+  },
+  "compilation": {
+    "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+    "compiler": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    "dumpbin": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\dumpbin.exe",
+      "bytes": 23424,
+      "sha256": "cfe78faf65bbf1809aebbca5afbe3d4258fa056daadef01dd9410d10a588630c"
+    },
+    "vcvars": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat",
+      "bytes": 10163,
+      "sha256": "693b4a30c7379e84d2675101a8d47178cf62f45df2e2f09be5c206107e9c9ca2"
+    },
+    "vswhere": {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\vswhere.exe",
+      "bytes": 469456,
+      "sha256": "c54f3b7c9164ea9a0db8641e81ecdda80c2664ef5a47c4191406f848cc07c662"
+    },
+    "architecture": "x86",
+    "objects": [
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\gameplay_effect_id_wrapper.cpp",
+          "bytes": 631,
+          "sha256": "af3454a15bbb32406a14dfbc9a1eaedc9c072075c5cf7b980fbab21431d6bc44"
+        },
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.obj",
+          "bytes": 2526,
+          "sha256": "9bdda0afde2cccebcfc7d858095a9658c6c3e11724252f45fc9723ed8f91152d"
+        },
+        "dependencies": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.dependencies.json",
+          "bytes": 16647,
+          "sha256": "e4d7ddba6d7f4501ef4d144b2c742d84b6df95123f60dfa1aa6a22f4ac85c275"
+        },
+        "compiler_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.compile.log",
+          "bytes": 1132,
+          "sha256": "04dbb186cb7fe20e5737a9f5a19356ebd0fa275d3ddb553d8dd38ca10040d0df"
+        },
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.command.json",
+          "bytes": 1455,
+          "sha256": "9820bda788d5fd7fdb9218ae6733be31c5ce0c54b713ef46fc31ad9e98ac167f"
+        },
+        "dumps": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.headers.txt",
+            "bytes": 4129,
+            "sha256": "ed2beb2c142f33adf43c9c28191d1b1b7af95c79ced701fae7e9141360437f07"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.symbols.txt",
+            "bytes": 2941,
+            "sha256": "24c9c5b4f1feda2ff3a83e4106cc707fa93e338e49653f8676da33e7b19baaf5"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.relocations.txt",
+            "bytes": 1202,
+            "sha256": "5e86f63bd2e94c92a86f0f70df2d7ff6ded300b56c2a50ce39ad1d88e9a707ea"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.directives.txt",
+            "bytes": 811,
+            "sha256": "5fbf19e8a2a1b43ee2dd48f3dc6f73b36619d03056f1a327f7412f708b496155"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.disasm.txt",
+            "bytes": 1879,
+            "sha256": "316ece928e5495bcd4e02c418904451fc6ae338c1985b4a8a70e05edab71941c"
+          }
+        ],
+        "exit_code": 0
+      },
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\gameplay_effect_acquisition.cpp",
+          "bytes": 3584,
+          "sha256": "86f9b93fe12c1e18413ebc6f8cc6be5f960b3aa8155e2ca5f4bf0ddb037e6031"
+        },
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.obj",
+          "bytes": 49078,
+          "sha256": "e882407234fd08fceba8c3b9b83f2653fd83f62892064dce0d3eafaf5bf8a37f"
+        },
+        "dependencies": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.dependencies.json",
+          "bytes": 27580,
+          "sha256": "cfe7fe58191a9b2d64df1f651699f8261c4c395bd7098daa8efe45f5e6c0b2b8"
+        },
+        "compiler_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.compile.log",
+          "bytes": 1133,
+          "sha256": "ba37ede72af692217d26dd2067fac4c14e6770e90e02b7626cba06d1083a5b7c"
+        },
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.command.json",
+          "bytes": 1459,
+          "sha256": "f2e04bb7f3265f1a34b31528fbd6a6a35d14fd672841c7757d64137b02208dfe"
+        },
+        "dumps": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.headers.txt",
+            "bytes": 114949,
+            "sha256": "13e038c1a7bfe22e1cbc635a59d266a1191f052051ba6d18e33c668bb4867685"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.symbols.txt",
+            "bytes": 83931,
+            "sha256": "0b3370e96dbb9328d6f8ed2912fa6937ca228f3993d0db2efcea60aa08111c8c"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.relocations.txt",
+            "bytes": 77482,
+            "sha256": "20918eef3dde32b1caf62deee17308cfef4180cd586af6b89f8ea858755fcbae"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.directives.txt",
+            "bytes": 947,
+            "sha256": "deb26db2f5fa78bbe8b664a586c08cc13c3cb5aa477eb6fc0c025d85ad40e82b"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.disasm.txt",
+            "bytes": 151833,
+            "sha256": "57549ab78fbd0737635f533c719b0eee56686d52b3d6eb0d657479af44b8ece0"
+          }
+        ],
+        "exit_code": 0
+      },
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\gameplay_effect_manager.cpp",
+          "bytes": 3288,
+          "sha256": "6edc627ec4a4a3694c2495f300393c21de7c222bd74ba81490268c4fce2db1dc"
+        },
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.obj",
+          "bytes": 38886,
+          "sha256": "fd1e246939e976cdd169c1301fc385c2b7ecacd677c4f2741664165ad5e1550f"
+        },
+        "dependencies": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.dependencies.json",
+          "bytes": 11974,
+          "sha256": "038f3de4f8dccfee58d1592e427209ea5339db413842c3f73d8d91084eb35154"
+        },
+        "compiler_output": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.compile.log",
+          "bytes": 1129,
+          "sha256": "9e0be676acb291f333766a8982864d618f943ce2b9e4895f3d7360fdbe716ab4"
+        },
+        "command": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.command.json",
+          "bytes": 1443,
+          "sha256": "3541ae4bdbaec29f4d32cd94661aaf5bb7efa24fd860c2c25de4385f07e43267"
+        },
+        "dumps": [
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.headers.txt",
+            "bytes": 117527,
+            "sha256": "71703ce8ea729c7e84d648b04cc91990a1eb8eac6ff5b17b1be89c3522550ed8"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.symbols.txt",
+            "bytes": 78225,
+            "sha256": "9ca634e43a082e4efde7ea221bedd126cf1a2f2ee2630de79f58278b8d99e6b2"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.relocations.txt",
+            "bytes": 78016,
+            "sha256": "06100400623fa9eab14bd260c1d427005f326ecc0828bc21bfeb208cf4e2f2bf"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.directives.txt",
+            "bytes": 943,
+            "sha256": "5a0f7f04cfae4bcf1e0bdb1e10b93434e5e514ffe8131abbf736302d3a48b518"
+          },
+          {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.disasm.txt",
+            "bytes": 98841,
+            "sha256": "01d57d3517c60c4348a0d0b7e4f0c572f451692f3613dc2fc3ca5fd4051ace93"
+          }
+        ],
+        "exit_code": 0
+      }
+    ],
+    "link_or_execution_or_CMake_or_tests": false
+  },
+  "actual_build_options": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\recorded_release_commands.json",
+      "bytes": 11280,
+      "sha256": "d089a44bb81db94bb7dc2affdaf6fcc123ac920b4cd4bee0c0e48ef4a0cd2e3a"
+    },
+    "project_snapshot": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\bsp_core.vcxproj",
+      "bytes": 251156,
+      "sha256": "4333c8916b755a60cf6c4f220424cbab141f13be8f1ade84367695393c3d01f8"
+    },
+    "tlog_snapshot": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\CL.command.1.tlog",
+      "bytes": 2901362,
+      "sha256": "a0088428f45f13277ba238087ad7e2236dfab3b1e949c2a8bbf00adf637d0c3c"
+    },
+    "settings": {
+      "AdditionalIncludeDirectories": "J:\\PROG\\battlestations-pacific-decompile\\include;J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\lua511-src\\src;J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\zlib121-src;%(AdditionalIncludeDirectories)",
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "AssemblerListingLocation": "$(IntDir)",
+      "BasicRuntimeChecks": "Default",
+      "BufferSecurityCheck": null,
+      "CallingConvention": null,
+      "ExceptionHandling": "Sync",
+      "ExternalWarningLevel": "TurnOffAllWarnings",
+      "FloatingPointModel": "Strict",
+      "ForceConformanceInForLoopScope": null,
+      "InlineFunctionExpansion": "AnySuitable",
+      "LanguageStandard": "stdcpp17",
+      "MinimalRebuild": null,
+      "Optimization": "MaxSpeed",
+      "PrecompiledHeader": "NotUsing",
+      "RemoveUnreferencedCodeData": null,
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "SupportJustMyCode": null,
+      "TreatWChar_tAsBuiltInType": null,
+      "TreatWarningAsError": "true",
+      "UseFullPaths": "false",
+      "WarningLevel": "Level4",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"",
+      "ObjectFileName": "$(IntDir)",
+      "DebugInformationFormat": "\n      ",
+      "ScanSourceForModuleDependencies": "false"
+    },
+    "derivations": [
+      {
+        "object": "gameplay_effect_id_wrapper",
+        "actual_command_template": "gameplay_effect_acquisition",
+        "only_relocated_paths": [
+          {
+            "original": "/IJ:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\INCLUDE",
+            "replacement": "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include"
+          },
+          {
+            "original": "/FoBSP_CORE.DIR\\RELEASE\\",
+            "replacement": "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.obj"
+          },
+          {
+            "original": "/FdJ:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB",
+            "replacement": "/FdJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.pdb"
+          },
+          {
+            "original": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\SRC\\GAMEPLAY_EFFECT_ACQUISITION.CPP",
+            "replacement": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\gameplay_effect_id_wrapper.cpp"
+          }
+        ],
+        "audit_only_added_options": [
+          "/sourceDependencies",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.dependencies.json",
+          "/Bv"
+        ],
+        "actual_option_order_preserved": true,
+        "Oy_minus_added_separately": false
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "actual_command_template": "gameplay_effect_acquisition",
+        "only_relocated_paths": [
+          {
+            "original": "/IJ:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\INCLUDE",
+            "replacement": "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include"
+          },
+          {
+            "original": "/FoBSP_CORE.DIR\\RELEASE\\",
+            "replacement": "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.obj"
+          },
+          {
+            "original": "/FdJ:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB",
+            "replacement": "/FdJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.pdb"
+          },
+          {
+            "original": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\SRC\\GAMEPLAY_EFFECT_ACQUISITION.CPP",
+            "replacement": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\gameplay_effect_acquisition.cpp"
+          }
+        ],
+        "audit_only_added_options": [
+          "/sourceDependencies",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.dependencies.json",
+          "/Bv"
+        ],
+        "actual_option_order_preserved": true,
+        "Oy_minus_added_separately": false
+      },
+      {
+        "object": "gameplay_effect_manager",
+        "actual_command_template": "gameplay_effect_manager",
+        "only_relocated_paths": [
+          {
+            "original": "/IJ:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\INCLUDE",
+            "replacement": "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include"
+          },
+          {
+            "original": "/FoBSP_CORE.DIR\\RELEASE\\",
+            "replacement": "/FoJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.obj"
+          },
+          {
+            "original": "/FdJ:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB",
+            "replacement": "/FdJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.pdb"
+          },
+          {
+            "original": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE\\SRC\\GAMEPLAY_EFFECT_MANAGER.CPP",
+            "replacement": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\gameplay_effect_manager.cpp"
+          }
+        ],
+        "audit_only_added_options": [
+          "/sourceDependencies",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.dependencies.json",
+          "/Bv"
+        ],
+        "actual_option_order_preserved": true,
+        "Oy_minus_added_separately": false
+      }
+    ],
+    "actual_Oy_minus": true,
+    "old_no_Oy_or_separate_Oy_audit_used": false,
+    "candidate_registered_in_generated_project": false,
+    "generated_ClCompile_count": 1914,
+    "Root_checkpoint_label": "Source636",
+    "label_is_not_generated_project_item_count": true
+  },
+  "whole_COFF": {
+    "complete_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\coff_provider_receipt.json",
+      "bytes": 367691,
+      "sha256": "c7846428cc9b991cc2d89d3109427847234308d3fab58d1d15c83c8a399d82ff"
+    },
+    "all_objects": {
+      "gameplay_effect_id_wrapper": {
+        "sections": 7,
+        "symbol_records_including_AUX": 22,
+        "relocations": 2,
+        "code_sections": 1,
+        "code_bytes": 42,
+        "instructions": 20,
+        "undecoded_tail_bytes": 0
+      },
+      "gameplay_effect_acquisition": {
+        "sections": 179,
+        "symbol_records_including_AUX": 564,
+        "relocations": 242,
+        "code_sections": 102,
+        "code_bytes": 4930,
+        "instructions": 1909,
+        "undecoded_tail_bytes": 0
+      },
+      "gameplay_effect_manager": {
+        "sections": 182,
+        "symbol_records_including_AUX": 529,
+        "relocations": 195,
+        "code_sections": 100,
+        "code_bytes": 2769,
+        "instructions": 1068,
+        "undecoded_tail_bytes": 0
+      }
+    },
+    "positive_definitions": {
+      "wrapper": {
+        "object": "gameplay_effect_id_wrapper",
+        "symbol": {
+          "index": 19,
+          "index_hex": "13",
+          "file_offset": 1999,
+          "name": "?acquire_gameplay_effect_by_id_00870cd0@bsp@@YAPAPAXAAPAXHADIAAUGameplayEffectAcquisitionContext@1@@Z",
+          "value": 0,
+          "section_number": 6,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "raw_hex": "000000007301000000000000060020000200",
+          "is_auxiliary": false
+        },
+        "section": 6,
+        "complete_section_bytes": 42,
+        "complete_section_sha256": "598c6c02e18d2c19f93fc201cedf50ea97795a282e1ff4ba8121c87b2039618a",
+        "complete_instructions": 20,
+        "full_section_and_code_in_coff_receipt": true
+      },
+      "real_lower_positive_definition": {
+        "object": "gameplay_effect_acquisition",
+        "symbol": {
+          "index": 363,
+          "index_hex": "16B",
+          "file_offset": 25222,
+          "name": "?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z",
+          "value": 0,
+          "section_number": 126,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "raw_hex": "000000004f170000000000007e0020000200",
+          "is_auxiliary": false
+        },
+        "section": 126,
+        "complete_section_bytes": 719,
+        "complete_section_sha256": "8936cfee375e3bc11d66e4ae548487ba36ed824f6737a3071a231722a77bd7ff",
+        "complete_instructions": 247,
+        "full_section_and_code_in_coff_receipt": true
+      },
+      "real_manager_positive_definition": {
+        "object": "gameplay_effect_manager",
+        "symbol": {
+          "index": 387,
+          "index_hex": "183",
+          "file_offset": 22445,
+          "name": "?get_gameplay_effect_manager_004c1650@bsp@@YAPAUGameplayEffectManager@1@AAUGameplayEffectManagerContext@1@@Z",
+          "value": 0,
+          "section_number": 144,
+          "type": 32,
+          "storage_class": 2,
+          "auxiliary_count": 0,
+          "raw_hex": "00000000351a000000000000900020000200",
+          "is_auxiliary": false
+        },
+        "section": 144,
+        "complete_section_bytes": 283,
+        "complete_section_sha256": "e205ec0515f58ee250e8b74f0e4348c6157f554ed729a8450cfbd1905e983107",
+        "complete_instructions": 96,
+        "full_section_and_code_in_coff_receipt": true
+      }
+    },
+    "exact_candidate_externals": [
+      {
+        "object": "gameplay_effect_id_wrapper",
+        "section": 6,
+        "relocation": {
+          "ordinal": 0,
+          "file_offset": 1581,
+          "section_offset": 10,
+          "type": 20,
+          "type_hex": "0014",
+          "symbol_index": 17,
+          "symbol_index_hex": "11",
+          "symbol_name": "?get_gameplay_effect_manager_004c1650@bsp@@YAPAUGameplayEffectManager@1@AAUGameplayEffectManagerContext@1@@Z",
+          "symbol_section_number": 0
+        },
+        "definition_targets": [
+          {
+            "object": "gameplay_effect_manager",
+            "section": 144,
+            "symbol_index": 387
+          }
+        ],
+        "boundary": null
+      },
+      {
+        "object": "gameplay_effect_id_wrapper",
+        "section": 6,
+        "relocation": {
+          "ordinal": 1,
+          "file_offset": 1591,
+          "section_offset": 30,
+          "type": 20,
+          "type_hex": "0014",
+          "symbol_index": 18,
+          "symbol_index_hex": "12",
+          "symbol_name": "?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z",
+          "symbol_section_number": 0
+        },
+        "definition_targets": [
+          {
+            "object": "gameplay_effect_acquisition",
+            "section": 126,
+            "symbol_index": 363
+          }
+        ],
+        "boundary": null
+      }
+    ],
+    "candidate_sequence": {
+      "getter_call_instruction_offset": 9,
+      "flag_reference_load_offset": 14,
+      "actual_volatile_flag_word_load_offset": 21,
+      "lower_call_instruction_offset": 29,
+      "return_captured_out_offset": 37,
+      "plain_Source_RET_offset": 41,
+      "only_two_direct_external_relocations": true,
+      "flag_word_loaded_once_after_getter_before_lower": true,
+      "private_argument_out_ID_reload_delayed_by_compiler": true,
+      "delayed_private_argument_reload_valid_under_excluded_private_frame_binding_aliases": true,
+      "Source_bytes_are_not_Native_bytes_despite_equal_42_length": true
+    },
+    "all_physical_sections_raw_symbols_AUX_and_relocations_frozen": true,
+    "all_7741_code_bytes_and_2997_instructions_decoded": true,
+    "undecoded_code_tails": 0,
+    "BSS_logical_zero_fill_not_invented_file_bytes": true,
+    "noncode_sections_not_claimed_as_instructions": true
+  },
+  "selected_Source_error_lifetime_graphs": {
+    "lower_acquisition": {
+      "function": "?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z",
+      "object": "gameplay_effect_acquisition",
+      "funcinfo_symbol": {
+        "index": 455,
+        "index_hex": "1C7",
+        "file_offset": 26878,
+        "name": "__ehfuncinfo$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z",
+        "value": 0,
+        "section_number": 145,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "00000000f440000000000000910000000300",
+        "is_auxiliary": false
+      },
+      "unwindtable_symbol": {
+        "index": 456,
+        "index_hex": "1C8",
+        "file_offset": 26896,
+        "name": "__unwindtable$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z",
+        "value": 36,
+        "section_number": 145,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "000000008041000024000000910000000300",
+        "is_auxiliary": false
+      },
+      "state_count": 13,
+      "try_block_count": 0,
+      "unwind_states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "table_offset": 36,
+          "action_relocation": {
+            "ordinal": 1,
+            "file_offset": 15859,
+            "section_offset": 40,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 429,
+            "symbol_index_hex": "1AD",
+            "symbol_name": "__unwindfunclet$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z$0",
+            "symbol_section_number": 127
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_acquisition",
+              "section": 127,
+              "symbol_index": 429
+            }
+          ],
+          "boundary": null
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "table_offset": 44,
+          "action_relocation": {
+            "ordinal": 2,
+            "file_offset": 15869,
+            "section_offset": 48,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 430,
+            "symbol_index_hex": "1AE",
+            "symbol_name": "__unwindfunclet$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z$1",
+            "symbol_section_number": 127
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_acquisition",
+              "section": 127,
+              "symbol_index": 430
+            }
+          ],
+          "boundary": null
+        },
+        {
+          "state": 2,
+          "next_state": 0,
+          "table_offset": 52,
+          "action_relocation": {
+            "ordinal": 3,
+            "file_offset": 15879,
+            "section_offset": 56,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 293,
+            "symbol_index_hex": "125",
+            "symbol_name": "___std_terminate",
+            "symbol_section_number": 0
+          },
+          "action_definitions": [],
+          "boundary": {
+            "kind": "external_frontier",
+            "object": "gameplay_effect_acquisition",
+            "symbol": {
+              "index": 293,
+              "index_hex": "125",
+              "file_offset": 23962,
+              "name": "___std_terminate",
+              "value": 0,
+              "section_number": 0,
+              "type": 32,
+              "storage_class": 2,
+              "auxiliary_count": 0,
+              "raw_hex": "00000000a200000000000000000020000200",
+              "is_auxiliary": false
+            }
+          }
+        },
+        {
+          "state": 3,
+          "next_state": 0,
+          "table_offset": 60,
+          "action_relocation": {
+            "ordinal": 4,
+            "file_offset": 15889,
+            "section_offset": 64,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 431,
+            "symbol_index_hex": "1AF",
+            "symbol_name": "__unwindfunclet$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z$2",
+            "symbol_section_number": 127
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_acquisition",
+              "section": 127,
+              "symbol_index": 431
+            }
+          ],
+          "boundary": null
+        },
+        {
+          "state": 4,
+          "next_state": 3,
+          "table_offset": 68,
+          "action_relocation": {
+            "ordinal": 5,
+            "file_offset": 15899,
+            "section_offset": 72,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 432,
+            "symbol_index_hex": "1B0",
+            "symbol_name": "__unwindfunclet$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z$3",
+            "symbol_section_number": 127
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_acquisition",
+              "section": 127,
+              "symbol_index": 432
+            }
+          ],
+          "boundary": null
+        },
+        {
+          "state": 5,
+          "next_state": 3,
+          "table_offset": 76,
+          "action_relocation": {
+            "ordinal": 6,
+            "file_offset": 15909,
+            "section_offset": 80,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 293,
+            "symbol_index_hex": "125",
+            "symbol_name": "___std_terminate",
+            "symbol_section_number": 0
+          },
+          "action_definitions": [],
+          "boundary": {
+            "kind": "external_frontier",
+            "object": "gameplay_effect_acquisition",
+            "symbol": {
+              "index": 293,
+              "index_hex": "125",
+              "file_offset": 23962,
+              "name": "___std_terminate",
+              "value": 0,
+              "section_number": 0,
+              "type": 32,
+              "storage_class": 2,
+              "auxiliary_count": 0,
+              "raw_hex": "00000000a200000000000000000020000200",
+              "is_auxiliary": false
+            }
+          }
+        },
+        {
+          "state": 6,
+          "next_state": 0,
+          "table_offset": 84,
+          "action_relocation": {
+            "ordinal": 7,
+            "file_offset": 15919,
+            "section_offset": 88,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 293,
+            "symbol_index_hex": "125",
+            "symbol_name": "___std_terminate",
+            "symbol_section_number": 0
+          },
+          "action_definitions": [],
+          "boundary": {
+            "kind": "external_frontier",
+            "object": "gameplay_effect_acquisition",
+            "symbol": {
+              "index": 293,
+              "index_hex": "125",
+              "file_offset": 23962,
+              "name": "___std_terminate",
+              "value": 0,
+              "section_number": 0,
+              "type": 32,
+              "storage_class": 2,
+              "auxiliary_count": 0,
+              "raw_hex": "00000000a200000000000000000020000200",
+              "is_auxiliary": false
+            }
+          }
+        },
+        {
+          "state": 7,
+          "next_state": 4,
+          "table_offset": 92,
+          "action_relocation": {
+            "ordinal": 8,
+            "file_offset": 15929,
+            "section_offset": 96,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 433,
+            "symbol_index_hex": "1B1",
+            "symbol_name": "__unwindfunclet$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z$4",
+            "symbol_section_number": 127
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_acquisition",
+              "section": 127,
+              "symbol_index": 433
+            }
+          ],
+          "boundary": null
+        },
+        {
+          "state": 8,
+          "next_state": 7,
+          "table_offset": 100,
+          "action_relocation": {
+            "ordinal": 9,
+            "file_offset": 15939,
+            "section_offset": 104,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 434,
+            "symbol_index_hex": "1B2",
+            "symbol_name": "__unwindfunclet$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z$5",
+            "symbol_section_number": 127
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_acquisition",
+              "section": 127,
+              "symbol_index": 434
+            }
+          ],
+          "boundary": null
+        },
+        {
+          "state": 9,
+          "next_state": 8,
+          "table_offset": 108,
+          "action_relocation": {
+            "ordinal": 10,
+            "file_offset": 15949,
+            "section_offset": 112,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 435,
+            "symbol_index_hex": "1B3",
+            "symbol_name": "__unwindfunclet$?acquire_gameplay_effect_by_id_008700e0@bsp@@YAPAPAXAAUGameplayEffectManager@1@AAPAXHIAAUGameplayEffectAcquisitionContext@1@@Z$12",
+            "symbol_section_number": 127
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_acquisition",
+              "section": 127,
+              "symbol_index": 435
+            }
+          ],
+          "boundary": null
+        },
+        {
+          "state": 10,
+          "next_state": 4,
+          "table_offset": 116,
+          "action_relocation": {
+            "ordinal": 11,
+            "file_offset": 15959,
+            "section_offset": 120,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 293,
+            "symbol_index_hex": "125",
+            "symbol_name": "___std_terminate",
+            "symbol_section_number": 0
+          },
+          "action_definitions": [],
+          "boundary": {
+            "kind": "external_frontier",
+            "object": "gameplay_effect_acquisition",
+            "symbol": {
+              "index": 293,
+              "index_hex": "125",
+              "file_offset": 23962,
+              "name": "___std_terminate",
+              "value": 0,
+              "section_number": 0,
+              "type": 32,
+              "storage_class": 2,
+              "auxiliary_count": 0,
+              "raw_hex": "00000000a200000000000000000020000200",
+              "is_auxiliary": false
+            }
+          }
+        },
+        {
+          "state": 11,
+          "next_state": 3,
+          "table_offset": 124,
+          "action_relocation": {
+            "ordinal": 12,
+            "file_offset": 15969,
+            "section_offset": 128,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 293,
+            "symbol_index_hex": "125",
+            "symbol_name": "___std_terminate",
+            "symbol_section_number": 0
+          },
+          "action_definitions": [],
+          "boundary": {
+            "kind": "external_frontier",
+            "object": "gameplay_effect_acquisition",
+            "symbol": {
+              "index": 293,
+              "index_hex": "125",
+              "file_offset": 23962,
+              "name": "___std_terminate",
+              "value": 0,
+              "section_number": 0,
+              "type": 32,
+              "storage_class": 2,
+              "auxiliary_count": 0,
+              "raw_hex": "00000000a200000000000000000020000200",
+              "is_auxiliary": false
+            }
+          }
+        },
+        {
+          "state": 12,
+          "next_state": 0,
+          "table_offset": 132,
+          "action_relocation": {
+            "ordinal": 13,
+            "file_offset": 15979,
+            "section_offset": 136,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 293,
+            "symbol_index_hex": "125",
+            "symbol_name": "___std_terminate",
+            "symbol_section_number": 0
+          },
+          "action_definitions": [],
+          "boundary": {
+            "kind": "external_frontier",
+            "object": "gameplay_effect_acquisition",
+            "symbol": {
+              "index": 293,
+              "index_hex": "125",
+              "file_offset": 23962,
+              "name": "___std_terminate",
+              "value": 0,
+              "section_number": 0,
+              "type": 32,
+              "storage_class": 2,
+              "auxiliary_count": 0,
+              "raw_hex": "00000000a200000000000000000020000200",
+              "is_auxiliary": false
+            }
+          }
+        }
+      ],
+      "compiler_Source_EH_only": true,
+      "all_funclet_code_EH_data_and_relocations_in_complete_receipt": true,
+      "original_Native_EH_equivalence_proved": false
+    },
+    "canonical_manager": {
+      "function": "?get_gameplay_effect_manager_004c1650@bsp@@YAPAUGameplayEffectManager@1@AAUGameplayEffectManagerContext@1@@Z",
+      "object": "gameplay_effect_manager",
+      "funcinfo_symbol": {
+        "index": 448,
+        "index_hex": "1C0",
+        "file_offset": 23543,
+        "name": "__ehfuncinfo$?get_gameplay_effect_manager_004c1650@bsp@@YAPAUGameplayEffectManager@1@AAUGameplayEffectManagerContext@1@@Z",
+        "value": 8,
+        "section_number": 156,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "00000000ba310000080000009c0000000300",
+        "is_auxiliary": false
+      },
+      "unwindtable_symbol": {
+        "index": 449,
+        "index_hex": "1C1",
+        "file_offset": 23561,
+        "name": "__unwindtable$?get_gameplay_effect_manager_004c1650@bsp@@YAPAUGameplayEffectManager@1@AAUGameplayEffectManagerContext@1@@Z",
+        "value": 0,
+        "section_number": 156,
+        "type": 0,
+        "storage_class": 3,
+        "auxiliary_count": 0,
+        "raw_hex": "0000000034320000000000009c0000000300",
+        "is_auxiliary": false
+      },
+      "state_count": 1,
+      "try_block_count": 0,
+      "unwind_states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "table_offset": 0,
+          "action_relocation": {
+            "ordinal": 0,
+            "file_offset": 13058,
+            "section_offset": 4,
+            "type": 6,
+            "type_hex": "0006",
+            "symbol_index": 439,
+            "symbol_index_hex": "1B7",
+            "symbol_name": "__unwindfunclet$?get_gameplay_effect_manager_004c1650@bsp@@YAPAUGameplayEffectManager@1@AAUGameplayEffectManagerContext@1@@Z$0",
+            "symbol_section_number": 145
+          },
+          "action_definitions": [
+            {
+              "object": "gameplay_effect_manager",
+              "section": 145,
+              "symbol_index": 439
+            }
+          ],
+          "boundary": null
+        }
+      ],
+      "compiler_Source_EH_only": true,
+      "all_funclet_code_EH_data_and_relocations_in_complete_receipt": true,
+      "original_Native_EH_equivalence_proved": false
+    }
+  },
+  "provider_closure": {
+    "method": "Complete section-level relocation closure including cotenants, EH/data sections and every COMDAT definition candidate",
+    "sections": [
+      {
+        "object": "gameplay_effect_id_wrapper",
+        "section": 6,
+        "name": ".text$mn",
+        "raw_size": 42,
+        "raw_sha256": "598c6c02e18d2c19f93fc201cedf50ea97795a282e1ff4ba8121c87b2039618a"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 126,
+        "name": ".text$mn",
+        "raw_size": 719,
+        "raw_sha256": "8936cfee375e3bc11d66e4ae548487ba36ed824f6737a3071a231722a77bd7ff"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 124,
+        "name": ".text$mn",
+        "raw_size": 11,
+        "raw_sha256": "0972c609d4f7cb2da896bf935b4a4b9e45196d6f98e825ce238181e9e5786819"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 164,
+        "name": ".rdata",
+        "raw_size": 17,
+        "raw_sha256": "b8c551285688d60ddb8ca0359b1aac36c9e47ab4599c8a80811a6750140ebcf6"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 116,
+        "name": ".text$mn",
+        "raw_size": 505,
+        "raw_sha256": "1b37da735ad6a03fc2d37470de6776ea8de94e700990d1dcb88ee605f72b065d"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 18,
+        "name": ".text$mn",
+        "raw_size": 515,
+        "raw_sha256": "ac3de99acf35996473b1bd4b7fb292624e1ee54669b86ff887079693e3f34faf"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 19,
+        "name": ".text$mn",
+        "raw_size": 75,
+        "raw_sha256": "2b170eaee73292815a3552d9e402eb3604ee8cbd95aa3b75b7b472883aeda849"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 166,
+        "name": ".rdata",
+        "raw_size": 5,
+        "raw_sha256": "5458f37977e6129640e9a702b17242e615bf4672eff3161fe49121846d47a085"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 165,
+        "name": ".rdata",
+        "raw_size": 8,
+        "raw_sha256": "d49c942e9d56873ae69cccf4eac88830e816f677c72fdbe51e77d1c7d6e665aa"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 127,
+        "name": ".text$x",
+        "raw_size": 90,
+        "raw_sha256": "c743f3cc49ab8917cfc5f3b52bff8f23186913db62be878b11f90633c6deb3d5"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 145,
+        "name": ".xdata$x",
+        "raw_size": 140,
+        "raw_sha256": "137361101135ea016d3d1d81120f2233b49c2d06f8f3c674fbbf060389b9137f"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 56,
+        "name": ".text$mn",
+        "raw_size": 19,
+        "raw_sha256": "2e7ba93135f7f54c43f464f221793f6beface7efbefbc28aeeff5892868ca94a"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 64,
+        "name": ".text$mn",
+        "raw_size": 15,
+        "raw_sha256": "81684dd9d6a8a267dd9a64bf26612d6a0781b920cbe2920e6a1e73a364498351"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 62,
+        "name": ".text$mn",
+        "raw_size": 65,
+        "raw_sha256": "6c658c69c576a443ef03e83c97f78e8a26eb5aeee5abf604f90650cb77bfa001"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 63,
+        "name": ".text$x",
+        "raw_size": 29,
+        "raw_sha256": "d90cb4be796cf291fed7ec4133c6ee08fdef7075b7cc3fda0d4572cc996b7b69"
+      },
+      {
+        "object": "gameplay_effect_acquisition",
+        "section": 146,
+        "name": ".xdata$x",
+        "raw_size": 36,
+        "raw_sha256": "deefb3473c3645d1b0e64473dc4d9122bd804dbeee0601d27662e64da29238e5"
+      },
+      {
+        "object": "gameplay_effect_manager",
+        "section": 144,
+        "name": ".text$mn",
+        "raw_size": 283,
+        "raw_sha256": "e205ec0515f58ee250e8b74f0e4348c6157f554ed729a8450cfbd1905e983107"
+      },
+      {
+        "object": "gameplay_effect_manager",
+        "section": 145,
+        "name": ".text$x",
+        "raw_size": 52,
+        "raw_sha256": "7ce0dd049a6f4ca9793e951558b06156b95cb826d367088743238fef266eda38"
+      },
+      {
+        "object": "gameplay_effect_manager",
+        "section": 156,
+        "name": ".xdata$x",
+        "raw_size": 44,
+        "raw_sha256": "4f143ae7e7b544a334c74e56a1337b935dbb2835710691ebf2bfea501a33e852"
+      },
+      {
+        "object": "gameplay_effect_manager",
+        "section": 94,
+        "name": ".text$mn",
+        "raw_size": 20,
+        "raw_sha256": "57a59c91c5aa14120f72ac1a74f46723ddcd4742384c8762e26bfa3335f35e00"
+      }
+    ],
+    "edge_count": 85,
+    "external_frontier_edge_count": 51,
+    "weak_alias_records": 0,
+    "external_frontier_unique_names": [
+      "??0GuiLua51Host@bsp@@QAE@AAUlua_State@@@Z",
+      "??1GuiLua51Host@bsp@@UAE@XZ",
+      "??2@YAPAXI@Z",
+      "??3@YAXPAXI@Z",
+      "?_Xlength_error@std@@YAXPBD@Z",
+      "?allocate_gameplay_effect_definition_00870240_fragment@bsp@@YAPAUGameplayEffectDefinition@1@XZ",
+      "?assign_0041e870@NativeString@bsp@@QAEAAV12@AAVNativeStringStorage@2@PBD@Z",
+      "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+      "?get_by_index@GuiLua51Host@bsp@@UAE?AUGuiLuaRef@2@ABU32@H@Z",
+      "?get_by_name@GuiLua51Host@bsp@@UAE?AUGuiLuaRef@2@ABU32@PBD@Z",
+      "?get_manager_00415350@SingletonLifetimeDomain@bsp@@QAEPAVConcreteSingletonLifetimeManager@2@XZ",
+      "?globals@GuiLua51Host@bsp@@UAE?AUGuiLuaRef@2@XZ",
+      "?load_gameplay_effect_components_00870400@bsp@@YAXAAUGameplayEffectDefinition@1@AAVGuiLua51Host@1@ABUGuiLuaRef@1@AAVNativeStringStorage@1@AAUGameplayEffectComponentServices@1@@Z",
+      "?register_object@ConcreteSingletonLifetimeManager@bsp@@UAEXPAX@Z",
+      "?release@GuiLua51Host@bsp@@UAEXABUGuiLuaRef@2@@Z",
+      "?set_gameplay_effect_definition_identity_0086b870@bsp@@YAXAAUGameplayEffectDefinition@1@HPBXAAVNativeStringStorage@1@@Z",
+      "?singleton_enter_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z",
+      "?singleton_leave_critical_section@bsp@@YAXAAUSystemSingletonCriticalSection@1@@Z",
+      "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+      "?to_string@GuiLua51Host@bsp@@UAEPBDABUGuiLuaRef@2@@Z",
+      "?type_of@GuiLua51Host@bsp@@UAE?AW4GuiLuaType@2@ABUGuiLuaRef@2@@Z",
+      "@__security_check_cookie@4",
+      "___CxxFrameHandler3",
+      "___security_cookie",
+      "___std_terminate"
+    ],
+    "complete_edges_in_receipt": true,
+    "whole_program_link_runtime_binding_proved": false,
+    "additional_frontier_cpp_frozen_but_not_compiled": [
+      "src/gui_lua_runtime.cpp",
+      "src/native_string.cpp",
+      "src/gameplay_effect_definition.cpp",
+      "src/gameplay_effect_components.cpp",
+      "src/singleton_lifetime.cpp",
+      "src/gameplay_effect_scalar_components.cpp",
+      "src/gameplay_effect_name_index.cpp"
+    ],
+    "remaining": [
+      "real Lua/string/definition/component and singleton providers",
+      "operator allocation/deallocation and length error",
+      "security cookie, CxxFrameHandler3 and terminate",
+      "genuine application/virtual/lifetime binding"
+    ]
+  },
+  "source_dependency_evidence": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\source_and_dependency_pins.json",
+      "bytes": 156507,
+      "sha256": "dfbe839d8d42645766fe06c7eb4c9b2e3ebce02e0cebde49a825e06839ba493f"
+    },
+    "counts": {
+      "complete_Source_files": 32,
+      "compiler_project_inputs": 25,
+      "additional_uncompiled_frontier_cpp": 7,
+      "new_candidate_files": 2,
+      "unchanged_baseline_Source_files": 30,
+      "external_header_files": 197,
+      "compiler_tool_pins": 10
+    },
+    "complete_compiler_dependencies_and_baseline_inputs_frozen": true
+  },
+  "retained_input_pins": [
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_DAMAGEABLE_EFFECT_ID_WRAPPER_IDENTITY_READINESS.md",
+        "bytes": 13981,
+        "sha256": "839154e01f0cfd8cc4003b81498df559b18af2b0455cccfdb611b7fed9ad2584"
+      },
+      "relative_path": "docs/CC12_DAMAGEABLE_EFFECT_ID_WRAPPER_IDENTITY_READINESS.md",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "2840f43a79a57448a5e75cc79128175de5dff2a0",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\docs\\CC12_DAMAGEABLE_EFFECT_ID_WRAPPER_IDENTITY_READINESS.md",
+        "bytes": 13981,
+        "sha256": "839154e01f0cfd8cc4003b81498df559b18af2b0455cccfdb611b7fed9ad2584"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_damageable_effect_id_wrapper_identity_readiness.json",
+        "bytes": 136561,
+        "sha256": "e1945e44150badf34591482e17d3a2ec98346ca68aa1d4d05999b7315e1e6484"
+      },
+      "relative_path": "reports/cc12_damageable_effect_id_wrapper_identity_readiness.json",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "441e1b9c9cf6e816adf1ac4e8ff157c3da552cce",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\reports\\cc12_damageable_effect_id_wrapper_identity_readiness.json",
+        "bytes": 136561,
+        "sha256": "e1945e44150badf34591482e17d3a2ec98346ca68aa1d4d05999b7315e1e6484"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_DAMAGEABLE_EFFECT_ID_WRAPPER_IDENTITY_READINESS_PRIMARY_REVIEW.md",
+        "bytes": 2492,
+        "sha256": "f06fef9bcbada937ee72db6913dd928246475c9c9e0c7a6f5f940e8c93a94586"
+      },
+      "relative_path": "docs/CC12_DAMAGEABLE_EFFECT_ID_WRAPPER_IDENTITY_READINESS_PRIMARY_REVIEW.md",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "d1d080864b516e8b3e317b3dc4f0b6b23afd5cc8",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\docs\\CC12_DAMAGEABLE_EFFECT_ID_WRAPPER_IDENTITY_READINESS_PRIMARY_REVIEW.md",
+        "bytes": 2492,
+        "sha256": "f06fef9bcbada937ee72db6913dd928246475c9c9e0c7a6f5f940e8c93a94586"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_damageable_effect_id_wrapper_identity_readiness_primary_review.json",
+        "bytes": 13914,
+        "sha256": "f4deb261f058c15eeb9d20f55948bbe0633cb9206cff14d178aac5f569077cac"
+      },
+      "relative_path": "reports/cc12_damageable_effect_id_wrapper_identity_readiness_primary_review.json",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "955f71ce14905089ad18f892a9dba3c3699de72d",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\reports\\cc12_damageable_effect_id_wrapper_identity_readiness_primary_review.json",
+        "bytes": 13914,
+        "sha256": "f4deb261f058c15eeb9d20f55948bbe0633cb9206cff14d178aac5f569077cac"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\cmake\\startup.cmake",
+        "bytes": 201538,
+        "sha256": "af3f3b688ade2685def3787ba89259b418b590f7af545be2e3abb0704bad9dee"
+      },
+      "relative_path": "cmake/startup.cmake",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "4cdb643767947916f67bdb1ca129ac980c5e55aa",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\cmake\\startup.cmake",
+        "bytes": 201538,
+        "sha256": "af3f3b688ade2685def3787ba89259b418b590f7af545be2e3abb0704bad9dee"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "relative_path": "config/target.json",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include\\bsp\\native_compact_type_id_publication_fragment.hpp",
+        "bytes": 1304,
+        "sha256": "e4c7de43ffc737e7bd679a17972fd90a35a9798295a8a66a9fe46470c1eba504"
+      },
+      "relative_path": "include/bsp/native_compact_type_id_publication_fragment.hpp",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "90a56cef524f56eaeb41eebd554bf9cd6979de32",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\include\\bsp\\native_compact_type_id_publication_fragment.hpp",
+        "bytes": 1304,
+        "sha256": "e4c7de43ffc737e7bd679a17972fd90a35a9798295a8a66a9fe46470c1eba504"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_compact_type_id_publication_fragment.cpp",
+        "bytes": 546,
+        "sha256": "af3c962e338bf3c5aa2d02699bd6e0df29c03948bd5a1d97fd60aefeecf59c40"
+      },
+      "relative_path": "src/native_compact_type_id_publication_fragment.cpp",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "96a06d18095f99e766526d19cf789410d5fbe823",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\src\\native_compact_type_id_publication_fragment.cpp",
+        "bytes": 546,
+        "sha256": "af3c962e338bf3c5aa2d02699bd6e0df29c03948bd5a1d97fd60aefeecf59c40"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_COMPACT_COUNTER_PREDECESSOR_INSTRUCTION_COMPLETION.md",
+        "bytes": 6180,
+        "sha256": "59133e06f8b347cddf79732a236d0c992dcf4864473bd4f0a528f600b4676370"
+      },
+      "relative_path": "docs/CC12_COMPACT_COUNTER_PREDECESSOR_INSTRUCTION_COMPLETION.md",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "731c4fd64643bb42f08cfd8f24eb8c53de93da68",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\docs\\CC12_COMPACT_COUNTER_PREDECESSOR_INSTRUCTION_COMPLETION.md",
+        "bytes": 6180,
+        "sha256": "59133e06f8b347cddf79732a236d0c992dcf4864473bd4f0a528f600b4676370"
+      }
+    },
+    {
+      "file": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_compact_counter_predecessor_instruction_completion.json",
+        "bytes": 47283,
+        "sha256": "7ef475a99f1cd85ce5de55f54dbc559b6c8a31d07c0a70477467bffeddddb193"
+      },
+      "relative_path": "reports/cc12_compact_counter_predecessor_instruction_completion.json",
+      "baseline": "b8ac06b7b13557f4a2698cce0693342047804dad",
+      "baseline_git_blob": "8ba34cfd9cf81d3939992c2f7be3d518fb2263fc",
+      "current_Git_blob_matches": true,
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\final\\retained_inputs\\reports\\cc12_compact_counter_predecessor_instruction_completion.json",
+        "bytes": 47283,
+        "sha256": "7ef475a99f1cd85ce5de55f54dbc559b6c8a31d07c0a70477467bffeddddb193"
+      }
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\compile_objects.py",
+      "bytes": 8031,
+      "sha256": "9a3768bd834b775615679105566ad5d75ac8c16173860af3095715406324865a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\compiler_environment.cmd",
+      "bytes": 139,
+      "sha256": "8fd2bd7e325d2b837ca105825599449c3cd8f0d67ac2b92f7c50d43753ae7781"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\coff_index_core.py",
+      "bytes": 5295,
+      "sha256": "42e947fc2653177afceaeb278212c3d34910749eb6482613f950a655dd1fe3ba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\index_objects.py",
+      "bytes": 2914,
+      "sha256": "a8c69dc625518367182865e513442d35428ebbd7f7b533750e29c83f0a48051b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\audit_objects.py",
+      "bytes": 11128,
+      "sha256": "2c73e819473f7a4e9fe264f3d8477a2b8f560e76eefaf74d004583813a6157ce"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\view_code.py",
+      "bytes": 1049,
+      "sha256": "a0230fab8a4ddd68b3876adabcc7790f06d2f5eb01de7248f105ec380434e9eb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\finalize.py",
+      "bytes": 21582,
+      "sha256": "5f0adc123d6bb4b6c878b4413e3f78cd626a8a7c92cd98001040e43c794c8afe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\compile_receipts.json",
+      "bytes": 10616,
+      "sha256": "9606e87708ceb7792d9d7f605d4ebf6c2abf899ea7e78eea566d75ca666bfdc2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\recorded_release_commands.json",
+      "bytes": 11280,
+      "sha256": "d089a44bb81db94bb7dc2affdaf6fcc123ac920b4cd4bee0c0e48ef4a0cd2e3a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\object_index_summary.json",
+      "bytes": 2092,
+      "sha256": "ae96ff23799826b47cb02d475091639c4f481de9508d716cc719f0cf36d82148"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\coff_provider_receipt.json",
+      "bytes": 367691,
+      "sha256": "c7846428cc9b991cc2d89d3109427847234308d3fab58d1d15c83c8a399d82ff"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\source_and_dependency_pins.json",
+      "bytes": 156507,
+      "sha256": "dfbe839d8d42645766fe06c7eb4c9b2e3ebce02e0cebde49a825e06839ba493f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\lease_receipt.json",
+      "bytes": 712,
+      "sha256": "16df01e675d3639e0a7b507c56198cbf5a3775ad04f1c2a0d638877897310745"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\prior_artifact_preservation.json",
+      "bytes": 2605,
+      "sha256": "9e89eb7e3a978ebc858a1c83ce4362202ca7edc3fe64662cd9403fe7773cf030"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\bsp_core.vcxproj",
+      "bytes": 251156,
+      "sha256": "4333c8916b755a60cf6c4f220424cbab141f13be8f1ade84367695393c3d01f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\CL.command.1.tlog",
+      "bytes": 2901362,
+      "sha256": "a0088428f45f13277ba238087ad7e2236dfab3b1e949c2a8bbf00adf637d0c3c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.obj",
+      "bytes": 2526,
+      "sha256": "9bdda0afde2cccebcfc7d858095a9658c6c3e11724252f45fc9723ed8f91152d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.dependencies.json",
+      "bytes": 16647,
+      "sha256": "e4d7ddba6d7f4501ef4d144b2c742d84b6df95123f60dfa1aa6a22f4ac85c275"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.command.json",
+      "bytes": 1455,
+      "sha256": "9820bda788d5fd7fdb9218ae6733be31c5ce0c54b713ef46fc31ad9e98ac167f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.compile.log",
+      "bytes": 1132,
+      "sha256": "04dbb186cb7fe20e5737a9f5a19356ebd0fa275d3ddb553d8dd38ca10040d0df"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.headers.txt",
+      "bytes": 4129,
+      "sha256": "ed2beb2c142f33adf43c9c28191d1b1b7af95c79ced701fae7e9141360437f07"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.symbols.txt",
+      "bytes": 2941,
+      "sha256": "24c9c5b4f1feda2ff3a83e4106cc707fa93e338e49653f8676da33e7b19baaf5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.relocations.txt",
+      "bytes": 1202,
+      "sha256": "5e86f63bd2e94c92a86f0f70df2d7ff6ded300b56c2a50ce39ad1d88e9a707ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.directives.txt",
+      "bytes": 811,
+      "sha256": "5fbf19e8a2a1b43ee2dd48f3dc6f73b36619d03056f1a327f7412f708b496155"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.disasm.txt",
+      "bytes": 1879,
+      "sha256": "316ece928e5495bcd4e02c418904451fc6ae338c1985b4a8a70e05edab71941c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_id_wrapper.coff_index.json",
+      "bytes": 18485,
+      "sha256": "1becc81fa59080d00aac401a94011167743a9dce702f328fb0922f30d790759c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.obj",
+      "bytes": 49078,
+      "sha256": "e882407234fd08fceba8c3b9b83f2653fd83f62892064dce0d3eafaf5bf8a37f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.dependencies.json",
+      "bytes": 27580,
+      "sha256": "cfe7fe58191a9b2d64df1f651699f8261c4c395bd7098daa8efe45f5e6c0b2b8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.command.json",
+      "bytes": 1459,
+      "sha256": "f2e04bb7f3265f1a34b31528fbd6a6a35d14fd672841c7757d64137b02208dfe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.compile.log",
+      "bytes": 1133,
+      "sha256": "ba37ede72af692217d26dd2067fac4c14e6770e90e02b7626cba06d1083a5b7c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.headers.txt",
+      "bytes": 114949,
+      "sha256": "13e038c1a7bfe22e1cbc635a59d266a1191f052051ba6d18e33c668bb4867685"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.symbols.txt",
+      "bytes": 83931,
+      "sha256": "0b3370e96dbb9328d6f8ed2912fa6937ca228f3993d0db2efcea60aa08111c8c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.relocations.txt",
+      "bytes": 77482,
+      "sha256": "20918eef3dde32b1caf62deee17308cfef4180cd586af6b89f8ea858755fcbae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.directives.txt",
+      "bytes": 947,
+      "sha256": "deb26db2f5fa78bbe8b664a586c08cc13c3cb5aa477eb6fc0c025d85ad40e82b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.disasm.txt",
+      "bytes": 151833,
+      "sha256": "57549ab78fbd0737635f533c719b0eee56686d52b3d6eb0d657479af44b8ece0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_acquisition.coff_index.json",
+      "bytes": 759044,
+      "sha256": "7b208217ee7e825819a93783437bd8a2912edc94f339b0a5083d5e7d7683b3c5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.obj",
+      "bytes": 38886,
+      "sha256": "fd1e246939e976cdd169c1301fc385c2b7ecacd677c4f2741664165ad5e1550f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.dependencies.json",
+      "bytes": 11974,
+      "sha256": "038f3de4f8dccfee58d1592e427209ea5339db413842c3f73d8d91084eb35154"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.command.json",
+      "bytes": 1443,
+      "sha256": "3541ae4bdbaec29f4d32cd94661aaf5bb7efa24fd860c2c25de4385f07e43267"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.compile.log",
+      "bytes": 1129,
+      "sha256": "9e0be676acb291f333766a8982864d618f943ce2b9e4895f3d7360fdbe716ab4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.headers.txt",
+      "bytes": 117527,
+      "sha256": "71703ce8ea729c7e84d648b04cc91990a1eb8eac6ff5b17b1be89c3522550ed8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.symbols.txt",
+      "bytes": 78225,
+      "sha256": "9ca634e43a082e4efde7ea221bedd126cf1a2f2ee2630de79f58278b8d99e6b2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.relocations.txt",
+      "bytes": 78016,
+      "sha256": "06100400623fa9eab14bd260c1d427005f326ecc0828bc21bfeb208cf4e2f2bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.directives.txt",
+      "bytes": 943,
+      "sha256": "5a0f7f04cfae4bcf1e0bdb1e10b93434e5e514ffe8131abbf736302d3a48b518"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.disasm.txt",
+      "bytes": 98841,
+      "sha256": "01d57d3517c60c4348a0d0b7e4f0c572f451692f3613dc2fc3ca5fd4051ace93"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_gameplay_effect_id_wrapper_source\\gameplay_effect_manager.coff_index.json",
+      "bytes": 560445,
+      "sha256": "428f84015d2c14af135d89d203a7b18f7f38d944ae5ab35a59fad2119c27752b"
+    }
+  ],
+  "prior_bundle_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\evidence_bundle.zip",
+      "bytes": 2620913,
+      "sha256": "a3b54b0f9c0b82d40ae2c8aec17bfc644a52d5689a18db4a47ae86df8fb3b0b7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_dependency_readiness\\final_evidence_bundle.zip",
+      "bytes": 152883,
+      "sha256": "a6295032b0be3687d7e7f066d49753f5cc998d9105f5f743f1a4eb3107336c4a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_owner_metadata\\evidence_bundle.zip",
+      "bytes": 123077,
+      "sha256": "c4261b44193f04b2c3bebb794a4549700adda1b1ca82743bdbcb78023b95b217"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_writer_predecessor_boundary\\evidence_bundle.zip",
+      "bytes": 218318,
+      "sha256": "90793c61b723119a88e812707156532a31fb78560117a6b7d9ebfbe02945d439"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_skin_model_type_id_publication_source\\final_evidence_bundle.zip",
+      "bytes": 1638902,
+      "sha256": "a00bf6f6f4e7dbd0448c4d20c091f22c1cf89434a260165075a59d315b688246"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_compact_writer_predecessor_boundary\\evidence_bundle.zip",
+      "bytes": 242033,
+      "sha256": "74b8d20766e54dc4a38bc49c3bd2c0327d12c121424dce1bffb6459e93255e69"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_compact_type_id_publication_source\\final_evidence_bundle.zip",
+      "bytes": 1643817,
+      "sha256": "b27ded2243136d46564123e727deabde5befbda51310b8625336eb6f55908d26"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_compact_counter_predecessor_instruction_completion\\evidence_bundle.zip",
+      "bytes": 212723,
+      "sha256": "949abbed683e8268c1cce3afed394d0db1c4cf28a640235a12b845536e3f749a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_damageable_effect_id_wrapper_identity_readiness\\evidence_bundle.zip",
+      "bytes": 777431,
+      "sha256": "d2e8f34d43d34c37e50fb134e5da32ac57750ed4b27e2393499bf0a9d5e68224"
+    }
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_GAMEPLAY_EFFECT_ID_WRAPPER_SOURCE.md",
+    "bytes": 10311,
+    "sha256": "c171cfd4878a47229a8cbf99b6287c80226f191fde6b884c2d343602e9ce524d"
+  },
+  "validation": {
+    "three_compiles_passed": true,
+    "actual_Root_options_matched": true,
+    "candidate_two_externals_resolve_to_exact_positive_compiled_definitions": true,
+    "whole_objects_all_sections_symbols_AUX_relocations_code_retained": true,
+    "Source_flag_load_order_reviewed_in_compiler_output": true,
+    "selected_complete_error_lifetime_graphs_reviewed": true,
+    "Native_queries_bytes_GPR_mutations_POST_scripts_restarts_configuration_changes": 0,
+    "existing_provider_header_CMake_ledger_edits": 0,
+    "new_tests_probes_links_runtime_executions": 0,
+    "Root_normal_registration_build_ledger_annotation_reserved": true
+  },
+  "held": [
+    "normal Root registration and build",
+    "original ECX/EDX/RET4 binary ABI",
+    "raw Native parent slot/type bridge",
+    "profile table binding",
+    "Native EH/SEH/fault behavior",
+    "complete Damageable parent composition",
+    "startup and gameplay equivalence"
+  ]
+}
