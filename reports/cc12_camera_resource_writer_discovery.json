@@ -780,5 +780,66 @@
     "runtime_or_ABI_admission": false,
     "game_validated": false
   },
-  "historical_context": "Accepted Source-readiness report is frozen unchanged from this baseline. Its Source595 build/runtime references remain historical; no such execution was repeated here."
+  "historical_context": "Accepted Source-readiness report is frozen unchanged from this baseline. Its Source595 build/runtime references remain historical; no such execution was repeated here.",
+  "primary_review": {
+    "decision": "Accept three direct Native writes as selected evidence; whole initializer/backing/ABI and ownership gate remain held.",
+    "worker_commit": "b89818e2",
+    "artifact_pin_occurrences_verified_and_retained": 49,
+    "selected_context_baseline_and_current_Git_matches": [
+      "config/target.json",
+      "tools/bsp.py",
+      "tools/ghidra_export.py",
+      "include/bsp/native_camera_group_resource.hpp",
+      "src/native_camera_group_resource.cpp",
+      "include/bsp/native_resource_instance_postprocess.hpp",
+      "include/bsp/native_resource_postprocess_full.hpp",
+      "include/bsp/game_native_type_storage.hpp",
+      "src/game_native_type_storage.cpp",
+      "src/game_native_vfs_application.cpp",
+      "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+      "reports/cc12_remaining_resource_descriptors_source_readiness.json"
+    ],
+    "Root_original_disk_vs_worker_retained_live_bytes": [
+      {
+        "address": "00CD83BF",
+        "bytes": 5,
+        "disk_hex": "a38c020901",
+        "worker_retained_live_hex": "a38c020901",
+        "raw_bytes_equal": true,
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x109028c], eax"
+      },
+      {
+        "address": "00CD83C4",
+        "bytes": 6,
+        "disk_hex": "890d90020901",
+        "worker_retained_live_hex": "890d90020901",
+        "raw_bytes_equal": true,
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x1090290], ecx"
+      },
+      {
+        "address": "00CD83D8",
+        "bytes": 6,
+        "disk_hex": "890d88020901",
+        "worker_retained_live_hex": "890d88020901",
+        "raw_bytes_equal": true,
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x1090288], ecx"
+      }
+    ],
+    "new_live_queries": 0,
+    "new_byte_windows": 0,
+    "proof": {
+      "path": "local/cc12_camera_writer_discovery_primary/proof.json",
+      "bytes": 27463,
+      "sha256": "d617a6839b0d594b2b5fba866c9c0e2a75e9ebf87fdbf7b16189d559646613f6"
+    },
+    "document_pin": {
+      "path": "docs/CC12_CAMERA_RESOURCE_WRITER_DISCOVERY.md",
+      "bytes": 7145,
+      "sha256": "16477111260a22179153ac87152114daed2ce0a502593486a498ec37e14ef8b6"
+    },
+    "GPR_mutations_or_Cpp_build_test_runtime_changes": 0
+  }
 }

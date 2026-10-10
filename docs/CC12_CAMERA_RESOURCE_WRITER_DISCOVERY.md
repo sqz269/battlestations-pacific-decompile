@@ -110,3 +110,11 @@ The existing VFS type owner, same-counter lifetime contract and Source-order
 qualification remain unchanged. Camera-resource production backing and consumer
 composition stay held. Compact `0109042C` and skin-model `01090344` remain outside
 this discovery; their bodies and data were not investigated.
+
+Primary review retained and verified all49 pin occurrences and all12 selected
+context Git blobs. Root additionally replayed the three exact selected windows
+against the unchanged original PE and worker-retained live hex: all17 bytes
+match directly. This adds selected raw-byte equality only. It does not extend
+the byte windows or establish a whole body, value origin, ABI, owner, caller,
+guard/name/layout/counter/CRT slot. The next ownership/boundary audit remains
+separate and must preserve this held complete-initializer boundary.
