@@ -30,4 +30,17 @@ void* create_gui_text_native_vertex_current5c(void* actual_renderer,
 void* create_gui_text_native_index_current60(void* actual_renderer,
     std::uint32_t count, std::uint32_t flags, std::uint32_t format,
     GuiTextNativeRendererServices&, NativeStreamCloneAcquired&);
+
+// Source composition for an already-captured renderer/+5C pair. The caller
+// supplies the ACTUAL live renderer/object, descriptor and native profile view,
+// with matching physical/device/pool/canonical-owner services. Header/token and
+// nonnull-view checks do not authenticate a copied Native layout or its origin.
+// Services and a fresh caller-owned acquired frame survive every partial effect
+// and terminal callback. No new custody, rollback, retry or extra Native retain.
+// Dispatches only saved B287C0; does not reload +5C or replace the saved receiver.
+// Original B287C0 late +58 behavior and existing canonical admission remain.
+// New MSVC Win32 interface, not a Native entry/SEH replacement or factory owner.
+void* create_native_vertex_from_captured_renderer_5c(void* actual_renderer,
+    std::uint32_t captured_entry, std::uint32_t first, std::uint32_t bytes,
+    void* actual_descriptor, NativeStreamCloneServices&, NativeStreamCloneAcquired&);
 } // namespace bsp
