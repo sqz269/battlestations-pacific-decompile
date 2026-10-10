@@ -1,0 +1,2339 @@
+{
+  "schema": "cc12.application_publication_authority_readiness.report.v1",
+  "status": "Source_readiness_no_CPP_GO_no_activation",
+  "base_commit": "ef15bbd5da9390cb75b691efae685b4360c69113",
+  "Main_at_capture": "98b5113614afb4b54aa16a469bfdd16befc656f3",
+  "owned_tracked_files": [
+    "docs/CC12_APPLICATION_PUBLICATION_AUTHORITY_READINESS.md",
+    "reports/cc12_application_publication_authority_readiness.json"
+  ],
+  "inputs": {
+    "source_corpus": {
+      "path": "frozen/87799730646459121dade53c5b1510006020581708d026b65cfdbb3f4aa16b80_Source_corpus.json",
+      "bytes": 1649772,
+      "sha256": "87799730646459121dade53c5b1510006020581708d026b65cfdbb3f4aa16b80"
+    },
+    "dependencies": {
+      "path": "frozen/c3ebd708a7db7787951cb7e869589cbb91caa1932f63a8507eb94ba3fa393db3_dependencies.json",
+      "bytes": 10753905,
+      "sha256": "c3ebd708a7db7787951cb7e869589cbb91caa1932f63a8507eb94ba3fa393db3"
+    },
+    "query_spec": {
+      "path": "frozen/52f090e3c5b3414f924c7cb393a7ab1d75fd797fbe881ac9ca2f0e6966137a5c_query_spec.json",
+      "bytes": 4022,
+      "sha256": "52f090e3c5b3414f924c7cb393a7ab1d75fd797fbe881ac9ca2f0e6966137a5c"
+    },
+    "queries": {
+      "path": "frozen/c16ce79dc3d0028bdd834524859dc151451be9728f9e8697a517aad8b4a9cc5c_queries.json",
+      "bytes": 306407,
+      "sha256": "c16ce79dc3d0028bdd834524859dc151451be9728f9e8697a517aad8b4a9cc5c"
+    },
+    "excerpts": {
+      "path": "frozen/f4f30aa5dc34ccb42727a5a77344b7b07c51f6b6db8b2a03a985a5a83cd91309_excerpts.json",
+      "bytes": 22201,
+      "sha256": "f4f30aa5dc34ccb42727a5a77344b7b07c51f6b6db8b2a03a985a5a83cd91309"
+    }
+  },
+  "helpers": {
+    "freeze_source": {
+      "path": "freeze_source.py",
+      "bytes": 3371,
+      "sha256": "fad8c21a03b2e177c5411b6c0ee21f02082aee888f4dae42fd55c9deec96860a"
+    },
+    "dependencies": {
+      "path": "dependencies.py",
+      "bytes": 7642,
+      "sha256": "4a37fa1dbb6520f7486a90b662d3aa480820a3880d2b0ac8e69f8a8bd8fd994f"
+    },
+    "evidence": {
+      "path": "evidence.py",
+      "bytes": 7797,
+      "sha256": "8252961b037cc0e0fe64806898b17f0aa2ac718f1370616ca95105c5d8e24327"
+    },
+    "audit": {
+      "path": "audit.py",
+      "bytes": 15494,
+      "sha256": "a7007c8be2db5b6882e8f3ae22cf65d788d87e9ee2b5a506c3fd6fd64e8d97cc"
+    },
+    "run_audit": {
+      "path": "run_audit.py",
+      "bytes": 670,
+      "sha256": "246f4c382abd09f98756293539e1d5e598c9105965ab7137bd34d4b01038a030"
+    },
+    "verify": {
+      "path": "verify.py",
+      "bytes": 5584,
+      "sha256": "75d21aa13ca504764bbe9269cc70c69e8371c726410b6c4da2dd42612e5e01d0"
+    },
+    "publish": {
+      "path": "publish.py",
+      "bytes": 3452,
+      "sha256": "4d6d6cb764da43818d3f4bad5cb75009be6ed15c568bd8ce434622069b3d9e1b"
+    },
+    "relocate_verify": {
+      "path": "relocate_verify.py",
+      "bytes": 1191,
+      "sha256": "31a45df46e78664be2578769b97ebfbf2b100ef5f8fd3ff9a5b12ea76c4ea05c"
+    }
+  },
+  "document": {
+    "path": "frozen/991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca_CC12_APPLICATION_PUBLICATION_AUTHORITY_READINESS.md",
+    "bytes": 14656,
+    "sha256": "991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca"
+  },
+  "audit_receipt": {
+    "path": "frozen/bf57a9dfc8bf28219f376005e26b5a0fb79a4f7594fc0e65b4090d6d82f3b81d_audit_receipt.json",
+    "bytes": 58563,
+    "sha256": "bf57a9dfc8bf28219f376005e26b5a0fb79a4f7594fc0e65b4090d6d82f3b81d"
+  },
+  "audit_result": {
+    "schema": "cc12.application_publication_authority.audit.v1",
+    "status": "PASS",
+    "base_commit": "ef15bbd5da9390cb75b691efae685b4360c69113",
+    "Main_at_capture": "98b5113614afb4b54aa16a469bfdd16befc656f3",
+    "Source_files": 4208,
+    "accepted_Git_blobs": 10,
+    "Root_frame_evidence_files": 2,
+    "Source_epochs": [
+      {
+        "label": "Source3352-wide",
+        "selected_inputs": 3352,
+        "historical_artifacts": 4,
+        "normalized_selected_differences": [
+          "cmake/startup.cmake",
+          "include/bsp/native_game_container_lifetime.hpp",
+          "include/bsp/native_game_grid.hpp",
+          "include/bsp/native_game_lifetime.hpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_render_context.hpp",
+          "src/native_game_container_lifetime.cpp",
+          "src/native_game_grid.cpp",
+          "src/native_game_lifetime.cpp",
+          "src/native_particle_model_lifetime.cpp",
+          "src/native_render_context.cpp"
+        ],
+        "old_artifacts_receive_fresh_or_unchanged_credit": false
+      },
+      {
+        "label": "Source3352-worker-free",
+        "selected_inputs": 3352,
+        "historical_artifacts": 4,
+        "normalized_selected_differences": [
+          "cmake/startup.cmake",
+          "include/bsp/native_game_grid.hpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_render_context.hpp",
+          "src/native_game_grid.cpp",
+          "src/native_particle_model_lifetime.cpp",
+          "src/native_render_context.cpp"
+        ],
+        "old_artifacts_receive_fresh_or_unchanged_credit": false
+      },
+      {
+        "label": "Source3354-node",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences": [
+          "include/bsp/native_game_container_lifetime.hpp",
+          "include/bsp/native_game_grid.hpp",
+          "include/bsp/native_game_lifetime.hpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_render_context.hpp",
+          "src/native_game_container_lifetime.cpp",
+          "src/native_game_grid.cpp",
+          "src/native_game_lifetime.cpp",
+          "src/native_particle_model_lifetime.cpp",
+          "src/native_render_context.cpp"
+        ],
+        "old_artifacts_receive_fresh_or_unchanged_credit": false
+      },
+      {
+        "label": "Source3354-primary-free",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences": [
+          "include/bsp/native_game_grid.hpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_render_context.hpp",
+          "src/native_game_grid.cpp",
+          "src/native_particle_model_lifetime.cpp",
+          "src/native_render_context.cpp"
+        ],
+        "old_artifacts_receive_fresh_or_unchanged_credit": false
+      },
+      {
+        "label": "Source3354-particle-primary",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences": [
+          "include/bsp/native_game_grid.hpp",
+          "include/bsp/native_render_context.hpp",
+          "src/native_game_grid.cpp",
+          "src/native_render_context.cpp"
+        ],
+        "old_artifacts_receive_fresh_or_unchanged_credit": false
+      },
+      {
+        "label": "Source3354-worker-grid",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences": [
+          "include/bsp/native_render_context.hpp",
+          "src/native_render_context.cpp"
+        ],
+        "old_artifacts_receive_fresh_or_unchanged_credit": false
+      },
+      {
+        "label": "Source3354-prepared-registry-primary",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences": [
+          "include/bsp/native_game_grid.hpp",
+          "src/native_game_grid.cpp"
+        ],
+        "old_artifacts_receive_fresh_or_unchanged_credit": false
+      }
+    ],
+    "prior_Source_corpora": [
+      {
+        "label": "frame-worker-Source4208",
+        "files": 4208,
+        "raw_current_Source_differences": [
+          "include/bsp/native_game_grid.hpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_render_context.hpp",
+          "src/native_game_grid.cpp",
+          "src/native_particle_model_lifetime.cpp",
+          "src/native_render_context.cpp"
+        ]
+      },
+      {
+        "label": "grid-worker-after-Source4208",
+        "files": 4208,
+        "raw_current_Source_differences": [
+          "include/bsp/native_render_context.hpp",
+          "src/native_render_context.cpp"
+        ]
+      }
+    ],
+    "query_results": [
+      {
+        "label": "duplicate_publication_identity",
+        "count": 7,
+        "files": [
+          "include/bsp/app_bootstrap.hpp",
+          "include/bsp/game_native_game_application_frame.hpp",
+          "src/game_native_game_application_frame.cpp"
+        ]
+      },
+      {
+        "label": "application_game_reference",
+        "count": 7,
+        "files": [
+          "include/bsp/app_frame.hpp",
+          "include/bsp/app_shutdown.hpp",
+          "include/bsp/game_native_game_application_frame.hpp",
+          "src/game_native_game_application_frame.cpp"
+        ]
+      },
+      {
+        "label": "frame_owner_type",
+        "count": 20,
+        "files": [
+          "include/bsp/game_native_game_application_frame.hpp",
+          "src/game_native_game_application_frame.cpp"
+        ]
+      },
+      {
+        "label": "candidate_application_storage",
+        "count": 27,
+        "files": [
+          "include/bsp/app_frame.hpp",
+          "include/bsp/app_shutdown.hpp",
+          "include/bsp/game_hosts.hpp",
+          "include/bsp/native_application_pointer_vector_resize.hpp",
+          "include/bsp/native_shader_preload.hpp",
+          "include/bsp/platform_services.hpp",
+          "src/app_frame.cpp",
+          "src/app_shutdown.cpp",
+          "src/game_hosts.cpp",
+          "src/native_application_pointer_vector_resize.cpp",
+          "src/native_shader_preload.cpp",
+          "src/platform_services.cpp"
+        ]
+      },
+      {
+        "label": "raw_application_constructor_anchor",
+        "count": 3,
+        "files": [
+          "include/bsp/app_frame.hpp",
+          "src/game_hosts.cpp"
+        ]
+      },
+      {
+        "label": "startup_application_boundaries",
+        "count": 17,
+        "files": [
+          "include/bsp/game_hosts.hpp",
+          "include/bsp/winmain_startup.hpp",
+          "src/game_hosts.cpp",
+          "src/winmain_startup.cpp"
+        ]
+      },
+      {
+        "label": "application_projection_shutdown",
+        "count": 8,
+        "files": [
+          "include/bsp/app_shutdown.hpp",
+          "src/app_shutdown.cpp",
+          "src/game_hosts.cpp"
+        ]
+      },
+      {
+        "label": "mode_input_producer",
+        "count": 6,
+        "files": [
+          "include/bsp/winmain_startup.hpp",
+          "src/app_bootstrap.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "src/winmain_startup.cpp"
+        ]
+      },
+      {
+        "label": "canonical_duplicate_leaf",
+        "count": 6,
+        "files": [
+          "include/bsp/native_string_duplicate.hpp",
+          "src/native_reference_payload_copy.cpp",
+          "src/native_reference_payload_replace.cpp",
+          "src/native_scene_property_record_type2_string_storage.cpp",
+          "src/native_scene_property_record_type5_storage.cpp",
+          "src/native_string_duplicate.cpp"
+        ]
+      },
+      {
+        "label": "plain_duplicate_and_release",
+        "count": 6,
+        "files": [
+          "include/bsp/native_string.hpp",
+          "src/native_string.cpp",
+          "src/robot_config.cpp"
+        ]
+      },
+      {
+        "label": "named_duplicate_retirement",
+        "count": 2,
+        "files": [
+          "src/app_bootstrap.cpp",
+          "src/game_entry.cpp"
+        ]
+      },
+      {
+        "label": "platform_application_identity",
+        "count": 17,
+        "files": [
+          "include/bsp/native_input_cursor.hpp",
+          "include/bsp/platform_cursor.hpp",
+          "include/bsp/platform_services.hpp",
+          "src/game_frame_control.cpp",
+          "src/game_hosts.cpp",
+          "src/native_input_cursor.cpp",
+          "src/platform_cursor.cpp",
+          "src/platform_services.cpp",
+          "src/platform_window.cpp"
+        ]
+      },
+      {
+        "label": "frame_and_current_consumers",
+        "count": 8,
+        "files": [
+          "include/bsp/app_frame.hpp",
+          "include/bsp/game_hosts_fixed_step.hpp",
+          "src/app_frame.cpp",
+          "src/game_hosts.cpp",
+          "src/game_hosts_fixed_step.cpp",
+          "src/platform_services.cpp"
+        ]
+      },
+      {
+        "label": "retained_current_game_cell",
+        "count": 60,
+        "files": [
+          "include/bsp/game_input_actions.hpp",
+          "include/bsp/game_native_settings_process.hpp",
+          "include/bsp/interface_sound_listener.hpp",
+          "include/bsp/native_game_construction.hpp",
+          "include/bsp/native_game_lifetime.hpp",
+          "include/bsp/native_online_profile_callback.hpp",
+          "include/bsp/native_profile_settings.hpp",
+          "include/bsp/native_session_message_base.hpp",
+          "include/bsp/native_session_transport_flush.hpp",
+          "include/bsp/native_unit_health_message.hpp",
+          "include/bsp/native_unit_wreck_tail.hpp",
+          "include/bsp/registered_type4_effect_behavior.hpp",
+          "include/bsp/unit_damage.hpp",
+          "src/game_native_game_runtime.cpp",
+          "src/game_native_settings_process.cpp",
+          "src/interface_sound_listener.cpp",
+          "src/native_game_construction.cpp",
+          "src/native_game_lifetime.cpp",
+          "src/native_landing_queue.cpp",
+          "src/native_online_profile_callback.cpp",
+          "src/native_profile_settings.cpp",
+          "src/native_session_message_base.cpp",
+          "src/native_session_message_tags_03_06_07.cpp",
+          "src/native_session_message_tags_12_13_14_15.cpp",
+          "src/native_session_message_tags_16_17_18_19_20.cpp",
+          "src/native_session_message_tags_56_to_62.cpp",
+          "src/native_session_message_tags_63_64_65.cpp",
+          "src/native_session_message_tags_66_67_68.cpp",
+          "src/native_session_message_tags_69_75_76.cpp",
+          "src/native_session_message_tags_78_to81.cpp",
+          "src/native_session_message_tags_82_to84.cpp",
+          "src/native_session_message_tags_85_to87.cpp",
+          "src/native_session_transport_flush.cpp",
+          "src/native_unit_health_message.cpp",
+          "src/native_unit_wreck_tail.cpp",
+          "src/registered_type4_effect_behavior.cpp",
+          "src/unit_damage.cpp"
+        ]
+      },
+      {
+        "label": "canonical_string_process",
+        "count": 34,
+        "files": [
+          "include/bsp/game_native_entity_registry_process.hpp",
+          "include/bsp/game_native_shader_process.hpp",
+          "include/bsp/game_native_string_process.hpp",
+          "include/bsp/native_entity_registry_lifetime.hpp",
+          "include/bsp/native_scene_property_recursive_lifetime.hpp",
+          "src/game_hosts_singletons.cpp",
+          "src/game_native_entity_registry_process.cpp",
+          "src/game_native_input_settings_process.cpp",
+          "src/game_native_lua_globals.cpp",
+          "src/game_native_settings_process.cpp",
+          "src/game_native_shader_process.cpp",
+          "src/game_native_string_process.cpp",
+          "src/game_native_vertex_declarations.cpp",
+          "src/game_native_vfs_application.cpp",
+          "src/native_scene_property_bag_storage.cpp"
+        ]
+      },
+      {
+        "label": "raw_string_domain_cells",
+        "count": 432,
+        "files": [
+          "include/bsp/game_native_vfs_runtime.hpp",
+          "include/bsp/gameplay_effect_definition.hpp",
+          "include/bsp/native_debug_feature_owner.hpp",
+          "include/bsp/native_device_registry.hpp",
+          "include/bsp/native_filestore_factory.hpp",
+          "include/bsp/native_frame_clock_lifetime.hpp",
+          "include/bsp/native_game_profile_lifetime.hpp",
+          "include/bsp/native_game_resource_factory.hpp",
+          "include/bsp/native_gameplay_effect_construction.hpp",
+          "include/bsp/native_loading_queue_owner.hpp",
+          "include/bsp/native_lua_variant_string_fields_cleanup.hpp",
+          "include/bsp/native_mission_entity_lock.hpp",
+          "include/bsp/native_mpak_factory.hpp",
+          "include/bsp/native_mpkg_provider.hpp",
+          "include/bsp/native_pak_registry.hpp",
+          "include/bsp/native_particle_clock_shutdown.hpp",
+          "include/bsp/native_particle_clock_singleton.hpp",
+          "include/bsp/native_particle_resource_cache.hpp",
+          "include/bsp/native_path_canonicalizer.hpp",
+          "include/bsp/native_pending_entity_lock.hpp",
+          "include/bsp/native_pending_registry_getter.hpp",
+          "include/bsp/native_physical_factory.hpp",
+          "include/bsp/native_procedural_factory_storage.hpp",
+          "include/bsp/native_renderer_gather_capabilities.hpp",
+          "include/bsp/native_resource_parser_singletons.hpp",
+          "include/bsp/native_resource_support.hpp",
+          "include/bsp/native_shadow_job_lifetime.hpp",
+          "include/bsp/native_singleton_publication.hpp",
+          "include/bsp/native_soldier_registry_lifetime.hpp",
+          "include/bsp/native_spatial_index_publication.hpp",
+          "include/bsp/native_string.hpp",
+          "include/bsp/native_string_pool_owner.hpp",
+          "include/bsp/native_string_pool_storage.hpp",
+          "include/bsp/native_tick_registration_constructor.hpp",
+          "include/bsp/native_tick_subnode_base_cleanup.hpp",
+          "include/bsp/native_tick_subnode_reparent.hpp",
+          "include/bsp/native_tick_subnode_requeue.hpp",
+          "include/bsp/native_tick_subnode_scalar_deletion.hpp",
+          "include/bsp/native_tick_subnode_unlink_caller.hpp",
+          "include/bsp/native_unit_tick_receiver_fragment.hpp",
+          "src/game_hosts_vfs.cpp",
+          "src/game_native_particle_runtime.cpp",
+          "src/game_native_renderer_application.cpp",
+          "src/game_native_resource_application.cpp",
+          "src/game_native_vfs_runtime.cpp",
+          "src/gameplay_effect_acquisition.cpp",
+          "src/gameplay_effect_definition.cpp",
+          "src/native_camera_group_resource.cpp",
+          "src/native_d3d9_shader_construction_actual.cpp",
+          "src/native_damageable_class_model.cpp",
+          "src/native_damageable_class_section_msh_field_fragment.cpp",
+          "src/native_debug_feature_owner.cpp",
+          "src/native_device_registry.cpp",
+          "src/native_directional_shadow_owner_construction.cpp",
+          "src/native_fileblock_owner.cpp",
+          "src/native_filestore_factory.cpp",
+          "src/native_frame_clock_lifetime.cpp",
+          "src/native_game_class_cleanup.cpp",
+          "src/native_game_lifetime.cpp",
+          "src/native_game_profile_lifetime.cpp",
+          "src/native_game_resource_factory.cpp",
+          "src/native_game_resource_parsers.cpp",
+          "src/native_gameplay_effect_construction.cpp",
+          "src/native_gui_media_focus_lifetime.cpp",
+          "src/native_gui_scene_acquisition_storage.cpp",
+          "src/native_gui_scene_storage.cpp",
+          "src/native_instance_collection.cpp",
+          "src/native_language_catalog_producer.cpp",
+          "src/native_loading_queue_owner.cpp",
+          "src/native_loading_queue_submission.cpp",
+          "src/native_lua_variant_string_fields_cleanup.cpp",
+          "src/native_material_diagnostics_draw.cpp",
+          "src/native_mesh_buffer_fields.cpp",
+          "src/native_mesh_scalar_fields.cpp",
+          "src/native_mesh_subset_loading.cpp",
+          "src/native_mesh_texture_field.cpp",
+          "src/native_mpak_factory.cpp",
+          "src/native_mpkg_provider.cpp",
+          "src/native_node_base_destruction.cpp",
+          "src/native_node_destruction.cpp",
+          "src/native_online_notification_dispatch.cpp",
+          "src/native_online_profile_callback.cpp",
+          "src/native_online_signin_ui.cpp",
+          "src/native_pak_registry.cpp",
+          "src/native_particle_axial_raw.cpp",
+          "src/native_particle_clock_singleton.cpp",
+          "src/native_particle_component_reader_raw.cpp",
+          "src/native_particle_definition_loading.cpp",
+          "src/native_particle_emitter_definition_lifetime.cpp",
+          "src/native_particle_layer_lifetime.cpp",
+          "src/native_particle_object_resources_raw.cpp",
+          "src/native_particle_resource_acquisition_raw.cpp",
+          "src/native_particle_resource_cache.cpp",
+          "src/native_particle_resource_lifetime.cpp",
+          "src/native_particle_resource_loader_raw.cpp",
+          "src/native_particle_resource_records.cpp",
+          "src/native_particle_type_lifetime.cpp",
+          "src/native_particle_type_preparation.cpp",
+          "src/native_particle_type_property.cpp",
+          "src/native_particle_type_resources.cpp",
+          "src/native_particle_type_texture_raw.cpp",
+          "src/native_pending_registry_getter.cpp",
+          "src/native_physical_factory.cpp",
+          "src/native_pooled_string_substring.cpp",
+          "src/native_pooled_text.cpp",
+          "src/native_pooled_text_suffix.cpp",
+          "src/native_post_effect20_construction.cpp",
+          "src/native_procedural_factory_storage.cpp",
+          "src/native_procedural_factory_table_construction.cpp",
+          "src/native_profile_hints_owner.cpp",
+          "src/native_raw_name_reader.cpp",
+          "src/native_raw_node_construction.cpp",
+          "src/native_render_alias_checked_ops.cpp",
+          "src/native_render_command_execution.cpp",
+          "src/native_render_command_owner.cpp",
+          "src/native_render_diagnostic_labels.cpp",
+          "src/native_render_group_lifetime.cpp",
+          "src/native_render_queue_execution.cpp",
+          "src/native_render_resource_init_continuation.cpp",
+          "src/native_render_resource_init_dof.cpp",
+          "src/native_render_resource_init_passthrough_dust.cpp",
+          "src/native_render_resource_init_post.cpp",
+          "src/native_render_resource_init_post658.cpp",
+          "src/native_render_resource_init_post65c.cpp",
+          "src/native_render_resource_init_post664.cpp",
+          "src/native_render_resource_init_tail.cpp",
+          "src/native_render_resource_record.cpp",
+          "src/native_render_resources_construction.cpp",
+          "src/native_render_resources_lifetime.cpp",
+          "src/native_render_service_texture_construction.cpp",
+          "src/native_renderer_begin_frame.cpp",
+          "src/native_renderer_debug_records24.cpp",
+          "src/native_renderer_debug_records40.cpp",
+          "src/native_renderer_destructor.cpp",
+          "src/native_renderer_gather_capabilities.cpp",
+          "src/native_renderer_generated_model.cpp",
+          "src/native_resource_cache_pair.cpp",
+          "src/native_resource_container_lifetime.cpp",
+          "src/native_resource_extra_item_lifetime.cpp",
+          "src/native_resource_extra_parser_singletons.cpp",
+          "src/native_resource_graph_builtin_dispatch.cpp",
+          "src/native_resource_hierarchy_fields.cpp",
+          "src/native_resource_hierarchy_parser.cpp",
+          "src/native_resource_load_cache.cpp",
+          "src/native_resource_node_traversal.cpp",
+          "src/native_resource_parser_registration.cpp",
+          "src/native_resource_parser_singletons.cpp",
+          "src/native_resource_reader_owner.cpp",
+          "src/native_resource_registry_insertion.cpp",
+          "src/native_resource_root_owner.cpp",
+          "src/native_resource_stream_reads.cpp",
+          "src/native_resource_support.cpp",
+          "src/native_resource_tree_cleanup.cpp",
+          "src/native_scene_resource_storage.cpp",
+          "src/native_session_message_tags_69_75_76.cpp",
+          "src/native_settings_loader.cpp",
+          "src/native_settings_text.cpp",
+          "src/native_shadow_job_lifetime.cpp",
+          "src/native_singleton_publication.cpp",
+          "src/native_skinned_animation_item.cpp",
+          "src/native_soldier_loop_lengths.cpp",
+          "src/native_soldier_registry_lifetime.cpp",
+          "src/native_soldier_registry_tree.cpp",
+          "src/native_spatial_index_publication.cpp",
+          "src/native_string.cpp",
+          "src/native_string_pool_owner.cpp",
+          "src/native_string_pool_storage.cpp",
+          "src/native_system_constant_registry_raw.cpp",
+          "src/native_texture_source_producer.cpp",
+          "src/native_tick_registration_constructor.cpp",
+          "src/native_tick_subnode_reparent.cpp",
+          "src/native_tick_subnode_requeue.cpp",
+          "src/native_unit_killed_base.cpp",
+          "src/native_unit_tick_receiver_fragment.cpp",
+          "src/native_wide_string.cpp"
+        ]
+      },
+      {
+        "label": "pooled_header_preparation_return",
+        "count": 757,
+        "files": [
+          "include/bsp/native_string.hpp",
+          "src/dialog_config.cpp",
+          "src/directional_light_reference.cpp",
+          "src/frontend_prompt_layout.cpp",
+          "src/frontend_prompts.cpp",
+          "src/game_native_game_application_frame.cpp",
+          "src/game_title_sound.cpp",
+          "src/gameplay_effect_acquisition.cpp",
+          "src/gameplay_effect_components.cpp",
+          "src/gameplay_effect_definition.cpp",
+          "src/gameplay_effect_name_index.cpp",
+          "src/gameplay_effect_scalar_components.cpp",
+          "src/gameplay_effect_sound.cpp",
+          "src/global_config.cpp",
+          "src/global_script_folders.cpp",
+          "src/global_subsystems.cpp",
+          "src/gui_camera_store_owner.cpp",
+          "src/gui_listbox_runtime.cpp",
+          "src/gui_native_clip_parameters.cpp",
+          "src/gui_screen_scene_runtime.cpp",
+          "src/gui_section_runtime.cpp",
+          "src/gui_text_buffers.cpp",
+          "src/gui_text_content.cpp",
+          "src/gui_text_copy.cpp",
+          "src/gui_text_glyph_child_runtime.cpp",
+          "src/gui_text_material.cpp",
+          "src/gui_text_sections.cpp",
+          "src/gui_text_type_dispatch.cpp",
+          "src/gui_widget_owner.cpp",
+          "src/joystick_labels.cpp",
+          "src/main_menu_activation_runtime.cpp",
+          "src/main_menu_command_listener.cpp",
+          "src/main_menu_selection_listener.cpp",
+          "src/main_menu_vehicle_unlock.cpp",
+          "src/marker_classes.cpp",
+          "src/message_record_resolver.cpp",
+          "src/movie_decoder.cpp",
+          "src/native_animation_channel_body_reader.cpp",
+          "src/native_animation_channels_resource_reader.cpp",
+          "src/native_animation_group_lifetime.cpp",
+          "src/native_bloom_initializer.cpp",
+          "src/native_bone_resource_item_reader.cpp",
+          "src/native_bright_pass_initializer.cpp",
+          "src/native_camera_group_resource.cpp",
+          "src/native_checked_string_storage.cpp",
+          "src/native_cockpit_helper_construction.cpp",
+          "src/native_compiled_shader_owner.cpp",
+          "src/native_compiled_shader_reflection.cpp",
+          "src/native_d3d9_shader_construction_actual.cpp",
+          "src/native_damageable_class_comment_fragment.cpp",
+          "src/native_damageable_class_construction.cpp",
+          "src/native_damageable_class_mesh_fragment.cpp",
+          "src/native_damageable_class_model.cpp",
+          "src/native_damageable_class_section_msh_field_fragment.cpp",
+          "src/native_debug_feature_owner.cpp",
+          "src/native_directional_shadow_owner_construction.cpp",
+          "src/native_distortion_initializer.cpp",
+          "src/native_enum_dictionary_membership.cpp",
+          "src/native_enum_dictionary_word_getters.cpp",
+          "src/native_enum_registry_lifetime.cpp",
+          "src/native_enum_symbol_lifetime.cpp",
+          "src/native_file_access_log_owner.cpp",
+          "src/native_file_provider_base.cpp",
+          "src/native_fileblock_identifier.cpp",
+          "src/native_filestore_completion.cpp",
+          "src/native_filestore_pending_tree.cpp",
+          "src/native_filestore_provider_lifetime.cpp",
+          "src/native_filestore_remove.cpp",
+          "src/native_filestore_request.cpp",
+          "src/native_filestore_subtree.cpp",
+          "src/native_game_array_lifetime.cpp",
+          "src/native_game_grid.cpp",
+          "src/native_game_settings_owner.cpp",
+          "src/native_gui_scene_acquisition_storage.cpp",
+          "src/native_gui_scene_storage.cpp",
+          "src/native_gui_widget_property_prefix.cpp",
+          "src/native_hardware_layout_construct.cpp",
+          "src/native_hardware_layout_create_if_missing.cpp",
+          "src/native_input_configuration_load.cpp",
+          "src/native_input_device_index.cpp",
+          "src/native_input_device_tail_virtuals.cpp",
+          "src/native_input_enumeration.cpp",
+          "src/native_input_scale_maps.cpp",
+          "src/native_input_settings_startup.cpp",
+          "src/native_input_settings_tables.cpp",
+          "src/native_input_settings_tree_cleanup.cpp",
+          "src/native_input_settings_tree_insertion.cpp",
+          "src/native_input_settings_vector_storage.cpp",
+          "src/native_input_vector_map_index.cpp",
+          "src/native_instance_collection.cpp",
+          "src/native_instance_generator_owner.cpp",
+          "src/native_joystick.cpp",
+          "src/native_language_catalog_producer.cpp",
+          "src/native_language_catalog_storage.cpp",
+          "src/native_loading_queue_submission.cpp",
+          "src/native_loading_queue_work_items.cpp",
+          "src/native_locale_map_node_lifetime.cpp",
+          "src/native_logical_texture_named_base.cpp",
+          "src/native_lua_file_loading.cpp",
+          "src/native_lua_fundamentals.cpp",
+          "src/native_lua_globals_lifetime.cpp",
+          "src/native_lua_script_overrides.cpp",
+          "src/native_luminance_owner.cpp",
+          "src/native_material_diagnostics_draw.cpp",
+          "src/native_material_effect_cache.cpp",
+          "src/native_material_effect_loading.cpp",
+          "src/native_material_effect_owner.cpp",
+          "src/native_material_effect_programs.cpp",
+          "src/native_material_effect_reload.cpp",
+          "src/native_material_owner.cpp",
+          "src/native_material_pass_copy.cpp",
+          "src/native_material_pass_owner.cpp",
+          "src/native_material_program_compiler.cpp",
+          "src/native_material_record_copy.cpp",
+          "src/native_material_texture_refresh.cpp",
+          "src/native_mesh_buffer_fields.cpp",
+          "src/native_mesh_scalar_fields.cpp",
+          "src/native_model_numbering.cpp",
+          "src/native_mpak_enumeration.cpp",
+          "src/native_mpak_open.cpp",
+          "src/native_mpak_record_copy.cpp",
+          "src/native_mpkg_enumeration.cpp",
+          "src/native_node_construction.cpp",
+          "src/native_node_destruction.cpp",
+          "src/native_online_notification_dispatch.cpp",
+          "src/native_online_profile_callback.cpp",
+          "src/native_pak_registry_block_helpers.cpp",
+          "src/native_particle_axial_loading.cpp",
+          "src/native_particle_axial_raw.cpp",
+          "src/native_particle_component_lifetime.cpp",
+          "src/native_particle_component_reader_raw.cpp",
+          "src/native_particle_cone_raw.cpp",
+          "src/native_particle_definition.cpp",
+          "src/native_particle_definition_loading.cpp",
+          "src/native_particle_emitter_construction.cpp",
+          "src/native_particle_emitter_definition_lifetime.cpp",
+          "src/native_particle_layer_lifetime.cpp",
+          "src/native_particle_model_construction.cpp",
+          "src/native_particle_object_resources_raw.cpp",
+          "src/native_particle_object_state.cpp",
+          "src/native_particle_object_tracer_loading.cpp",
+          "src/native_particle_record_resize.cpp",
+          "src/native_particle_resource_acquisition_raw.cpp",
+          "src/native_particle_resource_cache_removal.cpp",
+          "src/native_particle_resource_lifetime.cpp",
+          "src/native_particle_resource_loader_raw.cpp",
+          "src/native_particle_resource_loading.cpp",
+          "src/native_particle_resource_parser_raw.cpp",
+          "src/native_particle_resource_records.cpp",
+          "src/native_particle_smartarea_raw.cpp",
+          "src/native_particle_sphere_raw.cpp",
+          "src/native_particle_sprite_state.cpp",
+          "src/native_particle_texture_names_raw.cpp",
+          "src/native_particle_tracer_raw.cpp",
+          "src/native_particle_tracer_state.cpp",
+          "src/native_particle_type_base.cpp",
+          "src/native_particle_type_construction.cpp",
+          "src/native_particle_type_lifetime.cpp",
+          "src/native_particle_type_preparation.cpp",
+          "src/native_particle_type_property.cpp",
+          "src/native_particle_type_property_raw.cpp",
+          "src/native_particle_type_resources.cpp",
+          "src/native_particle_type_texture_raw.cpp",
+          "src/native_physical_buffer_owner.cpp",
+          "src/native_physical_file_date.cpp",
+          "src/native_physical_pending_io.cpp",
+          "src/native_physical_pending_records.cpp",
+          "src/native_physical_provider.cpp",
+          "src/native_physical_stream_open.cpp",
+          "src/native_pixel_shader_compilation.cpp",
+          "src/native_point_light_owner.cpp",
+          "src/native_pooled_resource_path.cpp",
+          "src/native_pooled_string_substring.cpp",
+          "src/native_post_effect20_construction.cpp",
+          "src/native_post_effect_construction.cpp",
+          "src/native_post_effect_dust_initializer.cpp",
+          "src/native_procedural_factory_table_construction.cpp",
+          "src/native_raw_name_reader.cpp",
+          "src/native_raw_node_construction.cpp",
+          "src/native_render_diagnostic_labels.cpp",
+          "src/native_render_pass_initializers.cpp",
+          "src/native_render_resource_container_removal.cpp",
+          "src/native_render_resource_init_continuation.cpp",
+          "src/native_render_resource_init_dof.cpp",
+          "src/native_render_resource_init_passthrough_dust.cpp",
+          "src/native_render_resource_init_post.cpp",
+          "src/native_render_resource_init_post658.cpp",
+          "src/native_render_resource_init_post65c.cpp",
+          "src/native_render_resource_init_post664.cpp",
+          "src/native_render_resource_init_tail.cpp",
+          "src/native_render_resource_record.cpp",
+          "src/native_render_resource_record_array.cpp",
+          "src/native_render_resource_record_construction.cpp",
+          "src/native_render_resources_construction.cpp",
+          "src/native_render_resources_lifetime.cpp",
+          "src/native_render_service_texture_construction.cpp",
+          "src/native_render_service_vector_cleanup.cpp",
+          "src/native_renderer_begin_frame.cpp",
+          "src/native_renderer_cache_cleanup.cpp",
+          "src/native_renderer_debug_records24.cpp",
+          "src/native_renderer_debug_records40.cpp",
+          "src/native_renderer_gather_capabilities.cpp",
+          "src/native_renderer_texture_name_notification.cpp",
+          "src/native_renderer_worker_lifetime.cpp",
+          "src/native_resource_cache_erase.cpp",
+          "src/native_resource_cache_pair.cpp",
+          "src/native_resource_container_lifetime.cpp",
+          "src/native_resource_graph_builder.cpp",
+          "src/native_resource_hierarchy_fields.cpp",
+          "src/native_resource_hierarchy_parser.cpp",
+          "src/native_resource_load_cache.cpp",
+          "src/native_resource_node_traversal.cpp",
+          "src/native_resource_parser_registration.cpp",
+          "src/native_resource_postprocess_full.cpp",
+          "src/native_resource_reader_buffer.cpp",
+          "src/native_resource_reader_owner.cpp",
+          "src/native_resource_record_copy.cpp",
+          "src/native_resource_registry_insertion.cpp",
+          "src/native_resource_root_owner.cpp",
+          "src/native_resource_stream_reads.cpp",
+          "src/native_runtime_texture_creation.cpp",
+          "src/native_scene_property_bag_storage.cpp",
+          "src/native_scene_resource_storage.cpp",
+          "src/native_scene_tokenizer.cpp",
+          "src/native_session_message35.cpp",
+          "src/native_session_message55.cpp",
+          "src/native_session_message55_library.cpp",
+          "src/native_session_message_tag_08.cpp",
+          "src/native_session_message_tags_09_10_11.cpp",
+          "src/native_session_message_tags_23_24_25.cpp",
+          "src/native_session_message_tags_33_34.cpp",
+          "src/native_session_message_tags_53_77.cpp",
+          "src/native_session_message_tags_56_to_62.cpp",
+          "src/native_session_message_tags_66_67_68.cpp",
+          "src/native_session_message_tags_69_75_76.cpp",
+          "src/native_session_message_tags_82_to84.cpp",
+          "src/native_settings_choices.cpp",
+          "src/native_shader_binary_cache.cpp",
+          "src/native_shader_combiner_reader.cpp",
+          "src/native_shader_constant_header.cpp",
+          "src/native_shader_descriptor_owner.cpp",
+          "src/native_shader_descriptor_reader.cpp",
+          "src/native_shader_field_initialization.cpp",
+          "src/native_shader_field_reader.cpp",
+          "src/native_shader_interpolators.cpp",
+          "src/native_shader_pixel_source.cpp",
+          "src/native_shader_sampler_owner.cpp",
+          "src/native_shader_sampler_reader.cpp",
+          "src/native_shader_state_definitions.cpp",
+          "src/native_shader_state_reader.cpp",
+          "src/native_shader_struct_declarations.cpp",
+          "src/native_shader_system_fields.cpp",
+          "src/native_skinned_animation_item.cpp",
+          "src/native_soldier_class_resolution.cpp",
+          "src/native_soldier_loop_lengths.cpp",
+          "src/native_soldier_registry_lifetime.cpp",
+          "src/native_soldier_registry_tree.cpp",
+          "src/native_startup_shader_modes.cpp",
+          "src/native_stream_text_scanner.cpp",
+          "src/native_string.cpp",
+          "src/native_structured_node_destruction.cpp",
+          "src/native_system_constant_registry.cpp",
+          "src/native_system_constant_registry_raw.cpp",
+          "src/native_texture_loading_cache.cpp",
+          "src/native_texture_source_producer.cpp",
+          "src/native_traceline_geometry.cpp",
+          "src/native_tracer_construction.cpp",
+          "src/native_unit_class_lua.cpp",
+          "src/native_unit_killed_base.cpp",
+          "src/native_unit_part_construction.cpp",
+          "src/native_vehicle_camera_array.cpp",
+          "src/native_vertex_declaration_cache.cpp",
+          "src/native_vertex_declaration_loading.cpp",
+          "src/native_vertex_declaration_registry_lifetime.cpp",
+          "src/native_vertex_shader_compilation.cpp",
+          "src/native_vfs_date_route.cpp",
+          "src/native_vfs_device_route.cpp",
+          "src/native_vfs_enumeration.cpp",
+          "src/native_vfs_extension_prefix.cpp",
+          "src/native_vfs_lookup_routes.cpp",
+          "src/native_vfs_manager_lifetime.cpp",
+          "src/native_vfs_mount_records.cpp",
+          "src/native_vfs_mount_tree.cpp",
+          "src/native_vfs_name_resolution.cpp",
+          "src/native_vfs_open_logging.cpp",
+          "src/native_vfs_open_route.cpp",
+          "src/native_vfs_pending_routes.cpp",
+          "src/native_vfs_request_list_lifetime.cpp",
+          "src/native_vfs_search_defaults.cpp",
+          "src/native_vfs_search_groups.cpp",
+          "src/native_vfs_sequence_lifetime.cpp",
+          "src/panel_owner.cpp",
+          "src/panel_publication.cpp",
+          "src/panel_sequence.cpp",
+          "src/powerup_config.cpp",
+          "src/race_config.cpp",
+          "src/robot_config.cpp",
+          "src/sound_alternate_owner.cpp",
+          "src/sound_class_ownership.cpp",
+          "src/sound_dialog_logical.cpp",
+          "src/sound_dialog_table.cpp",
+          "src/sound_instance.cpp",
+          "src/sound_listener.cpp",
+          "src/sound_resource_cleanup.cpp",
+          "src/sound_retained_factory.cpp",
+          "src/sound_retained_record.cpp",
+          "src/sound_sample.cpp",
+          "src/sound_sample_cache.cpp",
+          "src/sound_sample_cache_shutdown.cpp",
+          "src/sound_sample_runtime.cpp",
+          "src/sound_spatial_instance.cpp",
+          "src/sound_stream_owner.cpp",
+          "src/sound_system_owner.cpp",
+          "src/traffic_config.cpp",
+          "src/voice_fade_update.cpp",
+          "src/voice_sequence_update.cpp",
+          "src/voice_slot_start.cpp",
+          "src/warning_owner.cpp",
+          "src/weather_config.cpp"
+        ]
+      },
+      {
+        "label": "application_flags_and_system_count",
+        "count": 27,
+        "files": [
+          "include/bsp/ai_target_weights.hpp",
+          "include/bsp/app_frame.hpp",
+          "include/bsp/app_shutdown.hpp",
+          "include/bsp/game_hosts.hpp",
+          "include/bsp/platform_services.hpp",
+          "src/ai_target_weights.cpp",
+          "src/app_frame.cpp",
+          "src/app_shutdown.cpp",
+          "src/game_hosts.cpp",
+          "src/game_hosts_ai.cpp",
+          "src/platform_services.cpp"
+        ]
+      }
+    ],
+    "excerpts": 58,
+    "witnesses": [
+      {
+        "label": "one_documented_1Ch_application",
+        "path": "include/bsp/winmain_startup.hpp",
+        "ordered": true,
+        "Source_sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+        "matches": [
+          {
+            "token": "same 0x1c byte",
+            "line": 168
+          },
+          {
+            "token": "stack object",
+            "line": 169
+          },
+          {
+            "token": "virtual void application_construct()",
+            "line": 171
+          },
+          {
+            "token": "virtual void application_destruct()",
+            "line": 175
+          }
+        ]
+      },
+      {
+        "label": "literal_mode_and_normal_startup_schedule",
+        "path": "src/winmain_startup.cpp",
+        "ordered": true,
+        "Source_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+        "matches": [
+          {
+            "token": "const char kApplicationInitializeMode[] = \"cachedload\";",
+            "line": 85
+          },
+          {
+            "token": "static_cast<void>(arguments);",
+            "line": 166
+          },
+          {
+            "token": "host.application_construct();",
+            "line": 228
+          },
+          {
+            "token": "host.application_initialize(kApplicationInitializeFlags, kApplicationInitializeMode);",
+            "line": 229
+          },
+          {
+            "token": "host.platform_run_loop_dispatch();",
+            "line": 230
+          },
+          {
+            "token": "host.application_shutdown();",
+            "line": 231
+          },
+          {
+            "token": "host.application_destruct();",
+            "line": 232
+          },
+          {
+            "token": "host.destroy_singleton_lifetime_manager();",
+            "line": 233
+          }
+        ]
+      },
+      {
+        "label": "distinct_startup_initialization_flags",
+        "path": "include/bsp/winmain_startup.hpp",
+        "ordered": false,
+        "Source_sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+        "matches": [
+          {
+            "token": "inline constexpr int kApplicationInitializeFlags = 0;",
+            "line": 47
+          }
+        ]
+      },
+      {
+        "label": "host_projection_not_raw_application",
+        "path": "src/game_hosts.cpp",
+        "ordered": true,
+        "Source_sha256": "6cc3e21931ee19e8aa6f7be92e995797b309bfd0a75f8767df7b475fc925bfbb",
+        "matches": [
+          {
+            "token": "frame_state_ = ApplicationFrameState{};",
+            "line": 1839
+          },
+          {
+            "token": "constructed_ = true;",
+            "line": 1840
+          },
+          {
+            "token": "const CommandLineOptions command_line = parse_command_line_0073ce20(mode);",
+            "line": 1935
+          },
+          {
+            "token": "request.application = this;",
+            "line": 2130
+          },
+          {
+            "token": "constructed_ = false;",
+            "line": 2516
+          }
+        ]
+      },
+      {
+        "label": "actual_vector_subobject_positive",
+        "path": "include/bsp/native_shader_preload.hpp",
+        "ordered": true,
+        "Source_sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+        "matches": [
+          {
+            "token": "Actual 0Ch pointer vector at application+08",
+            "line": 9
+          },
+          {
+            "token": "void** data_00;",
+            "line": 12
+          },
+          {
+            "token": "std::int32_t count_04,capacity_08;",
+            "line": 13
+          },
+          {
+            "token": "static_assert(sizeof(NativeApplicationPointerVectorStorage)==12);",
+            "line": 15
+          }
+        ]
+      },
+      {
+        "label": "actual_vector_borrower_does_not_create_application",
+        "path": "src/native_shader_preload.cpp",
+        "ordered": true,
+        "Source_sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+        "matches": [
+          {
+            "token": "reinterpret_cast<NativeApplicationPointerVectorStorage*>(static_cast<char*>(application)+8)",
+            "line": 137
+          },
+          {
+            "token": "const I capacity=read<I>(&rows,8);",
+            "line": 138
+          },
+          {
+            "token": "put<U>(&rows,4,read<U>(&rows,4)+1u);",
+            "line": 147
+          }
+        ]
+      },
+      {
+        "label": "shutdown_projection_by_value",
+        "path": "include/bsp/app_shutdown.hpp",
+        "ordered": true,
+        "Source_sha256": "b1d746a79d81408ee9e05fda19fb289fe5c1cd02aaf215eac89580d1512086ce",
+        "matches": [
+          {
+            "token": "struct ApplicationShutdownState {",
+            "line": 182
+          },
+          {
+            "token": "void** systems;",
+            "line": 184
+          },
+          {
+            "token": "std::uint32_t system_count;",
+            "line": 186
+          },
+          {
+            "token": "void* game;",
+            "line": 188
+          }
+        ]
+      },
+      {
+        "label": "shutdown_count_and_clear_timing",
+        "path": "src/app_shutdown.cpp",
+        "ordered": true,
+        "Source_sha256": "56223c2bbc99310ca1c3048d50ab777f337930fc9d7e891358b452eed9e0215a",
+        "matches": [
+          {
+            "token": "index < state.system_count",
+            "line": 28
+          },
+          {
+            "token": "host.release_system_reference(system) == 0",
+            "line": 31
+          },
+          {
+            "token": "host.destroy_system(system);",
+            "line": 32
+          },
+          {
+            "token": "state.systems[index] = nullptr;",
+            "line": 34
+          },
+          {
+            "token": "host.game_on_destroy_004dc5c0(state.game);",
+            "line": 69
+          },
+          {
+            "token": "if (state.game != nullptr) {",
+            "line": 72
+          },
+          {
+            "token": "host.delete_game(state.game);",
+            "line": 73
+          },
+          {
+            "token": "state.game = nullptr;",
+            "line": 74
+          }
+        ]
+      },
+      {
+        "label": "frame_borrows_references_only",
+        "path": "src/game_native_game_application_frame.cpp",
+        "ordered": true,
+        "Source_sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+        "matches": [
+          {
+            "token": ":runtime_(runtime),application_game_14_(application),",
+            "line": 18
+          },
+          {
+            "token": "duplicate_name_00e1ae78_(duplicate),strings_(strings)",
+            "line": 19
+          },
+          {
+            "token": "if(runtime_.phase()!=GameNativeGameRuntime::Phase::fresh)",
+            "line": 24
+          }
+        ]
+      },
+      {
+        "label": "frame_actual_publication_schedule",
+        "path": "src/game_native_game_application_frame.cpp",
+        "ordered": true,
+        "Source_sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+        "matches": [
+          {
+            "token": "void* block=singleton_lifetime_allocate({SingletonAllocationKind::object,0x71a0,0x71a0});",
+            "line": 55
+          },
+          {
+            "token": "std::memset(block,0,0x71a0);",
+            "line": 59
+          },
+          {
+            "token": "parent_cleanup_state_=0x27;",
+            "line": 60
+          },
+          {
+            "token": "captured_name_=duplicate_name_00e1ae78_;",
+            "line": 61
+          },
+          {
+            "token": "construct_native_string_header_0041e870(name_header_,strings_,captured_name_);",
+            "line": 63
+          },
+          {
+            "token": "name_=Name::complete;observed_name_mask_|=0x2;",
+            "line": 64
+          },
+          {
+            "token": "parent_cleanup_state_=0x28;",
+            "line": 65
+          },
+          {
+            "token": "auto* result=runtime_.construct(*retained_,name_header_);",
+            "line": 67
+          },
+          {
+            "token": "application_game_14_=result;application_published_=true;",
+            "line": 69
+          },
+          {
+            "token": "parent_cleanup_state_=-1;",
+            "line": 70
+          },
+          {
+            "token": "name_=Name::return_attempted;",
+            "line": 71
+          },
+          {
+            "token": "destroy_native_string_header_0041dd20(name_header_,strings_);",
+            "line": 72
+          },
+          {
+            "token": "name_=Name::returned;active_stage_=Stage::none;phase_=Phase::live;",
+            "line": 73
+          }
+        ]
+      },
+      {
+        "label": "frame_scalar_disposition_and_no_cleanup_acknowledgments",
+        "path": "src/game_native_game_application_frame.cpp",
+        "ordered": true,
+        "Source_sha256": "b4b420da696055f815a5afcea3bed5fc9979818f45fa2230699de554bacacb09",
+        "matches": [
+          {
+            "token": "scalar_attempted_=true;scalar_flags_=flags;",
+            "line": 81
+          },
+          {
+            "token": "allocation_=Allocation::indeterminate;retained_=nullptr;",
+            "line": 85
+          },
+          {
+            "token": "auto* result=runtime_.scalar_delete(flags);",
+            "line": 87
+          },
+          {
+            "token": "if(flags&1)allocation_=Allocation::released;",
+            "line": 89
+          },
+          {
+            "token": "else {allocation_=Allocation::retained;",
+            "line": 90
+          },
+          {
+            "token": "void GameNativeGameApplicationFrame::acknowledge_name_resolution()",
+            "line": 102
+          },
+          {
+            "token": "name_=Name::externally_resolved;",
+            "line": 105
+          }
+        ]
+      },
+      {
+        "label": "existing_current_game_authority",
+        "path": "src/game_native_settings_process.cpp",
+        "ordered": true,
+        "Source_sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+        "matches": [
+          {
+            "token": "void* volatile game{};",
+            "line": 37
+          },
+          {
+            "token": "NativeProfileSettingsContext profile{online,game,sdk};",
+            "line": 38
+          },
+          {
+            "token": "void* volatile& GameNativeSettingsProcess::game_00e188a8() noexcept{return impl_->game;}",
+            "line": 91
+          }
+        ]
+      },
+      {
+        "label": "current_game_early_publication",
+        "path": "src/native_game_construction.cpp",
+        "ordered": true,
+        "Source_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+        "matches": [
+          {
+            "token": "c.actual_game_00e188a8=game;",
+            "line": 202
+          },
+          {
+            "token": "a.worker_count=calls.call_00be4800();",
+            "line": 204
+          },
+          {
+            "token": "calls.call_00c55f50(&a.worker_count,c.dynamics.engine)",
+            "line": 205
+          }
+        ]
+      },
+      {
+        "label": "game_name_distinct_copy",
+        "path": "src/native_game_construction.cpp",
+        "ordered": true,
+        "Source_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+        "matches": [
+          {
+            "token": "void* const destination=at(game,0x7164);word(destination,0);word(destination,4);",
+            "line": 161
+          },
+          {
+            "token": "if(destination!=name) {",
+            "line": 167
+          },
+          {
+            "token": "resize_native_string_header_0041dd40(destination,c.strings,read<Word>(name),true);",
+            "line": 169
+          },
+          {
+            "token": "a.native_site=0x004ddf99;std::memcpy(target,source,count);",
+            "line": 174
+          }
+        ]
+      },
+      {
+        "label": "current_game_clear_precedes_game_name_return",
+        "path": "src/native_game_lifetime.cpp",
+        "ordered": true,
+        "Source_sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+        "matches": [
+          {
+            "token": "void* first_grid=x.grid_00e19b0c;x.game_00e188a8=nullptr;",
+            "line": 71
+          },
+          {
+            "token": "U size=word(g,offset)+1;",
+            "line": 86
+          },
+          {
+            "token": "string(0x7164,0x4dd20f,0x4dd216);",
+            "line": 90
+          },
+          {
+            "token": "if(flags&1){o.native_site=0x4de280;x.calls.free_00bf6989(result);}",
+            "line": 278
+          }
+        ]
+      },
+      {
+        "label": "canonical_duplicate_is_separate_unpooled_allocation",
+        "path": "src/native_string_duplicate.cpp",
+        "ordered": true,
+        "Source_sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0",
+        "matches": [
+          {
+            "token": "singleton_lifetime_allocate(",
+            "line": 15
+          },
+          {
+            "token": "{SingletonAllocationKind::object, actual_bytes, actual_bytes}",
+            "line": 16
+          },
+          {
+            "token": "__declspec(naked) char* __fastcall duplicate_native_string_00438e40(",
+            "line": 25
+          },
+          {
+            "token": "test ebx, ebx",
+            "line": 30
+          },
+          {
+            "token": "lea esi, [eax + 1]",
+            "line": 45
+          },
+          {
+            "token": "call allocate_native_string_bytes",
+            "line": 48
+          },
+          {
+            "token": "call memcpy",
+            "line": 53
+          }
+        ]
+      },
+      {
+        "label": "canonical_duplicate_normal_domain",
+        "path": "include/bsp/native_string_duplicate.hpp",
+        "ordered": true,
+        "Source_sha256": "b101c630eba5844d1f5d21530aef1200c0969b0139fb72de1d3870e75814f477",
+        "matches": [
+          {
+            "token": "Null returns null without providers.",
+            "line": 10
+          },
+          {
+            "token": "length + 1 and address range do not wrap.",
+            "line": 12
+          },
+          {
+            "token": "release it once with singleton_lifetime_free after the final observation.",
+            "line": 14
+          },
+          {
+            "token": "Original private CRT/EH, failure unwind and class ownership are not admitted.",
+            "line": 16
+          }
+        ]
+      },
+      {
+        "label": "raw_string_context_same_three_cells",
+        "path": "include/bsp/native_string.hpp",
+        "ordered": true,
+        "Source_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "matches": [
+          {
+            "token": "struct NativeStringRawPoolContext {",
+            "line": 34
+          },
+          {
+            "token": "NativeStringPoolStorage* volatile& actual_published_01090aa8;",
+            "line": 35
+          },
+          {
+            "token": "volatile std::uint32_t& actual_small_returns_disabled_01090aa4;",
+            "line": 36
+          },
+          {
+            "token": "void* volatile& actual_manager_publication_01090aa0;",
+            "line": 37
+          }
+        ]
+      },
+      {
+        "label": "per_operation_pool_lookup",
+        "path": "src/native_string.cpp",
+        "ordered": true,
+        "Source_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "matches": [
+          {
+            "token": "class RawStringPoolAccess",
+            "line": 23
+          },
+          {
+            "token": "auto* const pool = current_pool();",
+            "line": 28
+          },
+          {
+            "token": "return_native_string_pool_00bd1510(pool, data, size,",
+            "line": 33
+          },
+          {
+            "token": "context_.actual_small_returns_disabled_01090aa4",
+            "line": 34
+          },
+          {
+            "token": "native_string_pool_get_or_create_00419cc0(",
+            "line": 38
+          },
+          {
+            "token": "context_.actual_published_01090aa8,",
+            "line": 39
+          },
+          {
+            "token": "context_.actual_manager_publication_01090aa0",
+            "line": 40
+          }
+        ]
+      },
+      {
+        "label": "raw_header_nonnull_constructor_and_untouched_return",
+        "path": "include/bsp/native_string.hpp",
+        "ordered": false,
+        "Source_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "matches": [
+          {
+            "token": "Leave the",
+            "line": 55
+          },
+          {
+            "token": "header untouched",
+            "line": 56
+          },
+          {
+            "token": "stack nonnull C string",
+            "line": 93
+          },
+          {
+            "token": "The CALLEE zeros",
+            "line": 93
+          },
+          {
+            "token": "No local exception cleanup is added.",
+            "line": 96
+          }
+        ]
+      },
+      {
+        "label": "raw_pool_large_small_return_gate",
+        "path": "src/native_string_pool_storage.cpp",
+        "ordered": true,
+        "Source_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "matches": [
+          {
+            "token": "void return_native_string_pool_00bd1510(",
+            "line": 80
+          },
+          {
+            "token": "if (size >= class_count) {",
+            "line": 83
+          },
+          {
+            "token": "std::free(block);",
+            "line": 84
+          },
+          {
+            "token": "if (actual_small_returns_disabled_01090aa4 != 0) return;",
+            "line": 87
+          },
+          {
+            "token": "auto* const captured_section = section(*pool);",
+            "line": 88
+          }
+        ]
+      },
+      {
+        "label": "canonical_string_process_identity",
+        "path": "include/bsp/game_native_string_process.hpp",
+        "ordered": true,
+        "Source_sha256": "b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace",
+        "matches": [
+          {
+            "token": "void* volatile manager_{};",
+            "line": 38
+          },
+          {
+            "token": "NativeStringPoolStorage* volatile pool_{};",
+            "line": 39
+          },
+          {
+            "token": "volatile std::uint32_t disabled_{};",
+            "line": 40
+          },
+          {
+            "token": "NativeStringRawPoolContext raw_{pool_, disabled_, manager_};",
+            "line": 41
+          },
+          {
+            "token": "ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};",
+            "line": 42
+          }
+        ]
+      },
+      {
+        "label": "process_cells_retained",
+        "path": "src/game_native_string_process.cpp",
+        "ordered": true,
+        "Source_sha256": "ca2c2665dd5da2c3481fa6382520e60010c35919c86102d802e4d03c3eaf0b0a",
+        "matches": [
+          {
+            "token": "static auto* const process = new GameNativeStringProcess;",
+            "line": 32
+          },
+          {
+            "token": "return *process;",
+            "line": 33
+          }
+        ]
+      },
+      {
+        "label": "scalar_string_lifetime_bridge_same_cells",
+        "path": "include/bsp/native_game_profile_lifetime.hpp",
+        "ordered": true,
+        "Source_sha256": "442816524d03d361abba5134a49130e25397d3befb754c6dc0e10115514f46c5",
+        "matches": [
+          {
+            "token": "NativeStringRawPoolContext& strings;",
+            "line": 30
+          },
+          {
+            "token": "ActualNativeStringPoolStorage actual_strings;",
+            "line": 33
+          },
+          {
+            "token": "actual_strings(raw.actual_published_01090aa8,",
+            "line": 36
+          },
+          {
+            "token": "raw.actual_small_returns_disabled_01090aa4,raw.actual_manager_publication_01090aa0)",
+            "line": 37
+          }
+        ]
+      },
+      {
+        "label": "rollback_owner_drain_order",
+        "path": "src/game_hosts.cpp",
+        "ordered": true,
+        "Source_sha256": "6cc3e21931ee19e8aa6f7be92e995797b309bfd0a75f8767df7b475fc925bfbb",
+        "matches": [
+          {
+            "token": "GameStartupHost::~GameStartupHost()",
+            "line": 1573
+          },
+          {
+            "token": "delete loop_callbacks_;",
+            "line": 1590
+          },
+          {
+            "token": "delete frame_host_;",
+            "line": 1591
+          },
+          {
+            "token": "if (native_renderer_) native_renderer_->drain_singletons();",
+            "line": 1601
+          },
+          {
+            "token": "else singletons_->shutdown();",
+            "line": 1602
+          },
+          {
+            "token": "delete singletons_;",
+            "line": 1619
+          },
+          {
+            "token": "lua_services_.reset();",
+            "line": 1628
+          },
+          {
+            "token": "delete vfs_;",
+            "line": 1637
+          }
+        ]
+      },
+      {
+        "label": "existing_grid_defaults_now_corrected",
+        "path": "src/native_game_grid.cpp",
+        "ordered": true,
+        "Source_sha256": "27c9d4e2844de811d8b62e6660d08f39dbcec89eabd2df30c93138409c1eede3",
+        "matches": [
+          {
+            "token": "void* NativeGameGridCpuCalls::allocate_00bf55be(U bytes){return singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes});}",
+            "line": 166
+          },
+          {
+            "token": "void NativeGameGridCpuCalls::free_00bf65ac(void* allocation){singleton_lifetime_free(allocation);}",
+            "line": 167
+          }
+        ]
+      }
+    ],
+    "witness_qualification": "Positive exact-source witnesses support the accompanying manual ownership analysis. Complete lexical results include declarations/comments and false positives; they do not prove a call graph, runtime authority or universal absence.",
+    "authority_decision": {
+      "genuine_current_game_cell_exists": true,
+      "canonical_raw_string_cells_exist": true,
+      "actual_application_vector_subobject_exists": true,
+      "whole_raw_application_owner_established": false,
+      "duplicate_name_publication_owner_established": false,
+      "frame_reference_parameter_proves_authority": false,
+      "standalone_duplicate_normal_source_leaf_exists": true,
+      "frame_startup_composition_GO": false,
+      "new_CPP_implementation_GO": false
+    },
+    "next_packet": {
+      "id": "cc12_application_raw_storage_constructor_readiness",
+      "purpose": "Admit the one actual 1Ch Source owner and its constructor preimage/write schedule before adding a publication cell. Keep duplicate E1AE78 publication/normal retirement as a separate explicit process-owner contract; do not activate the frame.",
+      "bounded_inputs": [
+        "1Ch application lifetime and same-receiver contract",
+        "application+08 existing raw0Ch vector and signed count/capacity",
+        "application+14 publication",
+        "application+18/+19/+1A flags",
+        "unknown +00/+04 and padding preimage",
+        "current platform/frame/shutdown borrows and failed-startup retention"
+      ],
+      "must_not": [
+        "invent a zeroed 1Ch application or reinterpret GameStartupHost",
+        "copy ApplicationShutdownState as publication authority",
+        "publish a local pointer or c_str as E1AE78",
+        "choose an unproved duplicate release/overwrite/rollback schedule",
+        "activate game construction or mutate existing Source in this packet"
+      ]
+    },
+    "scope": {
+      "new_Cpp": 0,
+      "new_builds": 0,
+      "new_tests": 0,
+      "new_probes": 0,
+      "fresh_Native_queries": 0,
+      "Ghidra_mutations": 0,
+      "ledger_mutations": 0,
+      "game_runs": 0,
+      "OS_work": false,
+      "original_ABI_or_FH3_claim": false
+    }
+  },
+  "finite_pins": [
+    {
+      "path": "audit.py",
+      "bytes": 15494,
+      "sha256": "a7007c8be2db5b6882e8f3ae22cf65d788d87e9ee2b5a506c3fd6fd64e8d97cc"
+    },
+    {
+      "path": "dependencies.py",
+      "bytes": 7642,
+      "sha256": "4a37fa1dbb6520f7486a90b662d3aa480820a3880d2b0ac8e69f8a8bd8fd994f"
+    },
+    {
+      "path": "evidence.py",
+      "bytes": 7797,
+      "sha256": "8252961b037cc0e0fe64806898b17f0aa2ac718f1370616ca95105c5d8e24327"
+    },
+    {
+      "path": "freeze_source.py",
+      "bytes": 3371,
+      "sha256": "fad8c21a03b2e177c5411b6c0ee21f02082aee888f4dae42fd55c9deec96860a"
+    },
+    {
+      "path": "frozen/001f8f1f9986e02d3c483e7e90c2f7dc336355fb1c5c444dde1769e63185963f_Source3354-particle-primary_retained.tar.gz",
+      "bytes": 26552359,
+      "sha256": "001f8f1f9986e02d3c483e7e90c2f7dc336355fb1c5c444dde1769e63185963f"
+    },
+    {
+      "path": "frozen/00b263afecf841a4146892d4f075a5404869165593bd192daba03997fdc1a87d_excerpt_grid_corrected_defaults.txt",
+      "bytes": 433,
+      "sha256": "00b263afecf841a4146892d4f075a5404869165593bd192daba03997fdc1a87d"
+    },
+    {
+      "path": "frozen/077829ee4cbff3309370b106094af04c68cbf5e64167dcc9293ff7bd7b385bfd_excerpt_startup_host_constructor_settings_owner.txt",
+      "bytes": 1438,
+      "sha256": "077829ee4cbff3309370b106094af04c68cbf5e64167dcc9293ff7bd7b385bfd"
+    },
+    {
+      "path": "frozen/0a790d357bc4da487a9309bea9ab4da566f505bca6c8545b0d223bbcff222c5f_excerpt_shutdown_system_array_schedule.txt",
+      "bytes": 716,
+      "sha256": "0a790d357bc4da487a9309bea9ab4da566f505bca6c8545b0d223bbcff222c5f"
+    },
+    {
+      "path": "frozen/0b1a96672b3ae3a8d66a980f911a9f996e853380acb8c2b4c1f8088514fcf99c_frame_Source4208_working.tar.gz",
+      "bytes": 8622337,
+      "sha256": "0b1a96672b3ae3a8d66a980f911a9f996e853380acb8c2b4c1f8088514fcf99c"
+    },
+    {
+      "path": "frozen/0f02fd0f90c563fa699fa51c14449a35eeb80b09aded0340a015731375672d4f_Source3352-worker-free_manifest.json",
+      "bytes": 801876,
+      "sha256": "0f02fd0f90c563fa699fa51c14449a35eeb80b09aded0340a015731375672d4f"
+    },
+    {
+      "path": "frozen/108b5e13fba131b9e30c86f416014cb841133997ce9c7741cf8f0512d46b1640_excerpt_shutdown_game_clear_schedule.txt",
+      "bytes": 819,
+      "sha256": "108b5e13fba131b9e30c86f416014cb841133997ce9c7741cf8f0512d46b1640"
+    },
+    {
+      "path": "frozen/11b434980be42c6144d8083595ff0aaaeeebe4d324944a0fe6c0d05e9793c346_Source3354-particle-primary_manifest.json",
+      "bytes": 1270504,
+      "sha256": "11b434980be42c6144d8083595ff0aaaeeebe4d324944a0fe6c0d05e9793c346"
+    },
+    {
+      "path": "frozen/13cf95c7628fe6bcea00e394a70497085c817d6cedabf624cdcd6d610dc70e48_Source3354-primary-free_retained.tar.gz",
+      "bytes": 26552095,
+      "sha256": "13cf95c7628fe6bcea00e394a70497085c817d6cedabf624cdcd6d610dc70e48"
+    },
+    {
+      "path": "frozen/14fce128496bf1767b8894eaf0ce4c5a156fe8d2069ea199a8d9b0d7235f7828_excerpt_pool_return_flags.txt",
+      "bytes": 700,
+      "sha256": "14fce128496bf1767b8894eaf0ce4c5a156fe8d2069ea199a8d9b0d7235f7828"
+    },
+    {
+      "path": "frozen/1664e26a02bdaf5cbad034ff8d7bb5cdda827750a800cc40f6c57e599acd710d_grid_Source4208_working.tar.gz",
+      "bytes": 8622639,
+      "sha256": "1664e26a02bdaf5cbad034ff8d7bb5cdda827750a800cc40f6c57e599acd710d"
+    },
+    {
+      "path": "frozen/16671c9e1c6630ef7be242c82eb46cfbf4c50b5044f54775fa8fe41d319d1bb5_excerpt_runtime_phase_and_current_consumer.txt",
+      "bytes": 1769,
+      "sha256": "16671c9e1c6630ef7be242c82eb46cfbf4c50b5044f54775fa8fe41d319d1bb5"
+    },
+    {
+      "path": "frozen/17828f9f805e373bc3c24cb67ba20a4448117577a3310da77ff56c8ab55a003f_Root_frame_guarded_replay.json",
+      "bytes": 389,
+      "sha256": "17828f9f805e373bc3c24cb67ba20a4448117577a3310da77ff56c8ab55a003f"
+    },
+    {
+      "path": "frozen/17f0cf2a3e657af3e48e53da539f069a97c13904600d42a02272705553c9f311_excerpt_startup_rollback_drain.txt",
+      "bytes": 3176,
+      "sha256": "17f0cf2a3e657af3e48e53da539f069a97c13904600d42a02272705553c9f311"
+    },
+    {
+      "path": "frozen/1984de129ebffa0f6ceaece40fb9278df72aa6d792285b5d0d11ea89a14aa3da_excerpt_raw_header_resize.txt",
+      "bytes": 1852,
+      "sha256": "1984de129ebffa0f6ceaece40fb9278df72aa6d792285b5d0d11ea89a14aa3da"
+    },
+    {
+      "path": "frozen/1d1a121745385ec8c18911da12fa029efdac28bd28204d1647668d39c9d849bd_Source3352-wide_retained.tar.gz",
+      "bytes": 26551334,
+      "sha256": "1d1a121745385ec8c18911da12fa029efdac28bd28204d1647668d39c9d849bd"
+    },
+    {
+      "path": "frozen/282f1746284799b49c095b453b594f4999427c42bf1201dde44815773b2ff5e0_excerpt_game_current_clear_and_pooled_name_return.txt",
+      "bytes": 1531,
+      "sha256": "282f1746284799b49c095b453b594f4999427c42bf1201dde44815773b2ff5e0"
+    },
+    {
+      "path": "frozen/2c0968bf936e18435d9bd7e0248a39edec2fbfe304b377f1d0b3d84ad4c91781_Source_Git_tree.bin",
+      "bytes": 382757,
+      "sha256": "2c0968bf936e18435d9bd7e0248a39edec2fbfe304b377f1d0b3d84ad4c91781"
+    },
+    {
+      "path": "frozen/2c2cb75fb167a6c8e6047397e809f5769b90483a7287f10c3ebed05ea0a60f8c_frame_Source4208_Git_tree.bin",
+      "bytes": 382757,
+      "sha256": "2c2cb75fb167a6c8e6047397e809f5769b90483a7287f10c3ebed05ea0a60f8c"
+    },
+    {
+      "path": "frozen/2c59485c684524e5791ef6117b235d6aa8e7a50e6a0b19755e99260a61822a6f_excerpt_game_cleanup_string_bridge.txt",
+      "bytes": 597,
+      "sha256": "2c59485c684524e5791ef6117b235d6aa8e7a50e6a0b19755e99260a61822a6f"
+    },
+    {
+      "path": "frozen/303ac459f9b773bde2e9e1395cf8d89be0326193f2e45efb56041014dc2e7650_excerpt_actual_app_vector_only.txt",
+      "bytes": 478,
+      "sha256": "303ac459f9b773bde2e9e1395cf8d89be0326193f2e45efb56041014dc2e7650"
+    },
+    {
+      "path": "frozen/3376335024b2921740ae1d79f6f7c6d9ea27d0bd25b2cb5e028e38bbbb6ff911_excerpt_game_name_copy.txt",
+      "bytes": 957,
+      "sha256": "3376335024b2921740ae1d79f6f7c6d9ea27d0bd25b2cb5e028e38bbbb6ff911"
+    },
+    {
+      "path": "frozen/35a3f9ac2765d19554b7cc2e06dcb3b31ad2b6b93cb1b18005625721b7a2fdaa_Source3354_prepared_registry_primary_manifest.json",
+      "bytes": 1243633,
+      "sha256": "35a3f9ac2765d19554b7cc2e06dcb3b31ad2b6b93cb1b18005625721b7a2fdaa"
+    },
+    {
+      "path": "frozen/3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e_Git_tests_math_tests.cpp",
+      "bytes": 205179,
+      "sha256": "3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e"
+    },
+    {
+      "path": "frozen/3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e_working_tests_math_tests.cpp",
+      "bytes": 205179,
+      "sha256": "3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e"
+    },
+    {
+      "path": "frozen/36ab4b12576920075ee0879242ec639f40e8df80733b5165dac79b3dc79b059b_accepted_bf21d1264_docs_CC12_GRID_CANONICAL_DEFAULT_PAIR.md",
+      "bytes": 8638,
+      "sha256": "36ab4b12576920075ee0879242ec639f40e8df80733b5165dac79b3dc79b059b"
+    },
+    {
+      "path": "frozen/3da1b81349508e1b3f2e118765b2eae6ee58431d67d1a2751396a9fd9d9cbc08_excerpt_startup_application_projection.txt",
+      "bytes": 753,
+      "sha256": "3da1b81349508e1b3f2e118765b2eae6ee58431d67d1a2751396a9fd9d9cbc08"
+    },
+    {
+      "path": "frozen/3e4960ac1da868c4a369d2f44ecbf57ddd92795d955ef1fe72cb43e3dea3a6cc_excerpt_pool_getter_and_draining.txt",
+      "bytes": 2771,
+      "sha256": "3e4960ac1da868c4a369d2f44ecbf57ddd92795d955ef1fe72cb43e3dea3a6cc"
+    },
+    {
+      "path": "frozen/4257a26bd2ac68f2dce6c82761b13ca03042fb9bbca104ebc568385f9a2846c8_frame_Source4208_Git.tar.gz",
+      "bytes": 8622337,
+      "sha256": "4257a26bd2ac68f2dce6c82761b13ca03042fb9bbca104ebc568385f9a2846c8"
+    },
+    {
+      "path": "frozen/462d571d67b2e2be750f2f80c3a727f1f6ec1487df1093106ea42f08ee8643ae_accepted_83c14ea62_docs_CC12_RENDER_PREPARED_ENTRY_PRIMARY.md",
+      "bytes": 3313,
+      "sha256": "462d571d67b2e2be750f2f80c3a727f1f6ec1487df1093106ea42f08ee8643ae"
+    },
+    {
+      "path": "frozen/474c86ebb0c2f2adb75b29047dcdd949ad1d7d1815000a5d2cca79c3588c660d_excerpt_runtime_identity_checks.txt",
+      "bytes": 964,
+      "sha256": "474c86ebb0c2f2adb75b29047dcdd949ad1d7d1815000a5d2cca79c3588c660d"
+    },
+    {
+      "path": "frozen/48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0_excerpt_canonical_duplicate_source_body.txt",
+      "bytes": 1554,
+      "sha256": "48c86a1ad7763861d099d909a7a8b314b3258ee9b5508f702f093a64188946e0"
+    },
+    {
+      "path": "frozen/4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4_Git_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+      "bytes": 3705583,
+      "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+    },
+    {
+      "path": "frozen/4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4_working_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+      "bytes": 3705583,
+      "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+    },
+    {
+      "path": "frozen/4f723f21f2f1dae5b7ed71a254dc80b53cfd5b0d67f28757d8437f0ebe1abf03_excerpt_current_semantic_move_consumer.txt",
+      "bytes": 1093,
+      "sha256": "4f723f21f2f1dae5b7ed71a254dc80b53cfd5b0d67f28757d8437f0ebe1abf03"
+    },
+    {
+      "path": "frozen/51f626e4f76e4b639e5d4178814bff57c0a3fe44c6640ddcf27c95d25eda0abd_excerpt_platform_frame_service_binding.txt",
+      "bytes": 555,
+      "sha256": "51f626e4f76e4b639e5d4178814bff57c0a3fe44c6640ddcf27c95d25eda0abd"
+    },
+    {
+      "path": "frozen/52f090e3c5b3414f924c7cb393a7ab1d75fd797fbe881ac9ca2f0e6966137a5c_query_spec.json",
+      "bytes": 4022,
+      "sha256": "52f090e3c5b3414f924c7cb393a7ab1d75fd797fbe881ac9ca2f0e6966137a5c"
+    },
+    {
+      "path": "frozen/53b93cecf0cb1b2c8b80da8ad4a5fb8ace0daa6381f1740f724fc42058ce400d_Source3354_worker_grid_retained.tar.gz",
+      "bytes": 26552405,
+      "sha256": "53b93cecf0cb1b2c8b80da8ad4a5fb8ace0daa6381f1740f724fc42058ce400d"
+    },
+    {
+      "path": "frozen/541e0f13cf5a235989f18724e714076cbe5b37eadf5cfb8ea2fb9f4a661c5ad3_Source3352-wide_manifest.json",
+      "bytes": 1273066,
+      "sha256": "541e0f13cf5a235989f18724e714076cbe5b37eadf5cfb8ea2fb9f4a661c5ad3"
+    },
+    {
+      "path": "frozen/548cd1fcb1ea89dc7d4f120aa2dae827861dead372167b19bc0e9f354430f27f_accepted_6a80adb7f_reports_cc12_game_native_frame_owner_composition.json",
+      "bytes": 26104,
+      "sha256": "548cd1fcb1ea89dc7d4f120aa2dae827861dead372167b19bc0e9f354430f27f"
+    },
+    {
+      "path": "frozen/552460ba2c531154964e5ecc9f4642cee6d5a57bf0d85a43c7a80f84025cc7a3_excerpt_game_current_publication_before_later_calls.txt",
+      "bytes": 882,
+      "sha256": "552460ba2c531154964e5ecc9f4642cee6d5a57bf0d85a43c7a80f84025cc7a3"
+    },
+    {
+      "path": "frozen/553c4ea7394432b76d0e0d2addbe66323dbff857f9d6d026f1b428646d45d223_excerpt_raw_header_construct.txt",
+      "bytes": 622,
+      "sha256": "553c4ea7394432b76d0e0d2addbe66323dbff857f9d6d026f1b428646d45d223"
+    },
+    {
+      "path": "frozen/55941582f22b72e79afb555ee0c8308aa9c237d56b59627a3f10951c9e1f6ac0_excerpt_bootstrap_string_projection.txt",
+      "bytes": 546,
+      "sha256": "55941582f22b72e79afb555ee0c8308aa9c237d56b59627a3f10951c9e1f6ac0"
+    },
+    {
+      "path": "frozen/5640f036d1b917d552e6ffeb3b01f75c348a381f66241fb2911ed5018878aabc_excerpt_startup_ignored_arguments.txt",
+      "bytes": 408,
+      "sha256": "5640f036d1b917d552e6ffeb3b01f75c348a381f66241fb2911ed5018878aabc"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_Git_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_working_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/59b99c8e2fcc4aa08eb0c2fc2865069d6e9a909fe5b4ba3a70b32717f6be87c8_excerpt_startup_mode_parse_without_duplicate.txt",
+      "bytes": 895,
+      "sha256": "59b99c8e2fcc4aa08eb0c2fc2865069d6e9a909fe5b4ba3a70b32717f6be87c8"
+    },
+    {
+      "path": "frozen/5ac3d925557f45f7a0fc09c365fb1769e2b13f7826f39934c2a26bb5c8dac4fe_excerpt_raw_string_domain_and_returns.txt",
+      "bytes": 1770,
+      "sha256": "5ac3d925557f45f7a0fc09c365fb1769e2b13f7826f39934c2a26bb5c8dac4fe"
+    },
+    {
+      "path": "frozen/5da8b6199aa294d5a2ebe76282e42f58d5f9ca63b2c61e51b4d847af62897f9e_Source3354-node_manifest.json",
+      "bytes": 1250346,
+      "sha256": "5da8b6199aa294d5a2ebe76282e42f58d5f9ca63b2c61e51b4d847af62897f9e"
+    },
+    {
+      "path": "frozen/5fe23ed49fa13f9f76e13520eec835db983c063ec17f4c9af3b3ef8faa839508_excerpt_frame_borrowed_contract.txt",
+      "bytes": 4865,
+      "sha256": "5fe23ed49fa13f9f76e13520eec835db983c063ec17f4c9af3b3ef8faa839508"
+    },
+    {
+      "path": "frozen/62b7f547cc3d6e391eca9fe867256965999b5a1332a3f526c43c794197ce7dd9_accepted_8579262d4_docs_CC12_RENDER_ACTUAL_REGISTRY_PREPARED_ENTRY.md",
+      "bytes": 12297,
+      "sha256": "62b7f547cc3d6e391eca9fe867256965999b5a1332a3f526c43c794197ce7dd9"
+    },
+    {
+      "path": "frozen/655dec933a14108eae1aee2470371e6295bc0cbfe6d29ce483b703e3cfd40754_Source3354_worker_grid_manifest.json",
+      "bytes": 802221,
+      "sha256": "655dec933a14108eae1aee2470371e6295bc0cbfe6d29ce483b703e3cfd40754"
+    },
+    {
+      "path": "frozen/65c82e400043eb85dbea0300d079dda5d1128eebb97620a1ee124e86925c11af_excerpt_shutdown_service_boundaries.txt",
+      "bytes": 1196,
+      "sha256": "65c82e400043eb85dbea0300d079dda5d1128eebb97620a1ee124e86925c11af"
+    },
+    {
+      "path": "frozen/67040add7757a85dad3c70104cab3a40cac2d9cf838a28b8042921c53bbac01f_excerpt_startup_shutdown_gate.txt",
+      "bytes": 781,
+      "sha256": "67040add7757a85dad3c70104cab3a40cac2d9cf838a28b8042921c53bbac01f"
+    },
+    {
+      "path": "frozen/7a73c9b73b0d9c5b191e86dab49a707dcc1ce71bcd44122c116469c05c0c8549_Source_working.tar.gz",
+      "bytes": 8623742,
+      "sha256": "7a73c9b73b0d9c5b191e86dab49a707dcc1ce71bcd44122c116469c05c0c8549"
+    },
+    {
+      "path": "frozen/7a9b59731ed64cf5a44d922b04e50ef12c1373de4543fa3c3c8ecb3d226bf02d_excerpt_startup_normal_order.txt",
+      "bytes": 622,
+      "sha256": "7a9b59731ed64cf5a44d922b04e50ef12c1373de4543fa3c3c8ecb3d226bf02d"
+    },
+    {
+      "path": "frozen/7ec264eae1c6968784d476a256e36b58b3982d47d42b01aa507092581405307b_excerpt_shutdown_order_head.txt",
+      "bytes": 779,
+      "sha256": "7ec264eae1c6968784d476a256e36b58b3982d47d42b01aa507092581405307b"
+    },
+    {
+      "path": "frozen/805f224808e1b8534f5515315cf5009647d120985f2950a9ca6808ca1449f8b1_excerpt_frame_construction_publication_order.txt",
+      "bytes": 1734,
+      "sha256": "805f224808e1b8534f5515315cf5009647d120985f2950a9ca6808ca1449f8b1"
+    },
+    {
+      "path": "frozen/80bdfb1a7a6d629723fb30f4c00767b5aef437700318c1fa3d4c5e7530ed88a0_excerpt_application_vector_scope.txt",
+      "bytes": 1545,
+      "sha256": "80bdfb1a7a6d629723fb30f4c00767b5aef437700318c1fa3d4c5e7530ed88a0"
+    },
+    {
+      "path": "frozen/82836818ad592dd765918dba2f2d79a74598f21cc33a6175b7ed0c21f3c0dc2f_excerpt_frame_constructor_and_rejection.txt",
+      "bytes": 1998,
+      "sha256": "82836818ad592dd765918dba2f2d79a74598f21cc33a6175b7ed0c21f3c0dc2f"
+    },
+    {
+      "path": "frozen/84d8e53ac29a7e984c12d19900c70e4b1d185c0d582d42fd2631b7aae5fbf3e1_accepted_ac580812a_docs_CC12_GAME_FRAME_OWNER_PRIMARY.md",
+      "bytes": 1909,
+      "sha256": "84d8e53ac29a7e984c12d19900c70e4b1d185c0d582d42fd2631b7aae5fbf3e1"
+    },
+    {
+      "path": "frozen/87799730646459121dade53c5b1510006020581708d026b65cfdbb3f4aa16b80_Source_corpus.json",
+      "bytes": 1649772,
+      "sha256": "87799730646459121dade53c5b1510006020581708d026b65cfdbb3f4aa16b80"
+    },
+    {
+      "path": "frozen/8bb0d2be31265b801f6c60172e2ede57a3918679715461cb446f2c528cf6c9fc_excerpt_canonical_duplicate_contract.txt",
+      "bytes": 813,
+      "sha256": "8bb0d2be31265b801f6c60172e2ede57a3918679715461cb446f2c528cf6c9fc"
+    },
+    {
+      "path": "frozen/8be0fa126a987993697b50a1518106af68d9ef3cfdb9161ff4798496f092e3c6_excerpt_application_frame_projection.txt",
+      "bytes": 509,
+      "sha256": "8be0fa126a987993697b50a1518106af68d9ef3cfdb9161ff4798496f092e3c6"
+    },
+    {
+      "path": "frozen/8de7354e5b18ded150d04627d61ddadb1ffd4e3f5f520b936d32d9f8c2a5efc1_Source3352-worker-free_retained.tar.gz",
+      "bytes": 26551628,
+      "sha256": "8de7354e5b18ded150d04627d61ddadb1ffd4e3f5f520b936d32d9f8c2a5efc1"
+    },
+    {
+      "path": "frozen/8eec3b495f873fc79d606d870e3256ff5a8751698c00acd28d48c97ed9be2ff8_grid_Source4208_Git.tar.gz",
+      "bytes": 8622545,
+      "sha256": "8eec3b495f873fc79d606d870e3256ff5a8751698c00acd28d48c97ed9be2ff8"
+    },
+    {
+      "path": "frozen/991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca_CC12_APPLICATION_PUBLICATION_AUTHORITY_READINESS.md",
+      "bytes": 14656,
+      "sha256": "991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca"
+    },
+    {
+      "path": "frozen/996691e2baeba0677d144c2d7b346ea4361995c7b3caa89537469d319f741ba4_Source3354_prepared_registry_primary_retained.tar.gz",
+      "bytes": 26556081,
+      "sha256": "996691e2baeba0677d144c2d7b346ea4361995c7b3caa89537469d319f741ba4"
+    },
+    {
+      "path": "frozen/9dbf6242a7faf77ceaf720ddd83136d51b0c002fe110a08f7afd77e19be97b70_excerpt_raw_string_header_construct_contract.txt",
+      "bytes": 1353,
+      "sha256": "9dbf6242a7faf77ceaf720ddd83136d51b0c002fe110a08f7afd77e19be97b70"
+    },
+    {
+      "path": "frozen/a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b_Git_reports_cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+    },
+    {
+      "path": "frozen/a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b_working_reports_cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+    },
+    {
+      "path": "frozen/a11cc24039e066970c42b261763714b6d0b62800775318a6778990b97c0a4e47_excerpt_startup_host_stored_projections.txt",
+      "bytes": 2600,
+      "sha256": "a11cc24039e066970c42b261763714b6d0b62800775318a6778990b97c0a4e47"
+    },
+    {
+      "path": "frozen/a36be696dd177f495a3cb75d912a13d014733bf0f0b09a59119686838b3dbc77_excerpt_startup_platform_identity.txt",
+      "bytes": 650,
+      "sha256": "a36be696dd177f495a3cb75d912a13d014733bf0f0b09a59119686838b3dbc77"
+    },
+    {
+      "path": "frozen/a66d0d6ebcd9d3f2ffb7a08f27605bcc6bda175d479f29eb0333052c8509d322_Source3354-primary-free_manifest.json",
+      "bytes": 1236914,
+      "sha256": "a66d0d6ebcd9d3f2ffb7a08f27605bcc6bda175d479f29eb0333052c8509d322"
+    },
+    {
+      "path": "frozen/a745afa4feb747c5e9832b07c81f55be974c991bc4a0eaac88e4d2a3165e4862_excerpt_retained_settings_game_cell.txt",
+      "bytes": 2386,
+      "sha256": "a745afa4feb747c5e9832b07c81f55be974c991bc4a0eaac88e4d2a3165e4862"
+    },
+    {
+      "path": "frozen/a87bc4c2caee2ab8476539de86fdc9a9fc7453439a5532a6b6b3ae107a78963f_excerpt_pool_return_threshold_contract.txt",
+      "bytes": 1927,
+      "sha256": "a87bc4c2caee2ab8476539de86fdc9a9fc7453439a5532a6b6b3ae107a78963f"
+    },
+    {
+      "path": "frozen/b0a61f226f31b4020b6bdd55910ce05d0571731da1856f13302d784d89227c6a_excerpt_current_direct_frame_dispatch.txt",
+      "bytes": 463,
+      "sha256": "b0a61f226f31b4020b6bdd55910ce05d0571731da1856f13302d784d89227c6a"
+    },
+    {
+      "path": "frozen/b2e64376467af675c23a1826aa108547685469b00b69830d9b2b33205a8cf0b3_grid_Source4208_Git_tree.bin",
+      "bytes": 382757,
+      "sha256": "b2e64376467af675c23a1826aa108547685469b00b69830d9b2b33205a8cf0b3"
+    },
+    {
+      "path": "frozen/b62c6e4fdd937a7dccbfa5a0b490dbed27889a4455dbf742c65188456db3d678_accepted_83c14ea62_reports_cc12_render_prepared_entry_primary.json",
+      "bytes": 26478,
+      "sha256": "b62c6e4fdd937a7dccbfa5a0b490dbed27889a4455dbf742c65188456db3d678"
+    },
+    {
+      "path": "frozen/b705b6e8f2b50d61c18cb7afab8e092c442a860ce2e676026e76dab4c25a6527_excerpt_raw_header_return.txt",
+      "bytes": 644,
+      "sha256": "b705b6e8f2b50d61c18cb7afab8e092c442a860ce2e676026e76dab4c25a6527"
+    },
+    {
+      "path": "frozen/b8b277d85d58986427664fa746dfde5b706b9d87e06c14a97c489c705e3a6c7d_Source_Git.tar.gz",
+      "bytes": 8623742,
+      "sha256": "b8b277d85d58986427664fa746dfde5b706b9d87e06c14a97c489c705e3a6c7d"
+    },
+    {
+      "path": "frozen/b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace_excerpt_canonical_string_cells.txt",
+      "bytes": 3108,
+      "sha256": "b8dde55aa8ef2dfe69a7ce14d6ba7752c6feae9c1716ef6962240b3eccadcace"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_Git_scripts_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_working_scripts_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/bbab88eb939d6ba81d1122a4ededd6619fcc8ce4defd915c0aea7f5be1253fcf_excerpt_bootstrap_duplicate_comment.txt",
+      "bytes": 521,
+      "sha256": "bbab88eb939d6ba81d1122a4ededd6619fcc8ce4defd915c0aea7f5be1253fcf"
+    },
+    {
+      "path": "frozen/bec4712db61702d31460b6dcc5271a434d68811837401b05099fd890c9d68c26_accepted_bf21d1264_reports_cc12_grid_canonical_default_pair.json",
+      "bytes": 130697,
+      "sha256": "bec4712db61702d31460b6dcc5271a434d68811837401b05099fd890c9d68c26"
+    },
+    {
+      "path": "frozen/bf57a9dfc8bf28219f376005e26b5a0fb79a4f7594fc0e65b4090d6d82f3b81d_audit_receipt.json",
+      "bytes": 58563,
+      "sha256": "bf57a9dfc8bf28219f376005e26b5a0fb79a4f7594fc0e65b4090d6d82f3b81d"
+    },
+    {
+      "path": "frozen/c056feb47e2037d13dfae5d73e501a4ec83ea42e382de897dee9e3c3917b8ca2_excerpt_frame_scalar_and_diagnostics.txt",
+      "bytes": 3551,
+      "sha256": "c056feb47e2037d13dfae5d73e501a4ec83ea42e382de897dee9e3c3917b8ca2"
+    },
+    {
+      "path": "frozen/c14a9e088c9e2d7283bc15c55b79d05a241e70afe63b6c9c5f7b7be788cf7607_excerpt_entry_host_and_arguments.txt",
+      "bytes": 1023,
+      "sha256": "c14a9e088c9e2d7283bc15c55b79d05a241e70afe63b6c9c5f7b7be788cf7607"
+    },
+    {
+      "path": "frozen/c16ce79dc3d0028bdd834524859dc151451be9728f9e8697a517aad8b4a9cc5c_queries.json",
+      "bytes": 306407,
+      "sha256": "c16ce79dc3d0028bdd834524859dc151451be9728f9e8697a517aad8b4a9cc5c"
+    },
+    {
+      "path": "frozen/c18a6aabce6f8ec4da911384becb44fcd3bf1f7a2f66bcdb9b6ee6d951b26a84_accepted_ac580812a_reports_cc12_game_frame_owner_primary.json",
+      "bytes": 4198,
+      "sha256": "c18a6aabce6f8ec4da911384becb44fcd3bf1f7a2f66bcdb9b6ee6d951b26a84"
+    },
+    {
+      "path": "frozen/c3ebd708a7db7787951cb7e869589cbb91caa1932f63a8507eb94ba3fa393db3_dependencies.json",
+      "bytes": 10753905,
+      "sha256": "c3ebd708a7db7787951cb7e869589cbb91caa1932f63a8507eb94ba3fa393db3"
+    },
+    {
+      "path": "frozen/d3b4b15b6eda0482d245e7010c5777794e88f865ef998ff6149a259f733780a8_excerpt_platform_application_field.txt",
+      "bytes": 1623,
+      "sha256": "d3b4b15b6eda0482d245e7010c5777794e88f865ef998ff6149a259f733780a8"
+    },
+    {
+      "path": "frozen/d637a9835379d96a4c65bcdcbc2771b6bf93538e6f9b049725117fd5e71c0f2c_excerpt_startup_shutdown_then_manager_drain.txt",
+      "bytes": 2128,
+      "sha256": "d637a9835379d96a4c65bcdcbc2771b6bf93538e6f9b049725117fd5e71c0f2c"
+    },
+    {
+      "path": "frozen/d9d5794645f03864646021523b0e12c22f6b84f2b18cd74d8f0e0de3c3804ce4_excerpt_retained_settings_game_accessor.txt",
+      "bytes": 489,
+      "sha256": "d9d5794645f03864646021523b0e12c22f6b84f2b18cd74d8f0e0de3c3804ce4"
+    },
+    {
+      "path": "frozen/db2f8c63a85ec524d5934032c2cb6e4c1a4281fbaf76864665741b17c0eddad7_Source3354-node_retained.tar.gz",
+      "bytes": 26552024,
+      "sha256": "db2f8c63a85ec524d5934032c2cb6e4c1a4281fbaf76864665741b17c0eddad7"
+    },
+    {
+      "path": "frozen/dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c_Git_reports_cc12_allocator_exception_copy_leaf_readiness.json",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+    },
+    {
+      "path": "frozen/dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c_working_reports_cc12_allocator_exception_copy_leaf_readiness.json",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+    },
+    {
+      "path": "frozen/df7d691b95868ec6c3b5952224fa788d7fef4c38c6d3864e91d773989a8887e5_accepted_6a80adb7f_docs_CC12_GAME_NATIVE_FRAME_OWNER_COMPOSITION.md",
+      "bytes": 14206,
+      "sha256": "df7d691b95868ec6c3b5952224fa788d7fef4c38c6d3864e91d773989a8887e5"
+    },
+    {
+      "path": "frozen/e0ba47dc4051eb32eeec0e3791bca9387ed703ad63630c7aa8c63a1ea59d2a77_excerpt_singleton_canonical_manager_borrow.txt",
+      "bytes": 1142,
+      "sha256": "e0ba47dc4051eb32eeec0e3791bca9387ed703ad63630c7aa8c63a1ea59d2a77"
+    },
+    {
+      "path": "frozen/e11db8ba7ad00d784a92b3523269f3a9324dfb5bcd5208cd025d6ae9a55f8f15_Root_frame_primary_review.json",
+      "bytes": 17381,
+      "sha256": "e11db8ba7ad00d784a92b3523269f3a9324dfb5bcd5208cd025d6ae9a55f8f15"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_Git_cmake_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_working_cmake_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/e55b9464ee3fb2756a2ef7ba143b8fadcc62a7e8599603eae35daad2e29687ab_excerpt_shutdown_projection_fields.txt",
+      "bytes": 344,
+      "sha256": "e55b9464ee3fb2756a2ef7ba143b8fadcc62a7e8599603eae35daad2e29687ab"
+    },
+    {
+      "path": "frozen/ebd7c68afab006b7db34cae7e370664310d931806d9e892b84b738ad6a8b9cf6_excerpt_raw_pool_access.txt",
+      "bytes": 815,
+      "sha256": "ebd7c68afab006b7db34cae7e370664310d931806d9e892b84b738ad6a8b9cf6"
+    },
+    {
+      "path": "frozen/f0abe12342b30ca9f1d9f6336d603515fdf5c5669988fee523042086560f23d2_excerpt_canonical_string_process_retention.txt",
+      "bytes": 166,
+      "sha256": "f0abe12342b30ca9f1d9f6336d603515fdf5c5669988fee523042086560f23d2"
+    },
+    {
+      "path": "frozen/f12768052e197c0b1163f5e53d49a6c8c98bfd7a952532b78e984cf741ad60f6_excerpt_plain_duplicate_projection.txt",
+      "bytes": 425,
+      "sha256": "f12768052e197c0b1163f5e53d49a6c8c98bfd7a952532b78e984cf741ad60f6"
+    },
+    {
+      "path": "frozen/f3d6f43b2cca5c3e3e624d013e5d5dfc0f7c3aca40389ed38cc2801b1381662d_excerpt_application_frame_current_game_and_update.txt",
+      "bytes": 1730,
+      "sha256": "f3d6f43b2cca5c3e3e624d013e5d5dfc0f7c3aca40389ed38cc2801b1381662d"
+    },
+    {
+      "path": "frozen/f4f30aa5dc34ccb42727a5a77344b7b07c51f6b6db8b2a03a985a5a83cd91309_excerpts.json",
+      "bytes": 22201,
+      "sha256": "f4f30aa5dc34ccb42727a5a77344b7b07c51f6b6db8b2a03a985a5a83cd91309"
+    },
+    {
+      "path": "frozen/face18a0113eccc011deb0871a1542b1e59ba305a66b57d9215c90b5ab1560b4_excerpt_current_semantic_game_consumer.txt",
+      "bytes": 502,
+      "sha256": "face18a0113eccc011deb0871a1542b1e59ba305a66b57d9215c90b5ab1560b4"
+    },
+    {
+      "path": "frozen/faf539359b3d2e76e1af6adf4fe41b9b7f8a5056b346d2ae3a3bea79c8e2143c_excerpt_game_scalar_flags.txt",
+      "bytes": 709,
+      "sha256": "faf539359b3d2e76e1af6adf4fe41b9b7f8a5056b346d2ae3a3bea79c8e2143c"
+    },
+    {
+      "path": "frozen/fb48a958943f27e2331e5349e4a5b8d9515e7dbbad8cb13009183e268b310c54_excerpt_application_frame_schedule.txt",
+      "bytes": 1096,
+      "sha256": "fb48a958943f27e2331e5349e4a5b8d9515e7dbbad8cb13009183e268b310c54"
+    },
+    {
+      "path": "frozen/fc9924c0c95043d7355157b8471628cfd9f196393eebdea91109241b7348884e_frame_Source4208_corpus.json",
+      "bytes": 1650183,
+      "sha256": "fc9924c0c95043d7355157b8471628cfd9f196393eebdea91109241b7348884e"
+    },
+    {
+      "path": "frozen/fd494084f18d6f6c7c938487cf6daeab74faf56be00f538bcb336d4acc0ff227_excerpt_startup_1Ch_application_identity.txt",
+      "bytes": 756,
+      "sha256": "fd494084f18d6f6c7c938487cf6daeab74faf56be00f538bcb336d4acc0ff227"
+    },
+    {
+      "path": "frozen/fe8a7e5d779574ab1701ee78a8246acae0afe0c4f07171c44722afc4b17c5261_grid_after_cohort.json",
+      "bytes": 2482937,
+      "sha256": "fe8a7e5d779574ab1701ee78a8246acae0afe0c4f07171c44722afc4b17c5261"
+    },
+    {
+      "path": "frozen/ffeb31f25027121e822df0618dd1a485097b8b53480ff69717ba9615d3a0c9c1_accepted_8579262d4_reports_cc12_render_actual_registry_prepared_entry.json",
+      "bytes": 1278206,
+      "sha256": "ffeb31f25027121e822df0618dd1a485097b8b53480ff69717ba9615d3a0c9c1"
+    },
+    {
+      "path": "publish.py",
+      "bytes": 3452,
+      "sha256": "4d6d6cb764da43818d3f4bad5cb75009be6ed15c568bd8ce434622069b3d9e1b"
+    },
+    {
+      "path": "relocate_verify.py",
+      "bytes": 1191,
+      "sha256": "31a45df46e78664be2578769b97ebfbf2b100ef5f8fd3ff9a5b12ea76c4ea05c"
+    },
+    {
+      "path": "run_audit.py",
+      "bytes": 670,
+      "sha256": "246f4c382abd09f98756293539e1d5e598c9105965ab7137bd34d4b01038a030"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 5584,
+      "sha256": "75d21aa13ca504764bbe9269cc70c69e8371c726410b6c4da2dd42612e5e01d0"
+    }
+  ],
+  "replay": {
+    "portable": "python local/cc12_application_publication_authority_readiness/verify.py --report reports/cc12_application_publication_authority_readiness.json",
+    "actual_Git": "Append --original-worktree . to verify current and two prior complete Source Git corpora, actual dependency blobs, current raw files, owned commit and all 125 closed grid pins.",
+    "physical_relocation": "python local/cc12_application_publication_authority_readiness/relocate_verify.py",
+    "scope": "Portable replay opens only the new finite bundle and exact report. Historical paths inside copied inputs remain opaque provenance. Separate local replay receipts bind the report hash."
+  },
+  "qualification": "Source-only ownership analysis and finite lexical evidence. The existing frame accepts caller references but establishes neither Application+14 nor E1AE78 authority. Actual+08 vector, canonical string process and retained current-game cell exist; no owner, registry, C++, Native/GPR/ledger mutation, build/test/probe, OS/game work or activation is added."
+}
