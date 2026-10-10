@@ -1,0 +1,1536 @@
+{
+  "schema": "bsp.cc12.grid-defaults-primary.v1",
+  "status": "canonical_defaults_implemented_integrated_build_checked_no_activation",
+  "worker_commit": "bf21d1264bb15a3375bc1f0bfc4c1d373800cb8e",
+  "worker_proof": {
+    "path": "local/cc12_grid_defaults_primary/Root_worker_review.json",
+    "bytes": 100630,
+    "sha256": "2f9a22eb4ea2a7767172d7b2e2c4dac1cb96291b877feaf3c478767837d4fc01"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_grid_defaults_primary/Root_compiled_review.json",
+    "bytes": 40629276,
+    "sha256": "65d93eb3fc10e7d574ea4805817b31d8214266865d93745b2873b10caca5431b"
+  },
+  "Root_before": {
+    "path": "local/cc12_grid_defaults_primary/Root_before.json",
+    "bytes": 4962160,
+    "sha256": "da3fe2a8ebeac5396c34e933334f82c06dff246a62229d406f85f19587f8f45f"
+  },
+  "Root_after": {
+    "path": "local/cc12_grid_defaults_primary/Root_after.json",
+    "bytes": 4958711,
+    "sha256": "18456239bdfe423558e44bf2475521f3af7e5252f3a5c82f0b7412ef8c3dcebd"
+  },
+  "Root_Source_epoch": {
+    "path": "local/cc12_grid_defaults_primary/Source3354_grid_defaults_Root_frozen.json",
+    "bytes": 1216789,
+    "sha256": "05cd6a12de46e025b973b757c00bbf7df160d34eb815da19220d952aef5aa7d0"
+  },
+  "Source_changes": [
+    "include/bsp/native_game_grid.hpp",
+    "src/native_game_grid.cpp"
+  ],
+  "before_epoch": "Accepted Source3354-render-prepared-entry; retained artifacts proven exact to previous fresh Root after build. No additional baseline build claimed.",
+  "after_build": {
+    "log": {
+      "path": "local/cc12_grid_defaults_primary/Root_after_build.log",
+      "bytes": 3469,
+      "sha256": "c6ca5bdacc823793600d39dab7156e7ebb7db2883d45a7d638620b1bdaf348d0"
+    },
+    "normal_MSVC_Win32": true,
+    "existing_checks": "3/3 passed",
+    "new_tests": 0,
+    "new_probes": 0
+  },
+  "contract": {
+    "BF55BE": "Forward exact bytes including zero as {object,bytes,bytes} to singleton_lifetime_allocate.",
+    "BF65AC": "CPU scalar deletion uses singleton_lifetime_free, matching canonical outer object allocation.",
+    "BF6989": "Unchanged source CRT free for internal buffers. Custom domains still require their matching overrides.",
+    "preserved": "Virtual signatures/noexcept, six independent size/current-field requests, late field clearing, flags, publications, exceptions and numeric grid profile remain unchanged."
+  },
+  "Root_static": {
+    "Core_objects": 1989,
+    "App_objects": 80,
+    "code_sections_before": 174290,
+    "code_sections_after": 174290,
+    "exact_code_sections": 174288,
+    "changed_code_sections": [
+      {
+        "before": {
+          "group": "Core",
+          "object": "native_game_grid.obj",
+          "identity": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+          "section": 21,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "symbol": "??2@YAPAXI@Z"
+            }
+          ]
+        },
+        "after": {
+          "group": "Core",
+          "object": "native_game_grid.obj",
+          "identity": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+          "section": 21,
+          "bytes": 60,
+          "sha256": "f90202dbaad021bf85ef6bf756e92dc0657b3c9b0023bf065dcc20f912cc8ffb",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 37,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 50,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            }
+          ]
+        }
+      },
+      {
+        "before": {
+          "group": "Core",
+          "object": "native_game_grid.obj",
+          "identity": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "section": 42,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "symbol": "??3@YAXPAX@Z"
+            }
+          ]
+        },
+        "after": {
+          "group": "Core",
+          "object": "native_game_grid.obj",
+          "identity": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "section": 42,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+            }
+          ]
+        }
+      }
+    ],
+    "added_code_sections": [],
+    "removed_code_sections": [],
+    "whole_Core_objects_changed": 4,
+    "whole_App_objects_changed": 2,
+    "App_changed_objects": [
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_game_application_frame.obj",
+        "whole_bytes_differ": true,
+        "exact_excluding_only_COFF_timestamp": true
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+        "whole_bytes_differ": true,
+        "exact_excluding_only_COFF_timestamp": true
+      }
+    ],
+    "all_App_code_exact": true,
+    "complete_physical_indices_each": 24,
+    "positive_unique_canonical_provider_definitions": [
+      {
+        "object": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "definition": {
+          "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "symbol_index": 184,
+          "symbol_record_file_offset": 20276,
+          "section": 76,
+          "value": 0,
+          "type": 32
+        }
+      },
+      {
+        "object": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "definition": {
+          "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 185,
+          "symbol_record_file_offset": 20294,
+          "section": 77,
+          "value": 0,
+          "type": 32
+        }
+      }
+    ],
+    "canonical_provider_whole_object_unchanged": true,
+    "complete_methods_and_providers": {
+      "before": {
+        "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z": {
+          "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+          "positive_definition": {
+            "name": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+            "value": 0,
+            "section": 21,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 21,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "hex": "558becff7508e80000000083c4045dc20400",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "symbol": "??2@YAPAXI@Z"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xb"
+            },
+            {
+              "offset": 11,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 14,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 15,
+              "bytes": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z": {
+          "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "positive_definition": {
+            "name": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "value": 0,
+            "section": 42,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 42,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "hex": "558becff7508e80000000083c4045dc20400",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "symbol": "??3@YAXPAX@Z"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xb"
+            },
+            {
+              "offset": 11,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 14,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 15,
+              "bytes": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z": {
+          "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "positive_definition": {
+            "name": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "value": 0,
+            "section": 43,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 43,
+          "bytes": 19,
+          "sha256": "181fe1203bde986f85cd486f2379792be609e6bdeb52da401052fe8671baac57",
+          "hex": "558becff7508ff150000000083c4045dc20400",
+          "relocations": [
+            {
+              "offset": 8,
+              "type": 6,
+              "symbol": "__imp__free"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": 6,
+              "hex": "ff1500000000",
+              "mnemonic": "call",
+              "operands": "dword ptr [0]"
+            },
+            {
+              "offset": 12,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 15,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 16,
+              "bytes": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z": {
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "positive_definition": {
+            "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "value": 0,
+            "section": 76,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 76,
+          "bytes": 90,
+          "sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+          "hex": "558bec83ec0c538b1d00000000568b7508ff7608ffd383c40485c07520578b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e80000000068000000008d45f450e800000000cc",
+          "relocations": [
+            {
+              "offset": 9,
+              "type": 6,
+              "symbol": "__imp__malloc"
+            },
+            {
+              "offset": 32,
+              "type": 6,
+              "symbol": "__imp___callnewh"
+            },
+            {
+              "offset": 71,
+              "type": 20,
+              "symbol": "??0bad_alloc@std@@QAE@XZ"
+            },
+            {
+              "offset": 76,
+              "type": 6,
+              "symbol": "__TI2?AVbad_alloc@std@@"
+            },
+            {
+              "offset": 85,
+              "type": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "83ec0c",
+              "mnemonic": "sub",
+              "operands": "esp, 0xc"
+            },
+            {
+              "offset": 6,
+              "bytes": 1,
+              "hex": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "offset": 7,
+              "bytes": 6,
+              "hex": "8b1d00000000",
+              "mnemonic": "mov",
+              "operands": "ebx, dword ptr [0]"
+            },
+            {
+              "offset": 13,
+              "bytes": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 14,
+              "bytes": 3,
+              "hex": "8b7508",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 17,
+              "bytes": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 20,
+              "bytes": 2,
+              "hex": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "offset": 22,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 25,
+              "bytes": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 27,
+              "bytes": 2,
+              "hex": "7520",
+              "mnemonic": "jne",
+              "operands": "0x3d"
+            },
+            {
+              "offset": 29,
+              "bytes": 1,
+              "hex": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 30,
+              "bytes": 6,
+              "hex": "8b3d00000000",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [0]"
+            },
+            {
+              "offset": 36,
+              "bytes": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 39,
+              "bytes": 2,
+              "hex": "ffd7",
+              "mnemonic": "call",
+              "operands": "edi"
+            },
+            {
+              "offset": 41,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 44,
+              "bytes": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 46,
+              "bytes": 2,
+              "hex": "7413",
+              "mnemonic": "je",
+              "operands": "0x43"
+            },
+            {
+              "offset": 48,
+              "bytes": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 51,
+              "bytes": 2,
+              "hex": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "offset": 53,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 56,
+              "bytes": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 58,
+              "bytes": 2,
+              "hex": "74e8",
+              "mnemonic": "je",
+              "operands": "0x24"
+            },
+            {
+              "offset": 60,
+              "bytes": 1,
+              "hex": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 61,
+              "bytes": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "bytes": 1,
+              "hex": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "offset": 63,
+              "bytes": 2,
+              "hex": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "offset": 65,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 66,
+              "bytes": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "offset": 67,
+              "bytes": 3,
+              "hex": "8d4df4",
+              "mnemonic": "lea",
+              "operands": "ecx, [ebp - 0xc]"
+            },
+            {
+              "offset": 70,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x4b"
+            },
+            {
+              "offset": 75,
+              "bytes": 5,
+              "hex": "6800000000",
+              "mnemonic": "push",
+              "operands": "0"
+            },
+            {
+              "offset": 80,
+              "bytes": 3,
+              "hex": "8d45f4",
+              "mnemonic": "lea",
+              "operands": "eax, [ebp - 0xc]"
+            },
+            {
+              "offset": 83,
+              "bytes": 1,
+              "hex": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 84,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x59"
+            },
+            {
+              "offset": 89,
+              "bytes": 1,
+              "hex": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            }
+          ]
+        },
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z": {
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "positive_definition": {
+            "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "value": 0,
+            "section": 77,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 77,
+          "bytes": 6,
+          "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+          "hex": "ff2500000000",
+          "relocations": [
+            {
+              "offset": 2,
+              "type": 6,
+              "symbol": "__imp__free"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 6,
+              "hex": "ff2500000000",
+              "mnemonic": "jmp",
+              "operands": "dword ptr [0]"
+            }
+          ]
+        }
+      },
+      "after": {
+        "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z": {
+          "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+          "positive_definition": {
+            "name": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+            "value": 0,
+            "section": 21,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 21,
+          "bytes": 60,
+          "sha256": "f90202dbaad021bf85ef6bf756e92dc0657b3c9b0023bf065dcc20f912cc8ffb",
+          "hex": "558bec83ec10a10000000033c58945fc8b45088945f48945f88d45f050c745f003000000e8000000008b4dfc83c40433cde8000000008be55dc20400",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 37,
+              "type": 20,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+            },
+            {
+              "offset": 50,
+              "type": 20,
+              "symbol": "@__security_check_cookie@4"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            },
+            {
+              "offset": 6,
+              "bytes": 5,
+              "hex": "a100000000",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [0]"
+            },
+            {
+              "offset": 11,
+              "bytes": 2,
+              "hex": "33c5",
+              "mnemonic": "xor",
+              "operands": "eax, ebp"
+            },
+            {
+              "offset": 13,
+              "bytes": 3,
+              "hex": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "offset": 16,
+              "bytes": 3,
+              "hex": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 19,
+              "bytes": 3,
+              "hex": "8945f4",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 0xc], eax"
+            },
+            {
+              "offset": 22,
+              "bytes": 3,
+              "hex": "8945f8",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 8], eax"
+            },
+            {
+              "offset": 25,
+              "bytes": 3,
+              "hex": "8d45f0",
+              "mnemonic": "lea",
+              "operands": "eax, [ebp - 0x10]"
+            },
+            {
+              "offset": 28,
+              "bytes": 1,
+              "hex": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 29,
+              "bytes": 7,
+              "hex": "c745f003000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 0x10], 3"
+            },
+            {
+              "offset": 36,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x29"
+            },
+            {
+              "offset": 41,
+              "bytes": 3,
+              "hex": "8b4dfc",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 4]"
+            },
+            {
+              "offset": 44,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 47,
+              "bytes": 2,
+              "hex": "33cd",
+              "mnemonic": "xor",
+              "operands": "ecx, ebp"
+            },
+            {
+              "offset": 49,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x36"
+            },
+            {
+              "offset": 54,
+              "bytes": 2,
+              "hex": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "offset": 56,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 57,
+              "bytes": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z": {
+          "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "positive_definition": {
+            "name": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "value": 0,
+            "section": 42,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 42,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "hex": "558becff7508e80000000083c4045dc20400",
+          "relocations": [
+            {
+              "offset": 7,
+              "type": 20,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xb"
+            },
+            {
+              "offset": 11,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 14,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 15,
+              "bytes": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z": {
+          "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "positive_definition": {
+            "name": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "value": 0,
+            "section": 43,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 43,
+          "bytes": 19,
+          "sha256": "181fe1203bde986f85cd486f2379792be609e6bdeb52da401052fe8671baac57",
+          "hex": "558becff7508ff150000000083c4045dc20400",
+          "relocations": [
+            {
+              "offset": 8,
+              "type": 6,
+              "symbol": "__imp__free"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": 6,
+              "hex": "ff1500000000",
+              "mnemonic": "call",
+              "operands": "dword ptr [0]"
+            },
+            {
+              "offset": 12,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 15,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 16,
+              "bytes": 3,
+              "hex": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z": {
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "positive_definition": {
+            "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "value": 0,
+            "section": 76,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 76,
+          "bytes": 90,
+          "sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+          "hex": "558bec83ec0c538b1d00000000568b7508ff7608ffd383c40485c07520578b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e80000000068000000008d45f450e800000000cc",
+          "relocations": [
+            {
+              "offset": 9,
+              "type": 6,
+              "symbol": "__imp__malloc"
+            },
+            {
+              "offset": 32,
+              "type": 6,
+              "symbol": "__imp___callnewh"
+            },
+            {
+              "offset": 71,
+              "type": 20,
+              "symbol": "??0bad_alloc@std@@QAE@XZ"
+            },
+            {
+              "offset": 76,
+              "type": 6,
+              "symbol": "__TI2?AVbad_alloc@std@@"
+            },
+            {
+              "offset": 85,
+              "type": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 1,
+              "hex": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": 2,
+              "hex": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": 3,
+              "hex": "83ec0c",
+              "mnemonic": "sub",
+              "operands": "esp, 0xc"
+            },
+            {
+              "offset": 6,
+              "bytes": 1,
+              "hex": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "offset": 7,
+              "bytes": 6,
+              "hex": "8b1d00000000",
+              "mnemonic": "mov",
+              "operands": "ebx, dword ptr [0]"
+            },
+            {
+              "offset": 13,
+              "bytes": 1,
+              "hex": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 14,
+              "bytes": 3,
+              "hex": "8b7508",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 17,
+              "bytes": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 20,
+              "bytes": 2,
+              "hex": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "offset": 22,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 25,
+              "bytes": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 27,
+              "bytes": 2,
+              "hex": "7520",
+              "mnemonic": "jne",
+              "operands": "0x3d"
+            },
+            {
+              "offset": 29,
+              "bytes": 1,
+              "hex": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 30,
+              "bytes": 6,
+              "hex": "8b3d00000000",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [0]"
+            },
+            {
+              "offset": 36,
+              "bytes": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 39,
+              "bytes": 2,
+              "hex": "ffd7",
+              "mnemonic": "call",
+              "operands": "edi"
+            },
+            {
+              "offset": 41,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 44,
+              "bytes": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 46,
+              "bytes": 2,
+              "hex": "7413",
+              "mnemonic": "je",
+              "operands": "0x43"
+            },
+            {
+              "offset": 48,
+              "bytes": 3,
+              "hex": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 51,
+              "bytes": 2,
+              "hex": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "offset": 53,
+              "bytes": 3,
+              "hex": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 56,
+              "bytes": 2,
+              "hex": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 58,
+              "bytes": 2,
+              "hex": "74e8",
+              "mnemonic": "je",
+              "operands": "0x24"
+            },
+            {
+              "offset": 60,
+              "bytes": 1,
+              "hex": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 61,
+              "bytes": 1,
+              "hex": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "bytes": 1,
+              "hex": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "offset": 63,
+              "bytes": 2,
+              "hex": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "offset": 65,
+              "bytes": 1,
+              "hex": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 66,
+              "bytes": 1,
+              "hex": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "offset": 67,
+              "bytes": 3,
+              "hex": "8d4df4",
+              "mnemonic": "lea",
+              "operands": "ecx, [ebp - 0xc]"
+            },
+            {
+              "offset": 70,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x4b"
+            },
+            {
+              "offset": 75,
+              "bytes": 5,
+              "hex": "6800000000",
+              "mnemonic": "push",
+              "operands": "0"
+            },
+            {
+              "offset": 80,
+              "bytes": 3,
+              "hex": "8d45f4",
+              "mnemonic": "lea",
+              "operands": "eax, [ebp - 0xc]"
+            },
+            {
+              "offset": 83,
+              "bytes": 1,
+              "hex": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 84,
+              "bytes": 5,
+              "hex": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x59"
+            },
+            {
+              "offset": 89,
+              "bytes": 1,
+              "hex": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            }
+          ]
+        },
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z": {
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "positive_definition": {
+            "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "value": 0,
+            "section": 77,
+            "type": 32,
+            "storage": 2
+          },
+          "physical_section": 77,
+          "bytes": 6,
+          "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+          "hex": "ff2500000000",
+          "relocations": [
+            {
+              "offset": 2,
+              "type": 6,
+              "symbol": "__imp__free"
+            }
+          ],
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": 6,
+              "hex": "ff2500000000",
+              "mnemonic": "jmp",
+              "operands": "dword ptr [0]"
+            }
+          ]
+        }
+      }
+    },
+    "complete_linked_methods_and_providers": 10,
+    "Root_CPU_service_tables": [
+      {
+        "phase": "before",
+        "map": {
+          "section": 2,
+          "section_offset": 413832,
+          "VA": 272846984,
+          "tail": "game_native_renderer_application.obj",
+          "line": " 0002:00065088       ??_7NativeGameGridCpuCalls@bsp@@6B@ 10435088     game_native_renderer_application.obj"
+        },
+        "bytes": 16,
+        "hex": "10480110b0b92d1090b92d1050c11510",
+        "slots": [
+          {
+            "offset": 0,
+            "symbol": "??_GNativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 79888,
+              "VA": 268519440,
+              "tail": "f   game_native_renderer_application.obj",
+              "line": " 0001:00013810       ??_GNativeGameGridCpuCalls@bsp@@UAEPAXI@Z 10014810 f   game_native_renderer_application.obj"
+            },
+            "VA": 268519440
+          },
+          {
+            "offset": 4,
+            "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 2992560,
+              "VA": 271432112,
+              "tail": "f   bsp_core:native_game_grid.obj",
+              "line": " 0001:002da9b0       ?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 102db9b0 f   bsp_core:native_game_grid.obj"
+            },
+            "VA": 271432112
+          },
+          {
+            "offset": 8,
+            "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 2992528,
+              "VA": 271432080,
+              "tail": "f   bsp_core:native_game_grid.obj",
+              "line": " 0001:002da990       ?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z 102db990 f   bsp_core:native_game_grid.obj"
+            },
+            "VA": 271432080
+          },
+          {
+            "offset": 12,
+            "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 1421648,
+              "VA": 269861200,
+              "tail": "f   bsp_core:native_game_grid.obj",
+              "line": " 0001:0015b150       ?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 1015c150 f   bsp_core:native_game_grid.obj"
+            },
+            "VA": 269861200
+          }
+        ],
+        "qualification": "Existing CPU-service Source vtable. Not raw-grid CFD484."
+      },
+      {
+        "phase": "after",
+        "map": {
+          "section": 2,
+          "section_offset": 413832,
+          "VA": 272846984,
+          "tail": "game_native_renderer_application.obj",
+          "line": " 0002:00065088       ??_7NativeGameGridCpuCalls@bsp@@6B@ 10435088     game_native_renderer_application.obj"
+        },
+        "bytes": 16,
+        "hex": "10480110f0b92d1090b92d10d0b92d10",
+        "slots": [
+          {
+            "offset": 0,
+            "symbol": "??_GNativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 79888,
+              "VA": 268519440,
+              "tail": "f   game_native_renderer_application.obj",
+              "line": " 0001:00013810       ??_GNativeGameGridCpuCalls@bsp@@UAEPAXI@Z 10014810 f   game_native_renderer_application.obj"
+            },
+            "VA": 268519440
+          },
+          {
+            "offset": 4,
+            "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 2992624,
+              "VA": 271432176,
+              "tail": "f   bsp_core:native_game_grid.obj",
+              "line": " 0001:002da9f0       ?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 102db9f0 f   bsp_core:native_game_grid.obj"
+            },
+            "VA": 271432176
+          },
+          {
+            "offset": 8,
+            "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 2992528,
+              "VA": 271432080,
+              "tail": "f   bsp_core:native_game_grid.obj",
+              "line": " 0001:002da990       ?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z 102db990 f   bsp_core:native_game_grid.obj"
+            },
+            "VA": 271432080
+          },
+          {
+            "offset": 12,
+            "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+            "positive_target": {
+              "section": 1,
+              "section_offset": 2992592,
+              "VA": 271432144,
+              "tail": "f   bsp_core:native_game_grid.obj",
+              "line": " 0001:002da9d0       ?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 102db9d0 f   bsp_core:native_game_grid.obj"
+            },
+            "VA": 271432144
+          }
+        ],
+        "qualification": "Existing CPU-service Source vtable. Not raw-grid CFD484."
+      }
+    ],
+    "artifacts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_grid_defaults_primary\\Root_artifact_comparison.json",
+      "bytes": 4629533,
+      "sha256": "3c54609068bec8826f32a0dd1e16b369341fcd6f9741536d02ca2fa13be046d6"
+    }
+  },
+  "epoch_separation": {
+    "worker_base": "4d0ae310d6a85a5962fa5e262b1003a43e4bbd26",
+    "Root_has_later_prepared_registry": true,
+    "current_Root_differences_from_worker_grid_Source": [
+      "include/bsp/native_render_context.hpp",
+      "src/native_render_context.cpp"
+    ],
+    "worker_actual_frozen_Git_blob_occurrences": 4233,
+    "worker_actual_closed_Source_blobs": 4208,
+    "Root_own_Code_baseline_and_after_comparison": true
+  },
+  "remaining": [
+    "Raw-grid CFD484 callable table ownership and profile binding are absent.",
+    "Application+14, duplicated-name cell and complete game construction ownership remain unready.",
+    "No Original Native allocator ABI, startup or gameplay validation."
+  ],
+  "limits": [
+    "Whole Core/App objects and EXE/map/text differ; no global linked-code identity claim.",
+    "Exact selected link bytes are verified by all actual map-resolved relocation operands; runtime DLL behavior is outside proof.",
+    "Custom override allocation/free contracts stay the caller responsibility."
+  ]
+}
