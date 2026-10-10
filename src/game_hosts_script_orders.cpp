@@ -4358,8 +4358,8 @@ void GameScriptOrdersHost::free_think_node_0092952c(const bsp::EntityThinkNode& 
 }
 
 bool GameScriptOrdersHost::gc_gate_predicate_0109cefc_vtable0c() {
-    // The predicate's body was not read by the packet that recovered the walk, and
-    // this process has no such object. A false answer only skips collectgarbage().
+    // Derived stats profile D685F4+0C selects BE2740, which returns AL=0.
+    // Preserve that result; other publication and profile states remain unproved.
     return false;
 }
 
