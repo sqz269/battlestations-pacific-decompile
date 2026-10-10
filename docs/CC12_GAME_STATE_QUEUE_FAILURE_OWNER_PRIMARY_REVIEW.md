@@ -1,0 +1,7 @@
+# Queue failure owner: primary acceptance
+
+Root accepted worker `5de62af8f519e771ef5bc7ce1ffd7e8498341ef7`. The complete105-byte `4CFE20` body registers its local exception frame, initializes three SBO fields for a counted17-byte message and arms state0 before constructing the exception owner. After construction returns it writes the retained vtable literal and calls the external throw provider. No return or local frame restoration appears in the admitted body; a returning throw continuation remains outside scope.
+
+The retained RET8/RET4 preparation contracts place the string and exception owner at entryESP-80 and -52. Root retains the symbolic cleanup calculation separately; consistency does not prove complete provider ABI. The handler's selected cleanup, runtime frame rebasing, native catch matching and exception-owner transfer remain unresolved. Existing raw SBO/exception Source is a reuse candidate, with no production queue binding approved.
+
+Root copied474 artifacts, ran the copied guarded replay, checked4240 actual Git objects and all4206 current Source files in both worktrees, and independently decoded23 instructions against the untouched original PE. The allocator's accepted Root report is a whole pinned dependency. No C++, new build/test/runtime, OriginalABI or Ghidra mutation is added. Evidence: `reports/cc12_game_state_queue_failure_owner_primary_review.json`; proof: `local/cc12_queue_failure_owner_primary/`.

@@ -1,0 +1,177 @@
+{
+  "schema": "bsp.cc12_locale_queue_readiness_annotations.v1",
+  "status": "saved_annotations_and_semantic_coverage_correction",
+  "prior_values_and_applied_evidence": [
+    {
+      "address": "004cfe20",
+      "before": {
+        "address": "004cfe20",
+        "function_name": "STL_xlen_throw_004cfe20"
+      },
+      "after": {
+        "address": "004cfe20",
+        "name": "STL_xlen_throw_004cfe20",
+        "evidence": "Retained existing STL library-site label, not a newly recovered symbol. Complete105B/23instruction body installs FS frame, initializes three local SBO fields for17B countedmessage, armsstate0 BEFORE411700 construction, writesD69260 then callsBF6885 withowner/D83F98. No local RET/FSrestore; returning continuation4CFE89 excluded. RET8/RET4 preparation contracts retained, symbolic stack consistency not independently recovered provider ABI. HandlerC65D08/direct cleanup/runtime frame rebasing remain separate boundaries. No production queue binding or exception interoperability credit. Evidence: docs/CC12_GAME_STATE_QUEUE_FAILURE_OWNER_PRIMARY_REVIEW.md; reports/cc12_game_state_queue_failure_owner_primary_review.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "007365e0",
+      "before": {
+        "address": "007365e0",
+        "function_name": "BSP_Singleton_Unregister_00f8bc4c",
+        "comment": "[BSP reconstruction 007365e0]\nHypothesis, not a recovered symbol. __fastcall f(this): stores the class vtable, takes the lifetime manager lock, unregisters this through 00bcfca0, clears DAT_00f8bc4c and stores the base vtable PTR_LAB_00ce3818. This self-clearing is why the release chain in BSP_Application_Shutdown can call the destructor without nulling the global."
+      },
+      "after": {
+        "address": "007365e0",
+        "name": "BSP_Singleton_Unregister_00f8bc4c",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall f(this): stores the class vtable, takes the lifetime manager lock, unregisters this through 00bcfca0, clears DAT_00f8bc4c and stores the base vtable PTR_LAB_00ce3818. This self-clearing is why the release chain in BSP_Application_Shutdown can call the destructor without nulling the global. CC12 correction: complete153B native body captures original receiver and first manager section, performs second415350 lookup, THEN loads CURRENT F8BC4C as unregister argument. Thus prior wording unregisters this is conditional, not an invariant. Only normal BCFCA0 return clears publication; captured section release follows, then original receiver profile reset. State1 remains armed during normal release; directly selected actions reset captured section/receiver without publication rollback/free/retry. PlainRET, provider/exception/lifetime assumptions retained. Evidence: docs/CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_base_lifetime_primary_review.json. Descriptive name remains provisional."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0073c240",
+      "before": {
+        "address": "0073c240",
+        "function_name": "BSP_StringMap_Clear",
+        "comment": "[BSP reconstruction 0073c240]\nHypothesis, not a recovered symbol. __fastcall, one argument, the bucket array. Walks all 0x1000 chains following the next link at node+0x14, returns each 0x1c-byte node to the pooled allocator under the critical section at 00e17698, then memsets 0x4000 bytes and zeroes the count at +0x4000. Called by 00aa09d0 at 00aa0a3b with ECX = manager+0x14, which fixes the map base inside the manager. Evidence: docs/APP_INIT_LOCALE.md; reports/app_init_locale.json."
+      },
+      "after": {
+        "address": "0073c240",
+        "name": "BSP_StringMap_Clear",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall, one argument, the bucket array. Walks all 0x1000 chains following the next link at node+0x14, returns each 0x1c-byte node to the pooled allocator under the critical section at 00e17698, then memsets 0x4000 bytes and zeroes the count at +0x4000. Called by 00aa09d0 at 00aa0a3b with ECX = manager+0x14, which fixes the map base inside the manager. Evidence: docs/APP_INIT_LOCALE.md; reports/app_init_locale.json. CC12 complete228B review: next+14 captured BEFORE737CE0, current node+18/tableE176B4 reloaded AFTER callbacks. Inline low16bit index/count writes and unsignedminimum update follow underE17698; only allchains normal return leads to final bucket/count clear. No local EHrollback or progressive unlink; partial failure leaves earlier recycling and uncleared heads. Stored225B body omits bypassed3B padding only; no repair. Semantic Source uses vector unique_ptr, different offsets/noexcept, not raw ownership. Evidence: docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md; reports/cc12_locale_raw_map_cleanup_primary_review.json."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\ghidra-annotations-20261010T181913Z.json",
+    "bytes": 4598,
+    "sha256": "e1fc194e13902ebe6b593176f290bedfadd58f7c14415fc54aaf140ed057b495"
+  },
+  "post_comments": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\post_annotation_comments.json",
+    "bytes": 4301,
+    "sha256": "5a9c21db130a9cc7090fbc54e492a89030bdd8827bc50ca7fcab703acc6480b6"
+  },
+  "ledger_changes": [
+    {
+      "kind": "name",
+      "before": {
+        "address": "007365e0",
+        "name": "BSP_Singleton_Unregister_00f8bc4c",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall f(this): stores the class vtable, takes the lifetime manager lock, unregisters this through 00bcfca0, clears DAT_00f8bc4c and stores the base vtable PTR_LAB_00ce3818. This self-clearing is why the release chain in BSP_Application_Shutdown can call the destructor without nulling the global."
+      },
+      "after": {
+        "address": "007365e0",
+        "name": "BSP_Singleton_Unregister_00f8bc4c",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall f(this): stores the class vtable, takes the lifetime manager lock, unregisters this through 00bcfca0, clears DAT_00f8bc4c and stores the base vtable PTR_LAB_00ce3818. This self-clearing is why the release chain in BSP_Application_Shutdown can call the destructor without nulling the global. CC12 correction: complete153B native body captures original receiver and first manager section, performs second415350 lookup, THEN loads CURRENT F8BC4C as unregister argument. Thus prior wording unregisters this is conditional, not an invariant. Only normal BCFCA0 return clears publication; captured section release follows, then original receiver profile reset. State1 remains armed during normal release; directly selected actions reset captured section/receiver without publication rollback/free/retry. PlainRET, provider/exception/lifetime assumptions retained. Evidence: docs/CC12_LOCALE_BASE_LIFETIME_PRIMARY_REVIEW.md; reports/cc12_locale_base_lifetime_primary_review.json. Descriptive name remains provisional."
+      }
+    },
+    {
+      "kind": "name",
+      "before": {
+        "address": "0073c240",
+        "name": "BSP_StringMap_Clear",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall, one argument, the bucket array. Walks all 0x1000 chains following the next link at node+0x14, returns each 0x1c-byte node to the pooled allocator under the critical section at 00e17698, then memsets 0x4000 bytes and zeroes the count at +0x4000. Called by 00aa09d0 at 00aa0a3b with ECX = manager+0x14, which fixes the map base inside the manager. Evidence: docs/APP_INIT_LOCALE.md; reports/app_init_locale.json."
+      },
+      "after": {
+        "address": "0073c240",
+        "name": "BSP_StringMap_Clear",
+        "evidence": "Hypothesis, not a recovered symbol. __fastcall, one argument, the bucket array. Walks all 0x1000 chains following the next link at node+0x14, returns each 0x1c-byte node to the pooled allocator under the critical section at 00e17698, then memsets 0x4000 bytes and zeroes the count at +0x4000. Called by 00aa09d0 at 00aa0a3b with ECX = manager+0x14, which fixes the map base inside the manager. Evidence: docs/APP_INIT_LOCALE.md; reports/app_init_locale.json. CC12 complete228B review: next+14 captured BEFORE737CE0, current node+18/tableE176B4 reloaded AFTER callbacks. Inline low16bit index/count writes and unsignedminimum update follow underE17698; only allchains normal return leads to final bucket/count clear. No local EHrollback or progressive unlink; partial failure leaves earlier recycling and uncleared heads. Stored225B body omits bypassed3B padding only; no repair. Semantic Source uses vector unique_ptr, different offsets/noexcept, not raw ownership. Evidence: docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md; reports/cc12_locale_raw_map_cleanup_primary_review.json."
+      }
+    },
+    {
+      "kind": "name",
+      "before": null,
+      "after": {
+        "address": "004cfe20",
+        "name": "STL_xlen_throw_004cfe20",
+        "evidence": "Retained existing STL library-site label, not a newly recovered symbol. Complete105B/23instruction body installs FS frame, initializes three local SBO fields for17B countedmessage, armsstate0 BEFORE411700 construction, writesD69260 then callsBF6885 withowner/D83F98. No local RET/FSrestore; returning continuation4CFE89 excluded. RET8/RET4 preparation contracts retained, symbolic stack consistency not independently recovered provider ABI. HandlerC65D08/direct cleanup/runtime frame rebasing remain separate boundaries. No production queue binding or exception interoperability credit. Evidence: docs/CC12_GAME_STATE_QUEUE_FAILURE_OWNER_PRIMARY_REVIEW.md; reports/cc12_game_state_queue_failure_owner_primary_review.json."
+      }
+    },
+    {
+      "kind": "function",
+      "before": {
+        "address": "0073c240",
+        "name": "LocaleTables::clear_0073c240",
+        "source": "src/locale_tables.cpp",
+        "status": "reconstructed_ledger_backfilled_from_source",
+        "evidence": "C++ body at src/locale_tables.cpp:215 (LocaleTables::clear_0073c240), a definition named after the address. Documents: docs/APP_INIT_FONTS_GUI.md, docs/APP_INIT_LOCALE.md, docs/APP_INITIALIZE_MAP.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build.",
+        "cpp_symbol": "LocaleTables::clear_0073c240",
+        "abi_compatible": false,
+        "game_validated": false,
+        "kind": "function"
+      },
+      "after": {
+        "address": "0073c240",
+        "name": "LocaleTables::clear_0073c240",
+        "source": "src/locale_tables.cpp",
+        "status": "semantic_source_fragment_compiled_raw_node_pool_owner_and_exception_binding_pending",
+        "evidence": "C++ body at src/locale_tables.cpp:215 (LocaleTables::clear_0073c240), a definition named after the address. Documents: docs/APP_INIT_FONTS_GUI.md, docs/APP_INIT_LOCALE.md, docs/APP_INITIALIZE_MAP.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build. CC12 coverage correction: existing57B/25instruction semantic clear uses storage-vector unique_ptr traversal, buckets+0C/count+400C and noexcept; native228B body uses saved-next rawchains, inline node-slot pool, buckets+0/count+4000 and final-only clears without local rollback. Address-named Source definition does not establish complete raw reconstruction. Native node ownership/EH and actual pool context binding remain pending. Evidence: docs/CC12_LOCALE_RAW_MAP_CLEANUP_PRIMARY_REVIEW.md; reports/cc12_locale_raw_map_cleanup_primary_review.json.",
+        "cpp_symbol": "LocaleTables::clear_0073c240",
+        "abi_compatible": false,
+        "game_validated": false,
+        "kind": "function"
+      }
+    }
+  ],
+  "ledger_change_receipt": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\ledger_changes.json",
+    "bytes": 6638,
+    "sha256": "743514258cf7cbe43d72ab9c1b30d943600116224bec40ddac89c903393e0c44"
+  },
+  "refreshed_complete_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\004cfe20\\metadata.json",
+      "bytes": 270,
+      "sha256": "583f829989a09ae81bfd53ab671ae22a70c1f3c5b0d32f47292eae969cbcf9c3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\004cfe20\\decompiled.c",
+      "bytes": 1467,
+      "sha256": "c80fb31d1cdb5dbbf00173cf4ca2d0b2ad3270afa99f5d064563f6cf030fdefb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\004cfe20\\assembly.txt",
+      "bytes": 681,
+      "sha256": "276c8057d52b4d2b425b96156835fea8fd53136070127ced6e6548a06422f5cd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\007365e0\\metadata.json",
+      "bytes": 210,
+      "sha256": "2f01e50495a1b40a53ee970b46f79306db865b5417e9325987091c0ed405c315"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\007365e0\\decompiled.c",
+      "bytes": 1106,
+      "sha256": "43b7509d9e7ddb0fe5efd424cbc28937f56fe6a0d10e7f1ab362405eebbbfd42"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\007365e0\\assembly.txt",
+      "bytes": 1218,
+      "sha256": "83d07e9fb98787b8c8153d9737638015c2e2f1c07c2fa287af1fef77ee39611d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\0073c240\\metadata.json",
+      "bytes": 210,
+      "sha256": "cb1b2a01d2abce3d1853e7917dd084723ad8cebe729b6e4dde2e817f01fe33a9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\0073c240\\decompiled.c",
+      "bytes": 1195,
+      "sha256": "618f39f0279c33afce73d9ca955c3d9fc0cdc19f2c2453fd29ed09c1113c81ae"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_locale_queue_readiness_annotations\\exports\\0073c240\\assembly.txt",
+      "bytes": 1829,
+      "sha256": "6e1fb7eefd500e9fa353905d3b5bbbe5b3b82374db96c16ca44a8048fbd1b462"
+    }
+  ],
+  "original_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "boundary": "Existing names and comments preserved; evidence appended under lease/tool write lock, project saved. No function/body/flow/prototype repair, C++/build/test/runtime, Original execution or complete raw binding credit."
+}
