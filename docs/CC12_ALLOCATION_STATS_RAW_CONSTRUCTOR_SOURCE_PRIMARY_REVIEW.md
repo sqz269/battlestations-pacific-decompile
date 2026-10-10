@@ -1,0 +1,19 @@
+# Allocation statistics raw constructors Source primary review
+
+Root accepted worker08748971b356b38ed2bbecd38d36ead738452476 without a Source correction, registered native_allocation_stats_constructor.cpp in the MSVC Win32 Core target, and added separate complete-function Source records for BE2750 and BE2900. The existing platform_window scalar projection remains unchanged.
+
+The standalone APIs borrow distinct actual manager01090AA0 and stats0109CEFC publication cells plus caller-owned valid aligned12B receiver storage. The base captures the first manager's section, enters/increments its depth before guard arming/publication, resolves the second manager before reloading current stats, registers through genuine BD0C30, then releases the captured first section. Ordinary C++ failure invokes genuine411EE0 before412430 once guarded. Publication persists; the constructors do not allocate/free, rollback or retry. Derived profile/+4/+8 writes follow base success only.
+
+Root replayed7597 pin occurrences,447 complete Source/Git rows,20 complete worker objects, the2666 payload/2667-entry archive, and all751 immutable Source747 pins. All15 prior provider payloads are byte-identical across worker Source746 and Root Source747. Root independently parsed every section/physical indexed relocation and rechecked20 whole objects; the retained177B49 native instructions and175-section/444-edge provider graph were replayed without new Native windows. Current Source context agrees except for the two intended new files; historical line-ending qualifications remain explicit.
+
+The normal build ran08:24:44.826905–08:25:01.543640 UTC and passed all three existing checks. Five complete Root/worker object comparisons cover61 functions with identical code/EH/nondebug payloads and indexed edges under recorded generated names. No raw RTTI differences occur in these comparisons. All107 prior selected Core and all five App objects remain byte-identical; all15 transitive provider objects remain byte-identical. No new tests or probe/game execution were introduced.
+
+Source749 retains749 selected inputs,116 selected Core objects, five App objects,303 uniquely resolved selected positive Core definitions and753 frozen input/artifact pins. The actual Core archive has1990 members. The selected Core count now includes eight additional existing providers and the new constructor object. Only the new header/CPP extend the selected input set; the providers' Source files were already included. The previous immutable Source746/747 checkpoints remain untouched.
+
+Compiler /Ob2 may inline the base schedule into the derived body. The private Source cleanup byte precedes the profile store, while the compiler EH state0 word may follow that nonthrowing raw store. This is explicitly ordinary C++ cleanup evidence; hardware-fault, original register ABI/private spills/FH3/SEH/cookie/OS equivalence is unproved. Numeric profile words preserve researched identity and are not callable rebuilt vtables.
+
+The existing provisional Ghidra names and prior comments were preserved, old values retained, evidence appended through the write lock, the project saved and affected exports refreshed. Program modification32→35; typed body/listing/flow/prototype/direct-target metadata is unchanged. No listing/body repair occurred.
+
+Startup handover still needs coherent process-owned actual stats/lifecycle/delete-profile binding through canonical manager drain. The base destructor's referenced CC6AB0 failure cleanup remains unopened. Actual startup/gameplay is unproved.
+
+Evidence: [primary report](../reports/cc12_allocation_stats_raw_constructor_source_primary_review.json), [worker Source](CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md), [accepted Source readiness](CC12_ALLOCATION_STATS_CONSTRUCTOR_SOURCE_READINESS.md). Full local objects, graph/index/annotation receipts and immutable artifacts are pinned by the report.
