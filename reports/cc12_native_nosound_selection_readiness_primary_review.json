@@ -1,0 +1,1791 @@
+{
+  "schema": 1,
+  "packet": "cc12_native_nosound_selection_readiness_primary_review",
+  "status": "accepted_readonly_original_selection_evidence",
+  "worker_commit": "ea268d7a72d8311b97529d674aef152a0884b165",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_native_nosound_selection_readiness.json",
+    "bytes": 90559,
+    "sha256": "67370e5d600a2afc5b99b3a1fb91235241ee168d6bd0c978c265f2e882a31a8b"
+  },
+  "Root_invoked_offline_replay": {
+    "scope": "Pure offline retained Source/listing/prior-body/metadata/hash replay; no live Ghidra, SDK, OS, compiler or game execution",
+    "retained_pin_occurrences_verified": 81,
+    "unique_retained_files_verified": 71,
+    "source_queries_verified": true,
+    "exact_retained_Native_windows_verified": 6,
+    "prior_admitted_constructor_CRT_windows_replayed": 2,
+    "single_direct_xref_result_replayed": true,
+    "all_selector_absence_not_inferred": true,
+    "result": "pass"
+  },
+  "Root_replay_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\replay.stdout.json",
+    "bytes": 482,
+    "sha256": "4325e088ac2b69d066fb48870533ca5262e17824fcdc2adc37409e376eb5ba22"
+  },
+  "current_Source_Git": [
+    {
+      "relative": "config/target.json",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\366e5a64ac945473_target.json"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "Root_Git_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "config/fmod_ex_types.json",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\fmod_ex_types.json",
+        "bytes": 56459,
+        "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\1a9166bbfe4bae22_fmod_ex_types.json"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\config\\fmod_ex_types.json",
+        "bytes": 56459,
+        "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103"
+      },
+      "Root_Git_sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "tools/bsp.py",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\09de2b8916a4af98_bsp.py"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\tools\\bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "Root_Git_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "tools/ghidra_export.py",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\tools\\ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\0367957cab3518c6_ghidra_export.py"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\tools\\ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "Root_Git_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/game_hosts.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_hosts.cpp",
+        "bytes": 120868,
+        "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\27afca34c33faf0c_game_hosts.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_hosts.cpp",
+        "bytes": 123312,
+        "sha256": "8be6cb7ede7b4c99c313264ad25184eb492682dc0d12b5048cb167009fab8bce"
+      },
+      "Root_Git_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/game_main.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_main.cpp",
+        "bytes": 73768,
+        "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\b896cda79427bbc3_game_main.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_main.cpp",
+        "bytes": 73768,
+        "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+      },
+      "Root_Git_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/winmain_startup.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\winmain_startup.cpp",
+        "bytes": 10209,
+        "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\521a73023c5d196b_winmain_startup.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\winmain_startup.cpp",
+        "bytes": 10209,
+        "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113"
+      },
+      "Root_Git_sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/winmain_startup.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\winmain_startup.hpp",
+        "bytes": 9647,
+        "sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\44ed9f390e22fad4_winmain_startup.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\winmain_startup.hpp",
+        "bytes": 9647,
+        "sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af"
+      },
+      "Root_Git_sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/game_native_settings_process.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_native_settings_process.cpp",
+        "bytes": 7791,
+        "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\44a2cc3b1c94c4af_game_native_settings_process.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_native_settings_process.cpp",
+        "bytes": 7791,
+        "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+      },
+      "Root_Git_sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/game_native_settings_process.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_native_settings_process.hpp",
+        "bytes": 2203,
+        "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\c39242f443a95a5a_game_native_settings_process.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\game_native_settings_process.hpp",
+        "bytes": 2203,
+        "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6"
+      },
+      "Root_Git_sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/game_native_settings_application.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_native_settings_application.cpp",
+        "bytes": 11456,
+        "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\9a4bea22270c4b38_game_native_settings_application.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_native_settings_application.cpp",
+        "bytes": 11456,
+        "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a"
+      },
+      "Root_Git_sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/native_game_settings_owner.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_game_settings_owner.cpp",
+        "bytes": 7785,
+        "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\251c0a349760dd21_native_game_settings_owner.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\native_game_settings_owner.cpp",
+        "bytes": 7785,
+        "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+      },
+      "Root_Git_sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/native_game_settings_owner.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_game_settings_owner.hpp",
+        "bytes": 5980,
+        "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\3c9e009c65606e35_native_game_settings_owner.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\native_game_settings_owner.hpp",
+        "bytes": 5980,
+        "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+      },
+      "Root_Git_sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/native_profile_settings.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_profile_settings.cpp",
+        "bytes": 3806,
+        "sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\fd7c280d5876ce58_native_profile_settings.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\native_profile_settings.cpp",
+        "bytes": 3806,
+        "sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8"
+      },
+      "Root_Git_sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/native_profile_settings.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_profile_settings.hpp",
+        "bytes": 2526,
+        "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\2dd92ab3c7dc3367_native_profile_settings.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\native_profile_settings.hpp",
+        "bytes": 2526,
+        "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9"
+      },
+      "Root_Git_sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/native_settings_loader.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_settings_loader.cpp",
+        "bytes": 15501,
+        "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\92cf2e1b496be7d8_native_settings_loader.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\native_settings_loader.cpp",
+        "bytes": 15501,
+        "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0"
+      },
+      "Root_Git_sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/native_settings_loader.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_settings_loader.hpp",
+        "bytes": 5567,
+        "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\29373ba8100bd449_native_settings_loader.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\native_settings_loader.hpp",
+        "bytes": 5567,
+        "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b"
+      },
+      "Root_Git_sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/native_scene_tokenizer.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_scene_tokenizer.cpp",
+        "bytes": 8452,
+        "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\cacfe4c42a3c8a97_native_scene_tokenizer.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\native_scene_tokenizer.cpp",
+        "bytes": 8452,
+        "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8"
+      },
+      "Root_Git_sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/native_scene_tokenizer.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_scene_tokenizer.hpp",
+        "bytes": 3563,
+        "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\040fb2c3a09a5323_native_scene_tokenizer.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\native_scene_tokenizer.hpp",
+        "bytes": 3563,
+        "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e"
+      },
+      "Root_Git_sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/game_settings.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_settings.cpp",
+        "bytes": 20468,
+        "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\fc9ab534f827975f_game_settings.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_settings.cpp",
+        "bytes": 20468,
+        "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+      },
+      "Root_Git_sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/game_settings.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_settings.hpp",
+        "bytes": 18657,
+        "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\8b1d37ce0ccdcde0_game_settings.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\game_settings.hpp",
+        "bytes": 18657,
+        "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+      },
+      "Root_Git_sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/settings_text.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_text.cpp",
+        "bytes": 3623,
+        "sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\cc9068161d592740_settings_text.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\settings_text.cpp",
+        "bytes": 3623,
+        "sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844"
+      },
+      "Root_Git_sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/settings_archive_reader.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_archive_reader.cpp",
+        "bytes": 4078,
+        "sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\cc4aadb5f286801d_settings_archive_reader.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\settings_archive_reader.cpp",
+        "bytes": 4078,
+        "sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5"
+      },
+      "Root_Git_sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/settings_initial_state.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_initial_state.cpp",
+        "bytes": 1560,
+        "sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\105ac7ca98f8a8d7_settings_initial_state.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\settings_initial_state.cpp",
+        "bytes": 1560,
+        "sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f"
+      },
+      "Root_Git_sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/app_bootstrap.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\app_bootstrap.cpp",
+        "bytes": 17741,
+        "sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\4e1f22c9509e25e2_app_bootstrap.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\app_bootstrap.cpp",
+        "bytes": 17741,
+        "sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1"
+      },
+      "Root_Git_sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/app_bootstrap.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\app_bootstrap.hpp",
+        "bytes": 13989,
+        "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\1e57895243715aab_app_bootstrap.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\app_bootstrap.hpp",
+        "bytes": 13989,
+        "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0"
+      },
+      "Root_Git_sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/audio_online_startup.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\audio_online_startup.cpp",
+        "bytes": 17786,
+        "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\e8c564464cc8ac90_audio_online_startup.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\audio_online_startup.cpp",
+        "bytes": 17786,
+        "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8"
+      },
+      "Root_Git_sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/audio_online_startup.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\2856a03245c6a27a_audio_online_startup.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+      },
+      "Root_Git_sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/sound_startup.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\sound_startup.cpp",
+        "bytes": 2221,
+        "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\836bbe877790db41_sound_startup.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\sound_startup.cpp",
+        "bytes": 2269,
+        "sha256": "bc4d830bf30d3173d59fd696850cb3e4d08e596d36ebbe8eff7543a850164aee"
+      },
+      "Root_Git_sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "src/game_sound_runtime.cpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_sound_runtime.cpp",
+        "bytes": 20101,
+        "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\ccce5e3d933fcfb8_game_sound_runtime.cpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_sound_runtime.cpp",
+        "bytes": 20484,
+        "sha256": "fd9efd3561f2d4d6f57e497f5ed13f19c9ad6d9daf34535d66fe79d06b627d56"
+      },
+      "Root_Git_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+      "full_equal_after_EOL": true
+    },
+    {
+      "relative": "include/bsp/game_sound_runtime.hpp",
+      "worker_frozen": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_sound_runtime.hpp",
+        "bytes": 5374,
+        "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+        "retained_path": "local\\cc12_native_nosound_selection_readiness\\frozen\\adc71df223c83c00_game_sound_runtime.hpp"
+      },
+      "current_Root": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\game_sound_runtime.hpp",
+        "bytes": 5374,
+        "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+      },
+      "Root_Git_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+      "full_equal_after_EOL": true
+    }
+  ],
+  "original_PE": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "Root_original_PE_complete_instruction_windows": [
+    {
+      "entry": "0073d410",
+      "declared_start": "0073d42f",
+      "first_verified_instruction": "0073d42f",
+      "declared_end": "0073d433",
+      "last_instruction": "0073d433",
+      "complete_bytes": "8bf16a1033ff",
+      "complete_sha256": "8cf846bbfca95b20390a53aa9d400f3e188403ce1d18374213b3632852b035ba",
+      "instructions": [
+        {
+          "address": "0073d42f",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "0073d431",
+          "bytes": "6a10",
+          "mnemonic": "push",
+          "operands": "0x10"
+        },
+        {
+          "address": "0073d433",
+          "bytes": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        }
+      ],
+      "all_saved_instruction_addresses_match": true,
+      "leading_fragment_qualification": null
+    },
+    {
+      "entry": "0073d410",
+      "declared_start": "0073da9e",
+      "first_verified_instruction": "0073daa0",
+      "declared_end": "0073dafd",
+      "last_instruction": "0073dafd",
+      "complete_bytes": "b98089f800e8e6a61900803d81aee10000740f8b0db00a09018b118b42246a32ffd08a0d0c8af8006878010000880d98d3f800e8438d4b0083c404894424103bc7c7842444010000110000007414803da489f80000570f94c2578bc852e86eac3400",
+      "complete_sha256": "840e79b90dc6eeb2545e809c0bcbb4951751bd5c0bb1c90cc775e62a51405d0b",
+      "instructions": [
+        {
+          "address": "0073daa0",
+          "bytes": "b98089f800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf88980"
+        },
+        {
+          "address": "0073daa5",
+          "bytes": "e8e6a61900",
+          "mnemonic": "call",
+          "operands": "0x8d8190"
+        },
+        {
+          "address": "0073daaa",
+          "bytes": "803d81aee10000",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [0xe1ae81], 0"
+        },
+        {
+          "address": "0073dab1",
+          "bytes": "740f",
+          "mnemonic": "je",
+          "operands": "0x73dac2"
+        },
+        {
+          "address": "0073dab3",
+          "bytes": "8b0db00a0901",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0x1090ab0]"
+        },
+        {
+          "address": "0073dab9",
+          "bytes": "8b11",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]"
+        },
+        {
+          "address": "0073dabb",
+          "bytes": "8b4224",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x24]"
+        },
+        {
+          "address": "0073dabe",
+          "bytes": "6a32",
+          "mnemonic": "push",
+          "operands": "0x32"
+        },
+        {
+          "address": "0073dac0",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "0073dac2",
+          "bytes": "8a0d0c8af800",
+          "mnemonic": "mov",
+          "operands": "cl, byte ptr [0xf88a0c]"
+        },
+        {
+          "address": "0073dac8",
+          "bytes": "6878010000",
+          "mnemonic": "push",
+          "operands": "0x178"
+        },
+        {
+          "address": "0073dacd",
+          "bytes": "880d98d3f800",
+          "mnemonic": "mov",
+          "operands": "byte ptr [0xf8d398], cl"
+        },
+        {
+          "address": "0073dad3",
+          "bytes": "e8438d4b00",
+          "mnemonic": "call",
+          "operands": "0xbf681b"
+        },
+        {
+          "address": "0073dad8",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0073dadb",
+          "bytes": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": "0073dadf",
+          "bytes": "3bc7",
+          "mnemonic": "cmp",
+          "operands": "eax, edi"
+        },
+        {
+          "address": "0073dae1",
+          "bytes": "c784244401000011000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x144], 0x11"
+        },
+        {
+          "address": "0073daec",
+          "bytes": "7414",
+          "mnemonic": "je",
+          "operands": "0x73db02"
+        },
+        {
+          "address": "0073daee",
+          "bytes": "803da489f80000",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [0xf889a4], 0"
+        },
+        {
+          "address": "0073daf5",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0073daf6",
+          "bytes": "0f94c2",
+          "mnemonic": "sete",
+          "operands": "dl"
+        },
+        {
+          "address": "0073daf9",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0073dafa",
+          "bytes": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0073dafc",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "0073dafd",
+          "bytes": "e86eac3400",
+          "mnemonic": "call",
+          "operands": "0xa88770"
+        }
+      ],
+      "all_saved_instruction_addresses_match": true,
+      "leading_fragment_qualification": {
+        "declared_start": "0073da9e",
+        "actual_first_instruction": "0073daa0",
+        "trailing_bytes_of_preceding_call": "f6ff",
+        "preceding_call": {
+          "address": "0073da9b",
+          "bytes": "e840a1f6ff",
+          "target": "006a7be0"
+        },
+        "qualification": "Declared start73DA9E is inside the CALL73DA9B..73DA9F. Decode begins only at the verified saved instruction boundary73DAA0; the two prefix bytes are not treated as an instruction."
+      }
+    },
+    {
+      "entry": "00a88770",
+      "declared_start": "00a88785",
+      "first_verified_instruction": "00a88785",
+      "declared_end": "00a887b1",
+      "last_instruction": "00a887b1",
+      "complete_bytes": "83ec185355568bf189742414e8ea8cffff33db385c24346a100f94c0895c2430c7064cb4d500899e74010000884670",
+      "complete_sha256": "5f32f62c0a8a46b03094d9e23936303880029da19f03169a426aba9d3cbb659a",
+      "instructions": [
+        {
+          "address": "00a88785",
+          "bytes": "83ec18",
+          "mnemonic": "sub",
+          "operands": "esp, 0x18"
+        },
+        {
+          "address": "00a88788",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00a88789",
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00a8878a",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00a8878b",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00a8878d",
+          "bytes": "89742414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], esi"
+        },
+        {
+          "address": "00a88791",
+          "bytes": "e8ea8cffff",
+          "mnemonic": "call",
+          "operands": "0xa81480"
+        },
+        {
+          "address": "00a88796",
+          "bytes": "33db",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx"
+        },
+        {
+          "address": "00a88798",
+          "bytes": "385c2434",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [esp + 0x34], bl"
+        },
+        {
+          "address": "00a8879c",
+          "bytes": "6a10",
+          "mnemonic": "push",
+          "operands": "0x10"
+        },
+        {
+          "address": "00a8879e",
+          "bytes": "0f94c0",
+          "mnemonic": "sete",
+          "operands": "al"
+        },
+        {
+          "address": "00a887a1",
+          "bytes": "895c2430",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x30], ebx"
+        },
+        {
+          "address": "00a887a5",
+          "bytes": "c7064cb4d500",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xd5b44c"
+        },
+        {
+          "address": "00a887ab",
+          "bytes": "899e74010000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x174], ebx"
+        },
+        {
+          "address": "00a887b1",
+          "bytes": "884670",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x70], al"
+        }
+      ],
+      "all_saved_instruction_addresses_match": true,
+      "leading_fragment_qualification": null
+    },
+    {
+      "entry": "00a88770",
+      "declared_start": "00a888e2",
+      "first_verified_instruction": "00a888e2",
+      "declared_end": "00a88931",
+      "last_instruction": "00a88931",
+      "complete_bytes": "807e7000bd0100000089ae58010000c7865c010000c0b606008d5d01751e8b0f5351e805561a0083f82b75108b0dd8bbf8006894abd500e8421bffff8b46488b106a006a006a106800020000508b02ffd0",
+      "complete_sha256": "fb0612b86a8c42299234dd523135261bcaff2814c5f3cc41c71efbb46faca0a2",
+      "instructions": [
+        {
+          "address": "00a888e2",
+          "bytes": "807e7000",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [esi + 0x70], 0"
+        },
+        {
+          "address": "00a888e6",
+          "bytes": "bd01000000",
+          "mnemonic": "mov",
+          "operands": "ebp, 1"
+        },
+        {
+          "address": "00a888eb",
+          "bytes": "89ae58010000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x158], ebp"
+        },
+        {
+          "address": "00a888f1",
+          "bytes": "c7865c010000c0b60600",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x15c], 0x6b6c0"
+        },
+        {
+          "address": "00a888fb",
+          "bytes": "8d5d01",
+          "mnemonic": "lea",
+          "operands": "ebx, [ebp + 1]"
+        },
+        {
+          "address": "00a888fe",
+          "bytes": "751e",
+          "mnemonic": "jne",
+          "operands": "0xa8891e"
+        },
+        {
+          "address": "00a88900",
+          "bytes": "8b0f",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi]"
+        },
+        {
+          "address": "00a88902",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00a88903",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00a88904",
+          "bytes": "e805561a00",
+          "mnemonic": "call",
+          "operands": "0xc2df0e"
+        },
+        {
+          "address": "00a88909",
+          "bytes": "83f82b",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x2b"
+        },
+        {
+          "address": "00a8890c",
+          "bytes": "7510",
+          "mnemonic": "jne",
+          "operands": "0xa8891e"
+        },
+        {
+          "address": "00a8890e",
+          "bytes": "8b0dd8bbf800",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0xf8bbd8]"
+        },
+        {
+          "address": "00a88914",
+          "bytes": "6894abd500",
+          "mnemonic": "push",
+          "operands": "0xd5ab94"
+        },
+        {
+          "address": "00a88919",
+          "bytes": "e8421bffff",
+          "mnemonic": "call",
+          "operands": "0xa7a460"
+        },
+        {
+          "address": "00a8891e",
+          "bytes": "8b4648",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x48]"
+        },
+        {
+          "address": "00a88921",
+          "bytes": "8b10",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax]"
+        },
+        {
+          "address": "00a88923",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00a88925",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00a88927",
+          "bytes": "6a10",
+          "mnemonic": "push",
+          "operands": "0x10"
+        },
+        {
+          "address": "00a88929",
+          "bytes": "6800020000",
+          "mnemonic": "push",
+          "operands": "0x200"
+        },
+        {
+          "address": "00a8892e",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00a8892f",
+          "bytes": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        {
+          "address": "00a88931",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        }
+      ],
+      "all_saved_instruction_addresses_match": true,
+      "leading_fragment_qualification": null
+    },
+    {
+      "entry": "00a88770",
+      "declared_start": "00a88a9c",
+      "first_verified_instruction": "00a88a9c",
+      "declared_end": "00a88aa8",
+      "last_instruction": "00a88aa6",
+      "complete_bytes": "64890d0000000083c424c20c00",
+      "complete_sha256": "ffce9cca73dd20d59acc9018bfd826ba4fa2bb7bdf4d333ba0ceb19ad91c6743",
+      "instructions": [
+        {
+          "address": "00a88a9c",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00a88aa3",
+          "bytes": "83c424",
+          "mnemonic": "add",
+          "operands": "esp, 0x24"
+        },
+        {
+          "address": "00a88aa6",
+          "bytes": "c20c00",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ],
+      "all_saved_instruction_addresses_match": true,
+      "leading_fragment_qualification": null
+    },
+    {
+      "entry": "008d8190",
+      "declared_start": "008d85b5",
+      "first_verified_instruction": "008d85b5",
+      "declared_end": "008d8626",
+      "last_instruction": "008d8626",
+      "complete_bytes": "8d4c243c74128d54241352e80b150000894654e9d3fcffff68885ed100e8e9f6b8ff84c00f85c1fcffff687c5ed1008d4c2440e8d3f6b8ff84c08d4c243c74158d44241350e881140000888694000000e996fcffffe8610400005068605ed100e896ceb4ff83c4088d4c243ce83a030000e975fcffff",
+      "complete_sha256": "637e4fda3f41a7fce94714b0d5de46a38aca84cae2a4bc0d20e3313730937fdc",
+      "instructions": [
+        {
+          "address": "008d85b5",
+          "bytes": "8d4c243c",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0x3c]"
+        },
+        {
+          "address": "008d85b9",
+          "bytes": "7412",
+          "mnemonic": "je",
+          "operands": "0x8d85cd"
+        },
+        {
+          "address": "008d85bb",
+          "bytes": "8d542413",
+          "mnemonic": "lea",
+          "operands": "edx, [esp + 0x13]"
+        },
+        {
+          "address": "008d85bf",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "008d85c0",
+          "bytes": "e80b150000",
+          "mnemonic": "call",
+          "operands": "0x8d9ad0"
+        },
+        {
+          "address": "008d85c5",
+          "bytes": "894654",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x54], eax"
+        },
+        {
+          "address": "008d85c8",
+          "bytes": "e9d3fcffff",
+          "mnemonic": "jmp",
+          "operands": "0x8d82a0"
+        },
+        {
+          "address": "008d85cd",
+          "bytes": "68885ed100",
+          "mnemonic": "push",
+          "operands": "0xd15e88"
+        },
+        {
+          "address": "008d85d2",
+          "bytes": "e8e9f6b8ff",
+          "mnemonic": "call",
+          "operands": "0x467cc0"
+        },
+        {
+          "address": "008d85d7",
+          "bytes": "84c0",
+          "mnemonic": "test",
+          "operands": "al, al"
+        },
+        {
+          "address": "008d85d9",
+          "bytes": "0f85c1fcffff",
+          "mnemonic": "jne",
+          "operands": "0x8d82a0"
+        },
+        {
+          "address": "008d85df",
+          "bytes": "687c5ed100",
+          "mnemonic": "push",
+          "operands": "0xd15e7c"
+        },
+        {
+          "address": "008d85e4",
+          "bytes": "8d4c2440",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0x40]"
+        },
+        {
+          "address": "008d85e8",
+          "bytes": "e8d3f6b8ff",
+          "mnemonic": "call",
+          "operands": "0x467cc0"
+        },
+        {
+          "address": "008d85ed",
+          "bytes": "84c0",
+          "mnemonic": "test",
+          "operands": "al, al"
+        },
+        {
+          "address": "008d85ef",
+          "bytes": "8d4c243c",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0x3c]"
+        },
+        {
+          "address": "008d85f3",
+          "bytes": "7415",
+          "mnemonic": "je",
+          "operands": "0x8d860a"
+        },
+        {
+          "address": "008d85f5",
+          "bytes": "8d442413",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0x13]"
+        },
+        {
+          "address": "008d85f9",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "008d85fa",
+          "bytes": "e881140000",
+          "mnemonic": "call",
+          "operands": "0x8d9a80"
+        },
+        {
+          "address": "008d85ff",
+          "bytes": "888694000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x94], al"
+        },
+        {
+          "address": "008d8605",
+          "bytes": "e996fcffff",
+          "mnemonic": "jmp",
+          "operands": "0x8d82a0"
+        },
+        {
+          "address": "008d860a",
+          "bytes": "e861040000",
+          "mnemonic": "call",
+          "operands": "0x8d8a70"
+        },
+        {
+          "address": "008d860f",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "008d8610",
+          "bytes": "68605ed100",
+          "mnemonic": "push",
+          "operands": "0xd15e60"
+        },
+        {
+          "address": "008d8615",
+          "bytes": "e896ceb4ff",
+          "mnemonic": "call",
+          "operands": "0x4254b0"
+        },
+        {
+          "address": "008d861a",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "008d861d",
+          "bytes": "8d4c243c",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0x3c]"
+        },
+        {
+          "address": "008d8621",
+          "bytes": "e83a030000",
+          "mnemonic": "call",
+          "operands": "0x8d8960"
+        },
+        {
+          "address": "008d8626",
+          "bytes": "e975fcffff",
+          "mnemonic": "jmp",
+          "operands": "0x8d82a0"
+        }
+      ],
+      "all_saved_instruction_addresses_match": true,
+      "leading_fragment_qualification": null
+    }
+  ],
+  "Root_original_PE_prior_ctor_CRT_bodies": [
+    {
+      "entry": "008d7710",
+      "length": 446,
+      "body_sha256": "a63e05c7fd265d8498851852cdb42d37852675ba8055587bffd0afacb65ae5c9",
+      "selected_prior_instructions": [
+        {
+          "address": "008d7736",
+          "hex": "c6462401",
+          "text": "mov byte ptr [esi + 0x24], 1"
+        }
+      ],
+      "provenance": "Already admitted R157 tracked evidence; no new constructor/CRT body query.",
+      "whole_original_PE_body_hash_matches": true
+    },
+    {
+      "entry": "00cd2d80",
+      "length": 22,
+      "body_sha256": "1f99bd5288799e10472ebc9cbd10af8f87681e74f33f122dd99dc25cb58481b8",
+      "selected_prior_instructions": [
+        {
+          "address": "00cd2d80",
+          "hex": "b98089f800",
+          "text": "mov ecx, 0xf88980"
+        },
+        {
+          "address": "00cd2d85",
+          "hex": "e88649c0ff",
+          "text": "call 0x8d7710"
+        },
+        {
+          "address": "00cd2d8a",
+          "hex": "68c0eecd00",
+          "text": "push 0xcdeec0"
+        },
+        {
+          "address": "00cd2d8f",
+          "hex": "e86142f2ff",
+          "text": "call 0xbf6ff5"
+        },
+        {
+          "address": "00cd2d94",
+          "hex": "59",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00cd2d95",
+          "hex": "c3",
+          "text": "ret "
+        }
+      ],
+      "provenance": "Already admitted R157 tracked evidence; no new constructor/CRT body query.",
+      "whole_original_PE_body_hash_matches": true
+    }
+  ],
+  "Root_typed_query": {
+    "command": [
+      "python",
+      "tools/bsp.py",
+      "ghidra",
+      "proto",
+      "00A88770",
+      "--brief"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "captured_from_prior_Root_tool_call": true,
+    "exit_code": 0,
+    "stdout": "00a88770 BSP_SoundSystem_Initialize  void * __fastcall BSP_SoundSystem_Initialize(void * self, void * unused_edx, byte disabled, uint unused0, uint unused1)  body 00a88770 - 00a88aa8\r\n",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "no_mutation": true
+  },
+  "retained_worker_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\0073d410_0073d42f_0073d433_window.txt",
+      "bytes": 67,
+      "sha256": "6d9e903dfad79459c1a101b8134149f14a40360ba13659092adfdce74c75a042"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\0073d410_0073da9e_0073dafd_window.txt",
+      "bytes": 737,
+      "sha256": "098e59780ad3bc1f375812543735fcd33e81b16c831933aaa58282a9eff1d888"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\008d8190_008d85b5_008d8626_window.txt",
+      "bytes": 819,
+      "sha256": "3ead899cddf91e5c753faafeda284823226c58da7911fcbfa971ecdd48187fd4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\00a88770_00a88785_00a887b1_window.txt",
+      "bytes": 444,
+      "sha256": "9be0965bf85fe750270fb98ab318b1f8a1cafc184797d46f85c2fbc2d9b12a46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\00a88770_00a888e2_00a88931_window.txt",
+      "bytes": 692,
+      "sha256": "8e1f56a3237076e502bbc6015c0c795fd856522fe9f5c412af54bffb7315862c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\00a88770_00a88a9c_00a88aa8_window.txt",
+      "bytes": 81,
+      "sha256": "88638c5d24c7db3184a9c7fecef08c0eead782240748c8718dadd8b978c15b00"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\capture_queries.py",
+      "bytes": 1857,
+      "sha256": "d0a379050109c22565a30d744c219fb2187d18b4cbd43d25825050da3775e03b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\commit_message.txt",
+      "bytes": 359,
+      "sha256": "cd5265eaae08e6041088ab74271824b02ffa03588c6dd18ab812945b27144454"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\loader_lookup_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\loader_lookup_stdout.txt",
+      "bytes": 1718,
+      "sha256": "7f60be8e048b7183892395bca555f68474534041cd7133378c14674e91feeb77"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\make_receipt.py",
+      "bytes": 16503,
+      "sha256": "6346165820b1e764c4a3c3d5f8d14854faa9135ed450b71724a56365e4560e93"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\named_nosound_find_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\named_nosound_find_stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\query_capture.json",
+      "bytes": 4576,
+      "sha256": "6b52c5e1867d52ff640d4b000561796a82e60deb6292624551f960b9e825ec51"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\replay_receipt.py",
+      "bytes": 5738,
+      "sha256": "acb9481aea53b0b1bd4e5c8d865c98f556c712f2aa3af612578f92459ec14faa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\replay_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\replay_stdout.json",
+      "bytes": 482,
+      "sha256": "4325e088ac2b69d066fb48870533ca5262e17824fcdc2adc37409e376eb5ba22"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\sound_current_cell_xrefs_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\sound_current_cell_xrefs_stdout.txt",
+      "bytes": 52,
+      "sha256": "85267a680092811dd3a71cd023f87f1f5bdce362b1e2f76a27a715bfd689ca0f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\sound_lookup_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\sound_lookup_stdout.txt",
+      "bytes": 1741,
+      "sha256": "291c04090a30c14a65881ace927b817f9740570e2223d919c194df3027ee4b75"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\sound_original_abi_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\sound_original_abi_stdout.txt",
+      "bytes": 184,
+      "sha256": "65512fad2e42db77f44047c0dc9778df471f96db9db5a15cb2a7b3d11a089191"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\startup_enclosing_lookup_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\startup_enclosing_lookup_stdout.txt",
+      "bytes": 92,
+      "sha256": "626681a2b090b50a8cb5d22ee6d7a13cbc6d1a4fd3efa523e33446769cd7d3c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\026d15454a8908b8_assembly.txt",
+      "bytes": 14578,
+      "sha256": "026d15454a8908b832705415915fe95c99cd054c84708a22e757c31e39bb7a60"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\0367957cab3518c6_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\040fb2c3a09a5323_native_scene_tokenizer.hpp",
+      "bytes": 3563,
+      "sha256": "040fb2c3a09a532377bc0eadd5ce5f4fc13475603fd6e646c1b162d9d8477b9e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\098e59780ad3bc1f_0073d410_0073da9e_0073dafd_window.txt",
+      "bytes": 737,
+      "sha256": "098e59780ad3bc1f375812543735fcd33e81b16c831933aaa58282a9eff1d888"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\09de2b8916a4af98_bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\105ac7ca98f8a8d7_settings_initial_state.cpp",
+      "bytes": 1560,
+      "sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\18496746577a85d1_NATIVE_SETTINGS_LOADER_R167.md",
+      "bytes": 7176,
+      "sha256": "18496746577a85d1d12a6d24d5130fa3965ba5e80c9599026c932a21f91bc084"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\1a9166bbfe4bae22_fmod_ex_types.json",
+      "bytes": 56459,
+      "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\1e57895243715aab_app_bootstrap.hpp",
+      "bytes": 13989,
+      "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\235ac07b5c8a67da_cc12_fmod_audio_endpoint_startup_recheck.json",
+      "bytes": 125270,
+      "sha256": "235ac07b5c8a67dae3e79f83d65673a7bd48c723f2117156e24a908f6fb7a37b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\251c0a349760dd21_native_game_settings_owner.cpp",
+      "bytes": 7785,
+      "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\27afca34c33faf0c_game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\2856a03245c6a27a_audio_online_startup.hpp",
+      "bytes": 17176,
+      "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\291c04090a30c14a_sound_lookup_stdout.txt",
+      "bytes": 1741,
+      "sha256": "291c04090a30c14a65881ace927b817f9740570e2223d919c194df3027ee4b75"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\29373ba8100bd449_native_settings_loader.hpp",
+      "bytes": 5567,
+      "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\2dd92ab3c7dc3367_native_profile_settings.hpp",
+      "bytes": 2526,
+      "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\31a630430e40a1bb_AUDIO_STARTUP_DIAGNOSTIC_CC10.md",
+      "bytes": 5227,
+      "sha256": "31a630430e40a1bb77a154f6c1ad9c3013301510d20391777bd187f2f32d13f6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\36674aee1cec936c_metadata.json",
+      "bytes": 273,
+      "sha256": "36674aee1cec936c3a99a317ec520b0de13e7b49eedf1bcbbaf6fff29f6a8ee3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\366e5a64ac945473_target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\3c9e009c65606e35_native_game_settings_owner.hpp",
+      "bytes": 5980,
+      "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\3ead899cddf91e5c_008d8190_008d85b5_008d8626_window.txt",
+      "bytes": 819,
+      "sha256": "3ead899cddf91e5c753faafeda284823226c58da7911fcbfa971ecdd48187fd4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\44a2cc3b1c94c4af_game_native_settings_process.cpp",
+      "bytes": 7791,
+      "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\44ed9f390e22fad4_winmain_startup.hpp",
+      "bytes": 9647,
+      "sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\46f6d994cc3154fd_NATIVE_GAME_SETTINGS_OWNER_R157.md",
+      "bytes": 4859,
+      "sha256": "46f6d994cc3154fd4981ee91742a4cc0e7bfefdf497520ad7cf8747ca61ccf62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\4883feb0d96c4053_native_settings_application_r170.json",
+      "bytes": 222876,
+      "sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\4e1f22c9509e25e2_app_bootstrap.cpp",
+      "bytes": 17741,
+      "sha256": "4e1f22c9509e25e20b311762dd1fe294e7bbd1a325da40771482fc11db1df2a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\521a73023c5d196b_winmain_startup.cpp",
+      "bytes": 10209,
+      "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\5fb8af108ad4f763_assembly.txt",
+      "bytes": 33500,
+      "sha256": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\626681a2b090b50a_startup_enclosing_lookup_stdout.txt",
+      "bytes": 92,
+      "sha256": "626681a2b090b50a8cb5d22ee6d7a13cbc6d1a4fd3efa523e33446769cd7d3c7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\6346165820b1e764_make_receipt.py",
+      "bytes": 16503,
+      "sha256": "6346165820b1e764c4a3c3d5f8d14854faa9135ed450b71724a56365e4560e93"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\65512fad2e42db77_sound_original_abi_stdout.txt",
+      "bytes": 184,
+      "sha256": "65512fad2e42db77f44047c0dc9778df471f96db9db5a15cb2a7b3d11a089191"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\6b52c5e1867d52ff_query_capture.json",
+      "bytes": 4576,
+      "sha256": "6b52c5e1867d52ff640d4b000561796a82e60deb6292624551f960b9e825ec51"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\6d9e903dfad79459_0073d410_0073d42f_0073d433_window.txt",
+      "bytes": 67,
+      "sha256": "6d9e903dfad79459c1a101b8134149f14a40360ba13659092adfdce74c75a042"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\70d9b0c579b98a30_native_settings_loader_r167.json",
+      "bytes": 151814,
+      "sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\73260f612b4171ff_CC12_FMOD_AUDIO_ENDPOINT_STARTUP_RECHECK.md",
+      "bytes": 4571,
+      "sha256": "73260f612b4171ff0f8a75c239dc7e8e6eb102d45022751d84d338ec7ebe4e3a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\758eeabbb9aca577_metadata.json",
+      "bytes": 224,
+      "sha256": "758eeabbb9aca577c1eac8ea94f566df6e2f8157ea0be60f3b7ab7b3ac29b110"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\7f60be8e048b7183_loader_lookup_stdout.txt",
+      "bytes": 1718,
+      "sha256": "7f60be8e048b7183892395bca555f68474534041cd7133378c14674e91feeb77"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\82dbb88f3c33f144_WINMAIN_STARTUP.md",
+      "bytes": 13620,
+      "sha256": "82dbb88f3c33f1445be5dee135ccc0d424c6d7a5223fd3fb3f9f03464cee8db1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\836bbe877790db41_sound_startup.cpp",
+      "bytes": 2221,
+      "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\85267a680092811d_sound_current_cell_xrefs_stdout.txt",
+      "bytes": 52,
+      "sha256": "85267a680092811dd3a71cd023f87f1f5bdce362b1e2f76a27a715bfd689ca0f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\88638c5d24c7db31_00a88770_00a88a9c_00a88aa8_window.txt",
+      "bytes": 81,
+      "sha256": "88638c5d24c7db3184a9c7fecef08c0eead782240748c8718dadd8b978c15b00"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\8b1d37ce0ccdcde0_game_settings.hpp",
+      "bytes": 18657,
+      "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\8e1f56a3237076e5_00a88770_00a888e2_00a88931_window.txt",
+      "bytes": 692,
+      "sha256": "8e1f56a3237076e502bbc6015c0c795fd856522fe9f5c412af54bffb7315862c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\917578ab949678c9_make_receipt.py",
+      "bytes": 16045,
+      "sha256": "917578ab949678c9f4f30ee107fb4be523f245873da8a9b224f21d483698b393"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\92cf2e1b496be7d8_native_settings_loader.cpp",
+      "bytes": 15501,
+      "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\96f2f3e60d3f6a8f_APP_INIT_BOOTSTRAP.md",
+      "bytes": 25010,
+      "sha256": "96f2f3e60d3f6a8f4d924255ab030b9abe1e2838b95683865703a5033e5564ec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\9a4bea22270c4b38_game_native_settings_application.cpp",
+      "bytes": 11456,
+      "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\9be0965bf85fe750_00a88770_00a88785_00a887b1_window.txt",
+      "bytes": 444,
+      "sha256": "9be0965bf85fe750270fb98ab318b1f8a1cafc184797d46f85c2fbc2d9b12a46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\acb9481aea53b0b1_replay_receipt.py",
+      "bytes": 5738,
+      "sha256": "acb9481aea53b0b1bd4e5c8d865c98f556c712f2aa3af612578f92459ec14faa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\adc71df223c83c00_game_sound_runtime.hpp",
+      "bytes": 5374,
+      "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\b4cf0891eb330bce_native_game_settings_owner_r157.json",
+      "bytes": 74742,
+      "sha256": "b4cf0891eb330bce7bf01c2c8abe531c97bbb42a922fbca02737beb90c8eb53f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\b896cda79427bbc3_game_main.cpp",
+      "bytes": 73768,
+      "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\c39242f443a95a5a_game_native_settings_process.hpp",
+      "bytes": 2203,
+      "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\cacfe4c42a3c8a97_native_scene_tokenizer.cpp",
+      "bytes": 8452,
+      "sha256": "cacfe4c42a3c8a974ccd3e6d7c0d1a1ed21478745acca7e2af34f2cb7f52e6b8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\cc4aadb5f286801d_settings_archive_reader.cpp",
+      "bytes": 4078,
+      "sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\cc9068161d592740_settings_text.cpp",
+      "bytes": 3623,
+      "sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\ccce5e3d933fcfb8_game_sound_runtime.cpp",
+      "bytes": 20101,
+      "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\d0a379050109c225_capture_queries.py",
+      "bytes": 1857,
+      "sha256": "d0a379050109c22565a30d744c219fb2187d18b4cbd43d25825050da3775e03b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\d0d0e96a4b5f8d8c_NATIVE_SETTINGS_APPLICATION_R170.md",
+      "bytes": 6195,
+      "sha256": "d0d0e96a4b5f8d8cc2650a63040c27bf32eeb4195e6e6730f28daa92854b1e6c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\dd3ae8a96506a93e_assembly.txt",
+      "bytes": 6822,
+      "sha256": "dd3ae8a96506a93e94e9a8261ef7dc8c711c4fc1fdca51800720172e0b97f718"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e3b0c44298fc1c14_loader_lookup_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e3b0c44298fc1c14_named_nosound_find_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e3b0c44298fc1c14_named_nosound_find_stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e3b0c44298fc1c14_sound_current_cell_xrefs_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e3b0c44298fc1c14_sound_lookup_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e3b0c44298fc1c14_sound_original_abi_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e3b0c44298fc1c14_startup_enclosing_lookup_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e8c564464cc8ac90_audio_online_startup.cpp",
+      "bytes": 17786,
+      "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e91cfd74e81410d0_metadata.json",
+      "bytes": 268,
+      "sha256": "e91cfd74e81410d0a4e26e1bfa29cf2692ac621a5a21be8ae3c620e6a0572ecf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\e92dc8e5f99b9f98_APP_INIT_AUDIO_ONLINE.md",
+      "bytes": 18612,
+      "sha256": "e92dc8e5f99b9f9811d01a372ee1cf3b2fd0cb9e28c55ba72a324e0968b564dc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\fc9ab534f827975f_game_settings.cpp",
+      "bytes": 20468,
+      "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\retained_worker_directory\\frozen\\fd7c280d5876ce58_native_profile_settings.cpp",
+      "bytes": 3806,
+      "sha256": "fd7c280d5876ce58ed2c5fdd11e78791b41ee9df2b40568569bc73b7b66d4ac8"
+    }
+  ],
+  "selection": "Actual settings+24h=0 selects disabled=true and genuine NOSOUND; observed construction seeds1, recognized SoundEnabled does not read/store its numeric value.",
+  "single_direct_xref_result": "0073DAEE READ only; indirect initialization via8D7710 is independently established. This is not an exhaustive write/selector census.",
+  "no_new_supported_config_or_CLI_selector_demonstrated": true,
+  "no_reconstruction_code_packet_justified": true,
+  "new_environment_or_API_initialization_or_game_launch": false,
+  "GPR_or_Source_or_OS_mutation": false,
+  "new_startup_or_gameplay_credit": false,
+  "Root_primary_prepare_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_nosound_selection_primary\\prepare.json",
+    "bytes": 81315,
+    "sha256": "052369d65666ff9e5100771f9102a3f34ec49807cf92fcd5f509874b5507ce3d"
+  }
+}

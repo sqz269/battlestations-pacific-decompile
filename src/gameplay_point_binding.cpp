@@ -23,7 +23,12 @@ void NativeGameplayEffectDefinitionReference::release_zero_references() noexcept
 }
 GameplayDefinitionReferences::GameplayDefinitionReferences(
     GameplayEffectDefinitionContext& context, const volatile std::uint32_t* table)
-    : context_(context), table_(table) {
+    : typed_context_(&context), table_(table), raw_context_domain_(false) {
+    if (!table_) throw std::invalid_argument("Gameplay definition requires its actual D0DA58 table");
+}
+GameplayDefinitionReferences::GameplayDefinitionReferences(
+    NativeGameplayEffectDefinitionContext& context, const volatile std::uint32_t* table)
+    : raw_context_(&context), table_(table), raw_context_domain_(true) {
     if (!table_) throw std::invalid_argument("Gameplay definition requires its actual D0DA58 table");
 }
 GameplayDefinitionReferences::~GameplayDefinitionReferences() {
@@ -33,6 +38,9 @@ void GameplayDefinitionReferences::require_slot(GameplayEffectDefinition& raw,
     std::size_t index, std::uint32_t expected) const {
     if (read<std::uint32_t>(raw.native.data(), 0) != 0x00d0da58u || table_[index] != expected)
         throw std::invalid_argument("Unsupported current gameplay-definition virtual implementation");
+}
+NativeStringStorage& GameplayDefinitionReferences::string_storage() const noexcept {
+    return raw_context_domain_ ? raw_context_->strings : typed_context_->strings;
 }
 NativeGameplayEffectDefinitionReference& GameplayDefinitionReferences::bind(
     GameplayEffectDefinition& raw) {
@@ -60,7 +68,10 @@ void GameplayDefinitionReferences::release_zero(
     if (reference.reference_count.load(std::memory_order_relaxed) != 0) std::terminate();
     require_slot(raw, 0, 0x00bd30e0u); // Actual BD30E0 forwards to CURRENT scalar+4(flags1).
     require_slot(raw, 1, 0x00871440u);
-    scalar_delete_gameplay_effect_definition_00871440(&raw, 1, context_);
+    if (raw_context_domain_)
+        scalar_delete_gameplay_effect_definition_00871440(&raw, 1, *raw_context_);
+    else
+        scalar_delete_gameplay_effect_definition_00871440(&raw, 1, *typed_context_);
     for (auto it = references_.begin(); it != references_.end(); ++it) {
         if (it->get() == &reference) {
             references_.erase(it); // Deletes only the host companion, after native free.
@@ -171,7 +182,7 @@ GameplayPointConstruction::GameplayPointConstruction(GameplayDefinitionReference
     GameplayPointRows& rows, PointEffectConstructorBindings& bindings)
     : definitions_(definitions), rows_(rows), bindings_(bindings) {
     if (&bindings.rows != &rows || &rows.definitions_ != &definitions ||
-        &bindings.strings != &definitions.context_.strings)
+        &bindings.strings != &definitions.string_storage())
         throw std::invalid_argument("Point construction requires the same gameplay rows, definition and string bindings");
 }
 PointEffectManagerView GameplayPointConstruction::manager_00866440() {
