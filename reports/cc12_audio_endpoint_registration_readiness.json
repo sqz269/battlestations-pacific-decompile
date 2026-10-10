@@ -1,0 +1,4564 @@
+{
+  "schema": "cc12-audio-endpoint-registration-readiness-v1",
+  "packet": "cc12_audio_endpoint_registration_readiness",
+  "observed_utc": "2026-10-10T11:01:06.462084+00:00",
+  "status": "Current all-state MMDevice render collection empty; existing Media/KS registrations and no present MMDEVAPI endpoint observed. No specific enable/select/install action established.",
+  "scope": {
+    "owned_files": [
+      "docs/CC12_AUDIO_ENDPOINT_REGISTRATION_READINESS.md",
+      "reports/cc12_audio_endpoint_registration_readiness.json"
+    ],
+    "Native_addresses": [],
+    "Native_GPR_or_original_game_analysis": false,
+    "game_or_FMOD_SDK_calls": false,
+    "OS_device_default_registry_driver_service_config_or_DLL_changes": false,
+    "Cpp_compile_or_tests": false,
+    "query_boundaries": "MMDevice render APIs; MMDevices/Audio/Render only; AudioEndpoint and present Media PnP classes; their selected properties, matching kernel services and Media signed-driver records; KSCATEGORY_RENDER/AUDIO interfaces only. No broad registry/process/user-data scan."
+  },
+  "git": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+    "branch": "agent/cc12_fmod_startup_failure",
+    "source_preimage_commit": "95163fe71295cc134cad4b6c562bde5c192f163a",
+    "synced_main_commit": "63b865de35a7f40c827b896925d5088f0de914c1",
+    "main_ref_at_receipt": "f2cb33e93875a18cd26a4fbb4b5fb37ac9e23043",
+    "prior_native_selection_commit": "ea268d7a72d8311b97529d674aef152a0884b165",
+    "prior_audio_commit": "74ea45d4e39321e923dc80e64ddf658139c87d86",
+    "prior_owned_receipts_unchanged": true
+  },
+  "current_MMDevice_all_state": {
+    "observed_utc": "2026-10-10T10:51:17.8315732Z",
+    "pid": 120612,
+    "session_id": 1,
+    "session_name": "Console",
+    "process_pointer_bytes": 8,
+    "query": "MMDeviceEnumerator: eRender DEVICE_STATEMASK_ALL=0xF enumeration/count; GetState per actual object; default eConsole/eMultimedia/eCommunications; ID/state only",
+    "state_mask": 15,
+    "read_only": true,
+    "native_result": {
+      "EnumeratorCreateHResult": "00000000",
+      "AllStateRenderEnumHResult": "00000000",
+      "AllStateRenderGetCountHResult": "00000000",
+      "AllStateRenderCount": 0,
+      "Endpoints": [],
+      "Defaults": [
+        {
+          "Role": "console",
+          "HResult": "80070490",
+          "EndpointReturned": false,
+          "EndpointId": null,
+          "GetIdHResult": null,
+          "State": 0,
+          "GetStateHResult": null
+        },
+        {
+          "Role": "multimedia",
+          "HResult": "80070490",
+          "EndpointReturned": false,
+          "EndpointId": null,
+          "GetIdHResult": null,
+          "State": 0,
+          "GetStateHResult": null
+        },
+        {
+          "Role": "communications",
+          "HResult": "80070490",
+          "EndpointReturned": false,
+          "EndpointId": null,
+          "GetIdHResult": null,
+          "State": 0,
+          "GetStateHResult": null
+        }
+      ]
+    }
+  },
+  "commands_and_raw_output_pins": [
+    {
+      "label": "all_state_MMDevice",
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mmdevice_all_state_render.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+      "pid": 120612,
+      "observed_utc": "2026-10-10T10:51:17.8315732Z",
+      "exit_code": 0,
+      "stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mmdevice_all_state_stdout.txt",
+        "bytes": 2642,
+        "sha256": "dba8a99867b10013fd35daf37c8bf6e6ac86e1bb9ed83091c9eea9d03345f6b7",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\dba8a99867b10013_mmdevice_all_state_stdout.txt"
+      },
+      "stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mmdevice_all_state_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_mmdevice_all_state_stderr.txt"
+      },
+      "qualification": "Retained first successful command output, reused after independent detailed inventory timeout; MMDevice query was not repeated.",
+      "raw_stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mmdevice_all_state_stdout.txt",
+        "bytes": 2642,
+        "sha256": "dba8a99867b10013fd35daf37c8bf6e6ac86e1bb9ed83091c9eea9d03345f6b7",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\dba8a99867b10013_mmdevice_all_state_stdout.txt"
+      },
+      "raw_stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mmdevice_all_state_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_mmdevice_all_state_stderr.txt"
+      },
+      "stderr_text": ""
+    },
+    {
+      "label": "narrow_audio_inventory",
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\audio_registry_pnp_driver_inventory.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+      "pid": 119308,
+      "start_utc": "2026-10-10T10:53:47.846998+00:00",
+      "finish_utc": "2026-10-10T10:53:59.129578+00:00",
+      "exit_code": 0,
+      "stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\audio_inventory_stdout.txt",
+        "bytes": 185397,
+        "sha256": "f2675068f3a5748cd22904f9d89c9c55700dfd5b7ecd0972e877fcc7ceec2782",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\f2675068f3a5748c_audio_inventory_stdout.txt"
+      },
+      "stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\audio_inventory_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_audio_inventory_stderr.txt"
+      },
+      "raw_stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\audio_inventory_stdout.txt",
+        "bytes": 185397,
+        "sha256": "f2675068f3a5748cd22904f9d89c9c55700dfd5b7ecd0972e877fcc7ceec2782",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\f2675068f3a5748c_audio_inventory_stdout.txt"
+      },
+      "raw_stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\audio_inventory_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_audio_inventory_stderr.txt"
+      },
+      "stderr_text": ""
+    },
+    {
+      "label": "KS_render_interfaces",
+      "command": [
+        "pnputil.exe",
+        "/enum-interfaces",
+        "/class",
+        "{65E8773E-8F56-11D0-A3B9-00A0C9223196}"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+      "pid": 114920,
+      "start_utc": "2026-10-10T10:53:59.148273+00:00",
+      "finish_utc": "2026-10-10T10:53:59.166765+00:00",
+      "exit_code": 0,
+      "stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_render_interfaces_stdout.txt",
+        "bytes": 37136,
+        "sha256": "03fc3b27a7b20c4ac6b05f73117bcab5b45cbb342cf7e0bbe31af7dd0064881d",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\03fc3b27a7b20c4a_KS_render_interfaces_stdout.txt"
+      },
+      "stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_render_interfaces_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_KS_render_interfaces_stderr.txt"
+      },
+      "raw_stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_render_interfaces_stdout.txt",
+        "bytes": 37136,
+        "sha256": "03fc3b27a7b20c4ac6b05f73117bcab5b45cbb342cf7e0bbe31af7dd0064881d",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\03fc3b27a7b20c4a_KS_render_interfaces_stdout.txt"
+      },
+      "raw_stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_render_interfaces_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_KS_render_interfaces_stderr.txt"
+      },
+      "stderr_text": ""
+    },
+    {
+      "label": "KS_audio_interfaces",
+      "command": [
+        "pnputil.exe",
+        "/enum-interfaces",
+        "/class",
+        "{6994AD04-93EF-11D0-A3CC-00A0C9223196}"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+      "pid": 118516,
+      "start_utc": "2026-10-10T10:53:59.172620+00:00",
+      "finish_utc": "2026-10-10T10:53:59.203635+00:00",
+      "exit_code": 0,
+      "stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_audio_interfaces_stdout.txt",
+        "bytes": 110092,
+        "sha256": "8a6d844a340eb84f4f1b939bceb5aafbbe576eba90f7ec71a3b748cdcd700e82",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\8a6d844a340eb84f_KS_audio_interfaces_stdout.txt"
+      },
+      "stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_audio_interfaces_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_KS_audio_interfaces_stderr.txt"
+      },
+      "raw_stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_audio_interfaces_stdout.txt",
+        "bytes": 110092,
+        "sha256": "8a6d844a340eb84f4f1b939bceb5aafbbe576eba90f7ec71a3b748cdcd700e82",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\8a6d844a340eb84f_KS_audio_interfaces_stdout.txt"
+      },
+      "raw_stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\KS_audio_interfaces_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_KS_audio_interfaces_stderr.txt"
+      },
+      "stderr_text": ""
+    }
+  ],
+  "authoritative_header_definitions": [
+    {
+      "header_pin": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\mmdeviceapi.h",
+        "bytes": 55214,
+        "sha256": "3e0b02d819dd7ce0cb1b5e0721c7370eb1c42f21aa1d4b2747a97eeb22aa5ede",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\3e0b02d819dd7ce0_mmdeviceapi.h"
+      },
+      "selected_authoritative_definitions": [
+        {
+          "line": 149,
+          "text": "#define DEVICE_STATE_ACTIVE      0x00000001"
+        },
+        {
+          "line": 150,
+          "text": "#define DEVICE_STATE_DISABLED    0x00000002"
+        },
+        {
+          "line": 151,
+          "text": "#define DEVICE_STATE_NOTPRESENT  0x00000004"
+        },
+        {
+          "line": 152,
+          "text": "#define DEVICE_STATE_UNPLUGGED   0x00000008"
+        },
+        {
+          "line": 153,
+          "text": "#define DEVICE_STATEMASK_ALL     0x0000000f"
+        },
+        {
+          "line": 164,
+          "text": "DEFINE_PROPERTYKEY(PKEY_AudioEndpoint_Association, 0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e, 2);"
+        },
+        {
+          "line": 166,
+          "text": "DEFINE_PROPERTYKEY(PKEY_AudioEndpoint_GUID, 0x1da5d803, 0xd492, 0x4edd, 0x8c, 0x23, 0xe0, 0xc0, 0xff, 0xee, 0x7f, 0x0e, 4);"
+        }
+      ]
+    },
+    {
+      "header_pin": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\functiondiscoverykeys_devpkey.h",
+        "bytes": 19479,
+        "sha256": "69bee422869fbf67dbce48be99006aac784c4898c994906473759d30924bddb6",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\69bee422869fbf67_functiondiscoverykeys_devpkey.h"
+      },
+      "selected_authoritative_definitions": [
+        {
+          "line": 113,
+          "text": "DEFINE_PROPERTYKEY(PKEY_Device_InstanceId,             0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 256);   // DEVPROP_TYPE_STRING"
+        }
+      ]
+    },
+    {
+      "header_pin": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\devpkey.h",
+        "bytes": 39985,
+        "sha256": "132ad3ea096996fbbf79ea8b23c4adb5b348d95a9d2d854bc076cc7fa6a091ab",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\132ad3ea096996fb_devpkey.h"
+      },
+      "selected_authoritative_definitions": [
+        {
+          "line": 86,
+          "text": "DEFINE_DEVPROPKEY(DEVPKEY_Device_InstanceId,             0x78c34fc8, 0x104a, 0x4aca, 0x9e, 0xa4, 0x52, 0x4d, 0x52, 0x99, 0x6e, 0x57, 256);   // DEVPROP_TYPE_STRING"
+        },
+        {
+          "line": 95,
+          "text": "DEFINE_DEVPROPKEY(DEVPKEY_Device_ProblemCode,            0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 3);     // DEVPROP_TYPE_UINT32"
+        },
+        {
+          "line": 107,
+          "text": "DEFINE_DEVPROPKEY(DEVPKEY_Device_Parent,                 0x4340a6c5, 0x93fa, 0x4706, 0x97, 0x2c, 0x7b, 0x64, 0x80, 0x08, 0xa5, 0xa7, 8);     // DEVPROP_TYPE_STRING"
+        },
+        {
+          "line": 186,
+          "text": "DEFINE_DEVPROPKEY(DEVPKEY_Device_IsPresent,                0x540b947e, 0x8b40, 0x45bc, 0xa8, 0xa2, 0x6a, 0x0b, 0x89, 0x4c, 0xbd, 0xa2, 5);    // DEVPROP_TYPE_BOOL"
+        }
+      ]
+    },
+    {
+      "header_pin": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\ksmedia.h",
+        "bytes": 395025,
+        "sha256": "1f81e344008164cfdcaa86464d29355e6ba65e5a4fd4519893c466861b3b9664",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\1f81e344008164cf_ksmedia.h"
+      },
+      "selected_authoritative_definitions": [
+        {
+          "line": 596,
+          "text": "DEFINE_GUIDSTRUCT(\"6994AD04-93EF-11D0-A3CC-00A0C9223196\", KSCATEGORY_AUDIO);"
+        }
+      ]
+    },
+    {
+      "header_pin": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\ks.h",
+        "bytes": 182024,
+        "sha256": "54e758c21575e0997489b838ed2862f0c3f66a921522bfb3ae0385dcb18c9a85",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\54e758c21575e099_ks.h"
+      },
+      "selected_authoritative_definitions": [
+        {
+          "line": 821,
+          "text": "DEFINE_GUIDSTRUCT(\"65E8773E-8F56-11D0-A3B9-00A0C9223196\", KSCATEGORY_RENDER);"
+        }
+      ]
+    },
+    {
+      "header_pin": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\cfg.h",
+        "bytes": 15380,
+        "sha256": "6e2aa35c540ec4754d8e13666b0b17f83cb174c4dfd34cf9076565f72361f5e3",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\6e2aa35c540ec475_cfg.h"
+      },
+      "selected_authoritative_definitions": [
+        {
+          "line": 89,
+          "text": "#define CM_PROB_DISABLED                   (0x00000016)   // devinst is disabled"
+        },
+        {
+          "line": 99,
+          "text": "#define CM_PROB_DISABLED_SERVICE           (0x00000020)   // service's Start = 4"
+        },
+        {
+          "line": 112,
+          "text": "#define CM_PROB_PHANTOM                    (0x0000002D)   // The devinst currently exists only in the registry"
+        }
+      ]
+    }
+  ],
+  "complete_capture_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\capture.json",
+    "bytes": 438172,
+    "sha256": "40e7826ce5be475b16095c82d643d7b1dfe14c0939eadf55bf2908830d16234b",
+    "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\40e7826ce5be475b_capture.json"
+  },
+  "capture_and_mapping_script_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\capture_readonly.py",
+      "bytes": 8092,
+      "sha256": "2027d98a80532762d54d220b3a2699b69a5afd8c958ac97c00efca848194715a",
+      "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\2027d98a80532762_capture_readonly.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mapping.py",
+      "bytes": 5322,
+      "sha256": "0ddc731c1122543232db7d52e246d3c40dd3c6a6dde85e6d367dfab6837feb90",
+      "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\0ddc731c11225432_mapping.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\make_receipt.py",
+      "bytes": 10474,
+      "sha256": "337d957c8ae45b28f83156cda78332a3f004d50dbf1dda8c1c9148f1cc17ff1c",
+      "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\337d957c8ae45b28_make_receipt.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mmdevice_all_state_render.ps1",
+      "bytes": 5577,
+      "sha256": "670eed5c4c08a3b21c4abeb3a05c4e1659988b9a8cf7fcd11e2db325ef165695",
+      "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\670eed5c4c08a3b2_mmdevice_all_state_render.ps1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\audio_registry_pnp_driver_inventory.ps1",
+      "bytes": 3058,
+      "sha256": "337b97a5cdf2a15949dbc10b4d41fc55e823455a894de6dae3a49bec3af38d70",
+      "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\337b97a5cdf2a159_audio_registry_pnp_driver_inventory.ps1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\capture_readonly.py",
+      "bytes": 8092,
+      "sha256": "2027d98a80532762d54d220b3a2699b69a5afd8c958ac97c00efca848194715a",
+      "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\2027d98a80532762_capture_readonly.py"
+    }
+  ],
+  "narrow_inventory": {
+    "observed_utc": "2026-10-10T10:53:59.0603500Z",
+    "pid": 119308,
+    "session_id": 1,
+    "session_name": "Console",
+    "process_pointer_bytes": 8,
+    "audio_endpoint_PnP": [
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{7EA952A1-593B-4EC5-BFBE-DEDD5B341C66}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "1 - SB241Y A (AMD High Definition Audio Device)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1a6972f4&0&0001"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{1B784DD2-5A6D-5179-8E45-F90D365B5FFA}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{7C84533C-404E-4F26-8EFB-6F73741754B7}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "Headset (Bose QC45)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTHHFENUM\\BthHFPAudio\\e&20f50977&0&97"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{693E9464-9AF9-5E80-A3E9-D58D60966B22}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{83FCBB5F-7D53-4912-B989-19E5289787F1}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "EB321HQU C (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{E6EC56CB-B9EE-5CF5-9E63-6D08F4065157}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{2EFC7C3C-125B-4139-92DB-83FC5A9A50B0}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "X27U W3 (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{572D4ACB-A974-5221-998D-F7D06191C0E6}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{C3309728-9857-4587-B269-C84202497351}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "EB321HQU C (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{E6EC56CB-B9EE-5CF5-9E63-6D08F4065157}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{ABB473C9-3DE1-46CB-9BA1-60DA5FC319A8}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "X27U W3 (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{572D4ACB-A974-5221-998D-F7D06191C0E6}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{76D159AE-B4E3-4B0D-AC88-8DD3138E89E0}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "Headset (Bose QC45 Hands-Free)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTHHFENUM\\BthHFPAudio\\e&20f50977&0&97"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{693E9464-9AF9-5E80-A3E9-D58D60966B22}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{083D7E1C-BADB-4E89-ADD2-A2386722AF32}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "Speakers (JBL Flip 7)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&00010ecb_PID&2107\\d&355d462e&0&501B6AFAD470_C00000000"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{C600BCF6-6441-5BA9-B288-E84EBA57C087}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{EBCC0587-B882-44FB-ACF3-FF707D1C794D}",
+        "Class": "AudioEndpoint",
+        "FriendlyName": "Headphones (Bose QC45)",
+        "Status": "Unknown",
+        "Present": false,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": false
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0001009e_PID&4039\\d&355d462e&0&ACBF71E63CA1_C00000000"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{693E9464-9AF9-5E80-A3E9-D58D60966B22}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 0,
+            "Data": null
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "audioendpoint.inf"
+          }
+        ]
+      }
+    ],
+    "present_media_PnP": [
+      {
+        "InstanceId": "BTHHFENUM\\BTHHFPAUDIO\\E&20F50977&0&97",
+        "Class": "MEDIA",
+        "FriendlyName": "Bose QC45 Hands-Free",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTHENUM\\{0000111e-0000-1000-8000-00805f9b34fb}_VID&0001009e_PID&4039\\d&355d462e&0&ACBF71E63CA1_C00000000"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{693E9464-9AF9-5E80-A3E9-D58D60966B22}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "BthHFAud"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.9278"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "microsoft_bluetooth_hfp.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574C6A&0&0000",
+        "Class": "MEDIA",
+        "FriendlyName": "Realtek USB Audio",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "USB\\VID_0B05&PID_1B9B\\8&15cd6c09&0&11"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "RtkUsbAD_2393"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "6.3.9600.2393"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "oem33.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001",
+        "Class": "MEDIA",
+        "FriendlyName": "AMD High Definition Audio Device",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "PCI\\VEN_1002&DEV_1640&SUBSYS_88771043&REV_00\\4&1ebe6a9c&0&0141"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "AtiHDAudioService"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.1.42"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "oem21.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "USB\\VID_0951&PID_16ED&MI_02\\A&271CE33E&0&0002",
+        "Class": "MEDIA",
+        "FriendlyName": "HyperX Cloud Alpha S Chat",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "USB\\VID_0951&PID_16ED\\000000000001"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{3D4630B4-E598-54A1-8DE7-A9D4CDD1A278}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "usbaudio"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.9457"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "wdma_usb.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001",
+        "Class": "MEDIA",
+        "FriendlyName": "NVIDIA High Definition Audio",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "PCI\\VEN_10DE&DEV_22E8&SUBSYS_000010DE&REV_A1\\4&1babdf5b&0&0109"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "NVHDA"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "1.4.5.7"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "oem65.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "ROOT\\STEAMSTREAMINGMICROPHONE\\0000",
+        "Class": "MEDIA",
+        "FriendlyName": "Steam Streaming Microphone",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HTREE\\ROOT\\0"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "SteamStreamingMicrophone"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "8.33.15.17"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "oem77.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "ROOT\\STEAMSTREAMINGSPEAKERS\\0000",
+        "Class": "MEDIA",
+        "FriendlyName": "Steam Streaming Speakers",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HTREE\\ROOT\\0"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "SteamStreamingSpeakers"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "17.56.13.764"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "oem59.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "ROOT\\UNNAMED_DEVICE\\0000",
+        "Class": "MEDIA",
+        "FriendlyName": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "HTREE\\ROOT\\0"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "nvvad_WaveExtensible"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "4.92.0.0"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "oem80.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "BTHHFENUM\\BTHHFPAUDIO\\E&56488D0&0&97",
+        "Class": "MEDIA",
+        "FriendlyName": "Cylinder Speaker Hands-Free",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTHENUM\\{0000111e-0000-1000-8000-00805f9b34fb}_LOCALMFG&0046\\d&355d462e&0&4142CFF170BC_C00000000"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{C4BF5207-AEB0-5C70-A2BA-7A9104893813}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "BthHFAud"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.9278"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "microsoft_bluetooth_hfp.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "SWD\\DRIVERENUM\\MTKBTACX&C&2D1A9950&0",
+        "Class": "MEDIA",
+        "FriendlyName": "MediaTek Bluetooth Audio Device",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "USB\\VID_13D3&PID_3588&MI_00\\b&1e81d904&0&0000"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "mtkbtacx"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "1.5.0.46"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "oem26.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "USB\\VID_0951&PID_16ED&MI_00\\A&271CE33E&0&0000",
+        "Class": "MEDIA",
+        "FriendlyName": "HyperX Cloud Alpha S Game",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "USB\\VID_0951&PID_16ED\\000000000001"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{3D4630B4-E598-54A1-8DE7-A9D4CDD1A278}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "usbaudio"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.9457"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "wdma_usb.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&00010ECB_PID&2107\\D&355D462E&0&501B6AFAD470_C00000000",
+        "Class": "MEDIA",
+        "FriendlyName": "JBL Flip 7",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTH\\MS_BTHBRB\\c&2d1a9950&0&1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{C600BCF6-6441-5BA9-B288-E84EBA57C087}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "BthA2dp"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "microsoft_bluetooth_a2dp_src.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_LOCALMFG&0046\\D&355D462E&0&4142CFF170BC_C00000000",
+        "Class": "MEDIA",
+        "FriendlyName": "Cylinder Speaker",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTH\\MS_BTHBRB\\c&2d1a9950&0&1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{C4BF5207-AEB0-5C70-A2BA-7A9104893813}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "BthA2dp"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "microsoft_bluetooth_a2dp_src.inf"
+          }
+        ]
+      },
+      {
+        "InstanceId": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0001009E_PID&4039\\D&355D462E&0&ACBF71E63CA1_C00000000",
+        "Class": "MEDIA",
+        "FriendlyName": "Bose QC45",
+        "Status": "OK",
+        "Present": true,
+        "properties": [
+          {
+            "KeyName": "DEVPKEY_Device_ProblemCode",
+            "Type": 7,
+            "Data": 0
+          },
+          {
+            "KeyName": "DEVPKEY_Device_IsPresent",
+            "Type": 17,
+            "Data": true
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Parent",
+            "Type": 18,
+            "Data": "BTH\\MS_BTHBRB\\c&2d1a9950&0&1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_ContainerId",
+            "Type": 13,
+            "Data": "{693E9464-9AF9-5E80-A3E9-D58D60966B22}"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_Service",
+            "Type": 18,
+            "Data": "BthA2dp"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverVersion",
+            "Type": 18,
+            "Data": "10.0.26100.1"
+          },
+          {
+            "KeyName": "DEVPKEY_Device_DriverInfPath",
+            "Type": 18,
+            "Data": "microsoft_bluetooth_a2dp_src.inf"
+          }
+        ]
+      }
+    ],
+    "render_registry_records": [
+      {
+        "endpoint_guid": "{00d4d548-0dec-406a-bb91-6f1611397462}",
+        "DeviceState": 268435457,
+        "description": "Headset Earphone",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "HyperX Cloud Alpha S Chat",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          180,
+          48,
+          70,
+          61,
+          152,
+          229,
+          161,
+          84,
+          141,
+          231,
+          169,
+          212,
+          205,
+          209,
+          162,
+          120
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{083d7e1c-badb-4e89-add2-a2386722af32}",
+        "DeviceState": 8,
+        "description": "Speakers",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "JBL Flip 7",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          246,
+          188,
+          0,
+          198,
+          65,
+          100,
+          169,
+          91,
+          178,
+          136,
+          232,
+          78,
+          186,
+          87,
+          192,
+          135
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{0b4472a6-b998-4465-b071-99f855ba9414}",
+        "DeviceState": 536870916,
+        "description": "NVIDIA Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          209,
+          50,
+          40,
+          194,
+          44,
+          155,
+          74,
+          89,
+          189,
+          23,
+          254,
+          166,
+          64,
+          93,
+          54,
+          42
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{1ee8ee1f-7987-4213-a284-db7c1610f0b5}",
+        "DeviceState": 4,
+        "description": "EB321HQU C",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          203,
+          86,
+          236,
+          230,
+          238,
+          185,
+          245,
+          92,
+          158,
+          99,
+          109,
+          8,
+          244,
+          6,
+          81,
+          87
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{24e409bc-01fe-4f61-bd7f-5a9a7513a5e6}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          85,
+          3,
+          134,
+          122,
+          66,
+          77,
+          249,
+          81,
+          159,
+          145,
+          205,
+          158,
+          175,
+          38,
+          148,
+          29
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{26580bc4-677d-442c-9890-c80e5bb82c53}",
+        "DeviceState": 536870916,
+        "description": "SB241Y A",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          210,
+          77,
+          120,
+          27,
+          109,
+          90,
+          121,
+          81,
+          142,
+          69,
+          249,
+          13,
+          54,
+          91,
+          95,
+          250
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{2b36cfb0-c0ce-4596-845b-63d882eecc7e}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          90,
+          151,
+          76,
+          30,
+          144,
+          254,
+          109,
+          81,
+          151,
+          168,
+          231,
+          219,
+          214,
+          218,
+          245,
+          185
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{2efc7c3c-125b-4139-92db-83fc5a9a50b0}",
+        "DeviceState": 4,
+        "description": "X27U W3",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          203,
+          74,
+          45,
+          87,
+          116,
+          169,
+          33,
+          82,
+          153,
+          141,
+          247,
+          208,
+          97,
+          145,
+          192,
+          230
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{2f54fe01-a0d9-4d72-b9b1-e364f690f18e}",
+        "DeviceState": 1,
+        "description": "Speakers",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "HyperX Cloud Alpha S Game",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          180,
+          48,
+          70,
+          61,
+          152,
+          229,
+          161,
+          84,
+          141,
+          231,
+          169,
+          212,
+          205,
+          209,
+          162,
+          120
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{31c7e69d-89a6-4325-ba04-58d19e1fac29}",
+        "DeviceState": 4,
+        "description": "NVIDIA Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          12,
+          35,
+          14,
+          59,
+          71,
+          9,
+          0,
+          91,
+          149,
+          12,
+          171,
+          28,
+          109,
+          9,
+          44,
+          172
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{343d241b-de68-4623-9496-3804d526ea36}",
+        "DeviceState": 1,
+        "description": "Speakers",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Steam Streaming Speakers",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": null,
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{3610e9e0-3b66-4ebf-a848-bba63101be67}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          155,
+          242,
+          44,
+          247,
+          96,
+          241,
+          31,
+          83,
+          141,
+          12,
+          35,
+          191,
+          228,
+          143,
+          30,
+          222
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{5a516f2a-de97-4e9a-b86a-99360b82cfbc}",
+        "DeviceState": 4,
+        "description": "NVIDIA Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          48,
+          75,
+          130,
+          189,
+          248,
+          9,
+          226,
+          91,
+          151,
+          135,
+          248,
+          151,
+          167,
+          20,
+          199,
+          239
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{5fa61253-cc6a-4e66-b9fa-02543901f056}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          204,
+          148,
+          64,
+          106,
+          208,
+          141,
+          100,
+          81,
+          158,
+          200,
+          205,
+          112,
+          117,
+          133,
+          0,
+          37
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{606ba315-24df-4be2-9112-39e100b541ae}",
+        "DeviceState": 536870916,
+        "description": "Headphones",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Realtek USB2.0 Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{63228b7c-5930-47b5-a5af-2f3baca21ea8}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "AMD High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          74,
+          217,
+          211,
+          210,
+          189,
+          184,
+          129,
+          88,
+          182,
+          90,
+          11,
+          138,
+          169,
+          190,
+          113,
+          140
+        ],
+        "association": null,
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{635dbf2e-a185-4a98-9adc-e36592f02abf}",
+        "DeviceState": 8,
+        "description": "Speakers",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Realtek USB Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{67e66158-ce4d-42af-927e-63e09bc67e2d}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          5,
+          234,
+          71,
+          4,
+          121,
+          75,
+          8,
+          95,
+          168,
+          14,
+          117,
+          190,
+          189,
+          39,
+          111,
+          211
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{6d643569-6ef3-4293-8c36-762dd738eff7}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          122,
+          245,
+          58,
+          119,
+          147,
+          226,
+          55,
+          81,
+          158,
+          68,
+          127,
+          239,
+          105,
+          78,
+          134,
+          159
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{6f7f9b52-774b-4d09-ad01-c412bc9d9d90}",
+        "DeviceState": 536870916,
+        "description": "EB321HQU C",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          203,
+          86,
+          236,
+          230,
+          238,
+          185,
+          245,
+          92,
+          158,
+          99,
+          109,
+          8,
+          244,
+          6,
+          81,
+          87
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{74f35a88-7fc0-4038-8e7b-3e687e0f5884}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          117,
+          149,
+          217,
+          217,
+          139,
+          55,
+          104,
+          91,
+          167,
+          223,
+          242,
+          216,
+          42,
+          19,
+          39,
+          89
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{76d159ae-b4e3-4b0d-ac88-8dd3138e89e0}",
+        "DeviceState": 8,
+        "description": "Headset",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Bose QC45 Hands-Free",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          100,
+          148,
+          62,
+          105,
+          249,
+          154,
+          128,
+          94,
+          163,
+          233,
+          213,
+          141,
+          96,
+          150,
+          107,
+          34
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{7ea952a1-593b-4ec5-bfbe-dedd5b341c66}",
+        "DeviceState": 4,
+        "description": "1 - SB241Y A",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "AMD High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          210,
+          77,
+          120,
+          27,
+          109,
+          90,
+          121,
+          81,
+          142,
+          69,
+          249,
+          13,
+          54,
+          91,
+          95,
+          250
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{83fcbb5f-7d53-4912-b989-19e5289787f1}",
+        "DeviceState": 4,
+        "description": "EB321HQU C",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          203,
+          86,
+          236,
+          230,
+          238,
+          185,
+          245,
+          92,
+          158,
+          99,
+          109,
+          8,
+          244,
+          6,
+          81,
+          87
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{85002254-15ad-43da-b5b4-7ad314b9b321}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "AMD High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          115,
+          202,
+          86,
+          174,
+          246,
+          137,
+          219,
+          88,
+          172,
+          198,
+          222,
+          235,
+          184,
+          27,
+          75,
+          254
+        ],
+        "association": null,
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{8b2b84e9-b5de-40eb-a144-fda33f309835}",
+        "DeviceState": 8,
+        "description": "Headphones",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Cylinder Speaker",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          7,
+          82,
+          191,
+          196,
+          176,
+          174,
+          112,
+          92,
+          162,
+          186,
+          122,
+          145,
+          4,
+          137,
+          56,
+          19
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{9f9583c3-b2e7-46db-9e98-b21396b54483}",
+        "DeviceState": 1,
+        "description": "Realtek Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Realtek USB Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{abb473c9-3de1-46cb-9ba1-60da5fc319a8}",
+        "DeviceState": 4,
+        "description": "X27U W3",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          203,
+          74,
+          45,
+          87,
+          116,
+          169,
+          33,
+          82,
+          153,
+          141,
+          247,
+          208,
+          97,
+          145,
+          192,
+          230
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{ae095f09-61f7-4226-b5d0-5087c152bf91}",
+        "DeviceState": 4,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "AMD High Definition Audio Device",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          170,
+          20,
+          237,
+          134,
+          205,
+          90,
+          91,
+          87,
+          176,
+          164,
+          184,
+          191,
+          188,
+          63,
+          75,
+          100
+        ],
+        "association": null,
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{b4314ca3-8b08-420d-95c8-43abf0288864}",
+        "DeviceState": 8,
+        "description": "Headset",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Cylinder Speaker Hands-Free",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          7,
+          82,
+          191,
+          196,
+          176,
+          174,
+          112,
+          92,
+          162,
+          186,
+          122,
+          145,
+          4,
+          137,
+          56,
+          19
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{b7df772f-2f3f-4953-9ec1-191869b2014e}",
+        "DeviceState": 536870916,
+        "description": "Digital Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Realtek USB2.0 Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{bf4d71b0-9352-44bb-9aaa-544b742be02d}",
+        "DeviceState": 1,
+        "description": "Speakers",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Steam Streaming Microphone",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": null,
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{c11798a6-764b-45d6-a4d0-31b1b0fe792c}",
+        "DeviceState": 536870916,
+        "description": "Speakers",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Realtek USB2.0 Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{c3309728-9857-4587-b269-c84202497351}",
+        "DeviceState": 4,
+        "description": "EB321HQU C",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          203,
+          86,
+          236,
+          230,
+          238,
+          185,
+          245,
+          92,
+          158,
+          99,
+          109,
+          8,
+          244,
+          6,
+          81,
+          87
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{ccc2533b-9a80-4f4d-9075-2f4372aa62a2}",
+        "DeviceState": 8,
+        "description": "Headphones",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Realtek USB Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{d13156f1-1fa5-4b26-8fa2-02ed325c3a49}",
+        "DeviceState": 4,
+        "description": "SB241Y A",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          210,
+          77,
+          120,
+          27,
+          109,
+          90,
+          121,
+          81,
+          142,
+          69,
+          249,
+          13,
+          54,
+          91,
+          95,
+          250
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{e0133b4e-a373-4c4a-bd9c-57855b9811be}",
+        "DeviceState": 4,
+        "description": "NVIDIA Output",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          58,
+          162,
+          27,
+          200,
+          134,
+          109,
+          56,
+          89,
+          143,
+          66,
+          244,
+          149,
+          87,
+          128,
+          182,
+          59
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{ebcc0587-b882-44fb-acf3-ff707d1c794d}",
+        "DeviceState": 8,
+        "description": "Headphones",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "Bose QC45",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          100,
+          148,
+          62,
+          105,
+          249,
+          154,
+          128,
+          94,
+          163,
+          233,
+          213,
+          141,
+          96,
+          150,
+          107,
+          34
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      },
+      {
+        "endpoint_guid": "{ee170be5-671a-47af-915a-34fdbaa0a0d8}",
+        "DeviceState": 4,
+        "description": "X27U W3",
+        "friendly_name": null,
+        "interface_friendly_name": null,
+        "device": "NVIDIA High Definition Audio",
+        "instance_id": null,
+        "container_id": [
+          72,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          203,
+          74,
+          45,
+          87,
+          116,
+          169,
+          33,
+          82,
+          153,
+          141,
+          247,
+          208,
+          97,
+          145,
+          192,
+          230
+        ],
+        "association": "{00000000-0000-0000-0000-000000000000}",
+        "audio_endpoint_guid": null
+      }
+    ],
+    "services": [
+      {
+        "Name": "AudioEndpointBuilder",
+        "State": "Running",
+        "StartMode": "Auto",
+        "ProcessId": 4760
+      },
+      {
+        "Name": "Audiosrv",
+        "State": "Running",
+        "StartMode": "Auto",
+        "ProcessId": 4936
+      }
+    ],
+    "mmcss_kernel_driver": [
+      {
+        "Name": "MMCSS",
+        "State": "Running",
+        "StartMode": "Auto",
+        "ServiceType": "Kernel Driver"
+      }
+    ],
+    "media_service_drivers": [
+      {
+        "Name": "AtiHDAudioService",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\atihdwt6.inf_amd64_76dcade1eff04982\\AtihdWT6.sys"
+      },
+      {
+        "Name": "BthA2dp",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\drivers\\BthA2dp.sys"
+      },
+      {
+        "Name": "BthHFAud",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\drivers\\BthHfAud.sys"
+      },
+      {
+        "Name": "mtkbtacx",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\mtkbtacx.inf_amd64_83b672d8fe91251d\\mtkbtacx.sys"
+      },
+      {
+        "Name": "NVHDA",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\drivers\\nvhda64v.sys"
+      },
+      {
+        "Name": "nvvad_WaveExtensible",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\drivers\\nvvad64v.sys"
+      },
+      {
+        "Name": "RtkUsbAD_2393",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\rtdusbad_asus.inf_amd64_01f0e5c78f4a7f00\\RtUsbA64.sys"
+      },
+      {
+        "Name": "SteamStreamingMicrophone",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\drivers\\SteamStreamingMicrophone.sys"
+      },
+      {
+        "Name": "SteamStreamingSpeakers",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\drivers\\SteamStreamingSpeakers.sys"
+      },
+      {
+        "Name": "usbaudio",
+        "State": "Running",
+        "StartMode": "Manual",
+        "ServiceType": "Kernel Driver",
+        "PathName": "C:\\WINDOWS\\system32\\drivers\\usbaudio.sys"
+      }
+    ],
+    "media_signed_driver_records": [
+      {
+        "DeviceID": "ROOT\\UNNAMED_DEVICE\\0000",
+        "DeviceName": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+        "DriverVersion": "4.92.0.0",
+        "InfName": "oem80.inf",
+        "DriverProviderName": "NVIDIA",
+        "DriverDate": "/Date(1785801600000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "ROOT\\STEAMSTREAMINGSPEAKERS\\0000",
+        "DeviceName": "Steam Streaming Speakers",
+        "DriverVersion": "17.56.13.764",
+        "InfName": "oem59.inf",
+        "DriverProviderName": "Valve Corporation",
+        "DriverDate": "/Date(1500508800000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "ROOT\\STEAMSTREAMINGMICROPHONE\\0000",
+        "DeviceName": "Steam Streaming Microphone",
+        "DriverVersion": "8.33.15.17",
+        "InfName": "oem77.inf",
+        "DriverProviderName": "Valve Corporation",
+        "DriverDate": "/Date(1501200000000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "USB\\VID_0951&PID_16ED&MI_02\\A&271CE33E&0&0002",
+        "DeviceName": "USB Audio Device",
+        "DriverVersion": "10.0.26100.9457",
+        "InfName": "wdma_usb.inf",
+        "DriverProviderName": "Microsoft",
+        "DriverDate": "/Date(1789171200000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "USB\\VID_0951&PID_16ED&MI_00\\A&271CE33E&0&0000",
+        "DeviceName": "USB Audio Device",
+        "DriverVersion": "10.0.26100.9457",
+        "InfName": "wdma_usb.inf",
+        "DriverProviderName": "Microsoft",
+        "DriverDate": "/Date(1789171200000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001",
+        "DeviceName": "AMD High Definition Audio Device",
+        "DriverVersion": "10.0.1.42",
+        "InfName": "oem21.inf",
+        "DriverProviderName": "Advanced Micro Devices",
+        "DriverDate": "/Date(1762214400000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574C6A&0&0000",
+        "DeviceName": "Realtek USB Audio",
+        "DriverVersion": "6.3.9600.2393",
+        "InfName": "oem33.inf",
+        "DriverProviderName": "Realtek Semiconductor Corp.",
+        "DriverDate": "/Date(1719446400000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "SWD\\DRIVERENUM\\MTKBTACX&C&2D1A9950&0",
+        "DeviceName": "MediaTek Bluetooth Audio Device",
+        "DriverVersion": "1.5.0.46",
+        "InfName": "oem26.inf",
+        "DriverProviderName": "Mediatek Inc.",
+        "DriverDate": "/Date(1758067200000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "BTHHFENUM\\BTHHFPAUDIO\\E&20F50977&0&97",
+        "DeviceName": "Microsoft Bluetooth Hands-Free Audio device",
+        "DriverVersion": "10.0.26100.9278",
+        "InfName": "microsoft_bluetooth_hfp.inf",
+        "DriverProviderName": "Microsoft",
+        "DriverDate": "/Date(1787529600000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "BTHHFENUM\\BTHHFPAUDIO\\E&56488D0&0&97",
+        "DeviceName": "Microsoft Bluetooth Hands-Free Audio device",
+        "DriverVersion": "10.0.26100.9278",
+        "InfName": "microsoft_bluetooth_hfp.inf",
+        "DriverProviderName": "Microsoft",
+        "DriverDate": "/Date(1787529600000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0001009E_PID&4039\\D&355D462E&0&ACBF71E63CA1_C00000000",
+        "DeviceName": "Microsoft Bluetooth A2dp Source",
+        "DriverVersion": "10.0.26100.1",
+        "InfName": "microsoft_bluetooth_a2dp_src.inf",
+        "DriverProviderName": "Microsoft",
+        "DriverDate": "/Date(1711843200000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&00010ECB_PID&2107\\D&355D462E&0&501B6AFAD470_C00000000",
+        "DeviceName": "Microsoft Bluetooth A2dp Source",
+        "DriverVersion": "10.0.26100.1",
+        "InfName": "microsoft_bluetooth_a2dp_src.inf",
+        "DriverProviderName": "Microsoft",
+        "DriverDate": "/Date(1711843200000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_LOCALMFG&0046\\D&355D462E&0&4142CFF170BC_C00000000",
+        "DeviceName": "Microsoft Bluetooth A2dp Source",
+        "DriverVersion": "10.0.26100.1",
+        "InfName": "microsoft_bluetooth_a2dp_src.inf",
+        "DriverProviderName": "Microsoft",
+        "DriverDate": "/Date(1711843200000)/",
+        "IsSigned": true
+      },
+      {
+        "DeviceID": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001",
+        "DeviceName": "NVIDIA High Definition Audio",
+        "DriverVersion": "1.4.5.7",
+        "InfName": "oem65.inf",
+        "DriverProviderName": "NVIDIA Corporation",
+        "DriverDate": "/Date(1764547200000)/",
+        "IsSigned": true
+      }
+    ]
+  },
+  "derived_identity_mapping": {
+    "state_constants": {
+      "1": "active",
+      "2": "disabled",
+      "4": "not_present",
+      "8": "unplugged"
+    },
+    "all_state_mask": 15,
+    "registry_raw_state_counts": {
+      "268435457": 1,
+      "8": 7,
+      "536870916": 6,
+      "4": 21,
+      "1": 4
+    },
+    "registry_known_state_counts": {
+      "active": 5,
+      "unplugged": 7,
+      "not_present": 27
+    },
+    "registry_record_count": 39,
+    "registry_to_PnP_mapping": [
+      {
+        "endpoint_guid": "{00d4d548-0dec-406a-bb91-6f1611397462}",
+        "description": "Headset Earphone",
+        "device_label": "HyperX Cloud Alpha S Chat",
+        "registry_DeviceState_raw": 268435457,
+        "registry_DeviceState_hex": "10000001",
+        "known_state_bits": 1,
+        "known_state_name": "active",
+        "unclassified_high_bits_hex": "10000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "USB\\VID_0951&PID_16ED&MI_02\\A&271CE33E&0&0002"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{083d7e1c-badb-4e89-add2-a2386722af32}",
+        "description": "Speakers",
+        "device_label": "JBL Flip 7",
+        "registry_DeviceState_raw": 8,
+        "registry_DeviceState_hex": "00000008",
+        "known_state_bits": 8,
+        "known_state_name": "unplugged",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{083D7E1C-BADB-4E89-ADD2-A2386722AF32}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&00010ecb_PID&2107\\d&355d462e&0&501B6AFAD470_C00000000"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&00010ECB_PID&2107\\D&355D462E&0&501B6AFAD470_C00000000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{0b4472a6-b998-4465-b071-99f855ba9414}",
+        "description": "NVIDIA Output",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 536870916,
+        "registry_DeviceState_hex": "20000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "20000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{1ee8ee1f-7987-4213-a284-db7c1610f0b5}",
+        "description": "EB321HQU C",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{24e409bc-01fe-4f61-bd7f-5a9a7513a5e6}",
+        "description": "Digital Output",
+        "device_label": "High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{26580bc4-677d-442c-9890-c80e5bb82c53}",
+        "description": "SB241Y A",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 536870916,
+        "registry_DeviceState_hex": "20000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "20000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{2b36cfb0-c0ce-4596-845b-63d882eecc7e}",
+        "description": "Digital Output",
+        "device_label": "High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{2efc7c3c-125b-4139-92db-83fc5a9a50b0}",
+        "description": "X27U W3",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{2EFC7C3C-125B-4139-92DB-83FC5A9A50B0}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{2f54fe01-a0d9-4d72-b9b1-e364f690f18e}",
+        "description": "Speakers",
+        "device_label": "HyperX Cloud Alpha S Game",
+        "registry_DeviceState_raw": 1,
+        "registry_DeviceState_hex": "00000001",
+        "known_state_bits": 1,
+        "known_state_name": "active",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "USB\\VID_0951&PID_16ED&MI_00\\A&271CE33E&0&0000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{31c7e69d-89a6-4325-ba04-58d19e1fac29}",
+        "description": "NVIDIA Output",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{343d241b-de68-4623-9496-3804d526ea36}",
+        "description": "Speakers",
+        "device_label": "Steam Streaming Speakers",
+        "registry_DeviceState_raw": 1,
+        "registry_DeviceState_hex": "00000001",
+        "known_state_bits": 1,
+        "known_state_name": "active",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "ROOT\\STEAMSTREAMINGSPEAKERS\\0000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{3610e9e0-3b66-4ebf-a848-bba63101be67}",
+        "description": "Digital Output",
+        "device_label": "High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{5a516f2a-de97-4e9a-b86a-99360b82cfbc}",
+        "description": "NVIDIA Output",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{5fa61253-cc6a-4e66-b9fa-02543901f056}",
+        "description": "Digital Output",
+        "device_label": "High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{606ba315-24df-4be2-9112-39e100b541ae}",
+        "description": "Headphones",
+        "device_label": "Realtek USB2.0 Audio",
+        "registry_DeviceState_raw": 536870916,
+        "registry_DeviceState_hex": "20000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "20000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{63228b7c-5930-47b5-a5af-2f3baca21ea8}",
+        "description": "Digital Output",
+        "device_label": "AMD High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{635dbf2e-a185-4a98-9adc-e36592f02abf}",
+        "description": "Speakers",
+        "device_label": "Realtek USB Audio",
+        "registry_DeviceState_raw": 8,
+        "registry_DeviceState_hex": "00000008",
+        "known_state_bits": 8,
+        "known_state_name": "unplugged",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574C6A&0&0000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{67e66158-ce4d-42af-927e-63e09bc67e2d}",
+        "description": "Digital Output",
+        "device_label": "High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{6d643569-6ef3-4293-8c36-762dd738eff7}",
+        "description": "Digital Output",
+        "device_label": "High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{6f7f9b52-774b-4d09-ad01-c412bc9d9d90}",
+        "description": "EB321HQU C",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 536870916,
+        "registry_DeviceState_hex": "20000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "20000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{74f35a88-7fc0-4038-8e7b-3e687e0f5884}",
+        "description": "Digital Output",
+        "device_label": "High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{76d159ae-b4e3-4b0d-ac88-8dd3138e89e0}",
+        "description": "Headset",
+        "device_label": "Bose QC45 Hands-Free",
+        "registry_DeviceState_raw": 8,
+        "registry_DeviceState_hex": "00000008",
+        "known_state_bits": 8,
+        "known_state_name": "unplugged",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{76D159AE-B4E3-4B0D-AC88-8DD3138E89E0}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "BTHHFENUM\\BthHFPAudio\\e&20f50977&0&97"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "BTHHFENUM\\BTHHFPAUDIO\\E&20F50977&0&97"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{7ea952a1-593b-4ec5-bfbe-dedd5b341c66}",
+        "description": "1 - SB241Y A",
+        "device_label": "AMD High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{7EA952A1-593B-4EC5-BFBE-DEDD5B341C66}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1a6972f4&0&0001"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{83fcbb5f-7d53-4912-b989-19e5289787f1}",
+        "description": "EB321HQU C",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{83FCBB5F-7D53-4912-B989-19E5289787F1}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{85002254-15ad-43da-b5b4-7ad314b9b321}",
+        "description": "Digital Output",
+        "device_label": "AMD High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{8b2b84e9-b5de-40eb-a144-fda33f309835}",
+        "description": "Headphones",
+        "device_label": "Cylinder Speaker",
+        "registry_DeviceState_raw": 8,
+        "registry_DeviceState_hex": "00000008",
+        "known_state_bits": 8,
+        "known_state_name": "unplugged",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_LOCALMFG&0046\\D&355D462E&0&4142CFF170BC_C00000000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{9f9583c3-b2e7-46db-9e98-b21396b54483}",
+        "description": "Realtek Digital Output",
+        "device_label": "Realtek USB Audio",
+        "registry_DeviceState_raw": 1,
+        "registry_DeviceState_hex": "00000001",
+        "known_state_bits": 1,
+        "known_state_name": "active",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574C6A&0&0000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{abb473c9-3de1-46cb-9ba1-60da5fc319a8}",
+        "description": "X27U W3",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{ABB473C9-3DE1-46CB-9BA1-60DA5FC319A8}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{ae095f09-61f7-4226-b5d0-5087c152bf91}",
+        "description": "Digital Output",
+        "device_label": "AMD High Definition Audio Device",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{b4314ca3-8b08-420d-95c8-43abf0288864}",
+        "description": "Headset",
+        "device_label": "Cylinder Speaker Hands-Free",
+        "registry_DeviceState_raw": 8,
+        "registry_DeviceState_hex": "00000008",
+        "known_state_bits": 8,
+        "known_state_name": "unplugged",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "BTHHFENUM\\BTHHFPAUDIO\\E&56488D0&0&97"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{b7df772f-2f3f-4953-9ec1-191869b2014e}",
+        "description": "Digital Output",
+        "device_label": "Realtek USB2.0 Audio",
+        "registry_DeviceState_raw": 536870916,
+        "registry_DeviceState_hex": "20000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "20000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{bf4d71b0-9352-44bb-9aaa-544b742be02d}",
+        "description": "Speakers",
+        "device_label": "Steam Streaming Microphone",
+        "registry_DeviceState_raw": 1,
+        "registry_DeviceState_hex": "00000001",
+        "known_state_bits": 1,
+        "known_state_name": "active",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "ROOT\\STEAMSTREAMINGMICROPHONE\\0000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{c11798a6-764b-45d6-a4d0-31b1b0fe792c}",
+        "description": "Speakers",
+        "device_label": "Realtek USB2.0 Audio",
+        "registry_DeviceState_raw": 536870916,
+        "registry_DeviceState_hex": "20000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "20000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{c3309728-9857-4587-b269-c84202497351}",
+        "description": "EB321HQU C",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{C3309728-9857-4587-B269-C84202497351}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{ccc2533b-9a80-4f4d-9075-2f4372aa62a2}",
+        "description": "Headphones",
+        "device_label": "Realtek USB Audio",
+        "registry_DeviceState_raw": 8,
+        "registry_DeviceState_hex": "00000008",
+        "known_state_bits": 8,
+        "known_state_name": "unplugged",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574C6A&0&0000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{d13156f1-1fa5-4b26-8fa2-02ed325c3a49}",
+        "description": "SB241Y A",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{e0133b4e-a373-4c4a-bd9c-57855b9811be}",
+        "description": "NVIDIA Output",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{ebcc0587-b882-44fb-acf3-ff707d1c794d}",
+        "description": "Headphones",
+        "device_label": "Bose QC45",
+        "registry_DeviceState_raw": 8,
+        "registry_DeviceState_hex": "00000008",
+        "known_state_bits": 8,
+        "known_state_name": "unplugged",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [
+          "SWD\\MMDEVAPI\\{0.0.0.00000000}.{EBCC0587-B882-44FB-ACF3-FF707D1C794D}"
+        ],
+        "matching_audio_endpoint_PnP_present": [
+          false
+        ],
+        "exact_parent_media_ids": [
+          "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0001009e_PID&4039\\d&355d462e&0&ACBF71E63CA1_C00000000"
+        ],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0001009E_PID&4039\\D&355D462E&0&ACBF71E63CA1_C00000000"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      },
+      {
+        "endpoint_guid": "{ee170be5-671a-47af-915a-34fdbaa0a0d8}",
+        "description": "X27U W3",
+        "device_label": "NVIDIA High Definition Audio",
+        "registry_DeviceState_raw": 4,
+        "registry_DeviceState_hex": "00000004",
+        "known_state_bits": 4,
+        "known_state_name": "not_present",
+        "unclassified_high_bits_hex": "00000000",
+        "matching_audio_endpoint_PnP_ids": [],
+        "matching_audio_endpoint_PnP_present": [],
+        "exact_parent_media_ids": [],
+        "current_MMDevice_object_exists": false,
+        "same_label_present_media_candidates": [
+          "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+        ],
+        "label_candidate_qualification": "Friendly-name equality only; not used as an identity join. Serialized registry container blobs are retained without guessed decoding."
+      }
+    ],
+    "audio_endpoint_PnP_count": 9,
+    "render_endpoint_PnP_count": 8,
+    "capture_endpoint_PnP_count": 1,
+    "present_audio_endpoint_PnP_count": 0,
+    "render_endpoint_PnP_mapping": [
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{7EA952A1-593B-4EC5-BFBE-DEDD5B341C66}",
+        "FriendlyName": "1 - SB241Y A (AMD High Definition Audio Device)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1a6972f4&0&0001",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 0,
+        "registry_match_guids": [
+          "{7ea952a1-593b-4ec5-bfbe-dedd5b341c66}"
+        ],
+        "current_MMDevice_object_exists": false
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{83FCBB5F-7D53-4912-B989-19E5289787F1}",
+        "FriendlyName": "EB321HQU C (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 0,
+        "registry_match_guids": [
+          "{83fcbb5f-7d53-4912-b989-19e5289787f1}"
+        ],
+        "current_MMDevice_object_exists": false
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{2EFC7C3C-125B-4139-92DB-83FC5A9A50B0}",
+        "FriendlyName": "X27U W3 (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 0,
+        "registry_match_guids": [
+          "{2efc7c3c-125b-4139-92db-83fc5a9a50b0}"
+        ],
+        "current_MMDevice_object_exists": false
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{C3309728-9857-4587-B269-C84202497351}",
+        "FriendlyName": "EB321HQU C (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 0,
+        "registry_match_guids": [
+          "{c3309728-9857-4587-b269-c84202497351}"
+        ],
+        "current_MMDevice_object_exists": false
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{ABB473C9-3DE1-46CB-9BA1-60DA5FC319A8}",
+        "FriendlyName": "X27U W3 (NVIDIA High Definition Audio)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2a12ad2e&0&0001",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 0,
+        "registry_match_guids": [
+          "{abb473c9-3de1-46cb-9ba1-60da5fc319a8}"
+        ],
+        "current_MMDevice_object_exists": false
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{76D159AE-B4E3-4B0D-AC88-8DD3138E89E0}",
+        "FriendlyName": "Headset (Bose QC45 Hands-Free)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "BTHHFENUM\\BthHFPAudio\\e&20f50977&0&97",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 1,
+        "registry_match_guids": [
+          "{76d159ae-b4e3-4b0d-ac88-8dd3138e89e0}"
+        ],
+        "current_MMDevice_object_exists": false
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{083D7E1C-BADB-4E89-ADD2-A2386722AF32}",
+        "FriendlyName": "Speakers (JBL Flip 7)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&00010ecb_PID&2107\\d&355d462e&0&501B6AFAD470_C00000000",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 1,
+        "registry_match_guids": [
+          "{083d7e1c-badb-4e89-add2-a2386722af32}"
+        ],
+        "current_MMDevice_object_exists": false
+      },
+      {
+        "InstanceId": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{EBCC0587-B882-44FB-ACF3-FF707D1C794D}",
+        "FriendlyName": "Headphones (Bose QC45)",
+        "Status": "Unknown",
+        "Present": false,
+        "IsPresent_property": false,
+        "ProblemCode_property": null,
+        "parent_instance_id": "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0001009e_PID&4039\\d&355d462e&0&ACBF71E63CA1_C00000000",
+        "parent_present_media_match": true,
+        "parent_enabled_KS_render_interfaces": 1,
+        "registry_match_guids": [
+          "{ebcc0587-b882-44fb-acf3-ff707d1c794d}"
+        ],
+        "current_MMDevice_object_exists": false
+      }
+    ],
+    "present_media_count": 14,
+    "present_media_mapping": [
+      {
+        "InstanceId": "BTHHFENUM\\BTHHFPAUDIO\\E&20F50977&0&97",
+        "FriendlyName": "Bose QC45 Hands-Free",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "BthHFAud",
+        "driver_version": "10.0.26100.9278",
+        "driver_INF": "microsoft_bluetooth_hfp.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Enabled": 1
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\BTHHFENUM#BthHFPAudio#e&20f50977&0&97#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave"
+        ]
+      },
+      {
+        "InstanceId": "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574C6A&0&0000",
+        "FriendlyName": "Realtek USB Audio",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "RtkUsbAD_2393",
+        "driver_version": "6.3.9600.2393",
+        "driver_INF": "oem33.inf",
+        "KS_render_interface_states": {
+          "Enabled": 3,
+          "Disabled": 4
+        },
+        "KS_audio_interface_states": {
+          "Enabled": 6,
+          "Disabled": 9
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\USB#VID_0B05&PID_1B9B&MI_00#9&10574c6a&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\WaveOut1",
+          "\\\\?\\USB#VID_0B05&PID_1B9B&MI_00#9&10574c6a&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\WaveOut2",
+          "\\\\?\\USB#VID_0B05&PID_1B9B&MI_00#9&10574c6a&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\WaveOut5"
+        ]
+      },
+      {
+        "InstanceId": "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001",
+        "FriendlyName": "AMD High Definition Audio Device",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "AtiHDAudioService",
+        "driver_version": "10.0.1.42",
+        "driver_INF": "oem21.inf",
+        "KS_render_interface_states": {
+          "Disabled": 60
+        },
+        "KS_audio_interface_states": {
+          "Disabled": 123,
+          "Enabled": 3
+        },
+        "enabled_KS_render_interface_paths": []
+      },
+      {
+        "InstanceId": "USB\\VID_0951&PID_16ED&MI_02\\A&271CE33E&0&0002",
+        "FriendlyName": "HyperX Cloud Alpha S Chat",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "usbaudio",
+        "driver_version": "10.0.26100.9457",
+        "driver_INF": "wdma_usb.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Enabled": 1
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\USB#VID_0951&PID_16ED&MI_02#a&271ce33e&0&0002#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\GLOBAL"
+        ]
+      },
+      {
+        "InstanceId": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001",
+        "FriendlyName": "NVIDIA High Definition Audio",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "NVHDA",
+        "driver_version": "1.4.5.7",
+        "driver_INF": "oem65.inf",
+        "KS_render_interface_states": {
+          "Disabled": 5
+        },
+        "KS_audio_interface_states": {
+          "Disabled": 82,
+          "Enabled": 4
+        },
+        "enabled_KS_render_interface_paths": []
+      },
+      {
+        "InstanceId": "ROOT\\STEAMSTREAMINGMICROPHONE\\0000",
+        "FriendlyName": "Steam Streaming Microphone",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "SteamStreamingMicrophone",
+        "driver_version": "8.33.15.17",
+        "driver_INF": "oem77.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Enabled": 2
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\ROOT#STEAMSTREAMINGMICROPHONE#0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave"
+        ]
+      },
+      {
+        "InstanceId": "ROOT\\STEAMSTREAMINGSPEAKERS\\0000",
+        "FriendlyName": "Steam Streaming Speakers",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "SteamStreamingSpeakers",
+        "driver_version": "17.56.13.764",
+        "driver_INF": "oem59.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Enabled": 2
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\ROOT#STEAMSTREAMINGSPEAKERS#0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave"
+        ]
+      },
+      {
+        "InstanceId": "ROOT\\UNNAMED_DEVICE\\0000",
+        "FriendlyName": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "nvvad_WaveExtensible",
+        "driver_version": "4.92.0.0",
+        "driver_INF": "oem80.inf",
+        "KS_render_interface_states": {
+          "Disabled": 6
+        },
+        "KS_audio_interface_states": {
+          "Disabled": 12
+        },
+        "enabled_KS_render_interface_paths": []
+      },
+      {
+        "InstanceId": "BTHHFENUM\\BTHHFPAUDIO\\E&56488D0&0&97",
+        "FriendlyName": "Cylinder Speaker Hands-Free",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "BthHFAud",
+        "driver_version": "10.0.26100.9278",
+        "driver_INF": "microsoft_bluetooth_hfp.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Enabled": 1
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\BTHHFENUM#BthHFPAudio#e&56488d0&0&97#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave"
+        ]
+      },
+      {
+        "InstanceId": "SWD\\DRIVERENUM\\MTKBTACX&C&2D1A9950&0",
+        "FriendlyName": "MediaTek Bluetooth Audio Device",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "mtkbtacx",
+        "driver_version": "1.5.0.46",
+        "driver_INF": "oem26.inf",
+        "KS_render_interface_states": {},
+        "KS_audio_interface_states": {},
+        "enabled_KS_render_interface_paths": []
+      },
+      {
+        "InstanceId": "USB\\VID_0951&PID_16ED&MI_00\\A&271CE33E&0&0000",
+        "FriendlyName": "HyperX Cloud Alpha S Game",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "usbaudio",
+        "driver_version": "10.0.26100.9457",
+        "driver_INF": "wdma_usb.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Enabled": 1
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\USB#VID_0951&PID_16ED&MI_00#a&271ce33e&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\GLOBAL"
+        ]
+      },
+      {
+        "InstanceId": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&00010ECB_PID&2107\\D&355D462E&0&501B6AFAD470_C00000000",
+        "FriendlyName": "JBL Flip 7",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "BthA2dp",
+        "driver_version": "10.0.26100.1",
+        "driver_INF": "microsoft_bluetooth_a2dp_src.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Disabled": 1,
+          "Enabled": 1
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\BTHENUM#{0000110b-0000-1000-8000-00805f9b34fb}_VID&00010ecb_PID&2107#d&355d462e&0&501B6AFAD470_C00000000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\SRC"
+        ]
+      },
+      {
+        "InstanceId": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_LOCALMFG&0046\\D&355D462E&0&4142CFF170BC_C00000000",
+        "FriendlyName": "Cylinder Speaker",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "BthA2dp",
+        "driver_version": "10.0.26100.1",
+        "driver_INF": "microsoft_bluetooth_a2dp_src.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Disabled": 1,
+          "Enabled": 1
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\BTHENUM#{0000110b-0000-1000-8000-00805f9b34fb}_LOCALMFG&0046#d&355d462e&0&4142CFF170BC_C00000000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\SRC"
+        ]
+      },
+      {
+        "InstanceId": "BTHENUM\\{0000110B-0000-1000-8000-00805F9B34FB}_VID&0001009E_PID&4039\\D&355D462E&0&ACBF71E63CA1_C00000000",
+        "FriendlyName": "Bose QC45",
+        "Status": "OK",
+        "Present": true,
+        "ProblemCode": 0,
+        "service": "BthA2dp",
+        "driver_version": "10.0.26100.1",
+        "driver_INF": "microsoft_bluetooth_a2dp_src.inf",
+        "KS_render_interface_states": {
+          "Enabled": 1
+        },
+        "KS_audio_interface_states": {
+          "Disabled": 1,
+          "Enabled": 1
+        },
+        "enabled_KS_render_interface_paths": [
+          "\\\\?\\BTHENUM#{0000110b-0000-1000-8000-00805f9b34fb}_VID&0001009e_PID&4039#d&355d462e&0&ACBF71E63CA1_C00000000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\SRC"
+        ]
+      }
+    ],
+    "render_interfaces_total": 87,
+    "render_interface_states": {
+      "Disabled": 75,
+      "Enabled": 12
+    },
+    "audio_interfaces_total": 253,
+    "audio_interface_states": {
+      "Disabled": 229,
+      "Enabled": 24
+    },
+    "enabled_render_interfaces": [
+      {
+        "Interface Path": "\\\\?\\ROOT#STEAMSTREAMINGSPEAKERS#0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave",
+        "Interface Description": "Steam Streaming Speakers Wave",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "Wave",
+        "Device Instance ID": "ROOT\\SteamStreamingSpeakers\\0000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\USB#VID_0951&PID_16ED&MI_02#a&271ce33e&0&0002#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\GLOBAL",
+        "Interface Description": "HyperX Cloud Alpha S Chat",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "GLOBAL",
+        "Device Instance ID": "USB\\VID_0951&PID_16ED&MI_02\\a&271ce33e&0&0002",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\BTHENUM#{0000110b-0000-1000-8000-00805f9b34fb}_VID&00010ecb_PID&2107#d&355d462e&0&501B6AFAD470_C00000000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\SRC",
+        "Interface Description": "Unknown",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "SRC",
+        "Device Instance ID": "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&00010ecb_PID&2107\\d&355d462e&0&501B6AFAD470_C00000000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\USB#VID_0B05&PID_1B9B&MI_00#9&10574c6a&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\WaveOut1",
+        "Interface Description": "Realtek USB Audio",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "WaveOut1",
+        "Device Instance ID": "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574c6a&0&0000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\USB#VID_0B05&PID_1B9B&MI_00#9&10574c6a&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\WaveOut2",
+        "Interface Description": "Realtek USB Audio",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "WaveOut2",
+        "Device Instance ID": "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574c6a&0&0000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\USB#VID_0B05&PID_1B9B&MI_00#9&10574c6a&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\WaveOut5",
+        "Interface Description": "Realtek USB Audio",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "WaveOut5",
+        "Device Instance ID": "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574c6a&0&0000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\BTHENUM#{0000110b-0000-1000-8000-00805f9b34fb}_VID&0001009e_PID&4039#d&355d462e&0&ACBF71E63CA1_C00000000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\SRC",
+        "Interface Description": "Unknown",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "SRC",
+        "Device Instance ID": "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_VID&0001009e_PID&4039\\d&355d462e&0&ACBF71E63CA1_C00000000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\BTHHFENUM#BthHFPAudio#e&56488d0&0&97#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave",
+        "Interface Description": "Unknown",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "Wave",
+        "Device Instance ID": "BTHHFENUM\\BthHFPAudio\\e&56488d0&0&97",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\BTHENUM#{0000110b-0000-1000-8000-00805f9b34fb}_LOCALMFG&0046#d&355d462e&0&4142CFF170BC_C00000000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\SRC",
+        "Interface Description": "Unknown",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "SRC",
+        "Device Instance ID": "BTHENUM\\{0000110b-0000-1000-8000-00805f9b34fb}_LOCALMFG&0046\\d&355d462e&0&4142CFF170BC_C00000000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\BTHHFENUM#BthHFPAudio#e&20f50977&0&97#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave",
+        "Interface Description": "Unknown",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "Wave",
+        "Device Instance ID": "BTHHFENUM\\BthHFPAudio\\e&20f50977&0&97",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\USB#VID_0951&PID_16ED&MI_00#a&271ce33e&0&0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\GLOBAL",
+        "Interface Description": "HyperX Cloud Alpha S Game",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "GLOBAL",
+        "Device Instance ID": "USB\\VID_0951&PID_16ED&MI_00\\a&271ce33e&0&0000",
+        "Interface Status": "Enabled"
+      },
+      {
+        "Interface Path": "\\\\?\\ROOT#STEAMSTREAMINGMICROPHONE#0000#{65e8773e-8f56-11d0-a3b9-00a0c9223196}\\Wave",
+        "Interface Description": "Steam Streaming Microphone Wave",
+        "Interface Class GUID": "{65e8773e-8f56-11d0-a3b9-00a0c9223196}",
+        "Reference String": "Wave",
+        "Device Instance ID": "ROOT\\SteamStreamingMicrophone\\0000",
+        "Interface Status": "Enabled"
+      }
+    ],
+    "join_contract": "Only exact endpoint GUID and PnP parent/device-instance identities establish joins. Friendly-name candidates are explicitly weak. Interface Disabled is not MMDevice DEVICE_STATE_DISABLED or a disabled Media devnode."
+  },
+  "out_param_and_state_contract": {
+    "all_state_enumeration": "EnumAudioEndpoints(eRender0, DEVICE_STATEMASK_ALL0xF) and GetCount both S_OK with0. No endpoint object/ID/state was returned; per-state empty counts follow the complete all-state enumeration, not invented GetState output.",
+    "defaults": "Three default roles return80070490/null. The untouched State0 fields in those null-object observations are invalid as endpoint-state outputs and are not classified.",
+    "registry_state": "Preserve full DWORD. Decode only documented low0xF state bits;0x10000000 and0x20000000 remain unclassified. Registry entries containing ACTIVE bits are not proof of API-visible active devices.",
+    "PnP_state": "Present=false/IsPresent=false is observed for all nine software AudioEndpoint records. Their ProblemCode properties are Empty/null, not treated as0,22 or45. All14 present Media nodes separately report ProblemCode0.",
+    "interface_state": "Pnputil enabled/disabled kernel-interface status is independent of MMDevice state and PnP CM_PROB_DISABLED22. No reclassification of75disabled render interfaces as75disabled playback endpoints."
+  },
+  "prior_independent_endpoint_and_SDK_evidence": {
+    "receipt_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\CC12_FMOD_AUDIO_ENDPOINT_STARTUP_RECHECK.md",
+        "bytes": 4571,
+        "sha256": "73260f612b4171ff0f8a75c239dc7e8e6eb102d45022751d84d338ec7ebe4e3a",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\73260f612b4171ff_CC12_FMOD_AUDIO_ENDPOINT_STARTUP_RECHECK.md"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_fmod_audio_endpoint_startup_recheck.json",
+        "bytes": 125270,
+        "sha256": "235ac07b5c8a67dae3e79f83d65673a7bd48c723f2117156e24a908f6fb7a37b",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\235ac07b5c8a67da_cc12_fmod_audio_endpoint_startup_recheck.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\CC12_NATIVE_NOSOUND_SELECTION_READINESS.md",
+        "bytes": 4335,
+        "sha256": "ee743ffdb62f877203857736b59216c79dafd26d37bc04c4e0bbf7147b920933",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\ee743ffdb62f8772_CC12_NATIVE_NOSOUND_SELECTION_READINESS.md"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_native_nosound_selection_readiness.json",
+        "bytes": 90559,
+        "sha256": "67370e5d600a2afc5b99b3a1fb91235241ee168d6bd0c978c265f2e882a31a8b",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\67370e5d600a2afc_cc12_native_nosound_selection_readiness.json"
+      }
+    ],
+    "endpoint_observed_utc": "2026-10-10T10:18:19.2078411Z",
+    "active_render_count": 0,
+    "SDK_probe": {
+      "qualification": "32-bit installed SDK read-only object creation/enumeration and release only; no init, SetOutput, SetDriver, SetSpeakerMode, bank call or game execution",
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\audio_probe.exe"
+      ],
+      "pid": 115560,
+      "start_utc": "2026-10-10T10:19:02.835461+00:00",
+      "finish_utc": "2026-10-10T10:19:02.896000+00:00",
+      "exit_code": 0,
+      "stdout": [
+        {
+          "step": "process",
+          "pid": 115560,
+          "pointer_bits": 32,
+          "actual_core": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+          "actual_event": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll"
+        },
+        {
+          "step": "EventSystem_Create",
+          "result": 0,
+          "object_returned": true
+        },
+        {
+          "step": "EventSystem_GetSystemObject",
+          "result": 0,
+          "object_returned": true
+        },
+        {
+          "step": "System_GetVersion",
+          "result": 0,
+          "output_valid": true,
+          "observed": 268292
+        },
+        {
+          "step": "System_GetOutput_without_init",
+          "result": 0,
+          "output_valid": true,
+          "observed": 0
+        },
+        {
+          "step": "System_GetNumDrivers",
+          "result": 0,
+          "output_valid": true,
+          "observed": 0
+        },
+        {
+          "step": "EventSystem_Release_owns_core_system",
+          "result": 0
+        }
+      ],
+      "compile_command": "cl /nologo /std:c++17 /EHsc /W4 /MD /O2 /Fe:audio_probe.exe /Fo:audio_probe.obj audio_probe.cpp /link /MANIFEST:EMBED",
+      "machine_hex": "014c",
+      "manifest": [
+        "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n"
+      ]
+    },
+    "probe_artifact_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\0165edd2e351ecd6_audio_probe.cpp",
+        "bytes": 4608,
+        "sha256": "0165edd2e351ecd6d535ed807f1758554ad7d10e581fa0784f62becf523504f5",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\0165edd2e351ecd6_0165edd2e351ecd6_audio_probe.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\abc661cdcf572b90_build_audio_probe.cmd",
+        "bytes": 259,
+        "sha256": "abc661cdcf572b90db508e7573f3e557a09536ed8f44a65a0c182ba7e2205468",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\abc661cdcf572b90_abc661cdcf572b90_build_audio_probe.cmd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\6d1c084e642742bb_audio_probe.exe",
+        "bytes": 17408,
+        "sha256": "6d1c084e642742bb8cec9fb8e37a452888d690aea7be24ae1c64e68832f0c2b1",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\6d1c084e642742bb_6d1c084e642742bb_audio_probe.exe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\1a8cc8a8d3524ddd_audio_probe_stdout.jsonl",
+        "bytes": 673,
+        "sha256": "1a8cc8a8d3524ddd02bea5642e171e7bdf45c8b9ab9c7b26d2d33da9b91a7316",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\1a8cc8a8d3524ddd_1a8cc8a8d3524ddd_audio_probe_stdout.jsonl"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_audio_probe_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_e3b0c44298fc1c14_audio_probe_stderr.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\89dc47875baffa6a_build_stdout.txt",
+        "bytes": 314,
+        "sha256": "89dc47875baffa6a9d8191c567a73400871fbb8bed6e6b563f1ab6e9e226a8fa",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\89dc47875baffa6a_89dc47875baffa6a_build_stdout.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_build_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_e3b0c44298fc1c14_build_stderr.txt"
+      }
+    ],
+    "installed_DLL_recorded_hashes": [
+      "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+      "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890"
+    ],
+    "scope": "Retained10:18 endpoint and independent manifested32bit4.18.4 driver0/GetOutput0/release0 evidence. No repeat SDK call or DLL identity refresh in this packet. Historical genuine Init61/78/37 and failed Source581/539/595 remain separate unchanged evidence."
+  },
+  "finding": {
+    "current_registered_render_endpoints_API_count": 0,
+    "registry_records": 39,
+    "registry_low_state_counts": {
+      "active": 5,
+      "unplugged": 7,
+      "not_present": 27
+    },
+    "present_PnP_AudioEndpoint_nodes": 0,
+    "present_media_nodes": 14,
+    "running_matching_media_kernel_drivers": 10,
+    "enabled_kernel_render_interfaces": 12,
+    "normal_enable_or_default_target_identified": false,
+    "hardware_or_missing_driver_installation_established": false,
+    "explanation": "The immediate missing contract is a present MMDEVAPI render endpoint exposed by the current Windows audio stack. MMDevice all-state enumeration, absent software endpoint nodes, existing registry records and enabled Media/KS identities agree that the gap lies above registered kernel interfaces. This localizes a publication/enumeration gap; it does not establish its root cause or prove every physical playback route is connected/functioning.",
+    "existing_candidates": "HyperXGame/Chat and Realtek/Steam/Bluetooth Media identities and enabled render interfaces exist. Registry labels resembling them are retained as weak candidates where no software endpoint/parent identity exists. None supplies a current MMDevice object that can be enabled or selected as default.",
+    "concrete_mutation_proposal": null,
+    "proposal_reason": "No API-visible disabled endpoint and no present Media devnode with CM_PROB_DISABLED22 were observed. A service restart, device cycle, driver install or new hardware connection would be an unverified experiment; none is proposed as an established fix.",
+    "reviewable_next_boundary": "A genuine present/published render endpoint must exist before default selection or normal-game audio startup can be qualified. Root can separately choose further Windows endpoint-publication diagnostics for these exact Media/KS instance IDs; this receipt does not select or perform an environment action.",
+    "limits": [
+      "Observations span10:51:17..10:53:59Z in Console session1, not a simultaneous snapshot.",
+      "The all-state query is64bit; the retained FMOD driver enumeration is separately historical32bit and no new Init/gameplay evidence.",
+      "Registry high bits and serialized container blobs remain uninterpreted; no guessed registry-to-driver joins.",
+      "A reported present adapter/interface is not proof of audible playback, hardware cable/BT route readiness or full driver correctness.",
+      "No disabled/current endpoint action or exact root cause was established; absence of all possible externally supplied audio routes is not claimed."
+    ]
+  },
+  "capture_limit_event": {
+    "initial_inventory_attempt": "First per-property PnP loop exceeded60second wrapper limit; successful all-state MMDevice output was already retained. Detailed inventory was retried with one selected-key batch per audio device and completed.",
+    "cleanup": "Only the task-specific inventory helper command-line suffix was queried for an orphan after timeout; no matching helper remained and no process was stopped. No audio service/device was touched.",
+    "conclusions_from_incomplete_inventory": false
+  },
+  "credit": {
+    "current_readonly_registration_observation": true,
+    "offline_identity_and_hash_replay_pending": false,
+    "new_SDK_Init_or_game_startup": 0,
+    "Cplusplus_or_compile_tests": 0,
+    "Native_ABI_or_gameplay": 0,
+    "environment_action": 0,
+    "offline_identity_and_hash_replay_pass": true
+  },
+  "offline_replay": {
+    "command": "python local/cc12_audio_endpoint_registration_readiness/replay_receipt.py reports/cc12_audio_endpoint_registration_readiness.json",
+    "script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\replay_receipt.py",
+      "retained_path": "local/cc12_audio_endpoint_registration_readiness/frozen/8212df28b516_replay_receipt.py",
+      "bytes": 3644,
+      "sha256": "8212df28b516c3bb5030c6ca810ef6da5c428905df59108d902fcb3a44ed3580"
+    },
+    "script_text": "\"\"\"Pure offline retained registration/output/header/identity replay.\"\"\"\nimport hashlib,json,pathlib,re,sys\nfrom mapping import map_capture\nroot=pathlib.Path(__file__).resolve().parent.parent.parent\npath=pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else root/'reports/cc12_audio_endpoint_registration_readiness.json'\nreceipt=json.loads(path.read_text());count=0;unique=set()\ndef walk(value):\n    global count\n    if isinstance(value,dict):\n        retained=value.get('retained_path','').replace('\\\\','/')\n        if retained.startswith('local/cc12_audio_endpoint_registration_readiness/frozen/') and 'sha256' in value:\n            b=(root/retained).read_bytes();assert len(b)==value['bytes'] and hashlib.sha256(b).hexdigest()==value['sha256'],value\n            count+=1;unique.add(retained)\n        for v in value.values():walk(v)\n    elif isinstance(value,list):\n        for v in value:walk(v)\nwalk(receipt)\ncapture=json.loads((root/receipt['complete_capture_pin']['retained_path']).read_text())\nmapping=json.loads(json.dumps(map_capture(capture)))\nassert mapping==receipt['derived_identity_mapping']\napi=capture['all_state_MMDevice']['observed'];native=api['native_result']\nassert api==receipt['current_MMDevice_all_state'] and api['state_mask']==15\nassert native['AllStateRenderEnumHResult']=='00000000' and native['AllStateRenderGetCountHResult']=='00000000' and native['AllStateRenderCount']==0 and native['Endpoints']==[]\nassert all(not d['EndpointReturned'] and d['HResult']=='80070490' for d in native['Defaults'])\nheader=next(p for p in capture['authoritative_local_header_pins'] if p['path'].endswith('mmdeviceapi.h'))\ntext=(root/header['retained_path']).read_text()\nfor name,value in [('DEVICE_STATE_ACTIVE',1),('DEVICE_STATE_DISABLED',2),('DEVICE_STATE_NOTPRESENT',4),('DEVICE_STATE_UNPLUGGED',8),('DEVICE_STATEMASK_ALL',15)]:\n    match=re.search(r'#define\\s+'+name+r'\\s+(0x[0-9a-fA-F]+)',text);assert match and int(match.group(1),16)==value\nassert mapping['registry_record_count']==39 and mapping['registry_known_state_counts']=={'active':5,'unplugged':7,'not_present':27}\nassert mapping['present_audio_endpoint_PnP_count']==0 and mapping['audio_endpoint_PnP_count']==9\nassert all(d['Present'] and d['ProblemCode']==0 for d in mapping['present_media_mapping'])\nassert mapping['render_interface_states']=={'Disabled':75,'Enabled':12}\nassert mapping['audio_interface_states']=={'Disabled':229,'Enabled':24}\nassert sum(bool(p['matching_audio_endpoint_PnP_ids']) for p in mapping['registry_to_PnP_mapping'])==8\nassert all(d['State']=='Running' for d in receipt['narrow_inventory']['media_service_drivers'])\nassert not receipt['finding']['normal_enable_or_default_target_identified'] and receipt['finding']['concrete_mutation_proposal'] is None\nassert receipt['git']['prior_owned_receipts_unchanged']\nfor command in receipt['commands_and_raw_output_pins']:\n    raw=(root/command['raw_stdout_pin']['retained_path']).read_bytes()\n    assert command['exit_code']==0\n    if command['label'] in ['all_state_MMDevice','narrow_audio_inventory']:\n        observed=json.loads(raw.decode('utf-8-sig'))\n        assert observed==capture[command['label']]['observed']\nresult={'scope':'Pure offline frozen hash/header/raw-query/identity replay; no current OS/MMDevice/PnP/SDK/GPR/compiler/game calls','retained_pin_occurrences_verified':count,'unique_retained_files_verified':len(unique),'all_state_output_and_invalid_default_state_handling_verified':True,'registry39_and_exact_PnP_parent_interface_joins_replayed':True,'enabled_render_interfaces_replayed':12,'unsupported_action_not_proposed':True,'result':'pass'}\nprint(json.dumps(result,indent=2))\n",
+    "scope": "Pure offline frozen raw-output/header/hash/identity replay; no current environment, SDK, GPR, compiler or game calls.",
+    "exit_code": 0,
+    "stdout_text": "{\n  \"scope\": \"Pure offline frozen hash/header/raw-query/identity replay; no current OS/MMDevice/PnP/SDK/GPR/compiler/game calls\",\n  \"retained_pin_occurrences_verified\": 41,\n  \"unique_retained_files_verified\": 32,\n  \"all_state_output_and_invalid_default_state_handling_verified\": true,\n  \"registry39_and_exact_PnP_parent_interface_joins_replayed\": true,\n  \"enabled_render_interfaces_replayed\": 12,\n  \"unsupported_action_not_proposed\": true,\n  \"result\": \"pass\"\n}\n",
+    "stderr_text": "",
+    "result": {
+      "scope": "Pure offline frozen hash/header/raw-query/identity replay; no current OS/MMDevice/PnP/SDK/GPR/compiler/game calls",
+      "retained_pin_occurrences_verified": 41,
+      "unique_retained_files_verified": 32,
+      "all_state_output_and_invalid_default_state_handling_verified": true,
+      "registry39_and_exact_PnP_parent_interface_joins_replayed": true,
+      "enabled_render_interfaces_replayed": 12,
+      "unsupported_action_not_proposed": true,
+      "result": "pass"
+    }
+  }
+}
