@@ -131,3 +131,14 @@ pinned individually in the readiness JSON, with their frozen rollback copies.
 The complete implementation bundle is 46,283,299 bytes, SHA-256
 `d3da681aecafa202f5058f67a97c222b6801fffa278b59278e1d7101e9b59aaa`;
 retain it outside this worker worktree before removing the worktree.
+
+
+## Primary historical review
+
+Root reviewed the save/close/launch methods and retained23 artifact pins after
+the separate clean rollout. The original JAR pin replays against its closed
+backup. Two hashes describe pre-close live projectState/tool-template bytes;
+clean GUI exit changed those files, and the worker retained no pre-close byte
+copy. Root preserves the reported observations but cannot independently replay
+those two historical hashes. This readiness receipt is distinct from the Root
+execution/closed-backup and corrected runtime-validation receipts.

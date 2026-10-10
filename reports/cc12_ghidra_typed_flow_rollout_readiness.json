@@ -455,5 +455,43 @@
     "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_GHIDRA_TYPED_FLOW_ROLLOUT_READINESS.md",
     "bytes": 8362,
     "sha256": "cf9cfd02af1c40560d316d036ca5ba38abe1d8778325f149a575b49a0d125e29"
+  },
+  "primary_review": {
+    "worker_commit": "1587d4fb6c25f0950de45d5655a13e1a5e0e57df",
+    "replayed_and_retained_pins": 23,
+    "historical_preclose_live_pins": [
+      {
+        "reported": {
+          "path": "C:\\Users\\sqz269\\bsp.rep\\projectState",
+          "bytes": 1275,
+          "sha256": "dcbc1ac32abf19207a0dbab10fcee3df7561ddfd2e3a3b2d0f30359fe139209d"
+        },
+        "current_pin": {
+          "path": "C:\\Users\\sqz269\\bsp.rep\\projectState",
+          "sha256": "62a20865478fea95e6a4a0b6f3ee9f648f6f586a9cb90c17e4cf24573715451b",
+          "bytes": 20465
+        },
+        "qualification": "Worker verified pre-rollout live snapshot; bytes changed during legitimate clean GUI exit, and no pre-close byte copy was retained. Root cannot replay the historical hash."
+      },
+      {
+        "reported": {
+          "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\tools\\_code_browser.tcd",
+          "bytes": 86825,
+          "sha256": "dff5103cdb4ddbad066d2a3aef929706be73fbf5f3ffc9e8bb299dec35b48445"
+        },
+        "current_pin": {
+          "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\tools\\_code_browser.tcd",
+          "sha256": "d249a4bd22bb5cbe0f4ab50b259fed7117f98f640084cb90ce3e453826abfa23",
+          "bytes": 86793
+        },
+        "qualification": "Worker verified pre-rollout live snapshot; bytes changed during legitimate clean GUI exit, and no pre-close byte copy was retained. Root cannot replay the historical hash."
+      }
+    ],
+    "source_methods_independently_reviewed": true,
+    "receipt": {
+      "path": "local/cc12_typed_flow_rollout_readiness_primary/primary_review.json",
+      "bytes": 17444,
+      "sha256": "f944f15b3269107f033b1bbe8914b17b46eb7772ce89b59afc172450bddc08dd"
+    }
   }
 }
