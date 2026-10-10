@@ -36,6 +36,18 @@ struct GameplayEffectDefinitionContext {
     NativeStringStorage& strings;
     GameplayEffectComponentLifetime& components;
 };
+
+// Borrow the same actual publication cells used by the raw10h manager getter.
+// These are stable Source bindings, not another manager, cache or publication.
+struct NativeGameplayEffectManagerCells {
+    void* volatile& actual_manager_publication_01090aa0;
+    void* volatile& actual_effect_publication_00f87664;
+};
+struct NativeGameplayEffectDefinitionContext {
+    NativeGameplayEffectManagerCells& manager;
+    NativeStringStorage& strings;
+    GameplayEffectComponentLifetime& components;
+};
 // Inline allocation/constructor fragment of008700E0, native00870240..00870279.
 // Allocate24h and preserve untouched representation bytes14..1B. Constructor
 // writes base then derived vtable, refs1, pointer/count/capacity0 and string0.
@@ -87,4 +99,18 @@ void destroy_gameplay_effect_definition_00870d00(GameplayEffectDefinition&,
 // Calls full destructor; flags&1 frees owner. New C++ API, not a native vtable.
 GameplayEffectDefinition* scalar_delete_gameplay_effect_definition_00871440(
     GameplayEffectDefinition*, std::uint32_t flags, GameplayEffectDefinitionContext&);
+
+// Raw-manager Source overloads of the same actual24h owner cleanup. Get the
+// current raw manager, then read current ID and erase it through the genuine
+// raw tree providers, regardless of its mapped pointer. Keep the existing
+// state2/name/array/base cleanup and no-retry contract above. Both acquisition
+// and destruction must borrow the same actual manager cells and live genuine
+// string/component services. Never cast raw10h storage to the typed manager.
+// No current slot0/scalar dispatch or companion binding is installed here.
+// Native ABI/FH3/SEH and actual virtual/application bindings remain separate.
+void destroy_gameplay_effect_definition_00870d00(GameplayEffectDefinition&,
+    NativeGameplayEffectDefinitionContext&);
+GameplayEffectDefinition* scalar_delete_gameplay_effect_definition_00871440(
+    GameplayEffectDefinition*, std::uint32_t flags,
+    NativeGameplayEffectDefinitionContext&);
 } // namespace bsp
