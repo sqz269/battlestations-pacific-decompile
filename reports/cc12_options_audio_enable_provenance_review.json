@@ -1,0 +1,1551 @@
+{
+  "schema": "bsp.cc12.options_audio_enable_provenance_review.v1",
+  "packet": "cc12_options_audio_enable_provenance_review",
+  "receipt_utc": "2026-10-10T12:29:57.871898+00:00",
+  "status": "Both additional 005F52C0 calls copy global F889A4 into screen+FC. Page-2 rows directly store four volume fields and pass screen+D8 to audio application. No actual enable-byte zero provenance or startup ordering is established.",
+  "scope": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+    "accepted_base_commit": "3ffe9406dc2af2ff09d9b2975cbe5563f23d7563",
+    "leased_functions": [
+      "005F54F0",
+      "005F5BD0",
+      "005F42D0"
+    ],
+    "approved_leased_data_windows": [
+      {
+        "start": "005F4984",
+        "end_exclusive": "005F49A0",
+        "bytes": 28
+      },
+      {
+        "start": "005F49DC",
+        "end_exclusive": "005F49EC",
+        "bytes": 16
+      }
+    ],
+    "data_expansion_reason": "Primary approved each finite switch-table window before its lease/read to establish page and row targets.",
+    "owned_outputs": [
+      "docs/CC12_OPTIONS_AUDIO_ENABLE_PROVENANCE_REVIEW.md",
+      "reports/cc12_options_audio_enable_provenance_review.json"
+    ],
+    "large_body_limit": "Main-list and Enter receiver/copy heads only. AdjustFocusedValue shared dispatch, page-2 branch, row blocks and shared return only. Unrelated GUI bodies not reconstructed.",
+    "unleased_body_queries": false,
+    "Ghidra_mutation": false
+  },
+  "complete_evidence_freeze": {
+    "schema": "bsp.cc12.options_audio_enable_provenance.freeze.v1",
+    "utc": "2026-10-10T12:25:48.529686+00:00",
+    "git": {
+      "HEAD": "3ffe9406dc2af2ff09d9b2975cbe5563f23d7563",
+      "branch": "agent/cc12_options_sound_copy_abi",
+      "status": "",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi"
+    },
+    "sources": [
+      {
+        "source_path": "config/target.json",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/366e5a64ac945473_working_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/366e5a64ac945473_git_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/bsp.py",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/09de2b8916a4af98_working_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/09de2b8916a4af98_git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/ghidra_export.py",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/0367957cab3518c6_working_tools_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/0367957cab3518c6_git_tools_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/workspace.py",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/611a2f0613f21724_working_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/611a2f0613f21724_git_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/options_menu_screens.cpp",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/3090a9d2bde1e7ec_working_src_options_menu_screens.cpp",
+          "bytes": 13334,
+          "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/3090a9d2bde1e7ec_git_src_options_menu_screens.cpp",
+          "bytes": 13334,
+          "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+        },
+        "git_blob": "65354763489be4c850f1601694efa9a833261c44",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/options_menu_screens.hpp",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/c63a55b98ee3cdff_working_include_bsp_options_menu_screens.hpp",
+          "bytes": 24760,
+          "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/c63a55b98ee3cdff_git_include_bsp_options_menu_screens.hpp",
+          "bytes": 24760,
+          "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+        },
+        "git_blob": "dfbefd762bcf33070446997c94268ea6588c69c8",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/game_settings.cpp",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/fc9ab534f827975f_working_src_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/fc9ab534f827975f_git_src_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+        },
+        "git_blob": "7c4a3f3ea41cf80dccee3057279e915bd8943f55",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/game_settings.hpp",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/8b1d37ce0ccdcde0_working_include_bsp_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/8b1d37ce0ccdcde0_git_include_bsp_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+        },
+        "git_blob": "e63f7e85a951ee4df192f3354595fcbccff3132a",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/native_game_settings_owner.cpp",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/251c0a349760dd21_working_src_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/251c0a349760dd21_git_src_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+        },
+        "git_blob": "50c3a642be3204956ea8104b16e331005840d3c4",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/native_game_settings_owner.hpp",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/3c9e009c65606e35_working_include_bsp_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/3c9e009c65606e35_git_include_bsp_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        },
+        "git_blob": "554bc4169b4f8089ba57e2084b83a1ba7603cb6e",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/OPTIONS_MENU_SCREENS.md",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/7d64171ee8f185bd_working_docs_OPTIONS_MENU_SCREENS.md",
+          "bytes": 30227,
+          "sha256": "7d64171ee8f185bd71e31bdd37b4ae49f0a03432024d7e576b00899f81359f30"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/7d64171ee8f185bd_git_docs_OPTIONS_MENU_SCREENS.md",
+          "bytes": 30227,
+          "sha256": "7d64171ee8f185bd71e31bdd37b4ae49f0a03432024d7e576b00899f81359f30"
+        },
+        "git_blob": "ab7902222847d7b405961777c7d1b8ffcdcad585",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/97392fd265148698_working_docs_CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+          "bytes": 7581,
+          "sha256": "97392fd265148698987c78d9694fdedf47dee362306c1a2db8b9383becff2894"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/97392fd265148698_git_docs_CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+          "bytes": 7581,
+          "sha256": "97392fd265148698987c78d9694fdedf47dee362306c1a2db8b9383becff2894"
+        },
+        "git_blob": "76056f79456792e3de8b2c8372db67cac420d75b",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_options_sound_copy_abi_review.json",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/6a743c634482e377_working_reports_cc12_options_sound_copy_abi_review.json",
+          "bytes": 119734,
+          "sha256": "6a743c634482e37753f678d1524078f93f585b416a6f519e00ea41da23dd01b1"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/3be48277a8efbea9_git_reports_cc12_options_sound_copy_abi_review.json",
+          "bytes": 117808,
+          "sha256": "3be48277a8efbea96e0bb1ee7750d3d03ae3c3085a126338e320e5adfe0142d0"
+        },
+        "git_blob": "2eb8441b72b595008e021fbeea5bfec80dda1af9",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_OPTIONS_SOUND_COPY_ABI_PRIMARY_REVIEW.md",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/fb4da69a3208ecea_working_docs_CC12_OPTIONS_SOUND_COPY_ABI_PRIMARY_REVIEW.md",
+          "bytes": 1846,
+          "sha256": "fb4da69a3208eceae41931cc265c42d0b517993f7ee360c9bd0281307de11327"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/fb4da69a3208ecea_git_docs_CC12_OPTIONS_SOUND_COPY_ABI_PRIMARY_REVIEW.md",
+          "bytes": 1846,
+          "sha256": "fb4da69a3208eceae41931cc265c42d0b517993f7ee360c9bd0281307de11327"
+        },
+        "git_blob": "bde48c7d2046ddf0e58d4aed26f545c060a3175f",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_options_sound_copy_abi_primary_review.json",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/f6cc225e12ed4f27_working_reports_cc12_options_sound_copy_abi_primary_review.json",
+          "bytes": 119569,
+          "sha256": "f6cc225e12ed4f2717a523fb3bcbd1105bd649fc3e72201d10d6692d389fee88"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/f6cc225e12ed4f27_git_reports_cc12_options_sound_copy_abi_primary_review.json",
+          "bytes": 119569,
+          "sha256": "f6cc225e12ed4f2717a523fb3bcbd1105bd649fc3e72201d10d6692d389fee88"
+        },
+        "git_blob": "a7a28ad04dd67963e41f6d5214b8ef70510b3d2b",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/8f6d0b3187db4c8a_working_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+          "bytes": 4172,
+          "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/8f6d0b3187db4c8a_git_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+          "bytes": 4172,
+          "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+        },
+        "git_blob": "13de969cb137890330c05957a5a3bd925eb45200",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_native_sound_state_writer_review.json",
+        "working": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/b5b740315878c3b5_working_reports_cc12_native_sound_state_writer_review.json",
+          "bytes": 157428,
+          "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/b5b740315878c3b5_git_reports_cc12_native_sound_state_writer_review.json",
+          "bytes": 157428,
+          "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+        },
+        "git_blob": "16d2760e51120da6be5b4386485ee9124692b8b0",
+        "LF_equal": true
+      }
+    ],
+    "command_captures_and_specs": [
+      {
+        "file": "live_audio_dispatch.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/f39f28d62fb15e20_live_audio_dispatch.json",
+          "bytes": 233,
+          "sha256": "f39f28d62fb15e203baecf5ccc6967ea619c67054c15fad21f171269dcd0ecf8"
+        }
+      },
+      {
+        "file": "live_audio_dispatch_capture.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/bea4d6615ab860b8_live_audio_dispatch_capture.json",
+          "bytes": 2101,
+          "sha256": "bea4d6615ab860b8ff1795bae82335872c38a69cb0fe85a871e0918e39721a7d"
+        }
+      },
+      {
+        "file": "live_audio_windows.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/f3cd629a2ec0f88e_live_audio_windows.json",
+          "bytes": 533,
+          "sha256": "f3cd629a2ec0f88e2908d0219125953819a2657770d37ed005224a6bdff2010c"
+        }
+      },
+      {
+        "file": "live_audio_windows_capture.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/67354d8415027f08_live_audio_windows_capture.json",
+          "bytes": 6203,
+          "sha256": "67354d8415027f08e9aa0b65f2bde7c30d39a82aa0e7c771dc7a629bd7aa0c6e"
+        }
+      },
+      {
+        "file": "live_bytes.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/79a62838639922a2_live_bytes.json",
+          "bytes": 815,
+          "sha256": "79a62838639922a25cdf67128eef693604ea157841fb72a8770ad714f81ec3bc"
+        }
+      },
+      {
+        "file": "live_bytes_capture.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/df751597e67b510b_live_bytes_capture.json",
+          "bytes": 9094,
+          "sha256": "df751597e67b510b4287b014285c70df5e5bc96bafa790fe0d9d9841c45763b7"
+        }
+      },
+      {
+        "file": "live_copy_windows.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/9bcc0a55c5a38c5e_live_copy_windows.json",
+          "bytes": 351,
+          "sha256": "9bcc0a55c5a38c5e8c29d3efc36fabe23ab3664f6429c08ba4a2934b88b5db07"
+        }
+      },
+      {
+        "file": "live_copy_windows_capture.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/b356b096102dafd7_live_copy_windows_capture.json",
+          "bytes": 8142,
+          "sha256": "b356b096102dafd7d58fefb77a192b66af68ec4044418df75d24db32f54af173"
+        }
+      },
+      {
+        "file": "live_initial.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/5182cabe85690478_live_initial.json",
+          "bytes": 269,
+          "sha256": "5182cabe8569047802b57db661be9607ad6ee1160e3193d2627a91a596faea7a"
+        }
+      },
+      {
+        "file": "live_initial_capture.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/9831776f7357959a_live_initial_capture.json",
+          "bytes": 8236,
+          "sha256": "9831776f7357959ab9b6be3bb0301f8dfec9da4198c6c18837415434717dfeab"
+        }
+      },
+      {
+        "file": "saved_audio_final_instruction.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/04d14e58d56c7441_saved_audio_final_instruction.json",
+          "bytes": 129,
+          "sha256": "04d14e58d56c74417198a94b7da61967ad0e5d35c578bdd503269fe96a597a44"
+        }
+      },
+      {
+        "file": "saved_audio_final_instruction_capture.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/41a59b8de8108b85_saved_audio_final_instruction_capture.json",
+          "bytes": 1623,
+          "sha256": "41a59b8de8108b856a3a19f3e9be0dca59da95ab014b19e9601e10f7e2ccae1e"
+        }
+      },
+      {
+        "file": "saved_windows.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/ecdc8c34bf12c22a_saved_windows.json",
+          "bytes": 721,
+          "sha256": "ecdc8c34bf12c22ab009b436709eb39fcef80557b3fb61daee81cdf022d46a2a"
+        }
+      },
+      {
+        "file": "saved_windows_capture.json",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/426d4e1307ba6e01_saved_windows_capture.json",
+          "bytes": 14479,
+          "sha256": "426d4e1307ba6e0133154ce30e4eb19d9df434866577a9760d5e83123659d14f"
+        }
+      }
+    ],
+    "scripts": [
+      {
+        "file": "capture.py",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/a3a7e2f3944d42cb_capture.py",
+          "bytes": 1303,
+          "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+        }
+      },
+      {
+        "file": "freeze.py",
+        "pin": {
+          "path": "local/cc12_options_audio_enable_provenance_review/frozen/2180f3198e8fcf78_freeze.py",
+          "bytes": 4469,
+          "sha256": "2180f3198e8fcf782c2639e0ffc4afa93fa26568c3d1229eeba70d03b0a97b31"
+        }
+      }
+    ],
+    "original_PE": {
+      "capture_provenance_original_absolute_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "retained_image_pin": {
+        "path": "local/cc12_options_audio_enable_provenance_review/frozen/b682a82c52f81f95_original_battlestationspacific.exe.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "machine": 332,
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "sections": [
+        {
+          "name": ".text",
+          "virtual_size": 9306422,
+          "rva": 4096,
+          "raw_size": 9310208,
+          "raw_offset": 4096
+        },
+        {
+          "name": ".rdata",
+          "virtual_size": 1202980,
+          "rva": 9314304,
+          "raw_size": 1204224,
+          "raw_offset": 9314304
+        },
+        {
+          "name": ".data",
+          "virtual_size": 2719452,
+          "rva": 10518528,
+          "raw_size": 65536,
+          "raw_offset": 10518528
+        },
+        {
+          "name": ".rsrc",
+          "virtual_size": 1630400,
+          "rva": 13238272,
+          "raw_size": 1634304,
+          "raw_offset": 10584064
+        }
+      ],
+      "windows": [
+        {
+          "label": "main_list_copy",
+          "kind": "code",
+          "start_va": "005F54F0",
+          "length": 134,
+          "file_offset": 2053360,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_audio_enable_provenance_review/frozen/ebca996d56119f40_main_list_copy.bin",
+            "bytes": 134,
+            "sha256": "ebca996d56119f405356516da8ec009806e416c1fd6685125e83a8f20b7589e0"
+          },
+          "hex": "558bec83e4f86aff68f060c70064a100000000506489250000000083ec245355568bf1c6865202000000a1a888e1008a881f060000884c240c8b54240c8b0d0c93e1005752e8e640f5ff807e780074266a00c64678008b0db898e1006a0ee80d6fedff8b4c243464890d000000005f5e5d5b8be55dc3688089f8008d8ed8000000e84afdffff"
+        },
+        {
+          "label": "enter_copy",
+          "kind": "code",
+          "start_va": "005F5BD0",
+          "length": 127,
+          "file_offset": 2055120,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_audio_enable_provenance_review/frozen/ee77c3db50d8ca9d_enter_copy.bin",
+            "bytes": 127,
+            "sha256": "ee77c3db50d8ca9d32b65a9962abb4bd14cf9aed3871d822e19c79f4a9992624"
+          },
+          "hex": "64a1000000006aff687061c700506489250000000083ec105356578bf133db83cfff389e5c02000075456884e8ce008d4c2418e8688ce2ff8d442414505333d28d4f07895c242ce84431f2ff8b4c24183bcb897c242474178b4424146a0183c0015051e88840e2ff8bc8e8d1b85d00688089f8008d8ed8000000e871f6ffff"
+        },
+        {
+          "label": "adjust_dispatch",
+          "kind": "code",
+          "start_va": "005F42D0",
+          "length": 59,
+          "file_offset": 2048720,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_audio_enable_provenance_review/frozen/774352e6a1b19f11_adjust_dispatch.bin",
+            "bytes": 59,
+            "sha256": "774352e6a1b19f11ff11c27e7c1bc56def648981ede6e319fb02f7ef27528049"
+          },
+          "hex": "83ec0855568bf18b8e88000000e83e864a008be885ed0f8cb6000000c6865002000001a15096e10083c0ff83f8060f879e000000ff248584495f00"
+        },
+        {
+          "label": "no_selection_or_out_of_range_return",
+          "kind": "code",
+          "start_va": "005F43A2",
+          "length": 8,
+          "file_offset": 2048930,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_audio_enable_provenance_review/frozen/752c31838dadee0e_no_selection_or_out_of_range_return.bin",
+            "bytes": 8,
+            "sha256": "752c31838dadee0e2834ea3433636d58a925fe0a88024170a51dd0eba3425cd0"
+          },
+          "hex": "5e5d83c408c20400"
+        },
+        {
+          "label": "audio",
+          "kind": "code",
+          "start_va": "005F459C",
+          "length": 396,
+          "file_offset": 2049436,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_audio_enable_provenance_review/frozen/81af8da73afc403a_audio.bin",
+            "bytes": 396,
+            "sha256": "81af8da73afc403a13d5715c032ec812adbf4fa527fecc8a17aef90b47d47192"
+          },
+          "hex": "83fd030f87fdfdffffff24addc495f00db442414f30f10054ca2d7008d4c240cf30f1144240cdc0da0a3d7000f57c0518d54240cd886f80000008d4c2418f30f1144240cd95c2418e8c70fe2ff8d8ed8000000d99ef8000000e8360e2e005e5d83c408c20400db442414f30f10054ca2d7008d54240cf30f1144240cdc0da0a3d7000f57c0528d54240cd886000100008d4c2418f30f1144240cd95c2418e8710fe2ff8d8ed8000000d99e00010000e8e00d2e005e5d83c408c20400db442414f30f10054ca2d7008d44240cf30f1144240cdc0da0a3d7000f57c0508d54240cd886080100008d4c2418f30f1144240cd95c2418e81b0fe2ff8d8ed8000000d99e08010000e88a0d2e008b8ea40000008b115e5d83c408c7442404010000008b4234ffe0db442414f30f10054ca2d7008d4c240cf30f1144240cdc0da0a3d7000f57c0518d54240cd886040100008d4c2418f30f1144240cd95c2418e8b30ee2ff8d8ed8000000d99e04010000e8220d2e008b8ea00000008b115e5d83c408c7442404010000008b4234ffe0"
+        },
+        {
+          "label": "page_switch_table",
+          "kind": "data",
+          "start_va": "005F4984",
+          "length": 28,
+          "file_offset": 2050436,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_audio_enable_provenance_review/frozen/a41c9f95f31f9f3e_page_switch_table.bin",
+            "bytes": 28,
+            "sha256": "a41c9f95f31f9f3e04314332acb671f64d276deabd275a9cef85f6dca115964f"
+          },
+          "hex": "c9435f009c455f0028475f00fc445f00a2435f00a2435f000b435f00"
+        },
+        {
+          "label": "audio_row_table",
+          "kind": "data",
+          "start_va": "005F49DC",
+          "length": 16,
+          "file_offset": 2050524,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_audio_enable_provenance_review/frozen/5db081337451aab7_audio_row_table.bin",
+            "bytes": 16,
+            "sha256": "5db081337451aab7d7a8781ffb7d8ee950a219925555704131a5e8bd391a4894"
+          },
+          "hex": "ac455f0002465f0058465f00c0465f00"
+        }
+      ],
+      "retention": "Complete readonly content-addressed PE retained for portable offline replay; original absolute path is provenance only."
+    }
+  },
+  "freeze_capture_pin": {
+    "path": "local/cc12_options_audio_enable_provenance_review/freeze_capture.json",
+    "bytes": 23960,
+    "sha256": "48fda82ee5d5089c7cbc88c7b6b61b1ec247c80b054b4912726fcf2587082b79"
+  },
+  "command_capture_records": {
+    "live_audio_dispatch_capture.json": [
+      {
+        "label": "page_switch_table_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F4984",
+          "--length",
+          "28"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:22:34.583469+00:00",
+        "finish_utc": "2026-10-10T12:22:34.869293+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f4984  c9 43 5f 00 9c 45 5f 00 28 47 5f 00 fc 44 5f 00  .C_..E_.(G_..D_.\r\n005f4994  a2 43 5f 00 a2 43 5f 00 0b 43 5f 00  .C_..C_..C_.\r\n",
+        "stderr": "",
+        "stdout_sha256": "e56e318c6cccbbde37d425cc3120ddec2de93c51029c6fbaa5b54ccbff5c8856",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "adjust_dispatch_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F42D0",
+          "--lines",
+          "16"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:22:34.869383+00:00",
+        "finish_utc": "2026-10-10T12:22:35.183230+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f42d0: SUB ESP,0x8 \r\n005f42d3: PUSH EBP \r\n005f42d4: PUSH ESI \r\n005f42d5: MOV ESI,ECX \r\n005f42d7: MOV ECX,dword ptr [ESI + 0x88] \r\n005f42dd: CALL 0x00a9c920 \r\n005f42e2: MOV EBP,EAX \r\n005f42e4: TEST EBP,EBP \r\n005f42e6: JL 0x005f43a2 \r\n005f42ec: MOV byte ptr [ESI + 0x250],0x1 \r\n005f42f3: MOV EAX,[0x00e19650] \r\n005f42f8: ADD EAX,-0x1 \r\n005f42fb: CMP EAX,0x6 \r\n005f42fe: JA 0x005f43a2 \r\n005f4304: JMP dword ptr [EAX*0x4 + 0x5f4984] \r\n005f430b: PUSH EBX \r\n... 444 more lines of 460 (use --start 16 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "ba86f19cf1f35f6123b9df8d4a56d359fabdaa29e0742d0ca33e5a4278c6bc1c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "live_audio_windows_capture.json": [
+      {
+        "label": "audio_row_table_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F49DC",
+          "--length",
+          "16"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:39.822332+00:00",
+        "finish_utc": "2026-10-10T12:23:40.151168+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f49dc  ac 45 5f 00 02 46 5f 00 58 46 5f 00 c0 46 5f 00  .E_..F_.XF_..F_.\r\n",
+        "stderr": "",
+        "stdout_sha256": "45169237ac69f1dc35ccd49f1141a8fb3387c7cab57c0708b69317fd6ef256f4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "audio_head_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F42D0",
+          "--start",
+          "005F459C",
+          "--lines",
+          "50"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:40.151263+00:00",
+        "finish_utc": "2026-10-10T12:23:40.464647+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f459c: CMP EBP,0x3 \r\n005f459f: JA 0x005f43a2 \r\n005f45a5: JMP dword ptr [EBP*0x4 + 0x5f49dc] \r\n005f45ac: FILD dword ptr [ESP + 0x14] \r\n005f45b0: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f45b8: LEA ECX,[ESP + 0xc] \r\n005f45bc: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f45c2: FMUL double ptr [0x00d7a3a0] \r\n005f45c8: XORPS XMM0,XMM0 \r\n005f45cb: PUSH ECX \r\n005f45cc: LEA EDX,[ESP + 0xc] \r\n005f45d0: FADD float ptr [ESI + 0xf8] \r\n005f45d6: LEA ECX,[ESP + 0x18] \r\n005f45da: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f45e0: FSTP float ptr [ESP + 0x18] \r\n005f45e4: CALL 0x004155b0 \r\n005f45e9: LEA ECX,[ESI + 0xd8] \r\n005f45ef: FSTP float ptr [ESI + 0xf8] \r\n005f45f5: CALL 0x008d5430 \r\n005f45fa: POP ESI \r\n005f45fb: POP EBP \r\n005f45fc: ADD ESP,0x8 \r\n005f45ff: RET 0x4 \r\n005f4602: FILD dword ptr [ESP + 0x14] \r\n005f4606: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f460e: LEA EDX,[ESP + 0xc] \r\n005f4612: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f4618: FMUL double ptr [0x00d7a3a0] \r\n005f461e: XORPS XMM0,XMM0 \r\n005f4621: PUSH EDX \r\n005f4622: LEA EDX,[ESP + 0xc] \r\n005f4626: FADD float ptr [ESI + 0x100] \r\n005f462c: LEA ECX,[ESP + 0x18] \r\n005f4630: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f4636: FSTP float ptr [ESP + 0x18] \r\n005f463a: CALL 0x004155b0 \r\n005f463f: LEA ECX,[ESI + 0xd8] \r\n005f4645: FSTP float ptr [ESI + 0x100] \r\n005f464b: CALL 0x008d5430 \r\n005f4650: POP ESI \r\n005f4651: POP EBP \r\n005f4652: ADD ESP,0x8 \r\n005f4655: RET 0x4 \r\n005f4658: FILD dword ptr [ESP + 0x14] \r\n005f465c: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f4664: LEA EAX,[ESP + 0xc] \r\n005f4668: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f466e: FMUL double ptr [0x00d7a3a0] \r\n005f4674: XORPS XMM0,XMM0 \r\n005f4677: PUSH EAX \r\n... 197 more lines of 247 (use --start 50 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "930ec28799c284b089041696fe94203d0e652ce5046a59d1f4630dfcef2d1924",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "audio_tail_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F42D0",
+          "--start",
+          "005F46B0",
+          "--lines",
+          "32"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:40.464735+00:00",
+        "finish_utc": "2026-10-10T12:23:40.760169+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f46b0: ADD ESP,0x8 \r\n005f46b3: MOV dword ptr [ESP + 0x4],0x1 \r\n005f46bb: MOV EAX,dword ptr [EDX + 0x34] \r\n005f46be: JMP EAX \r\n005f46c0: FILD dword ptr [ESP + 0x14] \r\n005f46c4: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f46cc: LEA ECX,[ESP + 0xc] \r\n005f46d0: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f46d6: FMUL double ptr [0x00d7a3a0] \r\n005f46dc: XORPS XMM0,XMM0 \r\n005f46df: PUSH ECX \r\n005f46e0: LEA EDX,[ESP + 0xc] \r\n005f46e4: FADD float ptr [ESI + 0x104] \r\n005f46ea: LEA ECX,[ESP + 0x18] \r\n005f46ee: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f46f4: FSTP float ptr [ESP + 0x18] \r\n005f46f8: CALL 0x004155b0 \r\n005f46fd: LEA ECX,[ESI + 0xd8] \r\n005f4703: FSTP float ptr [ESI + 0x104] \r\n005f4709: CALL 0x008d5430 \r\n005f470e: MOV ECX,dword ptr [ESI + 0xa0] \r\n005f4714: MOV EDX,dword ptr [ECX] \r\n005f4716: POP ESI \r\n005f4717: POP EBP \r\n005f4718: ADD ESP,0x8 \r\n005f471b: MOV dword ptr [ESP + 0x4],0x1 \r\n005f4723: MOV EAX,dword ptr [EDX + 0x34] \r\n005f4726: JMP EAX \r\n005f4728: CMP EBP,0xc \r\n005f472b: JA 0x005f43a2 \r\n005f4731: JMP dword ptr [EBP*0x4 + 0x5f49ec] \r\n005f4738: MOV ECX,dword ptr [0x00f88960] \r\n... 152 more lines of 184 (use --start 32 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "b9b4c8ebab5f59b19b2d375facc3130a9576f2697127d3a1862ca0e37b661810",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "no_selection_or_out_of_range_return_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F42D0",
+          "--start",
+          "005F43A2",
+          "--lines",
+          "4"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:40.760242+00:00",
+        "finish_utc": "2026-10-10T12:23:41.172804+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f43a2: POP ESI \r\n005f43a3: POP EBP \r\n005f43a4: ADD ESP,0x8 \r\n005f43a7: RET 0x4 \r\n... 391 more lines of 395 (use --start 4 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "4ce1f261f83f7791eb4895e027829e4b5acba988bdf77cade290b42d8f7168eb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "live_bytes_capture.json": [
+      {
+        "label": "audio_middle_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F42D0",
+          "--start",
+          "005F4678",
+          "--lines",
+          "13"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:24:10.394241+00:00",
+        "finish_utc": "2026-10-10T12:24:10.728151+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f4678: LEA EDX,[ESP + 0xc] \r\n005f467c: FADD float ptr [ESI + 0x108] \r\n005f4682: LEA ECX,[ESP + 0x18] \r\n005f4686: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f468c: FSTP float ptr [ESP + 0x18] \r\n005f4690: CALL 0x004155b0 \r\n005f4695: LEA ECX,[ESI + 0xd8] \r\n005f469b: FSTP float ptr [ESI + 0x108] \r\n005f46a1: CALL 0x008d5430 \r\n005f46a6: MOV ECX,dword ptr [ESI + 0xa4] \r\n005f46ac: MOV EDX,dword ptr [ECX] \r\n005f46ae: POP ESI \r\n005f46af: POP EBP \r\n... 184 more lines of 197 (use --start 13 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "89a25307ad05131a67ab5386d247c0430fd6fdbd50a631fa4378ca9b74795e80",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "main_list_copy_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F54F0",
+          "--length",
+          "134"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:24:10.728241+00:00",
+        "finish_utc": "2026-10-10T12:24:11.066468+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f54f0  55 8b ec 83 e4 f8 6a ff 68 f0 60 c7 00 64 a1 00  U.....j.h.`..d..\r\n005f5500  00 00 00 50 64 89 25 00 00 00 00 83 ec 24 53 55  ...Pd.%......$SU\r\n005f5510  56 8b f1 c6 86 52 02 00 00 00 a1 a8 88 e1 00 8a  V....R..........\r\n005f5520  88 1f 06 00 00 88 4c 24 0c 8b 54 24 0c 8b 0d 0c  ......L$..T$....\r\n005f5530  93 e1 00 57 52 e8 e6 40 f5 ff 80 7e 78 00 74 26  ...WR..@...~x.t&\r\n005f5540  6a 00 c6 46 78 00 8b 0d b8 98 e1 00 6a 0e e8 0d  j..Fx.......j...\r\n005f5550  6f ed ff 8b 4c 24 34 64 89 0d 00 00 00 00 5f 5e  o...L$4d......_^\r\n005f5560  5d 5b 8b e5 5d c3 68 80 89 f8 00 8d 8e d8 00 00  ][..].h.........\r\n005f5570  00 e8 4a fd ff ff  ..J...\r\n",
+        "stderr": "",
+        "stdout_sha256": "8909de21799d39757e731bdfe56fe8fbfd5f377a8fa20eab2bd0818546436fa7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "enter_copy_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F5BD0",
+          "--length",
+          "127"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:24:11.066539+00:00",
+        "finish_utc": "2026-10-10T12:24:11.360931+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f5bd0  64 a1 00 00 00 00 6a ff 68 70 61 c7 00 50 64 89  d.....j.hpa..Pd.\r\n005f5be0  25 00 00 00 00 83 ec 10 53 56 57 8b f1 33 db 83  %.......SVW..3..\r\n005f5bf0  cf ff 38 9e 5c 02 00 00 75 45 68 84 e8 ce 00 8d  ..8.\\...uEh.....\r\n005f5c00  4c 24 18 e8 68 8c e2 ff 8d 44 24 14 50 53 33 d2  L$..h....D$.PS3.\r\n005f5c10  8d 4f 07 89 5c 24 2c e8 44 31 f2 ff 8b 4c 24 18  .O..\\$,.D1...L$.\r\n005f5c20  3b cb 89 7c 24 24 74 17 8b 44 24 14 6a 01 83 c0  ;..|$$t..D$.j...\r\n005f5c30  01 50 51 e8 88 40 e2 ff 8b c8 e8 d1 b8 5d 00 68  .PQ..@.......].h\r\n005f5c40  80 89 f8 00 8d 8e d8 00 00 00 e8 71 f6 ff ff  ...........q...\r\n",
+        "stderr": "",
+        "stdout_sha256": "7bcd18ccb9db52daa1c1e6f88097194e6eb4912035aabd85e68dd35eccd0795b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "adjust_dispatch_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F42D0",
+          "--length",
+          "59"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:24:11.361003+00:00",
+        "finish_utc": "2026-10-10T12:24:11.770045+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f42d0  83 ec 08 55 56 8b f1 8b 8e 88 00 00 00 e8 3e 86  ...UV.........>.\r\n005f42e0  4a 00 8b e8 85 ed 0f 8c b6 00 00 00 c6 86 50 02  J.............P.\r\n005f42f0  00 00 01 a1 50 96 e1 00 83 c0 ff 83 f8 06 0f 87  ....P...........\r\n005f4300  9e 00 00 00 ff 24 85 84 49 5f 00  .....$..I_.\r\n",
+        "stderr": "",
+        "stdout_sha256": "d5149a3120bd9d5acf89dca674147aa4ba8abbac842d1a89dd654970016fead7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "no_selection_or_out_of_range_return_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F43A2",
+          "--length",
+          "8"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:24:11.770121+00:00",
+        "finish_utc": "2026-10-10T12:24:12.094297+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f43a2  5e 5d 83 c4 08 c2 04 00  ^]......\r\n",
+        "stderr": "",
+        "stdout_sha256": "73746cb7e742bf07407c7a2da15f8a57aa320254c29be5ac367238af7520d98e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "audio_bytes_0",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F459C",
+          "--length",
+          "256"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:24:12.094375+00:00",
+        "finish_utc": "2026-10-10T12:24:12.379403+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f459c  83 fd 03 0f 87 fd fd ff ff ff 24 ad dc 49 5f 00  ..........$..I_.\r\n005f45ac  db 44 24 14 f3 0f 10 05 4c a2 d7 00 8d 4c 24 0c  .D$.....L....L$.\r\n005f45bc  f3 0f 11 44 24 0c dc 0d a0 a3 d7 00 0f 57 c0 51  ...D$........W.Q\r\n005f45cc  8d 54 24 0c d8 86 f8 00 00 00 8d 4c 24 18 f3 0f  .T$........L$...\r\n005f45dc  11 44 24 0c d9 5c 24 18 e8 c7 0f e2 ff 8d 8e d8  .D$..\\$.........\r\n005f45ec  00 00 00 d9 9e f8 00 00 00 e8 36 0e 2e 00 5e 5d  ..........6...^]\r\n005f45fc  83 c4 08 c2 04 00 db 44 24 14 f3 0f 10 05 4c a2  .......D$.....L.\r\n005f460c  d7 00 8d 54 24 0c f3 0f 11 44 24 0c dc 0d a0 a3  ...T$....D$.....\r\n005f461c  d7 00 0f 57 c0 52 8d 54 24 0c d8 86 00 01 00 00  ...W.R.T$.......\r\n005f462c  8d 4c 24 18 f3 0f 11 44 24 0c d9 5c 24 18 e8 71  .L$....D$..\\$..q\r\n005f463c  0f e2 ff 8d 8e d8 00 00 00 d9 9e 00 01 00 00 e8  ................\r\n005f464c  e0 0d 2e 00 5e 5d 83 c4 08 c2 04 00 db 44 24 14  ....^].......D$.\r\n005f465c  f3 0f 10 05 4c a2 d7 00 8d 44 24 0c f3 0f 11 44  ....L....D$....D\r\n005f466c  24 0c dc 0d a0 a3 d7 00 0f 57 c0 50 8d 54 24 0c  $........W.P.T$.\r\n005f467c  d8 86 08 01 00 00 8d 4c 24 18 f3 0f 11 44 24 0c  .......L$....D$.\r\n005f468c  d9 5c 24 18 e8 1b 0f e2 ff 8d 8e d8 00 00 00 d9  .\\$.............\r\n",
+        "stderr": "",
+        "stdout_sha256": "d6f6c101d7aa53787ae8b054262e5ee67825fa1aba142e1385b64bef5c6d1014",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "audio_bytes_1",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F469C",
+          "--length",
+          "140"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:24:12.379479+00:00",
+        "finish_utc": "2026-10-10T12:24:12.697805+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f469c  9e 08 01 00 00 e8 8a 0d 2e 00 8b 8e a4 00 00 00  ................\r\n005f46ac  8b 11 5e 5d 83 c4 08 c7 44 24 04 01 00 00 00 8b  ..^]....D$......\r\n005f46bc  42 34 ff e0 db 44 24 14 f3 0f 10 05 4c a2 d7 00  B4...D$.....L...\r\n005f46cc  8d 4c 24 0c f3 0f 11 44 24 0c dc 0d a0 a3 d7 00  .L$....D$.......\r\n005f46dc  0f 57 c0 51 8d 54 24 0c d8 86 04 01 00 00 8d 4c  .W.Q.T$........L\r\n005f46ec  24 18 f3 0f 11 44 24 0c d9 5c 24 18 e8 b3 0e e2  $....D$..\\$.....\r\n005f46fc  ff 8d 8e d8 00 00 00 d9 9e 04 01 00 00 e8 22 0d  ..............\".\r\n005f470c  2e 00 8b 8e a0 00 00 00 8b 11 5e 5d 83 c4 08 c7  ..........^]....\r\n005f471c  44 24 04 01 00 00 00 8b 42 34 ff e0  D$......B4..\r\n",
+        "stderr": "",
+        "stdout_sha256": "d7799d5a2665f7af37744d9a77b9a8a0001e4f68e2936ecb71b60422b31c8d8e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "live_copy_windows_capture.json": [
+      {
+        "label": "enter_copy_context_pseudocode",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "decompile",
+          "005F5BD0",
+          "--lines",
+          "60"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:21:36.530218+00:00",
+        "finish_utc": "2026-10-10T12:21:37.102682+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "\r\n/* WARNING: Removing unreachable block (ram,0x005f5d85) */\r\n/* WARNING: Removing unreachable block (ram,0x005f5dc7) */\r\n/* [BSP reconstruction 005f5bd0]\r\n   Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see\r\n   docs/OPTIONS_MENU_SCREENS.md. __thiscall(this), RET, matching base default 004F75A0. Slot +18h of\r\n   vtable 00CF3974. No Ghidra function: the body runs 005F5BD0..005F5E54 in the disk image and ends\r\n   in a plain ret. Body not read. */\r\n\r\nvoid __fastcall BSP_OptionsScreen_Enter(int param_1)\r\n\r\n{\r\n  int iVar1;\r\n  int *piVar2;\r\n  int iVar3;\r\n  undefined4 uVar4;\r\n  void *pvStack_18;\r\n  int local_14;\r\n  int local_10;\r\n  void *pvStack_c;\r\n  undefined1 *puStack_8;\r\n  undefined4 local_4;\r\n  \r\n  local_4 = 0xffffffff;\r\n  puStack_8 = &LAB_00c76170;\r\n  pvStack_c = ExceptionList;\r\n  ExceptionList = &pvStack_c;\r\n  if (*(char *)(param_1 + 0x25c) == '\\0') {\r\n    ExceptionList = &pvStack_c;\r\n    BSP_NativeString_Assign(&local_14,\"FE.opt_title_main\");\r\n    local_4 = 0;\r\n    FUN_00518d60(0,&local_14);\r\n    local_4 = 0xffffffff;\r\n    if (local_10 != 0) {\r\n      uVar4 = 1;\r\n      iVar1 = local_14 + 1;\r\n      iVar3 = local_10;\r\n      BSP_SizedStoragePool_GetSingleton(local_10,iVar1,1);\r\n      BSP_SizedStoragePool_ReturnBlock(iVar3,iVar1,uVar4);\r\n    }\r\n  }\r\n  FUN_005f52c0(&DAT_00f88980);\r\n  if (*(char *)(DAT_00e188a8 + 0x61f) == '\\0') {\r\n    BSP_NativeString_Assign(&local_14,\"Main_Listbox\");\r\n    local_4 = 1;\r\n    uVar4 = BSP_GuiWidget_FindChildByName(&local_14,1);\r\n    *(undefined4 *)(param_1 + 0x84) = uVar4;\r\n    local_4 = 0xffffffff;\r\n    if (local_10 != 0) {\r\n      uVar4 = 1;\r\n      iVar3 = local_14 + 1;\r\n      BSP_SizedStoragePool_GetSingleton(local_10,iVar3,1);\r\n      BSP_SizedStoragePool_ReturnBlock(local_10,iVar3,uVar4);\r\n    }\r\n    BSP_NativeString_Assign(&local_14,\"Ingame_Main_Listbox\");\r\n    local_4 = 2;\r\n  }\r\n  else {\r\n    BSP_NativeString_Assign(&local_14,\"Ingame_Main_Listbox\");\r\n    local_4 = 3;\r\n... 44 more lines of 104 (use --start 60 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "a756120039b7420146e1fb0403c93939272d3caf58d9bd27ee45f85eef140f8e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "main_list_copy_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F54F0",
+          "--lines",
+          "55"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:21:37.102776+00:00",
+        "finish_utc": "2026-10-10T12:21:37.403554+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f54f0: PUSH EBP \r\n005f54f1: MOV EBP,ESP \r\n005f54f3: AND ESP,0xfffffff8 \r\n005f54f6: PUSH -0x1 \r\n005f54f8: PUSH 0xc760f0 \r\n005f54fd: MOV EAX,FS:[0x0] \r\n005f5503: PUSH EAX \r\n005f5504: MOV dword ptr FS:[0x0],ESP \r\n005f550b: SUB ESP,0x24 \r\n005f550e: PUSH EBX \r\n005f550f: PUSH EBP \r\n005f5510: PUSH ESI \r\n005f5511: MOV ESI,ECX \r\n005f5513: MOV byte ptr [ESI + 0x252],0x0 \r\n005f551a: MOV EAX,[0x00e188a8] \r\n005f551f: MOV CL,byte ptr [EAX + 0x61f] \r\n005f5525: MOV byte ptr [ESP + 0xc],CL \r\n005f5529: MOV EDX,dword ptr [ESP + 0xc] \r\n005f552d: MOV ECX,dword ptr [0x00e1930c] \r\n005f5533: PUSH EDI \r\n005f5534: PUSH EDX \r\n005f5535: CALL 0x00549620 \r\n005f553a: CMP byte ptr [ESI + 0x78],0x0 \r\n005f553e: JZ 0x005f5566 \r\n005f5540: PUSH 0x0 \r\n005f5542: MOV byte ptr [ESI + 0x78],0x0 \r\n005f5546: MOV ECX,dword ptr [0x00e198b8] \r\n005f554c: PUSH 0xe \r\n005f554e: CALL 0x004cc460 \r\n005f5553: MOV ECX,dword ptr [ESP + 0x34] \r\n005f5557: MOV dword ptr FS:[0x0],ECX \r\n005f555e: POP EDI \r\n005f555f: POP ESI \r\n005f5560: POP EBP \r\n005f5561: POP EBX \r\n005f5562: MOV ESP,EBP \r\n005f5564: POP EBP \r\n005f5565: RET \r\n005f5566: PUSH 0xf88980 \r\n005f556b: LEA ECX,[ESI + 0xd8] \r\n005f5571: CALL 0x005f52c0 \r\n005f5576: LEA EAX,[ESI + 0x118] \r\n005f557c: PUSH EAX \r\n005f557d: LEA ECX,[ESI + 0x11b] \r\n005f5583: PUSH ECX \r\n005f5584: MOV ECX,dword ptr [0x00e198b8] \r\n005f558a: LEA EDX,[ESI + 0x11a] \r\n005f5590: XOR EBP,EBP \r\n005f5592: PUSH EDX \r\n005f5593: LEA EAX,[ESI + 0x119] \r\n005f5599: MOV dword ptr [0x00e19650],EBP \r\n005f559f: MOV ECX,dword ptr [ECX + 0x44] \r\n005f55a2: PUSH EAX \r\n005f55a3: CALL 0x00527cb0 \r\n005f55a8: MOV ECX,dword ptr [ESI + 0x84] \r\n... 260 more lines of 315 (use --start 55 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "dc8d64bea0a262f7954d7128dc781776c952726aa4603cc8bbc2474989d85aff",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "enter_copy_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F5BD0",
+          "--lines",
+          "65"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:21:37.403628+00:00",
+        "finish_utc": "2026-10-10T12:21:37.704213+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f5bd0: MOV EAX,FS:[0x0] \r\n005f5bd6: PUSH -0x1 \r\n005f5bd8: PUSH 0xc76170 \r\n005f5bdd: PUSH EAX \r\n005f5bde: MOV dword ptr FS:[0x0],ESP \r\n005f5be5: SUB ESP,0x10 \r\n005f5be8: PUSH EBX \r\n005f5be9: PUSH ESI \r\n005f5bea: PUSH EDI \r\n005f5beb: MOV ESI,ECX \r\n005f5bed: XOR EBX,EBX \r\n005f5bef: OR EDI,0xffffffff \r\n005f5bf2: CMP byte ptr [ESI + 0x25c],BL \r\n005f5bf8: JNZ 0x005f5c3f \r\n005f5bfa: PUSH 0xcee884 \r\n005f5bff: LEA ECX,[ESP + 0x18] \r\n005f5c03: CALL 0x0041e870 \r\n005f5c08: LEA EAX,[ESP + 0x14] \r\n005f5c0c: PUSH EAX \r\n005f5c0d: PUSH EBX \r\n005f5c0e: XOR EDX,EDX \r\n005f5c10: LEA ECX,[EDI + 0x7] \r\n005f5c13: MOV dword ptr [ESP + 0x2c],EBX \r\n005f5c17: CALL 0x00518d60 \r\n005f5c1c: MOV ECX,dword ptr [ESP + 0x18] \r\n005f5c20: CMP ECX,EBX \r\n005f5c22: MOV dword ptr [ESP + 0x24],EDI \r\n005f5c26: JZ 0x005f5c3f \r\n005f5c28: MOV EAX,dword ptr [ESP + 0x14] \r\n005f5c2c: PUSH 0x1 \r\n005f5c2e: ADD EAX,0x1 \r\n005f5c31: PUSH EAX \r\n005f5c32: PUSH ECX \r\n005f5c33: CALL 0x00419cc0 \r\n005f5c38: MOV ECX,EAX \r\n005f5c3a: CALL 0x00bd1510 \r\n005f5c3f: PUSH 0xf88980 \r\n005f5c44: LEA ECX,[ESI + 0xd8] \r\n005f5c4a: CALL 0x005f52c0 \r\n005f5c4f: MOV ECX,dword ptr [0x00e188a8] \r\n005f5c55: MOV AL,byte ptr [ECX + 0x61f] \r\n005f5c5b: CMP AL,BL \r\n005f5c5d: LEA ECX,[ESP + 0x14] \r\n005f5c61: JNZ 0x005f5ccc \r\n005f5c63: PUSH 0xceb334 \r\n005f5c68: CALL 0x0041e870 \r\n005f5c6d: MOV ECX,dword ptr [ESI + 0x7c] \r\n005f5c70: PUSH 0x1 \r\n005f5c72: LEA EDX,[ESP + 0x18] \r\n005f5c76: PUSH EDX \r\n005f5c77: MOV dword ptr [ESP + 0x2c],0x1 \r\n005f5c7f: CALL 0x00aa7e00 \r\n005f5c84: MOV dword ptr [ESI + 0x84],EAX \r\n005f5c8a: MOV EAX,dword ptr [ESP + 0x18] \r\n005f5c8e: CMP EAX,EBX \r\n005f5c90: MOV dword ptr [ESP + 0x24],EDI \r\n005f5c94: JZ 0x005f5cad \r\n005f5c96: MOV ECX,dword ptr [ESP + 0x14] \r\n005f5c9a: PUSH 0x1 \r\n005f5c9c: ADD ECX,0x1 \r\n005f5c9f: PUSH ECX \r\n005f5ca0: PUSH EAX \r\n005f5ca1: CALL 0x00419cc0 \r\n005f5ca6: MOV ECX,EAX \r\n005f5ca8: CALL 0x00bd1510 \r\n... 125 more lines of 190 (use --start 65 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "0ca64d8241fd6e624964aba52851fd8589e22c81163554fc6c0ab900eddfd3af",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "live_initial_capture.json": [
+      {
+        "label": "owned_function_prototypes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "005F54F0",
+          "005F5BD0",
+          "005F42D0",
+          "--lines",
+          "32"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:21:15.638677+00:00",
+        "finish_utc": "2026-10-10T12:21:16.052852+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "Function: BSP_OptionsScreen_BuildMainList at 005f54f0\r\nSignature: undefined BSP_OptionsScreen_BuildMainList(void)\r\nEntry: 005f54f0\r\nBody: 005f54f0 - 005f58e9\r\n{\r\n \"function_name\": \"BSP_OptionsScreen_BuildMainList\",\r\n \"address\": \"005f54f0\",\r\n \"program\": \"battlestationspacific.exe\",\r\n \"instruction_count\": 315,\r\n \"basic_block_count\": 37,\r\n \"edge_count\": 53,\r\n \"call_count\": 34,\r\n \"string_ref_count\": 4,\r\n \"param_count\": 0,\r\n \"cyclomatic_complexity\": 18,\r\n \"prologue_stripped\": false,\r\n \"epilogue_stripped\": false,\r\n \"callee_names\": [\r\n  \"FUN_00527cb0\",\r\n  \"FUN_00a9cdf0\",\r\n  \"FUN_005f0cd0\",\r\n  \"FUN_005189b0\",\r\n  \"BSP_SizedStoragePool_GetSingleton\",\r\n  \"_memcpy\",\r\n  \"BSP_GuiWidget_CloneSubtree\",\r\n  \"BSP_GuiListbox_SelectIndex\",\r\n  \"FUN_00518d60\",\r\n  \"BSP_MainMenuCommandOwner_SetHelpVariant\",\r\n  \"FUN_005f52c0\",\r\n  \"BSP_GuiListbox_SetListener\",\r\n  \"BSP_GuiListbox_InsertRow\",\r\n  \"BSP_NativeString_Concat\",\r\n  \"BSP_NativeString_ConcatInt\",\r\n  \"BSP_FrontEndManager_PushInterfaceRequest\",\r\n  \"BSP_SizedStoragePool_ReturnBlock\",\r\n  \"FUN_00a9cf30\",\r\n... 64 more lines of 96 (use --start 32 or --lines)\r\nFunction: BSP_OptionsScreen_Enter at 005f5bd0\r\nSignature: undefined BSP_OptionsScreen_Enter(void)\r\nEntry: 005f5bd0\r\nBody: 005f5bd0 - 005f5e54\r\n{\r\n \"function_name\": \"BSP_OptionsScreen_Enter\",\r\n \"address\": \"005f5bd0\",\r\n \"program\": \"battlestationspacific.exe\",\r\n \"instruction_count\": 190,\r\n \"basic_block_count\": 22,\r\n \"edge_count\": 31,\r\n \"call_count\": 26,\r\n \"string_ref_count\": 6,\r\n \"param_count\": 0,\r\n \"cyclomatic_complexity\": 11,\r\n \"prologue_stripped\": false,\r\n \"epilogue_stripped\": false,\r\n \"callee_names\": [\r\n  \"BSP_OptionsScreen_BuildMainList\",\r\n  \"BSP_OptionsScreen_BuildControlPage\",\r\n  \"BSP_SizedStoragePool_GetSingleton\",\r\n  \"_memcpy\",\r\n  \"FUN_00518d60\",\r\n  \"FUN_005f52c0\",\r\n  \"BSP_GuiWidget_FindChildByName\",\r\n  \"BSP_OptionsScreen_BuildGamePage\",\r\n  \"BSP_SizedStoragePool_ReturnBlock\",\r\n  \"BSP_NativeString_Assign\",\r\n  \"BSP_NativeString_Resize\"\r\n ],\r\n \"string_constants\": [\r\n  \"Ingame_Main_Listbox\",\r\n  \"MainListbox_Text\",\r\n  \"Main_Listbox\",\r\n  \"FE.opt_title_main\"\r\n ],\r\n... 36 more lines of 68 (use --start 32 or --lines)\r\nFunction: BSP_OptionsScreen_AdjustFocusedValue at 005f42d0\r\nSignature: undefined BSP_OptionsScreen_AdjustFocusedValue(void)\r\nEntry: 005f42d0\r\nBody: 005f42d0 - 005f4981\r\n{\r\n \"function_name\": \"BSP_OptionsScreen_AdjustFocusedValue\",\r\n \"address\": \"005f42d0\",\r\n \"program\": \"battlestationspacific.exe\",\r\n \"instruction_count\": 460,\r\n \"basic_block_count\": 55,\r\n \"edge_count\": 66,\r\n \"call_count\": 30,\r\n \"string_ref_count\": 0,\r\n \"param_count\": 0,\r\n \"cyclomatic_complexity\": 13,\r\n \"prologue_stripped\": false,\r\n \"epilogue_stripped\": false,\r\n \"callee_names\": [\r\n  \"BSP_NativeString_EqualsInsensitive\",\r\n  \"TRIV_body_00bbddf0\",\r\n  \"FUN_005f1930\",\r\n  \"BSP_NativeStringVector_Append\",\r\n  \"FUN_00ad7a30\",\r\n  \"FUN_00b0d080\",\r\n  \"BSP_Settings_ApplyAudio\",\r\n  \"FUN_005ef4d0\",\r\n  \"BSP_Float_ClampByPointer\",\r\n  \"TRIV_body_008d45c0\",\r\n  \"BSP_NativeStringVector_FindCaseInsensitive\",\r\n  \"FUN_00bbcfe0\",\r\n  \"BSP_FoliageSystem_SetEnabled\",\r\n  \"BSP_GuiListbox_GetSelectedIndex\"\r\n ],\r\n \"string_constants\": [],\r\n \"immediate_values\": [\r\n  -1,\r\n... 66 more lines of 98 (use --start 32 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "41fa64444af9d0a6bdb79d477a801b2cc9297e18588e9f1c17edfea1fb9a486c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "main_list_copy_context_pseudocode",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "decompile",
+          "005F54F0",
+          "--lines",
+          "90"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:21:16.052947+00:00",
+        "finish_utc": "2026-10-10T12:21:16.663713+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "\r\n/* [BSP reconstruction 005f54f0]\r\n   Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see\r\n   docs/OPTIONS_MENU_SCREENS.md. __thiscall(this), RET. Builds the seven-row options list of page 0\r\n   from the label table at 00E08A48 (^FE.opt_game through ^FE.opt_downloaded_content) under title\r\n   FE.opt_title_main, naming its elements Elem_<n>_Text. Identified by its strings and its two\r\n   callers 005F5E60 and 005F65C0; body not read in full. */\r\n\r\nvoid __fastcall BSP_OptionsScreen_BuildMainList(int param_1)\r\n\r\n{\r\n  int iVar1;\r\n  int *piVar2;\r\n  void *pvVar3;\r\n  int iVar4;\r\n  code *pcVar5;\r\n  int unaff_EBX;\r\n  uint uVar6;\r\n  bool bVar7;\r\n  void *pvVar8;\r\n  undefined4 uVar9;\r\n  int local_38;\r\n  void *local_34;\r\n  int local_30;\r\n  void *local_2c;\r\n  int local_28;\r\n  int iStack_24;\r\n  int local_20 [3];\r\n  void *local_14;\r\n  undefined1 *puStack_10;\r\n  undefined4 local_c;\r\n  \r\n  local_c = 0xffffffff;\r\n  puStack_10 = &LAB_00c760f0;\r\n  local_14 = ExceptionList;\r\n  ExceptionList = &local_14;\r\n  *(undefined1 *)(param_1 + 0x252) = 0;\r\n  local_38 = CONCAT31(local_38._1_3_,*(undefined1 *)(DAT_00e188a8 + 0x61f));\r\n  BSP_MainMenuCommandOwner_SetHelpVariant(local_38);\r\n  if (*(char *)(param_1 + 0x78) != '\\0') {\r\n    *(undefined1 *)(param_1 + 0x78) = 0;\r\n    BSP_FrontEndManager_PushInterfaceRequest(0xe,0);\r\n    ExceptionList = local_14;\r\n    return;\r\n  }\r\n  FUN_005f52c0(&DAT_00f88980);\r\n  DAT_00e19650 = 0;\r\n  FUN_00527cb0(param_1 + 0x119,param_1 + 0x11a,param_1 + 0x11b,param_1 + 0x118);\r\n  BSP_GuiListbox_SetListener(0);\r\n  BSP_GuiListbox_ClearRows();\r\n  if (*(char *)(DAT_00e188a8 + 0x61f) == '\\0') {\r\n    BSP_NativeString_Assign(&local_30,\"FE.opt_title_main\");\r\n    local_c = 1;\r\n    FUN_005189b0();\r\n  }\r\n  else {\r\n    BSP_NativeString_Assign(&local_30,\"FE.opt_title_main\");\r\n    local_c = 0;\r\n    FUN_00518d60(0,&local_30);\r\n  }\r\n  local_c = 0xffffffff;\r\n  if (local_2c != (void *)0x0) {\r\n    uVar9 = 1;\r\n    iVar1 = local_30 + 1;\r\n    pvVar8 = local_2c;\r\n    BSP_SizedStoragePool_GetSingleton(local_2c,iVar1,1);\r\n    BSP_SizedStoragePool_ReturnBlock(pvVar8,iVar1,uVar9);\r\n  }\r\n  uVar6 = 0;\r\n  do {\r\n    if ((uVar6 != 6) || (*(char *)(DAT_00e188a8 + 0x61f) == '\\0')) {\r\n      piVar2 = (int *)BSP_GuiWidget_CloneSubtree(0);\r\n      local_38 = 0;\r\n      local_34 = (void *)0x0;\r\n      BSP_NativeString_Resize(&local_38,5,1);\r\n      if (local_34 != (void *)0x0) {\r\n        _memcpy(local_34,\"_Text\",local_38 + 1);\r\n      }\r\n      local_c = 2;\r\n      local_30 = 0;\r\n      local_2c = (void *)0x0;\r\n      BSP_NativeString_Resize(&local_30,5,1);\r\n      pvVar8 = local_2c;\r\n      if (local_2c != (void *)0x0) {\r\n        _memcpy(local_2c,\"Elem_\",local_30 + 1);\r\n      }\r\n      local_c._0_1_ = 3;\r\n      pvVar3 = (void *)BSP_NativeString_ConcatInt(local_20,uVar6 & 0xffff);\r\n      local_c._0_1_ = 4;\r\n      pvVar3 = BSP_NativeString_Concat(pvVar3,&local_28,&local_38);\r\n... 78 more lines of 168 (use --start 90 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "56380befa69a34328c67a25dd7a345604ef3a7438380fd5dcb3ce1a918d1e41c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "saved_audio_final_instruction_capture.json": [
+      {
+        "label": "saved_audio_final_jump",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F42D0",
+          "--asm",
+          "--start",
+          "304",
+          "--lines",
+          "1"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:25:42.997294+00:00",
+        "finish_utc": "2026-10-10T12:25:43.183732+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f42d0  BSP_OptionsScreen_AdjustFocusedValue  thunk=no  export=exports/bsp/functions/005f42d0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_AdjustFocusedValue - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this, int step), RET 4. Called from the update virtual on actions 4Ch and 4Dh and from the list listener on a value-change event. Reads the focused row from 00A9C920, set\r\nreconstruction: function options_adjust_005f42d0 status=reconstructed_ledger_backfilled_from_source source=src/options_menu_screens.cpp\r\n--- exports/bsp/functions/005f42d0/assembly.txt ---\r\n005f4726: JMP EAX \r\n... 156 more lines of 461 (use --start 305 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "bd81350bcc0e409d17ff91a7e2f38da4c7438b917e76976f532691535663f802",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "saved_windows_capture.json": [
+      {
+        "label": "saved_main_list_export_unavailable",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F54F0",
+          "--lines",
+          "5"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:39.822357+00:00",
+        "finish_utc": "2026-10-10T12:23:39.944836+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f54f0  BSP_OptionsScreen_BuildMainList  thunk=no  export=none\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_BuildMainList - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this), RET. Builds the seven-row options list of page 0 from the label table at 00E08A48 (^FE.opt_game through ^FE.opt_downloaded_content) under title FE.opt_title_main, \r\nnot exported; run: python tools/bsp.py ghidra export 005f54f0   (or --live for an unsaved view)\r\n",
+        "stderr": "",
+        "stdout_sha256": "44a32a611f9e10a03a497edf3946161ad08b76a9e0eb6a6fd8643970b435eda6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_enter_export_unavailable",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F5BD0",
+          "--lines",
+          "5"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:39.944942+00:00",
+        "finish_utc": "2026-10-10T12:23:40.058924+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f5bd0  BSP_OptionsScreen_Enter  thunk=no  export=none\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_Enter - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this), RET, matching base default 004F75A0. Slot +18h of vtable 00CF3974. No Ghidra function: the body runs 005F5BD0..005F5E54 in the disk image and ends in a plain ret. \r\nnot exported; run: python tools/bsp.py ghidra export 005f5bd0   (or --live for an unsaved view)\r\n",
+        "stderr": "",
+        "stdout_sha256": "52a7fc1dcb633508b926d37e4c84c7c820dfed780982f2b925c3d788fe490ab7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_audio_pseudocode",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F42D0",
+          "--start",
+          "54",
+          "--lines",
+          "46"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:40.059007+00:00",
+        "finish_utc": "2026-10-10T12:23:40.185509+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f42d0  BSP_OptionsScreen_AdjustFocusedValue  thunk=no  export=exports/bsp/functions/005f42d0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_AdjustFocusedValue - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this, int step), RET 4. Called from the update virtual on actions 4Ch and 4Dh and from the list listener on a value-change event. Reads the focused row from 00A9C920, set\r\nreconstruction: function options_adjust_005f42d0 status=reconstructed_ledger_backfilled_from_source source=src/options_menu_screens.cpp\r\n--- exports/bsp/functions/005f42d0/decompiled.c ---\r\n        return;\r\n      }\r\n      break;\r\n    case 1:\r\n      switch(iVar2) {\r\n      case 0:\r\n        local_4 = DAT_00d7a24c;\r\n        local_8 = 0;\r\n        fVar7 = (float10)FUN_004155b0(&local_4);\r\n        *(float *)(param_1 + 0xf8) = (float)fVar7;\r\n        BSP_Settings_ApplyAudio();\r\n        return;\r\n      case 1:\r\n        local_4 = DAT_00d7a24c;\r\n        local_8 = 0;\r\n        fVar7 = (float10)FUN_004155b0(&local_4);\r\n        *(float *)(param_1 + 0x100) = (float)fVar7;\r\n        BSP_Settings_ApplyAudio();\r\n        return;\r\n      case 2:\r\n        local_4 = DAT_00d7a24c;\r\n        local_8 = 0;\r\n        fVar7 = (float10)FUN_004155b0(&local_4);\r\n        *(float *)(param_1 + 0x108) = (float)fVar7;\r\n        BSP_Settings_ApplyAudio();\r\n                    /* WARNING: Could not recover jumptable at 0x005f46be. Too many branches */\r\n                    /* WARNING: Treating indirect jump as call */\r\n        (**(code **)(**(int **)(param_1 + 0xa4) + 0x34))();\r\n        return;\r\n      case 3:\r\n        local_4 = DAT_00d7a24c;\r\n        local_8 = 0;\r\n        fVar7 = (float10)FUN_004155b0(&local_4);\r\n        *(float *)(param_1 + 0x104) = (float)fVar7;\r\n        BSP_Settings_ApplyAudio();\r\n                    /* WARNING: Could not recover jumptable at 0x005f4726. Too many branches */\r\n                    /* WARNING: Treating indirect jump as call */\r\n        (**(code **)(**(int **)(param_1 + 0xa0) + 0x34))();\r\n        return;\r\n      }\r\n      break;\r\n    case 2:\r\n      uVar4 = (undefined3)((uint)(DAT_00e19650 + -1) >> 8);\r\n      switch(iVar2) {\r\n      case 0:\r\n        iVar2 = FUN_005ef4d0(DAT_00f88960);\r\n... 112 more lines of 212 (use --start 100 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "d20106519ad00d697bb8491157f67b26cacdb56dd691ac46c05caab22b65857b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_adjust_dispatch_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F42D0",
+          "--asm",
+          "--lines",
+          "16"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:40.185586+00:00",
+        "finish_utc": "2026-10-10T12:23:40.375410+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f42d0  BSP_OptionsScreen_AdjustFocusedValue  thunk=no  export=exports/bsp/functions/005f42d0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_AdjustFocusedValue - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this, int step), RET 4. Called from the update virtual on actions 4Ch and 4Dh and from the list listener on a value-change event. Reads the focused row from 00A9C920, set\r\nreconstruction: function options_adjust_005f42d0 status=reconstructed_ledger_backfilled_from_source source=src/options_menu_screens.cpp\r\n--- exports/bsp/functions/005f42d0/assembly.txt ---\r\n005f42d0: SUB ESP,0x8 \r\n005f42d3: PUSH EBP \r\n005f42d4: PUSH ESI \r\n005f42d5: MOV ESI,ECX \r\n005f42d7: MOV ECX,dword ptr [ESI + 0x88] \r\n005f42dd: CALL 0x00a9c920 \r\n005f42e2: MOV EBP,EAX \r\n005f42e4: TEST EBP,EBP \r\n005f42e6: JL 0x005f43a2 \r\n005f42ec: MOV byte ptr [ESI + 0x250],0x1 \r\n005f42f3: MOV EAX,[0x00e19650] \r\n005f42f8: ADD EAX,-0x1 \r\n005f42fb: CMP EAX,0x6 \r\n005f42fe: JA 0x005f43a2 \r\n005f4304: JMP dword ptr [EAX*0x4 + 0x5f4984] \r\n005f430b: PUSH EBX \r\n... 445 more lines of 461 (use --start 16 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "3ae4e2c3f7be2ec4ddcaf31ee71b654398681a4946db474cb70cf46d71d7abac",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_audio_head_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F42D0",
+          "--asm",
+          "--start",
+          "214",
+          "--lines",
+          "50"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:40.375522+00:00",
+        "finish_utc": "2026-10-10T12:23:40.564514+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f42d0  BSP_OptionsScreen_AdjustFocusedValue  thunk=no  export=exports/bsp/functions/005f42d0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_AdjustFocusedValue - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this, int step), RET 4. Called from the update virtual on actions 4Ch and 4Dh and from the list listener on a value-change event. Reads the focused row from 00A9C920, set\r\nreconstruction: function options_adjust_005f42d0 status=reconstructed_ledger_backfilled_from_source source=src/options_menu_screens.cpp\r\n--- exports/bsp/functions/005f42d0/assembly.txt ---\r\n005f459c: CMP EBP,0x3 \r\n005f459f: JA 0x005f43a2 \r\n005f45a5: JMP dword ptr [EBP*0x4 + 0x5f49dc] \r\n005f45ac: FILD dword ptr [ESP + 0x14] \r\n005f45b0: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f45b8: LEA ECX,[ESP + 0xc] \r\n005f45bc: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f45c2: FMUL double ptr [0x00d7a3a0] \r\n005f45c8: XORPS XMM0,XMM0 \r\n005f45cb: PUSH ECX \r\n005f45cc: LEA EDX,[ESP + 0xc] \r\n005f45d0: FADD float ptr [ESI + 0xf8] \r\n005f45d6: LEA ECX,[ESP + 0x18] \r\n005f45da: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f45e0: FSTP float ptr [ESP + 0x18] \r\n005f45e4: CALL 0x004155b0 \r\n005f45e9: LEA ECX,[ESI + 0xd8] \r\n005f45ef: FSTP float ptr [ESI + 0xf8] \r\n005f45f5: CALL 0x008d5430 \r\n005f45fa: POP ESI \r\n005f45fb: POP EBP \r\n005f45fc: ADD ESP,0x8 \r\n005f45ff: RET 0x4 \r\n005f4602: FILD dword ptr [ESP + 0x14] \r\n005f4606: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f460e: LEA EDX,[ESP + 0xc] \r\n005f4612: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f4618: FMUL double ptr [0x00d7a3a0] \r\n005f461e: XORPS XMM0,XMM0 \r\n005f4621: PUSH EDX \r\n005f4622: LEA EDX,[ESP + 0xc] \r\n005f4626: FADD float ptr [ESI + 0x100] \r\n005f462c: LEA ECX,[ESP + 0x18] \r\n005f4630: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f4636: FSTP float ptr [ESP + 0x18] \r\n005f463a: CALL 0x004155b0 \r\n005f463f: LEA ECX,[ESI + 0xd8] \r\n005f4645: FSTP float ptr [ESI + 0x100] \r\n005f464b: CALL 0x008d5430 \r\n005f4650: POP ESI \r\n005f4651: POP EBP \r\n005f4652: ADD ESP,0x8 \r\n005f4655: RET 0x4 \r\n005f4658: FILD dword ptr [ESP + 0x14] \r\n005f465c: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f4664: LEA EAX,[ESP + 0xc] \r\n005f4668: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f466e: FMUL double ptr [0x00d7a3a0] \r\n005f4674: XORPS XMM0,XMM0 \r\n005f4677: PUSH EAX \r\n... 197 more lines of 461 (use --start 264 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "4efde06d67be005c5a2f9a1a5f061ce00c268b12e865e031155e85491621c8f2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_audio_tail_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F42D0",
+          "--asm",
+          "--start",
+          "264",
+          "--lines",
+          "40"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:23:40.564597+00:00",
+        "finish_utc": "2026-10-10T12:23:40.736742+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f42d0  BSP_OptionsScreen_AdjustFocusedValue  thunk=no  export=exports/bsp/functions/005f42d0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_AdjustFocusedValue - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this, int step), RET 4. Called from the update virtual on actions 4Ch and 4Dh and from the list listener on a value-change event. Reads the focused row from 00A9C920, set\r\nreconstruction: function options_adjust_005f42d0 status=reconstructed_ledger_backfilled_from_source source=src/options_menu_screens.cpp\r\n--- exports/bsp/functions/005f42d0/assembly.txt ---\r\n005f4678: LEA EDX,[ESP + 0xc] \r\n005f467c: FADD float ptr [ESI + 0x108] \r\n005f4682: LEA ECX,[ESP + 0x18] \r\n005f4686: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f468c: FSTP float ptr [ESP + 0x18] \r\n005f4690: CALL 0x004155b0 \r\n005f4695: LEA ECX,[ESI + 0xd8] \r\n005f469b: FSTP float ptr [ESI + 0x108] \r\n005f46a1: CALL 0x008d5430 \r\n005f46a6: MOV ECX,dword ptr [ESI + 0xa4] \r\n005f46ac: MOV EDX,dword ptr [ECX] \r\n005f46ae: POP ESI \r\n005f46af: POP EBP \r\n005f46b0: ADD ESP,0x8 \r\n005f46b3: MOV dword ptr [ESP + 0x4],0x1 \r\n005f46bb: MOV EAX,dword ptr [EDX + 0x34] \r\n005f46be: JMP EAX \r\n005f46c0: FILD dword ptr [ESP + 0x14] \r\n005f46c4: MOVSS XMM0,dword ptr [0x00d7a24c] \r\n005f46cc: LEA ECX,[ESP + 0xc] \r\n005f46d0: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f46d6: FMUL double ptr [0x00d7a3a0] \r\n005f46dc: XORPS XMM0,XMM0 \r\n005f46df: PUSH ECX \r\n005f46e0: LEA EDX,[ESP + 0xc] \r\n005f46e4: FADD float ptr [ESI + 0x104] \r\n005f46ea: LEA ECX,[ESP + 0x18] \r\n005f46ee: MOVSS dword ptr [ESP + 0xc],XMM0 \r\n005f46f4: FSTP float ptr [ESP + 0x18] \r\n005f46f8: CALL 0x004155b0 \r\n005f46fd: LEA ECX,[ESI + 0xd8] \r\n005f4703: FSTP float ptr [ESI + 0x104] \r\n005f4709: CALL 0x008d5430 \r\n005f470e: MOV ECX,dword ptr [ESI + 0xa0] \r\n005f4714: MOV EDX,dword ptr [ECX] \r\n005f4716: POP ESI \r\n005f4717: POP EBP \r\n005f4718: ADD ESP,0x8 \r\n005f471b: MOV dword ptr [ESP + 0x4],0x1 \r\n005f4723: MOV EAX,dword ptr [EDX + 0x34] \r\n... 157 more lines of 461 (use --start 304 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "a1d5886e4a8e64264c7a64f83fc8460f4d3625eb61670fd861be7265acbffe09",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "project_program_verification": "Each typed bsp.py ghidra command invokes the frozen client()/Client.verify() before querying; successful exit confirms project bsp, program /battlestationspacific.exe, language x86:LE:32:default and image base00400000. Configured project file C:/Users/sqz269/bsp.gpr; its full live path is not independently exposed. BSP_GHIDRA_AUTOSTART=0.",
+  "admitted_evidence": {
+    "copy_helper_receipt": "reports/cc12_options_sound_copy_abi_review.json, accepted v2, frozen whole as Source/Git input",
+    "copy_helper_primary": "reports/cc12_options_sound_copy_abi_primary_review.json, frozen whole",
+    "helper_contract": "ECX destination; [entry ESP+4] source; byte[source+24] read at005F5311 and copied to byte[destination+24] at005F5315; EAX destination result, RET4. Body not reopened.",
+    "constructor_contract": "Accepted 005F6030 receiver recovery supplies screen+D8 and screen+194 to008D7710; admitted008D7710 writes +24=1. Both embedded enable bytes are initially one on normal completion; bodies not reopened.",
+    "existing_global_write": "Accepted005F6629 supplies ECX=F88980 and stack source=screen+D8, copying screen+FC to F889A4. Body not reopened.",
+    "admission_limit": "Prior receipts are retained and hashed as complete admission provenance; this packet does not recursively replay their external artifact trees or reinterpret unleased Native bodies."
+  },
+  "new_native_copy_facts": [
+    {
+      "caller": "005F54F0",
+      "receiver_preservation": "005F5511 MOV ESI,ECX",
+      "source_push": "005F5566 PUSH0xF88980",
+      "destination_receiver": "005F556B LEA ECX,[ESI+D8]",
+      "helper_call": "005F5571 ->005F52C0",
+      "equation": "byte[screen+FC] := byte[F889A4]",
+      "second_embedded_byte_targeted": false,
+      "bounded_condition": "Screen+78 equals0 branches to5566. Nonzero path clears+78, requests interface0xE and returns at5565; it bypasses this copy."
+    },
+    {
+      "caller": "005F5BD0",
+      "receiver_preservation": "005F5BEB MOV ESI,ECX",
+      "source_push": "005F5C3F PUSH0xF88980",
+      "destination_receiver": "005F5C44 LEA ECX,[ESI+D8]",
+      "helper_call": "005F5C4A ->005F52C0",
+      "equation": "byte[screen+FC] := byte[F889A4]",
+      "second_embedded_byte_targeted": false,
+      "bounded_condition": "Initial screen+25C branch and normal completion of optional title/string work converge at5C3F. Exceptional/non-returning call behavior is not proved."
+    }
+  ],
+  "audio_branch": {
+    "screen_receiver": "005F42D5 MOV ESI,ECX",
+    "row_provenance": "Selected index result from00A9C920 becomes EBP at42E2; negative row returns.",
+    "dirty_store": "005F42EC MOV byte[ESI+250],1 occurs before page dispatch.",
+    "page_dispatch": {
+      "page_cell": "00E19650",
+      "subtract_instruction": "005F42F8 ADD EAX,-1",
+      "jump_instruction": "005F4304",
+      "table": "005F4984",
+      "page": 2,
+      "index": 1,
+      "entry_address": "005F4988",
+      "entry_value": "005F459C",
+      "target_instruction": "CMP EBP,3"
+    },
+    "row_dispatch": {
+      "range": "0..3; above3 returns at005F43A2",
+      "jump_instruction": "005F45A5",
+      "table": "005F49DC",
+      "targets": [
+        "005F45AC",
+        "005F4602",
+        "005F4658",
+        "005F46C0"
+      ],
+      "target_start_instruction": "FILD dword ptr [ESP+14]"
+    },
+    "step_abi": "Shared prologue subtracts8 and pushes EBP/ESI, so row [ESP+14] corresponds to entry ESP+4. No float arithmetic emulation.",
+    "volume_rows": [
+      {
+        "row": 0,
+        "name_from_existing_Source": "master",
+        "native_target": "005F45AC",
+        "store_instruction": "005F45EF",
+        "store_opcode": "FSTP float ptr",
+        "screen_offset": "F8",
+        "settings_relative_offset": "20",
+        "audio_receiver_instruction": "005F45E9",
+        "audio_receiver": "ECX=screen+D8",
+        "audio_call": "005F45F5",
+        "audio_target": "008D5430"
+      },
+      {
+        "row": 1,
+        "name_from_existing_Source": "music",
+        "native_target": "005F4602",
+        "store_instruction": "005F4645",
+        "store_opcode": "FSTP float ptr",
+        "screen_offset": "100",
+        "settings_relative_offset": "28",
+        "audio_receiver_instruction": "005F463F",
+        "audio_receiver": "ECX=screen+D8",
+        "audio_call": "005F464B",
+        "audio_target": "008D5430"
+      },
+      {
+        "row": 2,
+        "name_from_existing_Source": "speech",
+        "native_target": "005F4658",
+        "store_instruction": "005F469B",
+        "store_opcode": "FSTP float ptr",
+        "screen_offset": "108",
+        "settings_relative_offset": "30",
+        "audio_receiver_instruction": "005F4695",
+        "audio_receiver": "ECX=screen+D8",
+        "audio_call": "005F46A1",
+        "audio_target": "008D5430"
+      },
+      {
+        "row": 3,
+        "name_from_existing_Source": "effects",
+        "native_target": "005F46C0",
+        "store_instruction": "005F4703",
+        "store_opcode": "FSTP float ptr",
+        "screen_offset": "104",
+        "settings_relative_offset": "2C",
+        "audio_receiver_instruction": "005F46FD",
+        "audio_receiver": "ECX=screen+D8",
+        "audio_call": "005F4709",
+        "audio_target": "008D5430"
+      }
+    ],
+    "preview_tails": [
+      {
+        "row": 2,
+        "receiver_load": "005F46A6 MOV ECX,[ESI+A4]",
+        "receiver_vtable_load": "005F46AC MOV EDX,[ECX]",
+        "argument_store": "005F46B3 MOV dword[ESP+4],1 after local-frame teardown",
+        "virtual_slot_load": "005F46BB MOV EAX,[EDX+34]",
+        "tail_jump": "005F46BE JMP EAX"
+      },
+      {
+        "row": 3,
+        "receiver_load": "005F470E MOV ECX,[ESI+A0]",
+        "receiver_vtable_load": "005F4714 MOV EDX,[ECX]",
+        "argument_store": "005F471B MOV dword[ESP+4],1 after local-frame teardown",
+        "virtual_slot_load": "005F4723 MOV EAX,[EDX+34]",
+        "tail_jump": "005F4726 JMP EAX"
+      }
+    ],
+    "direct_screen_stores_in_finite_audio_blocks": {
+      "005F45EF": "FSTP float ptr [ESI + 0xf8]",
+      "005F4645": "FSTP float ptr [ESI + 0x100]",
+      "005F469B": "FSTP float ptr [ESI + 0x108]",
+      "005F4703": "FSTP float ptr [ESI + 0x104]"
+    },
+    "enable_byte_direct_store_in_audio_blocks": false,
+    "absence_qualification": "Only the91 inspected instructions459C..4726. This excludes no delegated, external, other-branch or other-function write.",
+    "callee_boundary": "004155B0,008D5430 and virtual preview bodies not reopened; no full sound-host or ownership proof.",
+    "float_boundary": "x87 arithmetic and clamp semantics were not emulated; no exceptional-value, rounding or bit-equivalence proof."
+  },
+  "positive_zero_store_evidence": {
+    "enable_byte_zero_store_established": false,
+    "other_immediate_zero_stores": [
+      {
+        "instruction": "005F5513",
+        "receiver": "screen",
+        "offset": "252",
+        "width": 1,
+        "value_source": "immediate0"
+      },
+      {
+        "instruction": "005F5542",
+        "receiver": "screen",
+        "offset": "78",
+        "width": 1,
+        "value_source": "immediate0 on early-return branch"
+      }
+    ],
+    "audio_stack_zeros": "XORPS XMM0,XMM0 precedes MOVSS stack writes at45DA/4630/4686/46EE. These are stack temporaries, not screen/global enable stores.",
+    "conditional_copy": "A zero persistent source would be copied to screen+FC. This packet demonstrates no producer of that source zero.",
+    "second_object": "Neither new helper call targets screen+194. Later use/value provenance of screen+1B8 remains unreviewed."
+  },
+  "timing_and_selector_boundaries": {
+    "pre_73DAEE_route_established": false,
+    "post_startup_only_established": false,
+    "actual_zero_provenance_established": false,
+    "supported_zero_input_established": false,
+    "exhaustive_absence_claim": false,
+    "explanation": "No lifecycle or startup route audit was performed. Field transfers and UI dispatch alone do not establish order relative to startup."
+  },
+  "Source_readiness": {
+    "audio_rows": "include/bsp/options_menu_screens.hpp declares Audio rows0/1/2/3 atF8/100/108/104 with immediate application.",
+    "implementation": "src/options_menu_screens.cpp options_adjust_005f42d0 invokes abstract step_ranged, apply_audio and preview methods; current state leaves settings storage behind the host.",
+    "copy_provider": "build_main_list is an abstract Source slot; these inputs do not implement the newly recovered raw settings copies.",
+    "existing_naming_discrepancy": "reload_from_settings remains the abstract label for005F65C0; accepted native copy direction was corrected in docs by Root. This packet adds no Source correction or interface.",
+    "export_vs_function": "No saved exports existed for54F0/5BD0, but typed metadata shows stored bodies for both. Old comment claiming no5BD0 function is stale."
+  },
+  "artifact_handoff": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_options_audio_enable_provenance_review",
+    "portable_relative_directory": "local/cc12_options_audio_enable_provenance_review",
+    "retention": "Copy the complete directory under the same relative path before worktree removal. Retained complete PE and every replay input are within that directory; original installation path is provenance only."
+  },
+  "local_capture_commands": [
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "local/cc12_options_audio_enable_provenance_review/live_audio_dispatch.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "local/cc12_options_audio_enable_provenance_review/live_audio_windows.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "local/cc12_options_audio_enable_provenance_review/live_bytes.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "local/cc12_options_audio_enable_provenance_review/live_copy_windows.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "local/cc12_options_audio_enable_provenance_review/live_initial.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "local/cc12_options_audio_enable_provenance_review/saved_audio_final_instruction.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "local/cc12_options_audio_enable_provenance_review/saved_windows.json"
+    ]
+  ],
+  "local_finalize_commands": [
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/freeze.py"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/replay.py"
+    ],
+    [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/make_receipt.py"
+    ]
+  ],
+  "local_script_pins": [
+    {
+      "path": "local/cc12_options_audio_enable_provenance_review/capture.py",
+      "bytes": 1303,
+      "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+    },
+    {
+      "path": "local/cc12_options_audio_enable_provenance_review/freeze.py",
+      "bytes": 4469,
+      "sha256": "2180f3198e8fcf782c2639e0ffc4afa93fa26568c3d1229eeba70d03b0a97b31"
+    },
+    {
+      "path": "local/cc12_options_audio_enable_provenance_review/replay.py",
+      "bytes": 8222,
+      "sha256": "a50b122e9b2c8aa80591e0a5f8cb64fbbfa918546d56fe522130866306591786"
+    },
+    {
+      "path": "local/cc12_options_audio_enable_provenance_review/make_receipt.py",
+      "bytes": 10942,
+      "sha256": "9d0b8a8b2340a9d4bf524295833dcab636b8eea2ea676b3c62541916e171217a"
+    }
+  ],
+  "offline_replay": {
+    "command": [
+      "python",
+      "local/cc12_options_audio_enable_provenance_review/replay.py"
+    ],
+    "script_pin": {
+      "path": "local/cc12_options_audio_enable_provenance_review/replay.py",
+      "bytes": 8222,
+      "sha256": "a50b122e9b2c8aa80591e0a5f8cb64fbbfa918546d56fe522130866306591786"
+    },
+    "script_text": "\"\"\"Replay retained evidence only. No Native execution or installed-image access.\"\"\"\nimport hashlib, json, os, pathlib, re, struct, sys\nROOT=pathlib.Path(__file__).resolve().parents[2]\nOUT=pathlib.Path(__file__).resolve().parent\nopened=[]\ndef guard(event,args):\n    if event!='open': return\n    path,mode,flags=args\n    if not isinstance(path,(str,bytes)): raise RuntimeError('Offline replay forbids opening file descriptors')\n    resolved=pathlib.Path(path).resolve()\n    if not resolved.is_relative_to(OUT): raise RuntimeError('Open outside evidence directory: '+str(resolved))\n    if mode is not None and any(c in mode for c in 'wax+'): raise RuntimeError('Writes forbidden')\n    if flags & (os.O_WRONLY|os.O_RDWR|os.O_APPEND|os.O_CREAT|os.O_TRUNC): raise RuntimeError('Write flags forbidden')\n    opened.append(resolved.relative_to(OUT).as_posix())\nsys.addaudithook(guard)\nfreeze=json.loads((OUT/'freeze_capture.json').read_text(encoding='utf-8'))\ndef sha(data): return hashlib.sha256(data).hexdigest()\npins=[]\ndef walk(obj):\n    if isinstance(obj,dict):\n        if {'path','bytes','sha256'}<=set(obj):\n            assert not pathlib.Path(obj['path']).is_absolute()\n            data=(ROOT/obj['path']).read_bytes()\n            assert len(data)==obj['bytes'] and sha(data)==obj['sha256'],obj['path']\n            pins.append(obj['path'])\n        for value in obj.values(): walk(value)\n    elif isinstance(obj,list):\n        for value in obj: walk(value)\nwalk(freeze)\ncaptures={}\nfor entry in freeze['command_captures_and_specs']:\n    if entry['file'].endswith('_capture.json'):\n        for row in json.loads((ROOT/entry['pin']['path']).read_text(encoding='utf-8')):\n            assert row['exit_code']==0\n            assert sha(row['stdout'].encode())==row['stdout_sha256']\n            assert sha(row['stderr'].encode())==row['stderr_sha256']\n            captures[row['label']]=row\npe=freeze['original_PE']; assert 'path' not in pe\nimage=(ROOT/pe['retained_image_pin']['path']).read_bytes()\nassert len(image)==pe['bytes'] and sha(image)==pe['sha256']\npeoff=struct.unpack_from('<I',image,0x3c)[0]\nassert image[peoff:peoff+4]==b'PE\\0\\0'\nmachine,nsections=struct.unpack_from('<HH',image,peoff+4)\noptlen=struct.unpack_from('<H',image,peoff+20)[0]; opt=peoff+24\nassert machine==0x14c and struct.unpack_from('<H',image,opt)[0]==0x10b\nbase=struct.unpack_from('<I',image,opt+28)[0]; assert base==int(pe['image_base'],16)\nwindows={w['label']:w for w in pe['windows']}\nraw={}\nfor label,w in windows.items():\n    rva=int(w['start_va'],16)-base\n    matches=[]\n    for i in range(nsections):\n        off=opt+optlen+i*40\n        _,srva,rawsize,rawoff=struct.unpack_from('<IIII',image,off+8)\n        if srva<=rva and rva+w['length']<=srva+rawsize: matches.append(rawoff+rva-srva)\n    assert matches==[w['file_offset']]\n    raw[label]=(ROOT/w['bytes_pin']['path']).read_bytes()\n    assert image[w['file_offset']:w['file_offset']+w['length']]==raw[label]\ndef byte_capture(label):\n    parts=[]\n    for line in captures[label]['stdout'].splitlines():\n        m=re.match(r'^([0-9a-f]{8})  ((?:[0-9a-f]{2} ?)+)  ',line)\n        if m: parts.append((int(m[1],16),bytes.fromhex(m[2])))\n    assert parts\n    for (a,b),(c,d) in zip(parts,parts[1:]): assert a+len(b)==c\n    return parts[0][0],b''.join(b for a,b in parts)\nfor label in windows:\n    if label=='audio':\n        a,b=byte_capture('audio_bytes_0'); c,d=byte_capture('audio_bytes_1')\n        assert a+len(b)==c; data=b+d\n    else: a,data=byte_capture(label+'_bytes')\n    assert a==int(windows[label]['start_va'],16) and data==raw[label],label\ndef listing(*labels):\n    result={}\n    for label in labels:\n        for line in captures[label]['stdout'].splitlines():\n            m=re.match(r'^([0-9a-f]{8}):\\s*(.+)',line)\n            if m:\n                address=int(m[1],16); insn=' '.join(m[2].split())\n                if address in result: assert result[address]==insn\n                result[address]=insn\n    return result\naudio_listing={a:s for a,s in listing('audio_head_listing','audio_middle_listing','audio_tail_listing').items() if 0x5f459c<=a<0x5f4728}\nsaved_audio={a:s for a,s in listing('saved_audio_head_listing','saved_audio_tail_listing','saved_audio_final_jump').items() if 0x5f459c<=a<0x5f4728}\nassert audio_listing==saved_audio and audio_listing\nlive_dispatch={a:s for a,s in listing('adjust_dispatch_listing').items() if 0x5f42d0<=a<0x5f430b}\nsaved_dispatch={a:s for a,s in listing('saved_adjust_dispatch_listing').items() if 0x5f42d0<=a<0x5f430b}\nassert live_dispatch==saved_dispatch\ndef at(label,address,length):\n    offset=address-int(windows[label]['start_va'],16)\n    assert 0<=offset and offset+length<=len(raw[label])\n    return raw[label][offset:offset+length]\nchecks=[]\ndef expect(label,address,text):\n    expected=bytes.fromhex(text)\n    assert at(label,address,len(expected))==expected,f'{address:08X}'\n    checks.append(f'{address:08X}')\ndef call(label,address,target):\n    b=at(label,address,5)\n    assert b[0]==0xe8 and address+5+struct.unpack('<i',b[1:])[0]==target\n    checks.append(f'{address:08X}->{target:08X}')\nexpect('main_list_copy',0x5f5511,'8bf1')\nexpect('main_list_copy',0x5f5513,'c6865202000000')\nexpect('main_list_copy',0x5f5542,'c6467800')\nexpect('main_list_copy',0x5f5566,'688089f8008d8ed8000000')\ncall('main_list_copy',0x5f5571,0x5f52c0)\nexpect('enter_copy',0x5f5beb,'8bf1')\nexpect('enter_copy',0x5f5c3f,'688089f8008d8ed8000000')\ncall('enter_copy',0x5f5c4a,0x5f52c0)\nexpect('adjust_dispatch',0x5f42d5,'8bf1')\nexpect('adjust_dispatch',0x5f42e2,'8be8')\nexpect('adjust_dispatch',0x5f42ec,'c6865002000001')\nexpect('adjust_dispatch',0x5f42f3,'a15096e10083c0ff83f806')\nexpect('adjust_dispatch',0x5f4304,'ff248584495f00')\nexpect('audio',0x5f459c,'83fd03')\nexpect('audio',0x5f45a5,'ff24addc495f00')\npage_targets=list(struct.unpack('<7I',raw['page_switch_table']))\nrow_targets=list(struct.unpack('<4I',raw['audio_row_table']))\nassert page_targets[2-1]==0x5f459c\nassert row_targets==[0x5f45ac,0x5f4602,0x5f4658,0x5f46c0]\nassert audio_listing[page_targets[1]]=='CMP EBP,0x3'\nfor target in row_targets:\n    assert audio_listing[target]=='FILD dword ptr [ESP + 0x14]'\n    expect('audio',target,'db442414')\nvolume_rows=[(0,0x5f45ef,0xf8,0x5f45e9,0x5f45f5),(1,0x5f4645,0x100,0x5f463f,0x5f464b),\n             (2,0x5f469b,0x108,0x5f4695,0x5f46a1),(3,0x5f4703,0x104,0x5f46fd,0x5f4709)]\nfor row,address,offset,receiver,callee in volume_rows:\n    expect('audio',address,'d99e'+struct.pack('<I',offset).hex())\n    expect('audio',receiver,'8d8ed8000000')\n    call('audio',callee,0x8d5430)\nfor load,channel,arg,slot,jump in [(0x5f46a6,0xa4,0x5f46b3,0x5f46bb,0x5f46be),(0x5f470e,0xa0,0x5f471b,0x5f4723,0x5f4726)]:\n    expect('audio',load,'8b8e'+struct.pack('<I',channel).hex())\n    expect('audio',arg,'c744240401000000')\n    expect('audio',slot,'8b4234')\n    expect('audio',jump,'ffe0')\nscreen_stores={f'{a:08X}':s for a,s in audio_listing.items() if re.match(r'(MOV|MOVSS|FSTP) (byte|dword|float) ptr \\[ESI',s)}\nassert set(screen_stores)=={f'{r[1]:08X}' for r in volume_rows}\nassert all(s.startswith('FSTP float ptr') for s in screen_stores.values())\nassert 0xd8+0x24==0xfc and 0x194+0x24==0x1b8 and 0xf88980+0x24==0xf889a4\nresult={'passed':True,'pin_occurrences':len(pins),'unique_frozen_files':len(set(pins)),\n 'Source_Git_inputs':len(freeze['sources']),'captured_commands':len(captures),\n 'retained_PE_bytes':len(image),'retained_PE_sha256':sha(image),'PE_mapped_and_live_identical_windows':len(windows),\n 'PE_window_bytes':sum(len(x) for x in raw.values()),'saved_live_audio_instruction_rows':len(audio_listing),'saved_live_dispatch_instruction_rows':len(live_dispatch),\n 'page2_target':f'{page_targets[1]:08X}','row_targets':[f'{x:08X}' for x in row_targets],\n 'exact_byte_or_call_checks':checks,'direct_audio_screen_stores':screen_stores,\n 'read_guard':{'enabled':True,'successful_evidence_opens':len(opened),'unique_evidence_files_opened':len(set(opened)),'installation_opens':0,'writes_permitted':False},\n 'qualification':'Static copied-byte and field-store evidence only. No delegated-write census, actual zero provenance, x87 emulation, lifecycle/startup timing, Native execution, ABI replacement or gameplay proof.'}\nprint(json.dumps(result,indent=2))\n",
+    "exit_code": 0,
+    "stdout_text": "{\r\n  \"passed\": true,\r\n  \"pin_occurrences\": 58,\r\n  \"unique_frozen_files\": 58,\r\n  \"Source_Git_inputs\": 17,\r\n  \"captured_commands\": 25,\r\n  \"retained_PE_bytes\": 12223752,\r\n  \"retained_PE_sha256\": \"b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6\",\r\n  \"PE_mapped_and_live_identical_windows\": 7,\r\n  \"PE_window_bytes\": 768,\r\n  \"saved_live_audio_instruction_rows\": 91,\r\n  \"saved_live_dispatch_instruction_rows\": 15,\r\n  \"page2_target\": \"005F459C\",\r\n  \"row_targets\": [\r\n    \"005F45AC\",\r\n    \"005F4602\",\r\n    \"005F4658\",\r\n    \"005F46C0\"\r\n  ],\r\n  \"exact_byte_or_call_checks\": [\r\n    \"005F5511\",\r\n    \"005F5513\",\r\n    \"005F5542\",\r\n    \"005F5566\",\r\n    \"005F5571->005F52C0\",\r\n    \"005F5BEB\",\r\n    \"005F5C3F\",\r\n    \"005F5C4A->005F52C0\",\r\n    \"005F42D5\",\r\n    \"005F42E2\",\r\n    \"005F42EC\",\r\n    \"005F42F3\",\r\n    \"005F4304\",\r\n    \"005F459C\",\r\n    \"005F45A5\",\r\n    \"005F45AC\",\r\n    \"005F4602\",\r\n    \"005F4658\",\r\n    \"005F46C0\",\r\n    \"005F45EF\",\r\n    \"005F45E9\",\r\n    \"005F45F5->008D5430\",\r\n    \"005F4645\",\r\n    \"005F463F\",\r\n    \"005F464B->008D5430\",\r\n    \"005F469B\",\r\n    \"005F4695\",\r\n    \"005F46A1->008D5430\",\r\n    \"005F4703\",\r\n    \"005F46FD\",\r\n    \"005F4709->008D5430\",\r\n    \"005F46A6\",\r\n    \"005F46B3\",\r\n    \"005F46BB\",\r\n    \"005F46BE\",\r\n    \"005F470E\",\r\n    \"005F471B\",\r\n    \"005F4723\",\r\n    \"005F4726\"\r\n  ],\r\n  \"direct_audio_screen_stores\": {\r\n    \"005F45EF\": \"FSTP float ptr [ESI + 0xf8]\",\r\n    \"005F4645\": \"FSTP float ptr [ESI + 0x100]\",\r\n    \"005F469B\": \"FSTP float ptr [ESI + 0x108]\",\r\n    \"005F4703\": \"FSTP float ptr [ESI + 0x104]\"\r\n  },\r\n  \"read_guard\": {\r\n    \"enabled\": true,\r\n    \"successful_evidence_opens\": 74,\r\n    \"unique_evidence_files_opened\": 59,\r\n    \"installation_opens\": 0,\r\n    \"writes_permitted\": false\r\n  },\r\n  \"qualification\": \"Static copied-byte and field-store evidence only. No delegated-write census, actual zero provenance, x87 emulation, lifecycle/startup timing, Native execution, ABI replacement or gameplay proof.\"\r\n}\r\n",
+    "stderr_text": "",
+    "result": {
+      "passed": true,
+      "pin_occurrences": 58,
+      "unique_frozen_files": 58,
+      "Source_Git_inputs": 17,
+      "captured_commands": 25,
+      "retained_PE_bytes": 12223752,
+      "retained_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "PE_mapped_and_live_identical_windows": 7,
+      "PE_window_bytes": 768,
+      "saved_live_audio_instruction_rows": 91,
+      "saved_live_dispatch_instruction_rows": 15,
+      "page2_target": "005F459C",
+      "row_targets": [
+        "005F45AC",
+        "005F4602",
+        "005F4658",
+        "005F46C0"
+      ],
+      "exact_byte_or_call_checks": [
+        "005F5511",
+        "005F5513",
+        "005F5542",
+        "005F5566",
+        "005F5571->005F52C0",
+        "005F5BEB",
+        "005F5C3F",
+        "005F5C4A->005F52C0",
+        "005F42D5",
+        "005F42E2",
+        "005F42EC",
+        "005F42F3",
+        "005F4304",
+        "005F459C",
+        "005F45A5",
+        "005F45AC",
+        "005F4602",
+        "005F4658",
+        "005F46C0",
+        "005F45EF",
+        "005F45E9",
+        "005F45F5->008D5430",
+        "005F4645",
+        "005F463F",
+        "005F464B->008D5430",
+        "005F469B",
+        "005F4695",
+        "005F46A1->008D5430",
+        "005F4703",
+        "005F46FD",
+        "005F4709->008D5430",
+        "005F46A6",
+        "005F46B3",
+        "005F46BB",
+        "005F46BE",
+        "005F470E",
+        "005F471B",
+        "005F4723",
+        "005F4726"
+      ],
+      "direct_audio_screen_stores": {
+        "005F45EF": "FSTP float ptr [ESI + 0xf8]",
+        "005F4645": "FSTP float ptr [ESI + 0x100]",
+        "005F469B": "FSTP float ptr [ESI + 0x108]",
+        "005F4703": "FSTP float ptr [ESI + 0x104]"
+      },
+      "read_guard": {
+        "enabled": true,
+        "successful_evidence_opens": 74,
+        "unique_evidence_files_opened": 59,
+        "installation_opens": 0,
+        "writes_permitted": false
+      },
+      "qualification": "Static copied-byte and field-store evidence only. No delegated-write census, actual zero provenance, x87 emulation, lifecycle/startup timing, Native execution, ABI replacement or gameplay proof."
+    }
+  },
+  "credit": {
+    "finite_native_copy_provenance": true,
+    "finite_direct_volume_store_mapping": true,
+    "retained_offline_replay": true,
+    "Source_changes": false,
+    "compiler_or_tests_run": false,
+    "new_interface_or_selector": false,
+    "Native_execution": false,
+    "Ghidra_mutation": false,
+    "SDK_game_OS_change": false,
+    "x87_equivalence": false,
+    "ABI_replacement": false,
+    "startup_validated": false,
+    "gameplay_validated": false
+  }
+}
