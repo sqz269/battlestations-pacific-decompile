@@ -1,0 +1,522 @@
+{
+  "Source_census_and_searches": {
+    "Source_equal_prior_closed_paths": 4217,
+    "complete_search_counts": {
+      "head_storage_and_reference": 13,
+      "locale_authority_and_bookend_tokens": 3,
+      "locale_recycling_entry": 5,
+      "locale_storage_declaration_tokens": 3,
+      "same_process_head_accessor": 23,
+      "string_service_context": 1033
+    },
+    "evidence": [
+      "Source_census.json",
+      "Git_census.json",
+      "Source_searches.json",
+      "SourceExcerpts/"
+    ],
+    "prior_Source_HEAD": "3ad8c081106e5b4f0d11c7dcaa9de2a6580d1204",
+    "retained_services_candidate": "GameNativeStringProcess already retains AA8/AA4/AA0 publication services through raw_/raw_context(); Source service availability does not instantiate the canonical locale owner or establish lifetime.",
+    "same_existing_head_candidate": "GameNativePhysicalPoolProcess list_head_00e188b4_ is borrowed by its AllocatorListDomain and exposed through allocator_list_domain_00e188b4(). Reuse the same established Source head/domain; Original fixed-address identity and same actual published locale element remain unproved.",
+    "scope_limit": "These finite complete searches identify no canonical locale storage/startup owner under the enumerated patterns. Differently named or indirect ownership is not excluded."
+  },
+  "archive": {
+    "bytes": 46713562,
+    "path": "local/cc12_locale_initializer_prefix_and_table_cell/evidence.zip",
+    "sha256": "6df90fe269bcee5a56b32ab1ebf685524e7e714da91b7fbdda3507c1c757ba85"
+  },
+  "exact_contract": {
+    "call_00CC8D35": {
+      "callee_ABI_credit": "Prior accepted body contract only; no callee body or stack/register execution is revalidated in this packet.",
+      "default_and_effective_fallthrough": "00CC8D3A",
+      "default_and_effective_flow": "UNCONDITIONAL_CALL",
+      "default_and_effective_target": "00436230",
+      "direct_instruction_effect": "With prefix-entry ESP=S, CALL supplies ECX=E1768C, sets callee-entry ESP=S-4 and writes return address CC8D3A at [S-4]. The prefix pushes no argument and does not adjust flags.",
+      "encoded_signed_displacement": -8989450,
+      "failure_boundary": "The prefix has no conditional guard, status test or failure branch. The target non-return flag is false; that is not proof every call returns. Exception, allocation failure and partial construction cleanup are inherited unresolved contracts; no successful continuation or callback lifetime is inferred.",
+      "fallthrough_override": false,
+      "flow_override": "NONE",
+      "inherited_callee_ABI": "Accepted lifecycle report: receiver in ECX, no stacked arguments, plain RET, EAX=original receiver on normal return, EBX/ESI/EDI preserved and EBP untouched. Thus this call would yield ESP=S and EAX=E1768C on that normal-return contract. ECX/EDX/flags after the call are unspecified here.",
+      "instruction": "CALL rel32 0x00436230",
+      "length": 5,
+      "normal_return_condition": "Only if accepted 436230 returns normally to its saved return address does execution resume at CC8D3A. No bytes at that continuation were read.",
+      "operand_arithmetic": "(00CC8D3A + (-8989450)) modulo 2^32 = 00436230",
+      "owner": null,
+      "target_metadata": {
+        "direct_thunk_target": null,
+        "is_thunk": false,
+        "name": "BSP_LocaleNodePool_Initialize",
+        "no_return": false
+      }
+    },
+    "entry_00CC8D30": {
+      "default_and_effective_fallthrough": "00CC8D35",
+      "default_and_effective_flow": "FALL_THROUGH",
+      "effects": "ECX becomes 00E1768C. Other general registers, ESP and flags are unchanged by this instruction.",
+      "fallthrough_override": false,
+      "flow_override": "NONE",
+      "instruction": "MOV ECX,0x00E1768C",
+      "length": 5,
+      "owner": null
+    },
+    "table_cell_00CE2754": {
+      "decoded_little_endian_uint32": "00CC8D30",
+      "defined": true,
+      "exact_length": 4,
+      "function_owner": null,
+      "instruction_at_or_containing": null,
+      "interpretation": "The exact mapped saved data cell contains the address of the admitted unowned prefix. Table role, execution order, loader processing, neighboring cells and actual invocation are not established.",
+      "listing_class": "ghidra.program.database.code.DataDB"
+    }
+  },
+  "fresh_Native_evidence": {
+    "Native_byte_identical_pairs": [
+      "count.txt",
+      "instructions.json",
+      "code_bytes.txt",
+      "data_bytes.txt"
+    ],
+    "all_Native_captures_closed": true,
+    "code_hex": "b9 8c 76 e1 00 e8 f6 d4 76 ff",
+    "code_span_inclusive": [
+      "00CC8D30",
+      "00CC8D39"
+    ],
+    "comparison": {
+      "bytes": 330,
+      "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_comparison.json",
+      "sha256": "79dc77476f8138dfc46d49b6b47210088f19f19373ce979257f0e07a2ef573f7"
+    },
+    "data_hex": "30 8d cc 00",
+    "data_span_inclusive": [
+      "00CE2754",
+      "00CE2757"
+    ],
+    "evidence_files": [
+      {
+        "bytes": 53,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/code_bytes.txt",
+        "sha256": "f1544f2169c06ac18663f23148b83f057441014b2bc3198f952d34db44022fe6"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 29,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/data_bytes.txt",
+        "sha256": "76d01007e52f94c38ed515a0621e081cb015db877bb46ca62ee5b75b05cfe1c9"
+      },
+      {
+        "bytes": 320,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/instructions.json",
+        "sha256": "844848e636631d7af584447273d6319a50690d04301f15d4ae91448838b8ae3b"
+      },
+      {
+        "bytes": 44246,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/typed_gate.json",
+        "sha256": "df9f91e3f390e0278712c1dea2aa2c20c51c49723e74aaf53a18972b759326bf"
+      },
+      {
+        "bytes": 53,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/code_bytes.txt",
+        "sha256": "f1544f2169c06ac18663f23148b83f057441014b2bc3198f952d34db44022fe6"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 29,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/data_bytes.txt",
+        "sha256": "76d01007e52f94c38ed515a0621e081cb015db877bb46ca62ee5b75b05cfe1c9"
+      },
+      {
+        "bytes": 320,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/instructions.json",
+        "sha256": "844848e636631d7af584447273d6319a50690d04301f15d4ae91448838b8ae3b"
+      },
+      {
+        "bytes": 44246,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/typed_gate.json",
+        "sha256": "2bb3b9ee77d8e7dfa3143dc21a028cf8f8bc7a63bfaaa41c05186ac995e1268a"
+      }
+    ],
+    "fresh_modification_number_before_after": 92,
+    "fresh_unique_code_bytes": 10,
+    "fresh_unique_data_bytes": 4,
+    "function_count_before_after": 64730,
+    "gating_before_bytes": "Fourteen typed responses cover every admitted byte. Two exact 5-byte InstructionDB units and one exact defined 4-byte DataDB, no contradictory containing/exact unit or function owner.",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "program": "/battlestationspacific.exe",
+    "project": "bsp",
+    "project_marker_verified": "C:/Users/sqz269/bsp.gpr",
+    "provenance_limit": "Exact saved Ghidra memory/listing evidence. No fresh original PE comparison or Native execution; table pointer is not proof of actual startup dispatch.",
+    "typed_capture_outer_utc_differs": true,
+    "typed_response_pairs_byte_identical": 14,
+    "verified_identity_before_after_equal": true
+  },
+  "frozen_Source_HEAD": "22e67a54181d183e3c7958ce236289298fb192bd",
+  "named_incomplete_prerequisites": [
+    "Actual initialized canonical E1768C storage and identity across all borrowers.",
+    "Original E188B4 fixed-address projection authenticated to the same Source head/domain and same published locale element.",
+    "Actual initializer and callback registration/status/failure ordering, callback body and retained owner lifetime.",
+    "Concrete trim/profile binding with same element and ordinary provider serialization.",
+    "Actual slabs, 1Ch slots, payload/string lifetimes and quiescence before table/slab/section/unlink teardown.",
+    "Actual FH3 setup/dispatcher EBP = S = R + 0Ch; three accepted cleanup leaves do not establish invocation.",
+    "Full initializer entry continuation, actual registration operand/target, returned status and failure ordering.",
+    "Exact CE2754 table membership/dispatch, startup phase and actual invocation."
+  ],
+  "packet": "cc12_locale_initializer_prefix_and_table_cell",
+  "physical_copy_identity_check": {
+    "bytes": 919,
+    "path": "local/cc12_locale_initializer_prefix_and_table_cell/physical_copy_comparison.json",
+    "sha256": "594e7679f9ddd843501771cf07569b4b99248239afe5be1288ed9d56967f1caa"
+  },
+  "prior_base_unlink_archive_pin": {
+    "bytes": 72757861,
+    "credit": "Historical pin only; prior archive/raw Native bytes not copied into this proof.",
+    "sha256": "4e7a26caa16d436e0dcd443026702cc45b8da6facdb32788eed37be6d32456da",
+    "worker_commit": "bcef5843bfaec8a1990d6126b50b4a0e58716d46"
+  },
+  "prior_contract_pins": [
+    {
+      "bytes": 4365,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_lifecycle_primary.json",
+      "sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e",
+      "status": "accepted_normal_flow_contract_only",
+      "worker_commit": "da51854bc0beb187030cd01141a7c9c9914bdf6b"
+    },
+    {
+      "bytes": 7798,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_profile_primary.json",
+      "sha256": "0052ecca6ee433aeeea979583f95b0fde766f4bd469ad1f7428040c1a338474b",
+      "status": "accepted_normal_lifecycle_trim_and_bounded_unwind_data_provisional_annotations_saved",
+      "worker_commit": "3d9a6c29193f9ac09a8905a91c2b298eb5845b1f"
+    },
+    {
+      "bytes": 5334,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_unwind_primary.json",
+      "sha256": "2fd16f0d54fa6248393427aa4dbdde2d1b43f344ad461021eace18cd16b28e8b",
+      "status": "native_action_forwarding_evidenced_owner_unwind_and_dispatch_ABI_incomplete",
+      "worker_commit": "4d1c7ed8884e670f47628fe3da2a6f4cc25dff5b"
+    },
+    {
+      "bytes": 9694,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_table_cleanup_primary.json",
+      "sha256": "e26b5981e4cbbe59dc4880e2865af024a95d2830455279b9ed4a0aabf355c940",
+      "status": "bounded_native_nullable_table_backing_free_contract_accepted_owning_unwind_and_activation_NO_GO",
+      "worker_commit": "f2e60874b51768a44136acc34c112c0b89545a84"
+    },
+    {
+      "bytes": 22472,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_section_cleanup_primary.json",
+      "sha256": "67e2e2e9df0e4413a766ea508a83d92683485ceefbb9fbe5bbf52b6cc9c3edad",
+      "status": "native_cleanup_leaf_and_existing_source_reuse_candidate_accepted_complete_owner_unwind_activation_NO_GO",
+      "worker_commit": "03734602e960e8ea3b2c6c0bad31fd3dfa470d91"
+    },
+    {
+      "bytes": 11711,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_base_unlink_primary.json",
+      "sha256": "0b90ff96361174e28be1a51ce5c28a5a3ba02056ceea49623f0534e6377c155d",
+      "status": "native_shared_list_unlink_and_existing_domain_provider_accepted_canonical_owner_and_FH3_unproved",
+      "worker_commit": "bcef5843bfaec8a1990d6126b50b4a0e58716d46"
+    }
+  ],
+  "prior_metadata_evidence": {
+    "accepted_Main_commit": "22e67a54181d183e3c7958ce236289298fb192bd",
+    "accepted_worker_commit": "a5a4c55170609218efc4f81dd90c593c279e8e59",
+    "archive_bytes": 23790030,
+    "archive_sha256": "bcd6104842475fdb34df620e664e5357d84e31c936dd59f2264fefa37747c74d",
+    "copied_and_guarded_replayed": true,
+    "credit": "Prior metadata and Source proof only. Its ten metadata pairs and 4217-path Source cohort are distinct from fresh captures. Null caller response gives no caller absence inference.",
+    "nested_archive_entry": "Prior/canonical_metadata_evidence.zip",
+    "primary_report": {
+      "bytes": 11403,
+      "path": "reports/cc12_locale_canonical_owner_primary.json",
+      "sha256": "245b884ca92554b5b806048905e2feb69c5cc9412eef719ba79e4c4a1dcc7791"
+    },
+    "worker_report": {
+      "bytes": 22168,
+      "path": "reports/cc12_locale_canonical_pool_owner_provenance.json",
+      "sha256": "392664b8b11d3afc78573ec704307ec4f6f507ebd2c4cd72cc1b1b7510bb85d8"
+    }
+  },
+  "prior_particle_Root_Source_pin": {
+    "credit": "Historical routing pin only. No build/artifact credit transferred.",
+    "path": "local/cc12_particle_hook_adapter_primary/Source3356_particle_hook_adapter_Root_frozen.json",
+    "sha256": "fa67d37ee3567afdd432c4096504dda8e1b805f3dd5e7f0ec752501041e0fb07"
+  },
+  "proof_scope": {
+    "Source_scope": "Every frozen HEAD src/, include/, cmake/ path and CMakeLists.txt; complete root and Source subtree trees traversed.",
+    "actual_Git_blob_occurrences": 4248,
+    "actual_Git_commit_tree_objects": 11,
+    "closed_Source_paths": 4217,
+    "committed_output_proof": "After this immutable two-file commit, local delivery_git.zip captures the actual commit, root/docs/reports trees and these two blobs; its independent guarded replay and handoff pin are outside the report to avoid a self-hash cycle.",
+    "dependencies": [
+      {
+        "bytes": 89,
+        "oid": "9aef1928f1fd52590562a18ba0aeddfd3b38556b",
+        "path": ".gitattributes",
+        "sha256": "418193c95b4ee228aa2120999556180034f602de344f784a9f2b1de9a454bf0c"
+      },
+      {
+        "bytes": 93,
+        "oid": "aae3244d5fb60fd333c3a4900535d5f85d5e1719",
+        "path": ".gitignore",
+        "sha256": "06a705c18bce4da7cff632f1a0ff2cd77263bff0833c8d06197a16b31eaffb04"
+      },
+      {
+        "bytes": 10159,
+        "oid": "9d0593b43f2eb3b7d7d3303da9beefb0baf86db3",
+        "path": "AGENTS.md",
+        "sha256": "e37deff0ffe1fe978634c7b3998fba7ac70cb4e5f07d677ffb9a29e80d6070a8"
+      },
+      {
+        "bytes": 455,
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "path": "config/target.json",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "bytes": 1984,
+        "oid": "b87368b9b632b040666325917ef6b281759d1659",
+        "path": "docs/CC12_LOCALE_BASE_UNLINK_PRIMARY.md",
+        "sha256": "7e10ce565e5146f42d4af4372a6d3f67386c73d49bf1ac30eff4f4e561be69b6"
+      },
+      {
+        "bytes": 9148,
+        "oid": "a80a2794b97119df51fd83f53450117f0ca69a0e",
+        "path": "docs/CC12_LOCALE_BORROWED_NODE_RECYCLING_HELPER.md",
+        "sha256": "3c211c48f6e1dca44e56cce4fd2b9db84bf2cbf70a999de1ec52a022c4fcfac2"
+      },
+      {
+        "bytes": 1761,
+        "oid": "cb9eda9e29831007de6a970568056a8e890a9ded",
+        "path": "docs/CC12_LOCALE_CANONICAL_OWNER_PRIMARY.md",
+        "sha256": "341e7951e16b6d4f67e969662fc04c6c394c22db1d3712b12342e747043fb404"
+      },
+      {
+        "bytes": 6420,
+        "oid": "f569e15e370b228e95f380e5a3cc746facc8f46c",
+        "path": "docs/CC12_LOCALE_CANONICAL_POOL_OWNER_PROVENANCE.md",
+        "sha256": "12f1485715e85183393de8708d80051aa8119e764ec9eb46d6147958b3eecfb0"
+      },
+      {
+        "bytes": 1867,
+        "oid": "398eb90ccdfbc5dcb5249290ff78d8a37352f3dd",
+        "path": "docs/CC12_LOCALE_LIFECYCLE_PRIMARY.md",
+        "sha256": "a07fef4112d641d0b1c6dcfed3dc9a5de33a7025c024473ae0af3bb735cba53e"
+      },
+      {
+        "bytes": 11852,
+        "oid": "64acd423e8455ed95dbaf5244ec87057b7ba1f36",
+        "path": "docs/CC12_LOCALE_NODE_POOL_LIFECYCLE_CONTRACT.md",
+        "sha256": "952b75d3b5ca9c2b149d6c81249ac2be7e2ab4e6ac1251bb4b420258138eab73"
+      },
+      {
+        "bytes": 2381,
+        "oid": "a55381d8b696c5107f78a0c062f6c46eb2f61078",
+        "path": "docs/CC12_LOCALE_PROFILE_PRIMARY.md",
+        "sha256": "5c6972c9429f548879f02f5d42a4783dbcbf630852cf0920c577f7c19881e761"
+      },
+      {
+        "bytes": 1945,
+        "oid": "86793ef433f646efbbaedea33908c952bb04b73e",
+        "path": "docs/CC12_LOCALE_SECTION_CLEANUP_PRIMARY.md",
+        "sha256": "066426fdbff58594a773897313a842a6f42f8fe6b2d762ec64aa391721e37707"
+      },
+      {
+        "bytes": 2156,
+        "oid": "543dc65bb6b92ced0a5b4f5f3b62adeec20df565",
+        "path": "docs/CC12_LOCALE_TABLE_CLEANUP_PRIMARY.md",
+        "sha256": "3d5eca4fed91d415513e30d097226466a20a7f2ef01db28d2ace891bc6096abe"
+      },
+      {
+        "bytes": 1953,
+        "oid": "25e35b64e1805c514e156ac875a05daa3bab319d",
+        "path": "docs/CC12_LOCALE_UNWIND_PRIMARY.md",
+        "sha256": "16b59502ceb6538dbceedf2322cee1c9d938791236a85c867ca62cebf3c83b0d"
+      },
+      {
+        "bytes": 3727,
+        "oid": "a13d2bfe0e63bc246317f35b41fd1bbb8fac2457",
+        "path": "docs/NATIVE_STRING_RAW_POOL_CONTEXT.md",
+        "sha256": "7ed7edbf2bfe9b695d2b604eb35473d86dc1595e7f4c72a6b04de7529679912b"
+      },
+      {
+        "bytes": 11711,
+        "oid": "d9bffe001c3e547a8fa17cdbee03d530a349ad04",
+        "path": "reports/cc12_locale_base_unlink_primary.json",
+        "sha256": "0b90ff96361174e28be1a51ce5c28a5a3ba02056ceea49623f0534e6377c155d"
+      },
+      {
+        "bytes": 114660,
+        "oid": "c7f61b05f07e576ff37e003f160f73a897dc73c7",
+        "path": "reports/cc12_locale_borrowed_node_recycling_helper.json",
+        "sha256": "f479b519c6456b8c448c2e923185a687aee3978b43d613399b941dab5dd5ba96"
+      },
+      {
+        "bytes": 11403,
+        "oid": "5a252f907067283b5e17f90d7d6d155aeb60b90b",
+        "path": "reports/cc12_locale_canonical_owner_primary.json",
+        "sha256": "245b884ca92554b5b806048905e2feb69c5cc9412eef719ba79e4c4a1dcc7791"
+      },
+      {
+        "bytes": 22168,
+        "oid": "55a879582ae6acb831d14edc8d5e97cce30f8d0d",
+        "path": "reports/cc12_locale_canonical_pool_owner_provenance.json",
+        "sha256": "392664b8b11d3afc78573ec704307ec4f6f507ebd2c4cd72cc1b1b7510bb85d8"
+      },
+      {
+        "bytes": 4365,
+        "oid": "b55389981a417743660e30fde49f6985309457cf",
+        "path": "reports/cc12_locale_lifecycle_primary.json",
+        "sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e"
+      },
+      {
+        "bytes": 74911,
+        "oid": "945cad099ff59493fe9f1f53200cf467b47aeeff",
+        "path": "reports/cc12_locale_node_pool_lifecycle_contract.json",
+        "sha256": "9264fb23d1e7c5933db2fcc87f1dfd738c4a119eb2926a567b8846e811241dbd"
+      },
+      {
+        "bytes": 7798,
+        "oid": "3f8de9bc2d05f5b614dbef124074d1106ab8ebeb",
+        "path": "reports/cc12_locale_profile_primary.json",
+        "sha256": "0052ecca6ee433aeeea979583f95b0fde766f4bd469ad1f7428040c1a338474b"
+      },
+      {
+        "bytes": 22472,
+        "oid": "dd0f9fe8a421b3a5d83dc99bab5b3a91718a2274",
+        "path": "reports/cc12_locale_section_cleanup_primary.json",
+        "sha256": "67e2e2e9df0e4413a766ea508a83d92683485ceefbb9fbe5bbf52b6cc9c3edad"
+      },
+      {
+        "bytes": 9694,
+        "oid": "7107e06ee74a8f774b5c4d2fae88e63a7ba152a6",
+        "path": "reports/cc12_locale_table_cleanup_primary.json",
+        "sha256": "e26b5981e4cbbe59dc4880e2865af024a95d2830455279b9ed4a0aabf355c940"
+      },
+      {
+        "bytes": 5334,
+        "oid": "2301eafbb1c98f1ffd5d5c33d3ffd0cbd6348adc",
+        "path": "reports/cc12_locale_unwind_primary.json",
+        "sha256": "2fd16f0d54fa6248393427aa4dbdde2d1b43f344ad461021eace18cd16b28e8b"
+      },
+      {
+        "bytes": 73311,
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "path": "tools/bsp.py",
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "bytes": 17283,
+        "oid": "c9b6a6788498b82373233afe3211002ed90ca4c1",
+        "path": "tools/coordination.py",
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      {
+        "bytes": 14411,
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "path": "tools/ghidra_export.py",
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "bytes": 15523,
+        "oid": "a17d5c65f9cda9fda16f7cfbf530df1e5196f55b",
+        "path": "tools/ghidra_launch.py",
+        "sha256": "36ba29c40be112e3e32d3106272e8681a9fdb09fbc1ce25c6c52db080a4f363e"
+      },
+      {
+        "bytes": 20048,
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "path": "tools/ghidra_typed_flow.py",
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "bytes": 1371,
+        "oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "path": "tools/workspace.py",
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      }
+    ],
+    "strict_guard": "Only the supplied archive may be read and only the named result written; external file reads, processes, network and native code loading are rejected. Three negative self-probes passed. The prior nested archive is replayed from in-memory bytes.",
+    "whole_repository_blob_closure_claimed": false,
+    "whole_repository_paths_metadata_count_only": 13557
+  },
+  "replay_scripts": [
+    {
+      "bytes": 10831,
+      "path": "local/cc12_locale_initializer_prefix_and_table_cell/capture.py",
+      "sha256": "d498085ce58171c360727dd1fb0817cc394300f207302b8f52071572253e4ca0"
+    },
+    {
+      "bytes": 10761,
+      "path": "local/cc12_locale_initializer_prefix_and_table_cell/replay.py",
+      "sha256": "a1b73d8c05fb3d6ddbe0be426db625ef7572da6bc27891df7cc34b55178e2d40"
+    },
+    {
+      "bytes": 2874,
+      "path": "local/cc12_locale_initializer_prefix_and_table_cell/guarded_replay.py",
+      "sha256": "7714e11112c43000f5de829ed91412c0a391f985b72f6c2eb2e2d73afe71bb62"
+    },
+    {
+      "bytes": 5817,
+      "path": "local/cc12_locale_initializer_prefix_and_table_cell/prior_replay.py",
+      "sha256": "5787d5059905efafa5cbf041ddd604aa7c455abe1799b9a530d081669bef3f25"
+    }
+  ],
+  "schema": "bsp.cc12.locale-initializer-prefix-and-table-cell.v1",
+  "smallest_separately_gated_continuation": {
+    "candidate": "00CC8D3A",
+    "excluded": "No CD9410 callback body, registration callee, OS/free, handler/FH3/EH data, installed CRT, neighboring table cells or Native execution.",
+    "first_scope": "Metadata only at exact CC8D3A: refresh project/program, exact/containing owners, unit boundary/length and flow. No raw bytes are authorized by this proposal.",
+    "fresh_basis": "The exact saved default and effective fallthrough of the admitted CC8D35 call is CC8D3A, with no override.",
+    "possible_later_scope": "Only after that separate gate and Root admission, read exactly one complete instruction described by fresh typed metadata, with per-byte span ownership checks. Derive any subsequent instruction/call/terminal scope from its measured metadata; never an arbitrary initializer hull."
+  },
+  "status": "exact_unowned_prefix_and_table_cell_established_full_initializer_exit_registration_owner_lifetime_unproved",
+  "strict_original_guarded_replay": {
+    "bytes": 2519,
+    "path": "local/cc12_locale_initializer_prefix_and_table_cell/guarded_original.json",
+    "sha256": "e8fd202fc891f5ab3de0cbeb32141a6b725c9599bfd21a8bca322408488a2aec"
+  },
+  "strict_physically_copied_guarded_replay": {
+    "bytes": 2557,
+    "path": "local/cc12_locale_initializer_prefix_and_table_cell/PhysicalCopy/guarded_copy.json",
+    "sha256": "38fc98b8977606a627390af993e5395a85ea37b2b08b5f6c2ab216b142dd89d7"
+  },
+  "tracked_output_scope": [
+    "docs/CC12_LOCALE_INITIALIZER_PREFIX_AND_TABLE_CELL.md",
+    "reports/cc12_locale_initializer_prefix_and_table_cell.json"
+  ],
+  "validation_credit": {
+    "ABI_compatible_drop_in": false,
+    "CMake_changed": false,
+    "Cplusplus_changed": false,
+    "GPR_mutations": 0,
+    "Native_execution": false,
+    "actual_Git_and_closed_Source_replayed": true,
+    "build_run": false,
+    "callback_lifetime_established": false,
+    "canonical_Source_owner_activated": false,
+    "exit_registration_established": false,
+    "fresh_exact_prefix_and_cell": true,
+    "fresh_typed_metadata": true,
+    "game_validated": false,
+    "initializer_completion_established": false,
+    "probes_run": false,
+    "strict_original_and_physical_copy_replay_PASS": true,
+    "tests_run": false
+  },
+  "worker_branch": "agent/cc12_locale_initializer_prefix"
+}
