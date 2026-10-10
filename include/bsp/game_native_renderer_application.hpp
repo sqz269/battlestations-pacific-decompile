@@ -33,6 +33,7 @@ struct NativeMeshBufferReadContext;
 struct NativeMeshMetadataReadContext;
 struct NativeMeshTextureFieldContext;
 struct NativeMeshLightingConstants;
+struct NativeInstanceGeneratorContext;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -114,6 +115,16 @@ public:
     // renderer identities each time. Do not retarget its reader or contexts.
     // No mesh/subset/item parser, native acquisition or cleanup is activated.
     const GameNativeMeshFieldServices& borrow_mesh_field_services();
+    // Ready-only metadata inspection of the SAME graphics/layout/process and
+    // mapped-data domain. Retain this application and its original providers.
+    // End ALL borrowed views/copies before frame entry, reset/recreation, shared
+    // drain or provider destruction; serialize uses and reborrow afterward.
+    // Const is shallow: do not mutate referents/serial or copy for activation.
+    // No Native construction, factory/finalizer, registration, setter, release
+    // or mutable service use is permitted through this metadata borrow. It adds
+    // no Owners, acquisition tracking or retention enforcement. The cached plain
+    // context remains stable; every permitted borrow revalidates its identities.
+    const NativeInstanceGeneratorContext& borrow_instance_generator_context();
     //73BF80's cache bracket over canonical process cells and this SAME VFS.
     // Keep it alive through material compilation, release before singleton drain.
     // Full preload loop remains separate; these entrypoints perform real I/O.
