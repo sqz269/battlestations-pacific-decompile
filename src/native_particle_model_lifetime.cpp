@@ -298,4 +298,31 @@ void NativeParticleModelPreparedRecord::dispose_retired_at_quiescence() noexcept
     reference_.reset(); // Host reference is already retired; no Native access.
     phase_ = Phase::disposed;
 }
+
+NativeParticleModelPreparedHookAdapter::NativeParticleModelPreparedHookAdapter(
+    NativeParticleModelPreparedRecord& record, NativeParticleModelConstructionCallees& delegate) noexcept
+    : record_(record), delegate_(delegate) {}
+void NativeParticleModelPreparedHookAdapter::bind_particle_profile(NativeModelOwner& owner) noexcept {
+    record_.publish_particle_profile(owner);
+}
+void NativeParticleModelPreparedHookAdapter::retire_failed_particle_profile(NativeModelOwner& owner) noexcept {
+    record_.retire_after_failed_construction(owner);
+}
+void NativeParticleModelPreparedHookAdapter::bind_mesh(NativeMeshStorage& mesh) noexcept {
+    delegate_.bind_mesh(mesh);
+}
+void NativeParticleModelPreparedHookAdapter::bind_material(NativeMaterialStorage& material) noexcept {
+    delegate_.bind_material(material);
+}
+void NativeParticleModelPreparedHookAdapter::bind_section(NativeMeshSectionStorage& section) noexcept {
+    delegate_.bind_section(section);
+}
+void* NativeParticleModelPreparedHookAdapter::renderer_virtual5c(void* renderer, std::uint32_t entry,
+    std::uint32_t first, std::uint32_t bytes, void* descriptor) {
+    return delegate_.renderer_virtual5c(renderer, entry, first, bytes, descriptor);
+}
+float NativeParticleModelPreparedHookAdapter::call_00bd2f10(RandomThreads& random,
+    RandomStream stream, float minimum, float maximum) {
+    return delegate_.call_00bd2f10(random, stream, minimum, maximum);
+}
 } // namespace bsp
