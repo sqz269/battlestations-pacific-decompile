@@ -1,0 +1,751 @@
+{
+  "schema": 1,
+  "status": "read_only_typed_endpoint_Source_scope_ready_no_implementation_or_deployment",
+  "utc": "2026-10-10T00:36:55.030745+00:00",
+  "baseline_main_commit": "9416c324fcc763c988e83704c422fe86bfa03359",
+  "tooling_source_checkout": {
+    "path": "J:\\tools\\ghidra-mcp",
+    "HEAD": "0c0299d1588f17bdb457ff8591c98c0b5eae0a68",
+    "status": [
+      " M CHANGELOG.md",
+      " M bridge_mcp_ghidra.py",
+      " M tests/unit/test_mcp_tools.py"
+    ],
+    "preservation": "All existing modifications preserved. No plugin file or host configuration edited."
+  },
+  "configured_bridge": {
+    "config": "C:/Users/sqz269/.codex/config.toml",
+    "server": "ghidra",
+    "command": "uv",
+    "args": [
+      "run",
+      "--script",
+      "J:\\tools\\ghidra-mcp\\bridge_mcp_ghidra.py"
+    ],
+    "config_changed": false
+  },
+  "source_pins": [
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\FunctionService.java",
+      "bytes": 165097,
+      "sha256": "6b12fae758291cf568faafddf463b3bf0df579f199f5d2fab0c1ba442d1af1bd",
+      "git_path": "src/main/java/com/xebyte/core/FunctionService.java",
+      "HEAD_blob_sha256": "97e7a7e97aa24681f3ba283465165f3b23a27202db7268acbc196fcb787e55e9",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\AnalysisService.java",
+      "bytes": 263021,
+      "sha256": "6f7945af917c39bf6eaac182c45eb8ac19a7eb06afda02ff4e840a5b3039c2c4",
+      "git_path": "src/main/java/com/xebyte/core/AnalysisService.java",
+      "HEAD_blob_sha256": "f1b8ad0ce8a35b815f2e5ab79425cf1564fee0196e102b170f30544ee207e529",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\AnnotationScanner.java",
+      "bytes": 20342,
+      "sha256": "13b504fe965fa376e3b1fa2b6271424f9583f62a3c6a18055634478d6f7852e6",
+      "git_path": "src/main/java/com/xebyte/core/AnnotationScanner.java",
+      "HEAD_blob_sha256": "13b504fe965fa376e3b1fa2b6271424f9583f62a3c6a18055634478d6f7852e6",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\EndpointRegistry.java",
+      "bytes": 67620,
+      "sha256": "5da3b013dc097ade27b7cf2b2adf37f18a3cadd29038844ae1041c8f784b6fbf",
+      "git_path": "src/main/java/com/xebyte/core/EndpointRegistry.java",
+      "HEAD_blob_sha256": "5894f44ef4ef64411221f63cfca983f03b10bc713e9fc518b287af2855fe00b7",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\McpTool.java",
+      "bytes": 1174,
+      "sha256": "a8a27bc083b246126989a7810a4c900e55e5fe0befd5bcada9b9919de99c26f8",
+      "git_path": "src/main/java/com/xebyte/core/McpTool.java",
+      "HEAD_blob_sha256": "a8a27bc083b246126989a7810a4c900e55e5fe0befd5bcada9b9919de99c26f8",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\Param.java",
+      "bytes": 2303,
+      "sha256": "23a811bdce282c89a06c35d6f2c31aa8165653e89bd33464715719b3b93046ed",
+      "git_path": "src/main/java/com/xebyte/core/Param.java",
+      "HEAD_blob_sha256": "23a811bdce282c89a06c35d6f2c31aa8165653e89bd33464715719b3b93046ed",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\ThreadingStrategy.java",
+      "bytes": 4238,
+      "sha256": "e9a2095c247489c57361495aeec95fb062ca386f44acc59a3c40407d49e6c0a9",
+      "git_path": "src/main/java/com/xebyte/core/ThreadingStrategy.java",
+      "HEAD_blob_sha256": "e9a2095c247489c57361495aeec95fb062ca386f44acc59a3c40407d49e6c0a9",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\SwingThreadingStrategy.java",
+      "bytes": 3333,
+      "sha256": "f5a6777f327e245c9273c8a9c23ad79b50f6facda5eed210e7ede1fdc8f1bd32",
+      "git_path": "src/main/java/com/xebyte/core/SwingThreadingStrategy.java",
+      "HEAD_blob_sha256": "f5a6777f327e245c9273c8a9c23ad79b50f6facda5eed210e7ede1fdc8f1bd32",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\DocumentationHashService.java",
+      "bytes": 57168,
+      "sha256": "762ce5863234c53bbc11ecfaac08f45e8a1b7510213bd50f1b588531f379ec28",
+      "git_path": "src/main/java/com/xebyte/core/DocumentationHashService.java",
+      "HEAD_blob_sha256": "a2bcc39c3bd3c4980849eeb86909f485fa51d1bc093d08e5ab335161fad5f43a",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java",
+      "bytes": 109406,
+      "sha256": "75e6d419e38b7a15a045a6e847f13e26a5e9b346f353e5aeb493bc36820f3410",
+      "git_path": "src/main/java/com/xebyte/core/ProgramScriptService.java",
+      "HEAD_blob_sha256": "e27897a71422d85fa1b4a09246665d6b159033c92ee409acb2a76a1f688e2aeb",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\GhidraMCPPlugin.java",
+      "bytes": 185590,
+      "sha256": "f9bc1704fe92fa7253bf41f25d9db2d22b78faedf4c111bbf54c8c6c94fa9cbb",
+      "git_path": "src/main/java/com/xebyte/GhidraMCPPlugin.java",
+      "HEAD_blob_sha256": "fcbcde99ce4cb9fe3088aa752e71c1de1665f5c462e124437a3a91a823b526fd",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\headless\\GhidraMCPHeadlessServer.java",
+      "bytes": 30517,
+      "sha256": "2fa2c4870bd2e88c3450e8757951ae7e3509851f28aa631c58062fe4cf7c6365",
+      "git_path": "src/main/java/com/xebyte/headless/GhidraMCPHeadlessServer.java",
+      "HEAD_blob_sha256": "33e17e01a7357bcc90f2e31f2c58b57135da9367b222f736100f7af9b7321123",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\bridge_mcp_ghidra.py",
+      "bytes": 70200,
+      "sha256": "b12137cef0d4307e5f16dabfa945d6c7d7e59da9df1cb94b6d2fb75cf08b49e3",
+      "git_path": "bridge_mcp_ghidra.py",
+      "HEAD_blob_sha256": "d63c4d65b80c93e7ebaa0fdcad23735071c573ef0343100d2da7c776f70796d1",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": false
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\src\\main\\resources\\extension.properties",
+      "bytes": 352,
+      "sha256": "eb5072a1b10e1ca8e1c5a5499701d15dd463b26d34c3327189c44357fee33482",
+      "git_path": "src/main/resources/extension.properties",
+      "HEAD_blob_sha256": "eb5072a1b10e1ca8e1c5a5499701d15dd463b26d34c3327189c44357fee33482",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\pom.xml",
+      "bytes": 14499,
+      "sha256": "43727c7608af00bbdf60950dfa6bc00884884bc5535374d3931a6f63ee582597",
+      "git_path": "pom.xml",
+      "HEAD_blob_sha256": "3a12a4e9f9d79b24e8b9849abb929ec97eda4dd95e4d0559813169da02e15362",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\tests\\endpoints.json",
+      "bytes": 58482,
+      "sha256": "bd56bb42a556d06f089db210921895a304a279b881ee9784da2e543dbcb5eda9",
+      "git_path": "tests/endpoints.json",
+      "HEAD_blob_sha256": "a72ff520b4b92e2f97906651c7f9d88ad98d024f8e08e4f8158894172759e0a6",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp\\AGENTS.md",
+      "bytes": 1974,
+      "sha256": "7e408b6bc3a9745945c98f516ccc00a0b84c82d33166bd453756027394aa7ee0",
+      "git_path": "AGENTS.md",
+      "HEAD_blob_sha256": "0ddc27c60ff3a8b76fbac26888daba59b4c454193e953185699564b7cd646c1c",
+      "raw_HEAD_equality": false,
+      "LF_normalized_HEAD_equality": true
+    }
+  ],
+  "BSP_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\bsp.py",
+      "bytes": 72606,
+      "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "git_path": "tools/bsp.py",
+      "HEAD_blob_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "git_path": "tools/ghidra_export.py",
+      "HEAD_blob_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_flow_properties.py",
+      "bytes": 9331,
+      "sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+      "git_path": "tools/ghidra_flow_properties.py",
+      "HEAD_blob_sha256": "d63b4fc38cc4eb9d26a942df0dd784886fc64a4976a31c8df43cb5ffb3f1e623",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_flow_repair.py",
+      "bytes": 6756,
+      "sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6",
+      "git_path": "tools/ghidra_flow_repair.py",
+      "HEAD_blob_sha256": "68c09083c26ea072942389e88fd8c464b36e3e52bda33abf3720dbce99edfbe6",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_path": "config/target.json",
+      "HEAD_blob_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\native_texture_atlas_item_source.json",
+      "bytes": 159673,
+      "sha256": "c1ef980896d3b6ef3b1e7c3dbce3a35c197d3f9053e8d8b041125752cd2b1ca7",
+      "git_path": "reports/native_texture_atlas_item_source.json",
+      "HEAD_blob_sha256": "c1ef980896d3b6ef3b1e7c3dbce3a35c197d3f9053e8d8b041125752cd2b1ca7",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\NATIVE_TEXTURE_ATLAS_ITEM.md",
+      "bytes": 8525,
+      "sha256": "909816ad82f13854fbe8a2808f7bbc871c27dd28d54cd42b80dadbaa50b3584d",
+      "git_path": "docs/NATIVE_TEXTURE_ATLAS_ITEM.md",
+      "HEAD_blob_sha256": "909816ad82f13854fbe8a2808f7bbc871c27dd28d54cd42b80dadbaa50b3584d",
+      "raw_HEAD_equality": true,
+      "LF_normalized_HEAD_equality": true
+    }
+  ],
+  "installed_plugin": {
+    "extension_properties": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\extension.properties",
+      "bytes": 328,
+      "sha256": "dff8facacb38dbedae50e5998e8513c35c9bec80f716a6c9164cfb63437e99e5"
+    },
+    "JAR": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\lib\\GhidraMCP-5.6.0.jar",
+      "bytes": 581085,
+      "sha256": "3eb3999c930e844ddda1f74572b2d414cbacc645356593bf2cc44ccc038aad48"
+    },
+    "manifest": "Manifest-Version: 1.0\r\nCreated-By: Maven JAR Plugin 3.2.2\r\nBuild-Jdk-Spec: 21\r\nPlugin-Class: com.xebyte.GhidraMCPPlugin\r\nPlugin-Name: GhidraMCP\r\nPlugin-Version: 5.6.0\r\nPlugin-Author: Ben Ethington\r\nPlugin-Description: GhidraMCP - HTTP server plugin with 225 MCP tools fo\r\n r reverse engineering automation\r\n\r\n",
+    "maven_properties": "artifactId=GhidraMCP\r\ngroupId=com.xebyte\r\nversion=5.6.0\r\n",
+    "install_zip": {
+      "path": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Extensions\\Ghidra\\GhidraMCP-5.6.0.zip",
+      "bytes": 573064,
+      "sha256": "f0fbeacb13426fbe0240c6e53bfcdceeffde50e97408a8b5b6478135561c76a8"
+    },
+    "ZIP_embedded_jar": "GhidraMCP/lib/GhidraMCP-5.6.0.jar",
+    "ZIP_installed_jar_byte_equality": true,
+    "installed_bytecode_observations": [
+      {
+        "class_name": "FunctionService",
+        "method": "getFunctionByAddress",
+        "javap_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_source_readiness\\FunctionService_getFunctionByAddress_installed_javap.txt",
+          "bytes": 4832,
+          "sha256": "45105806b700a717fe94d2db2f1a4e483499bf7060a2e5b6bc757348877a0917"
+        },
+        "class_SHA256": "c809f06d702389f438c4e4c8b77d59c78f0839d839f177df179672163e13fc8c",
+        "selected_bytecode_lines": [
+          "      67: ldc_w         #373                // String Function: %s at %s\\nSignature: %s\\nEntry: %s\\nBody: %s - %s",
+          "     119: invokeinterface #321,  1          // InterfaceMethod ghidra/program/model/listing/Function.getBody:()Lghidra/program/model/address/AddressSetView;",
+          "     124: invokeinterface #379,  1          // InterfaceMethod ghidra/program/model/address/AddressSetView.getMinAddress:()Lghidra/program/model/address/Address;",
+          "     134: invokeinterface #321,  1          // InterfaceMethod ghidra/program/model/listing/Function.getBody:()Lghidra/program/model/address/AddressSetView;",
+          "     139: invokeinterface #325,  1          // InterfaceMethod ghidra/program/model/address/AddressSetView.getMaxAddress:()Lghidra/program/model/address/Address;"
+        ],
+        "qualification": "Disassembly of installed disk JAR, not an attestation of the JVM loaded class or a reproducible Source build."
+      },
+      {
+        "class_name": "AnalysisService",
+        "method": "analyzeControlFlow",
+        "javap_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_source_readiness\\AnalysisService_analyzeControlFlow_installed_javap.txt",
+          "bytes": 24356,
+          "sha256": "8812bc113d8cf5dd09d99efa6ad7ff727071db85e3c6481264f11d6be0ba4a0b"
+        },
+        "class_SHA256": "88b639244ce4e194ff3f06406f2cbe9ad9eb1eefdb571a4b6160f61813d1692d",
+        "selected_bytecode_lines": [
+          "     159: invokeinterface #125,  1          // InterfaceMethod ghidra/program/model/listing/Function.getBody:()Lghidra/program/model/address/AddressSetView;",
+          "     213: invokeinterface #125,  1          // InterfaceMethod ghidra/program/model/listing/Function.getBody:()Lghidra/program/model/address/AddressSetView;",
+          "     283: invokeinterface #795,  1          // InterfaceMethod ghidra/program/model/block/CodeBlock.getNumAddresses:()J",
+          "     526: invokeinterface #125,  1          // InterfaceMethod ghidra/program/model/listing/Function.getBody:()Lghidra/program/model/address/AddressSetView;",
+          "     901: ldc_w         #881                // String size_bytes",
+          "     906: invokeinterface #125,  1          // InterfaceMethod ghidra/program/model/listing/Function.getBody:()Lghidra/program/model/address/AddressSetView;",
+          "     911: invokeinterface #883,  1          // InterfaceMethod ghidra/program/model/address/AddressSetView.getNumAddresses:()J",
+          "    1097: ldc_w         #902                // String basic_block_details"
+        ],
+        "qualification": "Disassembly of installed disk JAR, not an attestation of the JVM loaded class or a reproducible Source build."
+      }
+    ],
+    "loaded_runtime_class_origin_attested": false,
+    "source_to_JAR_reproducible_build_attested": false
+  },
+  "SDK_getter_declarations": [
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/Instruction.java",
+      "entry_sha256": "84c2dc99fba573d3ac6f97bbf9a00f90ca8e6335825334ac624c674e8d404e62",
+      "declaration_lines": [
+        {
+          "line": 132,
+          "text": "public int getDefaultFallThroughOffset();"
+        },
+        {
+          "line": 141,
+          "text": "public Address getDefaultFallThrough();"
+        },
+        {
+          "line": 149,
+          "text": "public Address getFallThrough();"
+        },
+        {
+          "line": 190,
+          "text": "public Address[] getFlows();"
+        },
+        {
+          "line": 202,
+          "text": "public Address[] getDefaultFlows();"
+        },
+        {
+          "line": 208,
+          "text": "public FlowType getFlowType();"
+        },
+        {
+          "line": 223,
+          "text": "public FlowOverride getFlowOverride();"
+        },
+        {
+          "line": 374,
+          "text": "public boolean isFallThroughOverridden();"
+        },
+        {
+          "line": 379,
+          "text": "public InstructionContext getInstructionContext();"
+        }
+      ]
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/Function.java",
+      "entry_sha256": "bdd9ec371c5eb83e0437e0df96db9d338392ef1dc69f71f24c9799a6bd0049a9",
+      "declaration_lines": [
+        {
+          "line": 599,
+          "text": "public boolean hasNoReturn();"
+        },
+        {
+          "line": 604,
+          "text": "* @param hasNoReturn true if this function does not return."
+        },
+        {
+          "line": 606,
+          "text": "public void setNoReturn(boolean hasNoReturn);"
+        },
+        {
+          "line": 664,
+          "text": "* @see #getThunkedFunction(boolean)"
+        },
+        {
+          "line": 666,
+          "text": "public boolean isThunk();"
+        },
+        {
+          "line": 675,
+          "text": "public Function getThunkedFunction(boolean recursive);"
+        }
+      ]
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/address/AddressSetView.java",
+      "entry_sha256": "bda27f394f384afa261448342106f934da191cfa3d5cf66783cd27cf49fdf46f",
+      "declaration_lines": [
+        {
+          "line": 84,
+          "text": "public int getNumAddressRanges();"
+        },
+        {
+          "line": 89,
+          "text": "public AddressRangeIterator getAddressRanges();"
+        },
+        {
+          "line": 98,
+          "text": "public AddressRangeIterator getAddressRanges(boolean forward);"
+        },
+        {
+          "line": 112,
+          "text": "public AddressRangeIterator getAddressRanges(Address start, boolean forward);"
+        },
+        {
+          "line": 122,
+          "text": "return Spliterators.spliterator(iterator(), getNumAddressRanges(),"
+        },
+        {
+          "line": 152,
+          "text": "return Spliterators.spliterator(iterator(forward), getNumAddressRanges(),"
+        },
+        {
+          "line": 189,
+          "text": "return Spliterators.spliterator(iterator(start, forward), getNumAddressRanges(),"
+        },
+        {
+          "line": 208,
+          "text": "public long getNumAddresses();"
+        },
+        {
+          "line": 351,
+          "text": "for (AddressRange range : getAddressRanges()) {"
+        },
+        {
+          "line": 376,
+          "text": "AddressRangeIterator addressRanges = set.getAddressRanges();"
+        },
+        {
+          "line": 404,
+          "text": "AddressRangeIterator addressRanges = set.getAddressRanges();"
+        }
+      ]
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/address/AddressRange.java",
+      "entry_sha256": "caba08840fb126023f3e348df1f8bdcf7cd6b057a3cd203e413da2cf85480656",
+      "declaration_lines": [
+        {
+          "line": 36,
+          "text": "public long getLength();"
+        },
+        {
+          "line": 92,
+          "text": "public Address getMaxAddress();"
+        },
+        {
+          "line": 97,
+          "text": "public Address getMinAddress();"
+        }
+      ]
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/listing/CodeUnit.java",
+      "entry_sha256": "a1b8961f4fb565e7a9d5803059c6ef32bb2e5af4c729511f7c972386b2bff37a",
+      "declaration_lines": [
+        {
+          "line": 121,
+          "text": "public Address getMinAddress();"
+        },
+        {
+          "line": 242,
+          "text": "public int getLength();"
+        }
+      ]
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\Project\\lib\\Project-src.zip",
+      "entry": "ghidra/framework/model/DomainObject.java",
+      "entry_sha256": "7e14ce2ac30e09e674861e8491c7fe9a3153d471f8bd96084b528b82c311799e",
+      "declaration_lines": [
+        {
+          "line": 392,
+          "text": "public long getModificationNumber();"
+        },
+        {
+          "line": 521,
+          "text": "public TransactionInfo getCurrentTransactionInfo();"
+        }
+      ]
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/lang/InstructionPrototype.java",
+      "entry_sha256": "b45639e5b21415080fefc0e981fafb9cf8957dbdebd2e0d151c3d79965417100",
+      "declaration_lines": [
+        {
+          "line": 118,
+          "text": "public FlowType getFlowType(InstructionContext context);"
+        }
+      ]
+    },
+    {
+      "source_archive": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\SoftwareModeling\\lib\\SoftwareModeling-src.zip",
+      "entry": "ghidra/program/model/symbol/RefType.java",
+      "entry_sha256": "861e91252e8709b0749f705029c64cfad044cc9dd933aa84e5c4ec64343f6b3b",
+      "declaration_lines": [
+        {
+          "line": 478,
+          "text": "return (isConditional() ? \"Branch\" : \"Jump\");"
+        },
+        {
+          "line": 611,
+          "text": "return !isConditional();"
+        },
+        {
+          "line": 618,
+          "text": "public boolean isConditional() {"
+        },
+        {
+          "line": 626,
+          "text": "public boolean isComputed() {"
+        },
+        {
+          "line": 634,
+          "text": "public boolean isTerminal() {"
+        }
+      ]
+    }
+  ],
+  "named_live_metadata_query": {
+    "command": [
+      "C:\\ProgramData\\miniconda3\\python.exe",
+      "tools/bsp.py",
+      "ghidra",
+      "proto",
+      "00aeead0",
+      "--brief"
+    ],
+    "temporary_environment": {
+      "BSP_GHIDRA_AUTOSTART": "0"
+    },
+    "exit_code": 0,
+    "stdout_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_source_readiness\\named_proto_metadata.txt",
+      "bytes": 119,
+      "sha256": "4d4dc9654deff4fcd4fc57ca3f757bbda3edda222108188b44f64223a7ebaea4"
+    },
+    "stderr_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_source_readiness\\named_proto_metadata.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": "00aeead0 CG_scalar_deleting_dtor_00aeead0  undefined CG_scalar_deleting_dtor_00aeead0(void)  body 00aeead0 - 00aeeaed\r\n",
+    "Client_verify": "bsp.py client()->ghidra_export.Client.verify checks project bsp, /battlestationspacific.exe, x86:LE:32:default, imagebase00400000. No force/restart/autostart used.",
+    "qualification": "Function label/signature and minimum/maximum metadata only. No new exact-body membership or Native code/data evidence."
+  },
+  "historical_published_gate": {
+    "report": "reports/native_texture_atlas_item_source.json",
+    "flow_property_probe": {
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_atlas_item_listing\\flow_properties.json",
+        "bytes": 8040,
+        "sha256": "ba743747e35111898d6c903fcf30d8e05a5dc46ce9ae11054a038a49c191c417"
+      },
+      "http_status": 200,
+      "raw_response": "{\"error\":\"Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.\"}",
+      "properties": null,
+      "exact_body_AddressSets_returned": false,
+      "exact_flow_override_fallthrough_callee_no_return_preimages_returned": false,
+      "mutation_fallback_attempted": false
+    },
+    "qualification": "Prior atlas packet response retained and pinned; not a new script call in this readiness packet."
+  },
+  "existing_capabilities": [
+    {
+      "endpoint": "/get_function_by_address",
+      "service": "FunctionService.java:520-551",
+      "result": "Text function name/signature/entry/body minimum and maximum only",
+      "exact_AddressSet": false,
+      "flow_preimages": false
+    },
+    {
+      "endpoint": "/analyze_control_flow",
+      "service": "AnalysisService.java:950-1104",
+      "result": "Function body getNumAddresses, derived block entry/size/successor summaries and aggregate instruction/flow counts; block details truncated after100",
+      "exact_AddressSet": false,
+      "flow_preimages": false,
+      "invoked_this_packet": false
+    },
+    {
+      "endpoint": "/get_assembly_context",
+      "service": "XrefCallGraphService.java:1188",
+      "result": "Exact-start instruction text/context; useful for missing instruction evidence. Does not expose requested body ranges/flow flags",
+      "qualification": "Source path located; previous published exact-start result is pinned by atlas report. Not reopened in this packet."
+    },
+    {
+      "endpoint": "/get_function_documentation",
+      "service": "DocumentationHashService.java:312 onward",
+      "result": "Documentation/normalized-hash/decompiler-oriented route; not a precise flow-property endpoint",
+      "invoked_this_packet": false
+    },
+    {
+      "endpoint": "/run_script_inline and /run_ghidra_script",
+      "service": "ProgramScriptService.java:1260 and1815",
+      "result": "Both require existing script opt-in. Prior raw query was disabled. No enabling, retry or alternative script path attempted."
+    },
+    {
+      "endpoint": "/clear_instruction_flow_override and /set_function_no_return",
+      "service": "FunctionService.java:1500-1660",
+      "result": "Mutators call executeWrite and setters. Exact old getter values are returned only as part of mutation. Not a read capability.",
+      "dry_run_note": "Current AnnotationScanner has a generic rollback wrapper for POST dry_run, but it still invokes mutating service code and is not an attested mutation-free property read. This packet did not call it or infer rollback safety."
+    }
+  ],
+  "proposed_endpoint": {
+    "path": "/get_flow_metadata",
+    "method": "GET",
+    "service_file": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\FunctionService.java",
+    "annotation": "@McpTool(path=\"/get_flow_metadata\", method=\"GET\", description=\"Read exact current function body and instruction flow metadata without analysis or mutation\", category=\"function\")",
+    "parameters": {
+      "address": {
+        "type": "String",
+        "paramType": "address",
+        "required": true,
+        "semantics": "One explicit address; parse through ServiceUtils.parseAddress with actual program. No function-name or nearest-function inference."
+      },
+      "program": {
+        "type": "String",
+        "default": "",
+        "semantics": "Existing explicit program selector; BSP caller always supplies configured program."
+      },
+      "max_ranges": {
+        "type": "int",
+        "default": 4096,
+        "semantics": "Bound output. Reject overflow with complete=false and no partial body ranges; never silently truncate or infer range cover."
+      }
+    },
+    "read_path": [
+      "ServiceUtils.getProgramOrError(programProvider,program)",
+      "Parse explicit address; preserve address-space identity",
+      "threadingStrategy.executeRead for bounded getters; no transaction, analyzer, disassembler, decompiler, setter, save or script",
+      "Read modification number before/after; report them and reject changed observations. Matching numbers are a consistency check, not a universal concurrency or atomicity proof."
+    ],
+    "response_fields": {
+      "schema": 1,
+      "program": {
+        "path": "DomainFile pathname",
+        "language": "LanguageID string",
+        "image_base": "Address with space"
+      },
+      "query_address": "Canonical address with address-space name",
+      "modification_number_before": "DomainObject.getModificationNumber()",
+      "modification_number_after": "DomainObject.getModificationNumber()",
+      "instruction": {
+        "exists": "listing.getInstructionAt(query)!=null; false yields null flow values",
+        "start": "Exact Instruction address; no decode fallback",
+        "length": "Instruction.getLength()",
+        "containing_instruction_start": "listing.getInstructionContaining(query) result independently, or null",
+        "code_unit_at": "listing.getCodeUnitAt(query) Java class/type, start and length, or null",
+        "flow_override": "Instruction.getFlowOverride().name()",
+        "default_flow_type": "Instruction.getPrototype().getFlowType(Instruction.getInstructionContext())",
+        "effective_flow_type": "Instruction.getFlowType()",
+        "flow_type_flags": "Call/jump/conditional/computed/terminal flags for both types, with enum text retained",
+        "default_fallthrough": "Instruction.getDefaultFallThrough() or null",
+        "effective_fallthrough": "Instruction.getFallThrough() or null",
+        "fallthrough_overridden": "Instruction.isFallThroughOverridden()",
+        "default_targets": "Instruction.getDefaultFlows() complete Address[]",
+        "effective_targets": "Instruction.getFlows() complete Address[]"
+      },
+      "function_at_query": "FunctionManager.getFunctionAt(query) identity or null",
+      "function_containing_query": "FunctionManager.getFunctionContaining(query) identity or null; do not substitute a nearest function",
+      "functions": "Deduplicated exact-at/containing Function records: entry,name,hasNoReturn,isThunk,direct thunk target record and complete current body ranges",
+      "body": "Actual Function.getBody(); enumerate getAddressRanges(true), preserving every min/max inclusive and address space; include getNumAddressRanges/getNumAddresses plus returned range count and complete=true only after all ranges emitted",
+      "direct_call_targets": "If default OR effective type is a call, union default/effective target addresses with origin tags; each records getFunctionAt(target) or explicit no-exact-function, hasNoReturn,isThunk and direct thunk target metadata. No inferred indirect destination or runtime-call-target claim.",
+      "direct_thunk_target": "Only getThunkedFunction(false), with exact entry,name,hasNoReturn,isThunk and recursive=false; no implied equality of thunk and target flags or recursively resolved runtime identity."
+    },
+    "no_instruction_policy": "Return explicit exists=false with code-unit/containing-function facts; no default flow, predicted fallthrough, physical decode, synthetic instruction or function extension.",
+    "no_change_policy": [
+      "No startTransaction/executeWrite or setters",
+      "No disassembly/reanalysis/cache-flush/decompiler invocation",
+      "No body union, min/max cover or instruction-count inference",
+      "No scripts and no mutation dry_run fallback",
+      "No hostconfig or installed plugin changes in readiness"
+    ],
+    "coherence_boundary": "Root continues sole GPR writer and existing write-lock discipline for actual repairs. Read endpoint must reject observed concurrent modifications; exact property reads do not authorize or implement repair."
+  },
+  "routing_scope": [
+    {
+      "file": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\GhidraMCPPlugin.java",
+      "lines": "486-517",
+      "change": "None normally: existing AnnotationScanner includes FunctionService and publishes its tool schema."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\headless\\GhidraMCPHeadlessServer.java",
+      "lines": "306-339",
+      "change": "None normally: same annotated FunctionService registered for headless. This packet does not launch headless or open another project."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\AnnotationScanner.java",
+      "lines": "58-91,145-179",
+      "change": "None normally: annotated GET method is discovered; scalar parameters already supported. GET does not invoke POST dry_run transaction wrapper."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp\\src\\main\\java\\com\\xebyte\\core\\EndpointRegistry.java",
+      "lines": "461-466",
+      "change": "Legacy explicit registry also exposes function lookup; audited current GUI/headless paths use AnnotationScanner. Add a matching route only if maintaining this legacy entry path, not because current runtime discovery needs it."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp\\bridge_mcp_ghidra.py",
+      "lines": "747-789,848-896,1058-1068",
+      "change": "No handwritten wrapper required: /mcp/schema dynamic parser and GET multiplexer already support address/program/int arguments. Preserve existing local edits. Any eventual schema refresh occurs only after a separately scoped implementation/deployment step."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp\\tests\\endpoints.json",
+      "change": "Update catalog in later implementation packet; plugin AGENTS requires its usual tests when actually changing plugin code. None run for this readiness packet."
+    }
+  ],
+  "proposed_BSP_CLI": {
+    "command": "python tools/bsp.py ghidra typed-flow <address> [<address> ...] --output local/<packet>/typed_flow.json",
+    "changes": [
+      "Add named typed-flow parser/dispatch in tools/bsp.py; do not silently replace or fall back through current script-only flow-properties.",
+      "Use Client.verify before/after the bounded metadata batch, with explicit configured program; compare response target fields.",
+      "Invoke GET get_flow_metadata for each explicit address; retain complete raw responses and response status rather than cap/truncate saved JSON.",
+      "Validate schema, canonical query identity, complete range count/length accounting, null states and stable modification numbers; require identical modification numbers across the batch and reject incomplete/error responses.",
+      "Keep console summary capped; persist full exact ranges/properties to local. Report endpoint unavailable without enabling scripts or mutating Ghidra."
+    ],
+    "existing_script_route": "tools/ghidra_flow_properties.py currently calls run_script_inline and records no rows when disabled. It remains a separately named capability and must not be the typed endpoint fallback."
+  },
+  "Root_next_packet": [
+    "Implement the small annotated FunctionService getter endpoint and endpoint catalog update in isolated plugin work, preserving its three existing dirty files. Optional legacy registry parity is explicit, not a discovery requirement.",
+    "Implement named BSP typed-flow client with strict persisted-response validation. Review against local SDK getters; use smallest focused checks for complete discontiguous ranges, missing instruction, override/fallthrough separation and direct-thunk flags.",
+    "Build/package validation and any later replacement/restart remain separate concrete Root steps; none was performed here. No script opt-in is needed by the proposed design.",
+    "After the endpoint exists in a separately reviewed deployment, capture exact metadata under Root coordination before any Native listing repair. Preserve comments, names, flow preimages and exact ranges; current gate remains held until actual results."
+  ],
+  "validation": {
+    "plugin_Source_or_BSP_tool_edits": false,
+    "config_changes": false,
+    "Native_body_data_handler_openings": false,
+    "script_calls": false,
+    "mutating_dry_runs": false,
+    "GPR_writes": false,
+    "builds": false,
+    "tests": false,
+    "plugin_install_or_restart": false,
+    "current_exact_flow_or_AddressSet_obtained": false,
+    "Native_Source_admission": false,
+    "runtime_or_gameplay": false,
+    "installed_JAR_ZIP_equality": true,
+    "installed_bytecode_getter_review": true,
+    "SDK_API_declarations_reviewed": true
+  },
+  "readiness_capture_script_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_source_readiness\\capture.py",
+    "bytes": 18800,
+    "sha256": "e60e6e11401f0e7aa77cdf4619014758757be0827a098eb64194256a41d98997"
+  }
+}
