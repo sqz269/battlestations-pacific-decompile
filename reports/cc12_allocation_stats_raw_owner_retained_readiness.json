@@ -1,0 +1,3120 @@
+{
+  "schema": "cc12-allocation-stats-raw-owner-retained-readiness-v1",
+  "packet": "cc12_allocation_stats_raw_owner_retained_readiness",
+  "created_utc": "2026-10-10T04:37:44.149241+00:00",
+  "baseline_commit": "4da728a3f5d960636fe1932589cab57a023023ec",
+  "worker_worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "owned_tracked_files": [
+    "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+    "reports/cc12_allocation_stats_raw_owner_retained_readiness.json"
+  ],
+  "lease_scope": "file-only; zero addresses and ranges",
+  "status": "held-pending-bounded-allocation-stats-lifecycle-evidence",
+  "decision": {
+    "genuine_explicit_raw_owner_binding_API_ready": false,
+    "actual_derived_slot4_identity_already_retained": true,
+    "genuine_BE2700_ordinary_Source_already_complete": true,
+    "canonical_allocator_and_same_raw_manager_services_available": true,
+    "mapped_original_table_band_service_available": true,
+    "actual_allocation_stats_publication_and_deletion_binding_added": false,
+    "semantic_AllocationStatsState_is_valid_raw_owner": false,
+    "fallback_guard_four_word_owner_API_already_added": true,
+    "fallback_startup_call_remains_independently_held": true,
+    "new_Source634_or_Source636_credit": false,
+    "full_classifier_cache_composition_ready": false
+  },
+  "current_Source": {
+    "startup_semantic_owner": "GameStartupHost::run_initialize_phases stack-local AllocationStatsState; constructor sets null table, budget40000000 and startup0 only.",
+    "missing_actual_owner": "No retained0109CEFC publication or allocation-stats profile deletion context in GameSingletonHost/resource application.",
+    "consumer": "B80720 miss loads current0109CEFC, current owner table and current slot4 before factory work; reloads each after factory clear; wrapping start-end goes to current resource+40. Cache hit returns before metric calls.",
+    "known_metric_adapter": "NativeDefaultResourceLoadCacheCalls accepts genuineBE2700 identity only; different current targets forward to supplied actual implementation.",
+    "manager_and_lock": "SoundLifetimeAccess uses canonical process01090AA0; BD0C30/BCFCA0 operate actual raw manager; CapturedSoundLifetimeSection retains actual manager+10 section and its +18 recursion word.",
+    "allocator": "Existing singleton_lifetime_allocate BF681B malloc/new-handler retry boundary and matching singleton_lifetime_free; a registered scalar-freed owner cannot be a stack object or an unrelated embedded member.",
+    "mapped_data": "GameNativeReadOnlyData supplies verified read-only/non-executable original spans; game_main requestsD60000 band containing both profile tokens. It supplies neither mutable publication nor object storage.",
+    "drain": "delete_current_profile lacksD685E0/F4; raw drain pops before current-profile dispatch flags1; exception scope clears remaining manager storage.",
+    "lifetime": "Mapped owner outlives host.reset; owner publication/deletion context must precede registration and survive normal/fallback singleton drain, then captured manager free and publication clear.",
+    "separate_domains": "Owner budget/startup and actual lock recursion are separate from0109DB7C type-ID counter; constructor/metric evidence consumes no type ID."
+  },
+  "retained_Native": {
+    "startup_allocation": "0073D45D..0073D47D pushes0C and callsBF681B; caller preserves pointer/state0 and nonnull-gatesBE2900. Caller allocation cleanup not qualified.",
+    "BE2900": "Nine ordinary instructions: ECX receiver preserved inESI; callBE2750; stampD685F4; receiver+4=40000000; +8=0; return receiver. Metadata BE27F0 callee is not a direct ordinary instruction.",
+    "BE2750": "StampD685E0; current manager getter/capture+10; enter captured section and increment+18; publish receiver0109CEFC; second getter then reload current0109CEFC intoBD0C30; decrement/leave originally captured section; return receiver.",
+    "BE2750_cleanup_frontier": "CC6A90 handler and native states0/1 retained in normal listing; no handler/state-map/funclet recovery performed.",
+    "BE2700": "Complete30-byte ordinary body zeros34h locals via memset; returns40000000 minus zero DWORD+1C. ECX ignored, EAX40000000, RET; no owner budget/startup read and no OS memory query.",
+    "derived_table_capture": {
+      "retained_report": "reports/native_resource_load_cache_by.json",
+      "address": "00d685f4",
+      "bytes": 20,
+      "hex": "3029be000027be002027be004027be00a02abe00",
+      "sha256": "4bf0902e7c6f450631022f5e37365b99efd2cb2fc47cef88a3f9072135ac9db5",
+      "retained_hex_rehashed_without_installed_image_read": true,
+      "qualified_slots": {
+        "+0": "00be2930",
+        "+4": "00be2700",
+        "+8": "00be2720",
+        "+c": "00be2740"
+      },
+      "neighbor_word": {
+        "address": "00d68604",
+        "target": "00be2aa0",
+        "admitted_as_stats_slot10": false
+      },
+      "capture_width_proves_table_extent": false
+    },
+    "base_table": "D685E0 token known from ordinary constructor; actual deletion entry not qualified.",
+    "body_frontiers": [
+      {
+        "address": "00be27f0",
+        "state": "metadata only; cached body export absent",
+        "required": "publication clear/unregister/lock order and ordinary exception effects"
+      },
+      {
+        "address": "00be2930",
+        "state": "actual derived slot0 known; cached body export absent",
+        "required": "scalar flags, return, destructor/free order and failure behavior"
+      },
+      {
+        "address": "00be2890",
+        "state": "metadata candidate; cached body absent",
+        "required": "follow only if actualD685E0 deletion prefix points here"
+      },
+      {
+        "address": "00be2720",
+        "state": "cached body absent",
+        "required": "separate report/+8 gate, outside strict slot4 API"
+      },
+      {
+        "address": "00be2740",
+        "state": "not a cached function start",
+        "required": "separate entity-think/+C gate; current semantic false adapter is not proof"
+      },
+      {
+        "address": "00be2aa0",
+        "state": "neighbor metadata names PlatformBase route",
+        "required": "not a stats target admission and outside packet"
+      }
+    ]
+  },
+  "next_packet": {
+    "kind": "bounded-lifecycle-Native-evidence-recovery; no current implementation admission",
+    "candidate_roots": [
+      "00be27f0",
+      "00be2930"
+    ],
+    "support": [
+      "existingBE2750/BE2900 normal evidence",
+      "necessaryD685E0 deletion prefix",
+      "BE2750 ordinary cleanup contract",
+      "startup allocation caller state0 cleanup"
+    ],
+    "conditional_target": "BE2890 only if the actual base deletion prefix points to it",
+    "stop_boundary": [
+      "neighboring PlatformBase family",
+      "allocation reporting",
+      "entity-think traversal",
+      "full classifier/load-cache graph"
+    ],
+    "later_Source_API": "Actual raw3W storage plus stable0109CEFC publication/context; genuine constructor/base/destructor/scalar profiles bound before registration; same canonical manager and mapped spans retained through drain; explicit narrow construction/binding API.",
+    "later_separate_admission": [
+      "startup phase0 insertion",
+      "actual cache consumer composition",
+      "original ABI/FH3/SEH",
+      "original CRT order",
+      "runtime/gameplay"
+    ],
+    "prohibited_substitutions": [
+      "constant success for unknown metric targets",
+      "fake table pointer on semantic state",
+      "stack/embedded owner registered for scalar free",
+      "private manager/counter",
+      "inferred adjacent-family destructor",
+      "generic lock guard assumed to prove native cleanup"
+    ]
+  },
+  "evidence_levels": {
+    "retained_normal_constructor_and_metric_evidence": true,
+    "new_Native_body_bytes_data_handler_credit": false,
+    "new_raw_owner_Source": false,
+    "new_build_or_fixture_execution": false,
+    "raw_owner_API_ready": false,
+    "startup_bound": false,
+    "full_classifier_cache_graph": false,
+    "original_ABI_FH3_SEH": false,
+    "original_CRT_position": false,
+    "runtime_gameplay": false
+  },
+  "new_work_counts": {
+    "tracked_documents_reports": 2,
+    "Cpp_CMake_ledger_provider_changes": 0,
+    "new_Native_bodies_bytes_handlers_data_tables": 0,
+    "live_Ghidra_analysis_queries": 0,
+    "Ghidra_mutations": 0,
+    "builds_tests_probes_runtime": 0,
+    "current_whole_Source_files": 32,
+    "accepted_prior_context_files": 9,
+    "baseline_Git_blobs_verified": 41,
+    "complete_command_receipts": 63,
+    "negative_search_receipts": 1,
+    "retained_export_files": 12,
+    "frozen_bundle_files": 286
+  },
+  "evidence": {
+    "whole_file_pins": [
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "docs/APP_INIT_PLATFORM.md",
+          "bytes": 21443,
+          "sha256": "593ab5064807201bc00f58a04f50c0e685aa38233e97e8a3721e5f1e025c232b"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/docs/APP_INIT_PLATFORM.md",
+          "bytes": 21443,
+          "sha256": "593ab5064807201bc00f58a04f50c0e685aa38233e97e8a3721e5f1e025c232b"
+        },
+        "baseline_git_blob": "d1800e138743d55e2be164ab23aad91e989284c9",
+        "baseline_git_sha256": "593ab5064807201bc00f58a04f50c0e685aa38233e97e8a3721e5f1e025c232b",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/docs/APP_INIT_PLATFORM.md",
+          "bytes": 21443,
+          "sha256": "593ab5064807201bc00f58a04f50c0e685aa38233e97e8a3721e5f1e025c232b"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE.md",
+          "bytes": 9444,
+          "sha256": "abd6663842f1485fd381149e9f450dc7fb8a724fb14159c19719b6e9cac1ddea"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE.md",
+          "bytes": 9444,
+          "sha256": "abd6663842f1485fd381149e9f450dc7fb8a724fb14159c19719b6e9cac1ddea"
+        },
+        "baseline_git_blob": "e28ab2d72b5b123ecee3ba5a9549a1e0317391df",
+        "baseline_git_sha256": "abd6663842f1485fd381149e9f450dc7fb8a724fb14159c19719b6e9cac1ddea",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE.md",
+          "bytes": 9444,
+          "sha256": "abd6663842f1485fd381149e9f450dc7fb8a724fb14159c19719b6e9cac1ddea"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 4361,
+          "sha256": "ec857b88fc882d18daaf3edf7c9b97bc890960bb6aa7cf568e1392b52577eae2"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 4361,
+          "sha256": "ec857b88fc882d18daaf3edf7c9b97bc890960bb6aa7cf568e1392b52577eae2"
+        },
+        "baseline_git_blob": "b26d4e9f7ff00bec4864b153bedf1b35627b9cba",
+        "baseline_git_sha256": "ec857b88fc882d18daaf3edf7c9b97bc890960bb6aa7cf568e1392b52577eae2",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE_PRIMARY_REVIEW.md",
+          "bytes": 4361,
+          "sha256": "ec857b88fc882d18daaf3edf7c9b97bc890960bb6aa7cf568e1392b52577eae2"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+          "bytes": 15322,
+          "sha256": "007f48d8fbec03852398a64de0738fc73cc832bf67f883c0a8874baa022d16b5"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+          "bytes": 15322,
+          "sha256": "007f48d8fbec03852398a64de0738fc73cc832bf67f883c0a8874baa022d16b5"
+        },
+        "baseline_git_blob": "800167ed59b26dbbb9cc379c4c0a5132b597308c",
+        "baseline_git_sha256": "007f48d8fbec03852398a64de0738fc73cc832bf67f883c0a8874baa022d16b5",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+          "bytes": 15322,
+          "sha256": "007f48d8fbec03852398a64de0738fc73cc832bf67f883c0a8874baa022d16b5"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md",
+          "bytes": 6455,
+          "sha256": "28bc627022e3cac2b0a7d754d0cb242aa8863868df7c1dfe90b2b5edbc8518a4"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md",
+          "bytes": 6455,
+          "sha256": "28bc627022e3cac2b0a7d754d0cb242aa8863868df7c1dfe90b2b5edbc8518a4"
+        },
+        "baseline_git_blob": "8ce87e40f4ada284b7c8a9b989ea15bc13352388",
+        "baseline_git_sha256": "28bc627022e3cac2b0a7d754d0cb242aa8863868df7c1dfe90b2b5edbc8518a4",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md",
+          "bytes": 6455,
+          "sha256": "28bc627022e3cac2b0a7d754d0cb242aa8863868df7c1dfe90b2b5edbc8518a4"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/entity_think_dispatch.hpp",
+          "bytes": 9487,
+          "sha256": "ab113fcf6c7fbb70a3e0b792f7bee3b2cf04008b2825ce4aa9bf7a87b7b5ec8c"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/entity_think_dispatch.hpp",
+          "bytes": 9487,
+          "sha256": "ab113fcf6c7fbb70a3e0b792f7bee3b2cf04008b2825ce4aa9bf7a87b7b5ec8c"
+        },
+        "baseline_git_blob": "aa2a0a4f600e69bca99660ceeb7a88b56951cfcf",
+        "baseline_git_sha256": "ab113fcf6c7fbb70a3e0b792f7bee3b2cf04008b2825ce4aa9bf7a87b7b5ec8c",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/entity_think_dispatch.hpp",
+          "bytes": 9487,
+          "sha256": "ab113fcf6c7fbb70a3e0b792f7bee3b2cf04008b2825ce4aa9bf7a87b7b5ec8c"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "baseline_git_blob": "a777902d1207251888b81ce1ef9442864d88957f",
+        "baseline_git_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/host_data_lifetime_header.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_hosts_script_orders.hpp",
+          "bytes": 69151,
+          "sha256": "f6f0d4cc6c287045f7fdf64e0f4e8f6659a91cae692e31bf7626c5e5acdcc73a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/game_hosts_script_orders.hpp",
+          "bytes": 69151,
+          "sha256": "f6f0d4cc6c287045f7fdf64e0f4e8f6659a91cae692e31bf7626c5e5acdcc73a"
+        },
+        "baseline_git_blob": "9aaf1f403282626b2f0fca838bee0462560adddb",
+        "baseline_git_sha256": "f6f0d4cc6c287045f7fdf64e0f4e8f6659a91cae692e31bf7626c5e5acdcc73a",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/game_hosts_script_orders.hpp",
+          "bytes": 69151,
+          "sha256": "f6f0d4cc6c287045f7fdf64e0f4e8f6659a91cae692e31bf7626c5e5acdcc73a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_hosts_singletons.hpp",
+          "bytes": 7776,
+          "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/game_hosts_singletons.hpp",
+          "bytes": 7776,
+          "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+        },
+        "baseline_git_blob": "70ea3a09363bd920b2eb0f49528331be07173bae",
+        "baseline_git_sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/game_hosts_singletons.hpp",
+          "bytes": 7776,
+          "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_a.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_b.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_readonly_data.hpp",
+          "bytes": 2713,
+          "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/game_native_readonly_data.hpp",
+          "bytes": 2713,
+          "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+        },
+        "baseline_git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+        "baseline_git_sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/game_native_readonly_data.hpp",
+          "bytes": 2713,
+          "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_resource_application.hpp",
+          "bytes": 1678,
+          "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/game_native_resource_application.hpp",
+          "bytes": 1678,
+          "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391"
+        },
+        "baseline_git_blob": "53bbb6d0fd75a5b46494690f3f389cb9c28aa32d",
+        "baseline_git_sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/game_native_resource_application.hpp",
+          "bytes": 1678,
+          "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "bytes": 7900,
+          "sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/game_native_type_storage.hpp",
+          "bytes": 7900,
+          "sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337"
+        },
+        "baseline_git_blob": "52d2a009f0404a611feba2abcc41dab751204af6",
+        "baseline_git_sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/game_native_type_storage.hpp",
+          "bytes": 7900,
+          "sha256": "fc659c2705ef9899c150106ce1bfb7291fc23046f689528f6ec379d48d4d7337"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "baseline_git_blob": "52b6275cd53b1efeeeb9848d18c0960239df6450",
+        "baseline_git_sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        },
+        "baseline_git_blob": "edd0fede810a16cf00ca74c0f8c7497a6fb4b3dd",
+        "baseline_git_sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_singleton_publication.hpp",
+          "bytes": 2293,
+          "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/native_singleton_publication.hpp",
+          "bytes": 2293,
+          "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+        },
+        "baseline_git_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce",
+        "baseline_git_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/native_singleton_publication.hpp",
+          "bytes": 2293,
+          "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_singleton_removal_reorder.hpp",
+          "bytes": 1705,
+          "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/native_singleton_removal_reorder.hpp",
+          "bytes": 1705,
+          "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+        },
+        "baseline_git_blob": "f2a02b1b56d640d2fa144e22c01e95c623d7c3eb",
+        "baseline_git_sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/native_singleton_removal_reorder.hpp",
+          "bytes": 1705,
+          "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+          "bytes": 2373,
+          "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/native_singleton_vector_registration_wrappers.hpp",
+          "bytes": 2373,
+          "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+        },
+        "baseline_git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+        "baseline_git_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/native_singleton_vector_registration_wrappers.hpp",
+          "bytes": 2373,
+          "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "baseline_git_blob": "b4f5b75d1f0aad73e1dd372c809f02afa08565f0",
+        "baseline_git_sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "baseline_git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "baseline_git_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/singleton_lifetime.hpp",
+          "bytes": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_contract.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/sound_lifetime_access.hpp",
+          "bytes": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/include/bsp/sound_lifetime_access.hpp",
+          "bytes": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        "baseline_git_blob": "733525b1563c1641db659681fd812485aa71c7ed",
+        "baseline_git_sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/include/bsp/sound_lifetime_access.hpp",
+          "bytes": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_lifetime_h.command.json"
+        ]
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "reports/cc12_fallback_resource_type_retained_owner_api_source.json",
+          "bytes": 19040,
+          "sha256": "b7d35ae2f982a3ffa8adb33ed6cee35595a129c04f6ad96f5383c17b2588d8fc"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/reports/cc12_fallback_resource_type_retained_owner_api_source.json",
+          "bytes": 19040,
+          "sha256": "b7d35ae2f982a3ffa8adb33ed6cee35595a129c04f6ad96f5383c17b2588d8fc"
+        },
+        "baseline_git_blob": "54bd2902d54d56ad6c61627e705c5ed772e343ae",
+        "baseline_git_sha256": "b7d35ae2f982a3ffa8adb33ed6cee35595a129c04f6ad96f5383c17b2588d8fc",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/reports/cc12_fallback_resource_type_retained_owner_api_source.json",
+          "bytes": 19040,
+          "sha256": "b7d35ae2f982a3ffa8adb33ed6cee35595a129c04f6ad96f5383c17b2588d8fc"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "reports/cc12_fallback_resource_type_retained_owner_api_source_primary_review.json",
+          "bytes": 815888,
+          "sha256": "8adfdf4a09189efa3dbac12efcb1cc7a0d4b3859f2fda10e256cb1cf49416f9d"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/reports/cc12_fallback_resource_type_retained_owner_api_source_primary_review.json",
+          "bytes": 815888,
+          "sha256": "8adfdf4a09189efa3dbac12efcb1cc7a0d4b3859f2fda10e256cb1cf49416f9d"
+        },
+        "baseline_git_blob": "beba24f44c76139ee2d6f85e6c11ce153ab905e3",
+        "baseline_git_sha256": "8adfdf4a09189efa3dbac12efcb1cc7a0d4b3859f2fda10e256cb1cf49416f9d",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/reports/cc12_fallback_resource_type_retained_owner_api_source_primary_review.json",
+          "bytes": 815888,
+          "sha256": "8adfdf4a09189efa3dbac12efcb1cc7a0d4b3859f2fda10e256cb1cf49416f9d"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "reports/cc12_mesh_resource_classifier_retained_composition_followup.json",
+          "bytes": 176249,
+          "sha256": "9fb9613b7818445f7c14c1dad4c9ed4bdc12d99a7c747365491966a17a57d7c2"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/reports/cc12_mesh_resource_classifier_retained_composition_followup.json",
+          "bytes": 176249,
+          "sha256": "9fb9613b7818445f7c14c1dad4c9ed4bdc12d99a7c747365491966a17a57d7c2"
+        },
+        "baseline_git_blob": "3d87ea3b7a25b56dc3b98eceee5b449b7cc67f57",
+        "baseline_git_sha256": "9fb9613b7818445f7c14c1dad4c9ed4bdc12d99a7c747365491966a17a57d7c2",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/reports/cc12_mesh_resource_classifier_retained_composition_followup.json",
+          "bytes": 176249,
+          "sha256": "9fb9613b7818445f7c14c1dad4c9ed4bdc12d99a7c747365491966a17a57d7c2"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "accepted_prior_context",
+        "working": {
+          "path": "reports/native_resource_load_cache_by.json",
+          "bytes": 50674,
+          "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/reports/native_resource_load_cache_by.json",
+          "bytes": 50674,
+          "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+        },
+        "baseline_git_blob": "ab3c44102d7d13fbf7f30009d387bc0782935cec",
+        "baseline_git_sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/reports/native_resource_load_cache_by.json",
+          "bytes": 50674,
+          "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/prior_profile_capture.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/entity_think_dispatch.cpp",
+          "bytes": 7164,
+          "sha256": "5ef6bdd845abe55166c2fa4d488113841eebbbcf65506ffe20ea9c28243cfe1e"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/entity_think_dispatch.cpp",
+          "bytes": 7164,
+          "sha256": "5ef6bdd845abe55166c2fa4d488113841eebbbcf65506ffe20ea9c28243cfe1e"
+        },
+        "baseline_git_blob": "39dc4953256854f54c0929ae9db0dc62cf02170e",
+        "baseline_git_sha256": "5ef6bdd845abe55166c2fa4d488113841eebbbcf65506ffe20ea9c28243cfe1e",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/entity_think_dispatch.cpp",
+          "bytes": 7164,
+          "sha256": "5ef6bdd845abe55166c2fa4d488113841eebbbcf65506ffe20ea9c28243cfe1e"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "baseline_git_blob": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+        "baseline_git_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_shared_drain.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_stats.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_hosts_ready.cpp",
+          "bytes": 30809,
+          "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_hosts_ready.cpp",
+          "bytes": 30809,
+          "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+        },
+        "baseline_git_blob": "9867f9465dad336a057c46879c0ced77ec1c2d91",
+        "baseline_git_sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_hosts_ready.cpp",
+          "bytes": 30809,
+          "sha256": "cd4b6bac045fed5fd55f2c406d286b7731da9b854ac1753e3b5817a52ba07d06"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_hosts_script_orders.cpp",
+          "bytes": 304557,
+          "sha256": "e8babaaf48dcfc7c83f6c68b2e63ba0b2c20edc014bc52af98d1372983cb0a4a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_hosts_script_orders.cpp",
+          "bytes": 304557,
+          "sha256": "e8babaaf48dcfc7c83f6c68b2e63ba0b2c20edc014bc52af98d1372983cb0a4a"
+        },
+        "baseline_git_blob": "9c32ef7e15a984a2f068470c615912ef77f3edce",
+        "baseline_git_sha256": "e8babaaf48dcfc7c83f6c68b2e63ba0b2c20edc014bc52af98d1372983cb0a4a",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_hosts_script_orders.cpp",
+          "bytes": 304557,
+          "sha256": "e8babaaf48dcfc7c83f6c68b2e63ba0b2c20edc014bc52af98d1372983cb0a4a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_hosts_singletons.cpp",
+          "bytes": 6831,
+          "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_hosts_singletons.cpp",
+          "bytes": 6831,
+          "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+        },
+        "baseline_git_blob": "f97735b5be44bd1f937f79aa206c729f53c138d4",
+        "baseline_git_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_hosts_singletons.cpp",
+          "bytes": 6831,
+          "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_a.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_shutdown.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+        },
+        "baseline_git_blob": "68e5acd59f57e8ee5ef7751992fa0571e0f45127",
+        "baseline_git_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_owner.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_spans.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/main_host_lifetime.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_readonly_data.cpp",
+          "bytes": 7167,
+          "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_native_readonly_data.cpp",
+          "bytes": 7167,
+          "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+        },
+        "baseline_git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+        "baseline_git_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_native_readonly_data.cpp",
+          "bytes": 7167,
+          "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_a.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_b.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "baseline_git_blob": "43df1dd3c4fc4bd9a2b1112f626c320adf5ad4af",
+        "baseline_git_sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_type_storage.cpp",
+          "bytes": 5640,
+          "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/game_native_type_storage.cpp",
+          "bytes": 5640,
+          "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b"
+        },
+        "baseline_git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d",
+        "baseline_git_sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/game_native_type_storage.cpp",
+          "bytes": 5640,
+          "sha256": "87958d36dc6c7480e73992698c3c9dac86bc153f7033fc0e55a9833fd2ea5b4b"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "baseline_git_blob": "d6fc8abc02f911a6a3cc18be7dca751f76471088",
+        "baseline_git_sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c1.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c2.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c3.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        },
+        "baseline_git_blob": "f5a7340591c09a63f687f2636f0e1678b5459c0b",
+        "baseline_git_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_entry.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_tail.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain_body.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_singleton_publication.cpp",
+          "bytes": 4127,
+          "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/native_singleton_publication.cpp",
+          "bytes": 4127,
+          "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+        },
+        "baseline_git_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8",
+        "baseline_git_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/native_singleton_publication.cpp",
+          "bytes": 4127,
+          "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_getter_source.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_singleton_removal_reorder.cpp",
+          "bytes": 7844,
+          "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/native_singleton_removal_reorder.cpp",
+          "bytes": 7844,
+          "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+        },
+        "baseline_git_blob": "1b5f0f7f5cae8159456bc0cab19cf5b5d102afd5",
+        "baseline_git_sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/native_singleton_removal_reorder.cpp",
+          "bytes": 7844,
+          "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_unregister_source.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_singleton_vector_registration_wrappers.cpp",
+          "bytes": 4283,
+          "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/native_singleton_vector_registration_wrappers.cpp",
+          "bytes": 4283,
+          "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+        },
+        "baseline_git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+        "baseline_git_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/native_singleton_vector_registration_wrappers.cpp",
+          "bytes": 4283,
+          "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_register_source.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "baseline_git_blob": "ec6f7b179fba488e6f0bf77e8cf85465c0be6d7b",
+        "baseline_git_sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "baseline_git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "baseline_git_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/singleton_lifetime.cpp",
+          "bytes": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_body.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/sound_lifetime_access.cpp",
+          "bytes": 2751,
+          "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+        },
+        "frozen_working": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/working/src/sound_lifetime_access.cpp",
+          "bytes": 2751,
+          "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+        },
+        "baseline_git_blob": "3215502c513d22bb0d5c0201dfb110283803b0da",
+        "baseline_git_sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+        "frozen_git": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/git/src/sound_lifetime_access.cpp",
+          "bytes": 2751,
+          "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_read_receipts": [
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_a.command.json",
+          "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_b.command.json"
+        ]
+      }
+    ],
+    "bounded_command_receipts": [
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/allocation_source_entry.command.json",
+          "bytes": 1315,
+          "sha256": "9e722c19314a0d67b334211a0fad673b9b09d191b62cd76e6e564db93a63ba97"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/allocation_source_entry.stdout.txt",
+          "bytes": 245,
+          "sha256": "7c3a6f3660be2bbef301b5212fa9f7631ca71aa8b976ac37ef13d0ed10e8ad43"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/allocation_source_entry.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-i",
+            "00bf681b|00bf65ac",
+            "include/bsp",
+            "src",
+            "-g",
+            "*crt*",
+            "-g",
+            "*singleton_lifetime*",
+            "-g",
+            "*allocation*"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_assembly_a.command.json",
+          "bytes": 1128,
+          "sha256": "101146134a6d8804800d37e9f4d93eadc6d12725079f01351e84c710f3caeb44"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_assembly_a.stdout.txt",
+          "bytes": 1500,
+          "sha256": "e3705261bcb27650b738aba60f7a3058659170904ca564d763b11cb2db825743"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_assembly_a.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "show",
+            "00be2750",
+            "--asm",
+            "--lines",
+            "70"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_delete_lookup.command.json",
+          "bytes": 1108,
+          "sha256": "40f6b5a07a72c8fe9fb9c54dcc6ef0b9a9fa129402e4e228d1edd00502701531"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_delete_lookup.stdout.txt",
+          "bytes": 247,
+          "sha256": "bd8cb063047334a82ce58dd74568283cf908b5ddc3b47d5cca678f4fd10598c0"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_delete_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "00be2890",
+            "--limit",
+            "5"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_lookup.command.json",
+          "bytes": 1087,
+          "sha256": "b25de6e92205ab938d849ea35459fc21d1045d8d53217da7f5c721aa8ba28e65"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_lookup.stdout.txt",
+          "bytes": 461,
+          "sha256": "f039d80aa1899a85090aa88c8ed56b1c4265d2f0348e75ce07ceca7934ed52ff"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "00be2750",
+            "--limit",
+            "5"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_pseudocode.command.json",
+          "bytes": 1098,
+          "sha256": "568212bdbd75a36a9e9e9647a18e61f63f41b6cc51c1798e71bd4d0cf8846b79"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_pseudocode.stdout.txt",
+          "bytes": 1476,
+          "sha256": "7633a738c4417c058bdff3ceb10ced18beb7d4f816a6d8c84144c9adbfe2181c"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/base_pseudocode.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "show",
+            "00be2750",
+            "--lines",
+            "95"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_body.command.json",
+          "bytes": 1102,
+          "sha256": "9d1f88e593c172a88a5c0d747e403c700907b05752205d7c733c292b983cb4ff"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_body.stdout.txt",
+          "bytes": 1161,
+          "sha256": "e66f702d1769650ab7a35bbf54660d4600b5770ec1bc095244789c46fb425d43"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_body.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/singleton_lifetime.cpp",
+          "start_line": 41,
+          "requested_lines": 30,
+          "returned_lines": 30,
+          "total_lines": 344
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_contract.command.json",
+          "bytes": 1128,
+          "sha256": "dce3d4e2c132880abba5bc037fec42707100bc46a0cf0e7cbc436feafc79c0ee"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_contract.stdout.txt",
+          "bytes": 1622,
+          "sha256": "c1b981b514718a0f5eabd039e0ceed3882907dde99424bbfb3e90e76d8e3c097"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_contract.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "start_line": 1,
+          "requested_lines": 40,
+          "returned_lines": 40,
+          "total_lines": 101
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_source.command.json",
+          "bytes": 1295,
+          "sha256": "6a64933f6a911093bdb6bfae6a5866496864538773d5b350dc64db3768db8535"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_source.stdout.txt",
+          "bytes": 1414,
+          "sha256": "55f6c43ab98ee3b070a892f539fe2cbd0f89674de9019059673d7ed6503b710e"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/canonical_allocator_source.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "singleton_lifetime_allocate|singleton_lifetime_free|operator new|malloc",
+            "src/singleton_lifetime.cpp",
+            "include/bsp/singleton_lifetime.hpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/cleanup_lookup.command.json",
+          "bytes": 1096,
+          "sha256": "59496d768dbcaa3cfa919eb9c3f7fb0e306fbc3394d195be0314abcce89e8471"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/cleanup_lookup.stdout.txt",
+          "bytes": 401,
+          "sha256": "0225a321381e465b20e485fc8825c5136b41a4f8154510e95ef14a8daf9f7f3a"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/cleanup_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "00be27f0",
+            "--limit",
+            "5"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/ctor_assembly.command.json",
+          "bytes": 1122,
+          "sha256": "413a54ff04e7bc6301fc38918c2a046fb87c242b3900c1cdef1746358b65647a"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/ctor_assembly.stdout.txt",
+          "bytes": 1015,
+          "sha256": "0bdcca1cb4666a3ab0dc8d8be85a55b986d4dc292bf2340d088db69063c7bf6c"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/ctor_assembly.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "show",
+            "00be2900",
+            "--asm",
+            "--lines",
+            "75"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/ctor_pseudocode.command.json",
+          "bytes": 1097,
+          "sha256": "44c304a2bbf6c887b719455d26c68a7a978f65968859f2d6f312198118fb8c04"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/ctor_pseudocode.stdout.txt",
+          "bytes": 998,
+          "sha256": "66575efa24f94fc26930e5c8c9d0e14a0bd86559417e28bad88eb7f703e671c4"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/ctor_pseudocode.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "show",
+            "00be2900",
+            "--lines",
+            "90"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_entry.command.json",
+          "bytes": 1119,
+          "sha256": "d8d4c377b99f5b8d80b5ec3a573c3419b0b5369314894c704bf4e2648f9ff3d5"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_entry.stdout.txt",
+          "bytes": 2383,
+          "sha256": "5e21da24d342ed5809e4df41572f44247c099746224598126448dc4961c2abef"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_entry.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_singleton_destruction.cpp",
+          "start_line": 64,
+          "requested_lines": 60,
+          "returned_lines": 60,
+          "total_lines": 685
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_tail.command.json",
+          "bytes": 1118,
+          "sha256": "2468264b186b95b3c2ecf0796bbe46acf98f6c8871cff48379ea2bb06b307826"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_tail.stdout.txt",
+          "bytes": 1913,
+          "sha256": "b80658d1d4ed990509e75055d889021c879665e3c3b055681565e36cffa48e57"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_dispatch_tail.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_singleton_destruction.cpp",
+          "start_line": 506,
+          "requested_lines": 49,
+          "returned_lines": 49,
+          "total_lines": 685
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_structure.command.json",
+          "bytes": 1174,
+          "sha256": "6fb05350e577d8c771d668cee609fae32d80e40e8066cc2821d11fb2a6cdd124"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_structure.stdout.txt",
+          "bytes": 191,
+          "sha256": "73d3cb97cca3cbbc6476b839dc56cf68926372f65cb7c87471973b1076eda879"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/deletion_structure.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "^void|^Native|^std::|^namespace|^static|profile ==|switch",
+            "src/native_singleton_destruction.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/derived_delete_lookup.command.json",
+          "bytes": 1117,
+          "sha256": "e41a5c152cfbc99d8709a63fa8e0803993fc8e83219ce06ed7ae1101bdaf58ba"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/derived_delete_lookup.stdout.txt",
+          "bytes": 247,
+          "sha256": "24dbd0b2956fe504756a7488ed9db4cb124cb235b31bd9e302ec2c142e1b2f92"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/derived_delete_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "00be2930",
+            "--limit",
+            "5"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/exact_stats_roles.command.json",
+          "bytes": 1167,
+          "sha256": "eeff2a7c0c0febdce5a3554a8dc45f15486eca073d427379aa1f8020864249cb"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/exact_stats_roles.stdout.txt",
+          "bytes": 315,
+          "sha256": "48af8ad5bd45409077230eb1967a917c497ac62b834389a932196e5bb8e616dd"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/exact_stats_roles.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-i",
+            "d685f4|d685e0|be2750|be27f0|be2930|be28b0|be28e0|be2890",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/host_data_lifetime_header.command.json",
+          "bytes": 1107,
+          "sha256": "016377cf2320e0236be0b54f6d32868c2bc8e316d217fd69d3a319ff9f24e16d"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/host_data_lifetime_header.stdout.txt",
+          "bytes": 1807,
+          "sha256": "58ab3b7b717280dc9e3b024621ab2e5534af39816c4cfa26ffc57c2e99fcc74d"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/host_data_lifetime_header.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_hosts.hpp",
+          "start_line": 690,
+          "requested_lines": 37,
+          "returned_lines": 37,
+          "total_lines": 774
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_a.command.json",
+          "bytes": 1090,
+          "sha256": "9a0504892dae661e70d7e2f3e784dcc2c26bc65220379557aa17edc593d82176"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_a.stdout.txt",
+          "bytes": 2998,
+          "sha256": "43652a44ea3e857aa1a41796640d556d82661160a481dedba33c073c8cd4f759"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_a.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/sound_lifetime_access.cpp",
+          "start_line": 1,
+          "requested_lines": 82,
+          "returned_lines": 64,
+          "total_lines": 64
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_b.command.json",
+          "bytes": 1088,
+          "sha256": "6d65a76721f18cac665f08b787c387a3ac63b554505c8a3b15880ec53f7b8dc7"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_b.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/lifetime_access_c_b.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/sound_lifetime_access.cpp",
+          "start_line": 83,
+          "requested_lines": 80,
+          "returned_lines": 0,
+          "total_lines": 64
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c1.command.json",
+          "bytes": 1083,
+          "sha256": "3f34fdda851d55f98d7f108d9e4de94897fe1d815190accf9374e41bdd63b956"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c1.stdout.txt",
+          "bytes": 4023,
+          "sha256": "e5a54dad68f4deda11fe4c90e7869b513c442990dc361b0234d761c47084f1e5"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_load_cache.cpp",
+          "start_line": 1,
+          "requested_lines": 74,
+          "returned_lines": 74,
+          "total_lines": 216
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c2.command.json",
+          "bytes": 1085,
+          "sha256": "35f9c5a86ae5b12e2ee6b2ab26dc421f28a2b71b98a18b1b09e272acff6b93e6"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c2.stdout.txt",
+          "bytes": 4532,
+          "sha256": "b1cbd57cf7357c3fbe808d303a4927c4ff43f61f50b40ec0fd04845140771be0"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_load_cache.cpp",
+          "start_line": 75,
+          "requested_lines": 70,
+          "returned_lines": 70,
+          "total_lines": 216
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c3.command.json",
+          "bytes": 1087,
+          "sha256": "b38c5d547089c61d2abb0e6c9ff8ec8d289fd11ff5593ac66a67e4830c6b6957"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c3.stdout.txt",
+          "bytes": 4219,
+          "sha256": "25604558f6f6728cb5d2529426edcf0c42d8c5c1d9442b31f366de8a8a581472"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_c3.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_load_cache.cpp",
+          "start_line": 145,
+          "requested_lines": 75,
+          "returned_lines": 72,
+          "total_lines": 216
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_h.command.json",
+          "bytes": 1095,
+          "sha256": "bd58edd75bce29001715e6af8290ca2e79e3002298b8972abb80cae125341b94"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_h.stdout.txt",
+          "bytes": 5005,
+          "sha256": "828360c41a23197044865a15e169fcdbe201a085cc02daf3c06d8707d63279e5"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_load_cache.hpp",
+          "start_line": 1,
+          "requested_lines": 95,
+          "returned_lines": 90,
+          "total_lines": 90
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_prior_evidence.command.json",
+          "bytes": 1242,
+          "sha256": "bb63ad8aa7259486e8ccb382b0ce1fcb209233b43a9cecd7454ec7f5e98fc3ed"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_prior_evidence.stdout.txt",
+          "bytes": 4692,
+          "sha256": "79c4076f2ca327801c05a9515c2b61470a1c34a735c60a7da565b9f3fa05a27c"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_prior_evidence.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-C",
+            "3",
+            "D685|d685|0109CEFC|0109cefc|BE2700|allocation|Allocation",
+            "docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_report_paths.command.json",
+          "bytes": 1093,
+          "sha256": "fed940d43c033eb88e94e96462a0b158b48cafdb9c70b720cf8c462a9036ccec"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_report_paths.stdout.txt",
+          "bytes": 201,
+          "sha256": "b2923a55d130bf89aa1ebd6498098c3b6e46911ce0280e95815230a1f8239fb3"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/load_cache_report_paths.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "--files",
+            "reports",
+            "-g",
+            "*resource_load_cache*"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_lifetimes.command.json",
+          "bytes": 1126,
+          "sha256": "715a0a4eeffe433fc98796e5ff0e68c9af14a411b57b6f644655d470e4109635"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_lifetimes.stdout.txt",
+          "bytes": 1086,
+          "sha256": "e303092bc85185e5ad38a975f3255488516bbaf4f4594852633f6b8a21f75ad0"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_lifetimes.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "GameStartupHost|GameNativeReadOnlyData|native_data",
+            "src/game_main.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_owner.command.json",
+          "bytes": 1062,
+          "sha256": "8e22918fed119ed5729d46753a17bee020d7f53cba94e03204840019b6ee506e"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_owner.stdout.txt",
+          "bytes": 1500,
+          "sha256": "c668ae03b5310e50129937a4baf24f67d3323e7d183aa14ec305ef1ef68520fb"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_owner.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_main.cpp",
+          "start_line": 1018,
+          "requested_lines": 28,
+          "returned_lines": 28,
+          "total_lines": 1251
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_spans.command.json",
+          "bytes": 1058,
+          "sha256": "c469b8f748d442c5288954ba19704daae9f1af1f612f4e7387fad9afda62d2f8"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_spans.stdout.txt",
+          "bytes": 1493,
+          "sha256": "cbfe79c3eccfe1bbef89ac6c7dbc0e9279f35ca98c16a8788aac9557b0ddd2b0"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_data_spans.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_main.cpp",
+          "start_line": 82,
+          "requested_lines": 23,
+          "returned_lines": 23,
+          "total_lines": 1251
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_host_lifetime.command.json",
+          "bytes": 1071,
+          "sha256": "9ec561e4dfe63aaa87e5f14d842f652f2d1f3b892326d87f465d0e7a31df42fe"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_host_lifetime.stdout.txt",
+          "bytes": 2951,
+          "sha256": "6f52a09536f9edb72e8d4fd669e34c4404e08e3b636b97d5bfff0ba76c02a75b"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/main_host_lifetime.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_main.cpp",
+          "start_line": 1193,
+          "requested_lines": 66,
+          "returned_lines": 59,
+          "total_lines": 1251
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/metric_native_listing.command.json",
+          "bytes": 1146,
+          "sha256": "eda5e764d643ec7d295ea8fbb10a92a0e2c4fd16f4dd7badade8e1d3f7c06ea1"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/metric_native_listing.stdout.txt",
+          "bytes": 1097,
+          "sha256": "26b5710713703c71b4041b222b5d45e6c317edd324228b90617cddd27457034a"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/metric_native_listing.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "show",
+            "00be2700",
+            "--asm",
+            "--lines",
+            "38"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/native_stats_binding_absence.command.json",
+          "bytes": 1686,
+          "sha256": "6a5968535361067f18cac0dc78535cabc8970e277bb028be0c49dcaa28457f92"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/native_stats_binding_absence.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/native_stats_binding_absence.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 1,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-i",
+            "allocation.stats|0109cefc|d685e0|d685f4",
+            "include/bsp/native_singleton_destruction.hpp",
+            "src/native_singleton_destruction.cpp",
+            "include/bsp/game_hosts_singletons.hpp",
+            "src/game_hosts_singletons.cpp",
+            "include/bsp/game_native_resource_application.hpp",
+            "src/game_native_resource_application.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/other_stats_calls.command.json",
+          "bytes": 1536,
+          "sha256": "4119dd965233a6688a70750721d98369148a33897b7dec134bf5f31d9424c97b"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/other_stats_calls.stdout.txt",
+          "bytes": 3450,
+          "sha256": "6c013c897a0417e921baceda5d821fff5b6adfb94c993dd2794e9ad2c6325807"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/other_stats_calls.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-C",
+            "3",
+            "0109cefc|0109CEFC|allocation_stats|AllocationStats",
+            "include/bsp/entity_think_dispatch.hpp",
+            "src/entity_think_dispatch.cpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/game_hosts_script_orders.cpp",
+            "src/game_hosts_ready.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/owner_header_paths.command.json",
+          "bytes": 1246,
+          "sha256": "a11521b24b9b924b919c9253282cda26600dce7417d2dca96c6c7267c4ab4ba2"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/owner_header_paths.stdout.txt",
+          "bytes": 824,
+          "sha256": "7e23a9a39dce4d23d68e125752969d31618d76fd8722aa97e324f1dfd9cf0c24"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/owner_header_paths.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-l",
+            "-g",
+            "*.hpp",
+            "class GameSingletonHost|struct NativeSingletonDeletionBindings|class GameNativeReadOnlyData",
+            "include/bsp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/phy_metric_lookup.command.json",
+          "bytes": 1105,
+          "sha256": "84c87155effa9ab8e06d61d65f0ca8afb857f51343409587981260f5362c6e75"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/phy_metric_lookup.stdout.txt",
+          "bytes": 226,
+          "sha256": "523b20ad1e1f6094b55699dc5ef355ded6d0aea139c810a53ef69874bbb5819f"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/phy_metric_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "00be2720",
+            "--limit",
+            "5"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/predicate_lookup.command.json",
+          "bytes": 1101,
+          "sha256": "2e937ef84f0937ec1fedb8c444cb0623f4d971ea2d3636b06c1682230e313a22"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/predicate_lookup.stdout.txt",
+          "bytes": 78,
+          "sha256": "04d4680829767cc83997517df0a068523173cde148ace53299fd92d84795133e"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/predicate_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "00be2740",
+            "--limit",
+            "5"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/prior_profile_capture.command.json",
+          "bytes": 1129,
+          "sha256": "144853221874e387a0d2e86cdf9f0f390176b64c771813a4f1933ca1f39f8e87"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/prior_profile_capture.stdout.txt",
+          "bytes": 821,
+          "sha256": "e7789d0c7581302374da6ac46696d4af078f23612608c18c323703ca712fb703"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/prior_profile_capture.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "reports/native_resource_load_cache_by.json",
+          "start_line": 1954,
+          "requested_lines": 20,
+          "returned_lines": 20,
+          "total_lines": 2515
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain.command.json",
+          "bytes": 1079,
+          "sha256": "97335480628bc9465eb493a1cd9eba65762ef54a4ca9020afe7fe883b7a096f8"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain.stdout.txt",
+          "bytes": 2023,
+          "sha256": "00936686cb462db01bd1b3f713e0b134a52f5429193904e28253fe989b40cbc8"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_singleton_destruction.cpp",
+          "start_line": 620,
+          "requested_lines": 78,
+          "returned_lines": 66,
+          "total_lines": 685
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain_body.command.json",
+          "bytes": 1094,
+          "sha256": "99f228a39eaeefa5f6ee329202fba524102f23399833d9b0e19d1d1ae60ceced"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain_body.stdout.txt",
+          "bytes": 2098,
+          "sha256": "c860b212995f5aa2f66bdcf91486ed79e2f7c5f7f52c70f24c765dd2c2da4901"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_drain_body.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_singleton_destruction.cpp",
+          "start_line": 554,
+          "requested_lines": 67,
+          "returned_lines": 67,
+          "total_lines": 685
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_lifetime_h.command.json",
+          "bytes": 1091,
+          "sha256": "f980d54d3d0f4455190595474ad492a5729d3ccd11a212499e70d7a864ebea87"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_lifetime_h.stdout.txt",
+          "bytes": 3294,
+          "sha256": "935ffc85c8be54d126e8b35467019aaf555c7793a847a529480b1a4e9d330778"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/raw_lifetime_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/sound_lifetime_access.hpp",
+          "start_line": 1,
+          "requested_lines": 93,
+          "returned_lines": 66,
+          "total_lines": 66
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_a.command.json",
+          "bytes": 1078,
+          "sha256": "52ea7646078c5f9e6b723a81f7d0c940ad663dae9151e926aa00691000e3cb59"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_a.stdout.txt",
+          "bytes": 3835,
+          "sha256": "0f8bc0fbe3516e93346c74ea22e10ef70c76e6f008d670af0fbd2c1c78fe9fbe"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_a.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_readonly_data.cpp",
+          "start_line": 1,
+          "requested_lines": 83,
+          "returned_lines": 83,
+          "total_lines": 149
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_b.command.json",
+          "bytes": 1080,
+          "sha256": "e85fb19d4b75076d0677efd1ab68eeb9ef903c37560cb6ff1eb197e74b09d1f6"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_b.stdout.txt",
+          "bytes": 3969,
+          "sha256": "d414e7283b115ea3381d5a6b01cb8140820f5b28fcc073fca78d75ef7d6143e0"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_c_b.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_readonly_data.cpp",
+          "start_line": 84,
+          "requested_lines": 70,
+          "returned_lines": 66,
+          "total_lines": 149
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_data_api.command.json",
+          "bytes": 1262,
+          "sha256": "83a79e89f756a6483782a5950deb2f5d819e478bb992e5ea47eae68b827c3aff"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_data_api.stdout.txt",
+          "bytes": 2895,
+          "sha256": "dd537e1ebbadadd8f3c5aa4e25870d366ba71aa50e5f3a06d47e7c3aeac79169"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_data_api.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "table|read_only|\\.rdata|map|range|data_|base_|profile",
+            "include/bsp/game_native_readonly_data.hpp",
+            "src/game_native_readonly_data.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_h.command.json",
+          "bytes": 1087,
+          "sha256": "55d4ea5e1530a468473212cfee248b34bde599105698552721d3615c8ea4b9c1"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_h.stdout.txt",
+          "bytes": 2920,
+          "sha256": "ee524ea4ad5a80ba1ca5149edaca704da5e5c113ed4323ae0dca5751be5e5aa5"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/readonly_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_native_readonly_data.hpp",
+          "start_line": 1,
+          "requested_lines": 65,
+          "returned_lines": 54,
+          "total_lines": 54
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/registry_source_targets.command.json",
+          "bytes": 1914,
+          "sha256": "a9ddf33543f2f6139d85a3b0ad873bf8e92f940d7ade6489b949abaef605b43d"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/registry_source_targets.stdout.txt",
+          "bytes": 1043,
+          "sha256": "2e800f3063b3f75ec8c6361be06a1a35a6b3c178ea58d22ce6232abb3df98f79"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/registry_source_targets.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "get_native_singleton_manager_00415350|register_native_singleton_object_00bd0c30|unregister_native_singleton_object_00bcfca0",
+            "include/bsp/native_singleton_publication.hpp",
+            "src/native_singleton_publication.cpp",
+            "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+            "src/native_singleton_vector_registration_wrappers.cpp",
+            "include/bsp/native_singleton_removal_reorder.hpp",
+            "src/native_singleton_removal_reorder.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/retained_metric_table.command.json",
+          "bytes": 1222,
+          "sha256": "ae87ecc09b1a2693d6b09dc80ea995532520ad632a17b3e613e548705bb2239d"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/retained_metric_table.stdout.txt",
+          "bytes": 1037,
+          "sha256": "72861b02287a25a42aa4be9359138d1502a681fb7ddaf76740dc1647bbb04ef6"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/retained_metric_table.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-i",
+            "-C",
+            "3",
+            "d685f4|d685e0|be2700|profile|tables",
+            "reports/native_resource_load_cache_by.json"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/retained_named_doc.command.json",
+          "bytes": 1231,
+          "sha256": "1d69bb7b3bd655bc8b9ea189768fbc3ac8712cdd3562913e1f0eeeeea11635ae"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/retained_named_doc.stdout.txt",
+          "bytes": 3904,
+          "sha256": "b2c0584af325de6760bf23eb68c61e6909f8b7767d8a30219e57b3019eeee443"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/retained_named_doc.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-C",
+            "4",
+            "BE2900|be2900|BE2750|be2750|BE27F0|be27f0|D685F4|d685f4|0109CEFC|0109cefc",
+            "docs/APP_INIT_PLATFORM.md"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_c.command.json",
+          "bytes": 1074,
+          "sha256": "f29b5d256b6f12851448d44430ce4dae1b8d45d4d832b7602d1b32ab5892b57e"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_c.stdout.txt",
+          "bytes": 2334,
+          "sha256": "313bd24e43c4daea8bf86743446fee4eb892a4a68cc04ec2691edc70ec4252fe"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/platform_window.cpp",
+          "start_line": 238,
+          "requested_lines": 65,
+          "returned_lines": 58,
+          "total_lines": 295
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_h.command.json",
+          "bytes": 1090,
+          "sha256": "7bbe8e662370f8c80ea8e866944a7edfd77d41f4886119c8ec6fd3079637e3b4"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_h.stdout.txt",
+          "bytes": 2868,
+          "sha256": "06568b866825daa6d6c96e6eb87b617f0c2796dd32b080b684f77e18fa070469"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/semantic_stats_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/platform_window.hpp",
+          "start_line": 216,
+          "requested_lines": 49,
+          "returned_lines": 49,
+          "total_lines": 268
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_getter_source.command.json",
+          "bytes": 1117,
+          "sha256": "c6a4eec842dbef1d9de657ccec74a072886a929d3c2ea97a99fd1f09ce988ed9"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_getter_source.stdout.txt",
+          "bytes": 2171,
+          "sha256": "5ed1d9e3c0355396502a6a2eb415093a870024f2adc5b7b4b73d51db841cfa95"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_getter_source.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_singleton_publication.cpp",
+          "start_line": 1,
+          "requested_lines": 60,
+          "returned_lines": 60,
+          "total_lines": 115
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_a.command.json",
+          "bytes": 1088,
+          "sha256": "622caba7760acf36ecfaaa026ce2f80ded3f54417642838d24d2f97c24a45893"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_a.stdout.txt",
+          "bytes": 2565,
+          "sha256": "59508823f67270937e7cf588d7867a8ce793c770ebb6c53171ad5483352f1ba7"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_a.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_hosts_singletons.cpp",
+          "start_line": 1,
+          "requested_lines": 50,
+          "returned_lines": 50,
+          "total_lines": 139
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_shutdown.command.json",
+          "bytes": 1113,
+          "sha256": "c5e912f70155128f03b56014f7e972a0f4363589ff6bd427b8b0c48ec7ee8235"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_shutdown.stdout.txt",
+          "bytes": 1565,
+          "sha256": "4079ee1590b13afbc01518c9c97685da7e8d5e620d22153d7e8940829a0a7664"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_c_shutdown.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_hosts_singletons.cpp",
+          "start_line": 110,
+          "requested_lines": 74,
+          "returned_lines": 30,
+          "total_lines": 139
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_a.command.json",
+          "bytes": 1104,
+          "sha256": "ab9777b320aa20ab764cf30115bd6f36150192998a91f20419ec61fb20b0a9d3"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_a.stdout.txt",
+          "bytes": 4705,
+          "sha256": "434520b7fd6121f872f97a34bf896b16b5adddc29d3a2095cc195eed28f10160"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_a.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_hosts_singletons.hpp",
+          "start_line": 1,
+          "requested_lines": 84,
+          "returned_lines": 84,
+          "total_lines": 138
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_b.command.json",
+          "bytes": 1106,
+          "sha256": "df07fb7891016f4a89d3ce4e72ef50393e640154d646203cdb46228ffe477729"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_b.stdout.txt",
+          "bytes": 3653,
+          "sha256": "74b7717bbdcd24cb7feee2405c5d6e88111d186bec5a18744312393b801434a1"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_host_h_b.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_hosts_singletons.hpp",
+          "start_line": 85,
+          "requested_lines": 65,
+          "returned_lines": 54,
+          "total_lines": 138
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_register_source.command.json",
+          "bytes": 1161,
+          "sha256": "5e786d7a7ce81f7dc3bbc5d8ae9fb01b2b212f599026ba58bf5fe54468e5363f"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_register_source.stdout.txt",
+          "bytes": 1056,
+          "sha256": "b7cc919aaf113d8a609e8df9941a5388b21053f8face34716e0a2aab6b516618"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_register_source.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_singleton_vector_registration_wrappers.cpp",
+          "start_line": 128,
+          "requested_lines": 67,
+          "returned_lines": 38,
+          "total_lines": 165
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_unregister_source.command.json",
+          "bytes": 1137,
+          "sha256": "e16b24fbcc0f775239d8a005d4e0c38419b30fec1ef9295d4e1bfba9b399ffd0"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_unregister_source.stdout.txt",
+          "bytes": 2500,
+          "sha256": "2f2a2f9288a9dc903cff861357c695643200dfd4c18c6f1c37780e2efac563bc"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/singleton_unregister_source.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_singleton_removal_reorder.cpp",
+          "start_line": 1,
+          "requested_lines": 81,
+          "returned_lines": 81,
+          "total_lines": 301
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/slot10_lookup.command.json",
+          "bytes": 1093,
+          "sha256": "a0a166558065e035023fec6a5d9dc45d501c5ef29f5ad572bd10958633be8797"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/slot10_lookup.stdout.txt",
+          "bytes": 271,
+          "sha256": "10e6e1a52ba244d52935f0d1246872b3341b288ccf32dfc92d5ed3cbb8e664de"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/slot10_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "00be2aa0",
+            "--limit",
+            "5"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/source_stats_map.command.json",
+          "bytes": 1334,
+          "sha256": "d62b7c5991976ce1b236a7e347dc0b62c4ff3eeda85b9fe508502df3acb1ed47"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/source_stats_map.stdout.txt",
+          "bytes": 948,
+          "sha256": "2f29a0b205b544b9c4d33870a8af082e46f351251308e900e5ad34e08e244270"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/source_stats_map.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "AllocationStats|allocation_stats|0109cefc|0109CEFC",
+            "include/bsp/platform_window.hpp",
+            "src/platform_window.cpp",
+            "src/game_hosts.cpp",
+            "src/game_hosts_ready.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_native_lookup.command.json",
+          "bytes": 1118,
+          "sha256": "cf6fdfe7c36003a903837ee95e4768b1a7f5800d18966507dc4f897e66b28533"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_native_lookup.stdout.txt",
+          "bytes": 2871,
+          "sha256": "9d7f3eb7e48810baaec6357683ad634d8d4cf74203b34f3f1e998cf030b3b4eb"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_native_lookup.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "lookup",
+            "0073d410",
+            "--limit",
+            "2"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_native_window.command.json",
+          "bytes": 1146,
+          "sha256": "b5ba55dcba629b2db3ba150ce4fa634ef9524aa93b5fc1950c9529fd80dc71ad"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_native_window.stdout.txt",
+          "bytes": 4546,
+          "sha256": "8b3dfd61463c482e8a9d1bdd0cec1053f3af98f14390f247c24b10bdd5a9cb98"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_native_window.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "retained-only bsp lookup/show",
+          "argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "tools/bsp.py",
+            "show",
+            "0073d410",
+            "--asm",
+            "--lines",
+            "68"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_shared_drain.command.json",
+          "bytes": 1079,
+          "sha256": "aa0a68ece6999355dddbf12e8527c2112bfa9d85fd623a41d3925b42a6541be8"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_shared_drain.stdout.txt",
+          "bytes": 3367,
+          "sha256": "f69c096823636215bf437d3714ddbf260e90da0fad00b5e05187361f65515d51"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_shared_drain.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_hosts.cpp",
+          "start_line": 1540,
+          "requested_lines": 65,
+          "returned_lines": 65,
+          "total_lines": 2444
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_stats.command.json",
+          "bytes": 1058,
+          "sha256": "a9d4b366a8612e68df0580dd45901c1e6310fa56afe5786b364a81a387be0bf3"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_stats.stdout.txt",
+          "bytes": 4100,
+          "sha256": "48e21d5b4115a898f961461f7c9b73b9ae99c5bf26a4e6e4f6b8230750b75f6c"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/startup_stats.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_hosts.cpp",
+          "start_line": 1794,
+          "requested_lines": 65,
+          "returned_lines": 65,
+          "total_lines": 2444
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/stats_owner_bindings.command.json",
+          "bytes": 1554,
+          "sha256": "d27590fb2d7a41e947a9d604a26efe3e5df48f20090b828ee225644ab09624d3"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/stats_owner_bindings.stdout.txt",
+          "bytes": 11749,
+          "sha256": "a0f15fecb8dfff2157dbef843d05d3b35ae3c4fc4f5216f1d35407e67e84518a"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/stats_owner_bindings.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-i",
+            "d685|0109cefc|allocation|register_object|deletion|shutdown|manager_publication|raw_lifetime",
+            "include/bsp/game_hosts_singletons.hpp",
+            "src/game_hosts_singletons.cpp",
+            "include/bsp/native_singleton_destruction.hpp",
+            "src/native_singleton_destruction.cpp"
+          ]
+        },
+        "complete_retained_receipt": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/stats_remaining_source_targets.command.json",
+          "bytes": 1220,
+          "sha256": "aa7c9d8867843f64796f0ab60e19021df41bc302c4752a640ed2d925a46ee71c"
+        },
+        "stdout": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/stats_remaining_source_targets.stdout.txt",
+          "bytes": 105,
+          "sha256": "6eeea4343b2e7ddf82b6292cce69b1a3655424f58ad24d0fae43ef787de8a46e"
+        },
+        "stderr": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/stats_remaining_source_targets.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-i",
+            "be2720|be2740|be2aa0|be2890|be28b0|be28e0|be2930|d685e0|d685f4",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "complete_retained_receipt": true
+      }
+    ],
+    "already_retained_export_files": [
+      {
+        "address": "0073d410",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/0073d410/assembly.txt",
+          "bytes": 33500,
+          "sha256": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/0073d410/assembly.txt",
+          "bytes": 33500,
+          "sha256": "5fb8af108ad4f7632bdf2f7cb3f967d756cdae9a71f9d054134022696051c88f"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "0073d410",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/0073d410/decompiled.c",
+          "bytes": 60240,
+          "sha256": "5b4cca5f1b1f18e66f1960bedc71e5b508113769569c769f0eaf0e1bb12f4931"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/0073d410/decompiled.c",
+          "bytes": 60240,
+          "sha256": "5b4cca5f1b1f18e66f1960bedc71e5b508113769569c769f0eaf0e1bb12f4931"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "0073d410",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/0073d410/metadata.json",
+          "bytes": 273,
+          "sha256": "36674aee1cec936c3a99a317ec520b0de13e7b49eedf1bcbbaf6fff29f6a8ee3"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/0073d410/metadata.json",
+          "bytes": 273,
+          "sha256": "36674aee1cec936c3a99a317ec520b0de13e7b49eedf1bcbbaf6fff29f6a8ee3"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2750",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2750/assembly.txt",
+          "bytes": 1201,
+          "sha256": "5450ff10cb7d40bde7f9594a8e22ba1681bf3065395c2a6b7b56fdcfb88dadc8"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2750/assembly.txt",
+          "bytes": 1201,
+          "sha256": "5450ff10cb7d40bde7f9594a8e22ba1681bf3065395c2a6b7b56fdcfb88dadc8"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2750",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2750/decompiled.c",
+          "bytes": 1085,
+          "sha256": "4e2c7f44cb862a8bf5fbbf1084c8b1005e20aee23492203e612a688d4c6f0ade"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2750/decompiled.c",
+          "bytes": 1085,
+          "sha256": "4e2c7f44cb862a8bf5fbbf1084c8b1005e20aee23492203e612a688d4c6f0ade"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2750",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2750/metadata.json",
+          "bytes": 210,
+          "sha256": "69d669135d4a0f2f1779e70d2dd74eb551b1d679dbbb4bf812313c1f9896e5c2"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2750/metadata.json",
+          "bytes": 210,
+          "sha256": "69d669135d4a0f2f1779e70d2dd74eb551b1d679dbbb4bf812313c1f9896e5c2"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2900",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2900/assembly.txt",
+          "bytes": 256,
+          "sha256": "181fc7796f8ba3893c7d955f42ddf49631c22efde4d0c38d4e8bac6eb9c7b3cc"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2900/assembly.txt",
+          "bytes": 256,
+          "sha256": "181fc7796f8ba3893c7d955f42ddf49631c22efde4d0c38d4e8bac6eb9c7b3cc"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2900",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2900/decompiled.c",
+          "bytes": 178,
+          "sha256": "c690d2afae1c7956079216f6fe2cd629fe5d7ab02ddf3b233f1efe02de749347"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2900/decompiled.c",
+          "bytes": 178,
+          "sha256": "c690d2afae1c7956079216f6fe2cd629fe5d7ab02ddf3b233f1efe02de749347"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2900",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2900/metadata.json",
+          "bytes": 210,
+          "sha256": "7843700c85e62834cb405b8c3a659bf627c376001855b60e7bd230d2a26d10cc"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2900/metadata.json",
+          "bytes": 210,
+          "sha256": "7843700c85e62834cb405b8c3a659bf627c376001855b60e7bd230d2a26d10cc"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2700",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2700/assembly.txt",
+          "bytes": 254,
+          "sha256": "07f32e2128537395227821555a2b825fa4f989850ee793e6c24c52ed695b977c"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2700/assembly.txt",
+          "bytes": 254,
+          "sha256": "07f32e2128537395227821555a2b825fa4f989850ee793e6c24c52ed695b977c"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2700",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2700/decompiled.c",
+          "bytes": 1354,
+          "sha256": "2f391509e3eda43a4d883ee05ada4b756d014c9eb609b57b69aa87e4f4acc4eb"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2700/decompiled.c",
+          "bytes": 1354,
+          "sha256": "2f391509e3eda43a4d883ee05ada4b756d014c9eb609b57b69aa87e4f4acc4eb"
+        },
+        "new_Native_evidence": false
+      },
+      {
+        "address": "00be2700",
+        "retained_original": {
+          "path": "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00be2700/metadata.json",
+          "bytes": 210,
+          "sha256": "75b1bc3072f4026089668e15a9077404d8b18df01e4fc02ff194cd152a3da316"
+        },
+        "frozen_copy": {
+          "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/retained_exports/00be2700/metadata.json",
+          "bytes": 210,
+          "sha256": "75b1bc3072f4026089668e15a9077404d8b18df01e4fc02ff194cd152a3da316"
+        },
+        "new_Native_evidence": false
+      }
+    ],
+    "semantic_scope": "Whole-file pinning does not claim whole-file semantic review. Bounded receipts identify inspected ranges; retained startup export is broader than the examined allocation window.",
+    "command_boundary": "Initial helper creation failed before any source_audit or Native operation; four attempted missing-helper commands also did not execute queries. All subsequent audit helper executions have complete receipts. Brief health contact is distinct from cachedlookup/show; no live Native/data/callee/handler query.",
+    "frozen_document": {
+      "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/frozen/packet/docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+      "bytes": 13677,
+      "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+    },
+    "document_pin": {
+      "path": "docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+      "bytes": 13677,
+      "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+    },
+    "bundle_manifest": {
+      "path": "local/cc12_allocation_stats_raw_owner_retained_readiness/evidence_bundle_manifest.json",
+      "bytes": 67168,
+      "sha256": "e1d80c4c649378aff8e4782fc8805860b0cfa3049b9d9a5a15884d9b7cf03a05"
+    }
+  }
+}
