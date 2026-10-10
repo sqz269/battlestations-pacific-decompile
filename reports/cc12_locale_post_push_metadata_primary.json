@@ -1,0 +1,326 @@
+{
+  "schema": "bsp.cc12.locale-post-push-metadata-primary.v1",
+  "status": "exact_five_byte_unowned_call_metadata_accepted_opcode_and_registration_unproved",
+  "worker_commit": "167fc21b15945010a5b92bb91d4759d8fa3fdfc3",
+  "worker_report": {
+    "path": "local/cc12_locale_post_push_metadata_primary/worker_report.json",
+    "bytes": 33793,
+    "sha256": "477b00973ed41bb2d7cf24167c0e7e2288edad58c9b27eea56643318f1f91747"
+  },
+  "worker_document": {
+    "path": "local/cc12_locale_post_push_metadata_primary/worker_document.md",
+    "bytes": 5313,
+    "sha256": "8599992e0a45281a8cae9e0c8ad639efc03d336e5418dd4ac478061308a132d0"
+  },
+  "copied_archive": {
+    "path": "local/cc12_locale_post_push_metadata_primary/worker_evidence.zip",
+    "bytes": 116853327,
+    "sha256": "d1f550abc79eae09dff99142cadc27efa74f57b2efffe5af1ed96a924a8adc64"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_post_push_metadata_primary/Root_guarded_worker_replay.json",
+    "bytes": 9134,
+    "sha256": "74a8954738cee699b387e0e2bb6aee0c0ce7b1d50241b475f868d5ce0c179d35"
+  },
+  "actual_Git_blob_occurrences": 4262,
+  "actual_Git_commit_tree_objects": 11,
+  "actual_closed_Source_paths": 4217,
+  "committed_worker_Source_matches": true,
+  "Root_Source_differences": [],
+  "fresh_Native_metadata": {
+    "all_Native_captures_closed_before_evidence_packaging": true,
+    "boundary_consistency": "At 3F all exact/containing instruction and code-unit records identify one five-byte unit. At 40..43 exact units are null and containing units identify that same unit. No contradictory boundary or function owner observed.",
+    "comparison": {
+      "bytes": 236,
+      "path": "local/cc12_locale_initializer_post_push_metadata_gate/Native_comparison.json",
+      "sha256": "deed0b7367e6c731bfd88ac1fa8ee1107653d6470e9fc0a39479db9ab5434a35"
+    },
+    "count_pair_byte_equal": true,
+    "decompilation_reads": 0,
+    "direct_call_target_records": [
+      {
+        "address": {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        },
+        "default_target": true,
+        "effective_target": true,
+        "function_at_target": {
+          "direct_thunk_target": null,
+          "entry": {
+            "offset": "00bf6ff5",
+            "space": "ram"
+          },
+          "is_thunk": false,
+          "name": "_atexit",
+          "no_return": false,
+          "thunk_target_recursive": false
+        }
+      }
+    ],
+    "every_byte_unowned": true,
+    "evidence_files": [
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_post_push_metadata_gate/Native_before/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 8599,
+        "path": "local/cc12_locale_initializer_post_push_metadata_gate/Native_before/exact_entry_gate.json",
+        "sha256": "e4edf7af4a8cc5b7a28bfa63b8226c5c9d9d39b58491c6d8dabf3093b0ff7c95"
+      },
+      {
+        "bytes": 19351,
+        "path": "local/cc12_locale_initializer_post_push_metadata_gate/Native_before/exact_span_gate.json",
+        "sha256": "e3678d5dff9af320c03004caedf37b7309e4ea44617b5a0302c6548e20b5074e"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_post_push_metadata_gate/Native_after/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 8599,
+        "path": "local/cc12_locale_initializer_post_push_metadata_gate/Native_after/exact_entry_gate.json",
+        "sha256": "178b7d1cd4a775ee5f431acf7d540597d3f86dbb711375eb85aae558ca97d6f7"
+      },
+      {
+        "bytes": 19351,
+        "path": "local/cc12_locale_initializer_post_push_metadata_gate/Native_after/exact_span_gate.json",
+        "sha256": "36758ec35c6235a8b419d73e74a8ce264f0dcae468ef70954780cabb8eb2259b"
+      }
+    ],
+    "extra_target_body_or_metadata_queries": 0,
+    "fresh_Native_bytes": 0,
+    "function_at_every_query": null,
+    "function_containing_every_query": null,
+    "function_count_before_after": 64730,
+    "functions": [],
+    "identity_equal_across_all_captures": true,
+    "image_base": "00400000",
+    "initial_query": "00CC8D3F",
+    "instruction_context_reads": 0,
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00cc8d44",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": true,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "UNCONDITIONAL_CALL"
+      },
+      "default_targets": [
+        {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        }
+      ],
+      "effective_fallthrough": {
+        "offset": "00cc8d44",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": true,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "UNCONDITIONAL_CALL"
+      },
+      "effective_targets": [
+        {
+          "offset": "00bf6ff5",
+          "space": "ram"
+        }
+      ],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "instruction_text_reads": 0,
+    "language": "x86:LE:32:default",
+    "later_unit_queries": 0,
+    "measured_unit": {
+      "end_exclusive": "00CC8D44",
+      "end_inclusive": "00CC8D43",
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "kind": "instruction",
+      "length": 5,
+      "start": "00CC8D3F"
+    },
+    "modification_number_before_after": 95,
+    "owner_no_return": "Unavailable/not applicable because no containing or exact owning function exists.",
+    "per_byte_queries": [
+      "00CC8D3F",
+      "00CC8D40",
+      "00CC8D41",
+      "00CC8D42",
+      "00CC8D43"
+    ],
+    "preceding_unit_refreshes": 0,
+    "program": "/battlestationspacific.exe",
+    "project": "bsp",
+    "project_marker_verified": "C:/Users/sqz269/bsp.gpr",
+    "scope_extension": "The initial exact typed query measured a five-byte unit, within the authorized fifteen-byte x86 maximum. Only its measured span was then leased and queried per byte for typed ownership metadata.",
+    "target_metadata_scope": "BF6FF5 and its saved _atexit name/no_return=false/nonthunk flags were returned by the admitted site typed endpoint. No separate target query, target signature or body read occurred.",
+    "typed_raw_response_pairs_equal": 6,
+    "unique_typed_query_addresses": 5
+  },
+  "prior_operand_archives_byte_identical_to_Root_copies": true,
+  "prior_operand_pins": {
+    "Native_epoch": 95,
+    "Source_HEAD": "c8c253b5e246011562ea7547a346e7e31e2dc760",
+    "core": {
+      "bytes": 93219884,
+      "entry": "Prior/operand_evidence.zip",
+      "sha256": "00842dea0e760413baad005721fbc40589f99b1e0b34644b37fc867f51c740f0"
+    },
+    "credit": "Prior five-byte PUSH only; no fresh preceding-unit bytes/metadata. Prefix epoch92 ten code/four data bytes and prior metadata snapshots remain inherited credit only.",
+    "delivery": {
+      "bytes": 287398,
+      "entry": "Prior/operand_delivery_git.zip",
+      "sha256": "b80284e84d4e9f9783e715f50ec602662d928da16a29d07179f92fd0f3d4fe1e"
+    },
+    "primary_report": {
+      "bytes": 12972,
+      "path": "reports/cc12_locale_fallthrough_operand_primary.json",
+      "sha256": "6b7acefffab639e89899b73c5c9cb581f94c24da67d679389ec01c907325d7f2"
+    },
+    "worker_commit": "a9ffeafed028b8dabb5406d6858b9d558778c834",
+    "worker_report": {
+      "bytes": 30557,
+      "path": "reports/cc12_locale_initializer_fallthrough_operand_contract.json",
+      "sha256": "4c5af9e713633fb0c23dfe67a84a34571b0ff84da44140203bc08818b233fa4c"
+    }
+  },
+  "historical_renderer_Source_pin_byte_identical_to_Root_copy": true,
+  "historical_renderer_Source_pin": {
+    "bytes": 1251131,
+    "credit": "Historical physical pin only; no build/runtime credit.",
+    "entry": "Historical/Source3356_saved_renderer_Root_frozen.json",
+    "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+  },
+  "Source_delta": {
+    "changed_paths": [
+      {
+        "new_bytes": 2743,
+        "new_git_oid": "45aff1d95bc11528ebff9dba43c5b8b402747f61",
+        "new_sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572",
+        "old_bytes": 1778,
+        "old_git_oid": "c7c21daa08aae69dc3906229405feb64d9f4bdfd",
+        "old_sha256": "51e0dc41b0bdcd3941bc6b2e4e2e41d12111027e6864bc457eb96bc15dbf38cf",
+        "path": "include/bsp/gui_text_native_renderer.hpp"
+      },
+      {
+        "new_bytes": 5735,
+        "new_git_oid": "02a68b42f6d9f7cc81e9d66c90afe3794cedbe45",
+        "new_sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5",
+        "old_bytes": 4627,
+        "old_git_oid": "732d8e1fddf82eec461db43acf7453c73d64923f",
+        "old_sha256": "4a05f92e7209fd8ed69e184d6e6c48261611d2044c66a5608a43fa421cff7150",
+        "path": "src/gui_text_native_renderer.cpp"
+      }
+    ],
+    "current_head": "0b3db9a6496d72583220d5e90e286911d27aa9ff",
+    "equal_paths": 4215,
+    "historical_Source3356": {
+      "bytes": 1251131,
+      "credit": "Historical physical pin only; no build/runtime credit.",
+      "entry": "Historical/Source3356_saved_renderer_Root_frozen.json",
+      "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+    },
+    "prior_head": "c8c253b5e246011562ea7547a346e7e31e2dc760",
+    "renderer_commit": "224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8",
+    "renderer_objects": [
+      {
+        "entry": "RendererDelta/GitObjects/commit/224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8",
+        "kind": "commit",
+        "oid": "224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8"
+      },
+      {
+        "entry": "RendererDelta/GitObjects/tree/3f04f4186980c1cf0d4c481eb682017bde439373",
+        "kind": "tree",
+        "oid": "3f04f4186980c1cf0d4c481eb682017bde439373"
+      },
+      {
+        "entry": "RendererDelta/GitObjects/tree/5b638a47f65cd4dbdd6b63e7fac4ccf1ee7c633e",
+        "kind": "tree",
+        "oid": "5b638a47f65cd4dbdd6b63e7fac4ccf1ee7c633e"
+      },
+      {
+        "entry": "RendererDelta/GitObjects/tree/865fe6979c2052e069b8568c6165daf5848ae25f",
+        "kind": "tree",
+        "oid": "865fe6979c2052e069b8568c6165daf5848ae25f"
+      },
+      {
+        "entry": "RendererDelta/GitObjects/tree/c27d22f9af12ab2ccf8bf79d8dee4222597ce1bc",
+        "kind": "tree",
+        "oid": "c27d22f9af12ab2ccf8bf79d8dee4222597ce1bc"
+      }
+    ],
+    "renderer_root_tree": "3f04f4186980c1cf0d4c481eb682017bde439373"
+  },
+  "Source_delta_evidence": {
+    "bytes": 2361,
+    "path": "local/cc12_locale_initializer_post_push_metadata_gate/Source_delta.json",
+    "sha256": "98d3c942ddf6341a12d2c2c97f59c44c2929526569d0c39545cdef17660cdfa4"
+  },
+  "renderer_delta_commit_tree_objects_guarded_replay_verified": 5,
+  "named_incomplete_prerequisites": [
+    "Actual initialized canonical E1768C storage and identity across all borrowers.",
+    "Original E188B4 fixed-address projection authenticated to the same Source head/domain and same published locale element.",
+    "Actual initializer and callback registration/status/failure ordering, callback body and retained owner lifetime.",
+    "Concrete trim/profile binding with same element and ordinary provider serialization.",
+    "Actual slabs, 1Ch slots, payload/string lifetimes and quiescence before table/slab/section/unlink teardown.",
+    "Actual FH3 setup/dispatcher EBP = S = R + 0Ch; three accepted cleanup leaves do not establish invocation.",
+    "Full initializer entry continuation, actual registration operand/target, returned status and failure ordering.",
+    "Exact CE2754 table membership/dispatch, startup phase and actual invocation."
+  ],
+  "smallest_separately_admitted_instruction_proposal": {
+    "admission": "Proposal only. A separate Root packet must refresh exact identity/ownership/boundary/length/flow and all five per-byte gates before admitting exactly this unit.",
+    "basis": "Fresh exact and per-byte typed metadata measures one complete five-byte InstructionDB with consistent ownership and flow.",
+    "candidate_bytes": 5,
+    "candidate_end_exclusive": "00CC8D44",
+    "candidate_end_inclusive": "00CC8D43",
+    "candidate_start": "00CC8D3F",
+    "excluded": "No preceding-unit refresh, CC8D44/later instruction, BF6FF5 or other callee/IAT/CRT/OS body, CD9410 callback, FH3/handler/EH data or Native/game execution.",
+    "stop": "Stop without bytes on changed, unknown or overlapping owner/unit/boundary/flow/target metadata; no widening or repair.",
+    "target_and_callback_semantics_unproved": true
+  },
+  "scope": {
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "This packet adds no opcode bytes, text or call ABI/effects.",
+    "BF6FF5/_atexit are saved site target records; no target body or library implementation/version is authenticated.",
+    "The false target no-return flag does not establish actual return, registration or failure behavior.",
+    "Prior PUSH, epoch95 metadata and later Root epoch98 comments retain separate provenance.",
+    "Initializer completion, canonical owner, registration/callback lifetime, actual activation and FH3 frame remain unproved."
+  ],
+  "renderer_delta_commit_tree_objects_actual_Git_verified": 5,
+  "renderer_new_blobs_actual_Git_and_current_Root_verified": 2,
+  "Root_committed_output_delivery": {
+    "copied_archive": {
+      "path": "local/cc12_locale_post_push_metadata_primary/delivery_git.zip",
+      "bytes": 288508,
+      "sha256": "f4b93776df2751322d9254b2fef54d6a994d26a9e7fc44bd65f50468bc3f9c25"
+    },
+    "guarded_replay": {
+      "path": "local/cc12_locale_post_push_metadata_primary/Root_guarded_delivery_replay.json",
+      "bytes": 2354,
+      "sha256": "3683786ea67271e68826b78c12a30eda343b53d76da575869cfd1f3703bf7c91"
+    },
+    "actual_Git_commit_tree_objects": 4,
+    "actual_output_blobs": 2,
+    "outputs_byte_identical_to_reviewed_worker_files": true
+  }
+}
