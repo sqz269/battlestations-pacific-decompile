@@ -260,3 +260,12 @@ The actual Root_text_selection_candidate.json is typed v2, Source-credit zero an
 Complete Root design review passed 43,739 predicates with 697 equal current books and consumed the whole independent design, supplemental transport and closure reviews. The design binds the ninth probe Source role through the existing copy loop while preserving 121 payload filenames, ENTRY/STAGED 4/4, interpreted selected-code 8/13 and all 215 assembler plus 164 adopter predicates.
 
 Root accepts inert Source authoring within that causal design. Four new input grammars, exact fresh Source variants and complete Source acceptance are required before a new scope can be assembled or adopted. No implementation Source, fresh namespace, profile, plan, adoption, startup or runtime control is selected by this design acceptance. All unresolved conditions remain recorded verbatim; Source credit and qualification remain zero.
+
+
+## 2026-10-10 corrected inspector Source and prospective literal binding
+
+Root accepted and staged the 24,010-byte nested-pin inspector TEXT02 after consuming the full author and independent Source review, closure, readonly verification and original native transports. All 88 inspector predicates remain intact; four pin lookups in three leaf statements changed. The complete Root Source check passed 9,105 predicates against 76 equal current books. The initial Root leaf-count error and corrected genuine result are both preserved.
+
+The actual inspector has not run. The complete actual runtime Root report, its actual counts and the separate independent inspection gate remain unissued. This checkpoint adds Source compatibility acceptance only and preserves every preceding qualification limit.
+
+Root separately bound type1011p6, type1011select07, type1011observe07 and Root_type1011F6D07_adopter01 as prospective literals for inert successor Source authoring. All four roots were observed absent. They are uncreated and unreserved; no fresh implementation acceptance, plan, profile, materialization, adoption or actual phase selection is issued. The existing assembler worker is reused for this common stream.
