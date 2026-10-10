@@ -1,0 +1,1514 @@
+{
+  "schema": 1,
+  "packet": "cc12_fallback_entry_operand",
+  "status": "bounded_original_instruction_evidence_complete_writer_unestablished_by_this_entry",
+  "created_at": "2026-10-10T02:41:55.261137+00:00",
+  "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+  "branch": "agent/cc12_fallback_entry_operand",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_fallback_entry_operand",
+  "approved_native_scope": {
+    "start": "00cd82c0",
+    "end_exclusive": "00cd82ca",
+    "end_inclusive": "00cd82c9",
+    "length": 10,
+    "window_count": 1,
+    "verified_instruction_starts": [
+      "00cd82c0",
+      "00cd82c5"
+    ]
+  },
+  "owned_tracked_files": [
+    "docs/CC12_RESOURCE_CLASSIFIER_FALLBACK_ENTRY_OPERAND.md",
+    "reports/cc12_resource_classifier_fallback_entry_operand.json"
+  ],
+  "configured_identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "named_tools": [
+    {
+      "tool": "get_current_program_info",
+      "args": {
+        "program": "/battlestationspacific.exe"
+      },
+      "mcp_wrapper": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/named_current_program_info.mcp.json",
+        "size": 1780,
+        "sha256": "fc41e6ed62dc6645a0851d99278b7d8360b9c215cead88fb08c356f564374cbe"
+      }
+    },
+    {
+      "tool": "list_instances",
+      "args": {},
+      "mcp_wrapper": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/named_list_instances.mcp.json",
+        "size": 1798,
+        "sha256": "fe27c56ef21b4eb8c5c1fa27ce36b4590e9911de12ca2408a8ef459a5ddb36e3"
+      }
+    }
+  ],
+  "typed_batches": [
+    {
+      "tag": "batch01",
+      "capture": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01_typed_flow.json",
+        "size": 15298,
+        "sha256": "7d3e053b9657d02335d0bc46385025148e2bab524e0826eeb964f8e79813b25f"
+      },
+      "utc": "2026-10-10T02:37:46.710431+00:00",
+      "requested_addresses": [
+        "00CD82C0",
+        "00CD82C5"
+      ],
+      "max_ranges": 16,
+      "verified_before": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 4684,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 64730,
+          "symbol_count": 145558,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "verified_after": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 4684,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 64730,
+          "symbol_count": 145558,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "5",
+      "responses": [
+        {
+          "address": "00CD82C0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00CD82C0&program=battlestationspacific.exe&max_ranges=16",
+          "http_status": 200,
+          "transport_error": null,
+          "raw": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01_00cd82c0.raw.json",
+            "size": 2173,
+            "sha256": "3c8b153b55ca7a7076907ece16a0dd7879a6e81ee234db8b6b0e3b98a7ebad72"
+          },
+          "raw_sha256": "3c8b153b55ca7a7076907ece16a0dd7879a6e81ee234db8b6b0e3b98a7ebad72",
+          "indexed_metadata": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01_00cd82c0.indexed.json",
+            "size": 6837,
+            "sha256": "a0c5b05aca7b95a4b058e1788e64adff464d86fa680aad3b14c06cf669c4d40b"
+          },
+          "indexed_leaf_count": 79,
+          "complete_payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00cd82c5"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00cd82c5"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "function_containing_query": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "functions": [
+              {
+                "entry": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "name": "BSP_UnknownResourceTypeTokens_StartupEntry",
+                "no_return": false,
+                "is_thunk": false,
+                "thunk_target_recursive": false,
+                "direct_thunk_target": null,
+                "body": {
+                  "range_count": 1,
+                  "returned_range_count": 1,
+                  "address_count": "10",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00cd82c0"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00cd82c9"
+                      },
+                      "length": "10"
+                    }
+                  ]
+                }
+              }
+            ],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "address": "00CD82C5",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00CD82C5&program=battlestationspacific.exe&max_ranges=16",
+          "http_status": 200,
+          "transport_error": null,
+          "raw": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01_00cd82c5.raw.json",
+            "size": 2438,
+            "sha256": "803aacc4a9b776932ca0a6338dce1c66caa769714fe3d0e74a49d357c6770675"
+          },
+          "raw_sha256": "803aacc4a9b776932ca0a6338dce1c66caa769714fe3d0e74a49d357c6770675",
+          "indexed_metadata": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01_00cd82c5.indexed.json",
+            "size": 7800,
+            "sha256": "6583a5da3ca97ccfa5e391df4c4bff91fb2cf86d37b15cd4d9f2fd77acf517c2"
+          },
+          "indexed_leaf_count": 88,
+          "complete_payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00cd82c5"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "CALL_RETURN",
+              "default_flow": {
+                "name": "UNCONDITIONAL_JUMP",
+                "is_call": false,
+                "is_jump": true,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "CALL_TERMINATOR",
+                "is_call": true,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": true
+              },
+              "default_fallthrough": null,
+              "effective_fallthrough": null,
+              "fallthrough_overridden": false,
+              "default_targets": [
+                {
+                  "space": "ram",
+                  "offset": "00b86a00"
+                }
+              ],
+              "effective_targets": [
+                {
+                  "space": "ram",
+                  "offset": "00b86a00"
+                }
+              ]
+            },
+            "function_at_query": null,
+            "function_containing_query": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "functions": [
+              {
+                "entry": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "name": "BSP_UnknownResourceTypeTokens_StartupEntry",
+                "no_return": false,
+                "is_thunk": false,
+                "thunk_target_recursive": false,
+                "direct_thunk_target": null,
+                "body": {
+                  "range_count": 1,
+                  "returned_range_count": 1,
+                  "address_count": "10",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00cd82c0"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00cd82c9"
+                      },
+                      "length": "10"
+                    }
+                  ]
+                }
+              }
+            ],
+            "direct_call_targets": [
+              {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b86a00"
+                },
+                "default_target": true,
+                "effective_target": true,
+                "function_at_target": {
+                  "entry": {
+                    "space": "ram",
+                    "offset": "00b86a00"
+                  },
+                  "name": "FUN_00b86a00",
+                  "no_return": false,
+                  "is_thunk": false,
+                  "thunk_target_recursive": false,
+                  "direct_thunk_target": null
+                }
+              }
+            ],
+            "modification_number_after": "5"
+          }
+        }
+      ]
+    },
+    {
+      "tag": "batch02",
+      "capture": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02_typed_flow.json",
+        "size": 15298,
+        "sha256": "ca70102619ac6af4d8f017a222f4353d928acebac795696a08678be08b342424"
+      },
+      "utc": "2026-10-10T02:38:26.007919+00:00",
+      "requested_addresses": [
+        "00CD82C0",
+        "00CD82C5"
+      ],
+      "max_ranges": 16,
+      "verified_before": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 4684,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 64730,
+          "symbol_count": 145558,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "verified_after": [
+        {
+          "project_name": "bsp",
+          "current_folder": "/",
+          "folders": [],
+          "files": [
+            {
+              "name": "battlestationspacific.exe",
+              "path": "/battlestationspacific.exe",
+              "content_type": "Program",
+              "version": 4684,
+              "is_read_only": false,
+              "is_versioned": false
+            }
+          ]
+        },
+        {
+          "name": "battlestationspacific.exe",
+          "path": "/battlestationspacific.exe",
+          "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+          "executable_format": "Portable Executable (PE)",
+          "language": "x86:LE:32:default",
+          "compiler": "windows",
+          "address_size": 32,
+          "image_base": "00400000",
+          "min_address": "00400000",
+          "max_address": "ffdfffff",
+          "memory_size": 14876380,
+          "function_count": 64730,
+          "symbol_count": 145558,
+          "data_type_count": 795,
+          "creation_date": "Mon May 04 16:56:25 PDT 2026",
+          "memory_block_count": 6,
+          "address_spaces": [
+            {
+              "name": "ram",
+              "start": "00000000",
+              "end": "ffffffff",
+              "size": 4294967296,
+              "addressable_unit_size": 1,
+              "size_bytes": 4294967296,
+              "address_size_bits": 32,
+              "is_default": true
+            }
+          ],
+          "has_multiple_address_spaces": false
+        }
+      ],
+      "validation": {
+        "accepted": true,
+        "state": "accepted",
+        "errors": []
+      },
+      "modification_number": "5",
+      "responses": [
+        {
+          "address": "00CD82C0",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00CD82C0&program=battlestationspacific.exe&max_ranges=16",
+          "http_status": 200,
+          "transport_error": null,
+          "raw": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02_00cd82c0.raw.json",
+            "size": 2173,
+            "sha256": "3c8b153b55ca7a7076907ece16a0dd7879a6e81ee234db8b6b0e3b98a7ebad72"
+          },
+          "raw_sha256": "3c8b153b55ca7a7076907ece16a0dd7879a6e81ee234db8b6b0e3b98a7ebad72",
+          "indexed_metadata": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02_00cd82c0.indexed.json",
+            "size": 6837,
+            "sha256": "a0c5b05aca7b95a4b058e1788e64adff464d86fa680aad3b14c06cf669c4d40b"
+          },
+          "indexed_leaf_count": 79,
+          "complete_payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "NONE",
+              "default_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "FALL_THROUGH",
+                "is_call": false,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "default_fallthrough": {
+                "space": "ram",
+                "offset": "00cd82c5"
+              },
+              "effective_fallthrough": {
+                "space": "ram",
+                "offset": "00cd82c5"
+              },
+              "fallthrough_overridden": false,
+              "default_targets": [],
+              "effective_targets": []
+            },
+            "function_at_query": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "function_containing_query": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "functions": [
+              {
+                "entry": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "name": "BSP_UnknownResourceTypeTokens_StartupEntry",
+                "no_return": false,
+                "is_thunk": false,
+                "thunk_target_recursive": false,
+                "direct_thunk_target": null,
+                "body": {
+                  "range_count": 1,
+                  "returned_range_count": 1,
+                  "address_count": "10",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00cd82c0"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00cd82c9"
+                      },
+                      "length": "10"
+                    }
+                  ]
+                }
+              }
+            ],
+            "direct_call_targets": [],
+            "modification_number_after": "5"
+          }
+        },
+        {
+          "address": "00CD82C5",
+          "url": "http://127.0.0.1:8089/get_flow_metadata?address=00CD82C5&program=battlestationspacific.exe&max_ranges=16",
+          "http_status": 200,
+          "transport_error": null,
+          "raw": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02_00cd82c5.raw.json",
+            "size": 2438,
+            "sha256": "803aacc4a9b776932ca0a6338dce1c66caa769714fe3d0e74a49d357c6770675"
+          },
+          "raw_sha256": "803aacc4a9b776932ca0a6338dce1c66caa769714fe3d0e74a49d357c6770675",
+          "indexed_metadata": {
+            "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02_00cd82c5.indexed.json",
+            "size": 7800,
+            "sha256": "6583a5da3ca97ccfa5e391df4c4bff91fb2cf86d37b15cd4d9f2fd77acf517c2"
+          },
+          "indexed_leaf_count": 88,
+          "complete_payload": {
+            "schema": 1,
+            "complete": true,
+            "program": {
+              "path": "/battlestationspacific.exe",
+              "language": "x86:LE:32:default",
+              "image_base": {
+                "space": "ram",
+                "offset": "00400000"
+              },
+              "default_address_space": "ram",
+              "project": {
+                "name": "bsp",
+                "location": "/C:/Users/sqz269/",
+                "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+              }
+            },
+            "query_address": {
+              "space": "ram",
+              "offset": "00cd82c5"
+            },
+            "modification_number_before": "5",
+            "listing": {
+              "instruction_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "instruction_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_at": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              },
+              "code_unit_containing": {
+                "address": {
+                  "space": "ram",
+                  "offset": "00cd82c5"
+                },
+                "length": 5,
+                "java_class": "ghidra.program.database.code.InstructionDB",
+                "kind": "instruction",
+                "defined": null
+              }
+            },
+            "instruction_flow": {
+              "flow_override": "CALL_RETURN",
+              "default_flow": {
+                "name": "UNCONDITIONAL_JUMP",
+                "is_call": false,
+                "is_jump": true,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": false
+              },
+              "effective_flow": {
+                "name": "CALL_TERMINATOR",
+                "is_call": true,
+                "is_jump": false,
+                "is_conditional": false,
+                "is_computed": false,
+                "is_terminal": true
+              },
+              "default_fallthrough": null,
+              "effective_fallthrough": null,
+              "fallthrough_overridden": false,
+              "default_targets": [
+                {
+                  "space": "ram",
+                  "offset": "00b86a00"
+                }
+              ],
+              "effective_targets": [
+                {
+                  "space": "ram",
+                  "offset": "00b86a00"
+                }
+              ]
+            },
+            "function_at_query": null,
+            "function_containing_query": {
+              "space": "ram",
+              "offset": "00cd82c0"
+            },
+            "functions": [
+              {
+                "entry": {
+                  "space": "ram",
+                  "offset": "00cd82c0"
+                },
+                "name": "BSP_UnknownResourceTypeTokens_StartupEntry",
+                "no_return": false,
+                "is_thunk": false,
+                "thunk_target_recursive": false,
+                "direct_thunk_target": null,
+                "body": {
+                  "range_count": 1,
+                  "returned_range_count": 1,
+                  "address_count": "10",
+                  "complete": true,
+                  "ranges": [
+                    {
+                      "start": {
+                        "space": "ram",
+                        "offset": "00cd82c0"
+                      },
+                      "end_inclusive": {
+                        "space": "ram",
+                        "offset": "00cd82c9"
+                      },
+                      "length": "10"
+                    }
+                  ]
+                }
+              }
+            ],
+            "direct_call_targets": [
+              {
+                "address": {
+                  "space": "ram",
+                  "offset": "00b86a00"
+                },
+                "default_target": true,
+                "effective_target": true,
+                "function_at_target": {
+                  "entry": {
+                    "space": "ram",
+                    "offset": "00b86a00"
+                  },
+                  "name": "FUN_00b86a00",
+                  "no_return": false,
+                  "is_thunk": false,
+                  "thunk_target_recursive": false,
+                  "direct_thunk_target": null
+                }
+              }
+            ],
+            "modification_number_after": "5"
+          }
+        }
+      ]
+    }
+  ],
+  "identity_qualification": "Typed raw envelopes carry the actual absolute GPR locator, program, language and image base; Client.verify identity is retained before and after each batch. The batches bracket the exact live bytes and listing. All four responses accepted modification5. Named MCP wrappers are retained separately and are not represented as raw HTTP responses.",
+  "original_live_comparison": {
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "0x14c",
+      "image_base": "00400000"
+    },
+    "window": {
+      "address": "00cd82c0",
+      "end_exclusive": "00cd82ca",
+      "length": 10,
+      "rva": "008d82c0",
+      "file_offset": 9274048,
+      "file_offset_hex": "0x8d82c0",
+      "section": ".text",
+      "bytes": "b9 1c 02 09 01 e9 36 e7 ea ff",
+      "sha256": "6284e94b5f4795635e0b946e9af5919309f9d54f0986121b0354577f890ed5e3",
+      "disk_matches_live": true
+    },
+    "decoded": [
+      {
+        "address": "00cd82c0",
+        "size": 5,
+        "bytes": "b91c020901",
+        "mnemonic": "mov",
+        "op_str": "ecx, 0x109021c"
+      },
+      {
+        "address": "00cd82c5",
+        "size": 5,
+        "bytes": "e936e7eaff",
+        "mnemonic": "jmp",
+        "op_str": "0xb86a00"
+      }
+    ],
+    "manual_decode": {
+      "mov_opcode": "b9",
+      "register": "ecx",
+      "immediate_little_endian": "1c 02 09 01",
+      "immediate": "0109021c",
+      "jmp_opcode": "e9",
+      "rel32_little_endian": "36 e7 ea ff",
+      "signed_rel32": -1382602,
+      "next_instruction_address": "00cd82ca",
+      "computed_target": "00b86a00"
+    },
+    "versions": {
+      "pefile": "2024.8.26",
+      "capstone": "5.0.7"
+    }
+  },
+  "byte_artifacts": {
+    "original": {
+      "path": "local/cc12_resource_classifier_fallback_entry_operand/original_00cd82c0_10.bin",
+      "size": 10,
+      "sha256": "6284e94b5f4795635e0b946e9af5919309f9d54f0986121b0354577f890ed5e3"
+    },
+    "live_from_complete_cli": {
+      "path": "local/cc12_resource_classifier_fallback_entry_operand/ghidra_00cd82c0_10.bin",
+      "size": 10,
+      "sha256": "6284e94b5f4795635e0b946e9af5919309f9d54f0986121b0354577f890ed5e3"
+    },
+    "comparison": {
+      "path": "local/cc12_resource_classifier_fallback_entry_operand/disk_live_comparison.json",
+      "size": 1397,
+      "sha256": "b6661528e9747a12d3b9509c4022a03ec7f9e8584067a21bcc307c2930f98814"
+    }
+  },
+  "accepted_findings": [
+    "Original CD82C0 encodes B9 immediate32: MOV ECX,0109021C. This loads an address, not a value read from that address.",
+    "Original CD82C5 encodes E9 rel32: JMP00B86A00; no CALL return-address push occurs in this entry.",
+    "The complete two-instruction window has no memory operand read or write, stack adjustment or flag change. Target behavior is outside scope.",
+    "CD82C5 stored override CALL_RETURN transforms default UNCONDITIONAL_JUMP into effective CALL_TERMINATOR. This metadata does not replace the original JMP opcode.",
+    "Exact owner is CD82C0, complete10B, no-return=false and nonthunk; name is provisional evidence metadata, not startup behavior proof."
+  ],
+  "historical_evidence": {
+    "source_report": "reports/native_resource_item_frontier_bf.json",
+    "exact_entry_record": {
+      "start": "00cd82c0",
+      "end_inclusive": "00cd82c9",
+      "size": 10,
+      "live_sha256": "6284e94b5f4795635e0b946e9af5919309f9d54f0986121b0354577f890ed5e3",
+      "pe_sha256": "6284e94b5f4795635e0b946e9af5919309f9d54f0986121b0354577f890ed5e3",
+      "match": true,
+      "coverage": "complete matched raw span; no Ghidra function defined",
+      "original_abi": "See decoded instructions; definition/annotation left to integrator",
+      "evidence": "local/resource-item-frontier-bf/00cd82c0-decoded.txt",
+      "no_ghidra_function": true
+    },
+    "same_window_sha256": true,
+    "historical_decode_receipt_path": "J:/PROG/battlestations-pacific-decompile/local/resource-item-frontier-bf/00cd82c0-decoded.txt",
+    "historical_decode_receipt_present": false,
+    "current_metadata_difference": "Historical no_ghidra_function=true is superseded for current-state claims by exact function metadata at modification5.",
+    "previous_discovery_report": "reports/cc12_resource_classifier_fallback_type_writer_discovery.json",
+    "relation": "Immediate address operand explains the retained DATA reference; prior absence of recorded WRITE references is not proof of absent runtime writes."
+  },
+  "next_packet_proposal": {
+    "address": "00b86a00",
+    "initial_gate": "Separate owner/lease and exact typed-flow metadata before defining a new exact Native byte interval.",
+    "native_bytes_authorized_by_this_packet": 0,
+    "target_metadata_received_only_as_part_of_entry_response": true,
+    "target_queries_in_this_packet": 0,
+    "root_concurrent_work": "Root reports a separately scoped delegate audit. No evidence or conclusions from that audit are claimed by this packet."
+  },
+  "held_gates": [
+    "fallback cells0109021C/01090220/01090224 values and layout",
+    "guard semantics",
+    "actual writer and publication",
+    "reconstructed provider admission",
+    "CRT registration and startup order",
+    "ABI equivalence",
+    "consumer attachment",
+    "runtime and gameplay validation"
+  ],
+  "activity_counts": {
+    "unique_original_native_windows": 1,
+    "unique_original_native_bytes": 10,
+    "typed_metadata_batches": 2,
+    "typed_metadata_responses": 4,
+    "live_exact_byte_queries": 1,
+    "disk_decode_cli": 1,
+    "live_listing_queries": 1,
+    "target_queries": 0,
+    "new_xref_queries": 0,
+    "decompile_queries": 0,
+    "ghidra_mutations": 0,
+    "ghidra_scripts": 0,
+    "analysis_or_repairs": 0,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "game_runs": 0,
+    "cpp_cmake_ledger_config_changes": 0
+  },
+  "whole_file_pins": [
+    {
+      "path": "config/target.json",
+      "working": {
+        "path": "config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "working": {
+        "path": "tools/bsp.py",
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/tools/bsp.py",
+        "size": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "tools/ghidra_typed_flow.py",
+      "working": {
+        "path": "tools/ghidra_typed_flow.py",
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/tools/ghidra_typed_flow.py",
+        "size": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "working": {
+        "path": "tools/ghidra_export.py",
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/tools/ghidra_export.py",
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "tools/workspace.py",
+      "working": {
+        "path": "tools/workspace.py",
+        "size": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/tools/workspace.py",
+        "size": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "tools/coordination.py",
+      "working": {
+        "path": "tools/coordination.py",
+        "size": 17283,
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/tools/coordination.py",
+        "size": 17283,
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "c9b6a6788498b82373233afe3211002ed90ca4c1",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "docs/CC12_RESOURCE_CLASSIFIER_FALLBACK_TYPE_WRITER_DISCOVERY.md",
+      "working": {
+        "path": "docs/CC12_RESOURCE_CLASSIFIER_FALLBACK_TYPE_WRITER_DISCOVERY.md",
+        "size": 7988,
+        "sha256": "e14b9f9103d83ff62462b3240de1080aef07a56b1a0e6e17dcd99df53109130b"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/docs/CC12_RESOURCE_CLASSIFIER_FALLBACK_TYPE_WRITER_DISCOVERY.md",
+        "size": 7988,
+        "sha256": "e14b9f9103d83ff62462b3240de1080aef07a56b1a0e6e17dcd99df53109130b"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "9ecd625addc2ebf7398d593610275251ba0eb5b0",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "reports/cc12_resource_classifier_fallback_type_writer_discovery.json",
+      "working": {
+        "path": "reports/cc12_resource_classifier_fallback_type_writer_discovery.json",
+        "size": 34821,
+        "sha256": "a5d70bbbb33edfece61ae60de94f8e2cc2dffb913f18c78ff30d51b9ef6811f4"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/reports/cc12_resource_classifier_fallback_type_writer_discovery.json",
+        "size": 34821,
+        "sha256": "a5d70bbbb33edfece61ae60de94f8e2cc2dffb913f18c78ff30d51b9ef6811f4"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "e15d97c07f42435f03498c3c36fd18c8d28bd528",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_ITEM_FRONTIER_BF.md",
+      "working": {
+        "path": "docs/NATIVE_RESOURCE_ITEM_FRONTIER_BF.md",
+        "size": 14616,
+        "sha256": "5e83fe7fb4324144fa956cf07a4a1bc50c99350d62e743815f73474454fa0efb"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/docs/NATIVE_RESOURCE_ITEM_FRONTIER_BF.md",
+        "size": 14616,
+        "sha256": "5e83fe7fb4324144fa956cf07a4a1bc50c99350d62e743815f73474454fa0efb"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "71cc507502dd0e023bae21f5670c563ee29bdb09",
+      "equal_after_crlf_normalization": true
+    },
+    {
+      "path": "reports/native_resource_item_frontier_bf.json",
+      "working": {
+        "path": "reports/native_resource_item_frontier_bf.json",
+        "size": 100172,
+        "sha256": "a8b8fa50bd098dd1197a226fb1059a4911673dfe9aac4ea3024084930f134dee"
+      },
+      "baseline": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/baseline/reports/native_resource_item_frontier_bf.json",
+        "size": 100172,
+        "sha256": "a8b8fa50bd098dd1197a226fb1059a4911673dfe9aac4ea3024084930f134dee"
+      },
+      "baseline_commit": "5a2027ce606ec678de0b6a31401bea87e0c3aac9",
+      "baseline_git_blob": "bbb70c06af12c6a341f054b10ac294c5bc627799",
+      "equal_after_crlf_normalization": true
+    }
+  ],
+  "whole_file_pin_qualification": "Exact full working-file SHA256 and baseline Git blob/copy retained for ten context/config/tool files. CRLF normalization applies only to equality checks. No C++ source context was needed.",
+  "cli_receipts": [
+    {
+      "tag": "batch01",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01.command.json",
+        "size": 452,
+        "sha256": "d0ee3a6199f90d99221f6f4d2f93634cb90e9518b7c20db29b40bea4225f595d"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01.stdout",
+        "size": 210,
+        "sha256": "60400c859d7cf923273a88b941ce1ced873c8c7c3bd54b491825ff67bd565a8d"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch01.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00CD82C0",
+        "00CD82C5",
+        "--max-ranges",
+        "16",
+        "--output",
+        "local/cc12_resource_classifier_fallback_entry_operand/batch01_typed_flow.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "batch02",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02.command.json",
+        "size": 505,
+        "sha256": "c2286e9cb01e548494f22b902ee8d4679c3b441b25d67e73f2b9bee4866f3a0c"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02.stdout",
+        "size": 210,
+        "sha256": "c1b1295309ce81db8686c98eff1ffe270bd870bb5915365266767f0de50b26a9"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/batch02.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "typed-flow",
+        "00CD82C0",
+        "00CD82C5",
+        "--max-ranges",
+        "16",
+        "--output",
+        "local/cc12_resource_classifier_fallback_entry_operand/batch02_typed_flow.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "bytes",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/bytes.command.json",
+        "size": 376,
+        "sha256": "4e81342c6e41e6cd28d17fb6e1d213561a3e325a8c69445e83c754f709149e20"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/bytes.stdout",
+        "size": 53,
+        "sha256": "b356046af5a47fa99ee38fa91a8d444914312dabde9c5ec1b444109dcf5f24bb"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/bytes.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00CD82C0",
+        "--length",
+        "10"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "disk_decode",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/disk_decode.command.json",
+        "size": 366,
+        "sha256": "00df1fe8027e3c69ec3b5b9f67397e84cfa886d4af0ca8c6f9e7e6f86ee69943"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/disk_decode.stdout",
+        "size": 111,
+        "sha256": "ffff6e369e846077b9eac693ba21bfe1d243137f4d82286ef20f892bace30988"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/disk_decode.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "disasm-raw",
+        "00CD82C0",
+        "--length",
+        "10"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "git_branch",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_branch.command.json",
+        "size": 176,
+        "sha256": "14a1094c9affe1e2b69b5cdb33b66db044d8fb69b77c95608af32f75035edd0b"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_branch.stdout",
+        "size": 34,
+        "sha256": "1455e7b175c99937342a0f463118952af491a8963859ada8fa1307b452bea56a"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_branch.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "git_head",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_head.command.json",
+        "size": 169,
+        "sha256": "f4a899625c1ad8552b39295882b62c6cd21a299430ff4793fd34e7a8f57e49fc"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_head.stdout",
+        "size": 41,
+        "sha256": "de4d6c99f7d525fb20eefdd01f3e0f514c3435d0f8a34dc702593c899d316035"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_head.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "git_status",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_status.command.json",
+        "size": 169,
+        "sha256": "c556f13e2e0ecb77aeff509943ec260ff9128ee0563da1a50ca84e04a6e71156"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_status.stdout",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/git_status.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "lease_check",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/lease_check.command.json",
+        "size": 207,
+        "sha256": "7d750206085170c9116db862c4d9b978da385bd10aaee7ca2541247bf07af51c"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/lease_check.stdout",
+        "size": 96,
+        "sha256": "83c48bc863e998529d6995ebe8c76be1382eb7d53ebe29f030ac3e6813f4e872"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/lease_check.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lease",
+        "check",
+        "00CD82C0"
+      ],
+      "exit_code": 0
+    },
+    {
+      "tag": "listing",
+      "record": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/listing.command.json",
+        "size": 375,
+        "sha256": "51c200e278cc87edbe1fa3f14ee5663f0ad71950e777a14ff78794ec0a6e1447"
+      },
+      "stdout": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/listing.stdout",
+        "size": 57,
+        "sha256": "c9842b97ac98c76328246b1916bd777df6261b86c3b8f4847068f5529b4e02e5"
+      },
+      "stderr": {
+        "path": "local/cc12_resource_classifier_fallback_entry_operand/listing.stderr",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "argv": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00CD82C0",
+        "--lines",
+        "2"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "offline_verification": {
+    "path": "local/cc12_resource_classifier_fallback_entry_operand/offline_verification.json",
+    "size": 1307,
+    "sha256": "f2c1fa58328788f1e59277943077cc146b3b2745d18edb2e4712916047faf97c"
+  },
+  "evidence_manifest": {
+    "path": "local/cc12_resource_classifier_fallback_entry_operand/evidence_manifest.json",
+    "size": 11906,
+    "sha256": "792a004eeecca601dc2152aedae1416639a4c52bfdc29108acf2389da8fe9652"
+  },
+  "evidence_file_count_excluding_manifest": 54,
+  "validation_limits": "Instruction evidence and saved metadata only; no delegated writer semantics, source implementation, ABI compatibility, startup execution or runtime/game validation credit."
+}
