@@ -7333,6 +7333,54 @@
           "game_qualification": false,
           "original_clock_started": false,
           "original_capture_replayed": false
+        },
+        "fresh_F6_prepare01_actual_DATA_adoption_closed_pending_complete_adopted_output_review": {
+          "status": "ROOT_AUTHORIZED_DATA_ADOPTION_ONLY; complete adopted output review pending",
+          "Source_credit": 0,
+          "Root_acceptance": false,
+          "actual_execution_event": null,
+          "actual_DATA_adoption_completed": true,
+          "actual_adopter_session": 50467,
+          "actual_adopter_terminal_chunk": "4da094",
+          "actual_adopter_exit_code": 0,
+          "complete_original_native_envelope_count": 9,
+          "whole_original_native_capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_actual_DATA_adoption_native_DATA01.json",
+            "bytes": 7752,
+            "sha256": "861815abefadf548f86fc9e601dc298ffa03d24c318f402b0bf61514b57d2ac9"
+          },
+          "actual_final_Root_seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F6D07_adopter01\\type1011_f6_prepare01_adopted01\\Root_seal.json",
+            "bytes": 18544,
+            "sha256": "5730212a8e4b9be55dce8a1406a671fa110f2d0776e970f98f5e933168887829"
+          },
+          "separate_DATA_adoption_instruction": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_DATA_adoption_instruction_DATA01.json",
+            "bytes": 3467,
+            "sha256": "99f1b11a331a1129e6df4ec2cff2599896fc123f6d9679bee0345cbc91f2c8e1"
+          },
+          "selected_actual_seals_bound_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\adoption_plan.F6_prepare01.actual_seals_bound.inert_DATA01.json",
+            "bytes": 54282,
+            "sha256": "1040befb7e6c5b195e3322acd5d894bbe3b2b3c0de8296427e874a1f16157a2a"
+          },
+          "selected_adopter_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\selected_adopter.py",
+            "bytes": 64940,
+            "sha256": "a5286b8975e4762464bac6fdd927cce36ce83ecd2634e1686fc5e206d58dcfed"
+          },
+          "complete_adopted_output_review_pending": true,
+          "fixture_dispatch_authorized": false,
+          "dispatch_executed": false,
+          "phase_authority": false,
+          "runtime_authority": false,
+          "future_API_terminal_or_runtime_proven": false,
+          "ABI_qualification": false,
+          "game_validation": false,
+          "prepare_runtime_clock_started": false,
+          "F6_fixture_absent": true,
+          "Root_SQLite_absent": true,
+          "historical_original_F5_capture_preserved": true
         }
       }
     }
