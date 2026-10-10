@@ -1,0 +1,3065 @@
+{
+  "worker_commit": "1cdb4cdcaf9b49b05f74468e7ce14c472e30cca8",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\reports\\cc12_options_sound_copy_abi_review.json",
+    "bytes": 119734,
+    "sha256": "6a743c634482e37753f678d1524078f93f585b416a6f519e00ea41da23dd01b1"
+  },
+  "correction_preimage_commit": "2c8b20437839f69ae5b39c8226dd26b838951d5d",
+  "accepted_packet_git_paths": [
+    "docs/CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+    "reports/cc12_options_sound_copy_abi_review.json"
+  ],
+  "Root_invoked_portable_offline_replay": {
+    "command": [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/replay.py"
+    ],
+    "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts",
+    "exit_code": 0,
+    "returned": {
+      "passed": true,
+      "pin_occurrences": 56,
+      "unique_frozen_files": 55,
+      "whole_Source_Git_files": 17,
+      "captured_commands": 21,
+      "PE_live_identical_windows": 4,
+      "PE_bytes_total": 1039,
+      "retained_complete_PE_bytes": 12223752,
+      "retained_complete_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "slice_windows_match_retained_PE": 4,
+      "read_guard": {
+        "enabled": true,
+        "boundary": "Evidence directory only; filesystem open attempts outside it abort before OS access. Writes forbidden.",
+        "successful_open_count": 66,
+        "unique_opened_files": 56,
+        "installation_open_count": 0
+      },
+      "saved_live_listing_comparisons": [
+        {
+          "window": "constructor",
+          "matching_instruction_rows": 42
+        },
+        {
+          "window": "commit_head",
+          "matching_instruction_rows": 32
+        },
+        {
+          "window": "commit_tail",
+          "matching_instruction_rows": 48
+        }
+      ],
+      "exact_instruction_or_call_assertions": [
+        "005F6048",
+        "005F6093",
+        "005F60A3",
+        "005F609E->008D7710",
+        "005F60AE->008D7710",
+        "005F65E2",
+        "005F65E5",
+        "005F6623",
+        "005F6629->005F52C0",
+        "005F52C0",
+        "005F5311",
+        "005F54E2"
+      ],
+      "fixed_scalar_stores": {
+        "04": {
+          "instruction": "005F52CC",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "08": {
+          "instruction": "005F52D3",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "09": {
+          "instruction": "005F52DA",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "0C": {
+          "instruction": "005F52E0",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "10": {
+          "instruction": "005F52E7",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "14": {
+          "instruction": "005F52ED",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "18": {
+          "instruction": "005F52F3",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "1C": {
+          "instruction": "005F52FA",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "1D": {
+          "instruction": "005F5301",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "1E": {
+          "instruction": "005F5308",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "20": {
+          "instruction": "005F530E",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "24": {
+          "instruction": "005F5315",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "28": {
+          "instruction": "005F531B",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "2C": {
+          "instruction": "005F5321",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "30": {
+          "instruction": "005F5327",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "34": {
+          "instruction": "005F532D",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "38": {
+          "instruction": "005F5334",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "3C": {
+          "instruction": "005F533A",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "40": {
+          "instruction": "005F5341",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "41": {
+          "instruction": "005F5348",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "42": {
+          "instruction": "005F534F",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "43": {
+          "instruction": "005F5356",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "44": {
+          "instruction": "005F535D",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "45": {
+          "instruction": "005F5364",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "46": {
+          "instruction": "005F536B",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "47": {
+          "instruction": "005F5372",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "48": {
+          "instruction": "005F5379",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "49": {
+          "instruction": "005F5380",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "4A": {
+          "instruction": "005F5387",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "4B": {
+          "instruction": "005F538E",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "4C": {
+          "instruction": "005F5395",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "50": {
+          "instruction": "005F539B",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "54": {
+          "instruction": "005F53A1",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "58": {
+          "instruction": "005F53A7",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "5C": {
+          "instruction": "005F53AD",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "60": {
+          "instruction": "005F53B4",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "64": {
+          "instruction": "005F53BA",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "68": {
+          "instruction": "005F53C0",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "6C": {
+          "instruction": "005F53C7",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "70": {
+          "instruction": "005F53CD",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "74": {
+          "instruction": "005F53D4",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "78": {
+          "instruction": "005F53DA",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "7C": {
+          "instruction": "005F53E1",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "80": {
+          "instruction": "005F53EA",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "84": {
+          "instruction": "005F53F7",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "85": {
+          "instruction": "005F5404",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "86": {
+          "instruction": "005F5411",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "88": {
+          "instruction": "005F541D",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "8C": {
+          "instruction": "005F542A",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "8D": {
+          "instruction": "005F5437",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "90": {
+          "instruction": "005F5443",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "94": {
+          "instruction": "005F5450",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "95": {
+          "instruction": "005F546A",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "B0": {
+          "instruction": "005F548E",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "B1": {
+          "instruction": "005F549B",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "B2": {
+          "instruction": "005F54B6",
+          "width": 1,
+          "opcode": "MOV"
+        }
+      },
+      "qualification": "Reads confined by a Python audit hook to the retained evidence directory, including the complete frozen PE. Original installation path is provenance only. Frozen bytes, hashes, exact instruction facts and address arithmetic only; no Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit."
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\Root_replay.stdout.json",
+      "bytes": 7079,
+      "sha256": "5f32560e3b31a63ad57b1377df51c527db0cb3d6eeb11dd2301a227a8d41ecfa"
+    }
+  },
+  "complete_retained_directory_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\capture.py",
+      "bytes": 1303,
+      "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\commit_message.txt",
+      "bytes": 398,
+      "sha256": "4bf8635cfa7c924747c8decc79dba37e55fde6e783567f6d3f346b1c73f2ea05"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\correction_commit_message.txt",
+      "bytes": 475,
+      "sha256": "b30fd0a6d847a6db4deea42964d2bcdd68c9d26964f725f4599bc6518244fa76"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\freeze.py",
+      "bytes": 4018,
+      "sha256": "6a89bd44d0f894106c42454e71e18be334569829687e34d5e9b90746650f4b72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\freeze_capture.json",
+      "bytes": 19985,
+      "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\freeze_capture_v2.json",
+      "bytes": 23188,
+      "sha256": "47af111396981bb3acdc5b94a6af89a8c6ecb5fd3e0dca688108407b916d6ddd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\live_initial.json",
+      "bytes": 252,
+      "sha256": "7c6b7551171a745f8d7b4f737f503c8b5f765efafc6623b0c83eb73edb2c0dc9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\live_initial_capture.json",
+      "bytes": 9560,
+      "sha256": "369d12c5cf7ecf83e0c0f2203eef083281440c5d96577a69d4b2bdad75606d5d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\live_listing.json",
+      "bytes": 615,
+      "sha256": "a7be114a9697a201cca7a483f929133b0c6bfde861122b356722a2c4fa3019ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\live_listing_capture.json",
+      "bytes": 11386,
+      "sha256": "83bbc77009e098b29483c7bd3b8d5583f2c3846242873c3f322ff5943c10add8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\live_remaining.json",
+      "bytes": 1078,
+      "sha256": "a590c2a737a6a8dd58f8dc534ac6b788e7d399113755ec678496fca10b6e1c17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\live_remaining_capture.json",
+      "bytes": 14560,
+      "sha256": "4ce1801171391b5de1aa84cfb7d22e61bcc48e5248152f447b265aa416139a15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\make_receipt.py",
+      "bytes": 9647,
+      "sha256": "86d2ad24c3c9372b1931be1ef00ccdaf0c130f75601624523e76b6c0a41205a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\replay.py",
+      "bytes": 7341,
+      "sha256": "a2ebcbe7fd1b75a0fa3c02891d3ebbb6fa272f52133e284c3515901a8f74c8b8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\replay_result.json",
+      "bytes": 7079,
+      "sha256": "5f32560e3b31a63ad57b1377df51c527db0cb3d6eeb11dd2301a227a8d41ecfa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\retain_original_pe.py",
+      "bytes": 2641,
+      "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\saved_windows.json",
+      "bytes": 579,
+      "sha256": "215b2ca1c735b1ab2f08c66aec007acf057494e44f2458ec89f4bb95da611a67"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\saved_windows_capture.json",
+      "bytes": 12971,
+      "sha256": "fc6638c8c3b5fe4ff3dce9f9c015c29c9dfde9054e4ab88160f39c3cc908ee17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\0367957cab3518c6_git_tools_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\0367957cab3518c6_work_tools_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\09de2b8916a4af98_git_tools_bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\09de2b8916a4af98_work_tools_bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\1423e4d28f887bbe_commit_head.bin",
+      "bytes": 124,
+      "sha256": "1423e4d28f887bbe250264a9d86e6be49e08d4f305684dfed09f31db05558640"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\215b2ca1c735b1ab_saved_windows.json",
+      "bytes": 579,
+      "sha256": "215b2ca1c735b1ab2f08c66aec007acf057494e44f2458ec89f4bb95da611a67"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\251c0a349760dd21_git_src_native_game_settings_owner.cpp",
+      "bytes": 7785,
+      "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\251c0a349760dd21_work_src_native_game_settings_owner.cpp",
+      "bytes": 7785,
+      "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3090a9d2bde1e7ec_git_src_options_menu_screens.cpp",
+      "bytes": 13334,
+      "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3090a9d2bde1e7ec_work_src_options_menu_screens.cpp",
+      "bytes": 13334,
+      "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\35b1e6df84ef73d8_copy_helper.bin",
+      "bytes": 554,
+      "sha256": "35b1e6df84ef73d8268530a293c46630f2a748aca9272427e788084765ea2195"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\366e5a64ac945473_git_config_target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\366e5a64ac945473_work_config_target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\369d12c5cf7ecf83_live_initial_capture.json",
+      "bytes": 9560,
+      "sha256": "369d12c5cf7ecf83e0c0f2203eef083281440c5d96577a69d4b2bdad75606d5d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3c9e009c65606e35_git_include_bsp_native_game_settings_owner.hpp",
+      "bytes": 5980,
+      "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3c9e009c65606e35_work_include_bsp_native_game_settings_owner.hpp",
+      "bytes": 5980,
+      "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\4ce1801171391b5d_live_remaining_capture.json",
+      "bytes": 14560,
+      "sha256": "4ce1801171391b5de1aa84cfb7d22e61bcc48e5248152f447b265aa416139a15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\51fe0ce5d7a0713e_git_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+      "bytes": 1711,
+      "sha256": "51fe0ce5d7a0713ef1a58ddefd535778a1e3786d9dea9977c46bfb2bf2fd6a12"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\51fe0ce5d7a0713e_work_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+      "bytes": 1711,
+      "sha256": "51fe0ce5d7a0713ef1a58ddefd535778a1e3786d9dea9977c46bfb2bf2fd6a12"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\59076d4d9aa15f0f_before_offline_correction_CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+      "bytes": 6799,
+      "sha256": "59076d4d9aa15f0f29dc675bbd96ad64c5920b84ba27edc4c890932953971fda"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\611a2f0613f21724_git_tools_workspace.py",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\611a2f0613f21724_work_tools_workspace.py",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\6a89bd44d0f89410_freeze.py",
+      "bytes": 4018,
+      "sha256": "6a89bd44d0f894106c42454e71e18be334569829687e34d5e9b90746650f4b72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\7c6b7551171a745f_live_initial.json",
+      "bytes": 252,
+      "sha256": "7c6b7551171a745f8d7b4f737f503c8b5f765efafc6623b0c83eb73edb2c0dc9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\83bbc77009e098b2_live_listing_capture.json",
+      "bytes": 11386,
+      "sha256": "83bbc77009e098b29483c7bd3b8d5583f2c3846242873c3f322ff5943c10add8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8b1d37ce0ccdcde0_git_include_bsp_game_settings.hpp",
+      "bytes": 18657,
+      "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8b1d37ce0ccdcde0_work_include_bsp_game_settings.hpp",
+      "bytes": 18657,
+      "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8f6d0b3187db4c8a_git_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+      "bytes": 4172,
+      "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8f6d0b3187db4c8a_work_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+      "bytes": 4172,
+      "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+      "bytes": 19985,
+      "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a3a7e2f3944d42cb_capture.py",
+      "bytes": 1303,
+      "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a590c2a737a6a8dd_live_remaining.json",
+      "bytes": 1078,
+      "sha256": "a590c2a737a6a8dd58f8dc534ac6b788e7d399113755ec678496fca10b6e1c17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a5b64df4d2866c22_before_offline_correction_replay.py",
+      "bytes": 4981,
+      "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a7be114a9697a201_live_listing.json",
+      "bytes": 615,
+      "sha256": "a7be114a9697a201cca7a483f929133b0c6bfde861122b356722a2c4fa3019ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b5b740315878c3b5_git_reports_cc12_native_sound_state_writer_review.json",
+      "bytes": 157428,
+      "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b5b740315878c3b5_work_reports_cc12_native_sound_state_writer_review.json",
+      "bytes": 157428,
+      "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b682a82c52f81f95_original_battlestationspacific.exe.bin",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b9fd448c64a8bb36_git_reports_cc12_native_sound_state_writer_review_primary_review.json",
+      "bytes": 114892,
+      "sha256": "b9fd448c64a8bb36c55edf0f482e128766f2a5dec0e8e4feaf81ea4dd72847c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b9fd448c64a8bb36_work_reports_cc12_native_sound_state_writer_review_primary_review.json",
+      "bytes": 114892,
+      "sha256": "b9fd448c64a8bb36c55edf0f482e128766f2a5dec0e8e4feaf81ea4dd72847c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\c5e36a8a1a21de52_constructor.bin",
+      "bytes": 185,
+      "sha256": "c5e36a8a1a21de5243aaca6503f2cc3ade61666c4a77b96ab4107abb56076e7d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\c63a55b98ee3cdff_git_include_bsp_options_menu_screens.hpp",
+      "bytes": 24760,
+      "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\c63a55b98ee3cdff_work_include_bsp_options_menu_screens.hpp",
+      "bytes": 24760,
+      "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\ca03986ae9105a50_before_offline_correction_cc12_options_sound_copy_abi_review.json",
+      "bytes": 109624,
+      "sha256": "ca03986ae9105a501d4155a6fa0745aa1e194be65341e3a75077ab82dc073014"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d01c8c84a07118bb_git_docs_OPTIONS_MENU_SCREENS.md",
+      "bytes": 29920,
+      "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d01c8c84a07118bb_work_docs_OPTIONS_MENU_SCREENS.md",
+      "bytes": 29920,
+      "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d226c07465ccf8dd_retain_original_pe.py",
+      "bytes": 2641,
+      "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d35c73dca31fbd60_before_offline_correction_make_receipt.py",
+      "bytes": 9481,
+      "sha256": "d35c73dca31fbd6035b00f117b2101070f571f07a204c6fe3780efd810a4a07e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d90b2ac2468a4069_commit_tail.bin",
+      "bytes": 176,
+      "sha256": "d90b2ac2468a4069a1a8a60f739475ad3130f02eafd1f96a850effb33e26a110"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\db1fb36906e6bef0_git_include_bsp_frontend_managers.hpp",
+      "bytes": 22929,
+      "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\db1fb36906e6bef0_work_include_bsp_frontend_managers.hpp",
+      "bytes": 22929,
+      "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\dd1545809b0689ce_git_src_frontend_managers.cpp",
+      "bytes": 23865,
+      "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\dd1545809b0689ce_work_src_frontend_managers.cpp",
+      "bytes": 23865,
+      "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\fc6638c8c3b5fe4f_saved_windows_capture.json",
+      "bytes": 12971,
+      "sha256": "fc6638c8c3b5fe4ff3dce9f9c015c29c9dfde9054e4ab88160f39c3cc908ee17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\fc9ab534f827975f_git_src_game_settings.cpp",
+      "bytes": 20468,
+      "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\fc9ab534f827975f_work_src_game_settings.cpp",
+      "bytes": 20468,
+      "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+    }
+  ],
+  "Root_verified_report_pin_occurrences": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\366e5a64ac945473_work_config_target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\366e5a64ac945473_git_config_target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\09de2b8916a4af98_work_tools_bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\09de2b8916a4af98_git_tools_bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\0367957cab3518c6_work_tools_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\0367957cab3518c6_git_tools_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\611a2f0613f21724_work_tools_workspace.py",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\611a2f0613f21724_git_tools_workspace.py",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3090a9d2bde1e7ec_work_src_options_menu_screens.cpp",
+      "bytes": 13334,
+      "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3090a9d2bde1e7ec_git_src_options_menu_screens.cpp",
+      "bytes": 13334,
+      "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\c63a55b98ee3cdff_work_include_bsp_options_menu_screens.hpp",
+      "bytes": 24760,
+      "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\c63a55b98ee3cdff_git_include_bsp_options_menu_screens.hpp",
+      "bytes": 24760,
+      "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\dd1545809b0689ce_work_src_frontend_managers.cpp",
+      "bytes": 23865,
+      "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\dd1545809b0689ce_git_src_frontend_managers.cpp",
+      "bytes": 23865,
+      "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\db1fb36906e6bef0_work_include_bsp_frontend_managers.hpp",
+      "bytes": 22929,
+      "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\db1fb36906e6bef0_git_include_bsp_frontend_managers.hpp",
+      "bytes": 22929,
+      "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\fc9ab534f827975f_work_src_game_settings.cpp",
+      "bytes": 20468,
+      "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\fc9ab534f827975f_git_src_game_settings.cpp",
+      "bytes": 20468,
+      "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8b1d37ce0ccdcde0_work_include_bsp_game_settings.hpp",
+      "bytes": 18657,
+      "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8b1d37ce0ccdcde0_git_include_bsp_game_settings.hpp",
+      "bytes": 18657,
+      "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\251c0a349760dd21_work_src_native_game_settings_owner.cpp",
+      "bytes": 7785,
+      "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\251c0a349760dd21_git_src_native_game_settings_owner.cpp",
+      "bytes": 7785,
+      "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3c9e009c65606e35_work_include_bsp_native_game_settings_owner.hpp",
+      "bytes": 5980,
+      "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\3c9e009c65606e35_git_include_bsp_native_game_settings_owner.hpp",
+      "bytes": 5980,
+      "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d01c8c84a07118bb_work_docs_OPTIONS_MENU_SCREENS.md",
+      "bytes": 29920,
+      "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d01c8c84a07118bb_git_docs_OPTIONS_MENU_SCREENS.md",
+      "bytes": 29920,
+      "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8f6d0b3187db4c8a_work_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+      "bytes": 4172,
+      "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\8f6d0b3187db4c8a_git_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+      "bytes": 4172,
+      "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\51fe0ce5d7a0713e_work_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+      "bytes": 1711,
+      "sha256": "51fe0ce5d7a0713ef1a58ddefd535778a1e3786d9dea9977c46bfb2bf2fd6a12"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\51fe0ce5d7a0713e_git_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+      "bytes": 1711,
+      "sha256": "51fe0ce5d7a0713ef1a58ddefd535778a1e3786d9dea9977c46bfb2bf2fd6a12"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b5b740315878c3b5_work_reports_cc12_native_sound_state_writer_review.json",
+      "bytes": 157428,
+      "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b5b740315878c3b5_git_reports_cc12_native_sound_state_writer_review.json",
+      "bytes": 157428,
+      "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b9fd448c64a8bb36_work_reports_cc12_native_sound_state_writer_review_primary_review.json",
+      "bytes": 114892,
+      "sha256": "b9fd448c64a8bb36c55edf0f482e128766f2a5dec0e8e4feaf81ea4dd72847c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b9fd448c64a8bb36_git_reports_cc12_native_sound_state_writer_review_primary_review.json",
+      "bytes": 114892,
+      "sha256": "b9fd448c64a8bb36c55edf0f482e128766f2a5dec0e8e4feaf81ea4dd72847c6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\7c6b7551171a745f_live_initial.json",
+      "bytes": 252,
+      "sha256": "7c6b7551171a745f8d7b4f737f503c8b5f765efafc6623b0c83eb73edb2c0dc9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\369d12c5cf7ecf83_live_initial_capture.json",
+      "bytes": 9560,
+      "sha256": "369d12c5cf7ecf83e0c0f2203eef083281440c5d96577a69d4b2bdad75606d5d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a7be114a9697a201_live_listing.json",
+      "bytes": 615,
+      "sha256": "a7be114a9697a201cca7a483f929133b0c6bfde861122b356722a2c4fa3019ea"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\83bbc77009e098b2_live_listing_capture.json",
+      "bytes": 11386,
+      "sha256": "83bbc77009e098b29483c7bd3b8d5583f2c3846242873c3f322ff5943c10add8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a590c2a737a6a8dd_live_remaining.json",
+      "bytes": 1078,
+      "sha256": "a590c2a737a6a8dd58f8dc534ac6b788e7d399113755ec678496fca10b6e1c17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\4ce1801171391b5d_live_remaining_capture.json",
+      "bytes": 14560,
+      "sha256": "4ce1801171391b5de1aa84cfb7d22e61bcc48e5248152f447b265aa416139a15"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\215b2ca1c735b1ab_saved_windows.json",
+      "bytes": 579,
+      "sha256": "215b2ca1c735b1ab2f08c66aec007acf057494e44f2458ec89f4bb95da611a67"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\fc6638c8c3b5fe4f_saved_windows_capture.json",
+      "bytes": 12971,
+      "sha256": "fc6638c8c3b5fe4ff3dce9f9c015c29c9dfde9054e4ab88160f39c3cc908ee17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a3a7e2f3944d42cb_capture.py",
+      "bytes": 1303,
+      "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\6a89bd44d0f89410_freeze.py",
+      "bytes": 4018,
+      "sha256": "6a89bd44d0f894106c42454e71e18be334569829687e34d5e9b90746650f4b72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\c5e36a8a1a21de52_constructor.bin",
+      "bytes": 185,
+      "sha256": "c5e36a8a1a21de5243aaca6503f2cc3ade61666c4a77b96ab4107abb56076e7d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\1423e4d28f887bbe_commit_head.bin",
+      "bytes": 124,
+      "sha256": "1423e4d28f887bbe250264a9d86e6be49e08d4f305684dfed09f31db05558640"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d90b2ac2468a4069_commit_tail.bin",
+      "bytes": 176,
+      "sha256": "d90b2ac2468a4069a1a8a60f739475ad3130f02eafd1f96a850effb33e26a110"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\35b1e6df84ef73d8_copy_helper.bin",
+      "bytes": 554,
+      "sha256": "35b1e6df84ef73d8268530a293c46630f2a748aca9272427e788084765ea2195"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b682a82c52f81f95_original_battlestationspacific.exe.bin",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+      "bytes": 19985,
+      "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+      "bytes": 19985,
+      "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a5b64df4d2866c22_before_offline_correction_replay.py",
+      "bytes": 4981,
+      "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d35c73dca31fbd60_before_offline_correction_make_receipt.py",
+      "bytes": 9481,
+      "sha256": "d35c73dca31fbd6035b00f117b2101070f571f07a204c6fe3780efd810a4a07e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\59076d4d9aa15f0f_before_offline_correction_CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+      "bytes": 6799,
+      "sha256": "59076d4d9aa15f0f29dc675bbd96ad64c5920b84ba27edc4c890932953971fda"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\ca03986ae9105a50_before_offline_correction_cc12_options_sound_copy_abi_review.json",
+      "bytes": 109624,
+      "sha256": "ca03986ae9105a501d4155a6fa0745aa1e194be65341e3a75077ab82dc073014"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d226c07465ccf8dd_retain_original_pe.py",
+      "bytes": 2641,
+      "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\freeze_capture_v2.json",
+      "bytes": 23188,
+      "sha256": "47af111396981bb3acdc5b94a6af89a8c6ecb5fd3e0dca688108407b916d6ddd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+      "bytes": 19985,
+      "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+      "bytes": 19985,
+      "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\a5b64df4d2866c22_before_offline_correction_replay.py",
+      "bytes": 4981,
+      "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d35c73dca31fbd60_before_offline_correction_make_receipt.py",
+      "bytes": 9481,
+      "sha256": "d35c73dca31fbd6035b00f117b2101070f571f07a204c6fe3780efd810a4a07e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\59076d4d9aa15f0f_before_offline_correction_CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+      "bytes": 6799,
+      "sha256": "59076d4d9aa15f0f29dc675bbd96ad64c5920b84ba27edc4c890932953971fda"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\ca03986ae9105a50_before_offline_correction_cc12_options_sound_copy_abi_review.json",
+      "bytes": 109624,
+      "sha256": "ca03986ae9105a501d4155a6fa0745aa1e194be65341e3a75077ab82dc073014"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d226c07465ccf8dd_retain_original_pe.py",
+      "bytes": 2641,
+      "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\capture.py",
+      "bytes": 1303,
+      "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\freeze.py",
+      "bytes": 4018,
+      "sha256": "6a89bd44d0f894106c42454e71e18be334569829687e34d5e9b90746650f4b72"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\retain_original_pe.py",
+      "bytes": 2641,
+      "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\replay.py",
+      "bytes": 7341,
+      "sha256": "a2ebcbe7fd1b75a0fa3c02891d3ebbb6fa272f52133e284c3515901a8f74c8b8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\make_receipt.py",
+      "bytes": 9647,
+      "sha256": "86d2ad24c3c9372b1931be1ef00ccdaf0c130f75601624523e76b6c0a41205a1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\replay.py",
+      "bytes": 7341,
+      "sha256": "a2ebcbe7fd1b75a0fa3c02891d3ebbb6fa272f52133e284c3515901a8f74c8b8"
+    }
+  ],
+  "Root_current_complete_Source_Git": [
+    {
+      "path": "config/target.json",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\config\\target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "tools/bsp.py",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\tools\\bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\tools\\ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "tools/workspace.py",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\tools\\workspace.py",
+        "bytes": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "src/options_menu_screens.cpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\options_menu_screens.cpp",
+        "bytes": 13334,
+        "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "include/bsp/options_menu_screens.hpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\options_menu_screens.hpp",
+        "bytes": 24760,
+        "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "src/frontend_managers.cpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\frontend_managers.cpp",
+        "bytes": 23865,
+        "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "include/bsp/frontend_managers.hpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\frontend_managers.hpp",
+        "bytes": 22929,
+        "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "src/game_settings.cpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\game_settings.cpp",
+        "bytes": 20468,
+        "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "include/bsp/game_settings.hpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\game_settings.hpp",
+        "bytes": 18657,
+        "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "src/native_game_settings_owner.cpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\src\\native_game_settings_owner.cpp",
+        "bytes": 7785,
+        "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "include/bsp/native_game_settings_owner.hpp",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\include\\bsp\\native_game_settings_owner.hpp",
+        "bytes": 5980,
+        "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "docs/OPTIONS_MENU_SCREENS.md",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\OPTIONS_MENU_SCREENS.md",
+        "bytes": 29920,
+        "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+        "bytes": 4172,
+        "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "docs/CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+        "bytes": 1738,
+        "sha256": "2e786f80d354fae86382e15e34744bd981e2d231f2a858a27ab654d401b796e4"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "reports/cc12_native_sound_state_writer_review.json",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_native_sound_state_writer_review.json",
+        "bytes": 157428,
+        "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+      },
+      "complete_Git_unchanged": true
+    },
+    {
+      "path": "reports/cc12_native_sound_state_writer_review_primary_review.json",
+      "actual_current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_native_sound_state_writer_review_primary_review.json",
+        "bytes": 116607,
+        "sha256": "304dfb5cb227c72fd0edda0e01e50c97f7396a3d70fff7e326e4c27066861520"
+      },
+      "complete_Git_unchanged": true
+    }
+  ],
+  "Root_full_retained_PE": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\b682a82c52f81f95_original_battlestationspacific.exe.bin",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "Root_independent_PE_sections": [
+    {
+      "name": ".text",
+      "virtual_size": 9306422,
+      "rva": 4096,
+      "raw_size": 9310208,
+      "raw_offset": 4096
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 1202980,
+      "rva": 9314304,
+      "raw_size": 1204224,
+      "raw_offset": 9314304
+    },
+    {
+      "name": ".data",
+      "virtual_size": 2719452,
+      "rva": 10518528,
+      "raw_size": 65536,
+      "raw_offset": 10518528
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 1630400,
+      "rva": 13238272,
+      "raw_size": 1634304,
+      "raw_offset": 10584064
+    }
+  ],
+  "Root_independent_windows": [
+    {
+      "label": "constructor",
+      "retained_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\c5e36a8a1a21de52_constructor.bin",
+        "bytes": 185,
+        "sha256": "c5e36a8a1a21de5243aaca6503f2cc3ade61666c4a77b96ab4107abb56076e7d"
+      },
+      "mapped_file_offset": 2056240,
+      "Root_decoded_instructions": [
+        {
+          "address": "005F6030",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "005F6032",
+          "bytes": "68df61c700",
+          "mnemonic": "push",
+          "operands": "0xc761df"
+        },
+        {
+          "address": "005F6037",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "005F603D",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "005F603E",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "005F6045",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "005F6046",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "005F6047",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "005F6048",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "005F604A",
+          "bytes": "89742408",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 8], esi"
+        },
+        {
+          "address": "005F604E",
+          "bytes": "e82d11f0ff",
+          "mnemonic": "call",
+          "operands": "0x4f7180"
+        },
+        {
+          "address": "005F6053",
+          "bytes": "33db",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx"
+        },
+        {
+          "address": "005F6055",
+          "bytes": "895c2414",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], ebx"
+        },
+        {
+          "address": "005F6059",
+          "bytes": "c74608fcb0ce00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], 0xceb0fc"
+        },
+        {
+          "address": "005F6060",
+          "bytes": "c7460c10b1ce00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc], 0xceb110"
+        },
+        {
+          "address": "005F6067",
+          "bytes": "c7067439cf00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xcf3974"
+        },
+        {
+          "address": "005F606D",
+          "bytes": "c746086039cf00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], 0xcf3960"
+        },
+        {
+          "address": "005F6074",
+          "bytes": "c7460c4039cf00",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc], 0xcf3940"
+        },
+        {
+          "address": "005F607B",
+          "bytes": "899ec4000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc4], ebx"
+        },
+        {
+          "address": "005F6081",
+          "bytes": "899ecc000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xcc], ebx"
+        },
+        {
+          "address": "005F6087",
+          "bytes": "899ed0000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xd0], ebx"
+        },
+        {
+          "address": "005F608D",
+          "bytes": "899ed4000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xd4], ebx"
+        },
+        {
+          "address": "005F6093",
+          "bytes": "8d8ed8000000",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0xd8]"
+        },
+        {
+          "address": "005F6099",
+          "bytes": "c644241402",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x14], 2"
+        },
+        {
+          "address": "005F609E",
+          "bytes": "e86d162e00",
+          "mnemonic": "call",
+          "operands": "0x8d7710"
+        },
+        {
+          "address": "005F60A3",
+          "bytes": "8d8e94010000",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0x194]"
+        },
+        {
+          "address": "005F60A9",
+          "bytes": "c644241403",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x14], 3"
+        },
+        {
+          "address": "005F60AE",
+          "bytes": "e85d162e00",
+          "mnemonic": "call",
+          "operands": "0x8d7710"
+        },
+        {
+          "address": "005F60B3",
+          "bytes": "6a0a",
+          "mnemonic": "push",
+          "operands": "0xa"
+        },
+        {
+          "address": "005F60B5",
+          "bytes": "889e64020000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x264], bl"
+        },
+        {
+          "address": "005F60BB",
+          "bytes": "889e65020000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x265], bl"
+        },
+        {
+          "address": "005F60C1",
+          "bytes": "c746700a000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x70], 0xa"
+        },
+        {
+          "address": "005F60C8",
+          "bytes": "e84d3e6000",
+          "mnemonic": "call",
+          "operands": "0xbf9f1a"
+        },
+        {
+          "address": "005F60CD",
+          "bytes": "8b4c2410",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "005F60D1",
+          "bytes": "89866c020000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x26c], eax"
+        },
+        {
+          "address": "005F60D7",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "005F60DA",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "005F60DC",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "005F60DD",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "005F60DE",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "005F60E5",
+          "bytes": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "005F60E8",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "label": "commit_head",
+      "retained_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\1423e4d28f887bbe_commit_head.bin",
+        "bytes": 124,
+        "sha256": "1423e4d28f887bbe250264a9d86e6be49e08d4f305684dfed09f31db05558640"
+      },
+      "mapped_file_offset": 2057664,
+      "Root_decoded_instructions": [
+        {
+          "address": "005F65C0",
+          "bytes": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "005F65C2",
+          "bytes": "68a663c700",
+          "mnemonic": "push",
+          "operands": "0xc763a6"
+        },
+        {
+          "address": "005F65C7",
+          "bytes": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "005F65CD",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "005F65CE",
+          "bytes": "b8f84c0000",
+          "mnemonic": "mov",
+          "operands": "eax, 0x4cf8"
+        },
+        {
+          "address": "005F65D3",
+          "bytes": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "005F65DA",
+          "bytes": "e8312e6000",
+          "mnemonic": "call",
+          "operands": "0xbf9410"
+        },
+        {
+          "address": "005F65DF",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "005F65E0",
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "005F65E1",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "005F65E2",
+          "bytes": "8be9",
+          "mnemonic": "mov",
+          "operands": "ebp, ecx"
+        },
+        {
+          "address": "005F65E4",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "005F65E5",
+          "bytes": "8db5d8000000",
+          "mnemonic": "lea",
+          "operands": "esi, [ebp + 0xd8]"
+        },
+        {
+          "address": "005F65EB",
+          "bytes": "688089f800",
+          "mnemonic": "push",
+          "operands": "0xf88980"
+        },
+        {
+          "address": "005F65F0",
+          "bytes": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "005F65F2",
+          "bytes": "e819dc2d00",
+          "mnemonic": "call",
+          "operands": "0x8d4210"
+        },
+        {
+          "address": "005F65F7",
+          "bytes": "8844241f",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x1f], al"
+        },
+        {
+          "address": "005F65FB",
+          "bytes": "a1f889f800",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0xf889f8]"
+        },
+        {
+          "address": "005F6600",
+          "bytes": "3b8550010000",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ebp + 0x150]"
+        },
+        {
+          "address": "005F6606",
+          "bytes": "0fb68588010000",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [ebp + 0x188]"
+        },
+        {
+          "address": "005F660D",
+          "bytes": "0f95c3",
+          "mnemonic": "setne",
+          "operands": "bl"
+        },
+        {
+          "address": "005F6610",
+          "bytes": "3805308af800",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [0xf88a30], al"
+        },
+        {
+          "address": "005F6616",
+          "bytes": "740b",
+          "mnemonic": "je",
+          "operands": "0x5f6623"
+        },
+        {
+          "address": "005F6618",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "005F6619",
+          "bytes": "b98089f800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf88980"
+        },
+        {
+          "address": "005F661E",
+          "bytes": "e89dde2d00",
+          "mnemonic": "call",
+          "operands": "0x8d44c0"
+        },
+        {
+          "address": "005F6623",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "005F6624",
+          "bytes": "b98089f800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf88980"
+        },
+        {
+          "address": "005F6629",
+          "bytes": "e892ecffff",
+          "mnemonic": "call",
+          "operands": "0x5f52c0"
+        },
+        {
+          "address": "005F662E",
+          "bytes": "8b0da888e100",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0xe188a8]"
+        },
+        {
+          "address": "005F6634",
+          "bytes": "83c13c",
+          "mnemonic": "add",
+          "operands": "ecx, 0x3c"
+        },
+        {
+          "address": "005F6637",
+          "bytes": "e8d4230a00",
+          "mnemonic": "call",
+          "operands": "0x698a10"
+        }
+      ]
+    },
+    {
+      "label": "commit_tail",
+      "retained_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\d90b2ac2468a4069_commit_tail.bin",
+        "bytes": 176,
+        "sha256": "d90b2ac2468a4069a1a8a60f739475ad3130f02eafd1f96a850effb33e26a110"
+      },
+      "mapped_file_offset": 2059825,
+      "Root_decoded_instructions": [
+        {
+          "address": "005F6E31",
+          "bytes": "33f6",
+          "mnemonic": "xor",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "005F6E33",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "005F6E35",
+          "bytes": "e8d6a8ecff",
+          "mnemonic": "call",
+          "operands": "0x4c1710"
+        },
+        {
+          "address": "005F6E3A",
+          "bytes": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "005F6E3C",
+          "bytes": "e88f544500",
+          "mnemonic": "call",
+          "operands": "0xa4c2d0"
+        },
+        {
+          "address": "005F6E41",
+          "bytes": "807c241f00",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [esp + 0x1f], 0"
+        },
+        {
+          "address": "005F6E46",
+          "bytes": "b890005f00",
+          "mnemonic": "mov",
+          "operands": "eax, 0x5f0090"
+        },
+        {
+          "address": "005F6E4B",
+          "bytes": "7505",
+          "mnemonic": "jne",
+          "operands": "0x5f6e52"
+        },
+        {
+          "address": "005F6E4D",
+          "bytes": "b8c053bd00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xbd53c0"
+        },
+        {
+          "address": "005F6E52",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "005F6E53",
+          "bytes": "b98089f800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf88980"
+        },
+        {
+          "address": "005F6E58",
+          "bytes": "e8a3fd2d00",
+          "mnemonic": "call",
+          "operands": "0x8d6c00"
+        },
+        {
+          "address": "005F6E5D",
+          "bytes": "80bd5202000000",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [ebp + 0x252], 0"
+        },
+        {
+          "address": "005F6E64",
+          "bytes": "7451",
+          "mnemonic": "je",
+          "operands": "0x5f6eb7"
+        },
+        {
+          "address": "005F6E66",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "005F6E67",
+          "bytes": "b9248af800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf88a24"
+        },
+        {
+          "address": "005F6E6C",
+          "bytes": "e89f02e3ff",
+          "mnemonic": "call",
+          "operands": "0x427110"
+        },
+        {
+          "address": "005F6E71",
+          "bytes": "e83aa4ecff",
+          "mnemonic": "call",
+          "operands": "0x4c12b0"
+        },
+        {
+          "address": "005F6E76",
+          "bytes": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "005F6E78",
+          "bytes": "e8f3a04a00",
+          "mnemonic": "call",
+          "operands": "0xaa0f70"
+        },
+        {
+          "address": "005F6E7D",
+          "bytes": "8b8d88000000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp + 0x88]"
+        },
+        {
+          "address": "005F6E83",
+          "bytes": "8b11",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]"
+        },
+        {
+          "address": "005F6E85",
+          "bytes": "8b4260",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x60]"
+        },
+        {
+          "address": "005F6E88",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "005F6E89",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "005F6E8B",
+          "bytes": "8b8d88000000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp + 0x88]"
+        },
+        {
+          "address": "005F6E91",
+          "bytes": "c6417701",
+          "mnemonic": "mov",
+          "operands": "byte ptr [ecx + 0x77], 1"
+        },
+        {
+          "address": "005F6E95",
+          "bytes": "8b8d88000000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp + 0x88]"
+        },
+        {
+          "address": "005F6E9B",
+          "bytes": "8b11",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]"
+        },
+        {
+          "address": "005F6E9D",
+          "bytes": "8b4234",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x34]"
+        },
+        {
+          "address": "005F6EA0",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "005F6EA1",
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "005F6EA3",
+          "bytes": "8b0da888e100",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0xe188a8]"
+        },
+        {
+          "address": "005F6EA9",
+          "bytes": "e8e210eeff",
+          "mnemonic": "call",
+          "operands": "0x4d7f90"
+        },
+        {
+          "address": "005F6EAE",
+          "bytes": "c6855202000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [ebp + 0x252], 0"
+        },
+        {
+          "address": "005F6EB5",
+          "bytes": "eb11",
+          "mnemonic": "jmp",
+          "operands": "0x5f6ec8"
+        },
+        {
+          "address": "005F6EB7",
+          "bytes": "b98089f800",
+          "mnemonic": "mov",
+          "operands": "ecx, 0xf88980"
+        },
+        {
+          "address": "005F6EBC",
+          "bytes": "e88fec2d00",
+          "mnemonic": "call",
+          "operands": "0x8d5b50"
+        },
+        {
+          "address": "005F6EC1",
+          "bytes": "8bcd",
+          "mnemonic": "mov",
+          "operands": "ecx, ebp"
+        },
+        {
+          "address": "005F6EC3",
+          "bytes": "e828e6ffff",
+          "mnemonic": "call",
+          "operands": "0x5f54f0"
+        },
+        {
+          "address": "005F6EC8",
+          "bytes": "8b8c24084d0000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x4d08]"
+        },
+        {
+          "address": "005F6ECF",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "005F6ED0",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "005F6ED1",
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "005F6ED2",
+          "bytes": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "005F6ED9",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "005F6EDA",
+          "bytes": "81c4044d0000",
+          "mnemonic": "add",
+          "operands": "esp, 0x4d04"
+        },
+        {
+          "address": "005F6EE0",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "label": "copy_helper",
+      "retained_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\options\\retained_worker_artifacts\\local\\cc12_options_sound_copy_abi_review\\frozen\\35b1e6df84ef73d8_copy_helper.bin",
+        "bytes": 554,
+        "sha256": "35b1e6df84ef73d8268530a293c46630f2a748aca9272427e788084765ea2195"
+      },
+      "mapped_file_offset": 2052800,
+      "Root_decoded_instructions": [
+        {
+          "address": "005F52C0",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "005F52C1",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "005F52C2",
+          "bytes": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "005F52C4",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "005F52C5",
+          "bytes": "8b7c2410",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "005F52C9",
+          "bytes": "8b4704",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 4]"
+        },
+        {
+          "address": "005F52CC",
+          "bytes": "894604",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 4], eax"
+        },
+        {
+          "address": "005F52CF",
+          "bytes": "0fb64f08",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 8]"
+        },
+        {
+          "address": "005F52D3",
+          "bytes": "884e08",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 8], cl"
+        },
+        {
+          "address": "005F52D6",
+          "bytes": "0fb65709",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 9]"
+        },
+        {
+          "address": "005F52DA",
+          "bytes": "885609",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 9], dl"
+        },
+        {
+          "address": "005F52DD",
+          "bytes": "8b470c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 0xc]"
+        },
+        {
+          "address": "005F52E0",
+          "bytes": "89460c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0xc], eax"
+        },
+        {
+          "address": "005F52E3",
+          "bytes": "0fb64f10",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x10]"
+        },
+        {
+          "address": "005F52E7",
+          "bytes": "884e10",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x10], cl"
+        },
+        {
+          "address": "005F52EA",
+          "bytes": "8b5714",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edi + 0x14]"
+        },
+        {
+          "address": "005F52ED",
+          "bytes": "895614",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x14], edx"
+        },
+        {
+          "address": "005F52F0",
+          "bytes": "8b4718",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 0x18]"
+        },
+        {
+          "address": "005F52F3",
+          "bytes": "894618",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x18], eax"
+        },
+        {
+          "address": "005F52F6",
+          "bytes": "0fb64f1c",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x1c]"
+        },
+        {
+          "address": "005F52FA",
+          "bytes": "884e1c",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x1c], cl"
+        },
+        {
+          "address": "005F52FD",
+          "bytes": "0fb6571d",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x1d]"
+        },
+        {
+          "address": "005F5301",
+          "bytes": "88561d",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x1d], dl"
+        },
+        {
+          "address": "005F5304",
+          "bytes": "0fb6471e",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x1e]"
+        },
+        {
+          "address": "005F5308",
+          "bytes": "88461e",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x1e], al"
+        },
+        {
+          "address": "005F530B",
+          "bytes": "d94720",
+          "mnemonic": "fld",
+          "operands": "dword ptr [edi + 0x20]"
+        },
+        {
+          "address": "005F530E",
+          "bytes": "d95e20",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esi + 0x20]"
+        },
+        {
+          "address": "005F5311",
+          "bytes": "0fb64f24",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x24]"
+        },
+        {
+          "address": "005F5315",
+          "bytes": "884e24",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x24], cl"
+        },
+        {
+          "address": "005F5318",
+          "bytes": "d94728",
+          "mnemonic": "fld",
+          "operands": "dword ptr [edi + 0x28]"
+        },
+        {
+          "address": "005F531B",
+          "bytes": "d95e28",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esi + 0x28]"
+        },
+        {
+          "address": "005F531E",
+          "bytes": "d9472c",
+          "mnemonic": "fld",
+          "operands": "dword ptr [edi + 0x2c]"
+        },
+        {
+          "address": "005F5321",
+          "bytes": "d95e2c",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esi + 0x2c]"
+        },
+        {
+          "address": "005F5324",
+          "bytes": "d94730",
+          "mnemonic": "fld",
+          "operands": "dword ptr [edi + 0x30]"
+        },
+        {
+          "address": "005F5327",
+          "bytes": "d95e30",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esi + 0x30]"
+        },
+        {
+          "address": "005F532A",
+          "bytes": "d94734",
+          "mnemonic": "fld",
+          "operands": "dword ptr [edi + 0x34]"
+        },
+        {
+          "address": "005F532D",
+          "bytes": "d95e34",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esi + 0x34]"
+        },
+        {
+          "address": "005F5330",
+          "bytes": "0fb65738",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x38]"
+        },
+        {
+          "address": "005F5334",
+          "bytes": "885638",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x38], dl"
+        },
+        {
+          "address": "005F5337",
+          "bytes": "8b473c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 0x3c]"
+        },
+        {
+          "address": "005F533A",
+          "bytes": "89463c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x3c], eax"
+        },
+        {
+          "address": "005F533D",
+          "bytes": "0fb64f40",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x40]"
+        },
+        {
+          "address": "005F5341",
+          "bytes": "884e40",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x40], cl"
+        },
+        {
+          "address": "005F5344",
+          "bytes": "0fb65741",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x41]"
+        },
+        {
+          "address": "005F5348",
+          "bytes": "885641",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x41], dl"
+        },
+        {
+          "address": "005F534B",
+          "bytes": "0fb64742",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x42]"
+        },
+        {
+          "address": "005F534F",
+          "bytes": "884642",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x42], al"
+        },
+        {
+          "address": "005F5352",
+          "bytes": "0fb64f43",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x43]"
+        },
+        {
+          "address": "005F5356",
+          "bytes": "884e43",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x43], cl"
+        },
+        {
+          "address": "005F5359",
+          "bytes": "0fb65744",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x44]"
+        },
+        {
+          "address": "005F535D",
+          "bytes": "885644",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x44], dl"
+        },
+        {
+          "address": "005F5360",
+          "bytes": "0fb64745",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x45]"
+        },
+        {
+          "address": "005F5364",
+          "bytes": "884645",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x45], al"
+        },
+        {
+          "address": "005F5367",
+          "bytes": "0fb64f46",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x46]"
+        },
+        {
+          "address": "005F536B",
+          "bytes": "884e46",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x46], cl"
+        },
+        {
+          "address": "005F536E",
+          "bytes": "0fb65747",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x47]"
+        },
+        {
+          "address": "005F5372",
+          "bytes": "885647",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x47], dl"
+        },
+        {
+          "address": "005F5375",
+          "bytes": "0fb64748",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x48]"
+        },
+        {
+          "address": "005F5379",
+          "bytes": "884648",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x48], al"
+        },
+        {
+          "address": "005F537C",
+          "bytes": "0fb64f49",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x49]"
+        },
+        {
+          "address": "005F5380",
+          "bytes": "884e49",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x49], cl"
+        },
+        {
+          "address": "005F5383",
+          "bytes": "0fb6574a",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x4a]"
+        },
+        {
+          "address": "005F5387",
+          "bytes": "88564a",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x4a], dl"
+        },
+        {
+          "address": "005F538A",
+          "bytes": "0fb6474b",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x4b]"
+        },
+        {
+          "address": "005F538E",
+          "bytes": "88464b",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x4b], al"
+        },
+        {
+          "address": "005F5391",
+          "bytes": "0fb64f4c",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x4c]"
+        },
+        {
+          "address": "005F5395",
+          "bytes": "884e4c",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x4c], cl"
+        },
+        {
+          "address": "005F5398",
+          "bytes": "8b5750",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edi + 0x50]"
+        },
+        {
+          "address": "005F539B",
+          "bytes": "895650",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x50], edx"
+        },
+        {
+          "address": "005F539E",
+          "bytes": "8b4754",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 0x54]"
+        },
+        {
+          "address": "005F53A1",
+          "bytes": "894654",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x54], eax"
+        },
+        {
+          "address": "005F53A4",
+          "bytes": "8b4f58",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi + 0x58]"
+        },
+        {
+          "address": "005F53A7",
+          "bytes": "894e58",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x58], ecx"
+        },
+        {
+          "address": "005F53AA",
+          "bytes": "8b575c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edi + 0x5c]"
+        },
+        {
+          "address": "005F53AD",
+          "bytes": "89565c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x5c], edx"
+        },
+        {
+          "address": "005F53B0",
+          "bytes": "0fb64760",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x60]"
+        },
+        {
+          "address": "005F53B4",
+          "bytes": "884660",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x60], al"
+        },
+        {
+          "address": "005F53B7",
+          "bytes": "d94764",
+          "mnemonic": "fld",
+          "operands": "dword ptr [edi + 0x64]"
+        },
+        {
+          "address": "005F53BA",
+          "bytes": "d95e64",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esi + 0x64]"
+        },
+        {
+          "address": "005F53BD",
+          "bytes": "8b4f68",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi + 0x68]"
+        },
+        {
+          "address": "005F53C0",
+          "bytes": "894e68",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x68], ecx"
+        },
+        {
+          "address": "005F53C3",
+          "bytes": "0fb6576c",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x6c]"
+        },
+        {
+          "address": "005F53C7",
+          "bytes": "88566c",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x6c], dl"
+        },
+        {
+          "address": "005F53CA",
+          "bytes": "8b4770",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 0x70]"
+        },
+        {
+          "address": "005F53CD",
+          "bytes": "894670",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x70], eax"
+        },
+        {
+          "address": "005F53D0",
+          "bytes": "0fb64f74",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x74]"
+        },
+        {
+          "address": "005F53D4",
+          "bytes": "884e74",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x74], cl"
+        },
+        {
+          "address": "005F53D7",
+          "bytes": "8b5778",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edi + 0x78]"
+        },
+        {
+          "address": "005F53DA",
+          "bytes": "895678",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x78], edx"
+        },
+        {
+          "address": "005F53DD",
+          "bytes": "0fb6477c",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x7c]"
+        },
+        {
+          "address": "005F53E1",
+          "bytes": "88467c",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x7c], al"
+        },
+        {
+          "address": "005F53E4",
+          "bytes": "d98780000000",
+          "mnemonic": "fld",
+          "operands": "dword ptr [edi + 0x80]"
+        },
+        {
+          "address": "005F53EA",
+          "bytes": "d99e80000000",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esi + 0x80]"
+        },
+        {
+          "address": "005F53F0",
+          "bytes": "0fb68f84000000",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0x84]"
+        },
+        {
+          "address": "005F53F7",
+          "bytes": "888e84000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x84], cl"
+        },
+        {
+          "address": "005F53FD",
+          "bytes": "0fb69785000000",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x85]"
+        },
+        {
+          "address": "005F5404",
+          "bytes": "889685000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x85], dl"
+        },
+        {
+          "address": "005F540A",
+          "bytes": "0fb68786000000",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x86]"
+        },
+        {
+          "address": "005F5411",
+          "bytes": "888686000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x86], al"
+        },
+        {
+          "address": "005F5417",
+          "bytes": "8b8f88000000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi + 0x88]"
+        },
+        {
+          "address": "005F541D",
+          "bytes": "898e88000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x88], ecx"
+        },
+        {
+          "address": "005F5423",
+          "bytes": "0fb6978c000000",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x8c]"
+        },
+        {
+          "address": "005F542A",
+          "bytes": "88968c000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x8c], dl"
+        },
+        {
+          "address": "005F5430",
+          "bytes": "0fb6878d000000",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x8d]"
+        },
+        {
+          "address": "005F5437",
+          "bytes": "88868d000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x8d], al"
+        },
+        {
+          "address": "005F543D",
+          "bytes": "8b8f90000000",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi + 0x90]"
+        },
+        {
+          "address": "005F5443",
+          "bytes": "898e90000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x90], ecx"
+        },
+        {
+          "address": "005F5449",
+          "bytes": "0fb69794000000",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0x94]"
+        },
+        {
+          "address": "005F5450",
+          "bytes": "889694000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x94], dl"
+        },
+        {
+          "address": "005F5456",
+          "bytes": "0fb68795000000",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0x95]"
+        },
+        {
+          "address": "005F545D",
+          "bytes": "8d8f98000000",
+          "mnemonic": "lea",
+          "operands": "ecx, [edi + 0x98]"
+        },
+        {
+          "address": "005F5463",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "005F5464",
+          "bytes": "8d8e98000000",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0x98]"
+        },
+        {
+          "address": "005F546A",
+          "bytes": "888695000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x95], al"
+        },
+        {
+          "address": "005F5470",
+          "bytes": "e8dbe9f4ff",
+          "mnemonic": "call",
+          "operands": "0x543e50"
+        },
+        {
+          "address": "005F5475",
+          "bytes": "8d97a4000000",
+          "mnemonic": "lea",
+          "operands": "edx, [edi + 0xa4]"
+        },
+        {
+          "address": "005F547B",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "005F547C",
+          "bytes": "8d8ea4000000",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 0xa4]"
+        },
+        {
+          "address": "005F5482",
+          "bytes": "e8c9e9f4ff",
+          "mnemonic": "call",
+          "operands": "0x543e50"
+        },
+        {
+          "address": "005F5487",
+          "bytes": "0fb687b0000000",
+          "mnemonic": "movzx",
+          "operands": "eax, byte ptr [edi + 0xb0]"
+        },
+        {
+          "address": "005F548E",
+          "bytes": "8886b0000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0xb0], al"
+        },
+        {
+          "address": "005F5494",
+          "bytes": "0fb68fb1000000",
+          "mnemonic": "movzx",
+          "operands": "ecx, byte ptr [edi + 0xb1]"
+        },
+        {
+          "address": "005F549B",
+          "bytes": "888eb1000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0xb1], cl"
+        },
+        {
+          "address": "005F54A1",
+          "bytes": "0fb697b2000000",
+          "mnemonic": "movzx",
+          "operands": "edx, byte ptr [edi + 0xb2]"
+        },
+        {
+          "address": "005F54A8",
+          "bytes": "8d9fb4000000",
+          "mnemonic": "lea",
+          "operands": "ebx, [edi + 0xb4]"
+        },
+        {
+          "address": "005F54AE",
+          "bytes": "8dbeb4000000",
+          "mnemonic": "lea",
+          "operands": "edi, [esi + 0xb4]"
+        },
+        {
+          "address": "005F54B4",
+          "bytes": "3bfb",
+          "mnemonic": "cmp",
+          "operands": "edi, ebx"
+        },
+        {
+          "address": "005F54B6",
+          "bytes": "8896b2000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0xb2], dl"
+        },
+        {
+          "address": "005F54BC",
+          "bytes": "7424",
+          "mnemonic": "je",
+          "operands": "0x5f54e2"
+        },
+        {
+          "address": "005F54BE",
+          "bytes": "8b03",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx]"
+        },
+        {
+          "address": "005F54C0",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "005F54C2",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "005F54C3",
+          "bytes": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "005F54C5",
+          "bytes": "e87688e2ff",
+          "mnemonic": "call",
+          "operands": "0x41dd40"
+        },
+        {
+          "address": "005F54CA",
+          "bytes": "833b00",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [ebx], 0"
+        },
+        {
+          "address": "005F54CD",
+          "bytes": "7413",
+          "mnemonic": "je",
+          "operands": "0x5f54e2"
+        },
+        {
+          "address": "005F54CF",
+          "bytes": "8b0f",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi]"
+        },
+        {
+          "address": "005F54D1",
+          "bytes": "8b5304",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "005F54D4",
+          "bytes": "8b4704",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 4]"
+        },
+        {
+          "address": "005F54D7",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "005F54D8",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "005F54D9",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "005F54DA",
+          "bytes": "e8a1216000",
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": "005F54DF",
+          "bytes": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "005F54E2",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "005F54E3",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "005F54E5",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "005F54E6",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "005F54E7",
+          "bytes": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    }
+  ],
+  "exact_operand_assertions": [
+    {
+      "address": "005F6623",
+      "mnemonic": "push",
+      "operands": "esi"
+    },
+    {
+      "address": "005F6624",
+      "mnemonic": "mov",
+      "operands": "ecx, 0xf88980"
+    },
+    {
+      "address": "005F6629",
+      "mnemonic": "call",
+      "operands": "0x5f52c0"
+    },
+    {
+      "address": "005F52C2",
+      "mnemonic": "mov",
+      "operands": "esi, ecx"
+    },
+    {
+      "address": "005F52C5",
+      "mnemonic": "mov",
+      "operands": "edi, dword ptr [esp + 0x10]"
+    },
+    {
+      "address": "005F5311",
+      "mnemonic": "movzx",
+      "operands": "ecx, byte ptr [edi + 0x24]"
+    },
+    {
+      "address": "005F5315",
+      "mnemonic": "mov",
+      "operands": "byte ptr [esi + 0x24], cl"
+    },
+    {
+      "address": "005F54E3",
+      "mnemonic": "mov",
+      "operands": "eax, esi"
+    },
+    {
+      "address": "005F54E7",
+      "mnemonic": "ret",
+      "operands": "4"
+    },
+    {
+      "address": "005F6093",
+      "mnemonic": "lea",
+      "operands": "ecx, [esi + 0xd8]"
+    },
+    {
+      "address": "005F609E",
+      "mnemonic": "call",
+      "operands": "0x8d7710"
+    },
+    {
+      "address": "005F60A3",
+      "mnemonic": "lea",
+      "operands": "ecx, [esi + 0x194]"
+    },
+    {
+      "address": "005F60AE",
+      "mnemonic": "call",
+      "operands": "0x8d7710"
+    }
+  ],
+  "finding": "At005F6629, ECX destinationF88980 and stack source screen+D8 cause005F5315 to writeF889A4 from screen+FC.",
+  "zero_provenance_or_pre_startup_path_established": false,
+  "full_settings_assignment_or_binary_ABI_proof": false,
+  "new_Source_compilation_Native_GPR_environment_or_game": false,
+  "startup_or_gameplay_credit": false,
+  "Root_evidence_verification_epoch": "1a53da357, before the bounded OPTIONS_MENU_SCREENS document correction",
+  "Root_followup_annotation": {
+    "unchanged_function_names": [
+      "FUN_005f52c0",
+      "FUN_005f65c0"
+    ],
+    "prior_values_and_saved_mutation_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\ghidra-annotations-20261010T121751Z.json",
+      "bytes": 1513,
+      "sha256": "cbed24237aff49bc06f26ea9ff76e3d718654391f078b8718648a05fb8f4b17c"
+    },
+    "lock": "tools/ghidra_annotate.py --apply takes coordination.ghidra_lock and verifies project/program before each operation",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "changed": "Two evidence plate comments; current function names retained, project saved.",
+    "prototypes_listing_bodies_and_flow_unchanged": true,
+    "affected_exports_refreshed": true,
+    "corrected_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\OPTIONS_MENU_SCREENS.md",
+      "bytes": 30227,
+      "sha256": "7d64171ee8f185bd71e31bdd37b4ae49f0a03432024d7e576b00899f81359f30"
+    },
+    "Source_interface_label": "Abstract reload_from_settings() label is a remaining naming discrepancy, without an audited implementation change.",
+    "current_exports": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\005f52c0\\assembly.txt",
+        "bytes": 5582,
+        "sha256": "ba19dbe42b8b503e17c0f6ee846efc863d0fdcbe73bab6b8e6490eddd1b25976"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\005f52c0\\decompiled.c",
+        "bytes": 4851,
+        "sha256": "160b99fc5a2fe95cf3e988c4a533830933c436e5143526a63d7b27e24f9563bb"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\005f52c0\\metadata.json",
+        "bytes": 259,
+        "sha256": "28baf47b1bd6e8bc2c111b65b1bdaaf407b2eb80aa00e3945ef48746b88addea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\005f65c0\\assembly.txt",
+        "bytes": 17044,
+        "sha256": "dddc07ce13ec029539c9fb1848b5f6dba7919709f41281e724430315d4d4e1c5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\005f65c0\\decompiled.c",
+        "bytes": 7134,
+        "sha256": "c3f292fdefd1370703282bf58a0fe1832482832d3bd1f3dd806c2598d9709935"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\005f65c0\\metadata.json",
+        "bytes": 210,
+        "sha256": "8e4e0bc217f1040436487622d1e39d0e569285d92afb9fbef4c4ffdf6af15d80"
+      }
+    ]
+  }
+}
