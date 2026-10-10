@@ -1,0 +1,1814 @@
+{
+  "schema": "bsp.cc12.startup_sound_enable_cell_binding_review.v1",
+  "packet": "cc12_startup_sound_enable_cell_binding_review",
+  "receipt_utc": "2026-10-10T12:50:45.720320+00:00",
+  "status": "No bounded Source cell-routing or polarity mismatch found at accepted main0ebcc4745. Post-load projection reads exactly raw owner+24 as uint8_t!=0; startup negates that snapshot, matching the admitted Native disabled-byte zero test. No original zero selector or live-startup proof is added.",
+  "scope": {
+    "accepted_source_epoch": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+    "branch": "agent/cc12_options_sound_copy_abi",
+    "leased_native_addresses": [],
+    "owned_outputs": [
+      "docs/CC12_STARTUP_SOUND_ENABLE_CELL_BINDING_REVIEW.md",
+      "reports/cc12_startup_sound_enable_cell_binding_review.json"
+    ],
+    "private_stats_branch_inspected": false,
+    "private_stats_changes_inferred": false,
+    "baseline_limit": "Only accepted main0ebcc4745 working Source and matching Git blobs were read. Later integrated or private game_hosts edits require separate revalidation.",
+    "native_boundary": "Existing docs/reports and saved-index lookup admitted only. No Native body/export/bytes/live-address query or original executable read.",
+    "relevant_Source_dependency_expansion": [
+      "game_native_settings_process.hpp/cpp",
+      "native_game_settings_owner.hpp/cpp",
+      "game_sound_runtime.hpp/cpp",
+      "sound_startup.hpp/cpp"
+    ]
+  },
+  "complete_evidence_freeze": {
+    "schema": "bsp.cc12.startup_sound_enable_cell_binding.freeze.v1",
+    "utc": "2026-10-10T12:46:35.305572+00:00",
+    "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+    "branch": "agent/cc12_options_sound_copy_abi",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+    "working_Source_matches_baseline": true,
+    "Source_Git_inputs": [
+      {
+        "source_path": "src/game_native_settings_application.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/9a4bea22270c4b38_working_src_game_native_settings_application.cpp",
+          "bytes": 11456,
+          "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/9a4bea22270c4b38_git_src_game_native_settings_application.cpp",
+          "bytes": 11456,
+          "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a"
+        },
+        "git_blob": "b0e9d483af92377ec2ac9e277b6e42a061f1b26e",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/game_native_settings_application.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/27dcda3ae4e6c975_working_include_bsp_game_native_settings_application.hpp",
+          "bytes": 2280,
+          "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/27dcda3ae4e6c975_git_include_bsp_game_native_settings_application.hpp",
+          "bytes": 2280,
+          "sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760"
+        },
+        "git_blob": "313bab85fb4df16ea6cee3ff537d4fbb76026191",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/native_settings_loader.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/92cf2e1b496be7d8_working_src_native_settings_loader.cpp",
+          "bytes": 15501,
+          "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/92cf2e1b496be7d8_git_src_native_settings_loader.cpp",
+          "bytes": 15501,
+          "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0"
+        },
+        "git_blob": "40415a4648da16ec16fe942e0cf46eef2725de09",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/native_settings_loader.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/29373ba8100bd449_working_include_bsp_native_settings_loader.hpp",
+          "bytes": 5567,
+          "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/29373ba8100bd449_git_include_bsp_native_settings_loader.hpp",
+          "bytes": 5567,
+          "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b"
+        },
+        "git_blob": "ef797a5b91bcfbcd88f8814a8aa34c00f7b340bc",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/game_hosts.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/27afca34c33faf0c_working_src_game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/27afca34c33faf0c_git_src_game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "git_blob": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/game_hosts.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/a9b67bb9ce21aada_working_include_bsp_game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/a9b67bb9ce21aada_git_include_bsp_game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "git_blob": "a777902d1207251888b81ce1ef9442864d88957f",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/game_settings.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/fc9ab534f827975f_working_src_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/fc9ab534f827975f_git_src_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+        },
+        "git_blob": "7c4a3f3ea41cf80dccee3057279e915bd8943f55",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/game_settings.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/8b1d37ce0ccdcde0_working_include_bsp_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/8b1d37ce0ccdcde0_git_include_bsp_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+        },
+        "git_blob": "e63f7e85a951ee4df192f3354595fcbccff3132a",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/audio_online_startup.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/e8c564464cc8ac90_working_src_audio_online_startup.cpp",
+          "bytes": 17786,
+          "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/e8c564464cc8ac90_git_src_audio_online_startup.cpp",
+          "bytes": 17786,
+          "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8"
+        },
+        "git_blob": "866b697a84c9f85aca5cca75ae10f238011e4287",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/audio_online_startup.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/2856a03245c6a27a_working_include_bsp_audio_online_startup.hpp",
+          "bytes": 17176,
+          "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/2856a03245c6a27a_git_include_bsp_audio_online_startup.hpp",
+          "bytes": 17176,
+          "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+        },
+        "git_blob": "e1621061b3ed823c2c8dad9b37bb0521640b46f5",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/game_native_settings_process.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/44a2cc3b1c94c4af_working_src_game_native_settings_process.cpp",
+          "bytes": 7791,
+          "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/44a2cc3b1c94c4af_git_src_game_native_settings_process.cpp",
+          "bytes": 7791,
+          "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b"
+        },
+        "git_blob": "3fdec928d327e44bab7297a987591d43c7fd4d95",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/game_native_settings_process.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/c39242f443a95a5a_working_include_bsp_game_native_settings_process.hpp",
+          "bytes": 2203,
+          "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/c39242f443a95a5a_git_include_bsp_game_native_settings_process.hpp",
+          "bytes": 2203,
+          "sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6"
+        },
+        "git_blob": "c3af3aab298f334d35c33ac276eeab3a2a17e29e",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/native_game_settings_owner.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/251c0a349760dd21_working_src_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/251c0a349760dd21_git_src_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+        },
+        "git_blob": "50c3a642be3204956ea8104b16e331005840d3c4",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/native_game_settings_owner.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/3c9e009c65606e35_working_include_bsp_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/3c9e009c65606e35_git_include_bsp_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        },
+        "git_blob": "554bc4169b4f8089ba57e2084b83a1ba7603cb6e",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/game_sound_runtime.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/ccce5e3d933fcfb8_working_src_game_sound_runtime.cpp",
+          "bytes": 20101,
+          "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/ccce5e3d933fcfb8_git_src_game_sound_runtime.cpp",
+          "bytes": 20101,
+          "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba"
+        },
+        "git_blob": "0522dcc40e93a6d29b7b891c03d6e45f440d8c0c",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/game_sound_runtime.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/adc71df223c83c00_working_include_bsp_game_sound_runtime.hpp",
+          "bytes": 5374,
+          "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/adc71df223c83c00_git_include_bsp_game_sound_runtime.hpp",
+          "bytes": 5374,
+          "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+        },
+        "git_blob": "82568ef1384e93785a93eba2a220d5084bba348b",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/sound_startup.cpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/836bbe877790db41_working_src_sound_startup.cpp",
+          "bytes": 2221,
+          "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/836bbe877790db41_git_src_sound_startup.cpp",
+          "bytes": 2221,
+          "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc"
+        },
+        "git_blob": "21801a5d338081a3c31daf77014fd8753b6384a4",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/sound_startup.hpp",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/0dbc3e1d2c3bae88_working_include_bsp_sound_startup.hpp",
+          "bytes": 2200,
+          "sha256": "0dbc3e1d2c3bae88035a2e6e328bc0f2a1cceae89431dc6e04a01a493ec25c7c"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/0dbc3e1d2c3bae88_git_include_bsp_sound_startup.hpp",
+          "bytes": 2200,
+          "sha256": "0dbc3e1d2c3bae88035a2e6e328bc0f2a1cceae89431dc6e04a01a493ec25c7c"
+        },
+        "git_blob": "89c690e9df2b56c42d5bcb10adc83a97bf266657",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/NATIVE_SETTINGS_APPLICATION_R170.md",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/d0d0e96a4b5f8d8c_working_docs_NATIVE_SETTINGS_APPLICATION_R170.md",
+          "bytes": 6195,
+          "sha256": "d0d0e96a4b5f8d8cc2650a63040c27bf32eeb4195e6e6730f28daa92854b1e6c"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/d0d0e96a4b5f8d8c_git_docs_NATIVE_SETTINGS_APPLICATION_R170.md",
+          "bytes": 6195,
+          "sha256": "d0d0e96a4b5f8d8cc2650a63040c27bf32eeb4195e6e6730f28daa92854b1e6c"
+        },
+        "git_blob": "8292b894fdde0f40fe9e9465f8a7f8e50e6a760e",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/native_settings_application_r170.json",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/4883feb0d96c4053_working_reports_native_settings_application_r170.json",
+          "bytes": 222876,
+          "sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/4883feb0d96c4053_git_reports_native_settings_application_r170.json",
+          "bytes": 222876,
+          "sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097"
+        },
+        "git_blob": "8bd7fbf0d178eeb3e0e6a5e0e8db61e8d93600b4",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/NATIVE_SETTINGS_LOADER_R167.md",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/18496746577a85d1_working_docs_NATIVE_SETTINGS_LOADER_R167.md",
+          "bytes": 7176,
+          "sha256": "18496746577a85d1d12a6d24d5130fa3965ba5e80c9599026c932a21f91bc084"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/18496746577a85d1_git_docs_NATIVE_SETTINGS_LOADER_R167.md",
+          "bytes": 7176,
+          "sha256": "18496746577a85d1d12a6d24d5130fa3965ba5e80c9599026c932a21f91bc084"
+        },
+        "git_blob": "f03576348829e3a91298a73543a49674a55aaf6e",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/native_settings_loader_r167.json",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/70d9b0c579b98a30_working_reports_native_settings_loader_r167.json",
+          "bytes": 151814,
+          "sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/70d9b0c579b98a30_git_reports_native_settings_loader_r167.json",
+          "bytes": 151814,
+          "sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7"
+        },
+        "git_blob": "d1768badb7e35349e4ee2dad2099c69a63a8338a",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS.md",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/ee743ffdb62f8772_working_docs_CC12_NATIVE_NOSOUND_SELECTION_READINESS.md",
+          "bytes": 4335,
+          "sha256": "ee743ffdb62f877203857736b59216c79dafd26d37bc04c4e0bbf7147b920933"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/ee743ffdb62f8772_git_docs_CC12_NATIVE_NOSOUND_SELECTION_READINESS.md",
+          "bytes": 4335,
+          "sha256": "ee743ffdb62f877203857736b59216c79dafd26d37bc04c4e0bbf7147b920933"
+        },
+        "git_blob": "4a02d53b0d5083a1eb2e91230a381be1c8d01a23",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_native_nosound_selection_readiness.json",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/74add98a430eb0c4_working_reports_cc12_native_nosound_selection_readiness.json",
+          "bytes": 88590,
+          "sha256": "74add98a430eb0c47638a5f187e9230092051392bddb87ccbbab206436e4d89f"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/74add98a430eb0c4_git_reports_cc12_native_nosound_selection_readiness.json",
+          "bytes": 88590,
+          "sha256": "74add98a430eb0c47638a5f187e9230092051392bddb87ccbbab206436e4d89f"
+        },
+        "git_blob": "e60172fd951e77e47c0931228f92656ba82c860f",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS_PRIMARY_REVIEW.md",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/e8690708fdefc3d5_working_docs_CC12_NATIVE_NOSOUND_SELECTION_READINESS_PRIMARY_REVIEW.md",
+          "bytes": 3169,
+          "sha256": "e8690708fdefc3d57e21cc473228e4936c3d0c4654f2527fca2ed766fb6603c3"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/e8690708fdefc3d5_git_docs_CC12_NATIVE_NOSOUND_SELECTION_READINESS_PRIMARY_REVIEW.md",
+          "bytes": 3169,
+          "sha256": "e8690708fdefc3d57e21cc473228e4936c3d0c4654f2527fca2ed766fb6603c3"
+        },
+        "git_blob": "b9234180322af6f8129e1a4a3296adc82623ee5d",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_native_nosound_selection_readiness_primary_review.json",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/e579d2fb6c31fc10_working_reports_cc12_native_nosound_selection_readiness_primary_review.json",
+          "bytes": 79801,
+          "sha256": "e579d2fb6c31fc10e40d08e4d5bf75ac3b55a276455da2e0d6c7f561596ca4b9"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/e579d2fb6c31fc10_git_reports_cc12_native_nosound_selection_readiness_primary_review.json",
+          "bytes": 79801,
+          "sha256": "e579d2fb6c31fc10e40d08e4d5bf75ac3b55a276455da2e0d6c7f561596ca4b9"
+        },
+        "git_blob": "e8e2ba68c9e9c57253d48b6a5bf17a2e94f46c1c",
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/bsp.py",
+        "working": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/09de2b8916a4af98_working_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "git_baseline": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/09de2b8916a4af98_git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "LF_equal": true
+      }
+    ],
+    "excerpts": [
+      {
+        "label": "raw_storage_layout",
+        "source_path": "include/bsp/native_game_settings_owner.hpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 10,
+        "last_line": 34,
+        "text": "// F88980..F88A3B / the options screen's actual BCh copy. Opaque bytes and\n// padding are not initialized by the constructor. The static owner starts zero\n// through loader storage; ordinary copies must supply their own preimage.\nstruct alignas(4) NativeGameSettingsStorage {\n    std::byte opaque_00[0x34];\n    //008D7865 stores CE7D20 bits here;0087EC29/0087EC79 read this live float.\n    //No initializer: ordinary owners retain their supplied byte preimage.\n    float fov_divisor_34;\n    std::byte opaque_38[0x84];\n    //The complete object representation, including the typed cell. Do not\n    //derive whole-owner byte access from either opaque subarray.\n    std::byte* data() noexcept {return reinterpret_cast<std::byte*>(this);}\n    const std::byte* data() const noexcept {return reinterpret_cast<const std::byte*>(this);}\n};\nstatic_assert(sizeof(float)==4);\nstatic_assert(sizeof(NativeGameSettingsStorage)==0xbc);\nstatic_assert(alignof(NativeGameSettingsStorage)==4);\nstatic_assert(std::is_standard_layout_v<NativeGameSettingsStorage>);\nstatic_assert(offsetof(NativeGameSettingsStorage,opaque_00)==0);\nstatic_assert(offsetof(NativeGameSettingsStorage,fov_divisor_34)==0x34);\nstatic_assert(offsetof(NativeGameSettingsStorage,opaque_38)==0x38);\nstatic_assert(std::is_trivially_default_constructible_v<NativeGameSettingsStorage>);\nstatic_assert(std::is_trivially_copyable_v<NativeGameSettingsStorage>);\nstatic_assert(std::is_trivially_copy_constructible_v<NativeGameSettingsStorage>);\nstatic_assert(std::is_trivially_copy_assignable_v<NativeGameSettingsStorage>);\n",
+        "utf8_sha256": "92ca63b489f49c55796f78045d54fb69d61f8636d190440525ab41efe085c782",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "process_raw_member",
+        "source_path": "src/game_native_settings_process.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 33,
+        "last_line": 38,
+        "text": "struct GameNativeSettingsProcess::Impl {\n    enum class Phase{fresh,initializing,ready,failed};\n    GameNativeReadOnlyData& data;Phase phase{Phase::fresh};\n    NativeGameSettingsStorage settings{};RawVector resolutions,antialias,catalog;\n    NativeOnlineManagerStorage* volatile online{};void* volatile game{};\n    ProfileSdk sdk;NativeProfileSettingsContext profile{online,game,sdk};\n",
+        "utf8_sha256": "cc0b76a99f356194889fe590b88bee9325d0638dc3676858099e2b2106d3d0dc",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "process_retention_and_ready_guard",
+        "source_path": "src/game_native_settings_process.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 60,
+        "last_line": 82,
+        "text": "GameNativeSettingsProcess::GameNativeSettingsProcess(GameNativeReadOnlyData& data):impl_(std::make_unique<Impl>(data)){}\nGameNativeSettingsProcess::~GameNativeSettingsProcess()=default;\nGameNativeSettingsProcess& game_native_settings_process(GameNativeReadOnlyData& data){\n    if(!process)process=new GameNativeSettingsProcess(data);\n    if(&process->impl_->data!=&data)throw std::logic_error(\"native settings process cannot change its retained data mapping\");\n    return *process;\n}\nstd::array<int,4> GameNativeSettingsProcess::initialize_once(){\n    auto& p=*impl_;if(p.phase==Impl::Phase::ready)return p.registration;\n    if(p.phase!=Impl::Phase::fresh)throw std::logic_error(\"native settings CRT initialization cannot replay\");\n    p.phase=Impl::Phase::initializing;\n    try {\n        p.registration[0]=register_native_settings_resolutions_00cd2d60(p.vector_calls,&shutdown_resolutions);\n        p.registration[1]=register_native_settings_antialias_00cd2d70(p.vector_calls,&shutdown_antialias);\n        p.registration[2]=initialize_native_game_settings_static_00cd2d80(p.settings,p.settings_context,p.settings_startup,&shutdown_settings);\n        p.registration[3]=register_native_language_catalog_shutdown_00cd2da0(p.catalog_registration,&shutdown_catalog);\n        p.phase=Impl::Phase::ready;return p.registration;\n    }catch(...){p.phase=Impl::Phase::failed;throw;}\n}\nNativeGameSettingsStorage& GameNativeSettingsProcess::settings(){\n    if(impl_->phase!=Impl::Phase::ready)throw std::logic_error(\"native settings static owner is not initialized\");\n    return impl_->settings;\n}\n",
+        "utf8_sha256": "8f61c240204eb29b1958b565743d6ed7124f86fb5ca2a28e59911ff8f9efcfb5",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "sdk_binding_does_not_replace_storage",
+        "source_path": "src/game_native_settings_process.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 90,
+        "last_line": 97,
+        "text": "NativeOnlineManagerStorage* volatile& GameNativeSettingsProcess::online_00f8abe8() noexcept{return impl_->online;}\nvoid* volatile& GameNativeSettingsProcess::game_00e188a8() noexcept{return impl_->game;}\nNativeProfileSettingsContext& GameNativeSettingsProcess::profile_context() noexcept{return impl_->profile;}\nvoid GameNativeSettingsProcess::bind_profile_sdk(const XLiveLibrary* library){\n    if(library&&impl_->sdk.library&&impl_->sdk.library!=library)throw std::logic_error(\"native settings already borrow another XLive library\");\n    if(!library&&impl_->online)throw std::logic_error(\"XLive settings binding must survive the online owner\");\n    impl_->sdk.library=library;\n}\n",
+        "utf8_sha256": "c09e01ec13145191f04eccebff83070664cfc394e87472a0f23d88985a06bb45",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "raw_default_one",
+        "source_path": "src/native_game_settings_owner.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 78,
+        "last_line": 84,
+        "text": "void* construct_native_game_settings_008d7710(void* p,NativeGameSettingsContext& c,Op& op) {\n    begin(p,c,op);\n    try {\n        word(p,0,0x00d15d58);word(p,4,0);byte(p,0x24,1);byte(p,0x38,0);word(p,0x3c,1);\n        byte(p,0x49,0);byte(p,0x4a,1);byte(p,0x4b,0);byte(p,0x4c,0);word(p,0x50,2);\n        byte(p,0x94,0);byte(p,0x95,0);word(p,0x98,0);word(p,0x9c,0);word(p,0xa0,0);\n        op.unwind_state=0;word(p,0xa4,0);word(p,0xa8,0);word(p,0xac,0);\n",
+        "utf8_sha256": "6fb2258c1b4c52e4a6e8b3645a75bb73e3ee1cad5466c1b855c177c368638775",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "raw_static_initialization",
+        "source_path": "src/native_game_settings_owner.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 120,
+        "last_line": 124,
+        "text": "int initialize_native_game_settings_static_00cd2d80(NativeGameSettingsStorage& p,NativeGameSettingsContext& c,Op& op,void (*shutdown)()) {\n    construct_native_game_settings_008d7710(&p,c,op);op.native_site=0x00cd2d8f;\n    try{return c.calls.register_shutdown_00bf6ff5(shutdown);}\n    catch(...){op.phase=Op::Phase::failed;throw;}\n}\n",
+        "utf8_sha256": "df746169b043904d3154d7477d5b68dc9d1cdf3c89a3ac25f631b97eb57b10be",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "host_initial_owner_binding",
+        "source_path": "src/game_hosts.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 1464,
+        "last_line": 1476,
+        "text": "    auto singletons = std::make_unique<GameSingletonHost>(log_);\n    // Represented CRT table order: CE2BAC -> CCD6A0 precedes CE3054 -> CD2D80.\n    // Keep context/publication cells alive if later source construction fails.\n    singletons->observers().initialize_dispatch_00ccd6a0();\n    if(!native_data_)throw std::runtime_error(\"Native settings require retained verified data\");\n    try {\n        settings_process_=&game_native_settings_process(*native_data_);\n        const auto registration=settings_process_->initialize_once();\n        copy_native_game_settings_read_view(settings_process_->settings(),{},settings_view_);\n        log_.notef(\"native settings CRT owners initialized: storage=rawBCh/raw0Ch atexit=%d/%d/%d/%d online=process_cell input=process_cell\",\n            registration[0],registration[1],registration[2],registration[3]);\n    }catch(...){\n        log_.note(\"native settings CRT construction interrupted; retaining process contexts and partial ownership\");log_.close();std::_Exit(1);\n",
+        "utf8_sha256": "59eb07ea94d29f79fcb35f17ceda6bd72f96f3c0c95a0e0c79e393aadb3eb6ef",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "host_settings_members",
+        "source_path": "include/bsp/game_hosts.hpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 724,
+        "last_line": 732,
+        "text": "    GameDeviceHost* device_{};\n    GameFrameHost* frame_host_{};\n    GameLoopCallbacks* loop_callbacks_{};\n    GameVfsHost* vfs_{};\n    GameSettingsBlock settings_view_;\n    GameNativeSettingsProcess* settings_process_{};\n    std::vector<std::string> content_suffixes_;\n    GameNativeSettingsApplication* settings_host_{};\n    GameScriptHost* scripts_{};\n",
+        "utf8_sha256": "4dad080d2b82eca325efe0c95706290bb1c423410dbb503169aedec1cd8171a0",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "byte_projection_helper",
+        "source_path": "src/game_native_settings_application.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 19,
+        "last_line": 23,
+        "text": "using U=std::uint32_t;\ntemplate<class T> T read(const void* p,std::size_t offset){T value;std::memcpy(&value,static_cast<const char*>(p)+offset,sizeof value);return value;}\nbool flag(const void* p,std::size_t offset){return read<std::uint8_t>(p,offset)!=0;}\nstd::string raw_text(const void* header){\n    const auto* p=read<const char*>(header,4);return p?std::string(p,read<U>(header,0)):std::string();\n",
+        "utf8_sha256": "d47921865dd0ed55233815c06236b3849841d494e90149c9b2f5fa5aa608b0ec",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "raw_to_audio_projection",
+        "source_path": "src/game_native_settings_application.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 42,
+        "last_line": 60,
+        "text": "void copy_native_game_settings_read_view(const NativeGameSettingsStorage& storage,\n    const std::vector<LanguageEntry>& languages,GameSettingsBlock& view){\n    const void* p=&storage;auto& o=view.options_file;auto& g=view.gameplay;auto& a=view.audio;\n    auto& c=view.control;auto& v=view.presentation;\n    o.width_14=read<int>(p,0x14);o.height_18=read<int>(p,0x18);\n    o.no_lod_1c=flag(p,0x1c);o.hires_shadow_1d=flag(p,0x1d);o.fullscreen_1e=flag(p,0x1e);\n    o.object_detail_54=read<int>(p,0x54);o.antialias_58=read<int>(p,0x58);o.antialias_index_5c=read<int>(p,0x5c);\n    o.vsync_60=flag(p,0x60);o.texture_detail_68=read<int>(p,0x68);o.reflection_6c=flag(p,0x6c);\n    o.clouds_74=flag(p,0x74);o.resolution_index_78=read<int>(p,0x78);o.shadow_84=flag(p,0x84);\n    o.shadow_85=flag(p,0x85);o.foliage_86=flag(p,0x86);o.shader_model_88=read<int>(p,0x88);o.firewall_94=flag(p,0x94);\n    g.language_index_04=read<int>(p,4);o.language=language_name_008d4870(languages,static_cast<std::size_t>(g.language_index_04));\n    o.unknown_tokens.clear();g.imperial_08=flag(p,8);g.subtitle_09=flag(p,9);g.hints_0c=read<int>(p,0xc);\n    g.camera_shake_10=flag(p,0x10);g.target_indicator_4a=flag(p,0x4a);g.water_drops_7c=flag(p,0x7c);\n    g.marker_alpha_80=read<float>(p,0x80);g.cockpit_mode_b2=flag(p,0xb2);g.show_safe_area_b1=flag(p,0xb1);\n    g.clan_text_b4=raw_text(storage.data()+0xb4);\n    a.master_20=read<float>(p,0x20);a.enabled_24=flag(p,0x24);a.music_28=read<float>(p,0x28);\n    a.effects_2c=read<float>(p,0x2c);a.speech_30=read<float>(p,0x30);\n    c.rumble_off_40=flag(p,0x40);c.swap_sticks_41=flag(p,0x41);c.invert_camera_y_42=flag(p,0x42);\n    c.invert_plane_y_43=flag(p,0x43);c.swap_map_sticks_44=flag(p,0x44);c.xbox_compatibility_b0=flag(p,0xb0);\n",
+        "utf8_sha256": "7957d7ceb5e4ead13c14c56f32792c0ff5cb6f1c9b90a68e7b26891ea0ce77bc",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "application_retained_process_reference",
+        "source_path": "src/game_native_settings_application.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 67,
+        "last_line": 81,
+        "text": "struct GameNativeSettingsApplication::Impl {\n    enum class Phase{prepared,loading,ready,failed};\n    GameHostLog& log;GameNativeSettingsProcess& process;GameNativeRendererApplication& renderer;\n    GameNativeReadOnlyData& data;GameNativeVfsRawServices vfs;NativeStringRawPoolContext& raw;\n    const GameNativeSettingsStackPolicy policy;Phase phase{Phase::prepared};\n    NativeLanguageResourceEnumerationCalls enumeration_calls;NativeLanguageCatalogProducerCalls producer_calls;\n    NativeStreamTextScannerVfsCalls scanner_calls;NativeStreamTextScannerContext scanner;\n    NativeLanguageCatalogProducerContext catalog;\n    TextCalls text_calls;NativeSettingsPathContext path;NativeSettingsTextContext text;\n    NativeSettingsChoiceCalls choices;NativeSettingsLanguageContext language;\n    NativeSceneTokenizerCalls token_calls;NativeSceneTokenizerContext tokenizer;\n    NativeSceneTokenValueCalls value_calls;NativeSceneTokenValueContext values;\n    NativeSettingsLoaderCalls loader_calls;NativeSettingsDecrement const decrement_import=&decrement;\n    NativeSettingsLoaderContext loader;NativeSettingsLoaderOperation operation;\n    VfsLocaleRuntime locale;std::vector<LanguageEntry> languages;\n",
+        "utf8_sha256": "d1e8933336eb839aa7fcea5ec10183752324d3cc98c8032874906267d44f3df1",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "same_process_loader_and_projection",
+        "source_path": "src/game_native_settings_application.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 114,
+        "last_line": 146,
+        "text": "    GameSingletonHost& singletons,GameVfsHost& vfs,GameNativeRendererApplication& renderer,\n    GameNativeReadOnlyData& data,const std::vector<std::string>& suffixes,std::string personal_root,\n    const GameNativeSettingsStackPolicy& policy)\n    :impl_(std::make_unique<Impl>(log,owner,singletons,vfs,renderer,data,suffixes,std::move(personal_root),policy)){}\nGameNativeSettingsApplication::~GameNativeSettingsApplication()=default;\nvoid GameNativeSettingsApplication::load(){\n    auto& p=*impl_;if(p.phase!=Impl::Phase::prepared)throw std::logic_error(\"native application settings loader cannot replay\");\n    p.phase=Impl::Phase::loading;\n    try {\n        load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation);\n        const auto count=static_cast<std::int32_t>(p.process.catalog_count());\n        const auto* rows=static_cast<const char*>(p.process.catalog_data());\n        for(std::int32_t i=0;i<count;++i){const auto* row=rows+static_cast<std::size_t>(i)*32;\n            p.languages.push_back({raw_text(row),raw_text(row+8),raw_text(row+16),raw_text(row+24)});\n        }\n        p.phase=Impl::Phase::ready;\n        p.log.notef(\"native settings: storage=rawBCh catalog=raw0Ch entries=%u resolutions=%u antialias=%u loader=008D8190 read_view=copy CRT=registered\",\n            p.process.catalog_count(),read<U>(p.process.resolution_header(),4),read<U>(p.process.antialias_header(),4));\n        p.log.note(\"native settings stack policy: tokenizer/rectangle/registry/key/type/list/scanner/folder preimages=zero native_stack_identity=unproven\");\n    }catch(...){p.phase=Impl::Phase::failed;throw;}\n}\nbool GameNativeSettingsApplication::requires_process_retention() const noexcept{return impl_->phase==Impl::Phase::loading||impl_->phase==Impl::Phase::failed;}\nstd::uint32_t GameNativeSettingsApplication::failure_site() const noexcept{return impl_->operation.native_site;}\nvoid GameNativeSettingsApplication::copy_read_view(GameSettingsBlock& view) const{\n    if(impl_->phase!=Impl::Phase::ready)throw std::logic_error(\"native settings read view requires completed load\");\n    copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);\n}\nconst volatile float& GameNativeSettingsApplication::fov_divisor_00f889b4() const{\n    return impl_->process.settings().fov_divisor_34;\n}\nconst std::vector<LanguageEntry>& GameNativeSettingsApplication::language_catalog() const noexcept{return impl_->languages;}\nVfsLocaleRuntime& GameNativeSettingsApplication::locale_source() noexcept{return impl_->locale;}\nIDirect3D9& GameNativeSettingsApplication::renderer_api() const{return impl_->renderer.api();}\n",
+        "utf8_sha256": "31cc7a9bc5621bdaebf23d2474cf798b99cb2b2cd758d9d7750925b4c7d26f07",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "loader_owner_identity",
+        "source_path": "src/native_settings_loader.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 152,
+        "last_line": 164,
+        "text": "void load_native_game_settings_008d8190(void* owner,C& c,Op& op) {\n    if(op.phase!=Phase::fresh)throw std::logic_error(\"native settings loader operation cannot replay\");\n    op.phase=Phase::running;op.owner=owner;\n    try {\n        op.native_site=0x8d81ae;build_native_language_catalog_008d7bc0(c.catalog,op.catalog.emplace(c.preimages.catalog_list_word));\n        op.native_site=0x8d81b9;void* const resolutions=native_renderer_resolution_header_00b1fff0(c.actual_renderer_00f8d394);\n        op.native_site=0x8d81c4;assign_native_settings_pairs_008d4ea0(c.actual_resolution_header_00f8895c,resolutions,c.choices);\n        op.native_site=0x8d81cf;put(owner,0x88,static_cast<U>(native_renderer_shader_ceiling_00b200b0(c.actual_renderer_00f8d394)));\n        op.native_site=0x8d81e1;build_native_settings_path_008d5150(op.path_header,c.text.path,op.path.emplace(c.text.personal_buffer_preimage));op.path_live=true;op.unwind_state=0;\n        const char* path=get<const char*>(op.path_header,4);if(!path)path=c.text.path.empty_00f88a3c;\n        op.native_site=0x8d8206;op.file=c.text.path.calls.open_00bf838e(path,c.read_mode_00d15f28);op.file_live=op.file!=nullptr;\n        if(op.file)parse_file(c,op);else missing_file(c,op);\n        if(signed_bits(get(owner,0x88))<1){op.native_site=0x8d879e;put(owner,0x88,static_cast<U>(native_renderer_shader_ceiling_00b200b0(c.actual_renderer_00f8d394)));}\n",
+        "utf8_sha256": "8a53f889a8ac2a5259d1cdc5d30901170e02545829cc23cbb7fc28aded8ba0d5",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "loader_normal_completion",
+        "source_path": "src/native_settings_loader.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 181,
+        "last_line": 189,
+        "text": "        op.unwind_state=-1;\n        if(void* const data=get<void*>(op.path_header,4)) {\n            const U n=get(op.path_header)+1;auto& raw=c.text.path.strings;op.native_site=0x8d8898;\n            auto* const pool=native_string_pool_get_or_create_00419cc0(raw.actual_published_01090aa8,raw.actual_manager_publication_01090aa0);\n            op.native_site=0x8d889f;return_native_string_pool_00bd1510(pool,data,n,raw.actual_small_returns_disabled_01090aa4);\n        }\n        op.path_live=false;op.phase=Phase::complete;\n    }catch(...){op.phase=Phase::failed;throw;}\n}\n",
+        "utf8_sha256": "93249b4161e3bf3bd6aa993f7e6fd57bc8fe7a19e368f2a08fc828312409235b",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "ignored_sound_enabled",
+        "source_path": "src/native_settings_loader.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 71,
+        "last_line": 91,
+        "text": "        if(matched)continue;\n        constexpr U match_sites[]{0x8d8470,0x8d8494,0x8d84bf,0x8d84e6,0x8d850a,0x8d8535,0x8d8562,0x8d8586,0x8d85ae,0x8d85d2,0x8d85e8};\n        constexpr U value_sites[]{0x8d8482,0x8d84a6,0x8d84d4,0x8d84f8,0x8d851c,0x8d8547,0x8d8574,0x8d8598,0x8d85c0,0,0x8d85fa};\n        constexpr U offsets[]{0x60,0x88,0x58,0x74,0x86,0x84,0x6c,0x68,0x54,0,0x94};\n        for(U k=0;k<11;++k) {\n            op.native_site=match_sites[k];if(!match_native_scene_keyword_00467cc0(scan,c.keywords[k+5],tokenizer,c.calls))continue;\n            matched=true;if(k==9)break; // SoundEnabled never reads its value.\n            if(k==2)put(owner,0x5c,0u);\n            op.native_site=value_sites[k];\n            if(k==1||k==2||k==7||k==8)put(owner,offsets[k],static_cast<U>(read_native_scene_int_008d9ad0(scan,&op.ignored_value_success,c.values)));\n            else {\n                const auto value=static_cast<std::uint8_t>(read_native_scene_bool_008d9a80(scan,&op.ignored_value_success,c.values));\n                put<std::uint8_t>(owner,offsets[k],value);if(k==5)put<std::uint8_t>(owner,0x85,value);\n            }\n            break;\n        }\n        if(matched)continue;\n        op.native_site=0x8d860a;const char* const token=peek_native_scene_token_008d8a70(scan,tokenizer);\n        op.native_site=0x8d8615;c.calls.unknown_token_004254b0(c.unknown_format_00d15e60,token);\n        op.native_site=0x8d8621;consume_native_scene_token_008d8960(scan);\n    }\n",
+        "utf8_sha256": "1c66ac9911a698937c3fabb65fcb979a30aac10be90a548d1ae9a099c9b65fcd",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "projection_contract",
+        "source_path": "include/bsp/game_native_settings_application.hpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 17,
+        "last_line": 36,
+        "text": "};\n// Read-only compatibility copy for the remaining projected UI/audio/locale\n// consumers. The raw BCh owner is authoritative; no projected loader runs.\nvoid copy_native_game_settings_read_view(const NativeGameSettingsStorage&,\n    const std::vector<LanguageEntry>&,GameSettingsBlock&);\nclass GameNativeSettingsApplication final {\npublic:\n    GameNativeSettingsApplication(GameHostLog&,GameNativeSettingsProcess&,GameSingletonHost&,\n        GameVfsHost&,GameNativeRendererApplication&,GameNativeReadOnlyData&,\n        const std::vector<std::string>& suffixes,std::string personal_root,\n        const GameNativeSettingsStackPolicy&);\n    ~GameNativeSettingsApplication();\n    GameNativeSettingsApplication(const GameNativeSettingsApplication&)=delete;\n    GameNativeSettingsApplication& operator=(const GameNativeSettingsApplication&)=delete;\n    void load();\n    bool requires_process_retention() const noexcept;\n    std::uint32_t failure_site() const noexcept;\n    void copy_read_view(GameSettingsBlock&) const;\n    //The actual process-retained settings +34h cell, after static initialization.\n    //Borrow this for NativeGlobalConfigLoadContext; no projected read-view copy.\n",
+        "utf8_sha256": "81fae7c796edaa1e94780e5e9459c608968f55d71188bcdf524040f6d70ba153",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "load_before_projection",
+        "source_path": "src/game_hosts.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 1917,
+        "last_line": 1931,
+        "text": "\n    // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before\n    // window creation at 0073dc0f, which is the ordering constraint the whole phase exists\n    // for: arguments 7, 8, 3, 4 and 9 of 00becee0 are read straight out of this block.\n    settings_host_ = new GameNativeSettingsApplication(log_,*settings_process_,*singletons_,\n        *vfs_,*native_renderer_,*native_data_,content_suffixes_,options_.settings_personal_root,{});\n    auto& settings_host = *settings_host_;\n    settings_host.load();\n    settings_host.copy_read_view(settings_view_);\n    {\n        // Harness only: --window-resolution <WxH|fit> (GameExecutableOptions::window_resolution).\n        // Applied to the host's read view only, after the native loader validated the file, so\n        // the window request, the present size and the back buffer follow it. The file's\n        // resolution index is kept: only the options screen would show it.\n        std::string spec = options_.window_resolution;\n",
+        "utf8_sha256": "570a82f04649ee206b7eda4c37d84e4608b892df5fee9fefa391ae3956e62cd0",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "intervening_window_override_1",
+        "source_path": "src/game_hosts.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 1932,
+        "last_line": 1954,
+        "text": "        if (spec.empty()) {\n            char env[64]{};\n            if (GetEnvironmentVariableA(\"BSP_WINDOW_RESOLUTION\", env, sizeof(env)) > 0) spec = env;\n        }\n        if (!spec.empty()) {\n            auto& file = settings_view_.options_file;\n            const int before_w = file.width_14;\n            const int before_h = file.height_18;\n            int after_w = before_w;\n            int after_h = before_h;\n            if (spec == \"fit\") {\n                RECT frame{0, 0, 0, 0};\n                AdjustWindowRectEx(&frame, WS_CAPTION, FALSE, WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE);\n                const int frame_w = frame.right - frame.left;\n                const int frame_h = frame.bottom - frame.top;\n                const bool fits = before_w + frame_w <= window_monitor_width_ &&\n                    before_h + frame_h <= window_monitor_height_;\n                if (!fits && window_monitor_width_ > 0 && window_monitor_height_ > 0) {\n                    static constexpr int kCandidates[][2] = {\n                        {3840, 2160}, {2560, 1440}, {1920, 1080}, {1600, 900}, {1366, 768},\n                        {1280, 720}, {1024, 576}, {800, 600}, {640, 480}};\n                    after_w = 640;\n                    after_h = 480;\n",
+        "utf8_sha256": "163e1bc6a7e95d20e28408204e7bc9bd4893b9c815793373a9f0cc4ba45af7cf",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "intervening_window_override_2",
+        "source_path": "src/game_hosts.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 1955,
+        "last_line": 1977,
+        "text": "                    for (const auto& c : kCandidates) {\n                        if (c[0] + frame_w <= window_monitor_width_ && c[1] + frame_h <= window_monitor_height_) {\n                            after_w = c[0];\n                            after_h = c[1];\n                            break;\n                        }\n                    }\n                }\n            } else {\n                char* end = nullptr;\n                after_w = static_cast<int>(std::strtol(spec.c_str(), &end, 10));\n                after_h = static_cast<int>(std::strtol(end + 1, nullptr, 10));\n            }\n            if (after_w != before_w || after_h != before_h) {\n                file.width_14 = after_w;\n                file.height_18 = after_h;\n                log_.notef(\"window resolution override %s: %dx%d -> %dx%d (monitor %dx%d, index kept %d)\",\n                    spec.c_str(), before_w, before_h, after_w, after_h, window_monitor_width_,\n                    window_monitor_height_, file.resolution_index_78);\n            } else {\n                log_.notef(\"window resolution override %s: %dx%d kept (monitor %dx%d)\", spec.c_str(),\n                    before_w, before_h, window_monitor_width_, window_monitor_height_);\n            }\n",
+        "utf8_sha256": "2366334964f8c4b49e29801a6064f35ab04fe1efbf9002fc97219d31a2314209",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "projection_to_startup_interval",
+        "source_path": "src/game_hosts.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 1978,
+        "last_line": 2003,
+        "text": "        }\n    }\n    if (command_line.fixed_frame_rate)\n        enable_fixed_published_native_frame_clock(require_frame_clock_context(), 50);\n    log_.implemented(\"Phase 5 load_game_settings\", \"008d8190\");\n    summary_.options_file_present = settings_host.options_file_present();\n    summary_.options_path = settings_host.options_path();\n    log_.notef(\"options file %s %s\", settings_host.options_path().c_str(),\n        summary_.options_file_present ? \"loaded\" : \"absent, initial options write attempted\");\n    summary_.language = settings_view_.options_file.language;\n    summary_.settings_width = settings_view_.options_file.width_14;\n    summary_.settings_height = settings_view_.options_file.height_18;\n    summary_.settings_fullscreen = settings_view_.options_file.fullscreen_1e;\n    summary_.settings_vsync = settings_view_.options_file.vsync_60;\n    summary_.settings_antialias = settings_view_.options_file.antialias_58;\n    log_.notef(\"settings resolution=%dx%d index=%d fullscreen=%d vsync=%d antialias=%d \"\n        \"shader_model=%d language=%s\", settings_view_.options_file.width_14, settings_view_.options_file.height_18,\n        settings_view_.options_file.resolution_index_78, settings_view_.options_file.fullscreen_1e ? 1 : 0,\n        settings_view_.options_file.vsync_60 ? 1 : 0, settings_view_.options_file.antialias_58, settings_view_.options_file.shader_model_88,\n        settings_view_.options_file.language.empty() ? \"(none)\" : settings_view_.options_file.language.c_str());\n\n    bind_legacy_crt_math_runtime(application_math_runtime);\n    sound_ = std::make_unique<SoundServices>(*this);\n    try {\n        sound_->core.startup(!settings_view_.audio.enabled_24);\n    } catch (...) {\n",
+        "utf8_sha256": "6e60d8c3e10f3c14fb321fd829b949c51242e3ea56ca1c37082f8bc9f8246478",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "sound_services_binding",
+        "source_path": "src/game_hosts.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 1325,
+        "last_line": 1370,
+        "text": "struct GameStartupHost::SoundServices {\n    // Shared actual lifecycle publications. Native online construction occurs\n    // at73DC7C and input backend construction at73DD8E, after sound/window.\n    // Until those owners exist, these verified loader-zero slots stay null.\n    // No independent online/input/action owner is constructed for sound loads.\n    GameNativeSettingsProcess& settings_process;\n    NativeOnlineManagerStorage* volatile& online_00f8abe8;\n    NativeOnlinePumpContext* volatile online_pump{};\n    std::uint8_t cursor_shown_0109db8e{}, focus_reset_pending_0109db8f{}, previous_ui_0109db90{};\n    XLiveLibrary xlive;\n    NativeOnlineSigninRuntime signin;\n    NativeXLiveDeviceAdapter device_adapter;\n    GamePlatformServices platform;\n    void* volatile alternate_00f8bbcc{};\n    const std::array<std::uint32_t, 4> format_counts_00e12ef0{0, 1, 2, 6};\n    const volatile std::uint32_t one_00d7a24c{0x3f800000};\n    const volatile double fade_00ce3dc8{0.30000001192092896};\n    char null_integer_format_01090ab4{};\n    const CameraAxesCrtAccess& crt{application_camera_axes_crt()};\n    GameSoundDialogRuntime dialog;\n    GameSoundRuntime core;\n\n    explicit SoundServices(GameStartupHost& app)\n        : settings_process(*app.settings_process_),online_00f8abe8(settings_process.online_00f8abe8()),\n          xlive(selected_library_path(app.options_.xlive_dll, L\"xlive.dll\"),\n              app.options_.xlive_dependencies),\n          signin(xlive, app.require_frame_clock_context()),\n          device_adapter(xlive),\n          platform(app.input_backend_00f8bbf4_, app.input_runtime_, online_00f8abe8, xlive),\n          dialog({alternate_00f8bbcc, format_counts_00e12ef0, one_00d7a24c,\n              fade_00ce3dc8, &null_integer_format_01090ab4}),\n          core({app.vfs_->context(), app.vfs_->search_registrations(),\n              app.scripts_->files(), app.scripts_->runtime(), app.scripts_->globals(),\n              app.require_frame_clock_context(), app.vfs_->borrow_raw_services().strings,\n              platform.load_events(),\n              app.singletons_->sound_lifetime(), crt, dialog,\n              [this](void* owner, float seconds) { dialog.update(owner, seconds); },\n              &alternate_00f8bbcc}, selected_library_path(app.options_.fmod_dll, L\"fmodex.dll\"),\n              selected_library_path(app.options_.fmod_event_dll, L\"fmod_event.dll\")) {\n        dialog.attach(core, core.fmod());\n        settings_process.bind_profile_sdk(&xlive);\n        // Registration happens in startup, after the raw deletion dispatcher\n        // has this exact core allocation available.\n        app.singletons_->bind_sound_runtime(&core);\n    }\n    ~SoundServices() {\n",
+        "utf8_sha256": "d9aec5ffd97633e3d017fc160b80aa311ff098890ab04d52e30971e8c0e08d6f",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "sound_runtime_argument",
+        "source_path": "src/game_sound_runtime.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 307,
+        "last_line": 329,
+        "text": "void GameSoundRuntime::startup(bool disabled) {\n    auto& self = *impl_;\n    if (self.attempted) throw std::logic_error(\"Game sound startup is one-shot\");\n    if (self.alternate && !self.services.update_alternate)\n        throw std::logic_error(\"Alternate sound update service is required for a published owner\");\n    self.bind_files();\n    self.attempted = true;\n    try {\n        construct_sound_system_00a88770(*self.manager, self.lifetime, self.cache,\n            disabled, 0, 0, self.clock, self.resources, self.library, self.library,\n            self.lua, self.shutdown_context, self.services.strings);\n        self.running = true;\n        self.rethrow_file_error();\n    } catch (...) {\n        // A second cleanup exception cannot safely unload a DLL whose live\n        // objects or file callbacks survived; match the host destructor policy.\n        try {\n            if (self.running) self.shutdown();\n            else self.recover_failed_constructor();\n        } catch (...) { std::terminate(); }\n        throw;\n    }\n}\n",
+        "utf8_sha256": "a1092a924dc9c14ed1e75a1943d4dcb3afe156a770117affb277ff8a991ac8a5",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "sound_owner_negation",
+        "source_path": "src/sound_startup.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 20,
+        "last_line": 46,
+        "text": "SoundSystemOwner& construct_sound_system_00a88770(SoundSystemOwner& owner,\n    SoundOwnerLifetimeBindings& lifetime,\n    std::unique_ptr<SoundAuxiliaryTreeOwner>& auxiliary_owner,\n    bool sound_disabled, std::uint32_t, std::uint32_t,\n    SoundStartupClockHost& clock, SoundResourceLoadHost& resources,\n    FmodStartupHost& fmod_startup, SoundConfigurationFmodHost& fmod_configuration,\n    SoundConfigurationLuaOwner& lua, SoundSystemShutdownContext& shutdown,\n    NativeStringStorage& strings)\n{\n    construct_sound_system_owner_00a81480(owner, lifetime); // 00A88791\n    SoundStartupBaseUnwind unwind{owner, shutdown}; // state 0 only after base returns\n    owner.native_vtable_00 = 0x00d5b44c;\n    owner.system.field_174 = 0;\n    owner.system.sound_enabled = !sound_disabled;\n    auxiliary_owner = create_sound_auxiliary_tree_owner_00a88650(lifetime);\n    // Both constructors already registered their owners. This call changes the\n    // destruction ordering; it does not register the sound manager a second time.\n    auto* auxiliary = lifetime.global_00f8bbe8; // capture before getter,00A887D0\n    lifetime.domain.get_manager_00415350()->move_object_after_00bd0d70(&owner, auxiliary);\n    owner.time_118 = clock.sample_time_14(); // four literal word copies\n    initialize_sound_library_00a8881e_fragment(fmod_startup, owner.system);\n    owner.resource_owner_54 = create_sound_resource_owner_00a858f0(resources, strings);\n    initialize_sound_configuration_00a7ff80(owner.system, owner.configuration,\n        owner.classes, fmod_configuration, lua, strings);\n    unwind.armed = false;\n    return owner;\n}\n",
+        "utf8_sha256": "d6aab833375c644779a97a1e353a79eccfc622bc2e06f742839bca1f905c3be9",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "legacy_helper_is_separate",
+        "source_path": "src/audio_online_startup.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 182,
+        "last_line": 202,
+        "text": "void start_audio(FmodStartupHost& host, bool sound_disabled, SoundSystemState& state)\n{\n    state = SoundSystemState{};\n\n    // 00a88798-00a887b1: SETZ on the byte argument, so the stored flag is the\n    // negation of what the caller computed at 0073daee.\n    state.sound_enabled = !sound_disabled;\n    state.field_174 = 0u;\n    initialize_sound_library_00a8881e_fragment(host, state);\n}\n\nvoid initialize_sound_library_00a8881e_fragment(FmodStartupHost& host,\n    SoundSystemState& state)\n{\n\n    // 00a8881e, FMOD_EventSystem_Create into +0x48.\n    check_fmod(host, host.event_system_create(&state.event_system), state);\n    // 00a88844, handle table slot 7, writes +0x44.\n    check_fmod(host, host.event_system_get_system_object(state.event_system, &state.system), state);\n\n    if (state.sound_enabled) {\n",
+        "utf8_sha256": "3fdd17176adbf9cad05b5bd42c24fb2d52a69a7f779d3542dc592e3dfce2e8f9",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "nosound_branch",
+        "source_path": "src/audio_online_startup.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 232,
+        "last_line": 244,
+        "text": "    // frequencies read back from getDriverCaps are discarded.\n    state.min_frequency = kSoundSystemMinFrequency;\n    state.max_frequency = kSoundSystemMaxFrequency;\n\n    if (!state.sound_enabled) {\n        // 00a88904, the disabled-sound path: FMOD_OUTPUTTYPE_NOSOUND.\n        state.output_forced_to_nosound = true;\n        check_fmod(host, host.system_set_output(state.system, FmodOutputType::nosound), state);\n    }\n\n    // 00a88931, handle table slot 0.  The System is fully configured first, which\n    // is what makes this the EventSystem::init call.\n    FmodEventSystemInitArgs init_args;\n",
+        "utf8_sha256": "4302a425f9560ce91add572b537f0cd202ef366a27df47bbdf8a6fbb7b349552",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "audio_projected_type",
+        "source_path": "include/bsp/game_settings.hpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 85,
+        "last_line": 95,
+        "text": "\n// Audio page fields. All four volumes are written by the audio reset 008d41f0.\nstruct AudioSettings {\n    float master_20{0.5f};  // +20h, \"masterVolume\"\n    bool enabled_24{true};  // +24h, sound-system enable; the SoundEnabled token has no handler\n    float music_28{0.5f};   // +28h, \"musicVol\"\n    float effects_2c{0.5f}; // +2Ch, \"sfxVol\"\n    float speech_30{0.5f};  // +30h, \"speechVol\"\n};\n\n// Control page fields, +40h..+44h plus the compatibility byte.\n",
+        "utf8_sha256": "82f2c29e7e020ec75ecedaaabed08a555fdd17dfaf3466ed19cfa43e3935b020",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "later_audio_application",
+        "source_path": "src/game_settings.cpp",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 282,
+        "last_line": 293,
+        "text": "    writer.end_section(); // 008d6ac7\n    writer.end_section(); // 008d6ad0\n}\n\nvoid apply_audio_settings_008d5430(const GameSettingsBlock& settings, SettingsAudioHost& host)\n{\n    host.sound_set_enabled(settings.audio.enabled_24);          // 008d5455\n    host.sound_set_master_volume(settings.audio.master_20);     // 008d546e\n    host.sound_store_music_volume(settings.audio.music_28);     // 008d5483\n    host.sound_store_speech_volume(settings.audio.speech_30);   // 008d5490\n    host.music_player_set_volume(settings.audio.music_28);      // 008d54ba\n    host.sound_set_group_volume(kAllSoundGroups, settings.audio.effects_2c); // 008d54d9\n",
+        "utf8_sha256": "311eb45477f013baedb8f38b162d69d1d9430d49e8d5f36601954dfb6c822e5e",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "admitted_original_setz",
+        "source_path": "docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS.md",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 8,
+        "last_line": 23,
+        "text": "At `0073DAEE`, Native startup compares byte `F889A4` with zero. It pushes EDI,\nexecutes `SETZ DL`, pushes EDI again, sets ECX to the allocated sound receiver,\npushes EDX and calls `00A88770` at `0073DAFD`. EDI is the retained zero register.\nOnly DL changes; upper EDX bits remain their preimage. The sound constructor\nreads only that first stack byte, negates it with `SETZ AL` and writes receiver\n`+70h`. The ordinary contract is ECX=self, three stack dwords and `RET 0Ch`;\nthe latter two words are ignored. Ghidra's current prototype models an unused\nEDX pseudo-parameter through `__fastcall`; no ABI or prototype repair was made.\n\n| Settings +24h | Disabled argument | Sound +70h | Output selection |\n|---|---|---|---|\n| Zero | 1 | 0 | Real `System_SetOutput(NOSOUND=2)` |\n| Nonzero | 0 | 1 | Ordinary driver/speaker configuration |\n\nBoth paths still reach real `EventSystem_Init(512,16,null,0)`. File callbacks,\nresource/bank construction and sound configuration remain necessary. The branch\n",
+        "utf8_sha256": "52cd44138230d3c976fb756e6c34e8937564a820e0c779a6bd38cb4e2fe6277e",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "admitted_r170_binding",
+        "source_path": "docs/NATIVE_SETTINGS_APPLICATION_R170.md",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 8,
+        "last_line": 29,
+        "text": "\nOrdinary startup now constructs the actual BCh F88980 settings storage and calls\nthe complete native settings loader at the represented `0073DAA5` site.\n`GameNativeSettingsProcess` retains the settings block, resolution/antialias/\nlanguage vector headers, source publication cells, string contexts and CRT\ncallbacks through process shutdown. The previous projected loader is no longer\ncalled by `GameStartupHost`.\n\n`GameNativeSettingsApplication` binds the existing R167 loader to the same raw\nrenderer, mounted VFS, retained-memory domain and pooled strings used elsewhere\nin the application. It builds the raw language catalog from installed descriptor\nfiles, binds the actual hints owner to shared scalar deletion, copies native\nresolution/AA tables, reads or writes the real CRT options file, and runs the\nnative capability adjustments. The renderer exposes its current publication;\nthe VFS exposes its existing enumeration and validation contexts.\n\nThe remaining UI/audio/locale consumers receive a read-only compatibility copy.\n`settings_view_` has no independent initialization or parsing algorithm. Language\nrows are copied after the raw catalog is populated. Native BCh and raw vector\nstorage remain authoritative for this startup path; later options-screen commit\nand game/input configuration bindings remain separate work.\n\n",
+        "utf8_sha256": "cd95f2356b8510ba5d01a92a9b9d1f7ec0919dd754c6fa6ea5ce0d85e5e7b532",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      },
+      {
+        "label": "admitted_r167_loader_keyword",
+        "source_path": "docs/NATIVE_SETTINGS_LOADER_R167.md",
+        "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+        "first_line": 38,
+        "last_line": 49,
+        "text": "Consequential details preserved from the listing:\n\n- `HiResShadow` and `NoLOD` write bytes +1Dh/+1Ch. All boolean options write\n  one byte, preserving adjacent padding; `Shadow` writes both +84h and +85h.\n- An unsupported parsed resolution becomes 640x480. The subsequent scan keeps\n  the **last** matching resolution index. The missing-file desktop scan keeps\n  the **first** match and leaves the existing index on a miss.\n- `SoundEnabled` consumes only the keyword. Its value goes through the unknown\n  token path, which logs and consumes one token. The sound byte is unchanged.\n- Backing and stream references are decremented in that order through one\n  captured CE2220 import. Their current slot0 is called only at zero; tokenizer\n  destruction follows and releases its actual retained stream reference.\n",
+        "utf8_sha256": "4649093fd1953a64d6e60f3ee577585768a8622a190b8e42f5e9484817fd1f38",
+        "selection": "Inclusive 1-based line range from complete retained Git baseline blob."
+      }
+    ],
+    "queries": [
+      {
+        "file": "source_queries.json",
+        "pin": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/8693ebf1f9e2cb67_source_queries.json",
+          "bytes": 1155,
+          "sha256": "8693ebf1f9e2cb670adfef592ec768e17c88976f036d673f7cad6a9be1241b42"
+        }
+      },
+      {
+        "file": "source_queries_capture.json",
+        "pin": {
+          "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/35c8880c31b33de1_source_queries_capture.json",
+          "bytes": 10443,
+          "sha256": "35c8880c31b33de16874eb4be9039112bcabb9d921eb04e86642e3e074e124cb"
+        }
+      }
+    ],
+    "git_capture_commands": [
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "86648fb0a47577d78492e2bba8cffc0213f357f18718b330e7e5b7b947eba02c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_native_settings_application.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_native_settings_application.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "93212966c5544068213877470b24bab42408054159c4b6598f74cae728a01a41",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_native_settings_application.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "27dcda3ae4e6c975b5692790915575079dd28e9014e01bac5e430becd9298760",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_native_settings_application.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "9ffa82efcf3caf047ad67a70f77cbc0ec06634c72216306cfc7b28bc38ac4c43",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/native_settings_loader.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/native_settings_loader.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "b098a488ed74c070c5be5f22964e399e64843a67324a531bd857b160b50d20cf",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/native_settings_loader.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/native_settings_loader.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "ba53ffa6bd6134eaface5870fea842744cab539f84bb8a9fa6aa99604a043686",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_hosts.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_hosts.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "33eb9647439ebc017c3fa852ee7eef8b3a24c4646843442b08898a1a3ba33a4b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_hosts.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_hosts.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "0309d768c14c0b6751a519d70d7a099c17ec9f72f0d4442930d722f26ed8a176",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_settings.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_settings.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "9dbaa452f04228001bfa178ceb3eca57d0ef97b7dea8b7d12703c87abf1ed9eb",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_settings.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_settings.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "c07854b290ea5bf6be4340fb55e2ff9111c3a0948163d91fb7dd88a5d0081daf",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/audio_online_startup.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/audio_online_startup.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "ce285e1979413e9911fa5d27f57619edd33f81a71d2166c7582f1cf9f03ebcdb",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/audio_online_startup.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/audio_online_startup.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "f0046434cbd513e718efe58cc98b06d22cfab6ff0c98a376d6bd9fb48aafabdf",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_native_settings_process.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_native_settings_process.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "85b24f91106ccb54a37247b05f6962bacc2f53151e973a30e916840d3bba9825",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_native_settings_process.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "c39242f443a95a5a4d5f910279123a90fb09e8e0fa63d0036632cd597c26ccb6",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_native_settings_process.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "dd79114f02aa3efac28de3ed3dfa4d62b18bf9e21f2fe204b7f2853d441abe7b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/native_game_settings_owner.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/native_game_settings_owner.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "d7f5e5ed74fbef47086174044956341898705236c417bc1372ce59fb51378138",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/native_game_settings_owner.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/native_game_settings_owner.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "01f16af9758e7a52c4391060dee2c4db129ce2b6e0eaf406d95302fa07f01d61",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_sound_runtime.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/game_sound_runtime.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "6a39cace982b8c34abb38d48e9a8d463a0096d185e6c4d4f94a62258f3b8c38f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_sound_runtime.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/game_sound_runtime.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "f2e065246c8065cfd5e7a7047e74c0e255e07fa5e29f43c89a66e94618e7238f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/sound_startup.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:src/sound_startup.cpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "7bf5c0d46a8c28b421d11c816b778cd1e55e0dcbec04c056048eb494efe00072",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/sound_startup.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "0dbc3e1d2c3bae88035a2e6e328bc0f2a1cceae89431dc6e04a01a493ec25c7c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:include/bsp/sound_startup.hpp"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "8623d58d7a7b62ddd3d3824671c71eb3a61c1526d066d57dfbf26429125262c1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/NATIVE_SETTINGS_APPLICATION_R170.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "d0d0e96a4b5f8d8cc2650a63040c27bf32eeb4195e6e6730f28daa92854b1e6c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/NATIVE_SETTINGS_APPLICATION_R170.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "e1fbba5b1d1dee2f06e15ee62351c9532b736dacd1e956c873cc937b66226abf",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/native_settings_application_r170.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/native_settings_application_r170.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "5a8abc50737e29f55c331f1f63fd60a3d55f1ef9c8fbd3b89e6a56744c549560",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/NATIVE_SETTINGS_LOADER_R167.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "18496746577a85d1d12a6d24d5130fa3965ba5e80c9599026c932a21f91bc084",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/NATIVE_SETTINGS_LOADER_R167.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "096139101170c05708e347e6883b95f82d625cc9257c11189eeb47f3d8f65585",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/native_settings_loader_r167.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/native_settings_loader_r167.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "f453e9098bec5b7c95675973755e0217fadd6883db659988487c23dcf3089d8d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "ee743ffdb62f877203857736b59216c79dafd26d37bc04c4e0bbf7147b920933",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "8412c191a936af3d8f7c07e400585aaaa7ef2fc2c5207448399d2b2b0716c085",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/cc12_native_nosound_selection_readiness.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "74add98a430eb0c47638a5f187e9230092051392bddb87ccbbab206436e4d89f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/cc12_native_nosound_selection_readiness.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "0beb66cba4ed798fca14536bd2379ee592ecf9f604300aa30abd2f29df86daec",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "e8690708fdefc3d57e21cc473228e4936c3d0c4654f2527fca2ed766fb6603c3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "3954e24c95802fcec5fe4b20ef6ec169922fa3da1dc01c1154f219ddea88d576",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/cc12_native_nosound_selection_readiness_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "e579d2fb6c31fc10e40d08e4d5bf75ac3b55a276455da2e0d6c7f561596ca4b9",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:reports/cc12_native_nosound_selection_readiness_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "3811ab9ae7c888c4e070bc53dd9437f06a65a1cf39f862192f11bba293a8ad54",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "0ebcc4745339534a70d87b20f4324b631b43ceba:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "branch",
+          "--show-current"
+        ],
+        "exit_code": 0,
+        "stdout_sha256": "36d0b40c6f67841483a8eb9fb5398749325a6676fd4197530fbafb818b1c721a",
+        "stderr": ""
+      }
+    ],
+    "capture_scripts": [
+      {
+        "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/a3a7e2f3944d42cb_capture.py",
+        "bytes": 1303,
+        "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+      },
+      {
+        "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/7319386dc4364085_freeze_source.py",
+        "bytes": 6272,
+        "sha256": "7319386dc4364085a62b9bcc8b9045c91ea43175b550101cf19bb3ee6fe71ca8"
+      }
+    ],
+    "scope": "Accepted main0ebcc4745 Source only. No in-progress worker branch, Native body/export/bytes query, installed executable read, GPR mutation, compiler or runtime execution."
+  },
+  "freeze_capture_pin": {
+    "path": "local/cc12_startup_sound_enable_cell_binding_review/freeze_capture.json",
+    "bytes": 85096,
+    "sha256": "6b09bbe8a8abe5f1d0c8825cec7045d47ba5a128ae09f1e19f792c3726bbb1ea"
+  },
+  "captured_queries": [
+    {
+      "label": "accepted_source_epoch",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "start_utc": "2026-10-10T12:46:31.641664+00:00",
+      "finish_utc": "2026-10-10T12:46:31.672377+00:00",
+      "environment_override": {
+        "BSP_GHIDRA_AUTOSTART": "0"
+      },
+      "exit_code": 0,
+      "stdout": "0ebcc4745339534a70d87b20f4324b631b43ceba\n",
+      "stderr": "",
+      "stdout_sha256": "86648fb0a47577d78492e2bba8cffc0213f357f18718b330e7e5b7b947eba02c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "accepted_loader_saved_index_lookup",
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "lookup",
+        "008D8190"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "start_utc": "2026-10-10T12:46:31.672472+00:00",
+      "finish_utc": "2026-10-10T12:46:31.786493+00:00",
+      "environment_override": {
+        "BSP_GHIDRA_AUTOSTART": "0"
+      },
+      "exit_code": 0,
+      "stdout": "008d8190  BSP_GameSettings_Load  thunk=no  export=exports/bsp/functions/008d8190\r\nsegment 56 [0088b410-008dcd40] 716 candidates wave 2  keywords: luakod, options, hardwarereported, english, xboxcompatibilitymode, vsync, texturedetail, targetindicator\r\nledger name: BSP_GameSettings_Load - Hypothesis, not a recovered symbol. Packet app_init_bootstrap_options, reconstructed except the renderer-caps tail; CORRECTS the earlier provisional name BSP_GameSettings_LoadFromRegistry. __fastcall void(cGameSettings*), RET 0; this is the static object at 00f88980 (MOV ECX,0xf88980 at 0073daa0). T\r\nreconstruction: fragment native_settings_application_loader_binding_r170 status=ordinary_raw_settings_owner_loader_application_verified source=src/game_native_settings_application.cpp\r\nreconstruction: function BSP_GameSettings_Load status=reconstructed_build_fixture_and_startup_process_tested source=src/app_bootstrap.cpp\r\nreconstruction: function load_native_game_settings_008d8190 status=complete_normal_actual_settings_loader_native_compared source=src/native_settings_loader.cpp\r\ncallers (1): 0073d410 BSP_Application_Initialize\r\ncallees (32): 00419cc0 BSP_SizedStoragePool_GetSingleton, 004254b0 TRIV_body_004254b0, 00438e10 BSP_CString_CompareInsensitive, 00467cc0 BSP_SceneTokenizer_MatchAndConsumeKeyword, 008d43c0 BSP_MemoryBacking_Construct, 008d46c0 BSP_IntPairVector_FindFirst, 008d4df0 BSP_NativeIntVector_Assign, 008d4ea0 BSP_NativeIntPairVector_Assign, 008d5150 BSP_Settings_BuildOptionsPath, 008d56c0 BSP_GameSettings_SelectLanguageByName, 008d6170 BSP_Settings_WriteOptionsText, 008d7bc0 BSP_GameSettings_BuildLanguageTable ...\r\nstring refs (25, immediates in the body, not necessarily call arguments): german | spanish | italian | french | Resolution | english | language | SOFTWARE\\Eidos\\Battlestations Pacific | Destop size=%d %d | Options: unknown token %s | Firewall | SoundEnabled ...\r\ndocs (20): docs/APP_INITIALIZE_MAP.md (Application initialize map (0073d410)); docs/APP_INIT_BOOTSTRAP.md (Application init bootstrap and options); docs/APP_INIT_RENDERER.md (Application initialize, renderer device and render); docs/CC12_NATIVE_SETTINGS_ARCHIVE_AUDIO_BYTE_REVIEW.md (Native settings archive audio byte review); docs/GAME_EXECUTABLE.md (bsp_game.exe, milestones 1 through 2n); docs/LUA_RUNTIME_GLOBALS.md (Lua runtime global sources and startup order); docs/NATIVE_INPUT_SETTINGS_APPLICATION_R168.md (Raw input settings in application startup (R168)); docs/NATIVE_LANGUAGE_CATALOG_PRODUCER_R165.md (Raw language catalog producer (R165)); docs/NATIVE_SCENE_TOKENIZER_R158.md (Native scene tokenizer: stream owner and scanner (); docs/NATIVE_SCENE_TOKEN_VALUES_R159.md (Raw scene tokenizer typed reads (R159)); docs/NATIVE_SETTINGS_APPLICATION_R170.md (Native settings owner and application loader); docs/NATIVE_SETTINGS_CHOICES_R160.md (Native settings choice copies and language selecti)\r\n",
+      "stderr": "",
+      "stdout_sha256": "b745b0470afc2231c7d11d6e687b19e2136e7cad83540ad45c7c726ac5b3cdde",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "startup_enable_symbol_query",
+      "argv": [
+        "rg",
+        "-n",
+        "enabled_24|core.startup|copy_read_view|settings_host.load",
+        "src/game_hosts.cpp",
+        "src/game_native_settings_application.cpp",
+        "include/bsp/game_settings.hpp"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "start_utc": "2026-10-10T12:46:31.786581+00:00",
+      "finish_utc": "2026-10-10T12:46:31.803348+00:00",
+      "environment_override": {
+        "BSP_GHIDRA_AUTOSTART": "0"
+      },
+      "exit_code": 0,
+      "stdout": "include/bsp/game_settings.hpp:89:    bool enabled_24{true};  // +24h, sound-system enable; the SoundEnabled token has no handler\nsrc/game_native_settings_application.cpp:57:    a.master_20=read<float>(p,0x20);a.enabled_24=flag(p,0x24);a.music_28=read<float>(p,0x28);\nsrc/game_native_settings_application.cpp:137:void GameNativeSettingsApplication::copy_read_view(GameSettingsBlock& view) const{\nsrc/game_hosts.cpp:1924:    settings_host.load();\nsrc/game_hosts.cpp:1925:    settings_host.copy_read_view(settings_view_);\nsrc/game_hosts.cpp:2002:        sound_->core.startup(!settings_view_.audio.enabled_24);\n",
+      "stderr": "",
+      "stdout_sha256": "b63b7eeffa71b4bdd33974fadc7ac0a0c640ef3430df2a56781b2dd72cc99064",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "source_owner_binding_query",
+      "argv": [
+        "rg",
+        "-n",
+        "NativeGameSettingsStorage settings|return impl_->settings|load_native_game_settings_008d8190|process.settings|settings_process_",
+        "src/game_native_settings_process.cpp",
+        "src/game_native_settings_application.cpp",
+        "src/game_hosts.cpp"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "start_utc": "2026-10-10T12:46:31.803422+00:00",
+      "finish_utc": "2026-10-10T12:46:31.819761+00:00",
+      "environment_override": {
+        "BSP_GHIDRA_AUTOSTART": "0"
+      },
+      "exit_code": 0,
+      "stdout": "src/game_native_settings_application.cpp:123:        load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation);\nsrc/game_native_settings_application.cpp:139:    copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);\nsrc/game_native_settings_application.cpp:142:    return impl_->process.settings().fov_divisor_34;\nsrc/game_hosts.cpp:1348:        : settings_process(*app.settings_process_),online_00f8abe8(settings_process.online_00f8abe8()),\nsrc/game_hosts.cpp:1470:        settings_process_=&game_native_settings_process(*native_data_);\nsrc/game_hosts.cpp:1471:        const auto registration=settings_process_->initialize_once();\nsrc/game_hosts.cpp:1472:        copy_native_game_settings_read_view(settings_process_->settings(),{},settings_view_);\nsrc/game_hosts.cpp:1921:    settings_host_ = new GameNativeSettingsApplication(log_,*settings_process_,*singletons_,\nsrc/game_native_settings_process.cpp:36:    NativeGameSettingsStorage settings{};RawVector resolutions,antialias,catalog;\nsrc/game_native_settings_process.cpp:81:    return impl_->settings;\n",
+      "stderr": "",
+      "stdout_sha256": "2272a274785b19c1e3318fe06d17c84d6806c0895b5d3ac67ece6597776b0b89",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "loader_keyword_query",
+      "argv": [
+        "rg",
+        "-n",
+        "SoundEnabled|k==9|op.owner=owner|Phase::complete",
+        "src/native_settings_loader.cpp",
+        "include/bsp/native_settings_loader.hpp"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "start_utc": "2026-10-10T12:46:31.819841+00:00",
+      "finish_utc": "2026-10-10T12:46:31.834206+00:00",
+      "environment_override": {
+        "BSP_GHIDRA_AUTOSTART": "0"
+      },
+      "exit_code": 0,
+      "stdout": "src/native_settings_loader.cpp:77:            matched=true;if(k==9)break; // SoundEnabled never reads its value.\nsrc/native_settings_loader.cpp:154:    op.phase=Phase::running;op.owner=owner;\nsrc/native_settings_loader.cpp:187:        op.path_live=false;op.phase=Phase::complete;\ninclude/bsp/native_settings_loader.hpp:54:    // TextureDetail, ObjectDetail, SoundEnabled, Firewall.\ninclude/bsp/native_settings_loader.hpp:89:// SoundEnabled consumes no value; duplicate resolution/sample matches keep the\n",
+      "stderr": "",
+      "stdout_sha256": "119c28da99ec727e92ed41aba8ef08079116702b62cede3c94ffc610b31cbb4e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "sound_argument_consumers",
+      "argv": [
+        "rg",
+        "-n",
+        "startup\\(bool|disabled, 0, 0|sound_enabled = !sound_disabled|if \\(!state.sound_enabled\\)|system_set_output",
+        "src/game_sound_runtime.cpp",
+        "src/sound_startup.cpp",
+        "src/audio_online_startup.cpp",
+        "include/bsp/game_sound_runtime.hpp"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "start_utc": "2026-10-10T12:46:31.834290+00:00",
+      "finish_utc": "2026-10-10T12:46:31.851217+00:00",
+      "environment_override": {
+        "BSP_GHIDRA_AUTOSTART": "0"
+      },
+      "exit_code": 0,
+      "stdout": "src/sound_startup.cpp:33:    owner.system.sound_enabled = !sound_disabled;\nsrc/audio_online_startup.cpp:188:    state.sound_enabled = !sound_disabled;\nsrc/audio_online_startup.cpp:236:    if (!state.sound_enabled) {\nsrc/audio_online_startup.cpp:239:        check_fmod(host, host.system_set_output(state.system, FmodOutputType::nosound), state);\nsrc/game_sound_runtime.cpp:307:void GameSoundRuntime::startup(bool disabled) {\nsrc/game_sound_runtime.cpp:316:            disabled, 0, 0, self.clock, self.resources, self.library, self.library,\ninclude/bsp/game_sound_runtime.hpp:98:    void startup(bool sound_disabled);\n",
+      "stderr": "",
+      "stdout_sha256": "91e0824681d201bda638ed999bc400e27d81f56c412d6cb8ed162b794c6b3da7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "admitted_native_reports": {
+    "native_settings_loader_r167": {
+      "complete_retained_report": {
+        "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/70d9b0c579b98a30_git_reports_native_settings_loader_r167.json",
+        "bytes": 151814,
+        "sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7"
+      },
+      "status": "seven_complete_normal_raw_settings_loader_and_renderer_helpers_native_compared",
+      "contract": "Full raw BCh settings loader over canonical publications and recovered dependencies. Preserve byte writes, parser quirks, capture/reload order, retained memory ownership, desktop and registry gates, pre-clamp persistence and actual renderer choice storage. Explicit source contexts and retained operations; not original ABI/FH3.",
+      "limits": [
+        "Native loader invokes six copied native helpers; previously recovered raw dependencies shared between lanes",
+        "Catalog prepopulated; R165 independently validates full producer",
+        "Desktop registry FILE and COM behavior controlled for paired cases; separate source case verifies real local CRT text-mode input",
+        "Private tokenizer/rectangle preimages supplied at shared boundaries; no private frame alias claim",
+        "No originalCRT internals, binaryABI, FH3/SEH, token overflow, asynchronous mutation, ordinary startup ownership or gameplay proof"
+      ],
+      "freshly_executed": false
+    },
+    "native_settings_application_r170": {
+      "complete_retained_report": {
+        "path": "local/cc12_startup_sound_enable_cell_binding_review/frozen/4883feb0d96c4053_git_reports_native_settings_application_r170.json",
+        "bytes": 222876,
+        "sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097"
+      },
+      "status": "ordinary_raw_settings_owner_loader_and_two_presentations_verified",
+      "contract": "Actual process BCh/three raw vectors with native CRT order; existing full settings loader borrows same VFS/renderer/string/memory contexts and actual hints deletion binding. Online/game cells retained; SDK library bound lazily. Legacy startup consumers receive read-only views; projected loader is not run.",
+      "limits": [
+        "Explicit zero stack preimages are source policy, not recovered native stack identity",
+        "Real presentations are not visual or gameplay proof; xlive_stub used",
+        "Online/actual game constructors and input configuration application remain unbound; no profile SDK read claimed",
+        "New settings-vector reserve path for corrupt negative capacity is assembly-backed, not exercised by ordinary positive-capacity runs",
+        "No native FH3/SEH, drop-in ABI or concurrent mutation proof",
+        "Configured 800x600/windowed run initially did not launch because a peer occupied runtime; combined result recorded separately"
+      ],
+      "freshly_executed": false
+    }
+  },
+  "admitted_original_caller": {
+    "receipt": "reports/cc12_native_nosound_selection_readiness.json",
+    "documentation": "docs/CC12_NATIVE_NOSOUND_SELECTION_READINESS.md:8-23",
+    "comparison": "0073DAEE compares byte F889A4 with0; SETZ DL forms disabled byte.",
+    "constructor": "00A88770 consumes low byte, negates it through SETZ into sound+70. Upper EDX preimage is not part of this bool-value proof.",
+    "ABI_limit": "Original ECX/stack/RET facts are admitted, not newly queried. Source semantic bool correspondence does not establish a drop-in ABI."
+  },
+  "raw_Source_owner": {
+    "retained_owner": "GameNativeSettingsProcess::Impl::settings, type NativeGameSettingsStorage, declared src/game_native_settings_process.cpp:36.",
+    "retention": "game_native_settings_process creates one process object; keeps its Impl/data reference; rejects replacing the retained data mapping. settings() returns the same member only when ready.",
+    "representation": "BCh bytes, align4, standard layout; opaque_00 starts at0 and covers+24. Raw projection uses &storage as the whole object address.",
+    "initialization": "initialize_once passes p.settings to initialize_native_game_settings_static_00cd2d80; its wrapper passes &p to construct_native_game_settings_008d7710, whose Source writes byte(p,0x24,1).",
+    "host_binding": "GameStartupHost stores settings_process_ from the retained process, initializes once and copies the initial raw read view at1470..1472.",
+    "physical_address_qualification": "F88980/F889A4 identify the represented original owner/offset. The reconstructed process/Impl are allocated C++ objects; Source does not establish a member at physical VA00F88980 or an observation of the original process."
+  },
+  "load_and_projection": {
+    "owner_input": "GameNativeSettingsApplication::load calls load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation) at line123; loader sets op.owner=owner at154.",
+    "normal_load_completion": "The raw loader sets operation Phase::complete at the normal tail; the application sets Phase::ready only after the loader returns and language rows are copied.",
+    "failure_behavior": "Application load catches, sets failed and rethrows. copy_read_view rejects a non-ready phase. This is ordinary Source ordering, not Native EH/SEH equivalence.",
+    "same_owner_projection": "copy_read_view invokes copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view).",
+    "byte_read": "flag(p,offset) performs memcpy<uint8_t> from static_cast<const char*>(p)+offset, then !=0.",
+    "assignment": "With p=&storage, a.enabled_24=flag(p,0x24) at src/game_native_settings_application.cpp:57.",
+    "default_vs_refresh": "AudioSettings::enabled_24 defaults true, but the reviewed host path overwrites it from raw storage after CRT initialization and again after the loader before sound startup."
+  },
+  "Source_schedule": [
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 1924,
+      "operation": "settings_host.load()"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 1925,
+      "operation": "settings_host.copy_read_view(settings_view_)"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "lines": [
+        1926,
+        1999
+      ],
+      "operation": "Window-resolution override touches options_file width/height; clock binding and summary/log work. No direct audio-field assignment in retained interval."
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 2000,
+      "operation": "Construct SoundServices; retains same settings process for online cell/SDK binding. Constructor does not replace the projected audio flag."
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "line": 2002,
+      "operation": "sound_->core.startup(!settings_view_.audio.enabled_24)"
+    }
+  ],
+  "boolean_composition": {
+    "raw_sample": "b = byte[&settings_process_->settings()+24h], sampled during copy_read_view",
+    "read_view": "enabled_24 = (b !=0)",
+    "startup_argument": "sound_disabled = !enabled_24 = (b ==0)",
+    "runtime_forward": "GameSoundRuntime::startup forwards disabled,0,0 to construct_sound_system_00a88770.",
+    "constructor_assignment": "owner.system.sound_enabled = !sound_disabled = (b !=0)",
+    "library_branch": "initialize_sound_library_00a8881e_fragment selects NOSOUND when !state.sound_enabled.",
+    "cases": [
+      {
+        "raw_byte": "0",
+        "enabled_projection": false,
+        "disabled_argument": true,
+        "sound_enabled": false,
+        "branch": "NOSOUND"
+      },
+      {
+        "raw_byte": "any nonzero uint8_t",
+        "enabled_projection": true,
+        "disabled_argument": false,
+        "sound_enabled": true,
+        "branch": "ordinary enabled path"
+      }
+    ],
+    "normalization": "Preserves the zero/nonzero predicate for all possible raw byte values. Does not retain noncanonical byte magnitude or Native upper argument-register bits.",
+    "actual_entry_chain": "GameSoundRuntime uses the full sound_startup.cpp owner constructor. Legacy start_audio in audio_online_startup.cpp is a separate helper with matching polarity."
+  },
+  "snapshot_and_freshness": {
+    "exact_raw_predicate_at_copy": true,
+    "live_reference": false,
+    "literal_same_byte_representation": false,
+    "normal_Source_order_proven": true,
+    "original_runtime_order_newly_proven": false,
+    "finite_intervening_write_finding": "No direct settings_view_.audio assignment in inspected host interval; explicit view override is options_file width/height. SoundServices SDK binding changes the library pointer, not the raw settings owner.",
+    "qualification": "No universal alias/delegated/concurrent/external mutation proof. Snapshot equality is asserted at copy time; no atomic refresh or runtime observation is claimed."
+  },
+  "loader_and_selector_boundary": {
+    "actual_current_route": "Raw loader over retained Source owner, followed by compatibility projection. No separate projected parsing algorithm runs on this host path.",
+    "historical_document_resolution": "R167 ordinary projected-loader statement describes the earlier epoch. R170 admission and current Source establish the later raw application binding.",
+    "SoundEnabled": "Current native_settings_loader.cpp:77 matches and consumes the keyword but breaks before reading/storing a value; accepted original behavior is preserved.",
+    "original_zero_selector_established": false,
+    "new_zero_writer_established": false,
+    "supported_NOSOUND_activation_input_established": false
+  },
+  "fix_assessment": {
+    "bounded_mismatch_found": false,
+    "Cplusplus_fix_proposed": false,
+    "Cplusplus_changed": false,
+    "decision": "No Source fix or new input is justified by this finite binding review. No GO/activation or selector is inferred."
+  },
+  "artifact_handoff": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_startup_sound_enable_cell_binding_review",
+    "portable_relative_directory": "local/cc12_startup_sound_enable_cell_binding_review",
+    "retention": "Copy the complete directory under the same relative path before removing the worktree. Replay opens only retained Source/evidence artifacts, never the installation or live Native analysis."
+  },
+  "capture_commands": [
+    [
+      "python",
+      "local/cc12_startup_sound_enable_cell_binding_review/capture.py",
+      "local/cc12_startup_sound_enable_cell_binding_review/source_queries.json"
+    ],
+    [
+      "python",
+      "local/cc12_startup_sound_enable_cell_binding_review/freeze_source.py"
+    ]
+  ],
+  "finalize_commands": [
+    [
+      "python",
+      "local/cc12_startup_sound_enable_cell_binding_review/replay.py"
+    ],
+    [
+      "python",
+      "local/cc12_startup_sound_enable_cell_binding_review/make_receipt.py"
+    ]
+  ],
+  "local_script_pins": [
+    {
+      "path": "local/cc12_startup_sound_enable_cell_binding_review/capture.py",
+      "bytes": 1303,
+      "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+    },
+    {
+      "path": "local/cc12_startup_sound_enable_cell_binding_review/freeze_source.py",
+      "bytes": 6272,
+      "sha256": "7319386dc4364085a62b9bcc8b9045c91ea43175b550101cf19bb3ee6fe71ca8"
+    },
+    {
+      "path": "local/cc12_startup_sound_enable_cell_binding_review/replay.py",
+      "bytes": 6775,
+      "sha256": "2ad1d4766aac2c25d13587ab28567259e821874276cdd4e59832122f83e2adec"
+    },
+    {
+      "path": "local/cc12_startup_sound_enable_cell_binding_review/make_receipt.py",
+      "bytes": 10941,
+      "sha256": "bae6728c0b0aaf4326a0f9249db4023ee0b41991c6b79280d9473c31cdac7709"
+    }
+  ],
+  "offline_replay": {
+    "command": [
+      "python",
+      "local/cc12_startup_sound_enable_cell_binding_review/replay.py"
+    ],
+    "script_pin": {
+      "path": "local/cc12_startup_sound_enable_cell_binding_review/replay.py",
+      "bytes": 6775,
+      "sha256": "2ad1d4766aac2c25d13587ab28567259e821874276cdd4e59832122f83e2adec"
+    },
+    "script_text": "\"\"\"Replay frozen Source evidence only. Does not execute reconstructed Source or Native code.\"\"\"\nimport hashlib, json, os, pathlib, sys\nROOT=pathlib.Path(__file__).resolve().parents[2]\nOUT=pathlib.Path(__file__).resolve().parent\nopened=[]\ndef guard(event,args):\n    if event!='open': return\n    path,mode,flags=args\n    if not isinstance(path,(str,bytes)): raise RuntimeError('File descriptor opens forbidden')\n    resolved=pathlib.Path(path).resolve()\n    if not resolved.is_relative_to(OUT): raise RuntimeError('Read outside retained evidence: '+str(resolved))\n    if mode is not None and any(c in mode for c in 'wax+'): raise RuntimeError('Writes forbidden')\n    if flags & (os.O_WRONLY|os.O_RDWR|os.O_APPEND|os.O_CREAT|os.O_TRUNC): raise RuntimeError('Write flags forbidden')\n    opened.append(resolved.relative_to(OUT).as_posix())\nsys.addaudithook(guard)\nfreeze=json.loads((OUT/'freeze_capture.json').read_text(encoding='utf-8'))\ndef sha(data): return hashlib.sha256(data).hexdigest()\npins=[]\ndef walk(value):\n    if isinstance(value,dict):\n        if {'path','bytes','sha256'}<=set(value):\n            assert not pathlib.Path(value['path']).is_absolute()\n            data=(ROOT/value['path']).read_bytes()\n            assert len(data)==value['bytes'] and sha(data)==value['sha256'],value['path']\n            pins.append(value['path'])\n        for v in value.values(): walk(v)\n    elif isinstance(value,list):\n        for v in value: walk(v)\nwalk(freeze)\nsources={}\nfor entry in freeze['Source_Git_inputs']:\n    work=(ROOT/entry['working']['path']).read_bytes()\n    committed=(ROOT/entry['git_baseline']['path']).read_bytes()\n    assert work.replace(b'\\r\\n',b'\\n')==committed.replace(b'\\r\\n',b'\\n')\n    assert hashlib.sha1(b'blob '+str(len(committed)).encode()+b'\\0'+committed).hexdigest()==entry['git_blob']\n    sources[entry['source_path']]=committed.decode('utf-8')\nexcerpts={}\nfor entry in freeze['excerpts']:\n    lines=sources[entry['source_path']].splitlines()\n    expected='\\n'.join(lines[entry['first_line']-1:entry['last_line']])+'\\n'\n    assert expected==entry['text'] and sha(expected.encode())==entry['utf8_sha256']\n    excerpts[entry['label']]=expected\nqueries=[]\nfor entry in freeze['queries']:\n    if entry['file'].endswith('_capture.json'):\n        queries=json.loads((ROOT/entry['pin']['path']).read_text(encoding='utf-8'))\n        for query in queries:\n            assert query['exit_code']==0\n            assert sha(query['stdout'].encode())==query['stdout_sha256']\n            assert sha(query['stderr'].encode())==query['stderr_sha256']\n            assert 'ghidra' not in query['argv']\nfacts=[]\ndef contains(label,text):\n    assert text in excerpts[label],(label,text)\n    facts.append({'excerpt':label,'exact_text':text})\ncontains('raw_storage_layout','std::byte opaque_00[0x34];')\ncontains('raw_storage_layout','sizeof(NativeGameSettingsStorage)==0xbc')\ncontains('process_raw_member','NativeGameSettingsStorage settings{};')\ncontains('process_retention_and_ready_guard','if(!process)process=new GameNativeSettingsProcess(data);')\ncontains('process_retention_and_ready_guard','return impl_->settings;')\ncontains('process_retention_and_ready_guard','initialize_native_game_settings_static_00cd2d80(p.settings,p.settings_context')\ncontains('raw_default_one','byte(p,0x24,1);')\ncontains('raw_static_initialization','construct_native_game_settings_008d7710(&p,c,op);')\ncontains('byte_projection_helper','read<std::uint8_t>(p,offset)!=0')\ncontains('raw_to_audio_projection','const void* p=&storage;')\ncontains('raw_to_audio_projection','a.enabled_24=flag(p,0x24);')\ncontains('same_process_loader_and_projection','load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation);')\ncontains('same_process_loader_and_projection','p.phase=Impl::Phase::ready;')\ncontains('same_process_loader_and_projection','if(impl_->phase!=Impl::Phase::ready)throw')\ncontains('same_process_loader_and_projection','copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);')\ncontains('loader_owner_identity','op.phase=Phase::running;op.owner=owner;')\ncontains('loader_normal_completion','op.path_live=false;op.phase=Phase::complete;')\ncontains('ignored_sound_enabled','matched=true;if(k==9)break; // SoundEnabled never reads its value.')\ncontains('load_before_projection','settings_host.load();')\ncontains('load_before_projection','settings_host.copy_read_view(settings_view_);')\ncontains('projection_to_startup_interval','sound_->core.startup(!settings_view_.audio.enabled_24);')\ncontains('sound_runtime_argument','disabled, 0, 0, self.clock')\ncontains('sound_owner_negation','owner.system.sound_enabled = !sound_disabled;')\ncontains('nosound_branch','if (!state.sound_enabled)')\ncontains('nosound_branch','host.system_set_output(state.system, FmodOutputType::nosound)')\nhost=sources['src/game_hosts.cpp']\nrun=host[host.index('void GameStartupHost::run_initialize_phases('):]\nload=run.index('settings_host.load();'); copy=run.index('settings_host.copy_read_view(settings_view_);')\nstartup=run.index('sound_->core.startup(!settings_view_.audio.enabled_24);')\nassert load<copy<startup\ninterval=run[copy:startup]\nassert '.audio' not in interval\nassert 'auto& file = settings_view_.options_file;' in interval\napp=sources['src/game_native_settings_application.cpp']\nload_body=app[app.index('void GameNativeSettingsApplication::load()'):app.index('bool GameNativeSettingsApplication::requires_process_retention')]\nassert load_body.index('load_native_game_settings_008d8190(')<load_body.index('p.phase=Impl::Phase::ready;')\nassert freeze['baseline_commit']=='0ebcc4745339534a70d87b20f4324b631b43ceba'\nresult={'passed':True,'baseline_commit':freeze['baseline_commit'],'pin_occurrences':len(pins),'unique_frozen_files':len(set(pins)),\n 'complete_Source_Git_inputs':len(sources),'exact_excerpts_verified':len(excerpts),'captured_queries_verified':len(queries),\n 'positive_Source_anchor_count':len(facts),'positive_Source_anchors':facts,\n 'ordering_checks':['raw loader invocation precedes ready phase','host load precedes projection refresh','projection refresh precedes startup argument'],\n 'finite_interval_check':'No .audio text between completed copy call and startup argument in the retained run_initialize_phases source. This is a textual scope check, not proof against aliased, delegated, concurrent or external mutation.',\n 'read_guard':{'enabled':True,'successful_evidence_opens':len(opened),'unique_evidence_files':len(set(opened)),'installation_opens':0,'writes_permitted':False},\n 'qualification':'Hashes, Git blob identities, exact excerpts and static Source anchors/order only. No C++ execution, compiler/tests, Native query, program startup, concurrent-mutation proof or gameplay credit.'}\nprint(json.dumps(result,indent=2))\n",
+    "exit_code": 0,
+    "stdout_text": "{\r\n  \"passed\": true,\r\n  \"baseline_commit\": \"0ebcc4745339534a70d87b20f4324b631b43ceba\",\r\n  \"pin_occurrences\": 58,\r\n  \"unique_frozen_files\": 58,\r\n  \"complete_Source_Git_inputs\": 27,\r\n  \"exact_excerpts_verified\": 30,\r\n  \"captured_queries_verified\": 6,\r\n  \"positive_Source_anchor_count\": 25,\r\n  \"positive_Source_anchors\": [\r\n    {\r\n      \"excerpt\": \"raw_storage_layout\",\r\n      \"exact_text\": \"std::byte opaque_00[0x34];\"\r\n    },\r\n    {\r\n      \"excerpt\": \"raw_storage_layout\",\r\n      \"exact_text\": \"sizeof(NativeGameSettingsStorage)==0xbc\"\r\n    },\r\n    {\r\n      \"excerpt\": \"process_raw_member\",\r\n      \"exact_text\": \"NativeGameSettingsStorage settings{};\"\r\n    },\r\n    {\r\n      \"excerpt\": \"process_retention_and_ready_guard\",\r\n      \"exact_text\": \"if(!process)process=new GameNativeSettingsProcess(data);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"process_retention_and_ready_guard\",\r\n      \"exact_text\": \"return impl_->settings;\"\r\n    },\r\n    {\r\n      \"excerpt\": \"process_retention_and_ready_guard\",\r\n      \"exact_text\": \"initialize_native_game_settings_static_00cd2d80(p.settings,p.settings_context\"\r\n    },\r\n    {\r\n      \"excerpt\": \"raw_default_one\",\r\n      \"exact_text\": \"byte(p,0x24,1);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"raw_static_initialization\",\r\n      \"exact_text\": \"construct_native_game_settings_008d7710(&p,c,op);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"byte_projection_helper\",\r\n      \"exact_text\": \"read<std::uint8_t>(p,offset)!=0\"\r\n    },\r\n    {\r\n      \"excerpt\": \"raw_to_audio_projection\",\r\n      \"exact_text\": \"const void* p=&storage;\"\r\n    },\r\n    {\r\n      \"excerpt\": \"raw_to_audio_projection\",\r\n      \"exact_text\": \"a.enabled_24=flag(p,0x24);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"same_process_loader_and_projection\",\r\n      \"exact_text\": \"load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"same_process_loader_and_projection\",\r\n      \"exact_text\": \"p.phase=Impl::Phase::ready;\"\r\n    },\r\n    {\r\n      \"excerpt\": \"same_process_loader_and_projection\",\r\n      \"exact_text\": \"if(impl_->phase!=Impl::Phase::ready)throw\"\r\n    },\r\n    {\r\n      \"excerpt\": \"same_process_loader_and_projection\",\r\n      \"exact_text\": \"copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"loader_owner_identity\",\r\n      \"exact_text\": \"op.phase=Phase::running;op.owner=owner;\"\r\n    },\r\n    {\r\n      \"excerpt\": \"loader_normal_completion\",\r\n      \"exact_text\": \"op.path_live=false;op.phase=Phase::complete;\"\r\n    },\r\n    {\r\n      \"excerpt\": \"ignored_sound_enabled\",\r\n      \"exact_text\": \"matched=true;if(k==9)break; // SoundEnabled never reads its value.\"\r\n    },\r\n    {\r\n      \"excerpt\": \"load_before_projection\",\r\n      \"exact_text\": \"settings_host.load();\"\r\n    },\r\n    {\r\n      \"excerpt\": \"load_before_projection\",\r\n      \"exact_text\": \"settings_host.copy_read_view(settings_view_);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"projection_to_startup_interval\",\r\n      \"exact_text\": \"sound_->core.startup(!settings_view_.audio.enabled_24);\"\r\n    },\r\n    {\r\n      \"excerpt\": \"sound_runtime_argument\",\r\n      \"exact_text\": \"disabled, 0, 0, self.clock\"\r\n    },\r\n    {\r\n      \"excerpt\": \"sound_owner_negation\",\r\n      \"exact_text\": \"owner.system.sound_enabled = !sound_disabled;\"\r\n    },\r\n    {\r\n      \"excerpt\": \"nosound_branch\",\r\n      \"exact_text\": \"if (!state.sound_enabled)\"\r\n    },\r\n    {\r\n      \"excerpt\": \"nosound_branch\",\r\n      \"exact_text\": \"host.system_set_output(state.system, FmodOutputType::nosound)\"\r\n    }\r\n  ],\r\n  \"ordering_checks\": [\r\n    \"raw loader invocation precedes ready phase\",\r\n    \"host load precedes projection refresh\",\r\n    \"projection refresh precedes startup argument\"\r\n  ],\r\n  \"finite_interval_check\": \"No .audio text between completed copy call and startup argument in the retained run_initialize_phases source. This is a textual scope check, not proof against aliased, delegated, concurrent or external mutation.\",\r\n  \"read_guard\": {\r\n    \"enabled\": true,\r\n    \"successful_evidence_opens\": 114,\r\n    \"unique_evidence_files\": 59,\r\n    \"installation_opens\": 0,\r\n    \"writes_permitted\": false\r\n  },\r\n  \"qualification\": \"Hashes, Git blob identities, exact excerpts and static Source anchors/order only. No C++ execution, compiler/tests, Native query, program startup, concurrent-mutation proof or gameplay credit.\"\r\n}\r\n",
+    "stderr_text": "",
+    "result": {
+      "passed": true,
+      "baseline_commit": "0ebcc4745339534a70d87b20f4324b631b43ceba",
+      "pin_occurrences": 58,
+      "unique_frozen_files": 58,
+      "complete_Source_Git_inputs": 27,
+      "exact_excerpts_verified": 30,
+      "captured_queries_verified": 6,
+      "positive_Source_anchor_count": 25,
+      "positive_Source_anchors": [
+        {
+          "excerpt": "raw_storage_layout",
+          "exact_text": "std::byte opaque_00[0x34];"
+        },
+        {
+          "excerpt": "raw_storage_layout",
+          "exact_text": "sizeof(NativeGameSettingsStorage)==0xbc"
+        },
+        {
+          "excerpt": "process_raw_member",
+          "exact_text": "NativeGameSettingsStorage settings{};"
+        },
+        {
+          "excerpt": "process_retention_and_ready_guard",
+          "exact_text": "if(!process)process=new GameNativeSettingsProcess(data);"
+        },
+        {
+          "excerpt": "process_retention_and_ready_guard",
+          "exact_text": "return impl_->settings;"
+        },
+        {
+          "excerpt": "process_retention_and_ready_guard",
+          "exact_text": "initialize_native_game_settings_static_00cd2d80(p.settings,p.settings_context"
+        },
+        {
+          "excerpt": "raw_default_one",
+          "exact_text": "byte(p,0x24,1);"
+        },
+        {
+          "excerpt": "raw_static_initialization",
+          "exact_text": "construct_native_game_settings_008d7710(&p,c,op);"
+        },
+        {
+          "excerpt": "byte_projection_helper",
+          "exact_text": "read<std::uint8_t>(p,offset)!=0"
+        },
+        {
+          "excerpt": "raw_to_audio_projection",
+          "exact_text": "const void* p=&storage;"
+        },
+        {
+          "excerpt": "raw_to_audio_projection",
+          "exact_text": "a.enabled_24=flag(p,0x24);"
+        },
+        {
+          "excerpt": "same_process_loader_and_projection",
+          "exact_text": "load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation);"
+        },
+        {
+          "excerpt": "same_process_loader_and_projection",
+          "exact_text": "p.phase=Impl::Phase::ready;"
+        },
+        {
+          "excerpt": "same_process_loader_and_projection",
+          "exact_text": "if(impl_->phase!=Impl::Phase::ready)throw"
+        },
+        {
+          "excerpt": "same_process_loader_and_projection",
+          "exact_text": "copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);"
+        },
+        {
+          "excerpt": "loader_owner_identity",
+          "exact_text": "op.phase=Phase::running;op.owner=owner;"
+        },
+        {
+          "excerpt": "loader_normal_completion",
+          "exact_text": "op.path_live=false;op.phase=Phase::complete;"
+        },
+        {
+          "excerpt": "ignored_sound_enabled",
+          "exact_text": "matched=true;if(k==9)break; // SoundEnabled never reads its value."
+        },
+        {
+          "excerpt": "load_before_projection",
+          "exact_text": "settings_host.load();"
+        },
+        {
+          "excerpt": "load_before_projection",
+          "exact_text": "settings_host.copy_read_view(settings_view_);"
+        },
+        {
+          "excerpt": "projection_to_startup_interval",
+          "exact_text": "sound_->core.startup(!settings_view_.audio.enabled_24);"
+        },
+        {
+          "excerpt": "sound_runtime_argument",
+          "exact_text": "disabled, 0, 0, self.clock"
+        },
+        {
+          "excerpt": "sound_owner_negation",
+          "exact_text": "owner.system.sound_enabled = !sound_disabled;"
+        },
+        {
+          "excerpt": "nosound_branch",
+          "exact_text": "if (!state.sound_enabled)"
+        },
+        {
+          "excerpt": "nosound_branch",
+          "exact_text": "host.system_set_output(state.system, FmodOutputType::nosound)"
+        }
+      ],
+      "ordering_checks": [
+        "raw loader invocation precedes ready phase",
+        "host load precedes projection refresh",
+        "projection refresh precedes startup argument"
+      ],
+      "finite_interval_check": "No .audio text between completed copy call and startup argument in the retained run_initialize_phases source. This is a textual scope check, not proof against aliased, delegated, concurrent or external mutation.",
+      "read_guard": {
+        "enabled": true,
+        "successful_evidence_opens": 114,
+        "unique_evidence_files": 59,
+        "installation_opens": 0,
+        "writes_permitted": false
+      },
+      "qualification": "Hashes, Git blob identities, exact excerpts and static Source anchors/order only. No C++ execution, compiler/tests, Native query, program startup, concurrent-mutation proof or gameplay credit."
+    }
+  },
+  "credit": {
+    "current_Source_cell_provenance": true,
+    "current_Source_polarity": true,
+    "frozen_Source_replay": true,
+    "Native_reanalysis": false,
+    "Native_execution": false,
+    "Ghidra_mutation": false,
+    "Cplusplus_changes": false,
+    "compiler_or_new_tests": false,
+    "SDK_game_OS_changes": false,
+    "original_selector_support": false,
+    "full_ABI_compatibility": false,
+    "live_startup_validated": false,
+    "gameplay_validated": false
+  }
+}
