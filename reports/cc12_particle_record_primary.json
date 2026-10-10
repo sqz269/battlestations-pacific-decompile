@@ -1,0 +1,117 @@
+{
+  "schema": "bsp.cc12.particle.primary-acceptance.v1",
+  "status": "dormant_Source_implemented_merged_build_checked_no_activation",
+  "worker_commit": "6b7ce80ef081a796a40e529c52782f77531112cf",
+  "worker_review": {
+    "path": "local/cc12_particle_record_primary/Root_worker_review.json",
+    "bytes": 1721,
+    "sha256": "e2d764e7ef07ad0f93516c42a63861fbf44fba66a81e1524361d8dfe5746f94b"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_particle_record_primary/Root_compiled_review.json",
+    "bytes": 121870,
+    "sha256": "a36587bdd460893c6ea53c5600a10c4a01c89621e8ecf3f10aa35755e1d8c662"
+  },
+  "Root_before": {
+    "path": "local/cc12_particle_record_primary/Root_before.json",
+    "bytes": 4976773,
+    "sha256": "a478b592a8ebadcf7dc7afc5bd57e4de7c76c3daf1aa811344f7c5945781706e"
+  },
+  "Root_after": {
+    "path": "local/cc12_particle_record_primary/Root_after.json",
+    "bytes": 4973329,
+    "sha256": "5c189c09ce7c9d8f764375be5207a73487e9dd94127c87e747893ee851030da5"
+  },
+  "Root_Source_epoch": {
+    "path": "local/cc12_particle_record_primary/Source3354_particle_Root_frozen.json",
+    "bytes": 1223497,
+    "sha256": "2c748397a9a22d5ce755f44ffec379a0067b905c65bafb24859f0b1d74ee1bf7"
+  },
+  "Root_actual_Git": {
+    "before": 4215,
+    "after": 4215,
+    "working_LF_equals_actual_committed": true
+  },
+  "Root_Source_counts": {
+    "selected": 3354,
+    "full_src_include": 4208
+  },
+  "Root_Source_changes": [
+    "include/bsp/native_particle_model_lifetime.hpp",
+    "src/native_particle_model_lifetime.cpp"
+  ],
+  "Root_new_Source": [],
+  "build": {
+    "log": {
+      "path": "local/cc12_particle_record_primary/Root_after_build.log",
+      "bytes": 3365,
+      "sha256": "f1150ba9a63568b109a7cfcda5063686227f0b643a7ab231f3cbe65290bf4497"
+    },
+    "MSVC_Win32_Release": true,
+    "existing_checks": "3/3 passed",
+    "baseline": "Retained preceding accepted Root after-build artifact pins proven exact; no extra baseline build claimed.",
+    "new_tests": 0,
+    "new_probes": 0
+  },
+  "contract": {
+    "storage": "Stable noncopyable/nonmovable host record borrows one genuine prepared NativeModelOwner and services. Owns inline optional reference and two existing reservation tokens; no new Native allocation.",
+    "preparation": "Validate exact extent/identity, prepared phase, same registry and existing scene authority; reserve generated-model metadata then canonical registry node before Native construction. No typed raw+04 read.",
+    "publication": "Admission hook only after B75030 has made the Native base live. Inline admitted reference construction is followed immediately by consuming registry publication; no intervening external callback, Native call or yield. noexcept invariant/lock/constructor failure is terminal, not a recoverable cleanup path.",
+    "failure": "Existing constructor failure retirement only after owner dead; cancel prepared tokens only host metadata. No fabricated retain, full successful-model destructor, weak-manager ownership or count reversal.",
+    "retirement": "Reference disposal callback unbinds saved opaque identity and marks retired; no Native field access or reference destruction on callback stack. Native terminal return precedes host disposal.",
+    "quiescence": "Explicit later disposal resets optional only after all admitted construction, hooks, callbacks, terminal paths and resolve borrowers are quiescent. Registry/runtime/services and owner lifetime remain caller obligations; slot reuse must serialize metadata unbind.",
+    "activation": "Record remains uncalled and unlinked. No factory wiring, application caller or shutdown drain added."
+  },
+  "Root_static": {
+    "Core": [
+      1989,
+      1989
+    ],
+    "App": [
+      80,
+      80
+    ],
+    "old_code_exact": 174290,
+    "new_code_sections": 41,
+    "changed_code_sections": 0,
+    "removed_code_sections": 0,
+    "changed_whole_objects": [
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "before_sha256": "709a2f603804acc125e064f0a193ce6d6c6b8881ddcc5deb048eedec65b5d89c",
+        "after_sha256": "07804c6b6a1d6486baf89d825445855b0740bc3be1e4eeb2b40f8fa478a97d19"
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_model_construction.obj",
+        "before_sha256": "a7d1b34759917421b2e16d707d58f6f20ba4e9cdcb53bc8dfc5971a289adc95b",
+        "after_sha256": "be49ecdb0cbf472f6c3ead38ff8d143d21b84c73b46c0b6ebc64cbb79d5ef8e0"
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_array_resize.obj",
+        "before_sha256": "0c3e69bd524208a9872ba9a5e931d84ee14d95fda3e056ce77a270149e88a0ac",
+        "after_sha256": "d7830752511989d9b5a81606cc93456aa41d2e60d9d65cad122a1ec395f15551"
+      }
+    ],
+    "added_whole_objects": [],
+    "complete_physical_indices": 14,
+    "complete_selected_decodes": 9,
+    "Root_after_payloads_and_symbolic_relocations_equal_worker": true,
+    "positive_unique_Core_definitions": 6,
+    "no_external_Core_App_callers": true,
+    "Game_map_symbols": 0,
+    "Game_text_exact": true
+  },
+  "epoch_qualification": "Worker has registry but not later accepted Root grid Source. Root own merged before/after builds required. Portable replay proves retained artifact/Source observations only.",
+  "remaining": [
+    "Native allocation authority and complete owner/factory lifecycle remain open.",
+    "Original register ABI, fault/unwind behavior, runtime publication and quiescence are unproved.",
+    "Application raw storage/name authority, startup and gameplay validation remain open."
+  ],
+  "limits": [
+    "Worker and Root merged Source/build epochs remain distinct.",
+    "Exact static code/provider/artifact observations do not establish native or game execution."
+  ]
+}
