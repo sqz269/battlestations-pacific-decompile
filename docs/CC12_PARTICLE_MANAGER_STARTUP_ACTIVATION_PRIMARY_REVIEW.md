@@ -1,0 +1,15 @@
+# Early particle-manager construction: primary acceptance
+
+The Source startup now attempts particle-manager construction immediately before locale allocation. It binds the permanent particle domain before allocating 0x34 bytes, invokes the constructor on the captured allocation, and retires construction before logging or continuing. The constructor return does not replace the captured receiver. A thrown constructor marks the Source phase failed before freeing that captured allocation; partial publication and registry effects remain unrepaired.
+
+The Source retry gate prevents a second attempt. Four existing destructive shutdown paths check constructing/failed states before cleanup and take the Source fail-closed exit. This containment policy does not claim recovered Original FH3/SEH or binary ABI equivalence. Allocation failure, skipped null allocation and successful handover remain separately recorded.
+
+Root independently qualified the actual Source3352 preimages, 3,352 project inputs plus four artifact pins, 32 actual compiler header consumers (two Core and 30 application), 920 compiler project inputs and four separate Lua build headers. It replayed all 6,999 retained worker payloads under a ZIP-only guard and checked committed Git/current inputs separately. Seven preexisting newline variants remain explicitly qualified. The worker normal build passed 2/2; a separately authorized existing native differential check passed 1/1 after restoring the verified seed header. Root's normal `scripts/build.ps1` independently passed all three existing checks.
+
+Root retained complete before/after indices for all 32 consumers, all 70 application objects, 1,061 selected Core members and the full 1,991-entry archive (1,988 COFF members plus three metadata entries), and checked 320 prior unique positive Core definitions. Exactly the two Core consumers and 30 application consumers changed. Complete bytes and normalized relocation identities match the worker's seven reviewed startup sections and two complete initializer code sections. Two explicit generated lambda spelling pairs have matching complete vtable payloads and normalized relocation identities; exact names remain retained. All 223 declared `.bss` sections with raw offset zero have no file payload.
+
+The accepted epoch is `Source3352-particle-startup`; input count remains 3,352. The Root executable is 5,102,592 bytes, SHA-256 `35c8d75ff7423a9c2b6bb6f060b7b7c9013598dfd21b15149034eb84d3c0b0d9`. The full frozen manifest and receipts are pinned by the primary report. Root machine review is 1,529,878 bytes, SHA-256 `a32489c9a040ee6fb7ff94fd5be73ecc168f89035f415039d12076c1a7606237`.
+
+No runtime run is credited to this change. The last accepted runtime attempt stopped during FMOD initialization before this call; startup, rendering and gameplay remain unvalidated. Original installation, saved analysis, unrelated particle owner files and test sources were preserved.
+
+Worker commit: `61c668b73de98232bc7fc509f8298a6ccf36f4c2`. Primary report: `reports/cc12_particle_manager_startup_activation_primary_review.json`.
