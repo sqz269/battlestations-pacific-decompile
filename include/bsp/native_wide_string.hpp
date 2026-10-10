@@ -36,4 +36,10 @@ void resize_native_wide_string_header_004c53e0(void* actual_header,
 void destroy_native_wide_string_header_00436430(void* actual_header,
     NativeStringStorage& storage) noexcept;
 
+// Same header schedule through the actual raw pool/manager publications.
+// Capture the buffer and wrapping byte size before 00419CC0, then return via
+// 00BD1510. Getter exceptions propagate; no header field is cleared or reread.
+void destroy_native_wide_string_header_00436430(void* actual_header,
+    NativeStringRawPoolContext& context);
+
 } // namespace bsp

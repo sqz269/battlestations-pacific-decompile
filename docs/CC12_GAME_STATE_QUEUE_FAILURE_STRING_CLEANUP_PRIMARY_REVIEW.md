@@ -1,0 +1,9 @@
+# Queue failure string cleanup: primary acceptance
+
+Root accepted worker `a97fabfc637cb4a26d388bafb5675401c7eb82c6` and independently decoded the full38-byte,14-instruction body at004072D0 from the preserved PE. The listing covers every byte. ECX is captured in ESI; unsigned capacity below16 takes the inline path. Otherwise the stored pointer is passed to BF65AC without a null guard. Only after normal free return does the body write capacity15, length0 and the first inline byte0, in that order. It restores ESI, returns with plain RET and leaves EAX0. This machine-state result does not change the existing void Source interface.
+
+The existing raw SBO destroy and singleton lifetime malloc/free service already implement the local sequence for valid matching Source-owned storage. They do not establish compatibility with arbitrary original-game pointers. The free body, external preservation/failure semantics and allocator domain remain separate. No local rollback or header reset occurs before free returns.
+
+The accepted handler tail selects EBP-50h. That is the caller temporary only under the external relation EBP=caller entry ESP. The cleanup leaf closes its local RET0 amount; generic EH transfer, exception-object ownership and application queue composition remain unqualified.
+
+Root copied482 evidence artifacts, ran the copied guarded replay, verified4248 actual Git inputs and4206 current Source files in each worktree, and independently checked the14-instruction PE decode. The later accepted handler is pinned separately without rewriting the frozen capture. No C++, new test/build/runtime, Ghidra/listing repair, ABI bridge or application activation is added. Evidence: `reports/cc12_game_state_queue_failure_string_cleanup_primary_review.json`; proof: `local/cc12_queue_failure_string_cleanup_primary/`.
