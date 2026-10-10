@@ -1,0 +1,518 @@
+{
+  "schema": 1,
+  "packet": "cc12_instance_generator_serial_owner_readiness",
+  "created_utc": "2026-10-10T07:37:11.520063+00:00",
+  "baseline_commit": "cf99be09f982c35c5fa15c8747a43650a50cddbc",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "bounded_readiness_complete_conditional_process_owner_Source_proposal_pending_primary_replay",
+  "owned_files": [
+    "docs/CC12_INSTANCE_GENERATOR_SERIAL_OWNER_READINESS.md",
+    "reports/cc12_instance_generator_serial_owner_readiness.json"
+  ],
+  "lease_addresses": [
+    "0108fd30",
+    "00b451d0",
+    "00b85610"
+  ],
+  "decision": {
+    "Original_loader_zero_preimage_established": true,
+    "current_Source_serial_owner_exists": false,
+    "conditional_smallest_Source_owner": "Append one DWORD to existing GameNativeRendererScalarProcess.",
+    "Native_current_value_or_pre_first_use_value_established": false,
+    "complete_Native_initializer_reset_or_address_escape_absence_proved": false,
+    "new_Source_implementation": false,
+    "application_generator_or_mesh_activation": false
+  },
+  "native_contract": {
+    "attachment": {
+      "entry": "00b451d0",
+      "retained_complete_bytes": 339,
+      "ECX": "effect",
+      "stack": [
+        "section",
+        "opaque"
+      ],
+      "return": "RET8",
+      "retained_serial_sites": {
+        "00b45236": "00b45236: LEA ESI,[EBX + 0x1] ",
+        "00b45271": "00b45271: MOV ESI,0x1 ",
+        "00b452a7": "00b452a7: JZ 0x00b452ce ",
+        "00b452bb": "00b452bb: MOV ECX,dword ptr [0x0108fd30] ",
+        "00b452c1": "00b452c1: MOV dword ptr [EAX + 0x8],ECX ",
+        "00b452c4": "00b452c4: ADD dword ptr [0x0108fd30],ESI "
+      }
+    },
+    "caller": {
+      "entry": "00b85610",
+      "retained_complete_bytes": 30,
+      "ECX": "section",
+      "stack": [
+        "opaque"
+      ],
+      "return": "RET4",
+      "behavior": "Null-check section+20 material and material+7C effect; call attachment.",
+      "current_subset_Source_call_site": "00b94468"
+    },
+    "binding_layout": {
+      "bytes": 16,
+      "profile": "00d619f8",
+      "refcount_offset": 4,
+      "serial_offset": 8,
+      "generator_offset": 12
+    },
+    "serial_order": "Read current cell; store old DWORD into binding+8; unlocked ADD memory,1; then binding/section operations.",
+    "Source_counter_interface": "volatile std::uint32_t& NativeInstanceGeneratorContext::binding_serial_0108fd30",
+    "increment_is_atomic_or_locked": false,
+    "unsigned_wrap": "Modulo2^32; no lifetime uniqueness or concurrency guarantee added.",
+    "no_rollback": "Current Source consumes serial before metadata registration and keeps acquired state after failure.",
+    "known_skip_cases": [
+      "empty or unknown generator name",
+      "missing generator",
+      "null binding allocation branch"
+    ],
+    "null_binding_limit": "Skipping serial access does not establish safety of later null-binding operations.",
+    "known_destruction_behavior": "Current binding/generator destructors release fields/base and do not touch serial."
+  },
+  "evidence_gates": {
+    "Native_data_ownership_metadata": {
+      "address": "0108fd30",
+      "defined": true,
+      "defined_bytes": 4,
+      "function_at": null,
+      "function_containing": null,
+      "instruction_at": null,
+      "instruction_containing": null,
+      "modification_before_after": "32",
+      "data_value_read": false
+    },
+    "Ghidra_containing_block_source_mapping": {
+      "available": false,
+      "attempt_accepted": false,
+      "reason": "Script execution disabled at /run_script_inline. No script opt-in or fallback.",
+      "Root_attempted_facade_reverted_after_failure": true,
+      "original_failed_receipt_and_attempted_facade_frozen": true
+    },
+    "Original_PE_header_gate": {
+      "image_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "image_identity_before": {
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "method": "Streaming identity hash only; no interpretation of image body."
+      },
+      "image_identity_after": {
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "method": "Streaming identity hash only; no interpretation of image body."
+      },
+      "original_header_bytes_interpreted_and_retained": 472,
+      "header_ranges": [
+        {
+          "file_offset": 0,
+          "end_exclusive": 64,
+          "bytes": 64,
+          "sha256": "c4bfe3c9fa083643c55a84e22d1e46201fc3aba7cf52ccfb25d517cf1b82da05",
+          "snapshot": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\frozen\\original_PE_headers\\dos_header.bin",
+            "bytes": 64,
+            "sha256": "c4bfe3c9fa083643c55a84e22d1e46201fc3aba7cf52ccfb25d517cf1b82da05"
+          }
+        },
+        {
+          "file_offset": 288,
+          "end_exclusive": 312,
+          "bytes": 24,
+          "sha256": "8675131a9ab1542d031fcaca0ed0e1c1706e9c70895c304927e19c804b9ac05f",
+          "snapshot": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\frozen\\original_PE_headers\\pe_signature_and_COFF_header.bin",
+            "bytes": 24,
+            "sha256": "8675131a9ab1542d031fcaca0ed0e1c1706e9c70895c304927e19c804b9ac05f"
+          }
+        },
+        {
+          "file_offset": 312,
+          "end_exclusive": 536,
+          "bytes": 224,
+          "sha256": "bb8aca3656e7d064e9864107a3fd1a878a20fe28ca2801a21331aac502c65b36",
+          "snapshot": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\frozen\\original_PE_headers\\optional_header.bin",
+            "bytes": 224,
+            "sha256": "bb8aca3656e7d064e9864107a3fd1a878a20fe28ca2801a21331aac502c65b36"
+          }
+        },
+        {
+          "file_offset": 536,
+          "end_exclusive": 696,
+          "bytes": 160,
+          "sha256": "c0947b05e3233f05bf887d7b658195243c2acf5b42abb8fce5b61c93c76694cc",
+          "snapshot": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\frozen\\original_PE_headers\\section_table.bin",
+            "bytes": 160,
+            "sha256": "c0947b05e3233f05bf887d7b658195243c2acf5b42abb8fce5b61c93c76694cc"
+          }
+        }
+      ],
+      "PE_fields": {
+        "e_lfanew": 288,
+        "machine": 332,
+        "section_count": 4,
+        "timestamp": 1245831434,
+        "optional_header_size": 224,
+        "COFF_characteristics": "0123",
+        "optional_magic": 267,
+        "ImageBase": 4194304,
+        "SectionAlignment": 4096,
+        "FileAlignment": 4096,
+        "SizeOfImage": 14872576,
+        "SizeOfHeaders": 4096
+      },
+      "containing_data_section": {
+        "index": 2,
+        "name": ".data",
+        "section_header_file_offset": 616,
+        "virtual_size": 2719452,
+        "rva": 10518528,
+        "virtual_address": 14712832,
+        "virtual_end_exclusive": 17432284,
+        "raw_size": 65536,
+        "raw_file_offset": 10518528,
+        "raw_file_end_exclusive": 10584064,
+        "raw_support_virtual_end_exclusive": 14778368,
+        "characteristics": "c0000040",
+        "contains_target_whole_virtual_span": true,
+        "section_header_hex": "2e64617461000000dc7e29000080a000000001000080a000000000000000000000000000400000c0",
+        "section_header_sha256": "334af953751a8fa47338fc18dec4ee41dc5ea2abd6463720a1fa6051b7f1cf10"
+      },
+      "target_arithmetic": {
+        "target_address": "0108fd30",
+        "target_end_exclusive": "0108fd34",
+        "target_bytes": 4,
+        "target_rva": 13172016,
+        "offset_within_section": 2653488,
+        "offset_after_raw_support": 2587952,
+        "target_within_SizeOfImage": true,
+        "target_within_section_VirtualSize": true,
+        "target_wholly_file_backed": false,
+        "target_wholly_loader_zero_fill": true,
+        "file_target_interval": null,
+        "formulas": [
+          "target_rva = target_address - ImageBase",
+          "section_delta = target_rva - section.VirtualAddress",
+          "mapped = 0 <= section_delta and section_delta + 4 <= section.VirtualSize",
+          "file_backed = section_delta + 4 <= section.SizeOfRawData",
+          "zero_fill = section_delta >= section.SizeOfRawData and section_delta + 4 <= section.VirtualSize"
+        ]
+      },
+      "inference": "Original loader initial DWORD bits are zero because the full exact target interval is inside .data VirtualSize and beyond SizeOfRawData.",
+      "current_or_pre_first_use_value_observed": false,
+      "target_raw_file_interval_exists": false,
+      "target_or_other_body_bytes_interpreted_or_retained": 0,
+      "whole_file_reads": "Two streaming SHA-256 passes only, explicitly authorized for identity. Image body was not interpreted or retained."
+    },
+    "incoming_reference_metadata": {
+      "actual_returned_rows": 2,
+      "limit": 128,
+      "facade_line_cap": 80,
+      "rows": [
+        {
+          "from": "00b452bb",
+          "function_name": "BSP_MaterialEffect_AttachInstanceGenerator",
+          "reference_type": "READ"
+        },
+        {
+          "from": "00b452c4",
+          "function_name": "BSP_MaterialEffect_AttachInstanceGenerator",
+          "reference_type": "READ_WRITE"
+        }
+      ],
+      "count_field_returned": false,
+      "truncation_field_returned": false,
+      "completeness_field_returned": false,
+      "facade_spill_marker_present": false,
+      "scope": "No additional initializer/reset/address-taking reference appeared in this returned listing. Not proof against dynamic writes, indirect references or analysis omissions."
+    }
+  },
+  "Source_audit": {
+    "translation_unit_roots": [
+      "src/native_instance_generator_owner.cpp",
+      "src/native_mesh_subset_loading.cpp",
+      "src/game_native_renderer_application.cpp",
+      "src/game_native_renderer_scalars.cpp",
+      "src/game_native_geometry_globals.cpp",
+      "src/game_native_material_process.cpp",
+      "src/game_native_shader_process.cpp",
+      "src/game_native_readonly_data.cpp",
+      "src/game_native_mutable_crt_data.cpp",
+      "src/game_native_data_bootstrap.cpp",
+      "src/game_native_vertex_declarations.cpp",
+      "src/game_native_graphics_pools.cpp",
+      "src/game_native_physical_pool.cpp",
+      "src/gui_native_geometry.cpp",
+      "src/gui_text_native_layout.cpp",
+      "src/gui_text_native_renderer.cpp",
+      "src/game_hosts.cpp"
+    ],
+    "Source_include_closure_files": 525,
+    "quoted_repository_include_edges": 1014,
+    "unresolved_quoted_includes": 0,
+    "whole_Source_and_context_files_frozen_and_replayed": 539,
+    "full_tracked_Source_census_files": 4207,
+    "exact_serial_matches": [
+      {
+        "relative": "include/bsp/native_instance_generator_owner.hpp",
+        "line": 17,
+        "text": "    volatile std::uint32_t& binding_serial_0108fd30;"
+      },
+      {
+        "relative": "src/native_instance_generator_owner.cpp",
+        "line": 232,
+        "text": "        put(a.binding, 8, c.binding_serial_0108fd30); c.binding_serial_0108fd30 = c.binding_serial_0108fd30 + 1u;"
+      }
+    ],
+    "generator_context_match_count": 44,
+    "attachment_name_match_count": 6,
+    "raw_current_snapshot_hashes_and_baseline_Git_blob_ids_retained": true,
+    "Git_blob_content_hashes_recomputed": true,
+    "EOL_only_equality_explicit": true,
+    "not_a_compiler_or_Native_write_census": true
+  },
+  "existing_owner_choices": [
+    {
+      "owner": "GameNativeRendererScalarProcess",
+      "role": "Preferred existing process-lifetime scalar owner pattern.",
+      "current_serial_member": false,
+      "initialization_and_native_operation_added_now": false,
+      "reason": "Existing renderer graphs already borrow canonical process scalar references; an appended member can provide one stable cell without renderer lifetime resets."
+    },
+    {
+      "owner": "GameNativeGeometryGlobals",
+      "role": "Corroborating process-lifetime stable-cell pattern only.",
+      "reason": "Owns separate F87574 vector; not the serial."
+    },
+    {
+      "owner": "GameNativeReadOnlyData",
+      "suitable": false,
+      "reason": "Read-only CE2000..E07B23 domain excludes0108fd30 and mutable globals."
+    },
+    {
+      "owner": "GameNativeMutableCrtData",
+      "suitable": false,
+      "reason": "Only admitted CRT pages E15000/E16000/109E000; no0108fd30 ownership or mapping."
+    }
+  ],
+  "next_Source_proposal": {
+    "packet": "cc12_instance_generator_serial_owner_source",
+    "status": "conditional_on_primary_independent_replay_and_acceptance",
+    "owned_files_proposed": [
+      "include/bsp/game_native_renderer_scalars.hpp",
+      "src/game_native_renderer_scalars.cpp",
+      "docs/CC12_INSTANCE_GENERATOR_SERIAL_OWNER_SOURCE.md",
+      "reports/cc12_instance_generator_serial_owner_source.json"
+    ],
+    "storage": "Append one private uint32_t member after existing members of GameNativeRendererScalarProcess.",
+    "accessor_proposal": "volatile std::uint32_t& instance_generator_binding_serial_0108fd30() noexcept",
+    "initialization": "Once per Source process from the header-established loader-zero preimage. No per-renderer initialization/reset.",
+    "identity": "Every later generator context borrows the same cell across application and renderer lifetimes.",
+    "layout_obligation": "Keep existing declaration order and verify all old physical offsets and ordinary function/EH effects in the Source packet.",
+    "accessor_behavior": "Return existing cell only; no increment, reset, callback, allocation, native operation or replacement provider.",
+    "no_alias": "Distinct from logical texture serial0108d6e8 and neighboring vertex-declaration/layout pools.",
+    "excluded": [
+      "generator context/application wiring",
+      "new native pool/provider",
+      "full NativeMeshLoadingContext",
+      "material/effect/cache graph",
+      "compiler frame",
+      "parser or startup activation",
+      "native cleanup/retirement",
+      "fixed-address Native mapping"
+    ],
+    "verification": "Normal MSVC Win32 build and existing configured checks; focused member-layout/full emission review. No new value-initialization-only test."
+  },
+  "later_graph_obligations": [
+    "Bind every generator context to exact shared process serial plus current renderer graphics/layout/canonical geometry/string/declaration domain.",
+    "Qualify original generator profiles and actual declaration-name data separately; do not use fallback values or fabricated providers.",
+    "Retain existing persistent acquisition/failed-operation frames and actual owner identities.",
+    "Retire generator/binding native payloads before shared application drain; process serial survives renderer/application replacement.",
+    "Keep material/compiler/sampler/full-mesh/parser activation and retirement holds separate from this one-cell owner proposal."
+  ],
+  "retained_historical_limits": {
+    "recorded_fixture": {
+      "path": "local/native_instance_generator_ck/registered/probe.cpp",
+      "sha256": "76ca3c2e84afafb162d447c6f0ff5060d648de18e319d3cbdcca88a20c31ace8",
+      "bytes": 31323
+    },
+    "exact_paths_checked": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\native_instance_generator_ck\\registered\\probe.cpp",
+        "exists": false
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_instance_generator_ck\\registered\\probe.cpp",
+        "exists": false
+      }
+    ],
+    "status": "unavailable_held",
+    "use_as_serial_preimage_proof": false,
+    "retained_data_intervals": [
+      {
+        "address": "00df7920",
+        "bytes": 44
+      },
+      {
+        "address": "00df7da0",
+        "bytes": 60
+      },
+      {
+        "address": "00df7ddc",
+        "bytes": 60
+      },
+      {
+        "address": "00df7e18",
+        "bytes": 52
+      },
+      {
+        "address": "00df8e74",
+        "bytes": 52
+      },
+      {
+        "address": "00df8ea8",
+        "bytes": 52
+      },
+      {
+        "address": "00d5f0a8",
+        "bytes": 72
+      },
+      {
+        "address": "00d61bfc",
+        "bytes": 12
+      },
+      {
+        "address": "00d61c1c",
+        "bytes": 12
+      },
+      {
+        "address": "00d62190",
+        "bytes": 12
+      },
+      {
+        "address": "00d619f8",
+        "bytes": 8
+      },
+      {
+        "address": "00d61c08",
+        "bytes": 18
+      },
+      {
+        "address": "00d61c28",
+        "bytes": 42
+      },
+      {
+        "address": "00d61c54",
+        "bytes": 8
+      },
+      {
+        "address": "00d61c5c",
+        "bytes": 9
+      }
+    ],
+    "retained_CK_data_includes_serial": false
+  },
+  "actions": {
+    "C++_files_changed": 0,
+    "CMake_or_ledger_files_changed": 0,
+    "Ghidra_mutations": 0,
+    "script_opt_in": false,
+    "unsupported_endpoint_shipped": false,
+    "builds_tests_probes_or_runtime_executed": 0,
+    "new_Native_target_data_or_callee_bytes_read": 0,
+    "new_original_PE_header_bytes_interpreted": 472,
+    "new_readonly_metadata_requests": [
+      "typed-flow exact0108fd30",
+      "failed memory-metadata exact0108fd30",
+      "xrefs exact0108fd30 limit128/lines80"
+    ],
+    "whole_original_PE_hash_streams": 2
+  },
+  "evidence": {
+    "document_snapshot": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\frozen\\final_document\\docs\\CC12_INSTANCE_GENERATOR_SERIAL_OWNER_READINESS.md",
+      "bytes": 9230,
+      "sha256": "fa225ab9e09c1b7c282cab720f5874bf1c93d9397becfe77523094a4a80543db"
+    },
+    "key_records": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\full_current_Source_closure.json",
+        "bytes": 883540,
+        "sha256": "a508f86c5f536baf8043ffad540c3e8ef82e07f933469c1f9ebf0fcb482231da"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\tracked_Source_serial_census.json",
+        "bytes": 773709,
+        "sha256": "a8afd46442f8e729f4b335d9a16afc5bfe802ce3451a3c78beb38fd9cc3cb2c4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\retained_export_freeze.json",
+        "bytes": 2916,
+        "sha256": "3eaea136193068a79f5a406babc32307188c5cec429b9663758268ec9b7d8dc5"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\retained_context_availability.json",
+        "bytes": 1711,
+        "sha256": "743bd954162276fb39a3546d2dc919d11ee507c713090dd291deefe6fb87e412"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\typed_serial_metadata.json",
+        "bytes": 5748,
+        "sha256": "3c9b4988067b26f7a4f91ace9c5f4c35312b4e2e5d40f321bc7d01b1fc074524"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\typed_serial_metadata.command.json",
+        "bytes": 1514,
+        "sha256": "e7dd3bdc9c6d2985b0bde27f808eb0407b03c37d4a7e901dc98e0089b002b874"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\block_metadata.command.json",
+        "bytes": 2534,
+        "sha256": "293ea3e7047100f77ebae85a1ab20f9b8e5abe31b2fdc20b3532956ae07a0d70"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\frozen\\Root_metadata\\block_source.json",
+        "bytes": 8814,
+        "sha256": "dfe53d4d5d9ae715aa1459ed114d63c2d91f0fe20e47a26bbf0c2b053dfb1de7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\original_pe_header_gate.json",
+        "bytes": 9702,
+        "sha256": "ee16f758e22d092ebd976e21d691b32ba83d9480f989ee13ff0e167e981baf79"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\incoming_reference_metadata.command.json",
+        "bytes": 1441,
+        "sha256": "c2b042e3f9729e7c4681bf3952ea21aef1d5714b24132210a63c5faa6e006adc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\incoming_reference_metadata.stdout.txt",
+        "bytes": 142,
+        "sha256": "d9a8f7c2c69c7609b14161118ba4ddb91cf3b28ecdcb7ffad2d5b3f1c50d90e1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\incoming_reference_metadata.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\evidence_review.json",
+        "bytes": 3137,
+        "sha256": "161b3c58db0ec501cd766953c750c585e6c8674f2ba86b196ce342008aeeffca"
+      }
+    ],
+    "immutable_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\immutable_manifest.json",
+      "bytes": 515045,
+      "sha256": "0b7724590ae3af39d7fd1e880b4a903a2465f21ed128857caa6ff4cfda34b4fc"
+    },
+    "immutable_payload_count": 1227,
+    "bundle_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\cc12_instance_generator_serial_owner_readiness.zip",
+    "bundle_receipt_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_serial_owner_readiness\\bundle_receipt.json",
+    "detached_receipt": "Post-report archive and report pins stay outside their own archive to avoid cyclic pins."
+  }
+}
