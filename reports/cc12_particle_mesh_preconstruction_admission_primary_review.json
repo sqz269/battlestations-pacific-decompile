@@ -1,0 +1,67 @@
+{
+  "schema": "bsp.cc12.particle-mesh-readiness-primary.v1",
+  "status": "dormant_closed_mesh_prepared_record_Source_composition_GO_caller_and_custodian_NO_GO",
+  "utc": "2026-10-10T23:36:19.449572+00:00",
+  "worker_commit": "2aed64d3cd4d218c6f7a85a0f0de2892f18a7ae1",
+  "reviewed_commit_paths": [
+    "docs/CC12_PARTICLE_MESH_PRECONSTRUCTION_ADMISSION_READINESS.md",
+    "reports/cc12_particle_mesh_preconstruction_admission_readiness.json"
+  ],
+  "worker_document": {
+    "path": "local/cc12_particle_mesh_readiness_primary/worker_document.md",
+    "bytes": 20006,
+    "sha256": "428cd010bb2c7b72dc6a49c05a29eea9a185cc027b21377abefe6ce50091f8cf"
+  },
+  "worker_report": {
+    "path": "local/cc12_particle_mesh_readiness_primary/worker_report.json",
+    "bytes": 3396306,
+    "sha256": "57c140300cdef304ca8f87c55bb91cbc011276f187d609bc00d33105ee610f71"
+  },
+  "copied_bundle": {
+    "path": "local/cc12_particle_mesh_readiness_primary/evidence.zip",
+    "bytes": 18477318,
+    "sha256": "e62f1d1b58813d346484486c7f9d1b8636b21278910cef5f0d8df0c6a041d11f"
+  },
+  "copied_helper": {
+    "path": "local/cc12_particle_mesh_readiness_primary/portable_replay.py",
+    "bytes": 4185,
+    "sha256": "3b5763faccbd325ab284aa82047def26535cabe1e90223987866bd283f64106b"
+  },
+  "guarded_replay": {
+    "path": "local/cc12_particle_mesh_readiness_primary/Root_guarded_replay.json",
+    "bytes": 4240,
+    "sha256": "7b12a1a313a617eb72d08dd8beb48d161197b44eab3d8f246152103dc0192a33"
+  },
+  "actual_Git": {
+    "captured_head": "0555655489fee9c03b94bdadb0a0637e21ff4a3a",
+    "Source_rows": 4228,
+    "all_rows": 4255,
+    "objects": 11,
+    "whole_tree_exact": true,
+    "worker_commit_Source_roots_exact": true,
+    "current_Root_Source_differences": [],
+    "added_Source_paths": []
+  },
+  "finite_replay_counts": {
+    "corpus": 4211,
+    "queries": 33,
+    "excerpts": 46,
+    "ordered_checks": 20
+  },
+  "accepted_contract": [
+    "borrow real raw C0h slot, genuine environment and same canonical registry",
+    "prepare exact opaque key and stable host record before Native constructor; no early +04 read",
+    "one noexcept construct_and_publish transition; existing B73D70, inline companion, exact admitted publish, same return",
+    "valid transition adds no host allocation, Native callback or retain; mutex/contract exceptions terminate",
+    "prepared cancellation touches only host admission; caller owns raw slot return",
+    "terminal unbind uses saved opaque key after slot return; no Native reread; disposed only at proven quiescence"
+  ],
+  "excluded": [
+    "particle caller/raw allocation window",
+    "persistent custodian and raw slot reuse synchronization",
+    "full resource delegate, material/section/stream failure custody",
+    "Native ABI/FH3 equivalence",
+    "runtime startup/gameplay"
+  ],
+  "work_performed": "Root copied ZIP-only guarded replay plus actual Git/Source/document checks. No Native/GPR, C++, build, tests or runtime work."
+}
