@@ -5,6 +5,10 @@ void* volatile& GameNativeStringProcess::pending_registry_00f878cc() noexcept {
     return pending_registry_00f878cc_;
 }
 
+void* volatile& GameNativeStringProcess::allocation_stats_0109cefc() noexcept {
+    return allocation_stats_0109cefc_;
+}
+
 const char* GameNativeStringProcess::property_empty_00e177e4() const noexcept {
     return &property_empty_00e177e4_;
 }

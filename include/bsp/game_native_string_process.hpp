@@ -14,6 +14,8 @@ public:
     // Actual pending-registry publication shares this retained process lifetime.
     // Accessing the cell does not construct or register a registry owner.
     void* volatile& pending_registry_00f878cc() noexcept;
+    // Permanent allocation-statistics publication; cell access creates no owner.
+    void* volatile& allocation_stats_0109cefc() noexcept;
     NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }
     volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }
     NativeStringRawPoolContext& raw_context() noexcept { return raw_; }
@@ -36,6 +38,7 @@ private:
     const char query_empty_00e17654_{};
     // Append after every established authority; do not reuse another raw8 owner.
     void* volatile pending_registry_00f878cc_{};
+    void* volatile allocation_stats_0109cefc_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor
