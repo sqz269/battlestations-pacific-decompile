@@ -1,4 +1,5 @@
 #include "bsp/game_native_type_storage.hpp"
+#include "bsp/native_fallback_resource_type_initializer.hpp"
 
 #include <stdexcept>
 
@@ -23,7 +24,8 @@ GameNativeTypeStorage::GameNativeTypeStorage() noexcept
       model_types_{model_guard_01090030_, model_01090034_},
       model_base_types_{model_base_guard_01090031_, model_base_01090044_[0],
           model_base_01090044_[1], model_base_01090044_[2], model_base_01090044_[3]},
-      group_types_{group_guard_010902e1_, group_0109032c_} {}
+      group_types_{group_guard_010902e1_, group_0109032c_},
+      fallback_resource_types_{fallback_guard_0109020d_, fallback_0109021c_} {}
 
 ModelTypeBootstrapStorage& GameNativeTypeStorage::model_types() noexcept {
     return model_types_;
@@ -35,6 +37,23 @@ ModelBaseTypeStorage& GameNativeTypeStorage::model_base_types() noexcept {
 
 NativeGroupTypeStorage& GameNativeTypeStorage::group_types() noexcept {
     return group_types_;
+}
+
+const GameNativeFallbackResourceTypeStorage&
+GameNativeTypeStorage::fallback_resource_types() const noexcept {
+    return fallback_resource_types_;
+}
+
+void GameNativeTypeStorage::initialize_fallback_00b86a00(
+    TypeIdCounterLifetime& existing_counter, LightTypeBootstrap& common_root_bootstrap) {
+    require_common_bootstrap(common_root_bootstrap);
+    NativeMeshResourceTypeIds scene(existing_counter, common_root_bootstrap,
+        mesh_resource_types_);
+    const NativeFallbackResourceTypeInitializerContext context{
+        fallback_resource_types_.guard_0109020d,
+        fallback_resource_types_.resource_0109021c,
+        0x00d631f4u, mesh_resource_types_.scene_01090210, scene, existing_counter};
+    initialize_native_fallback_resource_type_00b86a00(context);
 }
 
 void GameNativeTypeStorage::require_common_bootstrap(

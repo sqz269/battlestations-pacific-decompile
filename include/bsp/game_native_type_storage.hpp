@@ -13,6 +13,13 @@
 
 namespace bsp::game {
 
+// Borrow the actual retained fallback guard and four descriptor words. The
+// array reference fixes the extent without copying IDs or rebinding storage.
+struct GameNativeFallbackResourceTypeStorage {
+    volatile std::uint8_t& guard_0109020d;
+    volatile std::uint32_t (&resource_0109021c)[4]; // own, Scene, root, name
+};
+
 // One application's process-owned type cells. The host must retain this object
 // through the shared singleton drain and any later native type consumers.
 // The counter, its publication, and the common bootstrap are borrowed only by
@@ -38,6 +45,18 @@ public:
     ModelTypeBootstrapStorage& model_types() noexcept;
     ModelBaseTypeStorage& model_base_types() noexcept;
     NativeGroupTypeStorage& group_types() noexcept;
+    const GameNativeFallbackResourceTypeStorage& fallback_resource_types() const noexcept;
+
+    // Explicit API only: this is not called by initialize_resource_types and
+    // assigns no original CRT position or absolute numeric type IDs. The caller
+    // supplies the SAME counter already borrowed by common_root_bootstrap;
+    // the existing storage-identity check cannot prove its private counter.
+    // Bind the canonical owner Scene and delegate the exact guard/name, Scene,
+    // parent-load/store, counter-increment and own-ID publication schedule.
+    // A dependency failure leaves the guard and earlier stores sticky. Keep
+    // this owner and the borrowed domain live through all uses/shared drain.
+    void initialize_fallback_00b86a00(TypeIdCounterLifetime& existing_counter,
+        LightTypeBootstrap& common_root_bootstrap);
 
     // Existing recovered relative CRT order: CCEC00/CCF740/CCF980 selectors, then
     // CD7D80 camera, CD7E60 model, CD7EB0 model-base, CD82F0/CD8340 extra
@@ -117,6 +136,12 @@ private:
     volatile std::uint8_t group_guard_010902e1_{};
     volatile NativeGroupTypeDescriptor group_0109032c_{};
     NativeGroupTypeStorage group_types_;
+
+    // Append after every existing field to preserve their owner offsets.
+    // Native address roles only; no fixed-address backing or startup binding.
+    volatile std::uint8_t fallback_guard_0109020d_{};
+    volatile std::uint32_t fallback_0109021c_[4]{};
+    GameNativeFallbackResourceTypeStorage fallback_resource_types_;
 };
 
 } // namespace bsp::game
