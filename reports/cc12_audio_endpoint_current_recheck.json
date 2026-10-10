@@ -1,0 +1,106 @@
+{
+  "schema": "cc12-current-audio-endpoint-recheck-v1",
+  "packet": "cc12_audio_endpoint_current_recheck",
+  "observed_utc": "2026-10-10T03:36:52.3564957Z",
+  "decision": "Current same-Console audio prerequisite still absent; reconstruction continues independently.",
+  "scope": "Read-only Windows MMDevice query; no FMOD SDK, startup or gameplay execution in this recheck.",
+  "current_MMDevice": {
+    "observed_utc": "2026-10-10T03:36:52.3564957Z",
+    "pid": 27380,
+    "session_id": 1,
+    "session_name": "Console",
+    "process_pointer_bytes": 8,
+    "query": "MMDeviceEnumerator: eRender DEVICE_STATE_ACTIVE enumeration/count; default eConsole/eMultimedia/eCommunications; ID/state only",
+    "read_only": true,
+    "native_result": {
+      "EnumeratorCreateHResult": "00000000",
+      "ActiveRenderEnumHResult": "00000000",
+      "ActiveRenderGetCountHResult": "00000000",
+      "ActiveRenderCount": 0,
+      "Active": [],
+      "Defaults": [
+        {
+          "Role": "console",
+          "HResult": "80070490",
+          "EndpointReturned": false,
+          "EndpointId": null,
+          "GetIdHResult": null,
+          "State": 0,
+          "GetStateHResult": null
+        },
+        {
+          "Role": "multimedia",
+          "HResult": "80070490",
+          "EndpointReturned": false,
+          "EndpointId": null,
+          "GetIdHResult": null,
+          "State": 0,
+          "GetStateHResult": null
+        },
+        {
+          "Role": "communications",
+          "HResult": "80070490",
+          "EndpointReturned": false,
+          "EndpointId": null,
+          "GetIdHResult": null,
+          "State": 0,
+          "GetStateHResult": null
+        }
+      ]
+    }
+  },
+  "interface_source": "Installed Windows SDK10.0.26100.0 mmdeviceapi.h; GUIDs and method order/signatures inspected before Add-Type COM query.",
+  "complete_input_and_raw_output_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_audio_endpoint_recheck.ps1",
+      "bytes": 5389,
+      "sha256": "9fb67969c707994faaeff22a214b8bf42ad85341c575da275e7727366ce3945c",
+      "retained_path": "local/cc12_audio_endpoint_current_recheck/frozen/cc12_audio_endpoint_recheck.ps1"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\mmdeviceapi.h",
+      "bytes": 55214,
+      "sha256": "3e0b02d819dd7ce0cb1b5e0721c7370eb1c42f21aa1d4b2747a97eeb22aa5ede",
+      "retained_path": "local/cc12_audio_endpoint_current_recheck/frozen/mmdeviceapi.h"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_audio_endpoint_current_recheck\\result.json",
+      "bytes": 2572,
+      "sha256": "3d66146a97803679c7e43e7d75636fc463950641823647b20a0dd9d68b44f85f",
+      "retained_path": "local/cc12_audio_endpoint_current_recheck/frozen/result.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_audio_endpoint_current_recheck\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_path": "local/cc12_audio_endpoint_current_recheck/frozen/stderr.txt"
+    }
+  ],
+  "historical_FMOD_failure_report": {
+    "path": "reports/cc12_fmod_current_startup_failure.json",
+    "bytes": 40454,
+    "sha256": "706851ea77a46ffb35baf8896af39288b019d7dd888fa2f16e231c307609edce",
+    "retained_path": "local/cc12_audio_endpoint_current_recheck/historical_fmod_failure_report.json"
+  },
+  "current_query_is_64_bit": true,
+  "current_32_bit_FMOD_driver_or_init_result_not_retested": true,
+  "no_default_ENDPOINT_returned": true,
+  "active_render_collection_count": 0,
+  "HRESULT_scope": "Enum/count succeeded; each default request returned80070490 without an endpoint. This is endpoint API evidence, not a PnP/registry inference or proof that endpoint absence alone caused historical FMOD61.",
+  "unchanged_state": {
+    "audio_device_or_default_selection": true,
+    "services_drivers_registry": true,
+    "FMOD_config_or_output_mode": true,
+    "original_game_installation_or_GPR": true,
+    "CXX_CMake_build_and_tests": true
+  },
+  "next_required_runtime_prerequisite": "An actual active playback endpoint/default visible in the same Console session; then repeat endpoint and genuine32bit FMOD/control startup checks before claiming resolution.",
+  "credit": {
+    "current_endpoint_API_observation": true,
+    "startup_resolved": false,
+    "Present": false,
+    "gameplay": false,
+    "new_game_execution": false,
+    "new_native_analysis_or_reconstruction": false
+  }
+}
