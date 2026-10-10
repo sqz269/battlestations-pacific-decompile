@@ -1,0 +1,1809 @@
+{
+  "schema": "bsp.cc12.options_sound_copy_abi_review.v1",
+  "packet": "cc12_options_sound_copy_abi_review",
+  "receipt_utc": "2026-10-10T12:07:35.577884+00:00",
+  "status": "Established an indirect persistent-byte writer: 005F65C0 passes screen+D8 as source and F88980 as destination to005F52C0, whose5315 store writes F889A4 from screen+FC. No zero provenance or pre-startup route established.",
+  "scope": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+    "accepted_base_commit": "1a53da3572c0e52c907de321e4f854034dfbb42b",
+    "leased_native_functions": [
+      "005F6030",
+      "005F65C0",
+      "005F52C0"
+    ],
+    "lease_expansion": "Primary authorized005F52C0 after caller operands exposed the unresolved copy helper; lease renewed before its first body query.",
+    "owned_outputs": [
+      "docs/CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+      "reports/cc12_options_sound_copy_abi_review.json"
+    ],
+    "helper_body_reviewed_in_full": true,
+    "large_function_scope": "005F65C0 bounded receiver/copy head and final global-receiver tail only; unrelated middle not reconstructed.",
+    "unowned_admitted_evidence": "008D7710 initializer, CRT CD2D80, startup73DAEE and SoundEnabled tokenizer facts are admitted only through frozen accepted receipts. Their bodies were not newly queried or reinterpreted.",
+    "other_worker_addresses_untouched": [
+      "008D6DC0",
+      "008D79A0"
+    ],
+    "caller_queries": "Names/entry addresses only for owned functions; callers bodies not read."
+  },
+  "git_preimage": {
+    "HEAD": "1a53da3572c0e52c907de321e4f854034dfbb42b",
+    "branch": "agent/cc12_options_sound_copy_abi",
+    "status": "",
+    "working_tree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi"
+  },
+  "complete_evidence_freeze": {
+    "schema": "bsp.cc12.options_sound_copy_abi.freeze.v1",
+    "utc": "2026-10-10T12:04:06.125491+00:00",
+    "git": {
+      "HEAD": "1a53da3572c0e52c907de321e4f854034dfbb42b",
+      "branch": "agent/cc12_options_sound_copy_abi",
+      "status": "",
+      "working_tree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi"
+    },
+    "sources": [
+      {
+        "source_path": "config/target.json",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/366e5a64ac945473_work_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/366e5a64ac945473_git_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/bsp.py",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/09de2b8916a4af98_work_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/09de2b8916a4af98_git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/ghidra_export.py",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/0367957cab3518c6_work_tools_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/0367957cab3518c6_git_tools_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/workspace.py",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/611a2f0613f21724_work_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/611a2f0613f21724_git_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/options_menu_screens.cpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/3090a9d2bde1e7ec_work_src_options_menu_screens.cpp",
+          "bytes": 13334,
+          "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/3090a9d2bde1e7ec_git_src_options_menu_screens.cpp",
+          "bytes": 13334,
+          "sha256": "3090a9d2bde1e7ec43de9b4891aa1a48fe277bb8354bc1360c06da3aa74d5e5a"
+        },
+        "git_blob": "65354763489be4c850f1601694efa9a833261c44",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/options_menu_screens.hpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/c63a55b98ee3cdff_work_include_bsp_options_menu_screens.hpp",
+          "bytes": 24760,
+          "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/c63a55b98ee3cdff_git_include_bsp_options_menu_screens.hpp",
+          "bytes": 24760,
+          "sha256": "c63a55b98ee3cdff721d6e7a7f96f10c622d6c9591297e73a3d286f827172e8b"
+        },
+        "git_blob": "dfbefd762bcf33070446997c94268ea6588c69c8",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/frontend_managers.cpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/dd1545809b0689ce_work_src_frontend_managers.cpp",
+          "bytes": 23865,
+          "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/dd1545809b0689ce_git_src_frontend_managers.cpp",
+          "bytes": 23865,
+          "sha256": "dd1545809b0689ce18818bac951c7cc31ae0e9e8dc75b9c2f10dc4c47acb5461"
+        },
+        "git_blob": "f974df50bc6e81d406e202734190c391c668a06d",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/frontend_managers.hpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/db1fb36906e6bef0_work_include_bsp_frontend_managers.hpp",
+          "bytes": 22929,
+          "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/db1fb36906e6bef0_git_include_bsp_frontend_managers.hpp",
+          "bytes": 22929,
+          "sha256": "db1fb36906e6bef0b70717ae2d9b7907d61cc014bb60555512382a46719f189a"
+        },
+        "git_blob": "d6132c8834c5bfd1a9c2e58d2259d23fc74b2570",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/game_settings.cpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/fc9ab534f827975f_work_src_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/fc9ab534f827975f_git_src_game_settings.cpp",
+          "bytes": 20468,
+          "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab"
+        },
+        "git_blob": "7c4a3f3ea41cf80dccee3057279e915bd8943f55",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/game_settings.hpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/8b1d37ce0ccdcde0_work_include_bsp_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/8b1d37ce0ccdcde0_git_include_bsp_game_settings.hpp",
+          "bytes": 18657,
+          "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+        },
+        "git_blob": "e63f7e85a951ee4df192f3354595fcbccff3132a",
+        "LF_equal": true
+      },
+      {
+        "source_path": "src/native_game_settings_owner.cpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/251c0a349760dd21_work_src_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/251c0a349760dd21_git_src_native_game_settings_owner.cpp",
+          "bytes": 7785,
+          "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3"
+        },
+        "git_blob": "50c3a642be3204956ea8104b16e331005840d3c4",
+        "LF_equal": true
+      },
+      {
+        "source_path": "include/bsp/native_game_settings_owner.hpp",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/3c9e009c65606e35_work_include_bsp_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/3c9e009c65606e35_git_include_bsp_native_game_settings_owner.hpp",
+          "bytes": 5980,
+          "sha256": "3c9e009c65606e35ac87801a4f5f65ab71ca9c5440009f4352d8144d622a68ee"
+        },
+        "git_blob": "554bc4169b4f8089ba57e2084b83a1ba7603cb6e",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/OPTIONS_MENU_SCREENS.md",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/d01c8c84a07118bb_work_docs_OPTIONS_MENU_SCREENS.md",
+          "bytes": 29920,
+          "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/d01c8c84a07118bb_git_docs_OPTIONS_MENU_SCREENS.md",
+          "bytes": 29920,
+          "sha256": "d01c8c84a07118bb3f759b05e1deaef9435533201369e3dc6fd2a28fc9944966"
+        },
+        "git_blob": "7210b6cf5ad015877b2dad69f7a18b4efabc28fa",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/8f6d0b3187db4c8a_work_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+          "bytes": 4172,
+          "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/8f6d0b3187db4c8a_git_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW.md",
+          "bytes": 4172,
+          "sha256": "8f6d0b3187db4c8a5a26e006ea09d9249ff905a84b4d4b530436c7caf4cacd36"
+        },
+        "git_blob": "13de969cb137890330c05957a5a3bd925eb45200",
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/51fe0ce5d7a0713e_work_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+          "bytes": 1711,
+          "sha256": "51fe0ce5d7a0713ef1a58ddefd535778a1e3786d9dea9977c46bfb2bf2fd6a12"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/51fe0ce5d7a0713e_git_docs_CC12_NATIVE_SOUND_STATE_WRITER_REVIEW_PRIMARY_REVIEW.md",
+          "bytes": 1711,
+          "sha256": "51fe0ce5d7a0713ef1a58ddefd535778a1e3786d9dea9977c46bfb2bf2fd6a12"
+        },
+        "git_blob": "8a1c1648621102dd89ec592a61d14a7dcbdc22aa",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_native_sound_state_writer_review.json",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/b5b740315878c3b5_work_reports_cc12_native_sound_state_writer_review.json",
+          "bytes": 157428,
+          "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/b5b740315878c3b5_git_reports_cc12_native_sound_state_writer_review.json",
+          "bytes": 157428,
+          "sha256": "b5b740315878c3b5ee501bb5797e5b95ba25bef18f21b1759597573af7f02fec"
+        },
+        "git_blob": "16d2760e51120da6be5b4386485ee9124692b8b0",
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_native_sound_state_writer_review_primary_review.json",
+        "working": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/b9fd448c64a8bb36_work_reports_cc12_native_sound_state_writer_review_primary_review.json",
+          "bytes": 114892,
+          "sha256": "b9fd448c64a8bb36c55edf0f482e128766f2a5dec0e8e4feaf81ea4dd72847c6"
+        },
+        "git_HEAD": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/b9fd448c64a8bb36_git_reports_cc12_native_sound_state_writer_review_primary_review.json",
+          "bytes": 114892,
+          "sha256": "b9fd448c64a8bb36c55edf0f482e128766f2a5dec0e8e4feaf81ea4dd72847c6"
+        },
+        "git_blob": "6c016c5d808b49fb52b918c4103b5b8e9195f775",
+        "LF_equal": true
+      }
+    ],
+    "command_captures_and_specs": [
+      {
+        "file": "live_initial.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/7c6b7551171a745f_live_initial.json",
+          "bytes": 252,
+          "sha256": "7c6b7551171a745f8d7b4f737f503c8b5f765efafc6623b0c83eb73edb2c0dc9"
+        }
+      },
+      {
+        "file": "live_initial_capture.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/369d12c5cf7ecf83_live_initial_capture.json",
+          "bytes": 9560,
+          "sha256": "369d12c5cf7ecf83e0c0f2203eef083281440c5d96577a69d4b2bdad75606d5d"
+        }
+      },
+      {
+        "file": "live_listing.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/a7be114a9697a201_live_listing.json",
+          "bytes": 615,
+          "sha256": "a7be114a9697a201cca7a483f929133b0c6bfde861122b356722a2c4fa3019ea"
+        }
+      },
+      {
+        "file": "live_listing_capture.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/83bbc77009e098b2_live_listing_capture.json",
+          "bytes": 11386,
+          "sha256": "83bbc77009e098b29483c7bd3b8d5583f2c3846242873c3f322ff5943c10add8"
+        }
+      },
+      {
+        "file": "live_remaining.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/a590c2a737a6a8dd_live_remaining.json",
+          "bytes": 1078,
+          "sha256": "a590c2a737a6a8dd58f8dc534ac6b788e7d399113755ec678496fca10b6e1c17"
+        }
+      },
+      {
+        "file": "live_remaining_capture.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/4ce1801171391b5d_live_remaining_capture.json",
+          "bytes": 14560,
+          "sha256": "4ce1801171391b5de1aa84cfb7d22e61bcc48e5248152f447b265aa416139a15"
+        }
+      },
+      {
+        "file": "saved_windows.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/215b2ca1c735b1ab_saved_windows.json",
+          "bytes": 579,
+          "sha256": "215b2ca1c735b1ab2f08c66aec007acf057494e44f2458ec89f4bb95da611a67"
+        }
+      },
+      {
+        "file": "saved_windows_capture.json",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/fc6638c8c3b5fe4f_saved_windows_capture.json",
+          "bytes": 12971,
+          "sha256": "fc6638c8c3b5fe4ff3dce9f9c015c29c9dfde9054e4ab88160f39c3cc908ee17"
+        }
+      }
+    ],
+    "scripts": [
+      {
+        "file": "capture.py",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/a3a7e2f3944d42cb_capture.py",
+          "bytes": 1303,
+          "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+        }
+      },
+      {
+        "file": "freeze.py",
+        "pin": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/6a89bd44d0f89410_freeze.py",
+          "bytes": 4018,
+          "sha256": "6a89bd44d0f894106c42454e71e18be334569829687e34d5e9b90746650f4b72"
+        }
+      }
+    ],
+    "original_PE": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": 332,
+      "image_base": "00400000",
+      "timestamp": 1245831434,
+      "sections": [
+        {
+          "name": ".text",
+          "virtual_size": 9306422,
+          "rva": 4096,
+          "raw_size": 9310208,
+          "raw_offset": 4096
+        },
+        {
+          "name": ".rdata",
+          "virtual_size": 1202980,
+          "rva": 9314304,
+          "raw_size": 1204224,
+          "raw_offset": 9314304
+        },
+        {
+          "name": ".data",
+          "virtual_size": 2719452,
+          "rva": 10518528,
+          "raw_size": 65536,
+          "raw_offset": 10518528
+        },
+        {
+          "name": ".rsrc",
+          "virtual_size": 1630400,
+          "rva": 13238272,
+          "raw_size": 1634304,
+          "raw_offset": 10584064
+        }
+      ],
+      "windows": [
+        {
+          "label": "constructor",
+          "start_va": "005F6030",
+          "length": 185,
+          "file_offset": 2056240,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_sound_copy_abi_review/frozen/c5e36a8a1a21de52_constructor.bin",
+            "bytes": 185,
+            "sha256": "c5e36a8a1a21de5243aaca6503f2cc3ade61666c4a77b96ab4107abb56076e7d"
+          },
+          "hex": "6aff68df61c70064a10000000050648925000000005153568bf189742408e82d11f0ff33db895c2414c74608fcb0ce00c7460c10b1ce00c7067439cf00c746086039cf00c7460c4039cf00899ec4000000899ecc000000899ed0000000899ed40000008d8ed8000000c644241402e86d162e008d8e94010000c644241403e85d162e006a0a889e64020000889e65020000c746700a000000e84d3e60008b4c241089866c02000083c4048bc65e5b64890d0000000083c410c3"
+        },
+        {
+          "label": "commit_head",
+          "start_va": "005F65C0",
+          "length": 124,
+          "file_offset": 2057664,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_sound_copy_abi_review/frozen/1423e4d28f887bbe_commit_head.bin",
+            "bytes": 124,
+            "sha256": "1423e4d28f887bbe250264a9d86e6be49e08d4f305684dfed09f31db05558640"
+          },
+          "hex": "6aff68a663c70064a10000000050b8f84c000064892500000000e8312e60005355568be9578db5d8000000688089f8008bcee819dc2d008844241fa1f889f8003b85500100000fb685880100000f95c33805308af800740b50b98089f800e89dde2d0056b98089f800e892ecffff8b0da888e10083c13ce8d4230a00"
+        },
+        {
+          "label": "commit_tail",
+          "start_va": "005F6E31",
+          "length": 176,
+          "file_offset": 2059825,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_sound_copy_abi_review/frozen/d90b2ac2468a4069_commit_tail.bin",
+            "bytes": 176,
+            "sha256": "d90b2ac2468a4069a1a8a60f739475ad3130f02eafd1f96a850effb33e26a110"
+          },
+          "hex": "33f66a01e8d6a8ecff8bc8e88f544500807c241f00b890005f007505b8c053bd0050b98089f800e8a3fd2d0080bd5202000000745156b9248af800e89f02e3ffe83aa4ecff8bc8e8f3a04a008b8d880000008b118b426056ffd08b8d88000000c64177018b8d880000008b118b423456ffd08b0da888e100e8e210eeffc6855202000000eb11b98089f800e88fec2d008bcde828e6ffff8b8c24084d00005f5e5d64890d000000005b81c4044d0000c3"
+        },
+        {
+          "label": "copy_helper",
+          "start_va": "005F52C0",
+          "length": 554,
+          "file_offset": 2052800,
+          "section": ".text",
+          "bytes_pin": {
+            "path": "local/cc12_options_sound_copy_abi_review/frozen/35b1e6df84ef73d8_copy_helper.bin",
+            "bytes": 554,
+            "sha256": "35b1e6df84ef73d8268530a293c46630f2a748aca9272427e788084765ea2195"
+          },
+          "hex": "53568bf1578b7c24108b47048946040fb64f08884e080fb657098856098b470c89460c0fb64f10884e108b57148956148b47188946180fb64f1c884e1c0fb6571d88561d0fb6471e88461ed94720d95e200fb64f24884e24d94728d95e28d9472cd95e2cd94730d95e30d94734d95e340fb657388856388b473c89463c0fb64f40884e400fb657418856410fb647428846420fb64f43884e430fb657448856440fb647458846450fb64f46884e460fb657478856470fb647488846480fb64f49884e490fb6574a88564a0fb6474b88464b0fb64f4c884e4c8b57508956508b47548946548b4f58894e588b575c89565c0fb64760884660d94764d95e648b4f68894e680fb6576c88566c8b47708946700fb64f74884e748b57788956780fb6477c88467cd98780000000d99e800000000fb68f84000000888e840000000fb697850000008896850000000fb687860000008886860000008b8f88000000898e880000000fb6978c00000088968c0000000fb6878d00000088868d0000008b8f90000000898e900000000fb697940000008896940000000fb687950000008d8f98000000518d8e98000000888695000000e8dbe9f4ff8d97a4000000528d8ea4000000e8c9e9f4ff0fb687b00000008886b00000000fb68fb1000000888eb10000000fb697b20000008d9fb40000008dbeb40000003bfb8896b200000074248b036a01508bcfe87688e2ff833b0074138b0f8b53048b4704515250e8a121600083c40c5f8bc65e5bc20400"
+        }
+      ]
+    }
+  },
+  "freeze_capture_pin": {
+    "path": "local/cc12_options_sound_copy_abi_review/freeze_capture.json",
+    "bytes": 19985,
+    "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+  },
+  "command_capture_records": {
+    "live_initial_capture.json": [
+      {
+        "label": "owned_prototypes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "005F6030",
+          "005F65C0",
+          "005F52C0",
+          "--lines",
+          "45"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:01:39.567368+00:00",
+        "finish_utc": "2026-10-10T12:01:39.991462+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "Function: BSP_OptionsScreen_Construct at 005f6030\r\nSignature: undefined BSP_OptionsScreen_Construct(void)\r\nEntry: 005f6030\r\nBody: 005f6030 - 005f60e8\r\n{\r\n \"function_name\": \"BSP_OptionsScreen_Construct\",\r\n \"address\": \"005f6030\",\r\n \"program\": \"battlestationspacific.exe\",\r\n \"instruction_count\": 42,\r\n \"basic_block_count\": 1,\r\n \"edge_count\": 0,\r\n \"call_count\": 4,\r\n \"string_ref_count\": 0,\r\n \"param_count\": 0,\r\n \"cyclomatic_complexity\": 1,\r\n \"prologue_stripped\": false,\r\n \"epilogue_stripped\": false,\r\n \"callee_names\": [\r\n  \"BSP_FrontEndScreen_Construct\",\r\n  \"BSP_GameSettings_Construct\",\r\n  \"_malloc\"\r\n ],\r\n \"string_constants\": [],\r\n \"immediate_values\": [\r\n  -1,\r\n  16,\r\n  2,\r\n  3,\r\n  4,\r\n  10\r\n ],\r\n \"basic_block_hashes\": [\r\n  \"bec45816ba8db1f68e7c63826c689836858e2d145dd4ae61af84f2dfd0a8cad3\"\r\n ]\r\n}\r\nFunction: FUN_005f65c0 at 005f65c0\r\nSignature: undefined FUN_005f65c0(void)\r\nEntry: 005f65c0\r\nBody: 005f65c0 - 005f6ee0\r\n{\r\n \"function_name\": \"FUN_005f65c0\",\r\n \"address\": \"005f65c0\",\r\n \"program\": \"battlestationspacific.exe\",\r\n \"instruction_count\": 570,\r\n \"basic_block_count\": 39,\r\n \"edge_count\": 58,\r\n \"call_count\": 115,\r\n \"string_ref_count\": 11,\r\n \"param_count\": 0,\r\n \"cyclomatic_complexity\": 21,\r\n \"prologue_stripped\": false,\r\n \"epilogue_stripped\": false,\r\n \"callee_names\": [\r\n  \"FUN_005efdc0\",\r\n  \"FUN_00a3eb00\",\r\n  \"FUN_0098c820\",\r\n  \"BSP_GuiManager_ResetScreens\",\r\n  \"FUN_005effa0\",\r\n  \"FUN_00992830\",\r\n  \"BSP_GuiManager_GetOrCreate\",\r\n  \"BSP_XenonSystemManager_HasSelectedUser\",\r\n  \"BSP_NativeString_FromInt\",\r\n  \"BSP_HardwareInfo_SoundDeviceName\",\r\n  \"BSP_HardwareInfo_CpuSpeed\",\r\n  \"METRICS_wrapper_00753570\",\r\n  \"BSP_Settings_VideoModeDiffers\",\r\n  \"BSP_MediaManager_GetOrCreate\",\r\n  \"BSP_NativeString_Assign\",\r\n  \"FUN_005f6530\",\r\n  \"BSP_NativeString_Resize\",\r\n  \"_sprintf\",\r\n  \"BSP_InputConfiguration_Load\",\r\n  \"TRIV_body_00a4c2d0\",\r\n  \"_free\",\r\n  \"BSP_HardwareInfo_GpuDeviceId\",\r\n  \"FUN_005f1750\",\r\n  \"_memcpy\",\r\n  \"BSP_SizedStoragePool_GetSingleton\",\r\n  \"BSP_Game_RequestReturnToTitle\",\r\n  \"FUN_005f52c0\",\r\n  \"BSP_HardwareInfo_MemorySize\",\r\n  \"FUN_005f5f80\",\r\n  \"BSP_NativeString_Concat\",\r\n  \"BSP_NativeString_ConcatInt\",\r\n... 107 more lines of 152 (use --start 45 or --lines)\r\nFunction: FUN_005f52c0 at 005f52c0\r\nSignature: undefined FUN_005f52c0(void)\r\nEntry: 005f52c0\r\nBody: 005f52c0 - 005f54e9\r\n{\r\n \"function_name\": \"FUN_005f52c0\",\r\n \"address\": \"005f52c0\",\r\n \"program\": \"battlestationspacific.exe\",\r\n \"instruction_count\": 149,\r\n \"basic_block_count\": 4,\r\n \"edge_count\": 5,\r\n \"call_count\": 4,\r\n \"string_ref_count\": 0,\r\n \"param_count\": 0,\r\n \"cyclomatic_complexity\": 3,\r\n \"prologue_stripped\": false,\r\n \"epilogue_stripped\": false,\r\n \"callee_names\": [\r\n  \"BSP_NativeStringVector_CopyContents\",\r\n  \"_memcpy\",\r\n  \"BSP_NativeString_Resize\"\r\n ],\r\n \"string_constants\": [],\r\n \"immediate_values\": [\r\n  1,\r\n  4,\r\n  12\r\n ],\r\n \"basic_block_hashes\": [\r\n  \"0478c51b8f597a2b175d750f0291be212bd39254e65f50a0f49214f8ca4e6151\",\r\n  \"b4720f6e1c05491ceeb03a2483c2f6e06263e5f36f15b7ee2c2e3b6d8afabc81\",\r\n  \"45f08f4083dae3b360049e6435685628302e95c1cecb2ef5c9e6ad98dd2b8f23\",\r\n  \"a660a05e0e58748fc61c9f2952bd4437d7d874c63cb0a9ea2f96efa52203dfc3\"\r\n ]\r\n}\r\n",
+        "stderr": "",
+        "stdout_sha256": "6d5437ea70eef9bee83edd9889eb187073c3ed31bfcb9cb872262235a290a87a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy_helper_decompile",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "decompile",
+          "005F52C0",
+          "--lines",
+          "90"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:01:39.991561+00:00",
+        "finish_utc": "2026-10-10T12:01:40.636283+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "\r\nint __thiscall FUN_005f52c0(int param_1,int param_2)\r\n\r\n{\r\n  uint *puVar1;\r\n  uint *this;\r\n  \r\n  *(undefined4 *)(param_1 + 4) = *(undefined4 *)(param_2 + 4);\r\n  *(undefined1 *)(param_1 + 8) = *(undefined1 *)(param_2 + 8);\r\n  *(undefined1 *)(param_1 + 9) = *(undefined1 *)(param_2 + 9);\r\n  *(undefined4 *)(param_1 + 0xc) = *(undefined4 *)(param_2 + 0xc);\r\n  *(undefined1 *)(param_1 + 0x10) = *(undefined1 *)(param_2 + 0x10);\r\n  *(undefined4 *)(param_1 + 0x14) = *(undefined4 *)(param_2 + 0x14);\r\n  *(undefined4 *)(param_1 + 0x18) = *(undefined4 *)(param_2 + 0x18);\r\n  *(undefined1 *)(param_1 + 0x1c) = *(undefined1 *)(param_2 + 0x1c);\r\n  *(undefined1 *)(param_1 + 0x1d) = *(undefined1 *)(param_2 + 0x1d);\r\n  *(undefined1 *)(param_1 + 0x1e) = *(undefined1 *)(param_2 + 0x1e);\r\n  *(undefined4 *)(param_1 + 0x20) = *(undefined4 *)(param_2 + 0x20);\r\n  *(undefined1 *)(param_1 + 0x24) = *(undefined1 *)(param_2 + 0x24);\r\n  *(undefined4 *)(param_1 + 0x28) = *(undefined4 *)(param_2 + 0x28);\r\n  *(undefined4 *)(param_1 + 0x2c) = *(undefined4 *)(param_2 + 0x2c);\r\n  *(undefined4 *)(param_1 + 0x30) = *(undefined4 *)(param_2 + 0x30);\r\n  *(undefined4 *)(param_1 + 0x34) = *(undefined4 *)(param_2 + 0x34);\r\n  *(undefined1 *)(param_1 + 0x38) = *(undefined1 *)(param_2 + 0x38);\r\n  *(undefined4 *)(param_1 + 0x3c) = *(undefined4 *)(param_2 + 0x3c);\r\n  *(undefined1 *)(param_1 + 0x40) = *(undefined1 *)(param_2 + 0x40);\r\n  *(undefined1 *)(param_1 + 0x41) = *(undefined1 *)(param_2 + 0x41);\r\n  *(undefined1 *)(param_1 + 0x42) = *(undefined1 *)(param_2 + 0x42);\r\n  *(undefined1 *)(param_1 + 0x43) = *(undefined1 *)(param_2 + 0x43);\r\n  *(undefined1 *)(param_1 + 0x44) = *(undefined1 *)(param_2 + 0x44);\r\n  *(undefined1 *)(param_1 + 0x45) = *(undefined1 *)(param_2 + 0x45);\r\n  *(undefined1 *)(param_1 + 0x46) = *(undefined1 *)(param_2 + 0x46);\r\n  *(undefined1 *)(param_1 + 0x47) = *(undefined1 *)(param_2 + 0x47);\r\n  *(undefined1 *)(param_1 + 0x48) = *(undefined1 *)(param_2 + 0x48);\r\n  *(undefined1 *)(param_1 + 0x49) = *(undefined1 *)(param_2 + 0x49);\r\n  *(undefined1 *)(param_1 + 0x4a) = *(undefined1 *)(param_2 + 0x4a);\r\n  *(undefined1 *)(param_1 + 0x4b) = *(undefined1 *)(param_2 + 0x4b);\r\n  *(undefined1 *)(param_1 + 0x4c) = *(undefined1 *)(param_2 + 0x4c);\r\n  *(undefined4 *)(param_1 + 0x50) = *(undefined4 *)(param_2 + 0x50);\r\n  *(undefined4 *)(param_1 + 0x54) = *(undefined4 *)(param_2 + 0x54);\r\n  *(undefined4 *)(param_1 + 0x58) = *(undefined4 *)(param_2 + 0x58);\r\n  *(undefined4 *)(param_1 + 0x5c) = *(undefined4 *)(param_2 + 0x5c);\r\n  *(undefined1 *)(param_1 + 0x60) = *(undefined1 *)(param_2 + 0x60);\r\n  *(undefined4 *)(param_1 + 100) = *(undefined4 *)(param_2 + 100);\r\n  *(undefined4 *)(param_1 + 0x68) = *(undefined4 *)(param_2 + 0x68);\r\n  *(undefined1 *)(param_1 + 0x6c) = *(undefined1 *)(param_2 + 0x6c);\r\n  *(undefined4 *)(param_1 + 0x70) = *(undefined4 *)(param_2 + 0x70);\r\n  *(undefined1 *)(param_1 + 0x74) = *(undefined1 *)(param_2 + 0x74);\r\n  *(undefined4 *)(param_1 + 0x78) = *(undefined4 *)(param_2 + 0x78);\r\n  *(undefined1 *)(param_1 + 0x7c) = *(undefined1 *)(param_2 + 0x7c);\r\n  *(undefined4 *)(param_1 + 0x80) = *(undefined4 *)(param_2 + 0x80);\r\n  *(undefined1 *)(param_1 + 0x84) = *(undefined1 *)(param_2 + 0x84);\r\n  *(undefined1 *)(param_1 + 0x85) = *(undefined1 *)(param_2 + 0x85);\r\n  *(undefined1 *)(param_1 + 0x86) = *(undefined1 *)(param_2 + 0x86);\r\n  *(undefined4 *)(param_1 + 0x88) = *(undefined4 *)(param_2 + 0x88);\r\n  *(undefined1 *)(param_1 + 0x8c) = *(undefined1 *)(param_2 + 0x8c);\r\n  *(undefined1 *)(param_1 + 0x8d) = *(undefined1 *)(param_2 + 0x8d);\r\n  *(undefined4 *)(param_1 + 0x90) = *(undefined4 *)(param_2 + 0x90);\r\n  *(undefined1 *)(param_1 + 0x94) = *(undefined1 *)(param_2 + 0x94);\r\n  *(undefined1 *)(param_1 + 0x95) = *(undefined1 *)(param_2 + 0x95);\r\n  BSP_NativeStringVector_CopyContents(param_2 + 0x98);\r\n  BSP_NativeStringVector_CopyContents(param_2 + 0xa4);\r\n  *(undefined1 *)(param_1 + 0xb0) = *(undefined1 *)(param_2 + 0xb0);\r\n  *(undefined1 *)(param_1 + 0xb1) = *(undefined1 *)(param_2 + 0xb1);\r\n  puVar1 = (uint *)(param_2 + 0xb4);\r\n  this = (uint *)(param_1 + 0xb4);\r\n  *(undefined1 *)(param_1 + 0xb2) = *(undefined1 *)(param_2 + 0xb2);\r\n  if (this != puVar1) {\r\n    BSP_NativeString_Resize(this,*puVar1,1);\r\n    if (*puVar1 != 0) {\r\n      _memcpy(*(void **)(param_1 + 0xb8),*(void **)(param_2 + 0xb8),*this);\r\n    }\r\n  }\r\n  return param_1;\r\n}\r\n\r\n",
+        "stderr": "",
+        "stdout_sha256": "b58e1d077b531635dbfcad7575a4416dc64017fbec4444e05ff017cb43551db3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "live_listing_capture.json": [
+      {
+        "label": "constructor_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F6030",
+          "--lines",
+          "90"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:06.275383+00:00",
+        "finish_utc": "2026-10-10T12:02:06.594537+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f6030: PUSH -0x1 \r\n005f6032: PUSH 0xc761df \r\n005f6037: MOV EAX,FS:[0x0] \r\n005f603d: PUSH EAX \r\n005f603e: MOV dword ptr FS:[0x0],ESP \r\n005f6045: PUSH ECX \r\n005f6046: PUSH EBX \r\n005f6047: PUSH ESI \r\n005f6048: MOV ESI,ECX \r\n005f604a: MOV dword ptr [ESP + 0x8],ESI \r\n005f604e: CALL 0x004f7180 \r\n005f6053: XOR EBX,EBX \r\n005f6055: MOV dword ptr [ESP + 0x14],EBX \r\n005f6059: MOV dword ptr [ESI + 0x8],0xceb0fc \r\n005f6060: MOV dword ptr [ESI + 0xc],0xceb110 \r\n005f6067: MOV dword ptr [ESI],0xcf3974 \r\n005f606d: MOV dword ptr [ESI + 0x8],0xcf3960 \r\n005f6074: MOV dword ptr [ESI + 0xc],0xcf3940 \r\n005f607b: MOV dword ptr [ESI + 0xc4],EBX \r\n005f6081: MOV dword ptr [ESI + 0xcc],EBX \r\n005f6087: MOV dword ptr [ESI + 0xd0],EBX \r\n005f608d: MOV dword ptr [ESI + 0xd4],EBX \r\n005f6093: LEA ECX,[ESI + 0xd8] \r\n005f6099: MOV byte ptr [ESP + 0x14],0x2 \r\n005f609e: CALL 0x008d7710 \r\n005f60a3: LEA ECX,[ESI + 0x194] \r\n005f60a9: MOV byte ptr [ESP + 0x14],0x3 \r\n005f60ae: CALL 0x008d7710 \r\n005f60b3: PUSH 0xa \r\n005f60b5: MOV byte ptr [ESI + 0x264],BL \r\n005f60bb: MOV byte ptr [ESI + 0x265],BL \r\n005f60c1: MOV dword ptr [ESI + 0x70],0xa \r\n005f60c8: CALL 0x00bf9f1a \r\n005f60cd: MOV ECX,dword ptr [ESP + 0x10] \r\n005f60d1: MOV dword ptr [ESI + 0x26c],EAX \r\n005f60d7: ADD ESP,0x4 \r\n005f60da: MOV EAX,ESI \r\n005f60dc: POP ESI \r\n005f60dd: POP EBX \r\n005f60de: MOV dword ptr FS:[0x0],ECX \r\n005f60e5: ADD ESP,0x10 \r\n005f60e8: RET \r\n",
+        "stderr": "",
+        "stdout_sha256": "a5b9ad84b909d48da89dce6a3e49651dcc80db06a3901e917368084cc90a0a8d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "commit_head_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F65C0",
+          "--lines",
+          "43"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:06.594632+00:00",
+        "finish_utc": "2026-10-10T12:02:06.917024+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f65c0: PUSH -0x1 \r\n005f65c2: PUSH 0xc763a6 \r\n005f65c7: MOV EAX,FS:[0x0] \r\n005f65cd: PUSH EAX \r\n005f65ce: MOV EAX,0x4cf8 \r\n005f65d3: MOV dword ptr FS:[0x0],ESP \r\n005f65da: CALL 0x00bf9410 \r\n005f65df: PUSH EBX \r\n005f65e0: PUSH EBP \r\n005f65e1: PUSH ESI \r\n005f65e2: MOV EBP,ECX \r\n005f65e4: PUSH EDI \r\n005f65e5: LEA ESI,[EBP + 0xd8] \r\n005f65eb: PUSH 0xf88980 \r\n005f65f0: MOV ECX,ESI \r\n005f65f2: CALL 0x008d4210 \r\n005f65f7: MOV byte ptr [ESP + 0x1f],AL \r\n005f65fb: MOV EAX,[0x00f889f8] \r\n005f6600: CMP EAX,dword ptr [EBP + 0x150] \r\n005f6606: MOVZX EAX,byte ptr [EBP + 0x188] \r\n005f660d: SETNZ BL \r\n005f6610: CMP byte ptr [0x00f88a30],AL \r\n005f6616: JZ 0x005f6623 \r\n005f6618: PUSH EAX \r\n005f6619: MOV ECX,0xf88980 \r\n005f661e: CALL 0x008d44c0 \r\n005f6623: PUSH ESI \r\n005f6624: MOV ECX,0xf88980 \r\n005f6629: CALL 0x005f52c0 \r\n005f662e: MOV ECX,dword ptr [0x00e188a8] \r\n005f6634: ADD ECX,0x3c \r\n005f6637: CALL 0x00698a10 \r\n005f663c: CMP byte ptr [0x00f88a15],0x0 \r\n005f6643: JZ 0x005f664d \r\n005f6645: TEST BL,BL \r\n005f6647: JZ 0x005f6e31 \r\n005f664d: XOR EAX,EAX \r\n005f664f: MOV dword ptr [ESP + 0x3c],EAX \r\n005f6653: MOV dword ptr [ESP + 0x40],EAX \r\n005f6657: MOV dword ptr [ESP + 0x44],EAX \r\n005f665b: MOV dword ptr [ESP + 0x4d10],EAX \r\n005f6662: CALL 0x00992830 \r\n005f6667: MOV EDI,EAX \r\n... 529 more lines of 572 (use --start 43 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "4a0a313afb49ea10af33dee4a97a784ad9989efda1d2456dacaafe31dd42070e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "commit_tail_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F65C0",
+          "--start",
+          "005f6e31",
+          "--lines",
+          "55"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:06.917094+00:00",
+        "finish_utc": "2026-10-10T12:02:07.272406+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f6e31: XOR ESI,ESI \r\n005f6e33: PUSH 0x1 \r\n005f6e35: CALL 0x004c1710 \r\n005f6e3a: MOV ECX,EAX \r\n005f6e3c: CALL 0x00a4c2d0 \r\n005f6e41: CMP byte ptr [ESP + 0x1f],0x0 \r\n005f6e46: MOV EAX,0x5f0090 \r\n005f6e4b: JNZ 0x005f6e52 \r\n005f6e4d: MOV EAX,0xbd53c0 \r\n005f6e52: PUSH EAX \r\n005f6e53: MOV ECX,0xf88980 \r\n005f6e58: CALL 0x008d6c00 \r\n005f6e5d: CMP byte ptr [EBP + 0x252],0x0 \r\n005f6e64: JZ 0x005f6eb7 \r\n005f6e66: PUSH ESI \r\n005f6e67: MOV ECX,0xf88a24 \r\n005f6e6c: CALL 0x00427110 \r\n005f6e71: CALL 0x004c12b0 \r\n005f6e76: MOV ECX,EAX \r\n005f6e78: CALL 0x00aa0f70 \r\n005f6e7d: MOV ECX,dword ptr [EBP + 0x88] \r\n005f6e83: MOV EDX,dword ptr [ECX] \r\n005f6e85: MOV EAX,dword ptr [EDX + 0x60] \r\n005f6e88: PUSH ESI \r\n005f6e89: CALL EAX \r\n005f6e8b: MOV ECX,dword ptr [EBP + 0x88] \r\n005f6e91: MOV byte ptr [ECX + 0x77],0x1 \r\n005f6e95: MOV ECX,dword ptr [EBP + 0x88] \r\n005f6e9b: MOV EDX,dword ptr [ECX] \r\n005f6e9d: MOV EAX,dword ptr [EDX + 0x34] \r\n005f6ea0: PUSH ESI \r\n005f6ea1: CALL EAX \r\n005f6ea3: MOV ECX,dword ptr [0x00e188a8] \r\n005f6ea9: CALL 0x004d7f90 \r\n005f6eae: MOV byte ptr [EBP + 0x252],0x0 \r\n005f6eb5: JMP 0x005f6ec8 \r\n005f6eb7: MOV ECX,0xf88980 \r\n005f6ebc: CALL 0x008d5b50 \r\n005f6ec1: MOV ECX,EBP \r\n005f6ec3: CALL 0x005f54f0 \r\n005f6ec8: MOV ECX,dword ptr [ESP + 0x4d08] \r\n005f6ecf: POP EDI \r\n005f6ed0: POP ESI \r\n005f6ed1: POP EBP \r\n005f6ed2: MOV dword ptr FS:[0x0],ECX \r\n005f6ed9: POP EBX \r\n005f6eda: ADD ESP,0x4d04 \r\n005f6ee0: RET \r\n",
+        "stderr": "",
+        "stdout_sha256": "704582e6d424447126e6c26e780f95802fdedd66d454e927bff9b2f3c04290b8",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy_helper_head_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F52C0",
+          "--lines",
+          "65"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:07.272482+00:00",
+        "finish_utc": "2026-10-10T12:02:07.580870+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f52c0: PUSH EBX \r\n005f52c1: PUSH ESI \r\n005f52c2: MOV ESI,ECX \r\n005f52c4: PUSH EDI \r\n005f52c5: MOV EDI,dword ptr [ESP + 0x10] \r\n005f52c9: MOV EAX,dword ptr [EDI + 0x4] \r\n005f52cc: MOV dword ptr [ESI + 0x4],EAX \r\n005f52cf: MOVZX ECX,byte ptr [EDI + 0x8] \r\n005f52d3: MOV byte ptr [ESI + 0x8],CL \r\n005f52d6: MOVZX EDX,byte ptr [EDI + 0x9] \r\n005f52da: MOV byte ptr [ESI + 0x9],DL \r\n005f52dd: MOV EAX,dword ptr [EDI + 0xc] \r\n005f52e0: MOV dword ptr [ESI + 0xc],EAX \r\n005f52e3: MOVZX ECX,byte ptr [EDI + 0x10] \r\n005f52e7: MOV byte ptr [ESI + 0x10],CL \r\n005f52ea: MOV EDX,dword ptr [EDI + 0x14] \r\n005f52ed: MOV dword ptr [ESI + 0x14],EDX \r\n005f52f0: MOV EAX,dword ptr [EDI + 0x18] \r\n005f52f3: MOV dword ptr [ESI + 0x18],EAX \r\n005f52f6: MOVZX ECX,byte ptr [EDI + 0x1c] \r\n005f52fa: MOV byte ptr [ESI + 0x1c],CL \r\n005f52fd: MOVZX EDX,byte ptr [EDI + 0x1d] \r\n005f5301: MOV byte ptr [ESI + 0x1d],DL \r\n005f5304: MOVZX EAX,byte ptr [EDI + 0x1e] \r\n005f5308: MOV byte ptr [ESI + 0x1e],AL \r\n005f530b: FLD float ptr [EDI + 0x20] \r\n005f530e: FSTP float ptr [ESI + 0x20] \r\n005f5311: MOVZX ECX,byte ptr [EDI + 0x24] \r\n005f5315: MOV byte ptr [ESI + 0x24],CL \r\n005f5318: FLD float ptr [EDI + 0x28] \r\n005f531b: FSTP float ptr [ESI + 0x28] \r\n005f531e: FLD float ptr [EDI + 0x2c] \r\n005f5321: FSTP float ptr [ESI + 0x2c] \r\n005f5324: FLD float ptr [EDI + 0x30] \r\n005f5327: FSTP float ptr [ESI + 0x30] \r\n005f532a: FLD float ptr [EDI + 0x34] \r\n005f532d: FSTP float ptr [ESI + 0x34] \r\n005f5330: MOVZX EDX,byte ptr [EDI + 0x38] \r\n005f5334: MOV byte ptr [ESI + 0x38],DL \r\n005f5337: MOV EAX,dword ptr [EDI + 0x3c] \r\n005f533a: MOV dword ptr [ESI + 0x3c],EAX \r\n005f533d: MOVZX ECX,byte ptr [EDI + 0x40] \r\n005f5341: MOV byte ptr [ESI + 0x40],CL \r\n005f5344: MOVZX EDX,byte ptr [EDI + 0x41] \r\n005f5348: MOV byte ptr [ESI + 0x41],DL \r\n005f534b: MOVZX EAX,byte ptr [EDI + 0x42] \r\n005f534f: MOV byte ptr [ESI + 0x42],AL \r\n005f5352: MOVZX ECX,byte ptr [EDI + 0x43] \r\n005f5356: MOV byte ptr [ESI + 0x43],CL \r\n005f5359: MOVZX EDX,byte ptr [EDI + 0x44] \r\n005f535d: MOV byte ptr [ESI + 0x44],DL \r\n005f5360: MOVZX EAX,byte ptr [EDI + 0x45] \r\n005f5364: MOV byte ptr [ESI + 0x45],AL \r\n005f5367: MOVZX ECX,byte ptr [EDI + 0x46] \r\n005f536b: MOV byte ptr [ESI + 0x46],CL \r\n005f536e: MOVZX EDX,byte ptr [EDI + 0x47] \r\n005f5372: MOV byte ptr [ESI + 0x47],DL \r\n005f5375: MOVZX EAX,byte ptr [EDI + 0x48] \r\n005f5379: MOV byte ptr [ESI + 0x48],AL \r\n005f537c: MOVZX ECX,byte ptr [EDI + 0x49] \r\n005f5380: MOV byte ptr [ESI + 0x49],CL \r\n005f5383: MOVZX EDX,byte ptr [EDI + 0x4a] \r\n005f5387: MOV byte ptr [ESI + 0x4a],DL \r\n005f538a: MOVZX EAX,byte ptr [EDI + 0x4b] \r\n005f538e: MOV byte ptr [ESI + 0x4b],AL \r\n... 84 more lines of 149 (use --start 65 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "ba7cbada2fb34a19c5f31de1bab19ca9a7923ad5c559b875874a084bf411ebd0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy_helper_tail_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F52C0",
+          "--start",
+          "130",
+          "--lines",
+          "70"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:07.580959+00:00",
+        "finish_utc": "2026-10-10T12:02:07.874579+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f54c0: PUSH 0x1 \r\n005f54c2: PUSH EAX \r\n005f54c3: MOV ECX,EDI \r\n005f54c5: CALL 0x0041dd40 \r\n005f54ca: CMP dword ptr [EBX],0x0 \r\n005f54cd: JZ 0x005f54e2 \r\n005f54cf: MOV ECX,dword ptr [EDI] \r\n005f54d1: MOV EDX,dword ptr [EBX + 0x4] \r\n005f54d4: MOV EAX,dword ptr [EDI + 0x4] \r\n005f54d7: PUSH ECX \r\n005f54d8: PUSH EDX \r\n005f54d9: PUSH EAX \r\n005f54da: CALL 0x00bf7680 \r\n005f54df: ADD ESP,0xc \r\n005f54e2: POP EDI \r\n005f54e3: MOV EAX,ESI \r\n005f54e5: POP ESI \r\n005f54e6: POP EBX \r\n005f54e7: RET 0x4 \r\n",
+        "stderr": "",
+        "stdout_sha256": "0eca7ad28d1386709a4bf28feec41e137f91bec053ae7d72a362d30c0bcf3260",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "live_remaining_capture.json": [
+      {
+        "label": "copy_helper_middle_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "disasm",
+          "005F52C0",
+          "--start",
+          "65",
+          "--lines",
+          "65"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:57.904330+00:00",
+        "finish_utc": "2026-10-10T12:02:58.230770+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f5391: MOVZX ECX,byte ptr [EDI + 0x4c] \r\n005f5395: MOV byte ptr [ESI + 0x4c],CL \r\n005f5398: MOV EDX,dword ptr [EDI + 0x50] \r\n005f539b: MOV dword ptr [ESI + 0x50],EDX \r\n005f539e: MOV EAX,dword ptr [EDI + 0x54] \r\n005f53a1: MOV dword ptr [ESI + 0x54],EAX \r\n005f53a4: MOV ECX,dword ptr [EDI + 0x58] \r\n005f53a7: MOV dword ptr [ESI + 0x58],ECX \r\n005f53aa: MOV EDX,dword ptr [EDI + 0x5c] \r\n005f53ad: MOV dword ptr [ESI + 0x5c],EDX \r\n005f53b0: MOVZX EAX,byte ptr [EDI + 0x60] \r\n005f53b4: MOV byte ptr [ESI + 0x60],AL \r\n005f53b7: FLD float ptr [EDI + 0x64] \r\n005f53ba: FSTP float ptr [ESI + 0x64] \r\n005f53bd: MOV ECX,dword ptr [EDI + 0x68] \r\n005f53c0: MOV dword ptr [ESI + 0x68],ECX \r\n005f53c3: MOVZX EDX,byte ptr [EDI + 0x6c] \r\n005f53c7: MOV byte ptr [ESI + 0x6c],DL \r\n005f53ca: MOV EAX,dword ptr [EDI + 0x70] \r\n005f53cd: MOV dword ptr [ESI + 0x70],EAX \r\n005f53d0: MOVZX ECX,byte ptr [EDI + 0x74] \r\n005f53d4: MOV byte ptr [ESI + 0x74],CL \r\n005f53d7: MOV EDX,dword ptr [EDI + 0x78] \r\n005f53da: MOV dword ptr [ESI + 0x78],EDX \r\n005f53dd: MOVZX EAX,byte ptr [EDI + 0x7c] \r\n005f53e1: MOV byte ptr [ESI + 0x7c],AL \r\n005f53e4: FLD float ptr [EDI + 0x80] \r\n005f53ea: FSTP float ptr [ESI + 0x80] \r\n005f53f0: MOVZX ECX,byte ptr [EDI + 0x84] \r\n005f53f7: MOV byte ptr [ESI + 0x84],CL \r\n005f53fd: MOVZX EDX,byte ptr [EDI + 0x85] \r\n005f5404: MOV byte ptr [ESI + 0x85],DL \r\n005f540a: MOVZX EAX,byte ptr [EDI + 0x86] \r\n005f5411: MOV byte ptr [ESI + 0x86],AL \r\n005f5417: MOV ECX,dword ptr [EDI + 0x88] \r\n005f541d: MOV dword ptr [ESI + 0x88],ECX \r\n005f5423: MOVZX EDX,byte ptr [EDI + 0x8c] \r\n005f542a: MOV byte ptr [ESI + 0x8c],DL \r\n005f5430: MOVZX EAX,byte ptr [EDI + 0x8d] \r\n005f5437: MOV byte ptr [ESI + 0x8d],AL \r\n005f543d: MOV ECX,dword ptr [EDI + 0x90] \r\n005f5443: MOV dword ptr [ESI + 0x90],ECX \r\n005f5449: MOVZX EDX,byte ptr [EDI + 0x94] \r\n005f5450: MOV byte ptr [ESI + 0x94],DL \r\n005f5456: MOVZX EAX,byte ptr [EDI + 0x95] \r\n005f545d: LEA ECX,[EDI + 0x98] \r\n005f5463: PUSH ECX \r\n005f5464: LEA ECX,[ESI + 0x98] \r\n005f546a: MOV byte ptr [ESI + 0x95],AL \r\n005f5470: CALL 0x00543e50 \r\n005f5475: LEA EDX,[EDI + 0xa4] \r\n005f547b: PUSH EDX \r\n005f547c: LEA ECX,[ESI + 0xa4] \r\n005f5482: CALL 0x00543e50 \r\n005f5487: MOVZX EAX,byte ptr [EDI + 0xb0] \r\n005f548e: MOV byte ptr [ESI + 0xb0],AL \r\n005f5494: MOVZX ECX,byte ptr [EDI + 0xb1] \r\n005f549b: MOV byte ptr [ESI + 0xb1],CL \r\n005f54a1: MOVZX EDX,byte ptr [EDI + 0xb2] \r\n005f54a8: LEA EBX,[EDI + 0xb4] \r\n005f54ae: LEA EDI,[ESI + 0xb4] \r\n005f54b4: CMP EDI,EBX \r\n005f54b6: MOV byte ptr [ESI + 0xb2],DL \r\n005f54bc: JZ 0x005f54e2 \r\n005f54be: MOV EAX,dword ptr [EBX] \r\n... 19 more lines of 149 (use --start 130 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "a95bb0b2749613616b2e708e937ad589902becf428fe9754eda2deb2ce00f1d7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "constructor_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F6030",
+          "--length",
+          "185"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:58.230874+00:00",
+        "finish_utc": "2026-10-10T12:02:58.524256+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f6030  6a ff 68 df 61 c7 00 64 a1 00 00 00 00 50 64 89  j.h.a..d.....Pd.\r\n005f6040  25 00 00 00 00 51 53 56 8b f1 89 74 24 08 e8 2d  %....QSV...t$..-\r\n005f6050  11 f0 ff 33 db 89 5c 24 14 c7 46 08 fc b0 ce 00  ...3..\\$..F.....\r\n005f6060  c7 46 0c 10 b1 ce 00 c7 06 74 39 cf 00 c7 46 08  .F.......t9...F.\r\n005f6070  60 39 cf 00 c7 46 0c 40 39 cf 00 89 9e c4 00 00  `9...F.@9.......\r\n005f6080  00 89 9e cc 00 00 00 89 9e d0 00 00 00 89 9e d4  ................\r\n005f6090  00 00 00 8d 8e d8 00 00 00 c6 44 24 14 02 e8 6d  ..........D$...m\r\n005f60a0  16 2e 00 8d 8e 94 01 00 00 c6 44 24 14 03 e8 5d  ..........D$...]\r\n005f60b0  16 2e 00 6a 0a 88 9e 64 02 00 00 88 9e 65 02 00  ...j...d.....e..\r\n005f60c0  00 c7 46 70 0a 00 00 00 e8 4d 3e 60 00 8b 4c 24  ..Fp.....M>`..L$\r\n005f60d0  10 89 86 6c 02 00 00 83 c4 04 8b c6 5e 5b 64 89  ...l........^[d.\r\n005f60e0  0d 00 00 00 00 83 c4 10 c3  .........\r\n",
+        "stderr": "",
+        "stdout_sha256": "8bb7394b02330973f2c3586f83fb6921d881941253c87c36f66114b10e05be8c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "commit_head_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F65C0",
+          "--length",
+          "124"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:58.524331+00:00",
+        "finish_utc": "2026-10-10T12:02:58.836499+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f65c0  6a ff 68 a6 63 c7 00 64 a1 00 00 00 00 50 b8 f8  j.h.c..d.....P..\r\n005f65d0  4c 00 00 64 89 25 00 00 00 00 e8 31 2e 60 00 53  L..d.%.....1.`.S\r\n005f65e0  55 56 8b e9 57 8d b5 d8 00 00 00 68 80 89 f8 00  UV..W......h....\r\n005f65f0  8b ce e8 19 dc 2d 00 88 44 24 1f a1 f8 89 f8 00  .....-..D$......\r\n005f6600  3b 85 50 01 00 00 0f b6 85 88 01 00 00 0f 95 c3  ;.P.............\r\n005f6610  38 05 30 8a f8 00 74 0b 50 b9 80 89 f8 00 e8 9d  8.0...t.P.......\r\n005f6620  de 2d 00 56 b9 80 89 f8 00 e8 92 ec ff ff 8b 0d  .-.V............\r\n005f6630  a8 88 e1 00 83 c1 3c e8 d4 23 0a 00  ......<..#..\r\n",
+        "stderr": "",
+        "stdout_sha256": "009c58da9a7c6b0f5e4f8acc33a38c2343f45aff495c18e01fff26680f12e5e7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "commit_tail_bytes",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F6E31",
+          "--length",
+          "176"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:58.836579+00:00",
+        "finish_utc": "2026-10-10T12:02:59.134486+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f6e31  33 f6 6a 01 e8 d6 a8 ec ff 8b c8 e8 8f 54 45 00  3.j..........TE.\r\n005f6e41  80 7c 24 1f 00 b8 90 00 5f 00 75 05 b8 c0 53 bd  .|$....._.u...S.\r\n005f6e51  00 50 b9 80 89 f8 00 e8 a3 fd 2d 00 80 bd 52 02  .P........-...R.\r\n005f6e61  00 00 00 74 51 56 b9 24 8a f8 00 e8 9f 02 e3 ff  ...tQV.$........\r\n005f6e71  e8 3a a4 ec ff 8b c8 e8 f3 a0 4a 00 8b 8d 88 00  .:........J.....\r\n005f6e81  00 00 8b 11 8b 42 60 56 ff d0 8b 8d 88 00 00 00  .....B`V........\r\n005f6e91  c6 41 77 01 8b 8d 88 00 00 00 8b 11 8b 42 34 56  .Aw..........B4V\r\n005f6ea1  ff d0 8b 0d a8 88 e1 00 e8 e2 10 ee ff c6 85 52  ...............R\r\n005f6eb1  02 00 00 00 eb 11 b9 80 89 f8 00 e8 8f ec 2d 00  ..............-.\r\n005f6ec1  8b cd e8 28 e6 ff ff 8b 8c 24 08 4d 00 00 5f 5e  ...(.....$.M.._^\r\n005f6ed1  5d 64 89 0d 00 00 00 00 5b 81 c4 04 4d 00 00 c3  ]d......[...M...\r\n",
+        "stderr": "",
+        "stdout_sha256": "7ff4486bea8ed14affc816afbf7f8740f6043647936ce3c4b8afae34f1e3679e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy_helper_bytes_0",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F52C0",
+          "--length",
+          "256"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:59.134569+00:00",
+        "finish_utc": "2026-10-10T12:02:59.457466+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f52c0  53 56 8b f1 57 8b 7c 24 10 8b 47 04 89 46 04 0f  SV..W.|$..G..F..\r\n005f52d0  b6 4f 08 88 4e 08 0f b6 57 09 88 56 09 8b 47 0c  .O..N...W..V..G.\r\n005f52e0  89 46 0c 0f b6 4f 10 88 4e 10 8b 57 14 89 56 14  .F...O..N..W..V.\r\n005f52f0  8b 47 18 89 46 18 0f b6 4f 1c 88 4e 1c 0f b6 57  .G..F...O..N...W\r\n005f5300  1d 88 56 1d 0f b6 47 1e 88 46 1e d9 47 20 d9 5e  ..V...G..F..G .^\r\n005f5310  20 0f b6 4f 24 88 4e 24 d9 47 28 d9 5e 28 d9 47   ..O$.N$.G(.^(.G\r\n005f5320  2c d9 5e 2c d9 47 30 d9 5e 30 d9 47 34 d9 5e 34  ,.^,.G0.^0.G4.^4\r\n005f5330  0f b6 57 38 88 56 38 8b 47 3c 89 46 3c 0f b6 4f  ..W8.V8.G<.F<..O\r\n005f5340  40 88 4e 40 0f b6 57 41 88 56 41 0f b6 47 42 88  @.N@..WA.VA..GB.\r\n005f5350  46 42 0f b6 4f 43 88 4e 43 0f b6 57 44 88 56 44  FB..OC.NC..WD.VD\r\n005f5360  0f b6 47 45 88 46 45 0f b6 4f 46 88 4e 46 0f b6  ..GE.FE..OF.NF..\r\n005f5370  57 47 88 56 47 0f b6 47 48 88 46 48 0f b6 4f 49  WG.VG..GH.FH..OI\r\n005f5380  88 4e 49 0f b6 57 4a 88 56 4a 0f b6 47 4b 88 46  .NI..WJ.VJ..GK.F\r\n005f5390  4b 0f b6 4f 4c 88 4e 4c 8b 57 50 89 56 50 8b 47  K..OL.NL.WP.VP.G\r\n005f53a0  54 89 46 54 8b 4f 58 89 4e 58 8b 57 5c 89 56 5c  T.FT.OX.NX.W\\.V\\\r\n005f53b0  0f b6 47 60 88 46 60 d9 47 64 d9 5e 64 8b 4f 68  ..G`.F`.Gd.^d.Oh\r\n",
+        "stderr": "",
+        "stdout_sha256": "ddb1bde897b306883fe679f7c525e7ece55f619d3bcb45d92874bfbe6da3bd92",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy_helper_bytes_1",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F53C0",
+          "--length",
+          "256"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:59.457538+00:00",
+        "finish_utc": "2026-10-10T12:02:59.755879+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f53c0  89 4e 68 0f b6 57 6c 88 56 6c 8b 47 70 89 46 70  .Nh..Wl.Vl.Gp.Fp\r\n005f53d0  0f b6 4f 74 88 4e 74 8b 57 78 89 56 78 0f b6 47  ..Ot.Nt.Wx.Vx..G\r\n005f53e0  7c 88 46 7c d9 87 80 00 00 00 d9 9e 80 00 00 00  |.F|............\r\n005f53f0  0f b6 8f 84 00 00 00 88 8e 84 00 00 00 0f b6 97  ................\r\n005f5400  85 00 00 00 88 96 85 00 00 00 0f b6 87 86 00 00  ................\r\n005f5410  00 88 86 86 00 00 00 8b 8f 88 00 00 00 89 8e 88  ................\r\n005f5420  00 00 00 0f b6 97 8c 00 00 00 88 96 8c 00 00 00  ................\r\n005f5430  0f b6 87 8d 00 00 00 88 86 8d 00 00 00 8b 8f 90  ................\r\n005f5440  00 00 00 89 8e 90 00 00 00 0f b6 97 94 00 00 00  ................\r\n005f5450  88 96 94 00 00 00 0f b6 87 95 00 00 00 8d 8f 98  ................\r\n005f5460  00 00 00 51 8d 8e 98 00 00 00 88 86 95 00 00 00  ...Q............\r\n005f5470  e8 db e9 f4 ff 8d 97 a4 00 00 00 52 8d 8e a4 00  ...........R....\r\n005f5480  00 00 e8 c9 e9 f4 ff 0f b6 87 b0 00 00 00 88 86  ................\r\n005f5490  b0 00 00 00 0f b6 8f b1 00 00 00 88 8e b1 00 00  ................\r\n005f54a0  00 0f b6 97 b2 00 00 00 8d 9f b4 00 00 00 8d be  ................\r\n005f54b0  b4 00 00 00 3b fb 88 96 b2 00 00 00 74 24 8b 03  ....;.......t$..\r\n",
+        "stderr": "",
+        "stdout_sha256": "e2d747b58e7f8de05f3358ad2378751d5555ed6ea548671bcd2b6c1be0e9a469",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy_helper_bytes_2",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "005F54C0",
+          "--length",
+          "42"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:02:59.755951+00:00",
+        "finish_utc": "2026-10-10T12:03:00.162716+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f54c0  6a 01 50 8b cf e8 76 88 e2 ff 83 3b 00 74 13 8b  j.P...v....;.t..\r\n005f54d0  0f 8b 53 04 8b 47 04 51 52 50 e8 a1 21 60 00 83  ..S..G.QRP..!`..\r\n005f54e0  c4 0c 5f 8b c6 5e 5b c2 04 00  .._..^[...\r\n",
+        "stderr": "",
+        "stdout_sha256": "5979f71efe401feecff251c8a75f8bbb3922bac1d1f3b896bbc2fcbb6240bf50",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "commit_callers_metadata_only",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "005F65C0",
+          "--limit",
+          "12",
+          "--lines",
+          "25"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:03:00.162798+00:00",
+        "finish_utc": "2026-10-10T12:03:00.464289+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "BSP_OptionsScreen_ActivateListRow @ 005f7c40\r\nBSP_OptionsScreen_HandleListEvent @ 005f8960\r\nBSP_OptionsScreen_Update @ 005f7310\r\nFUN_005f7050 @ 005f7050\r\n",
+        "stderr": "",
+        "stdout_sha256": "c815060cacc55bf544eb29fd6c5e29bdfb2eb102e595a5d0d19ce02849657ab5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "constructor_callers_metadata_only",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "005F6030",
+          "--limit",
+          "12",
+          "--lines",
+          "25"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:03:00.464360+00:00",
+        "finish_utc": "2026-10-10T12:03:00.742874+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "BSP_OptionsMenu_Init @ 006898c0\r\n",
+        "stderr": "",
+        "stdout_sha256": "5b5ffe056bd8bdf27659af9616b2565cada656a278dde2d8995f6570e80f8723",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "saved_windows_capture.json": [
+      {
+        "label": "saved_constructor_pseudocode",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F6030",
+          "--lines",
+          "75"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:03:26.411208+00:00",
+        "finish_utc": "2026-10-10T12:03:26.540858+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f6030  BSP_OptionsScreen_Construct  thunk=no  export=exports/bsp/functions/005f6030\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_Construct - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this), RET, returns this in EAX. Constructed into options manager 00E198B8+40h by Init 006898C0, 270h bytes. Chains 004F7180, installs primary vtable 00CF3974 and seconda\r\n--- exports/bsp/functions/005f6030/decompiled.c ---\r\n\r\nundefined4 * __fastcall FUN_005f6030(undefined4 *param_1)\r\n\r\n{\r\n  void *pvVar1;\r\n  void *local_c;\r\n  undefined1 *puStack_8;\r\n  undefined4 local_4;\r\n  \r\n  local_4 = 0xffffffff;\r\n  puStack_8 = &LAB_00c761df;\r\n  local_c = ExceptionList;\r\n  ExceptionList = &local_c;\r\n  BSP_FrontEndScreen_Construct();\r\n  param_1[2] = &PTR_LAB_00ceb0fc;\r\n  param_1[3] = &PTR_LAB_00ceb110;\r\n  *param_1 = &PTR_LAB_00cf3974;\r\n  param_1[2] = &PTR_LAB_00cf3960;\r\n  param_1[3] = &PTR_LAB_00cf3940;\r\n  param_1[0x31] = 0;\r\n  param_1[0x33] = 0;\r\n  param_1[0x34] = 0;\r\n  param_1[0x35] = 0;\r\n  local_4._0_1_ = 2;\r\n  local_4._1_3_ = 0;\r\n  FUN_008d7710();\r\n  local_4 = CONCAT31(local_4._1_3_,3);\r\n  FUN_008d7710();\r\n  *(undefined1 *)(param_1 + 0x99) = 0;\r\n  *(undefined1 *)((int)param_1 + 0x265) = 0;\r\n  param_1[0x1c] = 10;\r\n  pvVar1 = _malloc(10);\r\n  param_1[0x9b] = pvVar1;\r\n  ExceptionList = local_c;\r\n  return param_1;\r\n}\r\n\r\ncallees (3): 004f7180 BSP_FrontEndScreen_Construct, 008d7710 BSP_GameSettings_Construct, 00bf9f1a _malloc\r\n",
+        "stderr": "",
+        "stdout_sha256": "d6210da12b0a48afda7c131839a5d3e77e84a0e1696d6b9b15d5a86e11b8dfe8",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_constructor_listing",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F6030",
+          "--asm",
+          "--lines",
+          "90"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:03:26.540953+00:00",
+        "finish_utc": "2026-10-10T12:03:26.733427+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f6030  BSP_OptionsScreen_Construct  thunk=no  export=exports/bsp/functions/005f6030\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\nledger name: BSP_OptionsScreen_Construct - Hypothesis, not a recovered symbol. Packet options_menu_screens, read-only analysis; see docs/OPTIONS_MENU_SCREENS.md. __thiscall(this), RET, returns this in EAX. Constructed into options manager 00E198B8+40h by Init 006898C0, 270h bytes. Chains 004F7180, installs primary vtable 00CF3974 and seconda\r\n--- exports/bsp/functions/005f6030/assembly.txt ---\r\n005f6030: PUSH -0x1 \r\n005f6032: PUSH 0xc761df \r\n005f6037: MOV EAX,FS:[0x0] \r\n005f603d: PUSH EAX \r\n005f603e: MOV dword ptr FS:[0x0],ESP \r\n005f6045: PUSH ECX \r\n005f6046: PUSH EBX \r\n005f6047: PUSH ESI \r\n005f6048: MOV ESI,ECX \r\n005f604a: MOV dword ptr [ESP + 0x8],ESI \r\n005f604e: CALL 0x004f7180 \r\n005f6053: XOR EBX,EBX \r\n005f6055: MOV dword ptr [ESP + 0x14],EBX \r\n005f6059: MOV dword ptr [ESI + 0x8],0xceb0fc \r\n005f6060: MOV dword ptr [ESI + 0xc],0xceb110 \r\n005f6067: MOV dword ptr [ESI],0xcf3974 \r\n005f606d: MOV dword ptr [ESI + 0x8],0xcf3960 \r\n005f6074: MOV dword ptr [ESI + 0xc],0xcf3940 \r\n005f607b: MOV dword ptr [ESI + 0xc4],EBX \r\n005f6081: MOV dword ptr [ESI + 0xcc],EBX \r\n005f6087: MOV dword ptr [ESI + 0xd0],EBX \r\n005f608d: MOV dword ptr [ESI + 0xd4],EBX \r\n005f6093: LEA ECX,[ESI + 0xd8] \r\n005f6099: MOV byte ptr [ESP + 0x14],0x2 \r\n005f609e: CALL 0x008d7710 \r\n005f60a3: LEA ECX,[ESI + 0x194] \r\n005f60a9: MOV byte ptr [ESP + 0x14],0x3 \r\n005f60ae: CALL 0x008d7710 \r\n005f60b3: PUSH 0xa \r\n005f60b5: MOV byte ptr [ESI + 0x264],BL \r\n005f60bb: MOV byte ptr [ESI + 0x265],BL \r\n005f60c1: MOV dword ptr [ESI + 0x70],0xa \r\n005f60c8: CALL 0x00bf9f1a \r\n005f60cd: MOV ECX,dword ptr [ESP + 0x10] \r\n005f60d1: MOV dword ptr [ESI + 0x26c],EAX \r\n005f60d7: ADD ESP,0x4 \r\n005f60da: MOV EAX,ESI \r\n005f60dc: POP ESI \r\n005f60dd: POP EBX \r\n005f60de: MOV dword ptr FS:[0x0],ECX \r\n005f60e5: ADD ESP,0x10 \r\n005f60e8: RET \r\n",
+        "stderr": "",
+        "stdout_sha256": "0271adf059aca7ace09df6d77aa5f3902abbaa9df0f1cb7bc53d3849f58fb4ee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_commit_pseudocode_head",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F65C0",
+          "--lines",
+          "45"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:03:26.733508+00:00",
+        "finish_utc": "2026-10-10T12:03:26.861679+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f65c0  FUN_005f65c0  thunk=no  export=exports/bsp/functions/005f65c0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\n--- exports/bsp/functions/005f65c0/decompiled.c ---\r\n/* WARNING: Function: __alloca_probe replaced with injection: alloca_probe */\r\nvoid __fastcall FUN_005f65c0(int param_1)\r\n\r\n{\r\n  char cVar1;\r\n  size_t *psVar2;\r\n  bool bVar3;\r\n  size_t _Size;\r\n  void *_Dst;\r\n  int iStack_4cfc;\r\n  int iStack_4cf0;\r\n  size_t sStack_4ce4;\r\n  void *pvStack_4ce0;\r\n  undefined4 uStack_4cd8;\r\n  undefined4 uStack_4cd4;\r\n  undefined4 uStack_4cd0;\r\n  int iStack_4cc8;\r\n  int iStack_4cc0;\r\n  char acStack_4cac [104];\r\n  void *pvStack_4c44;\r\n  undefined4 uStack_4c40;\r\n  undefined4 uStack_4c3c;\r\n  void *pvStack_4c34;\r\n  undefined4 uStack_4c30;\r\n  undefined4 uStack_4c2c;\r\n  undefined4 uStack_10;\r\n  void *pvStack_c;\r\n  undefined1 *puStack_8;\r\n  undefined4 uStack_4;\r\n  \r\n  uStack_4 = 0xffffffff;\r\n  puStack_8 = &LAB_00c763a6;\r\n  pvStack_c = ExceptionList;\r\n  uStack_10 = 0x5f65df;\r\n  ExceptionList = &pvStack_c;\r\n  BSP_Settings_VideoModeDiffers();\r\n  bVar3 = DAT_00f889f8 != *(int *)(param_1 + 0x150);\r\n  if (DAT_00f88a30 != *(char *)(param_1 + 0x188)) {\r\n    BSP_Settings_SetXboxCompatibilityMode();\r\n  }\r\n  FUN_005f52c0();\r\n  FUN_00698a10();\r\n  if ((DAT_00f88a15 == '\\0') || (bVar3)) {\r\n    uStack_4cd8 = 0;\r\n    uStack_4cd4 = 0;\r\n    uStack_4cd0 = 0;\r\n... 222 more lines of 267 (use --start 45 or --lines)\r\ncallees (41): 00419cc0 BSP_SizedStoragePool_GetSingleton, 0041dd40 BSP_NativeString_Resize, 0041e870 BSP_NativeString_Assign, 004260b0 BSP_NativeString_FromInt, 004261a0 BSP_NativeString_Concat, 004263b0 BSP_NativeString_ConcatInt, 00427110 BSP_NativeStringVector_Resize, 004c12b0 BSP_GuiManager_GetOrCreate, 004c1710 BSP_MediaManager_GetOrCreate, 004d7f90 BSP_Game_RequestReturnToTitle, 005efdc0 FUN_005efdc0, 005effa0 FUN_005effa0 ...\r\n",
+        "stderr": "",
+        "stdout_sha256": "27e5e53f0206386f0205df8fc23a91ddcb05865c4daeb0b3d7395570d076fd21",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_commit_listing_head",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F65C0",
+          "--asm",
+          "--lines",
+          "43"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:03:26.861761+00:00",
+        "finish_utc": "2026-10-10T12:03:27.041432+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f65c0  FUN_005f65c0  thunk=no  export=exports/bsp/functions/005f65c0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\n--- exports/bsp/functions/005f65c0/assembly.txt ---\r\n005f65c0: PUSH -0x1 \r\n005f65c2: PUSH 0xc763a6 \r\n005f65c7: MOV EAX,FS:[0x0] \r\n005f65cd: PUSH EAX \r\n005f65ce: MOV EAX,0x4cf8 \r\n005f65d3: MOV dword ptr FS:[0x0],ESP \r\n005f65da: CALL 0x00bf9410 \r\n005f65df: PUSH EBX \r\n005f65e0: PUSH EBP \r\n005f65e1: PUSH ESI \r\n005f65e2: MOV EBP,ECX \r\n005f65e4: PUSH EDI \r\n005f65e5: LEA ESI,[EBP + 0xd8] \r\n005f65eb: PUSH 0xf88980 \r\n005f65f0: MOV ECX,ESI \r\n005f65f2: CALL 0x008d4210 \r\n005f65f7: MOV byte ptr [ESP + 0x1f],AL \r\n005f65fb: MOV EAX,[0x00f889f8] \r\n005f6600: CMP EAX,dword ptr [EBP + 0x150] \r\n005f6606: MOVZX EAX,byte ptr [EBP + 0x188] \r\n005f660d: SETNZ BL \r\n005f6610: CMP byte ptr [0x00f88a30],AL \r\n005f6616: JZ 0x005f6623 \r\n005f6618: PUSH EAX \r\n005f6619: MOV ECX,0xf88980 \r\n005f661e: CALL 0x008d44c0 \r\n005f6623: PUSH ESI \r\n005f6624: MOV ECX,0xf88980 \r\n005f6629: CALL 0x005f52c0 \r\n005f662e: MOV ECX,dword ptr [0x00e188a8] \r\n005f6634: ADD ECX,0x3c \r\n005f6637: CALL 0x00698a10 \r\n005f663c: CMP byte ptr [0x00f88a15],0x0 \r\n005f6643: JZ 0x005f664d \r\n005f6645: TEST BL,BL \r\n005f6647: JZ 0x005f6e31 \r\n005f664d: XOR EAX,EAX \r\n005f664f: MOV dword ptr [ESP + 0x3c],EAX \r\n005f6653: MOV dword ptr [ESP + 0x40],EAX \r\n005f6657: MOV dword ptr [ESP + 0x44],EAX \r\n005f665b: MOV dword ptr [ESP + 0x4d10],EAX \r\n005f6662: CALL 0x00992830 \r\n005f6667: MOV EDI,EAX \r\n... 529 more lines of 572 (use --start 43 or --lines)\r\n",
+        "stderr": "",
+        "stdout_sha256": "294f5383a003056a568afeca151ee328971acaa5f8b881f816a60fc13f197874",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "saved_commit_listing_tail",
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "show",
+          "005F65C0",
+          "--asm",
+          "--start",
+          "524",
+          "--lines",
+          "48"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+        "start_utc": "2026-10-10T12:03:27.041523+00:00",
+        "finish_utc": "2026-10-10T12:03:27.217019+00:00",
+        "environment_override": {
+          "BSP_GHIDRA_AUTOSTART": "0"
+        },
+        "exit_code": 0,
+        "stdout": "005f65c0  FUN_005f65c0  thunk=no  export=exports/bsp/functions/005f65c0\r\nsegment 23 [005e09a0-00604a50] 263 candidates wave 2  keywords: globals, back, xsm_saveconfirm, fe_xbox, mainlistbox_text, select, main_listbox, navigate\r\n--- exports/bsp/functions/005f65c0/assembly.txt ---\r\n005f6e31: XOR ESI,ESI \r\n005f6e33: PUSH 0x1 \r\n005f6e35: CALL 0x004c1710 \r\n005f6e3a: MOV ECX,EAX \r\n005f6e3c: CALL 0x00a4c2d0 \r\n005f6e41: CMP byte ptr [ESP + 0x1f],0x0 \r\n005f6e46: MOV EAX,0x5f0090 \r\n005f6e4b: JNZ 0x005f6e52 \r\n005f6e4d: MOV EAX,0xbd53c0 \r\n005f6e52: PUSH EAX \r\n005f6e53: MOV ECX,0xf88980 \r\n005f6e58: CALL 0x008d6c00 \r\n005f6e5d: CMP byte ptr [EBP + 0x252],0x0 \r\n005f6e64: JZ 0x005f6eb7 \r\n005f6e66: PUSH ESI \r\n005f6e67: MOV ECX,0xf88a24 \r\n005f6e6c: CALL 0x00427110 \r\n005f6e71: CALL 0x004c12b0 \r\n005f6e76: MOV ECX,EAX \r\n005f6e78: CALL 0x00aa0f70 \r\n005f6e7d: MOV ECX,dword ptr [EBP + 0x88] \r\n005f6e83: MOV EDX,dword ptr [ECX] \r\n005f6e85: MOV EAX,dword ptr [EDX + 0x60] \r\n005f6e88: PUSH ESI \r\n005f6e89: CALL EAX \r\n005f6e8b: MOV ECX,dword ptr [EBP + 0x88] \r\n005f6e91: MOV byte ptr [ECX + 0x77],0x1 \r\n005f6e95: MOV ECX,dword ptr [EBP + 0x88] \r\n005f6e9b: MOV EDX,dword ptr [ECX] \r\n005f6e9d: MOV EAX,dword ptr [EDX + 0x34] \r\n005f6ea0: PUSH ESI \r\n005f6ea1: CALL EAX \r\n005f6ea3: MOV ECX,dword ptr [0x00e188a8] \r\n005f6ea9: CALL 0x004d7f90 \r\n005f6eae: MOV byte ptr [EBP + 0x252],0x0 \r\n005f6eb5: JMP 0x005f6ec8 \r\n005f6eb7: MOV ECX,0xf88980 \r\n005f6ebc: CALL 0x008d5b50 \r\n005f6ec1: MOV ECX,EBP \r\n005f6ec3: CALL 0x005f54f0 \r\n005f6ec8: MOV ECX,dword ptr [ESP + 0x4d08] \r\n005f6ecf: POP EDI \r\n005f6ed0: POP ESI \r\n005f6ed1: POP EBP \r\n005f6ed2: MOV dword ptr FS:[0x0],ECX \r\n005f6ed9: POP EBX \r\n005f6eda: ADD ESP,0x4d04 \r\n005f6ee0: RET \r\n",
+        "stderr": "",
+        "stdout_sha256": "2b8d25342552234f1259ee3d4d425573f2a22616a8dc875012d630e7bfcb0ee2",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "project_program_verification": "Each typed bsp.py ghidra command invokes client()/Client.verify() before querying; successful exit means live project_name=bsp, program_path=/battlestationspacific.exe, language=x86:LE:32:default and image_base=00400000 matched frozen config. Configured project_file C:/Users/sqz269/bsp.gpr; full live GPR file path is not independently exposed. BSP_GHIDRA_AUTOSTART=0.",
+  "exact_native_evidence": {
+    "constructor": {
+      "receiver_entry": "ECX=screen;6048 MOV ESI,ECX",
+      "first_settings_receiver": "6093 LEA ECX,[ESI+D8];609E CALL8D7710",
+      "second_settings_receiver": "60A3 LEA ECX,[ESI+194];60AE CALL8D7710",
+      "return": "60DA MOV EAX,ESI;60E8 RET",
+      "audio_byte_offsets": [
+        "screen+FC",
+        "screen+1B8"
+      ],
+      "admitted_initializer_composition": "8D7710 writes byte[receiver+24]=1, so both embedded enable bytes receive one on normal constructor completion. No later source-byte value inferred."
+    },
+    "caller": {
+      "receiver": "65E2 MOV EBP,ECX",
+      "source": "65E5 LEA ESI,[EBP+D8]",
+      "call_sequence": [
+        {
+          "va": "005F6623",
+          "instruction": "PUSH ESI"
+        },
+        {
+          "va": "005F6624",
+          "instruction": "MOV ECX,0xF88980"
+        },
+        {
+          "va": "005F6629",
+          "instruction": "CALL0x005F52C0"
+        }
+      ],
+      "branch_fact": "Optional compatibility-setter branch converges at6623; both normal paths that reach6623 invoke the copy."
+    },
+    "copy_helper": {
+      "callee_destination": "52C2 MOV ESI,ECX",
+      "callee_source": "52C5 MOV EDI,[ESP+10]; after three register pushes this is [entry ESP+4]",
+      "source_read": "5311 MOVZX ECX,byte[EDI+24]",
+      "destination_write": "5315 MOV byte[ESI+24],CL",
+      "unconditional_byte_copy_before_first_nested_call": true,
+      "constant_zero_store": false,
+      "normalizes_to_bool": false,
+      "return": "54E3 MOV EAX,ESI;54E7 RET4; EBX/ESI/EDI restored",
+      "derived_abi": "thiscall-style ECX destination, one source pointer stack argument, callee pops4, EAX destination result",
+      "stored_prototype_is_not_this_proof": "Live stored signatures are undefined ...(void); no prototype mutation was made."
+    },
+    "equation": {
+      "destination_base": "00F88980",
+      "destination_offset": "24",
+      "destination_byte": "00F889A4",
+      "source_base": "screen+D8",
+      "source_offset": "24",
+      "source_byte": "screen+FC",
+      "operation": "byte[F889A4] := byte[screen+FC]"
+    },
+    "fixed_scalar_stores": {
+      "04": {
+        "instruction": "005F52CC",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "08": {
+        "instruction": "005F52D3",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "09": {
+        "instruction": "005F52DA",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "0C": {
+        "instruction": "005F52E0",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "10": {
+        "instruction": "005F52E7",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "14": {
+        "instruction": "005F52ED",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "18": {
+        "instruction": "005F52F3",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "1C": {
+        "instruction": "005F52FA",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "1D": {
+        "instruction": "005F5301",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "1E": {
+        "instruction": "005F5308",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "20": {
+        "instruction": "005F530E",
+        "width": 4,
+        "opcode": "FSTP"
+      },
+      "24": {
+        "instruction": "005F5315",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "28": {
+        "instruction": "005F531B",
+        "width": 4,
+        "opcode": "FSTP"
+      },
+      "2C": {
+        "instruction": "005F5321",
+        "width": 4,
+        "opcode": "FSTP"
+      },
+      "30": {
+        "instruction": "005F5327",
+        "width": 4,
+        "opcode": "FSTP"
+      },
+      "34": {
+        "instruction": "005F532D",
+        "width": 4,
+        "opcode": "FSTP"
+      },
+      "38": {
+        "instruction": "005F5334",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "3C": {
+        "instruction": "005F533A",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "40": {
+        "instruction": "005F5341",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "41": {
+        "instruction": "005F5348",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "42": {
+        "instruction": "005F534F",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "43": {
+        "instruction": "005F5356",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "44": {
+        "instruction": "005F535D",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "45": {
+        "instruction": "005F5364",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "46": {
+        "instruction": "005F536B",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "47": {
+        "instruction": "005F5372",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "48": {
+        "instruction": "005F5379",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "49": {
+        "instruction": "005F5380",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "4A": {
+        "instruction": "005F5387",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "4B": {
+        "instruction": "005F538E",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "4C": {
+        "instruction": "005F5395",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "50": {
+        "instruction": "005F539B",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "54": {
+        "instruction": "005F53A1",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "58": {
+        "instruction": "005F53A7",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "5C": {
+        "instruction": "005F53AD",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "60": {
+        "instruction": "005F53B4",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "64": {
+        "instruction": "005F53BA",
+        "width": 4,
+        "opcode": "FSTP"
+      },
+      "68": {
+        "instruction": "005F53C0",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "6C": {
+        "instruction": "005F53C7",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "70": {
+        "instruction": "005F53CD",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "74": {
+        "instruction": "005F53D4",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "78": {
+        "instruction": "005F53DA",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "7C": {
+        "instruction": "005F53E1",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "80": {
+        "instruction": "005F53EA",
+        "width": 4,
+        "opcode": "FSTP"
+      },
+      "84": {
+        "instruction": "005F53F7",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "85": {
+        "instruction": "005F5404",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "86": {
+        "instruction": "005F5411",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "88": {
+        "instruction": "005F541D",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "8C": {
+        "instruction": "005F542A",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "8D": {
+        "instruction": "005F5437",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "90": {
+        "instruction": "005F5443",
+        "width": 4,
+        "opcode": "MOV"
+      },
+      "94": {
+        "instruction": "005F5450",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "95": {
+        "instruction": "005F546A",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "B0": {
+        "instruction": "005F548E",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "B1": {
+        "instruction": "005F549B",
+        "width": 1,
+        "opcode": "MOV"
+      },
+      "B2": {
+        "instruction": "005F54B6",
+        "width": 1,
+        "opcode": "MOV"
+      }
+    },
+    "nested_subobject_call_operands": [
+      {
+        "call": "005F5470",
+        "target": "00543E50",
+        "ECX_destination": "original destination+98",
+        "stack_source": "original source+98"
+      },
+      {
+        "call": "005F5482",
+        "target": "00543E50",
+        "ECX_destination": "original destination+A4",
+        "stack_source": "original source+A4"
+      }
+    ],
+    "nested_subobject_boundary": "Callee names describe string vectors, but their bodies and deep ownership/lifetime behavior were not newly analyzed. +B4 tail checks object identity, resizes destination and conditionally copies payload through unreviewed callees.",
+    "float_boundary": "FSTP stores at offsets20/28/2C/30/34/64/80 follow x87 FLD loads. The enable-byte conclusion is independent; no x87 exceptional-value, rounding or bit-identity proof.",
+    "tail_global_receiver_calls": [
+      {
+        "at": "005F6E58",
+        "target": "008D6C00",
+        "ECX": "00F88980"
+      },
+      {
+        "at": "005F6EBC",
+        "target": "008D5B50",
+        "ECX": "00F88980",
+        "condition": "only one final branch"
+      }
+    ],
+    "tail_qualification": "Call operands only. No claim these unreviewed callees write the enable byte."
+  },
+  "source_document_discrepancies": [
+    {
+      "path": "include/bsp/options_menu_screens.hpp",
+      "line": 428,
+      "current": "virtual void reload_from_settings() = 0; //005F65C0",
+      "finding": "Direction implied by this label is contradicted for the exact6629 copy step; this is an abstract Source slot, not a demonstrated native reload implementation."
+    },
+    {
+      "path": "docs/OPTIONS_MENU_SCREENS.md",
+      "line": 344,
+      "current": "Describes005F65C0 as settings-to-screen reload",
+      "finding": "Exact6629 copy is screen-to-persistent-global. Do not generalize to all other menu copy directions."
+    },
+    {
+      "path": "include/bsp/game_settings.hpp",
+      "line": 156,
+      "current": "Calls005F65C0 the options commit",
+      "finding": "A differing existing Source label; machine operands, not names, establish the copy."
+    }
+  ],
+  "zero_and_timing": {
+    "actual_persistent_byte_writer_established": true,
+    "actual_zero_value_provenance_established": false,
+    "pre_0073DAEE_reachability_established": false,
+    "post_successful_startup_only_established": false,
+    "supported_input_or_selector_established": false,
+    "conditional_fact": "If screen+FC equals zero at this invocation,5315 copies zero. No such actual source writer/value or invocation ordering is established here.",
+    "known_one_provenance": "Admitted CRT initializer places1 in global byte before startup; newly recovered screen constructor receivers likewise receive1 from the admitted settings constructor.",
+    "caller_metadata": [
+      "005F7050",
+      "005F7310",
+      "005F7C40",
+      "005F8960"
+    ],
+    "constructor_caller_metadata": [
+      "006898C0"
+    ],
+    "caller_limit": "Metadata does not prove complete direct/indirect lifecycle reachability or order relative to73DAEE.",
+    "no_exhaustive_absence_claim": true,
+    "frontiers": [
+      "Find concrete original zero provenance into screen+FC or another persistent-byte writer, if any.",
+      "Independently establish a feasible original route and timing before73DAEE, if any.",
+      "Review additional copies, screen lifecycle and unreviewed callees only under separate ownership."
+    ]
+  },
+  "artifact_handoff": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_options_sound_copy_abi_review",
+    "portable_relative_directory": "local/cc12_options_sound_copy_abi_review",
+    "retention": "Copy the complete directory under the same relative path in the reviewing checkout before removing this worktree. Report pins are relative to checkout root. Prior receipts are retained as complete admitted provenance; their external artifact trees are not recursively replayed by this packet."
+  },
+  "local_capture_commands": [
+    [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/capture.py",
+      "local/cc12_options_sound_copy_abi_review/live_initial.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/capture.py",
+      "local/cc12_options_sound_copy_abi_review/live_listing.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/capture.py",
+      "local/cc12_options_sound_copy_abi_review/live_remaining.json"
+    ],
+    [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/capture.py",
+      "local/cc12_options_sound_copy_abi_review/saved_windows.json"
+    ]
+  ],
+  "local_finalize_commands": [
+    [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/freeze.py"
+    ],
+    [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/replay.py"
+    ],
+    [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/make_receipt.py"
+    ]
+  ],
+  "local_script_pins": [
+    {
+      "path": "local/cc12_options_sound_copy_abi_review/capture.py",
+      "bytes": 1303,
+      "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+    },
+    {
+      "path": "local/cc12_options_sound_copy_abi_review/freeze.py",
+      "bytes": 4018,
+      "sha256": "6a89bd44d0f894106c42454e71e18be334569829687e34d5e9b90746650f4b72"
+    },
+    {
+      "path": "local/cc12_options_sound_copy_abi_review/replay.py",
+      "bytes": 4981,
+      "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+    },
+    {
+      "path": "local/cc12_options_sound_copy_abi_review/make_receipt.py",
+      "bytes": 9481,
+      "sha256": "d35c73dca31fbd6035b00f117b2101070f571f07a204c6fe3780efd810a4a07e"
+    }
+  ],
+  "offline_replay": {
+    "command": [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/replay.py"
+    ],
+    "script_pin": {
+      "path": "local/cc12_options_sound_copy_abi_review/replay.py",
+      "bytes": 4981,
+      "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+    },
+    "script_text": "\"\"\"Pure offline evidence replay: no Native execution, live bridge, or original PE access.\"\"\"\nimport hashlib, json, pathlib, re, struct\nROOT=pathlib.Path(__file__).resolve().parents[2]\nOUT=pathlib.Path(__file__).resolve().parent\nfreeze=json.loads((OUT/'freeze_capture.json').read_text(encoding='utf-8'))\ndef sha(data): return hashlib.sha256(data).hexdigest()\npins=[]\ndef walk(obj):\n    if isinstance(obj,dict):\n        if {'path','bytes','sha256'}<=set(obj):\n            data=(ROOT/obj['path']).read_bytes()\n            assert len(data)==obj['bytes'] and sha(data)==obj['sha256'],obj['path']\n            pins.append(obj['path'])\n        for value in obj.values(): walk(value)\n    elif isinstance(obj,list):\n        for value in obj: walk(value)\nwalk(freeze)\ncaptures={}\nfor row in freeze['command_captures_and_specs']:\n    if row['file'].endswith('_capture.json'):\n        for cmd in json.loads((ROOT/row['pin']['path']).read_text(encoding='utf-8')):\n            assert cmd['exit_code']==0\n            assert sha(cmd['stdout'].encode())==cmd['stdout_sha256']\n            assert sha(cmd['stderr'].encode())==cmd['stderr_sha256']\n            captures[cmd['label']]=cmd\nwindows={w['label']:w for w in freeze['original_PE']['windows']}\nraw={k:(ROOT/v['bytes_pin']['path']).read_bytes() for k,v in windows.items()}\ndef live_bytes(label):\n    rows=[]\n    for line in captures[label]['stdout'].splitlines():\n        m=re.match(r'^([0-9a-f]{8})  ((?:[0-9a-f]{2} ?)+)  ',line)\n        if m: rows.append((int(m[1],16),bytes.fromhex(m[2])))\n    assert rows\n    for (a,b),(c,d) in zip(rows,rows[1:]): assert a+len(b)==c\n    return rows[0][0],b''.join(b for a,b in rows)\nfor label in ['constructor','commit_head','commit_tail']:\n    a,b=live_bytes(label+'_bytes')\n    assert a==int(windows[label]['start_va'],16) and b==raw[label]\nparts=[live_bytes('copy_helper_bytes_'+str(i)) for i in range(3)]\nfor (a,b),(c,d) in zip(parts,parts[1:]): assert a+len(b)==c\nassert b''.join(b for a,b in parts)==raw['copy_helper']\ndef at(label,address,length):\n    off=address-int(windows[label]['start_va'],16)\n    assert off>=0 and off+length<=len(raw[label])\n    return raw[label][off:off+length]\nchecks=[]\ndef expect(label,address,hexbytes):\n    expected=bytes.fromhex(hexbytes)\n    assert at(label,address,len(expected))==expected,f'{address:08X}'\n    checks.append(f'{address:08X}')\ndef call(label,address,target):\n    b=at(label,address,5)\n    assert b[0]==0xe8 and address+5+struct.unpack('<i',b[1:])[0]==target\n    checks.append(f'{address:08X}->{target:08X}')\nexpect('constructor',0x5f6048,'8bf1')\nexpect('constructor',0x5f6093,'8d8ed8000000')\nexpect('constructor',0x5f60a3,'8d8e94010000')\ncall('constructor',0x5f609e,0x8d7710)\ncall('constructor',0x5f60ae,0x8d7710)\nexpect('commit_head',0x5f65e2,'8be9')\nexpect('commit_head',0x5f65e5,'8db5d8000000')\nexpect('commit_head',0x5f6623,'56b98089f800')\ncall('commit_head',0x5f6629,0x5f52c0)\nexpect('copy_helper',0x5f52c0,'53568bf1578b7c2410')\nexpect('copy_helper',0x5f5311,'0fb64f24884e24')\nexpect('copy_helper',0x5f54e2,'5f8bc65e5bc20400')\ndef listing(label):\n    return {int(m[1],16):' '.join(m[2].split()) for line in captures[label]['stdout'].splitlines()\n        if (m:=re.match(r'^([0-9a-f]{8}):\\s*(.+)',line))}\ncomparisons=[]\nfor saved,live,window in [\n ('saved_constructor_listing','constructor_listing','constructor'),\n ('saved_commit_listing_head','commit_head_listing','commit_head'),\n ('saved_commit_listing_tail','commit_tail_listing','commit_tail')]:\n    a,b=listing(saved),listing(live)\n    start=int(windows[window]['start_va'],16); end=start+windows[window]['length']\n    aa={x:y for x,y in a.items() if start<=x<end}\n    bb={x:y for x,y in b.items() if start<=x<end}\n    assert aa and aa==bb,(saved,live)\n    comparisons.append({'window':window,'matching_instruction_rows':len(aa)})\nstores={}\nfor label in ['copy_helper_head_listing','copy_helper_middle_listing','copy_helper_tail_listing']:\n    for addr,insn in listing(label).items():\n        m=re.match(r'(MOV (byte|dword) ptr|FSTP (float) ptr) \\[ESI \\+ (0x[0-9a-f]+)\\],?(.*)',insn)\n        if m: stores[f'{int(m[4],16):02X}']={'instruction':f'{addr:08X}','width':1 if m[2]=='byte' else 4,'opcode':'FSTP' if m[3] else 'MOV'}\nassert stores['24']=={'instruction':'005F5315','width':1,'opcode':'MOV'}\nassert 0xd8+0x24==0xfc and 0x194+0x24==0x1b8 and 0xf88980+0x24==0xf889a4\nresult={'passed':True,'pin_occurrences':len(pins),'unique_frozen_files':len(set(pins)),\n 'whole_Source_Git_files':len(freeze['sources']),'captured_commands':len(captures),\n 'PE_live_identical_windows':4,'PE_bytes_total':sum(len(x) for x in raw.values()),\n 'saved_live_listing_comparisons':comparisons,'exact_instruction_or_call_assertions':checks,\n 'fixed_scalar_stores':stores,\n 'qualification':'Frozen bytes, hashes, exact instruction facts and address arithmetic only. No Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit.'}\nprint(json.dumps(result,indent=2))\n",
+    "exit_code": 0,
+    "stdout_text": "{\r\n  \"passed\": true,\r\n  \"pin_occurrences\": 49,\r\n  \"unique_frozen_files\": 49,\r\n  \"whole_Source_Git_files\": 17,\r\n  \"captured_commands\": 21,\r\n  \"PE_live_identical_windows\": 4,\r\n  \"PE_bytes_total\": 1039,\r\n  \"saved_live_listing_comparisons\": [\r\n    {\r\n      \"window\": \"constructor\",\r\n      \"matching_instruction_rows\": 42\r\n    },\r\n    {\r\n      \"window\": \"commit_head\",\r\n      \"matching_instruction_rows\": 32\r\n    },\r\n    {\r\n      \"window\": \"commit_tail\",\r\n      \"matching_instruction_rows\": 48\r\n    }\r\n  ],\r\n  \"exact_instruction_or_call_assertions\": [\r\n    \"005F6048\",\r\n    \"005F6093\",\r\n    \"005F60A3\",\r\n    \"005F609E->008D7710\",\r\n    \"005F60AE->008D7710\",\r\n    \"005F65E2\",\r\n    \"005F65E5\",\r\n    \"005F6623\",\r\n    \"005F6629->005F52C0\",\r\n    \"005F52C0\",\r\n    \"005F5311\",\r\n    \"005F54E2\"\r\n  ],\r\n  \"fixed_scalar_stores\": {\r\n    \"04\": {\r\n      \"instruction\": \"005F52CC\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"08\": {\r\n      \"instruction\": \"005F52D3\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"09\": {\r\n      \"instruction\": \"005F52DA\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"0C\": {\r\n      \"instruction\": \"005F52E0\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"10\": {\r\n      \"instruction\": \"005F52E7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"14\": {\r\n      \"instruction\": \"005F52ED\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"18\": {\r\n      \"instruction\": \"005F52F3\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1C\": {\r\n      \"instruction\": \"005F52FA\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1D\": {\r\n      \"instruction\": \"005F5301\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1E\": {\r\n      \"instruction\": \"005F5308\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"20\": {\r\n      \"instruction\": \"005F530E\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"24\": {\r\n      \"instruction\": \"005F5315\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"28\": {\r\n      \"instruction\": \"005F531B\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"2C\": {\r\n      \"instruction\": \"005F5321\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"30\": {\r\n      \"instruction\": \"005F5327\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"34\": {\r\n      \"instruction\": \"005F532D\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"38\": {\r\n      \"instruction\": \"005F5334\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"3C\": {\r\n      \"instruction\": \"005F533A\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"40\": {\r\n      \"instruction\": \"005F5341\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"41\": {\r\n      \"instruction\": \"005F5348\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"42\": {\r\n      \"instruction\": \"005F534F\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"43\": {\r\n      \"instruction\": \"005F5356\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"44\": {\r\n      \"instruction\": \"005F535D\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"45\": {\r\n      \"instruction\": \"005F5364\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"46\": {\r\n      \"instruction\": \"005F536B\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"47\": {\r\n      \"instruction\": \"005F5372\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"48\": {\r\n      \"instruction\": \"005F5379\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"49\": {\r\n      \"instruction\": \"005F5380\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4A\": {\r\n      \"instruction\": \"005F5387\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4B\": {\r\n      \"instruction\": \"005F538E\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4C\": {\r\n      \"instruction\": \"005F5395\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"50\": {\r\n      \"instruction\": \"005F539B\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"54\": {\r\n      \"instruction\": \"005F53A1\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"58\": {\r\n      \"instruction\": \"005F53A7\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"5C\": {\r\n      \"instruction\": \"005F53AD\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"60\": {\r\n      \"instruction\": \"005F53B4\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"64\": {\r\n      \"instruction\": \"005F53BA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"68\": {\r\n      \"instruction\": \"005F53C0\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"6C\": {\r\n      \"instruction\": \"005F53C7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"70\": {\r\n      \"instruction\": \"005F53CD\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"74\": {\r\n      \"instruction\": \"005F53D4\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"78\": {\r\n      \"instruction\": \"005F53DA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"7C\": {\r\n      \"instruction\": \"005F53E1\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"80\": {\r\n      \"instruction\": \"005F53EA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"84\": {\r\n      \"instruction\": \"005F53F7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"85\": {\r\n      \"instruction\": \"005F5404\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"86\": {\r\n      \"instruction\": \"005F5411\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"88\": {\r\n      \"instruction\": \"005F541D\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"8C\": {\r\n      \"instruction\": \"005F542A\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"8D\": {\r\n      \"instruction\": \"005F5437\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"90\": {\r\n      \"instruction\": \"005F5443\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"94\": {\r\n      \"instruction\": \"005F5450\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"95\": {\r\n      \"instruction\": \"005F546A\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B0\": {\r\n      \"instruction\": \"005F548E\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B1\": {\r\n      \"instruction\": \"005F549B\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B2\": {\r\n      \"instruction\": \"005F54B6\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    }\r\n  },\r\n  \"qualification\": \"Frozen bytes, hashes, exact instruction facts and address arithmetic only. No Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit.\"\r\n}\r\n",
+    "stderr_text": "",
+    "result": {
+      "passed": true,
+      "pin_occurrences": 49,
+      "unique_frozen_files": 49,
+      "whole_Source_Git_files": 17,
+      "captured_commands": 21,
+      "PE_live_identical_windows": 4,
+      "PE_bytes_total": 1039,
+      "saved_live_listing_comparisons": [
+        {
+          "window": "constructor",
+          "matching_instruction_rows": 42
+        },
+        {
+          "window": "commit_head",
+          "matching_instruction_rows": 32
+        },
+        {
+          "window": "commit_tail",
+          "matching_instruction_rows": 48
+        }
+      ],
+      "exact_instruction_or_call_assertions": [
+        "005F6048",
+        "005F6093",
+        "005F60A3",
+        "005F609E->008D7710",
+        "005F60AE->008D7710",
+        "005F65E2",
+        "005F65E5",
+        "005F6623",
+        "005F6629->005F52C0",
+        "005F52C0",
+        "005F5311",
+        "005F54E2"
+      ],
+      "fixed_scalar_stores": {
+        "04": {
+          "instruction": "005F52CC",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "08": {
+          "instruction": "005F52D3",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "09": {
+          "instruction": "005F52DA",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "0C": {
+          "instruction": "005F52E0",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "10": {
+          "instruction": "005F52E7",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "14": {
+          "instruction": "005F52ED",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "18": {
+          "instruction": "005F52F3",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "1C": {
+          "instruction": "005F52FA",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "1D": {
+          "instruction": "005F5301",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "1E": {
+          "instruction": "005F5308",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "20": {
+          "instruction": "005F530E",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "24": {
+          "instruction": "005F5315",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "28": {
+          "instruction": "005F531B",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "2C": {
+          "instruction": "005F5321",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "30": {
+          "instruction": "005F5327",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "34": {
+          "instruction": "005F532D",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "38": {
+          "instruction": "005F5334",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "3C": {
+          "instruction": "005F533A",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "40": {
+          "instruction": "005F5341",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "41": {
+          "instruction": "005F5348",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "42": {
+          "instruction": "005F534F",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "43": {
+          "instruction": "005F5356",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "44": {
+          "instruction": "005F535D",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "45": {
+          "instruction": "005F5364",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "46": {
+          "instruction": "005F536B",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "47": {
+          "instruction": "005F5372",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "48": {
+          "instruction": "005F5379",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "49": {
+          "instruction": "005F5380",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "4A": {
+          "instruction": "005F5387",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "4B": {
+          "instruction": "005F538E",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "4C": {
+          "instruction": "005F5395",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "50": {
+          "instruction": "005F539B",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "54": {
+          "instruction": "005F53A1",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "58": {
+          "instruction": "005F53A7",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "5C": {
+          "instruction": "005F53AD",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "60": {
+          "instruction": "005F53B4",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "64": {
+          "instruction": "005F53BA",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "68": {
+          "instruction": "005F53C0",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "6C": {
+          "instruction": "005F53C7",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "70": {
+          "instruction": "005F53CD",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "74": {
+          "instruction": "005F53D4",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "78": {
+          "instruction": "005F53DA",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "7C": {
+          "instruction": "005F53E1",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "80": {
+          "instruction": "005F53EA",
+          "width": 4,
+          "opcode": "FSTP"
+        },
+        "84": {
+          "instruction": "005F53F7",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "85": {
+          "instruction": "005F5404",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "86": {
+          "instruction": "005F5411",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "88": {
+          "instruction": "005F541D",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "8C": {
+          "instruction": "005F542A",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "8D": {
+          "instruction": "005F5437",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "90": {
+          "instruction": "005F5443",
+          "width": 4,
+          "opcode": "MOV"
+        },
+        "94": {
+          "instruction": "005F5450",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "95": {
+          "instruction": "005F546A",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "B0": {
+          "instruction": "005F548E",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "B1": {
+          "instruction": "005F549B",
+          "width": 1,
+          "opcode": "MOV"
+        },
+        "B2": {
+          "instruction": "005F54B6",
+          "width": 1,
+          "opcode": "MOV"
+        }
+      },
+      "qualification": "Frozen bytes, hashes, exact instruction facts and address arithmetic only. No Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit."
+    }
+  },
+  "credit": {
+    "static_copy_direction": true,
+    "frozen_evidence_replay": true,
+    "source_changes": false,
+    "compiler_or_tests_run": false,
+    "native_execution": false,
+    "ghidra_mutation": false,
+    "new_selector": false,
+    "SDK_or_game_or_OS_changes": false,
+    "ABI_compatible_replacement": false,
+    "startup_validated": false,
+    "gameplay_validated": false
+  }
+}
