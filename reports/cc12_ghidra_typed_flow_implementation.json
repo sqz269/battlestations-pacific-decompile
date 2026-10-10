@@ -1244,5 +1244,49 @@
       "Root authorizes bounded first capture and retains raw response; Native gates held",
       "Rollback restores original three extension files after clean shutdown; never revert saved analysis"
     ]
+  },
+  "primary_review": {
+    "worker_commit": "1574076d6ef4b383cfbab6d2790ee475c9aac688",
+    "plugin_commit": "3d8f2fc1e8f17643ca1894af4da7aa0d1aed0dfc",
+    "unique_paths": 111,
+    "frozen_bundle": {
+      "path": "local/cc12_typed_flow_implementation_primary/frozen_bundle.zip",
+      "bytes": 46283299,
+      "sha256": "d3da681aecafa202f5058f67a97c222b6801fffa278b59278e1d7101e9b59aaa"
+    },
+    "installed_JAR_unchanged": true,
+    "overlay_changes_only": [
+      "com/xebyte/core/FunctionService.class"
+    ],
+    "other102_entry_hashes_preserved": true,
+    "new_full_package_changes": [
+      "com/xebyte/core/FunctionService$PrototypeResult.class",
+      "com/xebyte/core/FunctionService.class",
+      "com/xebyte/version.properties"
+    ],
+    "raw_capture_validation_and_dispatch_code_reviewed": true,
+    "Java_endpoint_and_all_helpers_source_reviewed": true,
+    "SDK_and_existing_API_and_bytecode_audit_retained": true,
+    "primary_focused_tests": {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/test_ghidra_typed_flow.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "path": "local/cc12_typed_flow_implementation_primary/focused_primary_tests.txt",
+      "sha256": "47a5a6cf5faf31a9aa9c3f705c811eee462aa4148711395e1e33ef165d39c9b4"
+    },
+    "deployment": false,
+    "restart": false,
+    "endpoint_runtime_execution": false,
+    "GPR_mutation": false,
+    "Native_gate_admission": false,
+    "retained_complete_receipt": {
+      "path": "local/cc12_typed_flow_implementation_primary/primary_review.json",
+      "sha256": "a7c058bbb54155002e0f4159e1771ee014f75047c15d471b19570955be2642de"
+    }
   }
 }

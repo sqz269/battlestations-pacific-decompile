@@ -1,0 +1,727 @@
+{
+  "schema": "cc12-compact-resource-writer-discovery-v1",
+  "packet": "cc12_compact_resource_writer_discovery",
+  "created_utc": "2026-10-10T01:08:12.821216+00:00",
+  "baseline_commit": "e7cb4b9c18c3af28122a241674d2e3dea395d73c",
+  "worker_worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "direct-write-identified; owning-function-and-initializer-contract-unresolved; Astra/Root-recovery-required",
+  "owned_tracked_files": [
+    "docs/CC12_COMPACT_RESOURCE_WRITER_DISCOVERY.md",
+    "reports/cc12_compact_resource_writer_discovery.json"
+  ],
+  "lease_and_notification": "Initial0109042C lease extended with exact00CD8688 after WRITE xref and Root notified before selected instruction opening. Root notified again at the unresolved ownership gate.",
+  "leased_addresses_before_instruction_opening": [
+    "0109042C",
+    "00CD8688"
+  ],
+  "confirmed_write": {
+    "instruction_address": "00CD8688",
+    "inclusive_selected_end": "00CD868D",
+    "selected_bytes": 6,
+    "operation": "MOV dword ptr [0109042C], ECX",
+    "destination_cell": "0109042C",
+    "source_register": "ECX",
+    "live_hex": "890d2c040901",
+    "xref_type": "WRITE",
+    "ECX_value_origin": null,
+    "original_file_decoding_agrees_with_live_instruction": true,
+    "separate_original_live_raw_byte_equality_comparison": false
+  },
+  "reference_scope": {
+    "target": "0109042C",
+    "limit": 80,
+    "returned": 5,
+    "READ": [
+      "00B922C0",
+      "00B922E0",
+      "00B92EA0"
+    ],
+    "DATA": [
+      "00B92E94"
+    ],
+    "WRITE": [
+      "00CD8688"
+    ],
+    "other_returned_reference_sites_opened": false,
+    "complete_CLI_output_retained": true,
+    "display_spill": false,
+    "indirect_or_unresolved_writers_excluded": false
+  },
+  "physical_review_scope": {
+    "instruction_starts": [
+      "00CD8688"
+    ],
+    "selected_windows": [
+      {
+        "start": "00CD8688",
+        "inclusive_end": "00CD868D",
+        "bytes": 6
+      }
+    ],
+    "complete_bodies": [],
+    "adjacent_instructions_opened": false,
+    "Native_data_windows": [],
+    "handler_windows": [],
+    "pseudocode_opened": false,
+    "incoming_register_ABI_recovery_attempted": false,
+    "listing_or_control_flow_repair_attempted": false
+  },
+  "unresolved_metadata": {
+    "function_lookup": "No function found for 00cd8688",
+    "signature": "No function at address: 00cd8688",
+    "callers": "Function not found: null",
+    "exact_store_xrefs": "No references found to address: 00cd8688",
+    "indexed_document_mentions": 0,
+    "lookup_nearest_earlier_candidate": {
+      "address": "00CD8460",
+      "name": "BSP_GroupPool_InitializeStatic",
+      "ownership_evidence": false,
+      "body_opened": false
+    },
+    "qualification": "The bounded queries did not resolve ownership; they do not prove absence of every possible containing or discontiguous function. Caller metadata is unavailable, not an established empty caller set."
+  },
+  "initializer_contract": {
+    "owning_function": null,
+    "entrypoint": null,
+    "complete_physical_body_extent": null,
+    "guard": null,
+    "full_descriptor_extent": null,
+    "descriptor_name": null,
+    "parent_initializer_chain": null,
+    "shared_counter_owner": null,
+    "counter_consumption": null,
+    "store_order": null,
+    "partial_state_behavior": null,
+    "repeat_call_behavior": null,
+    "calling_convention": null,
+    "arguments": null,
+    "stack_cleanup": null,
+    "return_value": null,
+    "incoming_register_ABI": null,
+    "original_caller": null,
+    "CRT_table_placement": null
+  },
+  "next_bounded_packet": {
+    "model_and_owner": "Astra/Root",
+    "anchor": "00CD8688",
+    "objective": "Establish genuine containing-function ownership and entrypoint, then complete physical body. Recover guard/full target/name, parent/support calls, counter, store/failure/repeat semantics, ABI and caller/CRT evidence only within newly announced exact leases.",
+    "additional_boundaries_require_exact_lease_and_parent_notification": true,
+    "Ghidra_mutation_owner": "Root only, write lock and preserve old values",
+    "Cpp_implementation_authorized": false,
+    "nearest_candidate_or_adjacent_entry_inference_allowed": false
+  },
+  "source_boundaries": {
+    "compact_cell_reference": "include/bsp/native_resource_postprocess_full.hpp:21 const volatile borrowed compact_type_0109042c",
+    "consumer": "src/native_resource_postprocess_full.cpp:358 passes address of compact_type_0109042c to B87CE0",
+    "range_pair": "include/bsp/native_resource_instance_postprocess.hpp:8 associates B78750/B922C0 with0109042C",
+    "required_future_owner": "Actual retained VFS type storage and same TypeIdCounterLifetime/common lifetime domain.",
+    "order": "Native CRT placement remains unestablished; later chosen Source startup order must preserve that qualification.",
+    "distinct_families": [
+      "compact0109042C",
+      "camera resource01090288",
+      "skin model01090344",
+      "skined-mesh resource01090454",
+      "excluded skined-mesh01090370"
+    ],
+    "other_families_investigated": false,
+    "copied_ID_guard_or_default_descriptor_introduced": false
+  },
+  "evidence": {
+    "schema": "cc12-compact-resource-writer-discovery-evidence-v1",
+    "created_utc": "2026-10-10T01:08:12.821216+00:00",
+    "baseline_commit": "e7cb4b9c18c3af28122a241674d2e3dea395d73c",
+    "configured_target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "live_target_verification": "Every live ghidra command invokes Client.verify() for project name, program path, language and image base. Configured GPR file exists; live project-directory path is not separately compared by that client.",
+    "original_image": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+      "configured_project_file_exists": true,
+      "configured_project": "bsp",
+      "configured_program": "/battlestationspacific.exe",
+      "purpose": "Current read-only original executable identity; selected instruction evidence retained separately."
+    },
+    "original_image_identity_receipt": {
+      "path": "local/cc12_compact_resource_writer_discovery/original_image_identity.json",
+      "bytes": 497,
+      "sha256": "59e38f8e6e71d1e19332dbe6b6d318c26b519bc802291510852be4c8b4ea7168"
+    },
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "semantic_status": "typed CLI successful target verification; live/snapshot64730",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/batch01_target_verification.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "0109042C",
+          "--limit",
+          "80",
+          "--lines",
+          "70"
+        ],
+        "semantic_status": "five returned references: three READ, one DATA, one WRITE; complete output",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/0109042c_xrefs.txt",
+          "bytes": 153,
+          "sha256": "8cfbd7179981a7a3a14419a5f6b1469080af52c1de4529710d0588c25d3faa53"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "semantic_status": "typed CLI successful target verification; live/snapshot64730",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/batch02_target_verification.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "00CD8688",
+          "--lines",
+          "20"
+        ],
+        "semantic_status": "function lookup and signature unavailable at exact instruction address",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_proto.txt",
+          "bytes": 128,
+          "sha256": "2c0c570e52bbf6275954b95ec3452f9ccab4bc67acacb5061ab5c1af35985f3b"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "instruction-context",
+          "00CD8688",
+          "--context",
+          "0",
+          "--output",
+          "local\\cc12_compact_resource_writer_discovery\\00cd8688_context.json",
+          "--lines",
+          "15"
+        ],
+        "semantic_status": "one instruction only; before/after arrays empty",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_context_receipt.txt",
+          "bytes": 131,
+          "sha256": "7d2fe4662bc0fedc658452a1e81bb56fa7178261b590cb62d4eb0fdf5ef99ec0"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "lookup",
+          "00CD8688",
+          "--limit",
+          "12"
+        ],
+        "semantic_status": "no function start; nearest earlier candidate does not establish ownership",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_lookup.txt",
+          "bytes": 96,
+          "sha256": "7bff7eaa8ae61bfe115e5b215ee197f6de635688388adea27994cfadc5fc6a95"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "semantic_status": "typed CLI successful target verification; live/snapshot64730",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/batch03_target_verification.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00CD8688",
+          "--length",
+          "6"
+        ],
+        "semantic_status": "exact six live bytes retained",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_bytes.txt",
+          "bytes": 37,
+          "sha256": "98d5000d4a595326dc948043dc24f6399ce2295e7c9385291b07a042b4add97b"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "00CD8688",
+          "--limit",
+          "20",
+          "--lines",
+          "15"
+        ],
+        "semantic_status": "Function not found: null; unavailable caller metadata, not zero callers",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_callers.txt",
+          "bytes": 26,
+          "sha256": "81d3200211ca88c1535478885ba94d2b66fbf4855bed62ae318ba7e6c8fbf0d2"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "00CD8688",
+          "--limit",
+          "80",
+          "--lines",
+          "70"
+        ],
+        "semantic_status": "No references found to address: 00cd8688; exact-address bounded metadata only",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_xrefs.txt",
+          "bytes": 42,
+          "sha256": "abaf5fdf08d652d8262418629596a383456266872fd4a05cba29fea16958bde4"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "disasm-raw",
+          "00CD8688",
+          "--length",
+          "6"
+        ],
+        "semantic_status": "one instruction decoded from original disk file; six-byte selected window; no Ghidra state consulted",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_original_disasm.txt",
+          "bytes": 99,
+          "sha256": "45c000f016688fe01c0e7c6456e65a9f0420ba843e8cdfbb309bc18c8d07e6b6"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "docs-for",
+          "00CD8688",
+          "--limit",
+          "10"
+        ],
+        "semantic_status": "zero indexed document mentions",
+        "output": {
+          "path": "local/cc12_compact_resource_writer_discovery/00cd8688_docs_for.txt",
+          "bytes": 31,
+          "sha256": "3b6e8e543b754032c2a593584a36fe6d42ec4bebf0f24bfca0ccf514a993d734"
+        }
+      }
+    ],
+    "instruction_context_response": {
+      "path": "local/cc12_compact_resource_writer_discovery/00cd8688_context.json",
+      "bytes": 174,
+      "sha256": "48cca207eb5bf9aad1830abaf6cab6da126429a83360be99e5a226ea4e6bbc56"
+    },
+    "selected_context": [
+      {
+        "original": {
+          "path": "config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "tools/bsp.py",
+          "bytes": 72606,
+          "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/tools/bsp.py",
+          "bytes": 72606,
+          "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "tools/ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/tools/ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/include/bsp/native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/src/native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_resource_instance_postprocess.hpp",
+          "bytes": 2514,
+          "sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/include/bsp/native_resource_instance_postprocess.hpp",
+          "bytes": 2514,
+          "sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_resource_instance_postprocess.cpp",
+          "bytes": 2372,
+          "sha256": "a8e7a89dcbc8d704d4c66c87dc381711a327214c12649b9062932295c182e407"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/src/native_resource_instance_postprocess.cpp",
+          "bytes": 2372,
+          "sha256": "a8e7a89dcbc8d704d4c66c87dc381711a327214c12649b9062932295c182e407"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+          "bytes": 10333,
+          "sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+          "bytes": 10333,
+          "sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "reports/cc12_remaining_resource_descriptors_source_readiness.json",
+          "bytes": 41864,
+          "sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3"
+        },
+        "frozen": {
+          "path": "local/cc12_compact_resource_writer_discovery/frozen_context/reports/cc12_remaining_resource_descriptors_source_readiness.json",
+          "bytes": 41864,
+          "sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      }
+    ],
+    "instruction_finding": {
+      "instruction_address": "00CD8688",
+      "inclusive_selected_end": "00CD868D",
+      "selected_bytes": 6,
+      "operation": "MOV dword ptr [0109042C], ECX",
+      "destination_cell": "0109042C",
+      "source_register": "ECX",
+      "live_hex": "890d2c040901",
+      "xref_type": "WRITE",
+      "ECX_value_origin": null,
+      "original_file_decoding_agrees_with_live_instruction": true,
+      "separate_original_live_raw_byte_equality_comparison": false
+    },
+    "counts": {
+      "selected_CLI_receipts": 12,
+      "selected_context_files": 12,
+      "batch_verification_records": 3,
+      "Native_instruction_starts": 1,
+      "selected_instruction_bytes": 6,
+      "complete_Native_function_bodies": 0,
+      "descriptor_data_windows": 0,
+      "handler_windows": 0,
+      "Ghidra_mutations": 0,
+      "Cpp_CMake_ledger_config_script_edits": 0,
+      "new_builds_tests_probes": 0
+    },
+    "scope": "Compact0109042C direct writer discovery only. No surrounding instruction or other Native body/data/handler window opened; no camera/skin ownership work.",
+    "rejected_command": {
+      "argv": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm-raw",
+        "00CD8688",
+        "--length",
+        "6",
+        "--lines",
+        "4"
+      ],
+      "exit_code": 1,
+      "reason": "disasm-raw is a top-level command, not a ghidra subcommand; argparse rejected the invocation before Native access.",
+      "raw_stderr_retained_in_local_file": false,
+      "subsequent_correct_command_retained": true
+    }
+  },
+  "evidence_manifest_pin": {
+    "path": "local/cc12_compact_resource_writer_discovery/evidence_manifest.json",
+    "bytes": 15595,
+    "sha256": "6d40ed245070881f47a79e2c9c3c2fc0887af5a28f7811971ab18adce3a79c73"
+  },
+  "document_pin": {
+    "path": "docs/CC12_COMPACT_RESOURCE_WRITER_DISCOVERY.md",
+    "bytes": 7046,
+    "sha256": "417192e785cbc66c0383a9e4dce3de2dad3955ae8da8a6ad2f91734a351b9d60"
+  },
+  "new_work_counts": {
+    "selected_CLI_receipts": 12,
+    "selected_context_files": 12,
+    "batch_verification_records": 3,
+    "Native_instruction_starts": 1,
+    "selected_instruction_bytes": 6,
+    "complete_Native_function_bodies": 0,
+    "descriptor_data_windows": 0,
+    "handler_windows": 0,
+    "Ghidra_mutations": 0,
+    "Cpp_CMake_ledger_config_script_edits": 0,
+    "new_builds_tests_probes": 0
+  },
+  "evidence_levels": {
+    "direct_write_reference": true,
+    "selected_live_instruction_and_bytes": true,
+    "matching_original_file_instruction_decode": true,
+    "separate_original_live_raw_byte_equality_comparison": false,
+    "owning_function_identified": false,
+    "complete_initializer_reconstructed": false,
+    "Cpp_implemented": false,
+    "build_tested": false,
+    "fixture_tested": false,
+    "drop_in_ABI_compatible": false,
+    "original_execution_tested": false,
+    "startup_or_runtime_validated": false,
+    "gameplay_validated": false
+  },
+  "historical_context": "Current baseline readiness docs/report are frozen as accepted context; their Source/build/runtime references are not fresh execution evidence for this packet.",
+  "primary_review": {
+    "decision": "Accept one direct Native write as selected evidence; whole initializer/backing/ABI and ownership gate remain held.",
+    "worker_commit": "c848b49413976a4e3dd0bb63e03d3a9738af80a4",
+    "artifact_pin_occurrences_verified_and_retained": 41,
+    "selected_context_baseline_and_current_Git_matches": [
+      {
+        "path": "config/target.json",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "baseline_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": false,
+        "current_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "baseline_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "baseline_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "include/bsp/native_resource_postprocess_full.hpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7",
+        "baseline_sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+      },
+      {
+        "path": "src/native_resource_postprocess_full.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6",
+        "baseline_sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+      },
+      {
+        "path": "include/bsp/native_resource_instance_postprocess.hpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1",
+        "baseline_sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1"
+      },
+      {
+        "path": "src/native_resource_instance_postprocess.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "a8e7a89dcbc8d704d4c66c87dc381711a327214c12649b9062932295c182e407",
+        "baseline_sha256": "a8e7a89dcbc8d704d4c66c87dc381711a327214c12649b9062932295c182e407"
+      },
+      {
+        "path": "include/bsp/game_native_type_storage.hpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8",
+        "baseline_sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+      },
+      {
+        "path": "src/game_native_type_storage.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92",
+        "baseline_sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+      },
+      {
+        "path": "src/game_native_vfs_application.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "baseline_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+      },
+      {
+        "path": "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a",
+        "baseline_sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+      },
+      {
+        "path": "reports/cc12_remaining_resource_descriptors_source_readiness.json",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3",
+        "baseline_sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3"
+      }
+    ],
+    "Root_original_disk_vs_worker_retained_live_bytes": [
+      {
+        "address": "00CD8688",
+        "bytes": 6,
+        "disk_hex": "890d2c040901",
+        "worker_retained_live_hex": "890d2c040901",
+        "raw_bytes_equal": true,
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x109042c], ecx"
+      }
+    ],
+    "new_live_queries": 0,
+    "new_byte_windows": 0,
+    "proof": {
+      "path": "local/cc12_compact_writer_discovery_primary/proof.json",
+      "bytes": 25973,
+      "sha256": "621f52a8af33815ffed8d5f926dc5b8774b2717eb3408ac9f6048b2da0ef6cb4"
+    },
+    "document_pin": {
+      "path": "docs/CC12_COMPACT_RESOURCE_WRITER_DISCOVERY.md",
+      "bytes": 7679,
+      "sha256": "12e049a800744657988a2c25ad91a871cde05983a0aa647ccf8c1184b6170673"
+    },
+    "GPR_mutations_or_Cpp_build_test_runtime_changes": 0
+  }
+}

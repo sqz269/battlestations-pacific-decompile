@@ -144,3 +144,19 @@ in `new_package/`; the optional minimal JAR is
    Rollback does not involve deleting or reverting the GPR or its saved analysis.
 
 Both candidate packages and all rollback files remain local and undeployed.
+
+
+## Primary review
+
+Root replayed and froze all114 pin occurrences/111 unique paths, preserved the
+complete46,283,299-byte worker bundle, and reviewed the Java endpoint/all helpers
+plus BSP dispatch, raw retention and strict validation. An independent ZIP-entry
+comparison confirms the minimal overlay changes only FunctionService.class and
+preserves the other102 hashes, original manifest/resources and unsigned status.
+The full package changes the three documented entries. All BSP source pins match
+the merged implementation. The primary focused BSP suite passes5/5.
+
+Source preparation is accepted. Plugin Maven/unit results remain worker build
+evidence; no loaded endpoint, deployment, restart, GPR mutation or Native body
+admission occurred. Rollout requires a separate clean save/close and loaded
+project/schema/metadata verification. Original plugin checkout dirt is preserved.
