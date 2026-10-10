@@ -1,0 +1,9 @@
+# Locale node selected cleanup: primary acceptance
+
+Root accepted worker `3d45091a6f8cbbb7ab19457d6d38028b8a82a2ad`. The selector/FuncInfo/single unwind row route state0 to `MOV ECX,[EBP-10h]; JMP41DD20`. The retained node body saves its original receiver at entryESP-10h, so correspondence requires the external runtime premise EBP=entryESP. The action then selects the captured node's current narrow header, with no extra wide/node/map/publication repair.
+
+Raw JMP tails retain current CALL_RETURN overlays and unchanged targets/no fallthrough. Their local routing does not prove generic runtime rebasing, cleanup return stack, SEH or double-exception policy. The prior119B node body is a pinned accepted dependency, separately from62 fresh bytes.
+
+Root copied3513 payloads, ran the copied ZIP-only replay, independently checked all four spans/62B against the untouched PE and decoded four code instructions. It checked3352 capture Git objects, current Root files and the3352-input/four-artifact epoch. Worker current files are not claimed unchanged during its separate rawwide implementation packet. Source coverage retains seven complete sections/431B,1988 Core indices and a70-App subset; Root's extra current80-object inventory is qualified. Node95d's immutable pending status is preserved with its acceptance on f1bc40d1d recorded separately.
+
+The next bounded Source change is a rawwide overload using the actual canonical context; existing noexcept wide/range interfaces cannot propagate getter failures into this schedule. Node/map/full locale ownership and activation remain held. No C++, new build/test/runtime, OriginalABI or Ghidra mutation is added by this review. Evidence: `reports/cc12_locale_map_node_cleanup_primary_review.json`; proof: `local/cc12_locale_map_node_cleanup_primary/`.
