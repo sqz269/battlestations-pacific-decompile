@@ -1,4 +1,5 @@
 #include "bsp/native_wide_string.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include <cstring>
 
@@ -92,6 +93,19 @@ void destroy_native_wide_string_header_00436430(void* actual_header,
     auto* const data = read_header<char*>(actual_header, 4);
     if (data != nullptr)
         storage.release(data, read_header<std::uint32_t>(actual_header, 0) * 2u + 2u);
+}
+
+void destroy_native_wide_string_header_00436430(void* actual_header,
+    NativeStringRawPoolContext& context) {
+    auto* const data = read_header<char*>(actual_header, 4);
+    if (data != nullptr) {
+        const auto size = read_header<std::uint32_t>(actual_header, 0) * 2u + 2u;
+        auto* const pool = native_string_pool_get_or_create_00419cc0(
+            context.actual_published_01090aa8,
+            context.actual_manager_publication_01090aa0);
+        return_native_string_pool_00bd1510(pool, data, size,
+            context.actual_small_returns_disabled_01090aa4);
+    }
 }
 
 } // namespace bsp
