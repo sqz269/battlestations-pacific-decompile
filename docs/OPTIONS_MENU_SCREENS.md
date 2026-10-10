@@ -341,9 +341,13 @@ it pushes into the registry was not established here.
 
 The device reset for a resolution change is `XLiveOnResetDevice` (00A4D46A), called from both the
 A7h and A2h arms of page 3 and only when 00E198C4 is null, that is, when the multiplayer menu
-manager does not exist. 005F65C0 is the reverse direction: it compares 00F889F8 against +150h and
-00F88A30 against +188h and reloads the screen from the settings block, and it is what the update
-virtual calls when an outstanding storage read completes.
+manager does not exist. 005F65C0 compares 00F889F8 against +150h and
+00F88A30 against +188h. Its copy call at 005F6629 supplies the global settings
+at 00F88980 as destination and screen+D8h as source; 005F52C0 therefore writes
+the global enable byte 00F889A4 from screen+FCh. The earlier description of
+that call as a settings-to-screen reload was incorrect. The update virtual's
+storage-completion route does not establish a route before sound startup or
+the origin of a zero enable byte. See [the bounded copy review](CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md).
 
 ### Leaving the screen
 
