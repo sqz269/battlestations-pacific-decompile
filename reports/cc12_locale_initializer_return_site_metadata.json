@@ -1,0 +1,829 @@
+{
+  "archive": {
+    "bytes": 163967198,
+    "path": "local/cc12_locale_initializer_return_site_metadata/evidence.zip",
+    "sha256": "f881b73377f983ee217f7b2dcbdc26101b0d1195e47d47a47a3eff2cef6c205f"
+  },
+  "finite_proof": {
+    "Source_claim_limit": "Enumerated searches identify no canonical locale owner. Differently named or indirect ownership is not excluded. Shared-head/domain and retained string-service candidates retain prior scope.",
+    "Source_delta": {
+      "changed_paths": [],
+      "current_head": "d048caba6d93c061d622b3cda0a676137ebd3e8e",
+      "equal_paths": 4217,
+      "historical_Source3356": {
+        "bytes": 1251131,
+        "credit": "Historical physical pin only; no build/runtime credit.",
+        "entry": "Historical/Source3356_saved_renderer_Root_frozen.json",
+        "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+      },
+      "prior_Source_delta": {
+        "changed_paths": [],
+        "current_head": "a5245948c287cdf1775c0e9f9658bdb0d7f9df8e",
+        "equal_paths": 4217,
+        "historical_Source3356": {
+          "bytes": 1251131,
+          "credit": "Historical physical pin only; no build/runtime credit.",
+          "entry": "Historical/Source3356_saved_renderer_Root_frozen.json",
+          "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+        },
+        "historical_renderer_delta": {
+          "changed_paths": [
+            {
+              "new_bytes": 2743,
+              "new_git_oid": "45aff1d95bc11528ebff9dba43c5b8b402747f61",
+              "new_sha256": "9ee3aeaa194ebf677efd3e96817b057d7093bf08bed72702fd44f45edee4a572",
+              "old_bytes": 1778,
+              "old_git_oid": "c7c21daa08aae69dc3906229405feb64d9f4bdfd",
+              "old_sha256": "51e0dc41b0bdcd3941bc6b2e4e2e41d12111027e6864bc457eb96bc15dbf38cf",
+              "path": "include/bsp/gui_text_native_renderer.hpp"
+            },
+            {
+              "new_bytes": 5735,
+              "new_git_oid": "02a68b42f6d9f7cc81e9d66c90afe3794cedbe45",
+              "new_sha256": "9f3753d2cc0232eea8dd990cc5c0e4a5f958145dbd8de35ba64860ab370c74e5",
+              "old_bytes": 4627,
+              "old_git_oid": "732d8e1fddf82eec461db43acf7453c73d64923f",
+              "old_sha256": "4a05f92e7209fd8ed69e184d6e6c48261611d2044c66a5608a43fa421cff7150",
+              "path": "src/gui_text_native_renderer.cpp"
+            }
+          ],
+          "current_head": "0b3db9a6496d72583220d5e90e286911d27aa9ff",
+          "equal_paths": 4215,
+          "historical_Source3356": {
+            "bytes": 1251131,
+            "credit": "Historical physical pin only; no build/runtime credit.",
+            "entry": "Historical/Source3356_saved_renderer_Root_frozen.json",
+            "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+          },
+          "prior_head": "c8c253b5e246011562ea7547a346e7e31e2dc760",
+          "renderer_commit": "224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8",
+          "renderer_objects": [
+            {
+              "entry": "RendererDelta/GitObjects/commit/224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8",
+              "kind": "commit",
+              "oid": "224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8"
+            },
+            {
+              "entry": "RendererDelta/GitObjects/tree/3f04f4186980c1cf0d4c481eb682017bde439373",
+              "kind": "tree",
+              "oid": "3f04f4186980c1cf0d4c481eb682017bde439373"
+            },
+            {
+              "entry": "RendererDelta/GitObjects/tree/5b638a47f65cd4dbdd6b63e7fac4ccf1ee7c633e",
+              "kind": "tree",
+              "oid": "5b638a47f65cd4dbdd6b63e7fac4ccf1ee7c633e"
+            },
+            {
+              "entry": "RendererDelta/GitObjects/tree/865fe6979c2052e069b8568c6165daf5848ae25f",
+              "kind": "tree",
+              "oid": "865fe6979c2052e069b8568c6165daf5848ae25f"
+            },
+            {
+              "entry": "RendererDelta/GitObjects/tree/c27d22f9af12ab2ccf8bf79d8dee4222597ce1bc",
+              "kind": "tree",
+              "oid": "c27d22f9af12ab2ccf8bf79d8dee4222597ce1bc"
+            }
+          ],
+          "renderer_root_tree": "3f04f4186980c1cf0d4c481eb682017bde439373"
+        },
+        "prior_head": "0b3db9a6496d72583220d5e90e286911d27aa9ff"
+      },
+      "prior_head": "a5245948c287cdf1775c0e9f9658bdb0d7f9df8e"
+    },
+    "Source_delta_evidence": {
+      "bytes": 3578,
+      "path": "local/cc12_locale_initializer_return_site_metadata/Source_delta.json",
+      "sha256": "b85b596846ae6286d88e7a5c87c158831531303d89259b20ea5a72d43050056f"
+    },
+    "Source_equality": "All 4217 current paths equal prior CALL Sourcea5245948c; there are zero changed paths. Earlier renderer changes remain authenticated within the prior Source chain, not fresh current build evidence.",
+    "Source_scope": "Every frozen HEAD src/, include/, cmake/ path and CMakeLists.txt; actual Git hashes and complete Source subtree traversal replayed.",
+    "actual_Git_blob_occurrences": 4270,
+    "actual_Git_commit_tree_objects": 11,
+    "closed_Source_paths": 4217,
+    "committed_output_proof": "Separate postcommit delivery_git.zip freezes the actual immutable commit, root/docs/reports trees and both exact outputs. Original and physical-copy guarded replay plus external delivery pin avoid a report self-hash cycle.",
+    "complete_search_counts": {
+      "head_storage_and_reference": 13,
+      "locale_authority_and_bookend_tokens": 3,
+      "locale_recycling_entry": 5,
+      "locale_storage_declaration_tokens": 3,
+      "same_process_head_accessor": 23,
+      "string_service_context": 1033
+    },
+    "dependencies": [
+      {
+        "bytes": 89,
+        "oid": "9aef1928f1fd52590562a18ba0aeddfd3b38556b",
+        "path": ".gitattributes",
+        "sha256": "418193c95b4ee228aa2120999556180034f602de344f784a9f2b1de9a454bf0c"
+      },
+      {
+        "bytes": 93,
+        "oid": "aae3244d5fb60fd333c3a4900535d5f85d5e1719",
+        "path": ".gitignore",
+        "sha256": "06a705c18bce4da7cff632f1a0ff2cd77263bff0833c8d06197a16b31eaffb04"
+      },
+      {
+        "bytes": 10159,
+        "oid": "9d0593b43f2eb3b7d7d3303da9beefb0baf86db3",
+        "path": "AGENTS.md",
+        "sha256": "e37deff0ffe1fe978634c7b3998fba7ac70cb4e5f07d677ffb9a29e80d6070a8"
+      },
+      {
+        "bytes": 455,
+        "oid": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "path": "config/target.json",
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "bytes": 1984,
+        "oid": "b87368b9b632b040666325917ef6b281759d1659",
+        "path": "docs/CC12_LOCALE_BASE_UNLINK_PRIMARY.md",
+        "sha256": "7e10ce565e5146f42d4af4372a6d3f67386c73d49bf1ac30eff4f4e561be69b6"
+      },
+      {
+        "bytes": 9148,
+        "oid": "a80a2794b97119df51fd83f53450117f0ca69a0e",
+        "path": "docs/CC12_LOCALE_BORROWED_NODE_RECYCLING_HELPER.md",
+        "sha256": "3c211c48f6e1dca44e56cce4fd2b9db84bf2cbf70a999de1ec52a022c4fcfac2"
+      },
+      {
+        "bytes": 1761,
+        "oid": "cb9eda9e29831007de6a970568056a8e890a9ded",
+        "path": "docs/CC12_LOCALE_CANONICAL_OWNER_PRIMARY.md",
+        "sha256": "341e7951e16b6d4f67e969662fc04c6c394c22db1d3712b12342e747043fb404"
+      },
+      {
+        "bytes": 6420,
+        "oid": "f569e15e370b228e95f380e5a3cc746facc8f46c",
+        "path": "docs/CC12_LOCALE_CANONICAL_POOL_OWNER_PROVENANCE.md",
+        "sha256": "12f1485715e85183393de8708d80051aa8119e764ec9eb46d6147958b3eecfb0"
+      },
+      {
+        "bytes": 1801,
+        "oid": "084a368bfed164eb1cb2b47e82d03062fa1c6d47",
+        "path": "docs/CC12_LOCALE_FALLTHROUGH_METADATA_PRIMARY.md",
+        "sha256": "fcabcab8a8208aba19f9e4de362275c805c0a11b539da91919cee9e9e7b26d68"
+      },
+      {
+        "bytes": 1795,
+        "oid": "492cb21a28b9db22545df1c19f686b6f660d5717",
+        "path": "docs/CC12_LOCALE_FALLTHROUGH_OPERAND_PRIMARY.md",
+        "sha256": "57e4d5645eece88e142deef9632f8eb22f85debb682873b9b21c68f130c0a7d4"
+      },
+      {
+        "bytes": 5194,
+        "oid": "c21210dddc4f409af1d29492a3efd8e95e0c9748",
+        "path": "docs/CC12_LOCALE_INITIALIZER_FALLTHROUGH_METADATA_GATE.md",
+        "sha256": "0e26b32c4698a846dfa1dff4a6d248ccad7d5fccee231edf1affbe3867549a2d"
+      },
+      {
+        "bytes": 5525,
+        "oid": "5e073e973a5d74a03c39b7d29d51f1f2c298ccea",
+        "path": "docs/CC12_LOCALE_INITIALIZER_FALLTHROUGH_OPERAND_CONTRACT.md",
+        "sha256": "8380fc0f7f3c08ec690c9e4b5001d35be211abd9ec60d3ac56eef9feccd1c86d"
+      },
+      {
+        "bytes": 5745,
+        "oid": "bfd2f77382ab00428a5368197f596d26abab1bbb",
+        "path": "docs/CC12_LOCALE_INITIALIZER_POST_PUSH_CALL_CONTRACT.md",
+        "sha256": "ecc1c5e58e9c2bebc97d24c5ea60c030d097965ce7a46838f648c5383ec2dac0"
+      },
+      {
+        "bytes": 5313,
+        "oid": "11e70abdfa4a0fddcf5bf326ce96fcebb2f55662",
+        "path": "docs/CC12_LOCALE_INITIALIZER_POST_PUSH_METADATA_GATE.md",
+        "sha256": "8599992e0a45281a8cae9e0c8ad639efc03d336e5418dd4ac478061308a132d0"
+      },
+      {
+        "bytes": 6209,
+        "oid": "a6d56373fdbe9cc7e9a4ffd09f2df6bbc08f0151",
+        "path": "docs/CC12_LOCALE_INITIALIZER_PREFIX_AND_TABLE_CELL.md",
+        "sha256": "dd61677d0cf9cbaa7a4bfb8b26a2dc50ab2966731103faff0b720ce14dcb314c"
+      },
+      {
+        "bytes": 1761,
+        "oid": "6eff9987b0f1e1cea493aac682a247626d7e82c4",
+        "path": "docs/CC12_LOCALE_INITIALIZER_PREFIX_PRIMARY.md",
+        "sha256": "07cc90b4ded85c0c5d48f227f197a5c7c0abcd776d50e958c6ed6c26dc0287a4"
+      },
+      {
+        "bytes": 1867,
+        "oid": "398eb90ccdfbc5dcb5249290ff78d8a37352f3dd",
+        "path": "docs/CC12_LOCALE_LIFECYCLE_PRIMARY.md",
+        "sha256": "a07fef4112d641d0b1c6dcfed3dc9a5de33a7025c024473ae0af3bb735cba53e"
+      },
+      {
+        "bytes": 11852,
+        "oid": "64acd423e8455ed95dbaf5244ec87057b7ba1f36",
+        "path": "docs/CC12_LOCALE_NODE_POOL_LIFECYCLE_CONTRACT.md",
+        "sha256": "952b75d3b5ca9c2b149d6c81249ac2be7e2ab4e6ac1251bb4b420258138eab73"
+      },
+      {
+        "bytes": 2290,
+        "oid": "c38954240332489ea4608bbc74a2056d9497e39d",
+        "path": "docs/CC12_LOCALE_POST_PUSH_CALL_PRIMARY.md",
+        "sha256": "3f844bf8e33a3d2dd5ab0fd48ae70b61c1c43a1da7e70b133100d28f5815c7e0"
+      },
+      {
+        "bytes": 1795,
+        "oid": "0ad00e0e492ae43bda72d98cd72aa099526914d0",
+        "path": "docs/CC12_LOCALE_POST_PUSH_METADATA_PRIMARY.md",
+        "sha256": "8ce482f8a5128924771738ef551f264de821638775736c2579c7f0c580728404"
+      },
+      {
+        "bytes": 2381,
+        "oid": "a55381d8b696c5107f78a0c062f6c46eb2f61078",
+        "path": "docs/CC12_LOCALE_PROFILE_PRIMARY.md",
+        "sha256": "5c6972c9429f548879f02f5d42a4783dbcbf630852cf0920c577f7c19881e761"
+      },
+      {
+        "bytes": 1945,
+        "oid": "86793ef433f646efbbaedea33908c952bb04b73e",
+        "path": "docs/CC12_LOCALE_SECTION_CLEANUP_PRIMARY.md",
+        "sha256": "066426fdbff58594a773897313a842a6f42f8fe6b2d762ec64aa391721e37707"
+      },
+      {
+        "bytes": 2156,
+        "oid": "543dc65bb6b92ced0a5b4f5f3b62adeec20df565",
+        "path": "docs/CC12_LOCALE_TABLE_CLEANUP_PRIMARY.md",
+        "sha256": "3d5eca4fed91d415513e30d097226466a20a7f2ef01db28d2ace891bc6096abe"
+      },
+      {
+        "bytes": 1953,
+        "oid": "25e35b64e1805c514e156ac875a05daa3bab319d",
+        "path": "docs/CC12_LOCALE_UNWIND_PRIMARY.md",
+        "sha256": "16b59502ceb6538dbceedf2322cee1c9d938791236a85c867ca62cebf3c83b0d"
+      },
+      {
+        "bytes": 2284,
+        "oid": "c9a04c46820e4582d7c7b1203592017d0513774e",
+        "path": "docs/CC12_PARTICLE_SAVED_RENDERER_PRIMARY.md",
+        "sha256": "d6173c87dfdd97620c47f4d1bd99b6a908b4d5a0f7b0208fc1ee3b62001f4ff0"
+      },
+      {
+        "bytes": 3727,
+        "oid": "a13d2bfe0e63bc246317f35b41fd1bbb8fac2457",
+        "path": "docs/NATIVE_STRING_RAW_POOL_CONTEXT.md",
+        "sha256": "7ed7edbf2bfe9b695d2b604eb35473d86dc1595e7f4c72a6b04de7529679912b"
+      },
+      {
+        "bytes": 11711,
+        "oid": "d9bffe001c3e547a8fa17cdbee03d530a349ad04",
+        "path": "reports/cc12_locale_base_unlink_primary.json",
+        "sha256": "0b90ff96361174e28be1a51ce5c28a5a3ba02056ceea49623f0534e6377c155d"
+      },
+      {
+        "bytes": 114660,
+        "oid": "c7f61b05f07e576ff37e003f160f73a897dc73c7",
+        "path": "reports/cc12_locale_borrowed_node_recycling_helper.json",
+        "sha256": "f479b519c6456b8c448c2e923185a687aee3978b43d613399b941dab5dd5ba96"
+      },
+      {
+        "bytes": 11403,
+        "oid": "5a252f907067283b5e17f90d7d6d155aeb60b90b",
+        "path": "reports/cc12_locale_canonical_owner_primary.json",
+        "sha256": "245b884ca92554b5b806048905e2feb69c5cc9412eef719ba79e4c4a1dcc7791"
+      },
+      {
+        "bytes": 22168,
+        "oid": "55a879582ae6acb831d14edc8d5e97cce30f8d0d",
+        "path": "reports/cc12_locale_canonical_pool_owner_provenance.json",
+        "sha256": "392664b8b11d3afc78573ec704307ec4f6f507ebd2c4cd72cc1b1b7510bb85d8"
+      },
+      {
+        "bytes": 10576,
+        "oid": "6145b03a5c41cba3798e09aea63325b8662c10e6",
+        "path": "reports/cc12_locale_fallthrough_metadata_primary.json",
+        "sha256": "184b91440c72afe4f39cdfbb0b3f18e669294452d5699c2264cf4b3c1b0affd0"
+      },
+      {
+        "bytes": 12972,
+        "oid": "395d0968d55638811f359edefa30d061b8d0c407",
+        "path": "reports/cc12_locale_fallthrough_operand_primary.json",
+        "sha256": "6b7acefffab639e89899b73c5c9cb581f94c24da67d679389ec01c907325d7f2"
+      },
+      {
+        "bytes": 25445,
+        "oid": "773d94bddfb328f7b7d7804329b10d3258ef694b",
+        "path": "reports/cc12_locale_initializer_fallthrough_metadata_gate.json",
+        "sha256": "ae42523ede681c542a409fd9b3a35c30a3780db33e260f2033fb291abfa77ef5"
+      },
+      {
+        "bytes": 30557,
+        "oid": "cb7a8e20ea18999b7f811608ac20809e8ec15fc1",
+        "path": "reports/cc12_locale_initializer_fallthrough_operand_contract.json",
+        "sha256": "4c5af9e713633fb0c23dfe67a84a34571b0ff84da44140203bc08818b233fa4c"
+      },
+      {
+        "bytes": 37958,
+        "oid": "104a5c1cf38b494c002bbf4213703572b806ab91",
+        "path": "reports/cc12_locale_initializer_post_push_call_contract.json",
+        "sha256": "ad61cf1baf4856003063cb261ec18b77aaddb754158f31ea02ffd4eac1c227f1"
+      },
+      {
+        "bytes": 33793,
+        "oid": "9185e7d3350676f2d257603db61e2e6965709da4",
+        "path": "reports/cc12_locale_initializer_post_push_metadata_gate.json",
+        "sha256": "477b00973ed41bb2d7cf24167c0e7e2288edad58c9b27eea56643318f1f91747"
+      },
+      {
+        "bytes": 25430,
+        "oid": "aef619606a8c7fb72ac2e4b7a42a079386404cdf",
+        "path": "reports/cc12_locale_initializer_prefix_and_table_cell.json",
+        "sha256": "04da51973201083fd0fc763249fb80190479ff220cd1fd2f26f8dd019f36473d"
+      },
+      {
+        "bytes": 12006,
+        "oid": "c2096dcb2d774ec281220b46db0800bbae3eba02",
+        "path": "reports/cc12_locale_initializer_prefix_primary.json",
+        "sha256": "6141f0d396e3f2b7dc0fb33ef1b2d4653c64842236c2e27ed856cb462d4a2686"
+      },
+      {
+        "bytes": 4365,
+        "oid": "b55389981a417743660e30fde49f6985309457cf",
+        "path": "reports/cc12_locale_lifecycle_primary.json",
+        "sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e"
+      },
+      {
+        "bytes": 74911,
+        "oid": "945cad099ff59493fe9f1f53200cf467b47aeeff",
+        "path": "reports/cc12_locale_node_pool_lifecycle_contract.json",
+        "sha256": "9264fb23d1e7c5933db2fcc87f1dfd738c4a119eb2926a567b8846e811241dbd"
+      },
+      {
+        "bytes": 12956,
+        "oid": "2615d44cae4c23dfa5634c3c447f556682a233ea",
+        "path": "reports/cc12_locale_post_push_call_primary.json",
+        "sha256": "009831813f2c55042e589d25ee7151dfc2ee23f83525d1614f644b63d088c09b"
+      },
+      {
+        "bytes": 14032,
+        "oid": "6633dcb5470a9b859ab297fac72f8792a70e701d",
+        "path": "reports/cc12_locale_post_push_metadata_primary.json",
+        "sha256": "9a6e204d8edee24ba8706e345881e9ed3fae83cd8bf8c9084c6cb3048333c425"
+      },
+      {
+        "bytes": 7798,
+        "oid": "3f8de9bc2d05f5b614dbef124074d1106ab8ebeb",
+        "path": "reports/cc12_locale_profile_primary.json",
+        "sha256": "0052ecca6ee433aeeea979583f95b0fde766f4bd469ad1f7428040c1a338474b"
+      },
+      {
+        "bytes": 22472,
+        "oid": "dd0f9fe8a421b3a5d83dc99bab5b3a91718a2274",
+        "path": "reports/cc12_locale_section_cleanup_primary.json",
+        "sha256": "67e2e2e9df0e4413a766ea508a83d92683485ceefbb9fbe5bbf52b6cc9c3edad"
+      },
+      {
+        "bytes": 9694,
+        "oid": "7107e06ee74a8f774b5c4d2fae88e63a7ba152a6",
+        "path": "reports/cc12_locale_table_cleanup_primary.json",
+        "sha256": "e26b5981e4cbbe59dc4880e2865af024a95d2830455279b9ed4a0aabf355c940"
+      },
+      {
+        "bytes": 5334,
+        "oid": "2301eafbb1c98f1ffd5d5c33d3ffd0cbd6348adc",
+        "path": "reports/cc12_locale_unwind_primary.json",
+        "sha256": "2fd16f0d54fa6248393427aa4dbdde2d1b43f344ad461021eace18cd16b28e8b"
+      },
+      {
+        "bytes": 5305,
+        "oid": "d2d284b9b6586ca232f02d134ef357a403500510",
+        "path": "reports/cc12_particle_saved_renderer_primary.json",
+        "sha256": "3eccc8b2e22f90dc256bbcfb63aa606dd0f1819a752c92a5dd023e3847ec8bfa"
+      },
+      {
+        "bytes": 73311,
+        "oid": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "path": "tools/bsp.py",
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      {
+        "bytes": 17283,
+        "oid": "c9b6a6788498b82373233afe3211002ed90ca4c1",
+        "path": "tools/coordination.py",
+        "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+      },
+      {
+        "bytes": 14411,
+        "oid": "0056201883c1594d9267d2fcf4990385461f0857",
+        "path": "tools/ghidra_export.py",
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "bytes": 15523,
+        "oid": "a17d5c65f9cda9fda16f7cfbf530df1e5196f55b",
+        "path": "tools/ghidra_launch.py",
+        "sha256": "36ba29c40be112e3e32d3106272e8681a9fdb09fbc1ce25c6c52db080a4f363e"
+      },
+      {
+        "bytes": 20048,
+        "oid": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "path": "tools/ghidra_typed_flow.py",
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      {
+        "bytes": 1371,
+        "oid": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "path": "tools/workspace.py",
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      }
+    ],
+    "historical_artifact": "Root Source3356 saved-renderer JSON remains a physically copied exact historical hash pin only. No fresh renderer build, tests, ABI or runtime credit.",
+    "nested_prior_proof": "Prior CALL core and committed-output delivery ZIPs are physically nested and replayed from memory. Their earlier metadata/PUSH/prefix archives retain separate snapshots and inherited byte credit.",
+    "selected_named_dependencies": 53,
+    "strict_guard": "Reads limited to the supplied ZIP and writes to the named result; external files, processes, network and native-code loading denied. Three negative self-probes; original and distinct physical-copy replay PASS.",
+    "whole_repository_blob_closure_claimed": false,
+    "whole_repository_paths_metadata_count_only": 13601
+  },
+  "fresh_Native_metadata": {
+    "adjacent_address_queries": 0,
+    "all_Native_captures_closed_before_packaging": true,
+    "comparison": {
+      "bytes": 237,
+      "path": "local/cc12_locale_initializer_return_site_metadata/Native_comparison.json",
+      "sha256": "7d7f44c859ad61c3472d10399e8c0fb75dcbfe594fa2da8d080e92dab7da970b"
+    },
+    "count_pair_byte_equal": true,
+    "decompilation_reads": 0,
+    "direct_call_target_records": [],
+    "evidence_files": [
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_before/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 7727,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_before/exact_site_gate.json",
+        "sha256": "c509f08c38943276aed45d69bb79d9287025e4b1df16720aa80839e784f47d58"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_after/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 7727,
+        "path": "local/cc12_locale_initializer_return_site_metadata/Native_after/exact_site_gate.json",
+        "sha256": "4520041e7eefab8b1a28d769d30e5685f43ebf6f12b23d231561e44d160d0b9a"
+      }
+    ],
+    "exact_and_containing_unit_records": {
+      "code_unit_at": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "code_unit_containing": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_at": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      },
+      "instruction_containing": {
+        "address": {
+          "offset": "00cc8d44",
+          "space": "ram"
+        },
+        "defined": null,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "length": 1
+      }
+    },
+    "exact_typed_raw_response_pairs_equal": 1,
+    "extra_target_queries": 0,
+    "fresh_Native_bytes": 0,
+    "function_at_query": null,
+    "function_containing_query": null,
+    "function_count_before_after": 64730,
+    "functions": [],
+    "identity_equal_before_after": true,
+    "image_base": "00400000",
+    "instruction_context_reads": 0,
+    "instruction_flow": {
+      "default_fallthrough": {
+        "offset": "00cc8d45",
+        "space": "ram"
+      },
+      "default_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "default_targets": [],
+      "effective_fallthrough": {
+        "offset": "00cc8d45",
+        "space": "ram"
+      },
+      "effective_flow": {
+        "is_call": false,
+        "is_computed": false,
+        "is_conditional": false,
+        "is_jump": false,
+        "is_terminal": false,
+        "name": "FALL_THROUGH"
+      },
+      "effective_targets": [],
+      "fallthrough_overridden": false,
+      "flow_override": "NONE"
+    },
+    "instruction_text_reads": 0,
+    "language": "x86:LE:32:default",
+    "later_unit_queries": 0,
+    "lease_widened": false,
+    "measured_unit": {
+      "end_exclusive": "00CC8D45",
+      "end_inclusive": "00CC8D44",
+      "java_class": "ghidra.program.database.code.InstructionDB",
+      "kind": "instruction",
+      "length": 1,
+      "start": "00CC8D44"
+    },
+    "modification_number_before_after": 98,
+    "no_return_metadata": "Unavailable/not applicable: no exact/containing function or direct target record exists. No false no-return value is inferred and no separate target query was made.",
+    "only_queried_address": "00CC8D44",
+    "preceding_unit_refreshes": 0,
+    "program": "/battlestationspacific.exe",
+    "project": "bsp",
+    "project_marker_verified": "C:/Users/sqz269/bsp.gpr"
+  },
+  "frozen_Source_HEAD": "d048caba6d93c061d622b3cda0a676137ebd3e8e",
+  "helper_dependency_contract": {
+    "core_guard_files": [
+      "replay.py",
+      "guarded_replay.py",
+      "prior_replay.py",
+      "prefix_replay.py",
+      "prefix_delivery_replay.py",
+      "metadata_replay.py",
+      "metadata_delivery_replay.py",
+      "operand_replay.py",
+      "operand_delivery_replay.py",
+      "post_metadata_replay.py",
+      "post_metadata_delivery_replay.py",
+      "call_replay.py",
+      "call_delivery_replay.py"
+    ],
+    "delivery_guard_files": [
+      "guarded_delivery_replay.py",
+      "delivery_replay.py",
+      "prior_replay.py"
+    ],
+    "note": "All listed physical helper files are required. prior_replay.py supplies parse_tree/git_hash for delivery-only replay."
+  },
+  "historical_adapter_Source_pin": {
+    "credit": "Historical routing pin only. No build/artifact credit transferred.",
+    "path": "local/cc12_particle_hook_adapter_primary/Source3356_particle_hook_adapter_Root_frozen.json",
+    "sha256": "fa67d37ee3567afdd432c4096504dda8e1b805f3dd5e7f0ec752501041e0fb07"
+  },
+  "historical_renderer_Source_pin": {
+    "bytes": 1251131,
+    "credit": "Historical physical pin only; no build/runtime credit.",
+    "entry": "Historical/Source3356_saved_renderer_Root_frozen.json",
+    "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8"
+  },
+  "meaning_and_uncertainty": {
+    "ABI_boundary": "No target parameter use, cleanup, normal-return state, registration behavior, callback identity/lifetime or initializer completion is newly composed or established.",
+    "endpoint_limit": "CC8D45 is a reported metadata endpoint only. Its ownership/unit/body was not queried and no containing hull is inferred.",
+    "established": "All four exact/containing instruction/code-unit records agree on a one-byte InstructionDB at CC8D44. It is unowned in current function metadata, with override NONE, no fallthrough override and default/effective FALL_THROUGH to CC8D45. Targets are empty.",
+    "site_name_limit": "Return site denotes only the preceding accepted CALL encoded next/return address. It does not establish an actual target return or identify this unread instruction as a return instruction.",
+    "snapshot_boundary": "This is a fresh epoch98 capture distinct from the prior epoch98 CALL capture. Earlier epoch95 PUSH and epoch92 initializer-prefix contracts retain inherited credit only; equal modification numbers do not prove execution or a shared invocation.",
+    "unread_effects": "No opcode, operand, stack/register/flag or memory effects are established. Instruction text and bytes remain unread."
+  },
+  "named_incomplete_prerequisites": [
+    "Actual initialized canonical E1768C storage and identity across all borrowers.",
+    "Original E188B4 fixed-address projection authenticated to the same Source head/domain and same published locale element.",
+    "Actual initializer and callback registration/status/failure ordering, callback body and retained owner lifetime.",
+    "Concrete trim/profile binding with same element and ordinary provider serialization.",
+    "Actual slabs, 1Ch slots, payload/string lifetimes and quiescence before table/slab/section/unlink teardown.",
+    "Actual FH3 setup/dispatcher EBP = S = R + 0Ch; three accepted cleanup leaves do not establish invocation.",
+    "Full initializer entry continuation, actual registration operand/target, returned status and failure ordering.",
+    "Exact CE2754 table membership/dispatch, startup phase and actual invocation."
+  ],
+  "packet": "cc12_locale_initializer_return_site_metadata",
+  "physical_copy_identity_check": {
+    "bytes": 3195,
+    "path": "local/cc12_locale_initializer_return_site_metadata/physical_copy_comparison.json",
+    "sha256": "25f98063bbcac2b9bd5ea528579e53b92539eafb9fde78763f4a884b3ce76ad8"
+  },
+  "prior_CALL_pins": {
+    "Native_epoch": 98,
+    "Source_HEAD": "a5245948c287cdf1775c0e9f9658bdb0d7f9df8e",
+    "core": {
+      "bytes": 140393829,
+      "entry": "Prior/call_evidence.zip",
+      "sha256": "a3a07caebc4256a76ffb9eabd679c4a969248c2be01f6af6b07e0fc89f09b32f"
+    },
+    "credit": "Previously accepted five-byte near-CALL entry mechanics only. No fresh CALL/target bytes or semantic use here.",
+    "delivery": {
+      "bytes": 290232,
+      "entry": "Prior/call_delivery_git.zip",
+      "sha256": "0d2fe78d1d760c755621054dcbd80977652e5838470ffd6f09e3ef01369db8fb"
+    },
+    "primary_report": {
+      "bytes": 12956,
+      "path": "reports/cc12_locale_post_push_call_primary.json",
+      "sha256": "009831813f2c55042e589d25ee7151dfc2ee23f83525d1614f644b63d088c09b"
+    },
+    "worker_commit": "8d584972bab20b5859cf979e0304561c1fe88e8c",
+    "worker_report": {
+      "bytes": 37958,
+      "path": "reports/cc12_locale_initializer_post_push_call_contract.json",
+      "sha256": "ad61cf1baf4856003063cb261ec18b77aaddb754158f31ea02ffd4eac1c227f1"
+    }
+  },
+  "prior_contract_pins": [
+    {
+      "bytes": 4365,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_lifecycle_primary.json",
+      "sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e",
+      "status": "accepted_normal_flow_contract_only",
+      "worker_commit": "da51854bc0beb187030cd01141a7c9c9914bdf6b"
+    },
+    {
+      "bytes": 7798,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_profile_primary.json",
+      "sha256": "0052ecca6ee433aeeea979583f95b0fde766f4bd469ad1f7428040c1a338474b",
+      "status": "accepted_normal_lifecycle_trim_and_bounded_unwind_data_provisional_annotations_saved",
+      "worker_commit": "3d9a6c29193f9ac09a8905a91c2b298eb5845b1f"
+    },
+    {
+      "bytes": 5334,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_unwind_primary.json",
+      "sha256": "2fd16f0d54fa6248393427aa4dbdde2d1b43f344ad461021eace18cd16b28e8b",
+      "status": "native_action_forwarding_evidenced_owner_unwind_and_dispatch_ABI_incomplete",
+      "worker_commit": "4d1c7ed8884e670f47628fe3da2a6f4cc25dff5b"
+    },
+    {
+      "bytes": 9694,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_table_cleanup_primary.json",
+      "sha256": "e26b5981e4cbbe59dc4880e2865af024a95d2830455279b9ed4a0aabf355c940",
+      "status": "bounded_native_nullable_table_backing_free_contract_accepted_owning_unwind_and_activation_NO_GO",
+      "worker_commit": "f2e60874b51768a44136acc34c112c0b89545a84"
+    },
+    {
+      "bytes": 22472,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_section_cleanup_primary.json",
+      "sha256": "67e2e2e9df0e4413a766ea508a83d92683485ceefbb9fbe5bbf52b6cc9c3edad",
+      "status": "native_cleanup_leaf_and_existing_source_reuse_candidate_accepted_complete_owner_unwind_activation_NO_GO",
+      "worker_commit": "03734602e960e8ea3b2c6c0bad31fd3dfa470d91"
+    },
+    {
+      "bytes": 11711,
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit.",
+      "path": "reports/cc12_locale_base_unlink_primary.json",
+      "sha256": "0b90ff96361174e28be1a51ce5c28a5a3ba02056ceea49623f0534e6377c155d",
+      "status": "native_shared_list_unlink_and_existing_domain_provider_accepted_canonical_owner_and_FH3_unproved",
+      "worker_commit": "bcef5843bfaec8a1990d6126b50b4a0e58716d46"
+    }
+  ],
+  "replay_scripts": [
+    {
+      "bytes": 14219,
+      "path": "local/cc12_locale_initializer_return_site_metadata/capture.py",
+      "sha256": "d4fb400cdf064e4f1df137df3b9cb8c202775e5a896436f5f620ee8fa90f3fed"
+    },
+    {
+      "bytes": 10363,
+      "path": "local/cc12_locale_initializer_return_site_metadata/replay.py",
+      "sha256": "02e9da53e519c568fdd960418674950a81bd294e23477d85901eac004bbac35d"
+    },
+    {
+      "bytes": 2874,
+      "path": "local/cc12_locale_initializer_return_site_metadata/guarded_replay.py",
+      "sha256": "7714e11112c43000f5de829ed91412c0a391f985b72f6c2eb2e2d73afe71bb62"
+    },
+    {
+      "bytes": 5817,
+      "path": "local/cc12_locale_initializer_return_site_metadata/prior_replay.py",
+      "sha256": "5787d5059905efafa5cbf041ddd604aa7c455abe1799b9a530d081669bef3f25"
+    },
+    {
+      "bytes": 10761,
+      "path": "local/cc12_locale_initializer_return_site_metadata/prefix_replay.py",
+      "sha256": "a1b73d8c05fb3d6ddbe0be426db625ef7572da6bc27891df7cc34b55178e2d40"
+    },
+    {
+      "bytes": 2465,
+      "path": "local/cc12_locale_initializer_return_site_metadata/prefix_delivery_replay.py",
+      "sha256": "a126e45579611ca05c5e4b02c42567c01ad0e8f4eaf645b59b0744747eb847f6"
+    },
+    {
+      "bytes": 9853,
+      "path": "local/cc12_locale_initializer_return_site_metadata/metadata_replay.py",
+      "sha256": "b31b71745833305917e8367b8b18575b539b71dd18d6346de0b065c1e02fb16b"
+    },
+    {
+      "bytes": 2467,
+      "path": "local/cc12_locale_initializer_return_site_metadata/metadata_delivery_replay.py",
+      "sha256": "25147f2eff8a3ba2c819b76d950eca1ce6d078c2b44314124ac32524b7cbad77"
+    },
+    {
+      "bytes": 10585,
+      "path": "local/cc12_locale_initializer_return_site_metadata/operand_replay.py",
+      "sha256": "1c941b6bc0eae0c2ff25ab87af765e66fbbff0dc581b6f175b1bf038a61f7f63"
+    },
+    {
+      "bytes": 2480,
+      "path": "local/cc12_locale_initializer_return_site_metadata/operand_delivery_replay.py",
+      "sha256": "11e83e2c8ec79cfeadf4ee19ec68e8c022ef1a81681466364ed36fe1eff43503"
+    },
+    {
+      "bytes": 12435,
+      "path": "local/cc12_locale_initializer_return_site_metadata/post_metadata_replay.py",
+      "sha256": "20ecd3c6cf8aeb12d774ba59ca76cda39a0c07a4cdabdada589e9fedb40a4434"
+    },
+    {
+      "bytes": 2462,
+      "path": "local/cc12_locale_initializer_return_site_metadata/post_metadata_delivery_replay.py",
+      "sha256": "647cb76904c1a7d4cccd49a0de2ba2d9b0212ce9863d6fe205c98dec63feff04"
+    },
+    {
+      "bytes": 12906,
+      "path": "local/cc12_locale_initializer_return_site_metadata/call_replay.py",
+      "sha256": "018f614495c0a6f551cd8d481047a67d66ec4ec6cac22e93b70b43c5c98e53bf"
+    },
+    {
+      "bytes": 2466,
+      "path": "local/cc12_locale_initializer_return_site_metadata/call_delivery_replay.py",
+      "sha256": "2252ea9d80d691df785d1211472f4fa44fc8da105aca39802fca8fbe31b4ebe0"
+    }
+  ],
+  "schema": "bsp.cc12.locale-initializer-return-site-metadata.v1",
+  "smallest_separately_gated_byte_proposal": {
+    "admission": "Proposal only. A separate Root packet must refresh identity, exact ownership/unit boundaries/length/default and effective flow before admitting the single byte and exact-site text.",
+    "basis": "Current exact-site metadata establishes a complete one-byte unit with matching exact/containing records and no stored function owner. No adjacent address is needed to describe this measured unit.",
+    "bytes": 1,
+    "end_exclusive": "00CC8D45",
+    "end_inclusive": "00CC8D44",
+    "excluded": "No CC8D45/adjacent instruction, BF6FF5 target/signature/IAT/CRT/OS, callback CD9410, FH3/handler/EH data, guessed initializer hull or Native/game execution.",
+    "start": "00CC8D44",
+    "stop": "Stop without bytes on unknown, changed or overlapping metadata; do not widen the scope or repair listing/flow."
+  },
+  "status": "exact_unowned_one_byte_unit_metadata_established_opcode_and_instruction_effects_unread",
+  "strict_original_guarded_replay": {
+    "bytes": 14098,
+    "path": "local/cc12_locale_initializer_return_site_metadata/guarded_original.json",
+    "sha256": "dc65880ac940e994bb6f799bfda09280474de1ce7d0a9c6a7b787ccc8d12373a"
+  },
+  "strict_physically_copied_guarded_replay": {
+    "bytes": 14136,
+    "path": "local/cc12_locale_initializer_return_site_metadata/PhysicalCopy/guarded_copy.json",
+    "sha256": "33b33bef23503425d703af82a1d974f6a771a8dfd0ccbd2bf9148f45414e178b"
+  },
+  "tracked_output_scope": [
+    "docs/CC12_LOCALE_INITIALIZER_RETURN_SITE_METADATA.md",
+    "reports/cc12_locale_initializer_return_site_metadata.json"
+  ],
+  "validation_credit": {
+    "ABI_execution": false,
+    "CMake_changes": 0,
+    "Cplusplus_changes": 0,
+    "GPR_mutations": 0,
+    "Native_execution": false,
+    "Native_probes": 0,
+    "actual_Git_and_closed_Source_replayed": true,
+    "builds": 0,
+    "canonical_owner_activated": false,
+    "fresh_Native_bytes": 0,
+    "game_validated": false,
+    "initializer_completion_established": false,
+    "ledger_changes": 0,
+    "metadata_only": true,
+    "opcode_or_instruction_effects_established": false,
+    "original_and_physical_copy_guard_PASS": true,
+    "registration_or_callback_behavior_established": false,
+    "target_return_cleanup_established": false,
+    "tests": 0
+  },
+  "worker_branch": "agent/cc12_locale_initializer_prefix"
+}
