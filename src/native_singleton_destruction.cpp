@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_allocation_stats_lifecycle.hpp"
 #include "bsp/global_config.hpp"
 #include "bsp/native_game_class_cleanup.hpp"
 #include "bsp/native_profile_hints_owner.hpp"
@@ -276,6 +277,20 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             retire_native_pending_registry_scalar_00875850(
                 owner, *reinterpret_cast<const volatile std::uint8_t*>(&flags),
                 *bindings.actual_pending_registry_publication_00f878cc);
+            return;
+        }
+        break;
+    case 0x00d685e0:
+        if (bindings.allocation_stats != nullptr) {
+            delete_native_allocation_stats_base_00be2890(
+                owner, flags, *bindings.allocation_stats);
+            return;
+        }
+        break;
+    case 0x00d685f4:
+        if (bindings.allocation_stats != nullptr) {
+            delete_native_allocation_stats_00be2930(
+                owner, flags, *bindings.allocation_stats);
             return;
         }
         break;

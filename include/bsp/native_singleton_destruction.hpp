@@ -4,6 +4,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct NativeAllocationStatsConstructorContext;
 struct GlobalConfigContext;
 struct NativeGameClassCleanupContext;
 struct NativeProfileHintsOwnerContext;
@@ -228,6 +229,10 @@ struct NativeSingletonDeletionBindings {
     // D0DEA0 retires the passed raw8 registry through 875850. Borrow the same
     // canonical process F878CC cell used for publication; it must outlive drain.
     void* volatile* actual_pending_registry_publication_00f878cc{};
+    // D685E0/D685F4 require the same retained manager/statistics cells as their
+    // constructors. Dispatch the popped receiver and full flags independently
+    // of the current publication; a missing context fails closed.
+    NativeAllocationStatsConstructorContext* allocation_stats{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -254,7 +259,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, shadow_depth_target) == 
 static_assert(offsetof(NativeSingletonDeletionBindings, particle_clock) == 176);
 static_assert(offsetof(NativeSingletonDeletionBindings, global_configuration) == 180);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_pending_registry_publication_00f878cc) == 184);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 188);
+static_assert(offsetof(NativeSingletonDeletionBindings, allocation_stats) == 188);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 192);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

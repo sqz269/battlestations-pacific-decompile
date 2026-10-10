@@ -2,6 +2,7 @@
 #include "bsp/sound_lifetime_access.hpp"
 
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_allocation_stats_constructor.hpp"
 #include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_resource_support.hpp"
 #include <memory>
@@ -82,6 +83,9 @@ public:
     void* volatile& pending_registry_publication_00f878cc() noexcept {
         return pending_registry_publication_00f878cc_;
     }
+    // Retain the same canonical manager and permanent process statistics cell
+    // through normal and fallback drains; construction remains caller-driven.
+    NativeAllocationStatsConstructorContext& allocation_stats_context() noexcept;
     // Lazy diagnostic access and physical Lock contexts borrow this one cell
     // with sound_lifetime(). Its deletion binding outlives the raw drain.
     NativeDiagnosticSinkStorage* volatile& diagnostic_publication_0109cf14() noexcept {
@@ -134,5 +138,6 @@ private:
     GameNativeVfsRuntime* vfs_runtime_{};
     std::unique_ptr<GameObserverRuntime> observers_;
     void* volatile& pending_registry_publication_00f878cc_; // canonical process cell
+    NativeAllocationStatsConstructorContext allocation_stats_context_;
 };
 } // namespace bsp::game
