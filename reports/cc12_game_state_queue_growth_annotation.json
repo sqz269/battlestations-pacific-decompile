@@ -1,0 +1,118 @@
+{
+  "schema": "bsp.cc12_queue_growth.annotation.v1",
+  "status": "applied_saved_exports_refreshed",
+  "configured_project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "addresses": [
+    "004d20d0",
+    "004d3ed0"
+  ],
+  "Root_write_command": [
+    "python",
+    "tools/ghidra_annotate.py",
+    "--addresses",
+    "004D20D0",
+    "004D3ED0",
+    "--apply"
+  ],
+  "prior_and_applied_annotations": [
+    {
+      "address": "004d20d0",
+      "before": {
+        "address": "004d20d0",
+        "function_name": "FUN_004d20d0"
+      },
+      "after": {
+        "address": "004d20d0",
+        "name": "BSP_Game_GrowStateRequestMap",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete 341-byte body/129 instructions independently matched to original PE (docs/CC12_GAME_STATE_QUEUE_GROWTH_OWNER_PRIMARY_REVIEW.md). Incoming ECX raw queue is captured in EBX; one stack increment DWORD can be promoted to max(8,initial capacity>>1) only when preferred growth fits unsigned remaining capacity. Allocation 004B8C90 receives ECX count and EDX=0; copy/free providers remain independent. Current map/capacity and incoming increment are reloaded around providers. Free receives current old map while published, then verified 004D220E ADD ESP,4 precedes current capacity addition and late saved-pointer publication. RET4 closes enqueue callee-cleanup assumption. Stored listing omits 004D220E; fresh typed metadata records CALL_RETURN at 004D2209, no separate fallthrough override, and returning _free thunk/direct target. No listing/body/flow repair performed. No general raw queue C++GO or Original ABI/FH3/SEH/runtime equivalence."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "004d3ed0",
+      "before": {
+        "address": "004d3ed0",
+        "function_name": "BSP_Game_EnqueueStateRequest",
+        "comment": "[BSP reconstruction 004d3ed0]\nHypothesis, not a recovered symbol. __thiscall, ECX = the ring buffer embedded at game+5D8h, one stack argument pointing at the 10h-byte element to copy, RET 4. Fields: +4 bucket array, +8 capacity, +0Ch head, +10h count; it grows through 004d20d0(1) when head+count is 4-aligned and the capacity is reached, allocates a 10h bucket on demand and copies the element in. BSP_Game_BeginStartupSequence uses it at 004e5796 to post state 10 after writing game+5D4h. Eleven callers, all game-state transitions including BSP_Game_OnMove. Evidence: docs/APP_INIT_GAME_ENTRY.md.\n\n[BSP reconstruction 004d3ed0] update\nHypothesis, not a recovered symbol. __thiscall, ECX = the ring buffer embedded at game+5D8h, one stack argument pointing at the 10h-byte element to copy, RET 4. Fields: +4 bucket array, +8 capacity, +0Ch head, +10h count; it grows through 004d20d0(1) when head+count is 4-aligned and the capacity is reached, allocates a 10h bucket on demand and copies the element in. BSP_Game_BeginStartupSequence uses it at 004e5796 to post state 10 after writing game+5D4h. Eleven callers, all game-state transitions including BSP_Game_OnMove. Evidence: docs/APP_INIT_GAME_ENTRY.md. | Correction (docs/GAME_FRAME_CONTROL.md): the container at game+5D8h is an MSVC std::deque<int> with four elements per 16-byte block; +5E0h is the block count and +5E4h the element offset, not a capacity and a byte offset; the argument is a const int&, so call sites push a stack slot's address; the earlier 10h-byte element is the block size."
+      },
+      "after": {
+        "address": "004d3ed0",
+        "name": "BSP_Game_EnqueueStateRequest",
+        "evidence": "Hypothesis, not a recovered symbol. __thiscall, ECX = the ring buffer embedded at game+5D8h, one stack argument pointing at the 10h-byte element to copy, RET 4. Fields: +4 bucket array, +8 capacity, +0Ch head, +10h count; it grows through 004d20d0(1) when head+count is 4-aligned and the capacity is reached, allocates a 10h bucket on demand and copies the element in. BSP_Game_BeginStartupSequence uses it at 004e5796 to post state 10 after writing game+5D4h. Eleven callers, all game-state transitions including BSP_Game_OnMove. Evidence: docs/APP_INIT_GAME_ENTRY.md. | Correction (docs/GAME_FRAME_CONTROL.md): the container at game+5D8h is an MSVC std::deque<int> with four elements per 16-byte block; +5E0h is the block count and +5E4h the element offset, not a capacity and a byte offset; the argument is a const int&, so call sites push a stack slot's address; the earlier 10h-byte element is the block size. | Fresh 117-byte/46-instruction review (docs/CC12_GAME_STATE_ENQUEUE_OWNER_PRIMARY_REVIEW.md): one borrowed pointer argument, late pointer/value loads at 004D3F35/39 after growth and possible 10h block allocation; DWORD store only if computed destination is nonzero, followed by increment of CURRENT queue+10h count even on zero-destination arm. Null computed destination is not an allocator-result test. Post-allocation map is reloaded. Complete 004D20D0 review now independently establishes RET4 growth cleanup; allocation004B8C90, failure/copy/free providers, raw queue ownership/lifetime and alias effects remain separate. No C++ activation or drop-in ABI claim."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\ghidra-annotations-20261010T173725Z.json",
+    "bytes": 4708,
+    "sha256": "908cbbd27722a99d9883b3f980607d3316152dcd2b0527d40949da9eb438b1a5"
+  },
+  "post_annotation_comments": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\post_annotation_comments.json",
+    "bytes": 4659,
+    "sha256": "6da21926919b80e631979d0533cd9c9a45afe87cfd0a30103c2b8e4f70b52fd5"
+  },
+  "refreshed_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\exports\\004d20d0\\assembly.txt",
+      "bytes": 3484,
+      "sha256": "3f48942abfe09530b47392189f70b02d3536885b3ffd6218a02ab8d00a472a44"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\exports\\004d20d0\\decompiled.c",
+      "bytes": 3147,
+      "sha256": "fdd15b426f584d4254855541e3632335e1241d8076e3017aea840c382121e7f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\exports\\004d20d0\\metadata.json",
+      "bytes": 310,
+      "sha256": "b913f82fe18cdfbbaabc60b67b8d1db102c470f6b031204250ab772ecda58047"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\exports\\004d3ed0\\assembly.txt",
+      "bytes": 1352,
+      "sha256": "7841a9161df24ce6e7f10fd107868687a7ffaff670fb50473b55f5d7dd5222d9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\exports\\004d3ed0\\decompiled.c",
+      "bytes": 4196,
+      "sha256": "e68968eafd438269d53df67f2cd233d81044c78474dd6820c294055e0dbf0000"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\exports\\004d3ed0\\metadata.json",
+      "bytes": 275,
+      "sha256": "e7bf371186ea1ccb021a5db8fbb1ff4927dc00aa65aec2b6ffe9f66524573a70"
+    }
+  ],
+  "retained_typed_preimages": {
+    "typed_flow.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\typed_flow.json",
+      "bytes": 15061,
+      "sha256": "4bf4e13196e9b45cd69abe9ea0f393137e968f0163fce58954767cac96967a6b"
+    },
+    "call_flow.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\call_flow.json",
+      "bytes": 9971,
+      "sha256": "d92c30a3b118cc5b451dea377b7960b2aa29b13bfdd4eb5fc4d84b467171708f"
+    },
+    "instruction_context.json": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_growth_annotations\\instruction_context.json",
+      "bytes": 520,
+      "sha256": "b5818ca3598ce4e6e4afe6133b0507ed7918535eff9bee79705d74602584c5d6"
+    }
+  },
+  "current_metadata": {
+    "call_site": "004d2209",
+    "flow_override": "CALL_RETURN",
+    "separate_fallthrough_override": false,
+    "callee_thunk_no_return": false,
+    "callee_direct_target_no_return": false,
+    "function_stored_body_bytes": 338,
+    "verified_complete_raw_body_bytes": 341,
+    "gap": "004d220e..004d2210"
+  },
+  "lease": "cc12_queue_growth_annotations",
+  "qualification": "Root establishes exact current call override and338-byte two-range body from typed metadata, rather than inferring cause from a gap or claiming an historical cause. Renaming and appended comments only. Prior complete comments preserved, tool write lock and save used. No flow, listing, body or prototype repair, no C++ or runtime proof."
+}
