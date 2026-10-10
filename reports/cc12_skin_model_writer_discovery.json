@@ -580,5 +580,48 @@
     "runtime_execution": false,
     "game_validated": false
   },
-  "historical_context": "Current baseline readiness docs/report are frozen as context; their Source/build/runtime references are not fresh execution evidence for this packet."
+  "historical_context": "Current baseline readiness docs/report are frozen as context; their Source/build/runtime references are not fresh execution evidence for this packet.",
+  "primary_review": {
+    "decision": "Accept one direct Native write as selected evidence; whole initializer/backing/ABI and ownership gate remain held.",
+    "worker_commit": "f4e9497bf",
+    "artifact_pin_occurrences_verified_and_retained": 40,
+    "selected_context_baseline_and_current_Git_matches": [
+      "config/target.json",
+      "tools/bsp.py",
+      "tools/ghidra_export.py",
+      "include/bsp/native_resource_postprocess_full.hpp",
+      "src/native_resource_postprocess_full.cpp",
+      "include/bsp/native_point_light_provider.hpp",
+      "src/native_point_light_provider.cpp",
+      "include/bsp/game_native_type_storage.hpp",
+      "src/game_native_type_storage.cpp",
+      "src/game_native_vfs_application.cpp",
+      "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+      "reports/cc12_remaining_resource_descriptors_source_readiness.json"
+    ],
+    "Root_original_disk_vs_worker_retained_live_bytes": [
+      {
+        "address": "00CD8524",
+        "bytes": 6,
+        "disk_hex": "890d44030901",
+        "worker_retained_live_hex": "890d44030901",
+        "raw_bytes_equal": true,
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x1090344], ecx"
+      }
+    ],
+    "new_live_queries": 0,
+    "new_byte_windows": 0,
+    "proof": {
+      "path": "local/cc12_skin_model_writer_discovery_primary/proof.json",
+      "bytes": 21794,
+      "sha256": "c2f506ed88616f91350886c05a302ca99a1a9d5531d077d535e4b3d6f1c11a4f"
+    },
+    "document_pin": {
+      "path": "docs/CC12_SKIN_MODEL_WRITER_DISCOVERY.md",
+      "bytes": 6193,
+      "sha256": "9f21d829a7c06bd425b18fa1e3ef78bc059b2611a7306ef8416e697f8b0c29c4"
+    },
+    "GPR_mutations_or_Cpp_build_test_runtime_changes": 0
+  }
 }

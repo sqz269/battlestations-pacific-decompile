@@ -97,3 +97,10 @@ Skin model `01090344` is distinct from skined-mesh resource `01090454` and the
 excluded `01090370` family. Camera-resource `01090288` and compact `0109042C`
 remain separate. No copied consumer ID, substitute guard or default descriptor
 was introduced.
+
+Primary review retained and verified all40 pin occurrences and all12 selected
+context Git blobs. Root additionally replayed the exact selected six-byte
+window against the unchanged original PE and worker-retained live hex; they
+match directly. This adds selected raw-byte equality only. It does not extend
+the window or establish a whole body, value origin, ABI, owner, caller, guard,
+layout/name/counter/CRT slot. The ownership/boundary audit remains separate.
