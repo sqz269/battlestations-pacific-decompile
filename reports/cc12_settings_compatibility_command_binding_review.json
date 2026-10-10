@@ -1,0 +1,2423 @@
+{
+  "schema": "bsp.cc12.settings_compatibility_command_binding_review.v1",
+  "utc": "2026-10-10T13:34:30.608794+00:00",
+  "packet": "cc12_settings_compatibility_command_binding_review",
+  "status": "reviewed_unbound_archive_publication_route_no_cpp_go",
+  "scope": {
+    "owned_function": "008D44C0",
+    "accepted_source_commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+    "prior_reader_worker_commit": "83d73fe97c5d74221d028619f79dd4faeabd3aba",
+    "fresh_native_bytes": 89,
+    "fresh_native_instructions": 24,
+    "fresh_native_last_byte": "008D4518",
+    "mutations": [],
+    "reused_not_fresh": [
+      "006B8AD0",
+      "006B89F0",
+      "008D6DC0 prior post-audio evidence"
+    ],
+    "qualifications": [
+      "Stored Ghidra prototype remains undefined(void); proven ABI is ECX=settings, stack byte, RET4.",
+      "No concrete archive publication callback or production PcProfileIoHost construction found in complete retained Source corpus.",
+      "No complete raw archive reader binding exists in this Source path; raw startup008D8190 is separate.",
+      "System/SDK headers are explicit compile dependencies, not a newly frozen compiler/SDK environment."
+    ]
+  },
+  "outcome": {
+    "ordinary_source_route": "unbound, not demonstrated dropped/duplicated/correctly delivered at runtime",
+    "helper": "Updates semantic settings and supplied globals; returns optional text without delivery; no production caller.",
+    "misleading_named_method": "GameScriptOrdersHost::lua_run_string_006b8ad0 discards both inputs; not connected to setter.",
+    "available_semantic_delivery": "run_lua_chunk through actual GameMissionLuaHost executes Lua when state exists; no compatibility adapter connects it.",
+    "canonical_globals": "Explicit process initialization and shared field borrowing established; does not imply mission-machine availability.",
+    "normalized_bool_limit": "Native stores original byte; current helpers accept bool and precomputed sink presence. Raw ABI/noncanonical-byte identity not established.",
+    "source_fix": "Follow-up must bind same receiver, canonical global and actual optional mission-machine owner. No C++ implementation or activation in this packet."
+  },
+  "native_contract": {
+    "receiver": "ECX = whole settings object; copied to EDX",
+    "input": "low byte at entry ESP+4; stored unchanged",
+    "stores": [
+      {
+        "site": "008D44C6",
+        "destination": "settings+B0h",
+        "width": 1
+      },
+      {
+        "site": "008D44CC",
+        "destination": "0108FF20",
+        "width": 1
+      }
+    ],
+    "guard_order": [
+      "game=[00E188A8] nonnull",
+      "host=[game+1A08h] nonnull",
+      "machine=[host+4] nonnull"
+    ],
+    "guard_after_both_stores": true,
+    "machine_state_plus4_guard_present": false,
+    "truth": "reload settings+B0h and compare with zero",
+    "true_call": {
+      "site": "008D4504",
+      "literal_va": "00CF7F38",
+      "admitted_literal": "X360COMP=true"
+    },
+    "false_call": {
+      "site": "008D4511",
+      "literal_va": "00CF7F28",
+      "admitted_literal": "X360COMP=false"
+    },
+    "callee": "006B8AD0",
+    "callee_ECX": "machine from host+4",
+    "arguments": [
+      "selected text",
+      "null results",
+      "null error",
+      "2"
+    ],
+    "calls_per_path": "zero when guard fails, exactly one otherwise",
+    "exit": "RET4 at008D4509 or008D4516",
+    "delegate_limit": "Interpreter/global/alias effects not bounded by the local stores; no whole-reader +24 preservation, Native startup timing or selector credit."
+  },
+  "complete_evidence": {
+    "schema": "bsp.cc12.settings_compatibility_binding.freeze.v1",
+    "capture_utc": "2026-10-10T13:24:55.156487+00:00",
+    "accepted_source_commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+    "source_corpus": {
+      "scope": "Every tracked blob under src/ and include/ at accepted baseline; both complete Git and working bytes retained.",
+      "files": 4206,
+      "git_tree": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/8ff97655035e8c04_source_ls_tree_z.bin",
+        "bytes": 382563,
+        "sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f"
+      },
+      "git_archive": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/2a0dc5c9486f507a_source_git.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "working_archive": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/2a0dc5c9486f507a_source_working.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "manifest": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/c772aa9cc89fea34_source_manifest.json",
+        "bytes": 1628808,
+        "sha256": "c772aa9cc89fea343db0fd205e6a5493d472604122613f09739714a11ad05e88"
+      }
+    },
+    "additional_Source_Git": [
+      {
+        "source_path": "config/target.json",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/366e5a64ac945473_git_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/366e5a64ac945473_working_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/bsp.py",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/09de2b8916a4af98_git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/09de2b8916a4af98_working_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/ghidra_export.py",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "0056201883c1594d9267d2fcf4990385461f0857",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/0367957cab3518c6_git_tools_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/0367957cab3518c6_working_tools_ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/workspace.py",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/611a2f0613f21724_git_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/611a2f0613f21724_working_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "CMakeLists.txt",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/568fc615535bf822_git_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/568fc615535bf822_working_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/startup.cmake",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "6fa7a29dda1b965bcfa5ffc7f589c7ef3391a017",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/7c30db5b9be8b859_git_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/7c30db5b9be8b859_working_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/LUA_RUNTIME_GLOBALS.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "ef95bd7bf90ffb8a4b993a3ac2f33aa7dc718bf7",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/56dd1eb2f630213b_git_docs_LUA_RUNTIME_GLOBALS.md",
+          "bytes": 8273,
+          "sha256": "56dd1eb2f630213b1c8631176c24a7c4d17f45245bb66b27fb6b98e180babc7e"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/56dd1eb2f630213b_working_docs_LUA_RUNTIME_GLOBALS.md",
+          "bytes": 8273,
+          "sha256": "56dd1eb2f630213b1c8631176c24a7c4d17f45245bb66b27fb6b98e180babc7e"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/lua_runtime_globals.json",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "dedf2a1bebd2725196d04cdd40a54f33793d93e2",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/fa13493eca4745ef_git_reports_lua_runtime_globals.json",
+          "bytes": 5370,
+          "sha256": "fa13493eca4745ef6e0ae93d4f4ace7476ecd51f2f71dd6e6f4f0e14c69f8ab4"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/fa13493eca4745ef_working_reports_lua_runtime_globals.json",
+          "bytes": 5370,
+          "sha256": "fa13493eca4745ef6e0ae93d4f4ace7476ecd51f2f71dd6e6f4f0e14c69f8ab4"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/NATIVE_LUA_PROCESS_LIFETIME_R68.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "da498f13c7319d48137a275a76134da8312cd13b",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/639576853d4744b8_git_docs_NATIVE_LUA_PROCESS_LIFETIME_R68.md",
+          "bytes": 6705,
+          "sha256": "639576853d4744b838f402c13c6c76f66d01ce14243e10abbc8fb1378b9a3bfd"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/639576853d4744b8_working_docs_NATIVE_LUA_PROCESS_LIFETIME_R68.md",
+          "bytes": 6705,
+          "sha256": "639576853d4744b838f402c13c6c76f66d01ce14243e10abbc8fb1378b9a3bfd"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/native_lua_process_lifetime_r68.json",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "b91cf4db326858db0608e83e79923c1945fd7fbe",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/598ec0cc3212c21c_git_reports_native_lua_process_lifetime_r68.json",
+          "bytes": 891857,
+          "sha256": "598ec0cc3212c21c357acebcbd16494fa4cd5a82afc4c1c45cf181d6287f93e3"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/598ec0cc3212c21c_working_reports_native_lua_process_lifetime_r68.json",
+          "bytes": 891857,
+          "sha256": "598ec0cc3212c21c357acebcbd16494fa4cd5a82afc4c1c45cf181d6287f93e3"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/MISSION_LUA_HOST.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "3b9c1b0a5bccace5f51c6d92b388e5824f60ef0d",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/010b9880711a2534_git_docs_MISSION_LUA_HOST.md",
+          "bytes": 26373,
+          "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/010b9880711a2534_working_docs_MISSION_LUA_HOST.md",
+          "bytes": 26373,
+          "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/mission_lua_host.json",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "59f2fc7c0e66affd2feb56fd47540e14318ee198",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/038f566ab59dc67e_git_reports_mission_lua_host.json",
+          "bytes": 69076,
+          "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/038f566ab59dc67e_working_reports_mission_lua_host.json",
+          "bytes": 69076,
+          "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/OPTIONS_SETTINGS_COMMIT.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "0a6256bf6f897dd3918eb133bba354aa3ba3a550",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/71043750a961792f_git_docs_OPTIONS_SETTINGS_COMMIT.md",
+          "bytes": 24523,
+          "sha256": "71043750a961792fdc54cc1bbb553c34689767bafa562269309ed7acb748c2dc"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/71043750a961792f_working_docs_OPTIONS_SETTINGS_COMMIT.md",
+          "bytes": 24523,
+          "sha256": "71043750a961792fdc54cc1bbb553c34689767bafa562269309ed7acb748c2dc"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/options_settings_commit.json",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "5184f171af76f4d419746fbab55864c05a1be8ec",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/67de52c86abcd1d5_git_reports_options_settings_commit.json",
+          "bytes": 33859,
+          "sha256": "67de52c86abcd1d5bcc85a795773fca6b8beaa18519b6d0a7ba3a266042b7f54"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/67de52c86abcd1d5_working_reports_options_settings_commit.json",
+          "bytes": 33859,
+          "sha256": "67de52c86abcd1d5bcc85a795773fca6b8beaa18519b6d0a7ba3a266042b7f54"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/NATIVE_SETTINGS_APPLICATION_R170.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "8292b894fdde0f40fe9e9465f8a7f8e50e6a760e",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/d0d0e96a4b5f8d8c_git_docs_NATIVE_SETTINGS_APPLICATION_R170.md",
+          "bytes": 6195,
+          "sha256": "d0d0e96a4b5f8d8cc2650a63040c27bf32eeb4195e6e6730f28daa92854b1e6c"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/d0d0e96a4b5f8d8c_working_docs_NATIVE_SETTINGS_APPLICATION_R170.md",
+          "bytes": 6195,
+          "sha256": "d0d0e96a4b5f8d8cc2650a63040c27bf32eeb4195e6e6730f28daa92854b1e6c"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/native_settings_application_r170.json",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "8bd7fbf0d178eeb3e0e6a5e0e8db61e8d93600b4",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/4883feb0d96c4053_git_reports_native_settings_application_r170.json",
+          "bytes": 222876,
+          "sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/4883feb0d96c4053_working_reports_native_settings_application_r170.json",
+          "bytes": 222876,
+          "sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/NATIVE_SETTINGS_LOADER_R167.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "f03576348829e3a91298a73543a49674a55aaf6e",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/18496746577a85d1_git_docs_NATIVE_SETTINGS_LOADER_R167.md",
+          "bytes": 7176,
+          "sha256": "18496746577a85d1d12a6d24d5130fa3965ba5e80c9599026c932a21f91bc084"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/18496746577a85d1_working_docs_NATIVE_SETTINGS_LOADER_R167.md",
+          "bytes": 7176,
+          "sha256": "18496746577a85d1d12a6d24d5130fa3965ba5e80c9599026c932a21f91bc084"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/native_settings_loader_r167.json",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "d1768badb7e35349e4ee2dad2099c69a63a8338a",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/70d9b0c579b98a30_git_reports_native_settings_loader_r167.json",
+          "bytes": 151814,
+          "sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/70d9b0c579b98a30_working_reports_native_settings_loader_r167.json",
+          "bytes": 151814,
+          "sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/lua.cmake",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "git_blob": "c92cd290b5050de1b075928ad2aa04631e6a4da4",
+        "git": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/0c432ec1026aa692_git_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "working": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/0c432ec1026aa692_working_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "LF_equal": true
+      }
+    ],
+    "prior_reader_whole_reports": [
+      {
+        "source_path": "docs/CC12_NATIVE_SETTINGS_READER_POST_AUDIO_BYTE_REVIEW.md",
+        "commit": "83d73fe97c5d74221d028619f79dd4faeabd3aba",
+        "git_blob": "1d5c527fbf546799ce126e19267a40b00425fa62",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/1ba91270cfe071da_prior_docs_CC12_NATIVE_SETTINGS_READER_POST_AUDIO_BYTE_REVIEW.md",
+          "bytes": 8656,
+          "sha256": "1ba91270cfe071da8a1db9efb9e10406ba4d01f234f4a0c17b003649d62f5f46"
+        }
+      },
+      {
+        "source_path": "reports/cc12_native_settings_reader_post_audio_byte_review.json",
+        "commit": "83d73fe97c5d74221d028619f79dd4faeabd3aba",
+        "git_blob": "e0e8581bceba3136fb5b0f8e1d93b39775c6eece",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/dc91144072ae9a4e_prior_reports_cc12_native_settings_reader_post_audio_byte_review.json",
+          "bytes": 4095177,
+          "sha256": "dc91144072ae9a4eabe2b7e93235ec5ccb46a03649336e5d6fb345088a4f8dfa"
+        }
+      }
+    ],
+    "saved_exports": [
+      {
+        "address": "008d44c0",
+        "provenance_saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d44c0\\assembly.txt",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/6a98373cec8ad166_saved_008d44c0_assembly.txt",
+          "bytes": 685,
+          "sha256": "6a98373cec8ad166bf88bd2f85fc359f10346e659c69166820e6461dcf4db17b"
+        }
+      },
+      {
+        "address": "008d44c0",
+        "provenance_saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d44c0\\decompiled.c",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/cd88e654983fb505_saved_008d44c0_decompiled.c",
+          "bytes": 3767,
+          "sha256": "cd88e654983fb5055249ad39d2cf661752f3230d906b10118cf99bfdb842d24c"
+        }
+      },
+      {
+        "address": "008d44c0",
+        "provenance_saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d44c0\\metadata.json",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/356af341a328a4da_saved_008d44c0_metadata.json",
+          "bytes": 284,
+          "sha256": "356af341a328a4dad920774a815bfa47bef644d3add6dcf47f874ecfcbd74eed"
+        }
+      },
+      {
+        "address": "008d6dc0",
+        "provenance_saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d6dc0\\assembly.txt",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/5f641185062441f0_saved_008d6dc0_assembly.txt",
+          "bytes": 20994,
+          "sha256": "5f641185062441f0ad85ce1947195b5d8efac3d09b00f674054253fd71aa87a2"
+        }
+      },
+      {
+        "address": "008d6dc0",
+        "provenance_saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d6dc0\\decompiled.c",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/52a7b223a3e4dc27_saved_008d6dc0_decompiled.c",
+          "bytes": 14260,
+          "sha256": "52a7b223a3e4dc27e84f348908e2294d5b81a653d446e55f7f6c5094e0c37157"
+        }
+      },
+      {
+        "address": "008d6dc0",
+        "provenance_saved_export": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008d6dc0\\metadata.json",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/f27cc2b51d60cb83_saved_008d6dc0_metadata.json",
+          "bytes": 222,
+          "sha256": "f27cc2b51d60cb83a976333581aa25ae72cd4b4421941ca16d0f54881ce8e620"
+        }
+      }
+    ],
+    "typed_capture_inputs": [
+      {
+        "name": "capture.py",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/a3a7e2f3944d42cb_capture.py",
+          "bytes": 1303,
+          "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+        }
+      },
+      {
+        "name": "live.json",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/5f10597bcd08c8d3_live.json",
+          "bytes": 825,
+          "sha256": "5f10597bcd08c8d3de76afe3da35dccfb30cb80565fefe47c00eb4254d6b95d9"
+        }
+      },
+      {
+        "name": "live_capture.json",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/90c78e66e1dae37e_live_capture.json",
+          "bytes": 11722,
+          "sha256": "90c78e66e1dae37ec60faae8132f185cddd6771d0443a2c516c23d63bb07a0f7"
+        }
+      },
+      {
+        "name": "typed_flow.json",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/b2476bebe7179c73_typed_flow.json",
+          "bytes": 8882,
+          "sha256": "b2476bebe7179c733868e23ca2ba4f62af9ef3c7e9ea07a6dc02e9afc6e4b1bc"
+        }
+      },
+      {
+        "name": "freeze.py",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/091904d3a3144e69_freeze.py",
+          "bytes": 10992,
+          "sha256": "091904d3a3144e69d79c66966d3fcfb8f5357064530d57afe059cac0d14e3de8"
+        }
+      }
+    ],
+    "original_PE": {
+      "capture_utc": "2026-10-10T13:24:51.985027+00:00",
+      "original_installation_path_provenance_only": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "complete_image": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/b682a82c52f81f95_original_PE.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "image_base": "00400000",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "virtual_bytes": 9306422,
+          "raw_bytes": 9310208,
+          "raw_offset": 4096
+        },
+        {
+          "name": ".rdata",
+          "rva": 9314304,
+          "virtual_bytes": 1202980,
+          "raw_bytes": 1204224,
+          "raw_offset": 9314304
+        },
+        {
+          "name": ".data",
+          "rva": 10518528,
+          "virtual_bytes": 2719452,
+          "raw_bytes": 65536,
+          "raw_offset": 10518528
+        },
+        {
+          "name": ".rsrc",
+          "rva": 13238272,
+          "virtual_bytes": 1630400,
+          "raw_bytes": 1634304,
+          "raw_offset": 10584064
+        }
+      ],
+      "function": {
+        "start": "008D44C0",
+        "last_instruction": "008D4516",
+        "last_byte": "008D4518",
+        "exclusive_end": "008D4519",
+        "bytes": 89,
+        "file_offset": 5063872,
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/dc9a8bf22fccdcbe_function_008d44c0_008d4518.bin",
+          "bytes": 89,
+          "sha256": "dc9a8bf22fccdcbe390f73ececd6aea781b13cefad8a981dab60751e486f70ed"
+        },
+        "hex": "8a4424048bd18882b0000000a220ff0801a1a888e10085c0743c83b8081a00000074338b80081a00008b480485c9742680bab0000000006a026a006a00740d68387fcf00e8c745deffc2040068287fcf00e8ba45deffc20400",
+        "length_correction": "End minus start is0x58; inclusive body is0x59=89 bytes, not58 decimal bytes."
+      }
+    },
+    "source_queries": [
+      {
+        "label": "publication_helper",
+        "regex": "publish_lua_xbox_compatibility_008d44c0",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/lua_runtime_globals.hpp",
+            "line": 24,
+            "text": "const char* publish_lua_xbox_compatibility_008d44c0("
+          },
+          {
+            "path": "src/lua_runtime_globals.cpp",
+            "line": 33,
+            "text": "const char* publish_lua_xbox_compatibility_008d44c0("
+          }
+        ]
+      },
+      {
+        "label": "publication_host_method",
+        "regex": "publish_xbox_compatibility_008d44c0",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/settings_archive_reader.hpp",
+            "line": 12,
+            "text": "    virtual void publish_xbox_compatibility_008d44c0(bool) = 0;"
+          },
+          {
+            "path": "src/settings_archive_reader.cpp",
+            "line": 42,
+            "text": "    host.publish_xbox_compatibility_008d44c0(s.control.xbox_compatibility_b0);"
+          }
+        ]
+      },
+      {
+        "label": "publication_host_type",
+        "regex": "SettingsArchiveReadHost",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/pc_profile_io.hpp",
+            "line": 29,
+            "text": "    SettingsArchiveReadHost& archive_read;"
+          },
+          {
+            "path": "include/bsp/settings_archive_reader.hpp",
+            "line": 9,
+            "text": "struct SettingsArchiveReadHost {"
+          },
+          {
+            "path": "include/bsp/settings_archive_reader.hpp",
+            "line": 10,
+            "text": "    virtual ~SettingsArchiveReadHost() = default;"
+          },
+          {
+            "path": "include/bsp/settings_archive_reader.hpp",
+            "line": 18,
+            "text": "    InputSettings&, KeyboardRuntimeHost&, SettingsArchiveReadHost&);"
+          },
+          {
+            "path": "src/settings_archive_reader.cpp",
+            "line": 25,
+            "text": "    InputSettings& input, KeyboardRuntimeHost& keyboard, SettingsArchiveReadHost& host) {"
+          }
+        ]
+      },
+      {
+        "label": "archive_reader",
+        "regex": "read_settings_archive_008d6dc0",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/settings_archive_reader.hpp",
+            "line": 17,
+            "text": "void read_settings_archive_008d6dc0(GameSettingsBlock&, GuiLuaReader&,"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 85,
+            "text": "    read_settings_archive_008d6dc0(settings, settings_readers_.back()->reader,"
+          },
+          {
+            "path": "src/settings_archive_reader.cpp",
+            "line": 24,
+            "text": "void read_settings_archive_008d6dc0(GameSettingsBlock& s, GuiLuaReader& reader,"
+          }
+        ]
+      },
+      {
+        "label": "pc_profile_host_mentions",
+        "regex": "PcProfileIoHost",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/pc_profile_io.hpp",
+            "line": 43,
+            "text": "class PcProfileIoHost final : public ProfileIoHost, public ProfileSettingsRestoreHost {"
+          },
+          {
+            "path": "include/bsp/pc_profile_io.hpp",
+            "line": 45,
+            "text": "    PcProfileIoHost(PcProfileIoContext, PcStorageBackend&, StorageOperationState&,"
+          },
+          {
+            "path": "include/bsp/pc_profile_io.hpp",
+            "line": 48,
+            "text": "    ~PcProfileIoHost() override;"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 7,
+            "text": "struct PcProfileIoHost::ReaderFrame {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 17,
+            "text": "PcProfileIoHost::PcProfileIoHost(PcProfileIoContext context, PcStorageBackend& backend,"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 26,
+            "text": "PcProfileIoHost::~PcProfileIoHost() = default;"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 27,
+            "text": "void PcProfileIoHost::read(std::string_view name, ProfileCompletion completion) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 31,
+            "text": "void PcProfileIoHost::write(std::string_view name, ProfileCompletion completion, bool force) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 35,
+            "text": "void PcProfileIoHost::destroy_mission_progress_007fd780() { context_.scores.destroy_mission_progress_007fd780(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 36,
+            "text": "bool PcProfileIoHost::construct_mission_progress_00920e10() { return context_.scores.construct_mission_progress_00920e10(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 37,
+            "text": "bool PcProfileIoHost::xenon_state_is_two() { return services_.game.xenon_state_is_two(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 38,
+            "text": "bool PcProfileIoHost::xenon_user_selected() { return services_.game.xenon_user_selected(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 39,
+            "text": "void PcProfileIoHost::restore_selected_user_controls_008d45d0() { services_.game.restore_selected_user_controls_008d45d0(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 40,
+            "text": "bool PcProfileIoHost::storage_query_1c(std::string_view name, bool kind) { return backend_.storage_query_1c(name, kind ? 1u : 0u); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 41,
+            "text": "void PcProfileIoHost::request_read_00bd3d70(std::string_view name, bool kind) { backend_.request_read_00bd3d70(name, kind ? 1u : 0u); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 42,
+            "text": "void PcProfileIoHost::request_write_00bd3dc0(std::string_view name) { backend_.request_write_00bd3dc0(name); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 43,
+            "text": "void PcProfileIoHost::run_storage_operation_006adb50(ProfileIoTask task) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 47,
+            "text": "void PcProfileIoHost::run_storage_operation_006adb50(ProfileCompletion completion) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 50,
+            "text": "int PcProfileIoHost::storage_state_08() { return backend_.operation().state_08; }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 51,
+            "text": "void PcProfileIoHost::begin_profile_reader_004425c0() {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 55,
+            "text": "void PcProfileIoHost::deserialize_profile_007fdf00(ProfileResetState& profile) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 58,
+            "text": "bool PcProfileIoHost::has_storage_buffer_30() { return backend_.has_storage_buffer_30(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 59,
+            "text": "void PcProfileIoHost::free_and_clear_storage_buffer_30() { backend_.free_and_clear_storage_buffer_30(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 60,
+            "text": "void PcProfileIoHost::close_storage_archive_00b65e80() { backend_.close_storage_archive_00b65e80(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 61,
+            "text": "bool PcProfileIoHost::has_manager_00f8a2fc() { return services_.game.has_manager_00f8a2fc(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 62,
+            "text": "void PcProfileIoHost::notify_manager_virtual_a0() { services_.game.notify_manager_virtual_a0(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 63,
+            "text": "void PcProfileIoHost::restore_settings_008d7a50(ProfileCompletion completion) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 66,
+            "text": "void PcProfileIoHost::apply_settings_008d5b50() {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 70,
+            "text": "void PcProfileIoHost::commit_profile_007fae70(ProfileResetState& profile) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 73,
+            "text": "void PcProfileIoHost::destroy_profile_reader_00441a20() { profile_readers_.pop_back(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 74,
+            "text": "void PcProfileIoHost::reset_storage_operation_00bd3450() { backend_.reset_storage_operation_00bd3450(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 75,
+            "text": "bool PcProfileIoHost::storage_available_21() { return backend_.storage_available_21(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 76,
+            "text": "bool PcProfileIoHost::game_present() { return services_.game.game_present(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 77,
+            "text": "bool PcProfileIoHost::profile_has_save_name_007f8ca0() { return !context_.profile.save_name_34.empty(); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 78,
+            "text": "std::string PcProfileIoHost::copy_profile_save_name_00425f40() { return context_.profile.save_name_34; }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 79,
+            "text": "void PcProfileIoHost::immediate_read_00bd4380(std::string_view name, bool kind) { backend_.immediate_read_00bd4380(name, kind ? 1u : 0u); }"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 80,
+            "text": "void PcProfileIoHost::begin_settings_reader_004425c0() {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 84,
+            "text": "void PcProfileIoHost::deserialize_settings_008d6dc0(GameSettingsBlock& settings) {"
+          },
+          {
+            "path": "src/pc_profile_io.cpp",
+            "line": 88,
+            "text": "void PcProfileIoHost::destroy_settings_reader_00441a20() { settings_readers_.pop_back(); }"
+          }
+        ]
+      },
+      {
+        "label": "no_op_run_string",
+        "regex": "lua_run_string_006b8ad0",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 139,
+            "text": "    virtual void lua_run_string_006b8ad0(const char* chunk, int mode) = 0;"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 819,
+            "text": "    void lua_run_string_006b8ad0(const char* chunk, int mode) override;"
+          },
+          {
+            "path": "src/entity_think_dispatch.cpp",
+            "line": 128,
+            "text": "            host.lua_run_string_006b8ad0(kCollectGarbageChunk, kCollectGarbageRunMode);"
+          },
+          {
+            "path": "src/game_hosts_ready.cpp",
+            "line": 205,
+            "text": "    void lua_run_string_006b8ad0(const char* chunk, int mode) override {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4367,
+            "text": "void GameScriptOrdersHost::lua_run_string_006b8ad0(const char* chunk, int mode) {"
+          }
+        ]
+      },
+      {
+        "label": "actual_globals_borrowers",
+        "regex": "game_native_lua_globals_process|initialize_once_00cd7ce0",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_native_lua_globals.hpp",
+            "line": 14,
+            "text": "    int initialize_once_00cd7ce0();"
+          },
+          {
+            "path": "include/bsp/game_native_lua_globals.hpp",
+            "line": 20,
+            "text": "    friend GameNativeLuaGlobalsProcess& game_native_lua_globals_process();"
+          },
+          {
+            "path": "include/bsp/game_native_lua_globals.hpp",
+            "line": 32,
+            "text": "GameNativeLuaGlobalsProcess& game_native_lua_globals_process();"
+          },
+          {
+            "path": "src/game_main.cpp",
+            "line": 1091,
+            "text": "        auto& lua_globals = bsp::game::game_native_lua_globals_process();"
+          },
+          {
+            "path": "src/game_main.cpp",
+            "line": 1092,
+            "text": "        const int lua_region_atexit = lua_globals.initialize_once_00cd7ce0();"
+          },
+          {
+            "path": "src/game_native_lua_globals.cpp",
+            "line": 9,
+            "text": "GameNativeLuaGlobalsProcess& game_native_lua_globals_process() {"
+          },
+          {
+            "path": "src/game_native_lua_globals.cpp",
+            "line": 13,
+            "text": "int GameNativeLuaGlobalsProcess::initialize_once_00cd7ce0() {"
+          },
+          {
+            "path": "src/game_native_lua_services.cpp",
+            "line": 13,
+            "text": "    GameNativeLuaGlobalsProcess& process{game_native_lua_globals_process()};"
+          }
+        ]
+      },
+      {
+        "label": "raw_loader",
+        "regex": "load_native_game_settings_008d8190",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/native_settings_loader.hpp",
+            "line": 93,
+            "text": "void load_native_game_settings_008d8190(void*,NativeSettingsLoaderContext&,NativeSettingsLoaderOperation&);"
+          },
+          {
+            "path": "src/game_native_settings_application.cpp",
+            "line": 123,
+            "text": "        load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation);"
+          },
+          {
+            "path": "src/native_settings_loader.cpp",
+            "line": 152,
+            "text": "void load_native_game_settings_008d8190(void* owner,C& c,Op& op) {"
+          }
+        ]
+      },
+      {
+        "label": "raw_compatibility_reads",
+        "regex": "xbox_compatibility_b0=flag\\(p,0xb0\\)",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "src/game_native_settings_application.cpp",
+            "line": 60,
+            "text": "    c.invert_plane_y_43=flag(p,0x43);c.swap_map_sticks_44=flag(p,0x44);c.xbox_compatibility_b0=flag(p,0xb0);"
+          }
+        ]
+      },
+      {
+        "label": "compatibility_text",
+        "regex": "X360COMP",
+        "scope": "Complete retained accepted src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/font_registry.hpp",
+            "line": 30,
+            "text": "// PC/X360COMP/REGION inputs, DoFile and fundamentals; no native VFS ownership."
+          },
+          {
+            "path": "include/bsp/game_settings.hpp",
+            "line": 347,
+            "text": "inline constexpr char kX360CompatibilityOn[] = \"X360COMP=true\";   // 00cf7f38"
+          },
+          {
+            "path": "include/bsp/game_settings.hpp",
+            "line": 348,
+            "text": "inline constexpr char kX360CompatibilityOff[] = \"X360COMP=false\"; // 00cf7f28"
+          },
+          {
+            "path": "include/bsp/native_input_configuration_load.hpp",
+            "line": 32,
+            "text": "// Lua owner with mask1 only when byte4C8 is zero. Always execute X360COMP and"
+          },
+          {
+            "path": "include/bsp/shader_lua.hpp",
+            "line": 43,
+            "text": "// Opens base only, PC=true, supplied X360COMP/REGION, fundamentals then descriptor."
+          },
+          {
+            "path": "src/font_registry.cpp",
+            "line": 167,
+            "text": "    lua_pushboolean(state, x360comp); lua_setglobal(state, \"X360COMP\");"
+          },
+          {
+            "path": "src/lua_state_owner.cpp",
+            "line": 78,
+            "text": "    platform_chunk(state, owner->environment_.x360comp ? \"X360COMP=true\" : \"X360COMP=false\");"
+          },
+          {
+            "path": "src/native_input_configuration_load.cpp",
+            "line": 104,
+            "text": "        services.x360comp_00f88a30 != 0 ? \"X360COMP=true\" : \"X360COMP=false\");"
+          },
+          {
+            "path": "src/native_lua_bootstrap.cpp",
+            "line": 43,
+            "text": "    platform_chunk(owner,strings,inputs.x360comp_0108ff20?\"X360COMP=true\":\"X360COMP=false\");"
+          },
+          {
+            "path": "src/shader_lua.cpp",
+            "line": 309,
+            "text": "        lua_pushboolean(state, x360comp); lua_setglobal(state, \"X360COMP\");"
+          }
+        ]
+      }
+    ],
+    "exact_excerpts": [
+      {
+        "label": "setter_source",
+        "source_path": "src/game_settings.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 313,
+        "last_line": 322,
+        "text": "const char* set_xbox_compatibility_008d44c0(\n    GameSettingsBlock& settings, bool enabled, bool command_sink_present) noexcept\n{\n    settings.control.xbox_compatibility_b0 = enabled; // 008d44c6, mirrored into 0108ff20\n    if (!command_sink_present) {\n        return nullptr; // 008d44d8/008d44e1/008d44ee all fall to the bare RET 4\n    }\n    return enabled ? kX360CompatibilityOn : kX360CompatibilityOff; // 008d44ff/008d450c\n}\n\n",
+        "utf8_sha256": "bc401d96432254b6435a3ce104e93015bfc55dab3dbbb025e8b0e76fc2203259"
+      },
+      {
+        "label": "setter_header",
+        "source_path": "include/bsp/game_settings.hpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 344,
+        "last_line": 350,
+        "text": "// 008d44c0, __thiscall(bool enabled), RET 4. Stores +B0h, mirrors it into\n// 0108ff20 and, when the console command sink at ((00e188a8)+1A08h)+4h exists,\n// pushes one of the two literals through 006b8ad0(text, 0, 0, 2).\ninline constexpr char kX360CompatibilityOn[] = \"X360COMP=true\";   // 00cf7f38\ninline constexpr char kX360CompatibilityOff[] = \"X360COMP=false\"; // 00cf7f28\nconst char* set_xbox_compatibility_008d44c0(\n    GameSettingsBlock& settings, bool enabled, bool command_sink_present) noexcept;\n",
+        "utf8_sha256": "105572519ce7cf2ae3c91d548f116d047f9617c16bc6d5dc499ca279b5a813b5"
+      },
+      {
+        "label": "global_helper",
+        "source_path": "src/lua_runtime_globals.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 33,
+        "last_line": 41,
+        "text": "const char* publish_lua_xbox_compatibility_008d44c0(\n    GameSettingsBlock& settings, LuaRuntimeGlobals& globals, bool enabled,\n    bool command_sink_present) noexcept {\n    const char* command = set_xbox_compatibility_008d44c0(\n        settings, enabled, command_sink_present);\n    globals.x360comp = enabled; // native 008d44cc, before optional command delivery\n    return command;\n}\n\n",
+        "utf8_sha256": "5db584f0af7f15918b4442cc58f6e262fc9cdfa244e15fd4325f0b53e2623644"
+      },
+      {
+        "label": "helper_no_delivery_contract",
+        "source_path": "include/bsp/lua_runtime_globals.hpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 21,
+        "last_line": 26,
+        "text": "// Compose the existing settings setter with its missing global-byte mirror.\n// Return its optional command text for a caller with a live 006b8ad0 sink to\n// execute using arguments (text, 0, 0, 2). This helper does not deliver it.\nconst char* publish_lua_xbox_compatibility_008d44c0(\n    GameSettingsBlock&, LuaRuntimeGlobals&, bool enabled,\n    bool command_sink_present) noexcept;\n",
+        "utf8_sha256": "3c1dae8d76fc54a075ef2b8261de4a205cc0337bef2ee35cd560cba86c334127"
+      },
+      {
+        "label": "archive_publication",
+        "source_path": "src/settings_archive_reader.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 24,
+        "last_line": 44,
+        "text": "void read_settings_archive_008d6dc0(GameSettingsBlock& s, GuiLuaReader& reader,\n    InputSettings& input, KeyboardRuntimeHost& keyboard, SettingsArchiveReadHost& host) {\n    reader.enter_00bd8e20(gui_lua_key_by_name(\"Options\"));\n    boolean(reader, \"imperial\", s.gameplay.imperial_08, true);\n    boolean(reader, \"subtitle\", s.gameplay.subtitle_09, false);\n    integer(reader, \"hints\", s.gameplay.hints_0c, 2);\n    boolean(reader, \"cameraShake\", s.gameplay.camera_shake_10, true);\n    boolean(reader, \"TargetIndicator\", s.gameplay.target_indicator_4a, true);\n    real(reader, \"masterVolume\", s.audio.master_20, 1.0f);\n    real(reader, \"musicVol\", s.audio.music_28, 1.0f);\n    real(reader, \"sfxVol\", s.audio.effects_2c, 1.0f);\n    real(reader, \"speechVol\", s.audio.speech_30, 1.0f);\n    boolean(reader, \"rumbleOff\", s.control.rumble_off_40, false);\n    boolean(reader, \"swapSticks\", s.control.swap_sticks_41, false);\n    boolean(reader, \"invertCameraY\", s.control.invert_camera_y_42, true);\n    boolean(reader, \"invertPlaneY\", s.control.invert_plane_y_43, true);\n    boolean(reader, \"swapMapSticks\", s.control.swap_map_sticks_44, false);\n    boolean(reader, \"XboxCompatibilityMode\", s.control.xbox_compatibility_b0, false);\n    host.publish_xbox_compatibility_008d44c0(s.control.xbox_compatibility_b0);\n    reader.enter_00bd8e20(gui_lua_key_by_name(\"keyboardSetup\"));\n    read_keyboard_setup_006aba50(input, reader, keyboard);\n",
+        "utf8_sha256": "7d65e46507175aade0678942911f3d4e25ce903306aa2d8e3dcc888eb22ffb6b"
+      },
+      {
+        "label": "archive_interface",
+        "source_path": "include/bsp/settings_archive_reader.hpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 9,
+        "last_line": 18,
+        "text": "struct SettingsArchiveReadHost {\n    virtual ~SettingsArchiveReadHost() = default;\n    // Mirror00f88980+B0 into0108ff20 and optionally issue the native Lua command.\n    virtual void publish_xbox_compatibility_008d44c0(bool) = 0;\n    virtual std::uint32_t renderer_shader_model_104_28() = 0;\n};\n// 008d6dc0: ECX=settings, one reader pointer, RET4. Defaults here differ from\n// reset defaults. Uses real Lua fields and keyboard application, no native ABI.\nvoid read_settings_archive_008d6dc0(GameSettingsBlock&, GuiLuaReader&,\n    InputSettings&, KeyboardRuntimeHost&, SettingsArchiveReadHost&);\n",
+        "utf8_sha256": "c7c3dd4e0fe43a6a7e2541ff7d6ba2ddf48447d2c04c24b7830516dc86ec33a7"
+      },
+      {
+        "label": "profile_deserialize",
+        "source_path": "src/pc_profile_io.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 80,
+        "last_line": 88,
+        "text": "void PcProfileIoHost::begin_settings_reader_004425c0() {\n    settings_readers_.push_back(std::make_unique<ReaderFrame>(backend_.storage_lua_38(),\n        context_.crt_sse2_conversion));\n}\nvoid PcProfileIoHost::deserialize_settings_008d6dc0(GameSettingsBlock& settings) {\n    read_settings_archive_008d6dc0(settings, settings_readers_.back()->reader,\n        context_.input, services_.keyboard, services_.archive_read);\n}\nvoid PcProfileIoHost::destroy_settings_reader_00441a20() { settings_readers_.pop_back(); }\n",
+        "utf8_sha256": "4eedc8938b4635dba89e8984162f042c783e8a871068bad5482beb0ad7b48242"
+      },
+      {
+        "label": "profile_services",
+        "source_path": "include/bsp/pc_profile_io.hpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 27,
+        "last_line": 35,
+        "text": "struct PcProfileIoServices {\n    PcProfileGameHost& game;\n    SettingsArchiveReadHost& archive_read;\n    KeyboardRuntimeHost& keyboard;\n    ProfileCommitHost& commit;\n    SettingsApplyHost& apply;\n    SettingsApplyEnvironment& apply_environment;\n    SettingsCommitLatches& apply_latches;\n    const std::vector<LanguageEntry>& languages;\n",
+        "utf8_sha256": "875fb7684574ab19de6e700700abc52319a8c48e137a4f7ef4997536099c5803"
+      },
+      {
+        "label": "raw_settings_copy",
+        "source_path": "src/game_native_settings_application.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 42,
+        "last_line": 64,
+        "text": "void copy_native_game_settings_read_view(const NativeGameSettingsStorage& storage,\n    const std::vector<LanguageEntry>& languages,GameSettingsBlock& view){\n    const void* p=&storage;auto& o=view.options_file;auto& g=view.gameplay;auto& a=view.audio;\n    auto& c=view.control;auto& v=view.presentation;\n    o.width_14=read<int>(p,0x14);o.height_18=read<int>(p,0x18);\n    o.no_lod_1c=flag(p,0x1c);o.hires_shadow_1d=flag(p,0x1d);o.fullscreen_1e=flag(p,0x1e);\n    o.object_detail_54=read<int>(p,0x54);o.antialias_58=read<int>(p,0x58);o.antialias_index_5c=read<int>(p,0x5c);\n    o.vsync_60=flag(p,0x60);o.texture_detail_68=read<int>(p,0x68);o.reflection_6c=flag(p,0x6c);\n    o.clouds_74=flag(p,0x74);o.resolution_index_78=read<int>(p,0x78);o.shadow_84=flag(p,0x84);\n    o.shadow_85=flag(p,0x85);o.foliage_86=flag(p,0x86);o.shader_model_88=read<int>(p,0x88);o.firewall_94=flag(p,0x94);\n    g.language_index_04=read<int>(p,4);o.language=language_name_008d4870(languages,static_cast<std::size_t>(g.language_index_04));\n    o.unknown_tokens.clear();g.imperial_08=flag(p,8);g.subtitle_09=flag(p,9);g.hints_0c=read<int>(p,0xc);\n    g.camera_shake_10=flag(p,0x10);g.target_indicator_4a=flag(p,0x4a);g.water_drops_7c=flag(p,0x7c);\n    g.marker_alpha_80=read<float>(p,0x80);g.cockpit_mode_b2=flag(p,0xb2);g.show_safe_area_b1=flag(p,0xb1);\n    g.clan_text_b4=raw_text(storage.data()+0xb4);\n    a.master_20=read<float>(p,0x20);a.enabled_24=flag(p,0x24);a.music_28=read<float>(p,0x28);\n    a.effects_2c=read<float>(p,0x2c);a.speech_30=read<float>(p,0x30);\n    c.rumble_off_40=flag(p,0x40);c.swap_sticks_41=flag(p,0x41);c.invert_camera_y_42=flag(p,0x42);\n    c.invert_plane_y_43=flag(p,0x43);c.swap_map_sticks_44=flag(p,0x44);c.xbox_compatibility_b0=flag(p,0xb0);\n    v.gamma_64=read<float>(p,0x64);v.unknown_34=read<float>(p,0x34);v.unknown_70=read<int>(p,0x70);\n    v.shader_flag_8c=read<std::uint8_t>(p,0x8c);v.motion_blur_8d=flag(p,0x8d);v.old_film_effect_90=read<int>(p,0x90);\n    v.hardware_reported_95=flag(p,0x95);view.downloaded_content.clear();\n    const auto* entries=read<const char*>(p,0x98);const auto count=read<int>(p,0x9c);\n",
+        "utf8_sha256": "c30692b12a8a7c9608500a91c2d0fd2160d5c678f6ae6968f3a542a3ff465508"
+      },
+      {
+        "label": "raw_settings_loader",
+        "source_path": "src/game_native_settings_application.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 115,
+        "last_line": 146,
+        "text": "    GameNativeReadOnlyData& data,const std::vector<std::string>& suffixes,std::string personal_root,\n    const GameNativeSettingsStackPolicy& policy)\n    :impl_(std::make_unique<Impl>(log,owner,singletons,vfs,renderer,data,suffixes,std::move(personal_root),policy)){}\nGameNativeSettingsApplication::~GameNativeSettingsApplication()=default;\nvoid GameNativeSettingsApplication::load(){\n    auto& p=*impl_;if(p.phase!=Impl::Phase::prepared)throw std::logic_error(\"native application settings loader cannot replay\");\n    p.phase=Impl::Phase::loading;\n    try {\n        load_native_game_settings_008d8190(&p.process.settings(),p.loader,p.operation);\n        const auto count=static_cast<std::int32_t>(p.process.catalog_count());\n        const auto* rows=static_cast<const char*>(p.process.catalog_data());\n        for(std::int32_t i=0;i<count;++i){const auto* row=rows+static_cast<std::size_t>(i)*32;\n            p.languages.push_back({raw_text(row),raw_text(row+8),raw_text(row+16),raw_text(row+24)});\n        }\n        p.phase=Impl::Phase::ready;\n        p.log.notef(\"native settings: storage=rawBCh catalog=raw0Ch entries=%u resolutions=%u antialias=%u loader=008D8190 read_view=copy CRT=registered\",\n            p.process.catalog_count(),read<U>(p.process.resolution_header(),4),read<U>(p.process.antialias_header(),4));\n        p.log.note(\"native settings stack policy: tokenizer/rectangle/registry/key/type/list/scanner/folder preimages=zero native_stack_identity=unproven\");\n    }catch(...){p.phase=Impl::Phase::failed;throw;}\n}\nbool GameNativeSettingsApplication::requires_process_retention() const noexcept{return impl_->phase==Impl::Phase::loading||impl_->phase==Impl::Phase::failed;}\nstd::uint32_t GameNativeSettingsApplication::failure_site() const noexcept{return impl_->operation.native_site;}\nvoid GameNativeSettingsApplication::copy_read_view(GameSettingsBlock& view) const{\n    if(impl_->phase!=Impl::Phase::ready)throw std::logic_error(\"native settings read view requires completed load\");\n    copy_native_game_settings_read_view(impl_->process.settings(),impl_->languages,view);\n}\nconst volatile float& GameNativeSettingsApplication::fov_divisor_00f889b4() const{\n    return impl_->process.settings().fov_divisor_34;\n}\nconst std::vector<LanguageEntry>& GameNativeSettingsApplication::language_catalog() const noexcept{return impl_->languages;}\nVfsLocaleRuntime& GameNativeSettingsApplication::locale_source() noexcept{return impl_->locale;}\nIDirect3D9& GameNativeSettingsApplication::renderer_api() const{return impl_->renderer.api();}\n",
+        "utf8_sha256": "e0001838ac93738910ae24a2a7c5a7af3a9454ffd382713613d668c70cdef035"
+      },
+      {
+        "label": "global_initialization",
+        "source_path": "src/game_native_lua_globals.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 6,
+        "last_line": 29,
+        "text": "GameNativeLuaGlobalsProcess::GameNativeLuaGlobalsProcess()\n    : globals_(make_initial_lua_runtime_globals_0108ff20()),\n      lifetime_{globals_.region, game_native_string_process().raw_context()} {}\nGameNativeLuaGlobalsProcess& game_native_lua_globals_process() {\n    static auto* const process = new GameNativeLuaGlobalsProcess;\n    return *process;\n}\nint GameNativeLuaGlobalsProcess::initialize_once_00cd7ce0() {\n    std::lock_guard lock(mutex_);\n    if (phase_ == Phase::returned) return registration_;\n    if (phase_ == Phase::threw)\n        throw std::logic_error(\"Lua region static startup previously threw\");\n    phase_ = Phase::threw;\n    bind_static_native_lua_region_0108ff24(lifetime_);\n    registration_ = initialize_static_native_lua_region_00cd7ce0();\n    phase_ = Phase::returned;\n    return registration_;\n}\nLuaRuntimeGlobals& GameNativeLuaGlobalsProcess::globals_0108ff20() {\n    std::lock_guard lock(mutex_);\n    if (phase_ != Phase::returned)\n        throw std::logic_error(\"Lua globals require explicit static startup\");\n    return globals_;\n}\n",
+        "utf8_sha256": "a84da060e6233adf818a459d8171096e3065bee3e7382e5146e37a4753e25517"
+      },
+      {
+        "label": "global_storage_layout",
+        "source_path": "include/bsp/vfs_lua_scripts.hpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 19,
+        "last_line": 27,
+        "text": "\nstruct LuaRuntimeGlobals {\n    std::uint8_t x360comp{}; // actual0108FF20 byte\n    std::uint8_t reserved_0108ff21[3]{}; // same loader-zero padding before header\n    NativeString region;   // actual0108FF24/28 header, no implicit destruction\n};\nstatic_assert(offsetof(LuaRuntimeGlobals, region) == 4);\nstatic_assert(sizeof(LuaRuntimeGlobals) == 12);\n// Actual VFS-backed files for Lua. Production borrows the raw fundamentals cache;\n",
+        "utf8_sha256": "deb691e3a9a221f6d4a9716f00c699b5f632d560b6e280c7a4b8def8e835bfbf"
+      },
+      {
+        "label": "canonical_lua_binding",
+        "source_path": "src/game_native_lua_services.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 12,
+        "last_line": 28,
+        "text": "struct GameNativeLuaServices::Impl {\n    GameNativeLuaGlobalsProcess& process{game_native_lua_globals_process()};\n    LuaRuntimeGlobals& globals{process.globals_0108ff20()};\n    NativeLuaFundamentalsOwner* volatile& publication{process.fundamentals_0108ff1c()};\n    NativeLuaFundamentalsContext fundamentals;\n    NativeLuaServiceBindings bindings;\n    NativeLuaBootstrapInputs bootstrap;\n    std::atomic<bool> interrupted{};\n    std::atomic<std::uint32_t> getter_calls{};\n\n    Impl(GameSingletonHost& singletons, const GameNativeVfsRawServices& vfs)\n        : fundamentals{singletons.sound_lifetime(), publication, vfs.strings,\n              vfs.actual_vfs_publication_0109ceec, vfs.bindings},\n          bindings(fundamentals, globals.x360comp, globals.region),\n          bootstrap{bindings.bootstrap()} {\n        auto& deletion = singletons.native_deletion_bindings();\n        if (deletion.actual_lua_fundamentals_publication_0108ff1c &&\n",
+        "utf8_sha256": "ce0d4cbb6bf4d60108924cb55bdf39ad3543aba7e9fb96bbb06393225413d199"
+      },
+      {
+        "label": "bootstrap_global_reference",
+        "source_path": "src/native_lua_service_bindings.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 10,
+        "last_line": 17,
+        "text": "NativeLuaServiceBindings::NativeLuaServiceBindings(NativeLuaFundamentalsContext& fundamentals,\n    const volatile std::uint8_t& x360comp, const NativeString& region) noexcept\n    : fundamentals_(fundamentals),\n      files_{fundamentals.manager_0109ceec, &append_overrides, &do_file,\n          fundamentals.vfs},\n      bootstrap_{x360comp, region, &fundamentals,\n          &native_lua_fundamentals_callback, &do_file} {}\n\n",
+        "utf8_sha256": "770b76634aa20016f34d482daa62111c79605a346d11b8a1bba612893bfeeb29"
+      },
+      {
+        "label": "startup_crt",
+        "source_path": "src/game_main.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 1089,
+        "last_line": 1095,
+        "text": "        const int shader_states_atexit = shader_process.initialize_state_pool_once_00cd7cc0();\n        log.notef(\"native shader state-list pool CRT CD7CC0: atexit=%d storage=process_actual38h\",shader_states_atexit);\n        auto& lua_globals = bsp::game::game_native_lua_globals_process();\n        const int lua_region_atexit = lua_globals.initialize_once_00cd7ce0();\n        log.notef(\"native Lua globals initialized: region_atexit=%d storage=process_actual0ch\",\n            lua_region_atexit);\n        auto& resource_pools = bsp::game::game_native_resource_pool_process();\n",
+        "utf8_sha256": "8075a4284faf5852283866b632a2a90f7c40f87c152a466de5bc8aac7c8d924b"
+      },
+      {
+        "label": "startup_host_created_later",
+        "source_path": "src/game_main.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 1201,
+        "last_line": 1220,
+        "text": "    std::unique_ptr<bsp::game::GameStartupHost> host;\n    try { host = std::make_unique<bsp::game::GameStartupHost>(\n        log, instance, options, native_data); }\n    catch (const std::exception& failure) {\n        std::fprintf(stderr, \"bsp_game: startup host failed: %s\\n\", failure.what());\n        log.notef(\"startup host failed: %s\", failure.what());\n        log.close();\n        return 1;\n    }\n\n    // 008f81f0 reads none of its four arguments; they are recorded for completeness.\n    bsp::WinMainArguments arguments;\n    arguments.instance = instance;\n    arguments.previous_instance = previous_instance;\n    arguments.command_line = command_line;\n    arguments.show_command = show_command;\n\n    int result = 1;\n    try {\n        result = bsp::run_win_main(arguments, *host);\n",
+        "utf8_sha256": "02ca6a76f5346aaf78119d318ab46752018172f1dcafe8089d2702c6120d03e7"
+      },
+      {
+        "label": "startup_lua_then_settings",
+        "source_path": "src/game_hosts.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 1936,
+        "last_line": 1971,
+        "text": "    // Renderer constructor0073da88, input getter0073da94/loader0073da9b,\n    // then settings0073daa5. The same Direct3D API survives into device creation.\n    if (!vfs_->ready()) throw std::runtime_error(\"Script/settings startup requires the mounted VFS\");\n    lua_services_ = std::make_unique<GameNativeLuaServices>(*singletons_, vfs_->borrow_raw_services());\n    bind_legacy_crt_math_runtime(application_math_runtime);\n    native_renderer_ = std::make_unique<GameNativeRendererApplication>(log_, *singletons_,\n        *vfs_, *lua_services_, *native_data_, clock_publication_01090ab0_, &platform_.native_window_focus());\n    native_renderer_->construct();\n    renderer_api_ = &native_renderer_->api();\n    renderer_parameters_ = &native_renderer_->parameters();\n    native_renderer_->copy_settings_capabilities(renderer_capabilities_);\n    log_.notef(\"renderer capabilities from actual owner api=%p pixel_version=0x%04x shader_ceiling=%d resolutions=%zu\",\n        renderer_api_,renderer_capabilities_.pixel_shader_version_28,renderer_capabilities_.max_shader_model,\n        renderer_capabilities_.resolutions.size());\n\n    scripts_ = new GameScriptHost(log_, vfs_->context(), content_suffixes_,\n        *lua_services_,*singletons_,*native_data_,vfs_->borrow_raw_services());\n    // Retain the source context before native getter/table execution begins.\n    scripts_->input().load_tables();\n    log_.implemented(\"Phase 5 input_script_tables\", \"005547d0/006ab6b0/006a7be0\");\n    log_.notef(\"native Lua fundamentals: published=%d getters=%u storage=raw0ch shared_globals=actual0ch\",\n        lua_services_->fundamentals_published() ? 1 : 0, lua_services_->fundamentals_getter_calls());\n    const auto input_tables=scripts_->input().summary();\n    summary_.input_scripts_ready = input_tables.tables_started;\n    summary_.input_devices = input_tables.devices;\n    summary_.input_names = input_tables.input_names;\n    summary_.controller_names = input_tables.controller_names;\n\n    // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before\n    // window creation at 0073dc0f, which is the ordering constraint the whole phase exists\n    // for: arguments 7, 8, 3, 4 and 9 of 00becee0 are read straight out of this block.\n    settings_host_ = new GameNativeSettingsApplication(log_,*settings_process_,*singletons_,\n        *vfs_,*native_renderer_,*native_data_,content_suffixes_,options_.settings_personal_root,{});\n    auto& settings_host = *settings_host_;\n    settings_host.load();\n    settings_host.copy_read_view(settings_view_);\n",
+        "utf8_sha256": "13faf302f4d569a8dfe9b61662c50b55316451c9c98e4f95ea74e75c374245ef"
+      },
+      {
+        "label": "scripts_borrow_same_globals",
+        "source_path": "src/game_hosts_vfs.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 327,
+        "last_line": 333,
+        "text": "GameScriptHost::GameScriptHost(GameHostLog& log, VfsMountContext& mounts,\n    const std::vector<std::string>& suffixes, GameNativeLuaServices& lua,\n    GameSingletonHost& singletons,GameNativeReadOnlyData& data,const GameNativeVfsRawServices& vfs)\n    : globals_(lua.globals()), files_(mounts, suffixes, &lua.bootstrap()), runtime_(files_),\n      // The native stack has no defined high bytes for two persisted flags.\n      // This explicit source policy is not a recovered native stack value.\n      input_(log,singletons,lua,data,vfs,GameInputSettingsStackPolicy{0,0,0}) {}\n",
+        "utf8_sha256": "9c435fd96c64c1413b654efc6cbd5644f20a08ff8d0bcb415e7d987f9e7520ea"
+      },
+      {
+        "label": "future_semantic_owner_snapshot",
+        "source_path": "src/vfs_lua_scripts.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 78,
+        "last_line": 87,
+        "text": "LuaStateOwnerEnvironment VfsLuaScriptFiles::owner_environment(LuaScriptRuntime& runtime,\n    const LuaRuntimeGlobals& globals) {\n    LuaStateOwnerEnvironment result;\n    result.fundamentals = cached_fundamentals_00884770();\n    result.do_file = &LuaScriptRuntime::do_file;\n    result.do_file_context = &runtime;\n    result.x360comp = globals.x360comp != 0;\n    result.region = globals.region.data() ? globals.region.data() : \"\";\n    return result;\n}\n",
+        "utf8_sha256": "bf67af69a97f15a65b1e48c3cd3dc2d5e2af35f7ada8135cb1da43a410ee0411"
+      },
+      {
+        "label": "native_owner_reads_global",
+        "source_path": "src/native_lua_bootstrap.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 41,
+        "last_line": 46,
+        "text": "    owner.opaque_08=static_cast<std::uint32_t>(lua_gettop(owner.state_04));\n    platform_chunk(owner,strings,\"PC=true\");\n    platform_chunk(owner,strings,inputs.x360comp_0108ff20?\"X360COMP=true\":\"X360COMP=false\");\n    const char* region=inputs.region_0108ff24.data();\n    if(region && _stricmp(region,\"EU\")==0)platform_chunk(owner,strings,\"REGION=\\\"EU\\\"\");\n    else {\n",
+        "utf8_sha256": "8833105139b40459f4d8aee358b58b1e796c36ca929338b72e3724f281118204"
+      },
+      {
+        "label": "semantic_owner_executes_snapshot",
+        "source_path": "src/lua_state_owner.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 76,
+        "last_line": 85,
+        "text": "    owner->initial_stack_top_ = lua_gettop(state);\n    platform_chunk(state, \"PC=true\");\n    platform_chunk(state, owner->environment_.x360comp ? \"X360COMP=true\" : \"X360COMP=false\");\n    // Native _stricmp compares C strings; preserve its NUL termination.\n    const char* region = owner->environment_.region.c_str();\n    if (_stricmp(region, \"EU\") == 0) platform_chunk(state, \"REGION=\\\"EU\\\"\");\n    else if (_stricmp(region, \"USA\") == 0) platform_chunk(state, \"REGION=\\\"USA\\\"\");\n    else if (_stricmp(region, \"JAP\") == 0) platform_chunk(state, \"REGION=\\\"JAP\\\"\");\n    lua_pushlightuserdata(state, owner);\n    lua_pushcclosure(state, do_file, 1);\n",
+        "utf8_sha256": "3d485e90304555a7c98e69f3c8dcec90ecd13b7dab56fe87977c6c239be09e47"
+      },
+      {
+        "label": "no_op_named_delivery",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 4366,
+        "last_line": 4369,
+        "text": "\nvoid GameScriptOrdersHost::lua_run_string_006b8ad0(const char* chunk, int mode) {\n    static_cast<void>(chunk);\n    static_cast<void>(mode);\n",
+        "utf8_sha256": "182a1b4a22247d807b4ca5f36c316694a7eef799224c6c2955972e5132f1967a"
+      },
+      {
+        "label": "mission_owner_creation_timing",
+        "source_path": "src/game_hosts_mission.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 1741,
+        "last_line": 1752,
+        "text": "    // The previous frame and its children borrow the previous Lua owner.\n    // Destroy those borrowers before replacing that owner on a later load.\n    frame_host.reset();\n    lua = std::make_unique<GameMissionLuaHost>(log, vfs);\n    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,\n        profiler, language, hud);\n    if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);\n    // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;\n    // this process reaches its first mission here, so the machine is built now\n    // and kept for the rest of the run.\n    lua->start_machine_00884be0();\n    // Milestone 2g: game+2198h, the key the record commit writes under, and the\n",
+        "utf8_sha256": "7415ba7a517fa4cb9e910ec5c9811b2e8539deb89cca04baa2f12fb786d184c4"
+      },
+      {
+        "label": "mission_owner_ready",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 6898,
+        "last_line": 6906,
+        "text": "bool GameMissionLuaHost::start_machine_00884be0() {\n    if (state_ != nullptr) return true;\n    set_phase(\"machine\");\n    // 004dd627 is the one call site: BSP_Game_OnInitOnce builds the machine\n    // once per process, not once per mission.\n    log_.implemented(\"MissionLuaHost::initialize\", \"00884be0\");\n    summary_.bindings_registered = bsp::initialise_mission_lua_host(*this);\n    if (state_ == nullptr) return false;\n    summary_.machine_started = true;\n",
+        "utf8_sha256": "fc9a7e4764e8edcd8a4f7a1855111202ef435fa4f96ebf257ecd055f5f4c5fe6"
+      },
+      {
+        "label": "actual_lua_state_creation",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 7816,
+        "last_line": 7820,
+        "text": "void GameMissionLuaHost::create_state() {\n    state_ = luaL_newstate();\n    g_loadout_lua_state = state_;\n    log_.implemented(\"MissionLua::create_state\", \"006b8740\");\n}\n",
+        "utf8_sha256": "bd527b25025673f7541497fd115c36d4247c47c5e9abd17292e9f796ba3ea397"
+      },
+      {
+        "label": "actual_lua_execution",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 7891,
+        "last_line": 7916,
+        "text": "int GameMissionLuaHost::lua_gettop() {\n    return state_ != nullptr ? ::lua_gettop(state_) : 0;\n}\n\nvoid GameMissionLuaHost::lua_settop(int index) {\n    if (state_ != nullptr) ::lua_settop(state_, index);\n}\n\nint GameMissionLuaHost::luaL_loadbuffer(const char* buffer, int size, const char* chunk_name) {\n    if (state_ == nullptr) return 1;\n    const int status = ::luaL_loadbuffer(state_, buffer != nullptr ? buffer : \"\",\n        static_cast<std::size_t>(size < 0 ? 0 : size), chunk_name);\n    last_status_ = status;\n    last_chunk_ = chunk_name != nullptr ? chunk_name : \"\";\n    if (status == 0 && chunk_name != nullptr\n        && std::strcmp(chunk_name, bsp::kMissionLuaPlatformChunk) == 0) {\n        summary_.platform_chunk_ran = true;\n    }\n    return status;\n}\n\nint GameMissionLuaHost::lua_pcall(int nargs, int nresults, int errfunc_index) {\n    if (state_ == nullptr) return 1;\n    last_status_ = ::lua_pcall(state_, nargs, nresults, errfunc_index);\n    return last_status_;\n}\n",
+        "utf8_sha256": "4bdbceb4eb329a1677698e8158edb2da4458695e766ff2947bdabe44ec297523"
+      },
+      {
+        "label": "chunk_source",
+        "source_path": "src/mission_lua_host.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 653,
+        "last_line": 685,
+        "text": "LuaChunkResult run_lua_chunk(MissionLuaHostServices& host, const char* buffer, int size,\n    const char* chunk_name, bool capture_error, bool capture_results, int result_mode)\n{\n    LuaChunkResult result;\n    const int saved_top = host.lua_gettop();\n    int status = host.luaL_loadbuffer(buffer, size, chunk_name);\n    if (status == 0) {\n        status = host.lua_pcall(0, kLuaMultRet, kLuaNoErrorHandler);\n        result.status = status == 0 ? LuaChunkStatus::Ok : LuaChunkStatus::RunFailed;\n    } else {\n        result.status = LuaChunkStatus::LoadFailed;\n    }\n\n    const int new_top = host.lua_gettop();\n    if (new_top > saved_top) {\n        if (lua_chunk_failed(result.status)) {\n            // 006b8a5f and 006b8a80: the string is read on both paths and only\n            // stored when a sink was supplied.\n            std::string message = host.lua_tolstring_at_top();\n            if (capture_error) {\n                result.error_message = message;\n                result.error_message_captured = true;\n            }\n        } else if (capture_results) {\n            result.results_collected = host.collect_results(new_top - saved_top, result_mode);\n        }\n        host.lua_settop(saved_top);\n    }\n    return result;\n}\n\nLuaChunkResult run_script_file(MissionLuaHostServices& host, const std::string& path)\n{\n",
+        "utf8_sha256": "eb65eadf843f1c6c2ac8efbee4b3caf70cdc2cb86a48dad3a70c3824091b06bd"
+      },
+      {
+        "label": "press_start_unbound",
+        "source_path": "src/game_hosts_menu.cpp",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 525,
+        "last_line": 533,
+        "text": "    void reset_offline_profile() override {\n        owner_.log.unimplemented(\"PressStartScreen::reset_offline_profile\", \"008d5b50\");\n    }\n    void apply_input_settings() override {\n        owner_.log.unimplemented(\"PressStartScreen::apply_input_settings\", \"006ac030\");\n    }\n    void refresh_input_bindings() override {\n        owner_.log.unimplemented(\"PressStartScreen::refresh_input_bindings\", \"008d44c0\");\n    }\n",
+        "utf8_sha256": "72499ef24d33ccec52c867a761e9f4aa83d9467aaaafcfa29f5d25c762c4f245"
+      },
+      {
+        "label": "prior_native_object_chain",
+        "source_path": "docs/MISSION_LUA_HOST.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 11,
+        "last_line": 31,
+        "text": "`game+1A08h` is a **pointer** to the mission Lua host. `004DD620` loads it in `ECX` and calls\n`00884BE0`; `004DC729` loads it and calls `00886900` on shutdown. The host's own layout that this\npacket establishes:\n\n| Offset | Contents | Evidence |\n| --- | --- | --- |\n| +0h | vtable | `00884BE0` never writes it, so the allocation happens in the caller |\n| +4h | `LuaMachine*` | `00884C34` stores the `00BF681B(0Ch)` block; every wrapper reads `[this+4]` |\n| +8h, +Ch | queue used by `00887E50`'s deferred path | `0088814A` reads `[ESI+0Ch]`, `00888150` uses `ESI+8` |\n\n`game+1A0Ch` is an **inline** `LuaStateOwner`, constructed at `004DD641` from\n`[[game+1A08h]+4h]+4h`, that is, from the same `lua_State`. `0045F440` and `0045F520` take\n`LEA ECX,[ESI+1A0Ch]` to reach the globals. `game+1A1Ch` receives the constant `004C6880` at\n`004DD64F` and is out of scope here.\n\nThe `LuaMachine` at `host+4h` is twelve bytes:\n\n| Offset | Contents | Evidence |\n| --- | --- | --- |\n| +0h | vtable `00CF8394` | `006B8744` |\n| +4h | `lua_State*` | `006B8756`, and every wrapper's `MOV ECX,[ECX+4]` |\n",
+        "utf8_sha256": "b64efcbc432ac7f57254d577438187a88e56330b5d862498ebcfa3489748e3b9"
+      },
+      {
+        "label": "prior_native_run_string",
+        "source_path": "docs/MISSION_LUA_HOST.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 115,
+        "last_line": 144,
+        "text": "## Chunk execution, `006B89F0`\n\n`__thiscall(LuaMachine* this, const void* buffer, int size, const char* chunk_name,\nResultSink* results, NativeString* error_out, int result_mode)`, RET 18h, returns 0 or 1 in `EAX`.\n\n```\ntop = lua_gettop(L)                                 ; 006B7E70 -> 00A673D0\nstatus = luaL_loadbuffer(L, buffer, size, name)     ; 00A6A160, L in ECX, buffer in EDX\nif (status == 0) status = lua_pcall(L, 0, -1, 0)    ; 00A680E0, nargs in EDX\nfailed = (status != 0)\nif (lua_gettop(L) > top) {\n    if (failed) {\n        msg = lua_tolstring(L, -1, NULL)            ; 00A67810, idx in EDX\n        if (error_out) error_out->assign(msg)       ; 0041E350\n    } else if (results) {\n        006B89C0(results, this); 00887220(results, top_delta, result_mode)\n    }\n    lua_settop(L, top)                              ; 006B7E80 -> 00A673E0\n}\nreturn failed\n```\n\nTwo facts matter for the rebuild. **`errfunc` is 0 here**, so a file load gets no traceback; the\n`debugtrap` handler is used only by the named-call path. And `lua_tolstring` runs on the failure\npath even when no sink was supplied (`006B8A80`), which coerces the error value on the stack\nbefore `lua_settop` discards it.\n\n`006B8AD0` is `__thiscall(const char* source, ResultSink*, NativeString* error_out, int mode)`,\nRET 10h: an inline `strlen` then `006B89F0(source, len, source, ...)`, so a string chunk names\nitself.\n",
+        "utf8_sha256": "79c27a752186a3b9a517d8dc0a7cf2e7e9d85ac7e2e8703dbfd5faae722a2a0a"
+      },
+      {
+        "label": "prior_normalized_bool_limit",
+        "source_path": "docs/LUA_RUNTIME_GLOBALS.md",
+        "commit": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+        "first_line": 58,
+        "last_line": 66,
+        "text": "\n`publish_lua_xbox_compatibility_008d44c0` composes the existing settings setter\nwith its global mirror and returns the existing optional command text. The\ncaller must still deliver a returned command to its actual live `006b8ad0`\nsink; the helper does not pretend delivery occurred. Both native storage and\ncommand ordering are preserved for the existing normalized bool projection.\nArbitrary noncanonical native char values are outside that existing interface.\n\n## Geography region source\n",
+        "utf8_sha256": "699dbf97fce722a2c7933a7619dab63271c656ce4f0f90ab0845cf7371b78d25"
+      },
+      {
+        "label": "prior_reader_whole_receiver",
+        "source_path": "docs/CC12_NATIVE_SETTINGS_READER_POST_AUDIO_BYTE_REVIEW.md",
+        "commit": "83d73fe97c5d74221d028619f79dd4faeabd3aba",
+        "first_line": 94,
+        "last_line": 101,
+        "text": "## Calls, paths, and remaining effects\n\nThere are seven direct calls: `008D44C0`, `005547D0`, `006ABA50`, `00427110`,\n`004CDC20`, `00419CC0`, and `00BD1510`. In particular, `008D44C0` receives\n`ECX=settings` and a value read from `settings+B0h`; its whole-object effects\nremain open. The vector-related calls receive `settings+98h`. Their Source\nroles are context, not newly recovered Native callee behavior.\n\n",
+        "utf8_sha256": "036afc338603c00184ba412513043ff11682269d2772d3a89f6c0f1166516419"
+      }
+    ],
+    "git_capture_commands": [
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "f4645c380546cc6ba420c933096ed43a5dd1ee4e0a4c2dd93a0de81bf8badefe",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "ls-tree",
+          "-rz",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 382563,
+        "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "cat-file",
+          "--batch"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 35561128,
+        "stdout_sha256": "927b4899f77cc172b345cf9590aa0c1ed7dfc2361efd0ee6d5a8ed969f200884",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:config/target.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 455,
+        "stdout_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:config/target.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "ddc99652ba1067b6ee7e4ff6d47306676f350942425c7cb3c395e9139b53f772",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 73311,
+        "stdout_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/ghidra_export.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 14411,
+        "stdout_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/ghidra_export.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "532ef8a0de213d066055cd23fbd366ff9b56a7fbf581850d070ead146035128f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 1371,
+        "stdout_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 20149,
+        "stdout_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 202281,
+        "stdout_sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/LUA_RUNTIME_GLOBALS.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 8273,
+        "stdout_sha256": "56dd1eb2f630213b1c8631176c24a7c4d17f45245bb66b27fb6b98e180babc7e",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/LUA_RUNTIME_GLOBALS.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "d6b7f5a96a98a7019dc521e313e6efde422688141054520c3b0b8e25e301e411",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/lua_runtime_globals.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 5370,
+        "stdout_sha256": "fa13493eca4745ef6e0ae93d4f4ace7476ecd51f2f71dd6e6f4f0e14c69f8ab4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/lua_runtime_globals.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "3ba8fae563272f1d93473b41968e098415d656805d64085a84aa7024928feeac",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_LUA_PROCESS_LIFETIME_R68.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 6705,
+        "stdout_sha256": "639576853d4744b838f402c13c6c76f66d01ce14243e10abbc8fb1378b9a3bfd",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_LUA_PROCESS_LIFETIME_R68.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "6cf15d47f5880cff987fadbf7a98e073223274aec30cebb5d4968f576596d3a6",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_lua_process_lifetime_r68.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 891857,
+        "stdout_sha256": "598ec0cc3212c21c357acebcbd16494fa4cd5a82afc4c1c45cf181d6287f93e3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_lua_process_lifetime_r68.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "f389b40be6a4cd042e835cb487a29674c3e7dcc191df85c0f15962502e1aec0a",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/MISSION_LUA_HOST.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 26373,
+        "stdout_sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/MISSION_LUA_HOST.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "2d040291e445dfcd738be7b540be5b939cc5e4f45e76886786039ba9549d37be",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/mission_lua_host.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 69076,
+        "stdout_sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/mission_lua_host.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "1f719d7f8830d29bf7c41132069db1ae7061768c9761942648d8544db9334866",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/OPTIONS_SETTINGS_COMMIT.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 24523,
+        "stdout_sha256": "71043750a961792fdc54cc1bbb553c34689767bafa562269309ed7acb748c2dc",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/OPTIONS_SETTINGS_COMMIT.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "59526f75038e2881cd395fa956d58c7686ce14b79edddde14ef79cc71e65fbf2",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/options_settings_commit.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 33859,
+        "stdout_sha256": "67de52c86abcd1d5bcc85a795773fca6b8beaa18519b6d0a7ba3a266042b7f54",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/options_settings_commit.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "4e9a1381024b5ba573ce1e845f1d0b17de73c0261f98ebdd9ad3c225b8bd063d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_SETTINGS_APPLICATION_R170.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 6195,
+        "stdout_sha256": "d0d0e96a4b5f8d8cc2650a63040c27bf32eeb4195e6e6730f28daa92854b1e6c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_SETTINGS_APPLICATION_R170.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "e1fbba5b1d1dee2f06e15ee62351c9532b736dacd1e956c873cc937b66226abf",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_settings_application_r170.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 222876,
+        "stdout_sha256": "4883feb0d96c40536ae14d7a0cde1ca97bdce54b2694b3a48a8f4146b3689097",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_settings_application_r170.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "5a8abc50737e29f55c331f1f63fd60a3d55f1ef9c8fbd3b89e6a56744c549560",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_SETTINGS_LOADER_R167.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 7176,
+        "stdout_sha256": "18496746577a85d1d12a6d24d5130fa3965ba5e80c9599026c932a21f91bc084",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_SETTINGS_LOADER_R167.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "096139101170c05708e347e6883b95f82d625cc9257c11189eeb47f3d8f65585",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_settings_loader_r167.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 151814,
+        "stdout_sha256": "70d9b0c579b98a306fd6ba56453dd299a20e6623b4a3cf105975874a633d05d7",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_settings_loader_r167.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "f453e9098bec5b7c95675973755e0217fadd6883db659988487c23dcf3089d8d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "83d73fe97"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "12621021a144a49e218dc6e4a7fb3ec228e4fa943393403d511e918959be1235",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "83d73fe97c5d74221d028619f79dd4faeabd3aba:docs/CC12_NATIVE_SETTINGS_READER_POST_AUDIO_BYTE_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 8656,
+        "stdout_sha256": "1ba91270cfe071da8a1db9efb9e10406ba4d01f234f4a0c17b003649d62f5f46",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "83d73fe97c5d74221d028619f79dd4faeabd3aba:docs/CC12_NATIVE_SETTINGS_READER_POST_AUDIO_BYTE_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "2bb6e9451eaa36ff352baf3d6dc2ca3de763fbd820b7012e5edae99c63b4b5da",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "83d73fe97c5d74221d028619f79dd4faeabd3aba:reports/cc12_native_settings_reader_post_audio_byte_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 4095177,
+        "stdout_sha256": "dc91144072ae9a4eabe2b7e93235ec5ccb46a03649336e5d6fb345088a4f8dfa",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "83d73fe97c5d74221d028619f79dd4faeabd3aba:reports/cc12_native_settings_reader_post_audio_byte_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "92f356f9e3af825549c8e7670cbcd7cb9fee8b4216b0e35a68cff3d8062a021c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "--git-common-dir"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 46,
+        "stdout_sha256": "e2edb7cf7b9db28a0d5a70256990d4a558a57601a0c4acb021872a23772ddc81",
+        "stderr": ""
+      }
+    ],
+    "scope": "Fresh Native reads only008D44C0. Full original PE retention is inert evidence; interpreted Native window is89 bytes. No fresh006B8AD0/006B89F0 or data-range query; prior evidence retained separately.",
+    "include_closure": {
+      "capture_script": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/c9d156859a9fdc60_close_includes.py",
+        "bytes": 4387,
+        "sha256": "c9d156859a9fdc60dacde7f082cd98dd8c04d293e0ee8300db5d9111c601d5ed"
+      },
+      "previous_capture": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/e64a74866970426b_freeze_before_include_closure.json",
+        "bytes": 91689,
+        "sha256": "e64a74866970426b65be6ecfd816b15a466f7b1b9a623b33b106d51fdd844864"
+      },
+      "closure": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/b68de63fdbfbd46c_include_closure.json",
+        "bytes": 346784,
+        "sha256": "b68de63fdbfbd46c2d713eb1e334853ec49040a7db31a3cc5e42b532398cb20b"
+      },
+      "configured_lua_archive": {
+        "capture_provenance_only": "C:\\Users\\sqz269\\.bsp\\deps\\lua-5.1.1.tar.gz",
+        "pin": {
+          "path": "local/cc12_settings_compatibility_command_binding_review/frozen/c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+          "bytes": 207810,
+          "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+        },
+        "configured_sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+      },
+      "reviewed_roots": 24,
+      "project_files": 546,
+      "lua_header_count": 4,
+      "external_system_SDK_spellings": [
+        "Windows.h",
+        "Xinput.h",
+        "algorithm",
+        "array",
+        "assert.h",
+        "atomic",
+        "bitset",
+        "cctype",
+        "cerrno",
+        "cfloat",
+        "cmath",
+        "cstdarg",
+        "cstddef",
+        "cstdint",
+        "cstdio",
+        "cstdlib",
+        "cstring",
+        "cwchar",
+        "d3d9.h",
+        "dbghelp.h",
+        "deque",
+        "dinput.h",
+        "exception",
+        "filesystem",
+        "fstream",
+        "functional",
+        "gameux.h",
+        "io.h",
+        "limits",
+        "limits.h",
+        "list",
+        "map",
+        "math.h",
+        "memory",
+        "memory_resource",
+        "mutex",
+        "new",
+        "objbase.h",
+        "optional",
+        "powrprof.h",
+        "readline/history.h",
+        "readline/readline.h",
+        "set",
+        "shellapi.h",
+        "shlobj.h",
+        "stdarg.h",
+        "stddef.h",
+        "stdexcept",
+        "stdio.h",
+        "string",
+        "string_view",
+        "type_traits",
+        "unistd.h",
+        "unordered_map",
+        "utility",
+        "variant",
+        "vector",
+        "wincrypt.h",
+        "windows.h"
+      ]
+    }
+  },
+  "portable_replay": {
+    "script": {
+      "path": "local/cc12_settings_compatibility_command_binding_review/frozen/b4d03ee602db0950_replay.py",
+      "bytes": 15053,
+      "sha256": "b4d03ee602db0950b58567054822191dc28ecd0dd6a35ce6a7773405b5b15d98"
+    },
+    "result_pin": {
+      "path": "local/cc12_settings_compatibility_command_binding_review/frozen/dd365a9a5740e663_replay_result.json",
+      "bytes": 4185,
+      "sha256": "dd365a9a5740e663b82138f0f2f49040904411209eda7b8992c933205c9a0124"
+    },
+    "result": {
+      "schema": "bsp.cc12.settings_compatibility_binding.replay.v1",
+      "status": "pass",
+      "baseline": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+      "complete_Source_files_verified": 4206,
+      "Source_Git_extras": 19,
+      "prior_reports": 2,
+      "source_queries": [
+        {
+          "label": "publication_helper",
+          "hits": 2,
+          "files": [
+            "include/bsp/lua_runtime_globals.hpp",
+            "src/lua_runtime_globals.cpp"
+          ]
+        },
+        {
+          "label": "publication_host_method",
+          "hits": 2,
+          "files": [
+            "include/bsp/settings_archive_reader.hpp",
+            "src/settings_archive_reader.cpp"
+          ]
+        },
+        {
+          "label": "publication_host_type",
+          "hits": 5,
+          "files": [
+            "include/bsp/pc_profile_io.hpp",
+            "include/bsp/settings_archive_reader.hpp",
+            "src/settings_archive_reader.cpp"
+          ]
+        },
+        {
+          "label": "archive_reader",
+          "hits": 3,
+          "files": [
+            "include/bsp/settings_archive_reader.hpp",
+            "src/pc_profile_io.cpp",
+            "src/settings_archive_reader.cpp"
+          ]
+        },
+        {
+          "label": "pc_profile_host_mentions",
+          "hits": 39,
+          "files": [
+            "include/bsp/pc_profile_io.hpp",
+            "src/pc_profile_io.cpp"
+          ]
+        },
+        {
+          "label": "no_op_run_string",
+          "hits": 5,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "actual_globals_borrowers",
+          "hits": 8,
+          "files": [
+            "include/bsp/game_native_lua_globals.hpp",
+            "src/game_main.cpp",
+            "src/game_native_lua_globals.cpp",
+            "src/game_native_lua_services.cpp"
+          ]
+        },
+        {
+          "label": "raw_loader",
+          "hits": 3,
+          "files": [
+            "include/bsp/native_settings_loader.hpp",
+            "src/game_native_settings_application.cpp",
+            "src/native_settings_loader.cpp"
+          ]
+        },
+        {
+          "label": "raw_compatibility_reads",
+          "hits": 1,
+          "files": [
+            "src/game_native_settings_application.cpp"
+          ]
+        },
+        {
+          "label": "compatibility_text",
+          "hits": 10,
+          "files": [
+            "include/bsp/font_registry.hpp",
+            "include/bsp/game_settings.hpp",
+            "include/bsp/native_input_configuration_load.hpp",
+            "include/bsp/shader_lua.hpp",
+            "src/font_registry.cpp",
+            "src/lua_state_owner.cpp",
+            "src/native_input_configuration_load.cpp",
+            "src/native_lua_bootstrap.cpp",
+            "src/shader_lua.cpp"
+          ]
+        }
+      ],
+      "exact_excerpts": 32,
+      "source_anchors": 31,
+      "local_include_edges": 9446,
+      "external_quoted_includes": {
+        "camera_reference.hpp": 1,
+        "lauxlib.h": 4,
+        "lua.h": 4,
+        "lualib.h": 2,
+        "gui_geometry_reference.hpp": 1,
+        "timestamp_reference.hpp": 1
+      },
+      "reviewed_root_include_closure": {
+        "roots": 24,
+        "project_files": 546,
+        "lua_headers": 4,
+        "edges": 1088,
+        "remaining_dependencies": "System/C++/Windows/Direct3D SDK headers, including inactive platform branches, explicitly listed; no compiler closure or build claim."
+      },
+      "native": {
+        "function_bytes": 89,
+        "instructions": 24,
+        "calls": [
+          {
+            "site": "008D4504",
+            "target": "006B8AD0"
+          },
+          {
+            "site": "008D4511",
+            "target": "006B8AD0"
+          }
+        ],
+        "guard_null_target": "008D4516",
+        "typed_body_last_byte": "008D4518",
+        "project_marker": "C:/Users/sqz269/bsp.gpr",
+        "modification_number": "47"
+      },
+      "all_pin_occurrences": 65,
+      "unique_opened_artifacts": 66,
+      "read_guard": {
+        "only_packet_artifacts": true,
+        "installation_opens": 0,
+        "workspace_source_opens": 0,
+        "git_processes": 0,
+        "network_calls": 0,
+        "writes": 0
+      },
+      "qualification": "Data integrity, Source composition and finite Native structure only; no compiled/fixture/live execution, no original selector or startup timing proof."
+    },
+    "relocated_directory_replay": {
+      "result_pin": {
+        "path": "local/cc12_settings_compatibility_command_binding_review/frozen/dd365a9a5740e663_portable_relocation_result.json",
+        "bytes": 4185,
+        "sha256": "dd365a9a5740e663b82138f0f2f49040904411209eda7b8992c933205c9a0124"
+      },
+      "result_equal": true,
+      "directory": "local/cc12_settings_compatibility_command_binding_review/portable_replay",
+      "qualification": "Independent copied freeze/capture artifacts, guarded replay; no live Source or installation reads."
+    },
+    "command": "python local/cc12_settings_compatibility_command_binding_review/replay.py",
+    "portability": "All pin paths are resolved against the current evidence directory, so copying that directory preserves artifact-only replay; no live workspace dependency."
+  },
+  "separate_git_replay": {
+    "script": {
+      "path": "local/cc12_settings_compatibility_command_binding_review/frozen/370580d2ba58a0a1_verify_git.py",
+      "bytes": 3403,
+      "sha256": "370580d2ba58a0a17b0d909cf7286762e89a3784beed1f007285a356e73fbe50"
+    },
+    "result_pin": {
+      "path": "local/cc12_settings_compatibility_command_binding_review/frozen/e2cfb9717f4a19a5_git_replay_result.json",
+      "bytes": 8319,
+      "sha256": "e2cfb9717f4a19a5ff8ea084f1847757ab0a707bd87c589314fc60039ed67185"
+    },
+    "result": {
+      "schema": "bsp.cc12.settings_compatibility_binding.git_replay.v1",
+      "status": "pass",
+      "mode": "separate Git-object check with optional explicit working reads",
+      "repo": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "baseline": "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+      "blob_checks": 4227,
+      "working_files_checked": 4225,
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "f4645c380546cc6ba420c933096ed43a5dd1ee4e0a4c2dd93a0de81bf8badefe",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "ls-tree",
+            "-rz",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6",
+            "--",
+            "src",
+            "include"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 382563,
+          "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:config/target.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ddc99652ba1067b6ee7e4ff6d47306676f350942425c7cb3c395e9139b53f772",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/bsp.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/ghidra_export.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "532ef8a0de213d066055cd23fbd366ff9b56a7fbf581850d070ead146035128f",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:tools/workspace.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:CMakeLists.txt"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:cmake/startup.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/LUA_RUNTIME_GLOBALS.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d6b7f5a96a98a7019dc521e313e6efde422688141054520c3b0b8e25e301e411",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/lua_runtime_globals.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "3ba8fae563272f1d93473b41968e098415d656805d64085a84aa7024928feeac",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_LUA_PROCESS_LIFETIME_R68.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6cf15d47f5880cff987fadbf7a98e073223274aec30cebb5d4968f576596d3a6",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_lua_process_lifetime_r68.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "f389b40be6a4cd042e835cb487a29674c3e7dcc191df85c0f15962502e1aec0a",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/MISSION_LUA_HOST.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "2d040291e445dfcd738be7b540be5b939cc5e4f45e76886786039ba9549d37be",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/mission_lua_host.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "1f719d7f8830d29bf7c41132069db1ae7061768c9761942648d8544db9334866",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/OPTIONS_SETTINGS_COMMIT.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "59526f75038e2881cd395fa956d58c7686ce14b79edddde14ef79cc71e65fbf2",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/options_settings_commit.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "4e9a1381024b5ba573ce1e845f1d0b17de73c0261f98ebdd9ad3c225b8bd063d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_SETTINGS_APPLICATION_R170.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "e1fbba5b1d1dee2f06e15ee62351c9532b736dacd1e956c873cc937b66226abf",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_settings_application_r170.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "5a8abc50737e29f55c331f1f63fd60a3d55f1ef9c8fbd3b89e6a56744c549560",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:docs/NATIVE_SETTINGS_LOADER_R167.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "096139101170c05708e347e6883b95f82d625cc9257c11189eeb47f3d8f65585",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:reports/native_settings_loader_r167.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "f453e9098bec5b7c95675973755e0217fadd6883db659988487c23dcf3089d8d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "48d432db3863ea5b0254dc05a8bdbd405dbb74c6:cmake/lua.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "83d73fe97c5d74221d028619f79dd4faeabd3aba:docs/CC12_NATIVE_SETTINGS_READER_POST_AUDIO_BYTE_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "2bb6e9451eaa36ff352baf3d6dc2ca3de763fbd820b7012e5edae99c63b4b5da",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "83d73fe97c5d74221d028619f79dd4faeabd3aba:reports/cc12_native_settings_reader_post_audio_byte_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "92f356f9e3af825549c8e7670cbcd7cb9fee8b4216b0e35a68cff3d8062a021c",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "cat-file",
+            "--batch"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41434387,
+          "stdout_sha256": "cc0b890ef2c3544da0f81cdaf530bdf44b005f62eb5611904a69493f7b972a37",
+          "stderr": ""
+        }
+      ],
+      "qualifications": "Read-only Git/Source check; not portable artifact-only mode. No installation, SDK, compiler, Native or game execution."
+    },
+    "command": "python local/cc12_settings_compatibility_command_binding_review/verify_git.py --repo <repository> --check-working",
+    "note": "Omit --check-working for Git-object-only verification at the frozen epochs; this mode invokes read-only Git and is separate from portable replay."
+  },
+  "capture_pin": {
+    "path": "local/cc12_settings_compatibility_command_binding_review/frozen/e2ec8999c0a98912_freeze_capture.json",
+    "bytes": 94954,
+    "sha256": "e2ec8999c0a9891244e44dc982375432aa7a865e4e08a7c826c8528f6f802fea"
+  },
+  "receipt_script": {
+    "path": "local/cc12_settings_compatibility_command_binding_review/frozen/51308636844699a2_make_receipt.py",
+    "bytes": 5976,
+    "sha256": "51308636844699a29c1ae2bff69e5cc49e685eaba342229f4bec00f10d49be79"
+  },
+  "validation": {
+    "source_data_replayed": true,
+    "native_body_integrity_checked": true,
+    "compiled": false,
+    "fixture_executed": false,
+    "abi_compatible_provider": false,
+    "game_validated": false,
+    "selector_supported": false,
+    "original_startup_timing_proved": false
+  }
+}
