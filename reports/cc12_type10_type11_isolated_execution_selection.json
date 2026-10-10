@@ -7467,6 +7467,84 @@
           "ABI_qualification": false,
           "game_validation": false,
           "historical_original_F5_capture_preserved": true
+        },
+        "fresh_F6_prepare01_adopted_joint_and_actual_ordinary_startup_admission_closed": {
+          "status": "Complete adopted DATA joint accepted; actual ordinary startup admission passed; independent actual startup review pending",
+          "Source_credit": 0,
+          "Root_acceptance": false,
+          "actual_execution_event": null,
+          "Root_DATA_joint_acceptance_issued": true,
+          "Root_joint_predicate_count": 62572,
+          "Root_joint_current_selected_pin_count": 1059,
+          "Root_joint_opening_and_closing_equal": true,
+          "actual_complete_adopted_joint": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_complete_adopted_DATA_graph_peer_accepted_DATA01.json",
+            "bytes": 12612065,
+            "sha256": "3d51f475cede60642d70be5a706fb3b5d0f63ec66efdc50b7bae6d52c2e505ee"
+          },
+          "actual_fresh_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\Root_F6_prepare01_complete_Source_and_transport_acceptance_DATA01.json",
+            "bytes": 10703170,
+            "sha256": "a8d581fc1640858c628917266c9c99b617922e1083748dbe42b6f531b77df950"
+          },
+          "actual_three_terminal_utility_staging": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\Root_F6_prepare01_terminal_utilities_selected_staging_DATA01.json",
+            "bytes": 2704,
+            "sha256": "250e58016d724fee79922b0c29d2bd6b9221dd6d34c827b6a47df1ca415bece9"
+          },
+          "actual_acyclic_prestartup_binding": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_prestartup_bindings.DATA.json",
+            "bytes": 8826,
+            "sha256": "6ffaa7047c749043260f959ed166157a6e700e664bbf2295b0a847c1e6f85f54"
+          },
+          "actual_ordinary_host_probe": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\ordinary_private_PowerShell_startup_environment_F6_probe01.DATA.json",
+            "bytes": 21906,
+            "sha256": "cec969c9d5eaa89ede2e0e2534e0d0e466e39f3e18d493e3489b27778c345951"
+          },
+          "actual_ordinary_startup_admission": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\Root_F6_prepare01_ordinary_startup_and_guard_stream_admission_DATA01.json",
+            "bytes": 53105,
+            "sha256": "4b643a89fe92fd794ec8a6baa97cca1f2987454b9c02fd04a1199d50b6e6c8e5"
+          },
+          "whole_actual_Root_native_capture": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_adopted_joint_and_ordinary_startup_native_DATA01.json",
+            "bytes": 20171,
+            "sha256": "34ab0ed93e6cd50fa147d366e5acdda42ae6fac151b485b0f5fe1d7d23b991fb"
+          },
+          "selected_independent_startup_inspector_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_actual_startup_peer_inspector_TEXT03_Source_selection_DATA01.json",
+            "bytes": 75280,
+            "sha256": "7a1f684c29958745d4625c8014db6d95b9934f7a9dcc5a1cc657b31761f27ded"
+          },
+          "actual_host_probe_terminal_chunk": "4c496e",
+          "actual_guard_ADS_terminal_chunk": "bf1cb2",
+          "actual_startup_admission_terminal_chunk": "802412",
+          "actual_admission_envelope_count": 2,
+          "actual_ENV_name_count": 15,
+          "all_actual_ENV_name_and_value_rows_equal": true,
+          "actual_effective_ambient_execution_policy": "RemoteSigned",
+          "actual_guard_streams": [
+            {
+              "Stream": ":$DATA",
+              "Length": 24630
+            }
+          ],
+          "all_staged_aliases_byte_exact": true,
+          "Root_startup_Source_staging_check_count": 4112,
+          "Root_startup_Source_staging_current_pin_count": 106,
+          "independent_actual_startup_review_pending": true,
+          "actual_Dispatch_authority_issued": false,
+          "fixture_dispatch_authorized": false,
+          "dispatch_executed": false,
+          "original_prepare_clock_started": false,
+          "phase_authority": false,
+          "runtime_authority": false,
+          "ABI_qualification": false,
+          "game_validation": false,
+          "F6_fixture_absent": true,
+          "Root_SQLite_absent": true,
+          "historical_original_F5_capture_preserved": true
         }
       }
     }
