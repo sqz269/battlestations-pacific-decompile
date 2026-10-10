@@ -1,0 +1,136 @@
+{
+  "schema": "bsp.cc12.locale-unwind-primary.v1",
+  "status": "native_action_forwarding_evidenced_owner_unwind_and_dispatch_ABI_incomplete",
+  "worker_commit": "4d1c7ed8884e670f47628fe3da2a6f4cc25dff5b",
+  "worker_review": {
+    "path": "local/cc12_locale_unwind_primary/Root_worker_review.json",
+    "bytes": 1499,
+    "sha256": "998e6041e94c5497edba618ac51f70c05b976e38fa0fc69d63a9f9d7e7185105"
+  },
+  "Native": {
+    "fresh_worker_bytes": 30,
+    "fresh_worker_instructions": 8,
+    "Root_fresh_bytes": 0,
+    "Root_typed_before": {
+      "path": "local/cc12_locale_unwind_primary/Root_before_typed.json",
+      "bytes": 39424,
+      "sha256": "9f8651188e738ac7208c3369779918835f2277eb026c52c790f8a8a7559184ec"
+    },
+    "Root_typed_after": {
+      "path": "local/cc12_locale_unwind_primary/Root_after_typed.json",
+      "bytes": 39424,
+      "sha256": "9bf30c4209499b14c83c6d058b1fb9a44aac895ab7ad2ef2328e562fdeb00464"
+    },
+    "GPR_before": 79,
+    "GPR_after": 83,
+    "comments_added": 3,
+    "renames": 0,
+    "existing_Unwind_names_and_undefined_void_prototypes_retained": true,
+    "complete_metadata_equal_except_modification_numbers": true,
+    "body_listing_flow_no_return_unchanged": true,
+    "project_saved": true,
+    "journal": {
+      "path": "local/cc12_locale_unwind_primary/Root_comment_journal.json",
+      "bytes": 3781,
+      "sha256": "783f9b9e01829170d9d110e9ef635f3022bf4b9c7dcea465ccc93af153b44e98"
+    },
+    "exports": [
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eea0/assembly.txt",
+        "bytes": 69,
+        "sha256": "beedcbd5f8877539deda0e4eae9a92a9e2062d0e9781c8a852c141a9192bc14e"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eea0/decompiled.c",
+        "bytes": 1116,
+        "sha256": "56eb8664874e4e0327f95a6a8c47335fa22394ffd71ce204f37c6dc74e43dc30"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eea0/metadata.json",
+        "bytes": 262,
+        "sha256": "3638b963d2a4642eb20fff33a156a02b4bae4257d583c1420d1e506c6bffd3ed"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eea8/assembly.txt",
+        "bytes": 92,
+        "sha256": "292d057d88c58af8691fa1bae23e3fa298faf454baf1fe10c5034e5e88ff833c"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eea8/decompiled.c",
+        "bytes": 1131,
+        "sha256": "392c476b20f81e3a63df7b56ad217fc3f5c469f235c680d293ac0463673ba706"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eea8/metadata.json",
+        "bytes": 262,
+        "sha256": "7b81d7b4b2ff130022d28df94352c16f6983623881b5cdf2fe2d4a4ff787a1eb"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eeb3/assembly.txt",
+        "bytes": 93,
+        "sha256": "aa618b1873d795db00cea9191926867d18613ffae8e7179051f531c7967c53e4"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eeb3/decompiled.c",
+        "bytes": 1107,
+        "sha256": "b45d19496c5d126cfc48df42f3518434e351bf9191fb94810a7507d180ce3e20"
+      },
+      {
+        "path": "local/cc12_locale_unwind_primary/refreshed_exports/00c5eeb3/metadata.json",
+        "bytes": 262,
+        "sha256": "fd2c03cdf6205108f794d8aeff74a06530790f151ec19bf3ab09e323f08c50de"
+      }
+    ]
+  },
+  "contract": {
+    "actions": [
+      {
+        "address": "00C5EEA0",
+        "bytes": 8,
+        "target": "00403970",
+        "ECX": "DWORD[EBP-10h]"
+      },
+      {
+        "address": "00C5EEA8",
+        "bytes": 11,
+        "target": "00402F70",
+        "ECX": "DWORD[EBP-10h]+0Ch"
+      },
+      {
+        "address": "00C5EEB3",
+        "bytes": 11,
+        "target": "00435560",
+        "ECX": "DWORD[EBP-10h]+28h"
+      }
+    ],
+    "terminal": "Actual directE9 rel32 JMP with no stack adjustment; CALL_RETURN/effectiveCALL_TERMINATOR retained.",
+    "required_frame": "Constructor entryESP=S; registrationR=S-0Ch; saved poolR-4; dispatcher EBP=S=R+0Ch required, actual FH3 setup unproved.",
+    "declared_chain": "State2\u21921\u21920\u2192-1 selects member+28, section+0C, base. Normal constructor stores-1,0,2. No action writes state.",
+    "cleanup": "Target bodies and return/clobber/failure effects remain unread. No null-table/capacity32 allocation-failure cleanup inferred."
+  },
+  "Root_proof": {
+    "actual_frozen_Git_occurrences": 4229,
+    "actual_commit_tree_objects": 13,
+    "closed_worker_Source_paths": 4217,
+    "Root_Source_delta": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "src/native_particle_model_lifetime.cpp"
+    ],
+    "guarded_copied_replay": "PASS"
+  },
+  "Source_and_Native_epochs_separate": true,
+  "scope": {
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "new_probes": 0,
+    "game_runs": 0,
+    "OS_changes": 0
+  },
+  "next_gate": "00435560 metadata/prototype/typed ownership, then separately leased explicitly bounded body.00403970/00402F70 remain incomplete; FH3 setup separate.",
+  "remaining": [
+    "Canonical pool storage/list/profile/slab production/lifetime and payload-before-pool teardown.",
+    "Complete owning unwind, Original ABI/SEH/double-failure behavior.",
+    "Application authority, startup and gameplay validation."
+  ]
+}
