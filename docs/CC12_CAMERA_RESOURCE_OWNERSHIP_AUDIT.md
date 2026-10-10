@@ -140,3 +140,12 @@ still needs its own exact range and reason first.
 The audit stops with a fully observed local sequence and unresolved genuine
 function entry/ownership contracts. No function creation, listing repair,
 Source implementation, production backing, build, or gameplay claim follows.
+
+Primary review froze all reported pins and the manifest-listed artifacts,
+replayed all42 raw typed responses through the strict project/query validator
+at unchanged modification3, and matched six selected baseline/current context
+Git blobs. The original112-byte window and selected4-byte pointer match retained
+Ghidra memory directly; all24 existing in-window instruction decodes were checked.
+This accepts selected ownership/flow observations only. No whole initializer,
+CRT/table role, callee behavior, Source implementation or original ABI is admitted.
+There were no new windows, live queries, GPR writes, builds or execution.
