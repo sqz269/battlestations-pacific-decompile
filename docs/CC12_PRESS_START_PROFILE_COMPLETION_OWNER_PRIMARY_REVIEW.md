@@ -1,0 +1,13 @@
+# Press-start profile completion: primary review
+
+Root accepts worker `cc2451bca031d2f0e351d8d50a526b360d2441ab` for the complete no-argument callback at `0067CA40`. No production C++ activation is accepted.
+
+Root physically retained all 369 referenced artifacts, ran the relocated guarded replay, and separately verified 4,224 actual Git objects and current worker Source. Root checked all 4,206 Source files against the frozen baseline. The six later dormant owner-binding files were separately qualified against accepted Source3352 retained bytes and the committed owner packet; they are not claimed unchanged from this worker's older epoch. Prior complete accepted reports are pinned dependencies; their historical Root proof trees were not recursively replayed.
+
+Root independently mapped and decoded all 29 bytes/eight instructions from the unchanged Original PE. The callback loads current storage `[0109CECC]`, returns for any nonzero state at `+8h`, and on zero calls `00425D10`, moves returned EAX to ECX, dismisses prompts through `00530650`, then tail-jumps to `0068D8A0`. It consumes no incoming receiver or argument and directly accesses none of the three canonical completion slots. The delegated calls retain their own unproved ABI/lifetime requirements.
+
+Prompt dismissal can invoke saved callbacks and reenter before subsequent dismiss attempts and before the title tail. A persistent menu receiver and current-owner selection at the title boundary must therefore be established. Current production prompt clearing remains a log-only unimplemented call, and a frame-handoff boolean does not prove the immediate Native ordering. The detailed retained title contract resets storage unconditionally, preserves the hold when a request is already pending, otherwise requests state 4 before releasing the hold; fresh proof of that body is still pending.
+
+Profile `F87458`, storage `E198F8` and settings `F88958` remain separate current slots. No queue, suppression of reentry, callback-slot repair, shutdown drain or cleanup reordering is authorized. Automatic press-start adapters do not supply retained callback lifetime. Raw profile/settings/archive and production prompt/game/shutdown ownership remain open.
+
+The next bounded separately leased body is `0068D8A0`. No C++ edits, build, tests, new Root live query, Ghidra write or runtime execution occurred. The [primary report](../reports/cc12_press_start_profile_completion_owner_primary_review.json) pins replay and independent inspection; [the worker review](CC12_PRESS_START_PROFILE_COMPLETION_OWNER_REVIEW.md) records the complete contract.
