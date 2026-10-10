@@ -1,0 +1,1793 @@
+{
+  "schema": "bsp.cc12.script_orders_lua_command_owner_binding_review.v1",
+  "utc": "2026-10-10T13:56:07.104086+00:00",
+  "packet": "cc12_script_orders_lua_command_owner_binding_review",
+  "status": "source_owner_identified_command_currently_gated_off_no_cpp_go",
+  "outcome": {
+    "production_think_walk": true,
+    "current_no_op_reachable_through_production_caller": false,
+    "blocking_predicate": "GameScriptOrdersHost::gc_gate_predicate_0109cefc_vtable0c always returns false.",
+    "existing_owner": "GameMissionFrameHost::Impl::lua, borrowed from outer GameMissionHost::Impl::lua.",
+    "smallest_proposal": "Borrow MissionLuaHostServices& through the single ScriptOrders constructor call; synchronously run_lua_chunk(owner,chunk,strlen(chunk),chunk,false,false,mode). Keep predicates inactive.",
+    "proposed_files": [
+      "include/bsp/game_hosts_script_orders.hpp",
+      "src/game_hosts_script_orders.cpp",
+      "src/game_hosts_mission_frame.cpp"
+    ],
+    "lifetime": "Frame detaches and destroys orders before Lua owner replacement/close; preserve this relationship.",
+    "readiness_limit": "Successful machine initialization and lifetime required before future active calls; constructor/start order alone is not unconditional readiness. Cached trampoline state is not proven equal to owner root state.",
+    "parallel_route": "GameStepSubsystemsHost uses a distinct EntityThinkBinding with false predicate, separate countdown and no concrete Lua receiver bound.",
+    "archive_route": "Independent unbound settings publication callback; no equivalence or fix claimed."
+  },
+  "complete_evidence": {
+    "schema": "bsp.cc12.script_orders_lua_owner.freeze.v1",
+    "utc": "2026-10-10T13:51:17.073642+00:00",
+    "accepted_source_commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+    "capture_worktree_HEAD": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+    "previous_packet_HEAD": "9d371a9974e8c0bdd55683a4a0ad0fa6da408e07",
+    "checkout_sync": {
+      "initial_result": "bsp.py sync refused while9d371a was unlanded; Root notified and only accepted-main-equal Source was read.",
+      "after_Root_acceptance": "bsp.py sync fast-forwarded9d371a997 to4c0e429c3; no src/ or include/ path changed against assigned baselineea3c9fc17.",
+      "post_sync_commit": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+      "baseline_Source_tree_equals_post_sync": true
+    },
+    "source_corpus": {
+      "scope": "All tracked src/ and include/ blobs at accepted main ea3c9fc17; complete working bytes separately captured and LF-compared.",
+      "files": 4206,
+      "git_tree": {
+        "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/8ff97655035e8c04_source_ls_tree_z.bin",
+        "bytes": 382563,
+        "sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f"
+      },
+      "git_archive": {
+        "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/2a0dc5c9486f507a_source_git.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "working_archive": {
+        "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/2a0dc5c9486f507a_source_working.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "manifest": {
+        "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/c772aa9cc89fea34_source_manifest.json",
+        "bytes": 1628808,
+        "sha256": "c772aa9cc89fea343db0fd205e6a5493d472604122613f09739714a11ad05e88"
+      }
+    },
+    "additional_Source_Git": [
+      {
+        "source_path": "CMakeLists.txt",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/568fc615535bf822_git_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/568fc615535bf822_working_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/startup.cmake",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "6fa7a29dda1b965bcfa5ffc7f589c7ef3391a017",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/7c30db5b9be8b859_git_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/7c30db5b9be8b859_working_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/lua.cmake",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "c92cd290b5050de1b075928ad2aa04631e6a4da4",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/0c432ec1026aa692_git_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/0c432ec1026aa692_working_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/bsp.py",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/09de2b8916a4af98_git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/09de2b8916a4af98_working_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/workspace.py",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/611a2f0613f21724_git_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/611a2f0613f21724_working_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/MISSION_LUA_HOST.md",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "3b9c1b0a5bccace5f51c6d92b388e5824f60ef0d",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/010b9880711a2534_git_docs_MISSION_LUA_HOST.md",
+          "bytes": 26373,
+          "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/010b9880711a2534_working_docs_MISSION_LUA_HOST.md",
+          "bytes": 26373,
+          "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/mission_lua_host.json",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "59f2fc7c0e66affd2feb56fd47540e14318ee198",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/038f566ab59dc67e_git_reports_mission_lua_host.json",
+          "bytes": 69076,
+          "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/038f566ab59dc67e_working_reports_mission_lua_host.json",
+          "bytes": 69076,
+          "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/ENTITY_THINK_DISPATCH.md",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "b1f8195ff719b3e8d784ca9b26b5d6c475315d75",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/3b13813a5d9ebe33_git_docs_ENTITY_THINK_DISPATCH.md",
+          "bytes": 18155,
+          "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/3b13813a5d9ebe33_working_docs_ENTITY_THINK_DISPATCH.md",
+          "bytes": 18155,
+          "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/entity_think_dispatch.json",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "git_blob": "a8336d63e1394fe935cbc532a886d151288d6d3c",
+        "git": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/8a75caf71a8e2064_git_reports_entity_think_dispatch.json",
+          "bytes": 16415,
+          "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+        },
+        "working": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/8a75caf71a8e2064_working_reports_entity_think_dispatch.json",
+          "bytes": 16415,
+          "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+        },
+        "LF_equal": true
+      }
+    ],
+    "source_queries": [
+      {
+        "label": "run_string_all",
+        "regex": "lua_run_string_006b8ad0",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 139,
+            "text": "    virtual void lua_run_string_006b8ad0(const char* chunk, int mode) = 0;"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 819,
+            "text": "    void lua_run_string_006b8ad0(const char* chunk, int mode) override;"
+          },
+          {
+            "path": "src/entity_think_dispatch.cpp",
+            "line": 128,
+            "text": "            host.lua_run_string_006b8ad0(kCollectGarbageChunk, kCollectGarbageRunMode);"
+          },
+          {
+            "path": "src/game_hosts_ready.cpp",
+            "line": 205,
+            "text": "    void lua_run_string_006b8ad0(const char* chunk, int mode) override {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4367,
+            "text": "void GameScriptOrdersHost::lua_run_string_006b8ad0(const char* chunk, int mode) {"
+          }
+        ]
+      },
+      {
+        "label": "gc_gate_all",
+        "regex": "gc_gate_predicate_0109cefc_vtable0c",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 135,
+            "text": "    virtual bool gc_gate_predicate_0109cefc_vtable0c() = 0;"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 818,
+            "text": "    bool gc_gate_predicate_0109cefc_vtable0c() override;"
+          },
+          {
+            "path": "src/entity_think_dispatch.cpp",
+            "line": 127,
+            "text": "        if (host.gc_gate_predicate_0109cefc_vtable0c()) { // 00929568, AL tested at 0092956A"
+          },
+          {
+            "path": "src/game_hosts_ready.cpp",
+            "line": 201,
+            "text": "    bool gc_gate_predicate_0109cefc_vtable0c() override {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4361,
+            "text": "bool GameScriptOrdersHost::gc_gate_predicate_0109cefc_vtable0c() {"
+          }
+        ]
+      },
+      {
+        "label": "think_list_calls",
+        "regex": "run_entity_think_list_00929460",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 164,
+            "text": "EntityThinkRunSummary run_entity_think_list_00929460("
+          },
+          {
+            "path": "src/entity_think_dispatch.cpp",
+            "line": 77,
+            "text": "EntityThinkRunSummary run_entity_think_list_00929460("
+          },
+          {
+            "path": "src/game_hosts_ready.cpp",
+            "line": 548,
+            "text": "    const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5226,
+            "text": "    const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,"
+          }
+        ]
+      },
+      {
+        "label": "script_orders_construction",
+        "regex": "make_unique<GameScriptOrdersHost>|new GameScriptOrdersHost|GameScriptOrdersHost::GameScriptOrdersHost",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "src/game_hosts_mission_frame.cpp",
+            "line": 2219,
+            "text": "            host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 459,
+            "text": "GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)"
+          }
+        ]
+      },
+      {
+        "label": "orders_type_non_method_mentions",
+        "regex": "\\bGameScriptOrdersHost\\b(?!::)",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_lua.hpp",
+            "line": 384,
+            "text": "class GameScriptOrdersHost;"
+          },
+          {
+            "path": "include/bsp/game_hosts_lua.hpp",
+            "line": 1173,
+            "text": "    void attach_script_orders(GameScriptOrdersHost* orders) noexcept;"
+          },
+          {
+            "path": "include/bsp/game_hosts_lua.hpp",
+            "line": 1174,
+            "text": "    GameScriptOrdersHost* script_orders() const noexcept;"
+          },
+          {
+            "path": "include/bsp/game_hosts_lua.hpp",
+            "line": 1427,
+            "text": "    GameScriptOrdersHost* script_orders_{nullptr};"
+          },
+          {
+            "path": "include/bsp/game_hosts_scene_contents.hpp",
+            "line": 360,
+            "text": "// the command path through GameScriptOrdersHost, which holds a GameUnitsHost"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 560,
+            "text": "class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 568,
+            "text": "    GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);"
+          },
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 569,
+            "text": "    ~GameScriptOrdersHost();"
+          },
+          {
+            "path": "src/game_hosts_commands.cpp",
+            "line": 1593,
+            "text": "    // mission creates - GameScriptOrdersHost calls create_units at its two"
+          },
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 387,
+            "text": "    GameScriptOrdersHost* orders = host->script_orders();"
+          },
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 2495,
+            "text": "void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {"
+          },
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 2517,
+            "text": "            GameScriptOrdersHost* host = static_cast<GameScriptOrdersHost*>(context);"
+          },
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 2580,
+            "text": "GameScriptOrdersHost* GameMissionLuaHost::script_orders() const noexcept {"
+          },
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 2592,
+            "text": "        // The row runs its own reconstructed body; GameScriptOrdersHost records"
+          },
+          {
+            "path": "src/game_hosts_mission_frame.cpp",
+            "line": 326,
+            "text": "    std::unique_ptr<GameScriptOrdersHost> script_orders;"
+          },
+          {
+            "path": "src/game_hosts_mission_frame.cpp",
+            "line": 2219,
+            "text": "            host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 306,
+            "text": "    explicit SetThinkCoreHost(GameScriptOrdersHost& owner) : owner_(owner) {}"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 372,
+            "text": "    GameScriptOrdersHost& owner_;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 413,
+            "text": "GameScriptOrdersHost* g_live_script_orders = nullptr;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 459,
+            "text": "GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 464,
+            "text": "GameScriptOrdersHost::~GameScriptOrdersHost() {"
+          },
+          {
+            "path": "src/game_hosts_units.cpp",
+            "line": 15274,
+            "text": "    // GameScriptOrdersHost owns this body but the free function needs no"
+          },
+          {
+            "path": "src/game_hosts_units.cpp",
+            "line": 15501,
+            "text": "    // and GameScriptOrdersHost reports it in its own table."
+          }
+        ]
+      },
+      {
+        "label": "timers_calls",
+        "regex": "run_script_timers\\(",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 596,
+            "text": "    void run_script_timers(float step);"
+          },
+          {
+            "path": "src/game_hosts_mission_frame.cpp",
+            "line": 3541,
+            "text": "        host.script_orders->run_script_timers(raw_delta);"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5319,
+            "text": "void GameScriptOrdersHost::run_script_timers(float step) {"
+          }
+        ]
+      },
+      {
+        "label": "think_pass_calls",
+        "regex": "run_script_think_pass\\(",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_script_orders.hpp",
+            "line": 813,
+            "text": "    void run_script_think_pass(float step);"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5152,
+            "text": "void GameScriptOrdersHost::run_script_think_pass(float step) {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5348,
+            "text": "            run_script_think_pass(bsp::kFixedSimulationStepFloat);  // 00875E64"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5352,
+            "text": "        run_script_think_pass(step);"
+          }
+        ]
+      },
+      {
+        "label": "orders_attach",
+        "regex": "attach_script_orders\\(",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_lua.hpp",
+            "line": 1173,
+            "text": "    void attach_script_orders(GameScriptOrdersHost* orders) noexcept;"
+          },
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 2495,
+            "text": "void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {"
+          },
+          {
+            "path": "src/game_hosts_mission_frame.cpp",
+            "line": 222,
+            "text": "        lua.attach_script_orders(nullptr);"
+          },
+          {
+            "path": "src/game_hosts_mission_frame.cpp",
+            "line": 2236,
+            "text": "            host.lua.attach_script_orders(host.script_orders.get());"
+          }
+        ]
+      },
+      {
+        "label": "mission_lua_construction",
+        "regex": "make_unique<GameMissionLuaHost>|new GameMissionLuaHost|GameMissionLuaHost::GameMissionLuaHost",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 872,
+            "text": "GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)"
+          },
+          {
+            "path": "src/game_hosts_mission.cpp",
+            "line": 1744,
+            "text": "    lua = std::make_unique<GameMissionLuaHost>(log, vfs);"
+          }
+        ]
+      },
+      {
+        "label": "frame_owner_creation",
+        "regex": "make_unique<GameMissionFrameHost>|frame_host\\.reset\\(",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "src/game_hosts_mission.cpp",
+            "line": 1743,
+            "text": "    frame_host.reset();"
+          },
+          {
+            "path": "src/game_hosts_mission.cpp",
+            "line": 1745,
+            "text": "    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,"
+          }
+        ]
+      },
+      {
+        "label": "cached_machine_writes",
+        "regex": "machine_state_\\s*=",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 3166,
+            "text": "    machine_state_ = state;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4493,
+            "text": "    if (machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4700,
+            "text": "    if (narrative_callback_2c_.empty() || machine_state_ == nullptr) {"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4829,
+            "text": "    if (!kEntityDeadBound || machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4920,
+            "text": "    if (pads == nullptr || machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4982,
+            "text": "    if (!kMissionEndBound || machine_state_ == nullptr) return;"
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 5323,
+            "text": "    if (machine_state_ == nullptr) return;"
+          }
+        ]
+      },
+      {
+        "label": "native_gc_text",
+        "regex": "collectgarbage\\(\\)",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 48,
+            "text": "inline constexpr const char* kCollectGarbageChunk = \"collectgarbage()\";"
+          },
+          {
+            "path": "include/bsp/entity_think_dispatch.hpp",
+            "line": 137,
+            "text": "    // 00929588, BSP_LuaMachine_RunString(machine, \"collectgarbage()\", 0, 0, 2) on"
+          },
+          {
+            "path": "include/bsp/fixed_step_fanout.hpp",
+            "line": 143,
+            "text": "    // collectgarbage() countdown at 00F89A04."
+          },
+          {
+            "path": "src/game_hosts_script_orders.cpp",
+            "line": 4363,
+            "text": "    // this process has no such object. A false answer only skips collectgarbage()."
+          }
+        ]
+      },
+      {
+        "label": "archive_publication_separate",
+        "regex": "publish_xbox_compatibility_008d44c0|publish_lua_xbox_compatibility_008d44c0",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/lua_runtime_globals.hpp",
+            "line": 24,
+            "text": "const char* publish_lua_xbox_compatibility_008d44c0("
+          },
+          {
+            "path": "include/bsp/settings_archive_reader.hpp",
+            "line": 12,
+            "text": "    virtual void publish_xbox_compatibility_008d44c0(bool) = 0;"
+          },
+          {
+            "path": "src/lua_runtime_globals.cpp",
+            "line": 33,
+            "text": "const char* publish_lua_xbox_compatibility_008d44c0("
+          },
+          {
+            "path": "src/settings_archive_reader.cpp",
+            "line": 42,
+            "text": "    host.publish_xbox_compatibility_008d44c0(s.control.xbox_compatibility_b0);"
+          }
+        ]
+      },
+      {
+        "label": "initializer_and_chunk",
+        "regex": "initialise_mission_lua_host\\(|LuaChunkResult run_lua_chunk\\(",
+        "scope": "Complete retained src/ and include/ corpus",
+        "hits": [
+          {
+            "path": "include/bsp/mission_lua_host.hpp",
+            "line": 271,
+            "text": "std::size_t initialise_mission_lua_host(MissionLuaHostServices& host);"
+          },
+          {
+            "path": "include/bsp/mission_lua_host.hpp",
+            "line": 275,
+            "text": "LuaChunkResult run_lua_chunk(MissionLuaHostServices& host, const char* buffer, int size,"
+          },
+          {
+            "path": "src/game_hosts_lua.cpp",
+            "line": 6904,
+            "text": "    summary_.bindings_registered = bsp::initialise_mission_lua_host(*this);"
+          },
+          {
+            "path": "src/mission_lua_host.cpp",
+            "line": 632,
+            "text": "std::size_t initialise_mission_lua_host(MissionLuaHostServices& host)"
+          },
+          {
+            "path": "src/mission_lua_host.cpp",
+            "line": 653,
+            "text": "LuaChunkResult run_lua_chunk(MissionLuaHostServices& host, const char* buffer, int size,"
+          }
+        ]
+      }
+    ],
+    "exact_excerpts": [
+      {
+        "label": "think_call_guard",
+        "source_path": "src/entity_think_dispatch.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 121,
+        "last_line": 138,
+        "text": "\n    // 3. 00929542-0092958B. The refill and the collection happen after the walk, so\n    //    every untimed think of this call and the collection share one expiry.\n    if (script_countdown_expired(countdown)) {\n        summary.countdown_expired = true;\n        countdown = script_countdown_refilled(countdown);\n        if (host.gc_gate_predicate_0109cefc_vtable0c()) { // 00929568, AL tested at 0092956A\n            host.lua_run_string_006b8ad0(kCollectGarbageChunk, kCollectGarbageRunMode);\n            summary.garbage_collected = true;\n        }\n    }\n\n    // 4. 0092958D-009295A1: splice, then clear. A registration made during this call\n    //    first thinks on the next one.\n    summary.pending_spliced = pending.nodes.size();\n    host.splice_pending_into_live_00928380(live, pending);\n    host.clear_pending_00928330(pending);\n    return summary;\n",
+        "utf8_sha256": "9ef9ea85a606697c10f3236d2bea1f9aab3e6ddfdf18c9c2f6aed7ed8822bdf2"
+      },
+      {
+        "label": "think_literals",
+        "source_path": "include/bsp/entity_think_dispatch.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 45,
+        "last_line": 50,
+        "text": "inline constexpr float kMinimumThinkDelaySeconds = 0.5f;\n// The chunk 00929460 runs when the countdown expires; text at 00D19480, mode literal\n// 2 pushed at 0092957D into BSP_LuaMachine_RunString (006B8AD0, RET 10h).\ninline constexpr const char* kCollectGarbageChunk = \"collectgarbage()\";\ninline constexpr int kCollectGarbageRunMode = 2;\n\n",
+        "utf8_sha256": "adfc3b62f2fe63ab9b2694052f9fd598672ffcba86a1b253784de703b4a28885"
+      },
+      {
+        "label": "native_machine_contract_header",
+        "source_path": "include/bsp/entity_think_dispatch.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 132,
+        "last_line": 139,
+        "text": "\n    // 00929568, [0109CEFC]->vtable[+0Ch](), byte result tested at 0092956A. The\n    // predicate's body was not read, so this is named by slot and not by a verb.\n    virtual bool gc_gate_predicate_0109cefc_vtable0c() = 0;\n\n    // 00929588, BSP_LuaMachine_RunString(machine, \"collectgarbage()\", 0, 0, 2) on\n    // *(*(00E188A8)+1A08h)+4h, the mission Lua host's machine.\n    virtual void lua_run_string_006b8ad0(const char* chunk, int mode) = 0;\n",
+        "utf8_sha256": "193da8410498a8e7e3525d82a05312ae85c41e0c1fa5e114c46b49d2ba949ec3"
+      },
+      {
+        "label": "orders_false_gate_and_no_op",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 4360,
+        "last_line": 4369,
+        "text": "\nbool GameScriptOrdersHost::gc_gate_predicate_0109cefc_vtable0c() {\n    // The predicate's body was not read by the packet that recovered the walk, and\n    // this process has no such object. A false answer only skips collectgarbage().\n    return false;\n}\n\nvoid GameScriptOrdersHost::lua_run_string_006b8ad0(const char* chunk, int mode) {\n    static_cast<void>(chunk);\n    static_cast<void>(mode);\n",
+        "utf8_sha256": "7ea503f28990a859480c4cb61f1cccd039a70649211cabc0683bc60140c53b6e"
+      },
+      {
+        "label": "orders_ctor",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 459,
+        "last_line": 466,
+        "text": "GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)\n    : log_(log), units_(units) {\n    g_live_script_orders = this;\n}\n\nGameScriptOrdersHost::~GameScriptOrdersHost() {\n    if (g_live_script_orders == this) g_live_script_orders = nullptr;\n}\n",
+        "utf8_sha256": "80533d7d37ce6392048d235534fe7062a60719820c7d3678a774d8fb1127a3c2"
+      },
+      {
+        "label": "orders_ctor_declaration",
+        "source_path": "include/bsp/game_hosts_script_orders.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 565,
+        "last_line": 572,
+        "text": "                                   public bsp::EntityThinkHost,\n                                   public bsp::MissionBlackoutHost {\npublic:\n    GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);\n    ~GameScriptOrdersHost();\n    // Packet cc9_after_row9_order_queue: apply the deferred orders.\n    std::size_t drain_deferred_orders_0076c600();\n    // Packet cc9_ai_squadron_settarget_intake: see\n",
+        "utf8_sha256": "9b7dcae1b763730baa3f4940194ac6b2bd1e4ec9f285b45c00d6419c4329b5d0"
+      },
+      {
+        "label": "orders_overrides",
+        "source_path": "include/bsp/game_hosts_script_orders.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 812,
+        "last_line": 819,
+        "text": "    // One 00929460 walk with its delay updates, the body run_script_timers repeats.\n    void run_script_think_pass(float step);\n\n    // --- bsp::EntityThinkHost, the walk 00929460 makes over those entities ------\n    void run_entity_think_00929150(std::uint32_t entity) override;\n    void free_think_node_0092952c(const bsp::EntityThinkNode& node) override;\n    bool gc_gate_predicate_0109cefc_vtable0c() override;\n    void lua_run_string_006b8ad0(const char* chunk, int mode) override;\n",
+        "utf8_sha256": "c0a58098f339de037ba061af286fe79c4e69f5580566088465465d6c5b164449"
+      },
+      {
+        "label": "orders_cached_state",
+        "source_path": "include/bsp/game_hosts_script_orders.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 1033,
+        "last_line": 1041,
+        "text": "    std::vector<SceneMarker> markers_;\n    lua_State* state_{nullptr};\n    // The mission machine, kept past a dispatch so the per-frame timer pass can\n    // call the think globals on it. The native reaches the same machine through\n    // *(*(00E188A8)+1A08h)+4h; this process has no such chain and keeps the\n    // pointer the trampoline handed it.\n    lua_State* machine_state_{nullptr};\n    int argument_count_{0};\n    GameScriptOrderRow* row_{nullptr};\n",
+        "utf8_sha256": "1e57bd69cb6bf76e10e94a88a2e25ff1314e785d625b31ecff47b0941abb3b5f"
+      },
+      {
+        "label": "orders_dispatch_cache",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 3154,
+        "last_line": 3167,
+        "text": "\nint GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,\n    int argument_count) {\n    const ScriptOrderBinding* binding = find_binding(binding_name);\n    if (binding == nullptr) return 0;\n    // CreateScript runs the named global inside its own body, and that global\n    // calls further bindings, so a dispatch can re-enter this function. The three\n    // per-call fields are saved and restored rather than cleared at the end.\n    lua_State* const outer_state = state_;\n    const int outer_argument_count = argument_count_;\n    GameScriptOrderRow* const outer_row = row_;\n    state_ = state;\n    machine_state_ = state;\n    argument_count_ = argument_count;\n",
+        "utf8_sha256": "365104ee7a3c7d5922fb401a29b25a68d2e4cc2fef23338eed0bd82beecfe59c"
+      },
+      {
+        "label": "orders_dispatch_restoration",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 3864,
+        "last_line": 3872,
+        "text": "    }\n\n    ++summary_.calls;\n    rows_.push_back(row);\n    row_ = outer_row;\n    state_ = outer_state;\n    argument_count_ = outer_argument_count;\n    return results;\n}\n",
+        "utf8_sha256": "9e4fd84e8a2213f798734db0ca05e689e0a6002b5b87acbf15ee95f926dc5367"
+      },
+      {
+        "label": "timer_entry_guards",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 5318,
+        "last_line": 5341,
+        "text": "\nvoid GameScriptOrdersHost::run_script_timers(float step) {\n    // Packet cc9_deck_tick_in_step: with the switch on, the fixed step runs the\n    // deck tick at its owner's motion instead (bsp/game_hosts_fixed_step.hpp).\n    if (!kDeckTickInFixedStepBound) run_air_ops_update_006cdc70(step);\n    if (machine_state_ == nullptr) return;\n    observe_mission_end();\n    publish_unit_deaths_00929800();\n    publish_landing_unloads_0074ad90();\n    if (bsp::BuildingPadModel* pads = building_pads()) {\n        // Packet cc9_landing_modes_3_4: the pad's observer handle (+1E4h) drops a\n        // destroyed occupant. SUBSTITUTION, labelled: the handle's notification\n        // slot (vtable 00CE75CC) was not read.\n        for (const auto& death : units_.destroyed_units()) {\n            pads->forget_unit(static_cast<int>(death.first));\n        }\n    }\n    if constexpr (kSceneRaceAndScriptIdentityBound) {\n        mirror_script_identity_00928100();\n    }\n    if (script_entities_.empty()) {\n        run_blackout_update(step);\n        return;\n    }\n",
+        "utf8_sha256": "c7b172256aa9914e328e6e8caecf66a91cd8b4e7c5f332f5541e773ee8ab6dde"
+      },
+      {
+        "label": "timer_fixed_schedule",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 5341,
+        "last_line": 5359,
+        "text": "    }\n    if constexpr (kScriptThinkOnFixedStep) {\n        // 00875BB0's rule (src/in_mission_subsystem_tick.cpp): add the frame delta,\n        // then one 0.05f step while the step does not exceed the accumulator.\n        const float fixed = static_cast<float>(bsp::kFixedSimulationStepSeconds);\n        think_step_accumulator_ += step;\n        while (fixed <= think_step_accumulator_) {\n            run_script_think_pass(bsp::kFixedSimulationStepFloat);  // 00875E64\n            think_step_accumulator_ -= fixed;\n        }\n    } else {\n        run_script_think_pass(step);\n    }\n    // Packet cc_mission_blackout. GGame::OnMove step 18 runs 004C40A0, which\n    // drives the fixed-step fan-out and so the think walk, and only then 004C40F0,\n    // which steps the fade. Keeping that order here means a `luaDelay` that\n    // expires on this frame arms its blackout before the same frame steps it,\n    // exactly as the native does.\n    run_blackout_update(step);\n",
+        "utf8_sha256": "aadc575c08734d799123e85c575a32cfdfee109fca2145b0f38a39a4840fb33c"
+      },
+      {
+        "label": "fixed_schedule_flag",
+        "source_path": "include/bsp/game_hosts_script_orders.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 275,
+        "last_line": 282,
+        "text": "// Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think\n// walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does\n// (00875E64 inside 00875BB0), while the Blackout fade still steps once per frame\n// with the frame delta (004C429A). The step count mirrors 00875BB0's accumulator\n// rule. With a lockstep 0.05 s frame this is one pass per frame, which is the\n// old behaviour exactly. False: one think pass per frame with the frame delta.\ninline constexpr bool kScriptThinkOnFixedStep = true;\n\n",
+        "utf8_sha256": "833b6b2e9e4213fa2cb9373c4b312fe3bc7064880ba64a8f722d1d83dd641916"
+      },
+      {
+        "label": "think_pass_cache",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 5151,
+        "last_line": 5158,
+        "text": "\nvoid GameScriptOrdersHost::run_script_think_pass(float step) {\n    state_ = machine_state_;\n    argument_count_ = 0;\n    if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();\n    mission_clock_ += step;\n    if (kDialogSequencerBound) dialog_tick(step);\n    // Packet cc9_script_entity_pool, diagnostic only: BSP_ORIGIN_DIAG=1 logs, every\n",
+        "utf8_sha256": "ba84128ee48d424391ed0a7ad370b8901086aafb1c2afabb775e50e623c7008d"
+      },
+      {
+        "label": "think_pass_host_and_tail",
+        "source_path": "src/game_hosts_script_orders.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 5222,
+        "last_line": 5244,
+        "text": "        row.delay_seconds = script.delay_seconds;\n        fields.push_back(row);\n    }\n    in_think_walk_ = true;\n    const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,\n        think_countdown_, think_live_, think_pending_, fields, *this);\n    in_think_walk_ = false;\n    for (std::uint32_t id : think_erase_after_walk_) {\n        bsp::erase_think_entity_00928300(think_live_, id);\n        bsp::erase_think_entity_00928300(think_pending_, id);\n    }\n    think_erase_after_walk_.clear();\n    // 009294C7-009294D7 updates +1E0h in place and never re-arms the flag; the\n    // rule's own helpers own both, so the entity records follow them here.\n    for (GameScriptEntity& script : script_entities_) {\n        if (!script.delay_armed) continue;\n        if (script.delay_seconds <= 0.0f) continue;\n        script.delay_seconds = bsp::entity_think_delay_after_step(script.delay_seconds,\n            step);\n    }\n    ++timers_.passes;\n    timers_.timed_fires += run.thinks_run;\n    state_ = nullptr;\n",
+        "utf8_sha256": "14636217facf5764da51b4cdbc85b24d77e1af2bab5dc61cfe84c6881840bdbf"
+      },
+      {
+        "label": "frame_borrow_init",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 197,
+        "last_line": 213,
+        "text": "struct GameMissionFrameHost::Impl {\n    Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,\n        bsp::SessionParticipantPools& participants_in,\n        GameFrameProfiler* profiler_in, std::string language_in)\n        : log(log_in), vfs(vfs_in), lua(lua_in), participants(participants_in), profiler(profiler_in),\n          language(std::move(language_in)) {\n        // Both take references to members declared below, which are already\n        // default constructed when this body runs.\n        fixed_step = std::make_unique<GameFixedStepHost>(log, dynamics);\n        result = std::make_unique<GameMissionResultHost>(log, control);\n        // Milestone 2m: the six fan-out rows whose reconstructions are on main.\n        step_subsystems = std::make_unique<GameStepSubsystemsHost>(log);\n        fixed_step->attach_subsystems(step_subsystems.get());\n        // Packet cc9_sentity_init_all: row 12's pending list is the Lua host's.\n        fixed_step->attach_entity_init(&lua);\n        // Packet cc9_run_extra_fixed_step: GenerateObject's 00874D00.\n        lua.attach_extra_fixed_step(fixed_step.get());\n",
+        "utf8_sha256": "4103bf3336d4802c7bb196c288781b9d775e4eb42585bbee30aea4c28073804d"
+      },
+      {
+        "label": "frame_release_and_reference",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 215,
+        "last_line": 235,
+        "text": "\n    ~Impl() { release_units(); }\n\n    void release_units() noexcept {\n        // HUD persists across frames; Lua persists until after this frame dies.\n        // Release every outward borrow before destroying the canonical slots.\n        if (hud != nullptr && units != nullptr) hud->detach_world_2k();\n        lua.attach_script_orders(nullptr);\n        lua.attach_units_hooks(nullptr);\n        if (step_subsystems != nullptr) step_subsystems->attach_units(nullptr);\n        if (units != nullptr) units->set_ship_ai(nullptr);\n        ship_ai.reset();\n        script_orders.reset();\n        world_host.reset();\n        units.reset();\n    }\n\n    GameHostLog& log;\n    GameVfsHost& vfs;\n    GameMissionLuaHost& lua;\n    GameObserverRuntime* observer_runtime{nullptr};\n",
+        "utf8_sha256": "f2f0d3ce90f7164ebc62bd9f62626cfb2751fd46f615552b36a171b2a5c2dcf2"
+      },
+      {
+        "label": "frame_orders_member",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 318,
+        "last_line": 328,
+        "text": "    std::unique_ptr<GameSceneContentsHost> scene_contents;\n    // Milestone 2i: the created units and the world chain the walk reads. Both\n    // are built on the load's own load_scene_contents row, because that is the\n    // step that creates the instances.\n    std::unique_ptr<GameUnitsHost> units;\n    std::unique_ptr<GameWorldHost> world_host;\n    // Milestone 2m: the host the eight reconstructed binding bodies run over.\n    // Built with the units, because every one of the eight addresses an entity.\n    std::unique_ptr<GameScriptOrdersHost> script_orders;\n    // Milestone 2n: one ship AI controller per created unit, and the weapon\n    // director's automatic target selector beside it. Built with the units,\n",
+        "utf8_sha256": "ce46f74920c4c8f219461ce6c45fc8646df158a76a27e77a4e88ce0490699e45"
+      },
+      {
+        "label": "frame_constructs_orders",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 2216,
+        "last_line": 2237,
+        "text": "            // Milestone 2m: with the slots built, the eight binding bodies\n            // src/lua_binding_navigator.cpp reconstructs can run over the\n            // created instances instead of being counted as records.\n            host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,\n                *host.units);\n            for (const GameSceneMarkerSeed& marker : markers) {\n                // Packet cc9_building_pad_model: the class id lets the pad model\n                // adopt the LandingPoint (1Dh) markers (docs/SHIP_AI_OPEN_ITEMS.md 75).\n                host.script_orders->register_scene_marker(marker.id, marker.name,\n                    marker.position, marker.class_id);\n                host.units->register_scene_marker_frame(marker.id, marker.world);\n                if (!host.helm_orders.empty()) {\n                    Impl::HelmMarker named;\n                    named.name = marker.name;\n                    named.position[0] = marker.position[0];\n                    named.position[1] = marker.position[1];\n                    named.position[2] = marker.position[2];\n                    host.helm_markers.push_back(named);\n                }\n            }\n            host.lua.attach_script_orders(host.script_orders.get());\n            // Milestone 2n: the ship AI controller family at 00d21598 over the\n",
+        "utf8_sha256": "d3b703a283bd4043506c5406fd0d8323041c18440a6698d1c4296f052d909976"
+      },
+      {
+        "label": "frame_current_timer_location",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 3532,
+        "last_line": 3544,
+        "text": "    MissionFrameBinding binding(host);\n    const bsp::MissionFrameResult result\n        = bsp::run_mission_frame(host.frame_state, binding);\n    // Packet cc_lua_binding_audit: row 8 of the fixed-step fan-out, 00875E64 /\n    // 00929460, over the script entities CreateScript made. The fan-out's own row\n    // runs against an empty list because nothing else registers a think; this pass\n    // is the same reconstructed rule with the mission's script entities in it, and\n    // it is what re-enters `luaTimetable` when a luaDelay expires.\n    if (result.simulated && host.script_orders != nullptr) {\n        host.script_orders->run_script_timers(raw_delta);\n    }\n    ++host.frames.frames;\n    if (result.simulated) ++host.frames.simulated;\n",
+        "utf8_sha256": "2a4271f2e33fe782d01f1998ffa6f970c39913878f83c8c68184469ee273586c"
+      },
+      {
+        "label": "outer_owner_member_order",
+        "source_path": "src/game_hosts_mission.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 383,
+        "last_line": 389,
+        "text": "    // Key by the actual scene path; the semantic side_blocks vector still\n    // lacks resolved Party/Race and must not imply a zero participant count.\n    std::map<std::string, std::int32_t> participant_scene_counts;\n    std::unique_ptr<GameMissionLuaHost> lua;\n    GameObserverRuntime* observer_runtime{nullptr};\n    std::unique_ptr<GameMissionFrameHost> frame_host;\n    GameHudHost* hud{nullptr};  // milestone 2h, owned by GameMenuHost\n",
+        "utf8_sha256": "6fd684d1daccaa8fed423dd286254bbfefd934fb64cb603bfef79499331b6a54"
+      },
+      {
+        "label": "outer_owner_replacement",
+        "source_path": "src/game_hosts_mission.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 1741,
+        "last_line": 1752,
+        "text": "    // The previous frame and its children borrow the previous Lua owner.\n    // Destroy those borrowers before replacing that owner on a later load.\n    frame_host.reset();\n    lua = std::make_unique<GameMissionLuaHost>(log, vfs);\n    frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,\n        profiler, language, hud);\n    if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);\n    // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;\n    // this process reaches its first mission here, so the machine is built now\n    // and kept for the rest of the run.\n    lua->start_machine_00884be0();\n    // Milestone 2g: game+2198h, the key the record commit writes under, and the\n",
+        "utf8_sha256": "7415ba7a517fa4cb9e910ec5c9811b2e8539deb89cca04baa2f12fb786d184c4"
+      },
+      {
+        "label": "frame_constructor_borrow",
+        "source_path": "src/game_hosts_mission_frame.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 1669,
+        "last_line": 1680,
+        "text": "GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,\n    GameMissionLuaHost& lua, bsp::SessionParticipantPools& participants,\n    GameFrameProfiler* profiler, std::string language,\n    GameHudHost* hud)\n    : impl_(std::make_unique<Impl>(log, vfs, lua, participants, profiler, std::move(language))) {\n    impl_->hud = hud;\n    g_warning_owner = impl_.get();\n}\n\nGameMissionFrameHost::~GameMissionFrameHost() {\n    if (g_warning_owner == impl_.get()) g_warning_owner = nullptr;\n}\n",
+        "utf8_sha256": "04db524ef37e33b7999bdd642bfe30334e264a32b26058dea6a1ad0362c6d63f"
+      },
+      {
+        "label": "mission_machine_inheritance",
+        "source_path": "include/bsp/game_hosts_lua.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 782,
+        "last_line": 794,
+        "text": "class GameMissionLuaHost final : public bsp::MissionLuaHostServices,\n                                 public bsp::AirOpsSquadronFactory,\n                                 public bsp::SpawnQueueDrain,\n                                 public GameEntityInitAllRunner {\npublic:\n    GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs);\n    ~GameMissionLuaHost() override;\n    GameMissionLuaHost(const GameMissionLuaHost&) = delete;\n    GameMissionLuaHost& operator=(const GameMissionLuaHost&) = delete;\n\n    // 00884be0 at 004dd627, then the fundamentals chunk whose bytes the host\n    // owns (00884770) and the DoFile global from the owner layer at 00b6a303.\n    bool start_machine_00884be0();\n",
+        "utf8_sha256": "c02d6ee642b6946b86af01ffb610b7cb022a44353886e42894f82b3e8600ef7a"
+      },
+      {
+        "label": "mission_machine_state_member",
+        "source_path": "include/bsp/game_hosts_lua.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 1406,
+        "last_line": 1416,
+        "text": "    GameHostLog& log_;\n    GameVfsHost& vfs_;\n    // Declared before the adapter that borrows it: the adapter keeps a\n    // reference to this list for its whole life.\n    std::vector<std::string> content_suffixes_; // manager +48h/+4Ch, empty here\n    std::unique_ptr<bsp::VfsLocaleRuntime> resources_;\n    lua_State* state_{nullptr};\n    OpenScript script_;\n    std::string phase_;\n    // Packet cc9_stage_init_chunk_errors: the last luaL_loadbuffer / lua_pcall\n    // status and chunk name, so lua_tolstring_at_top reports an error only after\n",
+        "utf8_sha256": "cd7e19f2b50b19057cfcdce56245810cd7a576101a00ffc3229cbdbf65ecd29e"
+      },
+      {
+        "label": "mission_machine_start",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 6898,
+        "last_line": 6915,
+        "text": "bool GameMissionLuaHost::start_machine_00884be0() {\n    if (state_ != nullptr) return true;\n    set_phase(\"machine\");\n    // 004dd627 is the one call site: BSP_Game_OnInitOnce builds the machine\n    // once per process, not once per mission.\n    log_.implemented(\"MissionLuaHost::initialize\", \"00884be0\");\n    summary_.bindings_registered = bsp::initialise_mission_lua_host(*this);\n    if (state_ == nullptr) return false;\n    summary_.machine_started = true;\n\n    // 00b6a303, the LuaStateOwner layer over the same state. DoFile is not one\n    // of the 560 rows, and the first executable line of the stock mission\n    // script calls it (docs/MISSION_LUA_MACHINE.md, gap 1).\n    lua_pushlightuserdata(state_, this);\n    lua_pushcclosure(state_, dofile_trampoline, 1);\n    lua_setfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaStateOwnerGlobal);\n    summary_.dofile_installed = true;\n    log_.implemented(\"MissionLua::install_state_owner_global\", \"00b6a303\");\n",
+        "utf8_sha256": "76ebd09e0c19be28922b75fecc81b193b6fd6e56a5bfc8c3e1849abfeeddd955"
+      },
+      {
+        "label": "mission_machine_create",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 7816,
+        "last_line": 7820,
+        "text": "void GameMissionLuaHost::create_state() {\n    state_ = luaL_newstate();\n    g_loadout_lua_state = state_;\n    log_.implemented(\"MissionLua::create_state\", \"006b8740\");\n}\n",
+        "utf8_sha256": "bd527b25025673f7541497fd115c36d4247c47c5e9abd17292e9f796ba3ea397"
+      },
+      {
+        "label": "mission_machine_close",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 903,
+        "last_line": 919,
+        "text": "GameMissionLuaHost::~GameMissionLuaHost() {\n    if (g_exec_refusal_log == &log_) {\n        g_exec_refusal_log = nullptr;\n        bsp::g_lua_exec_refused_sink = nullptr;\n    }\n    if (g_class_arm_host == this) {\n        g_class_arm_host = nullptr;\n        script_orders_set_class_default_arm_reader(nullptr);\n        bsp::shipyard_set_create_unit(nullptr);\n    }\n    // The world walk holds a bare pointer to this host for the spawn drain.\n    bsp::set_spawn_queue_drain(nullptr);\n    if (state_ != nullptr) {\n        if (g_loadout_lua_state == state_) g_loadout_lua_state = nullptr;\n        lua_close(state_);\n        state_ = nullptr;\n    }\n",
+        "utf8_sha256": "df613d912b587fda2b45415559251a27c74304470340642661240da4b3a689fe"
+      },
+      {
+        "label": "mission_machine_register_closure",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 7846,
+        "last_line": 7854,
+        "text": "void GameMissionLuaHost::register_global_function(const bsp::MissionLuaBinding& binding) {\n    if (state_ == nullptr) return;\n    const bsp::MissionLuaBinding* rows = bsp::mission_lua_bindings();\n    const std::size_t row = static_cast<std::size_t>(&binding - rows);\n    lua_pushlightuserdata(state_, this);\n    lua_pushinteger(state_, static_cast<lua_Integer>(row));\n    lua_pushcclosure(state_, binding_trampoline, 2);\n    lua_setfield(state_, LUA_GLOBALSINDEX, binding.name);\n    log_.implemented(\"MissionLua::register_global_function\", \"006b8610\");\n",
+        "utf8_sha256": "6bb37adb3a74f7a40b1f96a6f0131a2665aba55f303bb027b61c9dc4a15fc94e"
+      },
+      {
+        "label": "trampoline_owner",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 377,
+        "last_line": 387,
+        "text": "int binding_trampoline(lua_State* state) {\n    GameMissionLuaHost* host = host_from_upvalue(state);\n    const int row = static_cast<int>(lua_tointeger(state, lua_upvalueindex(2)));\n    const int argc = lua_gettop(state);\n    if (host == nullptr) return 0;\n    // Milestone 2m: the eight rows src/lua_binding_navigator.cpp reconstructs\n    // run their own bodies over this process's created instances. Every other\n    // row keeps milestone 2l's record.\n    const bsp::MissionLuaBinding& dispatch_row =\n        bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];\n    GameScriptOrdersHost* orders = host->script_orders();\n",
+        "utf8_sha256": "7e32e8d2dea781d7d517834572d79a3f181e777af3d37d5bf0e5e2351f49f257"
+      },
+      {
+        "label": "trampoline_upvalue",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 234,
+        "last_line": 236,
+        "text": "GameMissionLuaHost* host_from_upvalue(lua_State* state) {\n    return static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));\n}\n",
+        "utf8_sha256": "1ca62d654167994184e3c72826cb7ec5cbbcabe58f3d2565b22226066af1e73f"
+      },
+      {
+        "label": "trampoline_dispatch",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 811,
+        "last_line": 813,
+        "text": "    if (handled && !host->error_replay()) {\n        return orders->dispatch(state, binding.name, argc);\n    }\n",
+        "utf8_sha256": "87ce33f9c6250eb861b4d0ccabf6fec7626e06d57fde79f4376a6a044d6f04d2"
+      },
+      {
+        "label": "orders_attach_owner",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 2495,
+        "last_line": 2499,
+        "text": "void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {\n    script_orders_ = orders;\n    // Packet cc8_airops_launch_tick. 006C5050's creator and the squadron's live\n    // plane count at entity+3CCh are the two things the air-operations code\n    // cannot reach on its own; both are bound here, where the orders host and the\n",
+        "utf8_sha256": "f4521d8ad8059a7255edc062a50c78dee96144f797d7f2fcc14a8dfdd92c7586"
+      },
+      {
+        "label": "orders_detach_branch",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 2507,
+        "last_line": 2513,
+        "text": "    bsp::set_spawn_queue_drain(orders == nullptr ? nullptr : this);\n    if (orders == nullptr) {\n        bsp::spawn_request_queue().clear();\n        bsp::set_air_ops_squadron_factory(nullptr);\n        bsp::set_air_ops_squadron_plane_count(nullptr, nullptr);\n        return;\n    }\n",
+        "utf8_sha256": "e5939be95270d703deed77c588db8df37b3e13acce87d72adaff1b7dac4ad214"
+      },
+      {
+        "label": "chunk_execution_contract",
+        "source_path": "include/bsp/mission_lua_host.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 273,
+        "last_line": 276,
+        "text": "// 006b89f0, __thiscall, RET 18h. this is the Lua machine, L is at +4h.\n// capture_error selects the native's arg5; capture_results selects arg4.\nLuaChunkResult run_lua_chunk(MissionLuaHostServices& host, const char* buffer, int size,\n    const char* chunk_name, bool capture_error, bool capture_results, int result_mode);\n",
+        "utf8_sha256": "c16731495f9417530f2a95bb7af096ada4651c4be3e64813534fa3d975de3641"
+      },
+      {
+        "label": "chunk_execution_body",
+        "source_path": "src/mission_lua_host.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 653,
+        "last_line": 685,
+        "text": "LuaChunkResult run_lua_chunk(MissionLuaHostServices& host, const char* buffer, int size,\n    const char* chunk_name, bool capture_error, bool capture_results, int result_mode)\n{\n    LuaChunkResult result;\n    const int saved_top = host.lua_gettop();\n    int status = host.luaL_loadbuffer(buffer, size, chunk_name);\n    if (status == 0) {\n        status = host.lua_pcall(0, kLuaMultRet, kLuaNoErrorHandler);\n        result.status = status == 0 ? LuaChunkStatus::Ok : LuaChunkStatus::RunFailed;\n    } else {\n        result.status = LuaChunkStatus::LoadFailed;\n    }\n\n    const int new_top = host.lua_gettop();\n    if (new_top > saved_top) {\n        if (lua_chunk_failed(result.status)) {\n            // 006b8a5f and 006b8a80: the string is read on both paths and only\n            // stored when a sink was supplied.\n            std::string message = host.lua_tolstring_at_top();\n            if (capture_error) {\n                result.error_message = message;\n                result.error_message_captured = true;\n            }\n        } else if (capture_results) {\n            result.results_collected = host.collect_results(new_top - saved_top, result_mode);\n        }\n        host.lua_settop(saved_top);\n    }\n    return result;\n}\n\nLuaChunkResult run_script_file(MissionLuaHostServices& host, const std::string& path)\n{\n",
+        "utf8_sha256": "eb65eadf843f1c6c2ac8efbee4b3caf70cdc2cb86a48dad3a70c3824091b06bd"
+      },
+      {
+        "label": "chunk_execution_source_calls",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 7891,
+        "last_line": 7916,
+        "text": "int GameMissionLuaHost::lua_gettop() {\n    return state_ != nullptr ? ::lua_gettop(state_) : 0;\n}\n\nvoid GameMissionLuaHost::lua_settop(int index) {\n    if (state_ != nullptr) ::lua_settop(state_, index);\n}\n\nint GameMissionLuaHost::luaL_loadbuffer(const char* buffer, int size, const char* chunk_name) {\n    if (state_ == nullptr) return 1;\n    const int status = ::luaL_loadbuffer(state_, buffer != nullptr ? buffer : \"\",\n        static_cast<std::size_t>(size < 0 ? 0 : size), chunk_name);\n    last_status_ = status;\n    last_chunk_ = chunk_name != nullptr ? chunk_name : \"\";\n    if (status == 0 && chunk_name != nullptr\n        && std::strcmp(chunk_name, bsp::kMissionLuaPlatformChunk) == 0) {\n        summary_.platform_chunk_ran = true;\n    }\n    return status;\n}\n\nint GameMissionLuaHost::lua_pcall(int nargs, int nresults, int errfunc_index) {\n    if (state_ == nullptr) return 1;\n    last_status_ = ::lua_pcall(state_, nargs, nresults, errfunc_index);\n    return last_status_;\n}\n",
+        "utf8_sha256": "4bdbceb4eb329a1677698e8158edb2da4458695e766ff2947bdabe44ec297523"
+      },
+      {
+        "label": "chunk_error_diagnostics",
+        "source_path": "src/game_hosts_lua.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 7918,
+        "last_line": 7939,
+        "text": "std::string GameMissionLuaHost::lua_tolstring_at_top() {\n    if (state_ == nullptr) return {};\n    const char* text = lua_tolstring(state_, -1, nullptr);\n    const std::string message = text != nullptr ? text : std::string();\n    // Packet cc9_stage_init_chunk_errors: the top of the stack after a\n    // successful load and call is a result, not an error message.\n    if (!message.empty() && last_status_ != 0) {\n        note_error(message);\n        if (phase_ == \"global folders\") ++summary_.global_folder_errors;\n        if (phase_ == \"mission chunk\") summary_.mission_chunk_error = message;\n        log_.notef(\"  chunk error in %s [%s] status=%d: %s\",\n            phase_.empty() ? \"(none)\" : phase_.c_str(),\n            last_chunk_.empty() ? \"?\" : last_chunk_.c_str(), last_status_, message.c_str());\n    }\n    return message;\n}\n\nint GameMissionLuaHost::collect_results(int count, int mode) {\n    static_cast<void>(mode);  // 00887220's literal, 2 for chunks and 4 for calls\n    if (state_ != nullptr && count > 0) ::lua_settop(state_, ::lua_gettop(state_) - count);\n    return count;\n}\n",
+        "utf8_sha256": "37a26c70b0bf34fa17f1d75d31350b7d3a77feb3aba68bfcfde1c8f76d1b8c81"
+      },
+      {
+        "label": "initial_machine_platform_example",
+        "source_path": "src/mission_lua_host.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 632,
+        "last_line": 645,
+        "text": "std::size_t initialise_mission_lua_host(MissionLuaHostServices& host)\n{\n    host.create_state();\n    host.set_panic_function(kMissionLuaPanicFunction);\n    host.set_gc_pause(kLuaGcSetPause, kMissionLuaGcPause);\n    for (std::size_t i = 0; i < kMissionLuaStandardLibraryCount; ++i) {\n        host.open_standard_library(kMissionLuaStandardLibraries[i]);\n    }\n    // 00884c37: the platform chunk runs before the table is installed.\n    run_lua_chunk(host, kMissionLuaPlatformChunk,\n        static_cast<int>(std::strlen(kMissionLuaPlatformChunk)), kMissionLuaPlatformChunk, false,\n        false, kChunkResultMode);\n    for (std::size_t i = 0; i < kBindingCount; ++i) {\n        host.register_global_function(kBindings[i]);\n",
+        "utf8_sha256": "e4c8b3943f9481879b7425e568edb9f0564016978477082f7faea0dea6da9b21"
+      },
+      {
+        "label": "parallel_ready_binding",
+        "source_path": "src/game_hosts_ready.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 190,
+        "last_line": 222,
+        "text": "class EntityThinkBinding final : public bsp::EntityThinkHost {\npublic:\n    explicit EntityThinkBinding(GameHostLog& log) : log_(log) {}\n\n    void run_entity_think_00929150(std::uint32_t entity) override {\n        static_cast<void>(entity);\n        log_.unimplemented(\"EntityThink::run_entity_think\", \"00929150\");\n    }\n    void free_think_node_0092952c(const bsp::EntityThinkNode& node) override {\n        static_cast<void>(node);\n    }\n    bool gc_gate_predicate_0109cefc_vtable0c() override {\n        log_.unimplemented(\"EntityThink::gc_gate_predicate\", \"0109cefc+vtable0c\");\n        return false;\n    }\n    void lua_run_string_006b8ad0(const char* chunk, int mode) override {\n        static_cast<void>(chunk);\n        static_cast<void>(mode);\n        log_.unimplemented(\"EntityThink::collect_garbage\", \"006b8ad0\");\n    }\n    void splice_pending_into_live_00928380(bsp::EntityThinkList& live,\n        const bsp::EntityThinkList& pending) override {\n        for (const bsp::EntityThinkNode& node : pending.nodes) live.nodes.push_back(node);\n        log_.implemented(\"EntityThink::splice_pending_into_live\", \"00928380\");\n    }\n    void clear_pending_00928330(bsp::EntityThinkList& pending) override {\n        pending.nodes.clear();\n        log_.implemented(\"EntityThink::clear_pending\", \"00928330\");\n    }\n\nprivate:\n    GameHostLog& log_;\n};\n",
+        "utf8_sha256": "ee89e4120736117081468f047d8fe15d2cfc5871e206d797e5ca8d9b21ff19a1"
+      },
+      {
+        "label": "parallel_ready_call",
+        "source_path": "src/game_hosts_ready.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 545,
+        "last_line": 553,
+        "text": "void GameStepSubsystemsHost::run_due_entity_think_00929460(float step) {\n    EntityThinkBinding binding(log_);\n    const std::vector<bsp::EntityThinkFields> fields;\n    const bsp::EntityThinkRunSummary run = bsp::run_entity_think_list_00929460(step,\n        think_countdown_, think_live_, think_pending_, fields, binding);\n    summary_.thinks_run += run.thinks_run;\n    summary_.think_collections += run.garbage_collected ? 1u : 0u;\n    ++summary_.think_passes;\n}\n",
+        "utf8_sha256": "94aa6c9c23e510f11c30804703e2f7fa4bcb1dd2f732e9f85784739f1dce67e1"
+      },
+      {
+        "label": "parallel_ready_owner_surface",
+        "source_path": "include/bsp/game_hosts_ready.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 96,
+        "last_line": 104,
+        "text": "// the whole run because every one of them keeps a container across steps.\nclass GameStepSubsystemsHost {\npublic:\n    explicit GameStepSubsystemsHost(GameHostLog& log);\n\n    // The world entity chain 009037f0 allocated, which row 16 walks. Attached on\n    // the load's own load_scene_contents row, with the created instances.\n    void attach_units(GameUnitsHost* units) noexcept;\n\n",
+        "utf8_sha256": "0b75fa73c8cc5a3f551b3d2d1192c16ff9897bc4ba120d95c9959b3485888e19"
+      },
+      {
+        "label": "parallel_ready_fields",
+        "source_path": "include/bsp/game_hosts_ready.hpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 121,
+        "last_line": 133,
+        "text": "\nprivate:\n    GameHostLog& log_;\n    GameUnitsHost* units_{nullptr};\n    GameStepSubsystemsSummary summary_{};\n    // 00f89a04, the think countdown the pass ages, and the two lists at\n    // 00f89ab0 / 00f89abc.\n    float think_countdown_{0.0f};\n    bsp::EntityThinkList think_live_{};\n    bsp::EntityThinkList think_pending_{};\n    // The deferred call list at [game+1A08h]+8h.\n    bsp::MissionLuaCallQueue lua_queue_{};\n    // The per-step callback list at 00F87680. Its only registrant is 00875a80,\n",
+        "utf8_sha256": "576e260bbe179dd34f9338d709c72a76ffcc9b0da0137c2f26e5e167ffc7d201"
+      },
+      {
+        "label": "prior_think_command",
+        "source_path": "docs/ENTITY_THINK_DISPATCH.md",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 119,
+        "last_line": 127,
+        "text": "     zeroed at `0092946F`/`00929536`, `JBE` skipping the call).\n3. After the walk, if `00F89A04 < 0`: refill it with `+= 3.0` and, when\n   `[0109CEFC]->vtable[+0Ch]()` returns a non-zero byte (`00929568 CALL EAX` /\n   `0092956A TEST AL,AL`), run `collectgarbage()` through\n   `BSP_LuaMachine_RunString(machine, \"collectgarbage()\", 0, 0, 2)` on\n   `*(*(00E188A8)+1A08h)+4h`, the mission Lua host's machine.\n4. Splice: `00928380(this = 00F89AB0, src = 00F89ABC)` appends a **new** live node for every\n   pending entity, then `00928330(this = 00F89ABC)` frees every pending node. A registration\n   made during step *n* therefore first thinks in step *n+1*, and a registration made during\n",
+        "utf8_sha256": "2a818c76e46d4c72f38581fe5d6b6ca6032588d8461e18f280f45f1438998341"
+      },
+      {
+        "label": "prior_think_machine_row",
+        "source_path": "docs/ENTITY_THINK_DISPATCH.md",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 191,
+        "last_line": 196,
+        "text": "| `009294F5` | `00929150` | `run_entity_think_00929150` | entity | none | `RET` | untimed branch and `00F89A04 < 0` |\n| `0092952C` | `00BF65AC` | `free_think_node` | none | node | `__cdecl`, `ADD ESP,4` at `00929531` | entity ineligible |\n| `00929568` | `0109CEFC+vtable0Ch` | `gc_gate_predicate` | `[0109CEFC]` | none | byte in `AL` | `00F89A04 < 0` |\n| `00929588` | `006B8AD0` | `lua_run_string` | `*(*(00E188A8)+1A08h)+4h` | `\"collectgarbage()\", 0, 0, 2` | `RET 10h` | gate returned non-zero |\n| `00929597` | `00928380` | `splice_pending_into_live_00928380` | `00F89AB0` | `00F89ABC` | `RET 4` | always |\n| `009295A1` | `00928330` | `clear_pending_00928330` | `00F89ABC` | none | `RET` | always |\n",
+        "utf8_sha256": "4c5d240f59cb923a322b81fd046d51e1767b9759da5525e06a6f1903c632fefe"
+      },
+      {
+        "label": "prior_distinct_machine_and_state",
+        "source_path": "docs/MISSION_LUA_HOST.md",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 11,
+        "last_line": 31,
+        "text": "`game+1A08h` is a **pointer** to the mission Lua host. `004DD620` loads it in `ECX` and calls\n`00884BE0`; `004DC729` loads it and calls `00886900` on shutdown. The host's own layout that this\npacket establishes:\n\n| Offset | Contents | Evidence |\n| --- | --- | --- |\n| +0h | vtable | `00884BE0` never writes it, so the allocation happens in the caller |\n| +4h | `LuaMachine*` | `00884C34` stores the `00BF681B(0Ch)` block; every wrapper reads `[this+4]` |\n| +8h, +Ch | queue used by `00887E50`'s deferred path | `0088814A` reads `[ESI+0Ch]`, `00888150` uses `ESI+8` |\n\n`game+1A0Ch` is an **inline** `LuaStateOwner`, constructed at `004DD641` from\n`[[game+1A08h]+4h]+4h`, that is, from the same `lua_State`. `0045F440` and `0045F520` take\n`LEA ECX,[ESI+1A0Ch]` to reach the globals. `game+1A1Ch` receives the constant `004C6880` at\n`004DD64F` and is out of scope here.\n\nThe `LuaMachine` at `host+4h` is twelve bytes:\n\n| Offset | Contents | Evidence |\n| --- | --- | --- |\n| +0h | vtable `00CF8394` | `006B8744` |\n| +4h | `lua_State*` | `006B8756`, and every wrapper's `MOV ECX,[ECX+4]` |\n",
+        "utf8_sha256": "b64efcbc432ac7f57254d577438187a88e56330b5d862498ebcfa3489748e3b9"
+      },
+      {
+        "label": "prior_run_string_and_chunk",
+        "source_path": "docs/MISSION_LUA_HOST.md",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 115,
+        "last_line": 144,
+        "text": "## Chunk execution, `006B89F0`\n\n`__thiscall(LuaMachine* this, const void* buffer, int size, const char* chunk_name,\nResultSink* results, NativeString* error_out, int result_mode)`, RET 18h, returns 0 or 1 in `EAX`.\n\n```\ntop = lua_gettop(L)                                 ; 006B7E70 -> 00A673D0\nstatus = luaL_loadbuffer(L, buffer, size, name)     ; 00A6A160, L in ECX, buffer in EDX\nif (status == 0) status = lua_pcall(L, 0, -1, 0)    ; 00A680E0, nargs in EDX\nfailed = (status != 0)\nif (lua_gettop(L) > top) {\n    if (failed) {\n        msg = lua_tolstring(L, -1, NULL)            ; 00A67810, idx in EDX\n        if (error_out) error_out->assign(msg)       ; 0041E350\n    } else if (results) {\n        006B89C0(results, this); 00887220(results, top_delta, result_mode)\n    }\n    lua_settop(L, top)                              ; 006B7E80 -> 00A673E0\n}\nreturn failed\n```\n\nTwo facts matter for the rebuild. **`errfunc` is 0 here**, so a file load gets no traceback; the\n`debugtrap` handler is used only by the named-call path. And `lua_tolstring` runs on the failure\npath even when no sink was supplied (`006B8A80`), which coerces the error value on the stack\nbefore `lua_settop` discards it.\n\n`006B8AD0` is `__thiscall(const char* source, ResultSink*, NativeString* error_out, int mode)`,\nRET 10h: an inline `strlen` then `006B89F0(source, len, source, ...)`, so a string chunk names\nitself.\n",
+        "utf8_sha256": "79c27a752186a3b9a517d8dc0a7cf2e7e9d85ac7e2e8703dbfd5faae722a2a0a"
+      },
+      {
+        "label": "separate_archive_callback",
+        "source_path": "src/settings_archive_reader.cpp",
+        "commit": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+        "first_line": 39,
+        "last_line": 43,
+        "text": "    boolean(reader, \"invertPlaneY\", s.control.invert_plane_y_43, true);\n    boolean(reader, \"swapMapSticks\", s.control.swap_map_sticks_44, false);\n    boolean(reader, \"XboxCompatibilityMode\", s.control.xbox_compatibility_b0, false);\n    host.publish_xbox_compatibility_008d44c0(s.control.xbox_compatibility_b0);\n    reader.enter_00bd8e20(gui_lua_key_by_name(\"keyboardSetup\"));\n",
+        "utf8_sha256": "1ee0cfd01726d8005469847695ec902b7e4469067395f1a2228bd23b3f37f0dc"
+      }
+    ],
+    "prior_native_finite_record": {
+      "source_path": "reports/entity_think_dispatch.json",
+      "selection": "host_steps[address=00929588]",
+      "value": {
+        "step": 5,
+        "address": "00929588",
+        "native": "006b8ad0",
+        "function": "00929460",
+        "name": "lua_run_string",
+        "this": "*(*(00E188A8)+1A08h)+4h, the mission Lua machine",
+        "args": "\"collectgarbage()\" (00D19480), 0, 0, 2",
+        "ret": "RET 10h",
+        "gate": "gate predicate returned non-zero"
+      },
+      "source_native_gate_open_question": "[0109CEFC]->vtable[+0Ch] is the GC gate; the singleton is shared with BSP_ResourceManager_LoadAndCache (00b807bc, 00b809c7) but the predicate was not read",
+      "qualification": "Previously recorded Native caller contract only. No live Ghidra query, Native image read, new byte window or fresh body validation in this packet."
+    },
+    "include_closure": {
+      "closure": {
+        "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/165a5216b9bc92fb_include_closure.json",
+        "bytes": 198679,
+        "sha256": "165a5216b9bc92fb35e52edb8cfdb3bc30a30649ec7f16848611b35d4e676490"
+      },
+      "configured_lua_archive": {
+        "capture_provenance_only": "C:\\Users\\sqz269\\.bsp\\deps\\lua-5.1.1.tar.gz",
+        "pin": {
+          "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+          "bytes": 207810,
+          "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+        },
+        "configured_sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+      },
+      "reviewed_roots": 13,
+      "project_files": 300,
+      "lua_header_count": 4
+    },
+    "capture_script": {
+      "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/ad001380fb7e5b5f_freeze.py",
+      "bytes": 12896,
+      "sha256": "ad001380fb7e5b5f26690cd3dae55967a873e84f08f156194339b088450490a6"
+    },
+    "git_capture_commands": [
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "2348eeb0492d12cc10630ee7c95c6f5ea77818642dcb9ba57659d38bb107e463",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "3377032528c86c502023f110dd640821dcf02c979647728880f9121896cc44b9",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "ls-tree",
+          "-rz",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 382563,
+        "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "cat-file",
+          "--batch"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 35561128,
+        "stdout_sha256": "927b4899f77cc172b345cf9590aa0c1ed7dfc2361efd0ee6d5a8ed969f200884",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 20149,
+        "stdout_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 202281,
+        "stdout_sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:cmake/lua.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 2242,
+        "stdout_sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:cmake/lua.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 73311,
+        "stdout_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 1371,
+        "stdout_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:docs/MISSION_LUA_HOST.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 26373,
+        "stdout_sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:docs/MISSION_LUA_HOST.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "2d040291e445dfcd738be7b540be5b939cc5e4f45e76886786039ba9549d37be",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:reports/mission_lua_host.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 69076,
+        "stdout_sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:reports/mission_lua_host.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "1f719d7f8830d29bf7c41132069db1ae7061768c9761942648d8544db9334866",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:docs/ENTITY_THINK_DISPATCH.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 18155,
+        "stdout_sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:docs/ENTITY_THINK_DISPATCH.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "d96d6117156c257007e7b210c2c8bdc59acfb78bb577901fdc492d2aca210608",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:reports/entity_think_dispatch.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 16415,
+        "stdout_sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:reports/entity_think_dispatch.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "5a2baa7cab8593b91c35dd800ac96cdc2d287324ab3b02ad8d715152a4b7e466",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "ls-tree",
+          "-rz",
+          "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 382563,
+        "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+        "stderr": ""
+      }
+    ],
+    "restrictions": "No fresh Ghidra function/body/bytes/prototype queries, Native image opens, writes to Source/SDK/GPR or runtime/compiler/test execution."
+  },
+  "capture_pin": {
+    "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/656cc48c78c27c8b_freeze_capture.json",
+    "bytes": 82964,
+    "sha256": "656cc48c78c27c8b43096aa13b99bcd445873b31f2f644d9104b079ecf74c94b"
+  },
+  "portable_replay": {
+    "script": {
+      "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/a41f8741af76c926_replay.py",
+      "bytes": 14125,
+      "sha256": "a41f8741af76c926288e6dbb936f92025958343c1b287901380ccd505e604e93"
+    },
+    "result_pin": {
+      "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/ba1602a0f50528b4_replay_result.json",
+      "bytes": 5030,
+      "sha256": "ba1602a0f50528b495bd3002e08e8e31956e11c959eae38ff2c728042c2ea3f5"
+    },
+    "result": {
+      "schema": "bsp.cc12.script_orders_lua_owner.replay.v1",
+      "status": "pass",
+      "baseline": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+      "capture_HEAD": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+      "complete_Source_files_verified": 4206,
+      "Source_Git_extras": 9,
+      "source_queries": [
+        {
+          "label": "run_string_all",
+          "hits": 5,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "gc_gate_all",
+          "hits": 5,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "think_list_calls",
+          "hits": 4,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "script_orders_construction",
+          "hits": 2,
+          "files": [
+            "src/game_hosts_mission_frame.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "orders_type_non_method_mentions",
+          "hits": 23,
+          "files": [
+            "include/bsp/game_hosts_lua.hpp",
+            "include/bsp/game_hosts_scene_contents.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/game_hosts_commands.cpp",
+            "src/game_hosts_lua.cpp",
+            "src/game_hosts_mission_frame.cpp",
+            "src/game_hosts_script_orders.cpp",
+            "src/game_hosts_units.cpp"
+          ]
+        },
+        {
+          "label": "timers_calls",
+          "hits": 3,
+          "files": [
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/game_hosts_mission_frame.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "think_pass_calls",
+          "hits": 4,
+          "files": [
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "orders_attach",
+          "hits": 4,
+          "files": [
+            "include/bsp/game_hosts_lua.hpp",
+            "src/game_hosts_lua.cpp",
+            "src/game_hosts_mission_frame.cpp"
+          ]
+        },
+        {
+          "label": "mission_lua_construction",
+          "hits": 2,
+          "files": [
+            "src/game_hosts_lua.cpp",
+            "src/game_hosts_mission.cpp"
+          ]
+        },
+        {
+          "label": "frame_owner_creation",
+          "hits": 2,
+          "files": [
+            "src/game_hosts_mission.cpp"
+          ]
+        },
+        {
+          "label": "cached_machine_writes",
+          "hits": 7,
+          "files": [
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "native_gc_text",
+          "hits": 4,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/fixed_step_fanout.hpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "archive_publication_separate",
+          "hits": 4,
+          "files": [
+            "include/bsp/lua_runtime_globals.hpp",
+            "include/bsp/settings_archive_reader.hpp",
+            "src/lua_runtime_globals.cpp",
+            "src/settings_archive_reader.cpp"
+          ]
+        },
+        {
+          "label": "initializer_and_chunk",
+          "hits": 5,
+          "files": [
+            "include/bsp/mission_lua_host.hpp",
+            "src/game_hosts_lua.cpp",
+            "src/mission_lua_host.cpp"
+          ]
+        }
+      ],
+      "exact_excerpts": 48,
+      "source_anchors": 57,
+      "include_closure": {
+        "reviewed_roots": 13,
+        "project_files": 300,
+        "lua_headers": 4,
+        "edges": 574,
+        "compiler_SDK_claim": false
+      },
+      "source_graph": {
+        "orders_production_constructor_sites": 1,
+        "orders_command_predicate": "constant false",
+        "current_orders_no_op_invocation": "unreachable through the only retained production caller",
+        "parallel_ready_predicate": "false, separate concrete host",
+        "proposed_receiver": "existing frame Impl::lua, passed from the outer mission owner; bind a borrowed services reference",
+        "cached_callback_state_is_owner_root_pointer": "not established"
+      },
+      "prior_native_record": {
+        "caller": "00929588",
+        "callee": "006B8AD0",
+        "fresh_bytes": 0,
+        "source": "complete retained entity_think_dispatch report"
+      },
+      "all_pin_occurrences": 29,
+      "unique_opened_artifacts": 30,
+      "read_guard": {
+        "only_packet_artifacts": true,
+        "workspace_Source_opens": 0,
+        "installation_opens": 0,
+        "Ghidra_calls": 0,
+        "Git_processes": 0,
+        "network_calls": 0,
+        "writes": 0
+      },
+      "qualification": "Source/retained-evidence validation only; not C++ execution, build, Native ABI, GC gate recovery, machine activation or original timing proof."
+    },
+    "relocated_result_pin": {
+      "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/ba1602a0f50528b4_portable_relocation_result.json",
+      "bytes": 5030,
+      "sha256": "ba1602a0f50528b495bd3002e08e8e31956e11c959eae38ff2c728042c2ea3f5"
+    },
+    "relocated_result_equal": true,
+    "command": "python local/cc12_script_orders_lua_command_owner_binding_review/replay.py"
+  },
+  "separate_git_replay": {
+    "script": {
+      "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/1655f71acc13a3e2_verify_git.py",
+      "bytes": 3404,
+      "sha256": "1655f71acc13a3e2750d040e174fcac16a02170bf4e13098c3f7853b5a325db0"
+    },
+    "result_pin": {
+      "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/0fd01faff39ce584_git_replay_result.json",
+      "bytes": 4305,
+      "sha256": "0fd01faff39ce5843c0ff5e696998554bb3e9bc3650b72137bedc8414f1472a6"
+    },
+    "result": {
+      "schema": "bsp.cc12.script_orders_lua_owner.git_replay.v1",
+      "status": "pass",
+      "mode": "separate Git-object check with optional explicit working reads",
+      "repo": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "baseline": "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+      "blob_checks": 4215,
+      "working_files_checked": 4215,
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "2348eeb0492d12cc10630ee7c95c6f5ea77818642dcb9ba57659d38bb107e463",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "ls-tree",
+            "-rz",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc",
+            "--",
+            "src",
+            "include"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 382563,
+          "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:CMakeLists.txt"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:cmake/startup.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:cmake/lua.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:tools/bsp.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:tools/workspace.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:docs/MISSION_LUA_HOST.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "2d040291e445dfcd738be7b540be5b939cc5e4f45e76886786039ba9549d37be",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:reports/mission_lua_host.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "1f719d7f8830d29bf7c41132069db1ae7061768c9761942648d8544db9334866",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:docs/ENTITY_THINK_DISPATCH.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d96d6117156c257007e7b210c2c8bdc59acfb78bb577901fdc492d2aca210608",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "ea3c9fc17f79f93b8c842a08e41ef531b6eea0fc:reports/entity_think_dispatch.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "5a2baa7cab8593b91c35dd800ac96cdc2d287324ab3b02ad8d715152a4b7e466",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "cat-file",
+            "--batch"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 35990977,
+          "stdout_sha256": "5ba51208e681a60066668730d858ce30f915d2b5fa69cc32335d912923f0d5e7",
+          "stderr": ""
+        }
+      ],
+      "qualifications": "Read-only Git/Source check; not portable artifact-only mode. No installation, SDK, compiler, Native or game execution."
+    },
+    "command": "python local/cc12_script_orders_lua_command_owner_binding_review/verify_git.py --repo <repository> --check-working",
+    "qualification": "Explicit read-only Git mode, separate from artifact-only replay. Omit --check-working to verify frozen Git objects only."
+  },
+  "receipt_script": {
+    "path": "local/cc12_script_orders_lua_command_owner_binding_review/frozen/5cc5e012721f923b_make_receipt.py",
+    "bytes": 4115,
+    "sha256": "5cc5e012721f923bd46cc49f132a156b003f12dbf47ce0ac70f6a375b240880c"
+  },
+  "validation": {
+    "source_evidence_checked": true,
+    "fresh_native_queries": false,
+    "native_image_opened": false,
+    "source_modified": false,
+    "compiled": false,
+    "tests_run": false,
+    "runtime_executed": false,
+    "cpp_go": false,
+    "gate_activated": false,
+    "native_abi_claim": false,
+    "original_timing_proved": false
+  }
+}
