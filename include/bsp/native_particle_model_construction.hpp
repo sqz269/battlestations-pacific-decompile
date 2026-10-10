@@ -8,6 +8,8 @@
 
 namespace bsp {
 
+struct NativeParticleModelManagerStorage;
+
 // Actual AFF5F0-produced28h allocation. The definition has the sole retained
 // reference; model08 is borrowed. No companion count or automatic destruction.
 struct NativeParticleEmitterStorage {
@@ -107,7 +109,7 @@ struct NativeParticleModelConstructionAccess {
     void* const volatile& resources_00f8c280;
     void* const volatile& shadow_00f8d39c;
     void* const volatile& renderer_00f8d394;
-    void* const volatile& manager_00f8c274;
+    NativeParticleModelManagerStorage* const volatile& manager_00f8c274;
     volatile std::uint32_t& live_count_00f8d2c8;
     const volatile std::uint32_t& one_00d7a24c;
     const volatile std::uint32_t& random_max_00ce3d64;
