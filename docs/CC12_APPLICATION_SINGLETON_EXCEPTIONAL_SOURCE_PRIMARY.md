@@ -1,0 +1,15 @@
+# Application singleton exceptional Source: primary acceptance
+
+Root accepts worker `59b5665ac579246f28801b93ca5d9e33665410e2` as readiness for one dormant borrowed-storage BEA810 interface with explicit, distinct manager and Application publication-cell references. No actual cell producer, raw owner, outer construction, activation or retirement is introduced.
+
+Root physically copied all 853 finite pins and the immutable report. The guarded proof passed, including twelve finite Source queries and 23 excerpts. Independent actual Git checks covered 8,510 current/prior blob occurrences, exact closed src/include trees and both immutable outputs. All 4,210 current Source paths exactly match Root; all 726 prior body pins exactly match Root's retained proof. The prior-body GUI delta is only the already accepted two-file saved-renderer change. Its historical Source3356 manifest supplies no new build credit.
+
+State0 cleanup arms before installing D68BC4 on the original receiver. The first genuine manager result supplies the captured actual native section. Its Enter/current-depth increment must finish before state1 arms. Publication unconditionally writes the original receiver. The second getter finishes before selecting the current publication for genuine BD0C30, including null. Normal release decrements the current depth and performs Leave using the original section, with state1 still armed until that release returns. Only then are both guards disarmed and the original receiver returned.
+
+An ordinary C++ escape after state1 invokes genuine 411EE0 before 412430, provided guard cleanup returns. A normal-Leave escape can reach a second decrement/Leave; no safe release disposition or balanced counter is invented. If cleanup does not return, the base-reset poststate is not claimed. The existing second-MSVC-C++-cleanup-exception termination boundary is preserved; hardware faults and original FH3 activation remain outside this Source contract.
+
+Publication and selected registration effects can survive failure. No restore, clear, unregister, free, retry or compensation is added. The original receiver, current publication, selected argument and first/second managers are distinct roles. Existing generic-reset and diagnostic guard fixture records retain their positive bounded historical coverage without becoming Application-frame evidence.
+
+Readiness proposes a new header/TU. For implementation Root will first assess whether appending this same interface to the existing generic-base provider module keeps the packet narrow and avoids a new build-list entry. Any shared CMake mutation remains integrator-coordinated.
+
+Actual raw storage/cell production, BEA970/737970 outer construction, +14 consumer lifetime, independent E1AE78, callable profiles, escaped custody and retirement remain separate gates. Root performed no Native/GPR work, C++ changes, compilation, tests, probes or game execution. Physical proof: `local/cc12_application_singleton_exceptional_source_primary/`; machine-readable proof: `reports/cc12_application_singleton_exceptional_source_primary.json`.

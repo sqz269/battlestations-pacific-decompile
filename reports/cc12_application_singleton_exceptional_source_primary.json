@@ -1,0 +1,326 @@
+{
+  "schema": "bsp.cc12.application-exceptional-source-primary.v1",
+  "status": "explicitly_bound_dormant_BEA810_Source_composition_GO_raw_owner_activation_retirement_NO_GO",
+  "worker_commit": "59b5665ac579246f28801b93ca5d9e33665410e2",
+  "worker_report": {
+    "path": "local/cc12_application_singleton_exceptional_source_primary/worker_report.json",
+    "bytes": 279834,
+    "sha256": "e9b68b1a0b5160206cdfd5f4c2ba982fdf45d7ffe42c4241c4b5ce3d1bfe03e4"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_singleton_exceptional_source_primary/worker_document.md",
+    "bytes": 13902,
+    "sha256": "38b800577936791c384c17a0e01fec6fcbae2d1122e3e3b7ab5d3f08a3e59975"
+  },
+  "copied_finite_pins": 853,
+  "copied_bytes": 530443236,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_singleton_exceptional_source_primary/Root_guarded_replay.json",
+    "bytes": 733,
+    "sha256": "f5d578b9ede2a33521cfeade002e24b82c97598fc1f8598d2088dadbd48f7a19"
+  },
+  "actual_Git_blob_occurrences": 8510,
+  "current_closed_Source_paths": 4210,
+  "current_Root_Source_exact": true,
+  "prior_body_726_pins_byte_identical_to_Root_copies": true,
+  "audit_result": {
+    "status": "PASS",
+    "base_commit": "5fba76b0d96b0375d582a758543d1e9f746ebaba",
+    "current_Source_files": 4210,
+    "Source_queries": 12,
+    "Source_excerpts": 23,
+    "Source_differences_from_prior_body": [
+      "include/bsp/gui_text_native_renderer.hpp",
+      "src/gui_text_native_renderer.cpp"
+    ],
+    "prior_body_pins": 726,
+    "prior_body_replayed": true,
+    "prior_targets_metadata_pins": 619,
+    "prior_actions_pins": 525,
+    "prior_map_pins": 433,
+    "prior_descriptor_pins": 355,
+    "prior_handler_pins": 287,
+    "prior_base_failure_pins": 230,
+    "prior_constructor_pins": 184,
+    "prior_authority_pins": 124,
+    "nested_prior_Source_corpora_preserved": true,
+    "compiler_definition_artifacts_byte_identical": true,
+    "retained_Native_epochs": {
+      "constructor": 79,
+      "handler": 85,
+      "descriptor": 88,
+      "map": 90,
+      "actions": 92,
+      "target_metadata": 95,
+      "target_bodies": 95
+    },
+    "fresh_Native_code_bytes": 0,
+    "fresh_Native_data_bytes": 0,
+    "fresh_Native_queries": 0,
+    "Ghidra_mutations": 0,
+    "historical_renderer_Source_epoch": {
+      "path": "local/cc12_particle_saved_renderer_primary/Source3356_saved_renderer_Root_frozen.json",
+      "sha256": "9db7bcdc7f5e9db339286ad26c43f96f8f5340034fe7d5f757e7bbb08c7abdb8",
+      "selected_inputs": 3356,
+      "manifest_physically_retained": true,
+      "artifact_pins_not_expanded_or_replayed": true,
+      "new_build_credit": false
+    },
+    "historical_positive_provider_records": {
+      "reset": {
+        "status": "integrated_normal_source_exact_build_and_bounded_native_fixture_passed",
+        "fixture": "PASS; generic base profile/canaries among three complete leaves and ten parent pairs",
+        "parent_CPP_EH_and_original_runtime_scope": "New explicit context/raw-pointer C++ interfaces, not original callable ABI. Valid actual native storage, actual provider and source CRT domains required. Native private EH-stack aliases, hardware faults, original exception/CRT identity, concurrent access, full derived lifetime and gameplay unproved. Destructor validation failure is forced between native reads in the private fixture only, not naturally reached.",
+        "new_fixture_execution": false
+      },
+      "guard": {
+        "record": {
+          "kind": "function",
+          "address": "00411ee0",
+          "name": "destroy_native_singleton_guard_00411ee0",
+          "cpp_symbol": "bsp::destroy_native_singleton_guard_00411ee0",
+          "source": "src/native_diagnostic_sink_lifetime.cpp",
+          "native_end_exclusive": "00411ef9",
+          "original_abi": "ECX actual eight-byte guard; RET.",
+          "evidence": "reports/native_diagnostic_sink_lifetime_audit.json",
+          "status": "complete_native_actual_storage_primary_library_original_FH3_fixture_and_strict_Win32_checked",
+          "native_differential_fixture": true,
+          "abi_compatible": false,
+          "game_validated": false
+        },
+        "historical_trace_words": 38274,
+        "historical_snapshots": 128,
+        "unclaimed": [
+          "native drop-in ABI or global publication race safety",
+          "game execution or visual behavior",
+          "native access-fault/SEH parity under /EHsc",
+          "allocator-null/OOM branch runtime execution; actual CRT four-byte allocation succeeds and otherwise throws",
+          "native runtime internals of already reconstructed singleton providers; original getter uses explicit genuine-provider layout carrier",
+          "Arbitrary second exception during native unwind."
+        ],
+        "new_fixture_execution": false
+      },
+      "sibling_Source": {
+        "report": "reports/cc12_allocation_stats_raw_constructor_source.json",
+        "decision": "Standalone ordinary Source base/derived constructor schedules implemented with borrowed actual cells and genuine providers. Five focused Win32 objects compile and full emitted Source/cleanup/provider code is indexed. Candidate CMake/normal build/tests and Native ABI/EH/startup/gameplay remain unclaimed.",
+        "remaining_holds": [
+          "Root CMake/selected-input/archive registration and normal Win32 build plus existing tests.",
+          "Original callable register ABI and Native FH3/private spills, hardware faults, OS registration and cookie equivalence.",
+          "Actual source-CRT/Win32 execution, link/load proof, and behavior across failures outside the documented Source C++ domain.",
+          "Receiver ownership, actual delete/profile dispatch retained through canonical drain, and startup publication/failure composition.",
+          "Native startup, gameplay, and current scalar-projection replacement."
+        ],
+        "Application_frame_credit": false
+      }
+    },
+    "Source_schedule": [
+      {
+        "stage": "state0_armed",
+        "native": "00BEA830",
+        "Source": "Construct private base cleanup before profile store."
+      },
+      {
+        "stage": "initial_profile",
+        "native": "00BEA838",
+        "Source": "Write D68BC4 only at original receiver+0."
+      },
+      {
+        "stage": "first_manager",
+        "native": "00BEA83E/00BEA843",
+        "Source": "Get actual manager; capture its actual +10 section."
+      },
+      {
+        "stage": "guard_storage",
+        "native": "00BEA848/00BEA850",
+        "Source": "Initialize exact 8B local guard profile CE37FC and captured section."
+      },
+      {
+        "stage": "enter_and_increment",
+        "native": "00BEA857/00BEA85D",
+        "Source": "If captured section nonnull, actual Enter then increment CURRENT DWORD+18."
+      },
+      {
+        "stage": "state1_armed",
+        "native": "00BEA861",
+        "Source": "Arm guard cleanup only after entry/increment complete."
+      },
+      {
+        "stage": "publication",
+        "native": "00BEA866",
+        "Source": "Unconditionally store original receiver into bound actual E1AE90 cell."
+      },
+      {
+        "stage": "second_manager_then_argument",
+        "native": "00BEA86C/00BEA871",
+        "Source": "Resolve second manager, then reload CURRENT Application publication as selected argument."
+      },
+      {
+        "stage": "register",
+        "native": "00BEA877..00BEA87A",
+        "Source": "Genuine BD0C30 receives second manager and selected current argument, including null."
+      },
+      {
+        "stage": "normal_release",
+        "native": "00BEA883/00BEA888",
+        "Source": "If captured section nonnull, decrement its CURRENT +18 then actual Leave; state1 stays armed."
+      },
+      {
+        "stage": "normal_return",
+        "native": "00BEA892..00BEA8A0",
+        "Source": "Only after successful release disarm guard/base and return original receiver."
+      }
+    ],
+    "Source_poststates": [
+      {
+        "case": "ordinary_Cpp_escape_before_guard_arm",
+        "cleanup": "Base reset only; no guard cleanup.",
+        "receiver": "CE3818 if base reset completes.",
+        "publication": "No direct Application publication store has run; preserve all provider/current-cell effects.",
+        "registration": "No caller registration entry yet.",
+        "section": "Capture/Enter disposition depends on stage; no guessed compensating Leave.",
+        "continuation": "Original C++ exception escapes only if cleanup completes."
+      },
+      {
+        "case": "second_manager_lookup_escape",
+        "cleanup": "Guard action1 then base action0 only if guard cleanup returns.",
+        "receiver": "CE3818 if both cleanups complete.",
+        "publication": "Original receiver was published; never restore or clear current cell.",
+        "registration": "No registration call by this attempt; second manager outcome may be incomplete.",
+        "section": "Cleanup uses guard capture, including null; current values/provider effects retained.",
+        "continuation": "Original C++ exception escapes if cleanup completes."
+      },
+      {
+        "case": "registration_escape",
+        "cleanup": "Guard then base if guard cleanup returns.",
+        "receiver": "CE3818 if both complete; original receiver remains lifetime obligation.",
+        "publication": "Retain current value; it may differ from original or selected registration argument.",
+        "registration": "Second manager and selected argument are fixed before entry; insertion/provider disposition may be partial or indeterminate.",
+        "section": "Captured first section is released by guard cleanup, conditional on provider completion.",
+        "continuation": "No rollback, unregister, free or retry; preserve delegated failure state."
+      },
+      {
+        "case": "normal_Leave_Cpp_escape",
+        "cleanup": "Guard remains armed: action1 attempts another decrement/Leave; base follows only if action1 returns.",
+        "receiver": "CE3818 only after successful guard/base cleanup.",
+        "publication": "No restoration or clearing.",
+        "registration": "Registration returned, but may have selected null or another object; no insertion success flag is inferred.",
+        "section": "Normal decrement already completed; first Leave disposition may be unknown. Cleanup uses CURRENT depth and may decrement/leave again. This is armed Source cleanup, not evidence that repeating an OS leave is generally safe.",
+        "continuation": "Retain effects; no counter compensation or assumed balanced release."
+      },
+      {
+        "case": "cleanup_action1_nonreturn",
+        "cleanup": "Action0 is not guaranteed; do not report completed chain.",
+        "receiver": "Base profile reset not guaranteed.",
+        "publication": "All reached publication/registration effects persist.",
+        "registration": "No rollback.",
+        "section": "Guard profile/counter/import prefixes may have completed; final disposition unknown.",
+        "continuation": "Second escaping MSVC C++ cleanup exception uses established Source terminate boundary; other SEH/hardware faults remain outside contract."
+      },
+      {
+        "case": "normal_return",
+        "cleanup": "No cleanup target is invoked; both local guards disarmed only after normal release.",
+        "receiver": "Return is original receiver; D68BC4 is last direct constructor profile write, subject to provider mutations.",
+        "publication": "Current cell may differ; no final reload controls return.",
+        "registration": "Selected argument and registration-return event do not prove registry membership or raw retirement safety.",
+        "section": "Normal release used original capture; no cached counter baseline or zero-depth conclusion.",
+        "continuation": "No stores to +4..+1B or outer constructor activation are added by the proposed base entry."
+      }
+    ],
+    "proposed_API": {
+      "context": "NativeApplicationSingletonBaseContext",
+      "fields": [
+        "void* volatile& actual_manager_01090aa0",
+        "void* volatile& actual_application_e1ae90"
+      ],
+      "function": "void* construct_native_application_singleton_base_00bea810(void* actual_receiver, NativeApplicationSingletonBaseContext& context)",
+      "files": [
+        "include/bsp/native_application_singleton_base.hpp",
+        "src/native_application_singleton_base.cpp"
+      ],
+      "no_default_context_or_global": true,
+      "receiver_allocation_or_free": false,
+      "full_Application_owner": false,
+      "current_startup_wiring": false
+    },
+    "Cpp_GO": true,
+    "bounded_dormant_Source_interface_GO": true,
+    "Source_exceptional_composition_GO": true,
+    "raw_owner_GO": false,
+    "frame_activation_GO": false,
+    "Native_exceptional_cleanup_GO": false,
+    "current_IAT_or_external_ABI_GO": false,
+    "normal_retirement_GO": false,
+    "builds": 0,
+    "tests": 0,
+    "probes": 0,
+    "Native_execution": false
+  },
+  "accepted_contract": {
+    "identity": "Return/reset the original receiver; first manager supplies the retained captured section; second manager is selected independently; only after its lookup reload current E1AE90 for the registration argument. Provider callbacks can change current values without changing these captured identities.",
+    "arming": "Source state0 before D68BC4. Exact 8B guard profile/capture before conditional Enter/current-depth increment. Source state1 only after that sequence, before unconditional publication. Stay armed through normal current-depth decrement/Leave; disarm only after success.",
+    "failure": "Before state1, only base reset. After state1, guard cleanup before base reset only if guard cleanup returns. Preserve publication and registration/provider effects; no cleanup chain completion is claimed after action1 nonreturn. Normal Leave escape can cause a further cleanup decrement/Leave, with prior external disposition unknown.",
+    "normal": "Return original receiver with no final current-publication reload and no generic-base reset. D68BC4 is only the last direct initial profile store, not a guarantee against provider mutations. No direct +4..+1B writes or outer construction.",
+    "policy": "Reuse the already established bounded ordinary Source cleanup boundary; do not infer original FH3/SEH behavior or introduce an Application owner destructor, unregister, free, clear, rollback, retry or compensating counter update.",
+    "coverage": "Existing reset/guard providers retain positive historical build/fixture records in their recorded domains. No new fixture execution or transferred Application-frame credit. Renderer Source3356 manifest is retained only as historical accepted Source provenance, with no new artifact/build credit."
+  },
+  "decision": {
+    "Cpp_GO": true,
+    "bounded_dormant_Source_interface_GO": true,
+    "Source_exceptional_composition_GO": true,
+    "raw_owner_GO": false,
+    "frame_activation_GO": false,
+    "Native_exceptional_cleanup_GO": false,
+    "current_IAT_or_external_ABI_GO": false,
+    "normal_retirement_GO": false,
+    "E1AE78_separate": true,
+    "next_packet": "cc12_application_singleton_base_dormant_Source_implementation",
+    "proposed_next_scope": {
+      "single_entry": "00BEA810",
+      "files": [
+        "include/bsp/native_application_singleton_base.hpp",
+        "src/native_application_singleton_base.cpp"
+      ],
+      "API": "void* construct_native_application_singleton_base_00bea810(void* actual_receiver, NativeApplicationSingletonBaseContext& context)",
+      "context": [
+        "void* volatile& actual_manager_01090aa0",
+        "void* volatile& actual_application_e1ae90"
+      ],
+      "receiver": "Borrow actual stable 4-byte-aligned Application storage; valid uint32 access at +0, enclosing retained 1Ch domain remains caller-owned. No allocation, aggregate zeroing, typed vtable or ownership class.",
+      "source_cleanup": "Established render-service/allocation-stats private Source guards: base armed before initial profile, guard armed after successful entry/increment and kept armed through normal Leave. Genuine guard target before generic-base target on ordinary C++ escape; second escaping MSVC C++ cleanup exception terminates, with no claimed original FH3 equivalence.",
+      "no_default_context_global_provider_callback_or_fallback": true,
+      "no_raw_owner_outer_constructor_startup_wiring_or_retirement": true,
+      "no_new_Native_reads_or_GPR_mutations_required": true,
+      "acceptance": "After a separately assigned implementation: strict MSVC Win32 build and relevant existing checks, complete emitted normal/cleanup/provider-call review, and preserved prior Source/provider coverage. Readiness adds none of those new results."
+    }
+  },
+  "named_prerequisites": {
+    "binding": "Both mutable cell bindings stay fixed and are distinct from each other, receiver, context and private guard storage. Actual manager authority is the same GameNativeStringProcess/SingletonHost domain; no private default manager or E1AE90 cell is created.",
+    "raw_storage": "Valid original receiver uint32 access at +0 and enclosing retained Application storage; valid nonnull manager results for successful raw +10 accesses, actual vector storage and native CRITICAL_SECTION plus DWORD at +18. No storage-invalidating provider or conflicting concurrent access.",
+    "custody": "Original receiver and actual E1AE90/manager cells, selected managers/registration objects, original captured section and all externally observed records remain alive until independently resolved. Current publication becoming null or different is not retirement evidence.",
+    "unresolved_activation": [
+      "Canonical original raw Application owner and actual E1AE90 producer/lifetime binding",
+      "BEA970/737970 outer construction and preserved preimage bytes",
+      "Actual +08 vector owner, +14 member identity and Game frame/runtime/services custody",
+      "Independent E1AE78 producer/string-domain/retirement contract",
+      "Callable D68BC4/D68BC8/CFEAB0 profiles, actual Application deletion/removal and canonical manager-drain order",
+      "Original FH3 incoming EBP/private spills, current IAT external behavior/ABI and Native/game validation"
+    ]
+  },
+  "mechanical_implementation_scope_review": "Readiness proposes a new header/TU. Root will prefer appending the identical dormant interface to the existing generic-base provider module if its boundaries permit; any build-list mutation requires integrator coordination.",
+  "scope": {
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Original receiver/current publication/selected registration argument remain separate roles.",
+    "State0 arms before first profile store; state1 after Enter/increment and stays armed through normal Leave.",
+    "Exceptional action1 precedes action0 only if action1 returns; no successful cleanup poststate from nonreturning or second-exception paths.",
+    "Publication/registration effects can survive failure; no unregister/free/restore/retry/compensating-counter policy.",
+    "Existing provider fixture success retains its exact historical scope; no Application FH3 or current external ABI transfer.",
+    "Actual E1AE90 producer/raw owner, outer construction/+14 lifetime, independent E1AE78, callable profiles, retirement and startup/gameplay remain separate."
+  ]
+}
