@@ -1,0 +1,3392 @@
+{
+  "schema": "cc12_locale_startup_constructor_owner_readiness_v1",
+  "status": "readiness_complete_no_Cpp_or_activation",
+  "baseline_head": "a51a734bb75de73bb5c464e60a1e758192838585",
+  "owned_files": [
+    "docs/CC12_LOCALE_STARTUP_CONSTRUCTOR_OWNER_READINESS.md",
+    "reports/cc12_locale_startup_constructor_owner_readiness.json"
+  ],
+  "source_epoch": "Source3352-particle-startup",
+  "scope": {
+    "original_caller": [
+      "0073E030",
+      "0073E064"
+    ],
+    "original_caller_bytes": 53,
+    "original_complete_bytes": 51,
+    "original_partial_tail": "89 9C",
+    "Root_admitted_extension": [
+      "0073E065",
+      "0073E069"
+    ],
+    "extended_caller_bytes": 58,
+    "extended_complete_bytes": 58,
+    "constructor": [
+      "0073C960",
+      "0073C9EC"
+    ],
+    "constructor_bytes": 141,
+    "constructor_instructions": 39,
+    "base": [
+      "00736540",
+      "007365D0"
+    ],
+    "base_bytes": 145,
+    "base_instructions": 40,
+    "excluded": [
+      "caller after0073E069",
+      "later locale setters and loaders Native bodies",
+      "font0073E13C",
+      "whole0073D410",
+      "constructor dormant cleanup action bodies",
+      "Ghidra writes",
+      "C++",
+      "new builds/tests/runtime"
+    ]
+  },
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "typed_tool": "python tools/bsp.py ghidra",
+    "verification": "Client.verify before each live query; retained config and wrapper/client sources",
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "imagebase": 4194304,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "raw_pointer": 4096,
+          "raw_size": 9310208
+        },
+        {
+          "name": ".rdata",
+          "rva": 9314304,
+          "raw_pointer": 9314304,
+          "raw_size": 1204224
+        },
+        {
+          "name": ".data",
+          "rva": 10518528,
+          "raw_pointer": 10518528,
+          "raw_size": 65536
+        },
+        {
+          "name": ".rsrc",
+          "rva": 13238272,
+          "raw_pointer": 10584064,
+          "raw_size": 1634304
+        }
+      ]
+    },
+    "fresh_spans": [
+      {
+        "address": "0073E030",
+        "kind": "code_with_partial_tail",
+        "pin": {
+          "entry": "retained/Native/0073e030_53.bin",
+          "bytes": 53,
+          "sha256": "38b23c7e5d95d554417d2780053bcf8023e7d647e693839e8d0204f0a7722e6c",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 7594032,
+            "length": 53,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 11,
+        "decoded_bytes": 51,
+        "partial_tail": "899c"
+      },
+      {
+        "address": "0073C960",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/0073c960_141.bin",
+          "bytes": 141,
+          "sha256": "f59f7defb9cd1b9c99c31a701fd67bd1d4a9e24d9505fa069188a18c4dcae908",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 7588192,
+            "length": 141,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 39,
+        "decoded_bytes": 141,
+        "partial_tail": null
+      },
+      {
+        "address": "00736540",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00736540_145.bin",
+          "bytes": 145,
+          "sha256": "ba1be99885d5396cabccd2c1a4dabb8003aa4d7b4bc086e07babdaed4d8ed598",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 7562560,
+            "length": 145,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 40,
+        "decoded_bytes": 145,
+        "partial_tail": null
+      },
+      {
+        "address": "00C8693A",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c8693a_10.bin",
+          "bytes": 10,
+          "sha256": "d84f18cd82027ff1c930dc7be29b4e05a539bcac7e9c242e25cc2448676ad93e",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13134138,
+            "length": 10,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 2,
+        "decoded_bytes": 10,
+        "partial_tail": null
+      },
+      {
+        "address": "00C85F50",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c85f50_10.bin",
+          "bytes": 10,
+          "sha256": "e3c5ed9ef8b04ab3bcc8382ecad3ba27f18c34510d5a20e8611eeb69de386746",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13131600,
+            "length": 10,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 2,
+        "decoded_bytes": 10,
+        "partial_tail": null
+      },
+      {
+        "address": "00DB61E0",
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db61e0_8.bin",
+          "bytes": 8,
+          "sha256": "bb1e2ddcc44802dc23142d5a7d9008a5cda4f891256048c8957d6ea892776e77",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14377440,
+            "length": 8,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 0,
+        "decoded_bytes": 0,
+        "partial_tail": null
+      },
+      {
+        "address": "00DB5F4C",
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db5f4c_40.bin",
+          "bytes": 40,
+          "sha256": "3b6ad492cc37353ed30c9357bf4e159e7aaba293ecf4abda4b2f269726aa65ef",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14376780,
+            "length": 40,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 0,
+        "decoded_bytes": 0,
+        "partial_tail": null
+      },
+      {
+        "address": "00DB5388",
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db5388_40.bin",
+          "bytes": 40,
+          "sha256": "cc155871af641b8c41bb528247d1f2855cb3f1eb7de84c7047d62892f32e3c03",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14373768,
+            "length": 40,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 0,
+        "decoded_bytes": 0,
+        "partial_tail": null
+      },
+      {
+        "address": "00DB5378",
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db5378_16.bin",
+          "bytes": 16,
+          "sha256": "d631c8c88d58d386ce345a2d18cf1f93f83fb5d41fcc4804f4b3bdfef51aadcc",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14373752,
+            "length": 16,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 0,
+        "decoded_bytes": 0,
+        "partial_tail": null
+      },
+      {
+        "address": "00DB5F70",
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00db5f70_40.bin",
+          "bytes": 40,
+          "sha256": "e8c2ae19d44153b1c6335c933c082e7a0992303ac3aa408fad9c2f9bf5151749",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 14376816,
+            "length": 40,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 0,
+        "decoded_bytes": 0,
+        "partial_tail": null
+      },
+      {
+        "address": "00C86C16",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c86c16_14.bin",
+          "bytes": 14,
+          "sha256": "3fc5cac1aef9ab260b85a505b28e3270d614a8c6cf4346272be5508bdc77efd0",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13134870,
+            "length": 14,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 5,
+        "decoded_bytes": 14,
+        "partial_tail": null
+      },
+      {
+        "address": "00C85F40",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00c85f40_16.bin",
+          "bytes": 16,
+          "sha256": "4d0ff482e8b3f09908a701def7baa42296021f8985379856d560650dff94abe2",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13131584,
+            "length": 16,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 4,
+        "decoded_bytes": 16,
+        "partial_tail": null
+      },
+      {
+        "address": "00412430",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00412430_7.bin",
+          "bytes": 7,
+          "sha256": "197860f577f6cbc985b15e4605cd24b4388d933d89eb449e8ef5d9ca60d86ea1",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 4269104,
+            "length": 7,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 2,
+        "decoded_bytes": 7,
+        "partial_tail": null
+      },
+      {
+        "address": "00411EE0",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/00411ee0_25.bin",
+          "bytes": 25,
+          "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 4267744,
+            "length": 25,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 8,
+        "decoded_bytes": 25,
+        "partial_tail": null
+      },
+      {
+        "address": "0073E030",
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/0073e030_58.bin",
+          "bytes": 58,
+          "sha256": "468fe0cc099684277c30cf92a709575ebeea6f59729744728c05f9ede0fbf460",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 7594032,
+            "length": 58,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "instructions": 12,
+        "decoded_bytes": 58,
+        "partial_tail": null
+      }
+    ],
+    "fresh_total_retained_bytes": 623,
+    "all_fresh_spans_exact_disk": true,
+    "caller": {
+      "allocator": "00BF681B",
+      "allocation_size": 16448,
+      "captured_allocation": "[ESP+10h]",
+      "null_compare": "EDI=0 from accepted enclosing register evidence",
+      "constructor_call": "0073E059 ->0073C960 withECX=captured allocation",
+      "state": 36,
+      "state_clear": "0073E063 MOV [ESP+144h],EBX; EBX=-1",
+      "return_use": "not consumed in admitted window",
+      "prior_evidence": [
+        "accepted0073D410 prologue",
+        "acceptedEDI/EBX reaching definitions",
+        "acceptedhandlerC86CBA/FuncInfoDB609C/unwind-mapbaseDB60C0"
+      ]
+    },
+    "constructor": {
+      "receiver": "capturedECX inESI",
+      "return_value": "capturedESI inEAX, plainRET",
+      "convention": "ECX receiver; no consumedEDX or stack argument in full body; inferredfastcall is not recovered declaration",
+      "call_order": [
+        "00736540 on same receiver",
+        "derivedprofileCFF140",
+        "zero table pointer triple",
+        "memset(this+14h,0,4000h)",
+        "zero count/language/sidecar triples"
+      ],
+      "untouched_offsets": [
+        "+4",
+        "+4020",
+        "+4030"
+      ],
+      "EH_state_throughout": -1,
+      "EH_handler": "00C8693A",
+      "EH_FuncInfo": "00DB5F4C",
+      "EH_map": "00DB5F70",
+      "EH_map_states": 5,
+      "EH_map_action_bodies_inspected": false
+    },
+    "base": {
+      "receiver": "capturedECX inEDI",
+      "normal_order": [
+        "state0",
+        "profileCFEA5C",
+        "getmanager415350",
+        "capturemanager+10section",
+        "optionalEnter/incrementcurrentcounter+18",
+        "state1",
+        "publishcapturedreceiverF8BC4C",
+        "getmanager415350 again",
+        "reloadcurrentF8BC4C asregistrationargument",
+        "registerBD0C30 on second manager",
+        "optionaldecrementcurrentcounter/Leave samecapturedsection",
+        "returncapturedEDI"
+      ],
+      "EH_FuncInfo": "00DB5388",
+      "EH_map": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00C85F40 ->00412430",
+          "effect": "receiverprofileCE3818"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00C85F48 ->00411EE0",
+          "effect": "actualstackguardprofileCE37FC; capturedsectioncurrentcounter decrement andLeave"
+        }
+      ],
+      "unwind_retains": [
+        "localepublication",
+        "registryeffects",
+        "caller allocation"
+      ]
+    },
+    "caller_cleanup": {
+      "state_map_address": "00DB61E0",
+      "previous": -1,
+      "action": "00C86C16",
+      "effect": "free captured[EBP-138h] throughBF65AC only",
+      "metadata_body": [
+        "00C86C16",
+        "00C86C21"
+      ],
+      "metadata_bytes": 12,
+      "raw_complete_body": [
+        "00C86C16",
+        "00C86C23"
+      ],
+      "raw_bytes": 14,
+      "unlisted_tail": "POP ECX; RET",
+      "listing_repair": false
+    }
+  },
+  "Source": {
+    "epoch": "Source3352-particle-startup",
+    "selected_project_inputs": 3352,
+    "artifacts": 4,
+    "all3356_current_integrator_exact_at_capture": true,
+    "worker_exact": 3345,
+    "worker_LF_only_differences": [
+      "cmake/startup.cmake",
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "committed_Git_inputs": 3352,
+    "Git_worker_exact": 3352,
+    "Git_Source_exact": 3345,
+    "Git_LF_equivalent": 3352,
+    "all_byte_cohorts_retained": true,
+    "artifact_pins": [
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_core.lib",
+        "bytes": 73965334,
+        "sha256": "ec852d37e7d1c6090bd3b8b72598ce5ea29fa597c4006b84bcfd18662f070ec9",
+        "provenance": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73965334,
+          "sha256": "ec852d37e7d1c6090bd3b8b72598ce5ea29fa597c4006b84bcfd18662f070ec9",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_startup_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_core.lib"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_game.exe",
+        "bytes": 5102592,
+        "sha256": "35c8d75ff7423a9c2b6bb6f060b7b7c9013598dfd21b15149034eb84d3c0b0d9",
+        "provenance": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5102592,
+          "sha256": "35c8d75ff7423a9c2b6bb6f060b7b7c9013598dfd21b15149034eb84d3c0b0d9",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_startup_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_game.exe"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/bsp_game.map",
+        "bytes": 7549530,
+        "sha256": "d94062b71dc799a4aa5bc03b381ecc45c47c0e993d18e7d457988f435bf72ab6",
+        "provenance": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7549530,
+          "sha256": "d94062b71dc799a4aa5bc03b381ecc45c47c0e993d18e7d457988f435bf72ab6",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_startup_Source_primary\\Source_frozen\\build\\win32\\bsp_game.map"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "6fec27b94685a826c5bc38b457a9a8bed8b68017e7c7ad3ec7fb5478601f0207",
+        "provenance": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "6fec27b94685a826c5bc38b457a9a8bed8b68017e7c7ad3ec7fb5478601f0207",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_startup_Source_primary\\Source_frozen\\build\\win32\\Testing\\Temporary\\LastTest.log"
+        }
+      }
+    ],
+    "Core_archive_entries": 1991,
+    "Core_COFF_indices": 1988,
+    "App_COFF_indices": 70,
+    "all_indices_reparsed_in_replay": true,
+    "existing_fragment": {
+      "files": [
+        "include/bsp/gui_startup.hpp",
+        "src/gui_startup.cpp"
+      ],
+      "function": "construct_locale_table_manager_0073c960",
+      "layout": "LocaleTableManagerImage4040",
+      "signature": "void noexcept onImage&",
+      "behavior": "derivedfield initialization only; no base/publication/registry/return receiver",
+      "Core_definitions": [
+        {
+          "member": "bsp_core.dir\\Release\\gui_startup.obj",
+          "name": "?construct_locale_table_manager_0073c960@bsp@@YAXAAULocaleTableManagerImage@1@@Z",
+          "value": 0,
+          "section": 154,
+          "type": 32,
+          "storage": 2
+        }
+      ],
+      "App_symbol_mentions": 0,
+      "compiled_bytes": 146,
+      "compiled_relocations": [
+        "_memset"
+      ]
+    },
+    "active_owner": {
+      "files": [
+        "include/bsp/game_hosts_vfs.hpp",
+        "src/game_hosts_vfs.cpp",
+        "src/game_hosts.cpp"
+      ],
+      "class_name": "GameLocaleHost",
+      "compiled_allocation_size": 16484,
+      "allocator": "C++ operatornew",
+      "compiled_initializer_allocation_push_offset": 7432,
+      "uses": "LocaleTables semantic projection plus lazyGUI",
+      "initialization_order": [
+        "set_language_00aa09d0",
+        "register_table_00aa0d30 globals",
+        "reload_00aa06d0"
+      ],
+      "current_consumers": [
+        "menu",
+        "text bridge"
+      ],
+      "destruction": "delete semanticlocale after rawsingleton drain",
+      "raw_locale_profile_dispatch": false
+    },
+    "complete_selected_sections": [
+      {
+        "object": "gui_startup",
+        "prefix": "?construct_locale_table_manager_0073c960@",
+        "index": 154,
+        "name": ".text$mn",
+        "declared_size": 146,
+        "raw_pointer": 16207,
+        "payload_bytes": 146,
+        "bytes": 146,
+        "sha256": "217a540eb6a4def218bfa5deb32623c5e52395907bb0cabf7f7273e93f286864",
+        "relocations": [
+          {
+            "offset": 46,
+            "type": 20,
+            "symbol": "_memset"
+          }
+        ],
+        "instructions": 26
+      },
+      {
+        "object": "game_hosts",
+        "prefix": "??0GameLocaleHost@",
+        "index": 832,
+        "name": ".text$mn",
+        "declared_size": 248,
+        "raw_pointer": 178465,
+        "payload_bytes": 248,
+        "bytes": 248,
+        "sha256": "4503114bfff37a2638734bcb3a215f6b4a8412dc43ac3b2d51c86d170d6d13df",
+        "relocations": [
+          {
+            "offset": 28,
+            "type": 6,
+            "symbol": "??_7GameLocaleHost@game@bsp@@6B@"
+          },
+          {
+            "offset": 55,
+            "type": 20,
+            "symbol": "_memset"
+          }
+        ],
+        "instructions": 42
+      },
+      {
+        "object": "game_hosts",
+        "prefix": "?application_initialize@GameStartupHost@",
+        "index": 2006,
+        "name": ".text$mn",
+        "declared_size": 141,
+        "raw_pointer": 254160,
+        "payload_bytes": 141,
+        "bytes": 141,
+        "sha256": "ffc8fb411940fa4ce17da6828107a6b3e2e0a5a6d84b5429dc176c339087e8c1",
+        "relocations": [
+          {
+            "offset": 26,
+            "type": 6,
+            "symbol": "??_C@_08LEDEJBAO@0073d410@"
+          },
+          {
+            "offset": 31,
+            "type": 6,
+            "symbol": "??_C@_0CE@HEOBPPKH@StartupHost?3?3application_initial@"
+          },
+          {
+            "offset": 36,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 53,
+            "type": 6,
+            "symbol": "??_C@_08LEDEJBAO@0073d410@"
+          },
+          {
+            "offset": 58,
+            "type": 6,
+            "symbol": "??_C@_0CE@HEOBPPKH@StartupHost?3?3application_initial@"
+          },
+          {
+            "offset": 63,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 69,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 81,
+            "type": 6,
+            "symbol": "??_C@_0BM@FEBGGOMF@initialize?5flags?$DN?$CFd?5mode?$DN?$CFs@"
+          },
+          {
+            "offset": 89,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 100,
+            "type": 20,
+            "symbol": "?run_initialize_phases@GameStartupHost@game@bsp@@AAEXPBD@Z"
+          },
+          {
+            "offset": 114,
+            "type": 6,
+            "symbol": "??_C@_0DL@BLLMDIFH@application?5initialization?5requi@"
+          },
+          {
+            "offset": 122,
+            "type": 20,
+            "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 127,
+            "type": 6,
+            "symbol": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "offset": 136,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instructions": 49
+      },
+      {
+        "object": "game_hosts",
+        "prefix": "?run_initialize_phases@GameStartupHost@",
+        "index": 2424,
+        "name": ".text$mn",
+        "declared_size": 12748,
+        "raw_pointer": 305808,
+        "payload_bytes": 12748,
+        "bytes": 12748,
+        "sha256": "a9d10a7dd96c044a0b89640e2ac34754a08207c9d537a137c6494fe4e66c18d8",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?run_initialize_phases@GameStartupHost@game@bsp@@AAEXPBD@Z"
+          },
+          {
+            "offset": 24,
+            "type": 20,
+            "symbol": "__chkstk"
+          },
+          {
+            "offset": 29,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 105,
+            "type": 20,
+            "symbol": "_memset"
+          },
+          {
+            "offset": 128,
+            "type": 6,
+            "symbol": "__imp__GetModuleFileNameA@12"
+          },
+          {
+            "offset": 202,
+            "type": 20,
+            "symbol": "??$_Construct@$00PBD@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAEXQBDI@Z"
+          },
+          {
+            "offset": 228,
+            "type": 20,
+            "symbol": "?capture_module_directory_00439040@bsp@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABV23@@Z"
+          },
+          {
+            "offset": 246,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 258,
+            "type": 6,
+            "symbol": "??_C@_08MMPGNFFF@00439040@"
+          },
+          {
+            "offset": 263,
+            "type": 6,
+            "symbol": "??_C@_0CB@IMELHKNE@Phase?50?5capture_module_directory@"
+          },
+          {
+            "offset": 268,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 285,
+            "type": 6,
+            "symbol": "??_C@_08MMPGNFFF@00439040@"
+          },
+          {
+            "offset": 290,
+            "type": 6,
+            "symbol": "??_C@_0CB@IMELHKNE@Phase?50?5capture_module_directory@"
+          },
+          {
+            "offset": 295,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 301,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 330,
+            "type": 6,
+            "symbol": "??_C@_0BE@ONBOINEC@module?5directory?5?$CFs@"
+          },
+          {
+            "offset": 338,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 407,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 451,
+            "type": 20,
+            "symbol": "?allocation_stats_context@GameSingletonHost@game@bsp@@QAEAAUNativeAllocationStatsConstructorContext@3@XZ"
+          },
+          {
+            "offset": 458,
+            "type": 20,
+            "symbol": "?construct_native_allocation_stats_00be2900@bsp@@YAPAXPAXAAUNativeAllocationStatsConstructorContext@1@@Z"
+          },
+          {
+            "offset": 491,
+            "type": 6,
+            "symbol": "??_C@_08FLPFDEHF@00be2900@"
+          },
+          {
+            "offset": 501,
+            "type": 6,
+            "symbol": "??_C@_0CD@ONIPBJF@Phase?50?5construct_allocation_sta@"
+          },
+          {
+            "offset": 519,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 536,
+            "type": 6,
+            "symbol": "??_C@_08FLPFDEHF@00be2900@"
+          },
+          {
+            "offset": 541,
+            "type": 6,
+            "symbol": "??_C@_0CD@ONIPBJF@Phase?50?5construct_allocation_sta@"
+          },
+          {
+            "offset": 546,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 552,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 604,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 645,
+            "type": 20,
+            "symbol": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z"
+          },
+          {
+            "offset": 837,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 854,
+            "type": 20,
+            "symbol": "?ensure@ClockServices@GameStartupHost@game@bsp@@QAEX_N@Z"
+          },
+          {
+            "offset": 866,
+            "type": 6,
+            "symbol": "??_C@_08LLOFKKIB@0073d480@"
+          },
+          {
+            "offset": 871,
+            "type": 6,
+            "symbol": "??_C@_0CC@HIADBEFJ@Phase?50?5ensure_actual_frame_cloc@"
+          },
+          {
+            "offset": 876,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 893,
+            "type": 6,
+            "symbol": "??_C@_08LLOFKKIB@0073d480@"
+          },
+          {
+            "offset": 898,
+            "type": 6,
+            "symbol": "??_C@_0CC@HIADBEFJ@Phase?50?5ensure_actual_frame_cloc@"
+          },
+          {
+            "offset": 903,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 909,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 924,
+            "type": 20,
+            "symbol": "?install_object_handle_resolvers_006ad0d0@bsp@@YAXAAUObjectHandleResolverSlots@1@@Z"
+          },
+          {
+            "offset": 939,
+            "type": 6,
+            "symbol": "??_C@_08LGBAEIEK@006ad0d0@"
+          },
+          {
+            "offset": 944,
+            "type": 6,
+            "symbol": "??_C@_0CI@OJGMAJDN@Phase?50?5install_object_handle_re@"
+          },
+          {
+            "offset": 949,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 966,
+            "type": 6,
+            "symbol": "??_C@_08LGBAEIEK@006ad0d0@"
+          },
+          {
+            "offset": 971,
+            "type": 6,
+            "symbol": "??_C@_0CI@OJGMAJDN@Phase?50?5install_object_handle_re@"
+          },
+          {
+            "offset": 976,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 982,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 1003,
+            "type": 20,
+            "symbol": "?game_native_shader_process@game@bsp@@YAAAVGameNativeShaderProcess@12@XZ"
+          },
+          {
+            "offset": 1028,
+            "type": 20,
+            "symbol": "?configure_startup_modes@GameNativeShaderProcess@game@bsp@@QAEXPBDAAVGameNativeReadOnlyData@23@@Z"
+          },
+          {
+            "offset": 1075,
+            "type": 6,
+            "symbol": "??_C@_0FN@OHOBLADF@native?5startup?5shader?5modes73D4C@"
+          },
+          {
+            "offset": 1086,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 1115,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 1174,
+            "type": 6,
+            "symbol": "??_C@_0BK@LEDGOLAG@battlestationspacific?4exe@"
+          },
+          {
+            "offset": 1180,
+            "type": 20,
+            "symbol": "??$_Convert_stringoid_to_wide@U_Normal_conversion@filesystem@std@@@filesystem@std@@YA?AV?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@1@V?$basic_string_view@DU?$char_traits@D@std@@@1@U_Normal_conversion@01@@Z"
+          },
+          {
+            "offset": 1222,
+            "type": 20,
+            "symbol": "?current_path@filesystem@std@@YA?AVpath@12@XZ"
+          },
+          {
+            "offset": 1264,
+            "type": 20,
+            "symbol": "??Kfilesystem@std@@YA?AVpath@01@ABV201@0@Z"
+          },
+          {
+            "offset": 1322,
+            "type": 20,
+            "symbol": "??0GameVfsHost@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABVpath@filesystem@std@@_N@Z"
+          },
+          {
+            "offset": 1362,
+            "type": 20,
+            "symbol": "?_Tidy_deallocate@?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 1392,
+            "type": 20,
+            "symbol": "?_Tidy_deallocate@?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 1429,
+            "type": 20,
+            "symbol": "?_Tidy_deallocate@?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 1483,
+            "type": 20,
+            "symbol": "?phase2@GameVfsHost@game@bsp@@QAEXAAUVfsStartupState@3@@Z"
+          },
+          {
+            "offset": 1502,
+            "type": 20,
+            "symbol": "?selected_xinput_path@?A0x124964e6@game@bsp@@YA?AV?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@ABV45@@Z"
+          },
+          {
+            "offset": 1515,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 1540,
+            "type": 20,
+            "symbol": "??0XInputLibrary@bsp@@QAE@ABV?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@@Z"
+          },
+          {
+            "offset": 1581,
+            "type": 20,
+            "symbol": "??1XInputLibrary@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 1594,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1612,
+            "type": 20,
+            "symbol": "?_Tidy_deallocate@?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 1626,
+            "type": 20,
+            "symbol": "?construct_win32_platform_00becda0@bsp@@YAXAAUWin32PlatformState@1@PAX@Z"
+          },
+          {
+            "offset": 1637,
+            "type": 6,
+            "symbol": "??_C@_08KJPEBPG@00becda0@"
+          },
+          {
+            "offset": 1642,
+            "type": 6,
+            "symbol": "??_C@_0CB@KGBNKPMI@Phase?53?5construct_win32_platform@"
+          },
+          {
+            "offset": 1647,
+            "type": 20,
+            "symbol": "?implemented@GameHostLog@game@bsp@@QAEXPBD0@Z"
+          },
+          {
+            "offset": 1663,
+            "type": 6,
+            "symbol": "??_7GameSaveStorageHost@game@bsp@@6B@"
+          },
+          {
+            "offset": 1671,
+            "type": 6,
+            "symbol": "?g_active_platform@?A0x124964e6@game@bsp@@3RAUWin32PlatformState@3@A"
+          },
+          {
+            "offset": 1691,
+            "type": 6,
+            "symbol": "?g_active_platform_text@?A0x124964e6@game@bsp@@3PAUPlatformTextInput@3@A"
+          },
+          {
+            "offset": 1720,
+            "type": 20,
+            "symbol": "?initialize_save_storage_00beb2c0@bsp@@YA_NAAUSaveStorageHost@1@AAUSaveStorageRoots@1@@Z"
+          },
+          {
+            "offset": 1735,
+            "type": 6,
+            "symbol": "??_C@_08NKBNOMFG@00beb2c0@"
+          },
+          {
+            "offset": 1740,
+            "type": 6,
+            "symbol": "??_C@_0CA@IADAAMCE@Phase?53?5initialize_save_storage@"
+          },
+          {
+            "offset": 1745,
+            "type": 20,
+            "symbol": "?implemented@GameHostLog@game@bsp@@QAEXPBD0@Z"
+          },
+          {
+            "offset": 1768,
+            "type": 6,
+            "symbol": "??_C@_0BC@INNGEPLM@save?5directory?5?$CFs@"
+          },
+          {
+            "offset": 1776,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 1786,
+            "type": 6,
+            "symbol": "??_C@_0CD@PGHIAGEE@save?5storage?5initialization?5fail@"
+          },
+          {
+            "offset": 1791,
+            "type": 20,
+            "symbol": "?note@GameHostLog@game@bsp@@QAEXPBD@Z"
+          },
+          {
+            "offset": 1808,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@QBD@Z"
+          },
+          {
+            "offset": 1831,
+            "type": 20,
+            "symbol": "?parse_command_line_0073ce20@bsp@@YA?AUCommandLineOptions@1@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 1849,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 1857,
+            "type": 6,
+            "symbol": "??_C@_08HHODJLIA@0073ce20@"
+          },
+          {
+            "offset": 1862,
+            "type": 6,
+            "symbol": "??_C@_0BL@NDFEFEFJ@Phase?53?5parse_command_line@"
+          },
+          {
+            "offset": 1867,
+            "type": 20,
+            "symbol": "?implemented@GameHostLog@game@bsp@@QAEXPBD0@Z"
+          },
+          {
+            "offset": 1908,
+            "type": 6,
+            "symbol": "??_C@_0ED@NDJKFFPA@command?5line?5cached_load?$DN?$CFd?5fixe@"
+          },
+          {
+            "offset": 1916,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 1943,
+            "type": 20,
+            "symbol": "?factory_tail@GameVfsHost@game@bsp@@QAEXAAUVfsStartupState@3@_N@Z"
+          },
+          {
+            "offset": 2036,
+            "type": 6,
+            "symbol": "??_C@_07OIPFBGHL@created@"
+          },
+          {
+            "offset": 2142,
+            "type": 6,
+            "symbol": "??_C@_0DN@LKCGCFOA@vfs?5loose?5mounts?5requested?$DN?$CFzu?5c@"
+          },
+          {
+            "offset": 2156,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 2184,
+            "type": 20,
+            "symbol": "?borrow_raw_services@GameVfsHost@game@bsp@@QAE?AUGameNativeVfsRawServices@23@XZ"
+          },
+          {
+            "offset": 2209,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 2245,
+            "type": 20,
+            "symbol": "??0GameNativeLuaServices@game@bsp@@QAE@AAVGameSingletonHost@12@ABUGameNativeVfsRawServices@12@@Z"
+          },
+          {
+            "offset": 2284,
+            "type": 20,
+            "symbol": "??1GameNativeLuaServices@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 2297,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 2305,
+            "type": 6,
+            "symbol": "?application_math_runtime@?A0x124964e6@game@bsp@@3ULegacyCrtMathRuntime@3@B"
+          },
+          {
+            "offset": 2310,
+            "type": 20,
+            "symbol": "?bind_legacy_crt_math_runtime@bsp@@YAXABULegacyCrtMathRuntime@1@@Z"
+          },
+          {
+            "offset": 2383,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 2448,
+            "type": 20,
+            "symbol": "??0GameNativeRendererApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeLuaServices@12@AAVGameNativeReadOnlyData@12@ADSAXPBX@Z"
+          },
+          {
+            "offset": 2485,
+            "type": 20,
+            "symbol": "??1GameNativeRendererApplication@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 2493,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 2504,
+            "type": 20,
+            "symbol": "?construct@GameNativeRendererApplication@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 2512,
+            "type": 20,
+            "symbol": "?api@GameNativeRendererApplication@game@bsp@@QBEAAUIDirect3D9@@XZ"
+          },
+          {
+            "offset": 2526,
+            "type": 20,
+            "symbol": "?parameters@GameNativeRendererApplication@game@bsp@@QBEAAUNativeRendererParametersOwner@3@XZ"
+          },
+          {
+            "offset": 2547,
+            "type": 20,
+            "symbol": "?copy_settings_capabilities@GameNativeRendererApplication@game@bsp@@QBEXAAUSettingsRendererCapabilities@3@@Z"
+          },
+          {
+            "offset": 2579,
+            "type": 6,
+            "symbol": "??_C@_0GG@HMMOENBK@renderer?5capabilities?5from?5actua@"
+          },
+          {
+            "offset": 2587,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 2594,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 2626,
+            "type": 20,
+            "symbol": "?borrow_raw_services@GameVfsHost@game@bsp@@QAE?AUGameNativeVfsRawServices@23@XZ"
+          },
+          {
+            "offset": 2679,
+            "type": 20,
+            "symbol": "??0GameScriptHost@game@bsp@@QAE@AAVGameHostLog@12@AAUVfsMountContext@2@ABV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAVGameNativeLuaServices@12@AAVGameSingletonHost@12@AAVGameNativeReadOnlyData@12@ABUGameNativeVfsRawServices@12@@Z"
+          },
+          {
+            "offset": 2713,
+            "type": 20,
+            "symbol": "?load_tables@GameNativeInputSettingsApplication@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 2725,
+            "type": 6,
+            "symbol": "??_C@_0BL@GPDHBGPM@005547d0?1006ab6b0?1006a7be0@"
+          },
+          {
+            "offset": 2730,
+            "type": 6,
+            "symbol": "??_C@_0BM@GCEIAAIC@Phase?55?5input_script_tables@"
+          },
+          {
+            "offset": 2735,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 2752,
+            "type": 6,
+            "symbol": "??_C@_0BL@GPDHBGPM@005547d0?1006ab6b0?1006a7be0@"
+          },
+          {
+            "offset": 2757,
+            "type": 6,
+            "symbol": "??_C@_0BM@GCEIAAIC@Phase?55?5input_script_tables@"
+          },
+          {
+            "offset": 2762,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 2768,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 2788,
+            "type": 20,
+            "symbol": "?fundamentals_getter_calls@GameNativeLuaServices@game@bsp@@QBEIXZ"
+          },
+          {
+            "offset": 2804,
+            "type": 20,
+            "symbol": "?fundamentals_published@GameNativeLuaServices@game@bsp@@QBE_NXZ"
+          },
+          {
+            "offset": 2814,
+            "type": 6,
+            "symbol": "??_C@_0FJ@DMACAABP@native?5Lua?5fundamentals?3?5publish@"
+          },
+          {
+            "offset": 2820,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 2850,
+            "type": 20,
+            "symbol": "?summary@GameNativeInputSettingsApplication@game@bsp@@QBE?AUGameNativeInputSettingsSummary@23@XZ"
+          },
+          {
+            "offset": 2905,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 2945,
+            "type": 20,
+            "symbol": "_memset"
+          },
+          {
+            "offset": 3029,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 3072,
+            "type": 20,
+            "symbol": "??0GameNativeSettingsApplication@game@bsp@@QAE@AAVGameHostLog@12@AAVGameNativeSettingsProcess@12@AAVGameSingletonHost@12@AAVGameVfsHost@12@AAVGameNativeRendererApplication@12@AAVGameNativeReadOnlyData@12@ABV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABUGameNativeSettingsStackPolicy@12@@Z"
+          },
+          {
+            "offset": 3105,
+            "type": 20,
+            "symbol": "?load@GameNativeSettingsApplication@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 3123,
+            "type": 20,
+            "symbol": "?copy_read_view@GameNativeSettingsApplication@game@bsp@@QBEXAAUGameSettingsBlock@3@@Z"
+          },
+          {
+            "offset": 3141,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 3167,
+            "type": 20,
+            "symbol": "_memset"
+          },
+          {
+            "offset": 3181,
+            "type": 6,
+            "symbol": "??_C@_0BG@JHPAAICA@BSP_WINDOW_RESOLUTION@"
+          },
+          {
+            "offset": 3187,
+            "type": 6,
+            "symbol": "__imp__GetEnvironmentVariableA@12"
+          },
+          {
+            "offset": 3222,
+            "type": 20,
+            "symbol": "??$_Assign@D@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAEAAV01@QBDI@Z"
+          },
+          {
+            "offset": 3282,
+            "type": 6,
+            "symbol": "??_C@_03MMKDMEGB@fit@"
+          },
+          {
+            "offset": 3289,
+            "type": 20,
+            "symbol": "??$_Traits_equal@U?$char_traits@D@std@@@std@@YA_NQBDI0I@Z"
+          },
+          {
+            "offset": 3335,
+            "type": 6,
+            "symbol": "__imp__AdjustWindowRectEx@16"
+          },
+          {
+            "offset": 3481,
+            "type": 6,
+            "symbol": "?kCandidates@?CP@??run_initialize_phases@GameStartupHost@game@bsp@@AAEXPBD@Z@4QAY01$$CBHA"
+          },
+          {
+            "offset": 3533,
+            "type": 6,
+            "symbol": "?kCandidates@?CP@??run_initialize_phases@GameStartupHost@game@bsp@@AAEXPBD@Z@4QAY01$$CBHA"
+          },
+          {
+            "offset": 3590,
+            "type": 6,
+            "symbol": "__imp__strtol"
+          },
+          {
+            "offset": 3720,
+            "type": 6,
+            "symbol": "??_C@_0DK@MENPBNLM@window?5resolution?5override?5?$CFs?3?5?$CF@"
+          },
+          {
+            "offset": 3728,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 3801,
+            "type": 6,
+            "symbol": "??_C@_0EN@BKIPPIAA@window?5resolution?5override?5?$CFs?3?5?$CF@"
+          },
+          {
+            "offset": 3809,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 3827,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 3845,
+            "type": 20,
+            "symbol": "?require_frame_clock_context@GameStartupHost@game@bsp@@ABEABUNativeFrameClockPublicationContext@3@XZ"
+          },
+          {
+            "offset": 3851,
+            "type": 20,
+            "symbol": "?enable_fixed_published_native_frame_clock@bsp@@YAXABUNativeFrameClockPublicationContext@1@H@Z"
+          },
+          {
+            "offset": 3866,
+            "type": 6,
+            "symbol": "??_C@_08JHNJFKOI@008d8190@"
+          },
+          {
+            "offset": 3871,
+            "type": 6,
+            "symbol": "??_C@_0BL@GKMIFELD@Phase?55?5load_game_settings@"
+          },
+          {
+            "offset": 3876,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 3893,
+            "type": 6,
+            "symbol": "??_C@_08JHNJFKOI@008d8190@"
+          },
+          {
+            "offset": 3898,
+            "type": 6,
+            "symbol": "??_C@_0BL@GKMIFELD@Phase?55?5load_game_settings@"
+          },
+          {
+            "offset": 3903,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 3909,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 3925,
+            "type": 20,
+            "symbol": "?options_file_present@GameNativeSettingsApplication@game@bsp@@QBE_NXZ"
+          },
+          {
+            "offset": 3938,
+            "type": 20,
+            "symbol": "?options_path@GameNativeSettingsApplication@game@bsp@@QBEABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ"
+          },
+          {
+            "offset": 3966,
+            "type": 20,
+            "symbol": "??$_Assign@D@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAEAAV01@QBDI@Z"
+          },
+          {
+            "offset": 3974,
+            "type": 6,
+            "symbol": "??_C@_06IILMCCFO@loaded@"
+          },
+          {
+            "offset": 3998,
+            "type": 6,
+            "symbol": "??_C@_0CI@IOOGJNPM@absent?0?5initial?5options?5write?5at@"
+          },
+          {
+            "offset": 4006,
+            "type": 20,
+            "symbol": "?options_path@GameNativeSettingsApplication@game@bsp@@QBEABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ"
+          },
+          {
+            "offset": 4021,
+            "type": 6,
+            "symbol": "??_C@_0BD@HCDCMKAC@options?5file?5?$CFs?5?$CFs@"
+          },
+          {
+            "offset": 4032,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 4078,
+            "type": 20,
+            "symbol": "??$_Assign@D@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAEAAV01@QBDI@Z"
+          },
+          {
+            "offset": 4170,
+            "type": 6,
+            "symbol": "??_C@_06GGPOMPNM@?$CInone?$CJ@"
+          },
+          {
+            "offset": 4232,
+            "type": 6,
+            "symbol": "??_C@_0GD@HINPHJKN@settings?5resolution?$DN?$CFdx?$CFd?5index?$DN@"
+          },
+          {
+            "offset": 4240,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 4245,
+            "type": 6,
+            "symbol": "?application_math_runtime@?A0x124964e6@game@bsp@@3ULegacyCrtMathRuntime@3@B"
+          },
+          {
+            "offset": 4250,
+            "type": 20,
+            "symbol": "?bind_legacy_crt_math_runtime@bsp@@YAXABULegacyCrtMathRuntime@1@@Z"
+          },
+          {
+            "offset": 4260,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 4285,
+            "type": 20,
+            "symbol": "??0SoundServices@GameStartupHost@game@bsp@@QAE@AAV123@@Z"
+          },
+          {
+            "offset": 4332,
+            "type": 20,
+            "symbol": "??1SoundServices@GameStartupHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 4348,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 4380,
+            "type": 20,
+            "symbol": "?startup@GameSoundRuntime@game@bsp@@QAEX_N@Z"
+          },
+          {
+            "offset": 4392,
+            "type": 6,
+            "symbol": "??_C@_08PPMDMOPL@0073dafd@"
+          },
+          {
+            "offset": 4397,
+            "type": 6,
+            "symbol": "??_C@_0CA@EADCAIP@Phase?55?5sound_system_initialize@"
+          },
+          {
+            "offset": 4415,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 4432,
+            "type": 6,
+            "symbol": "??_C@_08PPMDMOPL@0073dafd@"
+          },
+          {
+            "offset": 4437,
+            "type": 6,
+            "symbol": "??_C@_0CA@EADCAIP@Phase?55?5sound_system_initialize@"
+          },
+          {
+            "offset": 4442,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 4453,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 4470,
+            "type": 20,
+            "symbol": "?startup@GameSoundDialogRuntime@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 4482,
+            "type": 6,
+            "symbol": "??_C@_08NAJJEAPP@0073db2b@"
+          },
+          {
+            "offset": 4487,
+            "type": 6,
+            "symbol": "??_C@_0CD@KDGEODFD@Phase?55?5streamed_dialog_initiali@"
+          },
+          {
+            "offset": 4498,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 4515,
+            "type": 6,
+            "symbol": "??_C@_08NAJJEAPP@0073db2b@"
+          },
+          {
+            "offset": 4520,
+            "type": 6,
+            "symbol": "??_C@_0CD@KDGEODFD@Phase?55?5streamed_dialog_initiali@"
+          },
+          {
+            "offset": 4525,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 4536,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 4557,
+            "type": 20,
+            "symbol": "?phase6@GameVfsHost@game@bsp@@QAEXAAUVfsStartupState@3@@Z"
+          },
+          {
+            "offset": 4614,
+            "type": 20,
+            "symbol": "?summary@GameSoundRuntime@game@bsp@@QBE?AUGameSoundRuntimeSummary@23@XZ"
+          },
+          {
+            "offset": 4688,
+            "type": 6,
+            "symbol": "??_C@_0LI@CDLAAFPO@sound?5startup?5before?5window?3?5ena@"
+          },
+          {
+            "offset": 4696,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 4728,
+            "type": 6,
+            "symbol": "??_C@_0BG@LAPOOPOF@interface?1_common?4lua@"
+          },
+          {
+            "offset": 4739,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@QBD@Z"
+          },
+          {
+            "offset": 4786,
+            "type": 20,
+            "symbol": "?_Buy_nonzero@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAEXI@Z"
+          },
+          {
+            "offset": 4858,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 4918,
+            "type": 20,
+            "symbol": "??$_Destroy_range@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@std@@@std@@YAXPAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QAV10@AAV?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@0@@Z"
+          },
+          {
+            "offset": 4938,
+            "type": 6,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 4958,
+            "type": 20,
+            "symbol": "??_M@YGXPAXIIP6EX0@Z@Z"
+          },
+          {
+            "offset": 4972,
+            "type": 6,
+            "symbol": "??_C@_07CNNBJDHA@english@"
+          },
+          {
+            "offset": 4980,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@QBD@Z"
+          },
+          {
+            "offset": 5007,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 5035,
+            "type": 6,
+            "symbol": "??_C@_07HCPNCKO@lockit?1@"
+          },
+          {
+            "offset": 5047,
+            "type": 20,
+            "symbol": "??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QBD$$QAV10@@Z"
+          },
+          {
+            "offset": 5052,
+            "type": 6,
+            "symbol": "??_C@_04FOCJMKHG@?4lng@"
+          },
+          {
+            "offset": 5072,
+            "type": 20,
+            "symbol": "??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@$$QAV10@QBD@Z"
+          },
+          {
+            "offset": 5091,
+            "type": 20,
+            "symbol": "?push_back@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QAEX$$QAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@@Z"
+          },
+          {
+            "offset": 5102,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 5113,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 5139,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 5164,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 5169,
+            "type": 6,
+            "symbol": "??_C@_0BM@MCLDIKHE@effects?1a_fiji_terr_atl?4dds@"
+          },
+          {
+            "offset": 5180,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@QBD@Z"
+          },
+          {
+            "offset": 5202,
+            "type": 20,
+            "symbol": "?push_back@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@QAEX$$QAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@@Z"
+          },
+          {
+            "offset": 5217,
+            "type": 20,
+            "symbol": "??1?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@XZ"
+          },
+          {
+            "offset": 5267,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 5296,
+            "type": 20,
+            "symbol": "??$_Emplace_reallocate@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAEPAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@QAV21@ABV21@@Z"
+          },
+          {
+            "offset": 5353,
+            "type": 20,
+            "symbol": "?probe@GameVfsHost@game@bsp@@QAEABUGameVfsProbeResult@23@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 5405,
+            "type": 20,
+            "symbol": "?_Tidy@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 5440,
+            "type": 6,
+            "symbol": "?kWindowName@?A0x124964e6@game@bsp@@3QBDB"
+          },
+          {
+            "offset": 5494,
+            "type": 20,
+            "symbol": "??$_Assign@D@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAEAAV01@QBDI@Z"
+          },
+          {
+            "offset": 5625,
+            "type": 6,
+            "symbol": "?game_window_procedure@game@bsp@@YGJPAUHWND__@@IIJ@Z"
+          },
+          {
+            "offset": 5648,
+            "type": 6,
+            "symbol": "??_C@_0EG@MDIFFIAD@settings?5gave?5no?5usable?5resoluti@"
+          },
+          {
+            "offset": 5676,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 5753,
+            "type": 6,
+            "symbol": "??_C@_0DJ@KGPLCNLA@window?5request?5?$CFdx?$CFd?5fullscreen?$DN@"
+          },
+          {
+            "offset": 5761,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 5768,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 5797,
+            "type": 6,
+            "symbol": "??_7GameWindowHost@game@bsp@@6B@"
+          },
+          {
+            "offset": 5870,
+            "type": 6,
+            "symbol": "??_C@_03OFAPEBGM@?$CFs?6@"
+          },
+          {
+            "offset": 5875,
+            "type": 20,
+            "symbol": "_printf"
+          },
+          {
+            "offset": 5897,
+            "type": 6,
+            "symbol": "??_C@_03OFAPEBGM@?$CFs?6@"
+          },
+          {
+            "offset": 5903,
+            "type": 20,
+            "symbol": "_fprintf"
+          },
+          {
+            "offset": 5918,
+            "type": 6,
+            "symbol": "__imp__fflush"
+          },
+          {
+            "offset": 5953,
+            "type": 20,
+            "symbol": "?configure_platform_window_00becee0@bsp@@YA_NAAUPlatformWindowHost@1@ABUPlatformWindowRequest@1@AAUWin32PlatformState@1@AAURendererInitRequest@1@@Z"
+          },
+          {
+            "offset": 5980,
+            "type": 6,
+            "symbol": "??_C@_08LFCKIOEP@00becee0@"
+          },
+          {
+            "offset": 5985,
+            "type": 6,
+            "symbol": "??_C@_0CC@LAHDLNIE@Phase?53?5configure_platform_windo@"
+          },
+          {
+            "offset": 5992,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 6009,
+            "type": 6,
+            "symbol": "??_C@_08LFCKIOEP@00becee0@"
+          },
+          {
+            "offset": 6014,
+            "type": 6,
+            "symbol": "??_C@_0CC@LAHDLNIE@Phase?53?5configure_platform_windo@"
+          },
+          {
+            "offset": 6019,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 6025,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6063,
+            "type": 6,
+            "symbol": "??_C@_0CN@KEGKMLFI@window?5created?5?$CFdx?$CFd?5at?5?$CFd?0?$CFd?5co@"
+          },
+          {
+            "offset": 6071,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6118,
+            "type": 6,
+            "symbol": "??_C@_0EA@JHCGNPLH@renderer?5init?5request?5?$CFdx?$CFd?5full@"
+          },
+          {
+            "offset": 6126,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6143,
+            "type": 20,
+            "symbol": "?native_platform_has_focus_00b20c50@bsp@@YIIPBX@Z"
+          },
+          {
+            "offset": 6181,
+            "type": 20,
+            "symbol": "?native_platform_window_00bec230@bsp@@YAPAXPBX@Z"
+          },
+          {
+            "offset": 6213,
+            "type": 6,
+            "symbol": "??_C@_0EC@KDFFBNMC@platform?5native?5focus?5cells?3?5hwn@"
+          },
+          {
+            "offset": 6219,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6235,
+            "type": 6,
+            "symbol": "??_C@_0BH@ELMPGGHP@window?5creation?5failed@"
+          },
+          {
+            "offset": 6240,
+            "type": 6,
+            "symbol": "??_C@_03OFAPEBGM@?$CFs?6@"
+          },
+          {
+            "offset": 6245,
+            "type": 20,
+            "symbol": "_printf"
+          },
+          {
+            "offset": 6260,
+            "type": 6,
+            "symbol": "??_C@_0BH@ELMPGGHP@window?5creation?5failed@"
+          },
+          {
+            "offset": 6265,
+            "type": 6,
+            "symbol": "??_C@_03OFAPEBGM@?$CFs?6@"
+          },
+          {
+            "offset": 6271,
+            "type": 20,
+            "symbol": "_fprintf"
+          },
+          {
+            "offset": 6280,
+            "type": 6,
+            "symbol": "__imp__fflush"
+          },
+          {
+            "offset": 6315,
+            "type": 20,
+            "symbol": "?bind_platform_services@GameNativeRendererApplication@game@bsp@@QAEXAAUResourceLoadEventHost@3@PDIPBVNativeXLiveDeviceAdapter@3@ABVXLiveLibrary@3@@Z"
+          },
+          {
+            "offset": 6325,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 6385,
+            "type": 20,
+            "symbol": "_memset"
+          },
+          {
+            "offset": 6500,
+            "type": 20,
+            "symbol": "?release@GameDeviceHost@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 6515,
+            "type": 20,
+            "symbol": "?create_device@GameNativeRendererApplication@game@bsp@@QAEXABURendererInitRequest@3@@Z"
+          },
+          {
+            "offset": 6523,
+            "type": 20,
+            "symbol": "?device@GameNativeRendererApplication@game@bsp@@QBEPAUIDirect3DDevice9@@XZ"
+          },
+          {
+            "offset": 6534,
+            "type": 20,
+            "symbol": "?presentation@GameNativeRendererApplication@game@bsp@@QBEABU_D3DPRESENT_PARAMETERS_@@XZ"
+          },
+          {
+            "offset": 6624,
+            "type": 6,
+            "symbol": "??_C@_0FO@KIAGKJE@device?5created?5by?5full?5native?5st@"
+          },
+          {
+            "offset": 6631,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6655,
+            "type": 20,
+            "symbol": "?initialize_window_render_entry_cache@GameNativeRendererApplication@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 6667,
+            "type": 6,
+            "symbol": "??_C@_08BDAOAOLC@00bed223@"
+          },
+          {
+            "offset": 6672,
+            "type": 6,
+            "symbol": "??_C@_0CM@PAAKPAPK@PlatformWindowHost?3?3initialize_p@"
+          },
+          {
+            "offset": 6677,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 6694,
+            "type": 6,
+            "symbol": "??_C@_08BDAOAOLC@00bed223@"
+          },
+          {
+            "offset": 6699,
+            "type": 6,
+            "symbol": "??_C@_0CM@PAAKPAPK@PlatformWindowHost?3?3initialize_p@"
+          },
+          {
+            "offset": 6704,
+            "type": 6,
+            "symbol": "??_C@_0DG@KJAIOOPJ@host?5?$CFs?5?$FL?$CFs?$FN?5UNIMPLEMENTED?0?5retu@"
+          },
+          {
+            "offset": 6710,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6816,
+            "type": 20,
+            "symbol": "?api@GameNativeRendererApplication@game@bsp@@QBEAAUIDirect3D9@@XZ"
+          },
+          {
+            "offset": 6829,
+            "type": 20,
+            "symbol": "?renderer_api@GameNativeSettingsApplication@game@bsp@@QBEAAUIDirect3D9@@XZ"
+          },
+          {
+            "offset": 6869,
+            "type": 6,
+            "symbol": "??_C@_08HHPFNEDA@0073dc7c@"
+          },
+          {
+            "offset": 6874,
+            "type": 6,
+            "symbol": "??_C@_0CC@FCLDHEKP@Phase?55?5online_manager_initializ@"
+          },
+          {
+            "offset": 6879,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 6896,
+            "type": 6,
+            "symbol": "??_C@_08HHPFNEDA@0073dc7c@"
+          },
+          {
+            "offset": 6901,
+            "type": 6,
+            "symbol": "??_C@_0CC@FCLDHEKP@Phase?55?5online_manager_initializ@"
+          },
+          {
+            "offset": 6906,
+            "type": 6,
+            "symbol": "??_C@_0DG@KJAIOOPJ@host?5?$CFs?5?$FL?$CFs?$FN?5UNIMPLEMENTED?0?5retu@"
+          },
+          {
+            "offset": 6912,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6927,
+            "type": 6,
+            "symbol": "??_C@_08EMNBMGEO@00b14a10@"
+          },
+          {
+            "offset": 6932,
+            "type": 6,
+            "symbol": "??_C@_0BL@MJFLDCI@Phase?54?5renderer_resources@"
+          },
+          {
+            "offset": 6937,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 6954,
+            "type": 6,
+            "symbol": "??_C@_08EMNBMGEO@00b14a10@"
+          },
+          {
+            "offset": 6959,
+            "type": 6,
+            "symbol": "??_C@_0BL@MJFLDCI@Phase?54?5renderer_resources@"
+          },
+          {
+            "offset": 6964,
+            "type": 6,
+            "symbol": "??_C@_0DG@KJAIOOPJ@host?5?$CFs?5?$FL?$CFs?$FN?5UNIMPLEMENTED?0?5retu@"
+          },
+          {
+            "offset": 6970,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 6983,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 7008,
+            "type": 20,
+            "symbol": "??0InputServices@GameStartupHost@game@bsp@@QAE@AAV123@@Z"
+          },
+          {
+            "offset": 7037,
+            "type": 20,
+            "symbol": "??1GameInputRuntime@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 7044,
+            "type": 20,
+            "symbol": "??1?$vector@PAUIUnknown@@V?$allocator@PAUIUnknown@@@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 7055,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 7077,
+            "type": 20,
+            "symbol": "?startup@GameInputRuntime@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 7089,
+            "type": 6,
+            "symbol": "??_C@_08LHCEAMDC@0073dd8e@"
+          },
+          {
+            "offset": 7094,
+            "type": 6,
+            "symbol": "??_C@_0CB@HPELEBIF@Phase?55?5input_backend_initialize@"
+          },
+          {
+            "offset": 7099,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 7116,
+            "type": 6,
+            "symbol": "??_C@_08LHCEAMDC@0073dd8e@"
+          },
+          {
+            "offset": 7121,
+            "type": 6,
+            "symbol": "??_C@_0CB@HPELEBIF@Phase?55?5input_backend_initialize@"
+          },
+          {
+            "offset": 7126,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 7132,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 7147,
+            "type": 6,
+            "symbol": "??_C@_08LJPDEFBM@0073dd98@"
+          },
+          {
+            "offset": 7152,
+            "type": 6,
+            "symbol": "??_C@_0CJ@JILFGHKN@Phase?55?5input_backend_callback_a@"
+          },
+          {
+            "offset": 7157,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 7174,
+            "type": 6,
+            "symbol": "??_C@_08LJPDEFBM@0073dd98@"
+          },
+          {
+            "offset": 7179,
+            "type": 6,
+            "symbol": "??_C@_0CJ@JILFGHKN@Phase?55?5input_backend_callback_a@"
+          },
+          {
+            "offset": 7184,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 7190,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 7232,
+            "type": 20,
+            "symbol": "?bind_particle_manager_domain@GameSingletonHost@game@bsp@@QAEXAAVGameNativeReadOnlyData@23@@Z"
+          },
+          {
+            "offset": 7243,
+            "type": 20,
+            "symbol": "?particle_manager_context@GameSingletonHost@game@bsp@@QAEAAUNativeParticleModelManagerAccess@3@XZ"
+          },
+          {
+            "offset": 7302,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 7347,
+            "type": 20,
+            "symbol": "?construct_native_particle_model_manager_00af0b10@bsp@@YAPAUNativeParticleModelManagerStorage@1@PAU21@AAUNativeParticleModelManagerAccess@1@@Z"
+          },
+          {
+            "offset": 7372,
+            "type": 6,
+            "symbol": "??_C@_08ILIHONLC@00af0b10@"
+          },
+          {
+            "offset": 7381,
+            "type": 6,
+            "symbol": "??_C@_0CJ@GFJHGNOI@Phase?58?5construct_particle_model@"
+          },
+          {
+            "offset": 7392,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 7409,
+            "type": 6,
+            "symbol": "??_C@_08ILIHONLC@00af0b10@"
+          },
+          {
+            "offset": 7414,
+            "type": 6,
+            "symbol": "??_C@_0CJ@GFJHGNOI@Phase?58?5construct_particle_model@"
+          },
+          {
+            "offset": 7419,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 7425,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 7438,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 7477,
+            "type": 6,
+            "symbol": "??_7GameLocaleHost@game@bsp@@6B@"
+          },
+          {
+            "offset": 7506,
+            "type": 20,
+            "symbol": "_memset"
+          },
+          {
+            "offset": 7719,
+            "type": 20,
+            "symbol": "?language_catalog@GameNativeSettingsApplication@game@bsp@@QBEABV?$vector@ULanguageEntry@bsp@@V?$allocator@ULanguageEntry@bsp@@@std@@@std@@XZ"
+          },
+          {
+            "offset": 7726,
+            "type": 20,
+            "symbol": "?language_name_008d4870@bsp@@YAABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABV?$vector@ULanguageEntry@bsp@@V?$allocator@ULanguageEntry@bsp@@@std@@@3@I@Z"
+          },
+          {
+            "offset": 7742,
+            "type": 20,
+            "symbol": "?locale_source@GameNativeSettingsApplication@game@bsp@@QAEAAVVfsLocaleRuntime@3@XZ"
+          },
+          {
+            "offset": 7755,
+            "type": 20,
+            "symbol": "?initialize@GameLocaleHost@game@bsp@@QAEXAAULocaleTableSource@3@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 7852,
+            "type": 6,
+            "symbol": "??_C@_0BA@OCKLIELN@locale?5table?5?$CFs@"
+          },
+          {
+            "offset": 7860,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 7890,
+            "type": 6,
+            "symbol": "??_C@_0O@CHCFMAIO@FE?4init_legal@"
+          },
+          {
+            "offset": 7900,
+            "type": 6,
+            "symbol": "??_C@_0BD@CBOKKEFJ@globals?4pleasewait@"
+          },
+          {
+            "offset": 7910,
+            "type": 6,
+            "symbol": "??_C@_0BC@CKCLPNMG@globals?4newplayer@"
+          },
+          {
+            "offset": 7996,
+            "type": 20,
+            "symbol": "??$_Construct@$00PBD@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAEXQBDI@Z"
+          },
+          {
+            "offset": 8015,
+            "type": 20,
+            "symbol": "?find_00a9ec70@LocaleTables@bsp@@QBEPBV?$basic_string@_SU?$char_traits@_S@std@@V?$allocator@_S@2@@std@@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@@Z"
+          },
+          {
+            "offset": 8076,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 8127,
+            "type": 6,
+            "symbol": "??_C@_0BJ@IKFCFKJD@locale?5lookup?5?$CFs?5?9?$DO?5miss@"
+          },
+          {
+            "offset": 8135,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 8459,
+            "type": 20,
+            "symbol": "??$_Allocate_for_capacity@$0A@@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@CAPADAAV?$allocator@D@1@AAI@Z"
+          },
+          {
+            "offset": 8522,
+            "type": 20,
+            "symbol": "_memcpy"
+          },
+          {
+            "offset": 8597,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 8621,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 8645,
+            "type": 20,
+            "symbol": "_memcpy"
+          },
+          {
+            "offset": 8808,
+            "type": 6,
+            "symbol": "??_C@_0CD@JNGBFOEP@locale?5lookup?5?$CFs?5?9?$DO?5?$CFzu?5units?5?$CC?$CF@"
+          },
+          {
+            "offset": 8816,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 8831,
+            "type": 6,
+            "symbol": "??_C@_08DKJNAMPM@00a9ec70@"
+          },
+          {
+            "offset": 8836,
+            "type": 6,
+            "symbol": "??_C@_0BG@MLHBNMAL@Phase?56?5locale_lookup@"
+          },
+          {
+            "offset": 8841,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 8858,
+            "type": 6,
+            "symbol": "??_C@_08DKJNAMPM@00a9ec70@"
+          },
+          {
+            "offset": 8863,
+            "type": 6,
+            "symbol": "??_C@_0BG@MLHBNMAL@Phase?56?5locale_lookup@"
+          },
+          {
+            "offset": 8868,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 8874,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 8936,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 8991,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 9041,
+            "type": 20,
+            "symbol": "??0GameFontHost@game@bsp@@QAE@AAVGameHostLog@12@AAVGameVfsHost@12@AAVGameScriptHost@12@AAUIDirect3DDevice9@@I@Z"
+          },
+          {
+            "offset": 9062,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 9123,
+            "type": 20,
+            "symbol": "??0GameFrontendHost@game@bsp@@QAE@AAVGameHostLog@12@AAVGameVfsHost@12@AAVGameScriptHost@12@AAVGameFontHost@12@AAUIDirect3DDevice9@@_N@Z"
+          },
+          {
+            "offset": 9160,
+            "type": 20,
+            "symbol": "?language_catalog@GameNativeSettingsApplication@game@bsp@@QBEABV?$vector@ULanguageEntry@bsp@@V?$allocator@ULanguageEntry@bsp@@@std@@@std@@XZ"
+          },
+          {
+            "offset": 9167,
+            "type": 20,
+            "symbol": "?language_font_path_008d4890@bsp@@YAABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABV?$vector@ULanguageEntry@bsp@@V?$allocator@ULanguageEntry@bsp@@@std@@@3@I@Z"
+          },
+          {
+            "offset": 9182,
+            "type": 20,
+            "symbol": "?run_font_and_gui_startup_0073bae0@GameFrontendHost@game@bsp@@QAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 9200,
+            "type": 20,
+            "symbol": "?sound_lifetime@GameSingletonHost@game@bsp@@QAE?AVSoundLifetimeAccess@3@XZ"
+          },
+          {
+            "offset": 9220,
+            "type": 20,
+            "symbol": "?native_diagnostic_sink_get_or_create_004c14c0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@ACRAU21@VSoundLifetimeAccess@1@@Z"
+          },
+          {
+            "offset": 9234,
+            "type": 20,
+            "symbol": "?registry@GameFontHost@game@bsp@@QAEAAVFontRegistryStartup@3@XZ"
+          },
+          {
+            "offset": 9260,
+            "type": 20,
+            "symbol": "?resource_opens@GameFontHost@game@bsp@@QBEIXZ"
+          },
+          {
+            "offset": 9277,
+            "type": 20,
+            "symbol": "?fingerprint@GameFontHost@game@bsp@@QBEABVFingerprintPayload@3@XZ"
+          },
+          {
+            "offset": 9295,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 9328,
+            "type": 20,
+            "symbol": "??0GameDecalTable@game@bsp@@QAE@AAVGameHostLog@12@AAVGameVfsHost@12@@Z"
+          },
+          {
+            "offset": 9349,
+            "type": 20,
+            "symbol": "?run@GameDecalTable@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 9374,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 9403,
+            "type": 20,
+            "symbol": "??0GameFrameProfiler@game@bsp@@QAE@AAVGameHostLog@12@H@Z"
+          },
+          {
+            "offset": 9424,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 9663,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 9695,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 9727,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 9799,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 9838,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 9902,
+            "type": 20,
+            "symbol": "??0GameMenuHost@game@bsp@@QAE@AAVGameHostLog@12@AAVGameFrontendHost@12@AAUGameStateSlot@2@AAVGameSingletonHost@12@JAAVGameVfsHost@12@AAVGameScriptHost@12@AAVLocaleTables@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@JPAVGameFrameProfiler@12@7JJMMM777M_N@Z"
+          },
+          {
+            "offset": 9932,
+            "type": 20,
+            "symbol": "?mission@GameMenuHost@game@bsp@@QBEPAVGameMissionHost@23@XZ"
+          },
+          {
+            "offset": 9947,
+            "type": 20,
+            "symbol": "?mission@GameMenuHost@game@bsp@@QBEPAVGameMissionHost@23@XZ"
+          },
+          {
+            "offset": 9966,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 9973,
+            "type": 20,
+            "symbol": "?set_order_unit@GameMissionHost@game@bsp@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 9993,
+            "type": 20,
+            "symbol": "?mission@GameMenuHost@game@bsp@@QBEPAVGameMissionHost@23@XZ"
+          },
+          {
+            "offset": 10008,
+            "type": 20,
+            "symbol": "?mission@GameMenuHost@game@bsp@@QBEPAVGameMissionHost@23@XZ"
+          },
+          {
+            "offset": 10027,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 10034,
+            "type": 20,
+            "symbol": "?set_helm_orders@GameMissionHost@game@bsp@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 10054,
+            "type": 20,
+            "symbol": "?mission@GameMenuHost@game@bsp@@QBEPAVGameMissionHost@23@XZ"
+          },
+          {
+            "offset": 10069,
+            "type": 20,
+            "symbol": "?mission@GameMenuHost@game@bsp@@QBEPAVGameMissionHost@23@XZ"
+          },
+          {
+            "offset": 10116,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 10123,
+            "type": 20,
+            "symbol": "?set_ai_drive@GameMissionHost@game@bsp@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@MM@Z"
+          },
+          {
+            "offset": 10131,
+            "type": 20,
+            "symbol": "?initialize_classes_004dd6a8@GameInputRuntime@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 10143,
+            "type": 6,
+            "symbol": "??_C@_08DEMICOLK@004dd6b4@"
+          },
+          {
+            "offset": 10148,
+            "type": 6,
+            "symbol": "??_C@_0CN@JLCHMCIK@OnInitOnce?3?3configure_input_clas@"
+          },
+          {
+            "offset": 10153,
+            "type": 20,
+            "symbol": "?record@GameHostLog@game@bsp@@AAEAAUGameHostMethodRecord@23@PBD0_N@Z"
+          },
+          {
+            "offset": 10170,
+            "type": 6,
+            "symbol": "??_C@_08DEMICOLK@004dd6b4@"
+          },
+          {
+            "offset": 10175,
+            "type": 6,
+            "symbol": "??_C@_0CN@JLCHMCIK@OnInitOnce?3?3configure_input_clas@"
+          },
+          {
+            "offset": 10180,
+            "type": 6,
+            "symbol": "??_C@_0BG@BPAALNKC@host?5?$CFs?5?$FL?$CFs?$FN?5concrete@"
+          },
+          {
+            "offset": 10186,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 10200,
+            "type": 20,
+            "symbol": "?run_title_init_004c9a70@GameMenuHost@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 10211,
+            "type": 20,
+            "symbol": "?summary@GameFrontendHost@game@bsp@@QBEABUGameFrontendSummary@23@XZ"
+          },
+          {
+            "offset": 10292,
+            "type": 20,
+            "symbol": "?open_sprite_bridge@GameFrontendHost@game@bsp@@QAEXII@Z"
+          },
+          {
+            "offset": 10313,
+            "type": 20,
+            "symbol": "?open_text_bridge@GameFrontendHost@game@bsp@@QAEXAAVLocaleTables@3@@Z"
+          },
+          {
+            "offset": 10350,
+            "type": 6,
+            "symbol": "??_7?$_Func_impl_no_alloc@V<lambda_044217e42380f8ed669f48acee5b9210>@@XAAUIDirect3DDevice9@@@std@@6B@"
+          },
+          {
+            "offset": 10362,
+            "type": 20,
+            "symbol": "??4?$function@$$A6AXAAUIDirect3DDevice9@@@Z@std@@QAEAAV01@$$QAV01@@Z"
+          },
+          {
+            "offset": 10402,
+            "type": 20,
+            "symbol": "?hardware_probe@GameVfsHost@game@bsp@@QBEABUGameHardwareProbeSummary@23@XZ"
+          },
+          {
+            "offset": 10421,
+            "type": 20,
+            "symbol": "?hardware_probe@GameVfsHost@game@bsp@@QBEABUGameHardwareProbeSummary@23@XZ"
+          },
+          {
+            "offset": 10450,
+            "type": 20,
+            "symbol": "?registered_parsers@GameVfsHost@game@bsp@@QBEIXZ"
+          },
+          {
+            "offset": 10527,
+            "type": 20,
+            "symbol": "??$_Assign@D@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAEAAV01@QBDI@Z"
+          },
+          {
+            "offset": 10546,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 10653,
+            "type": 6,
+            "symbol": "??_7GameFrameHost@game@bsp@@6B@"
+          },
+          {
+            "offset": 10805,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 10827,
+            "type": 20,
+            "symbol": "??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QAE@ABV01@@Z"
+          },
+          {
+            "offset": 10925,
+            "type": 6,
+            "symbol": "??_7?$_Func_impl_no_alloc@V<lambda_eae1d37c607628cfa638a4e4a76dce99>@@XAAUIDirect3DDevice9@@@std@@6B@"
+          },
+          {
+            "offset": 10942,
+            "type": 6,
+            "symbol": "??_7?$_Func_impl_no_alloc@V<lambda_eae1d37c607628cfa638a4e4a76dce99>@@XAAUIDirect3DDevice9@@@std@@6B@"
+          },
+          {
+            "offset": 11287,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 11349,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 11359,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z"
+          },
+          {
+            "offset": 11670,
+            "type": 6,
+            "symbol": "??_7GameLoopCallbacks@game@bsp@@6B@"
+          },
+          {
+            "offset": 11880,
+            "type": 20,
+            "symbol": "?_Tidy@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 11935,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 12020,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 12101,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 12128,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 12155,
+            "type": 20,
+            "symbol": "??C?$unique_ptr@USoundServices@GameStartupHost@game@bsp@@U?$default_delete@USoundServices@GameStartupHost@game@bsp@@@std@@@std@@QBEPAUSoundServices@GameStartupHost@game@bsp@@XZ"
+          },
+          {
+            "offset": 12166,
+            "type": 20,
+            "symbol": "?fmod@GameSoundRuntime@game@bsp@@QAEAAVFmodConfigurationLibrary@3@XZ"
+          },
+          {
+            "offset": 12173,
+            "type": 20,
+            "symbol": "?calls@FmodConfigurationLibrary@bsp@@QBEABV?$vector@UFmodConfigurationCall@bsp@@V?$allocator@UFmodConfigurationCall@bsp@@@std@@@std@@XZ"
+          },
+          {
+            "offset": 12182,
+            "type": 20,
+            "symbol": "?_Unchecked_begin@?$vector@UFmodConfigurationCall@bsp@@V?$allocator@UFmodConfigurationCall@bsp@@@std@@@std@@QBEPBUFmodConfigurationCall@bsp@@XZ"
+          },
+          {
+            "offset": 12191,
+            "type": 20,
+            "symbol": "?_Unchecked_end@?$vector@UFmodConfigurationCall@bsp@@V?$allocator@UFmodConfigurationCall@bsp@@@std@@@std@@QBEPBUFmodConfigurationCall@bsp@@XZ"
+          },
+          {
+            "offset": 12226,
+            "type": 6,
+            "symbol": "??_C@_0CJ@NBONPIMP@sound?5startup?5FMOD?5failure?3?5?$CFs?5r@"
+          },
+          {
+            "offset": 12234,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 12272,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12277,
+            "type": 6,
+            "symbol": "??_C@_0DM@CJHFBHLN@application?5allocation?5stats?5con@"
+          },
+          {
+            "offset": 12288,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12293,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 12305,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12310,
+            "type": 6,
+            "symbol": "??_C@_0DK@BKOLJEPN@application?5clock?5requires?5retai@"
+          },
+          {
+            "offset": 12321,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12326,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 12338,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12362,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "offset": 12374,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12379,
+            "type": 6,
+            "symbol": "??_C@_0DH@NKJNONFH@application?5clock?5requires?5the?5v@"
+          },
+          {
+            "offset": 12390,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12395,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 12407,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12412,
+            "type": 6,
+            "symbol": "??_C@_0DC@BNBIGCID@Native?5shader?5startup?5modes?5requ@"
+          },
+          {
+            "offset": 12423,
+            "type": 20,
+            "symbol": "??0runtime_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12428,
+            "type": 6,
+            "symbol": "__TI2?AVruntime_error@std@@"
+          },
+          {
+            "offset": 12440,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12445,
+            "type": 6,
+            "symbol": "??_C@_0CN@HBHBNGML@Production?5VFS?5requires?5verified@"
+          },
+          {
+            "offset": 12456,
+            "type": 20,
+            "symbol": "??0runtime_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12461,
+            "type": 6,
+            "symbol": "__TI2?AVruntime_error@std@@"
+          },
+          {
+            "offset": 12473,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12478,
+            "type": 6,
+            "symbol": "??_C@_0DB@EFEGIILE@Script?1settings?5startup?5requires@"
+          },
+          {
+            "offset": 12489,
+            "type": 20,
+            "symbol": "??0runtime_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12494,
+            "type": 6,
+            "symbol": "__TI2?AVruntime_error@std@@"
+          },
+          {
+            "offset": 12506,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12511,
+            "type": 6,
+            "symbol": "??_C@_0DM@BNDEJCGE@application?5particle?5manager?5con@"
+          },
+          {
+            "offset": 12522,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12527,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 12539,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12544,
+            "type": 6,
+            "symbol": "??_C@_0DH@MIAPBBHD@Native?5particle?5manager?5startup?5@"
+          },
+          {
+            "offset": 12555,
+            "type": 20,
+            "symbol": "??0runtime_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12560,
+            "type": 6,
+            "symbol": "__TI2?AVruntime_error@std@@"
+          },
+          {
+            "offset": 12572,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12596,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "offset": 12608,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12613,
+            "type": 6,
+            "symbol": "??_C@_0CK@MIDECBBG@Font?5startup?5requires?5the?5render@"
+          },
+          {
+            "offset": 12624,
+            "type": 20,
+            "symbol": "??0runtime_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12629,
+            "type": 6,
+            "symbol": "__TI2?AVruntime_error@std@@"
+          },
+          {
+            "offset": 12641,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12646,
+            "type": 20,
+            "symbol": "?_Xlen_string@std@@YAXXZ"
+          },
+          {
+            "offset": 12651,
+            "type": 6,
+            "symbol": "??_C@_0CN@FBMMLDO@application?5clock?5context?5is?5not@"
+          },
+          {
+            "offset": 12662,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12667,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 12679,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12684,
+            "type": 6,
+            "symbol": "??_C@_0DL@OJKJMPLN@application?5clock?5consumers?5requ@"
+          },
+          {
+            "offset": 12695,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 12700,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 12712,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12734,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 12743,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instructions": 3056
+      },
+      {
+        "object": "game_hosts_vfs",
+        "prefix": "?initialize@GameLocaleHost@",
+        "index": 1342,
+        "name": ".text$mn",
+        "declared_size": 544,
+        "raw_pointer": 138486,
+        "payload_bytes": 544,
+        "bytes": 544,
+        "sha256": "064c10d9ced32d0bdfd278e08fd4da9f6fc8aa44ecf391edb021925b1259beb2",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?initialize@GameLocaleHost@game@bsp@@QAEXAAULocaleTableSource@3@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 21,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 104,
+            "type": 20,
+            "symbol": "?set_language_00aa09d0@LocaleTables@bsp@@QAE_NAAULocaleTableSource@2@AAULocaleGuiRefreshHost@2@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AA_NAAV56@@Z"
+          },
+          {
+            "offset": 131,
+            "type": 6,
+            "symbol": "??_C@_07NAPALOBA@globals@"
+          },
+          {
+            "offset": 153,
+            "type": 6,
+            "symbol": "??_C@_07NAPALOBA@globals@"
+          },
+          {
+            "offset": 162,
+            "type": 6,
+            "symbol": "??_C@_07NAPALOBA@globals@"
+          },
+          {
+            "offset": 181,
+            "type": 20,
+            "symbol": "?register_table_00aa0d30@LocaleTables@bsp@@QAEXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 198,
+            "type": 20,
+            "symbol": "?reload_00aa06d0@LocaleTables@bsp@@QAE_NAAULocaleTableSource@2@_NAAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z"
+          },
+          {
+            "offset": 214,
+            "type": 6,
+            "symbol": "??_C@_0BH@HMPMGNPD@Locale?5table?5startup?3?5@"
+          },
+          {
+            "offset": 220,
+            "type": 20,
+            "symbol": "??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QBDABV10@@Z"
+          },
+          {
+            "offset": 240,
+            "type": 6,
+            "symbol": "??_C@_08OAPJLJPC@00aa09d0@"
+          },
+          {
+            "offset": 245,
+            "type": 6,
+            "symbol": "??_C@_0BM@GEIEFGNL@Phase?56?5locale_set_language@"
+          },
+          {
+            "offset": 250,
+            "type": 20,
+            "symbol": "?implemented@GameHostLog@game@bsp@@QAEXPBD0@Z"
+          },
+          {
+            "offset": 258,
+            "type": 6,
+            "symbol": "??_C@_08LAGNFGLI@00aa0d30@"
+          },
+          {
+            "offset": 263,
+            "type": 6,
+            "symbol": "??_C@_0CA@LPAIFLBE@Phase?56?5locale_register_globals@"
+          },
+          {
+            "offset": 268,
+            "type": 20,
+            "symbol": "?implemented@GameHostLog@game@bsp@@QAEXPBD0@Z"
+          },
+          {
+            "offset": 276,
+            "type": 6,
+            "symbol": "??_C@_08LIJKKJKE@00aa06d0@"
+          },
+          {
+            "offset": 281,
+            "type": 6,
+            "symbol": "??_C@_0BL@CAECANKK@Phase?56?5locale_load_tables@"
+          },
+          {
+            "offset": 286,
+            "type": 20,
+            "symbol": "?implemented@GameHostLog@game@bsp@@QAEXPBD0@Z"
+          },
+          {
+            "offset": 396,
+            "type": 6,
+            "symbol": "??_C@_0EE@DIPDAMMI@locale?5language?$DN?$CFs?5keys?$DN?$CFzu?5file@"
+          },
+          {
+            "offset": 404,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 452,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 478,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 503,
+            "type": 6,
+            "symbol": "??_C@_0BM@EPKBPFGL@Locale?5language?5selection?3?5@"
+          },
+          {
+            "offset": 509,
+            "type": 20,
+            "symbol": "??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QBDABV10@@Z"
+          },
+          {
+            "offset": 525,
+            "type": 20,
+            "symbol": "??0runtime_error@std@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@@Z"
+          },
+          {
+            "offset": 530,
+            "type": 6,
+            "symbol": "__TI2?AVruntime_error@std@@"
+          },
+          {
+            "offset": 539,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instructions": 166
+      }
+    ]
+  },
+  "future_frontier": {
+    "recommendation": "dormant rawconstructor/base only",
+    "Cpp_authorized_by_this_review": false,
+    "addresses": [
+      "0073C960",
+      "00736540"
+    ],
+    "reusable": [
+      "LocaleTableManagerImage exactlayout",
+      "actualgenericreset00412430",
+      "actualguarddestroy00411EE0",
+      "acceptedactualmanager/registry providers"
+    ],
+    "required_contract": [
+      "stable actualmanager andlocalepublication bindings",
+      "capturedreceiver return",
+      "publication-before-registration withpost-getterreload",
+      "samecapturedsection throughrelease",
+      "baseunwindguardthenrootreset withoutpublicationrepair",
+      "leave3allocatorwords untouched",
+      "do notaddC++destructor orapplicationactivation"
+    ],
+    "activation_prerequisites": [
+      "rawlocale unregister/destructor/scalardelete",
+      "nativeprofiledispatch binding",
+      "bindinglifetime throughdrain",
+      "same-storage loader/setter/lookup andmenu/textconsumer bridge",
+      "captured4040caller allocation/null/throw handover",
+      "failure containment preservingpublication/registry effects"
+    ]
+  },
+  "validation": {
+    "bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_startup_constructor_owner_readiness\\evidence.zip",
+      "bytes": 43819024,
+      "sha256": "6462b203010cb44e7f5a23362d10eeac297c14466778ea06ad0dea750a03a903",
+      "payloads": 3522,
+      "payload_bytes": 280787882
+    },
+    "portable_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_startup_constructor_owner_readiness\\evidence.zip",
+      "payloads": 3522,
+      "epoch": "Source3352-particle-startup",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 5,
+      "Native_spans": 15,
+      "Native_retained_bytes": 623,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_startup_constructor_owner_readiness\\physical_relocation\\evidence.zip",
+      "payloads": 3522,
+      "epoch": "Source3352-particle-startup",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 5,
+      "Native_spans": 15,
+      "Native_retained_bytes": 623,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_startup_constructor_owner_readiness\\physical_relocation\\evidence.zip",
+      "bytes": 43819024,
+      "sha256": "6462b203010cb44e7f5a23362d10eeac297c14466778ea06ad0dea750a03a903"
+    },
+    "complete_selected_sections": 5,
+    "source_build_or_CTest": false,
+    "Original_execution": false,
+    "fixture": false,
+    "ABI": false,
+    "startup_process": false,
+    "gameplay": false,
+    "Ghidra_mutation": false,
+    "Cpp_changes": false,
+    "limitations": [
+      "readiness andretainedartifact verification only",
+      "replay doesnotquerylater livecheckouts",
+      "Nativeprovider bodies415350/BD0C30/allocator notfreshlyreconstructed",
+      "originalFH3/SEH andconcurrency notreproduced",
+      "dormantconstructorEHactionbodies outofscope",
+      "nativecallerreturnuselimited to58Bwindow"
+    ]
+  }
+}
