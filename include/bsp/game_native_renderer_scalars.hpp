@@ -39,6 +39,9 @@ public:
     std::uint32_t& logical_texture_serial_0108d6e8() noexcept;
     std::uint32_t& texture_tracking_counter_0108daf8() noexcept;
     std::uint32_t& surface_tracking_counter_0108dafc() noexcept;
+    // Shared loader-zero binding serial for 00B451D0. Borrowing does not
+    // consume or reset it; this cell is separate from the logical texture serial.
+    volatile std::uint32_t& instance_generator_binding_serial_0108fd30() noexcept;
 
 private:
     friend GameNativeRendererScalarProcess& game_native_renderer_scalar_process();
@@ -56,6 +59,7 @@ private:
     void* volatile shadow_target_publication_00f8bbf0_{};
     GameNativeRendererSectionImport volatile enter_iat_00ce2218_;
     GameNativeRendererSectionImport volatile leave_iat_00ce2210_;
+    std::uint32_t instance_generator_binding_serial_0108fd30_{};
 };
 
 // The function-local process object retains loader-zero scalar preimages and
