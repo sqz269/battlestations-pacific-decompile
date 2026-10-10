@@ -170,4 +170,33 @@ private:
     // identity only as an opaque key; never read/reset Native storage here.
     static void retire_reference(void*, NativeParticleModelReference&) noexcept;
 };
+
+// Dormant HOST adapter for one record's synchronous construction hooks. The
+// caller supplies the already-prepared persistent record and a REAL callee for
+// all five delegated resource/random methods; its two profile hooks are unused.
+// The record, sole owner and borrowed services must outlive failed acquired
+// frames, live models, Native terminals/callbacks and later quiescent disposal.
+// This adapter owns none of them and performs no preparation or disposal.
+class NativeParticleModelPreparedHookAdapter final : public NativeParticleModelConstructionCallees {
+public:
+    NativeParticleModelPreparedHookAdapter(NativeParticleModelPreparedRecord&,
+        NativeParticleModelConstructionCallees&) noexcept;
+    ~NativeParticleModelPreparedHookAdapter() override = default;
+    NativeParticleModelPreparedHookAdapter(const NativeParticleModelPreparedHookAdapter&) = delete;
+    NativeParticleModelPreparedHookAdapter& operator=(const NativeParticleModelPreparedHookAdapter&) = delete;
+    NativeParticleModelPreparedHookAdapter(NativeParticleModelPreparedHookAdapter&&) = delete;
+    NativeParticleModelPreparedHookAdapter& operator=(NativeParticleModelPreparedHookAdapter&&) = delete;
+
+    void bind_particle_profile(NativeModelOwner&) noexcept override;
+    void retire_failed_particle_profile(NativeModelOwner&) noexcept override;
+    void bind_mesh(NativeMeshStorage&) noexcept override;
+    void bind_material(NativeMaterialStorage&) noexcept override;
+    void bind_section(NativeMeshSectionStorage&) noexcept override;
+    void* renderer_virtual5c(void* actual_renderer, std::uint32_t captured_entry,
+        std::uint32_t first, std::uint32_t bytes, void* actual_descriptor) override;
+    float call_00bd2f10(RandomThreads&, RandomStream, float minimum, float maximum) override;
+private:
+    NativeParticleModelPreparedRecord& record_;
+    NativeParticleModelConstructionCallees& delegate_;
+};
 } // namespace bsp
