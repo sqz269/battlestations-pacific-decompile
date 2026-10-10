@@ -139,3 +139,9 @@ Named-but-incomplete follow-ons remain raw AEE620, AEEAF0 plus 00735F90, AEF280,
 the actual F8C26C manager lifetime, AF0060 raw enumeration/whole-span gate, and
 the relevant captured renderer dispatch. A production code packet must wait
 until these contracts can compose without invented ownership or behavior.
+
+Primary review replayed and retained all 38 current Source and six historical
+pins. Source pins match their named baseline Git blobs; changes against current
+main are recorded separately in the report. This is a readiness review only.
+The existing continuing reconstruction goal permits the next separate bounded
+item/cleanup evidence packet; this review itself opens no Native bodies.
