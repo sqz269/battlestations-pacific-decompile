@@ -1,0 +1,7 @@
+# Inner-field Source readiness primary review
+
+Accepted worker `8207a2b5df5450f0c28a8ae03047f0e11f907b00`: Index `[87CF35,87CF70)` is ready as a separate ordinary Source packet. Admission requires the genuine B66270 ST0 result flowing through BF7420 with its actual mutable full DWORD mode, the raw row+8 store while state18 is armed, lowering to17 before actual Lua cleanup, and complete Release object/EH evidence. The original key and row/storage lifetimes remain caller contracts.
+
+Root replays399 pin occurrences,103 exact baseline Git blobs,87 complete current Source snapshots, the worker readonly verifier and all454 retained bytes/134 instructions. Index is59B/13ops, category/Fire ID193B/59ops, and fallback202B/62ops. No new Native window is opened. All current Source snapshots match the frozen worker baseline.
+
+The two effect packets remain conditional: the actual saved Msh buffer capture is private, current header data cannot replace it, and output/flag/string storage requires real live typed identity and the documented callback schedule. Existing genuine providers are present; their existence does not assemble those lifetimes or application contexts. This review adds no C++, CMake, Ghidra, build, ABI, startup or gameplay credit. See [the primary report](../reports/cc12_damageable_section_inner_fields_source_readiness_primary_review.json) and [the packet contract](CC12_DAMAGEABLE_SECTION_INNER_FIELDS_SOURCE_READINESS.md).
