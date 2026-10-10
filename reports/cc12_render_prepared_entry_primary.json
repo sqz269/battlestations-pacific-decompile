@@ -1,0 +1,675 @@
+{
+  "schema": "bsp.cc12.render-prepared-entry-primary.v1",
+  "status": "Source_implementation_integrated_and_build_checked_no_activation",
+  "worker_commit": "8579262d472043dc2eed16e3fb14243c73c90b54",
+  "Root_review": {
+    "path": "local/cc12_render_prepared_entry_primary/Root_review.json",
+    "bytes": 144186,
+    "sha256": "26b67c75fa9cf490c8291d8c5392110b205b4a94f2a6706ba3e5be53e2ca0182"
+  },
+  "Root_before": {
+    "path": "local/cc12_render_prepared_entry_primary/Root_before.json",
+    "bytes": 5022769,
+    "sha256": "619ae7c4eb58b3af6d953c216abb04fab310961663b12777138d1cad0fc90490"
+  },
+  "Root_after": {
+    "path": "local/cc12_render_prepared_entry_primary/Root_after.json",
+    "bytes": 5019325,
+    "sha256": "67cb4adf902c814534f1ac63345544b7fcb38c7a5af920910053c3ab92ea8c0b"
+  },
+  "Source_epoch": {
+    "path": "local/cc12_render_prepared_entry_primary/Source3354_render_prepared_entry_frozen.json",
+    "bytes": 1243633,
+    "sha256": "35a3f9ac2765d19554b7cc2e06dcb3b31ad2b6b93cb1b18005625721b7a2fdaa"
+  },
+  "guarded_replay": {
+    "path": "local/cc12_render_prepared_entry_primary/Root_guarded_replay.json",
+    "bytes": 4301,
+    "sha256": "6c922b3d79d775cd87cdb62e7cfd58253676060723825d118fdd00b764f0e0de"
+  },
+  "worker_proof": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_render_prepared_entry_primary\\evidence.zip",
+      "bytes": 142474843,
+      "sha256": "0f1fc0c475b418341a874640dcd34bf2c8893183ea9574461e891f7aa7336ba2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_render_prepared_entry_primary\\portable_replay.py",
+      "bytes": 45728,
+      "sha256": "17c3f757f40d7d272804aef516490d987ee271991bf5242f82929749cf6a4681"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_render_prepared_entry_primary\\final_commit_check.json",
+      "bytes": 579,
+      "sha256": "59d7e38f458d88be3750a66a100521d454bbd076c2efc365f493e1aab861745a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_render_prepared_entry_primary\\worker_report.json",
+      "bytes": 1278206,
+      "sha256": "ffeb31f25027121e822df0618dd1a485097b8b53480ff69717ba9615d3a0c9c1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_render_prepared_entry_primary\\worker_document.md",
+      "bytes": 12297,
+      "sha256": "62b7f547cc3d6e391eca9fe867256965999b5a1332a3f526c43c794197ce7dd9"
+    }
+  ],
+  "actual_Git": {
+    "before_Source_blobs": 4226,
+    "after_Source_blobs": 4226,
+    "current_Root_Source_LF_equal": 4226,
+    "Root_selected_Source": 3354,
+    "Root_full_src_include": 4208,
+    "Root_capture_Git_union": 4215
+  },
+  "Source_changes": [
+    "include/bsp/native_render_context.hpp",
+    "src/native_render_context.cpp"
+  ],
+  "contract": {
+    "prepare": "Validate raw nonnull/aligned opaque identity, insert one null metadata entry under a short lock; do not read Native +04.",
+    "token": "Move-only registry/key/stable mapped-value address. Registry outlives token; no pending-key erase/extract/replacement. Move/cancel cleans only its own still-null entry.",
+    "publish": "Verify exact registry/key/mapped-value/null state before Native +04 alias and positive-count validation; fill existing entry and consume token. No insert, retain/release, constructor or Native callback.",
+    "failure": "Publication is not noexcept: mutex acquisition can throw. Invalid capability/alias/count terminates. noexcept cancel makes mutex failure fatal.",
+    "existing": "Ordinary bind/unbind/find/resolve/size/empty and callback Source bodies unchanged; enclosing instance storage unchanged.",
+    "pending": "Pending entries count in size, find returns null and resolve rejects until publication."
+  },
+  "compiled": {
+    "Core_objects_each": 1989,
+    "App_objects_each": 80,
+    "before_code_sections": 174279,
+    "after_code_sections": 174290,
+    "exact_code_sections": 174277,
+    "changed_existing_code_sections": [
+      {
+        "before": {
+          "group": "Core",
+          "object": "native_render_context.obj",
+          "identity": "?unbind@NativeRenderActualOwnerRegistry@bsp@@QAEXPAXAAVRenderCommandReference@2@@Z",
+          "section": 391,
+          "bytes": 360,
+          "sha256": "7997cb1099c8fc3a969655cf6fbec7749a3f1c0cdaf2944de95b69f8026cfa8c",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__ehhandler$?unbind@NativeRenderActualOwnerRegistry@bsp@@QAEXPAXAAVRenderCommandReference@2@@Z"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 47,
+              "type": 20,
+              "symbol": "__Mtx_lock"
+            },
+            {
+              "offset": 143,
+              "type": 20,
+              "symbol": "??$_Find_last@PAX@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@IBE?AU?$_Hash_find_last_result@PAU?$_List_node@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@PAX@std@@@1@ABQAXI@Z"
+            },
+            {
+              "offset": 297,
+              "type": 20,
+              "symbol": "??3@YAXPAXI@Z"
+            },
+            {
+              "offset": 303,
+              "type": 20,
+              "symbol": "__Mtx_unlock"
+            },
+            {
+              "offset": 332,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 339,
+              "type": 20,
+              "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+            },
+            {
+              "offset": 350,
+              "type": 20,
+              "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+            }
+          ]
+        },
+        "after": {
+          "group": "Core",
+          "object": "native_render_context.obj",
+          "identity": "?unbind@NativeRenderActualOwnerRegistry@bsp@@QAEXPAXAAVRenderCommandReference@2@@Z",
+          "section": 403,
+          "bytes": 242,
+          "sha256": "2f70ca73fb00b5e96407736f84443de06d697374c404db282b9f51f096b1a06a",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__ehhandler$?unbind@NativeRenderActualOwnerRegistry@bsp@@QAEXPAXAAVRenderCommandReference@2@@Z"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 47,
+              "type": 20,
+              "symbol": "__Mtx_lock"
+            },
+            {
+              "offset": 143,
+              "type": 20,
+              "symbol": "??$_Find_last@PAX@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@IBE?AU?$_Hash_find_last_result@PAU?$_List_node@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@PAX@std@@@1@ABQAXI@Z"
+            },
+            {
+              "offset": 179,
+              "type": 20,
+              "symbol": "??$erase@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@std@@$0A@@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@QAE?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@1@V21@@Z"
+            },
+            {
+              "offset": 185,
+              "type": 20,
+              "symbol": "__Mtx_unlock"
+            },
+            {
+              "offset": 214,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 221,
+              "type": 20,
+              "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+            },
+            {
+              "offset": 232,
+              "type": 20,
+              "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+            }
+          ]
+        }
+      },
+      {
+        "before": {
+          "group": "Core",
+          "object": "native_render_context.obj",
+          "identity": "?unbind_callback@NativeRenderActualOwnerRegistry@bsp@@SAXPAX0AAVRenderCommandReference@2@@Z",
+          "section": 393,
+          "bytes": 29,
+          "sha256": "46b8c388c0fe5e4267b121ec34531175b6b64a9924cc80158a5c3e89a7cd2ccc",
+          "relocations": [
+            {
+              "offset": 12,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 23,
+              "type": 20,
+              "symbol": "?unbind@NativeRenderActualOwnerRegistry@bsp@@QAEXPAXAAVRenderCommandReference@2@@Z"
+            }
+          ]
+        },
+        "after": {
+          "group": "Core",
+          "object": "native_render_context.obj",
+          "identity": "?unbind_callback@NativeRenderActualOwnerRegistry@bsp@@SAXPAX0AAVRenderCommandReference@2@@Z",
+          "section": 405,
+          "bytes": 293,
+          "sha256": "cbb3ee9d70437a025d18c8d10cdfce3ce414f040d91f37e4f6f6f43434809b4e",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__ehhandler$?unbind_callback@NativeRenderActualOwnerRegistry@bsp@@SAXPAX0AAVRenderCommandReference@2@@Z"
+            },
+            {
+              "offset": 24,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 93,
+              "type": 20,
+              "symbol": "__Mtx_lock"
+            },
+            {
+              "offset": 194,
+              "type": 20,
+              "symbol": "??$_Find_last@PAX@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@IBE?AU?$_Hash_find_last_result@PAU?$_List_node@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@PAX@std@@@1@ABQAXI@Z"
+            },
+            {
+              "offset": 232,
+              "type": 20,
+              "symbol": "??$erase@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@std@@$0A@@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@QAE?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@1@V21@@Z"
+            },
+            {
+              "offset": 238,
+              "type": 20,
+              "symbol": "__Mtx_unlock"
+            },
+            {
+              "offset": 265,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 272,
+              "type": 20,
+              "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+            },
+            {
+              "offset": 283,
+              "type": 20,
+              "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+            }
+          ]
+        }
+      }
+    ],
+    "added_code_sections": [
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "??0BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@AAE@AAV12@PAXPAPAVRenderCommandReference@2@@Z",
+        "section": 128,
+        "bytes": 26,
+        "sha256": "d50efaaa483f0c2af05a2fa28c605846fe87171db4c5bf93eb050a374482a562",
+        "relocations": []
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "??0BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAE@$$QAV012@@Z",
+        "section": 129,
+        "bytes": 48,
+        "sha256": "077de6730e0688ccfd5d9a4b5717ee4d0593fc800735a813aa5fd8e9d73a93fc",
+        "relocations": []
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "??1BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAE@XZ",
+        "section": 181,
+        "bytes": 5,
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "relocations": [
+          {
+            "offset": 1,
+            "type": 20,
+            "symbol": "?cancel@BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAEXXZ"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "??4BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAEAAV012@$$QAV012@@Z",
+        "section": 208,
+        "bytes": 63,
+        "sha256": "eb52df8113b721144a442978f253b7fcd89708d62c00b57c5c4157c0a0a66aac",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "?cancel@BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAEXXZ"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "??D?$unique_ptr@UImpl@NativeRenderActualOwnerRegistry@bsp@@U?$default_delete@UImpl@NativeRenderActualOwnerRegistry@bsp@@@std@@@std@@QBEAAUImpl@NativeRenderActualOwnerRegistry@bsp@@XZ",
+        "section": 224,
+        "bytes": 3,
+        "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa",
+        "relocations": []
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "?cancel@BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAEXXZ",
+        "section": 345,
+        "bytes": 198,
+        "sha256": "5f5478ed9b10d4bfc9a521d94b394109cb87d4638190ba953bf0da59ae6f0818",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?cancel@BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 22,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 51,
+            "type": 20,
+            "symbol": "__Mtx_lock"
+          },
+          {
+            "offset": 84,
+            "type": 20,
+            "symbol": "?find@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@QAE?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@2@ABQAX@Z"
+          },
+          {
+            "offset": 118,
+            "type": 20,
+            "symbol": "??$erase@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@std@@$0A@@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@QAE?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@1@V21@@Z"
+          },
+          {
+            "offset": 143,
+            "type": 20,
+            "symbol": "__Mtx_unlock"
+          },
+          {
+            "offset": 170,
+            "type": 6,
+            "symbol": "__imp__terminate"
+          },
+          {
+            "offset": 177,
+            "type": 20,
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "offset": 188,
+            "type": 20,
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "__ehhandler$?cancel@BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAEXXZ",
+        "section": 346,
+        "bytes": 29,
+        "sha256": "793d61246a06b7df03c69a77c80935aa4ddf073a062a1c62fcc7ea2a6688c892",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 20,
+            "type": 6,
+            "symbol": "__ehfuncinfo$?cancel@BindingAdmission@NativeRenderActualOwnerRegistry@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 25,
+            "type": 20,
+            "symbol": "___CxxFrameHandler3"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "?prepare_binding@NativeRenderActualOwnerRegistry@bsp@@QAE?AVBindingAdmission@12@PAX@Z",
+        "section": 383,
+        "bytes": 265,
+        "sha256": "72cbc89a6618ae31130c4e256d80c3faa31ebb7b6320cb190abada287428d294",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?prepare_binding@NativeRenderActualOwnerRegistry@bsp@@QAE?AVBindingAdmission@12@PAX@Z"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 69,
+            "type": 20,
+            "symbol": "__Mtx_lock"
+          },
+          {
+            "offset": 131,
+            "type": 20,
+            "symbol": "??$emplace@AAPAXPAVRenderCommandReference@bsp@@@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@QAE?AU?$pair@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@std@@_N@1@AAPAX$$QAPAVRenderCommandReference@bsp@@@Z"
+          },
+          {
+            "offset": 163,
+            "type": 20,
+            "symbol": "__Mtx_unlock"
+          },
+          {
+            "offset": 193,
+            "type": 6,
+            "symbol": "??_C@_0DK@NFBMEIAP@native?5owner?5registry?5requires?5a@"
+          },
+          {
+            "offset": 201,
+            "type": 20,
+            "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 206,
+            "type": 6,
+            "symbol": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "offset": 215,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 222,
+            "type": 20,
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "offset": 233,
+            "type": 20,
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "offset": 238,
+            "type": 6,
+            "symbol": "??_C@_0DD@GODOLGPN@native?5owner?5identity?5already?5ha@"
+          },
+          {
+            "offset": 246,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 251,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 260,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "__unwindfunclet$?prepare_binding@NativeRenderActualOwnerRegistry@bsp@@QAE?AVBindingAdmission@12@PAX@Z$0",
+        "section": 384,
+        "bytes": 42,
+        "sha256": "0ece9477dbb527f8ce52d1cc8ebc51b4327da9aaa15f8dc13a94e15d03abbc3b",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 20,
+            "symbol": "??1?$lock_guard@Vmutex@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 28,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 33,
+            "type": 6,
+            "symbol": "__ehfuncinfo$?prepare_binding@NativeRenderActualOwnerRegistry@bsp@@QAE?AVBindingAdmission@12@PAX@Z"
+          },
+          {
+            "offset": 38,
+            "type": 20,
+            "symbol": "___CxxFrameHandler3"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "?publish@NativeRenderActualOwnerRegistry@bsp@@QAEX$$QAVBindingAdmission@12@AAVRenderCommandReference@2@@Z",
+        "section": 385,
+        "bytes": 167,
+        "sha256": "f6e8632d6e7eab5e0a09f89fb7c9e62392d9c59a55801b900ef2fef3a4978ec3",
+        "relocations": [
+          {
+            "offset": 20,
+            "type": 20,
+            "symbol": "__Mtx_lock"
+          },
+          {
+            "offset": 56,
+            "type": 20,
+            "symbol": "?find@?$_Hash@V?$_Umap_traits@PAXPAVRenderCommandReference@bsp@@V?$_Uhash_compare@PAXU?$hash@PAX@std@@U?$equal_to@PAX@2@@std@@V?$allocator@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@4@$0A@@std@@@std@@QAE?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@QAXPAVRenderCommandReference@bsp@@@std@@@std@@@std@@@2@ABQAX@Z"
+          },
+          {
+            "offset": 128,
+            "type": 20,
+            "symbol": "__Mtx_unlock"
+          },
+          {
+            "offset": 144,
+            "type": 6,
+            "symbol": "__imp__terminate"
+          },
+          {
+            "offset": 151,
+            "type": 20,
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          },
+          {
+            "offset": 162,
+            "type": 20,
+            "symbol": "?_Throw_Cpp_error@std@@YAXH@Z"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_render_context.obj",
+        "identity": "__ehhandler$?unbind_callback@NativeRenderActualOwnerRegistry@bsp@@SAXPAX0AAVRenderCommandReference@2@@Z",
+        "section": 406,
+        "bytes": 29,
+        "sha256": "de50d5cf7b34573d5321c7f14cae5853d1153ecc9e75bd47e1e242bd17cb630f",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 20,
+            "type": 6,
+            "symbol": "__ehfuncinfo$?unbind_callback@NativeRenderActualOwnerRegistry@bsp@@SAXPAX0AAVRenderCommandReference@2@@Z"
+          },
+          {
+            "offset": 25,
+            "type": 20,
+            "symbol": "___CxxFrameHandler3"
+          }
+        ]
+      }
+    ],
+    "removed_code_sections": [],
+    "whole_Core_objects_changed": 366,
+    "whole_App_objects_changed": 21,
+    "all_App_code_exact": true,
+    "Root_worker_complete_registry_decodes": [
+      {
+        "phase": "before",
+        "complete_registry_decodes": 31,
+        "all_payloads_and_exact_symbolic_relocations_equal": true
+      },
+      {
+        "phase": "after",
+        "complete_registry_decodes": 42,
+        "all_payloads_and_exact_symbolic_relocations_equal": true
+      }
+    ],
+    "complete_physical_indices_each": 22,
+    "optimizer_positive_closure": [
+      {
+        "phase": "before",
+        "nodes": 16,
+        "edges": 18,
+        "complete_nonimport_payloads_and_symbolic_relocations_equal": true,
+        "Root_linked_operands_and_import_definitions_independently_verified": true
+      },
+      {
+        "phase": "after",
+        "nodes": 20,
+        "edges": 31,
+        "complete_nonimport_payloads_and_symbolic_relocations_equal": true,
+        "Root_linked_operands_and_import_definitions_independently_verified": true
+      }
+    ],
+    "all_Root_optimizer_closure_sections_match_actual_linked_image_after_exact_relocations": true,
+    "Root_artifacts": {
+      "path": "local/cc12_render_prepared_entry_primary/Root_artifact_comparison.json",
+      "bytes": 4795783,
+      "sha256": "fe851502b184d154d1cc6ab4ddd00fa8cc04d5c3da9041891b852258a2d1c3b7"
+    }
+  },
+  "validation": {
+    "Root_fresh_before_after_normal_MSVC_Win32_builds": true,
+    "existing_checks_each": "3/3 passed",
+    "worker_fresh_before_after_builds": "3/3 existing checks each",
+    "Root_probe_execution": false,
+    "worker_focused_manifested_probe": {
+      "manifest_bytes": 381,
+      "manifest_resource_path": [
+        24,
+        1,
+        1033
+      ],
+      "manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+      "qualification": "Validates the retained one-scenario execution receipt, output, binary and embedded manifest; replay does not execute the probe. Counters observe the overridden C++ allocation functions, not a universal heap monitor.",
+      "result": {
+        "extra_prepared_entries": 4096,
+        "final_registry_size": 0,
+        "largest_growth_cpp_allocation": 65571,
+        "native_count_before_after": 7,
+        "observed_growth_cpp_allocations": 4102,
+        "publication_cpp_allocations": 0,
+        "publication_rejected_cpp_allocations": 0,
+        "scenario": "prepared_entry_rehash_publish_retire",
+        "status": "pass",
+        "terminal_calls": 0
+      }
+    },
+    "public_prepare_publish_direct_Core_App_code_relocations": []
+  },
+  "remaining": [
+    "Persistent particle companion/producer storage and cleanup are absent.",
+    "Generated-model admission, particle profile bind, same canonical registry publication and creator credit require one caller contract.",
+    "Factory construction, generated-model callback/retirement lifetime and quiescence remain unready.",
+    "No application activation, Original Native constructor, Original ABI or gameplay validation."
+  ],
+  "limits": [
+    "Source/static compiled proof and existing checks; no Original constructor execution, Original ABI or gameplay validation.",
+    "No persistent particle companion, caller activation, Native profile hook, or count adjustment is added.",
+    "Publication can fail at mutex acquisition; it is not a universal no-fail/no-allocation heap claim.",
+    "Worker probe observes its overridden C++ allocators only; Root replays retained receipt and does not reexecute it.",
+    "Whole Core objects, App objects, EXE and linked .text differ. No whole-artifact equality claim."
+  ]
+}
