@@ -1,0 +1,508 @@
+{
+  "schema": 1,
+  "packet": "cc12_atlas_actual_provider_source_readiness",
+  "decision": "No complete genuine production atlas Source provider is ready to wire; reconstruct the actual raw item ownership and parser/registration gaps first. Existing retained VFS and renderer texture providers can be borrowed under their contracts.",
+  "source_baseline_commit": "2c49c7456632e160e879190e37500f0305676b90",
+  "observed_utc": "2026-10-10T00:05:32.664380+00:00",
+  "scope": "Current Source/config and selected historical evidence with capped metadata index queries only. No new Native body/data/handler/GPR reads or writes, no exports opened, no original installation reads/runs, no C++/build/test edits, no SDK/audio/runtime probe. Local index rebuilt from existing snapshots/ledgers for bounded lookup.",
+  "current_source_pins": [
+    {
+      "path": "src/game_hosts_menu.cpp",
+      "bytes": 88818,
+      "sha256": "e88a9561e5b3be250d4b0e36f4b166debb0c4f30c049dd49d7f13420f9c19b1e"
+    },
+    {
+      "path": "src/game_hosts_frontend.cpp",
+      "bytes": 56749,
+      "sha256": "226bd00fa6df20777d66975e8e3260f08eb75bde1c0be3d6f8b1b0e3230867f6"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 120868,
+      "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+    },
+    {
+      "path": "src/texture_atlas.cpp",
+      "bytes": 7033,
+      "sha256": "ea53ac547da672ef767d040ebd5dd04276ec4a0638562f61f0dd87a5d1156276"
+    },
+    {
+      "path": "include/bsp/texture_atlas.hpp",
+      "bytes": 2011,
+      "sha256": "e1ff70e6bb44e40967f53c55bc1bdfd6d9a428f2adb19ed592b846377b24aaa5"
+    },
+    {
+      "path": "src/texture_atlas_lookup.cpp",
+      "bytes": 2024,
+      "sha256": "cc1d03bbb9da7adb0f09c3f76a622eb5541f6ce896a303ce07ec6e013170e614"
+    },
+    {
+      "path": "src/world_effects_startup.cpp",
+      "bytes": 11331,
+      "sha256": "03062b95b8c2f1336503408082a3ac749082d4d2f00aa69ed77708a54a0eb7ea"
+    },
+    {
+      "path": "include/bsp/world_effects_startup.hpp",
+      "bytes": 16160,
+      "sha256": "5c7f960fad76bb593b93fc295ead076cb676dbf05bf1c9990a98e46e7c55aad5"
+    },
+    {
+      "path": "src/native_particle_texture_names_raw.cpp",
+      "bytes": 14759,
+      "sha256": "fb57ea62196906006c62164ac2710bc4379273b9c065b54f8170baac5ea50761"
+    },
+    {
+      "path": "include/bsp/native_particle_texture_names_raw.hpp",
+      "bytes": 2444,
+      "sha256": "96527a03f29e6edd2511735b94f7dc961127a31a890df02a91a827e5743c8c43"
+    },
+    {
+      "path": "src/native_pooled_text.cpp",
+      "bytes": 15018,
+      "sha256": "da9bf235546af58d385dc0f964c73bb89fd4ea7c8c18e0d66ad57d5a1326da9e"
+    },
+    {
+      "path": "include/bsp/native_pooled_text.hpp",
+      "bytes": 5230,
+      "sha256": "7496f31d04f73e73d6115fa7840ebb0855a3be470e8491cc8e82b7bc3cc1063b"
+    },
+    {
+      "path": "src/native_particle_text_loader.cpp",
+      "bytes": 3537,
+      "sha256": "ca5b120e1207bc0e48846f8b2f33b238c2e390781f1286c2113ff0044dc89448"
+    },
+    {
+      "path": "include/bsp/native_particle_text_loader.hpp",
+      "bytes": 2472,
+      "sha256": "5279f80eefbf6f4aa6bf4161212ccc52c9b550c49a5aa02a0596c8a1d59c50fd"
+    },
+    {
+      "path": "src/native_particle_resource_loading.cpp",
+      "bytes": 3300,
+      "sha256": "a87524c5b10f9a9acfb3735e5f5b9c7abc5acded08b450b653674f940c859d60"
+    },
+    {
+      "path": "include/bsp/native_particle_resource_loading.hpp",
+      "bytes": 1037,
+      "sha256": "bc7f22dc50e1f6dcd6fde4ce07ab2edc856b0dd93b08dba011be8fe3c9333fe9"
+    },
+    {
+      "path": "src/native_cube_texture_owner_array_reserve.cpp",
+      "bytes": 3238,
+      "sha256": "f8456b8a3477eb07bbef1f5cd207ef27f145d501b5d09f43c0701ba47b1f4779"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner_array_reserve.hpp",
+      "bytes": 1167,
+      "sha256": "6ecffbb6def9f0d27c8d0a5d16408f4000c4fb8f9b650b8a6c5a3d58baf585b8"
+    },
+    {
+      "path": "src/game_native_renderer_textures.inc",
+      "bytes": 2949,
+      "sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 38240,
+      "sha256": "cca0567a8031dfaa267dd37ccf48396eb2ceeb91257f4f81aabdd1c0d4a40f90"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 8283,
+      "sha256": "f91e34a463addb6de2f469276d45d018f0d2f67b33675cc5c5f7769fca57a346"
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "bytes": 35513,
+      "sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "bytes": 9565,
+      "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "bytes": 11040,
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "bytes": 42965,
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "bytes": 3247,
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_logical_texture_named_base.cpp",
+      "bytes": 4603,
+      "sha256": "8b5c3ae67f9872d72e2fe163a539225c9cc09aa96aaf7ee01d0fa59913c58fd3"
+    },
+    {
+      "path": "include/bsp/native_logical_texture_named_base.hpp",
+      "bytes": 3318,
+      "sha256": "d8918bdac4be9d04cfc0b9f4ecc5c058475f865e282bf01dd62fc44a8773006d"
+    },
+    {
+      "path": "src/native_particle_type_texture_raw.cpp",
+      "bytes": 7083,
+      "sha256": "96009b70a6c311fd24ce896cc0a3d33822c7cbae6952693a432914490dcb790a"
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "bytes": 6831,
+      "sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3"
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "bytes": 7776,
+      "sha256": "3dccb77123934f61f43a341b05cf56367d7b7d5fc5ffc632b078b69b62317d27"
+    },
+    {
+      "path": "include/bsp/app_shutdown.hpp",
+      "bytes": 11615,
+      "sha256": "b1d746a79d81408ee9e05fda19fb289fe5c1cd02aaf215eac89580d1512086ce"
+    },
+    {
+      "path": "src/gui_resources.cpp",
+      "bytes": 3744,
+      "sha256": "eb24e9beb9361eb9751e03c4b978082ed190369234855d2470c6176539941983"
+    },
+    {
+      "path": "src/gui_texture.cpp",
+      "bytes": 3258,
+      "sha256": "9aa07ad4775f94ae00205a4462b8042a76a0f08afd7892f4f9462c6bae79198a"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 200170,
+      "sha256": "f2ca5a918323d1da5ed262848d62f9e2710c5a0af15e6c22031656e1b6ebb1ff"
+    },
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "bytes": 11990,
+      "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "bytes": 11544,
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    }
+  ],
+  "selected_historical_evidence_pins": [
+    {
+      "path": "docs/CC12_ATLAS_STARTUP_PROVIDER_READINESS.md",
+      "bytes": 1962,
+      "sha256": "f9a6e95b16035223ef87bdd590acaee160519e3f0be77c178c7bc606d59fc178"
+    },
+    {
+      "path": "reports/cc12_atlas_startup_provider_readiness.json",
+      "bytes": 4419,
+      "sha256": "3c92fdfa4b8f762883cc3cd3e580f2dbd0ca3d59ec279b3417dee428edf71712"
+    },
+    {
+      "path": "docs/CC12_ATLAS_MESH_SOURCE_PRIMARY_REVIEW.md",
+      "bytes": 3191,
+      "sha256": "27a1a97d6a80680515461939f7b87fdabf4658ee14f05007b7710fba5becc14b"
+    },
+    {
+      "path": "docs/ATLAS_PARSER.md",
+      "bytes": 10512,
+      "sha256": "ec4f5cf976839dcd44efcc8748e9b399f5628df9c2ea64fdf8b3ffb4f04e3a57"
+    },
+    {
+      "path": "docs/APP_INIT_WORLD_EFFECTS.md",
+      "bytes": 20378,
+      "sha256": "b70f1b003cda3f3537882d5963216c0d1948fe95794b1d93c0c1b3ce058f8feb"
+    },
+    {
+      "path": "docs/ASSET_ENTRY.md",
+      "bytes": 5594,
+      "sha256": "dfa285ad0b03d8d7f6fda6c358ec5861adf5f12492c752be7664e3096e7816cc"
+    }
+  ],
+  "historical_qualifications": {
+    "root_correction": "registered_atlas_texture_paths is called after each matching candidate instead of once before the loop. Ordered VFS resolution/loading and counters remain the existing semantic interface.",
+    "AF0060_span": {
+      "physical_bytes": 935,
+      "physical_starts": 304,
+      "typed_starts": 289,
+      "exact_AddressSet_available": false,
+      "whole_body_admission": false
+    },
+    "GUI_dispatch": "AA5E60 is internal to AA5E20. Actual dispatch AA5EA2 captures current F8D394 renderer, reads slot64, passes actual name and flag0, then AA5EA4 publishes result to manager+28. No current captured target is inferred from a companion C++ type.",
+    "prior_credit": {
+      "semantic_Source_fix": true,
+      "fixture_callback_order": true,
+      "whole_Native_function": false,
+      "original_ABI": false,
+      "production_atlas_bound": false,
+      "startup": false,
+      "gameplay": false
+    },
+    "old_docs_overridden": "APP_INIT_WORLD_EFFECTS.md claim that requestedATS-vs-DDS guard cannot fire is stale and superseded by Root current-registry qualification. ASSET_ENTRY.md descriptions of yet-unrecovered token/VFS helpers are historical; current genuine helper Source now exists. Installed variant/file counts are historical metadata, not rechecked assets in this packet."
+  },
+  "existing_genuine_source": [
+    {
+      "domain": "Native text/token primitives",
+      "files": [
+        "include/bsp/native_pooled_text.hpp",
+        "src/native_pooled_text.cpp"
+      ],
+      "addresses": [
+        "00af5600",
+        "00af55f0",
+        "00af5740",
+        "00aee340",
+        "00aee3c0",
+        "00aee2a0"
+      ],
+      "contract": "Actual1Ch text buffer, actual4h pooled-text headers and actual8h NativeString headers remain distinct. Borrow the same raw pool cells01090AA8/01090AA0 and shared F8C2C8 line scratch. Initialization leaves extent+8 untouched; line/token behavior has native unsafe/missing-token and shared nonreentrant scratch boundaries; raw overloads propagate provider failures."
+    },
+    {
+      "domain": "Native descriptor file loader/cleanup",
+      "files": [
+        "include/bsp/native_particle_text_loader.hpp",
+        "src/native_particle_text_loader.cpp",
+        "include/bsp/native_particle_resource_loading.hpp",
+        "src/native_particle_resource_loading.cpp"
+      ],
+      "addresses": [
+        "00af5850",
+        "00af5620"
+      ],
+      "contract": "AF5850 requires a fresh retained NativeVfsNameResolutionAcquired and actual1Ch text buffer; borrow same live0109CEEC and VFS services. Flags32h, one current virtual24 read, low32 length; mismatch frees current data but does not release stream. Failed/incomplete resolver frames require process retention. AF5620 frees captured+14 before releasing current name+C, leaving stale fields."
+    },
+    {
+      "domain": "Actual VFS application provider",
+      "files": [
+        "include/bsp/game_native_vfs_runtime.hpp",
+        "src/game_native_vfs_runtime.cpp"
+      ],
+      "addresses": [
+        "0109ceec",
+        "01090aa0"
+      ],
+      "contract": "GameVfsHost.borrow_raw_services/GameNativeVfsRuntime expose the existing actual publication, bindings, name-resolution, dates, open/conversion routes, enumeration, strings and retained-memory domains. This borrowed view owns no native storage or acquired operation. Runtime and inputs survive consumers/shared drain."
+    },
+    {
+      "domain": "Pointer-array reserve",
+      "files": [
+        "include/bsp/native_cube_texture_owner_array_reserve.hpp",
+        "src/native_cube_texture_owner_array_reserve.cpp"
+      ],
+      "addresses": [
+        "00735ff0"
+      ],
+      "contract": "Complete Source raw12h table/count/capacity reserve with current field reloads, DWORD wrap and table-then-capacity publication. No substitute for00735F90, which is separately named-but-incomplete."
+    },
+    {
+      "domain": "Raw item lookup and consumers",
+      "files": [
+        "include/bsp/native_particle_texture_names_raw.hpp",
+        "src/native_particle_texture_names_raw.cpp",
+        "src/native_particle_type_texture_raw.cpp"
+      ],
+      "addresses": [
+        "00aefb20",
+        "00aee0f0",
+        "00f8c26c"
+      ],
+      "contract": "Borrow actual manager; current+4 item-pointer array and signed+8 count; actual30h item name header+0C. AEFB20 returns borrowed item whose storage must outlive use. Particle contexts accept actual F8C26C cell supplied externally; they do not construct/publish the atlas manager."
+    },
+    {
+      "domain": "Retained actual renderer/cache/texture owners",
+      "files": [
+        "include/bsp/game_native_renderer_application.hpp",
+        "src/game_native_renderer_application.cpp",
+        "src/game_native_renderer_textures.inc",
+        "include/bsp/native_texture_loading_cache.hpp",
+        "src/native_texture_loading_cache.cpp",
+        "include/bsp/native_texture_2d_owner.hpp"
+      ],
+      "addresses": [
+        "00f8d394",
+        "00b319b0",
+        "00b30b40",
+        "00b3f930",
+        "00b3f2e0",
+        "00b3f590"
+      ],
+      "contract": "GameNativeRendererApplication owns TextureLoadingGraph over SAME VFS, canonical actual owner registry, process pools, renderer notification, serial/counters, source memory and actual D3DX imports. texture_cache() exposes it. Keep loading/cache acquired frames retained on failure; no replay, rollback or substitute owner map. Release ordinary returned logical-texture references before shared renderer drain. B319B0 binding is admissible only when actual captured profile/slot equals supported established target."
+    },
+    {
+      "domain": "Logical-texture named prefix",
+      "files": [
+        "include/bsp/native_logical_texture_named_base.hpp",
+        "src/native_logical_texture_named_base.cpp"
+      ],
+      "addresses": [
+        "00b34120",
+        "00b34230",
+        "00b33f50",
+        "00b34010",
+        "00b33e40",
+        "0108d6e8"
+      ],
+      "contract": "Actual24h owner prefix/count/name/borrowedCOM/flags/sharedserial Source exists with failed construction retention. This prefix is not a complete texture owner/cache/source lifetime. Atlas items must borrow logical owners, never cast COM handles into this domain."
+    }
+  ],
+  "missing_or_held_prerequisites": [
+    {
+      "gate": "actual_atlas_manager_publication_lifetime",
+      "addresses": [
+        "00f8c26c",
+        "0073de2c",
+        "007382d2",
+        "00aef090",
+        "00737f10"
+      ],
+      "source_status": "No actual F8C26C publication/accessor/manager owner in current GameSingletonHost/startup. app_shutdown.hpp schedules F8C26C release at7382D2 but does not provide that owner. AEF090 and scalar deleting caller737F10 have metadata only; complete manager constructor/publication/destructor profile and disposal order not established by this packet.",
+      "must_preserve": "Manager item array+4/+8/+0C and texture array+10/+14/+18, each current raw header; manager/current publication and all arrays/items/logical texture ownership survive readers and shutdown. Do not invent a struct constructor, raw-array mapper or destructor from the known offsets."
+    },
+    {
+      "gate": "raw_item_constructor_and_cleanup",
+      "addresses": [
+        "00aee4d0",
+        "00aee220",
+        "00aeead0"
+      ],
+      "source_status": "AEE4D0 no reconstructed Source record; AEE220 metadata only, called by deleting wrapperAEEAD0, manager cleanupAEF090 and unloadAEFA30. Cleanup roles/complete behavior require new bounded evidence in a later authorized packet.",
+      "known_item_layout": {
+        "bytes": 48,
+        "descriptor_header": [
+          0,
+          4
+        ],
+        "borrowed_logical_texture": 8,
+        "name_header": [
+          12,
+          16
+        ],
+        "uv_float_fields": [
+          20,
+          24,
+          28,
+          32
+        ],
+        "packed_uv_words": [
+          36,
+          38,
+          40,
+          42,
+          44,
+          46
+        ]
+      },
+      "must_preserve": "Raw8h descriptor/name strings and borrowed texture; last dot truncation excludes position0. Constructor leaves UV/packed fields unwritten. Recover exact string-copy/unwind/failure order and actual cleanup before admitting retained item owner; no value-initialized semantic record or added reference."
+    },
+    {
+      "gate": "raw_item_parameter_parser",
+      "addresses": [
+        "00aee620"
+      ],
+      "source_status": "Only semantic_complete_finite_fixture_fields_checked in texture_atlas.cpp. No raw actual30h parser interface.",
+      "must_preserve": "Unwritten Params stay unwritten; repeated values/EOF/partial failures retain original stores. x87 truncate-to-zero and extended subtraction/multiply for six low16 outputs require arithmetic and current cleanup evidence; semantic default arrays are not compatible."
+    },
+    {
+      "gate": "raw_outer_descriptor_parser",
+      "addresses": [
+        "00aeeaf0",
+        "00735f90",
+        "00735ff0",
+        "00f8d394"
+      ],
+      "source_status": "AEEAF0 semantic fragment only; 00735F90 metadata only, 00735FF0 genuine Source exists.",
+      "must_preserve": "Actual1Ch buffer and raw headers; capture current renderer/table+64 and invoke actual supported target with real name/flag0; append returned logical texture to current manager texture array before body parse; then construct/parse/append each actual30h item preserving null textures, EOF, partial publication and no rollback. Separate texture/item array helpers cannot be equated by container shape."
+    },
+    {
+      "gate": "raw_descriptor_registration",
+      "addresses": [
+        "00aef280",
+        "00af5600",
+        "00bdf4c0",
+        "00af5850",
+        "00aeeaf0",
+        "00af5620"
+      ],
+      "source_status": "AEF280 has no reconstructed Source record/implementation; world_effects_startup only invokes abstract std::string host callback.",
+      "must_preserve": "Caller real manager, actual NativeString, allocated1Ch buffer, exact original resolve/read/parse/cleanup and exception order. Retain own parent and each actual acquired VFS child rather than shared scratch. Raw parser dependency missing, so existing text helpers alone do not make a complete registration provider."
+    },
+    {
+      "gate": "whole_actual_outer_loader",
+      "addresses": [
+        "00af0060",
+        "00aef3c0"
+      ],
+      "source_status": "Semantic Source callback-order correction exists, but actual Native AF0060 body/listing admission remains held.",
+      "must_preserve": "Fresh historical physical span935bytes/304starts disagrees with typed289; exact AddressSet unavailable. Current registry+10/+14 per matching candidate and requested-name comparison are known ordering only. Real VFS enumeration/raw candidate list/native string and registration composition needed before production bridge removal."
+    },
+    {
+      "gate": "GUI_captured_slot64_dispatch",
+      "addresses": [
+        "00aa5ea2",
+        "00aa5ea4",
+        "00f8d394"
+      ],
+      "source_status": "Historical gate establishes captured current renderer slot64 conditional; current GUI callbacks/COM frontend bridge do not establish this actual target.",
+      "must_preserve": "AA5E60 is internal toAA5E20. Resolve success leads to actual captured slot64/name/flag0 then manager+28 publication; no companion type/family substitution. A supplied B319B0 implementation may be used only after its actual captured identity is admitted."
+    }
+  ],
+  "current_production_sites": {
+    "menu": "game_hosts_menu.cpp load_texture_atlas logs TitleInit::load_texture_atlas UNIMPLEMENTED00AF0060 and requested path only.",
+    "frontend": "game_hosts_frontend.cpp enumerates bases/variants, parses semantic TextureAtlasItem vectors, merges atlas items, and returns IDirect3DTexture9 COM from create_texture. Explicit separate sprite bridge object/domain; does not populate actual F8C26C Native manager.",
+    "application": "game_hosts.cpp uses GameFrontendHost for GUI startup; Phase8 world_effects_startup remains recorded/unimplemented. No complete actual common.ats startup composition found.",
+    "raw_consumers": "Raw particle/numbering lookup paths require an externally supplied actual atlas manager and item storage; readiness of consumers does not construct the missing producer."
+  },
+  "smallest_next_reviewable_packet": {
+    "kind": "bounded raw Source reconstruction, not production wiring",
+    "addresses": [
+      "00aee4d0",
+      "00aee220",
+      "00aeead0"
+    ],
+    "proposed_owned_files": [
+      "include/bsp/native_texture_atlas_item.hpp",
+      "src/native_texture_atlas_item.cpp",
+      "docs/NATIVE_TEXTURE_ATLAS_ITEM.md",
+      "reports/native_texture_atlas_item_source.json"
+    ],
+    "shared_integrator_edits_later": [
+      "cmake/startup.cmake",
+      "address name/reconstruction shards"
+    ],
+    "admission_before_coding": "In a separately authorized Native evidence packet, establish exact AEE4D0 body and original unwind actions; validate AEE220/AEEAD0 actual cleanup/deletion role and spans instead of assuming it from call graph. Claim disjoint addresses/files. This readiness packet does not authorize/open those bodies.",
+    "contract": "Fresh caller-backed actual30h record. Construct only native descriptor/name headers and borrowed logical-texture slot; preserve uninitialized UV/packed bytes, source/header aliases, current raw string cells and exact failure/unwind effects. No semantic item copy/map, new COM/reference credit or automatic success fallback. Cleanup must admit real pool releases/stale fields and terminal storage disposal separately.",
+    "named_but_incomplete_followons": [
+      "RawAEE620 x87 Params parser",
+      "RawAEEAF0 descriptor parser and00735F90 array helper",
+      "RawAEF280 registration parent/acquired lifetime",
+      "ActualF8C26C manager constructor/publication/destruction",
+      "AF0060 exactAddressSet/count discrepancy and raw enumeration/loader",
+      "Actualcurrent renderer slot64 captured identity for relevant startup/GUI calls"
+    ],
+    "integration_ready": false,
+    "expected_bounded_outcome": "One genuine raw item construction/cleanup provider usable by later parser; no common.ats or GUI production/runtime claim."
+  },
+  "credit": {
+    "Source_readiness_review": true,
+    "new_Native_body_or_data": false,
+    "compile": false,
+    "existing_checks": false,
+    "new_tests": false,
+    "SDK": false,
+    "startup": false,
+    "FMOD": false,
+    "production_atlas_bound": false,
+    "original_ABI": false,
+    "gameplay": false
+  }
+}
