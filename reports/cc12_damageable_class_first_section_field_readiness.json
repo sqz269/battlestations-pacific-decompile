@@ -1,0 +1,2258 @@
+{
+  "schema": 1,
+  "packet": "cc12_damageable_class_first_section_field_readiness",
+  "utc": "2026-10-10T03:11:52.157156+00:00",
+  "base_commit": "80a0c1753964aeb0e1c482ab11b747383f3d0f55",
+  "decision": "HELD: first field value cleanup retains string under17 and does not return to13 before next field",
+  "owned_files": [
+    "docs/CC12_DAMAGEABLE_CLASS_FIRST_SECTION_FIELD_READINESS.md",
+    "reports/cc12_damageable_class_first_section_field_readiness.json"
+  ],
+  "owned_range": {
+    "start": "0087cebb",
+    "last_inclusive": "0087cf34",
+    "end_exclusive": "0087cf35",
+    "historical_byte_extent": 122,
+    "historical_text_instruction_count": 35
+  },
+  "workflow": {
+    "file_only_lease_claimed_before_selection": true,
+    "exact_range_lease_refreshed_before_focused_parse_and_Source_matching": true,
+    "no_scope_expansion": true,
+    "GPR_writer": "Root only"
+  },
+  "native_retained_gate": {
+    "evidence_mode": "Historical full parent listing and37-state audit only; no installed PE/current shared export/live query read",
+    "historical_parent_bytes": 3238,
+    "historical_parent_instructions": 858,
+    "historical_parent_sha256": "00d679920bd1b8f8653e9a0ab1de627f954cfadaf48b8bf0642676fde5162808",
+    "retained_listing": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment\\local\\output\\ghidra-disasm-0087ca80-lines-900-175926.txt",
+      "bytes": 25872,
+      "sha256": "eaf2df589c75997e7b2b9a87d42426b57bc448abc697e1a573d730194705c76e"
+    },
+    "all858_retained_starts_match_previous_receipt": true,
+    "original_parent_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment\\reports\\native_damageable_class_lua_orch4.json",
+      "bytes": 64046,
+      "sha256": "ff0e9d14717ddfd33456b3dced444d221a6e4164f79618a23fce07865383e31e"
+    },
+    "selected_start": "0087cebb",
+    "selected_last_inclusive": "0087cf34",
+    "selected_end_exclusive": "0087cf35",
+    "selected_byte_extent": 122,
+    "selected_instructions": [
+      {
+        "address": "0087cebb",
+        "instruction": "PUSH 0xd0e190",
+        "byte_extent_from_retained_starts": 5
+      },
+      {
+        "address": "0087cec0",
+        "instruction": "LEA ECX,[ESP + 0xe4]",
+        "byte_extent_from_retained_starts": 7
+      },
+      {
+        "address": "0087cec7",
+        "instruction": "PUSH ECX",
+        "byte_extent_from_retained_starts": 1
+      },
+      {
+        "address": "0087cec8",
+        "instruction": "LEA ECX,[ESP + 0x34]",
+        "byte_extent_from_retained_starts": 4
+      },
+      {
+        "address": "0087cecc",
+        "instruction": "CALL 0x00b67800",
+        "byte_extent_from_retained_starts": 5
+      },
+      {
+        "address": "0087ced1",
+        "instruction": "MOV ECX,EAX",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087ced3",
+        "instruction": "MOV byte ptr [ESP + 0xfc],0xf",
+        "byte_extent_from_retained_starts": 8
+      },
+      {
+        "address": "0087cedb",
+        "instruction": "CALL 0x00b662b0",
+        "byte_extent_from_retained_starts": 5
+      },
+      {
+        "address": "0087cee0",
+        "instruction": "MOV EDI,EAX",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cee2",
+        "instruction": "MOV dword ptr [ESP + 0x18],EBX",
+        "byte_extent_from_retained_starts": 4
+      },
+      {
+        "address": "0087cee6",
+        "instruction": "MOV dword ptr [ESP + 0x1c],EBX",
+        "byte_extent_from_retained_starts": 4
+      },
+      {
+        "address": "0087ceea",
+        "instruction": "LEA EDX,[EAX + 0x1]",
+        "byte_extent_from_retained_starts": 3
+      },
+      {
+        "address": "0087ceed",
+        "instruction": "LEA ECX,[ECX]",
+        "byte_extent_from_retained_starts": 3
+      },
+      {
+        "address": "0087cef0",
+        "instruction": "MOV CL,byte ptr [EAX]",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cef2",
+        "instruction": "ADD EAX,0x1",
+        "byte_extent_from_retained_starts": 3
+      },
+      {
+        "address": "0087cef5",
+        "instruction": "TEST CL,CL",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cef7",
+        "instruction": "JNZ 0x0087cef0",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cef9",
+        "instruction": "SUB EAX,EDX",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cefb",
+        "instruction": "PUSH 0x1",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cefd",
+        "instruction": "PUSH EAX",
+        "byte_extent_from_retained_starts": 1
+      },
+      {
+        "address": "0087cefe",
+        "instruction": "LEA ECX,[ESP + 0x20]",
+        "byte_extent_from_retained_starts": 4
+      },
+      {
+        "address": "0087cf02",
+        "instruction": "CALL 0x0041dd40",
+        "byte_extent_from_retained_starts": 5
+      },
+      {
+        "address": "0087cf07",
+        "instruction": "MOV EBX,dword ptr [ESP + 0x1c]",
+        "byte_extent_from_retained_starts": 4
+      },
+      {
+        "address": "0087cf0b",
+        "instruction": "TEST EBX,EBX",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cf0d",
+        "instruction": "MOV EBP,dword ptr [ESP + 0x18]",
+        "byte_extent_from_retained_starts": 4
+      },
+      {
+        "address": "0087cf11",
+        "instruction": "JZ 0x0087cf21",
+        "byte_extent_from_retained_starts": 2
+      },
+      {
+        "address": "0087cf13",
+        "instruction": "LEA EDX,[EBP + 0x1]",
+        "byte_extent_from_retained_starts": 3
+      },
+      {
+        "address": "0087cf16",
+        "instruction": "PUSH EDX",
+        "byte_extent_from_retained_starts": 1
+      },
+      {
+        "address": "0087cf17",
+        "instruction": "PUSH EDI",
+        "byte_extent_from_retained_starts": 1
+      },
+      {
+        "address": "0087cf18",
+        "instruction": "PUSH EBX",
+        "byte_extent_from_retained_starts": 1
+      },
+      {
+        "address": "0087cf19",
+        "instruction": "CALL 0x00bf7680",
+        "byte_extent_from_retained_starts": 5
+      },
+      {
+        "address": "0087cf1e",
+        "instruction": "ADD ESP,0xc",
+        "byte_extent_from_retained_starts": 3
+      },
+      {
+        "address": "0087cf21",
+        "instruction": "LEA ECX,[ESP + 0xe0]",
+        "byte_extent_from_retained_starts": 7
+      },
+      {
+        "address": "0087cf28",
+        "instruction": "MOV byte ptr [ESP + 0xfc],0x11",
+        "byte_extent_from_retained_starts": 8
+      },
+      {
+        "address": "0087cf30",
+        "instruction": "CALL 0x00b67700",
+        "byte_extent_from_retained_starts": 5
+      }
+    ],
+    "selected_schedule_text_sha256": "f1ac61417216c0b0c0be80af0c5974f95f875fb98855e3c319a984d6021ab056",
+    "selected_raw_bytes_available": false,
+    "fresh_original_byte_or_decode_claim": false,
+    "retained_parent_register_predecessor_metadata": [
+      {
+        "address": "0087caa6",
+        "instruction": "MOV EBX,ECX"
+      },
+      {
+        "address": "0087ce02",
+        "instruction": "XOR EBX,EBX"
+      }
+    ],
+    "selected_retained_EH_states": [
+      {
+        "state": 1,
+        "parent": -1,
+        "action": "00c9690b",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x6c]"
+      },
+      {
+        "state": 10,
+        "parent": 1,
+        "action": "00c9696b",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 11,
+        "parent": 10,
+        "action": "00c96976",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x80]"
+      },
+      {
+        "state": 12,
+        "parent": 11,
+        "action": "00c9697e",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xa8]"
+      },
+      {
+        "state": 13,
+        "parent": 12,
+        "action": "00c96989",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xd4]"
+      },
+      {
+        "state": 15,
+        "parent": 13,
+        "action": "00c9699c",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x20]"
+      },
+      {
+        "state": 16,
+        "parent": 15,
+        "action": "00c969a4",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xe8]"
+      },
+      {
+        "state": 17,
+        "parent": 13,
+        "action": "00c969a4",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xe8]"
+      },
+      {
+        "state": 18,
+        "parent": 17,
+        "action": "00c969af",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      }
+    ],
+    "selected_retained_cleanup_tail_records": [
+      {
+        "address": "00c9699f",
+        "native": "00b67700",
+        "function": "00c9699c",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969aa",
+        "native": "0041dd20",
+        "function": "00c969a4",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969b5",
+        "native": "00b67700",
+        "function": "00c969af",
+        "kind": "tail_jump"
+      }
+    ],
+    "selected_normal_state_stores": [
+      {
+        "site": "0087ced3",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xf"
+      },
+      {
+        "site": "0087cf28",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x11"
+      }
+    ],
+    "first_later_state13_store": {
+      "site": "0087d183",
+      "instruction": "mov byte ptr [esp + 0xfc], 0xd"
+    },
+    "retained_field_identity": {
+      "key": "Damage.Sections[].MshCategory",
+      "row_offset": "04",
+      "kind": "category_index",
+      "store_site": "0087cf8e"
+    },
+    "inherited_provider_assessment": [
+      {
+        "entry": "0041dd40",
+        "status": "available_actual_header_provider",
+        "source": "src/native_string.cpp",
+        "sites": [
+          "0087cb7a",
+          "0087cc11",
+          "0087cf02",
+          "0087d618"
+        ]
+      },
+      {
+        "entry": "00b662b0",
+        "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+        "source": "src/native_lua_objects.cpp",
+        "sites": [
+          "0087caca",
+          "0087cedb",
+          "0087d5f4"
+        ]
+      },
+      {
+        "entry": "00b67700",
+        "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+        "source": "src/native_lua_objects.cpp",
+        "sites": [
+          "0087cae8",
+          "0087cbca",
+          "0087cc61",
+          "0087cca3",
+          "0087ccdd",
+          "0087cd10",
+          "0087cd48",
+          "0087cf30",
+          "0087cf6b",
+          "0087d02c",
+          "0087d13c",
+          "0087d17c",
+          "0087d1db",
+          "0087d1ec",
+          "0087d207",
+          "0087d218",
+          "0087d2a5",
+          "0087d359",
+          "0087d3af",
+          "0087d405",
+          "0087d4ce",
+          "0087d522",
+          "0087d544",
+          "0087d55c",
+          "0087d6ca",
+          "0087d6de",
+          "0087d6ef",
+          "0087d706"
+        ]
+      },
+      {
+        "entry": "00b67800",
+        "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+        "source": "src/native_lua_objects.cpp",
+        "sites": [
+          "0087cab8",
+          "0087cafc",
+          "0087cb44",
+          "0087cbdb",
+          "0087cc72",
+          "0087ccb4",
+          "0087ccee",
+          "0087cd25",
+          "0087cd59",
+          "0087cd88",
+          "0087cecc",
+          "0087cf43",
+          "0087cf91",
+          "0087d109",
+          "0087d14f",
+          "0087d229",
+          "0087d282",
+          "0087d4ff",
+          "0087d56d"
+        ]
+      },
+      {
+        "entry": "00bf7680",
+        "status": "crt_memcpy_boundary",
+        "source": null,
+        "sites": [
+          "0087cb8f",
+          "0087cc26",
+          "0087cf19",
+          "0087d62f"
+        ]
+      }
+    ],
+    "no_fresh_Native_data_names_handlers_callees_body_windows": true,
+    "no_live_Ghidra_queries": true
+  },
+  "retained_full_parent_instruction_starts": [
+    "0087ca80",
+    "0087ca82",
+    "0087ca87",
+    "0087ca8d",
+    "0087ca8e",
+    "0087ca95",
+    "0087ca9b",
+    "0087ca9c",
+    "0087ca9d",
+    "0087caa4",
+    "0087caa5",
+    "0087caa6",
+    "0087caa8",
+    "0087caad",
+    "0087cab1",
+    "0087cab2",
+    "0087cab4",
+    "0087cab8",
+    "0087cabd",
+    "0087cabf",
+    "0087caca",
+    "0087cacf",
+    "0087cad1",
+    "0087cad6",
+    "0087cada",
+    "0087cadd",
+    "0087cae8",
+    "0087caed",
+    "0087caf2",
+    "0087caf9",
+    "0087cafa",
+    "0087cafc",
+    "0087cb01",
+    "0087cb08",
+    "0087cb13",
+    "0087cb18",
+    "0087cb1a",
+    "0087cb1c",
+    "0087cb23",
+    "0087cb28",
+    "0087cb2a",
+    "0087cb2c",
+    "0087cb31",
+    "0087cb33",
+    "0087cb35",
+    "0087cb3a",
+    "0087cb3e",
+    "0087cb3f",
+    "0087cb41",
+    "0087cb44",
+    "0087cb49",
+    "0087cb4e",
+    "0087cb52",
+    "0087cb53",
+    "0087cb55",
+    "0087cb5d",
+    "0087cb62",
+    "0087cb64",
+    "0087cb67",
+    "0087cb69",
+    "0087cb71",
+    "0087cb73",
+    "0087cb75",
+    "0087cb77",
+    "0087cb78",
+    "0087cb7a",
+    "0087cb7f",
+    "0087cb82",
+    "0087cb84",
+    "0087cb86",
+    "0087cb89",
+    "0087cb8a",
+    "0087cb8d",
+    "0087cb8e",
+    "0087cb8f",
+    "0087cb94",
+    "0087cb97",
+    "0087cb9b",
+    "0087cb9d",
+    "0087cba5",
+    "0087cba7",
+    "0087cbab",
+    "0087cbad",
+    "0087cbb0",
+    "0087cbb1",
+    "0087cbb2",
+    "0087cbb7",
+    "0087cbb9",
+    "0087cbbe",
+    "0087cbc2",
+    "0087cbca",
+    "0087cbcf",
+    "0087cbd4",
+    "0087cbd8",
+    "0087cbd9",
+    "0087cbdb",
+    "0087cbe0",
+    "0087cbe5",
+    "0087cbe9",
+    "0087cbea",
+    "0087cbec",
+    "0087cbf4",
+    "0087cbf9",
+    "0087cbfb",
+    "0087cbfe",
+    "0087cc00",
+    "0087cc08",
+    "0087cc0a",
+    "0087cc0c",
+    "0087cc0e",
+    "0087cc0f",
+    "0087cc11",
+    "0087cc16",
+    "0087cc19",
+    "0087cc1b",
+    "0087cc1d",
+    "0087cc20",
+    "0087cc21",
+    "0087cc24",
+    "0087cc25",
+    "0087cc26",
+    "0087cc2b",
+    "0087cc2e",
+    "0087cc32",
+    "0087cc34",
+    "0087cc3c",
+    "0087cc3e",
+    "0087cc42",
+    "0087cc44",
+    "0087cc47",
+    "0087cc48",
+    "0087cc49",
+    "0087cc4e",
+    "0087cc50",
+    "0087cc55",
+    "0087cc59",
+    "0087cc61",
+    "0087cc66",
+    "0087cc6b",
+    "0087cc6f",
+    "0087cc70",
+    "0087cc72",
+    "0087cc77",
+    "0087cc7d",
+    "0087cc7e",
+    "0087cc80",
+    "0087cc83",
+    "0087cc8b",
+    "0087cc90",
+    "0087cc94",
+    "0087cc98",
+    "0087cc9b",
+    "0087cca3",
+    "0087cca8",
+    "0087ccad",
+    "0087ccb1",
+    "0087ccb2",
+    "0087ccb4",
+    "0087ccb9",
+    "0087ccbb",
+    "0087ccbc",
+    "0087ccbf",
+    "0087ccc1",
+    "0087ccc9",
+    "0087ccce",
+    "0087ccd1",
+    "0087ccd5",
+    "0087ccdd",
+    "0087cce2",
+    "0087cce7",
+    "0087cceb",
+    "0087ccec",
+    "0087ccee",
+    "0087ccf3",
+    "0087ccf5",
+    "0087ccfd",
+    "0087cd02",
+    "0087cd06",
+    "0087cd08",
+    "0087cd10",
+    "0087cd15",
+    "0087cd17",
+    "0087cd19",
+    "0087cd1e",
+    "0087cd22",
+    "0087cd23",
+    "0087cd25",
+    "0087cd2a",
+    "0087cd2c",
+    "0087cd34",
+    "0087cd39",
+    "0087cd3d",
+    "0087cd40",
+    "0087cd48",
+    "0087cd4d",
+    "0087cd52",
+    "0087cd56",
+    "0087cd57",
+    "0087cd59",
+    "0087cd5e",
+    "0087cd62",
+    "0087cd6a",
+    "0087cd6f",
+    "0087cd71",
+    "0087cd77",
+    "0087cd7c",
+    "0087cd83",
+    "0087cd84",
+    "0087cd88",
+    "0087cd8d",
+    "0087cd94",
+    "0087cd9c",
+    "0087cda1",
+    "0087cda3",
+    "0087cda9",
+    "0087cdad",
+    "0087cdb2",
+    "0087cdb6",
+    "0087cdbe",
+    "0087cdc3",
+    "0087cdc7",
+    "0087cdc8",
+    "0087cdcc",
+    "0087cdcd",
+    "0087cdd4",
+    "0087cddc",
+    "0087cde1",
+    "0087cde5",
+    "0087cde6",
+    "0087cded",
+    "0087cdf2",
+    "0087cdf4",
+    "0087cdfa",
+    "0087ce00",
+    "0087ce02",
+    "0087ce04",
+    "0087ce0b",
+    "0087ce0c",
+    "0087ce0d",
+    "0087ce12",
+    "0087ce1a",
+    "0087ce1d",
+    "0087ce26",
+    "0087ce2f",
+    "0087ce33",
+    "0087ce3a",
+    "0087ce3d",
+    "0087ce3e",
+    "0087ce40",
+    "0087ce48",
+    "0087ce4d",
+    "0087ce54",
+    "0087ce56",
+    "0087ce5e",
+    "0087ce69",
+    "0087ce6b",
+    "0087ce6e",
+    "0087ce6f",
+    "0087ce75",
+    "0087ce77",
+    "0087ce79",
+    "0087ce7b",
+    "0087ce7d",
+    "0087ce7f",
+    "0087ce81",
+    "0087ce88",
+    "0087ce8b",
+    "0087ce8e",
+    "0087ce90",
+    "0087ce95",
+    "0087ce98",
+    "0087ce9b",
+    "0087cea2",
+    "0087cea4",
+    "0087cea7",
+    "0087cea9",
+    "0087ceae",
+    "0087ceb1",
+    "0087ceb4",
+    "0087ceb6",
+    "0087cebb",
+    "0087cec0",
+    "0087cec7",
+    "0087cec8",
+    "0087cecc",
+    "0087ced1",
+    "0087ced3",
+    "0087cedb",
+    "0087cee0",
+    "0087cee2",
+    "0087cee6",
+    "0087ceea",
+    "0087ceed",
+    "0087cef0",
+    "0087cef2",
+    "0087cef5",
+    "0087cef7",
+    "0087cef9",
+    "0087cefb",
+    "0087cefd",
+    "0087cefe",
+    "0087cf02",
+    "0087cf07",
+    "0087cf0b",
+    "0087cf0d",
+    "0087cf11",
+    "0087cf13",
+    "0087cf16",
+    "0087cf17",
+    "0087cf18",
+    "0087cf19",
+    "0087cf1e",
+    "0087cf21",
+    "0087cf28",
+    "0087cf30",
+    "0087cf35",
+    "0087cf3a",
+    "0087cf3e",
+    "0087cf3f",
+    "0087cf43",
+    "0087cf48",
+    "0087cf4a",
+    "0087cf52",
+    "0087cf57",
+    "0087cf5c",
+    "0087cf60",
+    "0087cf63",
+    "0087cf6b",
+    "0087cf70",
+    "0087cf72",
+    "0087cf74",
+    "0087cf76",
+    "0087cf7b",
+    "0087cf80",
+    "0087cf85",
+    "0087cf89",
+    "0087cf8a",
+    "0087cf8e",
+    "0087cf91",
+    "0087cf96",
+    "0087cf98",
+    "0087cf9a",
+    "0087cf9c",
+    "0087cfa4",
+    "0087cfa9",
+    "0087cfab",
+    "0087cfaf",
+    "0087cfb4",
+    "0087cfb6",
+    "0087cfb9",
+    "0087cfbb",
+    "0087cfc3",
+    "0087cfc5",
+    "0087cfc7",
+    "0087cfca",
+    "0087cfcc",
+    "0087cfcf",
+    "0087cfd0",
+    "0087cfd6",
+    "0087cfd8",
+    "0087cfda",
+    "0087cfdd",
+    "0087cfde",
+    "0087cfe4",
+    "0087cfe6",
+    "0087cfe8",
+    "0087cfea",
+    "0087cfec",
+    "0087cfee",
+    "0087cff0",
+    "0087cff4",
+    "0087cff6",
+    "0087cffe",
+    "0087d000",
+    "0087d002",
+    "0087d005",
+    "0087d006",
+    "0087d00c",
+    "0087d00e",
+    "0087d010",
+    "0087d012",
+    "0087d014",
+    "0087d016",
+    "0087d018",
+    "0087d020",
+    "0087d024",
+    "0087d02c",
+    "0087d031",
+    "0087d034",
+    "0087d036",
+    "0087d038",
+    "0087d03d",
+    "0087d043",
+    "0087d048",
+    "0087d04c",
+    "0087d051",
+    "0087d053",
+    "0087d057",
+    "0087d05b",
+    "0087d063",
+    "0087d068",
+    "0087d06a",
+    "0087d06d",
+    "0087d06f",
+    "0087d077",
+    "0087d079",
+    "0087d07b",
+    "0087d07e",
+    "0087d080",
+    "0087d083",
+    "0087d084",
+    "0087d08a",
+    "0087d08c",
+    "0087d08e",
+    "0087d091",
+    "0087d092",
+    "0087d098",
+    "0087d09a",
+    "0087d09c",
+    "0087d09e",
+    "0087d0a0",
+    "0087d0a2",
+    "0087d0a4",
+    "0087d0a8",
+    "0087d0aa",
+    "0087d0b2",
+    "0087d0b4",
+    "0087d0b6",
+    "0087d0b9",
+    "0087d0ba",
+    "0087d0c0",
+    "0087d0c2",
+    "0087d0c4",
+    "0087d0c6",
+    "0087d0c8",
+    "0087d0ca",
+    "0087d0cc",
+    "0087d0d4",
+    "0087d0d8",
+    "0087d0da",
+    "0087d0e2",
+    "0087d0e4",
+    "0087d0e8",
+    "0087d0ea",
+    "0087d0ed",
+    "0087d0ee",
+    "0087d0ef",
+    "0087d0f4",
+    "0087d0f6",
+    "0087d0fb",
+    "0087d100",
+    "0087d104",
+    "0087d105",
+    "0087d109",
+    "0087d10e",
+    "0087d114",
+    "0087d115",
+    "0087d117",
+    "0087d11a",
+    "0087d122",
+    "0087d127",
+    "0087d12d",
+    "0087d131",
+    "0087d139",
+    "0087d13c",
+    "0087d141",
+    "0087d146",
+    "0087d14a",
+    "0087d14b",
+    "0087d14f",
+    "0087d154",
+    "0087d15a",
+    "0087d15b",
+    "0087d15d",
+    "0087d160",
+    "0087d168",
+    "0087d16d",
+    "0087d170",
+    "0087d174",
+    "0087d17c",
+    "0087d181",
+    "0087d183",
+    "0087d18b",
+    "0087d18d",
+    "0087d18f",
+    "0087d192",
+    "0087d193",
+    "0087d194",
+    "0087d199",
+    "0087d19b",
+    "0087d1a0",
+    "0087d1a4",
+    "0087d1a5",
+    "0087d1a9",
+    "0087d1aa",
+    "0087d1b1",
+    "0087d1b6",
+    "0087d1ba",
+    "0087d1bb",
+    "0087d1c2",
+    "0087d1c7",
+    "0087d1c9",
+    "0087d1cf",
+    "0087d1d3",
+    "0087d1db",
+    "0087d1e0",
+    "0087d1e4",
+    "0087d1ec",
+    "0087d1f1",
+    "0087d1f8",
+    "0087d1ff",
+    "0087d207",
+    "0087d20c",
+    "0087d210",
+    "0087d218",
+    "0087d21d",
+    "0087d222",
+    "0087d226",
+    "0087d227",
+    "0087d229",
+    "0087d22e",
+    "0087d232",
+    "0087d23a",
+    "0087d23f",
+    "0087d241",
+    "0087d247",
+    "0087d24b",
+    "0087d250",
+    "0087d252",
+    "0087d256",
+    "0087d25b",
+    "0087d25c",
+    "0087d264",
+    "0087d26c",
+    "0087d271",
+    "0087d274",
+    "0087d278",
+    "0087d279",
+    "0087d27d",
+    "0087d27e",
+    "0087d282",
+    "0087d287",
+    "0087d288",
+    "0087d28c",
+    "0087d294",
+    "0087d299",
+    "0087d29d",
+    "0087d2a5",
+    "0087d2aa",
+    "0087d2ae",
+    "0087d2b3",
+    "0087d2b5",
+    "0087d2bb",
+    "0087d2bf",
+    "0087d2c2",
+    "0087d2c5",
+    "0087d2c7",
+    "0087d2c9",
+    "0087d2cb",
+    "0087d2cd",
+    "0087d2d0",
+    "0087d2d2",
+    "0087d2d5",
+    "0087d2dd",
+    "0087d2e0",
+    "0087d2e2",
+    "0087d2e5",
+    "0087d2e9",
+    "0087d2f0",
+    "0087d2f1",
+    "0087d2f3",
+    "0087d2f7",
+    "0087d2fe",
+    "0087d303",
+    "0087d305",
+    "0087d309",
+    "0087d30a",
+    "0087d30e",
+    "0087d313",
+    "0087d317",
+    "0087d31a",
+    "0087d31c",
+    "0087d324",
+    "0087d326",
+    "0087d329",
+    "0087d32b",
+    "0087d32e",
+    "0087d330",
+    "0087d332",
+    "0087d337",
+    "0087d33a",
+    "0087d33e",
+    "0087d340",
+    "0087d343",
+    "0087d345",
+    "0087d34a",
+    "0087d34d",
+    "0087d351",
+    "0087d359",
+    "0087d35e",
+    "0087d360",
+    "0087d364",
+    "0087d365",
+    "0087d369",
+    "0087d36e",
+    "0087d372",
+    "0087d375",
+    "0087d377",
+    "0087d37f",
+    "0087d381",
+    "0087d384",
+    "0087d386",
+    "0087d389",
+    "0087d38b",
+    "0087d38d",
+    "0087d392",
+    "0087d395",
+    "0087d399",
+    "0087d39b",
+    "0087d3a0",
+    "0087d3a4",
+    "0087d3a7",
+    "0087d3af",
+    "0087d3b4",
+    "0087d3b6",
+    "0087d3ba",
+    "0087d3bb",
+    "0087d3bf",
+    "0087d3c4",
+    "0087d3c8",
+    "0087d3cb",
+    "0087d3cd",
+    "0087d3d5",
+    "0087d3d7",
+    "0087d3da",
+    "0087d3dc",
+    "0087d3df",
+    "0087d3e1",
+    "0087d3e3",
+    "0087d3e8",
+    "0087d3eb",
+    "0087d3ef",
+    "0087d3f1",
+    "0087d3f6",
+    "0087d3fa",
+    "0087d3fd",
+    "0087d405",
+    "0087d40a",
+    "0087d40c",
+    "0087d410",
+    "0087d411",
+    "0087d415",
+    "0087d41a",
+    "0087d41c",
+    "0087d41e",
+    "0087d426",
+    "0087d42b",
+    "0087d42d",
+    "0087d431",
+    "0087d436",
+    "0087d438",
+    "0087d43b",
+    "0087d43d",
+    "0087d445",
+    "0087d447",
+    "0087d44a",
+    "0087d44c",
+    "0087d44f",
+    "0087d451",
+    "0087d453",
+    "0087d458",
+    "0087d45b",
+    "0087d45f",
+    "0087d462",
+    "0087d464",
+    "0087d466",
+    "0087d468",
+    "0087d46a",
+    "0087d46c",
+    "0087d46e",
+    "0087d471",
+    "0087d472",
+    "0087d478",
+    "0087d47a",
+    "0087d47c",
+    "0087d47f",
+    "0087d480",
+    "0087d486",
+    "0087d488",
+    "0087d48a",
+    "0087d48c",
+    "0087d48e",
+    "0087d490",
+    "0087d492",
+    "0087d496",
+    "0087d498",
+    "0087d4a0",
+    "0087d4a2",
+    "0087d4a4",
+    "0087d4a7",
+    "0087d4a8",
+    "0087d4ae",
+    "0087d4b0",
+    "0087d4b2",
+    "0087d4b4",
+    "0087d4b6",
+    "0087d4b8",
+    "0087d4ba",
+    "0087d4c2",
+    "0087d4c6",
+    "0087d4ce",
+    "0087d4d3",
+    "0087d4d7",
+    "0087d4da",
+    "0087d4db",
+    "0087d4df",
+    "0087d4e4",
+    "0087d4e5",
+    "0087d4e9",
+    "0087d4ee",
+    "0087d4f1",
+    "0087d4f5",
+    "0087d4f6",
+    "0087d4fa",
+    "0087d4fb",
+    "0087d4ff",
+    "0087d504",
+    "0087d505",
+    "0087d509",
+    "0087d511",
+    "0087d516",
+    "0087d51a",
+    "0087d522",
+    "0087d527",
+    "0087d52b",
+    "0087d530",
+    "0087d532",
+    "0087d538",
+    "0087d53c",
+    "0087d544",
+    "0087d549",
+    "0087d550",
+    "0087d554",
+    "0087d55c",
+    "0087d561",
+    "0087d566",
+    "0087d56a",
+    "0087d56b",
+    "0087d56d",
+    "0087d572",
+    "0087d576",
+    "0087d57e",
+    "0087d583",
+    "0087d585",
+    "0087d58b",
+    "0087d592",
+    "0087d597",
+    "0087d59b",
+    "0087d5a3",
+    "0087d5a8",
+    "0087d5ac",
+    "0087d5ad",
+    "0087d5b4",
+    "0087d5b5",
+    "0087d5b9",
+    "0087d5c1",
+    "0087d5c6",
+    "0087d5cd",
+    "0087d5ce",
+    "0087d5d2",
+    "0087d5d7",
+    "0087d5d9",
+    "0087d5df",
+    "0087d5e3",
+    "0087d5e6",
+    "0087d5e8",
+    "0087d5ea",
+    "0087d5f0",
+    "0087d5f4",
+    "0087d5f9",
+    "0087d5fb",
+    "0087d5ff",
+    "0087d603",
+    "0087d606",
+    "0087d608",
+    "0087d60b",
+    "0087d60d",
+    "0087d60f",
+    "0087d611",
+    "0087d613",
+    "0087d614",
+    "0087d618",
+    "0087d61d",
+    "0087d621",
+    "0087d623",
+    "0087d625",
+    "0087d629",
+    "0087d62c",
+    "0087d62d",
+    "0087d62e",
+    "0087d62f",
+    "0087d634",
+    "0087d637",
+    "0087d63e",
+    "0087d645",
+    "0087d64a",
+    "0087d64e",
+    "0087d652",
+    "0087d657",
+    "0087d659",
+    "0087d65d",
+    "0087d65e",
+    "0087d660",
+    "0087d665",
+    "0087d668",
+    "0087d66c",
+    "0087d66e",
+    "0087d676",
+    "0087d678",
+    "0087d67c",
+    "0087d67e",
+    "0087d681",
+    "0087d682",
+    "0087d683",
+    "0087d688",
+    "0087d68a",
+    "0087d68f",
+    "0087d693",
+    "0087d694",
+    "0087d69b",
+    "0087d69c",
+    "0087d6a0",
+    "0087d6a5",
+    "0087d6ac",
+    "0087d6ad",
+    "0087d6b1",
+    "0087d6b6",
+    "0087d6b8",
+    "0087d6be",
+    "0087d6c2",
+    "0087d6ca",
+    "0087d6cf",
+    "0087d6d6",
+    "0087d6de",
+    "0087d6e3",
+    "0087d6e7",
+    "0087d6ef",
+    "0087d6f4",
+    "0087d6fb",
+    "0087d706",
+    "0087d70b",
+    "0087d712",
+    "0087d713",
+    "0087d714",
+    "0087d715",
+    "0087d71c",
+    "0087d71d",
+    "0087d723"
+  ],
+  "raw_byte_receipt_limit": {
+    "selected_raw_bytes_available": false,
+    "full_parent_raw_buffer_available": false,
+    "retained_parent_SHA_is_historical": true,
+    "selected_byte_count_is_retained_address_extent": true,
+    "no_new_opcode_decode_or_selected_raw_hash_claim": true,
+    "Root_confirmation": "Root Source627 replay checked all3238 installed bytes and858 saved/live starts, but did not freeze full raw parent buffer. Root knows no prior full raw receipt and explicitly directed qualification without a Native reread.",
+    "Root_referenced_prior_path": "local/cc12_back_row_Source_primary/complete_artifacts.json (not opened; confirmation only)",
+    "parent_annotations_after_historical_mod5": "Not refreshed or credited here"
+  },
+  "retained_key_identity": {
+    "pointer": "00d0e190",
+    "name": "MshCategory",
+    "evidence": "Existing parent field_schedule and current Source metadata matches; no Native name/data read",
+    "raw_key_byte_hash_available": false,
+    "field_type": "string temporary; later category index publication excluded"
+  },
+  "original_storage": {
+    "stack_origin": "S=ESP after E4h locals/four saved registers",
+    "source_table": "actual live iterator value S+2Ch",
+    "fresh_field": "actual aligned14h-byte Lua storage S+E0h",
+    "string": "actual8h raw header S+18h: length+0/data+4",
+    "selected_row": "ESI from admitted back-row selection, untouched here",
+    "header_and_saved_end": "same actual descriptor+18h header and S+DCh identity; no direct accesses/writes in prefix",
+    "existing_live": {
+      "iterator_key": "S+58h",
+      "iterator_value": "S+2Ch",
+      "Sections": "S+80h",
+      "Damage": "S+44h",
+      "Unique": "S+94h"
+    },
+    "register_changes": {
+      "EDI": "captured C-string result replaces prior header register",
+      "EBX": "zero then current string data",
+      "EBP": "current string length",
+      "ESI": "selected row preserved"
+    },
+    "zero_evidence": "Retained predecessor XOR EBX,EBX atCE02; original nonvolatile call contract required",
+    "original_API": "B67800 this=actual value, stack(fresh,key); B662B0 this=returned field; resize41DD40 this=actual string stack(length,true); BF7680 stack(data,text,length+1); B67700 this=actual field",
+    "no_new_struct_type_or_wrapper": true
+  },
+  "ordered_schedule": [
+    {
+      "sites": "CEBB..CECC",
+      "action": "actual named lookup using retained key pointer and actual iterator value into freshS+E0"
+    },
+    {
+      "sites": "CED1..CEDB",
+      "action": "state15 then direct converting getter; no exact-type predicate/default"
+    },
+    {
+      "sites": "CEE0..CEE6",
+      "action": "capture text; zero actualS+18/S+1C only after getter returns"
+    },
+    {
+      "sites": "CEEA..CEF9",
+      "action": "byte scan through first NUL; unsigned32 difference; no null/fallback check"
+    },
+    {
+      "sites": "CEFB..CF02",
+      "action": "actual raw header resize length,true"
+    },
+    {
+      "sites": "CF07..CF1E",
+      "action": "capture data; TEST data; unconditionally capture length; if nonnull BF7680(data,text,length+1 wrap32)"
+    },
+    {
+      "sites": "CF21..CF30",
+      "action": "set state17 before actual field cleanup; string remains owned"
+    },
+    {
+      "sites": "CF35",
+      "action": "next field begins; excluded"
+    }
+  ],
+  "lifetime": {
+    "entry_state": 13,
+    "ordinary_states_written": [
+      15,
+      17
+    ],
+    "state16_recorded_but_not_activated_by_selected_ordinary_store": true,
+    "states": [
+      {
+        "state": 1,
+        "parent": -1,
+        "action": "00c9690b",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x6c]"
+      },
+      {
+        "state": 10,
+        "parent": 1,
+        "action": "00c9696b",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 11,
+        "parent": 10,
+        "action": "00c96976",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x80]"
+      },
+      {
+        "state": 12,
+        "parent": 11,
+        "action": "00c9697e",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xa8]"
+      },
+      {
+        "state": 13,
+        "parent": 12,
+        "action": "00c96989",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xd4]"
+      },
+      {
+        "state": 15,
+        "parent": 13,
+        "action": "00c9699c",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x20]"
+      },
+      {
+        "state": 16,
+        "parent": 15,
+        "action": "00c969a4",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xe8]"
+      },
+      {
+        "state": 17,
+        "parent": 13,
+        "action": "00c969a4",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xe8]"
+      },
+      {
+        "state": 18,
+        "parent": 17,
+        "action": "00c969af",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      }
+    ],
+    "cleanup_actions": [
+      {
+        "address": "00c9699f",
+        "native": "00b67700",
+        "function": "00c9699c",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969aa",
+        "native": "0041dd20",
+        "function": "00c969a4",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969b5",
+        "native": "00b67700",
+        "function": "00c969af",
+        "kind": "tail_jump"
+      }
+    ],
+    "normal_exit_state": 17,
+    "normal_exit_live_string": "S+18h underC969A4->41DD20",
+    "requested_close_to13_before_next_field": false,
+    "first_later13_metadata": {
+      "site": "0087d183",
+      "instruction": "mov byte ptr [esp + 0xfc], 0xd"
+    },
+    "later_cleanup_body_opened": false,
+    "fault_and_exception_observations": [
+      "lookup failure before15 leaves no published field under the existing protected Source boundary",
+      "getter failure occurs in state15, before string header zero stores; actual Lua conversion may already have occurred",
+      "ordinary recorded state remains15 through scan/resize/copy; do not fabricate an active state16 guard",
+      "CF28 activates state17 before field destruction, so failure there unwinds the string and must not retry field15",
+      "normal CF35 still owns the string under state17; destruction at prefix return would end its lifetime too early",
+      "native access faults/SEH/longjmp and secondary cleanup failure identity are not ordinary C++ equivalence"
+    ]
+  },
+  "genuine_Source_providers": {
+    "Lua_lookup": "Complete current native_lua_get_by_name_00b67800 and same-frame protected adapter, genuine actual tracked object",
+    "Lua_getter": "Complete current native_lua_string_00b662b0 -> actual lua_tolstring; existing protected adapter translates Lua failure",
+    "conversion": "Current Lua5.1.1 luaV_tostring accepts a number, converts the actual TValue using configured %.14g and allocates; lua_tolstring may run GC and reload the index. Other nonstrings return null.",
+    "Lua_cleanup": "Complete current B67700 -> actual tracked release; stack shifts and current index changes retained",
+    "string_resize": "Complete raw-header 41DD40 through actual NativeStringRawPoolContext; no replacement allocator",
+    "string_cleanup": "Complete raw 41DD20 captures nonnull pointer and length+1, calls actual pool return, leaves header untouched",
+    "pool": "Complete current raw manager getter00419CC0, BD1120 allocation, BD1510 return (including BD12A0 small return) bodies reviewed",
+    "body_review": [
+      {
+        "path": "src/native_lua_objects.cpp",
+        "ranges": [
+          [
+            40,
+            84
+          ],
+          [
+            121,
+            150
+          ],
+          [
+            191,
+            217
+          ]
+        ],
+        "bodies": [
+          "named actual lookup",
+          "trivial named callback and same-frame protected adapter",
+          "tracked release/destructor",
+          "direct string getter",
+          "trivial conversion callback and protected adapter"
+        ],
+        "excerpts": [
+          {
+            "first": 40,
+            "last": 84,
+            "text": "}\nNativeLuaObjectStorage* native_lua_get_by_name_00b67800(\n    NativeLuaObjectStorage& table,void* fresh,const char* key){\n    const bool globals=table.kind_04==3;\n    (void)lua_checkstack(table.owner_00->state_04,1);\n    const auto length=std::strlen(key);\n    lua_pushlstring(table.owner_00->state_04,key,length);\n    const auto index=globals?LUA_GLOBALSINDEX:table.index_08;\n    lua_gettable(table.owner_00->state_04,index);\n    const auto top=lua_gettop(table.owner_00->state_04);\n    auto* const owner=table.owner_00;\n    auto* object=::new(fresh) NativeLuaObjectStorage;\n    object->owner_00=owner;object->kind_04=2;object->index_08=top;object->opaque_0c=0;object->tracked_10=1;\n    const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(top));\n    if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;\n    auto& slot=owner->slots_14[slot_index];slot.references_00[slot.count_14]=object;++slot.count_14;return object;\n}\nnamespace {\nstruct NamedLookupOperation {\n    NativeLuaObjectStorage* table;\n    void* fresh;\n    const char* key;\n    NativeLuaObjectStorage* result;\n};\nvoid named_lookup_operation(lua_State*,void* context) {\n    auto& operation=*static_cast<NamedLookupOperation*>(context);\n    operation.result=native_lua_get_by_name_00b67800(*operation.table,operation.fresh,operation.key);\n}\n} // namespace\nNativeLuaObjectStorage* native_lua_get_by_name_protected(\n    NativeLuaObjectStorage& table,void* fresh,const char* key){\n    auto* const state=table.owner_00->state_04;\n    const int entry_top=lua_gettop(state);\n    NamedLookupOperation operation{&table,fresh,key,nullptr};\n    // Pinned Lua5.1.1 private API: unlike lua_pcall/lua_cpcall this invokes the\n    // trivial callback without introducing another Lua C frame. Include the\n    // allocation in checkstack and key creation in the protected operation.\n    const int status=luaD_pcall(state,&named_lookup_operation,&operation,\n        savestack(state,state->top),state->errfunc);\n    if(status){\n        lua_settop(state,entry_top);\n        throw NativeLuaOperationError{status};\n    }\n    return operation.result;\n}\n"
+          },
+          {
+            "first": 121,
+            "last": 150,
+            "text": "}\nvoid release_native_lua_tracked_object_00b66de0(\n    NativeLuaStateStorage* owner,NativeLuaObjectStorage& object,std::int32_t index,std::uint8_t remove_stack){\n    if(!object.tracked_10)return;\n    const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(index));\n    auto* const first=&owner->slots_14[slot_index];\n    const auto count=first->count_14;std::int32_t found=-1;\n    for(std::int32_t i=0;i<count;++i)if(first->references_00[i]==&object){found=i;break;}\n    if(found!=-1){const auto current=first->count_14;if(found!=current-1)first->references_00[found]=first->references_00[current-1];--first->count_14;}\n    if(first->count_14!=0)return;\n    if(remove_stack){\n        const auto top=lua_gettop(owner->state_04);\n        if(index==top)lua_settop(owner->state_04,-2);else lua_remove(owner->state_04,index);\n    }\n    if(slot_index==owner->high_water_4c4-1)return;\n    auto* destination=first;\n    while(destination!=&owner->slots_14[owner->high_water_4c4-1]){\n        auto* source=destination+1;\n        for(std::int32_t i=0;i<source->count_14;++i)destination->references_00[i]=source->references_00[i];\n        destination->count_14=source->count_14;++destination;\n    }\n    destination->count_14=0;\n    for(auto* slot=first;slot!=&owner->slots_14[owner->high_water_4c4];++slot)\n        for(std::int32_t i=0;i<slot->count_14;++i)--slot->references_00[i]->index_08;\n}\nvoid destroy_native_lua_object_00b67700(NativeLuaObjectStorage& object){\n    if(!object.kind_04)return;\n    release_native_lua_tracked_object_00b66de0(object.owner_00,object,object.index_08,1);object.kind_04=0;\n}\nNativeLuaObjectStorage* assign_native_lua_object_00b67690(\n"
+          },
+          {
+            "first": 191,
+            "last": 217,
+            "text": "const char* native_lua_string_00b662b0(const NativeLuaObjectStorage& object){\n    return lua_tolstring(object.owner_00->state_04,object.index_08,nullptr);\n}\nnamespace {\nstruct StringOperation {\n    const NativeLuaObjectStorage* object;\n    const char* result;\n};\nvoid string_operation(lua_State*,void* context) {\n    auto& operation=*static_cast<StringOperation*>(context);\n    operation.result=native_lua_string_00b662b0(*operation.object);\n}\n} // namespace\nconst char* native_lua_string_protected(const NativeLuaObjectStorage& object){\n    auto* const state=object.owner_00->state_04;\n    const int entry_top=lua_gettop(state);\n    StringOperation operation{&object,nullptr};\n    const int status=luaD_pcall(state,&string_operation,&operation,\n        savestack(state,state->top),state->errfunc);\n    if(status){\n        // Allocation can fail before conversion; GC/finalizers can fail after\n        // conversion. Keep the actual TValue and remove only the error slot.\n        lua_settop(state,entry_top);\n        throw NativeLuaOperationError{status};\n    }\n    return operation.result;\n}\n"
+          }
+        ]
+      },
+      {
+        "path": "src/native_string.cpp",
+        "ranges": [
+          [
+            14,
+            41
+          ],
+          [
+            75,
+            139
+          ],
+          [
+            174,
+            192
+          ]
+        ],
+        "bodies": [
+          "actual raw-header reads/writes and RawStringPoolAccess",
+          "complete raw/semantic resize and raw destructor",
+          "existing constructor comparison"
+        ],
+        "excerpts": [
+          {
+            "first": 14,
+            "last": 41,
+            "text": "template<class T> T read_header(const void* header, std::size_t offset) noexcept {\n    T value;\n    std::memcpy(&value, static_cast<const char*>(header) + offset, sizeof(value));\n    return value;\n}\ntemplate<class T> void write_header(void* header, std::size_t offset, T value) noexcept {\n    std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));\n}\n\nclass RawStringPoolAccess {\npublic:\n    explicit RawStringPoolAccess(NativeStringRawPoolContext& context) noexcept\n        : context_(context) {}\n    char* allocate(std::uint32_t size) {\n        auto* const pool = current_pool();\n        return static_cast<char*>(allocate_native_string_pool_00bd1120(pool, size));\n    }\n    void release(char* data, std::uint32_t size) {\n        auto* const pool = current_pool();\n        return_native_string_pool_00bd1510(pool, data, size,\n            context_.actual_small_returns_disabled_01090aa4);\n    }\nprivate:\n    NativeStringPoolStorage* current_pool() {\n        return native_string_pool_get_or_create_00419cc0(\n            context_.actual_published_01090aa8,\n            context_.actual_manager_publication_01090aa0);\n    }\n"
+          },
+          {
+            "first": 75,
+            "last": 139,
+            "text": "    if (length == initial_length) return; // 0041dd4a does not read the pointer.\n\n    if (length == 0) { // 0041dd52\n        auto* const old_data = read_header<char*>(actual_header, 4);\n        if (old_data != nullptr) storage.release(old_data, initial_length + 1u);\n        write_header<char*>(actual_header, 4, nullptr);\n        write_header<std::uint32_t>(actual_header, 0, 0);\n        return;\n    }\n\n    // 0041dd90 allocates before any old-buffer release. Do not snapshot the\n    // source header across this boundary: a callback may have changed it.\n    char* block = storage.allocate(length + 1u);\n    if (preserve) { // 0041dd95\n        const auto current_length = read_header<std::uint32_t>(actual_header, 0);\n        const auto copied = length > current_length ? current_length : length;\n        // Preserve the existing host policy: omit native memcpy with count 0,\n        // which can pass a null source and is not a defined standard C++ call.\n        if (copied != 0) {\n            if constexpr (NativeOverlap)\n                std::memmove(block, read_header<char*>(actual_header, 4), copied);\n            else\n                std::memcpy(block, read_header<char*>(actual_header, 4), copied);\n        }\n    }\n    auto* const old_data = read_header<char*>(actual_header, 4); // 0041ddb9\n    if (old_data != nullptr)\n        storage.release(old_data, read_header<std::uint32_t>(actual_header, 0) + 1u);\n    write_header<char*>(actual_header, 4, block);\n    write_header<std::uint32_t>(actual_header, 0, length);\n    // Native Win32 address addition, including uint32 wrap. No length guard or\n    // cleanup is added if the caller/storage contract cannot support the write.\n    *reinterpret_cast<char*>(reinterpret_cast<std::uintptr_t>(block) + length) = '\\0';\n}\n} // namespace\n\nvoid resize_native_string_header_0041dd40(void* actual_header,\n    NativeStringStorage& storage, std::uint32_t length, bool preserve) {\n    resize_header<false>(actual_header, storage, length, preserve);\n}\n\nvoid resize_native_string_header_0041dd40(void* actual_header,\n    NativeStringRawPoolContext& context, std::uint32_t length, bool preserve) {\n    RawStringPoolAccess storage(context);\n    resize_header<true>(actual_header, storage, length, preserve);\n}\n\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringStorage& storage) noexcept {\n    auto* const data = read_header<char*>(actual_header, 4);\n    if (data != nullptr)\n        storage.release(data, read_header<std::uint32_t>(actual_header, 0) + 1u);\n}\n\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringRawPoolContext& context) {\n    auto* const data = read_header<char*>(actual_header, 4);\n    if (data != nullptr) {\n        const auto size = read_header<std::uint32_t>(actual_header, 0) + 1u;\n        RawStringPoolAccess storage(context);\n        storage.release(data, size);\n    }\n}\n\nvoid lowercase_native_string_header_004bcc00(void* actual_header) noexcept {\n"
+          },
+          {
+            "first": 174,
+            "last": 192,
+            "text": "}\n\nvoid* construct_native_string_header_0041e870(void* header,\n    NativeStringRawPoolContext& context, const char* text) {\n    write_header<std::uint32_t>(header, 0, 0);\n    write_header<char*>(header, 4, nullptr);\n    const auto length = static_cast<std::uint32_t>(std::strlen(text));\n    resize_native_string_header_0041dd40(header, context, length, true);\n    void* const data = read_header<void*>(header, 4);\n    if (data != nullptr) {\n        const auto bytes = read_header<std::uint32_t>(header, 0) + 1u;\n        if (bytes) std::memmove(data, text, bytes); // Native BF7680 admits overlap.\n    }\n    return header;\n}\n\nNativeString& NativeString::assign_0041e870(NativeStringRawPoolContext& context, const char* text) {\n    construct_native_string_header_0041e870(this, context, text);\n    return *this;\n"
+          }
+        ]
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "ranges": [
+          [
+            23,
+            96
+          ]
+        ],
+        "bodies": [
+          "complete allocation/small return/return implementations"
+        ],
+        "excerpts": [
+          {
+            "first": 23,
+            "last": 96,
+            "text": "void* allocate_native_string_pool_00bd1120(NativeStringPoolStorage* pool,\n    std::uint32_t size) {\n    if (size >= class_count) return std::malloc(size);\n    auto* const captured_section = section(*pool);\n    EnterCriticalSection(captured_section);\n    volatile auto& actual = *pool;\n    actual.recursion_8ad49c = actual.recursion_8ad49c + 1u;\n    volatile auto& ring = actual.ring_6acfcc;\n    const auto after_tail = (ring.tail_200258[size] + 1u) & ring_mask;\n    void* block;\n    if (ring.head_200000[size] == after_tail) {\n        const auto bump = actual.bump_6acfc8;\n        // Native LEA uses DWORD wrap and does not align/check the arena.\n        block = reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(pool)\n            + 8u + bump);\n        actual.bump_6acfc8 = bump + size;\n    } else {\n        ring.live_2004b0 = ring.live_2004b0 - 1u;\n        const auto tail = ring.tail_200258[size]; // native post-counter reload\n        block = ring.slots_000000[tail];\n        ring.tail_200258[size] = (tail - 1u) & ring_mask;\n    }\n    actual.recursion_8ad49c = actual.recursion_8ad49c - 1u;\n    LeaveCriticalSection(captured_section);\n    return block;\n}\n\nvoid return_native_string_pool_small_00bd12a0(NativeStringPoolRingStorage& ring,\n    void* const* block, std::uint32_t size_class) noexcept {\n    void* moving = *block;\n    volatile auto& actual = ring;\n    actual.tail_200258[size_class] =\n        (actual.tail_200258[size_class] + 1u) & ring_mask;\n    auto last = size_class;\n    auto next = (size_class + 1u) % class_count;\n    while (next != size_class) {\n        const auto head = actual.head_200000[next];\n        if (actual.tail_200258[last] != head) break;\n        const auto after_tail = (actual.tail_200258[next] + 1u) & ring_mask;\n        if (head != after_tail) {\n            void* const displaced = actual.slots_000000[head];\n            actual.slots_000000[head] = moving;\n            moving = displaced;\n        }\n        actual.head_200000[next] = (actual.head_200000[next] + 1u) & ring_mask;\n        actual.tail_200258[next] = (actual.tail_200258[next] + 1u) & ring_mask;\n        last = next;\n        next = (next + 1u) % class_count;\n    }\n    actual.slots_000000[actual.tail_200258[last]] = moving;\n    actual.live_2004b0 = actual.live_2004b0 + 1u;\n    const auto live = actual.live_2004b0;\n    // Native JLE is signed, even though the preceding DWORD add wraps.\n    if (static_cast<std::int32_t>(live) >\n        static_cast<std::int32_t>(actual.peak_2004b4)) actual.peak_2004b4 = live;\n}\n\nvoid return_native_string_pool_00bd1510(NativeStringPoolStorage* pool,\n    void* block, std::uint32_t size,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept {\n    if (size >= class_count) {\n        std::free(block);\n        return;\n    }\n    if (actual_small_returns_disabled_01090aa4 != 0) return;\n    auto* const captured_section = section(*pool);\n    EnterCriticalSection(captured_section);\n    volatile auto& actual = *pool;\n    actual.recursion_8ad49c = actual.recursion_8ad49c + 1u;\n    return_native_string_pool_small_00bd12a0(pool->ring_6acfcc, &block, size);\n    actual.recursion_8ad49c = actual.recursion_8ad49c - 1u;\n    LeaveCriticalSection(captured_section);\n}\n\n"
+          }
+        ]
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "ranges": [
+          [
+            93,
+            134
+          ]
+        ],
+        "bodies": [
+          "complete actual raw-manager pool getter"
+        ],
+        "excerpts": [
+          {
+            "first": 93,
+            "last": 134,
+            "text": "NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    void* volatile& actual_manager_publication_01090aa0) {\n    if (auto* const owner = actual_published_01090aa8) return owner;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        actual_manager_publication_01090aa0);\n    auto* const captured_section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    auto* const depth = reinterpret_cast<volatile std::uint32_t*>(\n        reinterpret_cast<std::uintptr_t>(captured_section) + 0x18);\n    if (captured_section) {\n        EnterCriticalSection(captured_section);\n        *depth = *depth + 1u;\n    }\n    void* allocation = nullptr;\n    unsigned unwind_state = 0;\n    // Preserve the existing source __finally boundary and native state1 raw\n    // allocation cleanup. State0 retains the first manager's actual section.\n    __try {\n        if (!actual_published_01090aa8) {\n            allocation = singleton_lifetime_allocate({SingletonAllocationKind::object,\n                0x8ad4a0, sizeof(NativeStringPoolStorage)});\n            unwind_state = 1;\n            auto* const owner = allocation\n                ? construct_native_string_pool_00bd1480(allocation) : nullptr;\n            unwind_state = 0;\n            actual_published_01090aa8 = owner;\n            void* const registration_manager = get_native_singleton_manager_00415350(\n                actual_manager_publication_01090aa0);\n            // Native419D49 resolves manager BEFORE419D4E reloads pool argument.\n            register_native_singleton_object_00bd0c30(registration_manager, nullptr,\n                actual_published_01090aa8);\n        }\n    } __finally {\n        if (unwind_state == 1) singleton_lifetime_free(allocation);\n        if (captured_section) {\n            *depth = *depth - 1u;\n            LeaveCriticalSection(captured_section);\n        }\n    }\n    return actual_published_01090aa8;\n}\n"
+          }
+        ]
+      },
+      {
+        "path": "build/win32/_deps/lua511-src/src/lapi.c",
+        "ranges": [
+          [
+            339,
+            354
+          ]
+        ],
+        "bodies": [
+          "complete lua_tolstring"
+        ],
+        "excerpts": [
+          {
+            "first": 339,
+            "last": 354,
+            "text": "LUA_API const char *lua_tolstring (lua_State *L, int idx, size_t *len) {\n  StkId o = index2adr(L, idx);\n  if (!ttisstring(o)) {\n    lua_lock(L);  /* `luaV_tostring' may create a new string */\n    if (!luaV_tostring(L, o)) {  /* conversion failed? */\n      if (len != NULL) *len = 0;\n      lua_unlock(L);\n      return NULL;\n    }\n    luaC_checkGC(L);\n    o = index2adr(L, idx);  /* previous call may reallocate the stack */\n    lua_unlock(L);\n  }\n  if (len != NULL) *len = tsvalue(o)->len;\n  return svalue(o);\n}\n"
+          }
+        ]
+      },
+      {
+        "path": "build/win32/_deps/lua511-src/src/lvm.c",
+        "ranges": [
+          [
+            47,
+            57
+          ]
+        ],
+        "bodies": [
+          "complete luaV_tostring"
+        ],
+        "excerpts": [
+          {
+            "first": 47,
+            "last": 57,
+            "text": "int luaV_tostring (lua_State *L, StkId obj) {\n  if (!ttisnumber(obj))\n    return 0;\n  else {\n    char s[LUAI_MAXNUMBER2STR];\n    lua_Number n = nvalue(obj);\n    lua_number2str(s, n);\n    setsvalue2s(L, obj, luaS_new(L, s));\n    return 1;\n  }\n}\n"
+          }
+        ]
+      },
+      {
+        "path": "build/win32/_deps/lua511-src/src/luaconf.h",
+        "ranges": [
+          [
+            519,
+            522
+          ]
+        ],
+        "bodies": [
+          "active numeric string formatting definitions"
+        ],
+        "excerpts": [
+          {
+            "first": 519,
+            "last": 522,
+            "text": "*/\n#define LUA_NUMBER_SCAN\t\t\"%lf\"\n#define LUA_NUMBER_FMT\t\t\"%.14g\"\n#define lua_number2str(s,n)\tsprintf((s), LUA_NUMBER_FMT, (n))\n"
+          }
+        ]
+      }
+    ],
+    "current_Source_identity_comparison": [
+      {
+        "path": "src/native_lua_objects.cpp",
+        "retained_Comment_Source_sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+        "current_sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+        "same": true
+      },
+      {
+        "path": "include/bsp/native_lua_objects.hpp",
+        "retained_Comment_Source_sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+        "current_sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+        "same": true
+      },
+      {
+        "path": "src/native_string.cpp",
+        "retained_Comment_Source_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "current_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "same": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "retained_Comment_Source_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "current_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "same": true
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "retained_Comment_Source_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "current_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+        "same": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "retained_Comment_Source_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "current_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+        "same": true
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "retained_Comment_Source_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "current_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "same": true
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "retained_Comment_Source_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "current_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "same": true
+      }
+    ],
+    "production_actual_receiver_pool_Lua_binding_verified": false,
+    "existing_constructor_is_not_direct_schedule_proof": [
+      "std::strlen instead of retained byte scan",
+      "length loaded only on nonnull branch instead of unconditionally after TEST",
+      "zero-count memmove suppressed while retained nonnull branch calls BF7680 even when length+1 wraps to zero",
+      "no matching cross-field string owner lifetime supplied by standalone constructor"
+    ],
+    "BF7680": {
+      "inherited_status": "CRT memcpy boundary",
+      "current_standalone_named_Source_match": false,
+      "raw_constructor_host_copy": "std::memmove, qualified existing CRT boundary",
+      "Native_callee_opened": false
+    },
+    "not_substituted": [
+      "exact-string predicate",
+      "fallback empty text",
+      "semantic CRT allocator",
+      "release_to header reset",
+      "copied Lua object/indices",
+      "new string owner ending at CF35"
+    ]
+  },
+  "current_provider_Source_complete_snapshots": {
+    "src/native_lua_objects.cpp": "#include \"bsp/native_lua_objects.hpp\"\n#include \"bsp/lua_numeric.hpp\"\n#include \"bsp/gui_lua_reader.hpp\"\n#include <cstring>\n#include <new>\n#include <stdexcept>\nextern \"C\" {\n#include <lua.h>\n#include <lauxlib.h>\n#include <ldo.h>\n}\nnamespace bsp {\nNativeLuaObjectStorage* construct_native_lua_object_00b65f50(void* fresh) noexcept {\n    auto* object=::new(fresh) NativeLuaObjectStorage;\n    object->owner_00=nullptr;object->kind_04=0;object->index_08=-1;object->tracked_10=0;return object;\n}\nNativeLuaStateStorage* construct_native_lua_state_00b66bd0(void* fresh) noexcept {\n    auto* owner=::new(fresh) NativeLuaStateStorage;\n    owner->owns_00=0;owner->state_04=nullptr;owner->stack_offset_0c=0;owner->opaque_10=0;\n    for(auto& slot:owner->slots_14)slot.count_14=0;owner->high_water_4c4=0;return owner;\n}\nNativeLuaStateStorage* construct_native_lua_borrowed_state_00b66c00(\n    void* fresh,lua_State& state,int (*do_file)(lua_State*)){\n    if(!do_file)throw std::invalid_argument(\"native borrowed Lua owner requires application's DoFile callback\");\n    auto* owner=construct_native_lua_state_00b66bd0(fresh);owner->owns_00=0;owner->state_04=&state;\n    lua_pushcclosure(&state,do_file,0);lua_setfield(owner->state_04,LUA_GLOBALSINDEX,\"DoFile\");return owner;\n}\nint execute_native_lua_string_00b66c60(NativeLuaStateStorage& owner,const NativeString& code){\n    const char* text=code.data();if(!text)text=\"\";\n    const int status=luaL_loadstring(owner.state_04,text);\n    return status?status:lua_pcall(owner.state_04,0,LUA_MULTRET,0);\n}\nvoid close_native_lua_state_00b669a0(NativeLuaStateStorage& owner){\n    auto* state=owner.state_04;if(state && owner.owns_00)lua_close(state);owner.state_04=nullptr;\n}\nNativeLuaObjectStorage* native_lua_globals_00b67980(NativeLuaStateStorage& owner,void* fresh){\n    auto* object=::new(fresh) NativeLuaObjectStorage;\n    object->owner_00=&owner;object->kind_04=1;object->index_08=LUA_GLOBALSINDEX;\n    object->opaque_0c=0;object->tracked_10=0;return object;\n}\nNativeLuaObjectStorage* native_lua_get_by_name_00b67800(\n    NativeLuaObjectStorage& table,void* fresh,const char* key){\n    const bool globals=table.kind_04==3;\n    (void)lua_checkstack(table.owner_00->state_04,1);\n    const auto length=std::strlen(key);\n    lua_pushlstring(table.owner_00->state_04,key,length);\n    const auto index=globals?LUA_GLOBALSINDEX:table.index_08;\n    lua_gettable(table.owner_00->state_04,index);\n    const auto top=lua_gettop(table.owner_00->state_04);\n    auto* const owner=table.owner_00;\n    auto* object=::new(fresh) NativeLuaObjectStorage;\n    object->owner_00=owner;object->kind_04=2;object->index_08=top;object->opaque_0c=0;object->tracked_10=1;\n    const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(top));\n    if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;\n    auto& slot=owner->slots_14[slot_index];slot.references_00[slot.count_14]=object;++slot.count_14;return object;\n}\nnamespace {\nstruct NamedLookupOperation {\n    NativeLuaObjectStorage* table;\n    void* fresh;\n    const char* key;\n    NativeLuaObjectStorage* result;\n};\nvoid named_lookup_operation(lua_State*,void* context) {\n    auto& operation=*static_cast<NamedLookupOperation*>(context);\n    operation.result=native_lua_get_by_name_00b67800(*operation.table,operation.fresh,operation.key);\n}\n} // namespace\nNativeLuaObjectStorage* native_lua_get_by_name_protected(\n    NativeLuaObjectStorage& table,void* fresh,const char* key){\n    auto* const state=table.owner_00->state_04;\n    const int entry_top=lua_gettop(state);\n    NamedLookupOperation operation{&table,fresh,key,nullptr};\n    // Pinned Lua5.1.1 private API: unlike lua_pcall/lua_cpcall this invokes the\n    // trivial callback without introducing another Lua C frame. Include the\n    // allocation in checkstack and key creation in the protected operation.\n    const int status=luaD_pcall(state,&named_lookup_operation,&operation,\n        savestack(state,state->top),state->errfunc);\n    if(status){\n        lua_settop(state,entry_top);\n        throw NativeLuaOperationError{status};\n    }\n    return operation.result;\n}\nNativeLuaObjectStorage* native_lua_get_by_string_00b68100(\n    NativeLuaObjectStorage& table,void* fresh,const NativeString& key){\n    const char* text=key.data();if(!text)text=\"\";native_lua_get_by_name_00b67800(table,fresh,text);\n    return static_cast<NativeLuaObjectStorage*>(fresh);\n}\nbool native_lua_is_number_00b66050(const NativeLuaObjectStorage& object){\n    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TNUMBER;\n}\nNativeLuaObjectStorage* native_lua_call_frame_00b679b0(NativeLuaStateStorage& owner,void* fresh){\n    auto* object=::new(fresh) NativeLuaObjectStorage;\n    object->owner_00=&owner;object->kind_04=3;object->index_08=1;object->opaque_0c=0;object->tracked_10=0;\n    object->opaque_0c=static_cast<std::uint32_t>(lua_gettop(owner.state_04));return object;\n}\nNativeLuaObjectStorage* native_lua_get_by_index_00b67720(NativeLuaObjectStorage& input,void* fresh,std::int32_t index){\n    if(input.kind_04==2){\n        (void)lua_checkstack(input.owner_00->state_04,1);lua_pushnumber(input.owner_00->state_04,static_cast<double>(index));\n        lua_gettable(input.owner_00->state_04,input.index_08);\n        const auto top=lua_gettop(input.owner_00->state_04);auto* const owner=input.owner_00;\n        auto* object=::new(fresh) NativeLuaObjectStorage;\n        object->index_08=top;object->owner_00=owner;object->kind_04=2;object->opaque_0c=0;object->tracked_10=1;\n        const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(top));\n        if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;\n        auto& slot=owner->slots_14[slot_index];slot.references_00[slot.count_14]=object;++slot.count_14;return object;\n    }\n    const auto base=input.index_08;auto* const owner=input.owner_00;\n    auto* object=::new(fresh) NativeLuaObjectStorage;object->opaque_0c=0;object->tracked_10=0;object->owner_00=owner;object->kind_04=2;\n    object->index_08=static_cast<std::int32_t>(static_cast<std::uint32_t>(base)+static_cast<std::uint32_t>(index));return object;\n}\nNativeLuaObjectStorage* native_lua_argument_at_00b677e0(NativeLuaObjectStorage& input,void* fresh,std::int32_t index){\n    native_lua_get_by_index_00b67720(input,fresh,index);return static_cast<NativeLuaObjectStorage*>(fresh);\n}\nfloat native_lua_number_00b66270(const NativeLuaObjectStorage& object){\n    return lua_number_float32_00b66270(lua_tonumber(object.owner_00->state_04,object.index_08));\n}\nstd::int32_t native_lua_integer_00b66290(const NativeLuaObjectStorage& object,const bool& crt_sse2_conversion){\n    return lua_number_integer_00b66290(lua_tonumber(object.owner_00->state_04,object.index_08),crt_sse2_conversion);\n}\nvoid release_native_lua_tracked_object_00b66de0(\n    NativeLuaStateStorage* owner,NativeLuaObjectStorage& object,std::int32_t index,std::uint8_t remove_stack){\n    if(!object.tracked_10)return;\n    const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(index));\n    auto* const first=&owner->slots_14[slot_index];\n    const auto count=first->count_14;std::int32_t found=-1;\n    for(std::int32_t i=0;i<count;++i)if(first->references_00[i]==&object){found=i;break;}\n    if(found!=-1){const auto current=first->count_14;if(found!=current-1)first->references_00[found]=first->references_00[current-1];--first->count_14;}\n    if(first->count_14!=0)return;\n    if(remove_stack){\n        const auto top=lua_gettop(owner->state_04);\n        if(index==top)lua_settop(owner->state_04,-2);else lua_remove(owner->state_04,index);\n    }\n    if(slot_index==owner->high_water_4c4-1)return;\n    auto* destination=first;\n    while(destination!=&owner->slots_14[owner->high_water_4c4-1]){\n        auto* source=destination+1;\n        for(std::int32_t i=0;i<source->count_14;++i)destination->references_00[i]=source->references_00[i];\n        destination->count_14=source->count_14;++destination;\n    }\n    destination->count_14=0;\n    for(auto* slot=first;slot!=&owner->slots_14[owner->high_water_4c4];++slot)\n        for(std::int32_t i=0;i<slot->count_14;++i)--slot->references_00[i]->index_08;\n}\nvoid destroy_native_lua_object_00b67700(NativeLuaObjectStorage& object){\n    if(!object.kind_04)return;\n    release_native_lua_tracked_object_00b66de0(object.owner_00,object,object.index_08,1);object.kind_04=0;\n}\nNativeLuaObjectStorage* assign_native_lua_object_00b67690(\n    NativeLuaObjectStorage& destination,const NativeLuaObjectStorage& source){\n    if(destination.kind_04){\n        release_native_lua_tracked_object_00b66de0(\n            destination.owner_00,destination,destination.index_08,1);\n        destination.kind_04=0;\n    }\n    // Capture after release: source can alias destination or another tracked\n    // object whose index was shifted by that release. Native leaves0C/padding.\n    const auto tracked=source.tracked_10;\n    const auto kind=source.kind_04;\n    const auto index=source.index_08;\n    auto* const owner=source.owner_00;\n    destination.kind_04=kind;destination.owner_00=owner;\n    destination.index_08=index;destination.tracked_10=tracked;\n    if(tracked){\n        const auto slot_index=static_cast<std::int32_t>(\n            static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(index));\n        if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;\n        auto& slot=owner->slots_14[slot_index];\n        slot.references_00[slot.count_14]=&destination;++slot.count_14;\n    }\n    return &destination;\n}\nbool native_lua_is_boolean_00b66000(const NativeLuaObjectStorage& object){\n    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TBOOLEAN;\n}\nbool native_lua_is_nil_00b65fb0(const NativeLuaObjectStorage& object){\n    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TNIL;\n}\nbool native_lua_boolean_00b66250(const NativeLuaObjectStorage& object){\n    return lua_toboolean(object.owner_00->state_04,object.index_08)!=0;\n}\nbool native_lua_is_table_00b661b0(const NativeLuaObjectStorage& object){\n    if(!object.kind_04)return false;\n    return object.kind_04!=2 || lua_type(object.owner_00->state_04,object.index_08)==LUA_TTABLE;\n}\nbool native_lua_is_integer_number_00b66a60(const NativeLuaObjectStorage& object){\n    return native_lua_is_number_00b66050(object) &&\n        gui_lua_is_integer_number_00b66a60(lua_tonumber(object.owner_00->state_04,object.index_08));\n}\nconst char* native_lua_string_00b662b0(const NativeLuaObjectStorage& object){\n    return lua_tolstring(object.owner_00->state_04,object.index_08,nullptr);\n}\nnamespace {\nstruct StringOperation {\n    const NativeLuaObjectStorage* object;\n    const char* result;\n};\nvoid string_operation(lua_State*,void* context) {\n    auto& operation=*static_cast<StringOperation*>(context);\n    operation.result=native_lua_string_00b662b0(*operation.object);\n}\n} // namespace\nconst char* native_lua_string_protected(const NativeLuaObjectStorage& object){\n    auto* const state=object.owner_00->state_04;\n    const int entry_top=lua_gettop(state);\n    StringOperation operation{&object,nullptr};\n    const int status=luaD_pcall(state,&string_operation,&operation,\n        savestack(state,state->top),state->errfunc);\n    if(status){\n        // Allocation can fail before conversion; GC/finalizers can fail after\n        // conversion. Keep the actual TValue and remove only the error slot.\n        lua_settop(state,entry_top);\n        throw NativeLuaOperationError{status};\n    }\n    return operation.result;\n}\nstd::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage& object,std::uint8_t fallback){\n    if(!native_lua_is_boolean_00b66000(object))return fallback;\n    return lua_toboolean(object.owner_00->state_04,object.index_08)!=0?1:0;\n}\nbool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage& object) noexcept {return object.kind_04==0;}\nbool native_lua_is_string_00b660a0(const NativeLuaObjectStorage& object){\n    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TSTRING;\n}\nfloat native_lua_number_or_00b66330(const NativeLuaObjectStorage& object,float fallback){\n    return native_lua_is_number_00b66050(object)?native_lua_number_00b66270(object):fallback;\n}\nstd::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage& object,std::int32_t fallback,const bool& mode){\n    return native_lua_is_number_00b66050(object)?native_lua_integer_00b66290(object,mode):fallback;\n}\nNativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage& object,void* fresh,const char* fallback,NativeStringStorage& strings){\n    const char* text=fallback;\n    if(object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TSTRING)\n        text=native_lua_string_00b662b0(object);\n    auto* output=::new(fresh) NativeString;output->assign_0041e870(strings,text);return output;\n}\nnamespace {\nvoid publish_iteration_object(NativeLuaObjectStorage& table,NativeLuaObjectStorage& object,int index){\n    auto* const owner=table.owner_00;\n    object.owner_00=owner;object.kind_04=2;object.index_08=index;object.tracked_10=1;\n    const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(index));\n    if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;\n    auto& slot=owner->slots_14[slot_index];slot.references_00[slot.count_14]=&object;++slot.count_14;\n}\nvoid finish_iteration(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    if(!lua_next(table.owner_00->state_04,table.index_08))return;\n    const auto key_index=lua_gettop(table.owner_00->state_04)-1;publish_iteration_object(table,key,key_index);\n    const auto value_index=lua_gettop(table.owner_00->state_04);publish_iteration_object(table,value,value_index);\n}\nvoid release_iteration_objects(NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    destroy_native_lua_object_00b67700(value);destroy_native_lua_object_00b67700(key);\n}\nvoid start_iteration(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    (void)lua_checkstack(table.owner_00->state_04,2);lua_pushnil(table.owner_00->state_04);\n    finish_iteration(table,key,value);\n}\nvoid prepare_next_iteration(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    destroy_native_lua_object_00b67700(value);\n    const auto key_index=key.index_08;\n    if(key_index==lua_gettop(table.owner_00->state_04)){\n        if(key.kind_04){release_native_lua_tracked_object_00b66de0(key.owner_00,key,key_index,0);key.kind_04=0;}\n    }else{\n        lua_pushvalue(table.owner_00->state_04,key_index);\n        if(key.kind_04){release_native_lua_tracked_object_00b66de0(key.owner_00,key,key.index_08,1);key.kind_04=0;}\n    }\n}\n} // namespace\nvoid native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    release_iteration_objects(key,value);\n    start_iteration(table,key,value);\n}\nvoid native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    prepare_next_iteration(table,key,value);\n    finish_iteration(table,key,value);\n}\nnamespace {\nstruct IterationOperation {\n    NativeLuaObjectStorage* table;\n    NativeLuaObjectStorage* key;\n    NativeLuaObjectStorage* value;\n    bool first;\n};\nvoid iteration_operation(lua_State*,void* context) {\n    auto& operation=*static_cast<IterationOperation*>(context);\n    // lua_next can raise before it returns a pair. The following publication\n    // uses nonallocating Lua getters and plain tracking stores only.\n    if(operation.first)start_iteration(*operation.table,*operation.key,*operation.value);\n    else finish_iteration(*operation.table,*operation.key,*operation.value);\n}\nvoid protect_iteration(IterationOperation& operation,int discard_top){\n    auto* const state=operation.table->owner_00->state_04;\n    const int failure_top=lua_gettop(state)-discard_top;\n    const int status=luaD_pcall(state,&iteration_operation,&operation,\n        savestack(state,state->top-discard_top),state->errfunc);\n    if(status){\n        // This is the post-release stack. Reinstating the entry height would\n        // resurrect removed value/key slots without their tracking records.\n        lua_settop(state,failure_top);\n        throw NativeLuaOperationError{status};\n    }\n}\n} // namespace\nvoid native_lua_iterate_first_protected(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    release_iteration_objects(key,value);\n    IterationOperation operation{&table,&key,&value,true};\n    protect_iteration(operation,0);\n}\nvoid native_lua_iterate_next_protected(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){\n    prepare_next_iteration(table,key,value);\n    // The reader owns key/value exclusively. The top key is now detached;\n    // retain all prior releases/shifts and consume this work slot on failure.\n    IterationOperation operation{&table,&key,&value,false};\n    protect_iteration(operation,1);\n}\n} // namespace bsp\n",
+    "include/bsp/native_lua_objects.hpp": "#pragma once\n#include \"bsp/native_string.hpp\"\n#include <cstddef>\n#include <cstdint>\n#include <exception>\nstruct lua_State;\n\nnamespace bsp {\nstruct NativeLuaStateStorage;\n// Actual14h object. This owns a position on the Lua STACK, not a registry ref.\n// Addresses remain stable while tracked. No implicit cleanup or initialization.\nstruct NativeLuaObjectStorage {\n    NativeLuaStateStorage* owner_00;\n    std::int32_t kind_04,index_08;\n    std::uint32_t opaque_0c;\n    std::uint8_t tracked_10;\n    std::byte padding_11[3];\n};\nstruct NativeLuaTrackedSlot {\n    NativeLuaObjectStorage* references_00[5];\n    std::int32_t count_14;\n};\n// Full4C8h owner layout. The constructor clears the50 COUNTS at28+18*i;\n// their five reference pointers begin at14+18*i and retain their preimage.\nstruct NativeLuaStateStorage {\n    std::uint8_t owns_00;\n    std::byte padding_01[3];\n    lua_State* state_04;\n    std::uint32_t opaque_08;\n    std::int32_t stack_offset_0c;\n    std::uint32_t opaque_10;\n    NativeLuaTrackedSlot slots_14[50];\n    std::int32_t high_water_4c4;\n};\nstatic_assert(sizeof(NativeLuaObjectStorage)==0x14);\nstatic_assert(offsetof(NativeLuaObjectStorage,tracked_10)==0x10);\nstatic_assert(sizeof(NativeLuaTrackedSlot)==0x18);\nstatic_assert(sizeof(NativeLuaStateStorage)==0x4c8);\nstatic_assert(offsetof(NativeLuaStateStorage,slots_14)==0x14);\nstatic_assert(offsetof(NativeLuaStateStorage,high_water_4c4)==0x4c4);\n\n// Full original bodies, explicit C++ interfaces over actual storage. The\n// linked Lua5.1.1 API is a library dependency, not reimplemented game code.\nNativeLuaObjectStorage* construct_native_lua_object_00b65f50(void* fresh) noexcept;\nNativeLuaStateStorage* construct_native_lua_state_00b66bd0(void* fresh) noexcept;\n// B66C00, ECX fresh owner, stack borrowed lua_State*, EAX same, RET4.\n// Native installs00B69E00 as global DoFile with ZERO upvalues. Supply that\n// application's real callback; no default/no-op/VFS substitution is provided.\nNativeLuaStateStorage* construct_native_lua_borrowed_state_00b66c00(\n    void* fresh,lua_State&,int (*do_file_00b69e00)(lua_State*));\n// B66C60: luaL_loadstring of name.data (empty if null), pcall(0,-1,0) on\n// successful load only. Preserve all result/error stack values; return status.\nint execute_native_lua_string_00b66c60(NativeLuaStateStorage&,const NativeString&);\n// No blanket reference invalidation. Close only nonnull state when owns!=0,\n// then clear state04 unconditionally, leaving ownership/tracking metadata stale.\nvoid close_native_lua_state_00b669a0(NativeLuaStateStorage&);\nNativeLuaObjectStorage* native_lua_globals_00b67980(NativeLuaStateStorage&,void* fresh);\n// B67800 always uses the supplied owner, even for kind0. Kind3 reads globals;\n// all other kinds use current index08 AFTER pushing the C-string key. Output\n// is a tracked kind2 object at actual top. Unchecked slots<50/refs<5 are caller\n// contracts; lua_checkstack's return is ignored just as in the original.\n// This raw entry retains Lua's nonlocal error transfer, including calls inside\n// existing lua_pcall callbacks. It does not convert Lua errors to C++ values.\nNativeLuaObjectStorage* native_lua_get_by_name_00b67800(\n    NativeLuaObjectStorage& table,void* fresh,const char* key);\n// Source error transport for the explicit C++ reader boundary below. This is\n// a linked Lua status, not the original CRT exception or retained error value.\nstruct NativeLuaOperationError final : std::exception {\n    explicit NativeLuaOperationError(int value) noexcept : status(value) {}\n    const char* what() const noexcept override { return \"native Lua operation failed\"; }\n    int status;\n};\n// Explicit C++ reader adapter: protects checkstack/push/gettable in the SAME Lua C\n// frame. On Lua error it restores the entry stack, publishes no output, and\n// throws NativeLuaOperationError after Lua restores the frame. Inherits the\n// current error handler; consumes its error value. Caller objects/interpreter\n// must remain stable, including across metamethod/error-handler execution.\n// Do not use inside a Lua C callback that expects its caller's lua_pcall to\n// receive the Lua error. It is selected only by the base/Particle C++ readers.\n// Raw primitives retain their Lua nonlocal-transfer contract.\nNativeLuaObjectStorage* native_lua_get_by_name_protected(\n    NativeLuaObjectStorage& table,void* fresh,const char* key);\nNativeLuaObjectStorage* native_lua_get_by_string_00b68100(\n    NativeLuaObjectStorage& table,void* fresh,const NativeString& key);\nbool native_lua_is_number_00b66050(const NativeLuaObjectStorage&);\nfloat native_lua_number_00b66270(const NativeLuaObjectStorage&);\nstd::int32_t native_lua_integer_00b66290(const NativeLuaObjectStorage&,const bool& crt_sse2_conversion);\n// Tracked byte0 is a no-op even with a closed/null owner. Otherwise remove\n// first matching pointer by last-swap. A zero refcount can pop/remove index,\n// shift subsequent slot records and decrement EVERY moved object's index.\n// High-water and stale pointer cells are NOT cleared/decremented.\nvoid release_native_lua_tracked_object_00b66de0(\n    NativeLuaStateStorage*,NativeLuaObjectStorage&,std::int32_t index,std::uint8_t remove_stack);\n// Kind0 skips everything; otherwise release using captured owner/index and\n// then clear CURRENT kind04 only. The other16 bytes remain unchanged.\nvoid destroy_native_lua_object_00b67700(NativeLuaObjectStorage&);\n// B67690, ECX destination, stack source, EAX destination, RET4. Release a\n// bound destination BEFORE reading source; copy owner/kind/index/tracked only.\n// Register the destination's actual address when tracked. No self-copy guard:\n// self-assignment can clear kind and re-register stale tracked metadata.\nNativeLuaObjectStorage* assign_native_lua_object_00b67690(\n    NativeLuaObjectStorage& destination,const NativeLuaObjectStorage& source);\n// Full native predicates/getters over the actual stack object. B661B0 treats\n// every nonzero kind other than 2 as a table without accessing the interpreter.\nbool native_lua_is_boolean_00b66000(const NativeLuaObjectStorage&);\n// B65FB0 returns false for unbound/non-reference kinds, even unbound kind0.\nbool native_lua_is_nil_00b65fb0(const NativeLuaObjectStorage&);\n// B66250 always calls lua_toboolean at the current owner/index; no kind gate.\nbool native_lua_boolean_00b66250(const NativeLuaObjectStorage&);\nbool native_lua_is_table_00b661b0(const NativeLuaObjectStorage&);\nbool native_lua_is_integer_number_00b66a60(const NativeLuaObjectStorage&);\nconst char* native_lua_string_00b662b0(const NativeLuaObjectStorage&);\n// Same-frame C++ reader boundary, with the named adapter's error-handler and\n// caller-stability contract. Restores stack height on failure, but does NOT\n// undo numeric-to-string conversion: GC can fail AFTER the TValue changes.\nconst char* native_lua_string_protected(const NativeLuaObjectStorage&);\nstd::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage&,std::uint8_t fallback);\nbool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage&) noexcept;\n// ECX table; stack key/value; RET8. Existing value is released before key.\n// Results keep word0C/padding unchanged and register their actual addresses.\n// Next consumes a top key in place, or copies then removes a non-top key.\nvoid native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,\n    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);\nvoid native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,\n    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);\n// Explicit Particle reader adapters. Release/preparation retains the native\n// order BEFORE protecting Lua work. Errors leave key/value unbound and retain\n// the completed releases/index shifts; they never restore the entry stack.\n// First drops operation temporaries; next drops its detached working key.\n// Next requires the reader's exclusively owned key/value, valid table and\n// stack/tracking domain, with no surviving reference to the working key.\n// An inherited error handler must be below every removed/consumed slot and\n// remain unmoved through preparation, callbacks and surrounding reader cleanup:\n// Lua stack removal does not adjust the saved L->errfunc byte offset.\n// Same C++ boundary/handler/stability restrictions as the named adapter apply.\nvoid native_lua_iterate_first_protected(NativeLuaObjectStorage& table,\n    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);\nvoid native_lua_iterate_next_protected(NativeLuaObjectStorage& table,\n    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);\n// Exact NUMBER or the full signed fallback DWORD; unlike integer coercion,\n// numeric strings take the fallback. ECX object, stack fallback, EAX, RET4.\nstd::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage&,\n    std::int32_t fallback,const bool& crt_sse2_conversion);\n// Exact STRING or supplied C-string fallback, then construct fresh8h output.\n// ECX object, stack output/fallback, EAX output, RET8; no prior-output cleanup.\nNativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage&,\n    void* fresh,const char* fallback,NativeStringStorage&);\nbool native_lua_is_string_00b660a0(const NativeLuaObjectStorage&);\n// Kind2/exact NUMBER yields a float32-rounded result; every other value\n// returns the supplied float. Original ECX object, stack float, ST0, RET4.\nfloat native_lua_number_or_00b66330(const NativeLuaObjectStorage&,float fallback);\n// B679B0: kind3, start index1, top in opaque0C, untracked; RET4/EAXoutput.\nNativeLuaObjectStorage* native_lua_call_frame_00b679b0(NativeLuaStateStorage&,void* fresh);\n// B67720: kind2 table lookup pushes integer key and registers actual output;\n// every other kind creates untracked kind2 at current base index+offset.\nNativeLuaObjectStorage* native_lua_get_by_index_00b67720(NativeLuaObjectStorage&,void* fresh,std::int32_t);\n// Full32-byte wrapper, RET8/EAXoriginal output pointer.\nNativeLuaObjectStorage* native_lua_argument_at_00b677e0(NativeLuaObjectStorage&,void* fresh,std::int32_t);\n} // namespace bsp\n",
+    "src/native_string.cpp": "#include \"bsp/native_string.hpp\"\n#include \"bsp/native_string_pool_storage.hpp\"\n\n#include <cstdlib>\n#include <cstring>\n#include <new>\n\nnamespace bsp {\nnamespace {\n\nstatic_assert(sizeof(NativeString) == 8, \"Native string is a length dword plus a pointer.\");\nstatic_assert(sizeof(std::uintptr_t) == 4);\n\ntemplate<class T> T read_header(const void* header, std::size_t offset) noexcept {\n    T value;\n    std::memcpy(&value, static_cast<const char*>(header) + offset, sizeof(value));\n    return value;\n}\ntemplate<class T> void write_header(void* header, std::size_t offset, T value) noexcept {\n    std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));\n}\n\nclass RawStringPoolAccess {\npublic:\n    explicit RawStringPoolAccess(NativeStringRawPoolContext& context) noexcept\n        : context_(context) {}\n    char* allocate(std::uint32_t size) {\n        auto* const pool = current_pool();\n        return static_cast<char*>(allocate_native_string_pool_00bd1120(pool, size));\n    }\n    void release(char* data, std::uint32_t size) {\n        auto* const pool = current_pool();\n        return_native_string_pool_00bd1510(pool, data, size,\n            context_.actual_small_returns_disabled_01090aa4);\n    }\nprivate:\n    NativeStringPoolStorage* current_pool() {\n        return native_string_pool_get_or_create_00419cc0(\n            context_.actual_published_01090aa8,\n            context_.actual_manager_publication_01090aa0);\n    }\n    NativeStringRawPoolContext& context_;\n};\n\nclass CrtStringStorage final : public NativeStringStorage {\npublic:\n    char* allocate(std::uint32_t size) override {\n        void* block = std::malloc(size == 0 ? 1u : static_cast<std::size_t>(size));\n        if (block == nullptr) throw std::bad_alloc();\n        return static_cast<char*>(block);\n    }\n    void release(char* block, std::uint32_t) noexcept override { std::free(block); }\n};\n\n} // namespace\n\nchar* PooledStringStorage::allocate(std::uint32_t size) {\n    return static_cast<char*>(pool_->allocate_00bd1120(size));\n}\n\nvoid PooledStringStorage::release(char* block, std::uint32_t size) noexcept {\n    pool_->release_00bd1510(block, size);\n}\n\nNativeStringStorage& crt_string_storage() noexcept {\n    static CrtStringStorage storage;\n    return storage;\n}\n\nnamespace {\ntemplate<bool NativeOverlap, class Storage>\nvoid resize_header(void* actual_header,\n    Storage& storage, std::uint32_t length, bool preserve) {\n    const auto initial_length = read_header<std::uint32_t>(actual_header, 0);\n    if (length == initial_length) return; // 0041dd4a does not read the pointer.\n\n    if (length == 0) { // 0041dd52\n        auto* const old_data = read_header<char*>(actual_header, 4);\n        if (old_data != nullptr) storage.release(old_data, initial_length + 1u);\n        write_header<char*>(actual_header, 4, nullptr);\n        write_header<std::uint32_t>(actual_header, 0, 0);\n        return;\n    }\n\n    // 0041dd90 allocates before any old-buffer release. Do not snapshot the\n    // source header across this boundary: a callback may have changed it.\n    char* block = storage.allocate(length + 1u);\n    if (preserve) { // 0041dd95\n        const auto current_length = read_header<std::uint32_t>(actual_header, 0);\n        const auto copied = length > current_length ? current_length : length;\n        // Preserve the existing host policy: omit native memcpy with count 0,\n        // which can pass a null source and is not a defined standard C++ call.\n        if (copied != 0) {\n            if constexpr (NativeOverlap)\n                std::memmove(block, read_header<char*>(actual_header, 4), copied);\n            else\n                std::memcpy(block, read_header<char*>(actual_header, 4), copied);\n        }\n    }\n    auto* const old_data = read_header<char*>(actual_header, 4); // 0041ddb9\n    if (old_data != nullptr)\n        storage.release(old_data, read_header<std::uint32_t>(actual_header, 0) + 1u);\n    write_header<char*>(actual_header, 4, block);\n    write_header<std::uint32_t>(actual_header, 0, length);\n    // Native Win32 address addition, including uint32 wrap. No length guard or\n    // cleanup is added if the caller/storage contract cannot support the write.\n    *reinterpret_cast<char*>(reinterpret_cast<std::uintptr_t>(block) + length) = '\\0';\n}\n} // namespace\n\nvoid resize_native_string_header_0041dd40(void* actual_header,\n    NativeStringStorage& storage, std::uint32_t length, bool preserve) {\n    resize_header<false>(actual_header, storage, length, preserve);\n}\n\nvoid resize_native_string_header_0041dd40(void* actual_header,\n    NativeStringRawPoolContext& context, std::uint32_t length, bool preserve) {\n    RawStringPoolAccess storage(context);\n    resize_header<true>(actual_header, storage, length, preserve);\n}\n\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringStorage& storage) noexcept {\n    auto* const data = read_header<char*>(actual_header, 4);\n    if (data != nullptr)\n        storage.release(data, read_header<std::uint32_t>(actual_header, 0) + 1u);\n}\n\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringRawPoolContext& context) {\n    auto* const data = read_header<char*>(actual_header, 4);\n    if (data != nullptr) {\n        const auto size = read_header<std::uint32_t>(actual_header, 0) + 1u;\n        RawStringPoolAccess storage(context);\n        storage.release(data, size);\n    }\n}\n\nvoid lowercase_native_string_header_004bcc00(void* actual_header) noexcept {\n    auto* const data = read_header<unsigned char*>(actual_header, 4);\n    if (data == nullptr || read_header<std::uint32_t>(actual_header, 0) == 0)\n        return;\n    auto cursor = reinterpret_cast<std::uintptr_t>(data);\n    std::uint32_t index = 0;\n    do {\n        auto* const current = reinterpret_cast<volatile unsigned char*>(cursor);\n        auto byte = *current;\n        if (byte >= 0x41 && byte <= 0x5a)\n            byte = static_cast<unsigned char>(byte + 0x20);\n        *current = byte;\n        ++index;\n        ++cursor;\n    } while (index < read_header<std::uint32_t>(actual_header, 0));\n}\n\nvoid NativeString::resize_0041dd40(NativeStringStorage& storage, std::uint32_t length, bool preserve) {\n    resize_native_string_header_0041dd40(this, storage, length, preserve);\n}\n\nNativeString& NativeString::assign_0041e870(NativeStringStorage& storage, const char* text) {\n    // 0041e87a: both fields are cleared first, so any buffer already held is\n    // abandoned. This mirrors the native, which only ever runs on fresh storage.\n    length_ = 0;\n    data_ = nullptr;\n\n    const std::uint32_t length = static_cast<std::uint32_t>(std::strlen(text));\n    resize_0041dd40(storage, length, true);\n    if (data_ != nullptr) {\n        // 0041e8b1 copies length + 1 bytes, rewriting the terminator resize\n        // already placed. An empty text leaves data_ null and copies nothing.\n        std::memcpy(data_, text, length_ + 1u);\n    }\n    return *this;\n}\n\nvoid* construct_native_string_header_0041e870(void* header,\n    NativeStringRawPoolContext& context, const char* text) {\n    write_header<std::uint32_t>(header, 0, 0);\n    write_header<char*>(header, 4, nullptr);\n    const auto length = static_cast<std::uint32_t>(std::strlen(text));\n    resize_native_string_header_0041dd40(header, context, length, true);\n    void* const data = read_header<void*>(header, 4);\n    if (data != nullptr) {\n        const auto bytes = read_header<std::uint32_t>(header, 0) + 1u;\n        if (bytes) std::memmove(data, text, bytes); // Native BF7680 admits overlap.\n    }\n    return header;\n}\n\nNativeString& NativeString::assign_0041e870(NativeStringRawPoolContext& context, const char* text) {\n    construct_native_string_header_0041e870(this, context, text);\n    return *this;\n}\n\nvoid NativeString::copy_from_00be0a30_fragment(NativeStringStorage& storage, const NativeString& source) {\n    copy_native_string_header_00be0a30_fragment(this, storage, &source);\n}\nvoid copy_native_string_header_00be0a30_fragment(void* destination,\n    NativeStringStorage& storage, const void* source) {\n    if (destination == source) return; //00BE0A6C\n    resize_native_string_header_0041dd40(destination, storage,\n        read_header<std::uint32_t>(source, 0), true);\n    if (read_header<std::uint32_t>(source, 0) != 0) {\n        const auto length = read_header<std::uint32_t>(destination, 0);\n        if (length) std::memcpy(read_header<void*>(destination, 4),\n            read_header<const void*>(source, 4), length);\n    }\n}\n\nvoid NativeString::release_to(NativeStringStorage& storage) noexcept {\n    if (data_ == nullptr) {\n        length_ = 0;\n        return;\n    }\n    storage.release(data_, length_ + 1u);\n    data_ = nullptr;\n    length_ = 0;\n}\n\nchar* duplicate_00438e40(const char* text) {\n    if (text == nullptr) return nullptr; // 00438e47\n    const std::size_t size = std::strlen(text) + 1u;\n    void* copy = std::malloc(size);\n    if (copy == nullptr) throw std::bad_alloc();\n    std::memcpy(copy, text, size); // 00438e6b copies the terminator too.\n    return static_cast<char*>(copy);\n}\n\nvoid release_duplicate_00438e40(char* copy) noexcept { std::free(copy); }\n\n}\n",
+    "include/bsp/native_string.hpp": "#pragma once\n#include <cstdint>\n\n#include \"bsp/storage_pool.hpp\"\n\n// Host projection of the game's native string helper layer, recovered from\n// BSP_NativeString_Resize 0041dd40, BSP_NativeString_Assign 0041e870,\n// BSP_NativeString_Duplicate 00438e40 and the copy fragment inside\n// BSP_FileBlock_Construct 00be0a30.\n//\n// The native object is eight bytes and carries no allocator, no capacity and no\n// small-buffer area: dword 0 is the length, dword 4 is the buffer. Storage is\n// therefore passed explicitly into every operation instead of being cached in\n// the object or read from a process global. Evidence and native ABI:\n// docs/APP_INIT_ALLOC_STRINGS.md.\nnamespace bsp {\n\n// The allocation contract 0041dd40 depends on. Every release repeats the size\n// that was allocated, because the native pool picks its free list from that\n// number. The native large-block malloc can return null; these native string\n// bodies do not translate that failure into an exception or a fallback buffer.\n// Host allocators may have a stronger throwing contract. See also the actual\n// pool bridge in native_string_pool_storage.hpp and its exception-domain limit.\nclass NativeStringStorage {\npublic:\n    virtual ~NativeStringStorage() = default;\n    virtual char* allocate(std::uint32_t size) = 0;\n    virtual void release(char* block, std::uint32_t size) noexcept = 0;\n};\n\nstruct NativeStringPoolStorage;\n// Actual publication cells shared with the native string-pool getter and raw\n// singleton manager. This context owns no storage and adds no host callback.\nstruct NativeStringRawPoolContext {\n    NativeStringPoolStorage* volatile& actual_published_01090aa8;\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4;\n    void* volatile& actual_manager_publication_01090aa0;\n};\n\n// Semantic SizedStoragePool projection; not the actual 00419cc0 owner layout.\nclass PooledStringStorage final : public NativeStringStorage {\npublic:\n    explicit PooledStringStorage(SizedStoragePool& pool) noexcept : pool_(&pool) {}\n    char* allocate(std::uint32_t size) override;\n    void release(char* block, std::uint32_t size) noexcept override;\n\nprivate:\n    SizedStoragePool* pool_;\n};\n\n// std::malloc / std::free for hosts that do not stand a pool up.\nNativeStringStorage& crt_string_storage() noexcept;\n\n// Full 0041DD20; ECX actual8h header, RET. Capture its nonnull data pointer,\n// then length+1 (DWORD wrap), and release through supplied storage. Leave the\n// header untouched, including changes performed during release. Null data\n// skips the length read and storage call. No implicit header destruction.\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringStorage& storage) noexcept;\n\n// Complete raw-pool composition. Resolve 00419CC0 before every nonnull return,\n// including large blocks and disabled small returns. Getter exceptions escape;\n// the caller's original cleanup state determines subsequent cleanup. The header\n// remains untouched. Evidence: docs/NATIVE_STRING_RAW_POOL_CONTEXT.md.\nvoid destroy_native_string_header_0041dd20(void* actual_header,\n    NativeStringRawPoolContext& context);\n\n// Full 004BCC00; ECX actual8h header, RET. Capture data once; walk bytes by the\n// current unsigned length, reread after every store. Convert only ASCII A..Z,\n// including after embedded NUL, and still store unchanged bytes. No allocation.\nvoid lowercase_native_string_header_004bcc00(void* actual_header) noexcept;\n\n// Full 0041dd40 against an existing native header: uint32 length at +0 and\n// char* data at +4, in the Win32 build. The header is neither initialized nor\n// copied into a temporary owner. Allocation/release can observe or change its\n// fields; later reads use those current fields. Equal length returns without\n// touching the pointer, including a stale or null one. No null-header guard.\n// NativeStringStorage remains the explicit host boundary for 00419cc0 and the\n// sized pool calls. The original __thiscall/RET 8 ABI is not this C++ interface.\n// A zero-byte native memcpy is omitted, as in the existing NativeString API.\n// Evidence and the remaining boundaries: docs/NATIVE_POOLED_STRING_ACTUAL_RESIZE.md.\nvoid resize_native_string_header_0041dd40(void* actual_header,\n    NativeStringStorage& storage, std::uint32_t length, bool preserve);\n\n// Same complete header schedule through concrete 00419CC0/BD1120/BD1510 using\n// the actual raw manager. Getter exceptions propagate on allocation AND return.\n// Nonzero preserve copies admit overlap, as the original BF7680 branch does.\n// No rollback or native binary/SEH identity is added by this source interface.\nvoid resize_native_string_header_0041dd40(void* actual_header,\n    NativeStringRawPoolContext& context, std::uint32_t length, bool preserve);\n\n// Complete 0041E870 against an actual8h header and the concrete raw pool.\n// ECX header, stack nonnull C string, RET4/EAX same header. The CALLEE zeros\n// both header fields before strlen; no caller initialization is assumed and\n// any previous buffer is abandoned. Resize preserves, then copy CURRENT\n// length+1 into CURRENT data if nonnull. No local exception cleanup is added.\nvoid* construct_native_string_header_0041e870(void* actual_header,\n    NativeStringRawPoolContext& context, const char* text);\n\n// Existing BE0A30 copy fragment against actual8h headers, without starting a\n// NativeString object or copying a source header. Self-copy returns; otherwise\n// resize from source length, then reload source length/data and destination\n// length/data AFTER allocation callbacks. A zero-byte memcpy is omitted.\nvoid copy_native_string_header_00be0a30_fragment(void* actual_destination,\n    NativeStringStorage&, const void* actual_source);\n\n// Exact layout of the native eight-byte string. This host wrapper has no\n// implicit destructor cleanup. Its owner calls release_to, resize(0), or the\n// actual-header destruction body before discarding owned storage.\nclass NativeString {\npublic:\n    NativeString() noexcept = default;\n    NativeString(const NativeString&) = delete;\n    NativeString& operator=(const NativeString&) = delete;\n    NativeString(NativeString&& other) noexcept : length_(other.length_), data_(other.data_) {\n        other.length_ = 0;\n        other.data_ = nullptr;\n    }\n\n    // 0041dd40, __thiscall, RET 8. A request for the length the string already\n    // has does nothing at all, even when the buffer is null; that quirk is\n    // native. Length zero releases the buffer and clears both fields. Any other\n    // length allocates length + 1, optionally copies min(old, new) bytes, then\n    // releases the old buffer with old_length + 1 and writes the terminator.\n    // Delegates to resize_native_string_header_0041dd40 on this actual object.\n    void resize_0041dd40(NativeStringStorage& storage, std::uint32_t length, bool preserve);\n\n    // 0041e870, __thiscall, RET 4, returns this. This is a constructor body,\n    // not an assignment: it zeroes both fields before resizing, so calling it\n    // on a live string leaks that string's buffer. text must not be null.\n    NativeString& assign_0041e870(NativeStringStorage& storage, const char* text);\n    // Raw-pool overload delegates to the actual-header body above; getter\n    // exceptions propagate, with the same callee-owned zero initialization.\n    NativeString& assign_0041e870(NativeStringRawPoolContext& context, const char* text);\n\n    // The copy fragment at 00be0a82 inside BSP_FileBlock_Construct: guard\n    // against self-copy, resize to the source length with preserve set, then\n    // copy exactly length bytes over the terminator resize already wrote.\n    void copy_from_00be0a30_fragment(NativeStringStorage& storage, const NativeString& source);\n\n    // resize to zero: the release path the owners use.\n    void release_to(NativeStringStorage& storage) noexcept;\n\n    std::uint32_t length() const noexcept { return length_; }\n    // Null for a string that has never held a non-empty value; the native\n    // callers check this pointer rather than the length.\n    const char* data() const noexcept { return data_; }\n    char* data() noexcept { return data_; }\n    // Size the buffer occupies in the pool, and the number release has to\n    // repeat. There is no separate capacity: it is always length + 1.\n    std::uint32_t block_size() const noexcept { return length_ + 1u; }\n\nprivate:\n    std::uint32_t length_{};\n    char* data_{};\n};\n\n// 00438e40, __fastcall in ECX, RET 0. Returns null for a null argument,\n// otherwise a std::malloc copy of strlen + 1 bytes. This one does not touch the\n// pool: the native allocates through 00bf681b and its callers release the\n// result with _free 00bf9dc8.\nchar* duplicate_00438e40(const char* text);\nvoid release_duplicate_00438e40(char* copy) noexcept;\n\n}\n",
+    "src/native_string_pool_owner.cpp": "#include \"bsp/native_string_pool_owner.hpp\"\n#include \"bsp/native_singleton_publication.hpp\"\n#include \"bsp/native_singleton_vector_registration_wrappers.hpp\"\n\n#define WIN32_LEAN_AND_MEAN\n#define NOMINMAX\n#include <Windows.h>\n\n#include <cstring>\n#include <new>\n#include <stdexcept>\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native string pool ownership requires MSVC Win32.\n#endif\n\nnamespace bsp {\nnamespace {\nconstexpr std::uint32_t pool_profile = 0x00d68200;\nconstexpr std::uint32_t base_profile = 0x00ce3818;\nstatic_assert(sizeof(CRITICAL_SECTION) == 0x18);\nstatic_assert(alignof(CRITICAL_SECTION) == 4);\n\nCRITICAL_SECTION* section(NativeStringPoolStorage& owner) noexcept {\n    return reinterpret_cast<CRITICAL_SECTION*>(owner.critical_section_8ad484);\n}\n} // namespace\n\nNativeStringPoolRingStorage& construct_native_string_pool_ring_00bd0f50(\n    NativeStringPoolRingStorage& ring) noexcept {\n    volatile auto& actual = ring;\n    std::uint32_t head = 0;\n    for (std::uint32_t i = 0; i < 0x96; ++i) {\n        actual.head_200000[i] = head;\n        actual.tail_200258[i] = head - 1u;\n        head += 0xda7;\n    }\n    actual.live_2004b0 = 0;\n    actual.peak_2004b4 = 0;\n    actual.tail_200258[0] = 0x7ffff;\n    return ring;\n}\n\nNativeStringPoolStorage* construct_native_string_pool_00bd1480(void* actual_allocation) {\n    auto* const owner = ::new (actual_allocation) NativeStringPoolStorage;\n    volatile auto& actual = *owner;\n    actual.native_vtable_00 = pool_profile;\n    construct_native_string_pool_ring_00bd0f50(owner->ring_6acfcc);\n    ::new (owner->critical_section_8ad484) CRITICAL_SECTION;\n    InitializeCriticalSection(section(*owner));\n    actual.recursion_8ad49c = 0;\n    actual.bump_6acfc8 = 0;\n    return owner;\n}\n\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    SingletonLifetimeDomain& actual_lifetime) {\n    if (auto* const owner = actual_published_01090aa8) return owner;\n    auto* const captured_section = actual_lifetime.get_manager_00415350()\n        ->system_owner().section_10;\n    if (captured_section) {\n        singleton_enter_critical_section(*captured_section);\n        ++captured_section->recursion_18;\n    }\n    void* allocation = nullptr;\n    unsigned unwind_state = 0;\n    // FuncInfo D841EC: state1 frees raw storage (C5E118), then state0 releases\n    // the captured section (C5E110 -> 00411EE0). Registration is in state0.\n    // __finally preserves cleanup for both C++ and Win32 unwinding.\n    __try {\n        if (!actual_published_01090aa8) {\n            allocation = singleton_lifetime_allocate({SingletonAllocationKind::object,\n                0x8ad4a0, sizeof(NativeStringPoolStorage)});\n            unwind_state = 1;\n            auto* const owner = allocation\n                ? construct_native_string_pool_00bd1480(allocation) : nullptr;\n            unwind_state = 0;\n            actual_published_01090aa8 = owner;\n            auto* const registration_manager = actual_lifetime.get_manager_00415350();\n            registration_manager->register_object(actual_published_01090aa8);\n        }\n    } __finally {\n        if (unwind_state == 1) singleton_lifetime_free(allocation);\n        if (captured_section) {\n            --captured_section->recursion_18;\n            singleton_leave_critical_section(*captured_section);\n        }\n    }\n    return actual_published_01090aa8; // Reload AFTER unlocking.\n}\n\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    void* volatile& actual_manager_publication_01090aa0) {\n    if (auto* const owner = actual_published_01090aa8) return owner;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        actual_manager_publication_01090aa0);\n    auto* const captured_section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    auto* const depth = reinterpret_cast<volatile std::uint32_t*>(\n        reinterpret_cast<std::uintptr_t>(captured_section) + 0x18);\n    if (captured_section) {\n        EnterCriticalSection(captured_section);\n        *depth = *depth + 1u;\n    }\n    void* allocation = nullptr;\n    unsigned unwind_state = 0;\n    // Preserve the existing source __finally boundary and native state1 raw\n    // allocation cleanup. State0 retains the first manager's actual section.\n    __try {\n        if (!actual_published_01090aa8) {\n            allocation = singleton_lifetime_allocate({SingletonAllocationKind::object,\n                0x8ad4a0, sizeof(NativeStringPoolStorage)});\n            unwind_state = 1;\n            auto* const owner = allocation\n                ? construct_native_string_pool_00bd1480(allocation) : nullptr;\n            unwind_state = 0;\n            actual_published_01090aa8 = owner;\n            void* const registration_manager = get_native_singleton_manager_00415350(\n                actual_manager_publication_01090aa0);\n            // Native419D49 resolves manager BEFORE419D4E reloads pool argument.\n            register_native_singleton_object_00bd0c30(registration_manager, nullptr,\n                actual_published_01090aa8);\n        }\n    } __finally {\n        if (unwind_state == 1) singleton_lifetime_free(allocation);\n        if (captured_section) {\n            *depth = *depth - 1u;\n            LeaveCriticalSection(captured_section);\n        }\n    }\n    return actual_published_01090aa8;\n}\n\nvoid destroy_native_string_pool_00bd14c0(NativeStringPoolStorage& owner,\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept {\n    volatile auto& actual = owner;\n    actual.native_vtable_00 = pool_profile;\n    actual_small_returns_disabled_01090aa4 = 1;\n    // Native JLE/JG use signed depth; arithmetic itself wraps as a DWORD.\n    while (static_cast<std::int32_t>(actual.recursion_8ad49c) > 0) {\n        actual.recursion_8ad49c = actual.recursion_8ad49c - 1u;\n        LeaveCriticalSection(section(owner));\n    }\n    DeleteCriticalSection(section(owner));\n    actual_published_01090aa8 = nullptr;\n    actual.native_vtable_00 = base_profile;\n}\n\nNativeStringPoolStorage* delete_native_string_pool_00bd1730(NativeStringPoolStorage& owner,\n    std::uint32_t flags, NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept {\n    auto* const original_address = &owner;\n    destroy_native_string_pool_00bd14c0(owner, actual_published_01090aa8,\n        actual_small_returns_disabled_01090aa4);\n    if ((flags & 1u) != 0) {\n        owner.~NativeStringPoolStorage();\n        singleton_lifetime_free(original_address);\n    }\n    // Ghidra misses ADD ESP,4 at 00BD1745 after incorrectly treating _free as\n    // no-return. Verified bytes continue with EAX=this and RET4 through174D.\n    return original_address;\n}\n\nNativeStringPoolLifetimeBinding::NativeStringPoolLifetimeBinding(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4,\n    SingletonLifetimeCallbacks next)\n    : published_(actual_published_01090aa8),\n      returns_disabled_(actual_small_returns_disabled_01090aa4), next_(next) {\n    if (!next_.destroy_registered || !next_.invalid_parameter) {\n        throw std::invalid_argument(\"String pool lifetime binding requires other-owner callbacks\");\n    }\n}\n\nSingletonLifetimeCallbacks NativeStringPoolLifetimeBinding::callbacks() noexcept {\n    return {this, &destroy_registered, &invalid_parameter};\n}\n\nvoid NativeStringPoolLifetimeBinding::destroy_registered(void* context, void* owner,\n    std::uint32_t flags) noexcept {\n    auto& binding = *static_cast<NativeStringPoolLifetimeBinding*>(context);\n    std::uint32_t profile;\n    std::memcpy(&profile, owner, sizeof(profile));\n    if (profile == pool_profile) {\n        delete_native_string_pool_00bd1730(*static_cast<NativeStringPoolStorage*>(owner),\n            flags, binding.published_, binding.returns_disabled_);\n    } else {\n        binding.next_.destroy_registered(binding.next_.context, owner, flags);\n    }\n}\n\nvoid NativeStringPoolLifetimeBinding::invalid_parameter(void* context) {\n    auto& binding = *static_cast<NativeStringPoolLifetimeBinding*>(context);\n    binding.next_.invalid_parameter(binding.next_.context);\n}\n\n} // namespace bsp\n",
+    "include/bsp/native_string_pool_owner.hpp": "#pragma once\n\n#include \"bsp/singleton_lifetime.hpp\"\n\n#include <cstddef>\n#include <cstdint>\n#include <type_traits>\n\nnamespace bsp {\n\n// Actual embedded ring, not SizedStoragePool's vector projection. Construction\n// writes only head/tail/live/peak; the 0x80000 pointer cells retain their bytes.\nstruct NativeStringPoolRingStorage {\n    void* slots_000000[0x80000];\n    std::uint32_t head_200000[0x96];\n    std::uint32_t tail_200258[0x96];\n    std::uint32_t live_2004b0;\n    std::uint32_t peak_2004b4;\n};\n\n// Actual 8AD4A0h Win32 owner. No initializers, separately allocated arena,\n// host vptr, cached shutdown gate, or hidden allocator state.\nstruct NativeStringPoolStorage {\n    std::uint32_t native_vtable_00;\n    std::byte untouched_04[4];\n    std::byte arena_08[7000000];\n    std::uint32_t bump_6acfc8;\n    NativeStringPoolRingStorage ring_6acfcc;\n    alignas(4) std::byte critical_section_8ad484[0x18];\n    std::uint32_t recursion_8ad49c;\n};\n\nstatic_assert(sizeof(void*) == 4);\nstatic_assert(sizeof(NativeStringPoolRingStorage) == 0x2004b8);\nstatic_assert(offsetof(NativeStringPoolRingStorage, head_200000) == 0x200000);\nstatic_assert(offsetof(NativeStringPoolRingStorage, tail_200258) == 0x200258);\nstatic_assert(offsetof(NativeStringPoolRingStorage, live_2004b0) == 0x2004b0);\nstatic_assert(offsetof(NativeStringPoolRingStorage, peak_2004b4) == 0x2004b4);\nstatic_assert(sizeof(NativeStringPoolStorage) == 0x8ad4a0);\nstatic_assert(offsetof(NativeStringPoolStorage, arena_08) == 8);\nstatic_assert(offsetof(NativeStringPoolStorage, bump_6acfc8) == 0x6acfc8);\nstatic_assert(offsetof(NativeStringPoolStorage, ring_6acfcc) == 0x6acfcc);\nstatic_assert(offsetof(NativeStringPoolStorage, critical_section_8ad484) == 0x8ad484);\nstatic_assert(offsetof(NativeStringPoolStorage, recursion_8ad49c) == 0x8ad49c);\nstatic_assert(std::is_trivially_default_constructible_v<NativeStringPoolStorage>);\nstatic_assert(std::is_trivially_copyable_v<NativeStringPoolStorage>);\n\n// 00BD0F50..00BD0F92, ECX ring, EAX same ring, RET. It is an embedded-ring\n// constructor, not a complete-owner base constructor.\nNativeStringPoolRingStorage& construct_native_string_pool_ring_00bd0f50(\n    NativeStringPoolRingStorage&) noexcept;\n\n// 00BD1480..00BD14B1, ECX aligned raw owner allocation, EAX same owner, RET.\n// Begin the trivial owner's lifetime without value-initialization. The native\n// constructor has no local unwind cleanup and does not reset shared01090AA4.\nNativeStringPoolStorage* construct_native_string_pool_00bd1480(void* actual_allocation);\n\n// 00419CC0..00419D7F, no native arguments, EAX published owner, RET. References\n// must be the application's one 01090AA8 slot and canonical01090AA0 domain.\n// Install a real D68200/00BD1730 binding in that domain before first use (the\n// binding below composes it with the application's other registered owners).\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    SingletonLifetimeDomain& actual_lifetime);\n\n// Same complete getter schedule using the application's actual raw14h manager\n// publication. Borrows the same01090AA0 cell used by SoundLifetimeAccess and\n// NativePhysicalFactoryContext; no semantic domain is allocated. Raw manager\n// shutdown requires the pool's explicit native deletion binding.\nNativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    void* volatile& actual_manager_publication_01090aa0);\n\n// 00BD14C0..00BD150E, ECX actual owner, RET; no specified return. Set the real\n// shutdown gate, drain only positive SIGNED depth, delete the embedded section,\n// clear publication unconditionally, then write baseCE3818. No unregister/free.\nvoid destroy_native_string_pool_00bd14c0(NativeStringPoolStorage&,\n    NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept;\n\n// 00BD1730..00BD174D, ECX actual owner, stack flags, EAX original owner, RET4.\n// Always destroy; flags&1 additionally frees via canonical00BF65AC contract.\nNativeStringPoolStorage* delete_native_string_pool_00bd1730(NativeStringPoolStorage&,\n    std::uint32_t flags, NativeStringPoolStorage* volatile& actual_published_01090aa8,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept;\n\n// Host dispatch composition, not another lifetime domain or publication slot.\n// Construct this first, construct the application's canonical domain from\n// callbacks(), and retain this binding until that domain has shut down. Every\n// other native profile and invalid-parameter call goes to the REQUIRED next\n// callbacks. D68200 is identity data; dispatch calls rebuilt C++ directly.\nclass NativeStringPoolLifetimeBinding final {\npublic:\n    NativeStringPoolLifetimeBinding(\n        NativeStringPoolStorage* volatile& actual_published_01090aa8,\n        volatile std::uint32_t& actual_small_returns_disabled_01090aa4,\n        SingletonLifetimeCallbacks next);\n    NativeStringPoolLifetimeBinding(const NativeStringPoolLifetimeBinding&) = delete;\n    NativeStringPoolLifetimeBinding& operator=(const NativeStringPoolLifetimeBinding&) = delete;\n    SingletonLifetimeCallbacks callbacks() noexcept;\n\nprivate:\n    static void destroy_registered(void*, void* owner, std::uint32_t flags) noexcept;\n    static void invalid_parameter(void*);\n    NativeStringPoolStorage* volatile& published_;\n    volatile std::uint32_t& returns_disabled_;\n    SingletonLifetimeCallbacks next_;\n};\n\n// The actual-state BD1120/BD1510/BD12A0 layer and NativeStringStorage bridge\n// are provided separately by native_string_pool_storage.hpp. The owner report\n// records this packet's earlier boundary; docs/NATIVE_STRING_POOL_STORAGE.md\n// records its subsequent implementation and remaining integration limits.\n\n} // namespace bsp\n",
+    "src/native_string_pool_storage.cpp": "#include \"bsp/native_string_pool_storage.hpp\"\n\n#define WIN32_LEAN_AND_MEAN\n#define NOMINMAX\n#include <Windows.h>\n\n#include <cstdlib>\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native string pool storage requires MSVC Win32.\n#endif\n\nnamespace bsp {\nnamespace {\nconstexpr std::uint32_t ring_mask = 0x7ffff;\nconstexpr std::uint32_t class_count = 0x96;\n\nCRITICAL_SECTION* section(NativeStringPoolStorage& pool) noexcept {\n    return reinterpret_cast<CRITICAL_SECTION*>(pool.critical_section_8ad484);\n}\n} // namespace\n\nvoid* allocate_native_string_pool_00bd1120(NativeStringPoolStorage* pool,\n    std::uint32_t size) {\n    if (size >= class_count) return std::malloc(size);\n    auto* const captured_section = section(*pool);\n    EnterCriticalSection(captured_section);\n    volatile auto& actual = *pool;\n    actual.recursion_8ad49c = actual.recursion_8ad49c + 1u;\n    volatile auto& ring = actual.ring_6acfcc;\n    const auto after_tail = (ring.tail_200258[size] + 1u) & ring_mask;\n    void* block;\n    if (ring.head_200000[size] == after_tail) {\n        const auto bump = actual.bump_6acfc8;\n        // Native LEA uses DWORD wrap and does not align/check the arena.\n        block = reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(pool)\n            + 8u + bump);\n        actual.bump_6acfc8 = bump + size;\n    } else {\n        ring.live_2004b0 = ring.live_2004b0 - 1u;\n        const auto tail = ring.tail_200258[size]; // native post-counter reload\n        block = ring.slots_000000[tail];\n        ring.tail_200258[size] = (tail - 1u) & ring_mask;\n    }\n    actual.recursion_8ad49c = actual.recursion_8ad49c - 1u;\n    LeaveCriticalSection(captured_section);\n    return block;\n}\n\nvoid return_native_string_pool_small_00bd12a0(NativeStringPoolRingStorage& ring,\n    void* const* block, std::uint32_t size_class) noexcept {\n    void* moving = *block;\n    volatile auto& actual = ring;\n    actual.tail_200258[size_class] =\n        (actual.tail_200258[size_class] + 1u) & ring_mask;\n    auto last = size_class;\n    auto next = (size_class + 1u) % class_count;\n    while (next != size_class) {\n        const auto head = actual.head_200000[next];\n        if (actual.tail_200258[last] != head) break;\n        const auto after_tail = (actual.tail_200258[next] + 1u) & ring_mask;\n        if (head != after_tail) {\n            void* const displaced = actual.slots_000000[head];\n            actual.slots_000000[head] = moving;\n            moving = displaced;\n        }\n        actual.head_200000[next] = (actual.head_200000[next] + 1u) & ring_mask;\n        actual.tail_200258[next] = (actual.tail_200258[next] + 1u) & ring_mask;\n        last = next;\n        next = (next + 1u) % class_count;\n    }\n    actual.slots_000000[actual.tail_200258[last]] = moving;\n    actual.live_2004b0 = actual.live_2004b0 + 1u;\n    const auto live = actual.live_2004b0;\n    // Native JLE is signed, even though the preceding DWORD add wraps.\n    if (static_cast<std::int32_t>(live) >\n        static_cast<std::int32_t>(actual.peak_2004b4)) actual.peak_2004b4 = live;\n}\n\nvoid return_native_string_pool_00bd1510(NativeStringPoolStorage* pool,\n    void* block, std::uint32_t size,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept {\n    if (size >= class_count) {\n        std::free(block);\n        return;\n    }\n    if (actual_small_returns_disabled_01090aa4 != 0) return;\n    auto* const captured_section = section(*pool);\n    EnterCriticalSection(captured_section);\n    volatile auto& actual = *pool;\n    actual.recursion_8ad49c = actual.recursion_8ad49c + 1u;\n    return_native_string_pool_small_00bd12a0(pool->ring_6acfcc, &block, size);\n    actual.recursion_8ad49c = actual.recursion_8ad49c - 1u;\n    LeaveCriticalSection(captured_section);\n}\n\nActualNativeStringPoolStorage::ActualNativeStringPoolStorage(\n    NativeStringPoolStorage* volatile& publication,\n    volatile std::uint32_t& returns_disabled,\n    SingletonLifetimeDomain& lifetime) noexcept\n    : publication_(publication), returns_disabled_(returns_disabled), lifetime_(&lifetime) {}\n\nActualNativeStringPoolStorage::ActualNativeStringPoolStorage(\n    NativeStringPoolStorage* volatile& publication,\n    volatile std::uint32_t& returns_disabled,\n    void* volatile& actual_manager_publication_01090aa0) noexcept\n    : publication_(publication), returns_disabled_(returns_disabled),\n      actual_manager_(&actual_manager_publication_01090aa0) {}\n\nNativeStringPoolStorage* ActualNativeStringPoolStorage::get_pool() {\n    if (actual_manager_) {\n        return native_string_pool_get_or_create_00419cc0(publication_, *actual_manager_);\n    }\n    return native_string_pool_get_or_create_00419cc0(publication_, *lifetime_);\n}\n\nchar* ActualNativeStringPoolStorage::allocate(std::uint32_t size) {\n    auto* const owner = get_pool();\n    return static_cast<char*>(allocate_native_string_pool_00bd1120(owner, size));\n}\n\nvoid ActualNativeStringPoolStorage::release(char* block, std::uint32_t size) noexcept {\n    auto* const owner = get_pool();\n    return_native_string_pool_00bd1510(owner, block, size, returns_disabled_);\n}\n\n} // namespace bsp\n",
+    "include/bsp/native_string_pool_storage.hpp": "#pragma once\n\n#include \"bsp/native_string.hpp\"\n#include \"bsp/native_string_pool_owner.hpp\"\n\nnamespace bsp {\n\n// Complete BD1120. Native ECX pool, stack (size, unused), RET8; EAX block.\n// size>=150 calls current CRT malloc (nullable), without dereferencing pool.\n// Small requests require the constructed actual owner; exact-size ring or\n// unchecked DWORD bump into embedded arena. Zero size neither advances nor\n// aligns the bump. No arena bounds or ring-capacity policy is added.\nvoid* allocate_native_string_pool_00bd1120(NativeStringPoolStorage* actual_pool,\n    std::uint32_t size);\n\n// Complete BD12A0. Native ECX ring, stack (address of block, size_class), RET8.\n// Caller guarantees class<150 and valid native ring indices. Capture *block\n// before the first ring write, including when block aliases a slot. No lock.\nvoid return_native_string_pool_small_00bd12a0(NativeStringPoolRingStorage&,\n    void* const* block, std::uint32_t size_class) noexcept;\n\n// Complete BD1510. Native ECX pool, stack (block, size, unused), RET0C.\n// Large requests free without reading pool or the real01090AA4 gate. Small\n// returns read that live gate first; a nonzero value does not touch the owner.\nvoid return_native_string_pool_00bd1510(NativeStringPoolStorage* actual_pool,\n    void* block, std::uint32_t size,\n    volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept;\n\n// Borrow the application's one publication slot, real shutdown gate and\n// canonical lifetime domain. Semantic domains use NativeStringPoolLifetimeBinding;\n// raw publications require the explicit pool deletion binding. EVERY operation\n// calls00419CC0, even large\n// allocations/frees and disabled small returns: do not cache the pool here.\n// NativeStringStorage::release is noexcept: its returning-getter domain is\n// covered; C++ failure while lazily recreating a pool terminates under that\n// pre-existing interface. This bridge does not claim native EH/SEH ABI parity.\nclass ActualNativeStringPoolStorage final : public NativeStringStorage {\npublic:\n    ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,\n        volatile std::uint32_t& returns_disabled,\n        SingletonLifetimeDomain& lifetime) noexcept;\n    ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,\n        volatile std::uint32_t& returns_disabled,\n        void* volatile& actual_manager_publication_01090aa0) noexcept;\n    char* allocate(std::uint32_t size) override;\n    void release(char* block, std::uint32_t size) noexcept override;\n\nprivate:\n    NativeStringPoolStorage* volatile& publication_;\n    volatile std::uint32_t& returns_disabled_;\n    NativeStringPoolStorage* get_pool();\n    SingletonLifetimeDomain* lifetime_{};\n    void* volatile* actual_manager_{};\n};\n\n} // namespace bsp\n"
+  },
+  "current_Lua_implementation_whole_file_pins": [
+    {
+      "path": "build/win32/_deps/lua511-src/src/lapi.c",
+      "bytes": 22526,
+      "sha256": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0"
+    },
+    {
+      "path": "build/win32/_deps/lua511-src/src/lvm.c",
+      "bytes": 23069,
+      "sha256": "03ee8d2e2a9a2eda683bdfc90cd0859acfe9eb039eba703990face2cd4168aa1"
+    },
+    {
+      "path": "build/win32/_deps/lua511-src/src/luaconf.h",
+      "bytes": 22998,
+      "sha256": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9"
+    }
+  ],
+  "complete_bounded_Source_searches": {
+    "base_commit": "80a0c1753964aeb0e1c482ab11b747383f3d0f55",
+    "scope": "Only explicit bounded Source/header/build paths and patterns; negative conclusions limited to this inventory",
+    "queries": [
+      {
+        "label": "genuine_Lua_lookup_getter_conversion_cleanup",
+        "argv": [
+          "rg",
+          "-n",
+          "native_lua_get_by_name_|named_lookup_operation|native_lua_string_|string_operation|destroy_native_lua_object_00b67700|release_native_lua_tracked_object_00b66de0",
+          "src/native_lua_objects.cpp",
+          "include/bsp/native_lua_objects.hpp"
+        ],
+        "return_code": 0,
+        "stdout_complete": "include/bsp/native_lua_objects.hpp:53:int execute_native_lua_string_00b66c60(NativeLuaStateStorage&,const NativeString&);\ninclude/bsp/native_lua_objects.hpp:64:NativeLuaObjectStorage* native_lua_get_by_name_00b67800(\ninclude/bsp/native_lua_objects.hpp:81:NativeLuaObjectStorage* native_lua_get_by_name_protected(\ninclude/bsp/native_lua_objects.hpp:92:void release_native_lua_tracked_object_00b66de0(\ninclude/bsp/native_lua_objects.hpp:96:void destroy_native_lua_object_00b67700(NativeLuaObjectStorage&);\ninclude/bsp/native_lua_objects.hpp:112:const char* native_lua_string_00b662b0(const NativeLuaObjectStorage&);\ninclude/bsp/native_lua_objects.hpp:116:const char* native_lua_string_protected(const NativeLuaObjectStorage&);\ninclude/bsp/native_lua_objects.hpp:146:NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage&,\nsrc/native_lua_objects.cpp:28:int execute_native_lua_string_00b66c60(NativeLuaStateStorage& owner,const NativeString& code){\nsrc/native_lua_objects.cpp:41:NativeLuaObjectStorage* native_lua_get_by_name_00b67800(\nsrc/native_lua_objects.cpp:64:void named_lookup_operation(lua_State*,void* context) {\nsrc/native_lua_objects.cpp:66:    operation.result=native_lua_get_by_name_00b67800(*operation.table,operation.fresh,operation.key);\nsrc/native_lua_objects.cpp:69:NativeLuaObjectStorage* native_lua_get_by_name_protected(\nsrc/native_lua_objects.cpp:77:    const int status=luaD_pcall(state,&named_lookup_operation,&operation,\nsrc/native_lua_objects.cpp:87:    const char* text=key.data();if(!text)text=\"\";native_lua_get_by_name_00b67800(table,fresh,text);\nsrc/native_lua_objects.cpp:122:void release_native_lua_tracked_object_00b66de0(\nsrc/native_lua_objects.cpp:146:void destroy_native_lua_object_00b67700(NativeLuaObjectStorage& object){\nsrc/native_lua_objects.cpp:148:    release_native_lua_tracked_object_00b66de0(object.owner_00,object,object.index_08,1);object.kind_04=0;\nsrc/native_lua_objects.cpp:153:        release_native_lua_tracked_object_00b66de0(\nsrc/native_lua_objects.cpp:191:const char* native_lua_string_00b662b0(const NativeLuaObjectStorage& object){\nsrc/native_lua_objects.cpp:199:void string_operation(lua_State*,void* context) {\nsrc/native_lua_objects.cpp:201:    operation.result=native_lua_string_00b662b0(*operation.object);\nsrc/native_lua_objects.cpp:204:const char* native_lua_string_protected(const NativeLuaObjectStorage& object){\nsrc/native_lua_objects.cpp:208:    const int status=luaD_pcall(state,&string_operation,&operation,\nsrc/native_lua_objects.cpp:232:NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage& object,void* fresh,const char* fallback,NativeStringStorage& strings){\nsrc/native_lua_objects.cpp:235:        text=native_lua_string_00b662b0(object);\nsrc/native_lua_objects.cpp:252:    destroy_native_lua_object_00b67700(value);destroy_native_lua_object_00b67700(key);\nsrc/native_lua_objects.cpp:259:    destroy_native_lua_object_00b67700(value);\nsrc/native_lua_objects.cpp:262:        if(key.kind_04){release_native_lua_tracked_object_00b66de0(key.owner_00,key,key_index,0);key.kind_04=0;}\nsrc/native_lua_objects.cpp:265:        if(key.kind_04){release_native_lua_tracked_object_00b66de0(key.owner_00,key,key.index_08,1);key.kind_04=0;}\n",
+        "stderr_complete": "",
+        "truncated": false
+      },
+      {
+        "label": "genuine_raw_string_resize_constructor_cleanup",
+        "argv": [
+          "rg",
+          "-n",
+          "RawStringPoolAccess|resize_header|resize_native_string_header_0041dd40|construct_native_string_header_0041e870|destroy_native_string_header_0041dd20|memmove|memcpy",
+          "src/native_string.cpp",
+          "include/bsp/native_string.hpp"
+        ],
+        "return_code": 0,
+        "stdout_complete": "include/bsp/native_string.hpp:58:void destroy_native_string_header_0041dd20(void* actual_header,\ninclude/bsp/native_string.hpp:65:void destroy_native_string_header_0041dd20(void* actual_header,\ninclude/bsp/native_string.hpp:80:// A zero-byte native memcpy is omitted, as in the existing NativeString API.\ninclude/bsp/native_string.hpp:82:void resize_native_string_header_0041dd40(void* actual_header,\ninclude/bsp/native_string.hpp:89:void resize_native_string_header_0041dd40(void* actual_header,\ninclude/bsp/native_string.hpp:97:void* construct_native_string_header_0041e870(void* actual_header,\ninclude/bsp/native_string.hpp:103:// length/data AFTER allocation callbacks. A zero-byte memcpy is omitted.\ninclude/bsp/native_string.hpp:125:    // Delegates to resize_native_string_header_0041dd40 on this actual object.\nsrc/native_string.cpp:16:    std::memcpy(&value, static_cast<const char*>(header) + offset, sizeof(value));\nsrc/native_string.cpp:20:    std::memcpy(static_cast<char*>(header) + offset, &value, sizeof(value));\nsrc/native_string.cpp:23:class RawStringPoolAccess {\nsrc/native_string.cpp:25:    explicit RawStringPoolAccess(NativeStringRawPoolContext& context) noexcept\nsrc/native_string.cpp:72:void resize_header(void* actual_header,\nsrc/native_string.cpp:91:        // Preserve the existing host policy: omit native memcpy with count 0,\nsrc/native_string.cpp:95:                std::memmove(block, read_header<char*>(actual_header, 4), copied);\nsrc/native_string.cpp:97:                std::memcpy(block, read_header<char*>(actual_header, 4), copied);\nsrc/native_string.cpp:111:void resize_native_string_header_0041dd40(void* actual_header,\nsrc/native_string.cpp:113:    resize_header<false>(actual_header, storage, length, preserve);\nsrc/native_string.cpp:116:void resize_native_string_header_0041dd40(void* actual_header,\nsrc/native_string.cpp:118:    RawStringPoolAccess storage(context);\nsrc/native_string.cpp:119:    resize_header<true>(actual_header, storage, length, preserve);\nsrc/native_string.cpp:122:void destroy_native_string_header_0041dd20(void* actual_header,\nsrc/native_string.cpp:129:void destroy_native_string_header_0041dd20(void* actual_header,\nsrc/native_string.cpp:134:        RawStringPoolAccess storage(context);\nsrc/native_string.cpp:157:    resize_native_string_header_0041dd40(this, storage, length, preserve);\nsrc/native_string.cpp:171:        std::memcpy(data_, text, length_ + 1u);\nsrc/native_string.cpp:176:void* construct_native_string_header_0041e870(void* header,\nsrc/native_string.cpp:181:    resize_native_string_header_0041dd40(header, context, length, true);\nsrc/native_string.cpp:185:        if (bytes) std::memmove(data, text, bytes); // Native BF7680 admits overlap.\nsrc/native_string.cpp:191:    construct_native_string_header_0041e870(this, context, text);\nsrc/native_string.cpp:201:    resize_native_string_header_0041dd40(destination, storage,\nsrc/native_string.cpp:205:        if (length) std::memcpy(read_header<void*>(destination, 4),\nsrc/native_string.cpp:225:    std::memcpy(copy, text, size); // 00438e6b copies the terminator too.\n",
+        "stderr_complete": "",
+        "truncated": false
+      },
+      {
+        "label": "real_pool_getter_allocation_return",
+        "argv": [
+          "rg",
+          "-n",
+          "native_string_pool_get_or_create_00419cc0|allocate_native_string_pool_00bd1120|return_native_string_pool_00bd1510|actual_published_01090aa8|actual_manager_publication_01090aa0",
+          "src/native_string_pool_owner.cpp",
+          "src/native_string_pool_storage.cpp",
+          "include/bsp/native_string_pool_owner.hpp",
+          "include/bsp/native_string_pool_storage.hpp"
+        ],
+        "return_code": 0,
+        "stdout_complete": "include/bsp/native_string_pool_storage.hpp:13:void* allocate_native_string_pool_00bd1120(NativeStringPoolStorage* actual_pool,\ninclude/bsp/native_string_pool_storage.hpp:25:void return_native_string_pool_00bd1510(NativeStringPoolStorage* actual_pool,\ninclude/bsp/native_string_pool_storage.hpp:44:        void* volatile& actual_manager_publication_01090aa0) noexcept;\ninclude/bsp/native_string_pool_owner.hpp:62:NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\ninclude/bsp/native_string_pool_owner.hpp:63:    NativeStringPoolStorage* volatile& actual_published_01090aa8,\ninclude/bsp/native_string_pool_owner.hpp:70:NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\ninclude/bsp/native_string_pool_owner.hpp:71:    NativeStringPoolStorage* volatile& actual_published_01090aa8,\ninclude/bsp/native_string_pool_owner.hpp:72:    void* volatile& actual_manager_publication_01090aa0);\ninclude/bsp/native_string_pool_owner.hpp:78:    NativeStringPoolStorage* volatile& actual_published_01090aa8,\ninclude/bsp/native_string_pool_owner.hpp:84:    std::uint32_t flags, NativeStringPoolStorage* volatile& actual_published_01090aa8,\ninclude/bsp/native_string_pool_owner.hpp:95:        NativeStringPoolStorage* volatile& actual_published_01090aa8,\nsrc/native_string_pool_storage.cpp:23:void* allocate_native_string_pool_00bd1120(NativeStringPoolStorage* pool,\nsrc/native_string_pool_storage.cpp:80:void return_native_string_pool_00bd1510(NativeStringPoolStorage* pool,\nsrc/native_string_pool_storage.cpp:106:    void* volatile& actual_manager_publication_01090aa0) noexcept\nsrc/native_string_pool_storage.cpp:108:      actual_manager_(&actual_manager_publication_01090aa0) {}\nsrc/native_string_pool_storage.cpp:112:        return native_string_pool_get_or_create_00419cc0(publication_, *actual_manager_);\nsrc/native_string_pool_storage.cpp:114:    return native_string_pool_get_or_create_00419cc0(publication_, *lifetime_);\nsrc/native_string_pool_storage.cpp:119:    return static_cast<char*>(allocate_native_string_pool_00bd1120(owner, size));\nsrc/native_string_pool_storage.cpp:124:    return_native_string_pool_00bd1510(owner, block, size, returns_disabled_);\nsrc/native_string_pool_owner.cpp:56:NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\nsrc/native_string_pool_owner.cpp:57:    NativeStringPoolStorage* volatile& actual_published_01090aa8,\nsrc/native_string_pool_owner.cpp:59:    if (auto* const owner = actual_published_01090aa8) return owner;\nsrc/native_string_pool_owner.cpp:72:        if (!actual_published_01090aa8) {\nsrc/native_string_pool_owner.cpp:79:            actual_published_01090aa8 = owner;\nsrc/native_string_pool_owner.cpp:81:            registration_manager->register_object(actual_published_01090aa8);\nsrc/native_string_pool_owner.cpp:90:    return actual_published_01090aa8; // Reload AFTER unlocking.\nsrc/native_string_pool_owner.cpp:93:NativeStringPoolStorage* native_string_pool_get_or_create_00419cc0(\nsrc/native_string_pool_owner.cpp:94:    NativeStringPoolStorage* volatile& actual_published_01090aa8,\nsrc/native_string_pool_owner.cpp:95:    void* volatile& actual_manager_publication_01090aa0) {\nsrc/native_string_pool_owner.cpp:96:    if (auto* const owner = actual_published_01090aa8) return owner;\nsrc/native_string_pool_owner.cpp:98:        actual_manager_publication_01090aa0);\nsrc/native_string_pool_owner.cpp:112:        if (!actual_published_01090aa8) {\nsrc/native_string_pool_owner.cpp:119:            actual_published_01090aa8 = owner;\nsrc/native_string_pool_owner.cpp:121:                actual_manager_publication_01090aa0);\nsrc/native_string_pool_owner.cpp:124:                actual_published_01090aa8);\nsrc/native_string_pool_owner.cpp:133:    return actual_published_01090aa8;\nsrc/native_string_pool_owner.cpp:137:    NativeStringPoolStorage* volatile& actual_published_01090aa8,\nsrc/native_string_pool_owner.cpp:148:    actual_published_01090aa8 = nullptr;\nsrc/native_string_pool_owner.cpp:153:    std::uint32_t flags, NativeStringPoolStorage* volatile& actual_published_01090aa8,\nsrc/native_string_pool_owner.cpp:156:    destroy_native_string_pool_00bd14c0(owner, actual_published_01090aa8,\nsrc/native_string_pool_owner.cpp:168:    NativeStringPoolStorage* volatile& actual_published_01090aa8,\nsrc/native_string_pool_owner.cpp:171:    : published_(actual_published_01090aa8),\n",
+        "stderr_complete": "",
+        "truncated": false
+      },
+      {
+        "label": "current_Lua_numeric_to_string_body",
+        "argv": [
+          "rg",
+          "-n",
+          "lua_tolstring|luaV_tostring|lua_number2str|LUA_NUMBER_FMT",
+          "build/win32/_deps/lua511-src/src/lapi.c",
+          "build/win32/_deps/lua511-src/src/lvm.c",
+          "build/win32/_deps/lua511-src/src/luaconf.h"
+        ],
+        "return_code": 0,
+        "stdout_complete": "build/win32/_deps/lua511-src/src/luaconf.h:515:@@ LUA_NUMBER_FMT is the format for writing numbers.\nbuild/win32/_deps/lua511-src/src/luaconf.h:516:@@ lua_number2str converts a number to a string.\nbuild/win32/_deps/lua511-src/src/luaconf.h:521:#define LUA_NUMBER_FMT\t\t\"%.14g\"\nbuild/win32/_deps/lua511-src/src/luaconf.h:522:#define lua_number2str(s,n)\tsprintf((s), LUA_NUMBER_FMT, (n))\nbuild/win32/_deps/lua511-src/src/lvm.c:47:int luaV_tostring (lua_State *L, StkId obj) {\nbuild/win32/_deps/lua511-src/src/lvm.c:53:    lua_number2str(s, n);\nbuild/win32/_deps/lua511-src/src/lapi.c:339:LUA_API const char *lua_tolstring (lua_State *L, int idx, size_t *len) {\nbuild/win32/_deps/lua511-src/src/lapi.c:342:    lua_lock(L);  /* `luaV_tostring' may create a new string */\nbuild/win32/_deps/lua511-src/src/lapi.c:343:    if (!luaV_tostring(L, o)) {  /* conversion failed? */\nbuild/win32/_deps/lua511-src/src/lapi.c:365:      lua_lock(L);  /* `luaV_tostring' may create a new string */\nbuild/win32/_deps/lua511-src/src/lapi.c:366:      l = (luaV_tostring(L, o) ? tsvalue(o)->len : 0);\n",
+        "stderr_complete": "",
+        "truncated": false
+      },
+      {
+        "label": "named_BF7680_Source_definitions_bounded",
+        "argv": [
+          "rg",
+          "-n",
+          "00bf7680|bf7680",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "return_code": 1,
+        "stdout_complete": "",
+        "stderr_complete": "",
+        "truncated": false
+      },
+      {
+        "label": "actual_row_and_owner_boundary",
+        "argv": [
+          "rg",
+          "-n",
+          "live_iterator_owner|actual_iterator_scratch|actual_header_at_parent_edi|actual_saved_end_at_parent_dc|actual_vector_access|state_",
+          "include/bsp/native_damageable_class_back_row_selection_fragment.hpp",
+          "src/native_damageable_class_back_row_selection_fragment.cpp",
+          "include/bsp/native_damageable_class_section_iterator_setup_fragment.hpp",
+          "src/native_damageable_class_section_iterator_setup_fragment.cpp",
+          "src/native_damageable_class_section_row_begin_fragment.cpp"
+        ],
+        "return_code": 0,
+        "stdout_complete": "src/native_damageable_class_section_iterator_setup_fragment.cpp:15:    state_ = 12;\nsrc/native_damageable_class_section_iterator_setup_fragment.cpp:17:    state_ = 13;\nsrc/native_damageable_class_section_iterator_setup_fragment.cpp:28:    if (state_ == 13) {\nsrc/native_damageable_class_section_iterator_setup_fragment.cpp:29:        state_ = 12; // Native D1D3, before VALUE cleanup.\nsrc/native_damageable_class_section_iterator_setup_fragment.cpp:33:    if (state_ == 12) {\nsrc/native_damageable_class_section_iterator_setup_fragment.cpp:34:        state_ = 11; // Native D1E4, before KEY cleanup.\nsrc/native_damageable_class_section_row_begin_fragment.cpp:18:    if (state_ == 14) {\nsrc/native_damageable_class_section_row_begin_fragment.cpp:19:        state_ = 13;\nsrc/native_damageable_class_section_row_begin_fragment.cpp:21:            access_.actual_vector_access.actual_vtable_00d0df04);\nsrc/native_damageable_class_section_row_begin_fragment.cpp:38:    state_ = 14;\nsrc/native_damageable_class_section_row_begin_fragment.cpp:39:    append_native_damageable_section_0087c870(header, temporary, access_.actual_vector_access);\nsrc/native_damageable_class_section_row_begin_fragment.cpp:51:    state_ = 13;\nsrc/native_damageable_class_section_row_begin_fragment.cpp:53:    const std::uint32_t table = access_.actual_vector_access.actual_vtable_00d0df04;\nsrc/native_damageable_class_back_row_selection_fragment.cpp:10:    void* const header = actual_scratch.actual_header_at_parent_edi;\nsrc/native_damageable_class_back_row_selection_fragment.cpp:11:    void* const saved_end_slot = actual_scratch.actual_saved_end_at_parent_dc;\nsrc/native_damageable_class_back_row_selection_fragment.cpp:12:    const auto& invalid = actual_scratch.actual_vector_access.invalid_parameters;\ninclude/bsp/native_damageable_class_back_row_selection_fragment.hpp:11:    NativeDamageableClassSectionIteratorSetupFragment& live_iterator_owner;\ninclude/bsp/native_damageable_class_back_row_selection_fragment.hpp:12:    NativeDamageableClassSectionIteratorSetupFragmentScratch& actual_iterator_scratch;\ninclude/bsp/native_damageable_class_back_row_selection_fragment.hpp:13:    void* actual_header_at_parent_edi; // SAME retained descriptor+18h header\ninclude/bsp/native_damageable_class_back_row_selection_fragment.hpp:14:    void* actual_saved_end_at_parent_dc; // actual writable four-byte S+DCh slot\ninclude/bsp/native_damageable_class_back_row_selection_fragment.hpp:15:    const NativeDamageableSectionVectorAccess& actual_vector_access;\ninclude/bsp/native_damageable_class_section_iterator_setup_fragment.hpp:61:    unsigned state_ = 11;\n",
+        "stderr_complete": "",
+        "truncated": false
+      },
+      {
+        "label": "MshCategory_binding_and_new_candidate_absence",
+        "argv": [
+          "rg",
+          "-n",
+          "MshCategory|first_section_field|first_section_field_fragment",
+          "src",
+          "include/bsp",
+          "-g",
+          "*.cpp",
+          "-g",
+          "*.hpp"
+        ],
+        "return_code": 0,
+        "stdout_complete": "src\\game_hosts_gunnery.cpp:2513:            int kind{-1};                // row+4h, 007149D0(MshCategory)\nsrc\\game_hosts_gunnery.cpp:3621:    // the chunk can map Damage.Sections[].MshCategory and\nsrc\\game_hosts_gunnery.cpp:3813:        \"          f[q .. 'kind'] = mcat(sc.MshCategory)\\n\"\nsrc\\vehicle_class_fields.cpp:153:    {\"MshCategory\", \".Damage.Sections[]\", VehicleClassFieldConversion::String, kNo, 0x0087CECC,\ninclude/bsp\\part_damage_reachability.hpp:16://     key `MshCategory` (00D0E190); the result lands in the 30h-byte part\n",
+        "stderr_complete": "",
+        "truncated": false
+      },
+      {
+        "label": "current_provider_registration",
+        "argv": [
+          "rg",
+          "-n",
+          "native_lua_objects.cpp|native_string.cpp|native_string_pool_owner.cpp|native_string_pool_storage.cpp|native_damageable_class_back_row_selection_fragment.cpp",
+          "CMakeLists.txt",
+          "cmake/startup.cmake"
+        ],
+        "return_code": 0,
+        "stdout_complete": "cmake/startup.cmake:120:cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_back_row_selection_fragment.cpp)\ncmake/startup.cmake:229:cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_lua_objects.cpp src/native_shader_state_reader.cpp)\ncmake/startup.cmake:1284:cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string.cpp)\ncmake/startup.cmake:1287:cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_pool_owner.cpp)\ncmake/startup.cmake:1288:cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_string_pool_storage.cpp)\n",
+        "stderr_complete": "",
+        "truncated": false
+      }
+    ]
+  },
+  "search_interpretation": [
+    "Exact named BF7680 search over specified Source/headers had no matches, not a global claim that copying is absent",
+    "MshCategory matches existing metadata/other host script; no actual reader binding inferred",
+    "No first_section_field Source candidate or new typed wrapper introduced",
+    "Provider definitions inspected as complete bodies; declarations alone not used"
+  ],
+  "floating_point_and_ABI": {
+    "selected_retained_x87_instructions": 0,
+    "arithmetic": "unsigned32 address/length wrap and bytescan",
+    "later_numeric_conversion_excluded": true,
+    "Lua_number_format_CRT_locale_and_allocation": "Current genuineSource provider boundary, notNative FP/format/exception parity",
+    "original_register_stack_ABI_preserved_claim": false
+  },
+  "future_Source_packet": {
+    "proposed": false,
+    "ready": false,
+    "smallest_held_gate": "CEBB..CF34 ends in state17; cannot close to13 before CF35",
+    "needed_before_proposal": [
+      "explicitly bounded complete cross-field lifetime/consumer/cleanup contract for actual S+18",
+      "appropriate retained raw byte evidence for any new Source region",
+      "actual genuine Lua/string-pool/header binding and failure contracts"
+    ],
+    "no_expanded_address_scope_or_newSourcefiles_proposed": true
+  },
+  "Source627_context": {
+    "primary_report": "reports/cc12_damageable_class_back_row_selection_source_primary_review.json",
+    "selected_project_inputs": 627,
+    "Core_objects": 84,
+    "App_objects": 3,
+    "positive_definitions": 225,
+    "existing_checks_passed": 3,
+    "this_packet_execution_credit": false
+  },
+  "validation": {
+    "retained_listing_hash_verified": true,
+    "all858historicalstarts_verified": true,
+    "selected35textops_and122extent_verified": true,
+    "selected_raw_byte_decode": false,
+    "full37state_report_pinned": true,
+    "existing8LuaStringPoolSourcefiles_matchretainedCommentpins": true,
+    "complete_bounded_queries": 8,
+    "no_new_build_test_or_probe": true
+  },
+  "credit": {
+    "readiness_only": true,
+    "Source_present": false,
+    "new_complete_Native_functions": 0,
+    "new_Sourcecounter": 0,
+    "fullparent": false,
+    "Native_ABI": false,
+    "FH3_SEH_longjmp_faultidentity": false,
+    "production_binding": false,
+    "runtime": false
+  },
+  "mutations": {
+    "Cpp": false,
+    "CMake": false,
+    "providers": false,
+    "ledgers": false,
+    "GPR": false,
+    "build": false,
+    "tests": false,
+    "probe": false,
+    "installedNative_or_current_shared_export_reads": false,
+    "prior_published_receipts_modified": false
+  },
+  "baseline_tracked_blob_pins": [
+    {
+      "path": "src/native_lua_objects.cpp",
+      "baseline_blob_sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "current_sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_lua_objects.hpp",
+      "baseline_blob_sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "current_sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "same": true
+    },
+    {
+      "path": "src/native_string.cpp",
+      "baseline_blob_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "current_sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "baseline_blob_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "current_sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "same": true
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "baseline_blob_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "current_sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "baseline_blob_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "current_sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "same": true
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "baseline_blob_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "current_sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "baseline_blob_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "current_sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_damageable_class_back_row_selection_fragment.hpp",
+      "baseline_blob_sha256": "d318be1bfcbfb7c09a7067a48234e68fcef18cd39a906f14384fa33e7e957718",
+      "current_sha256": "d318be1bfcbfb7c09a7067a48234e68fcef18cd39a906f14384fa33e7e957718",
+      "same": true
+    },
+    {
+      "path": "src/native_damageable_class_back_row_selection_fragment.cpp",
+      "baseline_blob_sha256": "d209f00c7a9fb0fe97aba3573f753ef6fe5f7f26d7af73dec98d4bc3a4030bcd",
+      "current_sha256": "d209f00c7a9fb0fe97aba3573f753ef6fe5f7f26d7af73dec98d4bc3a4030bcd",
+      "same": true
+    },
+    {
+      "path": "docs/CC12_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_SOURCE.md",
+      "baseline_blob_sha256": "3a1125b970940cdbe4e94106f391fd012487591538f74cd964f9b74b22824e97",
+      "current_sha256": "3a1125b970940cdbe4e94106f391fd012487591538f74cd964f9b74b22824e97",
+      "same": true
+    },
+    {
+      "path": "reports/cc12_damageable_class_back_row_selection_source.json",
+      "baseline_blob_sha256": "4b9efc640f3faf603e7078ffa50970a6d291e153f99dd930e71c52b2b9140a6d",
+      "current_sha256": "4b9efc640f3faf603e7078ffa50970a6d291e153f99dd930e71c52b2b9140a6d",
+      "same": true
+    },
+    {
+      "path": "reports/cc12_damageable_class_back_row_selection_source_primary_review.json",
+      "baseline_blob_sha256": "2e0c4d3e65510d50ce77d9d2e1bfc3b7ea4bffa80167c409aa7f9af40f0801d6",
+      "current_sha256": "2e0c4d3e65510d50ce77d9d2e1bfc3b7ea4bffa80167c409aa7f9af40f0801d6",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_damageable_class_section_iterator_setup_fragment.hpp",
+      "baseline_blob_sha256": "a8c3c08fb6bc5902e995382485b3e5491987d592893efcc9318b499233e4f369",
+      "current_sha256": "a8c3c08fb6bc5902e995382485b3e5491987d592893efcc9318b499233e4f369",
+      "same": true
+    },
+    {
+      "path": "src/native_damageable_class_section_iterator_setup_fragment.cpp",
+      "baseline_blob_sha256": "b343db4402d941f1802506bc8d6cdae90250ad03ac6809f93cee883e10956eae",
+      "current_sha256": "b343db4402d941f1802506bc8d6cdae90250ad03ac6809f93cee883e10956eae",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_damageable_class_section_row_begin_fragment.hpp",
+      "baseline_blob_sha256": "2f27866a9c26df595ca516f50b6d1d166afb7187f019f0c2abaf888061dbb798",
+      "current_sha256": "2f27866a9c26df595ca516f50b6d1d166afb7187f019f0c2abaf888061dbb798",
+      "same": true
+    },
+    {
+      "path": "src/native_damageable_class_section_row_begin_fragment.cpp",
+      "baseline_blob_sha256": "bcb0186c7714696df3c640b8b8fdc72e0552127da8cfb82fd4d958f23861d031",
+      "current_sha256": "bcb0186c7714696df3c640b8b8fdc72e0552127da8cfb82fd4d958f23861d031",
+      "same": true
+    },
+    {
+      "path": "include/bsp/native_damageable_class_damage_entry_fragment.hpp",
+      "baseline_blob_sha256": "2417219fa6f7cef14430b58251f1edae40132fad9616536f195b94a9277fff60",
+      "current_sha256": "2417219fa6f7cef14430b58251f1edae40132fad9616536f195b94a9277fff60",
+      "same": true
+    },
+    {
+      "path": "src/native_damageable_class_damage_entry_fragment.cpp",
+      "baseline_blob_sha256": "67cfa625b85730dd92731255eaf84d33d55ba0627451b4754d606dedcf445052",
+      "current_sha256": "67cfa625b85730dd92731255eaf84d33d55ba0627451b4754d606dedcf445052",
+      "same": true
+    },
+    {
+      "path": "docs/CC12_DAMAGEABLE_CLASS_COMMENT_FRAGMENT_SOURCE.md",
+      "baseline_blob_sha256": "d4b112674f8826a1b9eddb0151af7d424c72153305668fbc274e01571b2be1fe",
+      "current_sha256": "d4b112674f8826a1b9eddb0151af7d424c72153305668fbc274e01571b2be1fe",
+      "same": true
+    },
+    {
+      "path": "reports/cc12_damageable_class_comment_fragment_source.json",
+      "baseline_blob_sha256": "8e9b98bc44593d813a04469f3eab75924ea4fba1a70e14f8f2d99ae2c7f8dd33",
+      "current_sha256": "8e9b98bc44593d813a04469f3eab75924ea4fba1a70e14f8f2d99ae2c7f8dd33",
+      "same": true
+    },
+    {
+      "path": "reports/native_damageable_class_lua_orch4.json",
+      "baseline_blob_sha256": "ff0e9d14717ddfd33456b3dced444d221a6e4164f79618a23fce07865383e31e",
+      "current_sha256": "ff0e9d14717ddfd33456b3dced444d221a6e4164f79618a23fce07865383e31e",
+      "same": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "baseline_blob_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+      "current_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+      "same": true
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "baseline_blob_sha256": "2f3448a191cd4f2c856ca675b23be9a9cf55f44fefc8375bc4d9e1bb8131384d",
+      "current_sha256": "2f3448a191cd4f2c856ca675b23be9a9cf55f44fefc8375bc4d9e1bb8131384d",
+      "same": true
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "docs/CC12_DAMAGEABLE_CLASS_FIRST_SECTION_FIELD_READINESS.md",
+      "bytes": 9475,
+      "sha256": "1653b819ab110e2aea39cb766a2acaa15ca1bb77fbd4906bb4071b90faf7e6ac"
+    },
+    {
+      "path": "src/native_lua_objects.cpp",
+      "bytes": 17434,
+      "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
+    },
+    {
+      "path": "include/bsp/native_lua_objects.hpp",
+      "bytes": 10058,
+      "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/native_damageable_class_back_row_selection_fragment.hpp",
+      "bytes": 2606,
+      "sha256": "d318be1bfcbfb7c09a7067a48234e68fcef18cd39a906f14384fa33e7e957718"
+    },
+    {
+      "path": "src/native_damageable_class_back_row_selection_fragment.cpp",
+      "bytes": 1905,
+      "sha256": "d209f00c7a9fb0fe97aba3573f753ef6fe5f7f26d7af73dec98d4bc3a4030bcd"
+    },
+    {
+      "path": "docs/CC12_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_SOURCE.md",
+      "bytes": 8484,
+      "sha256": "3a1125b970940cdbe4e94106f391fd012487591538f74cd964f9b74b22824e97"
+    },
+    {
+      "path": "reports/cc12_damageable_class_back_row_selection_source.json",
+      "bytes": 424512,
+      "sha256": "4b9efc640f3faf603e7078ffa50970a6d291e153f99dd930e71c52b2b9140a6d"
+    },
+    {
+      "path": "reports/cc12_damageable_class_back_row_selection_source_primary_review.json",
+      "bytes": 28642,
+      "sha256": "2e0c4d3e65510d50ce77d9d2e1bfc3b7ea4bffa80167c409aa7f9af40f0801d6"
+    },
+    {
+      "path": "include/bsp/native_damageable_class_section_iterator_setup_fragment.hpp",
+      "bytes": 3526,
+      "sha256": "a8c3c08fb6bc5902e995382485b3e5491987d592893efcc9318b499233e4f369"
+    },
+    {
+      "path": "src/native_damageable_class_section_iterator_setup_fragment.cpp",
+      "bytes": 1581,
+      "sha256": "b343db4402d941f1802506bc8d6cdae90250ad03ac6809f93cee883e10956eae"
+    },
+    {
+      "path": "include/bsp/native_damageable_class_section_row_begin_fragment.hpp",
+      "bytes": 3922,
+      "sha256": "2f27866a9c26df595ca516f50b6d1d166afb7187f019f0c2abaf888061dbb798"
+    },
+    {
+      "path": "src/native_damageable_class_section_row_begin_fragment.cpp",
+      "bytes": 2840,
+      "sha256": "bcb0186c7714696df3c640b8b8fdc72e0552127da8cfb82fd4d958f23861d031"
+    },
+    {
+      "path": "include/bsp/native_damageable_class_damage_entry_fragment.hpp",
+      "bytes": 3101,
+      "sha256": "2417219fa6f7cef14430b58251f1edae40132fad9616536f195b94a9277fff60"
+    },
+    {
+      "path": "src/native_damageable_class_damage_entry_fragment.cpp",
+      "bytes": 1534,
+      "sha256": "67cfa625b85730dd92731255eaf84d33d55ba0627451b4754d606dedcf445052"
+    },
+    {
+      "path": "docs/CC12_DAMAGEABLE_CLASS_COMMENT_FRAGMENT_SOURCE.md",
+      "bytes": 7995,
+      "sha256": "d4b112674f8826a1b9eddb0151af7d424c72153305668fbc274e01571b2be1fe"
+    },
+    {
+      "path": "reports/cc12_damageable_class_comment_fragment_source.json",
+      "bytes": 277889,
+      "sha256": "8e9b98bc44593d813a04469f3eab75924ea4fba1a70e14f8f2d99ae2c7f8dd33"
+    },
+    {
+      "path": "reports/native_damageable_class_lua_orch4.json",
+      "bytes": 64046,
+      "sha256": "ff0e9d14717ddfd33456b3dced444d221a6e4164f79618a23fce07865383e31e"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 201079,
+      "sha256": "2f3448a191cd4f2c856ca675b23be9a9cf55f44fefc8375bc4d9e1bb8131384d"
+    }
+  ],
+  "local_evidence_pins": [
+    {
+      "path": "local/first_section_field_readiness_audit.py",
+      "bytes": 6600,
+      "sha256": "88e807990ff7a8b26b7743ac0fee746239c524242fe7ac2e395bd01b6f06d6b8"
+    },
+    {
+      "path": "local/first_section_field_retained_gate.json",
+      "bytes": 10459,
+      "sha256": "3fcb1ab8306fa2a76975c591443d031d1cb2ddedd078bbc2aeba120546797d5b"
+    },
+    {
+      "path": "local/first_section_field_source_searches.json",
+      "bytes": 20034,
+      "sha256": "71a1b8710ca82a26d15194647d313aee66ab2f8f783df64e5f3b775f87c3a3f9"
+    },
+    {
+      "path": "local/first_section_field_readiness_report_build.py",
+      "bytes": 14286,
+      "sha256": "4de051155b0a7d41e55302c570c2296df664c09b955bce2b8fcb1bfa2adfd248"
+    }
+  ]
+}
