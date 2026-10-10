@@ -64,6 +64,8 @@ struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbedded
     // Concrete Win32 atomic/CRT defaults; fixtures may observe each boundary.
     virtual std::int32_t interlocked_decrement(volatile std::int32_t*);
     void* allocate_00bf55be(std::uint32_t) override;
+    // Default accepts null or storage from singleton_lifetime_allocate.
+    // Foreign domains must override every reached matching free boundary.
     virtual void free_00bf65ac(void*);
     virtual void free_00bf6989(void*);
 };
