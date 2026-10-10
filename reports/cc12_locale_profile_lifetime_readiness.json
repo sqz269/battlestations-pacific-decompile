@@ -1,0 +1,2717 @@
+{
+  "schema": "cc12_locale_profile_lifetime_readiness_v1",
+  "status": "bounded_readiness_complete_lifetime_dependencies_open",
+  "baseline_head": "68cfbc7d572951d4fc7bc89bdf2d0a46742a26b1",
+  "source_epoch": "Source3352-particle-model-typed-views",
+  "owned_files": [
+    "docs/CC12_LOCALE_PROFILE_LIFETIME_READINESS.md",
+    "reports/cc12_locale_profile_lifetime_readiness.json"
+  ],
+  "scope": {
+    "profile_slot": {
+      "address": "00CFF140",
+      "bytes": 4,
+      "selected_entry": "0073CAF0"
+    },
+    "scalar": {
+      "start": "0073CAF0",
+      "end": "0073CB0D",
+      "span_bytes": 30,
+      "raw_instructions": 11,
+      "stored_body_address_count": 27,
+      "stored_listing_instructions": 10
+    },
+    "one_additional_destructor": {
+      "start": "0073C9F0",
+      "end": "0073CAEA",
+      "span_bytes": 251,
+      "raw_instructions": 73,
+      "stored_body_address_count": 242,
+      "stored_listing_instructions": 70,
+      "within_512_byte_limit": true
+    },
+    "Native_expansion_stopped": true,
+    "excluded": [
+      "other profile slots",
+      "007365E0 body",
+      "0073C240 body",
+      "provider code bodies",
+      "00C8696E handler/FuncInfo/map/action bodies",
+      "broad table or map expansion",
+      "Ghidra mutation",
+      "C++/build/tests/runtime"
+    ]
+  },
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "typed bsp queries verify configured project/program/language/base; typed-flow also records before/after identity",
+    "PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "imagebase": 4194304,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "raw_pointer": 4096,
+          "raw_size": 9310208
+        },
+        {
+          "name": ".rdata",
+          "rva": 9314304,
+          "raw_pointer": 9314304,
+          "raw_size": 1204224
+        },
+        {
+          "name": ".data",
+          "rva": 10518528,
+          "raw_pointer": 10518528,
+          "raw_size": 65536
+        },
+        {
+          "name": ".rsrc",
+          "rva": 13238272,
+          "raw_pointer": 10584064,
+          "raw_size": 1634304
+        }
+      ]
+    },
+    "fresh_spans": [
+      {
+        "address": 13627712,
+        "kind": "data",
+        "pin": {
+          "entry": "retained/Native/00cff140_4.bin",
+          "bytes": 4,
+          "sha256": "e33c72f91094f1a74cd07844693123ce4a9f48bb5b3732490780ec72ea077b34",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 13627712,
+            "length": 4,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [],
+        "partial_tail": null
+      },
+      {
+        "address": 7588592,
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/0073caf0_30.bin",
+          "bytes": 30,
+          "sha256": "90fc1e4906b02e1cddf92b0dc4ffdc322c6aa7609fd4067952698b2cccea26ab",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 7588592,
+            "length": 30,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [
+          {
+            "address": 7588592,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 7588593,
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": 7588595,
+            "bytes": "e8f8feffff",
+            "mnemonic": "call",
+            "operands": "0x73c9f0"
+          },
+          {
+            "address": 7588600,
+            "bytes": "f644240801",
+            "mnemonic": "test",
+            "operands": "byte ptr [esp + 8], 1"
+          },
+          {
+            "address": 7588605,
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x73cb08"
+          },
+          {
+            "address": 7588607,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 7588608,
+            "bytes": "e8a79a4b00",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": 7588613,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": 7588616,
+            "bytes": "8bc6",
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "address": 7588618,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": 7588619,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "partial_tail": null
+      },
+      {
+        "address": 7588336,
+        "kind": "code",
+        "pin": {
+          "entry": "retained/Native/0073c9f0_251.bin",
+          "bytes": 251,
+          "sha256": "efd90fecdcd71c5329f30d7282367adec30387c91f58b3c4245fc0614488fe10",
+          "provenance": {
+            "tool": "bsp.py ghidra bytes",
+            "address": 7588336,
+            "length": 251,
+            "verification": "Client.verify before every typed call",
+            "disk_exact": true
+          }
+        },
+        "decode": [
+          {
+            "address": 7588336,
+            "bytes": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "address": 7588338,
+            "bytes": "686e69c800",
+            "mnemonic": "push",
+            "operands": "0xc8696e"
+          },
+          {
+            "address": 7588343,
+            "bytes": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "address": 7588349,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 7588350,
+            "bytes": "64892500000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], esp"
+          },
+          {
+            "address": 7588357,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": 7588358,
+            "bytes": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "address": 7588359,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "address": 7588360,
+            "bytes": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "address": 7588362,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "address": 7588363,
+            "bytes": "8974240c",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0xc], esi"
+          },
+          {
+            "address": 7588367,
+            "bytes": "c70640f1cf00",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0xcff140"
+          },
+          {
+            "address": 7588373,
+            "bytes": "8b8634400000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x4034]"
+          },
+          {
+            "address": 7588379,
+            "bytes": "33db",
+            "mnemonic": "xor",
+            "operands": "ebx, ebx"
+          },
+          {
+            "address": 7588381,
+            "bytes": "3bc3",
+            "mnemonic": "cmp",
+            "operands": "eax, ebx"
+          },
+          {
+            "address": 7588383,
+            "bytes": "c744241802000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x18], 2"
+          },
+          {
+            "address": 7588391,
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x73ca32"
+          },
+          {
+            "address": 7588393,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 7588394,
+            "bytes": "e87d9b4b00",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": 7588399,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": 7588402,
+            "bytes": "899e34400000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x4034], ebx"
+          },
+          {
+            "address": 7588408,
+            "bytes": "899e38400000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x4038], ebx"
+          },
+          {
+            "address": 7588414,
+            "bytes": "899e3c400000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x403c], ebx"
+          },
+          {
+            "address": 7588420,
+            "bytes": "8b8624400000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x4024]"
+          },
+          {
+            "address": 7588426,
+            "bytes": "3bc3",
+            "mnemonic": "cmp",
+            "operands": "eax, ebx"
+          },
+          {
+            "address": 7588428,
+            "bytes": "7409",
+            "mnemonic": "je",
+            "operands": "0x73ca57"
+          },
+          {
+            "address": 7588430,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 7588431,
+            "bytes": "e8589b4b00",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": 7588436,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": 7588439,
+            "bytes": "899e24400000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x4024], ebx"
+          },
+          {
+            "address": 7588445,
+            "bytes": "899e28400000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x4028], ebx"
+          },
+          {
+            "address": 7588451,
+            "bytes": "899e2c400000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x402c], ebx"
+          },
+          {
+            "address": 7588457,
+            "bytes": "8b861c400000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x401c]"
+          },
+          {
+            "address": 7588463,
+            "bytes": "3bc3",
+            "mnemonic": "cmp",
+            "operands": "eax, ebx"
+          },
+          {
+            "address": 7588465,
+            "bytes": "7419",
+            "mnemonic": "je",
+            "operands": "0x73ca8c"
+          },
+          {
+            "address": 7588467,
+            "bytes": "8b8e18400000",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esi + 0x4018]"
+          },
+          {
+            "address": 7588473,
+            "bytes": "6a01",
+            "mnemonic": "push",
+            "operands": "1"
+          },
+          {
+            "address": 7588475,
+            "bytes": "83c101",
+            "mnemonic": "add",
+            "operands": "ecx, 1"
+          },
+          {
+            "address": 7588478,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "address": 7588479,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 7588480,
+            "bytes": "e83bd2cdff",
+            "mnemonic": "call",
+            "operands": "0x419cc0"
+          },
+          {
+            "address": 7588485,
+            "bytes": "8bc8",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "address": 7588487,
+            "bytes": "e8844a4900",
+            "mnemonic": "call",
+            "operands": "0xbd1510"
+          },
+          {
+            "address": 7588492,
+            "bytes": "8d4e14",
+            "mnemonic": "lea",
+            "operands": "ecx, [esi + 0x14]"
+          },
+          {
+            "address": 7588495,
+            "bytes": "c644241801",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0x18], 1"
+          },
+          {
+            "address": 7588500,
+            "bytes": "e8a7f7ffff",
+            "mnemonic": "call",
+            "operands": "0x73c240"
+          },
+          {
+            "address": 7588505,
+            "bytes": "8b4e08",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esi + 8]"
+          },
+          {
+            "address": 7588508,
+            "bytes": "3bcb",
+            "mnemonic": "cmp",
+            "operands": "ecx, ebx"
+          },
+          {
+            "address": 7588510,
+            "bytes": "8d7e04",
+            "mnemonic": "lea",
+            "operands": "edi, [esi + 4]"
+          },
+          {
+            "address": 7588513,
+            "bytes": "885c2418",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esp + 0x18], bl"
+          },
+          {
+            "address": 7588517,
+            "bytes": "741a",
+            "mnemonic": "je",
+            "operands": "0x73cac1"
+          },
+          {
+            "address": 7588519,
+            "bytes": "8b44240c",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": 7588523,
+            "bytes": "8b5708",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [edi + 8]"
+          },
+          {
+            "address": 7588526,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 7588527,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "address": 7588528,
+            "bytes": "e89b55cfff",
+            "mnemonic": "call",
+            "operands": "0x432050"
+          },
+          {
+            "address": 7588533,
+            "bytes": "8b4704",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 4]"
+          },
+          {
+            "address": 7588536,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "address": 7588537,
+            "bytes": "e8ee9a4b00",
+            "mnemonic": "call",
+            "operands": "0xbf65ac"
+          },
+          {
+            "address": 7588542,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "address": 7588545,
+            "bytes": "8bce",
+            "mnemonic": "mov",
+            "operands": "ecx, esi"
+          },
+          {
+            "address": 7588547,
+            "bytes": "895f04",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 4], ebx"
+          },
+          {
+            "address": 7588550,
+            "bytes": "895f08",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 8], ebx"
+          },
+          {
+            "address": 7588553,
+            "bytes": "895f0c",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0xc], ebx"
+          },
+          {
+            "address": 7588556,
+            "bytes": "c7442418ffffffff",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x18], 0xffffffff"
+          },
+          {
+            "address": 7588564,
+            "bytes": "e8079bffff",
+            "mnemonic": "call",
+            "operands": "0x7365e0"
+          },
+          {
+            "address": 7588569,
+            "bytes": "8b4c2410",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": 7588573,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "address": 7588574,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "address": 7588575,
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "address": 7588576,
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "address": 7588583,
+            "bytes": "83c410",
+            "mnemonic": "add",
+            "operands": "esp, 0x10"
+          },
+          {
+            "address": 7588586,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "partial_tail": null
+      }
+    ],
+    "fresh_span_count": 3,
+    "fresh_bytes": 285,
+    "all_fresh_spans_equal_original_disk": true,
+    "current_typed_flow": [
+      {
+        "call": "0073CB00",
+        "flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ]
+        },
+        "body": {
+          "entry": {
+            "space": "ram",
+            "offset": "0073caf0"
+          },
+          "name": "CG_scalar_deleting_dtor_0073caf0",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 2,
+            "returned_range_count": 2,
+            "address_count": "27",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073caf0"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073cb04"
+                },
+                "length": "21"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073cb08"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073cb0d"
+                },
+                "length": "6"
+              }
+            ]
+          }
+        },
+        "free_target": {
+          "entry": {
+            "space": "ram",
+            "offset": "00bf65ac"
+          },
+          "name": "_free",
+          "no_return": false,
+          "is_thunk": true,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf9dc8"
+            },
+            "name": "_free",
+            "no_return": false,
+            "is_thunk": false
+          }
+        }
+      },
+      {
+        "call": "0073CA2A",
+        "flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ]
+        },
+        "body": {
+          "entry": {
+            "space": "ram",
+            "offset": "0073c9f0"
+          },
+          "name": "FUN_0073c9f0",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 4,
+            "returned_range_count": 4,
+            "address_count": "242",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073c9f0"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073ca2e"
+                },
+                "length": "63"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073ca32"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073ca53"
+                },
+                "length": "34"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073ca57"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073cabd"
+                },
+                "length": "103"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073cac1"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073caea"
+                },
+                "length": "42"
+              }
+            ]
+          }
+        },
+        "free_target": {
+          "entry": {
+            "space": "ram",
+            "offset": "00bf65ac"
+          },
+          "name": "_free",
+          "no_return": false,
+          "is_thunk": true,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf9dc8"
+            },
+            "name": "_free",
+            "no_return": false,
+            "is_thunk": false
+          }
+        }
+      },
+      {
+        "call": "0073CA4F",
+        "flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ]
+        },
+        "body": {
+          "entry": {
+            "space": "ram",
+            "offset": "0073c9f0"
+          },
+          "name": "FUN_0073c9f0",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 4,
+            "returned_range_count": 4,
+            "address_count": "242",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073c9f0"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073ca2e"
+                },
+                "length": "63"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073ca32"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073ca53"
+                },
+                "length": "34"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073ca57"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073cabd"
+                },
+                "length": "103"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073cac1"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073caea"
+                },
+                "length": "42"
+              }
+            ]
+          }
+        },
+        "free_target": {
+          "entry": {
+            "space": "ram",
+            "offset": "00bf65ac"
+          },
+          "name": "_free",
+          "no_return": false,
+          "is_thunk": true,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf9dc8"
+            },
+            "name": "_free",
+            "no_return": false,
+            "is_thunk": false
+          }
+        }
+      },
+      {
+        "call": "0073CAB9",
+        "flow": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_CALL",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00bf65ac"
+            }
+          ]
+        },
+        "body": {
+          "entry": {
+            "space": "ram",
+            "offset": "0073c9f0"
+          },
+          "name": "FUN_0073c9f0",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null,
+          "body": {
+            "range_count": 4,
+            "returned_range_count": 4,
+            "address_count": "242",
+            "complete": true,
+            "ranges": [
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073c9f0"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073ca2e"
+                },
+                "length": "63"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073ca32"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073ca53"
+                },
+                "length": "34"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073ca57"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073cabd"
+                },
+                "length": "103"
+              },
+              {
+                "start": {
+                  "space": "ram",
+                  "offset": "0073cac1"
+                },
+                "end_inclusive": {
+                  "space": "ram",
+                  "offset": "0073caea"
+                },
+                "length": "42"
+              }
+            ]
+          }
+        },
+        "free_target": {
+          "entry": {
+            "space": "ram",
+            "offset": "00bf65ac"
+          },
+          "name": "_free",
+          "no_return": false,
+          "is_thunk": true,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": {
+            "entry": {
+              "space": "ram",
+              "offset": "00bf9dc8"
+            },
+            "name": "_free",
+            "no_return": false,
+            "is_thunk": false
+          }
+        }
+      }
+    ],
+    "metadata_modification": 55,
+    "metadata_modification_stable": true,
+    "listing_gaps": [
+      {
+        "address": 7588613,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": 7588399,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": 7588436,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      },
+      {
+        "address": 7588542,
+        "bytes": "83c404",
+        "mnemonic": "add",
+        "operands": "esp, 4"
+      }
+    ],
+    "historical_gap_cause_recovered": false,
+    "listing_repair": false,
+    "scalar_contract": {
+      "receiver": "ECX captured inESI before destructor",
+      "flags": "one fullDWORD stackslot, RET4; lowbyte bit0 read AFTER destructor; otherbits notconsumed",
+      "callee": "0073C9F0 samecapturedreceiver",
+      "free": "00BF65AC oncapturedESI iff flags&1 afterdestructor normalreturn",
+      "return_value": "EAX=capturedESI evenafterfree",
+      "own_EH_setup": false,
+      "destructor_exception": "later scalarfree not reached",
+      "original_ABI": "ECX receiver, full4-byte stackflags, EAX capturedreceiver, RET4",
+      "native_decompiler_signature_not_authoritative": true
+    },
+    "destructor_contract": {
+      "receiver": "ECX captured inESI; savedreceiver spill[ESP+0C]",
+      "entry_profile": "00CFF140",
+      "normal_order": [
+        {
+          "order": 1,
+          "state": 2,
+          "operation": "free captured +4034 buffer whennonnull; zero +4034/+4038/+403C"
+        },
+        {
+          "order": 2,
+          "operation": "free captured +4024 buffer whennonnull; zero +4024/+4028/+402C"
+        },
+        {
+          "order": 3,
+          "operation": "capture +401C pointer then current +4018 length+1 DWORDwrap; pushfactor1,size,pointer; call419CC0 thenBD1510 withreturnedpoolECX; noexplicitlanguageheaderclear"
+        },
+        {
+          "order": 4,
+          "state": 1,
+          "operation": "ECX=this+14; call73C240"
+        },
+        {
+          "order": 5,
+          "state": 0,
+          "operation": "capturecurrentfirst this+8, EDI=this+4; ifnonnull reloadreceiverspill/end; call432050 withECXfirst,EDXend andtwo shownstackarguments"
+        },
+        {
+          "order": 6,
+          "operation": "reload current [EDI+4] AFTER rangehelper; free thatpointer"
+        },
+        {
+          "order": 7,
+          "state": -1,
+          "operation": "zero namepointertriple; ECX=capturedESI; call7365E0; restoreEHlink andRET"
+        }
+      ],
+      "direct_publication_access": false,
+      "unregister_target": "007365E0",
+      "unregister_body_inspected": false,
+      "unregister_publication_profile_effects": "unresolved; descriptive name is not behavioral proof",
+      "untouched_allocator_offsets": [
+        "+4",
+        "+4020",
+        "+4030"
+      ],
+      "original_ABI": "ECX receiver; no stackargument; plainRET; no meaningfulEAX contract established",
+      "handler": "00C8696E",
+      "visible_states": [
+        2,
+        1,
+        0,
+        -1
+      ],
+      "EH_map_or_action_bodies_inspected": false,
+      "unwind_behavior": "not established"
+    }
+  },
+  "prior_code_dependency": {
+    "schema": "pin_dependency_v1",
+    "prior_worker_commit": "ca840ebc7ad2010ce00af8ad59f949af0d2a0ac1",
+    "accepted_on_main": "68cfbc7d5",
+    "prior_bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_startup_constructor_owner_readiness\\evidence.zip",
+      "bytes": 43819024,
+      "sha256": "6462b203010cb44e7f5a23362d10eeac297c14466778ea06ad0dea750a03a903",
+      "payloads": 3522,
+      "payload_bytes": 280787882
+    },
+    "prior_epoch": "Source3352-particle-startup",
+    "current_epoch": "Source3352-particle-model-typed-views",
+    "current_unchanged_source_pins": [
+      {
+        "path": "include/bsp/gui_startup.hpp",
+        "bytes": 12017,
+        "sha256": "625f71034415a96315aff758371b9e52a07747e06455b51108e9893e3adc8bb9",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/gui_startup.cpp",
+        "bytes": 5432,
+        "sha256": "ef86036b6cc55c6ae4a9ad3a118933f83762510dc1e2ce3be612df6d3b0e76d4",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "include/bsp/game_hosts_vfs.hpp",
+        "bytes": 12775,
+        "sha256": "397bf3eb722ff71175b5e7011a569bf16efeeead5d3f132f3cfc4995fc22f058",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "bytes": 21946,
+        "sha256": "df8cd0f4e723e20a331ce4de87fa6f3e547c6254bb013cafca4ed515d516fc4a",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "include/bsp/locale_tables.hpp",
+        "bytes": 9471,
+        "sha256": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/locale_tables.cpp",
+        "bytes": 12433,
+        "sha256": "d18e6056f48e8c8b2a7cd5db980dc998a840e27b16c28b87b6a315cb4997f17c",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 126110,
+        "sha256": "6cc3e21931ee19e8aa6f7be92e995797b309bfd0a75f8767df7b475fc925bfbb",
+        "unchanged_from_constructor_epoch": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 26650,
+        "sha256": "99c7143f6de7aae8933b783c4e1f584ac50af697e401189abe64d18d0fbaaa13",
+        "unchanged_from_constructor_epoch": true
+      }
+    ],
+    "dependency_only": true,
+    "previous_Native_constructor_base_evidence_replayed_here": false,
+    "recursive_Root_proof_tree_retained": false,
+    "accepted_contract": [
+      "exact4040h LocaleTableManagerImage",
+      "constructor Source is derivedfields only",
+      "nativebase uses two actual manager lookups andF8BC4Creload",
+      "capturedsection guard andno basecleanup publication repair",
+      "semanticapp locale4064h andrawloader/textconsumer work remain unresolved"
+    ]
+  },
+  "Source": {
+    "epoch": "Source3352-particle-model-typed-views",
+    "selected_project_inputs": 3352,
+    "artifacts": 4,
+    "current_integrator_all3356_exact_at_capture": true,
+    "worker_exact": 3345,
+    "worker_LF_only_differences": [
+      "cmake/startup.cmake",
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "Git_worker_exact": 3352,
+    "Git_Source_exact": 3345,
+    "Git_LF_equivalent": 3352,
+    "all_byte_cohorts_retained": true,
+    "artifact_pins": [
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_core.lib",
+        "bytes": 73965334,
+        "sha256": "913884472a34eef75e9baa0c2e7664f78913a4b22dc626f68777d0dc18781d35",
+        "provenance": {
+          "path": "build/win32/Release/bsp_core.lib",
+          "bytes": 73965334,
+          "sha256": "913884472a34eef75e9baa0c2e7664f78913a4b22dc626f68777d0dc18781d35",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_core.lib"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Release/bsp_game.exe",
+        "bytes": 5102592,
+        "sha256": "e7839f5e5bbe1c00ee541beb18203e4bb34cefcb194392a48dd1c5dd76186a65",
+        "provenance": {
+          "path": "build/win32/Release/bsp_game.exe",
+          "bytes": 5102592,
+          "sha256": "e7839f5e5bbe1c00ee541beb18203e4bb34cefcb194392a48dd1c5dd76186a65",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Release\\bsp_game.exe"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/bsp_game.map",
+        "bytes": 7549530,
+        "sha256": "b893501b68e7c014cbf74979471e73956c7daad6d70844a8ab7c741903edcaa6",
+        "provenance": {
+          "path": "build/win32/bsp_game.map",
+          "bytes": 7549530,
+          "sha256": "b893501b68e7c014cbf74979471e73956c7daad6d70844a8ab7c741903edcaa6",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\bsp_game.map"
+        }
+      },
+      {
+        "entry": "retained/Source/build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2448,
+        "sha256": "7c97caa3da589b21950cea46361be4ad74c4441df6774312b3ad162fd86895ab",
+        "provenance": {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "bytes": 2448,
+          "sha256": "7c97caa3da589b21950cea46361be4ad74c4441df6774312b3ad162fd86895ab",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_model_view_Source_primary\\Source_frozen\\build\\win32\\Testing\\Temporary\\LastTest.log"
+        }
+      }
+    ],
+    "Core_archive_entries": 1991,
+    "Core_COFF_indices": 1988,
+    "App_COFF_indices": 70,
+    "all_full_indices_reparsed": true,
+    "address_named_symbol_mentions": {
+      "0073caf0": [],
+      "0073c9f0": [],
+      "007365e0": []
+    },
+    "symbol_absence_scope": "Only exactaddress-named symbols across fullCore/App indices; source/relocations inspected separately",
+    "retained_whole_COFF_objects": 13,
+    "complete_selected_sections": [
+      {
+        "object": "game_hosts",
+        "prefix": "??1GameLocaleHost@",
+        "index": 1111,
+        "name": ".text$mn",
+        "declared_size": 23,
+        "raw_pointer": 208390,
+        "payload_bytes": 23,
+        "bytes": 23,
+        "sha256": "4db355fde49608e01767b329efa13923c311d4817ade08d9fc68e7f93901f036",
+        "relocations": [
+          {
+            "offset": 10,
+            "type": 20,
+            "symbol": "??1?$unique_ptr@VGuiLocaleRefreshManager@bsp@@U?$default_delete@VGuiLocaleRefreshManager@bsp@@@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 19,
+            "type": 20,
+            "symbol": "??1LocaleTables@bsp@@QAE@XZ"
+          }
+        ],
+        "decoded_instructions": 7
+      },
+      {
+        "object": "game_hosts",
+        "prefix": "??_GGameLocaleHost@",
+        "index": 1403,
+        "name": ".text$mn",
+        "declared_size": 52,
+        "raw_pointer": 225881,
+        "payload_bytes": 52,
+        "bytes": 52,
+        "sha256": "dac06edf363e1ae50463d01d3e88e47cc55077a18776c4f5e952df229a0c31cb",
+        "relocations": [
+          {
+            "offset": 13,
+            "type": 20,
+            "symbol": "??1?$unique_ptr@VGuiLocaleRefreshManager@bsp@@U?$default_delete@VGuiLocaleRefreshManager@bsp@@@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 21,
+            "type": 20,
+            "symbol": "??1LocaleTables@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 38,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          }
+        ],
+        "decoded_instructions": 18
+      },
+      {
+        "object": "game_hosts",
+        "prefix": "??1LocaleTables@",
+        "index": 1155,
+        "name": ".text$mn",
+        "declared_size": 143,
+        "raw_pointer": 215331,
+        "payload_bytes": 143,
+        "bytes": 143,
+        "sha256": "e631e39048799639ca763f078f083a0794d0a8daee432b3abf1ac24b9c4d6720",
+        "relocations": [
+          {
+            "offset": 10,
+            "type": 20,
+            "symbol": "?_Tidy@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 21,
+            "type": 20,
+            "symbol": "??1?$vector@GV?$allocator@G@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 32,
+            "type": 20,
+            "symbol": "??1?$vector@GV?$allocator@G@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 83,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 124,
+            "type": 20,
+            "symbol": "?_Tidy@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 132,
+            "type": 20,
+            "symbol": "??1?$vector@V?$unique_ptr@UNode@LocaleTables@bsp@@U?$default_delete@UNode@LocaleTables@bsp@@@std@@@std@@V?$allocator@V?$unique_ptr@UNode@LocaleTables@bsp@@U?$default_delete@UNode@LocaleTables@bsp@@@std@@@std@@@2@@std@@QAE@XZ"
+          }
+        ],
+        "decoded_instructions": 36
+      },
+      {
+        "object": "game_hosts",
+        "prefix": "??1GameStartupHost@",
+        "index": 1133,
+        "name": ".text$mn",
+        "declared_size": 1831,
+        "raw_pointer": 210265,
+        "payload_bytes": 1831,
+        "bytes": 1831,
+        "sha256": "98c92214e948511b749c7cab0514e2c35f53ff5dbbf13d22a04ac48c8674c041",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$??1GameStartupHost@game@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 50,
+            "type": 6,
+            "symbol": "??_7GameStartupHost@game@bsp@@6B@"
+          },
+          {
+            "offset": 81,
+            "type": 20,
+            "symbol": "?requires_process_retention@GameNativeSettingsApplication@game@bsp@@QBE_NXZ"
+          },
+          {
+            "offset": 95,
+            "type": 20,
+            "symbol": "?failure_site@GameNativeSettingsApplication@game@bsp@@QBEIXZ"
+          },
+          {
+            "offset": 101,
+            "type": 6,
+            "symbol": "??_C@_0GB@EICJLECK@native?5settings?5loader?5interrupt@"
+          },
+          {
+            "offset": 107,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 139,
+            "type": 20,
+            "symbol": "?requires_process_retention@GameNativeInputSettingsApplication@game@bsp@@QBE_NXZ"
+          },
+          {
+            "offset": 151,
+            "type": 6,
+            "symbol": "??_C@_0GA@DPCHHGI@native?5input?5settings?5interrupte@"
+          },
+          {
+            "offset": 156,
+            "type": 20,
+            "symbol": "?note@GameHostLog@game@bsp@@QAEXPBD@Z"
+          },
+          {
+            "offset": 164,
+            "type": 20,
+            "symbol": "?close@GameHostLog@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 172,
+            "type": 6,
+            "symbol": "__imp___Exit"
+          },
+          {
+            "offset": 179,
+            "type": 20,
+            "symbol": "?exit_if_native_renderer_incomplete@GameStartupHost@game@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 186,
+            "type": 20,
+            "symbol": "?exit_if_native_lua_interrupted@GameStartupHost@game@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 193,
+            "type": 20,
+            "symbol": "?exit_if_frame_clock_failed@GameStartupHost@game@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 200,
+            "type": 20,
+            "symbol": "?exit_if_native_vfs_interrupted@GameStartupHost@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 207,
+            "type": 20,
+            "symbol": "?exit_if_allocation_stats_failed@GameStartupHost@game@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 214,
+            "type": 20,
+            "symbol": "?exit_if_particle_manager_failed@GameStartupHost@game@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 262,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 283,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 324,
+            "type": 20,
+            "symbol": "??4?$function@$$A6AXAAUIDirect3DDevice9@@@Z@std@@QAEAAV01@$$QAV01@@Z"
+          },
+          {
+            "offset": 364,
+            "type": 20,
+            "symbol": "??1GameMenuHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 372,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 401,
+            "type": 20,
+            "symbol": "??1GameFrontendHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 409,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 451,
+            "type": 20,
+            "symbol": "?drain_singletons@GameNativeRendererApplication@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 458,
+            "type": 20,
+            "symbol": "?shutdown@GameSingletonHost@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 475,
+            "type": 20,
+            "symbol": "?after_singleton_drain@GameNativeInputSettingsApplication@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 518,
+            "type": 20,
+            "symbol": "?release_sdk_after_native_drain@GameInputRuntime@game@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 540,
+            "type": 6,
+            "symbol": "??_C@_0CH@MOKGGHII@input?5SDK?5final?5release?5incomple@"
+          },
+          {
+            "offset": 546,
+            "type": 20,
+            "symbol": "?notef@GameHostLog@game@bsp@@QAAXPBDZZ"
+          },
+          {
+            "offset": 554,
+            "type": 6,
+            "symbol": "$LN646"
+          },
+          {
+            "offset": 600,
+            "type": 20,
+            "symbol": "??1GameInputRuntime@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 608,
+            "type": 20,
+            "symbol": "??1?$vector@PAUIUnknown@@V?$allocator@PAUIUnknown@@@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 621,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 648,
+            "type": 20,
+            "symbol": "??1SoundServices@GameStartupHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 661,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 680,
+            "type": 20,
+            "symbol": "??1GameSingletonHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 693,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 724,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 744,
+            "type": 20,
+            "symbol": "??1GameFrameProfiler@game@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 755,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 775,
+            "type": 20,
+            "symbol": "??1GameDecalTable@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 783,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 799,
+            "type": 20,
+            "symbol": "??1GameFrontendHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 807,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 831,
+            "type": 20,
+            "symbol": "??1?$unique_ptr@VGuiLocaleRefreshManager@bsp@@U?$default_delete@VGuiLocaleRefreshManager@bsp@@@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 839,
+            "type": 20,
+            "symbol": "??1LocaleTables@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 850,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 870,
+            "type": 20,
+            "symbol": "??1GameFontHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 878,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 898,
+            "type": 20,
+            "symbol": "??1GameNativeInputSettingsApplication@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 953,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 982,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1006,
+            "type": 20,
+            "symbol": "??1GameNativeLuaServices@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1014,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1033,
+            "type": 20,
+            "symbol": "??1GameNativeSettingsApplication@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1041,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1200,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1244,
+            "type": 20,
+            "symbol": "??1GameNativeRendererApplication@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1252,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1262,
+            "type": 20,
+            "symbol": "?release_platform_window@GameStartupHost@game@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 1280,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1304,
+            "type": 20,
+            "symbol": "??1XInputLibrary@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 1312,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1332,
+            "type": 20,
+            "symbol": "??1GameVfsHost@game@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 1340,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1360,
+            "type": 20,
+            "symbol": "??1RandomThreads@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1371,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1385,
+            "type": 20,
+            "symbol": "??1GameRunSummary@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1440,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1481,
+            "type": 20,
+            "symbol": "??1?$vector@HV?$allocator@H@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 1492,
+            "type": 20,
+            "symbol": "??1?$vector@UResolution@bsp@@V?$allocator@UResolution@bsp@@@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 1503,
+            "type": 20,
+            "symbol": "?_Tidy@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AAEXXZ"
+          },
+          {
+            "offset": 1514,
+            "type": 20,
+            "symbol": "??1GameSettingsBlock@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1525,
+            "type": 20,
+            "symbol": "??1SaveStorageRoots@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1536,
+            "type": 20,
+            "symbol": "??1TextInputQueue@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1547,
+            "type": 20,
+            "symbol": "??1Win32PlatformState@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1602,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1640,
+            "type": 20,
+            "symbol": "??1GameExecutableOptions@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1655,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1678,
+            "type": 20,
+            "symbol": "??1GameInputRuntime@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1685,
+            "type": 20,
+            "symbol": "??1?$vector@PAUIUnknown@@V?$allocator@PAUIUnknown@@@std@@@std@@QAE@XZ"
+          },
+          {
+            "offset": 1696,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1713,
+            "type": 20,
+            "symbol": "??1XInputLibrary@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 1721,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1738,
+            "type": 20,
+            "symbol": "??1SoundServices@GameStartupHost@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1749,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1766,
+            "type": 20,
+            "symbol": "??1GameNativeLuaServices@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1774,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          },
+          {
+            "offset": 1791,
+            "type": 20,
+            "symbol": "??1GameNativeRendererApplication@game@bsp@@QAE@XZ"
+          },
+          {
+            "offset": 1799,
+            "type": 20,
+            "symbol": "??3@YAXPAXI@Z"
+          }
+        ],
+        "decoded_instructions": 551
+      },
+      {
+        "object": "native_singleton_destruction",
+        "prefix": "?delete_current_profile@",
+        "index": 23,
+        "name": ".text$mn",
+        "declared_size": 3545,
+        "raw_pointer": 4347,
+        "bytes": 3545,
+        "sha256": "23b8ef07ee59356048eead982ea9a30cd90551290e56fff857ba67055dfb9dc4",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?delete_current_profile@?A0x5c59d620@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z"
+          },
+          {
+            "offset": 24,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 169,
+            "type": 20,
+            "symbol": "?delete_native_profile_hints_owner_00426320@bsp@@YAPAXPAXIAAUNativeProfileHintsOwnerContext@1@@Z"
+          },
+          {
+            "offset": 202,
+            "type": 20,
+            "symbol": "?delete_native_singleton_base_00412440@bsp@@YIPAXPAX0I@Z"
+          },
+          {
+            "offset": 246,
+            "type": 20,
+            "symbol": "?scalar_delete_global_config_00432710@bsp@@YAPAUGlobalConfigOwner@1@PAU21@IAAUGlobalConfigContext@1@@Z"
+          },
+          {
+            "offset": 292,
+            "type": 20,
+            "symbol": "?delete_native_game_class_registered_owner@bsp@@YAXPAXIAAUNativeGameClassCleanupContext@1@@Z"
+          },
+          {
+            "offset": 299,
+            "type": 20,
+            "symbol": "?process_native_device_registry_00e17bf4@bsp@@YAACRAUNativeDeviceRegistryStorage@1@XZ"
+          },
+          {
+            "offset": 309,
+            "type": 20,
+            "symbol": "?delete_native_device_registry_00441840@bsp@@YAPAUNativeDeviceRegistryStorage@1@PAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 335,
+            "type": 20,
+            "symbol": "?delete_native_diagnostic_sink_004bbca0@bsp@@YAPAUNativeDiagnosticSinkStorage@1@AAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 406,
+            "type": 20,
+            "symbol": "?delete_native_frame_job_owner_004bfb30@bsp@@YAPAUNativeFrameJobOwnerStorage@1@PAU21@IACRAU21@AAVNativeFrameJobLifetimeBindings@1@@Z"
+          },
+          {
+            "offset": 434,
+            "type": 20,
+            "symbol": "?process_native_mission_entity_lock_00f878fc@bsp@@YAACRAUNativeObserverLockOwner@1@XZ"
+          },
+          {
+            "offset": 444,
+            "type": 20,
+            "symbol": "?delete_native_mission_entity_lock_004c4890@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 471,
+            "type": 20,
+            "symbol": "?delete_native_particle_clock_004de340@bsp@@YIPAXPAXAAUNativeParticleClockShutdownContext@1@I@Z"
+          },
+          {
+            "offset": 523,
+            "type": 20,
+            "symbol": "?delete_lock_owner_00694ea0@NativeObserverLifetime@bsp@@QAEPAUNativeObserverLockOwner@2@PAU32@I@Z"
+          },
+          {
+            "offset": 564,
+            "type": 20,
+            "symbol": "?delete_observer_dispatch_owner_00695f40@bsp@@YAPAUNativeObserverDispatchOwner@1@PAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 637,
+            "type": 20,
+            "symbol": "?deleting_destructor_006fad40@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@PAU32@I@Z"
+          },
+          {
+            "offset": 678,
+            "type": 20,
+            "symbol": "?scalar_delete_native_input_settings_006ab800@bsp@@YAPAXPAXIAAUNativeInputSettingsLifetimeContext@1@@Z"
+          },
+          {
+            "offset": 750,
+            "type": 20,
+            "symbol": "?delete_native_game_resource_registered_owner@bsp@@YAXIPAXIAAUNativeGameResourceParserContexts@1@@Z"
+          },
+          {
+            "offset": 794,
+            "type": 20,
+            "symbol": "?delete_native_game_resource_factory_secondary_00716520@bsp@@YAPAXPAXIAAUNativeGameResourceFactoryContext@1@@Z"
+          },
+          {
+            "offset": 832,
+            "type": 20,
+            "symbol": "?delete_native_mpkg_factory_secondary_00735d00@bsp@@YAPAXPAXIAAUNativeMpkgFactoryContext@1@@Z"
+          },
+          {
+            "offset": 858,
+            "type": 20,
+            "symbol": "?delete_native_mpak_factory_secondary_00735d30@bsp@@YAPAXPAXIAAUNativeMpakFactoryContext@1@@Z"
+          },
+          {
+            "offset": 949,
+            "type": 20,
+            "symbol": "?delete_native_resource_extra_registered_owner@bsp@@YAXIPAXIAAUNativeResourceExtraParserContexts@1@@Z"
+          },
+          {
+            "offset": 990,
+            "type": 20,
+            "symbol": "?delete_native_gameplay_effect_manager_008703e0@bsp@@YIPAXPAXACRAXI@Z"
+          },
+          {
+            "offset": 1047,
+            "type": 20,
+            "symbol": "?retire_native_pending_registry_scalar_00875850@bsp@@YAPAXPAXADEACRAX@Z"
+          },
+          {
+            "offset": 1075,
+            "type": 20,
+            "symbol": "?delete_lock_owner_00925430@NativeWeakOwnerDomain@bsp@@QAEPAUNativeWeakMutexOwner@2@PAU32@I@Z"
+          },
+          {
+            "offset": 1127,
+            "type": 20,
+            "symbol": "?process_native_pending_entity_lock_00f899e8@bsp@@YAACRAUNativeObserverLockOwner@1@XZ"
+          },
+          {
+            "offset": 1137,
+            "type": 20,
+            "symbol": "?delete_native_pending_entity_lock_009256d0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 1147,
+            "type": 20,
+            "symbol": "?native_entity_registry_process@bsp@@YAAAVNativeEntityRegistryProcess@1@XZ"
+          },
+          {
+            "offset": 1162,
+            "type": 20,
+            "symbol": "?delete_native_pending_init_lock_00925660@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 1172,
+            "type": 20,
+            "symbol": "?native_entity_registry_process@bsp@@YAAAVNativeEntityRegistryProcess@1@XZ"
+          },
+          {
+            "offset": 1187,
+            "type": 20,
+            "symbol": "?delete_native_scene_registry_lock_009285f0@bsp@@YAPAUNativeObserverLockOwner@1@PAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 1236,
+            "type": 20,
+            "symbol": "?delete_native_online_manager_base_00a3f670@bsp@@YAPAUNativeOnlineManagerStorage@1@AAU21@IAAUNativeOnlineManagerBaseContext@1@@Z"
+          },
+          {
+            "offset": 1266,
+            "type": 20,
+            "symbol": "?delete_xlive_manager_base_00a3f670@bsp@@YAPAXAAVXLiveOwnerAllocation@1@E@Z"
+          },
+          {
+            "offset": 1320,
+            "type": 20,
+            "symbol": "?delete_native_online_manager_00a3fdc0@bsp@@YAPAUNativeOnlineManagerStorage@1@AAU21@IAAUNativeOnlineManagerLifetimeContext@1@@Z"
+          },
+          {
+            "offset": 1350,
+            "type": 20,
+            "symbol": "?delete_xlive_manager_00a3fdc0@bsp@@YAPAXAAVXLiveOwnerAllocation@1@E@Z"
+          },
+          {
+            "offset": 1442,
+            "type": 20,
+            "symbol": "?scalar_delete_native_media_manager_00a4c620@bsp@@YAPAXPAXIAAUNativePlatformFocusOwnersContext@1@@Z"
+          },
+          {
+            "offset": 1476,
+            "type": 20,
+            "symbol": "?owns_registered@GameSoundRuntime@game@bsp@@QBE_NPAX@Z"
+          },
+          {
+            "offset": 1496,
+            "type": 20,
+            "symbol": "?delete_registered@GameSoundRuntime@game@bsp@@QAEXPAXI@Z"
+          },
+          {
+            "offset": 1541,
+            "type": 6,
+            "symbol": "$LN202"
+          },
+          {
+            "offset": 1548,
+            "type": 6,
+            "symbol": "$LN203"
+          },
+          {
+            "offset": 1572,
+            "type": 20,
+            "symbol": "?delete_native_shadow_depth_target_00a900c0@bsp@@YAPAXPAXIAAVNativeShadowDepthTargetContext@1@@Z"
+          },
+          {
+            "offset": 1598,
+            "type": 20,
+            "symbol": "?scalar_delete_native_input_backend_base_00a909e0@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z"
+          },
+          {
+            "offset": 1624,
+            "type": 20,
+            "symbol": "?scalar_delete_native_input_backend_groups_00a91150@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z"
+          },
+          {
+            "offset": 1648,
+            "type": 20,
+            "symbol": "?delete_native_shadow_job_secondary_00a8ddb0@bsp@@YIPAXPAXAAUNativeShadowJobContext@1@I@Z"
+          },
+          {
+            "offset": 1689,
+            "type": 20,
+            "symbol": "?scalar_delete_native_input_action_owner_00a93e50@bsp@@YAPAXPAXIAAUNativeInputActionOwnerContext@1@@Z"
+          },
+          {
+            "offset": 1802,
+            "type": 20,
+            "symbol": "?scalar_delete_native_gui_manager_00aa6540_fragment@bsp@@YAPAXPAXIAAUNativeGuiMediaFocusLifetimeContext@1@@Z"
+          },
+          {
+            "offset": 1828,
+            "type": 20,
+            "symbol": "?scalar_delete_native_input_backend_00a97c00@bsp@@YAPAXPAXEAAUNativeInputBackendOwnerContext@1@@Z"
+          },
+          {
+            "offset": 1857,
+            "type": 20,
+            "symbol": "?delete_native_particle_manager_base_00af0870@bsp@@YAPAUNativeParticleModelManagerStorage@1@PAU21@IAAUNativeParticleModelManagerAccess@1@@Z"
+          },
+          {
+            "offset": 1903,
+            "type": 20,
+            "symbol": "?delete_native_preparation_job_secondary_actual_00b0f1c0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@PAUNativeRenderPreparationJobSecondary@1@IAAUNativeRenderJobPublicationContext@1@@Z"
+          },
+          {
+            "offset": 1932,
+            "type": 20,
+            "symbol": "?delete_native_particle_model_manager_00af1080@bsp@@YAPAUNativeParticleModelManagerStorage@1@PAU21@IAAUNativeParticleModelManagerAccess@1@@Z"
+          },
+          {
+            "offset": 1961,
+            "type": 20,
+            "symbol": "?delete_native_render_resources_00b151c0@bsp@@YAPAXPAXIAAUNativeRenderResourcesLifetimeContext@1@@Z"
+          },
+          {
+            "offset": 1988,
+            "type": 6,
+            "symbol": "$LN204"
+          },
+          {
+            "offset": 1995,
+            "type": 6,
+            "symbol": "$LN205"
+          },
+          {
+            "offset": 2016,
+            "type": 20,
+            "symbol": "?scalar_delete_native_renderer_lua_base_00b1bb70@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z"
+          },
+          {
+            "offset": 2042,
+            "type": 20,
+            "symbol": "?scalar_delete_native_renderer_lua_owner_00b1bc50@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z"
+          },
+          {
+            "offset": 2066,
+            "type": 20,
+            "symbol": "?delete_native_resource_registry_00b1b660@bsp@@YIPAXPAXPBUNativeResourceRegistryDeleteBindings@1@I@Z"
+          },
+          {
+            "offset": 2105,
+            "type": 20,
+            "symbol": "?delete_native_resource_registry_00b1b710@bsp@@YIPAXPAXPBUNativeResourceRegistryDeleteBindings@1@I@Z"
+          },
+          {
+            "offset": 2145,
+            "type": 20,
+            "symbol": "?delete_lock_owner_00b1d530@NativeRenderBatchLifetime@bsp@@QAEPAUNativeRenderBatchLockOwner@2@PAU32@I@Z"
+          },
+          {
+            "offset": 2234,
+            "type": 20,
+            "symbol": "?delete_native_render_queue_00b1f6b0@bsp@@YAPAUNativeRenderCommandQueueStorage@1@AAU21@IAAUNativeRenderQueueDestructionContext@1@@Z"
+          },
+          {
+            "offset": 2259,
+            "type": 20,
+            "symbol": "?delete_pool_00b1e930@NativeRenderBatchLifetime@bsp@@QAEPAUNativeRenderBatchPoolStorage@2@PAU32@I@Z"
+          },
+          {
+            "offset": 2300,
+            "type": 20,
+            "symbol": "?delete_native_renderer_record_guard_00b26130@bsp@@YAPAXPAXIAAUNativeRendererRecordGuardContext@1@@Z"
+          },
+          {
+            "offset": 2339,
+            "type": 20,
+            "symbol": "?delete_native_renderer_secondary_00b32900@bsp@@YIPAXPAXPAUNativeRendererDestructorContext@1@I@Z"
+          },
+          {
+            "offset": 2462,
+            "type": 20,
+            "symbol": "?delete_native_system_constant_base_00b5bb20@bsp@@YAPAUNativeSystemConstantRegistryStorage@1@PAU21@AAUNativeSystemConstantRegistryRawContext@1@I@Z"
+          },
+          {
+            "offset": 2511,
+            "type": 20,
+            "symbol": "?delete_native_shader_state_definition_base_00b56750@bsp@@YAPAUNativeShaderStateDefinitionsStorage@1@PAU21@ACRAU21@VSoundLifetimeAccess@1@I@Z"
+          },
+          {
+            "offset": 2549,
+            "type": 20,
+            "symbol": "??0ActualNativeStringPoolStorage@bsp@@QAE@ACRAUNativeStringPoolStorage@1@ACIACRAX@Z"
+          },
+          {
+            "offset": 2578,
+            "type": 20,
+            "symbol": "?delete_native_shader_state_definitions_00b59e50@bsp@@YAPAUNativeShaderStateDefinitionsStorage@1@PAU21@ACRAU21@VSoundLifetimeAccess@1@AAVNativeStringStorage@1@I@Z"
+          },
+          {
+            "offset": 2606,
+            "type": 20,
+            "symbol": "?delete_native_system_constant_registry_00b5df70@bsp@@YAPAUNativeSystemConstantRegistryStorage@1@PAU21@AAUNativeSystemConstantRegistryRawContext@1@I@Z"
+          },
+          {
+            "offset": 2646,
+            "type": 20,
+            "symbol": "?delete_native_resource_support_00b61d60@bsp@@YAPAUNativeResourceSupportStorage@1@AAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 2672,
+            "type": 20,
+            "symbol": "?delete_native_lua_fundamentals_00b66b80@bsp@@YAPAUNativeLuaFundamentalsView@1@AAU21@IACRAU21@@Z"
+          },
+          {
+            "offset": 2727,
+            "type": 6,
+            "symbol": "$LN206"
+          },
+          {
+            "offset": 2734,
+            "type": 6,
+            "symbol": "$LN207"
+          },
+          {
+            "offset": 2784,
+            "type": 20,
+            "symbol": "?delete_native_resource_registered_owner@bsp@@YAXIPAXIAAUNativeResourceManagerContext@1@@Z"
+          },
+          {
+            "offset": 2828,
+            "type": 20,
+            "symbol": "?delete_native_pak_registry_secondary_00bb4ff0@bsp@@YAPAXPAXIAAUNativePakRegistryContext@1@@Z"
+          },
+          {
+            "offset": 2878,
+            "type": 20,
+            "symbol": "?delete_native_string_pool_00bd1730@bsp@@YAPAUNativeStringPoolStorage@1@AAU21@IACRAU21@ACI@Z"
+          },
+          {
+            "offset": 2925,
+            "type": 20,
+            "symbol": "?delete_native_allocation_stats_base_00be2890@bsp@@YAPAXPAXIAAUNativeAllocationStatsConstructorContext@1@@Z"
+          },
+          {
+            "offset": 2995,
+            "type": 20,
+            "symbol": "?delete_native_filestore_factory_secondary_00be5340@bsp@@YAPAXPAXIAAUNativeFileStoreFactoryContext@1@@Z"
+          },
+          {
+            "offset": 3024,
+            "type": 20,
+            "symbol": "?delete_native_allocation_stats_00be2930@bsp@@YAPAXPAXIAAUNativeAllocationStatsConstructorContext@1@@Z"
+          },
+          {
+            "offset": 3050,
+            "type": 20,
+            "symbol": "?delete_native_debug_feature_owner_00be9600@bsp@@YAPAXPAXIAAUNativeDebugFeatureOwnerContext@1@@Z"
+          },
+          {
+            "offset": 3099,
+            "type": 20,
+            "symbol": "?delete_native_render_entry_cache_base_00bec6f0@bsp@@YAPAXPAXIAAUNativeRenderEntryCacheContext@1@@Z"
+          },
+          {
+            "offset": 3109,
+            "type": 20,
+            "symbol": "?delete_native_render_entry_cache_00bec910@bsp@@YAPAXPAXIAAUNativeRenderEntryCacheContext@1@@Z"
+          },
+          {
+            "offset": 3154,
+            "type": 20,
+            "symbol": "?delete_native_vfs_derived_manager_00bedac0@bsp@@YAPAXPAXIAAUNativeVfsManagerLifetimeContext@1@@Z"
+          },
+          {
+            "offset": 3176,
+            "type": 20,
+            "symbol": "?delete_native_physical_factory_secondary_00bed910@bsp@@YAPAXPAXIAAUNativePhysicalFactoryContext@1@@Z"
+          },
+          {
+            "offset": 3196,
+            "type": 20,
+            "symbol": "?delete_native_frame_clock_00bee110@bsp@@YIPAXPAXAAUNativeFrameClockLifetimeContext@1@I@Z"
+          },
+          {
+            "offset": 3241,
+            "type": 20,
+            "symbol": "?delete_native_physical_stream_pool_00bf4370@bsp@@YAPAXPAXIAAUNativePhysicalStreamOpenContext@1@@Z"
+          },
+          {
+            "offset": 3251,
+            "type": 6,
+            "symbol": "??_C@_0EM@OBNKJAIB@raw?5singleton?5deletion?5requires?5@"
+          },
+          {
+            "offset": 3259,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 3264,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 3273,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 3280,
+            "type": 6,
+            "symbol": "$LN150"
+          },
+          {
+            "offset": 3284,
+            "type": 6,
+            "symbol": "$LN6"
+          },
+          {
+            "offset": 3288,
+            "type": 6,
+            "symbol": "$LN102"
+          },
+          {
+            "offset": 3292,
+            "type": 6,
+            "symbol": "$LN104"
+          },
+          {
+            "offset": 3296,
+            "type": 6,
+            "symbol": "$LN115"
+          },
+          {
+            "offset": 3444,
+            "type": 6,
+            "symbol": "$LN85"
+          },
+          {
+            "offset": 3448,
+            "type": 6,
+            "symbol": "$LN87"
+          },
+          {
+            "offset": 3452,
+            "type": 6,
+            "symbol": "$LN39"
+          },
+          {
+            "offset": 3456,
+            "type": 6,
+            "symbol": "$LN41"
+          },
+          {
+            "offset": 3460,
+            "type": 6,
+            "symbol": "$LN115"
+          },
+          {
+            "offset": 3488,
+            "type": 6,
+            "symbol": "$LN64"
+          },
+          {
+            "offset": 3492,
+            "type": 6,
+            "symbol": "$LN115"
+          }
+        ],
+        "code_and_alignment_bytes": 3280,
+        "switch_data_bytes": 259,
+        "switch_alignment_bytes": 6,
+        "data_regions": [
+          {
+            "label": "$LN203",
+            "start": 3280,
+            "end": 3300,
+            "kind": "DWORD_targets",
+            "bytes": 20,
+            "data_bytes": 20,
+            "alignment_bytes": 0,
+            "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90",
+            "payload_hex": "0000000000000000000000000000000000000000",
+            "relocations": [
+              {
+                "offset": 3280,
+                "type": 6,
+                "symbol": "$LN150"
+              },
+              {
+                "offset": 3284,
+                "type": 6,
+                "symbol": "$LN6"
+              },
+              {
+                "offset": 3288,
+                "type": 6,
+                "symbol": "$LN102"
+              },
+              {
+                "offset": 3292,
+                "type": 6,
+                "symbol": "$LN104"
+              },
+              {
+                "offset": 3296,
+                "type": 6,
+                "symbol": "$LN115"
+              }
+            ]
+          },
+          {
+            "label": "$LN202",
+            "start": 3300,
+            "end": 3444,
+            "kind": "byte_indices",
+            "bytes": 144,
+            "data_bytes": 141,
+            "alignment_bytes": 3,
+            "sha256": "c430c40d3f78e37d563134f5d06405f76dd56a6935e916bb36916b2004477b31",
+            "payload_hex": "0004040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040404040401040404040404040404040402040404030f1f00",
+            "relocations": []
+          },
+          {
+            "label": "$LN205",
+            "start": 3444,
+            "end": 3464,
+            "kind": "DWORD_targets",
+            "bytes": 20,
+            "data_bytes": 20,
+            "alignment_bytes": 0,
+            "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90",
+            "payload_hex": "0000000000000000000000000000000000000000",
+            "relocations": [
+              {
+                "offset": 3444,
+                "type": 6,
+                "symbol": "$LN85"
+              },
+              {
+                "offset": 3448,
+                "type": 6,
+                "symbol": "$LN87"
+              },
+              {
+                "offset": 3452,
+                "type": 6,
+                "symbol": "$LN39"
+              },
+              {
+                "offset": 3456,
+                "type": 6,
+                "symbol": "$LN41"
+              },
+              {
+                "offset": 3460,
+                "type": 6,
+                "symbol": "$LN115"
+              }
+            ]
+          },
+          {
+            "label": "$LN204",
+            "start": 3464,
+            "end": 3488,
+            "kind": "byte_indices",
+            "bytes": 24,
+            "data_bytes": 21,
+            "alignment_bytes": 3,
+            "sha256": "ce01c80ec7046ba3c1deb249d969441da16aa69b1ee7ca2ec4538f17e3fc0df1",
+            "payload_hex": "0004040404040404010404040404040402040404030f1f00",
+            "relocations": []
+          },
+          {
+            "label": "$LN207",
+            "start": 3488,
+            "end": 3496,
+            "kind": "DWORD_targets",
+            "bytes": 8,
+            "data_bytes": 8,
+            "alignment_bytes": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+            "payload_hex": "0000000000000000",
+            "relocations": [
+              {
+                "offset": 3488,
+                "type": 6,
+                "symbol": "$LN64"
+              },
+              {
+                "offset": 3492,
+                "type": 6,
+                "symbol": "$LN115"
+              }
+            ]
+          },
+          {
+            "label": "$LN206",
+            "start": 3496,
+            "end": 3545,
+            "kind": "byte_indices",
+            "bytes": 49,
+            "data_bytes": 49,
+            "alignment_bytes": 0,
+            "sha256": "2f1d462d746b44f5f3425d36c89868646c23083b70094e9e09a3c9f341932711",
+            "payload_hex": "00010101010101010101010101010101000101010101010101010101010101010001010101010101010101010101010100",
+            "relocations": []
+          }
+        ],
+        "decoded_instructions": 975
+      },
+      {
+        "object": "global_config",
+        "prefix": "?destroy_global_config_name_range_00432050@",
+        "index": 18,
+        "name": ".text$mn",
+        "declared_size": 41,
+        "raw_pointer": 3312,
+        "payload_bytes": 41,
+        "bytes": 41,
+        "sha256": "b45472212d910a1d59664dd559cffb754f87fcd437afb53d1f9c0f9a46055fb8",
+        "relocations": [
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          }
+        ],
+        "decoded_instructions": 22
+      },
+      {
+        "object": "locale_tables",
+        "prefix": "?clear_0073c240@",
+        "index": 612,
+        "name": ".text$mn",
+        "declared_size": 57,
+        "raw_pointer": 61068,
+        "payload_bytes": 57,
+        "bytes": 57,
+        "sha256": "81fbdc1c5a0d4bbf724dda893d681a7b008efb692f0acfe4ef89f99e9a0ee4b6",
+        "relocations": [
+          {
+            "offset": 19,
+            "type": 20,
+            "symbol": "??1?$unique_ptr@UNode@LocaleTables@bsp@@U?$default_delete@UNode@LocaleTables@bsp@@@std@@@std@@QAE@XZ"
+          }
+        ],
+        "decoded_instructions": 25
+      }
+    ],
+    "section_accounting": {
+      "pure_code_sections": 6,
+      "mixed_dispatcher_section_bytes": 3545,
+      "dispatcher_code_and_alignment_bytes": 3280,
+      "dispatcher_switch_data_bytes": 259,
+      "dispatcher_switch_alignment_bytes": 6,
+      "dispatcher_table_labels": 6
+    },
+    "raw_layout": "existing4040 LocaleTableManagerImage unchanged",
+    "constructor": "derivedfields-only dormant helper unchanged",
+    "active_owner": {
+      "class_name": "GameLocaleHost",
+      "compiled_size": 16484,
+      "ordinary_destructor": "unique_ptrGUI thenLocaleTables",
+      "scalar_delete": "semanticmembers then sizedC++delete",
+      "locale_tables": "STL strings/vectors andunique_ptrnodes",
+      "clear_0073c240": "semanticstorage clear andbucketprojectionzero, notnative-map call",
+      "shutdown": "semantic locale delete followsrawsingleton drain",
+      "native_locale_profile_binding": false
+    },
+    "available_provider_building_blocks": [
+      "actualpoolgetter419CC0",
+      "actualpoolreturnBD1510",
+      "global_config rangehelper432050 withNativeStringStorage noexceptinterface"
+    ],
+    "provider_qualification": "Existing Source contracts and artifacts only; locale context andexception compatibility not established"
+  },
+  "next_frontier": {
+    "next_read_only": "007365E0 unregister body only, with separately scoped cleanup evidence",
+    "then": [
+      "0073C240 actual raw map cleanup",
+      "00C8696E cleanupmetadata/actions bounded individually",
+      "rawpool/range context andexception compatibility"
+    ],
+    "eventual_dormant_lifetime": "actual4040 receiver +fullflags; complete destructor dependencies before scalarwrapper composition",
+    "application_activation_GO": false,
+    "complete_lifetime_GO": false,
+    "Cpp_implemented": false,
+    "do_not": [
+      "stub unresolveddestructor",
+      "infer publicationclear fromcallee name",
+      "treat semanticLocaleTables as raw storage",
+      "repair publication/registry failureeffects"
+    ]
+  },
+  "validation": {
+    "bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_profile_lifetime_readiness\\evidence.zip",
+      "bytes": 42875668,
+      "sha256": "7e46c1147721b72c74a650dff3f8b8723d06772ec2d33beae518549d0ec550d4",
+      "payloads": 3495,
+      "payload_bytes": 275992344
+    },
+    "portable_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_profile_lifetime_readiness\\evidence.zip",
+      "payloads": 3495,
+      "epoch": "Source3352-particle-model-typed-views",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 7,
+      "Native_spans": 3,
+      "Native_retained_bytes": 285,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_replay": {
+      "status": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_profile_lifetime_readiness\\physical_relocation\\evidence.zip",
+      "payloads": 3495,
+      "epoch": "Source3352-particle-model-typed-views",
+      "Source_inputs": 3352,
+      "artifacts": 4,
+      "Core_COFF_indices": 1988,
+      "App_COFF_indices": 70,
+      "complete_selected_sections": 7,
+      "Native_spans": 3,
+      "Native_retained_bytes": 285,
+      "ZIP_only": true,
+      "deliberate_external_read_denied": true,
+      "Cpp_build_test_runtime": false
+    },
+    "relocated_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_profile_lifetime_readiness\\physical_relocation\\evidence.zip",
+      "bytes": 42875668,
+      "sha256": "7e46c1147721b72c74a650dff3f8b8723d06772ec2d33beae518549d0ec550d4"
+    },
+    "readiness_only": true,
+    "Cpp_changes": false,
+    "new_build_or_CTest": false,
+    "Original_execution": false,
+    "fixture": false,
+    "ABI": false,
+    "startup_process": false,
+    "gameplay": false,
+    "Ghidra_mutation": false,
+    "recursive_Root_proof_tree": false,
+    "replay_live_state": false
+  }
+}
