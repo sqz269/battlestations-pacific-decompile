@@ -1,0 +1,82 @@
+{
+  "schema": "bsp.cc12.application-handler-primary.v1",
+  "status": "bounded_handler_listing_prefix_accepted_Cpp_owner_cleanup_activation_NO_GO",
+  "worker_commit": "9748c33df9f9b97f3af88daee7f8465eb0cc5a56",
+  "worker_report": {
+    "path": "local/cc12_application_handler_primary/worker_report.json",
+    "bytes": 83177,
+    "sha256": "8e710fb68aa9842bd50a8b96fbc7971fd142ddfd152495e8391f45d60ff1dc51"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_handler_primary/worker_document.md",
+    "bytes": 8147,
+    "sha256": "cb87d877265ec5e3addb1ef874f9f844b927f1c254499c9e8d7f352981a39efc"
+  },
+  "copied_finite_pins": 287,
+  "copied_bytes": 335146481,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_handler_primary/Root_guarded_replay.json",
+    "bytes": 487,
+    "sha256": "74a13da9208ad857d7afcf18f181d4e5edae7507bd7b5a2e50019997d1421a96"
+  },
+  "actual_frozen_Git_occurrences": 8450,
+  "exact_committed_report_and_document_read_via_Git": true,
+  "actual_closed_Source_paths": 4210,
+  "prior_base_230_pins_byte_identical": true,
+  "Root_Source_differences": [],
+  "Native": {
+    "fresh_bytes": 10,
+    "instruction_starts": 2,
+    "GPR_worker_epoch": 85,
+    "functions_absent": true,
+    "raw_instructions": [
+      "CC7240 MOV EAX,E01CC4",
+      "CC7245 JMP BF6B43"
+    ],
+    "candidate_descriptor_bytes_read": 0,
+    "target_bytes_read": 0,
+    "raw_jump_distinct_from_effective_CALL_TERMINATOR": true,
+    "flow_override": "CALL_RETURN",
+    "Native_execution": false
+  },
+  "contract": {
+    "prefix": "CC7240 MOV EAX,E01CC4; CC7245 raw E9 JMP BF6B43. Exactly two five-byte instructions; stop at transfer with no inline successor.",
+    "ABI": "EAX is overwritten with the immediate for transfer to the target. MOV/JMP make no stack access/change or flags change and do not write other general registers. This is not an EAX caller return or a recovered target ABI/frame contract.",
+    "flow": "Raw bytes and context show JMP. Typed default flow is UNCONDITIONAL_JUMP; saved CALL_RETURN override makes effective flow CALL_TERMINATOR. Same target, no fallthrough. No repair performed.",
+    "uncertainty": "Candidate descriptor type/contents, target semantics, real FH3 invocation, frame/spill addresses and all cleanup actions remain unestablished by this prefix.",
+    "retained_prior": "Prior normal base epoch79, current publication/registration argument, original receiver and captured section remain separately pinned. Stable raw owner/+14 and authorities must outlive failure records; no reset/unregister/free/retry/destructor policy.",
+    "Source": "Current 4210-file corpus has no handler-address or handler-ABI definition hits, no raw Application authority or callable deletion profiles. Four Source paths changed since prior base packet; those implementations/builds receive no new credit."
+  },
+  "decision": {
+    "Cpp_GO": false,
+    "raw_owner_GO": false,
+    "frame_activation_GO": false,
+    "exceptional_cleanup_GO": false,
+    "normal_retirement_GO": false,
+    "next_packet": "cc12_application_singleton_descriptor_prefix_readiness",
+    "proposed_next_scope": {
+      "candidate_address": "00E01CC4",
+      "metadata_first": true,
+      "read_only": true,
+      "exact_data_range": "00E01CC4..00E01CCF",
+      "max_data_bytes": 12,
+      "meaning": "First three DWORDs at the directly encoded candidate descriptor address only. Establish raw values/mapping before assigning a layout. No descriptor type or field semantics pre-accepted.",
+      "function_bodies": 0,
+      "derived_tables_cleanup_bodies_destructors_FH3_target": "Separate finite proposals required before reads"
+    },
+    "E1AE78_separate": true
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "No descriptor interpretation, target ABI/FH3 frame, cleanup action or owner retirement is proved.",
+    "No function boundary beyond the two leased instruction ranges is inferred; no body/listing/flow/prototype repair.",
+    "Current Source, prior Native79, worker85 and later Root88 annotation epochs remain separate."
+  ]
+}
