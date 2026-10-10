@@ -2254,5 +2254,28 @@
       "bytes": 14286,
       "sha256": "4de051155b0a7d41e55302c570c2296df664c09b955bce2b8fcb1bfa2adfd248"
     }
-  ]
+  ],
+  "primary_review": {
+    "worker_commit": "e3c1f511cc2c2939cc3eeaee2bdad2a28685fe62",
+    "worker_report_sha256": "b0231f62de4e6f331c072834c291ba15d63c6999478f51da9e24e2019b2087e7",
+    "worker_pin_occurrences_retained": 34,
+    "baseline_Git_blobs_verified": 24,
+    "body_excerpt_groups_verified": 7,
+    "body_excerpts_verified": 11,
+    "bounded_Source_searches_pinned": 8,
+    "retained_parent_starts_verified": 858,
+    "retained_states_verified": 37,
+    "selected_text_operations_verified": 35,
+    "selected_byte_extent_from_starts": 122,
+    "selected_schedule_text_sha256": "f1ac61417216c0b0c0be80af0c5974f95f875fb98855e3c319a984d6021ab056",
+    "no_selected_raw_byte_decode_or_full_raw_parent_buffer": true,
+    "decision": "HOLD: prefix ends with state17-owned string, next field retains that owner; no standalone completed first-field Source.",
+    "new_Source_or_build_test_probe": false,
+    "new_Native_or_GPR_queries_mutations": false,
+    "proof_pin": {
+      "path": "local/cc12_first_field_readiness_primary/proof.json",
+      "bytes": 28293,
+      "sha256": "370a31841096a5a2990c1737be8ffbfb566320a9f461d9f56a579214a71e8d02"
+    }
+  }
 }

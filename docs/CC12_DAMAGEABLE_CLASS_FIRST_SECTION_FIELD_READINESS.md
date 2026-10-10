@@ -151,3 +151,15 @@ Source627's 627 inputs, 84 Core / 3 App objects, 225 definitions and three check
 are pinned Root context only. This packet adds no Source count, C++, CMake,
 provider changes, ledger entries, GPR writes, build, test or probe. Native ABI,
 FH3/SEH/longjmp/fault identity, whole-parent completion and runtime remain held.
+
+## Primary review
+
+Root accepts the held readiness finding and proposes no standalone completed
+first-field Source. All 34 recursive worker pin occurrences, 24 historical
+Git blobs, eight complete embedded Source snapshots and seven body-excerpt
+groups verify. The current CMake file differs from that baseline only by the
+later fallback and SkinModel registrations. Root checks all 858 retained parent
+starts, 37 recorded states and the selected 35 textual operations/122-byte extent.
+At CF28 the prefix selects state17, retaining the S+18h string into the next field.
+No unavailable raw buffer, selected byte/decode replay, widened cleanup review,
+new build/test/probe, Native/GPR query or Source implementation is claimed.
