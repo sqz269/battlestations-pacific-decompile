@@ -6365,6 +6365,106 @@
           "runtime_authority": false,
           "fixture_advance": false,
           "qualification": false
+        },
+        "review_phase_reader07_complete_Source_acceptance_and_exact_additive_staging": {
+          "status": "COMPLETE_STATIC_SOURCE_ACCEPTED_DATA_REVIEW_STARTED",
+          "Source_credit": 0,
+          "Root_acceptance": true,
+          "complete_Root_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader07_complete_Source_peer_accepted_DATA01.json",
+            "bytes": 589219978,
+            "sha256": "b2f1674ed346423b865d165afe091d43cc3d5dd27ce7adecfc0dea6df0d5a1ca"
+          },
+          "complete_Root_static_acceptance_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_complete_static_Source_acceptance_failed01_corrected02.actual_tools.DATA.json",
+            "bytes": 4795,
+            "sha256": "885d3c2ae8a30fc71f6e7d4fb5a63c7efa48e02edd11852935c5bc8f532aeda4"
+          },
+          "complete_exact_additive_staging": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader07_exact_additive_Source_staging_DATA01.json",
+            "bytes": 2157,
+            "sha256": "789982e89ceabfc61d61a5a9bcbd0547526a9c5bc0d712ced391532f3b9509e8"
+          },
+          "staged_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\review_F5_review01_complete_actual_runtime_DATA07.py",
+            "bytes": 75339,
+            "sha256": "5cc299bcb985a416a5ee1c26f2a0a77d6b7a5c9b83d51af8fb80f96da4a13d53"
+          },
+          "Root_static_predicates": 233171,
+          "Root_current_equal_books": 3014,
+          "complete_independent_Source_predicates": 582647,
+          "independent_current_equal_books": 2984,
+          "complete_independent_seal_predicates": 57004,
+          "complete_independent_readonly_verifier_predicates": 51309,
+          "exact11byte_builtin_tokenize_import_only": true,
+          "all188_need_ASTs_order_and_locations_unchanged": true,
+          "all11_function_ASTs_and_Source_unchanged": true,
+          "whole_raw_and_module_AST_inverse_exact": true,
+          "line404_assertion_unchanged": true,
+          "all_original_Source04_Source05_Source06_failures_retained": true,
+          "original_builtin_diagnosis_34_advertised_45_serialized_preserved": true,
+          "corrected_builtin_diagnosis46_complete_checks": true,
+          "Root_original_verifier_disposition_field_assumption_failure_retained": true,
+          "Root_DATA_reader_execution_authorized": true,
+          "original_fixture_Source_execution_authorized": false,
+          "actual_DATA_initial_native_chunk": "d0221d",
+          "actual_DATA_initial_native_session": 96968,
+          "original_four_native_zero_and_QPC_attempt_preserved": true,
+          "original_native_attempt_replayed": false,
+          "actual_runtime_success_or_failure_not_yet_recorded": true,
+          "future_complete_actual_DATA_terminal": null,
+          "future_complete_actual_Root_review": null,
+          "future_actual_Root_review_counts": null,
+          "future_actual_independent_inspection_gate": null,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_advance": false,
+          "qualification": false
+        },
+        "review_phase_reader07_actual_DATA_full_dynamic_descriptor_shape_failure": {
+          "status": "ACTUAL_DATA_READER_FAILED_FULL_DESCRIPTOR_VERSUS_DIGEST_SHAPE_CHECK",
+          "Source_credit": 0,
+          "Root_acceptance": false,
+          "complete_actual_native_failure": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_actual_isolated_DATA_execution_terminal_failure01.actual_tools.DATA.json",
+            "bytes": 4721,
+            "sha256": "ef4622b12a297d18f5b91a3b592d08f4e0db7a5bda7b11e49507fcad5f8f6261"
+          },
+          "complete_current_ordinary_diagnosis": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_actual_complete_dynamic_descriptor_shape_failure_diagnosis_DATA01.json",
+            "bytes": 165336,
+            "sha256": "7d99af12ef8ccda044070056556ebea74aa3310a8f99ad0f8c24a26a726171d0"
+          },
+          "complete_original_ordinary_diagnostic_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader07_actual_dynamic_descriptor_shape_failure_diagnosis.actual_native_DATA01.json",
+            "bytes": 1406,
+            "sha256": "3cd7ea66664e04084fd98b9f85a78ab12293fae1984f6086b81c9bd272e539f7"
+          },
+          "actual_initial_chunk": "d0221d",
+          "actual_initial_session": 96968,
+          "actual_terminal_chunk": "0cb933",
+          "actual_terminal_exit_code": 1,
+          "failed_Source_line": 534,
+          "failed_predicate": "all_four_genuine_dynamic_pin_values",
+          "Root_ordinary_diagnosis_checks": 246,
+          "Root_ordinary_equal_books": 8,
+          "whole_original_four_descriptor_rows_equal_current_physical_pins": true,
+          "all_four_SHA_values_already_equal": true,
+          "historical_field_names_preserved": true,
+          "original_record_values_are_complete_path_bytes_sha256_descriptors": true,
+          "Source07_incorrect_expected_values_are_digest_strings": true,
+          "minimal_expected_full_descriptor_Source08_proposal_requested": true,
+          "original_four_native_zero_and_QPC_attempt_preserved": true,
+          "original_native_attempt_replayed": false,
+          "all_prior_failures_preserved": true,
+          "all_actual_success_exports_and_gate_absent": true,
+          "future_complete_actual_Root_review": null,
+          "future_actual_Root_counts": null,
+          "future_actual_independent_inspection_gate": null,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_advance": false,
+          "qualification": false
         }
       }
     }
