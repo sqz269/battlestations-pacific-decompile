@@ -1,0 +1,584 @@
+{
+  "schema": "cc12-skin-model-writer-discovery-v1",
+  "packet": "cc12_skin_model_writer_discovery",
+  "created_utc": "2026-10-10T00:58:33.506755+00:00",
+  "baseline_commit": "da380a56406f5519a7e63b1fdd1714e6ecaa316f",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "one_original_direct_write_confirmed_owning_function_and_complete_initializer_unresolved",
+  "owned_tracked_files": [
+    "docs/CC12_SKIN_MODEL_WRITER_DISCOVERY.md",
+    "reports/cc12_skin_model_writer_discovery.json"
+  ],
+  "lease_and_notification": "Initial01090344 and owned files claimed. After typed reference identified00CD8524, extended exact address lease and notified Root before opening instruction or byte windows.",
+  "leased_addresses_before_instruction_opening": [
+    "01090344",
+    "00CD8524"
+  ],
+  "confirmed_write": {
+    "instruction_address": "00CD8524",
+    "inclusive_selected_end": "00CD8529",
+    "selected_bytes": 6,
+    "operation": "MOV dword ptr [01090344], ECX",
+    "destination_cell": "01090344",
+    "source_register": "ECX",
+    "live_hex": "890d44030901",
+    "xref_type": "WRITE",
+    "ECX_value_origin": null,
+    "original_file_decoding_agrees_with_live_instruction": true,
+    "separate_original_live_raw_byte_equality_comparison": false
+  },
+  "reference_scope": {
+    "limit": 80,
+    "display_line_limit": 70,
+    "returned_records": 5,
+    "WRITE_records": 1,
+    "other_records": [
+      {
+        "from": "00B8F920",
+        "type": "READ",
+        "existing_label": "BSP_SkinModel_GetCurrentType"
+      },
+      {
+        "from": "00B8F940",
+        "type": "READ"
+      },
+      {
+        "from": "00B91630",
+        "type": "READ"
+      },
+      {
+        "from": "00B91624",
+        "type": "DATA"
+      }
+    ],
+    "complete_returned_output_saved": true,
+    "display_spills": 0,
+    "universal_writer_completeness": false,
+    "qualification": "Additional dynamic, unresolved or unmodeled writers are not excluded."
+  },
+  "physical_review_scope": {
+    "instruction_starts": 1,
+    "selected_bytes": 6,
+    "inclusive_range": "00CD8524..00CD8529",
+    "preceding_following_instructions_opened": 0,
+    "whole_function_bodies_reviewed": 0,
+    "complete_body_instruction_count": null,
+    "function_entry": null,
+    "physical_or_discontiguous_body_extent": null,
+    "ECX_origin": null,
+    "qualification": "One store is not a whole body, complete-path store ordering or incoming register ABI."
+  },
+  "unresolved_metadata": {
+    "lookup": "No start at00CD8524; nearest earlier00CD8460 BSP_GroupPool_InitializeStatic is only an indexed candidate, not ownership evidence.",
+    "indexed_range": "No starts returned for00CD8500..00CD8540.",
+    "live_function_and_signature": "No function found for00cd8524; no function at address for signature.",
+    "typed_callers": "Function not found: null; unavailable, not proven empty.",
+    "indexed_docs_for_mentions": 0,
+    "qualification": "Bounded address-query results do not prove no possible containing or discontiguous function exists."
+  },
+  "initializer_contract": {
+    "original_entrypoint": null,
+    "original_calling_convention": null,
+    "arguments": null,
+    "stack_cleanup": null,
+    "return_value": null,
+    "incoming_register_contract": null,
+    "guard_address": null,
+    "complete_descriptor_extent": null,
+    "native_name_word_address": null,
+    "native_name_value": null,
+    "parent_descriptor_identity": null,
+    "parent_initializer_chain": null,
+    "counter_owner_or_calls": null,
+    "counter_consumption_count": null,
+    "complete_path_store_order": null,
+    "partial_failure_behavior": null,
+    "repeat_call_behavior": null,
+    "CRT_slot_or_entry": null,
+    "actual_production_caller": null,
+    "qualification": "All remain unknown; no adjacent address, nearest function or existing family layout supplies missing evidence."
+  },
+  "next_bounded_packet": {
+    "kind": "Astra/Root instruction ownership and function-boundary audit",
+    "anchor": "00CD8524",
+    "required_first_result": "Establish actual owner and entry, complete physical/discontiguous body extent and relevant control flow.",
+    "lease_rule": "Lease exact newly opened instruction/body/data/handler addresses first.",
+    "Ghidra_writer": "Root only, through existing write lock with prior metadata preserved if repair is necessary.",
+    "subsequent_contract_gate": "Only after complete body/ownership recover original ABI, guard/layout/name, actual parent/counter dependencies, partial-state semantics and original caller/CRT placement.",
+    "ready_Cpp_packet": null,
+    "complete_initializer_reconstruction_admitted": false,
+    "production_backing": "Held."
+  },
+  "source_boundaries": {
+    "required_future_owner": "Actual retained VFS type storage and same TypeIdCounterLifetime/common lifetime domain.",
+    "order": "No Native CRT placement established; eventual Source insertion must retain that qualification.",
+    "distinct_families": [
+      "skin model01090344",
+      "skined-mesh resource01090454",
+      "excluded skined-mesh01090370",
+      "camera resource01090288",
+      "compact0109042C"
+    ],
+    "other_families_investigated": false,
+    "copied_ID_guard_or_default_descriptor_introduced": false,
+    "camera_boundary_investigation": false
+  },
+  "evidence": {
+    "schema": "cc12-skin-model-writer-discovery-evidence-v1",
+    "created_utc": "2026-10-10T00:58:33.506755+00:00",
+    "baseline_commit": "da380a56406f5519a7e63b1fdd1714e6ecaa316f",
+    "configured_target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "live_target_verification": "Every ghidra command invokes Client.verify() for project name, program path, language and image base. Configured GPR file exists; live project-directory path is not separately compared by that client.",
+    "original_image": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "configured_project_file": "C:/Users/sqz269/bsp.gpr",
+      "configured_project_file_exists": true,
+      "configured_project": "bsp",
+      "configured_program": "/battlestationspacific.exe",
+      "purpose": "Read-only original executable identity; selected instruction evidence retained separately."
+    },
+    "original_image_identity_receipt": {
+      "path": "local/cc12_skin_model_writer_discovery/original_image_identity.json",
+      "bytes": 504,
+      "sha256": "6c86bca67271afa646279c84e1e7072bf30eca744d67321b9db091baf6bcb677"
+    },
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "semantic_status": "typed CLI successful target verification; live/snapshot64730",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/batch01_target_verification.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "semantic_status": "typed CLI successful target verification; live/snapshot64730",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/batch02_target_verification.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "semantic_status": "typed CLI successful target verification; live/snapshot64730",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/batch03_target_verification.txt",
+          "bytes": 49,
+          "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "xrefs",
+          "01090344",
+          "--limit",
+          "80",
+          "--lines",
+          "70"
+        ],
+        "semantic_status": "five returned references including direct WRITE at00CD8524; not universal reference completeness",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/xrefs_01090344.txt",
+          "bytes": 143,
+          "sha256": "fb9c541c8b14871e61ac1c65dc999cb8cd87ec48bce50cd02c6bedf94c48378b"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "lookup",
+          "00CD8524",
+          "--limit",
+          "12"
+        ],
+        "semantic_status": "no start there; earlier GroupPool initializer candidate is not ownership proof",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/lookup_00cd8524.txt",
+          "bytes": 96,
+          "sha256": "b6798d60f8b4d5446528f28d200abe4c4b259c437824634d13f82fdc54cde300"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "docs-for",
+          "00CD8524",
+          "--limit",
+          "10"
+        ],
+        "semantic_status": "zero indexed mentions",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/docs_for_00cd8524.txt",
+          "bytes": 31,
+          "sha256": "dd341f27541903c17e79685eb8fec6abd8e8b1196899207c110c22b89ee0706b"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "00CD8524",
+          "--lines",
+          "20"
+        ],
+        "semantic_status": "function/signature unavailable at requested address",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/proto_00cd8524.txt",
+          "bytes": 128,
+          "sha256": "431b5400bcbea9d62d7ccb6304d1f08aa588371325434eb91a428eae661e2875"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "instruction-context",
+          "00CD8524",
+          "--context",
+          "0",
+          "--output",
+          "local/cc12_skin_model_writer_discovery/write_instruction_context.json",
+          "--lines",
+          "15"
+        ],
+        "semantic_status": "one exact instruction with empty before/after context",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/write_instruction_context.json",
+          "bytes": 174,
+          "sha256": "aecaf47d1ab808dab7c2216ddb4527d34c3be90091655f30e95ae36ee96e1da1"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "callers",
+          "00CD8524",
+          "--limit",
+          "20",
+          "--lines",
+          "15"
+        ],
+        "semantic_status": "function query unavailable; does not establish zero callers",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/callers_00cd8524.txt",
+          "bytes": 26,
+          "sha256": "81d3200211ca88c1535478885ba94d2b66fbf4855bed62ae318ba7e6c8fbf0d2"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "range",
+          "00CD8500",
+          "00CD8540",
+          "--limit",
+          "8"
+        ],
+        "semantic_status": "zero indexed starts; not full live/discontiguous ownership proof",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/range_00cd8500_00cd8540.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00CD8524",
+          "--length",
+          "6"
+        ],
+        "semantic_status": "exact selected six live bytes",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/live_write_bytes_00cd8524.txt",
+          "bytes": 37,
+          "sha256": "994e1509c3793eac100614b5d98a7b621cb7c2ba0612dcb2ed4163d0d943095c"
+        }
+      },
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "disasm-raw",
+          "00CD8524",
+          "--length",
+          "6",
+          "--lines",
+          "4"
+        ],
+        "semantic_status": "one original-file instruction in exact selected window, below line cap",
+        "output": {
+          "path": "local/cc12_skin_model_writer_discovery/original_write_00cd8524.txt",
+          "bytes": 99,
+          "sha256": "1ec16571a3d0d466063682b552e3e3082f1ea6a54dfb1c771a99fa1e9342bfe3"
+        }
+      }
+    ],
+    "selected_context": [
+      {
+        "original": {
+          "path": "config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "tools/bsp.py",
+          "bytes": 72606,
+          "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/tools/bsp.py",
+          "bytes": 72606,
+          "sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "tools/ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/tools/ghidra_export.py",
+          "bytes": 14411,
+          "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/include/bsp/native_resource_postprocess_full.hpp",
+          "bytes": 2781,
+          "sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/src/native_resource_postprocess_full.cpp",
+          "bytes": 20341,
+          "sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/native_point_light_provider.hpp",
+          "bytes": 3912,
+          "sha256": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/include/bsp/native_point_light_provider.hpp",
+          "bytes": 3912,
+          "sha256": "b2c20ccb28cd9f94b53007030c19e4ff604dc1b131153f60f6421957a8cda3d1"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/native_point_light_provider.cpp",
+          "bytes": 11224,
+          "sha256": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/src/native_point_light_provider.cpp",
+          "bytes": 11224,
+          "sha256": "cd17f340290fa84b2ba35f534a6024567c47b3e77e7ad2ffd957f0a706ca9aef"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+          "bytes": 10333,
+          "sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+          "bytes": 10333,
+          "sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "original": {
+          "path": "reports/cc12_remaining_resource_descriptors_source_readiness.json",
+          "bytes": 41864,
+          "sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3"
+        },
+        "frozen": {
+          "path": "local/cc12_skin_model_writer_discovery/frozen_context/reports/cc12_remaining_resource_descriptors_source_readiness.json",
+          "bytes": 41864,
+          "sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      }
+    ],
+    "instruction_finding": {
+      "instruction_address": "00CD8524",
+      "inclusive_selected_end": "00CD8529",
+      "selected_bytes": 6,
+      "operation": "MOV dword ptr [01090344], ECX",
+      "destination_cell": "01090344",
+      "source_register": "ECX",
+      "live_hex": "890d44030901",
+      "xref_type": "WRITE",
+      "ECX_value_origin": null,
+      "original_file_decoding_agrees_with_live_instruction": true,
+      "separate_original_live_raw_byte_equality_comparison": false
+    },
+    "counts": {
+      "selected_CLI_receipts": 12,
+      "selected_context_files": 12,
+      "batch_verification_records": 3,
+      "Native_instruction_starts": 1,
+      "selected_instruction_bytes": 6,
+      "complete_Native_function_bodies": 0,
+      "descriptor_data_windows": 0,
+      "handler_windows": 0,
+      "Ghidra_mutations": 0,
+      "Cpp_CMake_ledger_config_script_edits": 0,
+      "new_builds_tests_probes": 0
+    },
+    "scope": "Skin-model01090344 direct writer discovery only. No surrounding instruction or other Native body/data/handler window opened; no camera boundary investigation."
+  },
+  "evidence_manifest_pin": {
+    "path": "local/cc12_skin_model_writer_discovery/evidence_manifest.json",
+    "bytes": 14706,
+    "sha256": "5ac1badad0654a75c16e00d11ae40b9fd887421b2494abbe45b155cd2b3b615b"
+  },
+  "document_pin": {
+    "path": "docs/CC12_SKIN_MODEL_WRITER_DISCOVERY.md",
+    "bytes": 5730,
+    "sha256": "110d264919388df50ac89bd0794d89be4411862154a8d7602098805f46152409"
+  },
+  "new_work_counts": {
+    "Native_functions_reconstructed": 0,
+    "Native_instruction_starts_reviewed": 1,
+    "selected_Native_instruction_bytes": 6,
+    "Native_descriptor_data_windows": 0,
+    "Native_handler_windows": 0,
+    "Ghidra_mutations": 0,
+    "Cpp_CMake_ledger_config_script_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "runtime_probes": 0,
+    "descriptor_backings": 0,
+    "startup_calls": 0,
+    "consumer_compositions": 0
+  },
+  "evidence_levels": {
+    "direct_original_instruction_write_verified": true,
+    "complete_initializer": false,
+    "function_ownership_or_extent_admitted": false,
+    "exact_original_ABI": false,
+    "original_CRT_placement": false,
+    "original_live_raw_byte_equality_comparison": false,
+    "runtime_execution": false,
+    "game_validated": false
+  },
+  "historical_context": "Current baseline readiness docs/report are frozen as context; their Source/build/runtime references are not fresh execution evidence for this packet."
+}
