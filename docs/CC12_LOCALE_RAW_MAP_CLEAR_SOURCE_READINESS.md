@@ -31,7 +31,7 @@ The exact raw layout and service separation are:
 | Storage | Required fields and identity |
 | --- | --- |
 | Raw map |4096 DWORD heads at `map+4*i`; count DWORD at `map+4000h`. Pass the actual bucket base, established elsewhere as locale receiver+14h. |
-| Node |1Ch slot; narrow header+0, wide header+8, prev+10h, next+14h, block index+18h. The map does not touch prev. |
+| Node |1Ch slot; narrow length+0, pointer+4; wide length+8, pointer+Ch; prev+10h, next+14h, block index+18h. All offsets are bytes from the node. The map does not touch prev. |
 | String payload context |Existing `NativeStringRawPoolContext` borrows canonical01090AA8 publication,01090AA4 live gate and01090AA0 manager publication. |
 | Node-slot authority |Distinct critical section00E17698, depth DWORD00E176B0, current table pointer cell00E176B4, unsigned earliest-block DWORD00E176C0. No enclosing owner base is inferred. |
 | Selected node block |1Ch slot geometry, WORD free-index stack+7000h, WORD current free count+7800h. Geometry permits1024 stack entries before the count, but does not establish allocation extent or initialization. |
@@ -149,3 +149,18 @@ physical-copy replay both pass, including a deliberate denied external read.
 Evidence: `reports/cc12_locale_raw_map_clear_source_readiness.json` and
 `local/cc12_locale_raw_map_clear_source_readiness/evidence.zip` (14,611,721 bytes,
 SHA-256 `b99da35346305292591123560620e6ad6c2c334ed046f880493cb64603dca7e0`).
+
+A separate layout correction supersedes the swapped pointer/length labels in
+the original `5cd08cb76` report's `layout.node`. Narrow is length+0/pointer+4;
+wide is length+8/pointer+Ch. Retained Native instructions737CFD/737D0C load the
+wide pointer/length, and737D23/737D32 load the narrow pointer/length. The complete
+retained raw Source helpers use header-relative pointer+4 and length+0; the node
+composition supplies node+8 to the wide helper. The original report, design and
+ZIP remain historical, including the erroneous labels. Its original passing
+replay did not check internal header offsets. A focused read-only two-ZIP replay
+now asserts those offsets from the complete119-byte node body and three complete
+retained Source files, and proves all other report contracts unchanged.
+Its physical-copy replay also passes. Correction proof:
+`local/cc12_locale_raw_map_clear_source_readiness/layout_correction/correction.zip`
+(62,029 bytes, SHA-256
+`353f0570034dd260be300990537eca80b36e5df5a04fdea0e53e8b5628904cfc`).

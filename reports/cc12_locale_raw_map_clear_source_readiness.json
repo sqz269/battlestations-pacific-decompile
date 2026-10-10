@@ -20,7 +20,7 @@
   },
   "layout": {
     "raw_map": "At an already proved locale receiver+14h, but the proposed helper takes the actual bucket base directly. DWORD heads at map+4*i for i=0..FFFh; count DWORD at map+4000h. Require readable/writable4004h extent.",
-    "node": "1Ch slot: narrow header+0 (pointer+0,length+4), wide header+8 (pointer+8,length+C), prev+10, next+14, allocator block index+18. Map clear neither reads nor writes prev. Payload helper never clears either header.",
+    "node": "1Ch slot: narrow header+0 (length+0,pointer+4), wide header+8 (length+8,pointer+C), prev+10, next+14, allocator block index+18. Offsets are bytes from the original node. Map clear neither reads nor writes prev. Payload helper never clears either header.",
     "node_pool": "Actual fixed critical section E17698; depth DWORD E176B0; current table pointer cell E176B4; unsigned earliest available block index DWORD E176C0. Do not infer an enclosing owner base from these offsets.",
     "block": "Table entry at current_table+4*current_node_block_index. Data slot stride1Ch. WORD free indices at selected_block+7000h; WORD current count at selected_block+7800h. Offsets geometrically accommodate1024 indices before the count; this is not proof of allocation size, initialization or capacity.",
     "string_context": "Borrow the same canonical01090AA8 pool publication,01090AA4 live small-return gate and01090AA0 manager publication cells through existing NativeStringRawPoolContext. GameNativeStringProcess owns those process-lifetime cells and GameVfsHost exposes its raw context; this proves no E17698 node owner."
@@ -1609,5 +1609,154 @@
     "No ledger edits or main integration in this worker",
     "No blanket semantic absence proof from text searches; finite census and fixed incompatible providers are the evidence",
     "Current Root artifact bytes are not retained or compared here; separately accepted Root report and frozen Source epoch are dependencies"
-  ]
+  ],
+  "layout_correction": {
+    "historical_commit": "5cd08cb762216d94d9ae533fe16b6461e5f2961f",
+    "historical_working_report": {
+      "entry": "historical/Current/reports/cc12_locale_raw_map_clear_source_readiness.json",
+      "bytes": 64131,
+      "sha256": "6ba6854262fb1b6170400d6e07a5077318f129c04db674cef437f48dbd8aedde"
+    },
+    "historical_committed_report": {
+      "entry": "historical/Git/reports/cc12_locale_raw_map_clear_source_readiness.json",
+      "bytes": 62518,
+      "sha256": "4aecdb1b5bb8d19ccebade24f18012aa4091be1e058969812a2a964190313d81"
+    },
+    "historical_original_proof": {
+      "entry": "../evidence.zip",
+      "bytes": 14611721,
+      "sha256": "b99da35346305292591123560620e6ad6c2c334ed046f880493cb64603dca7e0"
+    },
+    "corrected_node_relative_byte_offsets": {
+      "narrow": {
+        "length": 0,
+        "pointer": 4
+      },
+      "wide": {
+        "length": 8,
+        "pointer": 12
+      }
+    },
+    "retained_Native_instructions": [
+      {
+        "address": "00737CFD",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 0xc]",
+        "meaning": "wide pointer"
+      },
+      {
+        "address": "00737D0C",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esi + 8]",
+        "meaning": "wide length"
+      },
+      {
+        "address": "00737D23",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 4]",
+        "meaning": "narrow pointer"
+      },
+      {
+        "address": "00737D32",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [esi]",
+        "meaning": "narrow length"
+      }
+    ],
+    "retained_Source": [
+      {
+        "entry": "retained/Source/src/native_string.cpp",
+        "bytes": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+        "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_string.cpp"
+      },
+      {
+        "entry": "retained/Source/src/native_wide_string.cpp",
+        "bytes": 4789,
+        "sha256": "c3bb1d825f59a9b2ce930d4b463d129ac0557a97cb4e26fbceefb01761456864",
+        "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_wide_string.cpp"
+      },
+      {
+        "entry": "retained/Source/src/native_locale_map_node_lifetime.cpp",
+        "bytes": 820,
+        "sha256": "65e5b8d4ede42ba7df6527468b83594df5351a0d35e3ee5c391a7f88926036fd",
+        "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_locale_map_node_lifetime.cpp"
+      }
+    ],
+    "assertion_gap": "Original replay verified payload composition but did not assert the internal header fields. The passing original replay does not validate its erroneous layout.node prose.",
+    "qualification": "The original capture, design, closed report and evidence ZIP remain historical and unmodified. This additive correction supersedes only layout.node; all prior Source/build/GO/failure conclusions stay unchanged.",
+    "correction_proof": {
+      "entry": "layout_correction/correction.zip",
+      "bytes": 62029,
+      "sha256": "353f0570034dd260be300990537eca80b36e5df5a04fdea0e53e8b5628904cfc",
+      "payload_files": 12
+    },
+    "correction_review": {
+      "status": "PASS",
+      "guard": {
+        "two_pinned_ZIPs_only": true,
+        "read_only": true,
+        "external_read_denied": true,
+        "process_network_dynamic_loading_directory_access_denied": true
+      },
+      "review": {
+        "status": "PASS",
+        "historical_commit": "5cd08cb762216d94d9ae533fe16b6461e5f2961f",
+        "old_ZIP_exact": true,
+        "old_report_Git_and_current_preserved": true,
+        "old_design_still_historical_wrong_layout": true,
+        "complete_retained_node_bytes": 119,
+        "complete_retained_node_instructions": 38,
+        "verified_Native_fields": [
+          {
+            "address": "00737CFD",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0xc]",
+            "meaning": "wide pointer"
+          },
+          {
+            "address": "00737D0C",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esi + 8]",
+            "meaning": "wide length"
+          },
+          {
+            "address": "00737D23",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 4]",
+            "meaning": "narrow pointer"
+          },
+          {
+            "address": "00737D32",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [esi]",
+            "meaning": "narrow length"
+          }
+        ],
+        "verified_full_Source_files": 3,
+        "narrow_header_relative_length": 0,
+        "narrow_header_relative_pointer": 4,
+        "wide_header_relative_length": 0,
+        "wide_header_relative_pointer": 4,
+        "wide_header_node_base": 8,
+        "corrected_node_relative_byte_offsets": {
+          "narrow": {
+            "length": 0,
+            "pointer": 4
+          },
+          "wide": {
+            "length": 8,
+            "pointer": 12
+          }
+        },
+        "changed_report_paths": [
+          "layout.node",
+          "layout_correction"
+        ],
+        "other_report_contracts_unchanged": true,
+        "Cpp_Native_build_runtime_work": false
+      }
+    },
+    "physical_copy_review_same": true
+  }
 }
