@@ -1,0 +1,681 @@
+{
+  "schema": 1,
+  "packet": "cc12_camera_resource_initializer_fragment_Source",
+  "status": "ordinary_unbound_Source_fragment_object_compiled_real_providers_indexed_not_registered",
+  "baseline_main": "0fd0169927d7650b19905ee9715d0f4d9d874374",
+  "owned_tracked_files": [
+    "include/bsp/native_camera_resource_initializer_fragment.hpp",
+    "src/native_camera_resource_initializer_fragment.cpp",
+    "docs/CC12_CAMERA_RESOURCE_INITIALIZER_FRAGMENT_SOURCE.md",
+    "reports/cc12_camera_resource_initializer_fragment_source.json"
+  ],
+  "fragment": {
+    "function": "initialize_native_camera_resource_fragment_00cd8390",
+    "source": "src/native_camera_resource_initializer_fragment.cpp",
+    "header": "include/bsp/native_camera_resource_initializer_fragment.hpp",
+    "new_Source_ABI": "ordinary MSVC Win32 cdecl void(const NativeCameraResourceInitializerFragmentContext&)",
+    "retained_Native_scope": {
+      "start": "00CD8390",
+      "end_inclusive": "00CD83DE",
+      "bytes": 79,
+      "instructions": 16
+    },
+    "whole_original_function_admitted": false,
+    "last_accepted_exact_and_containing_Native_function": null,
+    "entry_ownership_not_refreshed_or_changed": true
+  },
+  "borrowed_contract": {
+    "guard": "actual volatile uint8 reference, role 01090266",
+    "distinct_destination_words": [
+      "own-ID 01090288",
+      "Scene-ID 0109028C",
+      "root-ID 01090290",
+      "name address 01090294"
+    ],
+    "literal_binding": "actual original numeric address token 00D6327C; no substitute local string, content interpretation or dereference",
+    "canonical_Scene": "actual current three-word view 01090210, identical to scene_types.storage().scene_01090210",
+    "providers": [
+      "genuine NativeMeshResourceTypeIds",
+      "SAME retained TypeIdCounterLifetime used by Scene and its root domain"
+    ],
+    "caller_preconditions": [
+      "correct distinct cell identities",
+      "nonconflicting aliases",
+      "stable bindings across dependency calls",
+      "actual literal-address binding",
+      "same retained counter/root/Scene domain",
+      "sufficient readable object/storage lifetimes"
+    ],
+    "provider_headers_or_implementations_changed": false,
+    "production_storage_or_caller_supplied_here": false,
+    "runtime_binding_validation_or_missing_binding_fabrication": false
+  },
+  "publication_order": [
+    {
+      "Native_addresses": [
+        "00CD8390",
+        "00CD8397"
+      ],
+      "Source_lines": [
+        15
+      ],
+      "operation": "Current nonzero guard returns without publication writes",
+      "Source_COFF_offsets": [
+        "09",
+        "0C -> 51"
+      ]
+    },
+    {
+      "Native_addresses": [
+        "00CD839E",
+        "00CD83A5"
+      ],
+      "Source_lines": [
+        16,
+        17
+      ],
+      "operation": "Guard 1 then actual bound name token",
+      "Source_COFF_offsets": [
+        "10",
+        "19"
+      ]
+    },
+    {
+      "Native_addresses": [
+        "00CD8399",
+        "00CD83AF"
+      ],
+      "Source_lines": [
+        19
+      ],
+      "operation": "Real Scene provider on canonical current three-word view",
+      "Source_COFF_offsets": [
+        "1B",
+        "1E",
+        "21"
+      ]
+    },
+    {
+      "Native_addresses": [
+        "00CD83B4",
+        "00CD83B9"
+      ],
+      "Source_lines": [
+        20,
+        21
+      ],
+      "operation": "Capture BOTH current Scene own/root IDs before either destination store",
+      "Source_COFF_offsets": [
+        "29",
+        "2E"
+      ]
+    },
+    {
+      "Native_addresses": [
+        "00CD83BF",
+        "00CD83C4"
+      ],
+      "Source_lines": [
+        22,
+        23
+      ],
+      "operation": "Publish Scene ID then root ID",
+      "Source_COFF_offsets": [
+        "34",
+        "39"
+      ]
+    },
+    {
+      "Native_addresses": [
+        "00CD83CA",
+        "00CD83CF"
+      ],
+      "Source_lines": [
+        25,
+        26
+      ],
+      "operation": "Real same counter getter then current DWORD+4 load",
+      "Source_COFF_offsets": [
+        "3E",
+        "43"
+      ]
+    },
+    {
+      "Native_addresses": [
+        "00CD83D2",
+        "00CD83D5",
+        "00CD83D8"
+      ],
+      "Source_lines": [
+        27,
+        28
+      ],
+      "operation": "Increment modulo 2^32, publish increment before captured old own ID",
+      "Source_COFF_offsets": [
+        "46",
+        "49",
+        "4F"
+      ]
+    },
+    {
+      "Native_addresses": [
+        "00CD83DE"
+      ],
+      "Source_lines": [
+        29
+      ],
+      "operation": "Return through new Source ABI; original return-register semantics unclaimed",
+      "Source_COFF_offsets": [
+        "51",
+        "52",
+        "53"
+      ]
+    }
+  ],
+  "failure_state": {
+    "guard_nonzero": "No publication writes or provider calls",
+    "Scene_Source_exception": "Guard and name remain published; no rollback",
+    "counter_getter_Source_exception": "Guard, name and both parent IDs remain published; no rollback",
+    "later_call": "Sticky guard suppresses repair",
+    "new_exception_handler_cleanup_or_fault_fallback": false,
+    "Native_EH_and_hardware_fault_behavior_claimed": false
+  },
+  "validation": {
+    "ordinary_strict_Win32_object_compilation": true,
+    "objects_compiled": 3,
+    "all_compiler_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "compiler_version": "19.51.36244.0",
+    "toolset_directory": "14.51.36231",
+    "flags_origin": "Actual generated bsp_core Release ClCompile settings and provider command log in main",
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/O2",
+      "/Ob2",
+      "/Oy-",
+      "/EHsc",
+      "/MD",
+      "/fp:strict",
+      "/std:c++17"
+    ],
+    "other_flags": [
+      "/nologo",
+      "/c",
+      "/W4",
+      "/WX",
+      "/diagnostics:column",
+      "/O2",
+      "/Ob2",
+      "/Oy-",
+      "/D_MBCS",
+      "/DWIN32",
+      "/D_WINDOWS",
+      "/DNDEBUG",
+      "/DCMAKE_INTDIR=\"Release\"",
+      "/EHsc",
+      "/MD",
+      "/fp:strict",
+      "/std:c++17",
+      "/external:W0",
+      "/TP",
+      "/analyze-",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include",
+      "/IJ:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\lua511-src\\src",
+      "/IJ:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\zlib121-src",
+      "/external:IJ:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\dxsdk_d3dx-src\\build\\native\\include"
+    ],
+    "configuration_snapshot": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\frozen\\build_configuration\\bsp_core.vcxproj",
+      "bytes": 251156,
+      "sha256": "4333c8916b755a60cf6c4f220424cbab141f13be8f1ade84367695393c3d01f8"
+    },
+    "command_log_snapshot": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\frozen\\build_configuration\\CL.command.1.tlog",
+      "bytes": 2901362,
+      "sha256": "a0088428f45f13277ba238087ad7e2236dfab3b1e949c2a8bbf00adf637d0c3c"
+    },
+    "compile_receipts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\compile_receipts.json",
+      "bytes": 10905,
+      "sha256": "deeb529e1f43491bff85d4ddf218b903ea540dd03a23517479a2b61c56df60e2"
+    },
+    "configuration_and_recorded_command_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\recorded_release_commands.json",
+      "bytes": 3934,
+      "sha256": "5d2c2002e629e708e2cc82884a64ac90f2552d97d54b8b715ac4e0d386d0ab87"
+    },
+    "complete_compiler_dependency_receipts": [
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.dependencies.json",
+          "bytes": 10352,
+          "sha256": "67977d686abe25c519d73522b70b77fc814fcdb849671423d9ae60668dd3ad5c"
+        },
+        "source": "j:\\prog\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\light_type_bootstrap.cpp",
+        "include_count": 86,
+        "imports": []
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.dependencies.json",
+          "bytes": 41328,
+          "sha256": "1d059f59dd6c87271bcc3b306a0d54ab94a39a7651ca409b258cc3aea4a3258f"
+        },
+        "source": "j:\\prog\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_camera_resource_initializer_fragment.cpp",
+        "include_count": 363,
+        "imports": []
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.dependencies.json",
+          "bytes": 42203,
+          "sha256": "3c55feb10fb7dbe4f1bd393065e9b844d87b823b924c9eed7716413852b86003"
+        },
+        "source": "j:\\prog\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_mesh_subset_loading.cpp",
+        "include_count": 370,
+        "imports": []
+      }
+    ],
+    "whole_current_Source_files_pinned": 101,
+    "new_candidate_files_pinned": 2,
+    "unchanged_baseline_Source_files_pinned": 99,
+    "external_dependency_files_pinned_and_copied": 236,
+    "Source_dependency_pin_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\source_and_dependency_pins.json",
+      "bytes": 267237,
+      "sha256": "3d880bf29599dd39688ff3d1821389cf5b275aaad44795d38a4531146fbb1a29"
+    },
+    "complete_COFF_indexes": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.coff_index.json",
+        "bytes": 57410,
+        "sha256": "7d366ba7a6099470d32f850b81b40475800f44cde4316f5abc59287093868536"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.coff_index.json",
+        "bytes": 12698,
+        "sha256": "aae16ceced472eccc59acba79bf020a1ee16b8bf5f623f8c626e9e9b14a0e40f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.coff_index.json",
+        "bytes": 1568521,
+        "sha256": "5b72c18aee1b1e1060ffab5ef4282244c32b3b33d02f0f240f407209248d4ca0"
+      }
+    ],
+    "COFF_real_provider_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\coff_provider_receipt.json",
+      "bytes": 9295,
+      "sha256": "25f6c350947241e1d93c96ee0cc4cf2490f79245c34e198652d444857d60ab06"
+    },
+    "all_COFF_record_counts": {
+      "native_camera_resource_initializer_fragment": {
+        "sections": 8,
+        "symbol_records_including_aux": 25,
+        "relocations": 2
+      },
+      "native_mesh_subset_loading": {
+        "sections": 762,
+        "symbol_records_including_aux": 2335,
+        "relocations": 1011
+      },
+      "light_type_bootstrap": {
+        "sections": 28,
+        "symbol_records_including_aux": 91,
+        "relocations": 44
+      }
+    },
+    "candidate_Source_function_bytes": 84,
+    "candidate_symbol_index_hex": "16",
+    "candidate_section": 7,
+    "candidate_relocations": [
+      {
+        "ordinal": 0,
+        "file_offset": 1771,
+        "section_offset": 34,
+        "type": 20,
+        "type_hex": "0014",
+        "symbol_index": 21,
+        "symbol_index_hex": "15",
+        "symbol_name": "?initialize_scene_resource_00b869c0@NativeMeshResourceTypeIds@bsp@@QAEXPCI@Z",
+        "symbol_section_number": 0
+      },
+      {
+        "ordinal": 1,
+        "file_offset": 1781,
+        "section_offset": 63,
+        "type": 20,
+        "type_hex": "0014",
+        "symbol_index": 20,
+        "symbol_index_hex": "14",
+        "symbol_name": "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ",
+        "symbol_section_number": 0
+      }
+    ],
+    "provider_definitions": {
+      "Scene": {
+        "index": 1536,
+        "index_hex": "600",
+        "file_offset": 104477,
+        "name": "?initialize_scene_resource_00b869c0@NativeMeshResourceTypeIds@bsp@@QAEXPCI@Z",
+        "value": 0,
+        "section_number": 549,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "raw_hex": "00000000bda2000000000000250220000200",
+        "is_auxiliary": false
+      },
+      "counter": {
+        "index": 60,
+        "index_hex": "3C",
+        "file_offset": 4696,
+        "name": "?get_006fac20@TypeIdCounterLifetime@bsp@@QAEPAUTypeIdCounterStorage@2@XZ",
+        "value": 0,
+        "section_number": 13,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "raw_hex": "0000000020020000000000000d0020000200",
+        "is_auxiliary": false
+      },
+      "root": {
+        "index": 63,
+        "index_hex": "3F",
+        "file_offset": 4750,
+        "name": "?initialize_root_00bea780@LightTypeBootstrap@bsp@@QAEXACURootTypeDescriptor@2@@Z",
+        "value": 0,
+        "section_number": 22,
+        "type": 32,
+        "storage_class": 2,
+        "auxiliary_count": 0,
+        "raw_hex": "000000002303000000000000160020000200",
+        "is_auxiliary": false
+      }
+    },
+    "candidate_emitted_order_reviewed": true,
+    "all_COMDAT_helpers_and_auxiliary_records_retained_not_attributed_to_fragment": true,
+    "isolated_provider_dependencies_unresolved_not_stubbed": true,
+    "link_probe_fixture_CTest_project_build_or_execution": false,
+    "initial_environment_launch_quoting_error": "Corrected in ignored helper before any compiler invocation; final three object compilations all passed."
+  },
+  "source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include\\bsp\\native_camera_resource_initializer_fragment.hpp",
+      "bytes": 1765,
+      "sha256": "789341dd8930b436f67f9c9465f9393210d412b95ffeb67632cc661e8487bfc6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_camera_resource_initializer_fragment.cpp",
+      "bytes": 1088,
+      "sha256": "dc63cf5f9f28928fbd9830f362f987ed2bde560b628e9fbca38d94419bb733d4"
+    }
+  ],
+  "retained_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_CAMERA_RESOURCE_OWNERSHIP_AUDIT.md",
+      "bytes": 9317,
+      "sha256": "b8900d1d63d44ea64605d5fdfa033518a6b8075d487c6cb837be722fdcd7371f",
+      "baseline_git_blob": "edb7d7981e89f66117ba41b3c9a1306e69ac1462",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\frozen\\retained_evidence\\docs\\CC12_CAMERA_RESOURCE_OWNERSHIP_AUDIT.md",
+        "bytes": 9317,
+        "sha256": "b8900d1d63d44ea64605d5fdfa033518a6b8075d487c6cb837be722fdcd7371f"
+      },
+      "used_as_retained_evidence_only_no_new_Native_query": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_camera_resource_ownership_audit.json",
+      "bytes": 60894,
+      "sha256": "f5243b694f5f33a9f4559395ed759dc4dc7141e38e049210d0589dee6bd2e6d5",
+      "baseline_git_blob": "2924749fa2e0a29752f1c06752a771c4236dcd03",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\frozen\\retained_evidence\\reports\\cc12_camera_resource_ownership_audit.json",
+        "bytes": 60894,
+        "sha256": "f5243b694f5f33a9f4559395ed759dc4dc7141e38e049210d0589dee6bd2e6d5"
+      },
+      "used_as_retained_evidence_only_no_new_Native_query": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_CAMERA_RESOURCE_DEPENDENCY_READINESS.md",
+      "bytes": 11868,
+      "sha256": "198d4d64392da4c2080ff63fb705cc67d5f18a400af967928355a8702478a857",
+      "baseline_git_blob": "5db6d9761920cd9304036f52f8a82e7c259aed2f",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\frozen\\retained_evidence\\docs\\CC12_CAMERA_RESOURCE_DEPENDENCY_READINESS.md",
+        "bytes": 11868,
+        "sha256": "198d4d64392da4c2080ff63fb705cc67d5f18a400af967928355a8702478a857"
+      },
+      "used_as_retained_evidence_only_no_new_Native_query": true
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_camera_resource_dependency_readiness.json",
+      "bytes": 53858,
+      "sha256": "c17fd057872cf43f8ca323201d95481e7c95688c5f6951a42aed44ba1d9dc233",
+      "baseline_git_blob": "806e79ae9a7f072359d491a02384649636288808",
+      "snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\frozen\\retained_evidence\\reports\\cc12_camera_resource_dependency_readiness.json",
+        "bytes": 53858,
+        "sha256": "c17fd057872cf43f8ca323201d95481e7c95688c5f6951a42aed44ba1d9dc233"
+      },
+      "used_as_retained_evidence_only_no_new_Native_query": true
+    }
+  ],
+  "artifact_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\bsp_core.vcxproj",
+      "bytes": 251156,
+      "sha256": "4333c8916b755a60cf6c4f220424cbab141f13be8f1ade84367695393c3d01f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\coff_provider_receipt.json",
+      "bytes": 9295,
+      "sha256": "25f6c350947241e1d93c96ee0cc4cf2490f79245c34e198652d444857d60ab06"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\compile_objects.py",
+      "bytes": 6249,
+      "sha256": "f21776daf7090649c1cae643496f2b9294d14fa2ca2f2338858a8a85b3327063"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\compile_receipts.json",
+      "bytes": 10905,
+      "sha256": "deeb529e1f43491bff85d4ddf218b903ea540dd03a23517479a2b61c56df60e2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\compiler_environment.cmd",
+      "bytes": 139,
+      "sha256": "8fd2bd7e325d2b837ca105825599449c3cd8f0d67ac2b92f7c50d43753ae7781"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\finalize.py",
+      "bytes": 15426,
+      "sha256": "c7b3e1cc6efb3a954c6dc635e7daf4e3b63c24787a60adaf43429033e06d44f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\index_coff.py",
+      "bytes": 8432,
+      "sha256": "78f09f640fb7802e05eecff4b75ea8ee2495ae9d0ef596f1f77f0dbb420cdab9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.coff_index.json",
+      "bytes": 57410,
+      "sha256": "7d366ba7a6099470d32f850b81b40475800f44cde4316f5abc59287093868536"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.command.json",
+      "bytes": 1428,
+      "sha256": "07a801cddac65d24e70ec62fbf26c45e4779b741f62d239548d76ca352a09ba5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.compile.log",
+      "bytes": 1126,
+      "sha256": "18286fc4c0cf1d9213801ca6696a6b7903ee499993dfcac57743637312b6780d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.dependencies.json",
+      "bytes": 10352,
+      "sha256": "67977d686abe25c519d73522b70b77fc814fcdb849671423d9ae60668dd3ad5c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.directives.txt",
+      "bytes": 768,
+      "sha256": "ad4ea7476feaf3b81731334773e6e9b94d071cc64fafd49685ba1d02cdb9fe05"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.headers.txt",
+      "bytes": 15511,
+      "sha256": "5f9df13e7f6816eb07e5ec5d2e9ea755a6de21ca656c024574192c8b61511681"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.obj",
+      "bytes": 7296,
+      "sha256": "93719706e0f2b515012d7c12f6b3836e03a26f6411fad9b055109dbf2996b3dd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.relocations.txt",
+      "bytes": 11126,
+      "sha256": "152a254b875632d6ea1d463e007c84fe5a7ddc9b133308a93f44d60f50657a9f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\light_type_bootstrap.symbols.txt",
+      "bytes": 10996,
+      "sha256": "ea86d7091ccb248e5b781e684e549d8f67400cbe5561babe514928040a744a39"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.coff_index.json",
+      "bytes": 12698,
+      "sha256": "aae16ceced472eccc59acba79bf020a1ee16b8bf5f623f8c626e9e9b14a0e40f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.command.json",
+      "bytes": 1520,
+      "sha256": "f79aa51f7b21509439de5f991dc3b2e9b213cf50e3301db7c7d7e820a8bf44e9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.compile.log",
+      "bytes": 1149,
+      "sha256": "5a8fcb0b3cc0e0cd00783127b7edbe88abe71aed1660ce94d5c8cd22aaaeea17"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.dependencies.json",
+      "bytes": 41328,
+      "sha256": "1d059f59dd6c87271bcc3b306a0d54ab94a39a7651ca409b258cc3aea4a3258f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.directives.txt",
+      "bytes": 888,
+      "sha256": "1100acfb6a276639fae1a5e6e568a00e318dc47eb2b96bcd357ad8c9e0902d71"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.disasm.txt",
+      "bytes": 3950,
+      "sha256": "dc0261f956ec849189c83cca82cdb6e9e195be547b72ad83955466eb059aec08"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.headers.txt",
+      "bytes": 4715,
+      "sha256": "c40d62c1e66372a9af707662e49db32f520e4d63a8aa0505fc4cba742cfcaaa3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.obj",
+      "bytes": 2731,
+      "sha256": "488e5b6876f1bb542714caf4757f9b1f3da5980c3f37e29727b13f7993ce85f7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.relocations.txt",
+      "bytes": 1059,
+      "sha256": "e95cf6b8c40606db6dacbb00caff22ffb1a5053997b4372edadc891110a7b08a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_camera_resource_initializer_fragment.symbols.txt",
+      "bytes": 3141,
+      "sha256": "c16f60a7b15faaa73089a8cc5054b39fe232460371be547268887cc1e5294f6f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.coff_index.json",
+      "bytes": 1568521,
+      "sha256": "5b72c18aee1b1e1060ffab5ef4282244c32b3b33d02f0f240f407209248d4ca0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.command.json",
+      "bytes": 1452,
+      "sha256": "1e8207dbe74130309f27e35f932104e5de1a59326e0905c270b4b11215327a94"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.compile.log",
+      "bytes": 1132,
+      "sha256": "2f7d8df9aa3bb618f24fa3e3cb746859822315fb8880ef9f98d363abd78802fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.dependencies.json",
+      "bytes": 42203,
+      "sha256": "3c55feb10fb7dbe4f1bd393065e9b844d87b823b924c9eed7716413852b86003"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.directives.txt",
+      "bytes": 1029,
+      "sha256": "0503d337b9356aead96770ee7ffcb2acacc1e56e857a781d7540f28c9281d3c0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.headers.txt",
+      "bytes": 588370,
+      "sha256": "08ce2424c1f4c2aa4418818b8dee023ce24eabfd3e768fa355cacf0426420825"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.obj",
+      "bytes": 235137,
+      "sha256": "de804b106127e2ecd38a87a343eaf1512c04526a18ba3caf27c5d18f93f99c4d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.relocations.txt",
+      "bytes": 428952,
+      "sha256": "7428d3474b13af7907388782f4dffbb55b3bbd839d3f836e7a0e4966270a5ad5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\native_mesh_subset_loading.symbols.txt",
+      "bytes": 442344,
+      "sha256": "c2c0e18b31e5b4baf0fc764b3fd57ac5dcb30d11cfedcad7bb65e95543c7e8f8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\recorded_release_commands.json",
+      "bytes": 3934,
+      "sha256": "5d2c2002e629e708e2cc82884a64ac90f2552d97d54b8b715ac4e0d386d0ab87"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_initializer_fragment_source\\source_and_dependency_pins.json",
+      "bytes": 267237,
+      "sha256": "3d880bf29599dd39688ff3d1821389cf5b275aaad44795d38a4531146fbb1a29"
+    }
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_CAMERA_RESOURCE_INITIALIZER_FRAGMENT_SOURCE.md",
+    "bytes": 7089,
+    "sha256": "cd85d1f09c98ab824fa96bb6a7be3d8436a015d34bd1a0eeb9778fe19bebfb67"
+  },
+  "scope": {
+    "new_Native_memory_PE_byte_disassembly_decompile_table_name_handler_or_body_query": false,
+    "live_Ghidra_analysis_queries": false,
+    "required_initial_brief_health_status_check": true,
+    "GPR_POST_Ghidra_script_restart_configuration_or_ledger_mutation": false,
+    "CMake_registration": false,
+    "existing_provider_or_header_edits": false,
+    "production_camera_guard_descriptor_backing_or_startup_CRT_calls": false,
+    "new_tests_or_probe": false,
+    "retained_historical_listing_exposure_from_prior_packet": "Historical material only; no fresh Native query or new validation credit.",
+    "loaded_Java_CodeSource_attested": false
+  },
+  "remaining_gates": [
+    "retained production camera storage and caller bindings",
+    "application startup/CRT routing",
+    "original CRT consumer and invocation order",
+    "whole original function entry/body ownership",
+    "original register/entry ABI and Native EH",
+    "name string contents and extent",
+    "Root CMake registration and full project build/review",
+    "runtime, game and image parity"
+  ]
+}
