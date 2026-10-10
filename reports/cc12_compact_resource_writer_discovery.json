@@ -608,5 +608,120 @@
     "startup_or_runtime_validated": false,
     "gameplay_validated": false
   },
-  "historical_context": "Current baseline readiness docs/report are frozen as accepted context; their Source/build/runtime references are not fresh execution evidence for this packet."
+  "historical_context": "Current baseline readiness docs/report are frozen as accepted context; their Source/build/runtime references are not fresh execution evidence for this packet.",
+  "primary_review": {
+    "decision": "Accept one direct Native write as selected evidence; whole initializer/backing/ABI and ownership gate remain held.",
+    "worker_commit": "c848b49413976a4e3dd0bb63e03d3a9738af80a4",
+    "artifact_pin_occurrences_verified_and_retained": 41,
+    "selected_context_baseline_and_current_Git_matches": [
+      {
+        "path": "config/target.json",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "baseline_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "tools/bsp.py",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": false,
+        "current_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "baseline_sha256": "9e82a021504a0e206e49b2dca201cb61075a39f14137d8d006ee4ff89ef751c4"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "baseline_sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "include/bsp/native_resource_postprocess_full.hpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7",
+        "baseline_sha256": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7"
+      },
+      {
+        "path": "src/native_resource_postprocess_full.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6",
+        "baseline_sha256": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+      },
+      {
+        "path": "include/bsp/native_resource_instance_postprocess.hpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1",
+        "baseline_sha256": "70eeaf26d4808f8ba42ce61312241942d7de47b5a30f94e5a888dd7d0c7d3bf1"
+      },
+      {
+        "path": "src/native_resource_instance_postprocess.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "a8e7a89dcbc8d704d4c66c87dc381711a327214c12649b9062932295c182e407",
+        "baseline_sha256": "a8e7a89dcbc8d704d4c66c87dc381711a327214c12649b9062932295c182e407"
+      },
+      {
+        "path": "include/bsp/game_native_type_storage.hpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8",
+        "baseline_sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+      },
+      {
+        "path": "src/game_native_type_storage.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92",
+        "baseline_sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+      },
+      {
+        "path": "src/game_native_vfs_application.cpp",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "baseline_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+      },
+      {
+        "path": "docs/CC12_REMAINING_RESOURCE_DESCRIPTORS_SOURCE_READINESS.md",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a",
+        "baseline_sha256": "21782c31c9d47516a32d33edf14f498bae23efcc3065e71da46dd7614b56c46a"
+      },
+      {
+        "path": "reports/cc12_remaining_resource_descriptors_source_readiness.json",
+        "historical_worker_matches_baseline": true,
+        "current_matches_baseline": true,
+        "current_sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3",
+        "baseline_sha256": "9825f2987595799b30324e320a595c7874d86fa64fbb09da2bc4b57ab61df4c3"
+      }
+    ],
+    "Root_original_disk_vs_worker_retained_live_bytes": [
+      {
+        "address": "00CD8688",
+        "bytes": 6,
+        "disk_hex": "890d2c040901",
+        "worker_retained_live_hex": "890d2c040901",
+        "raw_bytes_equal": true,
+        "mnemonic": "mov",
+        "operands": "dword ptr [0x109042c], ecx"
+      }
+    ],
+    "new_live_queries": 0,
+    "new_byte_windows": 0,
+    "proof": {
+      "path": "local/cc12_compact_writer_discovery_primary/proof.json",
+      "bytes": 25973,
+      "sha256": "621f52a8af33815ffed8d5f926dc5b8774b2717eb3408ac9f6048b2da0ef6cb4"
+    },
+    "document_pin": {
+      "path": "docs/CC12_COMPACT_RESOURCE_WRITER_DISCOVERY.md",
+      "bytes": 7679,
+      "sha256": "12e049a800744657988a2c25ad91a871cde05983a0aa647ccf8c1184b6170673"
+    },
+    "GPR_mutations_or_Cpp_build_test_runtime_changes": 0
+  }
 }

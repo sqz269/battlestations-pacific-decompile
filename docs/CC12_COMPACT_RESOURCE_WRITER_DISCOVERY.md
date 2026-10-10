@@ -115,3 +115,12 @@ its original-file disassembly, plus current Source consumer context. Complete
 initializer reconstruction, drop-in ABI compatibility, execution, startup,
 runtime and gameplay equivalence remain unproved. No builds/tests/probes were
 needed for these two documentation/report files.
+
+Primary review retained and verified every pin occurrence and all12 historical
+context Git blobs. Eleven context files also match current main; tools/bsp.py
+now has the independently reviewed typed-flow dispatch from1574076d6. That
+subsequent tooling change supplies no new live observation for this discovery.
+Root replayed the exact selected six-byte window against the unchanged original
+PE and worker-retained live hex; they match directly. This adds selected raw-byte
+equality only, with no extended window or whole body/value origin/ABI/owner/
+caller/guard/layout/name/counter/CRT credit. Ownership recovery remains separate.
