@@ -17,7 +17,11 @@ struct NativeGameGridCpuCalls {
     // BF6989 is the game's CRT free, not a six-array ownership abstraction.
     // Source allocations must belong to the matching source CRT domain.
     virtual void free_00bf6989(void* allocation);
+    // Default forwards the exact size, including zero, to canonical singleton
+    // allocation. A foreign internal domain must also override BF6989.
     virtual void* allocate_00bf55be(std::uint32_t bytes);
+    // Default accepts null or canonical singleton storage. A foreign outer
+    // allocation domain must override this matching scalar-deletion free.
     virtual void free_00bf65ac(void* allocation);
 };
 
