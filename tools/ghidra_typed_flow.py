@@ -159,7 +159,12 @@ def validate_response(payload, config, requested, default_space, max_ranges):
     marker = windows_path(project.get('marker_file'))
     expected_marker = windows_path(config['project_file'])
     require(marker == expected_marker, 'Wrong absolute runtime GPR marker path')
-    require(windows_path(project.get('location')) == ntpath.dirname(expected_marker), 'Wrong runtime project location')
+    location = project.get('location')
+    # ProjectLocator.checkAbsolutePath prepends '/' to Windows drive paths.
+    # Accept that documented form only for location; marker validation stays strict.
+    if isinstance(location, str) and re.match(r'^/[A-Za-z]:/', location):
+        location = location[1:]
+    require(windows_path(location) == ntpath.dirname(expected_marker), 'Wrong runtime project location')
     expected_space, expected_offset = query_address(requested)
     query = address(payload.get('query_address'), 'query_address')
     require(query == (expected_space or default_space, expected_offset), 'Response query address mismatch')
