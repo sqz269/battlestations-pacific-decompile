@@ -6528,6 +6528,88 @@
           "phase_authority": false,
           "fixture_advance": false,
           "qualification": false
+        },
+        "review_phase_reader08_complete_actual_DATA_review_and_independent_inspection_gate": {
+          "status": "COMPLETE_ACTUAL_CAPTURED_DATA_ACCEPTED_INDEPENDENT_INSPECTION_AUTHORIZED",
+          "Source_credit": 0,
+          "Root_acceptance": true,
+          "acceptance_scope": "ACTUAL_CAPTURED_DATA_AND_INDEPENDENT_INSPECTION_ONLY",
+          "complete_actual_DATA_reader_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader08_actual_isolated_DATA_execution_complete01.actual_tools.DATA.json",
+            "bytes": 2155,
+            "sha256": "137bf5723ab6c428f63efecd08867928ccd986f766186c248be3343a91a2d8ce"
+          },
+          "actual_initial_chunk": "cb6063",
+          "actual_initial_session": 10124,
+          "actual_terminal_chunk": "326cc1",
+          "actual_terminal_exit": 0,
+          "complete_actual_runtime_Root_review": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_complete_actual_runtime_Root_review_DATA01.json",
+            "bytes": 55876785,
+            "sha256": "638f55e50431512b268aac77c984a1554122b1ecdc6637dc293580b6d08f52e3"
+          },
+          "complete_independent_expected_candidate_selection": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_independent_expected_candidate_selection_DATA01.json",
+            "bytes": 2291973,
+            "sha256": "2b9a666a20e9fbc5c9f884eee21c2b995f7e1d8da66bfd1a02a98536bdf5303e"
+          },
+          "complete_future_independent_inspector_inputs": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_complete_future_peer_inputs_DATA01.json",
+            "bytes": 1482774,
+            "sha256": "7628b5c06e1929ff3266025a7a77a9ef7c8e9c22b17c87240fb0f8f0c4185a71"
+          },
+          "actual_Root_predicates": 74180,
+          "actual_Root_current_equal_books": 33805,
+          "complete_Root_actual_runtime_report_consumption": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader08_complete_actual_runtime_Root_report_consumption_DATA01.json",
+            "bytes": 219900957,
+            "sha256": "a1c1b2613813ddd39e273787efbd8bfdf2de5dbcca8a0907e17452fbb12ef128"
+          },
+          "Root_reconsumption_predicates": 1062274,
+          "Root_reconsumption_current_equal_books": 33814,
+          "complete_Root_actual_consumption_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader08_complete_actual_DATA_consumption_and_gate.actual_native_DATA01.json",
+            "bytes": 2439,
+            "sha256": "90d79640a793edb2db505caf59ecd0483c782015e29e9d03394500c7367dca99"
+          },
+          "actual_independent_inspection_gate": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_complete_actual_independent_inspection_gate_DATA01.json",
+            "bytes": 1506843,
+            "sha256": "e3358b6408234e6b09bf4d81bc43fec084753786e285343f81d0eb433210cbf0"
+          },
+          "original_clock": {
+            "T0": 10702415154834,
+            "F": 10000000,
+            "fourth_upper_ticks": 10705857345437,
+            "fourth_upper_elapsed_seconds": 344.2190603,
+            "remaining_before600_seconds": 255.7809397
+          },
+          "actual_runtime_counts": {
+            "fixture_files": 1483,
+            "external_files": 1053,
+            "Root_slots": 17,
+            "identity_snapshots": 501,
+            "identity_process_rows": 1001,
+            "known_PID_creation_pairs": 2,
+            "natural_polls": 1,
+            "selected_dependencies": 1453,
+            "image_rows": {
+              "resolved_rows": 994,
+              "initially_signalled_unavailable_rows": 7,
+              "prior_live_terminal_transition_rows": 0
+            }
+          },
+          "original_four_genuine_native_zero": true,
+          "original_native_attempt_replayed": false,
+          "Source05_Source06_Source07_failures_retained": true,
+          "independent_inspection_authorized": true,
+          "independent_actual_DATA_terminal": null,
+          "independent_actual_DATA_acceptance": null,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fresh_materialization_authority": false,
+          "fixture_advance": false,
+          "qualification": false
         }
       }
     }
