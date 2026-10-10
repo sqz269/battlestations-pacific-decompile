@@ -55,3 +55,12 @@ This worker made no new live metadata query, plugin change, restart, GPR
 mutation, or Native opening. The mandatory initial `bsp.py brief` used its
 existing health/identity probes. Metadata admission remains held for Root's
 review, and the loaded JVM class CodeSource remains unattested.
+
+
+Root reviewed the narrow diff and replayed the exact SDK entry/excerpts, froze
+every worker pin, independently accepted the four original raw responses offline,
+and reran the five focused tests successfully. A fresh named BSP capture accepts
+four responses at modification3 with the actual configured GPR marker identity.
+This verifies runtime getter/capture behavior; loaded CodeSource/bytecode identity
+and Native body/ABI/repair admission remain distinct. No JAR or GPR change was
+needed for the client correction, and the original rejected receipt is preserved.

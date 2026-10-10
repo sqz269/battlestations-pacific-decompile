@@ -244,5 +244,25 @@
   "diff_check": {
     "command": "git diff --check",
     "passed": true
+  },
+  "primary_review": {
+    "worker_commit": "6fdc1b11a30aadbdace3dc23cc294500e1a67fa8",
+    "SDK_entry_and_excerpts_replayed": true,
+    "original_rejection_history_preserved": true,
+    "offline_four_responses_accept_at_modification": 3,
+    "fresh_four_response_capture_accepted": true,
+    "fresh_capture": {
+      "path": "local/cc12_typed_flow_rollout_primary/accepted_typed_capture.json",
+      "bytes": 24607,
+      "sha256": "fa2577f91e837dcbd47d828deb2d5a501d496a7446ef46db3b428c7b97583c3b"
+    },
+    "marker_path_and_full_identity_checks_unchanged": true,
+    "plugin_JAR_or_GPR_change_in_this_fix": false,
+    "verified_and_retained_pin_occurrences": 6,
+    "receipt": {
+      "path": "local/cc12_typed_flow_location_primary/primary_review.json",
+      "bytes": 3566,
+      "sha256": "5cf21fef319794e47603bd35ac5f2cad8184887334a1b768ff9732fa54f05097"
+    }
   }
 }
