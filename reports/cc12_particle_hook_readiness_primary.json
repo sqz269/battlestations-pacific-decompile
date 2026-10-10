@@ -1,0 +1,65 @@
+{
+  "schema": "bsp.cc12.particle-hook-readiness-primary.v1",
+  "status": "dormant_borrowed_adapter_GO_complete_factory_activation_NO_GO",
+  "worker_commit": "022d13c69940073f63a20a35ed327e54715b65ef",
+  "worker_report": {
+    "path": "local/cc12_particle_hook_readiness_primary/worker_report.json",
+    "bytes": 552441,
+    "sha256": "02a1ef19a1b30a14f5311637bef88aabee88d229909b45fa504f234c264393ea"
+  },
+  "copied_ZIP": {
+    "path": "local/cc12_particle_hook_readiness_primary/evidence.zip",
+    "bytes": 16362714,
+    "sha256": "cbfb8f191d1397503ad690f4db988f6cada80cd05064f82949d9f3ea0f2c7845"
+  },
+  "copied_helper": {
+    "path": "local/cc12_particle_hook_readiness_primary/portable_replay.py",
+    "bytes": 3519,
+    "sha256": "f78d4da1bb9b75f32a8c444ab60bd0cd073c70e81f184d81f2963bcff8043e60"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_particle_hook_readiness_primary/Root_guarded_replay.json",
+    "bytes": 1763,
+    "sha256": "04c8507bcd6b9ed3ccbd2ce8cc2d371c09e35658ffcf50825ce1527b47b5e1c4"
+  },
+  "actual_frozen_Git_blobs": 4237,
+  "actual_closed_Source_paths": 4226,
+  "actual_commit_and_tree_objects": 11,
+  "Root_HEAD": "281e91b6d5fa9dba441e5ec60b14874e4b9c90d6",
+  "Root_Source_differences": [
+    "cmake/startup.cmake"
+  ],
+  "Root_Source_added_paths": [
+    "include/bsp/native_locale_map_node_recycling.hpp",
+    "src/native_locale_map_node_recycling.cpp"
+  ],
+  "contract": {
+    "record_hooks": [
+      "bind_particle_profile -> publish_particle_profile",
+      "retire_failed_particle_profile -> retire_after_failed_construction"
+    ],
+    "delegate_hooks": [
+      "bind_mesh",
+      "bind_material",
+      "bind_section",
+      "renderer_virtual5c",
+      "call_00bd2f10"
+    ],
+    "identity": "Forward every receiver, argument and result unchanged. Preserve original noexcept contracts; no catch, reload, retain, allocator, registry or disposal policy.",
+    "lifetime": "Adapter borrowed throughout synchronous hooks; record/owner/services remain stable through successful terminal return, failure frames, callbacks and later quiescent disposal.",
+    "factory": "No concrete resource delegate, custody owner, complete environment/lifetime wiring or application activation is established."
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Lexical queries are not AST or compiled reachability proof.",
+    "Root locale helper Source changes remain separate from worker readiness epoch.",
+    "Dormant composition only; no new Native address ownership or ABI replacement."
+  ]
+}
