@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "packet": "cc12_instance_generator_application_binding_readiness",
+  "status": "metadata_only_binding_contract_identified_full_activation_held",
+  "baseline_commit": "0acd45594a365d0c9d452f154d1ab323c53a430f",
+  "requested_main": "0fc0be6b1",
+  "included_ordinary_serial_Source": "c194788ca156fc491f71171777c3d091777bccd6",
+  "owned_outputs": [
+    "docs/CC12_INSTANCE_GENERATOR_APPLICATION_BINDING_READINESS.md",
+    "reports/cc12_instance_generator_application_binding_readiness.json"
+  ],
+  "leased_relevant_addresses": [
+    "00B451D0",
+    "00B85610",
+    "00B55B20",
+    "00B44FD0",
+    "00B450D0",
+    "00B55BE0",
+    "00B55CB0",
+    "00B450A0",
+    "00B451A0",
+    "00B41710",
+    "00B417C0",
+    "00B41780",
+    "00B417E0"
+  ],
+  "scope": "Source-only readiness. Existing ordinary artifacts and four already frozen original export files were copied/read. No new original bytes, PE windows, Ghidra queries, implementation, wiring, CMake, tests, build, probes or activation.",
+  "existing_factory": {
+    "context": "NativeInstanceGeneratorContext",
+    "companion_owner": "NativeInstanceGeneratorOwners",
+    "attachment": "attach_native_material_instance_generator_00b451d0",
+    "finalizer": "finalize_native_mesh_section_generator_00b85610",
+    "persistent_frame": "NativeInstanceGeneratorAcquired",
+    "context_provider_fields": [
+      {
+        "context_field": "graphics",
+        "existing_provider": "GameNativeRendererApplication::Impl::game_grids.graphics",
+        "public_route": "game_grid_context().graphics",
+        "identity": "Same declaration cache, geometry registry, logical vertex/index services, mapping, physical pool, synchronization and current renderer cell."
+      },
+      {
+        "context_field": "layouts",
+        "existing_provider": "GameNativeRendererApplication::Impl::section_layouts",
+        "public_route": "section_layout_services()",
+        "identity": "Same texture_loading.geometry, graph.vertex, declaration_loading, devices.hardware and D62AF4 profile; current API checks ready phase and pending layout acquisition."
+      },
+      {
+        "context_field": "binding_serial_0108fd30",
+        "existing_provider": "game_native_renderer_scalar_process().instance_generator_binding_serial_0108fd30()",
+        "identity": "Ordinary Source stable process cell, volatile uint32 reference. Original numeric-cell provenance remains held; no fixed-address interpretation or per-binding copy."
+      },
+      {
+        "context_field": "profiles",
+        "existing_provider": "Impl::profiles.data.data_at(address,8)",
+        "identity": "Same retained GameNativeReadOnlyData object; table words are numeric selectors, not callable replacements.",
+        "required_spans": [
+          {
+            "address": "00D62190",
+            "bytes": 8,
+            "role": "base",
+            "terminal": "00B55CB0"
+          },
+          {
+            "address": "00D61BFC",
+            "bytes": 8,
+            "role": "generic",
+            "terminal": "00B450A0"
+          },
+          {
+            "address": "00D61C1C",
+            "bytes": 8,
+            "role": "building",
+            "terminal": "00B451A0"
+          },
+          {
+            "address": "00D619F8",
+            "bytes": 8,
+            "role": "binding",
+            "terminal": "00B417C0"
+          }
+        ],
+        "shared_first_word": "00BD30E0"
+      },
+      {
+        "context_field": "generic_declaration_00d61c08",
+        "existing_provider": "Impl::profiles.data.data_at(0x00d61c08,18)",
+        "bytes": 18,
+        "identity": "Retained original readable name span; constructor resizes17 then copies current length+1. No literal or generated replacement."
+      },
+      {
+        "context_field": "building_declaration_00d61c28",
+        "existing_provider": "Impl::profiles.data.data_at(0x00d61c28,42)",
+        "bytes": 42,
+        "identity": "Retained original readable name span; constructor resizes41 then copies current length+1. No literal or generated replacement."
+      }
+    ]
+  },
+  "smallest_next_binding": {
+    "status": "proposed_not_implemented",
+    "Source_files": [
+      "include/bsp/game_native_renderer_application.hpp",
+      "src/game_native_renderer_application.cpp"
+    ],
+    "shape": "Forward-declare actual owner; append optional private metadata binding after all existing Impl members. Stable Context precedes Owners; ready-only borrowed owner reference validates current provider identities. Preserve all existing layout offsets.",
+    "borrow_does_not": [
+      "call genuine factory/finalizer/parser",
+      "allocate Native resources",
+      "increment or reset serial",
+      "install callbacks",
+      "create projection owners",
+      "map numeric0108FD30"
+    ],
+    "metadata_allocations": "The existing owner constructor allocates its C++ Impl. This is metadata only, not a new native generator.",
+    "serialization": "Preserve the existing application startup/device/frame/drain serialization contract; the ordinary serial remains unlocked and no new lock or atomic is supplied.",
+    "gate": "Existing ready/retention guard is available and conservative; currently includes live layout companions. Do not infer generator quiescence from it."
+  },
+  "missing_lifetime_contract": {
+    "owner_query": "No public quiescent/has_live_companions/size/empty API exists on NativeInstanceGeneratorOwners.",
+    "global_registry": "NativeRenderActualOwnerRegistry::size/empty exist but count unrelated owners and miss generator companions retained before transactional bind; they cannot prove this owner domain quiescent.",
+    "before_entry_failure": "Persistent acquired frame and provider lifetime must remain retained even if no companion entry or canonical registration exists.",
+    "after_complete": "Successful attachment leaves section-owned native payloads/companions; complete is not retired.",
+    "new_query_is_not_current_API": true,
+    "live_entry_query_alone_would_not_cover_all_interrupted_frames": true,
+    "current_renderer_guard_lacks_generator_observation": true,
+    "activation_holds": [
+      "No generator-owner companion query exists yet; a narrowly named const observation over the complete private entries list is a separately proposed future API, not an existing call.",
+      "A live-entry query alone cannot cover raw creator or declaration/name failures before any companion is inserted; persistent acquired frames and explicit failed-operation retention must be part of any later entered-operation contract.",
+      "Successful phase complete does not mean quiescent: the section owns the binding and generator, whose companions must outlive every actual reference.",
+      "Current renderer requires_process_retention observes layout acquisitions/companions but not generator frames or owner entries; native payloads and interrupted obligations must retire before shared drain.",
+      "Binding construction and repeat validation may allocate only C++ metadata; this does not authorize full material/compiler/sampler/mesh/parser execution."
+    ]
+  },
+  "required_native_schedule": {
+    "source_and_retained_evidence_steps": 14,
+    "all_Source_points_ordered": true,
+    "selection": "Building first; generic re-reads current primary descriptor; empty/unknown does not replace binding.",
+    "creator": "1Ch allocation and selected full constructor; raw-free-only constructor unwind; completed creator is never silently rolled back.",
+    "binding": "10h allocation; nonnull binding stores old serial then unlocked modulo32 increment before binding companion registration. Null keeps original fallthrough to setter.",
+    "handoff": "B41780 assignment; generator creator release; B417E0 section publication; binding creator release.",
+    "subset": "Section mesh publication precedes B85610; actual mesh+60 opaque value passes unchanged; section creator release follows.",
+    "rejected_substitutions": [
+      "Invented callbacks/default profiles/names/counters",
+      "GeneratedInstanceGeometry or other projection owners",
+      "GUI declaration helper substitution: load_gui_text_native_declaration_current38 throws on null while this genuine base factory directly calls B317E0 and preserves its own null schedule.",
+      "A process-cell copy, texture serial alias, per-binding reset, atomic increment, or numeric0108FD30 fixed mapping",
+      "No-op cleanup or replay of an interrupted frame"
+    ]
+  },
+  "numeric_cell_provenance": "Held. Only the accepted ordinary Source accessor is a proposed reference provider here; no original numeric metadata is reopened or promoted.",
+  "frozen_evidence": {
+    "Source_roots": 33,
+    "repository_include_closure": 490,
+    "full_Source_context_Git_files": 501,
+    "include_edges": 928,
+    "unresolved_quoted_includes": 0,
+    "prior_build_Source_census_files_matching_current": 4209,
+    "Source746_retained_pins": 750,
+    "complete_existing_link_inputs": 95,
+    "normal_configuration_and_map_artifacts": 12,
+    "complete_core_archive_members": 1989,
+    "ordinary_provider_objects": 33,
+    "fully_decoded_functions": 5426,
+    "physical_primary_AUX_symbol_records": 28299,
+    "relocations": 15466,
+    "undecoded_function_tails": 0,
+    "exact_existing_API_bodies": 19,
+    "already_retained_original_export_files": 4,
+    "new_original_export_files": 0
+  },
+  "validation": "Read-only Source/Git, complete ordinary COFF/archive, existing API and retained schedule replay. No new build or tests; prior ordinary build records do not confer Native runtime credit.",
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness\\prepared_readiness.json",
+      "bytes": 659320,
+      "sha256": "1ffd3028416f798e4d1d58fecb3d50e1e71ff4bbddf60f4826445c1cef13c1cd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness\\full_Source_closure.json",
+      "bytes": 769869,
+      "sha256": "8e5a2b6b01959e97a8c66be85521321ce22c671fcd52de52504e45bc8e256d79"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness\\ordinary_build_context.json",
+      "bytes": 9385,
+      "sha256": "7d80fdbef3ba4ba3a28a0aeb8986c5868515f936d0e3b9172d277e003e2fa447"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness\\complete_provider_inventory.json",
+      "bytes": 41148,
+      "sha256": "70ebd2f894f0cd00b99696f8750b49e6c0191ee0915875cd6bcb4ef854609436"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness\\contract_audit.json",
+      "bytes": 240499,
+      "sha256": "dc0a41337432e8ebb92d1a7f04343e304dc6b06981a66e42dbfa23b454b2fb46"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness\\review_evidence.py",
+      "bytes": 3982,
+      "sha256": "b04a9b09133657fc0b983edc1264565e110c028ddce07ffa404614bda9e6eb3b"
+    }
+  ],
+  "bundle": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness",
+    "archive_relative": "cc12_instance_generator_application_binding_readiness.zip",
+    "manifest_relative": "immutable_manifest.json",
+    "receipt_relative": "bundle_receipt.json",
+    "readonly_replay": "python local/cc12_instance_generator_application_binding_readiness/review_evidence.py"
+  },
+  "limits": [
+    "No Native ABI/startup/renderer/gameplay equivalence",
+    "No actual metadata span mapping or fresh numeric-cell provenance established",
+    "No full material/compiler/sampler/mesh/parser activation",
+    "No replacement callback/default/projection introduced",
+    "All proposed new API names must be implemented/reviewed before any use"
+  ]
+}
