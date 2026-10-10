@@ -1,0 +1,3586 @@
+{
+  "schema": "cc12.locale_borrowed_node_recycling_helper.report.v1",
+  "status": "dormant_borrowed_helpers_implemented_MSVC_Win32_build_checked_canonical_lifecycle_and_activation_open",
+  "base_head": "75db5de51b296781b1a73915bf47081d5c088519",
+  "owned_files": [
+    "include/bsp/native_locale_map_node_recycling.hpp",
+    "src/native_locale_map_node_recycling.cpp",
+    "cmake/startup.cmake",
+    "docs/CC12_LOCALE_BORROWED_NODE_RECYCLING_HELPER.md",
+    "reports/cc12_locale_borrowed_node_recycling_helper.json"
+  ],
+  "Native_scope": {
+    "fresh_queries": 0,
+    "GPR_mutations": false,
+    "ledger_edits": false,
+    "prior_retained_bytes": 1335,
+    "provider_bytes": 105,
+    "wrapper_bytes": 32,
+    "Original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_PE_reopened": false
+  },
+  "contract": {
+    "slot_return": {
+      "native_address": "00736090",
+      "Native_ABI": "ECX=pool, one stacked DWORD slot, RET4; preserves EBX/EBP/ESI/EDI; no meaningful EAX result",
+      "Source_interface": "return_native_locale_node_slot_00736090(void* actual_initialized_locale_pool, void* actual_allocated_node_slot)",
+      "borrowed_authority": "Exact actually initialized E1768C locale pool, live OS section+0C, actual allocated slot and coherent current table/block identity; no fabricated pointer or zeroed owner",
+      "schedule": [
+        "Compute section address; EnterCriticalSection through actual host import.",
+        "Increment CURRENT depth DWORD+24 with unsigned wrapping ADD.",
+        "Only then read slot DWORD+18, CURRENT pool table DWORD+28, and indexed block.",
+        "Subtract slot/block address bits modulo2^32, memcpy-reinterpret signed32, divide by28 toward zero, narrow modulo2^16.",
+        "Capture WORD free count+7800; write slot index at block+7000+2*captured_count.",
+        "ADD1 to CURRENT WORD+7800 after the free-index write.",
+        "Compare captured block index with CURRENT unsigned minimum+34; store only when smaller.",
+        "Decrement CURRENT depth DWORD+24 with wrapping ADDFFFFFFFF; LeaveCriticalSection."
+      ],
+      "recursive_lock_retained": true,
+      "guards_added": false,
+      "rollback_added": false,
+      "payload_cleanup": false,
+      "physical_free": false
+    },
+    "scalar_wrapper": {
+      "native_address": "0073C220",
+      "Native_ABI": "ECX=node, one stacked DWORD flags, RET4; preserves ESI; EAX=original node bits",
+      "Source_interface": "scalar_delete_native_locale_map_node_0073c220(void*, uint32_t, NativeStringRawPoolContext&, void*)",
+      "schedule": [
+        "Call unchanged destroy_native_locale_map_node_payload_00737ce0 on original node and same actual raw string context.",
+        "After normal payload return, volatile-read the normalized parameter low byte and test bit0; other bits ignored.",
+        "When set, return original node slot through the same actual initialized E1768C owner; no early pool/slot/table reads.",
+        "Return original node address bits without a live-object guarantee."
+      ],
+      "raw_string_cells": [
+        "01090AA8",
+        "01090AA4",
+        "01090AA0"
+      ],
+      "payload_failure_prevents_flag_read_and_slot_return": true,
+      "provider_failure_prevents_normal_completion": true,
+      "local_unwind_cleanup": false
+    },
+    "factoring": {
+      "stable_Enter_Leave_import_bindings": true,
+      "reason": "Accepted map caches Enter while provider reloads it; no dynamic import-mutation equivalence claimed",
+      "actual_pool_and_slot_precondition_cannot_be_proved_by_view": true,
+      "finish_payloads_and_borrowers_before_pool_teardown": true,
+      "no_alternate_owner_registry_or_domain": true
+    },
+    "exception_boundary": "Existing payload helper ordinary C++ unwind is reused unchanged. New normalized interfaces are not native register/stack replacements; fault/read timing, FH3, SEH and double-failure parity remain unproved."
+  },
+  "prior_readiness_proposal_corrections": [
+    {
+      "field": "recommended_next_packet.read_only_Source_dependencies",
+      "old": "include/bsp/allocator_registry.hpp",
+      "correct": "include/bsp/allocator_list.hpp",
+      "qualification": "The former path does not exist. These two helpers need no allocator-domain API and do not modify either domain state or the real allocator_list module."
+    },
+    {
+      "field": "recommended_next_packet.Native_dependencies_not_owned",
+      "old": "00E18AA8/00E18AA4/00E18AA0",
+      "correct": "01090AA8/01090AA4/01090AA0",
+      "qualification": "Existing NativeStringRawPoolContext field names and unchanged Source establish the actual borrowed cells. No new literal pointers or replacement cells are introduced."
+    }
+  ],
+  "Source": {
+    "before_actual_Git_count": 4215,
+    "after_actual_index_Git_count": 4217,
+    "before_tracked_include_src": 4208,
+    "after_tracked_include_src": 4210,
+    "prior_profile_head": "f414ed0709d190f7ec09d7ee2390aae4749a6286",
+    "prior_profile_Source_deltas": [
+      "include/bsp/native_render_context.hpp",
+      "src/native_render_context.cpp"
+    ],
+    "prior_profile_delta_qualification": "Only the two accepted render-context files from Main98b differ. This packet does not reclassify the previous readiness Source epoch.",
+    "existing_changes": [
+      "cmake/startup.cmake"
+    ],
+    "new_paths": [
+      "include/bsp/native_locale_map_node_recycling.hpp",
+      "src/native_locale_map_node_recycling.cpp"
+    ],
+    "CMake_exact_added_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_locale_map_node_recycling.cpp)",
+    "accepted_payload_and_string_APIs_unchanged": true,
+    "after_index_is_actual_Git_blob_evidence_not_yet_a_commit_claim": true
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "Release",
+    "platform": "Win32",
+    "fresh_before": true,
+    "fresh_after": true,
+    "compiler": {
+      "toolset_directory": "14.51.36231",
+      "CMake_CXX_compiler_version": "19.51.36244.0",
+      "architecture": "X86",
+      "exception_property": "Sync",
+      "tool_binaries_retained": 4
+    },
+    "checks": {
+      "Before": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "After": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "first_post_edit_build_passed": true,
+    "final_rebuild_reason": "Normalize the implementation physical file from CRLF to LF to match the staged Git blob byte-for-byte; no semantic edit.",
+    "new_tests": 0,
+    "ad_hoc_probes": 0,
+    "new_helper_runtime_execution": false,
+    "game_validation": false
+  },
+  "evidence": {
+    "Core": {
+      "before": 1989,
+      "after": 1990,
+      "all_old_object_payloads_exact": true,
+      "new_object": "bsp_core.dir/Release/native_locale_map_node_recycling.obj"
+    },
+    "App": {
+      "before": 80,
+      "after": 80,
+      "all_payloads_exact": true,
+      "new_public_symbol_mentions": 0,
+      "qualification": "Actual worker directory census; no Root App/project membership or linked-body activation claim"
+    },
+    "positive_linker_providers": [
+      {
+        "symbol": "?return_native_locale_node_slot_00736090@bsp@@YAXPAX0@Z",
+        "member_header_offset": 34221610,
+        "member_name": "bsp_core.dir\\Release\\native_locale_map_node_recycling.obj",
+        "member_sha256": "da53e0a1205c2770f3656681410efa8d92520029a8aa49282194f0bb8e7350cb",
+        "definition_section": 11,
+        "definition_bytes": 254
+      },
+      {
+        "symbol": "?scalar_delete_native_locale_map_node_0073c220@bsp@@YAPAXPAXIAAUNativeStringRawPoolContext@1@0@Z",
+        "member_header_offset": 34221610,
+        "member_name": "bsp_core.dir\\Release\\native_locale_map_node_recycling.obj",
+        "member_sha256": "da53e0a1205c2770f3656681410efa8d92520029a8aa49282194f0bb8e7350cb",
+        "definition_section": 12,
+        "definition_bytes": 283
+      },
+      {
+        "symbol": "?destroy_native_locale_map_node_payload_00737ce0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "member_header_offset": 34225146,
+        "member_name": "bsp_core.dir\\Release\\native_locale_map_node_lifetime.obj",
+        "member_sha256": "10de030de5f8bbd247255a873a2730ff76908df8b1d4f15d949816924468e4a5",
+        "definition_section": 6,
+        "definition_bytes": 103
+      },
+      {
+        "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "member_header_offset": 25759806,
+        "member_name": "bsp_core.dir\\Release\\native_wide_string.obj",
+        "member_sha256": "d4356163c736c1de91f160ffe313dfad0f8d83bf7af94e4dc2040abcec60dd24",
+        "definition_section": 9,
+        "definition_bytes": 57
+      },
+      {
+        "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+        "member_header_offset": 26896828,
+        "member_name": "bsp_core.dir\\Release\\native_string.obj",
+        "member_sha256": "8555efe6660a6d8572f31c19089bc2413dc5ade207496cb8c12b6ae25db6237b",
+        "definition_section": 56,
+        "definition_bytes": 51
+      }
+    ],
+    "wrapper_return_helper_inlined": true,
+    "public_sections": {
+      "slot_return_bytes": 254,
+      "scalar_wrapper_bytes": 283
+    },
+    "compiler_effects": "MSVC duplicates the slot-return body in the wrapper while retaining the standalone public provider. No local FH3/terminate symbol or sxdata is emitted for the new object. Existing payload/raw-string objects remain byte-identical.",
+    "artifact_deltas": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "before": {
+          "entry": "retained/Before/Artifacts/bsp_core.lib",
+          "bytes": 73980446,
+          "sha256": "355bed7d57fd15301dff4d90b5a7e19b4020a225846770793635f6434928cfa8",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_core.lib"
+        },
+        "after": {
+          "entry": "retained/After/Artifacts/bsp_core.lib",
+          "bytes": 73984360,
+          "sha256": "23ba065fc310774f16faeb780659a17383da3561e87afe0218b8a6b1b658f6d2",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_core.lib"
+        },
+        "byte_exact": false
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "before": {
+          "entry": "retained/Before/Artifacts/bsp_game.exe",
+          "bytes": 5103104,
+          "sha256": "8bc1414e6f6dc6de7d1cf780b97cbc033ea42d5f793c8c5894a6fb777613a4b5",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_game.exe"
+        },
+        "after": {
+          "entry": "retained/After/Artifacts/bsp_game.exe",
+          "bytes": 5103104,
+          "sha256": "c6820b2c015304564df61ca47a18ac52754eac3af1ee50ee43e0d2bff56ca31b",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_game.exe"
+        },
+        "byte_exact": false,
+        "before_sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "virtual_bytes": 3992091,
+            "raw_bytes": 3992576,
+            "raw_offset": 1024,
+            "sha256": "fdef79b4bfd8434c4d5a82f7c7e1b3a2ffa4933f04e84bdd338bb57a1924a7b4"
+          },
+          {
+            "name": ".rdata",
+            "rva": 3997696,
+            "virtual_bytes": 913886,
+            "raw_bytes": 913920,
+            "raw_offset": 3993600,
+            "sha256": "95da188bc62c4d4ee14d563a7d364d1a352c1ef8a2ebafc186c63996ff119cbe"
+          },
+          {
+            "name": ".data",
+            "rva": 4915200,
+            "virtual_bytes": 76160,
+            "raw_bytes": 52736,
+            "raw_offset": 4907520,
+            "sha256": "11fe576d77182c288460055b7df176f2d7d690747271b1ad95f675f8f353a65c"
+          },
+          {
+            "name": ".rsrc",
+            "rva": 4993024,
+            "virtual_bytes": 480,
+            "raw_bytes": 512,
+            "raw_offset": 4960256,
+            "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+          },
+          {
+            "name": ".reloc",
+            "rva": 4997120,
+            "virtual_bytes": 142164,
+            "raw_bytes": 142336,
+            "raw_offset": 4960768,
+            "sha256": "8ee24ca36d5faecc22b3d711156c845beb8d9ebd52898effd2d9d3e77ef4ade4"
+          }
+        ],
+        "after_sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "virtual_bytes": 3992091,
+            "raw_bytes": 3992576,
+            "raw_offset": 1024,
+            "sha256": "fdef79b4bfd8434c4d5a82f7c7e1b3a2ffa4933f04e84bdd338bb57a1924a7b4"
+          },
+          {
+            "name": ".rdata",
+            "rva": 3997696,
+            "virtual_bytes": 913886,
+            "raw_bytes": 913920,
+            "raw_offset": 3993600,
+            "sha256": "846df7b6bbb70cf800e3ee6e5e41f5367d530c275e75069ba7fd42cc1749f28a"
+          },
+          {
+            "name": ".data",
+            "rva": 4915200,
+            "virtual_bytes": 76160,
+            "raw_bytes": 52736,
+            "raw_offset": 4907520,
+            "sha256": "11fe576d77182c288460055b7df176f2d7d690747271b1ad95f675f8f353a65c"
+          },
+          {
+            "name": ".rsrc",
+            "rva": 4993024,
+            "virtual_bytes": 480,
+            "raw_bytes": 512,
+            "raw_offset": 4960256,
+            "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+          },
+          {
+            "name": ".reloc",
+            "rva": 4997120,
+            "virtual_bytes": 142164,
+            "raw_bytes": 142336,
+            "raw_offset": 4960768,
+            "sha256": "8ee24ca36d5faecc22b3d711156c845beb8d9ebd52898effd2d9d3e77ef4ade4"
+          }
+        ],
+        "same_section_names": true,
+        "section_payloads_exact": [
+          ".text",
+          ".data",
+          ".rsrc",
+          ".reloc"
+        ],
+        "section_payloads_changed": [
+          ".rdata"
+        ],
+        "changed_byte_count": 4,
+        "changed_offsets": [
+          280,
+          281,
+          4695108,
+          4695109
+        ],
+        "before_PE_metadata": {
+          "pe": 272,
+          "timestamp_offset": 280,
+          "timestamp": 1791665627,
+          "checksum_offset": 360,
+          "checksum": 0,
+          "debug": [
+            {
+              "offset": 4695104,
+              "type": 13,
+              "timestamp": 1791665627,
+              "timestamp_offset": 4695108,
+              "bytes": 884,
+              "rva": 4764568,
+              "pointer": 4760472
+            }
+          ]
+        },
+        "after_PE_metadata": {
+          "pe": 272,
+          "timestamp_offset": 280,
+          "timestamp": 1791665750,
+          "checksum_offset": 360,
+          "checksum": 0,
+          "debug": [
+            {
+              "offset": 4695104,
+              "type": 13,
+              "timestamp": 1791665750,
+              "timestamp_offset": 4695108,
+              "bytes": 884,
+              "rva": 4764568,
+              "pointer": 4760472
+            }
+          ]
+        },
+        "only_PE_and_debug_timestamps_changed": true
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "before": {
+          "entry": "retained/Before/Artifacts/bsp_math_tests.exe",
+          "bytes": 841728,
+          "sha256": "4d22b2b5c8e532a20ae832f612f5adbbc967881f4b446929665d4a5d85b2f3d2",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_math_tests.exe"
+        },
+        "after": {
+          "entry": "retained/After/Artifacts/bsp_math_tests.exe",
+          "bytes": 841728,
+          "sha256": "0a51f205ad984b7391f505eaca3dd70b536898994d3ab485d943c03ea3eaf9a7",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_math_tests.exe"
+        },
+        "byte_exact": false,
+        "before_sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "virtual_bytes": 565483,
+            "raw_bytes": 565760,
+            "raw_offset": 1024,
+            "sha256": "c8e4221e686656f8cc8b27ccec537aeec2ca533d36f3a0dd20d0aa027f606c23"
+          },
+          {
+            "name": ".rdata",
+            "rva": 573440,
+            "virtual_bytes": 240746,
+            "raw_bytes": 241152,
+            "raw_offset": 566784,
+            "sha256": "bcfab85357a4a31093b1064c896e936ce17377c122a59a39af01ff9320029302"
+          },
+          {
+            "name": ".data",
+            "rva": 815104,
+            "virtual_bytes": 8868,
+            "raw_bytes": 4096,
+            "raw_offset": 807936,
+            "sha256": "66aeacc4956b878a47119eee272f7e014c62be896d02e0989c64520dfcdf9b0d"
+          },
+          {
+            "name": ".rsrc",
+            "rva": 827392,
+            "virtual_bytes": 480,
+            "raw_bytes": 512,
+            "raw_offset": 812032,
+            "sha256": "cea34833474011aacef477afbe43bbffe75f34983049f4a422a39ff6022d52ad"
+          },
+          {
+            "name": ".reloc",
+            "rva": 831488,
+            "virtual_bytes": 28844,
+            "raw_bytes": 29184,
+            "raw_offset": 812544,
+            "sha256": "d573a02b12a5ffce795a1d096422a76731378b8d65150320885705736ab050d1"
+          }
+        ],
+        "after_sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "virtual_bytes": 565483,
+            "raw_bytes": 565760,
+            "raw_offset": 1024,
+            "sha256": "c8e4221e686656f8cc8b27ccec537aeec2ca533d36f3a0dd20d0aa027f606c23"
+          },
+          {
+            "name": ".rdata",
+            "rva": 573440,
+            "virtual_bytes": 240746,
+            "raw_bytes": 241152,
+            "raw_offset": 566784,
+            "sha256": "40b96c1e945b4c1441b79ee16b596c562432d01fcdce4fcb4e0f2268a230a776"
+          },
+          {
+            "name": ".data",
+            "rva": 815104,
+            "virtual_bytes": 8868,
+            "raw_bytes": 4096,
+            "raw_offset": 807936,
+            "sha256": "66aeacc4956b878a47119eee272f7e014c62be896d02e0989c64520dfcdf9b0d"
+          },
+          {
+            "name": ".rsrc",
+            "rva": 827392,
+            "virtual_bytes": 480,
+            "raw_bytes": 512,
+            "raw_offset": 812032,
+            "sha256": "cea34833474011aacef477afbe43bbffe75f34983049f4a422a39ff6022d52ad"
+          },
+          {
+            "name": ".reloc",
+            "rva": 831488,
+            "virtual_bytes": 28844,
+            "raw_bytes": 29184,
+            "raw_offset": 812544,
+            "sha256": "d573a02b12a5ffce795a1d096422a76731378b8d65150320885705736ab050d1"
+          }
+        ],
+        "same_section_names": true,
+        "section_payloads_exact": [
+          ".text",
+          ".data",
+          ".rsrc",
+          ".reloc"
+        ],
+        "section_payloads_changed": [
+          ".rdata"
+        ],
+        "changed_byte_count": 4,
+        "changed_offsets": [
+          280,
+          281,
+          769476,
+          769477
+        ],
+        "before_PE_metadata": {
+          "pe": 272,
+          "timestamp_offset": 280,
+          "timestamp": 1791665603,
+          "checksum_offset": 360,
+          "checksum": 0,
+          "debug": [
+            {
+              "offset": 769472,
+              "type": 13,
+              "timestamp": 1791665603,
+              "timestamp_offset": 769476,
+              "bytes": 864,
+              "rva": 782928,
+              "pointer": 776272
+            }
+          ]
+        },
+        "after_PE_metadata": {
+          "pe": 272,
+          "timestamp_offset": 280,
+          "timestamp": 1791665750,
+          "checksum_offset": 360,
+          "checksum": 0,
+          "debug": [
+            {
+              "offset": 769472,
+              "type": 13,
+              "timestamp": 1791665750,
+              "timestamp_offset": 769476,
+              "bytes": 864,
+              "rva": 782928,
+              "pointer": 776272
+            }
+          ]
+        },
+        "only_PE_and_debug_timestamps_changed": true
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "before": {
+          "entry": "retained/Before/Artifacts/bsp_native_math_tests.exe",
+          "bytes": 18432,
+          "sha256": "50a29031f1a76c1e1a55551924799fbfdd54a998fdc4a6b28fdf12a11cda8bd5",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_native_math_tests.exe"
+        },
+        "after": {
+          "entry": "retained/After/Artifacts/bsp_native_math_tests.exe",
+          "bytes": 18432,
+          "sha256": "1e6df11abec22dbc4756efed6887499e02a0f896cafa93459d026cb640fe32ec",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_native_math_tests.exe"
+        },
+        "byte_exact": false,
+        "before_sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "virtual_bytes": 9639,
+            "raw_bytes": 9728,
+            "raw_offset": 1024,
+            "sha256": "32e38026a5043f1e215138039e788b81069fedff7a973d10d99009c15e3435e5"
+          },
+          {
+            "name": ".rdata",
+            "rva": 16384,
+            "virtual_bytes": 5554,
+            "raw_bytes": 5632,
+            "raw_offset": 10752,
+            "sha256": "dc70c67239933bb36074cb7bbe6d17183317b73bbc03a03fc14c9027dccd4fc6"
+          },
+          {
+            "name": ".data",
+            "rva": 24576,
+            "virtual_bytes": 272,
+            "raw_bytes": 512,
+            "raw_offset": 16384,
+            "sha256": "b78494f036a07feadc1d963ae6e2bfd8abce2a771beb80afd5fdcaf3579e286f"
+          },
+          {
+            "name": ".rsrc",
+            "rva": 28672,
+            "virtual_bytes": 480,
+            "raw_bytes": 512,
+            "raw_offset": 16896,
+            "sha256": "c9ed38ed40cfe8c1718cbf78be16bb4aa76b76097a449f9ea315aee9fd20df0d"
+          },
+          {
+            "name": ".reloc",
+            "rva": 32768,
+            "virtual_bytes": 804,
+            "raw_bytes": 1024,
+            "raw_offset": 17408,
+            "sha256": "3e9937c53dca416b02a001ea6769ec1e8b94c566bb4e335216e383d903b1d421"
+          }
+        ],
+        "after_sections": [
+          {
+            "name": ".text",
+            "rva": 4096,
+            "virtual_bytes": 9639,
+            "raw_bytes": 9728,
+            "raw_offset": 1024,
+            "sha256": "32e38026a5043f1e215138039e788b81069fedff7a973d10d99009c15e3435e5"
+          },
+          {
+            "name": ".rdata",
+            "rva": 16384,
+            "virtual_bytes": 5554,
+            "raw_bytes": 5632,
+            "raw_offset": 10752,
+            "sha256": "8ea4372081ae036bd54587e429d1cb5ac8cf35919c9fadb336d2db253ffc7693"
+          },
+          {
+            "name": ".data",
+            "rva": 24576,
+            "virtual_bytes": 272,
+            "raw_bytes": 512,
+            "raw_offset": 16384,
+            "sha256": "b78494f036a07feadc1d963ae6e2bfd8abce2a771beb80afd5fdcaf3579e286f"
+          },
+          {
+            "name": ".rsrc",
+            "rva": 28672,
+            "virtual_bytes": 480,
+            "raw_bytes": 512,
+            "raw_offset": 16896,
+            "sha256": "c9ed38ed40cfe8c1718cbf78be16bb4aa76b76097a449f9ea315aee9fd20df0d"
+          },
+          {
+            "name": ".reloc",
+            "rva": 32768,
+            "virtual_bytes": 804,
+            "raw_bytes": 1024,
+            "raw_offset": 17408,
+            "sha256": "3e9937c53dca416b02a001ea6769ec1e8b94c566bb4e335216e383d903b1d421"
+          }
+        ],
+        "same_section_names": true,
+        "section_payloads_exact": [
+          ".text",
+          ".data",
+          ".rsrc",
+          ".reloc"
+        ],
+        "section_payloads_changed": [
+          ".rdata"
+        ],
+        "changed_byte_count": 4,
+        "changed_offsets": [
+          248,
+          249,
+          12116,
+          12117
+        ],
+        "before_PE_metadata": {
+          "pe": 240,
+          "timestamp_offset": 248,
+          "timestamp": 1791665599,
+          "checksum_offset": 328,
+          "checksum": 0,
+          "debug": [
+            {
+              "offset": 12112,
+              "type": 13,
+              "timestamp": 1791665599,
+              "timestamp_offset": 12116,
+              "bytes": 692,
+              "rva": 18140,
+              "pointer": 12508
+            }
+          ]
+        },
+        "after_PE_metadata": {
+          "pe": 240,
+          "timestamp_offset": 248,
+          "timestamp": 1791665750,
+          "checksum_offset": 328,
+          "checksum": 0,
+          "debug": [
+            {
+              "offset": 12112,
+              "type": 13,
+              "timestamp": 1791665750,
+              "timestamp_offset": 12116,
+              "bytes": 692,
+              "rva": 18140,
+              "pointer": 12508
+            }
+          ]
+        },
+        "only_PE_and_debug_timestamps_changed": true
+      }
+    ],
+    "finite_Source_matches": [
+      {
+        "path": "include/bsp/native_locale_map_node_recycling.hpp",
+        "line": 17,
+        "text": "void return_native_locale_node_slot_00736090("
+      },
+      {
+        "path": "include/bsp/native_locale_map_node_recycling.hpp",
+        "line": 27,
+        "text": "void* scalar_delete_native_locale_map_node_0073c220(void* actual_node,"
+      },
+      {
+        "path": "src/native_locale_map_node_recycling.cpp",
+        "line": 88,
+        "text": "void return_native_locale_node_slot_00736090(void* pool, void* slot) {"
+      },
+      {
+        "path": "src/native_locale_map_node_recycling.cpp",
+        "line": 113,
+        "text": "void* scalar_delete_native_locale_map_node_0073c220(void* node,"
+      },
+      {
+        "path": "src/native_locale_map_node_recycling.cpp",
+        "line": 118,
+        "text": "        return_native_locale_node_slot_00736090(pool, node);"
+      }
+    ],
+    "header_consumers": [
+      "native_locale_map_node_recycling.cpp"
+    ]
+  },
+  "dependencies": [
+    {
+      "label": "provider_Root",
+      "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_NODE_PROVIDER_PRIMARY.md",
+          "blob": "e1ee043f62371bcc4f5bdbc424ca7d26b384f969",
+          "pin": {
+            "entry": "retained/Dependencies/provider_Root/docs/CC12_LOCALE_NODE_PROVIDER_PRIMARY.md",
+            "bytes": 2488,
+            "sha256": "a39e6bb32f537453debc852600ed099e30aa1ef2e92584848d06e146e1716b6b",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "e1ee043f62371bcc4f5bdbc424ca7d26b384f969"
+            }
+          }
+        },
+        {
+          "path": "reports/cc12_locale_node_provider_primary.json",
+          "blob": "f2386352079acd5cc75937b5cd0a21f27946a8b0",
+          "pin": {
+            "entry": "retained/Dependencies/provider_Root/reports/cc12_locale_node_provider_primary.json",
+            "bytes": 5256,
+            "sha256": "b806b6c12b8858e36ec651383ff00bf2b791bbaf2f4a4608584f81c91f1c8922",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "f2386352079acd5cc75937b5cd0a21f27946a8b0"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "provider_worker",
+      "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_NODE_SLOT_PROVIDER_OWNER.md",
+          "blob": "2d45cda77bb0a304ea5457c956d0c13f48926de7",
+          "pin": {
+            "entry": "retained/Dependencies/provider_worker/docs/CC12_LOCALE_NODE_SLOT_PROVIDER_OWNER.md",
+            "bytes": 10216,
+            "sha256": "d51ed0845b0a62759521bb672d6662e3554b2ed6acc0c26d2ba991bb5994dbb8",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "2d45cda77bb0a304ea5457c956d0c13f48926de7"
+            }
+          }
+        },
+        {
+          "path": "reports/cc12_locale_node_slot_provider_owner.json",
+          "blob": "141142acb6e60384c5b91eb865775bf7defe6c15",
+          "pin": {
+            "entry": "retained/Dependencies/provider_worker/reports/cc12_locale_node_slot_provider_owner.json",
+            "bytes": 56519,
+            "sha256": "bb3acc1af4dda5a29d0d8c77a96432e2e484dc6c9f76a06e423b1a52edcf24e8",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "141142acb6e60384c5b91eb865775bf7defe6c15"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "payload_Root",
+      "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+          "blob": "6abe5ab24c7d0151616e6fc547ef3d1b7d95958d",
+          "pin": {
+            "entry": "retained/Dependencies/payload_Root/docs/CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+            "bytes": 2921,
+            "sha256": "a8dd31aa671d825c53d04a7ad076406cf7b7f79399d9b72e49a213b05befae23",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "6abe5ab24c7d0151616e6fc547ef3d1b7d95958d"
+            }
+          }
+        },
+        {
+          "path": "reports/cc12_locale_map_node_payload_primary.json",
+          "blob": "532f5584cf1c5fcaebc9636280316c196dbf5483",
+          "pin": {
+            "entry": "retained/Dependencies/payload_Root/reports/cc12_locale_map_node_payload_primary.json",
+            "bytes": 35030,
+            "sha256": "68049ea13d6bc44208cc4a0649e6280f727d6a413a2c587ece24353c2585173e",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "532f5584cf1c5fcaebc9636280316c196dbf5483"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "payload_worker",
+      "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_MAP_RAW_NODE_PAYLOAD_HELPER.md",
+          "blob": "363315c45f3daa6dd842758f79a26ebbb383f210",
+          "pin": {
+            "entry": "retained/Dependencies/payload_worker/docs/CC12_LOCALE_MAP_RAW_NODE_PAYLOAD_HELPER.md",
+            "bytes": 8734,
+            "sha256": "2e09908bde856652b01ef4e121d72f294d77d56779a0605b54cad6beb8ea456d",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "363315c45f3daa6dd842758f79a26ebbb383f210"
+            }
+          }
+        },
+        {
+          "path": "reports/cc12_locale_map_raw_node_payload_helper.json",
+          "blob": "5814376d1fe677c02af5c6b28d6aa2b255716818",
+          "pin": {
+            "entry": "retained/Dependencies/payload_worker/reports/cc12_locale_map_raw_node_payload_helper.json",
+            "bytes": 53623,
+            "sha256": "b9c810cd83d1e051ec676fac49e25b9b96c68cf37a5a661277f11b3fedba8541",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "5814376d1fe677c02af5c6b28d6aa2b255716818"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "profile_worker",
+      "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_POOL_PROFILE_UNWIND_READINESS.md",
+          "blob": "7edd1d41c8020e166cca25cf22d8cf9bba9f0eab",
+          "pin": {
+            "entry": "retained/Dependencies/profile_worker/docs/CC12_LOCALE_POOL_PROFILE_UNWIND_READINESS.md",
+            "bytes": 10617,
+            "sha256": "990b44ed7a435cd0e88f0347867775d0bf679ed8f8d21fd2d0c2611fe0b85d7e",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "7edd1d41c8020e166cca25cf22d8cf9bba9f0eab"
+            }
+          }
+        },
+        {
+          "path": "reports/cc12_locale_pool_profile_unwind_readiness.json",
+          "blob": "1071905f43318456552866dc0d4e56deb67304c9",
+          "pin": {
+            "entry": "retained/Dependencies/profile_worker/reports/cc12_locale_pool_profile_unwind_readiness.json",
+            "bytes": 68212,
+            "sha256": "1dc32daf72626c0e78b7e464ed6219d3dc146347968b7e35f49b6bc6b5909c49",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "1071905f43318456552866dc0d4e56deb67304c9"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "lifecycle_Root",
+      "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+      "files": [
+        {
+          "path": "docs/CC12_LOCALE_LIFECYCLE_PRIMARY.md",
+          "blob": "398eb90ccdfbc5dcb5249290ff78d8a37352f3dd",
+          "pin": {
+            "entry": "retained/Dependencies/lifecycle_Root/docs/CC12_LOCALE_LIFECYCLE_PRIMARY.md",
+            "bytes": 1867,
+            "sha256": "a07fef4112d641d0b1c6dcfed3dc9a5de33a7025c024473ae0af3bb735cba53e",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "398eb90ccdfbc5dcb5249290ff78d8a37352f3dd"
+            }
+          }
+        },
+        {
+          "path": "reports/cc12_locale_lifecycle_primary.json",
+          "blob": "b55389981a417743660e30fde49f6985309457cf",
+          "pin": {
+            "entry": "retained/Dependencies/lifecycle_Root/reports/cc12_locale_lifecycle_primary.json",
+            "bytes": 4365,
+            "sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "b55389981a417743660e30fde49f6985309457cf"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "prepared_Root",
+      "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+      "files": [
+        {
+          "path": "docs/CC12_RENDER_PREPARED_ENTRY_PRIMARY.md",
+          "blob": "33e87fe7c82231124ce1e8569a9df4e3c75d0db3",
+          "pin": {
+            "entry": "retained/Dependencies/prepared_Root/docs/CC12_RENDER_PREPARED_ENTRY_PRIMARY.md",
+            "bytes": 3313,
+            "sha256": "462d571d67b2e2be750f2f80c3a727f1f6ec1487df1093106ea42f08ee8643ae",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "33e87fe7c82231124ce1e8569a9df4e3c75d0db3"
+            }
+          }
+        },
+        {
+          "path": "reports/cc12_render_prepared_entry_primary.json",
+          "blob": "85d01685ecb60c7ff75a09f1f5e1dbfd8c0eb24e",
+          "pin": {
+            "entry": "retained/Dependencies/prepared_Root/reports/cc12_render_prepared_entry_primary.json",
+            "bytes": 26478,
+            "sha256": "b62c6e4fdd937a7dccbfa5a0b490dbed27889a4455dbf742c65188456db3d678",
+            "provenance": {
+              "commit": "75db5de51b296781b1a73915bf47081d5c088519",
+              "blob": "85d01685ecb60c7ff75a09f1f5e1dbfd8c0eb24e"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "proof": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper",
+    "bundle": {
+      "entry": "evidence.zip",
+      "bytes": 87665404,
+      "sha256": "d734df05c47cfc96f41a3a9badcb69ac8da621d1f6dad45fec0107fce4e43c2e",
+      "payload_files": 4573,
+      "payload_bytes": 482457983
+    },
+    "physical_copy": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\physical_copy\\evidence.zip",
+      "bytes": 87665404,
+      "sha256": "d734df05c47cfc96f41a3a9badcb69ac8da621d1f6dad45fec0107fce4e43c2e"
+    },
+    "guarded_replay": {
+      "status": "PASS",
+      "guard": {
+        "ZIP_only": true,
+        "read_only": true,
+        "external_read_denied": true,
+        "process_network_dynamic_loading_directory_access_denied": true
+      },
+      "review": {
+        "schema": "cc12.locale_borrowed_node_recycling_helper.replay.v1",
+        "status": "PASS",
+        "payload_files": 4573,
+        "base_head": "75db5de51b296781b1a73915bf47081d5c088519",
+        "before_Source_Git_exact": 4215,
+        "after_Source_index_Git_exact": 4217,
+        "existing_Source_changed": [
+          "cmake/startup.cmake"
+        ],
+        "new_Source_paths": [
+          "include/bsp/native_locale_map_node_recycling.hpp",
+          "src/native_locale_map_node_recycling.cpp"
+        ],
+        "prior_profile_epoch_Source_deltas": [
+          "include/bsp/native_render_context.hpp",
+          "src/native_render_context.cpp"
+        ],
+        "dependency_blobs": 14,
+        "retained_Native_bytes": 1335,
+        "new_Native_queries": 0,
+        "Core_before": 1989,
+        "Core_after": 1990,
+        "all_1989_old_Core_payloads_exact": true,
+        "added_Core_members": [
+          "bsp_core.dir\\Release\\native_locale_map_node_recycling.obj"
+        ],
+        "selected_old_objects_exact": [
+          "native_locale_map_node_lifetime",
+          "native_string",
+          "native_wide_string",
+          "native_loading_queue_submission"
+        ],
+        "new_object_machine": 332,
+        "return_section": {
+          "index": 11,
+          "name": ".text$mn",
+          "declared_size": 254,
+          "raw_pointer": 1322,
+          "payload_bytes": 254,
+          "bytes": 254,
+          "sha256": "f33c41b1afdc98d6e7311da198ddd70b97ea6c29bdd2c0b0868bb78cc789e4d3",
+          "relocations": [
+            {
+              "offset": 17,
+              "type": 6,
+              "symbol": "__imp__EnterCriticalSection@4"
+            },
+            {
+              "offset": 244,
+              "type": 6,
+              "symbol": "__imp__LeaveCriticalSection@4"
+            }
+          ],
+          "decode": [
+            {
+              "address": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "address": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "address": 3,
+              "bytes": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            },
+            {
+              "address": 6,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 7,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 8,
+              "bytes": "8b7d08",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 11,
+              "bytes": "83c70c",
+              "mnemonic": "add",
+              "operands": "edi, 0xc"
+            },
+            {
+              "address": 14,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 15,
+              "bytes": "ff1500000000",
+              "mnemonic": "call",
+              "operands": "dword ptr [0]"
+            },
+            {
+              "address": 21,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 24,
+              "bytes": "ba24000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x24"
+            },
+            {
+              "address": 29,
+              "bytes": "b901000000",
+              "mnemonic": "mov",
+              "operands": "ecx, 1"
+            },
+            {
+              "address": 34,
+              "bytes": "010c10",
+              "mnemonic": "add",
+              "operands": "dword ptr [eax + edx], ecx"
+            },
+            {
+              "address": 37,
+              "bytes": "8b450c",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 40,
+              "bytes": "ba18000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x18"
+            },
+            {
+              "address": 45,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 48,
+              "bytes": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "address": 51,
+              "bytes": "8b75fc",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp - 4]"
+            },
+            {
+              "address": 54,
+              "bytes": "8975f0",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 0x10], esi"
+            },
+            {
+              "address": 57,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 60,
+              "bytes": "ba28000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x28"
+            },
+            {
+              "address": 65,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 68,
+              "bytes": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "address": 71,
+              "bytes": "8b45fc",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 4]"
+            },
+            {
+              "address": 74,
+              "bytes": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "address": 77,
+              "bytes": "8d04b500000000",
+              "mnemonic": "lea",
+              "operands": "eax, [esi*4]"
+            },
+            {
+              "address": 84,
+              "bytes": "8945f8",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 8], eax"
+            },
+            {
+              "address": 87,
+              "bytes": "8b45fc",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 4]"
+            },
+            {
+              "address": 90,
+              "bytes": "8b55f8",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp - 8]"
+            },
+            {
+              "address": 93,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 96,
+              "bytes": "8945f4",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 0xc], eax"
+            },
+            {
+              "address": 99,
+              "bytes": "8b45f4",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 0xc]"
+            },
+            {
+              "address": 102,
+              "bytes": "8b4d0c",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 105,
+              "bytes": "2bc8",
+              "mnemonic": "sub",
+              "operands": "ecx, eax"
+            },
+            {
+              "address": 107,
+              "bytes": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "address": 110,
+              "bytes": "b893244992",
+              "mnemonic": "mov",
+              "operands": "eax, 0x92492493"
+            },
+            {
+              "address": 115,
+              "bytes": "f7e9",
+              "mnemonic": "imul",
+              "operands": "ecx"
+            },
+            {
+              "address": 117,
+              "bytes": "03d1",
+              "mnemonic": "add",
+              "operands": "edx, ecx"
+            },
+            {
+              "address": 119,
+              "bytes": "c1fa04",
+              "mnemonic": "sar",
+              "operands": "edx, 4"
+            },
+            {
+              "address": 122,
+              "bytes": "8bc2",
+              "mnemonic": "mov",
+              "operands": "eax, edx"
+            },
+            {
+              "address": 124,
+              "bytes": "c1e81f",
+              "mnemonic": "shr",
+              "operands": "eax, 0x1f"
+            },
+            {
+              "address": 127,
+              "bytes": "03c2",
+              "mnemonic": "add",
+              "operands": "eax, edx"
+            },
+            {
+              "address": 129,
+              "bytes": "0fb7c0",
+              "mnemonic": "movzx",
+              "operands": "eax, ax"
+            },
+            {
+              "address": 132,
+              "bytes": "8945f4",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 0xc], eax"
+            },
+            {
+              "address": 135,
+              "bytes": "8b45fc",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 4]"
+            },
+            {
+              "address": 138,
+              "bytes": "ba00780000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x7800"
+            },
+            {
+              "address": 143,
+              "bytes": "668b0410",
+              "mnemonic": "mov",
+              "operands": "ax, word ptr [eax + edx]"
+            },
+            {
+              "address": 147,
+              "bytes": "6689450c",
+              "mnemonic": "mov",
+              "operands": "word ptr [ebp + 0xc], ax"
+            },
+            {
+              "address": 151,
+              "bytes": "0fb7450c",
+              "mnemonic": "movzx",
+              "operands": "eax, word ptr [ebp + 0xc]"
+            },
+            {
+              "address": 155,
+              "bytes": "8d044500700000",
+              "mnemonic": "lea",
+              "operands": "eax, [eax*2 + 0x7000]"
+            },
+            {
+              "address": 162,
+              "bytes": "89450c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 0xc], eax"
+            },
+            {
+              "address": 165,
+              "bytes": "8b45fc",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 4]"
+            },
+            {
+              "address": 168,
+              "bytes": "8b550c",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 171,
+              "bytes": "668b4df4",
+              "mnemonic": "mov",
+              "operands": "cx, word ptr [ebp - 0xc]"
+            },
+            {
+              "address": 175,
+              "bytes": "66890c10",
+              "mnemonic": "mov",
+              "operands": "word ptr [eax + edx], cx"
+            },
+            {
+              "address": 179,
+              "bytes": "8b45fc",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 4]"
+            },
+            {
+              "address": 182,
+              "bytes": "ba00780000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x7800"
+            },
+            {
+              "address": 187,
+              "bytes": "6683041001",
+              "mnemonic": "add",
+              "operands": "word ptr [eax + edx], 1"
+            },
+            {
+              "address": 192,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 195,
+              "bytes": "ba34000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x34"
+            },
+            {
+              "address": 200,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 203,
+              "bytes": "89450c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 0xc], eax"
+            },
+            {
+              "address": 206,
+              "bytes": "3b750c",
+              "mnemonic": "cmp",
+              "operands": "esi, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 209,
+              "bytes": "730e",
+              "mnemonic": "jae",
+              "operands": "0xe1"
+            },
+            {
+              "address": 211,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 214,
+              "bytes": "ba34000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x34"
+            },
+            {
+              "address": 219,
+              "bytes": "8b4df0",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": 222,
+              "bytes": "890c10",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + edx], ecx"
+            },
+            {
+              "address": 225,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 228,
+              "bytes": "ba24000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x24"
+            },
+            {
+              "address": 233,
+              "bytes": "b9ffffffff",
+              "mnemonic": "mov",
+              "operands": "ecx, 0xffffffff"
+            },
+            {
+              "address": 238,
+              "bytes": "010c10",
+              "mnemonic": "add",
+              "operands": "dword ptr [eax + edx], ecx"
+            },
+            {
+              "address": 241,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 242,
+              "bytes": "ff1500000000",
+              "mnemonic": "call",
+              "operands": "dword ptr [0]"
+            },
+            {
+              "address": 248,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "address": 249,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "address": 250,
+              "bytes": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "address": 252,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "address": 253,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        },
+        "return_graph": {
+          "instructions": 79,
+          "edges": [
+            {
+              "source": 0,
+              "target": 1,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 1,
+              "target": 3,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 3,
+              "target": 6,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 6,
+              "target": 7,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 7,
+              "target": 8,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 8,
+              "target": 11,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 11,
+              "target": 14,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 14,
+              "target": 15,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 15,
+              "target": 21,
+              "kind": "normal_callee_return_assumed"
+            },
+            {
+              "source": 21,
+              "target": 24,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 24,
+              "target": 29,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 29,
+              "target": 34,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 34,
+              "target": 37,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 37,
+              "target": 40,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 40,
+              "target": 45,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 45,
+              "target": 48,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 48,
+              "target": 51,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 51,
+              "target": 54,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 54,
+              "target": 57,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 57,
+              "target": 60,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 60,
+              "target": 65,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 65,
+              "target": 68,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 68,
+              "target": 71,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 71,
+              "target": 74,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 74,
+              "target": 77,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 77,
+              "target": 84,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 84,
+              "target": 87,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 87,
+              "target": 90,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 90,
+              "target": 93,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 93,
+              "target": 96,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 96,
+              "target": 99,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 99,
+              "target": 102,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 102,
+              "target": 105,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 105,
+              "target": 107,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 107,
+              "target": 110,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 110,
+              "target": 115,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 115,
+              "target": 117,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 117,
+              "target": 119,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 119,
+              "target": 122,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 122,
+              "target": 124,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 124,
+              "target": 127,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 127,
+              "target": 129,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 129,
+              "target": 132,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 132,
+              "target": 135,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 135,
+              "target": 138,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 138,
+              "target": 143,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 143,
+              "target": 147,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 147,
+              "target": 151,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 151,
+              "target": 155,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 155,
+              "target": 162,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 162,
+              "target": 165,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 165,
+              "target": 168,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 168,
+              "target": 171,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 171,
+              "target": 175,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 175,
+              "target": 179,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 179,
+              "target": 182,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 182,
+              "target": 187,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 187,
+              "target": 192,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 192,
+              "target": 195,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 195,
+              "target": 200,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 200,
+              "target": 203,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 203,
+              "target": 206,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 206,
+              "target": 209,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 209,
+              "target": 225,
+              "kind": "taken_jae"
+            },
+            {
+              "source": 209,
+              "target": 211,
+              "kind": "not_taken_jae"
+            },
+            {
+              "source": 211,
+              "target": 214,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 214,
+              "target": 219,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 219,
+              "target": 222,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 222,
+              "target": 225,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 225,
+              "target": 228,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 228,
+              "target": 233,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 233,
+              "target": 238,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 238,
+              "target": 241,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 241,
+              "target": 242,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 242,
+              "target": 248,
+              "kind": "normal_callee_return_assumed"
+            },
+            {
+              "source": 248,
+              "target": 249,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 249,
+              "target": 250,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 250,
+              "target": 252,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 252,
+              "target": 253,
+              "kind": "fallthrough"
+            }
+          ],
+          "all_code_reachable_under_normal_call_return": true
+        },
+        "wrapper_section": {
+          "index": 12,
+          "name": ".text$mn",
+          "declared_size": 283,
+          "raw_pointer": 1596,
+          "payload_bytes": 283,
+          "bytes": 283,
+          "sha256": "4d7ad7b0b4cdf42631675df151a202fd3d463461be050e280d91f4b4f9e58140",
+          "relocations": [
+            {
+              "offset": 15,
+              "type": 20,
+              "symbol": "?destroy_native_locale_map_node_payload_00737ce0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+            },
+            {
+              "offset": 44,
+              "type": 6,
+              "symbol": "__imp__EnterCriticalSection@4"
+            },
+            {
+              "offset": 270,
+              "type": 6,
+              "symbol": "__imp__LeaveCriticalSection@4"
+            }
+          ],
+          "decode": [
+            {
+              "address": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "address": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "address": 3,
+              "bytes": "83ec08",
+              "mnemonic": "sub",
+              "operands": "esp, 8"
+            },
+            {
+              "address": 6,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 7,
+              "bytes": "ff7510",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 0x10]"
+            },
+            {
+              "address": 10,
+              "bytes": "8b7d08",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 13,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "address": 14,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x13"
+            },
+            {
+              "address": 19,
+              "bytes": "8a450c",
+              "mnemonic": "mov",
+              "operands": "al, byte ptr [ebp + 0xc]"
+            },
+            {
+              "address": 22,
+              "bytes": "83c408",
+              "mnemonic": "add",
+              "operands": "esp, 8"
+            },
+            {
+              "address": 25,
+              "bytes": "a801",
+              "mnemonic": "test",
+              "operands": "al, 1"
+            },
+            {
+              "address": 27,
+              "bytes": "0f84f3000000",
+              "mnemonic": "je",
+              "operands": "0x114"
+            },
+            {
+              "address": 33,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "address": 34,
+              "bytes": "8b5d14",
+              "mnemonic": "mov",
+              "operands": "ebx, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 37,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "address": 38,
+              "bytes": "83c30c",
+              "mnemonic": "add",
+              "operands": "ebx, 0xc"
+            },
+            {
+              "address": 41,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "address": 42,
+              "bytes": "ff1500000000",
+              "mnemonic": "call",
+              "operands": "dword ptr [0]"
+            },
+            {
+              "address": 48,
+              "bytes": "8b4514",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 51,
+              "bytes": "ba24000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x24"
+            },
+            {
+              "address": 56,
+              "bytes": "b901000000",
+              "mnemonic": "mov",
+              "operands": "ecx, 1"
+            },
+            {
+              "address": 61,
+              "bytes": "010c10",
+              "mnemonic": "add",
+              "operands": "dword ptr [eax + edx], ecx"
+            },
+            {
+              "address": 64,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 67,
+              "bytes": "ba18000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x18"
+            },
+            {
+              "address": 72,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 75,
+              "bytes": "89450c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 0xc], eax"
+            },
+            {
+              "address": 78,
+              "bytes": "8b750c",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 81,
+              "bytes": "8975f8",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 8], esi"
+            },
+            {
+              "address": 84,
+              "bytes": "8b4514",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 87,
+              "bytes": "ba28000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x28"
+            },
+            {
+              "address": 92,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 95,
+              "bytes": "894508",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 8], eax"
+            },
+            {
+              "address": 98,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 101,
+              "bytes": "894508",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 8], eax"
+            },
+            {
+              "address": 104,
+              "bytes": "8d04b500000000",
+              "mnemonic": "lea",
+              "operands": "eax, [esi*4]"
+            },
+            {
+              "address": 111,
+              "bytes": "89450c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 0xc], eax"
+            },
+            {
+              "address": 114,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 117,
+              "bytes": "8b550c",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 120,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 123,
+              "bytes": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "address": 126,
+              "bytes": "8b45fc",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 4]"
+            },
+            {
+              "address": 129,
+              "bytes": "8bcf",
+              "mnemonic": "mov",
+              "operands": "ecx, edi"
+            },
+            {
+              "address": 131,
+              "bytes": "2bc8",
+              "mnemonic": "sub",
+              "operands": "ecx, eax"
+            },
+            {
+              "address": 133,
+              "bytes": "89450c",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 0xc], eax"
+            },
+            {
+              "address": 136,
+              "bytes": "b893244992",
+              "mnemonic": "mov",
+              "operands": "eax, 0x92492493"
+            },
+            {
+              "address": 141,
+              "bytes": "f7e9",
+              "mnemonic": "imul",
+              "operands": "ecx"
+            },
+            {
+              "address": 143,
+              "bytes": "03d1",
+              "mnemonic": "add",
+              "operands": "edx, ecx"
+            },
+            {
+              "address": 145,
+              "bytes": "c1fa04",
+              "mnemonic": "sar",
+              "operands": "edx, 4"
+            },
+            {
+              "address": 148,
+              "bytes": "8bc2",
+              "mnemonic": "mov",
+              "operands": "eax, edx"
+            },
+            {
+              "address": 150,
+              "bytes": "c1e81f",
+              "mnemonic": "shr",
+              "operands": "eax, 0x1f"
+            },
+            {
+              "address": 153,
+              "bytes": "03c2",
+              "mnemonic": "add",
+              "operands": "eax, edx"
+            },
+            {
+              "address": 155,
+              "bytes": "0fb7c0",
+              "mnemonic": "movzx",
+              "operands": "eax, ax"
+            },
+            {
+              "address": 158,
+              "bytes": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "address": 161,
+              "bytes": "8b450c",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 164,
+              "bytes": "ba00780000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x7800"
+            },
+            {
+              "address": 169,
+              "bytes": "668b0410",
+              "mnemonic": "mov",
+              "operands": "ax, word ptr [eax + edx]"
+            },
+            {
+              "address": 173,
+              "bytes": "66894508",
+              "mnemonic": "mov",
+              "operands": "word ptr [ebp + 8], ax"
+            },
+            {
+              "address": 177,
+              "bytes": "0fb74508",
+              "mnemonic": "movzx",
+              "operands": "eax, word ptr [ebp + 8]"
+            },
+            {
+              "address": 181,
+              "bytes": "8d044500700000",
+              "mnemonic": "lea",
+              "operands": "eax, [eax*2 + 0x7000]"
+            },
+            {
+              "address": 188,
+              "bytes": "894508",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 8], eax"
+            },
+            {
+              "address": 191,
+              "bytes": "8b450c",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 194,
+              "bytes": "8b5508",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 197,
+              "bytes": "668b4dfc",
+              "mnemonic": "mov",
+              "operands": "cx, word ptr [ebp - 4]"
+            },
+            {
+              "address": 201,
+              "bytes": "66890c10",
+              "mnemonic": "mov",
+              "operands": "word ptr [eax + edx], cx"
+            },
+            {
+              "address": 205,
+              "bytes": "8b450c",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0xc]"
+            },
+            {
+              "address": 208,
+              "bytes": "ba00780000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x7800"
+            },
+            {
+              "address": 213,
+              "bytes": "6683041001",
+              "mnemonic": "add",
+              "operands": "word ptr [eax + edx], 1"
+            },
+            {
+              "address": 218,
+              "bytes": "8b4514",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 221,
+              "bytes": "ba34000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x34"
+            },
+            {
+              "address": 226,
+              "bytes": "8b0410",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [eax + edx]"
+            },
+            {
+              "address": 229,
+              "bytes": "894508",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp + 8], eax"
+            },
+            {
+              "address": 232,
+              "bytes": "3b7508",
+              "mnemonic": "cmp",
+              "operands": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "address": 235,
+              "bytes": "730e",
+              "mnemonic": "jae",
+              "operands": "0xfb"
+            },
+            {
+              "address": 237,
+              "bytes": "8b4514",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 240,
+              "bytes": "ba34000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x34"
+            },
+            {
+              "address": 245,
+              "bytes": "8b4df8",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 8]"
+            },
+            {
+              "address": 248,
+              "bytes": "890c10",
+              "mnemonic": "mov",
+              "operands": "dword ptr [eax + edx], ecx"
+            },
+            {
+              "address": 251,
+              "bytes": "8b4514",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 0x14]"
+            },
+            {
+              "address": 254,
+              "bytes": "ba24000000",
+              "mnemonic": "mov",
+              "operands": "edx, 0x24"
+            },
+            {
+              "address": 259,
+              "bytes": "b9ffffffff",
+              "mnemonic": "mov",
+              "operands": "ecx, 0xffffffff"
+            },
+            {
+              "address": 264,
+              "bytes": "010c10",
+              "mnemonic": "add",
+              "operands": "dword ptr [eax + edx], ecx"
+            },
+            {
+              "address": 267,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "address": 268,
+              "bytes": "ff1500000000",
+              "mnemonic": "call",
+              "operands": "dword ptr [0]"
+            },
+            {
+              "address": 274,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "address": 275,
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "address": 276,
+              "bytes": "8bc7",
+              "mnemonic": "mov",
+              "operands": "eax, edi"
+            },
+            {
+              "address": 278,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "address": 279,
+              "bytes": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "address": 281,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "address": 282,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        },
+        "wrapper_graph": {
+          "instructions": 90,
+          "edges": [
+            {
+              "source": 0,
+              "target": 1,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 1,
+              "target": 3,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 3,
+              "target": 6,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 6,
+              "target": 7,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 7,
+              "target": 10,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 10,
+              "target": 13,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 13,
+              "target": 14,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 14,
+              "target": 19,
+              "kind": "normal_callee_return_assumed"
+            },
+            {
+              "source": 19,
+              "target": 22,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 22,
+              "target": 25,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 25,
+              "target": 27,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 27,
+              "target": 276,
+              "kind": "taken_je"
+            },
+            {
+              "source": 27,
+              "target": 33,
+              "kind": "not_taken_je"
+            },
+            {
+              "source": 33,
+              "target": 34,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 34,
+              "target": 37,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 37,
+              "target": 38,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 38,
+              "target": 41,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 41,
+              "target": 42,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 42,
+              "target": 48,
+              "kind": "normal_callee_return_assumed"
+            },
+            {
+              "source": 48,
+              "target": 51,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 51,
+              "target": 56,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 56,
+              "target": 61,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 61,
+              "target": 64,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 64,
+              "target": 67,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 67,
+              "target": 72,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 72,
+              "target": 75,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 75,
+              "target": 78,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 78,
+              "target": 81,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 81,
+              "target": 84,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 84,
+              "target": 87,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 87,
+              "target": 92,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 92,
+              "target": 95,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 95,
+              "target": 98,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 98,
+              "target": 101,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 101,
+              "target": 104,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 104,
+              "target": 111,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 111,
+              "target": 114,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 114,
+              "target": 117,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 117,
+              "target": 120,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 120,
+              "target": 123,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 123,
+              "target": 126,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 126,
+              "target": 129,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 129,
+              "target": 131,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 131,
+              "target": 133,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 133,
+              "target": 136,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 136,
+              "target": 141,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 141,
+              "target": 143,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 143,
+              "target": 145,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 145,
+              "target": 148,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 148,
+              "target": 150,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 150,
+              "target": 153,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 153,
+              "target": 155,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 155,
+              "target": 158,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 158,
+              "target": 161,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 161,
+              "target": 164,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 164,
+              "target": 169,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 169,
+              "target": 173,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 173,
+              "target": 177,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 177,
+              "target": 181,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 181,
+              "target": 188,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 188,
+              "target": 191,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 191,
+              "target": 194,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 194,
+              "target": 197,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 197,
+              "target": 201,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 201,
+              "target": 205,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 205,
+              "target": 208,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 208,
+              "target": 213,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 213,
+              "target": 218,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 218,
+              "target": 221,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 221,
+              "target": 226,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 226,
+              "target": 229,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 229,
+              "target": 232,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 232,
+              "target": 235,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 235,
+              "target": 251,
+              "kind": "taken_jae"
+            },
+            {
+              "source": 235,
+              "target": 237,
+              "kind": "not_taken_jae"
+            },
+            {
+              "source": 237,
+              "target": 240,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 240,
+              "target": 245,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 245,
+              "target": 248,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 248,
+              "target": 251,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 251,
+              "target": 254,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 254,
+              "target": 259,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 259,
+              "target": 264,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 264,
+              "target": 267,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 267,
+              "target": 268,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 268,
+              "target": 274,
+              "kind": "normal_callee_return_assumed"
+            },
+            {
+              "source": 274,
+              "target": 275,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 275,
+              "target": 276,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 276,
+              "target": 278,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 278,
+              "target": 279,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 279,
+              "target": 281,
+              "kind": "fallthrough"
+            },
+            {
+              "source": 281,
+              "target": 282,
+              "kind": "fallthrough"
+            }
+          ],
+          "all_code_reachable_under_normal_call_return": true
+        },
+        "wrapper_slot_return_inlined": true,
+        "wrapper_local_FH3_or_terminate_symbols": false,
+        "positive_Core_linker_providers": [
+          {
+            "symbol": "?return_native_locale_node_slot_00736090@bsp@@YAXPAX0@Z",
+            "member_header_offset": 34221610,
+            "member_name": "bsp_core.dir\\Release\\native_locale_map_node_recycling.obj",
+            "member_sha256": "da53e0a1205c2770f3656681410efa8d92520029a8aa49282194f0bb8e7350cb",
+            "definition_section": 11,
+            "definition_bytes": 254
+          },
+          {
+            "symbol": "?scalar_delete_native_locale_map_node_0073c220@bsp@@YAPAXPAXIAAUNativeStringRawPoolContext@1@0@Z",
+            "member_header_offset": 34221610,
+            "member_name": "bsp_core.dir\\Release\\native_locale_map_node_recycling.obj",
+            "member_sha256": "da53e0a1205c2770f3656681410efa8d92520029a8aa49282194f0bb8e7350cb",
+            "definition_section": 12,
+            "definition_bytes": 283
+          },
+          {
+            "symbol": "?destroy_native_locale_map_node_payload_00737ce0@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+            "member_header_offset": 34225146,
+            "member_name": "bsp_core.dir\\Release\\native_locale_map_node_lifetime.obj",
+            "member_sha256": "10de030de5f8bbd247255a873a2730ff76908df8b1d4f15d949816924468e4a5",
+            "definition_section": 6,
+            "definition_bytes": 103
+          },
+          {
+            "symbol": "?destroy_native_wide_string_header_00436430@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+            "member_header_offset": 25759806,
+            "member_name": "bsp_core.dir\\Release\\native_wide_string.obj",
+            "member_sha256": "d4356163c736c1de91f160ffe313dfad0f8d83bf7af94e4dc2040abcec60dd24",
+            "definition_section": 9,
+            "definition_bytes": 57
+          },
+          {
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z",
+            "member_header_offset": 26896828,
+            "member_name": "bsp_core.dir\\Release\\native_string.obj",
+            "member_sha256": "8555efe6660a6d8572f31c19089bc2413dc5ade207496cb8c12b6ae25db6237b",
+            "definition_section": 56,
+            "definition_bytes": 51
+          }
+        ],
+        "payload_calls_resolve_to_actual_raw_WIDE_and_NARROW_members": true,
+        "App_directory": {
+          "before": 80,
+          "after": 80,
+          "all_payloads_exact": true,
+          "new_public_symbol_mentions": 0,
+          "qualification": "Actual worker directory census; no Root App/project membership or linked-body activation claim"
+        },
+        "finite_Source_matches": [
+          {
+            "path": "include/bsp/native_locale_map_node_recycling.hpp",
+            "line": 17,
+            "text": "void return_native_locale_node_slot_00736090("
+          },
+          {
+            "path": "include/bsp/native_locale_map_node_recycling.hpp",
+            "line": 27,
+            "text": "void* scalar_delete_native_locale_map_node_0073c220(void* actual_node,"
+          },
+          {
+            "path": "src/native_locale_map_node_recycling.cpp",
+            "line": 88,
+            "text": "void return_native_locale_node_slot_00736090(void* pool, void* slot) {"
+          },
+          {
+            "path": "src/native_locale_map_node_recycling.cpp",
+            "line": 113,
+            "text": "void* scalar_delete_native_locale_map_node_0073c220(void* node,"
+          },
+          {
+            "path": "src/native_locale_map_node_recycling.cpp",
+            "line": 118,
+            "text": "        return_native_locale_node_slot_00736090(pool, node);"
+          }
+        ],
+        "new_header_consumers": [
+          "native_locale_map_node_recycling.cpp"
+        ],
+        "compiler": {
+          "toolset_directory": "14.51.36231",
+          "CMake_CXX_compiler_version": "19.51.36244.0",
+          "architecture": "X86",
+          "exception_property": "Sync",
+          "tool_binaries_retained": 4
+        },
+        "artifact_delta": [
+          {
+            "path": "build/win32/Release/bsp_core.lib",
+            "before": {
+              "entry": "retained/Before/Artifacts/bsp_core.lib",
+              "bytes": 73980446,
+              "sha256": "355bed7d57fd15301dff4d90b5a7e19b4020a225846770793635f6434928cfa8",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_core.lib"
+            },
+            "after": {
+              "entry": "retained/After/Artifacts/bsp_core.lib",
+              "bytes": 73984360,
+              "sha256": "23ba065fc310774f16faeb780659a17383da3561e87afe0218b8a6b1b658f6d2",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_core.lib"
+            },
+            "byte_exact": false
+          },
+          {
+            "path": "build/win32/Release/bsp_game.exe",
+            "before": {
+              "entry": "retained/Before/Artifacts/bsp_game.exe",
+              "bytes": 5103104,
+              "sha256": "8bc1414e6f6dc6de7d1cf780b97cbc033ea42d5f793c8c5894a6fb777613a4b5",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_game.exe"
+            },
+            "after": {
+              "entry": "retained/After/Artifacts/bsp_game.exe",
+              "bytes": 5103104,
+              "sha256": "c6820b2c015304564df61ca47a18ac52754eac3af1ee50ee43e0d2bff56ca31b",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_game.exe"
+            },
+            "byte_exact": false,
+            "before_sections": [
+              {
+                "name": ".text",
+                "rva": 4096,
+                "virtual_bytes": 3992091,
+                "raw_bytes": 3992576,
+                "raw_offset": 1024,
+                "sha256": "fdef79b4bfd8434c4d5a82f7c7e1b3a2ffa4933f04e84bdd338bb57a1924a7b4"
+              },
+              {
+                "name": ".rdata",
+                "rva": 3997696,
+                "virtual_bytes": 913886,
+                "raw_bytes": 913920,
+                "raw_offset": 3993600,
+                "sha256": "95da188bc62c4d4ee14d563a7d364d1a352c1ef8a2ebafc186c63996ff119cbe"
+              },
+              {
+                "name": ".data",
+                "rva": 4915200,
+                "virtual_bytes": 76160,
+                "raw_bytes": 52736,
+                "raw_offset": 4907520,
+                "sha256": "11fe576d77182c288460055b7df176f2d7d690747271b1ad95f675f8f353a65c"
+              },
+              {
+                "name": ".rsrc",
+                "rva": 4993024,
+                "virtual_bytes": 480,
+                "raw_bytes": 512,
+                "raw_offset": 4960256,
+                "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+              },
+              {
+                "name": ".reloc",
+                "rva": 4997120,
+                "virtual_bytes": 142164,
+                "raw_bytes": 142336,
+                "raw_offset": 4960768,
+                "sha256": "8ee24ca36d5faecc22b3d711156c845beb8d9ebd52898effd2d9d3e77ef4ade4"
+              }
+            ],
+            "after_sections": [
+              {
+                "name": ".text",
+                "rva": 4096,
+                "virtual_bytes": 3992091,
+                "raw_bytes": 3992576,
+                "raw_offset": 1024,
+                "sha256": "fdef79b4bfd8434c4d5a82f7c7e1b3a2ffa4933f04e84bdd338bb57a1924a7b4"
+              },
+              {
+                "name": ".rdata",
+                "rva": 3997696,
+                "virtual_bytes": 913886,
+                "raw_bytes": 913920,
+                "raw_offset": 3993600,
+                "sha256": "846df7b6bbb70cf800e3ee6e5e41f5367d530c275e75069ba7fd42cc1749f28a"
+              },
+              {
+                "name": ".data",
+                "rva": 4915200,
+                "virtual_bytes": 76160,
+                "raw_bytes": 52736,
+                "raw_offset": 4907520,
+                "sha256": "11fe576d77182c288460055b7df176f2d7d690747271b1ad95f675f8f353a65c"
+              },
+              {
+                "name": ".rsrc",
+                "rva": 4993024,
+                "virtual_bytes": 480,
+                "raw_bytes": 512,
+                "raw_offset": 4960256,
+                "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+              },
+              {
+                "name": ".reloc",
+                "rva": 4997120,
+                "virtual_bytes": 142164,
+                "raw_bytes": 142336,
+                "raw_offset": 4960768,
+                "sha256": "8ee24ca36d5faecc22b3d711156c845beb8d9ebd52898effd2d9d3e77ef4ade4"
+              }
+            ],
+            "same_section_names": true,
+            "section_payloads_exact": [
+              ".text",
+              ".data",
+              ".rsrc",
+              ".reloc"
+            ],
+            "section_payloads_changed": [
+              ".rdata"
+            ],
+            "changed_byte_count": 4,
+            "changed_offsets": [
+              280,
+              281,
+              4695108,
+              4695109
+            ],
+            "before_PE_metadata": {
+              "pe": 272,
+              "timestamp_offset": 280,
+              "timestamp": 1791665627,
+              "checksum_offset": 360,
+              "checksum": 0,
+              "debug": [
+                {
+                  "offset": 4695104,
+                  "type": 13,
+                  "timestamp": 1791665627,
+                  "timestamp_offset": 4695108,
+                  "bytes": 884,
+                  "rva": 4764568,
+                  "pointer": 4760472
+                }
+              ]
+            },
+            "after_PE_metadata": {
+              "pe": 272,
+              "timestamp_offset": 280,
+              "timestamp": 1791665750,
+              "checksum_offset": 360,
+              "checksum": 0,
+              "debug": [
+                {
+                  "offset": 4695104,
+                  "type": 13,
+                  "timestamp": 1791665750,
+                  "timestamp_offset": 4695108,
+                  "bytes": 884,
+                  "rva": 4764568,
+                  "pointer": 4760472
+                }
+              ]
+            },
+            "only_PE_and_debug_timestamps_changed": true
+          },
+          {
+            "path": "build/win32/Release/bsp_math_tests.exe",
+            "before": {
+              "entry": "retained/Before/Artifacts/bsp_math_tests.exe",
+              "bytes": 841728,
+              "sha256": "4d22b2b5c8e532a20ae832f612f5adbbc967881f4b446929665d4a5d85b2f3d2",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_math_tests.exe"
+            },
+            "after": {
+              "entry": "retained/After/Artifacts/bsp_math_tests.exe",
+              "bytes": 841728,
+              "sha256": "0a51f205ad984b7391f505eaca3dd70b536898994d3ab485d943c03ea3eaf9a7",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_math_tests.exe"
+            },
+            "byte_exact": false,
+            "before_sections": [
+              {
+                "name": ".text",
+                "rva": 4096,
+                "virtual_bytes": 565483,
+                "raw_bytes": 565760,
+                "raw_offset": 1024,
+                "sha256": "c8e4221e686656f8cc8b27ccec537aeec2ca533d36f3a0dd20d0aa027f606c23"
+              },
+              {
+                "name": ".rdata",
+                "rva": 573440,
+                "virtual_bytes": 240746,
+                "raw_bytes": 241152,
+                "raw_offset": 566784,
+                "sha256": "bcfab85357a4a31093b1064c896e936ce17377c122a59a39af01ff9320029302"
+              },
+              {
+                "name": ".data",
+                "rva": 815104,
+                "virtual_bytes": 8868,
+                "raw_bytes": 4096,
+                "raw_offset": 807936,
+                "sha256": "66aeacc4956b878a47119eee272f7e014c62be896d02e0989c64520dfcdf9b0d"
+              },
+              {
+                "name": ".rsrc",
+                "rva": 827392,
+                "virtual_bytes": 480,
+                "raw_bytes": 512,
+                "raw_offset": 812032,
+                "sha256": "cea34833474011aacef477afbe43bbffe75f34983049f4a422a39ff6022d52ad"
+              },
+              {
+                "name": ".reloc",
+                "rva": 831488,
+                "virtual_bytes": 28844,
+                "raw_bytes": 29184,
+                "raw_offset": 812544,
+                "sha256": "d573a02b12a5ffce795a1d096422a76731378b8d65150320885705736ab050d1"
+              }
+            ],
+            "after_sections": [
+              {
+                "name": ".text",
+                "rva": 4096,
+                "virtual_bytes": 565483,
+                "raw_bytes": 565760,
+                "raw_offset": 1024,
+                "sha256": "c8e4221e686656f8cc8b27ccec537aeec2ca533d36f3a0dd20d0aa027f606c23"
+              },
+              {
+                "name": ".rdata",
+                "rva": 573440,
+                "virtual_bytes": 240746,
+                "raw_bytes": 241152,
+                "raw_offset": 566784,
+                "sha256": "40b96c1e945b4c1441b79ee16b596c562432d01fcdce4fcb4e0f2268a230a776"
+              },
+              {
+                "name": ".data",
+                "rva": 815104,
+                "virtual_bytes": 8868,
+                "raw_bytes": 4096,
+                "raw_offset": 807936,
+                "sha256": "66aeacc4956b878a47119eee272f7e014c62be896d02e0989c64520dfcdf9b0d"
+              },
+              {
+                "name": ".rsrc",
+                "rva": 827392,
+                "virtual_bytes": 480,
+                "raw_bytes": 512,
+                "raw_offset": 812032,
+                "sha256": "cea34833474011aacef477afbe43bbffe75f34983049f4a422a39ff6022d52ad"
+              },
+              {
+                "name": ".reloc",
+                "rva": 831488,
+                "virtual_bytes": 28844,
+                "raw_bytes": 29184,
+                "raw_offset": 812544,
+                "sha256": "d573a02b12a5ffce795a1d096422a76731378b8d65150320885705736ab050d1"
+              }
+            ],
+            "same_section_names": true,
+            "section_payloads_exact": [
+              ".text",
+              ".data",
+              ".rsrc",
+              ".reloc"
+            ],
+            "section_payloads_changed": [
+              ".rdata"
+            ],
+            "changed_byte_count": 4,
+            "changed_offsets": [
+              280,
+              281,
+              769476,
+              769477
+            ],
+            "before_PE_metadata": {
+              "pe": 272,
+              "timestamp_offset": 280,
+              "timestamp": 1791665603,
+              "checksum_offset": 360,
+              "checksum": 0,
+              "debug": [
+                {
+                  "offset": 769472,
+                  "type": 13,
+                  "timestamp": 1791665603,
+                  "timestamp_offset": 769476,
+                  "bytes": 864,
+                  "rva": 782928,
+                  "pointer": 776272
+                }
+              ]
+            },
+            "after_PE_metadata": {
+              "pe": 272,
+              "timestamp_offset": 280,
+              "timestamp": 1791665750,
+              "checksum_offset": 360,
+              "checksum": 0,
+              "debug": [
+                {
+                  "offset": 769472,
+                  "type": 13,
+                  "timestamp": 1791665750,
+                  "timestamp_offset": 769476,
+                  "bytes": 864,
+                  "rva": 782928,
+                  "pointer": 776272
+                }
+              ]
+            },
+            "only_PE_and_debug_timestamps_changed": true
+          },
+          {
+            "path": "build/win32/Release/bsp_native_math_tests.exe",
+            "before": {
+              "entry": "retained/Before/Artifacts/bsp_native_math_tests.exe",
+              "bytes": 18432,
+              "sha256": "50a29031f1a76c1e1a55551924799fbfdd54a998fdc4a6b28fdf12a11cda8bd5",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_native_math_tests.exe"
+            },
+            "after": {
+              "entry": "retained/After/Artifacts/bsp_native_math_tests.exe",
+              "bytes": 18432,
+              "sha256": "1e6df11abec22dbc4756efed6887499e02a0f896cafa93459d026cb640fe32ec",
+              "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_native_math_tests.exe"
+            },
+            "byte_exact": false,
+            "before_sections": [
+              {
+                "name": ".text",
+                "rva": 4096,
+                "virtual_bytes": 9639,
+                "raw_bytes": 9728,
+                "raw_offset": 1024,
+                "sha256": "32e38026a5043f1e215138039e788b81069fedff7a973d10d99009c15e3435e5"
+              },
+              {
+                "name": ".rdata",
+                "rva": 16384,
+                "virtual_bytes": 5554,
+                "raw_bytes": 5632,
+                "raw_offset": 10752,
+                "sha256": "dc70c67239933bb36074cb7bbe6d17183317b73bbc03a03fc14c9027dccd4fc6"
+              },
+              {
+                "name": ".data",
+                "rva": 24576,
+                "virtual_bytes": 272,
+                "raw_bytes": 512,
+                "raw_offset": 16384,
+                "sha256": "b78494f036a07feadc1d963ae6e2bfd8abce2a771beb80afd5fdcaf3579e286f"
+              },
+              {
+                "name": ".rsrc",
+                "rva": 28672,
+                "virtual_bytes": 480,
+                "raw_bytes": 512,
+                "raw_offset": 16896,
+                "sha256": "c9ed38ed40cfe8c1718cbf78be16bb4aa76b76097a449f9ea315aee9fd20df0d"
+              },
+              {
+                "name": ".reloc",
+                "rva": 32768,
+                "virtual_bytes": 804,
+                "raw_bytes": 1024,
+                "raw_offset": 17408,
+                "sha256": "3e9937c53dca416b02a001ea6769ec1e8b94c566bb4e335216e383d903b1d421"
+              }
+            ],
+            "after_sections": [
+              {
+                "name": ".text",
+                "rva": 4096,
+                "virtual_bytes": 9639,
+                "raw_bytes": 9728,
+                "raw_offset": 1024,
+                "sha256": "32e38026a5043f1e215138039e788b81069fedff7a973d10d99009c15e3435e5"
+              },
+              {
+                "name": ".rdata",
+                "rva": 16384,
+                "virtual_bytes": 5554,
+                "raw_bytes": 5632,
+                "raw_offset": 10752,
+                "sha256": "8ea4372081ae036bd54587e429d1cb5ac8cf35919c9fadb336d2db253ffc7693"
+              },
+              {
+                "name": ".data",
+                "rva": 24576,
+                "virtual_bytes": 272,
+                "raw_bytes": 512,
+                "raw_offset": 16384,
+                "sha256": "b78494f036a07feadc1d963ae6e2bfd8abce2a771beb80afd5fdcaf3579e286f"
+              },
+              {
+                "name": ".rsrc",
+                "rva": 28672,
+                "virtual_bytes": 480,
+                "raw_bytes": 512,
+                "raw_offset": 16896,
+                "sha256": "c9ed38ed40cfe8c1718cbf78be16bb4aa76b76097a449f9ea315aee9fd20df0d"
+              },
+              {
+                "name": ".reloc",
+                "rva": 32768,
+                "virtual_bytes": 804,
+                "raw_bytes": 1024,
+                "raw_offset": 17408,
+                "sha256": "3e9937c53dca416b02a001ea6769ec1e8b94c566bb4e335216e383d903b1d421"
+              }
+            ],
+            "same_section_names": true,
+            "section_payloads_exact": [
+              ".text",
+              ".data",
+              ".rsrc",
+              ".reloc"
+            ],
+            "section_payloads_changed": [
+              ".rdata"
+            ],
+            "changed_byte_count": 4,
+            "changed_offsets": [
+              248,
+              249,
+              12116,
+              12117
+            ],
+            "before_PE_metadata": {
+              "pe": 240,
+              "timestamp_offset": 248,
+              "timestamp": 1791665599,
+              "checksum_offset": 328,
+              "checksum": 0,
+              "debug": [
+                {
+                  "offset": 12112,
+                  "type": 13,
+                  "timestamp": 1791665599,
+                  "timestamp_offset": 12116,
+                  "bytes": 692,
+                  "rva": 18140,
+                  "pointer": 12508
+                }
+              ]
+            },
+            "after_PE_metadata": {
+              "pe": 240,
+              "timestamp_offset": 248,
+              "timestamp": 1791665750,
+              "checksum_offset": 328,
+              "checksum": 0,
+              "debug": [
+                {
+                  "offset": 12112,
+                  "type": 13,
+                  "timestamp": 1791665750,
+                  "timestamp_offset": 12116,
+                  "bytes": 692,
+                  "rva": 18140,
+                  "pointer": 12508
+                }
+              ]
+            },
+            "only_PE_and_debug_timestamps_changed": true
+          }
+        ],
+        "build_checks": {
+          "Before": [
+            "reconstructed_math",
+            "native_math_differential",
+            "tool_tests"
+          ],
+          "After": [
+            "reconstructed_math",
+            "native_math_differential",
+            "tool_tests"
+          ]
+        },
+        "no_new_tests": true,
+        "no_ad_hoc_probe": true,
+        "original_ABI_parity": false,
+        "Native_SEH_parity": false,
+        "actual_pool_authority_proven": false,
+        "canonical_lifecycle_GO": false,
+        "raw_map_activation_GO": false,
+        "application_GO": false
+      }
+    },
+    "physical_copy_result_equal": true,
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\before.json",
+        "bytes": 7415533,
+        "sha256": "974edd0412e3d30967b6719f44947fa16cac22bbb8951345245c8db56853ee95"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\after.json",
+        "bytes": 5777706,
+        "sha256": "531278c4d2c69d673a6e29ecdbe85275a372cb328ebf87aafef4daf880bd0a92"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\supplement.json",
+        "bytes": 1185,
+        "sha256": "32499023dd14e9e0749df3512cbca8ea6e620a0c42c18b506a83ac211f2703c1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\capture.py",
+        "bytes": 9264,
+        "sha256": "58026980d15b18f95b4ba6232e536a52f4a8188bd28d4cf3dd3305e84397fc46"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\replay.py",
+        "bytes": 15818,
+        "sha256": "78b317273001d77510fdc2b7b279c0f94ca1ed36e6ed8eae60f670f8ed698393"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\evidence_utils.py",
+        "bytes": 4496,
+        "sha256": "ba6927319e084833d3b55ba32c1bf89d450494ae3c47a93edb370bd7e50217a1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\review.json",
+        "bytes": 67580,
+        "sha256": "a44dbe482528d22ef7512f1264d64e0bafb15a379c613b4871a763fc6de01e2e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_locale_borrowed_node_recycling_helper\\physical_copy\\review.json",
+        "bytes": 67580,
+        "sha256": "a44dbe482528d22ef7512f1264d64e0bafb15a379c613b4871a763fc6de01e2e"
+      }
+    ]
+  },
+  "gates": {
+    "Source_helpers_implemented": true,
+    "normal_MSVC_Win32_build_and_existing_checks_pass": true,
+    "borrowed_actual_authority_is_precondition": true,
+    "actual_canonical_pool_authority_proven": false,
+    "slab_slot_producer_proven": false,
+    "Source_profile_trim_implemented": false,
+    "Source_owner_lifecycle_implemented": false,
+    "Native_ABI_replacement": false,
+    "FH3_SEH_parity": false,
+    "raw_map_composition_or_caller_registration": false,
+    "canonical_lifecycle_GO": false,
+    "application_GO": false
+  },
+  "restrictions": {
+    "new_owning_storage": false,
+    "new_registry_or_domain": false,
+    "new_global_publication": false,
+    "unlock_RAII": false,
+    "rollback": false,
+    "physical_node_free": false,
+    "Source_trim_init_unwind": false,
+    "application_registration": false,
+    "GPR_writes": false,
+    "ledger_changes": false,
+    "new_tests": false,
+    "ad_hoc_probe": false,
+    "game_execution": false
+  }
+}
