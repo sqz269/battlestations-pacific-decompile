@@ -3190,12 +3190,12 @@
           "sha256": "97cb0d55853c26656de7fc20413357ff9f755f261bc3019fd8f7390413586c50"
         },
         "DATA_assembly_authorized": true,
-        "DATA_adoption_authorized": false,
+        "DATA_adoption_authorized": true,
         "actual_DATA_assembler_initial_chunk_id": "3d7b14",
         "actual_DATA_assembler_initial_session_id": 70049,
         "actual_DATA_assembler_terminal_observed": true,
         "fresh_future_targets_created": true,
-        "fresh_future_targets_creation_boundary": "control04 selected and D05 DATA assembly in progress; F4/adopted04/Dispatch absent.",
+        "fresh_future_targets_creation_boundary": "D05 assembly and complete output/inert-plan joint acceptance closed; exactly one Source23 DATA adoption running. Original prepare04 clock and Dispatch absent.",
         "actual_DATA_assembler_terminal_chunk_id": "76f722",
         "actual_DATA_assembler_terminal_exit_code": 0,
         "actual_DATA_assembler_raw_tool_evidence": {
@@ -3244,8 +3244,32 @@
           "sha256": "ae50bf39a97401f6a10fb4fb2d9b457335cf61c48bb6d32f836953efece75abe"
         },
         "inert_adopter_plan_current_pins_each_bookend": 45,
-        "complete_independent_output_and_adopter_plan_peer_pending": true,
-        "original_prepare04_clock_started": false
+        "complete_independent_output_and_adopter_plan_peer_pending": false,
+        "original_prepare04_clock_started": false,
+        "Root_complete_output_and_inert_plan_joint_acceptance": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F4_D03_TEXT_review01\\Root_control04_complete_output_and_inert_plan_peer_accepted_DATA01.json",
+          "bytes": 112488882,
+          "sha256": "c638f61e7ebd5dd82c0bde2fb1b14bfbb37d3263a90a74da959e8aa98733a373"
+        },
+        "complete_output_and_plan_peer_checks": 221,
+        "complete_output_and_plan_peer_findings": 12,
+        "complete_output_and_plan_peer_limits": 10,
+        "complete_output_and_plan_current_union_pins_each_bookend": 40487,
+        "separate_DATA_adoption_authorization": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F4_D03_materialization_control04\\Root_DATA_adoption_authorization.selected.json",
+          "bytes": 3542,
+          "sha256": "af96097bd1724b106776608c5a76656ee86ff87d36a5109718752809fdefc94c"
+        },
+        "actual_DATA_adopter_initial_chunk_id": "cdec77",
+        "actual_DATA_adopter_initial_session_id": 11036,
+        "actual_DATA_adopter_terminal_observed": false,
+        "actual_DATA_adoption_complete": false,
+        "actual_DATA_adopter_pending_genuine_tool_evidence": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F4_D03_materialization_control04\\DATA_adopter_attempt01.pending_genuine_tools_DATA01.json",
+          "bytes": 2909,
+          "sha256": "f12e2b5cf83006b50b10650ec4555cc452dadefcbf021f89c7a61bb5935f406a"
+        },
+        "Root_remaining": "Genuine adopted04 DATA terminal; complete adopted-output Root and independent peer closure; fresh ordinary-host environment/policy/guard-stream admission; separate exact actual prepare04 authority and four genuine original-QPC tool terminals."
       }
     }
   }
