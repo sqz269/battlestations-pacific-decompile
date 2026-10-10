@@ -1,0 +1,3796 @@
+{
+  "schema": 1,
+  "packet": "cc12_particle_profile_admitted_constructor",
+  "utc": "2026-10-10T19:46:07.718296+00:00",
+  "status": "implemented_and_build_checked_source_overload_only",
+  "scope": {
+    "cpp_files": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "src/native_particle_model_lifetime.cpp"
+    ],
+    "source_diff": "6 header lines added; 12 source lines changed; 17 additions and 1 deletion",
+    "no_registry_or_application_activation": true,
+    "constructors_remain_potentially_throwing": true,
+    "no_new_fields_or_lifetime_state": true,
+    "no_new_tests_or_model_probes": true,
+    "no_Ghidra_query_or_mutation": true
+  },
+  "baseline_commit": "637e162800c638995f0ab1c8e891a1b21edaef92",
+  "after_actual_staged_git_tree": "26a57f194b0535bd990d1b4fd64ef38f2cd617cb",
+  "after_source_root_entries": [
+    "100644 blob 3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa\tCMakeLists.txt",
+    "040000 tree 098038a53c6a019ae6c7b29c6bfd2caf64619fbf\tcmake",
+    "040000 tree e65233af613ef42d13cfa00ca78451b8bf7c0750\tinclude",
+    "040000 tree bf65e83d6945357deb40b7a440352ff3d2a7305e\tscripts",
+    "040000 tree d2c00b871fb9bd37c5898ff55ef5fa91ba93ce0f\tsrc",
+    "040000 tree e5f6b0a0552a5cdd667867306ad6c11f0c1b0e68\ttests"
+  ],
+  "Source": {
+    "paths": 4224,
+    "query_corpus": 4207,
+    "actual_tu_dependency_paths": [
+      "include/bsp/allocator_list.hpp",
+      "include/bsp/building_instance.hpp",
+      "include/bsp/camera_frame_state.hpp",
+      "include/bsp/camera_look_at.hpp",
+      "include/bsp/camera_pose.hpp",
+      "include/bsp/camera_projection.hpp",
+      "include/bsp/camera_transform.hpp",
+      "include/bsp/camera_type_bootstrap.hpp",
+      "include/bsp/d3d9_buffers.hpp",
+      "include/bsp/d3d9_startup.hpp",
+      "include/bsp/d3d9_states.hpp",
+      "include/bsp/d3d9_vertex_layout.hpp",
+      "include/bsp/effect_admission.hpp",
+      "include/bsp/effect_deletion_queue.hpp",
+      "include/bsp/font_registry.hpp",
+      "include/bsp/frame_clock.hpp",
+      "include/bsp/frontend_screen_animation.hpp",
+      "include/bsp/game_entry.hpp",
+      "include/bsp/generated_model_lifetime.hpp",
+      "include/bsp/gui_layout_loader.hpp",
+      "include/bsp/gui_native_geometry.hpp",
+      "include/bsp/gui_text.hpp",
+      "include/bsp/gui_text_buffers.hpp",
+      "include/bsp/gui_text_material.hpp",
+      "include/bsp/gui_text_native_renderer.hpp",
+      "include/bsp/gui_widget.hpp",
+      "include/bsp/gui_widget_base_lifetime.hpp",
+      "include/bsp/gui_widget_owner.hpp",
+      "include/bsp/gui_widget_scene.hpp",
+      "include/bsp/instance_geometry.hpp",
+      "include/bsp/instance_grouping.hpp",
+      "include/bsp/instance_sort.hpp",
+      "include/bsp/instance_upload.hpp",
+      "include/bsp/light_type_bootstrap.hpp",
+      "include/bsp/live_effect_event_registry.hpp",
+      "include/bsp/live_effect_insertion.hpp",
+      "include/bsp/live_effect_manager_lifetime.hpp",
+      "include/bsp/material_lighting.hpp",
+      "include/bsp/material_sort_metadata.hpp",
+      "include/bsp/model_type_bootstrap.hpp",
+      "include/bsp/native_camera_matrix_copy.hpp",
+      "include/bsp/native_camera_owner.hpp",
+      "include/bsp/native_camera_pool.hpp",
+      "include/bsp/native_camera_reference.hpp",
+      "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "include/bsp/native_live_effect_manager.hpp",
+      "include/bsp/native_logical_buffer_device_restore.hpp",
+      "include/bsp/native_logical_buffer_mapping.hpp",
+      "include/bsp/native_logical_index_owner.hpp",
+      "include/bsp/native_logical_vertex_owner.hpp",
+      "include/bsp/native_material_factory.hpp",
+      "include/bsp/native_material_owner.hpp",
+      "include/bsp/native_material_parameters.hpp",
+      "include/bsp/native_material_pools.hpp",
+      "include/bsp/native_mesh_clone.hpp",
+      "include/bsp/native_mesh_owner.hpp",
+      "include/bsp/native_mesh_pool.hpp",
+      "include/bsp/native_mesh_section.hpp",
+      "include/bsp/native_model_owner.hpp",
+      "include/bsp/native_model_pool.hpp",
+      "include/bsp/native_node_construction.hpp",
+      "include/bsp/native_node_destruction.hpp",
+      "include/bsp/native_node_parenting.hpp",
+      "include/bsp/native_particle_array_resize.hpp",
+      "include/bsp/native_particle_model_construction.hpp",
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "include/bsp/native_particle_model_manager.hpp",
+      "include/bsp/native_particle_model_pool_allocate.hpp",
+      "include/bsp/native_particle_model_update.hpp",
+      "include/bsp/native_particle_preparation.hpp",
+      "include/bsp/native_physical_buffer_lock.hpp",
+      "include/bsp/native_physical_buffer_owner.hpp",
+      "include/bsp/native_point_light_links.hpp",
+      "include/bsp/native_render_context.hpp",
+      "include/bsp/native_render_pointer_arrays.hpp",
+      "include/bsp/native_render_resource_record.hpp",
+      "include/bsp/native_renderer_synchronization_actual.hpp",
+      "include/bsp/native_resource_support.hpp",
+      "include/bsp/native_stream_clone.hpp",
+      "include/bsp/native_string.hpp",
+      "include/bsp/native_vertex_declaration_cache.hpp",
+      "include/bsp/native_viewport_owner.hpp",
+      "include/bsp/native_viewport_registry.hpp",
+      "include/bsp/point_effect_instance.hpp",
+      "include/bsp/random.hpp",
+      "include/bsp/random_threads.hpp",
+      "include/bsp/registered_model_effect.hpp",
+      "include/bsp/render_command_queue.hpp",
+      "include/bsp/render_tail.hpp",
+      "include/bsp/scene_attachment.hpp",
+      "include/bsp/singleton_lifetime.hpp",
+      "include/bsp/sound_lifetime_access.hpp",
+      "include/bsp/storage_pool.hpp",
+      "include/bsp/system_camera_axes.hpp",
+      "include/bsp/system_fog_constants.hpp",
+      "include/bsp/system_fog_slot.hpp",
+      "include/bsp/system_lighting_constants.hpp",
+      "include/bsp/system_time_constants.hpp",
+      "include/bsp/vertex_declaration.hpp",
+      "src/generated_model_lifetime.cpp",
+      "src/native_camera_reference.cpp",
+      "src/native_model_owner.cpp",
+      "src/native_particle_array_resize.cpp",
+      "src/native_particle_model_construction.cpp",
+      "src/native_particle_model_lifetime.cpp",
+      "src/scene_attachment.cpp"
+    ],
+    "three_epoch_report_metadata_paths": [
+      "reports/cc12_allocation_stats_raw_constructor_source_primary_review.json",
+      "reports/cc12_allocator_exception_copy_leaf_readiness.json",
+      "reports/cc12_pending_registry_tick_registration_constructor_readiness.json"
+    ],
+    "old_and_wide_epochs": [
+      {
+        "after_changed": [
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_wide_string.hpp",
+          "src/native_particle_model_lifetime.cpp",
+          "src/native_wide_string.cpp"
+        ],
+        "before_changed": [
+          "include/bsp/native_wide_string.hpp",
+          "src/native_wide_string.cpp"
+        ],
+        "name": "typed_views",
+        "project_pins": 3352
+      },
+      {
+        "after_changed": [
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "src/native_particle_model_lifetime.cpp"
+        ],
+        "before_changed": [],
+        "name": "wide_raw_context",
+        "project_pins": 3352
+      }
+    ],
+    "historical_build_artifact_credit": false,
+    "exact_intended_source_transform": true,
+    "changed_paths": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "src/native_particle_model_lifetime.cpp"
+    ],
+    "actual_git_current_check": {
+      "baseline_commit": "637e162800c638995f0ab1c8e891a1b21edaef92",
+      "staged_tree": "26a57f194b0535bd990d1b4fd64ef38f2cd617cb",
+      "verified_git_blobs": 4224,
+      "verified_current_files": 4224,
+      "observed_main": "71e9a0e5ddaf783d0b668917b0e33350b12fe42d",
+      "observed_main_cpp_drift": "M\tcmake/startup.cmake\nA\tinclude/bsp/native_locale_map_node_lifetime.hpp\nA\tsrc/native_locale_map_node_lifetime.cpp\n",
+      "qualification": "Metadata only; no equality of this frozen worker build with later main or other worker changes is claimed."
+    }
+  },
+  "seed_prerequisite": {
+    "source_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_free_seed_primary\\seed_reference_verified.hpp",
+    "used_path": "local/seed_reference.hpp",
+    "source": {
+      "entry": "blobs/26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    "used": {
+      "entry": "blobs/26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    "existing_unchanged": true
+  },
+  "builds": {
+    "before": {
+      "phase": "before",
+      "start_utc": "2026-10-10T19:26:38.223420+00:00",
+      "end_utc": "2026-10-10T19:26:57.328293+00:00",
+      "exit_code": 0,
+      "command": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "log": {
+        "entry": "before_build.log",
+        "bytes": 3419,
+        "sha256": "52267ce076bde6b7c3603cc2ec8d56436e5bd0b7893449a4be3665b86a30118a"
+      }
+    },
+    "after": {
+      "phase": "after",
+      "start_utc": "2026-10-10T19:27:53.468843+00:00",
+      "end_utc": "2026-10-10T19:28:13.146799+00:00",
+      "exit_code": 0,
+      "command": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "log": {
+        "entry": "after_build.log",
+        "bytes": 3435,
+        "sha256": "697d8139e56833309207958789c5f255ef175f5c1dc881fca36741dc2217a2b5"
+      }
+    }
+  },
+  "compiler_captures": {
+    "before": {
+      "TUs": 7,
+      "header_consumers": [
+        {
+          "source_path": "src/native_particle_array_resize.cpp",
+          "headers": [
+            "include/bsp/native_particle_model_lifetime.hpp"
+          ]
+        },
+        {
+          "source_path": "src/native_particle_model_construction.cpp",
+          "headers": [
+            "include/bsp/native_particle_model_lifetime.hpp"
+          ]
+        },
+        {
+          "source_path": "src/native_particle_model_lifetime.cpp",
+          "headers": [
+            "include/bsp/native_particle_model_lifetime.hpp"
+          ]
+        }
+      ],
+      "selected_roots": [
+        "src/native_particle_model_lifetime.cpp",
+        "src/native_particle_array_resize.cpp",
+        "src/native_particle_model_construction.cpp",
+        "src/generated_model_lifetime.cpp",
+        "src/native_camera_reference.cpp",
+        "src/scene_attachment.cpp",
+        "src/native_model_owner.cpp"
+      ],
+      "compiler_tlogs": 56,
+      "external_paths_enumerated_only": 242,
+      "tracked_dependency_paths": 106,
+      "Core_archive_entries": 1991,
+      "App_objects": 80,
+      "object_pins": [
+        {
+          "source_path": "src/scene_attachment.cpp",
+          "pin": {
+            "entry": "blobs/d57d0cadbf995ded154074cc28e846e97983b3d1ec6abb87a3444c1c20925111",
+            "bytes": 160463,
+            "sha256": "d57d0cadbf995ded154074cc28e846e97983b3d1ec6abb87a3444c1c20925111"
+          }
+        },
+        {
+          "source_path": "src/generated_model_lifetime.cpp",
+          "pin": {
+            "entry": "blobs/7898fdfb5ad4f0b6eb8a2e98c3d11112e875c0df53c1d59b839ca497a0cc18e0",
+            "bytes": 164332,
+            "sha256": "7898fdfb5ad4f0b6eb8a2e98c3d11112e875c0df53c1d59b839ca497a0cc18e0"
+          }
+        },
+        {
+          "source_path": "src/native_camera_reference.cpp",
+          "pin": {
+            "entry": "blobs/acdde92655ae42315d7b15a36e4552b52c2fea9bc5e39c11befc39c42dcd0148",
+            "bytes": 29466,
+            "sha256": "acdde92655ae42315d7b15a36e4552b52c2fea9bc5e39c11befc39c42dcd0148"
+          }
+        },
+        {
+          "source_path": "src/native_model_owner.cpp",
+          "pin": {
+            "entry": "blobs/f0f6f181eb982063aac5e623bde81c9fcc4cc78793ea37bfa7dd4a48078e74eb",
+            "bytes": 48274,
+            "sha256": "f0f6f181eb982063aac5e623bde81c9fcc4cc78793ea37bfa7dd4a48078e74eb"
+          }
+        },
+        {
+          "source_path": "src/native_particle_array_resize.cpp",
+          "pin": {
+            "entry": "blobs/6ec13ab51d9e0e9a9ffa8bf949e54b1b77719a171fc98793103cde656105e00f",
+            "bytes": 4327,
+            "sha256": "6ec13ab51d9e0e9a9ffa8bf949e54b1b77719a171fc98793103cde656105e00f"
+          }
+        },
+        {
+          "source_path": "src/native_particle_model_construction.cpp",
+          "pin": {
+            "entry": "blobs/6a4f1c535191f5aeabb26b7327120293a40e4dbcf19519d56c1178be96389ccd",
+            "bytes": 47746,
+            "sha256": "6a4f1c535191f5aeabb26b7327120293a40e4dbcf19519d56c1178be96389ccd"
+          }
+        },
+        {
+          "source_path": "src/native_particle_model_lifetime.cpp",
+          "pin": {
+            "entry": "blobs/58600b56c0bdddee2598368948d7c5d76e51f1c964b51547be9e33bdcbdd1244",
+            "bytes": 43873,
+            "sha256": "58600b56c0bdddee2598368948d7c5d76e51f1c964b51547be9e33bdcbdd1244"
+          }
+        }
+      ]
+    },
+    "after": {
+      "TUs": 7,
+      "header_consumers": [
+        {
+          "source_path": "src/native_particle_array_resize.cpp",
+          "headers": [
+            "include/bsp/native_particle_model_lifetime.hpp"
+          ]
+        },
+        {
+          "source_path": "src/native_particle_model_construction.cpp",
+          "headers": [
+            "include/bsp/native_particle_model_lifetime.hpp"
+          ]
+        },
+        {
+          "source_path": "src/native_particle_model_lifetime.cpp",
+          "headers": [
+            "include/bsp/native_particle_model_lifetime.hpp"
+          ]
+        }
+      ],
+      "selected_roots": [
+        "src/native_particle_model_lifetime.cpp",
+        "src/native_particle_array_resize.cpp",
+        "src/native_particle_model_construction.cpp",
+        "src/generated_model_lifetime.cpp",
+        "src/native_camera_reference.cpp",
+        "src/scene_attachment.cpp",
+        "src/native_model_owner.cpp"
+      ],
+      "compiler_tlogs": 56,
+      "external_paths_enumerated_only": 243,
+      "tracked_dependency_paths": 106,
+      "Core_archive_entries": 1991,
+      "App_objects": 80,
+      "object_pins": [
+        {
+          "source_path": "src/scene_attachment.cpp",
+          "pin": {
+            "entry": "blobs/d57d0cadbf995ded154074cc28e846e97983b3d1ec6abb87a3444c1c20925111",
+            "bytes": 160463,
+            "sha256": "d57d0cadbf995ded154074cc28e846e97983b3d1ec6abb87a3444c1c20925111"
+          }
+        },
+        {
+          "source_path": "src/generated_model_lifetime.cpp",
+          "pin": {
+            "entry": "blobs/7898fdfb5ad4f0b6eb8a2e98c3d11112e875c0df53c1d59b839ca497a0cc18e0",
+            "bytes": 164332,
+            "sha256": "7898fdfb5ad4f0b6eb8a2e98c3d11112e875c0df53c1d59b839ca497a0cc18e0"
+          }
+        },
+        {
+          "source_path": "src/native_camera_reference.cpp",
+          "pin": {
+            "entry": "blobs/acdde92655ae42315d7b15a36e4552b52c2fea9bc5e39c11befc39c42dcd0148",
+            "bytes": 29466,
+            "sha256": "acdde92655ae42315d7b15a36e4552b52c2fea9bc5e39c11befc39c42dcd0148"
+          }
+        },
+        {
+          "source_path": "src/native_model_owner.cpp",
+          "pin": {
+            "entry": "blobs/f0f6f181eb982063aac5e623bde81c9fcc4cc78793ea37bfa7dd4a48078e74eb",
+            "bytes": 48274,
+            "sha256": "f0f6f181eb982063aac5e623bde81c9fcc4cc78793ea37bfa7dd4a48078e74eb"
+          }
+        },
+        {
+          "source_path": "src/native_particle_array_resize.cpp",
+          "pin": {
+            "entry": "blobs/88045c25be4c5a6df758e6c7ff510cbbe56c78db870ea541f9fa2448d79d8555",
+            "bytes": 4327,
+            "sha256": "88045c25be4c5a6df758e6c7ff510cbbe56c78db870ea541f9fa2448d79d8555"
+          }
+        },
+        {
+          "source_path": "src/native_particle_model_construction.cpp",
+          "pin": {
+            "entry": "blobs/82f40332922137bbf311f7ee35eccf9065147935f1035eab023759727cc61b6d",
+            "bytes": 47746,
+            "sha256": "82f40332922137bbf311f7ee35eccf9065147935f1035eab023759727cc61b6d"
+          }
+        },
+        {
+          "source_path": "src/native_particle_model_lifetime.cpp",
+          "pin": {
+            "entry": "blobs/ba8572a9749961c9aaab94b8cc8a07aa94c2d856f9ba817c92a2465ce999b7f4",
+            "bytes": 45297,
+            "sha256": "ba8572a9749961c9aaab94b8cc8a07aa94c2d856f9ba817c92a2465ce999b7f4"
+          }
+        }
+      ]
+    }
+  },
+  "compiled": {
+    "before_code_sections": 174273,
+    "after_code_sections": 174276,
+    "exact_code_sections": 174271,
+    "changed_code_sections": [
+      {
+        "before": {
+          "group": "Core",
+          "object": "native_particle_model_lifetime.obj",
+          "identity": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z",
+          "section": 26,
+          "bytes": 363,
+          "sha256": "58f1b0f82c482271cb21c3c567f5fc2003567fd52b51e919e0316d6dde9e6751",
+          "relocations": [
+            {
+              "offset": 6,
+              "type": 6,
+              "symbol": "__ehhandler$??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z"
+            },
+            {
+              "offset": 23,
+              "type": 6,
+              "symbol": "___security_cookie"
+            },
+            {
+              "offset": 46,
+              "type": 6,
+              "symbol": "??_7GeneratedModelNodeLifetime@bsp@@6B@"
+            },
+            {
+              "offset": 80,
+              "type": 6,
+              "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+            },
+            {
+              "offset": 87,
+              "type": 6,
+              "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+            },
+            {
+              "offset": 264,
+              "type": 20,
+              "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@@Z"
+            },
+            {
+              "offset": 274,
+              "type": 6,
+              "symbol": "?is_type@NativeParticleModelReference@bsp@@CA_NAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@I@Z"
+            },
+            {
+              "offset": 286,
+              "type": 6,
+              "symbol": "?attach_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+            },
+            {
+              "offset": 296,
+              "type": 6,
+              "symbol": "?remove_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+            },
+            {
+              "offset": 306,
+              "type": 6,
+              "symbol": "?world_changed@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@@Z"
+            },
+            {
+              "offset": 331,
+              "type": 6,
+              "symbol": "__imp__terminate"
+            },
+            {
+              "offset": 336,
+              "type": 6,
+              "symbol": "??_C@_0FA@KGIPDCME@particle?5reference?5requires?5the?5@"
+            },
+            {
+              "offset": 344,
+              "type": 20,
+              "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 349,
+              "type": 6,
+              "symbol": "__TI3?AVinvalid_argument@std@@"
+            },
+            {
+              "offset": 358,
+              "type": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ]
+        },
+        "after": {
+          "group": "Core",
+          "object": "native_particle_model_lifetime.obj",
+          "identity": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z",
+          "section": 30,
+          "bytes": 51,
+          "sha256": "1fddc627a394937370b219b5274b3a9572b5601d9fdb57821c76063fc5629e72",
+          "relocations": [
+            {
+              "offset": 25,
+              "type": 20,
+              "symbol": "??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+            },
+            {
+              "offset": 31,
+              "type": 6,
+              "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+            },
+            {
+              "offset": 40,
+              "type": 6,
+              "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+            }
+          ]
+        }
+      }
+    ],
+    "removed_code_sections": [
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "identity": "__unwindfunclet$??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z$0",
+        "section": 27,
+        "bytes": 53,
+        "sha256": "d3e44d6f68d78fcc9a91ec9d8c67fee9fa8085946c46327ddcc3d7dc91f4356d",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 20,
+            "symbol": "??1GeneratedModelNodeLifetime@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "??1RenderCommandReference@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 44,
+            "type": 6,
+            "symbol": "__ehfuncinfo$??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z"
+          },
+          {
+            "offset": 49,
+            "type": 20,
+            "symbol": "___CxxFrameHandler3"
+          }
+        ]
+      }
+    ],
+    "added_code_sections": [
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "identity": "??$move@AAVBindingAdmission@GeneratedModelLifetimeRuntime@bsp@@@std@@YA$$QAVBindingAdmission@GeneratedModelLifetimeRuntime@bsp@@AAV123@@Z",
+        "section": 8,
+        "bytes": 8,
+        "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+        "relocations": []
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "identity": "??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+        "section": 27,
+        "bytes": 383,
+        "sha256": "e2a0b4acb7f56fd10ff3d98750965841fd98f51041f6434be958fbbfd7144938",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+          },
+          {
+            "offset": 23,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 46,
+            "type": 6,
+            "symbol": "??_7GeneratedModelNodeLifetime@bsp@@6B@"
+          },
+          {
+            "offset": 80,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+          },
+          {
+            "offset": 87,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+          },
+          {
+            "offset": 276,
+            "type": 20,
+            "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@$$QAVBindingAdmission@12@@Z"
+          },
+          {
+            "offset": 284,
+            "type": 20,
+            "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@@Z"
+          },
+          {
+            "offset": 294,
+            "type": 6,
+            "symbol": "?is_type@NativeParticleModelReference@bsp@@CA_NAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@I@Z"
+          },
+          {
+            "offset": 306,
+            "type": 6,
+            "symbol": "?attach_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+          },
+          {
+            "offset": 316,
+            "type": 6,
+            "symbol": "?remove_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+          },
+          {
+            "offset": 326,
+            "type": 6,
+            "symbol": "?world_changed@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@@Z"
+          },
+          {
+            "offset": 351,
+            "type": 6,
+            "symbol": "__imp__terminate"
+          },
+          {
+            "offset": 356,
+            "type": 6,
+            "symbol": "??_C@_0FA@KGIPDCME@particle?5reference?5requires?5the?5@"
+          },
+          {
+            "offset": 364,
+            "type": 20,
+            "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 369,
+            "type": 6,
+            "symbol": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "offset": 378,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "identity": "__unwindfunclet$??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z$0",
+        "section": 28,
+        "bytes": 53,
+        "sha256": "d3e44d6f68d78fcc9a91ec9d8c67fee9fa8085946c46327ddcc3d7dc91f4356d",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 20,
+            "symbol": "??1GeneratedModelNodeLifetime@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "??1RenderCommandReference@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 44,
+            "type": 6,
+            "symbol": "__ehfuncinfo$??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+          },
+          {
+            "offset": 49,
+            "type": 20,
+            "symbol": "___CxxFrameHandler3"
+          }
+        ]
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "identity": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@$$QAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+        "section": 29,
+        "bytes": 52,
+        "sha256": "74e86f5abd0ac6482806c71a1810445ea35df4eb543376746ff986b351f37582",
+        "relocations": [
+          {
+            "offset": 26,
+            "type": 20,
+            "symbol": "??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+          },
+          {
+            "offset": 32,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+          },
+          {
+            "offset": 41,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+          }
+        ]
+      }
+    ],
+    "changed_whole_objects": [
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "before_sha256": "58600b56c0bdddee2598368948d7c5d76e51f1c964b51547be9e33bdcbdd1244",
+        "after_sha256": "ba8572a9749961c9aaab94b8cc8a07aa94c2d856f9ba817c92a2465ce999b7f4"
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_model_construction.obj",
+        "before_sha256": "6a4f1c535191f5aeabb26b7327120293a40e4dbcf19519d56c1178be96389ccd",
+        "after_sha256": "82f40332922137bbf311f7ee35eccf9065147935f1035eab023759727cc61b6d"
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_array_resize.obj",
+        "before_sha256": "6ec13ab51d9e0e9a9ffa8bf949e54b1b77719a171fc98793103cde656105e00f",
+        "after_sha256": "88045c25be4c5a6df758e6c7ff510cbbe56c78db870ea541f9fa2448d79d8555"
+      }
+    ],
+    "all_80_App_objects_exact": true,
+    "complete_code_index_scope": "All 1988 Core COFF members and 80 App objects in each build; every code section payload hash and relocation is recomputed by replay.",
+    "selected": {
+      "before": {
+        "full_indices": [
+          {
+            "source_path": "src/native_particle_model_lifetime.cpp",
+            "index": {
+              "entry": "indices/before/native_particle_model_lifetime.obj.json",
+              "bytes": 359596,
+              "sha256": "e4c4dd5da8f31e1e41fef86190c19ea1c39f38200b8085db06a58b028207fe9b"
+            }
+          },
+          {
+            "source_path": "src/native_particle_model_construction.cpp",
+            "index": {
+              "entry": "indices/before/native_particle_model_construction.obj.json",
+              "bytes": 362520,
+              "sha256": "2fb812f15e7f14ff1e3645ce76ff959191f2c269ffccb3b2606f8e0248706dab"
+            }
+          },
+          {
+            "source_path": "src/native_particle_array_resize.cpp",
+            "index": {
+              "entry": "indices/before/native_particle_array_resize.obj.json",
+              "bytes": 27193,
+              "sha256": "289e2ca5b6fce42d1a822d23d72e15455752baf1898cd7b57995726f523da4a4"
+            }
+          },
+          {
+            "source_path": "src/native_model_owner.cpp",
+            "index": {
+              "entry": "indices/before/native_model_owner.obj.json",
+              "bytes": 398961,
+              "sha256": "de32826fe5e78bf895985d6352462319ba213d9db1ae763e5a0bc0a7aeecb75f"
+            }
+          },
+          {
+            "source_path": "src/native_camera_reference.cpp",
+            "index": {
+              "entry": "indices/before/native_camera_reference.obj.json",
+              "bytes": 251133,
+              "sha256": "60ee120bd5a85a1dd52dd058b66d7e1aa287ef67446ebbe3622f1d866fbaed2a"
+            }
+          },
+          {
+            "source_path": "src/generated_model_lifetime.cpp",
+            "index": {
+              "entry": "indices/before/generated_model_lifetime.obj.json",
+              "bytes": 1323637,
+              "sha256": "67c22b4b29ed312184494e27bcfd00160c3c640833e86534b02cbf8c801df846"
+            }
+          },
+          {
+            "source_path": "src/scene_attachment.cpp",
+            "index": {
+              "entry": "indices/before/scene_attachment.obj.json",
+              "bytes": 1235399,
+              "sha256": "3b9805fb4aad20cae69bf5d11029ab9135bc8bccdebb8393048c67fbcfe9f054"
+            }
+          }
+        ],
+        "decoded_functions": 20,
+        "decoded_bytes": 4825,
+        "decoded_instructions": 1588,
+        "zero_raw_storage": [
+          {
+            "source_path": "src/native_particle_model_lifetime.cpp",
+            "section": 5,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_particle_model_construction.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_particle_array_resize.cpp",
+            "section": 5,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_model_owner.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_camera_reference.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/generated_model_lifetime.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/scene_attachment.cpp",
+            "section": 5,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          }
+        ]
+      },
+      "after": {
+        "full_indices": [
+          {
+            "source_path": "src/native_particle_model_lifetime.cpp",
+            "index": {
+              "entry": "indices/after/native_particle_model_lifetime.obj.json",
+              "bytes": 369205,
+              "sha256": "0ae11f8969a2c25fadb0576028283faec7de82a039542cc6bc989fdc238988b7"
+            }
+          },
+          {
+            "source_path": "src/native_particle_model_construction.cpp",
+            "index": {
+              "entry": "indices/after/native_particle_model_construction.obj.json",
+              "bytes": 362520,
+              "sha256": "fdfa1233391f2959954d471fa39a2c62ecd6341ac5fd1bbdfb512af73388541c"
+            }
+          },
+          {
+            "source_path": "src/native_particle_array_resize.cpp",
+            "index": {
+              "entry": "indices/after/native_particle_array_resize.obj.json",
+              "bytes": 27193,
+              "sha256": "c30ba6914d12f45b539abf50b3da8c1322e4b85603bf91e77ec126d332ec403b"
+            }
+          },
+          {
+            "source_path": "src/native_model_owner.cpp",
+            "index": {
+              "entry": "indices/after/native_model_owner.obj.json",
+              "bytes": 398961,
+              "sha256": "de32826fe5e78bf895985d6352462319ba213d9db1ae763e5a0bc0a7aeecb75f"
+            }
+          },
+          {
+            "source_path": "src/native_camera_reference.cpp",
+            "index": {
+              "entry": "indices/after/native_camera_reference.obj.json",
+              "bytes": 251133,
+              "sha256": "60ee120bd5a85a1dd52dd058b66d7e1aa287ef67446ebbe3622f1d866fbaed2a"
+            }
+          },
+          {
+            "source_path": "src/generated_model_lifetime.cpp",
+            "index": {
+              "entry": "indices/after/generated_model_lifetime.obj.json",
+              "bytes": 1323637,
+              "sha256": "67c22b4b29ed312184494e27bcfd00160c3c640833e86534b02cbf8c801df846"
+            }
+          },
+          {
+            "source_path": "src/scene_attachment.cpp",
+            "index": {
+              "entry": "indices/after/scene_attachment.obj.json",
+              "bytes": 1235399,
+              "sha256": "3b9805fb4aad20cae69bf5d11029ab9135bc8bccdebb8393048c67fbcfe9f054"
+            }
+          }
+        ],
+        "decoded_functions": 22,
+        "decoded_bytes": 4948,
+        "decoded_instructions": 1633,
+        "zero_raw_storage": [
+          {
+            "source_path": "src/native_particle_model_lifetime.cpp",
+            "section": 5,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_particle_model_construction.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_particle_array_resize.cpp",
+            "section": 5,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_model_owner.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/native_camera_reference.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/generated_model_lifetime.cpp",
+            "section": 3,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          },
+          {
+            "source_path": "src/scene_attachment.cpp",
+            "section": 5,
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0
+          }
+        ]
+      }
+    }
+  },
+  "semantic_checks": {
+    "status": "pass",
+    "before_constructor": {
+      "name": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z",
+      "bytes": 363,
+      "instructions": 98
+    },
+    "after_constructors": [
+      {
+        "name": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z",
+        "bytes": 51,
+        "instructions": 19
+      },
+      {
+        "name": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@$$QAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+        "bytes": 52,
+        "instructions": 19
+      },
+      {
+        "name": "??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+        "bytes": 383,
+        "instructions": 105
+      }
+    ],
+    "shared_live_validation_checkpoints": [
+      {
+        "offset": 129,
+        "bytes": 7,
+        "hex": "83bf7c01000002",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [edi + 0x17c], 2"
+      },
+      {
+        "offset": 171,
+        "bytes": 6,
+        "hex": "813850dad500",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [eax], 0xd5da50"
+      },
+      {
+        "offset": 186,
+        "bytes": 2,
+        "hex": "8b00",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [eax]"
+      },
+      {
+        "offset": 190,
+        "bytes": 6,
+        "hex": "0f8e9f000000",
+        "mnemonic": "jle",
+        "operands": "0x163"
+      },
+      {
+        "offset": 223,
+        "bytes": 6,
+        "hex": "8138e030bd00",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [eax], 0xbd30e0"
+      },
+      {
+        "offset": 254,
+        "bytes": 7,
+        "hex": "817804407faf00",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [eax + 4], 0xaf7f40"
+      },
+      {
+        "offset": 271,
+        "bytes": 2,
+        "hex": "7409",
+        "mnemonic": "je",
+        "operands": "0x11a"
+      }
+    ],
+    "shared_runtime_bind_relocations": [
+      {
+        "offset": 276,
+        "type": 20,
+        "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@$$QAVBindingAdmission@12@@Z"
+      },
+      {
+        "offset": 284,
+        "type": 20,
+        "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@@Z"
+      }
+    ],
+    "callback_relocations": [
+      {
+        "offset": 294,
+        "type": 6,
+        "symbol": "?is_type@NativeParticleModelReference@bsp@@CA_NAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@I@Z"
+      },
+      {
+        "offset": 306,
+        "type": 6,
+        "symbol": "?attach_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+      },
+      {
+        "offset": 316,
+        "type": 6,
+        "symbol": "?remove_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+      },
+      {
+        "offset": 326,
+        "type": 6,
+        "symbol": "?world_changed@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@@Z"
+      }
+    ],
+    "admitted_bind_bytes": 188,
+    "reserved_append_function_bytes": 234,
+    "reserved_append_instructions": [
+      {
+        "offset": 23,
+        "bytes": 3,
+        "hex": "8b4508",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [ebp + 8]"
+      },
+      {
+        "offset": 26,
+        "bytes": 2,
+        "hex": "8b00",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [eax]"
+      },
+      {
+        "offset": 28,
+        "bytes": 2,
+        "hex": "8902",
+        "mnemonic": "mov",
+        "operands": "dword ptr [edx], eax"
+      },
+      {
+        "offset": 30,
+        "bytes": 4,
+        "hex": "83460404",
+        "mnemonic": "add",
+        "operands": "dword ptr [esi + 4], 4"
+      },
+      {
+        "offset": 34,
+        "bytes": 1,
+        "hex": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "offset": 35,
+        "bytes": 1,
+        "hex": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "offset": 36,
+        "bytes": 2,
+        "hex": "8be5",
+        "mnemonic": "mov",
+        "operands": "esp, ebp"
+      },
+      {
+        "offset": 38,
+        "bytes": 1,
+        "hex": "5d",
+        "mnemonic": "pop",
+        "operands": "ebp"
+      },
+      {
+        "offset": 39,
+        "bytes": 3,
+        "hex": "c20400",
+        "mnemonic": "ret",
+        "operands": "4"
+      }
+    ],
+    "growth_allocation_relocation": {
+      "offset": 117,
+      "type": 20,
+      "symbol": "??$_Allocate_at_least_helper@V?$allocator@PAVGeneratedModelNodeLifetime@bsp@@@std@@@std@@YAPAPAVGeneratedModelNodeLifetime@bsp@@AAV?$allocator@PAVGeneratedModelNodeLifetime@bsp@@@0@AAI@Z"
+    },
+    "preserved_complete_decodes": [
+      {
+        "name": "??1NativeParticleModelReference@bsp@@UAE@XZ",
+        "bytes": 26,
+        "sha256": "7b61f93d369b3240fb958d9a2f97b04919928269e82ef2441ee4a6617f172f51"
+      },
+      {
+        "name": "?require_slot@NativeParticleModelReference@bsp@@ABEXII_N@Z",
+        "bytes": 87,
+        "sha256": "76c251cb75b72de7a7625c0c42ee460a4f6fb525f930f25fb3c57c285440a5e5"
+      },
+      {
+        "name": "?retire_after_failed_construction@NativeParticleModelReference@bsp@@QAEXXZ",
+        "bytes": 118,
+        "sha256": "574c76796f31a99362b8bde4b6e5a343393e48c42180481c5ef68e093f7efa27"
+      },
+      {
+        "name": "?release_zero_references@NativeParticleModelReference@bsp@@UAEXXZ",
+        "bytes": 231,
+        "sha256": "aa9b38538f9b560156815225e99a450ad3368927b77a3c737d7e3f3149e7e62c"
+      },
+      {
+        "name": "?retire@NativeParticleModelReference@bsp@@AAEXXZ",
+        "bytes": 86,
+        "sha256": "e8945357503711839c4bb8f2a4123202db681816e18734f151ac83fb28a8c45d"
+      },
+      {
+        "name": "?delete_native_particle_model_00af7f40@bsp@@YAPAXAAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@I@Z",
+        "bytes": 46,
+        "sha256": "03022d52e230f74d9d17a57d84d34a6eeb4d083e3b0426c494134e0d647bd85d"
+      },
+      {
+        "name": "?destroy_native_particle_model_00af6c50@bsp@@YAXAAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@@Z",
+        "bytes": 600,
+        "sha256": "64e547707319fc65b2c2179bd121bbfffd46e2f4584db61284c859ac1ed04118"
+      },
+      {
+        "name": "?construct_native_particle_model_00af74a0@bsp@@YAPAUNativeNodeStorage@1@AAVNativeModelOwner@1@PAXAAUNativeParticleModelConstructionAccess@1@@Z",
+        "bytes": 1868,
+        "sha256": "eff81afba0efa884ffa41bdedf66f3159acf211d56a55bdff0ad1dd044833f1a"
+      },
+      {
+        "name": "??0NativeCameraReference@bsp@@AAE@AAVNativeCameraOwner@1@UNativeCameraCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+        "bytes": 306,
+        "sha256": "30c9ec827640c88755c602fa5ad83649dbeaad53e7827888cab33ab47d9905b8"
+      },
+      {
+        "name": "??0NativeCameraReference@bsp@@QAE@AAVNativeCameraOwner@1@UNativeCameraCompanionDisposal@1@$$QAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+        "bytes": 49,
+        "sha256": "d4b47d8424877d372997bc91c9943490ec0e41306d4e5655475972117e6b051e"
+      },
+      {
+        "name": "??0NativeCameraReference@bsp@@QAE@AAVNativeCameraOwner@1@UNativeCameraCompanionDisposal@1@@Z",
+        "bytes": 48,
+        "sha256": "d2e0cabda789033f4a837d949465e78a4cf22accc232d81c27b2ae6234f72beb"
+      },
+      {
+        "name": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@$$QAVBindingAdmission@12@@Z",
+        "bytes": 188,
+        "sha256": "ea82071259c3c83c6a05f4bc89511471e258e437c69ed07d436b67ecdb8d506b"
+      },
+      {
+        "name": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@@Z",
+        "bytes": 50,
+        "sha256": "3bf059a6bd4a2cf7f3c110d42a9c900c068238b51760da8fe9c083b447783840"
+      },
+      {
+        "name": "?validate_binding@GeneratedModelLifetimeRuntime@bsp@@ABEXAAVGeneratedModelNodeLifetime@2@@Z",
+        "bytes": 131,
+        "sha256": "9dd1be4a6b2db2e0fb27318b75952982ed702974957947b572f6d1009ba4ee5a"
+      },
+      {
+        "name": "?reserve_binding@GeneratedModelLifetimeRuntime@bsp@@QAE?AVBindingAdmission@12@XZ",
+        "bytes": 31,
+        "sha256": "baec4ad174d7b460c4f6c82ddcb663d8fb65e28e3c6563201ec0835aa25eda58"
+      },
+      {
+        "name": "?reserve_binding_capacity@GeneratedModelLifetimeRuntime@bsp@@AAEXXZ",
+        "bytes": 232,
+        "sha256": "5d54ce72322a8d9e8466d1a8349d8eb27c586eb24ff56164b3fec53089e183dd"
+      },
+      {
+        "name": "?unbind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@@Z",
+        "bytes": 58,
+        "sha256": "01b8ca067025a683a6a39594e3ac907f2e75ed83e5b743521ec779fe3fc7cf8d"
+      },
+      {
+        "name": "?push_back@?$vector@PAVGeneratedModelNodeLifetime@bsp@@V?$allocator@PAVGeneratedModelNodeLifetime@bsp@@@std@@@std@@QAEX$$QAPAVGeneratedModelNodeLifetime@bsp@@@Z",
+        "bytes": 234,
+        "sha256": "a4269598069cb46d37b52cf03796a68e386899bc8e0fdddccf6aec8b643586a4"
+      },
+      {
+        "name": "?resolve_key@SceneAttachmentRuntime@bsp@@QBEAAUSceneNodeAttachment@2@I@Z",
+        "bytes": 73,
+        "sha256": "7a47fac2fa3505ed1e2e7250e5b030d63b2ef7a79d10ce898aa1be3c34079b0c"
+      }
+    ],
+    "moved_EH_funclet": {
+      "before": {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "identity": "__unwindfunclet$??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z$0",
+        "section": 27,
+        "bytes": 53,
+        "sha256": "d3e44d6f68d78fcc9a91ec9d8c67fee9fa8085946c46327ddcc3d7dc91f4356d",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 20,
+            "symbol": "??1GeneratedModelNodeLifetime@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "??1RenderCommandReference@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 44,
+            "type": 6,
+            "symbol": "__ehfuncinfo$??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z"
+          },
+          {
+            "offset": 49,
+            "type": 20,
+            "symbol": "___CxxFrameHandler3"
+          }
+        ]
+      },
+      "after": {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "identity": "__unwindfunclet$??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z$0",
+        "section": 28,
+        "bytes": 53,
+        "sha256": "d3e44d6f68d78fcc9a91ec9d8c67fee9fa8085946c46327ddcc3d7dc91f4356d",
+        "relocations": [
+          {
+            "offset": 4,
+            "type": 20,
+            "symbol": "??1GeneratedModelNodeLifetime@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "??1RenderCommandReference@bsp@@UAE@XZ"
+          },
+          {
+            "offset": 39,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 44,
+            "type": 6,
+            "symbol": "__ehfuncinfo$??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+          },
+          {
+            "offset": 49,
+            "type": 20,
+            "symbol": "___CxxFrameHandler3"
+          }
+        ]
+      },
+      "code_bytes_exact": true,
+      "relocations_equal_after_constructor_symbol_rename": true
+    },
+    "public_constructor_direct_code_relocations": [],
+    "qualification": "Reserved append is allocation-free only under the existing active, serialized admission contract; complete growth and throwing validation paths remain retained. Constructors remain potentially throwing. No new Native reference, registry publication or application activation."
+  },
+  "complete_constructor_decodes": {
+    "before": [
+      {
+        "source_path": "src/native_particle_model_lifetime.cpp",
+        "prefix": "??0NativeParticleModelReference@bsp@@",
+        "section": 26,
+        "function_labels": [
+          {
+            "name": ".text$mn",
+            "value": 0,
+            "section": 26,
+            "type": 0,
+            "storage": 3
+          },
+          {
+            "name": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z",
+            "value": 0,
+            "section": 26,
+            "type": 32,
+            "storage": 2
+          },
+          {
+            "name": "$LN65",
+            "value": 362,
+            "section": 26,
+            "type": 0,
+            "storage": 6
+          }
+        ],
+        "bytes": 363,
+        "sha256": "58f1b0f82c482271cb21c3c567f5fc2003567fd52b51e919e0316d6dde9e6751",
+        "hex": "558bec6aff680000000064a1000000005083ec105657a10000000033c5508d45f464a3000000008bf18975f0c706000000008b7d08c745fc000000008b0783c004c6460c008946108b4d0c8b5514c70600000000c7460400000000897e14894e188b4708c645fc018b40048b403089461c8b4510894620895624c746280000000083bf7c010000020f85c10000008339000f84b800000083790c000f84ae00000085d20f84a60000008b07813850dad5000f85980000008b46108b0085c00f8e8b0000008b46148b00813850dad50075788b46188b400c85c0746e8138e030bd0075668b46148b00813850dad50075598b46188b400c85c0744f817804407faf0075468b4e1c56e800000000c78760010000000000008bc6c7876401000000000000c7877001000000000000c7876c010000000000008b4df464890d00000000595f5e8be55dc21000ff150000000068000000008d4de4e80000000068000000008d45e450e800000000cc",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z"
+          },
+          {
+            "offset": 23,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 46,
+            "type": 6,
+            "symbol": "??_7GeneratedModelNodeLifetime@bsp@@6B@"
+          },
+          {
+            "offset": 80,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+          },
+          {
+            "offset": 87,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+          },
+          {
+            "offset": 264,
+            "type": 20,
+            "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@@Z"
+          },
+          {
+            "offset": 274,
+            "type": 6,
+            "symbol": "?is_type@NativeParticleModelReference@bsp@@CA_NAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@I@Z"
+          },
+          {
+            "offset": 286,
+            "type": 6,
+            "symbol": "?attach_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+          },
+          {
+            "offset": 296,
+            "type": 6,
+            "symbol": "?remove_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+          },
+          {
+            "offset": 306,
+            "type": 6,
+            "symbol": "?world_changed@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@@Z"
+          },
+          {
+            "offset": 331,
+            "type": 6,
+            "symbol": "__imp__terminate"
+          },
+          {
+            "offset": 336,
+            "type": 6,
+            "symbol": "??_C@_0FA@KGIPDCME@particle?5reference?5requires?5the?5@"
+          },
+          {
+            "offset": 344,
+            "type": 20,
+            "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 349,
+            "type": 6,
+            "symbol": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "offset": 358,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": 2,
+            "hex": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "offset": 5,
+            "bytes": 5,
+            "hex": "6800000000",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "offset": 10,
+            "bytes": 6,
+            "hex": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "offset": 16,
+            "bytes": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 17,
+            "bytes": 3,
+            "hex": "83ec10",
+            "mnemonic": "sub",
+            "operands": "esp, 0x10"
+          },
+          {
+            "offset": 20,
+            "bytes": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 21,
+            "bytes": 1,
+            "hex": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "offset": 22,
+            "bytes": 5,
+            "hex": "a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [0]"
+          },
+          {
+            "offset": 27,
+            "bytes": 2,
+            "hex": "33c5",
+            "mnemonic": "xor",
+            "operands": "eax, ebp"
+          },
+          {
+            "offset": 29,
+            "bytes": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 30,
+            "bytes": 3,
+            "hex": "8d45f4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0xc]"
+          },
+          {
+            "offset": 33,
+            "bytes": 6,
+            "hex": "64a300000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], eax"
+          },
+          {
+            "offset": 39,
+            "bytes": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "offset": 41,
+            "bytes": 3,
+            "hex": "8975f0",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x10], esi"
+          },
+          {
+            "offset": 44,
+            "bytes": 6,
+            "hex": "c70600000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0"
+          },
+          {
+            "offset": 50,
+            "bytes": 3,
+            "hex": "8b7d08",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 53,
+            "bytes": 7,
+            "hex": "c745fc00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], 0"
+          },
+          {
+            "offset": 60,
+            "bytes": 2,
+            "hex": "8b07",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi]"
+          },
+          {
+            "offset": 62,
+            "bytes": 3,
+            "hex": "83c004",
+            "mnemonic": "add",
+            "operands": "eax, 4"
+          },
+          {
+            "offset": 65,
+            "bytes": 4,
+            "hex": "c6460c00",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esi + 0xc], 0"
+          },
+          {
+            "offset": 69,
+            "bytes": 3,
+            "hex": "894610",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x10], eax"
+          },
+          {
+            "offset": 72,
+            "bytes": 3,
+            "hex": "8b4d0c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 75,
+            "bytes": 3,
+            "hex": "8b5514",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 78,
+            "bytes": 6,
+            "hex": "c70600000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0"
+          },
+          {
+            "offset": 84,
+            "bytes": 7,
+            "hex": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "offset": 91,
+            "bytes": 3,
+            "hex": "897e14",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x14], edi"
+          },
+          {
+            "offset": 94,
+            "bytes": 3,
+            "hex": "894e18",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x18], ecx"
+          },
+          {
+            "offset": 97,
+            "bytes": 3,
+            "hex": "8b4708",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 8]"
+          },
+          {
+            "offset": 100,
+            "bytes": 4,
+            "hex": "c645fc01",
+            "mnemonic": "mov",
+            "operands": "byte ptr [ebp - 4], 1"
+          },
+          {
+            "offset": 104,
+            "bytes": 3,
+            "hex": "8b4004",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 4]"
+          },
+          {
+            "offset": 107,
+            "bytes": 3,
+            "hex": "8b4030",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 0x30]"
+          },
+          {
+            "offset": 110,
+            "bytes": 3,
+            "hex": "89461c",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x1c], eax"
+          },
+          {
+            "offset": 113,
+            "bytes": 3,
+            "hex": "8b4510",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 116,
+            "bytes": 3,
+            "hex": "894620",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x20], eax"
+          },
+          {
+            "offset": 119,
+            "bytes": 3,
+            "hex": "895624",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x24], edx"
+          },
+          {
+            "offset": 122,
+            "bytes": 7,
+            "hex": "c7462800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x28], 0"
+          },
+          {
+            "offset": 129,
+            "bytes": 7,
+            "hex": "83bf7c01000002",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [edi + 0x17c], 2"
+          },
+          {
+            "offset": 136,
+            "bytes": 6,
+            "hex": "0f85c1000000",
+            "mnemonic": "jne",
+            "operands": "0x14f"
+          },
+          {
+            "offset": 142,
+            "bytes": 3,
+            "hex": "833900",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [ecx], 0"
+          },
+          {
+            "offset": 145,
+            "bytes": 6,
+            "hex": "0f84b8000000",
+            "mnemonic": "je",
+            "operands": "0x14f"
+          },
+          {
+            "offset": 151,
+            "bytes": 4,
+            "hex": "83790c00",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [ecx + 0xc], 0"
+          },
+          {
+            "offset": 155,
+            "bytes": 6,
+            "hex": "0f84ae000000",
+            "mnemonic": "je",
+            "operands": "0x14f"
+          },
+          {
+            "offset": 161,
+            "bytes": 2,
+            "hex": "85d2",
+            "mnemonic": "test",
+            "operands": "edx, edx"
+          },
+          {
+            "offset": 163,
+            "bytes": 6,
+            "hex": "0f84a6000000",
+            "mnemonic": "je",
+            "operands": "0x14f"
+          },
+          {
+            "offset": 169,
+            "bytes": 2,
+            "hex": "8b07",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi]"
+          },
+          {
+            "offset": 171,
+            "bytes": 6,
+            "hex": "813850dad500",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xd5da50"
+          },
+          {
+            "offset": 177,
+            "bytes": 6,
+            "hex": "0f8598000000",
+            "mnemonic": "jne",
+            "operands": "0x14f"
+          },
+          {
+            "offset": 183,
+            "bytes": 3,
+            "hex": "8b4610",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x10]"
+          },
+          {
+            "offset": 186,
+            "bytes": 2,
+            "hex": "8b00",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 188,
+            "bytes": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 190,
+            "bytes": 6,
+            "hex": "0f8e8b000000",
+            "mnemonic": "jle",
+            "operands": "0x14f"
+          },
+          {
+            "offset": 196,
+            "bytes": 3,
+            "hex": "8b4614",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x14]"
+          },
+          {
+            "offset": 199,
+            "bytes": 2,
+            "hex": "8b00",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 201,
+            "bytes": 6,
+            "hex": "813850dad500",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xd5da50"
+          },
+          {
+            "offset": 207,
+            "bytes": 2,
+            "hex": "7578",
+            "mnemonic": "jne",
+            "operands": "0x149"
+          },
+          {
+            "offset": 209,
+            "bytes": 3,
+            "hex": "8b4618",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x18]"
+          },
+          {
+            "offset": 212,
+            "bytes": 3,
+            "hex": "8b400c",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 0xc]"
+          },
+          {
+            "offset": 215,
+            "bytes": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 217,
+            "bytes": 2,
+            "hex": "746e",
+            "mnemonic": "je",
+            "operands": "0x149"
+          },
+          {
+            "offset": 219,
+            "bytes": 6,
+            "hex": "8138e030bd00",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xbd30e0"
+          },
+          {
+            "offset": 225,
+            "bytes": 2,
+            "hex": "7566",
+            "mnemonic": "jne",
+            "operands": "0x149"
+          },
+          {
+            "offset": 227,
+            "bytes": 3,
+            "hex": "8b4614",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x14]"
+          },
+          {
+            "offset": 230,
+            "bytes": 2,
+            "hex": "8b00",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 232,
+            "bytes": 6,
+            "hex": "813850dad500",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xd5da50"
+          },
+          {
+            "offset": 238,
+            "bytes": 2,
+            "hex": "7559",
+            "mnemonic": "jne",
+            "operands": "0x149"
+          },
+          {
+            "offset": 240,
+            "bytes": 3,
+            "hex": "8b4618",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x18]"
+          },
+          {
+            "offset": 243,
+            "bytes": 3,
+            "hex": "8b400c",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 0xc]"
+          },
+          {
+            "offset": 246,
+            "bytes": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 248,
+            "bytes": 2,
+            "hex": "744f",
+            "mnemonic": "je",
+            "operands": "0x149"
+          },
+          {
+            "offset": 250,
+            "bytes": 7,
+            "hex": "817804407faf00",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax + 4], 0xaf7f40"
+          },
+          {
+            "offset": 257,
+            "bytes": 2,
+            "hex": "7546",
+            "mnemonic": "jne",
+            "operands": "0x149"
+          },
+          {
+            "offset": 259,
+            "bytes": 3,
+            "hex": "8b4e1c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esi + 0x1c]"
+          },
+          {
+            "offset": 262,
+            "bytes": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 263,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x10c"
+          },
+          {
+            "offset": 268,
+            "bytes": 10,
+            "hex": "c7876001000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x160], 0"
+          },
+          {
+            "offset": 278,
+            "bytes": 2,
+            "hex": "8bc6",
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "offset": 280,
+            "bytes": 10,
+            "hex": "c7876401000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x164], 0"
+          },
+          {
+            "offset": 290,
+            "bytes": 10,
+            "hex": "c7877001000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x170], 0"
+          },
+          {
+            "offset": 300,
+            "bytes": 10,
+            "hex": "c7876c01000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x16c], 0"
+          },
+          {
+            "offset": 310,
+            "bytes": 3,
+            "hex": "8b4df4",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0xc]"
+          },
+          {
+            "offset": 313,
+            "bytes": 7,
+            "hex": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "offset": 320,
+            "bytes": 1,
+            "hex": "59",
+            "mnemonic": "pop",
+            "operands": "ecx"
+          },
+          {
+            "offset": 321,
+            "bytes": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "offset": 322,
+            "bytes": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 323,
+            "bytes": 2,
+            "hex": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "offset": 325,
+            "bytes": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 326,
+            "bytes": 3,
+            "hex": "c21000",
+            "mnemonic": "ret",
+            "operands": "0x10"
+          },
+          {
+            "offset": 329,
+            "bytes": 6,
+            "hex": "ff1500000000",
+            "mnemonic": "call",
+            "operands": "dword ptr [0]"
+          },
+          {
+            "offset": 335,
+            "bytes": 5,
+            "hex": "6800000000",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "offset": 340,
+            "bytes": 3,
+            "hex": "8d4de4",
+            "mnemonic": "lea",
+            "operands": "ecx, [ebp - 0x1c]"
+          },
+          {
+            "offset": 343,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x15c"
+          },
+          {
+            "offset": 348,
+            "bytes": 5,
+            "hex": "6800000000",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "offset": 353,
+            "bytes": 3,
+            "hex": "8d45e4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0x1c]"
+          },
+          {
+            "offset": 356,
+            "bytes": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 357,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x16a"
+          },
+          {
+            "offset": 362,
+            "bytes": 1,
+            "hex": "cc",
+            "mnemonic": "int3",
+            "operands": ""
+          }
+        ]
+      }
+    ],
+    "after": [
+      {
+        "source_path": "src/native_particle_model_lifetime.cpp",
+        "prefix": "??0NativeParticleModelReference@bsp@@",
+        "section": 27,
+        "function_labels": [
+          {
+            "name": ".text$mn",
+            "value": 0,
+            "section": 27,
+            "type": 0,
+            "storage": 3
+          },
+          {
+            "name": "??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+            "value": 0,
+            "section": 27,
+            "type": 32,
+            "storage": 2
+          },
+          {
+            "name": "$LN67",
+            "value": 382,
+            "section": 27,
+            "type": 0,
+            "storage": 6
+          }
+        ],
+        "bytes": 383,
+        "sha256": "e2a0b4acb7f56fd10ff3d98750965841fd98f51041f6434be958fbbfd7144938",
+        "hex": "558bec6aff680000000064a1000000005083ec105657a10000000033c5508d45f464a3000000008bf18975f0c706000000008b7d08c745fc000000008b0783c004c6460c008946108b4d0c8b5514c70600000000c7460400000000897e14894e188b4708c645fc018b40048b403089461c8b4510894620895624c746280000000083bf7c010000020f85d50000008339000f84cc00000083790c000f84c200000085d20f84ba0000008b07813850dad5000f85ac0000008b46108b0085c00f8e9f0000008b46148b00813850dad5000f85880000008b46188b400c85c0747e8138e030bd0075768b46148b00813850dad50075698b46188b400c85c0745f817804407faf0075568b45188b4e1c85c074095056e800000000eb0656e800000000c78760010000000000008bc6c7876401000000000000c7877001000000000000c7876c010000000000008b4df464890d00000000595f5e8be55dc21400ff150000000068000000008d4de4e80000000068000000008d45e450e800000000cc",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+          },
+          {
+            "offset": 23,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 46,
+            "type": 6,
+            "symbol": "??_7GeneratedModelNodeLifetime@bsp@@6B@"
+          },
+          {
+            "offset": 80,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+          },
+          {
+            "offset": 87,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+          },
+          {
+            "offset": 276,
+            "type": 20,
+            "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@$$QAVBindingAdmission@12@@Z"
+          },
+          {
+            "offset": 284,
+            "type": 20,
+            "symbol": "?bind@GeneratedModelLifetimeRuntime@bsp@@QAEXAAVGeneratedModelNodeLifetime@2@@Z"
+          },
+          {
+            "offset": 294,
+            "type": 6,
+            "symbol": "?is_type@NativeParticleModelReference@bsp@@CA_NAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@I@Z"
+          },
+          {
+            "offset": 306,
+            "type": 6,
+            "symbol": "?attach_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+          },
+          {
+            "offset": 316,
+            "type": 6,
+            "symbol": "?remove_scene@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@PAUSceneResource@2@_N@Z"
+          },
+          {
+            "offset": 326,
+            "type": 6,
+            "symbol": "?world_changed@NativeParticleModelReference@bsp@@CAXAAVSceneAttachmentRuntime@2@AAUSceneNodeAttachment@2@@Z"
+          },
+          {
+            "offset": 351,
+            "type": 6,
+            "symbol": "__imp__terminate"
+          },
+          {
+            "offset": 356,
+            "type": 6,
+            "symbol": "??_C@_0FA@KGIPDCME@particle?5reference?5requires?5the?5@"
+          },
+          {
+            "offset": 364,
+            "type": 20,
+            "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 369,
+            "type": 6,
+            "symbol": "__TI3?AVinvalid_argument@std@@"
+          },
+          {
+            "offset": 378,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": 2,
+            "hex": "6aff",
+            "mnemonic": "push",
+            "operands": "-1"
+          },
+          {
+            "offset": 5,
+            "bytes": 5,
+            "hex": "6800000000",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "offset": 10,
+            "bytes": 6,
+            "hex": "64a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr fs:[0]"
+          },
+          {
+            "offset": 16,
+            "bytes": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 17,
+            "bytes": 3,
+            "hex": "83ec10",
+            "mnemonic": "sub",
+            "operands": "esp, 0x10"
+          },
+          {
+            "offset": 20,
+            "bytes": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 21,
+            "bytes": 1,
+            "hex": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "offset": 22,
+            "bytes": 5,
+            "hex": "a100000000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [0]"
+          },
+          {
+            "offset": 27,
+            "bytes": 2,
+            "hex": "33c5",
+            "mnemonic": "xor",
+            "operands": "eax, ebp"
+          },
+          {
+            "offset": 29,
+            "bytes": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 30,
+            "bytes": 3,
+            "hex": "8d45f4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0xc]"
+          },
+          {
+            "offset": 33,
+            "bytes": 6,
+            "hex": "64a300000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], eax"
+          },
+          {
+            "offset": 39,
+            "bytes": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "offset": 41,
+            "bytes": 3,
+            "hex": "8975f0",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x10], esi"
+          },
+          {
+            "offset": 44,
+            "bytes": 6,
+            "hex": "c70600000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0"
+          },
+          {
+            "offset": 50,
+            "bytes": 3,
+            "hex": "8b7d08",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 53,
+            "bytes": 7,
+            "hex": "c745fc00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], 0"
+          },
+          {
+            "offset": 60,
+            "bytes": 2,
+            "hex": "8b07",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi]"
+          },
+          {
+            "offset": 62,
+            "bytes": 3,
+            "hex": "83c004",
+            "mnemonic": "add",
+            "operands": "eax, 4"
+          },
+          {
+            "offset": 65,
+            "bytes": 4,
+            "hex": "c6460c00",
+            "mnemonic": "mov",
+            "operands": "byte ptr [esi + 0xc], 0"
+          },
+          {
+            "offset": 69,
+            "bytes": 3,
+            "hex": "894610",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x10], eax"
+          },
+          {
+            "offset": 72,
+            "bytes": 3,
+            "hex": "8b4d0c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 75,
+            "bytes": 3,
+            "hex": "8b5514",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 78,
+            "bytes": 6,
+            "hex": "c70600000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0"
+          },
+          {
+            "offset": 84,
+            "bytes": 7,
+            "hex": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "offset": 91,
+            "bytes": 3,
+            "hex": "897e14",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x14], edi"
+          },
+          {
+            "offset": 94,
+            "bytes": 3,
+            "hex": "894e18",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x18], ecx"
+          },
+          {
+            "offset": 97,
+            "bytes": 3,
+            "hex": "8b4708",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 8]"
+          },
+          {
+            "offset": 100,
+            "bytes": 4,
+            "hex": "c645fc01",
+            "mnemonic": "mov",
+            "operands": "byte ptr [ebp - 4], 1"
+          },
+          {
+            "offset": 104,
+            "bytes": 3,
+            "hex": "8b4004",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 4]"
+          },
+          {
+            "offset": 107,
+            "bytes": 3,
+            "hex": "8b4030",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 0x30]"
+          },
+          {
+            "offset": 110,
+            "bytes": 3,
+            "hex": "89461c",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x1c], eax"
+          },
+          {
+            "offset": 113,
+            "bytes": 3,
+            "hex": "8b4510",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 116,
+            "bytes": 3,
+            "hex": "894620",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x20], eax"
+          },
+          {
+            "offset": 119,
+            "bytes": 3,
+            "hex": "895624",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x24], edx"
+          },
+          {
+            "offset": 122,
+            "bytes": 7,
+            "hex": "c7462800000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x28], 0"
+          },
+          {
+            "offset": 129,
+            "bytes": 7,
+            "hex": "83bf7c01000002",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [edi + 0x17c], 2"
+          },
+          {
+            "offset": 136,
+            "bytes": 6,
+            "hex": "0f85d5000000",
+            "mnemonic": "jne",
+            "operands": "0x163"
+          },
+          {
+            "offset": 142,
+            "bytes": 3,
+            "hex": "833900",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [ecx], 0"
+          },
+          {
+            "offset": 145,
+            "bytes": 6,
+            "hex": "0f84cc000000",
+            "mnemonic": "je",
+            "operands": "0x163"
+          },
+          {
+            "offset": 151,
+            "bytes": 4,
+            "hex": "83790c00",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [ecx + 0xc], 0"
+          },
+          {
+            "offset": 155,
+            "bytes": 6,
+            "hex": "0f84c2000000",
+            "mnemonic": "je",
+            "operands": "0x163"
+          },
+          {
+            "offset": 161,
+            "bytes": 2,
+            "hex": "85d2",
+            "mnemonic": "test",
+            "operands": "edx, edx"
+          },
+          {
+            "offset": 163,
+            "bytes": 6,
+            "hex": "0f84ba000000",
+            "mnemonic": "je",
+            "operands": "0x163"
+          },
+          {
+            "offset": 169,
+            "bytes": 2,
+            "hex": "8b07",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi]"
+          },
+          {
+            "offset": 171,
+            "bytes": 6,
+            "hex": "813850dad500",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xd5da50"
+          },
+          {
+            "offset": 177,
+            "bytes": 6,
+            "hex": "0f85ac000000",
+            "mnemonic": "jne",
+            "operands": "0x163"
+          },
+          {
+            "offset": 183,
+            "bytes": 3,
+            "hex": "8b4610",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x10]"
+          },
+          {
+            "offset": 186,
+            "bytes": 2,
+            "hex": "8b00",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 188,
+            "bytes": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 190,
+            "bytes": 6,
+            "hex": "0f8e9f000000",
+            "mnemonic": "jle",
+            "operands": "0x163"
+          },
+          {
+            "offset": 196,
+            "bytes": 3,
+            "hex": "8b4614",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x14]"
+          },
+          {
+            "offset": 199,
+            "bytes": 2,
+            "hex": "8b00",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 201,
+            "bytes": 6,
+            "hex": "813850dad500",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xd5da50"
+          },
+          {
+            "offset": 207,
+            "bytes": 6,
+            "hex": "0f8588000000",
+            "mnemonic": "jne",
+            "operands": "0x15d"
+          },
+          {
+            "offset": 213,
+            "bytes": 3,
+            "hex": "8b4618",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x18]"
+          },
+          {
+            "offset": 216,
+            "bytes": 3,
+            "hex": "8b400c",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 0xc]"
+          },
+          {
+            "offset": 219,
+            "bytes": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 221,
+            "bytes": 2,
+            "hex": "747e",
+            "mnemonic": "je",
+            "operands": "0x15d"
+          },
+          {
+            "offset": 223,
+            "bytes": 6,
+            "hex": "8138e030bd00",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xbd30e0"
+          },
+          {
+            "offset": 229,
+            "bytes": 2,
+            "hex": "7576",
+            "mnemonic": "jne",
+            "operands": "0x15d"
+          },
+          {
+            "offset": 231,
+            "bytes": 3,
+            "hex": "8b4614",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x14]"
+          },
+          {
+            "offset": 234,
+            "bytes": 2,
+            "hex": "8b00",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax]"
+          },
+          {
+            "offset": 236,
+            "bytes": 6,
+            "hex": "813850dad500",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax], 0xd5da50"
+          },
+          {
+            "offset": 242,
+            "bytes": 2,
+            "hex": "7569",
+            "mnemonic": "jne",
+            "operands": "0x15d"
+          },
+          {
+            "offset": 244,
+            "bytes": 3,
+            "hex": "8b4618",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [esi + 0x18]"
+          },
+          {
+            "offset": 247,
+            "bytes": 3,
+            "hex": "8b400c",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [eax + 0xc]"
+          },
+          {
+            "offset": 250,
+            "bytes": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 252,
+            "bytes": 2,
+            "hex": "745f",
+            "mnemonic": "je",
+            "operands": "0x15d"
+          },
+          {
+            "offset": 254,
+            "bytes": 7,
+            "hex": "817804407faf00",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [eax + 4], 0xaf7f40"
+          },
+          {
+            "offset": 261,
+            "bytes": 2,
+            "hex": "7556",
+            "mnemonic": "jne",
+            "operands": "0x15d"
+          },
+          {
+            "offset": 263,
+            "bytes": 3,
+            "hex": "8b4518",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x18]"
+          },
+          {
+            "offset": 266,
+            "bytes": 3,
+            "hex": "8b4e1c",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esi + 0x1c]"
+          },
+          {
+            "offset": 269,
+            "bytes": 2,
+            "hex": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "offset": 271,
+            "bytes": 2,
+            "hex": "7409",
+            "mnemonic": "je",
+            "operands": "0x11a"
+          },
+          {
+            "offset": 273,
+            "bytes": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 274,
+            "bytes": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 275,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x118"
+          },
+          {
+            "offset": 280,
+            "bytes": 2,
+            "hex": "eb06",
+            "mnemonic": "jmp",
+            "operands": "0x120"
+          },
+          {
+            "offset": 282,
+            "bytes": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 283,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x120"
+          },
+          {
+            "offset": 288,
+            "bytes": 10,
+            "hex": "c7876001000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x160], 0"
+          },
+          {
+            "offset": 298,
+            "bytes": 2,
+            "hex": "8bc6",
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "offset": 300,
+            "bytes": 10,
+            "hex": "c7876401000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x164], 0"
+          },
+          {
+            "offset": 310,
+            "bytes": 10,
+            "hex": "c7877001000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x170], 0"
+          },
+          {
+            "offset": 320,
+            "bytes": 10,
+            "hex": "c7876c01000000000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [edi + 0x16c], 0"
+          },
+          {
+            "offset": 330,
+            "bytes": 3,
+            "hex": "8b4df4",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0xc]"
+          },
+          {
+            "offset": 333,
+            "bytes": 7,
+            "hex": "64890d00000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr fs:[0], ecx"
+          },
+          {
+            "offset": 340,
+            "bytes": 1,
+            "hex": "59",
+            "mnemonic": "pop",
+            "operands": "ecx"
+          },
+          {
+            "offset": 341,
+            "bytes": 1,
+            "hex": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "offset": 342,
+            "bytes": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 343,
+            "bytes": 2,
+            "hex": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "offset": 345,
+            "bytes": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 346,
+            "bytes": 3,
+            "hex": "c21400",
+            "mnemonic": "ret",
+            "operands": "0x14"
+          },
+          {
+            "offset": 349,
+            "bytes": 6,
+            "hex": "ff1500000000",
+            "mnemonic": "call",
+            "operands": "dword ptr [0]"
+          },
+          {
+            "offset": 355,
+            "bytes": 5,
+            "hex": "6800000000",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "offset": 360,
+            "bytes": 3,
+            "hex": "8d4de4",
+            "mnemonic": "lea",
+            "operands": "ecx, [ebp - 0x1c]"
+          },
+          {
+            "offset": 363,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x170"
+          },
+          {
+            "offset": 368,
+            "bytes": 5,
+            "hex": "6800000000",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "offset": 373,
+            "bytes": 3,
+            "hex": "8d45e4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0x1c]"
+          },
+          {
+            "offset": 376,
+            "bytes": 1,
+            "hex": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 377,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x17e"
+          },
+          {
+            "offset": 382,
+            "bytes": 1,
+            "hex": "cc",
+            "mnemonic": "int3",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "source_path": "src/native_particle_model_lifetime.cpp",
+        "prefix": "??0NativeParticleModelReference@bsp@@",
+        "section": 29,
+        "function_labels": [
+          {
+            "name": ".text$mn",
+            "value": 0,
+            "section": 29,
+            "type": 0,
+            "storage": 3
+          },
+          {
+            "name": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@$$QAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z",
+            "value": 0,
+            "section": 29,
+            "type": 32,
+            "storage": 2
+          }
+        ],
+        "bytes": 52,
+        "sha256": "74e86f5abd0ac6482806c71a1810445ea35df4eb543376746ff986b351f37582",
+        "hex": "558bec5156ff75188bf1ff75148975fcff7510ff750cff7508e800000000c706000000008bc6c74604000000005e8be55dc21400",
+        "relocations": [
+          {
+            "offset": 26,
+            "type": 20,
+            "symbol": "??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+          },
+          {
+            "offset": 32,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+          },
+          {
+            "offset": 41,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": 1,
+            "hex": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "offset": 4,
+            "bytes": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 5,
+            "bytes": 3,
+            "hex": "ff7518",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x18]"
+          },
+          {
+            "offset": 8,
+            "bytes": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "offset": 10,
+            "bytes": 3,
+            "hex": "ff7514",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 13,
+            "bytes": 3,
+            "hex": "8975fc",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], esi"
+          },
+          {
+            "offset": 16,
+            "bytes": 3,
+            "hex": "ff7510",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 19,
+            "bytes": 3,
+            "hex": "ff750c",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 22,
+            "bytes": 3,
+            "hex": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 25,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x1e"
+          },
+          {
+            "offset": 30,
+            "bytes": 6,
+            "hex": "c70600000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0"
+          },
+          {
+            "offset": 36,
+            "bytes": 2,
+            "hex": "8bc6",
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "offset": 38,
+            "bytes": 7,
+            "hex": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "offset": 45,
+            "bytes": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 46,
+            "bytes": 2,
+            "hex": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "offset": 48,
+            "bytes": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 49,
+            "bytes": 3,
+            "hex": "c21400",
+            "mnemonic": "ret",
+            "operands": "0x14"
+          }
+        ]
+      },
+      {
+        "source_path": "src/native_particle_model_lifetime.cpp",
+        "prefix": "??0NativeParticleModelReference@bsp@@",
+        "section": 30,
+        "function_labels": [
+          {
+            "name": ".text$mn",
+            "value": 0,
+            "section": 30,
+            "type": 0,
+            "storage": 3
+          },
+          {
+            "name": "??0NativeParticleModelReference@bsp@@QAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@@Z",
+            "value": 0,
+            "section": 30,
+            "type": 32,
+            "storage": 2
+          }
+        ],
+        "bytes": 51,
+        "sha256": "1fddc627a394937370b219b5274b3a9572b5601d9fdb57821c76063fc5629e72",
+        "hex": "558bec51566a00ff75148bf1ff75108975fcff750cff7508e800000000c706000000008bc6c74604000000005e8be55dc21000",
+        "relocations": [
+          {
+            "offset": 25,
+            "type": 20,
+            "symbol": "??0NativeParticleModelReference@bsp@@AAE@AAVNativeModelOwner@1@AAUNativeParticleModelLifetimeAccess@1@UNativeParticleModelCompanionDisposal@1@PAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+          },
+          {
+            "offset": 31,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BGeneratedModelNodeLifetime@1@@"
+          },
+          {
+            "offset": 40,
+            "type": 6,
+            "symbol": "??_7NativeParticleModelReference@bsp@@6BRenderCommandReference@1@@"
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": 1,
+            "hex": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": 2,
+            "hex": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": 1,
+            "hex": "51",
+            "mnemonic": "push",
+            "operands": "ecx"
+          },
+          {
+            "offset": 4,
+            "bytes": 1,
+            "hex": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 5,
+            "bytes": 2,
+            "hex": "6a00",
+            "mnemonic": "push",
+            "operands": "0"
+          },
+          {
+            "offset": 7,
+            "bytes": 3,
+            "hex": "ff7514",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 10,
+            "bytes": 2,
+            "hex": "8bf1",
+            "mnemonic": "mov",
+            "operands": "esi, ecx"
+          },
+          {
+            "offset": 12,
+            "bytes": 3,
+            "hex": "ff7510",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 15,
+            "bytes": 3,
+            "hex": "8975fc",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], esi"
+          },
+          {
+            "offset": 18,
+            "bytes": 3,
+            "hex": "ff750c",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 21,
+            "bytes": 3,
+            "hex": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 24,
+            "bytes": 5,
+            "hex": "e800000000",
+            "mnemonic": "call",
+            "operands": "0x1d"
+          },
+          {
+            "offset": 29,
+            "bytes": 6,
+            "hex": "c70600000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], 0"
+          },
+          {
+            "offset": 35,
+            "bytes": 2,
+            "hex": "8bc6",
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "offset": 37,
+            "bytes": 7,
+            "hex": "c7460400000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 4], 0"
+          },
+          {
+            "offset": 44,
+            "bytes": 1,
+            "hex": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 45,
+            "bytes": 2,
+            "hex": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "offset": 47,
+            "bytes": 1,
+            "hex": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 48,
+            "bytes": 3,
+            "hex": "c21000",
+            "mnemonic": "ret",
+            "operands": "0x10"
+          }
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "artifact_pins": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "before": {
+          "bytes": 73975848,
+          "sha256": "77436d52f56bbf32bca3a02cc17b165509eea8f266c797382ee32009c313994a"
+        },
+        "after": {
+          "bytes": 73978076,
+          "sha256": "c95609d862ddde4f6b8067e7d64cd694ce2c5cd9aa44031c36c432c12a52efa3"
+        },
+        "exact": false
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "before": {
+          "bytes": 5102592,
+          "sha256": "b05cd9e4911be246e009a6dec8e97f957f5e1cd05b2366535cc0ab4320846c21"
+        },
+        "after": {
+          "bytes": 5102592,
+          "sha256": "23776e40b2124d9ee0e64b654d19b1eb2485ec6593500ffb4b5178ab9076a226"
+        },
+        "exact": false
+      },
+      {
+        "path": "build/win32/bsp_game.map",
+        "before": {
+          "bytes": 7549530,
+          "sha256": "84c82e96eaa32bdd96711e5bb9e93993bd3cb4315542ffc30a881338cc3fd450"
+        },
+        "after": {
+          "bytes": 7549530,
+          "sha256": "3ba0ce27b96033ede9848d99797c87c1f10444b38dcb07a0816b6525557a26f6"
+        },
+        "exact": false
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "before": {
+          "bytes": 2473,
+          "sha256": "4b6696bce3eddbee5e3d7fc1585520eba9d9f1a488a51850496063c3adcfd9d6"
+        },
+        "after": {
+          "bytes": 2473,
+          "sha256": "a220d1cd1fb54e7c4276fd8dd596cf12a378e9acf61a1ddffd5d11a679d5727b"
+        },
+        "exact": false
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "before": {
+          "bytes": 318497,
+          "sha256": "7d4937753bf3d51190a41d4b2e9a2534cc61c1485b974ff9050ce6892b16402c"
+        },
+        "after": {
+          "bytes": 318497,
+          "sha256": "7d4937753bf3d51190a41d4b2e9a2534cc61c1485b974ff9050ce6892b16402c"
+        },
+        "exact": true
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "before": {
+          "bytes": 69908,
+          "sha256": "ac4c04b6f1477860cf2e7d56873b258e2dfe4fc2b0f87c5451d41a77100615bb"
+        },
+        "after": {
+          "bytes": 69908,
+          "sha256": "ac4c04b6f1477860cf2e7d56873b258e2dfe4fc2b0f87c5451d41a77100615bb"
+        },
+        "exact": true
+      },
+      {
+        "path": "build/win32/CTestTestfile.cmake",
+        "before": {
+          "bytes": 6768,
+          "sha256": "d55849f29c4034476479b4e4f64bf51d647fef3c3bb84054b91ed64feea630af"
+        },
+        "after": {
+          "bytes": 6768,
+          "sha256": "d55849f29c4034476479b4e4f64bf51d647fef3c3bb84054b91ed64feea630af"
+        },
+        "exact": true
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "before": {
+          "bytes": 19669,
+          "sha256": "8106c44acf5ac799e35f04efa55a0fb41096ae30137fcb8f8b1a1b2b29a940ea"
+        },
+        "after": {
+          "bytes": 19669,
+          "sha256": "8106c44acf5ac799e35f04efa55a0fb41096ae30137fcb8f8b1a1b2b29a940ea"
+        },
+        "exact": true
+      }
+    ],
+    "exe_sections": [
+      {
+        "before": {
+          "name": ".text",
+          "raw_offset": 1024,
+          "bytes": 3992064,
+          "sha256": "a5b9539f7b93d7115fa49dbdfde00196b5fc6cf538d427e2dc3cef28e4f92fe3",
+          "flags": 1610612768,
+          "code": true
+        },
+        "after": {
+          "name": ".text",
+          "raw_offset": 1024,
+          "bytes": 3992064,
+          "sha256": "a5b9539f7b93d7115fa49dbdfde00196b5fc6cf538d427e2dc3cef28e4f92fe3",
+          "flags": 1610612768,
+          "code": true
+        },
+        "exact": true
+      },
+      {
+        "before": {
+          "name": ".rdata",
+          "raw_offset": 3993088,
+          "bytes": 913920,
+          "sha256": "762f4274a47cba71fda3250b31d10d07370e46b0a06e2a1a99029d5fae03048a",
+          "flags": 1073741888,
+          "code": false
+        },
+        "after": {
+          "name": ".rdata",
+          "raw_offset": 3993088,
+          "bytes": 913920,
+          "sha256": "e494b3143a14836887e007feec05cd665c0be6062120a155d1e6ce109a7a756c",
+          "flags": 1073741888,
+          "code": false
+        },
+        "exact": false
+      },
+      {
+        "before": {
+          "name": ".data",
+          "raw_offset": 4907008,
+          "bytes": 52736,
+          "sha256": "0c1e530ef0b0178f6d379888802b418f3ce9173b421d0c27b081f2d85914b6da",
+          "flags": 3221225536,
+          "code": false
+        },
+        "after": {
+          "name": ".data",
+          "raw_offset": 4907008,
+          "bytes": 52736,
+          "sha256": "0c1e530ef0b0178f6d379888802b418f3ce9173b421d0c27b081f2d85914b6da",
+          "flags": 3221225536,
+          "code": false
+        },
+        "exact": true
+      },
+      {
+        "before": {
+          "name": ".rsrc",
+          "raw_offset": 4959744,
+          "bytes": 512,
+          "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7",
+          "flags": 1073741888,
+          "code": false
+        },
+        "after": {
+          "name": ".rsrc",
+          "raw_offset": 4959744,
+          "bytes": 512,
+          "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7",
+          "flags": 1073741888,
+          "code": false
+        },
+        "exact": true
+      },
+      {
+        "before": {
+          "name": ".reloc",
+          "raw_offset": 4960256,
+          "bytes": 142336,
+          "sha256": "7fefe038282b42eb2aad31caaabbca7c0aca12fb006d2a1473fec80ad6a448f4",
+          "flags": 1107296320,
+          "code": false
+        },
+        "after": {
+          "name": ".reloc",
+          "raw_offset": 4960256,
+          "bytes": 142336,
+          "sha256": "7fefe038282b42eb2aad31caaabbca7c0aca12fb006d2a1473fec80ad6a448f4",
+          "flags": 1107296320,
+          "code": false
+        },
+        "exact": true
+      }
+    ],
+    "before_PE_timestamp": 1791660408,
+    "after_PE_timestamp": 1791660484,
+    "map_changed_lines": [
+      {
+        "line": 3,
+        "before": " Timestamp is 6aca9178 (Sat Oct 10 12:26:48 2026)",
+        "after": " Timestamp is 6aca91c4 (Sat Oct 10 12:28:04 2026)"
+      }
+    ],
+    "qualification": "Whole images/maps retained and hashed. Code-section equality is a static linked-artifact observation, not startup or model-runtime proof."
+  },
+  "source_query_counts": {
+    "before": {
+      "particle_reference": 28,
+      "admitted_runtime": 24,
+      "profile_hook": 6,
+      "persistent_particle_reference_storage": 0,
+      "particle_reference_explicit_new": 0
+    },
+    "after": {
+      "particle_reference": 34,
+      "admitted_runtime": 28,
+      "profile_hook": 6,
+      "persistent_particle_reference_storage": 0,
+      "particle_reference_explicit_new": 0
+    }
+  },
+  "portable_replay": {
+    "result": {
+      "App_objects_each": 80,
+      "Core_COFF_members_each": 1988,
+      "Source_paths": 4224,
+      "added_code_sections": 4,
+      "after_staged_tree": "26a57f194b0535bd990d1b4fd64ef38f2cd617cb",
+      "baseline": "637e162800c638995f0ab1c8e891a1b21edaef92",
+      "builds": "Fresh before/after normal MSVC Win32 builds; three existing checks passed in each.",
+      "changed_code_sections": 1,
+      "checked_unique_entries": 4470,
+      "compiler_TUs_each": 7,
+      "complete_selected_decodes_after": 22,
+      "complete_selected_decodes_before": 20,
+      "epoch_qualification": [
+        {
+          "after_changed": [
+            "include/bsp/native_particle_model_lifetime.hpp",
+            "include/bsp/native_wide_string.hpp",
+            "src/native_particle_model_lifetime.cpp",
+            "src/native_wide_string.cpp"
+          ],
+          "before_changed": [
+            "include/bsp/native_wide_string.hpp",
+            "src/native_wide_string.cpp"
+          ],
+          "name": "typed_views",
+          "project_pins": 3352
+        },
+        {
+          "after_changed": [
+            "include/bsp/native_particle_model_lifetime.hpp",
+            "src/native_particle_model_lifetime.cpp"
+          ],
+          "before_changed": [],
+          "name": "wide_raw_context",
+          "project_pins": 3352
+        }
+      ],
+      "exact_code_sections": 174271,
+      "header_consumers_each": 3,
+      "payload_members": 4471,
+      "public_constructor_direct_code_relocations": [],
+      "qualification": "ZIP-only retained Source/static compiled replay. No live Git/current-file check, compilation, model execution, Original ABI or game validation performed by replay.",
+      "removed_code_sections": 1,
+      "source_query_corpus": 4207,
+      "status": "pass"
+    },
+    "physically_relocated_result": {
+      "App_objects_each": 80,
+      "Core_COFF_members_each": 1988,
+      "Source_paths": 4224,
+      "added_code_sections": 4,
+      "after_staged_tree": "26a57f194b0535bd990d1b4fd64ef38f2cd617cb",
+      "baseline": "637e162800c638995f0ab1c8e891a1b21edaef92",
+      "builds": "Fresh before/after normal MSVC Win32 builds; three existing checks passed in each.",
+      "changed_code_sections": 1,
+      "checked_unique_entries": 4470,
+      "compiler_TUs_each": 7,
+      "complete_selected_decodes_after": 22,
+      "complete_selected_decodes_before": 20,
+      "epoch_qualification": [
+        {
+          "after_changed": [
+            "include/bsp/native_particle_model_lifetime.hpp",
+            "include/bsp/native_wide_string.hpp",
+            "src/native_particle_model_lifetime.cpp",
+            "src/native_wide_string.cpp"
+          ],
+          "before_changed": [
+            "include/bsp/native_wide_string.hpp",
+            "src/native_wide_string.cpp"
+          ],
+          "name": "typed_views",
+          "project_pins": 3352
+        },
+        {
+          "after_changed": [
+            "include/bsp/native_particle_model_lifetime.hpp",
+            "src/native_particle_model_lifetime.cpp"
+          ],
+          "before_changed": [],
+          "name": "wide_raw_context",
+          "project_pins": 3352
+        }
+      ],
+      "exact_code_sections": 174271,
+      "header_consumers_each": 3,
+      "payload_members": 4471,
+      "public_constructor_direct_code_relocations": [],
+      "qualification": "ZIP-only retained Source/static compiled replay. No live Git/current-file check, compilation, model execution, Original ABI or game validation performed by replay.",
+      "removed_code_sections": 1,
+      "source_query_corpus": 4207,
+      "status": "pass"
+    },
+    "physical_copies_byte_identical": true,
+    "guard": "After importing Python/Capstone/codecs/XML, permits file opens only for the ZIP; blocks outside opens, writes, subprocess/network/library-load actions and directory enumeration.",
+    "separate_actual_Git_check": "Captured separately; never claimed by portable replay."
+  },
+  "remaining_work": [
+    "Prepare a stable entry in the existing actual-owner registry before Native construction.",
+    "Prepare and retain the persistent per-model application record and canonical environment/access/disposal borrows.",
+    "Complete the remaining construction callees and valid failure/quiescence/teardown binding before application activation.",
+    "Perform any future specifically authorized model fixture, Original ABI or game validation separately."
+  ],
+  "qualification": "Built Source constructor overload and static preservation evidence. Existing three build checks pass. This packet adds no new Native execution beyond the standard existing verified math-seed test; no particle constructor fixture, game launch, Original ABI proof or application integration is claimed.",
+  "local_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\evidence.zip",
+      "bytes": 88866998,
+      "sha256": "0622379986c0a71636b0f96ebd5df40f7f6d6c8138157986988814ff40490a2e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\portable_replay.py",
+      "bytes": 33561,
+      "sha256": "11b9dc03d48d5c8ded0fc832c50da4b61f3355ec9cac96f811a4c7a89a1fec1e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\bundle_receipt.json",
+      "bytes": 411,
+      "sha256": "7777fb2c951bc9e15e3ec25683a696a2995bda73eaaf81a2c8bde942b941eec6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\freeze.json",
+      "bytes": 6754999,
+      "sha256": "44ac8a1c374398f9a3f456937870a8a047d2f4b615830cd124354ce51b6775e4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\before.json",
+      "bytes": 5897902,
+      "sha256": "e47e9b63d4d2fbd0ab32d4e67e41bc4b033be46fb0c8d20d3cb545019e3edb2a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\after.json",
+      "bytes": 5900868,
+      "sha256": "c8081c7cae9c56541633f6598eec74068de66b7ec3d7fb91c94072246c12dc25"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\separate_git.json",
+      "bytes": 2632686,
+      "sha256": "778e9e2e97ee89557de2bb6142db83a5377f70333e5440c5d66eda601fe776fe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\epoch_metadata_git.json",
+      "bytes": 3081,
+      "sha256": "5fa0c29388a6154229ac8e2ef794ffc03434bb9820ce55b56750acf168752084"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\source_evidence.json",
+      "bytes": 575483,
+      "sha256": "76f53ded5b0116d1b3751bc352af2388ead6a946042da815e5df1d0b7f056a73"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\semantic_evidence.json",
+      "bytes": 12415,
+      "sha256": "23d1879c32e5692b388d7790dcaecbaeb28c5d7f1e492805ff20916e3a3093b8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\before_compiled.json",
+      "bytes": 114275547,
+      "sha256": "77b07bf0b94e8620b29d642966e2f6bd32d339997f72f1919d74c048bab82aeb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\after_compiled.json",
+      "bytes": 114292668,
+      "sha256": "27128875d520e43a55edd90a05677c6b4522a53a7de1c76adc114fda791dd2f0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\comparison.json",
+      "bytes": 38819451,
+      "sha256": "2a942bcedb59f1be11bfd5d1d99c31c32ced2cad58d00cfc29080049500f7fc6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\artifact_comparison.json",
+      "bytes": 6123,
+      "sha256": "44d5662767f9032d70c2197ff88dbbee1ac1074f6272aaacf8cd07177f7abb58"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\before_build_receipt.json",
+      "bytes": 441,
+      "sha256": "48fe79d4fdc9886d4fe19d4d4aa2f558bd398a33c22ce016df4c066342d3c680"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\after_build_receipt.json",
+      "bytes": 439,
+      "sha256": "e51900951813c90deb03a2d32b471c4ca3ed2426cece7bf4889053d2de608d9b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\before_build.log",
+      "bytes": 3419,
+      "sha256": "52267ce076bde6b7c3603cc2ec8d56436e5bd0b7893449a4be3665b86a30118a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\after_build.log",
+      "bytes": 3435,
+      "sha256": "697d8139e56833309207958789c5f255ef175f5c1dc881fca36741dc2217a2b5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\replay_result.json",
+      "bytes": 1403,
+      "sha256": "929196bd01c331aa9a207ef2e3fa426f50c0784ea55b014c289e77bac123e84b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_particle_profile_admitted_constructor\\relocated\\replay_result.json",
+      "bytes": 1403,
+      "sha256": "929196bd01c331aa9a207ef2e3fa426f50c0784ea55b014c289e77bac123e84b"
+    }
+  ],
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\docs\\CC12_PARTICLE_PROFILE_ADMITTED_CONSTRUCTOR.md",
+    "bytes": 11755,
+    "sha256": "e1760f141f4b7c6750eb9e7d5a79b8dbef9c171e36ee5ba6f328ac6664f88f62"
+  }
+}
