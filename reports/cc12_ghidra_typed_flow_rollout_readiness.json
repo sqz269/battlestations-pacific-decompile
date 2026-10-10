@@ -1,0 +1,459 @@
+{
+  "schema": 1,
+  "status": "Root_rollout_readiness_only_not_executed",
+  "utc": "2026-10-10T01:16:17.009158+00:00",
+  "worker_base_commit": "1574076d6ef4b383cfbab6d2790ee475c9aac688",
+  "scope": {
+    "owned_files": [
+      "docs/CC12_GHIDRA_TYPED_FLOW_ROLLOUT_READINESS.md",
+      "reports/cc12_ghidra_typed_flow_rollout_readiness.json"
+    ],
+    "mandatory_brief_health_probes": true,
+    "explicit_endpoint_calls": false,
+    "save": false,
+    "shutdown": false,
+    "restart": false,
+    "deployment": false,
+    "configuration_change": false,
+    "GPR_write": false,
+    "Native_opening": false
+  },
+  "process_observation": {
+    "ghidra_JVMs": [
+      {
+        "ProcessId": 33644,
+        "ParentProcessId": 36756,
+        "ExecutablePath": "C:\\Program Files\\Amazon Corretto\\jdk21.0.9_10\\bin\\javaw.exe",
+        "CommandLine": "\"C:\\Program Files\\Amazon Corretto\\jdk21.0.9_10\\bin\\javaw\"     -Duser.home=\"C:\\Users\\sqz269\" -Djava.system.class.loader=ghidra.GhidraClassLoader -Dfile.encoding=UTF8 -Duser.country=US -Duser.language=en -Duser.variant= -Dsun.java2d.opengl=false -Djdk.tls.client.protocols=TLSv1.2,TLSv1.3 -Dcpu.core.limit= -Dcpu.core.override= -Dfont.size.override= -Dpython.console.encoding=UTF-8 -Xshare:off -Djavax.xml.accessExternalDTD= -Djavax.xml.accessExternalSchema= -Djavax.xml.accessExternalStylesheet= --enable-native-access=ALL-UNNAMED -Dsun.java2d.d3d=false -Dlog4j.skipJansi=true -cp \"J:\\tools\\ghidra_12.0.4_PUBLIC\\support\\..\\Ghidra\\Framework\\Utility\\lib\\Utility.jar\" ghidra.Ghidra ghidra.GhidraRun  \"C:\\Users\\sqz269\\bsp.gpr\""
+      }
+    ],
+    "window": {
+      "Id": 33644,
+      "StartTimeUtc": "2026-09-28T04:36:33.9184243Z",
+      "MainWindowTitle": "Ghidra: bsp",
+      "MainWindowHandle": 264030
+    },
+    "listener": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 8089,
+      "OwningProcess": 33644
+    },
+    "loaded_class_CodeSource_attested": false
+  },
+  "target_config": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "configured_bridge": {
+    "config_path": "C:/Users/sqz269/.codex/config.toml",
+    "command": "uv",
+    "args": [
+      "run",
+      "--script",
+      "J:\\tools\\ghidra-mcp\\bridge_mcp_ghidra.py"
+    ],
+    "env_keys": [],
+    "script_permission_explicit_setting": "unset",
+    "changed": false
+  },
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_launch.py",
+      "bytes": 15523,
+      "sha256": "36ba29c40be112e3e32d3106272e8681a9fdb09fbc1ce25c6c52db080a4f363e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\coordination.py",
+      "bytes": 17283,
+      "sha256": "327088c7835914187a890ed038f69f05fec354c2229b2ff85a03c2160c4153ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\COORDINATION.md",
+      "bytes": 14723,
+      "sha256": "0aacb28c42955c8dea720a03b7c198400d9eae5e21a7746721edee6fbecab2fd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java",
+      "bytes": 109406,
+      "sha256": "75e6d419e38b7a15a045a6e847f13e26a5e9b346f353e5aeb493bc36820f3410"
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\core\\EndpointRegistry.java",
+      "bytes": 67620,
+      "sha256": "5da3b013dc097ade27b7cf2b2adf37f18a3cadd29038844ae1041c8f784b6fbf"
+    },
+    {
+      "path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\headless\\HeadlessManagementService.java",
+      "bytes": 6598,
+      "sha256": "63bf1c809cd01d1c469e29e89493050d2ca4dd0648b4edac79ab9ecda36066f8"
+    }
+  ],
+  "source_findings": [
+    {
+      "file": "tools/ghidra_launch.py",
+      "lines": [
+        236,
+        281
+      ],
+      "finding": "ensure returns immediately for state up regardless of restart; down-server relaunch calls inject_running_tool."
+    },
+    {
+      "file": "tools/ghidra_launch.py",
+      "lines": [
+        102,
+        120
+      ],
+      "finding": "close invokes CloseMainWindow and waits; force=False never Stop-Process. Completion tests all Ghidra JVMs, not only requested PIDs."
+    },
+    {
+      "file": "tools/ghidra_launch.py",
+      "lines": [
+        139,
+        183
+      ],
+      "finding": "inject_running_tool can rewrite projectState and projectState.bak; launch starts configured bat/project with CREATE_NO_WINDOW without injection."
+    },
+    {
+      "file": "tools/ghidra_launch.py",
+      "lines": [
+        207,
+        233
+      ],
+      "finding": "Separate launch mutex has 12-minute expiration and no renewal. Do not call ensure while holding it."
+    },
+    {
+      "file": "tools/coordination.py",
+      "lines": [
+        363,
+        416
+      ],
+      "finding": "Context manager write lock checks owner, PID and expiry; default TTL600, configurable. Readers/autostart are not suppressed."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java",
+      "lines": [
+        158,
+        269
+      ],
+      "finding": "save_program and save_all_programs call DomainFile.save on EDT. No save_project route found."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java",
+      "lines": [
+        303,
+        359
+      ],
+      "finding": "close_program does not close the JVM and GUI close count ignores boolean result; insufficient exit attestation."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java",
+      "lines": [
+        83,
+        95
+      ],
+      "finding": "suppressAnalysisPrompt marks program then persists it."
+    },
+    {
+      "file": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\src\\main\\java\\com\\xebyte\\core\\ProgramScriptService.java",
+      "lines": [
+        674,
+        749
+      ],
+      "finding": "open_program with auto_analyze=false still invokes suppressAnalysisPrompt; not read-only."
+    },
+    {
+      "file": "HeadlessManagementService.java",
+      "lines": [
+        10,
+        89
+      ],
+      "finding": "open_project/close_project are headless only, not part of GUI schema."
+    }
+  ],
+  "available_MCP_tools_reviewed_without_invocation": [
+    "mcp__ghidra__save_program(program)",
+    "mcp__ghidra__save_all_programs()",
+    "mcp__ghidra__list_open_programs()",
+    "mcp__ghidra__close_program(name,dry_run)",
+    "mcp__ghidra__open_program(path,auto_analyze)"
+  ],
+  "saved_session": {
+    "project_state_pin": {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\projectState",
+      "bytes": 1275,
+      "sha256": "dcbc1ac32abf19207a0dbab10fcee3df7561ddfd2e3a3b2d0f30359fe139209d"
+    },
+    "state_values": {
+      "SHOW_TABLE": "true",
+      "CURRENT_FILE": "battlestationspacific.exe",
+      "LOCATION_0": "/C:/Users/sqz269/",
+      "NUM_PROGRAMS": "1",
+      "PATHNAME_0": "/battlestationspacific.exe",
+      "PROJECT_NAME_0": "bsp",
+      "VERSION_0": "-1"
+    },
+    "running_tools": [
+      {
+        "TOOL_NAME": "CodeBrowser"
+      }
+    ],
+    "tool_template": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\tools\\_code_browser.tcd",
+      "bytes": 86825,
+      "sha256": "dff5103cdb4ddbad066d2a3aef929706be73fbf5f3ffc9e8bb299dec35b48445"
+    },
+    "extension_registration": {
+      "line": 1143,
+      "text": "<EXTENSION NAME=\"GhidraMCP\" />"
+    },
+    "startup_log": {
+      "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\application.log",
+      "selected_lines": [
+        {
+          "line": 135347,
+          "text": "2026-09-27 21:36:38 INFO  (GhidraMCPPlugin) GhidraMCP 5.6.0 (build 20260504-235055, 20260504-235055)"
+        },
+        {
+          "line": 135351,
+          "text": "2026-09-27 21:36:38 INFO  (GhidraMCPPlugin) HTTP server created successfully on 127.0.0.1:8089"
+        },
+        {
+          "line": 135353,
+          "text": "2026-09-27 21:36:38 INFO  (GhidraMCPPlugin) GhidraMCP HTTP server started on port 8089 (thread pool size 3)"
+        }
+      ]
+    }
+  },
+  "project_backing_paths": [
+    {
+      "path": "C:\\Users\\sqz269\\bsp.gpr",
+      "kind": "file",
+      "bytes": 0,
+      "mtime_utc": "2026-05-04T23:45:48.795311+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep",
+      "kind": "directory",
+      "bytes": null,
+      "mtime_utc": "2026-09-23T03:40:09.212793+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\idata",
+      "kind": "directory",
+      "bytes": null,
+      "mtime_utc": "2026-09-28T04:36:39.031759+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\project.prp",
+      "kind": "file",
+      "bytes": 165,
+      "mtime_utc": "2026-05-04T23:45:48.796867+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\projectState",
+      "kind": "file",
+      "bytes": 1275,
+      "mtime_utc": "2026-09-23T03:40:09.213793+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\projectState.bak",
+      "kind": "file",
+      "bytes": 497,
+      "mtime_utc": "2026-09-23T03:40:09.212793+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\user",
+      "kind": "directory",
+      "bytes": null,
+      "mtime_utc": "2026-09-28T04:36:39.032759+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\versioned",
+      "kind": "directory",
+      "bytes": null,
+      "mtime_utc": "2026-09-28T04:36:39.033759+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.lock",
+      "kind": "file",
+      "bytes": 245,
+      "mtime_utc": "2026-09-28T04:36:39.023211+00:00"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.lock~",
+      "kind": "file",
+      "bytes": 0,
+      "mtime_utc": "2026-09-28T04:36:39.023211+00:00"
+    }
+  ],
+  "database_subtrees_metadata_only": [
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\idata",
+      "file_count": 6,
+      "bytes": 689947397,
+      "observation": "File metadata only; no database content opened or hashed."
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\user",
+      "file_count": 7,
+      "bytes": 246603,
+      "observation": "File metadata only; no database content opened or hashed."
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp.rep\\versioned",
+      "file_count": 2,
+      "bytes": 126,
+      "observation": "File metadata only; no database content opened or hashed."
+    }
+  ],
+  "backup_limitations": [
+    "No database file content read or hashed during this readiness task",
+    "No consistent live database snapshot claimed",
+    "projectState.bak is only a state-file backup",
+    "Copy whole closed .gpr plus .rep tree and create new per-file hash manifest after successful save and clean exit",
+    "Do not manually delete or restore stale bsp.lock or bsp.lock~",
+    "Plugin rollback restores extension only; it does not rewind saved analysis"
+  ],
+  "coordination": {
+    "write_lock_path": "C:/Users/sqz269/.bsp/ghidra.lock",
+    "write_lock_present": false,
+    "launch_lock_path": "C:/Users/sqz269/.bsp/ghidra-launch.lock",
+    "launch_lock_present": false,
+    "other_owners_seen_in_initial_brief": [
+      "agent/cc12_resume_integrator",
+      "agent/cc12_type1011_fixture_execution",
+      "agent/cc12_type1011_job_peer"
+    ],
+    "quiescence_confirmed": false,
+    "requirement": "Root coordinates all harnesses and the GUI user, including auto-starting readers, then holds write and launch locks in one live process. No force-kill."
+  },
+  "original_plugin_checkout": {
+    "path": "J:\\tools\\ghidra-mcp",
+    "status": [
+      " M CHANGELOG.md",
+      " M bridge_mcp_ghidra.py",
+      " M tests/unit/test_mcp_tools.py"
+    ],
+    "unchanged_dirty_file_pins": [
+      {
+        "path": "J:\\tools\\ghidra-mcp\\CHANGELOG.md",
+        "bytes": 105336,
+        "sha256": "8961c7b58d7910d01b24c12fa9c3a5a3bd0abedbf21f0a32ff2af4b870d41891"
+      },
+      {
+        "path": "J:\\tools\\ghidra-mcp\\bridge_mcp_ghidra.py",
+        "bytes": 70200,
+        "sha256": "b12137cef0d4307e5f16dabfa945d6c7d7e59da9df1cb94b6d2fb75cf08b49e3"
+      },
+      {
+        "path": "J:\\tools\\ghidra-mcp\\tests\\unit\\test_mcp_tools.py",
+        "bytes": 12691,
+        "sha256": "db32fbccef76111096f7bc623ae5f1c068bf7c8ff3614b49bff0ca14879ea4bb"
+      }
+    ]
+  },
+  "rollback_files": [
+    {
+      "current_installed": {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\extension.properties",
+        "bytes": 328,
+        "sha256": "dff8facacb38dbedae50e5998e8513c35c9bec80f716a6c9164cfb63437e99e5"
+      },
+      "frozen_rollback": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\installed_before\\extension.properties",
+        "bytes": 328,
+        "sha256": "dff8facacb38dbedae50e5998e8513c35c9bec80f716a6c9164cfb63437e99e5",
+        "source_path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\extension.properties"
+      }
+    },
+    {
+      "current_installed": {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\lib\\GhidraMCP-5.6.0.jar",
+        "bytes": 581085,
+        "sha256": "3eb3999c930e844ddda1f74572b2d414cbacc645356593bf2cc44ccc038aad48"
+      },
+      "frozen_rollback": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\installed_before\\lib\\GhidraMCP-5.6.0.jar",
+        "bytes": 581085,
+        "sha256": "3eb3999c930e844ddda1f74572b2d414cbacc645356593bf2cc44ccc038aad48",
+        "source_path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\lib\\GhidraMCP-5.6.0.jar"
+      }
+    },
+    {
+      "current_installed": {
+        "path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\Module.manifest",
+        "bytes": 83,
+        "sha256": "f5f22625a9f075b440aebb2cf23a57deb220bb5e4e5d6bc6391059a7d7036ece"
+      },
+      "frozen_rollback": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\installed_before\\Module.manifest",
+        "bytes": 83,
+        "sha256": "f5f22625a9f075b440aebb2cf23a57deb220bb5e4e5d6bc6391059a7d7036ece",
+        "source_path": "C:\\Users\\sqz269\\AppData\\Roaming\\ghidra\\ghidra_12.0.4_PUBLIC\\Extensions\\GhidraMCP\\Module.manifest"
+      }
+    }
+  ],
+  "implementation_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_ghidra_typed_flow_implementation.json",
+    "bytes": 65341,
+    "sha256": "60176f8b9e5d8318a46b1208aa1b85ac3de0e14b957dbf60ad97fe857ee7b680"
+  },
+  "implementation_bundle": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen_bundle.zip",
+    "bytes": 46283299,
+    "sha256": "d3da681aecafa202f5058f67a97c222b6801fffa278b59278e1d7101e9b59aaa"
+  },
+  "package_comparison": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\package_comparison\\jar_entry_comparison.json",
+    "bytes": 105823,
+    "sha256": "cc087d0bb1de417e32e2594d1786754f812d300f03160ac91d66091e5056ab50"
+  },
+  "overlay_candidate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\package_comparison\\GhidraMCP-5.6.0-typed-flow-overlay.jar",
+    "bytes": 586003,
+    "sha256": "05e5d95e7bb08eae2079ea38fba4d36611498b48462ed1939dbcdc546a24205d"
+  },
+  "full_JAR_candidate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\new_package\\GhidraMCP-5.6.0.jar",
+    "bytes": 586004,
+    "sha256": "a1e473968541f7030c6efc36b19aae25b699726575523034da7349b046d7b907",
+    "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\GhidraMCP-5.6.0.jar"
+  },
+  "full_ZIP_candidate": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_ghidra_typed_flow_implementation\\frozen\\new_package\\GhidraMCP-5.6.0.zip",
+    "bytes": 578036,
+    "sha256": "4d35ef651c6ac7a6b9bc425d2e5c03ec2816ec8a6c060114e797ca260a8f4b7e",
+    "source_path": "J:\\tools\\ghidra-mcp-cc12-typed-flow\\target\\GhidraMCP-5.6.0.zip"
+  },
+  "future_method": {
+    "decision_owner": "Root",
+    "executed": false,
+    "save_route": "GET /save_program?program=battlestationspacific.exe",
+    "graceful_close": "ghidra_launch.close([verified_pid], grace=60, force=False)",
+    "restart": "ghidra_launch.launch(config), only after clean exit, backup and selected artifact hash verification, while Root owns launch lock",
+    "not_suitable": [
+      "ensure(restart=True) against a healthy server",
+      "close_program as proof of process exit",
+      "open_program(auto_analyze=False) as read-only reopening",
+      "headless open_project/close_project on GUI server"
+    ]
+  },
+  "document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_GHIDRA_TYPED_FLOW_ROLLOUT_READINESS.md",
+    "bytes": 8362,
+    "sha256": "cf9cfd02af1c40560d316d036ca5ba38abe1d8778325f149a575b49a0d125e29"
+  }
+}
