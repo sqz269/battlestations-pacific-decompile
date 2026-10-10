@@ -49,6 +49,7 @@
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_frame_clock_lifetime.hpp"
 #include "bsp/native_frame_clock_publication.hpp"
+#include "bsp/native_particle_model_manager.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
@@ -1338,6 +1339,22 @@ void GameStartupHost::exit_if_allocation_stats_failed() noexcept {
     std::_Exit(1);
 }
 
+void GameStartupHost::exit_if_particle_manager_failed() noexcept {
+    if (particle_manager_phase_ != ParticleManagerPhase::failed &&
+        particle_manager_phase_ != ParticleManagerPhase::constructing) return;
+    try {
+        log_.note("raw particle manager construction failed; manager graph cleanup is unproved; retaining application and mapped data until process exit");
+        log_.close();
+    } catch (...) {
+        std::fputs("bsp_game: failed particle manager construction requires process exit\n", stderr);
+        std::fflush(stderr);
+    }
+    // Source containment for publication/registration effects surviving the
+    // captured allocation's free. No host, manager, context or CRT cleanup.
+    // Native FH3, SEH and hardware-fault delivery remain unproved.
+    std::_Exit(1);
+}
+
 struct GameStartupHost::SoundServices {
     // Shared actual lifecycle publications. Native online construction occurs
     // at73DC7C and input backend construction at73DD8E, after sound/window.
@@ -1569,6 +1586,7 @@ GameStartupHost::~GameStartupHost() {
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     exit_if_allocation_stats_failed();
+    exit_if_particle_manager_failed();
     delete loop_callbacks_;
     delete frame_host_;
     // The sprite bridge holds textures created on the device, so it goes before the
@@ -1683,6 +1701,7 @@ void GameStartupHost::exit_process(int code) {
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     exit_if_allocation_stats_failed();
+    exit_if_particle_manager_failed();
     log_.implemented("StartupHost::exit_process", "008f82f0");
     std::exit(code); // 008F82F0 calls genuine CRT exit, including atexit callbacks.
 }
@@ -2187,6 +2206,44 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     log_.implemented("Phase 5 input_backend_initialize", "0073dd8e");
     log_.implemented("Phase 5 input_backend_callback_and_reset", "0073dd98");
 
+    // 0073E005..E02B: raw 34h allocation, caller state 23h, then AF0B10.
+    // Prepare the permanent domain before any receiver can register. Neither
+    // a null publication nor this host's fresh phase proves prior graph absence.
+    if (particle_manager_phase_ != ParticleManagerPhase::unattempted)
+        throw std::logic_error("application particle manager construction cannot be retried");
+    if (!native_data_)
+        throw std::runtime_error("Native particle manager startup requires verified data");
+    singletons_->bind_particle_manager_domain(*native_data_);
+    auto& particle_access = singletons_->particle_manager_context();
+
+    particle_manager_phase_ = ParticleManagerPhase::allocating;
+    void* captured_particle_manager = nullptr;
+    try {
+        captured_particle_manager = singleton_lifetime_allocate({
+            SingletonAllocationKind::object, 0x34,
+            sizeof(NativeParticleModelManagerStorage)});
+    } catch (...) {
+        particle_manager_phase_ = ParticleManagerPhase::allocation_failed;
+        throw; // No receiver returned and AF0B10 was not entered.
+    }
+    if (captured_particle_manager) {
+        particle_manager_phase_ = ParticleManagerPhase::constructing;
+        try {
+            (void)construct_native_particle_model_manager_00af0b10(
+                static_cast<NativeParticleModelManagerStorage*>(captured_particle_manager),
+                particle_access);
+        } catch (...) {
+            particle_manager_phase_ = ParticleManagerPhase::failed;
+            // C86C08 frees the caller's captured allocation only. Preserve
+            // every callee publication/registration effect for containment.
+            singleton_lifetime_free(captured_particle_manager);
+            throw;
+        }
+    }
+    particle_manager_phase_ = captured_particle_manager
+        ? ParticleManagerPhase::handed_over : ParticleManagerPhase::skipped;
+    log_.implemented("Phase 8 construct_particle_model_manager", "00af0b10");
+
     // Locale construction and exact setter/register/reload order0073e057..e135.
     locale_ = new GameLocaleHost(log_);
     locale_->initialize(settings_host.locale_source(), language_name_008d4870(
@@ -2238,11 +2295,6 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
-
-    // Phase 8, 00af0b10 at 0073e02b. The foliage group manager is reconstructed in
-    // src/world_effects_startup.cpp; its critical section and its publication are not
-    // bound here, so the phase itself is still a record.
-    log_.unimplemented("Phase 8 world_effects_startup", "00af0b10");
 
     // Phase 9, 00740840 at 0073de8c. Milestone 2a's host table calls this "game_entry";
     // it is the decal definition loader, as docs/APP_INIT_TAIL.md establishes.
@@ -2368,6 +2420,7 @@ void GameStartupHost::application_shutdown() {
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     exit_if_allocation_stats_failed();
+    exit_if_particle_manager_failed();
     // Native00737f30's full singleton teardown remains unbound. Retained C++
     // input/locale/settings owners close later in dependency order at destruction.
     log_.implemented("StartupHost::application_shutdown", "00737f30");
@@ -2469,6 +2522,7 @@ void GameStartupHost::destroy_singleton_lifetime_manager() {
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     exit_if_allocation_stats_failed();
+    exit_if_particle_manager_failed();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     if (native_renderer_) native_renderer_->drain_singletons();
     else singletons_->shutdown();
