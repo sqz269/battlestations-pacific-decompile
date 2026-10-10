@@ -37,7 +37,7 @@ void release_cell(void* cell,Calls& calls,Progress& o,U atomic_site,U terminal_s
 }
 }
 void* Calls::allocate_00bf55be(U n){return singleton_lifetime_allocate({SingletonAllocationKind::object,n,n});}
-void Calls::free_00bf65ac(void* p){::operator delete(p);}
+void Calls::free_00bf65ac(void* p){singleton_lifetime_free(p);}
 void Calls::free_00bf6989(void* p){std::free(p);}
 I Calls::interlocked_increment(volatile I* p){return InterlockedIncrement(reinterpret_cast<volatile LONG*>(p));}
 I Calls::interlocked_decrement(volatile I* p){return InterlockedDecrement(reinterpret_cast<volatile LONG*>(p));}
