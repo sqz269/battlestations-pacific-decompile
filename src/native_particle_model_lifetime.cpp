@@ -241,4 +241,61 @@ void NativeParticleModelReference::retire_after_failed_construction() noexcept {
     if (phase_ != Phase::bound || owner_.phase != NativeModelOwner::Phase::dead) std::terminate();
     retire();
 }
+
+NativeParticleModelPreparedRecord::NativeParticleModelPreparedRecord(void* actual_slot,
+    std::size_t slot_bytes, NativeModelOwner& owner, NativeParticleModelLifetimeAccess& access,
+    NativeRenderActualOwnerRegistry& registry)
+    : owner_(owner), access_(access), registry_(registry),
+      runtime_(owner.environment.nodes.attachments), raw_identity_(actual_slot) {
+    if (!actual_slot || slot_bytes != 0x2e0 || actual_slot != &owner.storage.node ||
+        owner.phase != NativeModelOwner::Phase::prepared || !access.actual_pool_00f8d2d0 ||
+        !access.vtable_00d5da50 || !owner.environment.actual_names ||
+        &owner.environment.retained_owners != &registry ||
+        &runtime_.scenes != &owner.environment.nodes.scenes ||
+        owner.node.scene_attachment.context != &owner ||
+        owner.node.scene_attachment.pointer_key != reinterpret_cast<std::uint32_t>(actual_slot))
+        throw std::invalid_argument("particle record requires one prepared actual2E0h owner and canonical borrowed domains");
+    if (&runtime_.scenes.resolve_key(owner.node.scene_attachment.pointer_key) != &owner.node.scene_attachment ||
+        access.vtable_00d5da50[0] != 0x00bd30e0 || access.vtable_00d5da50[1] != 0x00af7f40)
+        throw std::invalid_argument("particle record requires its canonical scene binding and actual derived terminal profile");
+    lifetime_admission_ = runtime_.reserve_binding();
+    registry_admission_ = registry_.prepare_binding(raw_identity_);
+}
+NativeParticleModelPreparedRecord::~NativeParticleModelPreparedRecord() noexcept {
+    if (phase_ == Phase::prepared) {
+        if (reference_ || (owner_.phase != NativeModelOwner::Phase::prepared &&
+            owner_.phase != NativeModelOwner::Phase::dead)) std::terminate();
+        // Member destructors cancel admissions only; the caller owns raw return
+        // and the separate prepared/dead NativeModelOwner lifetime.
+    } else if (phase_ != Phase::disposed) std::terminate();
+}
+void NativeParticleModelPreparedRecord::publish_particle_profile(NativeModelOwner& owner) noexcept {
+    if (&owner != &owner_ || phase_ != Phase::prepared || reference_ ||
+        !lifetime_admission_ || !registry_admission_ ||
+        owner.phase != NativeModelOwner::Phase::live) std::terminate();
+    phase_ = Phase::publishing;
+    reference_.emplace(owner_, access_, NativeParticleModelCompanionDisposal{this, retire_reference},
+        std::move(lifetime_admission_));
+    registry_.publish(std::move(registry_admission_), *reference_);
+    phase_ = Phase::published;
+}
+void NativeParticleModelPreparedRecord::retire_after_failed_construction(NativeModelOwner& owner) noexcept {
+    if (&owner != &owner_ || phase_ != Phase::published || !reference_ ||
+        owner.phase != NativeModelOwner::Phase::dead) std::terminate();
+    reference_->retire_after_failed_construction();
+}
+void NativeParticleModelPreparedRecord::retire_reference(void* context,
+    NativeParticleModelReference& reference) noexcept {
+    auto& record = *static_cast<NativeParticleModelPreparedRecord*>(context);
+    if (record.phase_ != Phase::published || !record.reference_ ||
+        &*record.reference_ != &reference) std::terminate();
+    record.registry_.unbind(record.raw_identity_, reference);
+    record.phase_ = Phase::retired;
+}
+void NativeParticleModelPreparedRecord::dispose_retired_at_quiescence() noexcept {
+    if (phase_ != Phase::retired || !reference_ || lifetime_admission_ || registry_admission_)
+        std::terminate();
+    reference_.reset(); // Host reference is already retired; no Native access.
+    phase_ = Phase::disposed;
+}
 } // namespace bsp

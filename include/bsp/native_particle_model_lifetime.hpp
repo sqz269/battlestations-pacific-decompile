@@ -1,6 +1,8 @@
 #pragma once
 #include "bsp/native_particle_model_construction.hpp"
 #include "bsp/native_particle_model_pool_allocate.hpp"
+#include "bsp/native_render_context.hpp"
+#include <optional>
 
 namespace bsp {
 
@@ -117,5 +119,55 @@ private:
     static void shrink_lights(void*) noexcept;
     void require_slot(std::uint32_t offset, std::uint32_t expected, bool allow_base = false) const noexcept;
     void retire() noexcept;
+};
+
+// Stable HOST bookkeeping only; this does not construct, own or return a Native
+// slot. Borrow the caller's sole already-prepared NativeModelOwner over an actual
+// F8D2D0 allocation (2E0h extent, pool ID at+2DC), its initialized pool/lifetime
+// access and SAME canonical registry. The caller proves the allocation extent
+// and initialized pool identity; neither is inferred from Native slot bytes.
+// Owner preparation/scene binding and this record may allocate/throw, and must
+// both finish BEFORE AF74A0. No typed+04 load, Native retain or physical cleanup
+// occurs here. Every borrowed owner/service remains alive through retirement.
+class NativeParticleModelPreparedRecord final {
+public:
+    NativeParticleModelPreparedRecord(void* actual_slot, std::size_t slot_bytes,
+        NativeModelOwner&, NativeParticleModelLifetimeAccess&, NativeRenderActualOwnerRegistry&);
+    // Abandoned preparation cancels only host admissions (owner must be prepared
+    // or dead). Published records must retire and be explicitly disposed first.
+    ~NativeParticleModelPreparedRecord() noexcept;
+    NativeParticleModelPreparedRecord(const NativeParticleModelPreparedRecord&) = delete;
+    NativeParticleModelPreparedRecord& operator=(const NativeParticleModelPreparedRecord&) = delete;
+    NativeParticleModelPreparedRecord(NativeParticleModelPreparedRecord&&) = delete;
+    NativeParticleModelPreparedRecord& operator=(NativeParticleModelPreparedRecord&&) = delete;
+
+    // For the existing noexcept profile hook AFTER live D5DA50 publication.
+    // Consume the Generated credit then immediately publish the exact registry
+    // entry, with no intervening Native call/callback. Contract or mutex failure
+    // is terminal across this boundary, not recoverable constructor raw cleanup.
+    void publish_particle_profile(NativeModelOwner&) noexcept;
+    // For the existing failure hook AFTER B750C0 made the SAME owner dead.
+    // Retires metadata only; the original caller still returns its raw slot.
+    void retire_after_failed_construction(NativeModelOwner&) noexcept;
+    bool retired() const noexcept { return phase_ == Phase::retired; }
+    // Caller MUST prove no constructor, hook, terminal, callback or resolved-
+    // companion borrower remains. Never call from disposal/Native callbacks.
+    // Serialize slot reuse until retirement removed the old canonical entry.
+    void dispose_retired_at_quiescence() noexcept;
+
+private:
+    enum class Phase { prepared, publishing, published, retired, disposed };
+    NativeModelOwner& owner_;
+    NativeParticleModelLifetimeAccess& access_;
+    NativeRenderActualOwnerRegistry& registry_;
+    GeneratedModelLifetimeRuntime& runtime_;
+    void* const raw_identity_;
+    GeneratedModelLifetimeRuntime::BindingAdmission lifetime_admission_;
+    NativeRenderActualOwnerRegistry::BindingAdmission registry_admission_;
+    std::optional<NativeParticleModelReference> reference_;
+    Phase phase_{Phase::prepared};
+    // Successful terminal has ALREADY returned the Native slot. Use its saved
+    // identity only as an opaque key; never read/reset Native storage here.
+    static void retire_reference(void*, NativeParticleModelReference&) noexcept;
 };
 } // namespace bsp
