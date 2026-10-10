@@ -1,0 +1,7 @@
+# Mesh field binding readiness primary review
+
+Accepted worker `cfc0f3921050c232d6cc341b3111186d30524824` for `cc12_mesh_field_application_binding_source`: an explicit renderer-owned retained metadata view borrowing the original VFS hierarchy reader and existing buffer, compressed-format, texture-field and lighting providers. The four-file contract, current identity gates and finite mapped slots are retained in the paired report. Metadata destruction performs no native cleanup.
+
+Root independently replays all 605 current/frozen pin references, 95 complete Source/context files against exact baseline Git blobs, and 514 ZIP payloads (515 entries). All 95 current integrator inputs match after checkout line-ending normalization. The 173 unavailable historical artifact pointers remain unavailable; retained report content does not provide new execution evidence.
+
+Full mesh loading remains held on actual material/effect application ownership, distinct caller-frame sampler inputs, the process binding serial owner, persistent entered-operation frames and payload retirement before shared drain. This review adds no C++, CMake, Native capture, Ghidra mutation, build, test, parser, ABI, startup or gameplay credit. See [the primary report](../reports/cc12_mesh_loading_application_binding_readiness_primary_review.json) and [the worker contract](CC12_MESH_LOADING_APPLICATION_BINDING_READINESS.md).
