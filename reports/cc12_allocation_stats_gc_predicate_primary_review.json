@@ -1,0 +1,2335 @@
+{
+  "schema": 1,
+  "status": "accepted",
+  "packet": "cc12_allocation_stats_gc_predicate_review_primary_review",
+  "utc": "2026-10-10T14:29:14.389118+00:00",
+  "worker_commit": "8332416a4af209a4e7dffdeff693a02379a8dec0",
+  "complete_copied_files": [
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\freeze_capture.json",
+        "bytes": 132319,
+        "sha256": "0060f6712ec8499203529b080ef2718c12b2b1b5a8700db58cf6ab423d95137f"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\freeze_capture.json",
+        "bytes": 132319,
+        "sha256": "0060f6712ec8499203529b080ef2718c12b2b1b5a8700db58cf6ab423d95137f"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\replay.py",
+        "bytes": 14973,
+        "sha256": "1d35c7d8be3d4b7eaafe76920835849221ca020fd50c8cfb7d8b37df5fceb6ca"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\replay.py",
+        "bytes": 14973,
+        "sha256": "1d35c7d8be3d4b7eaafe76920835849221ca020fd50c8cfb7d8b37df5fceb6ca"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\010b9880711a2534_git_docs_MISSION_LUA_HOST.md",
+        "bytes": 26373,
+        "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\010b9880711a2534_git_docs_MISSION_LUA_HOST.md",
+        "bytes": 26373,
+        "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\010b9880711a2534_working_docs_MISSION_LUA_HOST.md",
+        "bytes": 26373,
+        "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\010b9880711a2534_working_docs_MISSION_LUA_HOST.md",
+        "bytes": 26373,
+        "sha256": "010b9880711a253427a3e52d925cac4ccf0bf496d64f6176e8a08e8506e83dbe"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\01cb47d078b4841b_predicate_00be2740_00be2742.bin",
+        "bytes": 3,
+        "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\01cb47d078b4841b_predicate_00be2740_00be2742.bin",
+        "bytes": 3,
+        "sha256": "01cb47d078b4841b8408ec4fe278efa83115c6f6e101972987507d2b2b57dcf0"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\038f566ab59dc67e_git_reports_mission_lua_host.json",
+        "bytes": 69076,
+        "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\038f566ab59dc67e_git_reports_mission_lua_host.json",
+        "bytes": 69076,
+        "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\038f566ab59dc67e_working_reports_mission_lua_host.json",
+        "bytes": 69076,
+        "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\038f566ab59dc67e_working_reports_mission_lua_host.json",
+        "bytes": 69076,
+        "sha256": "038f566ab59dc67e200a7ab9ab88ff05cf4a085ac7df7a416adbf0f125a25a9c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\06ec09f5c403f580_predicate_exact.json",
+        "bytes": 563,
+        "sha256": "06ec09f5c403f58028adb405eae65de7373f8cbbb345eff7e4a60d352e989f34"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\06ec09f5c403f580_predicate_exact.json",
+        "bytes": 563,
+        "sha256": "06ec09f5c403f58028adb405eae65de7373f8cbbb345eff7e4a60d352e989f34"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\071b3c8a8dfd98d6_git_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "bytes": 964231,
+        "sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\071b3c8a8dfd98d6_git_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "bytes": 964231,
+        "sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\071b3c8a8dfd98d6_working_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "bytes": 964231,
+        "sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\071b3c8a8dfd98d6_working_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "bytes": 964231,
+        "sha256": "071b3c8a8dfd98d66d2c95adcfbbedcfe0922b1952635e0e32984eeaa08560c1"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\09de2b8916a4af98_git_tools_bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\09de2b8916a4af98_git_tools_bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\09de2b8916a4af98_working_tools_bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\09de2b8916a4af98_working_tools_bsp.py",
+        "bytes": 73311,
+        "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\0a69a11d3e176ceb_lua_archive_lua.h",
+        "bytes": 11612,
+        "sha256": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\0a69a11d3e176ceb_lua_archive_lua.h",
+        "bytes": 11612,
+        "sha256": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\0b26a744a3dd5b48_git_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "bytes": 3499742,
+        "sha256": "0b26a744a3dd5b48a30ced59b9e788310bb687919f4467d7a7c58685b61a0903"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\0b26a744a3dd5b48_git_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "bytes": 3499742,
+        "sha256": "0b26a744a3dd5b48a30ced59b9e788310bb687919f4467d7a7c58685b61a0903"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\0b26a744a3dd5b48_working_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "bytes": 3499742,
+        "sha256": "0b26a744a3dd5b48a30ced59b9e788310bb687919f4467d7a7c58685b61a0903"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\0b26a744a3dd5b48_working_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "bytes": 3499742,
+        "sha256": "0b26a744a3dd5b48a30ced59b9e788310bb687919f4467d7a7c58685b61a0903"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\0c432ec1026aa692_git_cmake_lua.cmake",
+        "bytes": 2242,
+        "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\0c432ec1026aa692_git_cmake_lua.cmake",
+        "bytes": 2242,
+        "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\0c432ec1026aa692_working_cmake_lua.cmake",
+        "bytes": 2242,
+        "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\0c432ec1026aa692_working_cmake_lua.cmake",
+        "bytes": 2242,
+        "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\0d0bb866505bc0e2_padding_00be2743_00be274f.bin",
+        "bytes": 13,
+        "sha256": "0d0bb866505bc0e2d4276fcdee1afdc8887662d04cce9e4bbb4c10fba6d0f1ce"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\0d0bb866505bc0e2_padding_00be2743_00be274f.bin",
+        "bytes": 13,
+        "sha256": "0d0bb866505bc0e2d4276fcdee1afdc8887662d04cce9e4bbb4c10fba6d0f1ce"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\18e103e99c7cc6d4_git_reports_native_resource_load_cache_by.json",
+        "bytes": 50674,
+        "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\18e103e99c7cc6d4_git_reports_native_resource_load_cache_by.json",
+        "bytes": 50674,
+        "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\18e103e99c7cc6d4_working_reports_native_resource_load_cache_by.json",
+        "bytes": 50674,
+        "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\18e103e99c7cc6d4_working_reports_native_resource_load_cache_by.json",
+        "bytes": 50674,
+        "sha256": "18e103e99c7cc6d498a2fb8fff997cb58ed9a2fe6f0a110b5e0e553e11a4190c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\1af7bd37b6b8820a_include_closure.json",
+        "bytes": 380150,
+        "sha256": "1af7bd37b6b8820aa3ba498870232e7a08526571cf18caa600b91270e6faca22"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\1af7bd37b6b8820a_include_closure.json",
+        "bytes": 380150,
+        "sha256": "1af7bd37b6b8820aa3ba498870232e7a08526571cf18caa600b91270e6faca22"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\1d35c7d8be3d4b7e_replay.py",
+        "bytes": 14973,
+        "sha256": "1d35c7d8be3d4b7eaafe76920835849221ca020fd50c8cfb7d8b37df5fceb6ca"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\1d35c7d8be3d4b7e_replay.py",
+        "bytes": 14973,
+        "sha256": "1d35c7d8be3d4b7eaafe76920835849221ca020fd50c8cfb7d8b37df5fceb6ca"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\1ebe476762f8f0bc_typed_flow.json",
+        "bytes": 7737,
+        "sha256": "1ebe476762f8f0bc0c182a36f4afe5dc541e423e59cf42ee96a8c78f05f3e4b0"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\1ebe476762f8f0bc_typed_flow.json",
+        "bytes": 7737,
+        "sha256": "1ebe476762f8f0bc0c182a36f4afe5dc541e423e59cf42ee96a8c78f05f3e4b0"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2372135299dfafe3_prior_docs_CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md",
+        "bytes": 9211,
+        "sha256": "2372135299dfafe386b129d4fc8725163c0c590cf49b6d4c5b9186d80a23e53e"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2372135299dfafe3_prior_docs_CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md",
+        "bytes": 9211,
+        "sha256": "2372135299dfafe386b129d4fc8725163c0c590cf49b6d4c5b9186d80a23e53e"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\23a4928ed7eaf80b_git_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "bytes": 3779952,
+        "sha256": "23a4928ed7eaf80b7ccca2e352cce365ce673e9572876c41352c353478969a71"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\23a4928ed7eaf80b_git_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "bytes": 3779952,
+        "sha256": "23a4928ed7eaf80b7ccca2e352cce365ce673e9572876c41352c353478969a71"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\23a4928ed7eaf80b_working_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "bytes": 3779952,
+        "sha256": "23a4928ed7eaf80b7ccca2e352cce365ce673e9572876c41352c353478969a71"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\23a4928ed7eaf80b_working_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "bytes": 3779952,
+        "sha256": "23a4928ed7eaf80b7ccca2e352cce365ce673e9572876c41352c353478969a71"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\24b1dadac8d82b8a_portable_relocation_result.json",
+        "bytes": 12936,
+        "sha256": "24b1dadac8d82b8ac302baa2d41cc24efe8706db27e052dd6722cc20ef330259"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\24b1dadac8d82b8a_portable_relocation_result.json",
+        "bytes": 12936,
+        "sha256": "24b1dadac8d82b8ac302baa2d41cc24efe8706db27e052dd6722cc20ef330259"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\24b1dadac8d82b8a_replay_result.json",
+        "bytes": 12936,
+        "sha256": "24b1dadac8d82b8ac302baa2d41cc24efe8706db27e052dd6722cc20ef330259"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\24b1dadac8d82b8a_replay_result.json",
+        "bytes": 12936,
+        "sha256": "24b1dadac8d82b8ac302baa2d41cc24efe8706db27e052dd6722cc20ef330259"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2822efd1d6f7f0b8_git_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "bytes": 11077508,
+        "sha256": "2822efd1d6f7f0b8af75899cb7273adf19feeba1ef3777e89d2052a6e870f4b3"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2822efd1d6f7f0b8_git_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "bytes": 11077508,
+        "sha256": "2822efd1d6f7f0b8af75899cb7273adf19feeba1ef3777e89d2052a6e870f4b3"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2822efd1d6f7f0b8_working_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "bytes": 11077508,
+        "sha256": "2822efd1d6f7f0b8af75899cb7273adf19feeba1ef3777e89d2052a6e870f4b3"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2822efd1d6f7f0b8_working_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "bytes": 11077508,
+        "sha256": "2822efd1d6f7f0b8af75899cb7273adf19feeba1ef3777e89d2052a6e870f4b3"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\29a1c549a58f6de4_git_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "bytes": 137087,
+        "sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\29a1c549a58f6de4_git_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "bytes": 137087,
+        "sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\29a1c549a58f6de4_working_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "bytes": 137087,
+        "sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\29a1c549a58f6de4_working_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "bytes": 137087,
+        "sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2a0dc5c9486f507a_source_git.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2a0dc5c9486f507a_source_git.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2a0dc5c9486f507a_source_working.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2a0dc5c9486f507a_source_working.tar.gz",
+        "bytes": 8619209,
+        "sha256": "2a0dc5c9486f507a76e9ff44181e626a7fff8de2991aaca045daaea069a578d3"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2b4aec25df83fa83_profile_00d685f4_00d68603.bin",
+        "bytes": 16,
+        "sha256": "2b4aec25df83fa83ceff7bdacf2d7b6112a2e42b9ccaf2c2f5fa9b8908351713"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2b4aec25df83fa83_profile_00d685f4_00d68603.bin",
+        "bytes": 16,
+        "sha256": "2b4aec25df83fa83ceff7bdacf2d7b6112a2e42b9ccaf2c2f5fa9b8908351713"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2da7c6a9946aac65_profile.json",
+        "bytes": 347,
+        "sha256": "2da7c6a9946aac657e7b929800dc2b97d4f108569e3569daa6cc52310a5625a0"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2da7c6a9946aac65_profile.json",
+        "bytes": 347,
+        "sha256": "2da7c6a9946aac657e7b929800dc2b97d4f108569e3569daa6cc52310a5625a0"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2dc2693e7bb32eca_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3911,
+        "sha256": "2dc2693e7bb32ecac2d16e00e6d0042384666be95055561ddc089e566adcc014"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2dc2693e7bb32eca_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3911,
+        "sha256": "2dc2693e7bb32ecac2d16e00e6d0042384666be95055561ddc089e566adcc014"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\2dc2693e7bb32eca_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3911,
+        "sha256": "2dc2693e7bb32ecac2d16e00e6d0042384666be95055561ddc089e566adcc014"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\2dc2693e7bb32eca_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3911,
+        "sha256": "2dc2693e7bb32ecac2d16e00e6d0042384666be95055561ddc089e566adcc014"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\366e5a64ac945473_git_config_target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\366e5a64ac945473_git_config_target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\366e5a64ac945473_working_config_target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\366e5a64ac945473_working_config_target.json",
+        "bytes": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\39c0cec495c6bf10_two_instruction_flow.json",
+        "bytes": 12182,
+        "sha256": "39c0cec495c6bf10d6c1fce60d8741b115608d69266fc6314767d20fde7d0c16"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\39c0cec495c6bf10_two_instruction_flow.json",
+        "bytes": 12182,
+        "sha256": "39c0cec495c6bf10d6c1fce60d8741b115608d69266fc6314767d20fde7d0c16"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\3b13813a5d9ebe33_git_docs_ENTITY_THINK_DISPATCH.md",
+        "bytes": 18155,
+        "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\3b13813a5d9ebe33_git_docs_ENTITY_THINK_DISPATCH.md",
+        "bytes": 18155,
+        "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\3b13813a5d9ebe33_working_docs_ENTITY_THINK_DISPATCH.md",
+        "bytes": 18155,
+        "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\3b13813a5d9ebe33_working_docs_ENTITY_THINK_DISPATCH.md",
+        "bytes": 18155,
+        "sha256": "3b13813a5d9ebe3342d38ce76c62e2e53b7a5cfa23309b2b116dfe6ea054415b"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\3f349201dea6df89_lua_archive_luaconf.h",
+        "bytes": 22236,
+        "sha256": "3f349201dea6df89e219f44f78ab132308b790c6bce9ff35e283630146ef99b2"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\3f349201dea6df89_lua_archive_luaconf.h",
+        "bytes": 22236,
+        "sha256": "3f349201dea6df89e219f44f78ab132308b790c6bce9ff35e283630146ef99b2"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\427c9d35f93302bd_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3914,
+        "sha256": "427c9d35f93302bd723fa75e75c73dbe96b3e53c770a849d2e3a109a29b04e22"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\427c9d35f93302bd_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3914,
+        "sha256": "427c9d35f93302bd723fa75e75c73dbe96b3e53c770a849d2e3a109a29b04e22"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\427c9d35f93302bd_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3914,
+        "sha256": "427c9d35f93302bd723fa75e75c73dbe96b3e53c770a849d2e3a109a29b04e22"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\427c9d35f93302bd_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3914,
+        "sha256": "427c9d35f93302bd723fa75e75c73dbe96b3e53c770a849d2e3a109a29b04e22"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\4816e8afedf7407b_git_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "bytes": 33375,
+        "sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\4816e8afedf7407b_git_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "bytes": 33375,
+        "sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\4816e8afedf7407b_working_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "bytes": 33375,
+        "sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\4816e8afedf7407b_working_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "bytes": 33375,
+        "sha256": "4816e8afedf7407beb5d40640c40825ebdc8b44d1f033803f384cfc0439dc70c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\4d9e6f61d919a17a_git_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "bytes": 3705583,
+        "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\4d9e6f61d919a17a_git_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "bytes": 3705583,
+        "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\4d9e6f61d919a17a_working_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "bytes": 3705583,
+        "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\4d9e6f61d919a17a_working_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "bytes": 3705583,
+        "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\4e6914d4def82ce1_freeze.py",
+        "bytes": 14046,
+        "sha256": "4e6914d4def82ce112642daa4a58017c1c22a76e44c01ba5a1ef60eb2937bc99"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\4e6914d4def82ce1_freeze.py",
+        "bytes": 14046,
+        "sha256": "4e6914d4def82ce112642daa4a58017c1c22a76e44c01ba5a1ef60eb2937bc99"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\568fc615535bf822_git_CMakeLists.txt",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\568fc615535bf822_git_CMakeLists.txt",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\568fc615535bf822_working_CMakeLists.txt",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\568fc615535bf822_working_CMakeLists.txt",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\58b2fd931ada7a11_predicate_bytes.json",
+        "bytes": 355,
+        "sha256": "58b2fd931ada7a11d41910eb3ad015cf3e33225ca4c4d3a68c2159284084d673"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\58b2fd931ada7a11_predicate_bytes.json",
+        "bytes": 355,
+        "sha256": "58b2fd931ada7a11d41910eb3ad015cf3e33225ca4c4d3a68c2159284084d673"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\5a56da312e412dc8_lua_archive_lauxlib.h",
+        "bytes": 5773,
+        "sha256": "5a56da312e412dc849fc66a867ce6925fb6ebf4c1744bb594953e0efccfafbef"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\5a56da312e412dc8_lua_archive_lauxlib.h",
+        "bytes": 5773,
+        "sha256": "5a56da312e412dc849fc66a867ce6925fb6ebf4c1744bb594953e0efccfafbef"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\5e6fbf28a9f52ad9_git_reports_cc12_allocation_stats_startup_source.json",
+        "bytes": 4912288,
+        "sha256": "5e6fbf28a9f52ad96f3d1517aec966c383051c805980e274fe9ba40a20256458"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\5e6fbf28a9f52ad9_git_reports_cc12_allocation_stats_startup_source.json",
+        "bytes": 4912288,
+        "sha256": "5e6fbf28a9f52ad96f3d1517aec966c383051c805980e274fe9ba40a20256458"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\5e6fbf28a9f52ad9_working_reports_cc12_allocation_stats_startup_source.json",
+        "bytes": 4912288,
+        "sha256": "5e6fbf28a9f52ad96f3d1517aec966c383051c805980e274fe9ba40a20256458"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\5e6fbf28a9f52ad9_working_reports_cc12_allocation_stats_startup_source.json",
+        "bytes": 4912288,
+        "sha256": "5e6fbf28a9f52ad96f3d1517aec966c383051c805980e274fe9ba40a20256458"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\611a2f0613f21724_git_tools_workspace.py",
+        "bytes": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\611a2f0613f21724_git_tools_workspace.py",
+        "bytes": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\611a2f0613f21724_working_tools_workspace.py",
+        "bytes": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\611a2f0613f21724_working_tools_workspace.py",
+        "bytes": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\657edd12a865808d_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "bytes": 8656,
+        "sha256": "657edd12a865808d8c2d174ab830b14af4cda2c34f28766af9bb81f5d221da31"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\657edd12a865808d_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "bytes": 8656,
+        "sha256": "657edd12a865808d8c2d174ab830b14af4cda2c34f28766af9bb81f5d221da31"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\657edd12a865808d_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "bytes": 8656,
+        "sha256": "657edd12a865808d8c2d174ab830b14af4cda2c34f28766af9bb81f5d221da31"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\657edd12a865808d_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "bytes": 8656,
+        "sha256": "657edd12a865808d8c2d174ab830b14af4cda2c34f28766af9bb81f5d221da31"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\689915fd4f265cb9_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "bytes": 11157,
+        "sha256": "689915fd4f265cb9f84e6221123b557bd4633dd9c1078459e600709fe08bdd4c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\689915fd4f265cb9_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "bytes": 11157,
+        "sha256": "689915fd4f265cb9f84e6221123b557bd4633dd9c1078459e600709fe08bdd4c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\689915fd4f265cb9_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "bytes": 11157,
+        "sha256": "689915fd4f265cb9f84e6221123b557bd4633dd9c1078459e600709fe08bdd4c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\689915fd4f265cb9_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "bytes": 11157,
+        "sha256": "689915fd4f265cb9f84e6221123b557bd4633dd9c1078459e600709fe08bdd4c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\69d98e3db9724a0b_predicate_exact_capture.json",
+        "bytes": 2739,
+        "sha256": "69d98e3db9724a0b8108e531ecd19338859cf8a333c4d7f6c85ef6d6c582e41e"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\69d98e3db9724a0b_predicate_exact_capture.json",
+        "bytes": 2739,
+        "sha256": "69d98e3db9724a0b8108e531ecd19338859cf8a333c4d7f6c85ef6d6c582e41e"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\69ffaf5c2c09425f_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "bytes": 8971,
+        "sha256": "69ffaf5c2c09425f45fa2e6348f04f88492525d173c1ca2d5cc59f9831c34225"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\69ffaf5c2c09425f_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "bytes": 8971,
+        "sha256": "69ffaf5c2c09425f45fa2e6348f04f88492525d173c1ca2d5cc59f9831c34225"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\69ffaf5c2c09425f_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "bytes": 8971,
+        "sha256": "69ffaf5c2c09425f45fa2e6348f04f88492525d173c1ca2d5cc59f9831c34225"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\69ffaf5c2c09425f_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "bytes": 8971,
+        "sha256": "69ffaf5c2c09425f45fa2e6348f04f88492525d173c1ca2d5cc59f9831c34225"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\728a7e4dd4831770_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3309,
+        "sha256": "728a7e4dd4831770e2504efbb5bc79d6175df70b881c893211790e795fdccbf7"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\728a7e4dd4831770_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3309,
+        "sha256": "728a7e4dd4831770e2504efbb5bc79d6175df70b881c893211790e795fdccbf7"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\728a7e4dd4831770_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3309,
+        "sha256": "728a7e4dd4831770e2504efbb5bc79d6175df70b881c893211790e795fdccbf7"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\728a7e4dd4831770_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3309,
+        "sha256": "728a7e4dd4831770e2504efbb5bc79d6175df70b881c893211790e795fdccbf7"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\76649e33d56835a3_predicate_metadata_capture.json",
+        "bytes": 3444,
+        "sha256": "76649e33d56835a38a171138ffc05791da5d7e57f62d981b433e66854256348f"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\76649e33d56835a3_predicate_metadata_capture.json",
+        "bytes": 3444,
+        "sha256": "76649e33d56835a38a171138ffc05791da5d7e57f62d981b433e66854256348f"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\7876d8123a7c3315_git_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "bytes": 3156920,
+        "sha256": "7876d8123a7c3315c7efbc30b0aafa8119854faac0d7be7e7d7784cd828a8e77"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\7876d8123a7c3315_git_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "bytes": 3156920,
+        "sha256": "7876d8123a7c3315c7efbc30b0aafa8119854faac0d7be7e7d7784cd828a8e77"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\7876d8123a7c3315_working_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "bytes": 3156920,
+        "sha256": "7876d8123a7c3315c7efbc30b0aafa8119854faac0d7be7e7d7784cd828a8e77"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\7876d8123a7c3315_working_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "bytes": 3156920,
+        "sha256": "7876d8123a7c3315c7efbc30b0aafa8119854faac0d7be7e7d7784cd828a8e77"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\7c30db5b9be8b859_git_cmake_startup.cmake",
+        "bytes": 202281,
+        "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\7c30db5b9be8b859_git_cmake_startup.cmake",
+        "bytes": 202281,
+        "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\7c30db5b9be8b859_working_cmake_startup.cmake",
+        "bytes": 202281,
+        "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\7c30db5b9be8b859_working_cmake_startup.cmake",
+        "bytes": 202281,
+        "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\8a3e29582a0db5dd_git_reports_cc12_allocation_stats_process_cell_source.json",
+        "bytes": 1332353,
+        "sha256": "8a3e29582a0db5dd593fba2913fb066073be44d18f2c46e7571a411f64cb0f00"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\8a3e29582a0db5dd_git_reports_cc12_allocation_stats_process_cell_source.json",
+        "bytes": 1332353,
+        "sha256": "8a3e29582a0db5dd593fba2913fb066073be44d18f2c46e7571a411f64cb0f00"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\8a3e29582a0db5dd_working_reports_cc12_allocation_stats_process_cell_source.json",
+        "bytes": 1332353,
+        "sha256": "8a3e29582a0db5dd593fba2913fb066073be44d18f2c46e7571a411f64cb0f00"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\8a3e29582a0db5dd_working_reports_cc12_allocation_stats_process_cell_source.json",
+        "bytes": 1332353,
+        "sha256": "8a3e29582a0db5dd593fba2913fb066073be44d18f2c46e7571a411f64cb0f00"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\8a75caf71a8e2064_git_reports_entity_think_dispatch.json",
+        "bytes": 16415,
+        "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\8a75caf71a8e2064_git_reports_entity_think_dispatch.json",
+        "bytes": 16415,
+        "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\8a75caf71a8e2064_working_reports_entity_think_dispatch.json",
+        "bytes": 16415,
+        "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\8a75caf71a8e2064_working_reports_entity_think_dispatch.json",
+        "bytes": 16415,
+        "sha256": "8a75caf71a8e2064fb94e09444048d404fa697356dd8c36a3e79a3fdde8cdc26"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\8bec005f0300870b_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "bytes": 9374,
+        "sha256": "8bec005f0300870be671532ba3035eab0280775637db7533a6c2f7cb0f8d6777"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\8bec005f0300870b_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "bytes": 9374,
+        "sha256": "8bec005f0300870be671532ba3035eab0280775637db7533a6c2f7cb0f8d6777"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\8bec005f0300870b_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "bytes": 9374,
+        "sha256": "8bec005f0300870be671532ba3035eab0280775637db7533a6c2f7cb0f8d6777"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\8bec005f0300870b_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "bytes": 9374,
+        "sha256": "8bec005f0300870be671532ba3035eab0280775637db7533a6c2f7cb0f8d6777"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\8ff97655035e8c04_source_ls_tree_z.bin",
+        "bytes": 382563,
+        "sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\8ff97655035e8c04_source_ls_tree_z.bin",
+        "bytes": 382563,
+        "sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\9051a84edd7ef671_git_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "bytes": 3913,
+        "sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\9051a84edd7ef671_git_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "bytes": 3913,
+        "sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\9051a84edd7ef671_working_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "bytes": 3913,
+        "sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\9051a84edd7ef671_working_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "bytes": 3913,
+        "sha256": "9051a84edd7ef671f8090382bcbce59f64eac6fca6c1fab28ac801503842206c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\940ab4f56633de99_git_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "bytes": 2995465,
+        "sha256": "940ab4f56633de99b57b417106cd2ff69c75d56ff44cdf2411d56a8f7f8e4694"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\940ab4f56633de99_git_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "bytes": 2995465,
+        "sha256": "940ab4f56633de99b57b417106cd2ff69c75d56ff44cdf2411d56a8f7f8e4694"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\940ab4f56633de99_working_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "bytes": 2995465,
+        "sha256": "940ab4f56633de99b57b417106cd2ff69c75d56ff44cdf2411d56a8f7f8e4694"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\940ab4f56633de99_working_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "bytes": 2995465,
+        "sha256": "940ab4f56633de99b57b417106cd2ff69c75d56ff44cdf2411d56a8f7f8e4694"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\96a8bcc8795cd32c_verify_git.py",
+        "bytes": 3441,
+        "sha256": "96a8bcc8795cd32ca5f41abbdbac8d13fa9a8c69b442782f097d70da89d7a35f"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\96a8bcc8795cd32c_verify_git.py",
+        "bytes": 3441,
+        "sha256": "96a8bcc8795cd32ca5f41abbdbac8d13fa9a8c69b442782f097d70da89d7a35f"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\97272278577d3d32_git_tools_ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\97272278577d3d32_git_tools_ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\97272278577d3d32_working_tools_ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\97272278577d3d32_working_tools_ghidra_typed_flow.py",
+        "bytes": 20048,
+        "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\9aa0858555b2f0dc_predicate_window_00be2740_00be274f.bin",
+        "bytes": 16,
+        "sha256": "9aa0858555b2f0dcfb2e62c18e238df28fbaf81f25346fcc428385196cd18139"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\9aa0858555b2f0dc_predicate_window_00be2740_00be274f.bin",
+        "bytes": 16,
+        "sha256": "9aa0858555b2f0dcfb2e62c18e238df28fbaf81f25346fcc428385196cd18139"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\9e50547fdab391a3_git_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "bytes": 249159,
+        "sha256": "9e50547fdab391a30a91c39e2e1183fb5b0ab7f50202492dd363a499cfd5a4b1"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\9e50547fdab391a3_git_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "bytes": 249159,
+        "sha256": "9e50547fdab391a30a91c39e2e1183fb5b0ab7f50202492dd363a499cfd5a4b1"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\9e50547fdab391a3_working_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "bytes": 249159,
+        "sha256": "9e50547fdab391a30a91c39e2e1183fb5b0ab7f50202492dd363a499cfd5a4b1"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\9e50547fdab391a3_working_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "bytes": 249159,
+        "sha256": "9e50547fdab391a30a91c39e2e1183fb5b0ab7f50202492dd363a499cfd5a4b1"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\9f797fd2990aef2e_freeze_capture.json",
+        "bytes": 130826,
+        "sha256": "9f797fd2990aef2edecbecdf8155df20392c2d3676c0ea40aba7be444390354e"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\9f797fd2990aef2e_freeze_capture.json",
+        "bytes": 130826,
+        "sha256": "9f797fd2990aef2edecbecdf8155df20392c2d3676c0ea40aba7be444390354e"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\a3a7e2f3944d42cb_capture.py",
+        "bytes": 1303,
+        "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\a3a7e2f3944d42cb_capture.py",
+        "bytes": 1303,
+        "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\a61d268bb06586fa_include_closure.json",
+        "bytes": 362074,
+        "sha256": "a61d268bb06586faf81d20cf64812bf3845211be4d74e6df7d4a886d0d353657"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\a61d268bb06586fa_include_closure.json",
+        "bytes": 362074,
+        "sha256": "a61d268bb06586faf81d20cf64812bf3845211be4d74e6df7d4a886d0d353657"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\a97f8fe9b81e2289_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "bytes": 12688,
+        "sha256": "a97f8fe9b81e2289e57762f9d3b81ab397efc0792ec36fad58dce2d082b13d5a"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\a97f8fe9b81e2289_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "bytes": 12688,
+        "sha256": "a97f8fe9b81e2289e57762f9d3b81ab397efc0792ec36fad58dce2d082b13d5a"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\a97f8fe9b81e2289_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "bytes": 12688,
+        "sha256": "a97f8fe9b81e2289e57762f9d3b81ab397efc0792ec36fad58dce2d082b13d5a"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\a97f8fe9b81e2289_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "bytes": 12688,
+        "sha256": "a97f8fe9b81e2289e57762f9d3b81ab397efc0792ec36fad58dce2d082b13d5a"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\abb53d9c7495cc7a_review_document.md",
+        "bytes": 9458,
+        "sha256": "abb53d9c7495cc7af9c2cf70efef53fb51a00ee74faeb589b701c1568a00dbcd"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\abb53d9c7495cc7a_review_document.md",
+        "bytes": 9458,
+        "sha256": "abb53d9c7495cc7af9c2cf70efef53fb51a00ee74faeb589b701c1568a00dbcd"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\b00e231750624e31_lua_archive_lualib.h",
+        "bytes": 1022,
+        "sha256": "b00e231750624e31235b0b639933de85bc936a89dd780abc8f20e2725e11ddd0"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\b00e231750624e31_lua_archive_lualib.h",
+        "bytes": 1022,
+        "sha256": "b00e231750624e31235b0b639933de85bc936a89dd780abc8f20e2725e11ddd0"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\b5cbc97f0b93beba_git_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "bytes": 1525264,
+        "sha256": "b5cbc97f0b93bebac0667faafd41ef6dab6687965afdfeff6d923b6d62a5cb49"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\b5cbc97f0b93beba_git_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "bytes": 1525264,
+        "sha256": "b5cbc97f0b93bebac0667faafd41ef6dab6687965afdfeff6d923b6d62a5cb49"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\b5cbc97f0b93beba_working_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "bytes": 1525264,
+        "sha256": "b5cbc97f0b93bebac0667faafd41ef6dab6687965afdfeff6d923b6d62a5cb49"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\b5cbc97f0b93beba_working_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "bytes": 1525264,
+        "sha256": "b5cbc97f0b93bebac0667faafd41ef6dab6687965afdfeff6d923b6d62a5cb49"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\b682a82c52f81f95_original_image.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\b682a82c52f81f95_original_image.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\b7b1dc3e75f6f6e7_git_replay_result.json",
+        "bytes": 15226,
+        "sha256": "b7b1dc3e75f6f6e70ca2a756cf0af5cec263d94fff2b990b2559832b75d42d43"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\b7b1dc3e75f6f6e7_git_replay_result.json",
+        "bytes": 15226,
+        "sha256": "b7b1dc3e75f6f6e70ca2a756cf0af5cec263d94fff2b990b2559832b75d42d43"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\ba5a3fc04b15e9a4_predicate_body.json",
+        "bytes": 481,
+        "sha256": "ba5a3fc04b15e9a4ce2ce45351f4bb52aa0380c8f3fcbd1f9a3898e40a782d54"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\ba5a3fc04b15e9a4_predicate_body.json",
+        "bytes": 481,
+        "sha256": "ba5a3fc04b15e9a4ce2ce45351f4bb52aa0380c8f3fcbd1f9a3898e40a782d54"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\bb434a7c78576a6b_two_instructions.json",
+        "bytes": 273,
+        "sha256": "bb434a7c78576a6b117d010537a97e13803a1788852a7eb30c2b14de9d21bf5c"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\bb434a7c78576a6b_two_instructions.json",
+        "bytes": 273,
+        "sha256": "bb434a7c78576a6b117d010537a97e13803a1788852a7eb30c2b14de9d21bf5c"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+        "bytes": 207810,
+        "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+        "bytes": 207810,
+        "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\c772aa9cc89fea34_source_manifest.json",
+        "bytes": 1628808,
+        "sha256": "c772aa9cc89fea343db0fd205e6a5493d472604122613f09739714a11ad05e88"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\c772aa9cc89fea34_source_manifest.json",
+        "bytes": 1628808,
+        "sha256": "c772aa9cc89fea343db0fd205e6a5493d472604122613f09739714a11ad05e88"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\ce42211b53f50bfa_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 4218,
+        "sha256": "ce42211b53f50bfab81e8466488e4a2a0d774405031ddf618565cdc4a8285457"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\ce42211b53f50bfa_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 4218,
+        "sha256": "ce42211b53f50bfab81e8466488e4a2a0d774405031ddf618565cdc4a8285457"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\ce42211b53f50bfa_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 4218,
+        "sha256": "ce42211b53f50bfab81e8466488e4a2a0d774405031ddf618565cdc4a8285457"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\ce42211b53f50bfa_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 4218,
+        "sha256": "ce42211b53f50bfab81e8466488e4a2a0d774405031ddf618565cdc4a8285457"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\d16c83b636f5c359_prior_reports_cc12_script_orders_lua_command_owner_binding_review.json",
+        "bytes": 98854,
+        "sha256": "d16c83b636f5c359bce80c38ce1bbaaca247759267f9dd382beee670a5af08f5"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\d16c83b636f5c359_prior_reports_cc12_script_orders_lua_command_owner_binding_review.json",
+        "bytes": 98854,
+        "sha256": "d16c83b636f5c359bce80c38ce1bbaaca247759267f9dd382beee670a5af08f5"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\d27a329da91cfd67_profile_capture.json",
+        "bytes": 2249,
+        "sha256": "d27a329da91cfd67794dcd308dff35eaccb1b6d9df8b1ba19b1f89fb82852aea"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\d27a329da91cfd67_profile_capture.json",
+        "bytes": 2249,
+        "sha256": "d27a329da91cfd67794dcd308dff35eaccb1b6d9df8b1ba19b1f89fb82852aea"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\d3978b39bf56acad_predicate_body_capture.json",
+        "bytes": 937,
+        "sha256": "d3978b39bf56acad0da8c85b1b480362cfaffce2f4f39020b79a05247f00e143"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\d3978b39bf56acad_predicate_body_capture.json",
+        "bytes": 937,
+        "sha256": "d3978b39bf56acad0da8c85b1b480362cfaffce2f4f39020b79a05247f00e143"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\d9e974c8aeab3d36_predicate_metadata.json",
+        "bytes": 522,
+        "sha256": "d9e974c8aeab3d36bd4d12286790512c7c53c071dc729638ebcc6d41db466ba8"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\d9e974c8aeab3d36_predicate_metadata.json",
+        "bytes": 522,
+        "sha256": "d9e974c8aeab3d36bd4d12286790512c7c53c071dc729638ebcc6d41db466ba8"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\dab59d9cd45cdfdd_profile_mapping.json",
+        "bytes": 1695,
+        "sha256": "dab59d9cd45cdfdd1ed3e528a21050c07f0ed756eed0b3f34d3cf6412569cd20"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\dab59d9cd45cdfdd_profile_mapping.json",
+        "bytes": 1695,
+        "sha256": "dab59d9cd45cdfdd1ed3e528a21050c07f0ed756eed0b3f34d3cf6412569cd20"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\e47dafcec2c6a3ed_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "bytes": 8371,
+        "sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\e47dafcec2c6a3ed_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "bytes": 8371,
+        "sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\e47dafcec2c6a3ed_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "bytes": 8371,
+        "sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\e47dafcec2c6a3ed_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "bytes": 8371,
+        "sha256": "e47dafcec2c6a3ed910f13ac523e93f9952487a15197ed585cd6d9b6da3435da"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\e530bed3bd9db1f6_make_receipt.py",
+        "bytes": 9150,
+        "sha256": "e530bed3bd9db1f6ba299bd73b94588f878f71b2a675b15da0e4ed374e09b676"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\e530bed3bd9db1f6_make_receipt.py",
+        "bytes": 9150,
+        "sha256": "e530bed3bd9db1f6ba299bd73b94588f878f71b2a675b15da0e4ed374e09b676"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\e6c07aea2cbb05a5_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3878,
+        "sha256": "e6c07aea2cbb05a5e2cac047e043d7d6ab612b599d18eb715ad4600a85beac18"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\e6c07aea2cbb05a5_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3878,
+        "sha256": "e6c07aea2cbb05a5e2cac047e043d7d6ab612b599d18eb715ad4600a85beac18"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\e6c07aea2cbb05a5_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3878,
+        "sha256": "e6c07aea2cbb05a5e2cac047e043d7d6ab612b599d18eb715ad4600a85beac18"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\e6c07aea2cbb05a5_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 3878,
+        "sha256": "e6c07aea2cbb05a5e2cac047e043d7d6ab612b599d18eb715ad4600a85beac18"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\ec73694426956ffc_git_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "bytes": 13677,
+        "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\ec73694426956ffc_git_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "bytes": 13677,
+        "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\ec73694426956ffc_working_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "bytes": 13677,
+        "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\ec73694426956ffc_working_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "bytes": 13677,
+        "sha256": "ec73694426956ffcd00397ba0131483fffbc07397249982cd0b22e873bcd7cf9"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\efc2d75d146c998e_predicate_bytes_capture.json",
+        "bytes": 2571,
+        "sha256": "efc2d75d146c998e93e876d5e4d5da2ad2739ab94bda63660a5a00923dd215a8"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\efc2d75d146c998e_predicate_bytes_capture.json",
+        "bytes": 2571,
+        "sha256": "efc2d75d146c998e93e876d5e4d5da2ad2739ab94bda63660a5a00923dd215a8"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\f408e93e158f5e4e_freeze.py",
+        "bytes": 14175,
+        "sha256": "f408e93e158f5e4e6c4c6e048c120347cbe164dcbf81a5b441221b9f94b78111"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\f408e93e158f5e4e_freeze.py",
+        "bytes": 14175,
+        "sha256": "f408e93e158f5e4e6c4c6e048c120347cbe164dcbf81a5b441221b9f94b78111"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\portable_replay_final\\frozen\\f5b1e463cb60c3ee_map_profile.py",
+        "bytes": 1886,
+        "sha256": "f5b1e463cb60c3ee8c4c728c280f955987d5316b394687d538581a2501c37d93"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\frozen\\f5b1e463cb60c3ee_map_profile.py",
+        "bytes": 1886,
+        "sha256": "f5b1e463cb60c3ee8c4c728c280f955987d5316b394687d538581a2501c37d93"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\local\\cc12_allocation_stats_gc_predicate_review\\verify_git.py",
+        "bytes": 3441,
+        "sha256": "96a8bcc8795cd32ca5f41abbdbac8d13fa9a8c69b442782f097d70da89d7a35f"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\verify_git.py",
+        "bytes": 3441,
+        "sha256": "96a8bcc8795cd32ca5f41abbdbac8d13fa9a8c69b442782f097d70da89d7a35f"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\docs\\CC12_ALLOCATION_STATS_GC_PREDICATE_REVIEW.md",
+        "bytes": 9689,
+        "sha256": "2138506b4473c619ec73eb4754c6a97dca5156cc558df4e04642f4ff1777b1f2"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\docs\\CC12_ALLOCATION_STATS_GC_PREDICATE_REVIEW.md",
+        "bytes": 9689,
+        "sha256": "2138506b4473c619ec73eb4754c6a97dca5156cc558df4e04642f4ff1777b1f2"
+      }
+    },
+    {
+      "source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi\\reports\\cc12_allocation_stats_gc_predicate_review.json",
+        "bytes": 180368,
+        "sha256": "a0856a32f51653731e0ad4368625b8519f50ea69fb33b6ac516515154a528fd9"
+      },
+      "retained": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\reports\\cc12_allocation_stats_gc_predicate_review.json",
+        "bytes": 180368,
+        "sha256": "a0856a32f51653731e0ad4368625b8519f50ea69fb33b6ac516515154a528fd9"
+      }
+    }
+  ],
+  "portable_replay": {
+    "start_utc": "2026-10-10T14:29:06.348450+00:00",
+    "argv": [
+      "C:\\ProgramData\\miniconda3\\python.exe",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\replay.py"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete",
+    "exit_code": 0,
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\Root_portable.stdout.json",
+      "bytes": 12989,
+      "sha256": "baac817c6fbcffd85fdd9aa1855a7868fec7f5cd94b06f2b4a294d2ad902b6a9"
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\Root_portable.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "returned": {
+      "schema": "bsp.cc12.allocation_stats_gc_predicate.artifact_replay.v1",
+      "status": "pass",
+      "mode": "retained artifacts only with audit-enforced no external reads/writes/process/network",
+      "source_files": 4206,
+      "additional_Source_Git": 38,
+      "prior_whole_reports": 2,
+      "source_queries": [
+        {
+          "label": "gc_gate_all",
+          "hits": 5,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "predicate_target_mentions",
+          "hits": 0,
+          "files": []
+        },
+        {
+          "label": "derived_profile_mentions",
+          "hits": 5,
+          "files": [
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "include/bsp/native_singleton_destruction.hpp",
+            "include/bsp/platform_window.hpp",
+            "src/native_allocation_stats_constructor.cpp",
+            "src/native_singleton_destruction.cpp"
+          ]
+        },
+        {
+          "label": "actual_stats_cell_mentions",
+          "hits": 13,
+          "files": [
+            "include/bsp/game_native_string_process.hpp",
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "include/bsp/native_resource_load_cache.hpp",
+            "src/game_hosts_singletons.cpp",
+            "src/game_native_string_process.cpp",
+            "src/native_allocation_stats_constructor.cpp",
+            "src/native_allocation_stats_lifecycle.cpp",
+            "src/native_resource_load_cache.cpp"
+          ]
+        },
+        {
+          "label": "raw_stats_constructor_calls",
+          "hits": 6,
+          "files": [
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "src/game_hosts.cpp",
+            "src/native_allocation_stats_constructor.cpp"
+          ]
+        },
+        {
+          "label": "stats_context_bindings",
+          "hits": 7,
+          "files": [
+            "include/bsp/game_hosts_singletons.hpp",
+            "src/game_hosts.cpp",
+            "src/game_hosts_singletons.cpp"
+          ]
+        },
+        {
+          "label": "semantic_stats_model",
+          "hits": 4,
+          "files": [
+            "include/bsp/native_allocation_stats_constructor.hpp",
+            "include/bsp/platform_window.hpp",
+            "src/platform_window.cpp"
+          ]
+        },
+        {
+          "label": "think_list_calls",
+          "hits": 4,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "command_calls",
+          "hits": 5,
+          "files": [
+            "include/bsp/entity_think_dispatch.hpp",
+            "include/bsp/game_hosts_script_orders.hpp",
+            "src/entity_think_dispatch.cpp",
+            "src/game_hosts_ready.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "orders_construction",
+          "hits": 2,
+          "files": [
+            "src/game_hosts_mission_frame.cpp",
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "cached_machine_writes",
+          "hits": 7,
+          "files": [
+            "src/game_hosts_script_orders.cpp"
+          ]
+        },
+        {
+          "label": "startup_phase_and_failure",
+          "hits": 16,
+          "files": [
+            "include/bsp/game_hosts.hpp",
+            "src/game_hosts.cpp"
+          ]
+        }
+      ],
+      "exact_excerpts": 35,
+      "source_anchors": 44,
+      "include_roots": 19,
+      "include_project_files": 592,
+      "include_edges": 1164,
+      "lua_headers": 4,
+      "new_native_profile_bytes": 16,
+      "predicate_body_bytes": 3,
+      "separate_padding_bytes": 13,
+      "predicate_instructions": 2,
+      "typed_command_receipts": 14,
+      "ghidra_modification_number": "49",
+      "saved_function_at_and_containing": null,
+      "source_leaf_result": "false; no receiver/global reads; AL-only original result; no gate or command activation",
+      "finite_native_mapping": "profile .rdata and predicate .text mapped from retained complete PE",
+      "retained_pin_occurrences": 106,
+      "unique_pin_paths": 106,
+      "opened_paths": [
+        "freeze_capture.json",
+        "frozen/010b9880711a2534_git_docs_MISSION_LUA_HOST.md",
+        "frozen/010b9880711a2534_working_docs_MISSION_LUA_HOST.md",
+        "frozen/01cb47d078b4841b_predicate_00be2740_00be2742.bin",
+        "frozen/038f566ab59dc67e_git_reports_mission_lua_host.json",
+        "frozen/038f566ab59dc67e_working_reports_mission_lua_host.json",
+        "frozen/06ec09f5c403f580_predicate_exact.json",
+        "frozen/071b3c8a8dfd98d6_git_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "frozen/071b3c8a8dfd98d6_working_reports_cc12_allocation_stats_raw_constructor_source.json",
+        "frozen/09de2b8916a4af98_git_tools_bsp.py",
+        "frozen/09de2b8916a4af98_working_tools_bsp.py",
+        "frozen/0a69a11d3e176ceb_lua_archive_lua.h",
+        "frozen/0b26a744a3dd5b48_git_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "frozen/0b26a744a3dd5b48_working_reports_cc12_allocation_stats_retained_host_binding_source_primary_review.json",
+        "frozen/0c432ec1026aa692_git_cmake_lua.cmake",
+        "frozen/0c432ec1026aa692_working_cmake_lua.cmake",
+        "frozen/0d0bb866505bc0e2_padding_00be2743_00be274f.bin",
+        "frozen/18e103e99c7cc6d4_git_reports_native_resource_load_cache_by.json",
+        "frozen/18e103e99c7cc6d4_working_reports_native_resource_load_cache_by.json",
+        "frozen/1af7bd37b6b8820a_include_closure.json",
+        "frozen/1ebe476762f8f0bc_typed_flow.json",
+        "frozen/2372135299dfafe3_prior_docs_CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md",
+        "frozen/23a4928ed7eaf80b_git_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "frozen/23a4928ed7eaf80b_working_reports_cc12_allocation_stats_raw_lifecycle_source_primary_review.json",
+        "frozen/2822efd1d6f7f0b8_git_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "frozen/2822efd1d6f7f0b8_working_reports_cc12_allocation_stats_startup_source_primary_review.json",
+        "frozen/29a1c549a58f6de4_git_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "frozen/29a1c549a58f6de4_working_reports_cc12_allocation_stats_raw_owner_retained_readiness.json",
+        "frozen/2a0dc5c9486f507a_source_git.tar.gz",
+        "frozen/2a0dc5c9486f507a_source_working.tar.gz",
+        "frozen/2b4aec25df83fa83_profile_00d685f4_00d68603.bin",
+        "frozen/2da7c6a9946aac65_profile.json",
+        "frozen/2dc2693e7bb32eca_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/2dc2693e7bb32eca_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/366e5a64ac945473_git_config_target.json",
+        "frozen/366e5a64ac945473_working_config_target.json",
+        "frozen/39c0cec495c6bf10_two_instruction_flow.json",
+        "frozen/3b13813a5d9ebe33_git_docs_ENTITY_THINK_DISPATCH.md",
+        "frozen/3b13813a5d9ebe33_working_docs_ENTITY_THINK_DISPATCH.md",
+        "frozen/3f349201dea6df89_lua_archive_luaconf.h",
+        "frozen/427c9d35f93302bd_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/427c9d35f93302bd_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/4816e8afedf7407b_git_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "frozen/4816e8afedf7407b_working_reports_cc12_allocation_stats_lifecycle_body_gate.json",
+        "frozen/4d9e6f61d919a17a_git_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "frozen/4d9e6f61d919a17a_working_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+        "frozen/568fc615535bf822_git_CMakeLists.txt",
+        "frozen/568fc615535bf822_working_CMakeLists.txt",
+        "frozen/58b2fd931ada7a11_predicate_bytes.json",
+        "frozen/5a56da312e412dc8_lua_archive_lauxlib.h",
+        "frozen/5e6fbf28a9f52ad9_git_reports_cc12_allocation_stats_startup_source.json",
+        "frozen/5e6fbf28a9f52ad9_working_reports_cc12_allocation_stats_startup_source.json",
+        "frozen/611a2f0613f21724_git_tools_workspace.py",
+        "frozen/611a2f0613f21724_working_tools_workspace.py",
+        "frozen/657edd12a865808d_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "frozen/657edd12a865808d_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md",
+        "frozen/689915fd4f265cb9_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "frozen/689915fd4f265cb9_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md",
+        "frozen/69d98e3db9724a0b_predicate_exact_capture.json",
+        "frozen/69ffaf5c2c09425f_git_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "frozen/69ffaf5c2c09425f_working_docs_CC12_ALLOCATION_STATS_STARTUP_SOURCE.md",
+        "frozen/728a7e4dd4831770_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/728a7e4dd4831770_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/76649e33d56835a3_predicate_metadata_capture.json",
+        "frozen/7876d8123a7c3315_git_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "frozen/7876d8123a7c3315_working_reports_cc12_allocation_stats_process_cell_binding_readiness.json",
+        "frozen/7c30db5b9be8b859_git_cmake_startup.cmake",
+        "frozen/7c30db5b9be8b859_working_cmake_startup.cmake",
+        "frozen/8a3e29582a0db5dd_git_reports_cc12_allocation_stats_process_cell_source.json",
+        "frozen/8a3e29582a0db5dd_working_reports_cc12_allocation_stats_process_cell_source.json",
+        "frozen/8a75caf71a8e2064_git_reports_entity_think_dispatch.json",
+        "frozen/8a75caf71a8e2064_working_reports_entity_think_dispatch.json",
+        "frozen/8bec005f0300870b_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "frozen/8bec005f0300870b_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md",
+        "frozen/8ff97655035e8c04_source_ls_tree_z.bin",
+        "frozen/9051a84edd7ef671_git_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "frozen/9051a84edd7ef671_working_docs_CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md",
+        "frozen/940ab4f56633de99_git_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "frozen/940ab4f56633de99_working_reports_cc12_allocation_stats_retained_host_binding_source.json",
+        "frozen/97272278577d3d32_git_tools_ghidra_typed_flow.py",
+        "frozen/97272278577d3d32_working_tools_ghidra_typed_flow.py",
+        "frozen/9aa0858555b2f0dc_predicate_window_00be2740_00be274f.bin",
+        "frozen/9e50547fdab391a3_git_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "frozen/9e50547fdab391a3_working_reports_cc12_allocation_stats_process_cell_source_primary_review.json",
+        "frozen/a3a7e2f3944d42cb_capture.py",
+        "frozen/a97f8fe9b81e2289_git_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "frozen/a97f8fe9b81e2289_working_docs_CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md",
+        "frozen/b00e231750624e31_lua_archive_lualib.h",
+        "frozen/b5cbc97f0b93beba_git_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "frozen/b5cbc97f0b93beba_working_reports_cc12_allocation_stats_raw_lifecycle_source.json",
+        "frozen/b682a82c52f81f95_original_image.bin",
+        "frozen/ba5a3fc04b15e9a4_predicate_body.json",
+        "frozen/bb434a7c78576a6b_two_instructions.json",
+        "frozen/c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+        "frozen/c772aa9cc89fea34_source_manifest.json",
+        "frozen/ce42211b53f50bfa_git_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/ce42211b53f50bfa_working_docs_CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/d16c83b636f5c359_prior_reports_cc12_script_orders_lua_command_owner_binding_review.json",
+        "frozen/d27a329da91cfd67_profile_capture.json",
+        "frozen/d3978b39bf56acad_predicate_body_capture.json",
+        "frozen/d9e974c8aeab3d36_predicate_metadata.json",
+        "frozen/dab59d9cd45cdfdd_profile_mapping.json",
+        "frozen/e47dafcec2c6a3ed_git_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "frozen/e47dafcec2c6a3ed_working_docs_CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md",
+        "frozen/e6c07aea2cbb05a5_git_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/e6c07aea2cbb05a5_working_docs_CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md",
+        "frozen/ec73694426956ffc_git_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "frozen/ec73694426956ffc_working_docs_CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md",
+        "frozen/efc2d75d146c998e_predicate_bytes_capture.json",
+        "frozen/f408e93e158f5e4e_freeze.py",
+        "frozen/f5b1e463cb60c3ee_map_profile.py"
+      ],
+      "qualification": "Artifact integrity, static Source facts and finite instruction evidence only. No compiled result, Native ABI compatibility, Lua execution, runtime/global dispatch readiness or gameplay proof."
+    }
+  },
+  "separate_actual_Git_replay": {
+    "start_utc": "2026-10-10T14:29:11.619471+00:00",
+    "argv": [
+      "C:\\ProgramData\\miniconda3\\python.exe",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete\\verify_git.py",
+      "--repo",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "--check-working"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\worker_complete",
+    "exit_code": 0,
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\Root_separate_Git.stdout.json",
+      "bytes": 15226,
+      "sha256": "b7b1dc3e75f6f6e70ca2a756cf0af5cec263d94fff2b990b2559832b75d42d43"
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_stats_gc_primary\\Root_separate_Git.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "returned": {
+      "schema": "bsp.cc12.allocation_stats_gc_predicate.git_replay.v1",
+      "status": "pass",
+      "mode": "separate Git-object check with optional explicit working reads",
+      "repo": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "baseline": "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+      "blob_checks": 4246,
+      "working_files_checked": 4244,
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "3377032528c86c502023f110dd640821dcf02c979647728880f9121896cc44b9",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "ls-tree",
+            "-rz",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8",
+            "--",
+            "src",
+            "include"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 382563,
+          "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:CMakeLists.txt"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/startup.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:cmake/lua.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/bsp.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/workspace.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:tools/ghidra_typed_flow.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "55557d668225635a9c30ed01fe6f80b2de7b9f84ac07078e946a7cdb5ed994d9",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:config/target.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ddc99652ba1067b6ee7e4ff6d47306676f350942425c7cb3c395e9139b53f772",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/ENTITY_THINK_DISPATCH.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d96d6117156c257007e7b210c2c8bdc59acfb78bb577901fdc492d2aca210608",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/entity_think_dispatch.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "5a2baa7cab8593b91c35dd800ac96cdc2d287324ab3b02ad8d715152a4b7e466",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/native_resource_load_cache_by.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d9aeca1c1ed36c21678f7cfd3d696ebe54b4ddcf8f5bc406768ae3822126fbc1",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/MISSION_LUA_HOST.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "2d040291e445dfcd738be7b540be5b939cc5e4f45e76886786039ba9549d37be",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/mission_lua_host.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "1f719d7f8830d29bf7c41132069db1ae7061768c9761942648d8544db9334866",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "eb227235d49bbe9273ee642146beaf85ad28c5fb15aba2018eae6aa74f321c5c",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "afe734710bb89acae61064f37435f22bd76549ae5455508cba935aa6982f3afe",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_constructor_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "e9c7c28e8985e98742d82f7cfe48ddeab5f09ea4c9cd5b1edf5f340551c3bdbc",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_CONSTRUCTOR_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "74d37c38282c767b3b70a01c6d04e99bba8db415512d12dd10ff47863b78c8d0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6b1d0146dcbddbfb946044f8c8365e59c9e551ba528ceed151e2e4811a43d9f4",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "bce02b3261a7b5a887e30b9530de8c794b54022870505b7a7776eb71ae3e6a05",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_lifecycle_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d7e5f035568bc7b02e34d39a1c7bc6f9485298b7ca5b86a957c339a326b97326",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_LIFECYCLE_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c3c215a94db42090ca9f377ca532e22444bfda3e4fc38909dee24f7739724cbb",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "e4daa02a64e1071b18e33b0c7b2205bc14042bc7d34f62aaa9c3c90208477982",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "57a720f2e463cfb60133df459d9a9564266dc9c6396da93e51f843a477c36eb3",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c69b7e7e06ee4464e253c3d404319f5e33ad3c409b2a8b34354262d12008ac87",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "17039a2aae5596e1a9093cae0e45132fe5103513e6f028acb235675dbe8d5e85",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ed5482a633b9e177e43963a2c0316635a5ae4a5760a8898150df946d122184d6",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "3658185570b46a8ced9a697fb73dc647ea4f4b3dc6c4e701bd73fd09067094d0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_retained_host_binding_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6bbe1e432f3b5811bbe97b842439aacbb2d2a6bb8206998aacedc544d7c9450d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RETAINED_HOST_BINDING_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "1e36ad5ee63fd57b272c484dc6b3da6e1157c379ce1e194dcd27a21196d068a0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ee35845b31d036b190cc3e4cbff1c06a15529256d3223f75563c207011cd8ea5",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "5df58343f095543b3de30872708265ad294d930a9f98faaf597e22b9a1a0b733",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_startup_source_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c762494e91146b59c2bdf4496af8d7333d30a2af0cb7e6bbb369df74d865ba14",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_STARTUP_SOURCE_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "91e6303d85e3563a9f08ed7140b78113f212b0dd1f9b47541005732159403545",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_raw_owner_retained_readiness.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d83b363ccc6efd9b22b8d3055ac758af12ebe49627aa34b3dfe116d7a902977c",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_RAW_OWNER_RETAINED_READINESS.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "f02051fa45ec3400fb9f8b720cf13d1a569abc045cf8c597f22b3ef9fa397574",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_process_cell_binding_readiness.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "07acb55b107c7b8e9863a5be8c858911291367f4793c3587d91585f9739c2496",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_PROCESS_CELL_BINDING_READINESS.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "c4b566fee682fb2df0e3a2cdf431b3668aa6b27395e1f6a08d704d6827580b2d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:reports/cc12_allocation_stats_lifecycle_body_gate.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "79b49afaa0eff9b78b50090420abe741b01a3b06e655887ff0b32c1fbbb6c979",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "4c0e429c3493d48af726c528a7e9854ef9cafad8:docs/CC12_ALLOCATION_STATS_LIFECYCLE_BODY_GATE.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "9b1fcb3b36d006f5b69e166329cba032415a90683aea99786434c9e2e6013797",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "2929fe387ab428d488a38baa847185a1f8246a33:docs/CC12_SCRIPT_ORDERS_LUA_COMMAND_OWNER_BINDING_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6187aa33c04cef7f7e130d7d724c374044656f07cddc65bdb87d9624abf10c9d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "2929fe387ab428d488a38baa847185a1f8246a33:reports/cc12_script_orders_lua_command_owner_binding_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ddd00f1dc57064021aa3c2d4735d00b9773c5488765914922b4fb819333d697a",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "cat-file",
+            "--batch"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 73636835,
+          "stdout_sha256": "fd0b8ec5d4b619481c6c5fcb5c223607240d8bf4e447b10c3bae745e7c491446",
+          "stderr": ""
+        }
+      ],
+      "qualifications": "Read-only Git/Source check; not portable artifact-only mode. No installation, SDK, compiler, Native or game execution."
+    }
+  },
+  "Root_current_Source_comparison": {
+    "files": 4206,
+    "bytes_exact": 4201,
+    "CRLF_LF_only": [
+      "include/bsp/sound_configuration.hpp",
+      "include/bsp/sound_startup.hpp",
+      "src/game_sound_runtime.cpp",
+      "src/sound_configuration.cpp",
+      "src/sound_startup.cpp"
+    ],
+    "all_LF_equal": true
+  },
+  "Root_independent_finite_Native_review": {
+    "profile_slots": [
+      "BE2930",
+      "BE2700",
+      "BE2720",
+      "BE2740"
+    ],
+    "reachable_bytes": 3,
+    "separate_padding_bytes": 13,
+    "conclusion": "AL is zero; upper EAX bits are unchanged. Exact D685F4 profile only; no activation.",
+    "decoded_instructions": [
+      {
+        "address": "00BE2740",
+        "bytes": "32c0",
+        "mnemonic": "xor",
+        "operands": "al, al"
+      },
+      {
+        "address": "00BE2742",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ]
+  },
+  "Cpp_changes": false,
+  "Ghidra_mutations": false,
+  "execution": false,
+  "activation": false,
+  "Native_register_ABI_FH3_hardware_fault_validation": false,
+  "startup_gameplay_goal_complete": false
+}
