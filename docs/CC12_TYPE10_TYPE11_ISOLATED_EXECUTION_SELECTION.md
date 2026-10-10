@@ -246,3 +246,10 @@ The original preclock authorizer02 failed because the Root binding used plain fi
 Independent mapped producer Source review is positive within its trusted in-main scope. Original reader v2 remains held for unbounded pin reads, and additive TEXT02 remains held for Windows path/handle creation-time representation mismatch. TEXT03 passes 11,190 independent static predicates and preserves all bounded reads, each API full stable stamps and reliable cross-API identity. All earlier held reports, genuine failures and the original terminal/report count discrepancy remain preserved. These are static Source findings, with Root Source acceptance, compilation and runtime qualification still pending.
 
 The exact four-tool route and prepared independent inspector retain one original fresh clock, strict cutoffs and literal output inventories. All future clock/output/gate values remain null. The current eight-role assembler still copies the old producer from its immutable draft; selecting a recipe and reader alone cannot migrate the producer. A fresh explicit scope and causal consumer changes remain required. Source credit, fixture advancement, ABI compatibility and game validation remain unchanged.
+
+
+## 2026-10-10 actual fresh review01 four-tool result
+
+Fresh review01 completed all four genuine native calls and all three event/timing auxiliaries with zero exits. The complete original orchestration retains 84 actual tool turns. A separate same-machine QPC observation after the fourth terminal recorded an upper bound of 344.2190603 seconds on the same original 600-second clock. The prior expired prepare clock was not reused.
+
+The actual Root_text_selection_candidate.json is typed v2, Source-credit zero and Root-unaccepted. Complete Root review of the independent expected projection, raw owned-job and natural records, inventories and deadlines is still pending, followed by the prepared independent actual-runtime inspector. These terminal and output observations grant no fixture advancement, later phase, ABI compatibility or game validation.
