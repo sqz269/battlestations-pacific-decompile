@@ -1,0 +1,150 @@
+{
+  "schema": "bsp.cc12.particle-hook-adapter-primary.v1",
+  "status": "dormant_borrowed_host_adapter_integrated_fresh_Win32_build_and_static_review_PASS_runtime_activation_unproved",
+  "worker_commit": "b8ca31f78529adab0a9c5082e95475b5e7849aa1",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_hook_adapter_primary\\worker_report.json",
+    "bytes": 10333208,
+    "sha256": "cdc1f02c93ec5b48b9e260a2a2fb80f13055a442cb616b48821dca30a5833568"
+  },
+  "Root_worker_review": {
+    "path": "local/cc12_particle_hook_adapter_primary/Root_worker_review.json",
+    "bytes": 1771,
+    "sha256": "56115caa91747d0d6cc18fce5cf7d15ccfd0708b059d32ce7bf90fe63fd9f772"
+  },
+  "Root_before": {
+    "path": "local/cc12_particle_hook_adapter_primary/Root_before.json",
+    "bytes": 5025468,
+    "sha256": "9d4d7380242bc736a33fc22b045fb325a025fc502834eb6b5cc4f17944afae83"
+  },
+  "Root_after": {
+    "path": "local/cc12_particle_hook_adapter_primary/Root_after.json",
+    "bytes": 5021531,
+    "sha256": "bf6df13faf4ea105047f5c1960aaeaf750ba6a971d2290e98a4b2b014a013edc"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_particle_hook_adapter_primary/Root_compiled_review.json",
+    "bytes": 78228,
+    "sha256": "3e16723b3893c0d9fd614694e9dd945ecfecdbaa4ecf963f9da3590fc2854e61"
+  },
+  "Root_vtable_review": {
+    "path": "local/cc12_particle_hook_adapter_primary/Root_vtable_review.json",
+    "bytes": 15858,
+    "sha256": "922e4bd1b589a15f12cdda2eb0481dd8b32938ecfde649b26648b847d30a0c16"
+  },
+  "Source_epoch": {
+    "path": "local/cc12_particle_hook_adapter_primary/Source3356_particle_hook_adapter_Root_frozen.json",
+    "bytes": 1244424,
+    "sha256": "fa67d37ee3567afdd432c4096504dda8e1b805f3dd5e7f0ec752501041e0fb07"
+  },
+  "Source_scope": {
+    "selected": 3356,
+    "full_src_include": 4210,
+    "actual_Root_Git": 4217,
+    "worker_closed_Source": 4228,
+    "actual_worker_Git": 4245,
+    "Root_Source_changes": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "src/native_particle_model_lifetime.cpp"
+    ],
+    "new_files": []
+  },
+  "Root_build": {
+    "log": {
+      "path": "local/cc12_particle_hook_adapter_primary/Root_after_build.log",
+      "bytes": 3365,
+      "sha256": "d2cfb443773c47116249aaf06a1014bcdff95b50b006d69d684851bd1a7cc7e3"
+    },
+    "normal_scripts_build_ps1": true,
+    "MSVC_Win32": true,
+    "existing_checks_passed": 3,
+    "new_tests": 0,
+    "new_probes": 0,
+    "baseline_artifacts": {
+      "path": "local/cc12_particle_hook_adapter_primary/Root_baseline_artifact_reuse.json",
+      "bytes": 721,
+      "sha256": "b2d319146f8cf2b4be852563f789fd9fdf59ab5d0086560cc58afa44f867e12c"
+    },
+    "baseline": "Exact accepted locale-after artifacts reused; no extra baseline build claimed.",
+    "existing_warning": "LNK4006 spawn_request duplicate remains, same as worker before/after."
+  },
+  "contract": {
+    "storage": "Final noncopy/nonmove adapter borrows required persistent prepared record and real construction-callee delegate. Constructor stores references only.",
+    "record_hooks": [
+      "bind_particle_profile routes to record publish_particle_profile",
+      "retire_failed_particle_profile routes to record retire_after_failed_construction"
+    ],
+    "delegate_hooks": "Mesh/material/section, all five saved renderer arguments and random reference/stream/min/max/results forwarded unchanged; original noexcept preserved. Delegate profile hooks never called.",
+    "generated_code": "MSVC inlined existing record operations in the two profile hooks. Generated interface and adapter destructors own only their Host object; no Native model or record disposal.",
+    "custody": "Synchronous adapter lifetime; stable record/owner/services retained through acquired failure frames, live model, terminal/callback retirement and externally proved later quiescent disposal.",
+    "activation": "No concrete/default delegate, factory/custodian, raw-return or application caller introduced."
+  },
+  "Root_static": {
+    "Core": [
+      1990,
+      1990
+    ],
+    "App": [
+      80,
+      80
+    ],
+    "old_code_exact": 174341,
+    "added_code_sections": 15,
+    "new_code_bytes": 676,
+    "new_instructions": 233,
+    "changed_code_sections": 0,
+    "removed_code_sections": 0,
+    "whole_changed_objects": [
+      {
+        "group": "Core",
+        "object": "native_particle_model_lifetime.obj",
+        "before_sha256": "07804c6b6a1d6486baf89d825445855b0740bc3be1e4eeb2b40f8fa478a97d19",
+        "after_sha256": "20c23acca45a76783d67a6328863e3984a037728daf5eff85dce2d909322b6bf"
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_model_construction.obj",
+        "before_sha256": "be49ecdb0cbf472f6c3ead38ff8d143d21b84c73b46c0b6ebc64cbb79d5ef8e0",
+        "after_sha256": "79d3d8922877ccf57c0e0ee4278f38c3841e14b136e82adbe132fc0e0ce7bae1"
+      },
+      {
+        "group": "Core",
+        "object": "native_particle_array_resize.obj",
+        "before_sha256": "d7830752511989d9b5a81606cc93456aa41d2e60d9d65cad122a1ec395f15551",
+        "after_sha256": "ed1c68d63992b96dccca8de8755c17f16d68e13313a258fadaae522ef8662035"
+      }
+    ],
+    "whole_added_objects": [],
+    "complete_physical_indices": 12,
+    "complete_added_decodes": 15,
+    "unique_positive_Core_functions": 13,
+    "all_added_code_payloads_and_symbolic_relocations_equal_worker": true,
+    "private_symbol_bijection_pairs": 0,
+    "complete_vtable_bytes": 36,
+    "vtable_public_offset": 4,
+    "vtable_relocations": 9,
+    "weak_external_aux_characteristic": 1,
+    "weak_external_positive_G_fallback": true,
+    "all_section_Core_App_refs_outside_owned_TU": 0,
+    "Game_map_symbols": 0,
+    "Game_text_exact": true,
+    "whole_EXE_map_equality_claimed": false,
+    "artifact_comparison": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_particle_hook_adapter_primary\\Root_artifact_comparison.json",
+      "bytes": 4825,
+      "sha256": "26a9f4c03d81bb7ca09e8cb52ef3db65efa9dbcaeed0c3180e953b0fbcbdaa7f"
+    }
+  },
+  "epoch_qualification": "Worker and Root share accepted grid/record/locale Source baseline. Root own before artifact capture and merged fresh after build remain independently qualified. Portable replay proves retained Source/artifact observations only.",
+  "scope": {
+    "Native_queries": 0,
+    "GPR_writes": 0,
+    "Native_execution": 0,
+    "game_runs": 0
+  },
+  "remaining": [
+    "Real resource/random delegates and stable persistent custody remain explicit caller requirements.",
+    "Native allocation/terminal/SEH/ABI and actual hook invocation/quiescence remain unproved.",
+    "Raw Application owner, callable retirement, startup and gameplay remain open."
+  ]
+}
