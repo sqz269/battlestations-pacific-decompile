@@ -1,4 +1,7 @@
 #include "bsp/gameplay_effect_definition.hpp"
+#include "bsp/native_effect_handle_acquisition.hpp"
+#include "bsp/native_gameplay_effect_construction.hpp"
+#include "bsp/native_int_pointer_tree18_erase.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -65,6 +68,31 @@ public:
 private:
     GameplayEffectDefinition& owner_;
     GameplayEffectDefinitionContext& context_;
+};
+
+class NativeDefinitionMemberUnwind final {
+public:
+    NativeDefinitionMemberUnwind(GameplayEffectDefinition& owner,
+        NativeGameplayEffectDefinitionContext& context) noexcept
+        : owner_(owner), context_(context) {}
+    ~NativeDefinitionMemberUnwind() noexcept {
+        if (state >= 2) {
+            state = 1;
+            destroy_native_string_header_0041dd20(owner_.native.data() + 0x1c, context_.strings);
+        }
+        if (state >= 1) {
+            state = 0;
+            destroy_gameplay_effect_components_0086fc30(owner_.native.data() + 8, context_.components);
+        }
+        if (state >= 0) {
+            state = -1;
+            write<std::uint32_t>(owner_.native.data(), 0, 0x00ceb130);
+        }
+    }
+    int state{2};
+private:
+    GameplayEffectDefinition& owner_;
+    NativeGameplayEffectDefinitionContext& context_;
 };
 } // namespace
 
@@ -189,6 +217,41 @@ void destroy_gameplay_effect_definition_00870d00(GameplayEffectDefinition& owner
 GameplayEffectDefinition* scalar_delete_gameplay_effect_definition_00871440(
     GameplayEffectDefinition* owner, std::uint32_t flags,
     GameplayEffectDefinitionContext& context) {
+    auto* const original = owner;
+    destroy_gameplay_effect_definition_00870d00(*owner, context);
+    if ((flags & 1u) != 0) {
+        owner->~GameplayEffectDefinition();
+        singleton_lifetime_free(owner);
+    }
+    return original;
+}
+
+void destroy_gameplay_effect_definition_00870d00(GameplayEffectDefinition& owner,
+    NativeGameplayEffectDefinitionContext& context) {
+    auto* const data = owner.native.data();
+    write<std::uint32_t>(data, 0, 0x00d0da58);
+    NativeDefinitionMemberUnwind unwind(owner, context);
+    void* const manager = get_native_gameplay_effect_manager_004c1650(
+        context.manager.actual_manager_publication_01090aa0,
+        context.manager.actual_effect_publication_00f87664);
+    const auto id = read<std::int32_t>(data, 0x18);
+    void* const tree = static_cast<std::byte*>(manager) + 4;
+    NativeIntPointerTree18Iterator found;
+    find_native_int_pointer_tree18_0086b650(tree, &found, &id);
+    NativeIntPointerTree18Iterator erased;
+    erase_native_int_pointer_tree18_iterator_0086e8a0(
+        tree, nullptr, &erased, found.owner, found.node);
+    unwind.state = 1;
+    destroy_native_string_header_0041dd20(data + 0x1c, context.strings);
+    unwind.state = 0;
+    destroy_gameplay_effect_components_0086fc30(data + 8, context.components);
+    unwind.state = -1;
+    write<std::uint32_t>(data, 0, 0x00ceb130);
+}
+
+GameplayEffectDefinition* scalar_delete_gameplay_effect_definition_00871440(
+    GameplayEffectDefinition* owner, std::uint32_t flags,
+    NativeGameplayEffectDefinitionContext& context) {
     auto* const original = owner;
     destroy_gameplay_effect_definition_00870d00(*owner, context);
     if ((flags & 1u) != 0) {
