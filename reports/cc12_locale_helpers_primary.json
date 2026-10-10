@@ -1,0 +1,109 @@
+{
+  "schema": "bsp.cc12.locale.primary-acceptance.v1",
+  "status": "dormant_Source_implemented_merged_build_checked_no_activation",
+  "worker_commit": "9bf12e5b8ceecd354680bdea771d3b11eabc2998",
+  "worker_review": {
+    "path": "local/cc12_locale_helpers_primary/Root_worker_review.json",
+    "bytes": 1560,
+    "sha256": "5dd811492960b5eb3295da0c32f4211607135e14caff05e5d521eb82d9010d19"
+  },
+  "Root_compiled_review": {
+    "path": "local/cc12_locale_helpers_primary/Root_compiled_review.json",
+    "bytes": 61010,
+    "sha256": "c8c09bdb3bfb5cad997931c333eab3b3ba2f7b945e722baa8f67f4c26ac8f52b"
+  },
+  "Root_before": {
+    "path": "local/cc12_locale_helpers_primary/Root_before.json",
+    "bytes": 4967619,
+    "sha256": "06b076b9d0ca919dab72c5df66a6f4f596e0c76e5e51c9f152d38473ddbadd8a"
+  },
+  "Root_after": {
+    "path": "local/cc12_locale_helpers_primary/Root_after.json",
+    "bytes": 4967124,
+    "sha256": "7b19ae6747cca90a9a583663114f6455ef36a1cd3d6792710c3a660db176cbdb"
+  },
+  "Root_Source_epoch": {
+    "path": "local/cc12_locale_helpers_primary/Source3356_locale_Root_frozen.json",
+    "bytes": 1220888,
+    "sha256": "2461b9aae3a9d12c28041369919aa127cca47ebf0a626b5de456b638daa61a05"
+  },
+  "Root_actual_Git": {
+    "before": 4215,
+    "after": 4217,
+    "working_LF_equals_actual_committed": true
+  },
+  "Root_Source_counts": {
+    "selected": 3356,
+    "full_src_include": 4210
+  },
+  "Root_Source_changes": [
+    "cmake/startup.cmake"
+  ],
+  "Root_new_Source": [
+    "include/bsp/native_locale_map_node_recycling.hpp",
+    "src/native_locale_map_node_recycling.cpp"
+  ],
+  "build": {
+    "log": {
+      "path": "local/cc12_locale_helpers_primary/Root_after_build.log",
+      "bytes": 3267,
+      "sha256": "4d04e362ef37249567ffff04a994326171d3843275dffbe576ef353f6fb2cbf4"
+    },
+    "MSVC_Win32_Release": true,
+    "existing_checks": "3/3 passed",
+    "baseline": "Retained preceding accepted Root after-build artifact pins proven exact; no extra baseline build claimed.",
+    "new_tests": 0,
+    "new_probes": 0
+  },
+  "contract": {
+    "slot_return": "Borrow exact actually initialized locale pool and allocated slot. Enter real OS section, increment CURRENT wrapping depth; read slot/table/block after lock; wrapping address subtraction reinterpreted signed32, divide by28 toward zero, WORD narrowing; write free index, ADD current WORD free count, unsigned minimum, decrement current depth, Leave.",
+    "scalar_wrapper": "Run existing payload cleanup first with actual raw-string context; only after normal return read normalized flags low byte, optionally return slot, return original pointer bits. No early pool or slot read.",
+    "authority": "No storage/profile/list binding, guard, rollback, RAII unlock, physical owner free, initialization, trim or owner construction is introduced.",
+    "factoring": "Stable Enter/Leave import bindings are a caller precondition; normalized Win32/C++ interfaces do not establish Original register ABI, fault timing, FH3/SEH or runtime import behavior.",
+    "proposal_errata": [
+      "Prior allocator_registry.hpp proposal label corrected to actual allocator_list.hpp; helpers require neither domain API.",
+      "Prior raw-string proposal addresses corrected to existing actual01090AA8/01090AA4/01090AA0 cells; no replacement literals or cells."
+    ]
+  },
+  "Root_static": {
+    "Core": [
+      1989,
+      1990
+    ],
+    "App": [
+      80,
+      80
+    ],
+    "old_code_exact": 174331,
+    "new_code_sections": 10,
+    "changed_code_sections": 0,
+    "removed_code_sections": 0,
+    "changed_whole_objects": [],
+    "added_whole_objects": [
+      {
+        "group": "Core",
+        "object": "native_locale_map_node_recycling.obj",
+        "bytes": 3476,
+        "sha256": "f540a6f60bf678c87ace5111f19543ac784b41f1c48966b757e4951cf6428b64"
+      }
+    ],
+    "complete_physical_indices": 7,
+    "complete_selected_decodes": 10,
+    "positive_unique_Core_definitions": 2,
+    "no_external_Core_App_callers": true,
+    "Game_map_symbols": 0,
+    "Game_text_exact": true,
+    "payloads_and_relocations_equal_worker_under_positive_symbol_bijection": true,
+    "private_function_symbol_pairs": 8
+  },
+  "epoch_qualification": "Worker baseline includes registry and omits later Root grid/record changes. Root own merged-epoch build and whole code census are required.",
+  "remaining": [
+    "Native allocation authority and complete owner/factory lifecycle remain open.",
+    "Original register ABI, fault/unwind behavior, runtime publication and quiescence are unproved.",
+    "Application raw storage/name authority, startup and gameplay validation remain open."
+  ],
+  "limits": [
+    "Worker and Root merged Source/build epochs remain distinct.",
+    "Exact static code/provider/artifact observations do not establish native or game execution."
+  ]
+}
