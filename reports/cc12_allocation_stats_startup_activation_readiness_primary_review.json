@@ -1,0 +1,658 @@
+{
+  "schema": 1,
+  "packet": "cc12_allocation_stats_startup_activation_readiness_primary_review",
+  "worker_commit": "c3306da526790d6fb7346016b27103dc0e50f003",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_allocation_stats_startup_activation_readiness.json",
+    "bytes": 55227,
+    "sha256": "e47b0599e896c9b0a9f1335111aa9d9cd17f01b0feff4d29d5571b48cb1004b5"
+  },
+  "Root_invoked_offline_replay": {
+    "command": [
+      "python",
+      "local/cc12_allocation_stats_startup_activation_readiness/verify_evidence.py",
+      "--commit",
+      "c3306da526790d6fb7346016b27103dc0e50f003"
+    ],
+    "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing",
+    "exit_code": 0,
+    "returned": {
+      "status": "pass",
+      "Source_epochs": {
+        "pending_host_binding": {
+          "commit": "abb468ec7290aa8e337af22c6b2f9aa770de1385",
+          "whole_Source_files": 4206,
+          "all_Git_files": 4227
+        },
+        "accepted_main_at_start": {
+          "commit": "5a2ba8aa30b447d1297e0d5fcf94729b8fac443d",
+          "whole_Source_files": 4206,
+          "all_Git_files": 4225
+        },
+        "accepted_main_at_freeze": {
+          "commit": "06bb5f24d1290d8485d343e5d0c3aa4e5c2b0e4c",
+          "whole_Source_files": 4206,
+          "all_Git_files": 4225
+        }
+      },
+      "pin_occurrences": 12741,
+      "unique_local_pins": 8479,
+      "Git_file_occurrences": 12677,
+      "unique_Git_requests": 12677,
+      "unique_Git_blob_ids": 4235,
+      "Source_query_matches": 185,
+      "contract_audit": {
+        "status": "pass",
+        "Source_excerpts": 11,
+        "reference_matches": 18,
+        "pending_host_only_changes": 4,
+        "unchanged_required_Source_files": 10,
+        "saved_postcall_bytes": 13,
+        "new_Native_bytes": 0
+      },
+      "prior_bundles": [
+        {
+          "packet": "cc12_allocation_stats_startup_owner_handover_readiness",
+          "payloads": 150,
+          "all_payloads_replayed": true
+        },
+        {
+          "packet": "cc12_allocation_stats_raw_lifecycle_source",
+          "payloads": 1418,
+          "all_payloads_replayed": true
+        },
+        {
+          "packet": "cc12_allocation_stats_retained_host_binding_source",
+          "payloads": 12372,
+          "all_payloads_replayed": true
+        }
+      ],
+      "bundle_verified": true,
+      "bundle_payloads": 8484,
+      "manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\bundle_manifest.json",
+        "bytes": 1867875,
+        "sha256": "0a70948034f17cdb6107c3376802cb917d6d89518ad35f4bcc894c835e053c36"
+      },
+      "bundle": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\evidence_bundle.zip",
+        "bytes": 617912189,
+        "sha256": "2f722e0de203efdfef73f4095da5fed9158cab847ebbc7541dead4e80b683133"
+      },
+      "commit_outputs": [
+        {
+          "path": "docs/CC12_ALLOCATION_STATS_STARTUP_ACTIVATION_READINESS.md",
+          "bytes": 11300,
+          "sha256": "460e7e64c90e482e00a34c2fc8a28305b5e8a42c6252e6f630a4d93aabd4d183"
+        },
+        {
+          "path": "reports/cc12_allocation_stats_startup_activation_readiness.json",
+          "bytes": 55227,
+          "sha256": "e47b0599e896c9b0a9f1335111aa9d9cd17f01b0feff4d29d5571b48cb1004b5"
+        }
+      ],
+      "Native_queries_execution_compiler_tests_Ghidra_mutations": false
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\replay.stdout.json",
+      "bytes": 2598,
+      "sha256": "26ca23fb5b3b611bcf18f618d82bce57e5f934d9340d9d8d8ac5280e4aefa731"
+    }
+  },
+  "complete_worker_copy_scope": "Complete frozen bundles/manifest and key immutable receipts; original referenced artifacts remain retained in worker",
+  "retained_worker_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\evidence_bundle.zip",
+      "bytes": 617912189,
+      "sha256": "2f722e0de203efdfef73f4095da5fed9158cab847ebbc7541dead4e80b683133"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\bundle_manifest.json",
+      "bytes": 1867875,
+      "sha256": "0a70948034f17cdb6107c3376802cb917d6d89518ad35f4bcc894c835e053c36"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\contract_audit.json",
+      "bytes": 24777,
+      "sha256": "a3dc2e9f79e40ff3f5e16d210b95d26fb56fa4d14bb6036597eff50915cb7676"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\prepared_inputs.json",
+      "bytes": 4922888,
+      "sha256": "17dfb3b80d66d34fe4508ee5a54ccba6696554ed1e072ed4f610386f0355dcd4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\later_accepted_epoch.json",
+      "bytes": 2441238,
+      "sha256": "e70c47248e832408007fffa2922f0c5a5df73f8b19b37857de393451d542a091"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\verify_evidence.py",
+      "bytes": 6381,
+      "sha256": "f1a3dd82887dfc6d4bac37480379cbc1fe020272ec8049709e3c62b1dcd0e3ed"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\final_verification.json",
+      "bytes": 2194,
+      "sha256": "15415e9aacc39558831db5747a45b1919ad79266ded8ee8ae95479c9fc4e67fb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\retained_worker_artifacts\\local\\cc12_allocation_stats_startup_activation_readiness\\post_commit_verification.json",
+      "bytes": 1433,
+      "sha256": "a8a27be46a4980cdab63e7f54e9a9334d083ef7223809018d4dcd840d727d748"
+    }
+  ],
+  "reviewed_findings": {
+    "decision": "Conditionally ready for a bounded ordinary Source activation design after primary acceptance of abb468e. Existing low-level providers, permanent cells and the pending retained host binding suffice for normal ownership; caller allocation/failure-state and post-call cleanup boundaries still require explicit Source implementation. No C++ or compiler GO is granted by this readiness result.",
+    "contract_audit": {
+      "schema": 1,
+      "status": "pass",
+      "epochs": {
+        "pending": "abb468ec7290aa8e337af22c6b2f9aa770de1385",
+        "accepted_at_start": "5a2ba8aa30b447d1297e0d5fcf94729b8fac443d",
+        "accepted_at_freeze": "06bb5f24d1290d8485d343e5d0c3aa4e5c2b0e4c"
+      },
+      "retained_Source_contracts": {
+        "allocation": {
+          "path": "src/singleton_lifetime.cpp",
+          "first_line": 51,
+          "last_line": 68,
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}\n",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          }
+        },
+        "current_startup": {
+          "path": "src/game_hosts.cpp",
+          "first_line": 1813,
+          "last_line": 1833,
+          "text": "void GameStartupHost::run_initialize_phases(const char* mode) {\n    // Phase 0, allocator and process identity (0073d43f-0073d4bd).\n    char module_name[MAX_PATH] = {};\n    GetModuleFileNameA(nullptr, module_name, static_cast<DWORD>(sizeof(module_name)));\n    const std::string module_directory = capture_module_directory_00439040(module_name);\n    log_.implemented(\"Phase 0 capture_module_directory\", \"00439040\");\n    log_.notef(\"module directory %s\", module_directory.c_str());\n\n    AllocationStatsState allocation_stats{};\n    construct_allocation_stats_00be2900(allocation_stats);\n    log_.implemented(\"Phase 0 construct_allocation_stats\", \"00be2900\");\n\n    ensure_frame_clock_0073d480();\n    log_.implemented(\"Phase 0 ensure_actual_frame_clock\", \"0073d480\");\n\n    install_object_handle_resolvers_006ad0d0(object_resolvers_);\n    log_.implemented(\"Phase 0 install_object_handle_resolvers\", \"006ad0d0\");\n\n    if(!native_data_)throw std::runtime_error(\"Native shader startup modes require verified data\");\n    auto& shader_process=game_native_shader_process();\n    shader_process.configure_startup_modes(mode,*native_data_);",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts.cpp",
+            "bytes": 120868,
+            "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+          }
+        },
+        "raw_constructor": {
+          "path": "src/native_allocation_stats_constructor.cpp",
+          "first_line": 55,
+          "last_line": 93,
+          "text": "void* construct_native_allocation_stats_base_00be2750(\n    void* actual_receiver, NativeAllocationStatsConstructorContext& context) {\n    BaseCleanup base_cleanup{actual_receiver}; // Source state0 before profile.\n    *static_cast<volatile Word*>(actual_receiver) = 0x00d685e0u;\n    void* const first_manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    auto* const section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(\n        static_cast<std::byte*>(first_manager) + 0x10);\n    NativeGuard guard{0x00ce37fcu, section};\n    if (section) {\n        EnterCriticalSection(section);\n        depth(section) = depth(section) + 1u;\n    }\n    GuardCleanup guard_cleanup{guard}; // Source state1 after enter/increment.\n    context.actual_allocation_stats_0109cefc = actual_receiver;\n    void* const manager = get_native_singleton_manager_00415350(\n        context.actual_manager_01090aa0);\n    void* const current_stats = context.actual_allocation_stats_0109cefc;\n    register_native_singleton_object_00bd0c30(manager, nullptr, current_stats);\n    if (section) {\n        depth(section) = depth(section) - 1u;\n        LeaveCriticalSection(section);\n    }\n    guard_cleanup.armed = false;\n    base_cleanup.armed = false;\n    return actual_receiver;\n}\n\nvoid* construct_native_allocation_stats_00be2900(\n    void* actual_receiver, NativeAllocationStatsConstructorContext& context) {\n    construct_native_allocation_stats_base_00be2750(actual_receiver, context);\n    *static_cast<volatile Word*>(actual_receiver) = 0x00d685f4u;\n    *reinterpret_cast<volatile Word*>(static_cast<std::byte*>(actual_receiver) + 4)\n        = 0x40000000u;\n    *reinterpret_cast<volatile Word*>(static_cast<std::byte*>(actual_receiver) + 8)\n        = 0u;\n    return actual_receiver;\n}\n} // namespace bsp",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\native_allocation_stats_constructor.cpp",
+            "bytes": 3494,
+            "sha256": "8f47655e5a7475baa9ac06f38f98682e35821709f3540e20f055d0824fc6c389"
+          }
+        },
+        "canonical_process_cell": {
+          "path": "src/game_native_string_process.cpp",
+          "first_line": 8,
+          "last_line": 11,
+          "text": "void* volatile& GameNativeStringProcess::allocation_stats_0109cefc() noexcept {\n    return allocation_stats_0109cefc_;\n}\n",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_native_string_process.cpp",
+            "bytes": 715,
+            "sha256": "3f7eec3865f115013a6b36638b36d1f8ab71acb7160d3bbf11e5edd85f6d6167"
+          }
+        },
+        "host_context": {
+          "path": "src/game_hosts_singletons.cpp",
+          "first_line": 20,
+          "last_line": 35,
+          "text": "      deletion_bindings_{&effect_publication_00f87664_, nullptr},\n      observers_(std::make_unique<GameObserverRuntime>(*this, log)),\n      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()),\n      allocation_stats_context_{manager_publication_01090aa0_,\n          game_native_string_process().allocation_stats_0109cefc()} {\n    // Admit factory+4 before startup can register that exact subobject.\n    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;\n    deletion_bindings_.resource_support = &resource_support_context_;\n    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;\n    deletion_bindings_.actual_pending_registry_publication_00f878cc =\n        &pending_registry_publication_00f878cc_;\n    deletion_bindings_.allocation_stats = &allocation_stats_context_;\n}\n\nGameSingletonHost::~GameSingletonHost() {\n    // Normal WinMain shutdown has already drained this owner. All publication",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts_singletons.cpp",
+            "bytes": 7171,
+            "sha256": "92a8f9d344e6038e6c0f116999109602a549df981de997689b8c2f4cd64036f7"
+          }
+        },
+        "normal_host_shutdown": {
+          "path": "src/game_hosts_singletons.cpp",
+          "first_line": 125,
+          "last_line": 145,
+          "text": "void GameSingletonHost::shutdown() {\n    void* const manager = manager_publication_01090aa0_;\n    if (manager == nullptr) {\n        retire_vfs_after_drain();\n        return;\n    }\n    const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);\n    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);\n    retire_vfs_after_drain();\n    observers_->record_after_singleton_drain();\n    singleton_lifetime_free(manager);\n    manager_publication_01090aa0_ = nullptr;\n    log_.notef(\"singleton lifetime drained: registered_slots=%u effect_publication=%s \"\n        \"manager_publication=%s factory_publication=%s factory_alias=%p \"\n        \"storage=raw14h/raw10h/raw8h\", registered,\n        effect_publication_00f87664_ == nullptr ? \"null\" : \"non-null\",\n        manager_publication_01090aa0_ == nullptr ? \"null\" : \"non-null\",\n        game_resource_factory_publication_00e19b90_ == nullptr ? \"null\" : \"non-null\",\n        game_resource_factory_alias_00f8d31c_);\n}\n} // namespace bsp::game",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts_singletons.cpp",
+            "bytes": 7171,
+            "sha256": "92a8f9d344e6038e6c0f116999109602a549df981de997689b8c2f4cd64036f7"
+          }
+        },
+        "existing_clock_retention_policy": {
+          "path": "src/game_hosts.cpp",
+          "first_line": 1310,
+          "last_line": 1323,
+          "text": "void GameStartupHost::exit_if_frame_clock_failed() noexcept {\n    if (!clock_services_ || (clock_services_->phase != ClockServices::Phase::failed &&\n                            clock_services_->phase != ClockServices::Phase::constructing)) return;\n    try {\n        log_.note(\"raw application clock construction failed; manager graph cleanup is unproved; retaining application and mapped data until process exit\");\n        log_.close();\n    } catch (...) {\n        std::fputs(\"bsp_game: failed raw clock construction requires process exit\\n\", stderr);\n        std::fflush(stderr);\n    }\n    // Conservative source policy. Do not run manager/host/CRT cleanup against\n    // a potentially dangling publication; this is not native FH3 equivalence.\n    std::_Exit(1);\n}",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts.cpp",
+            "bytes": 120868,
+            "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+          }
+        },
+        "fallback_drain_boundary": {
+          "path": "src/game_hosts.cpp",
+          "first_line": 1540,
+          "last_line": 1576,
+          "text": "GameStartupHost::~GameStartupHost() {\n    if(settings_host_&&settings_host_->requires_process_retention()) {\n        try{log_.notef(\"native settings loader interrupted at %08x; retaining actual settings/catalog/VFS/renderer graph\",settings_host_->failure_site());log_.close();}\n        catch(...){std::fputs(\"bsp_game: native settings require process retention\\n\",stderr);std::fflush(stderr);}\n        std::_Exit(1);\n    }\n    if(scripts_&&scripts_->input().requires_process_retention()) {\n        try {log_.note(\"native input settings interrupted; retaining shared Lua/VFS/manager bindings until process exit\");log_.close();}\n        catch(...) {std::fputs(\"bsp_game: native input settings require process retention\\n\",stderr);std::fflush(stderr);}\n        std::_Exit(1);\n    }\n    exit_if_native_renderer_incomplete();\n    exit_if_native_lua_interrupted();\n    exit_if_frame_clock_failed();\n    exit_if_native_vfs_interrupted();\n    delete loop_callbacks_;\n    delete frame_host_;\n    // The sprite bridge holds textures created on the device, so it goes before the\n    // device and before the font host whose registry its pages reference.\n    if (device_) device_->set_overlay(nullptr);\n    delete menu_;\n    delete frontend_;\n    frontend_ = nullptr;\n    // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells\n    // through the actual raw singleton drain, including exceptional startup.\n    if (singletons_) {\n        if (native_renderer_) native_renderer_->drain_singletons();\n        else singletons_->shutdown();\n        if(scripts_)scripts_->input().after_singleton_drain();\n        if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;\n    }\n    if (input_) {\n        try { input_->core.release_sdk_after_native_drain(); }\n        catch (const std::exception& error) {\n            // Native registration failure can leave an unpublished-to-manager\n            // allocation (or a freed backend publication). Do not dereference\n            // or repair that cell, and do not terminate exceptional startup",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts.cpp",
+            "bytes": 120868,
+            "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+          }
+        },
+        "normal_drain_boundary": {
+          "path": "src/game_hosts.cpp",
+          "first_line": 2419,
+          "last_line": 2433,
+          "text": "void GameStartupHost::destroy_singleton_lifetime_manager() {\n    exit_if_native_renderer_incomplete();\n    exit_if_native_lua_interrupted();\n    exit_if_frame_clock_failed();\n    exit_if_native_vfs_interrupted();\n    log_.implemented(\"StartupHost::destroy_singleton_lifetime_manager\", \"008f8449\");\n    if (native_renderer_) native_renderer_->drain_singletons();\n    else singletons_->shutdown();\n    if (lua_services_)\n        log_.notef(\"native Lua after raw singleton drain: fundamentals=%s getters=%u\",\n            lua_services_->fundamentals_published() ? \"non-null\" : \"null\",\n            lua_services_->fundamentals_getter_calls());\n    if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;\n    if (input_) input_->core.release_sdk_after_native_drain();\n    if (sound_) {",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts.cpp",
+            "bytes": 120868,
+            "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+          }
+        },
+        "normal_application_shutdown_boundary": {
+          "path": "src/game_hosts.cpp",
+          "first_line": 2319,
+          "last_line": 2327,
+          "text": "void GameStartupHost::application_shutdown() {\n    exit_if_native_renderer_incomplete();\n    exit_if_native_lua_interrupted();\n    exit_if_frame_clock_failed();\n    exit_if_native_vfs_interrupted();\n    // Native00737f30's full singleton teardown remains unbound. Retained C++\n    // input/locale/settings owners close later in dependency order at destruction.\n    log_.implemented(\"StartupHost::application_shutdown\", \"00737f30\");\n    log_.unimplemented(\"ApplicationShutdownHost::singleton_teardown\", \"00737f80\");",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts.cpp",
+            "bytes": 120868,
+            "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+          }
+        },
+        "CRT_exit_boundary": {
+          "path": "src/game_hosts.cpp",
+          "first_line": 1663,
+          "last_line": 1671,
+          "text": "void GameStartupHost::exit_process(int code) {\n    exit_if_native_renderer_incomplete();\n    exit_if_native_lua_interrupted();\n    exit_if_frame_clock_failed();\n    exit_if_native_vfs_interrupted();\n    log_.implemented(\"StartupHost::exit_process\", \"008f82f0\");\n    std::exit(code); // 008F82F0 calls genuine CRT exit, including atexit callbacks.\n}\n",
+          "whole_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\retained\\pending_host_binding\\src\\game_hosts.cpp",
+            "bytes": 120868,
+            "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+          }
+        }
+      },
+      "current_startup_order_offsets": [
+        297,
+        485,
+        530,
+        662,
+        769
+      ],
+      "base_constructor_order_offsets": [
+        138,
+        266,
+        283,
+        594,
+        681,
+        760,
+        824,
+        931,
+        1005,
+        1154,
+        1195,
+        1228,
+        1260
+      ],
+      "saved_Native_postcall": {
+        "utc": "2026-10-10T06:25:34.392694+00:00",
+        "start": "0073d480",
+        "end_exclusive": "0073d48d",
+        "bytes": 13,
+        "file_offset": 3396736,
+        "mapping_section": {
+          "name": ".text",
+          "virtual_size": 9306422,
+          "rva": 4096,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "characteristics": 1610612768
+        },
+        "hex": "393db00a0901899c2444010000",
+        "sha256": "9361dfcbffe73eb3dd54a212ee6811ded2ea865f1d8514bc006c63844f0e7ab3",
+        "original_live_equal": true,
+        "original_stat_stable": true,
+        "all_bytes_decoded": true,
+        "decoder_version": "5.0.7",
+        "instructions": [
+          {
+            "address": "0073d480",
+            "bytes": 6,
+            "hex": "393db00a0901",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [0x1090ab0], edi"
+          },
+          {
+            "address": "0073d486",
+            "bytes": 7,
+            "hex": "899c2444010000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [esp + 0x144], ebx"
+          }
+        ],
+        "enclosing_function_listing_requested": false,
+        "fresh_headers_or_whole_image_hash": false
+      },
+      "saved_state0": {
+        "interpretation": "Conditional retained32-bit V3 absolute-pointer EH layout; actual Program datatype name and loaded Java CodeSource unexposed.",
+        "descriptor_words": [
+          {
+            "offset": 0,
+            "little_endian_u32": "19930522"
+          },
+          {
+            "offset": 4,
+            "little_endian_u32": "00000031"
+          },
+          {
+            "offset": 8,
+            "little_endian_u32": "00db60c0"
+          },
+          {
+            "offset": 12,
+            "little_endian_u32": "00000000"
+          },
+          {
+            "offset": 16,
+            "little_endian_u32": "00000000"
+          },
+          {
+            "offset": 20,
+            "little_endian_u32": "00000000"
+          },
+          {
+            "offset": 24,
+            "little_endian_u32": "00000000"
+          },
+          {
+            "offset": 28,
+            "little_endian_u32": "00000000"
+          },
+          {
+            "offset": 32,
+            "little_endian_u32": "00000001"
+          }
+        ],
+        "unwind_count": 49,
+        "map_address": "00db60c0",
+        "map_declared_bytes": 392,
+        "only_entry_read": 0,
+        "entry_bytes_read": 8,
+        "remaining_entries_unread": 48,
+        "state0": {
+          "to_state_signed_i32": -1,
+          "action_pointer": "00c86a30"
+        },
+        "EHFlags_raw": 1,
+        "flags_interpreted": false,
+        "layout_sources_retained_from_preceding_packet": "retained/layout_source/",
+        "first_map_scope": "[00DB60C0,00DB60C8) only",
+        "frame_qualification": "Physical allocation spillS-130 and sentinelS-4 known. Actual action operands and helper EBP restoration remain separate; no cleanup inferred from map alone."
+      },
+      "saved_tail": {
+        "retained_action": "MOV EAX,[EBP-130h]; PUSH EAX; CALL 00BF65AC, with nested metadata identifying returning_free and returning 00BF9DC8 target.",
+        "frame": "Accepted actual prologue/helper ordinary path gives action EBP=forwarded raw argument 2+0Ch; prologue own FS node is distinct.",
+        "caller": "C07B35 CALL EAX pushes C07B37; action entry ESP=T-20h.",
+        "return": "Conditional ordinary free return reaches physical POP ECX; RET, resuming C07B37 with ESP=T-1Ch.",
+        "operand_identity": "Reads current [actionEBP-130h]. It does not read current0109CEFC publication or independently recover an original allocation identity.",
+        "tail_effects": "Discards free argument slot into ECX; consumes original action return. No tail publication store or additional cleanup call.",
+        "conditional_parent": "Parent allocation spill mapping still requires OS raw second argument to equal the parent registration node."
+      },
+      "saved_tail_holds": [
+        "Actual OS/handler association between raw forwarded argument 2 and parent registration node.",
+        "Free implementation, its actual execution and fault behavior; ordinary cdecl shape is an explicit condition.",
+        "Native FH3 identity, filters, nested/fault/nonlocal paths and successful exception cleanup.",
+        "Previously excluded unwind-body gap, stored handler/table/data contents and actual canonical availability.",
+        "Original ABI delivery, Source raw owner/startup composition and publication/registration failure ownership.",
+        "Native execution, startup and gameplay."
+      ],
+      "Source_cache_and_context_references": [
+        {
+          "path": "include/bsp/game_hosts_singletons.hpp",
+          "line": 88,
+          "text": "    NativeAllocationStatsConstructorContext& allocation_stats_context() noexcept;"
+        },
+        {
+          "path": "include/bsp/game_native_particle_runtime.hpp",
+          "line": 23,
+          "text": "struct NativeResourceLoadCacheContext;"
+        },
+        {
+          "path": "include/bsp/game_native_particle_runtime.hpp",
+          "line": 65,
+          "text": "    NativeResourceLoadCacheContext& resource_load_cache;"
+        },
+        {
+          "path": "include/bsp/game_native_string_process.hpp",
+          "line": 18,
+          "text": "    void* volatile& allocation_stats_0109cefc() noexcept;"
+        },
+        {
+          "path": "include/bsp/native_damageable_class_model.hpp",
+          "line": 8,
+          "text": "struct NativeResourceLoadCacheContext;"
+        },
+        {
+          "path": "include/bsp/native_damageable_class_model.hpp",
+          "line": 14,
+          "text": "    NativeResourceLoadCacheContext& cache;"
+        },
+        {
+          "path": "include/bsp/native_particle_object_resources_raw.hpp",
+          "line": 7,
+          "text": "struct NativeResourceLoadCacheContext;"
+        },
+        {
+          "path": "include/bsp/native_particle_object_resources_raw.hpp",
+          "line": 16,
+          "text": "    NativeResourceLoadCacheContext& cache;"
+        },
+        {
+          "path": "include/bsp/native_particle_object_resources_raw.hpp",
+          "line": 51,
+          "text": "    NativeResourceLoadCacheContext&, NativeResourceLoadCacheAcquired&);"
+        },
+        {
+          "path": "include/bsp/native_resource_load_cache.hpp",
+          "line": 22,
+          "text": "struct NativeResourceLoadCacheContext {"
+        },
+        {
+          "path": "include/bsp/native_resource_load_cache.hpp",
+          "line": 52,
+          "text": "        NativeResourceLoadCacheContext&, NativeResourceLoadCacheAcquired&);"
+        },
+        {
+          "path": "include/bsp/native_resource_load_cache.hpp",
+          "line": 63,
+          "text": "    void* factory, NativeResourceLoadCacheContext&, NativeResourceLoadCacheAcquired&);"
+        },
+        {
+          "path": "src/game_hosts_singletons.cpp",
+          "line": 24,
+          "text": "          game_native_string_process().allocation_stats_0109cefc()} {"
+        },
+        {
+          "path": "src/game_hosts_singletons.cpp",
+          "line": 43,
+          "text": "NativeAllocationStatsConstructorContext& GameSingletonHost::allocation_stats_context() noexcept {"
+        },
+        {
+          "path": "src/game_native_string_process.cpp",
+          "line": 8,
+          "text": "void* volatile& GameNativeStringProcess::allocation_stats_0109cefc() noexcept {"
+        },
+        {
+          "path": "src/native_particle_object_resources_raw.cpp",
+          "line": 50,
+          "text": "    NativeResourceLoadCacheContext& context,NativeResourceLoadCacheAcquired& acquired) {"
+        },
+        {
+          "path": "src/native_resource_load_cache.cpp",
+          "line": 67,
+          "text": "    void cleanup(NativeResourceLoadCacheContext& context) noexcept {"
+        },
+        {
+          "path": "src/native_resource_load_cache.cpp",
+          "line": 88,
+          "text": "    void* factory, NativeResourceLoadCacheContext& context, NativeResourceLoadCacheAcquired& acquired) {"
+        }
+      ],
+      "findings": {
+        "existing_low_level_allocation_constructor_registration_lifecycle_process_cell_available": true,
+        "pending_host_context_and_profile_routes_present": true,
+        "host_primary_acceptance_still_pending_for_this_packet": true,
+        "current_startup_is_semantic_stack_projection": true,
+        "actual_12_byte_startup_receiver_allocated_by_current_stats_site": false,
+        "stats_constructor_failure_state_and_pre_drain_guard_present": false,
+        "clock_policy_exists_but_is_not_stats_policy": true,
+        "existing_clock_helper_can_throw_before_comparing_publication": true,
+        "no_missing_low_level_provider_identified": true,
+        "no_new_Native_evidence_required_for_bounded_ordinary_Source_design": true,
+        "existing_clock_retention_gate_call_count": 4,
+        "Source_cleanup_must_not_span_entire_clock_helper": true
+      },
+      "scope": "Static Source and already-retained metadata assertions only; no compiler, C++ execution, new test, Native access, Ghidra call or repair."
+    },
+    "available_dependencies": [
+      {
+        "name": "Raw 12-byte allocation and release",
+        "Source": "singleton_lifetime_allocate({SingletonAllocationKind::object,12,12}) / singleton_lifetime_free",
+        "status": "Accepted existing Source provider; malloc/new-handler retry/bad_alloc and current Source CRT free domain. Four-byte alignment and writable DWORD+0/+4/+8 storage are required."
+      },
+      {
+        "name": "Actual BE2900 constructor",
+        "Source": "construct_native_allocation_stats_00be2900 -> construct_native_allocation_stats_base_00be2750",
+        "status": "Accepted and already registered in Core. Writes D685F4/40000000/0 only after genuine base construction. The semantic platform_window projection remains separate."
+      },
+      {
+        "name": "Canonical manager / BD0C30 registration",
+        "Source": "get_native_singleton_manager_00415350 and register_native_singleton_object_00bd0c30",
+        "status": "Existing genuine providers. First manager/captured section and second manager/current stats reload are distinct observation points. BD0C30 validates bounds before null, performs no own lock/duplicate filter/retain, and returns RET4 in its raw Source entry."
+      },
+      {
+        "name": "Permanent statistics cell",
+        "Source": "GameNativeStringProcess::allocation_stats_0109cefc",
+        "status": "Accepted process-owned zero-initialized cell. Same intentionally persistent process object as the canonical manager domain; accessor returns the cell reference, not its current value."
+      },
+      {
+        "name": "Retained host context and finite profile dispatch",
+        "Source": "GameSingletonHost::allocation_stats_context / NativeSingletonDeletionBindings::allocation_stats",
+        "status": "Present only in pending abb468e for this readiness comparison. Borrows the canonical manager and permanent stats cell; both D685E0/BE2890 and D685F4/BE2930 routes preserve popped receiver and full flags. Requires primary acceptance before activation implementation."
+      },
+      {
+        "name": "Actual destructor / scalar ownership",
+        "Source": "BE27F0, BE2890, BE2930",
+        "status": "Accepted existing lifecycle Source. Genuine unregister/current-cell and captured-section schedule; no constructor rollback. Conditional scalar free follows base destruction normal return."
+      }
+    ],
+    "remaining_Source_work": [
+      "First accept/integrate the pending retained host binding; keep its exact permanent cell, manager reference and both profile routes alive through normal/fallback drain.",
+      "At the existing Phase0 position replace the semantic stack projection with actual 12-byte allocation and genuine BE2900 using the retained host context. Preserve the conditional null skip, captured allocation identity and original neighboring startup order.",
+      "Define explicit caller allocation/constructing/completed/failed-or-skipped state. Do not derive success from publication equality or non-null publication, do not retry after an interrupted attempt, and do not turn a repeated call into first-success fallback.",
+      "Implement only the admitted outer conditional allocation cleanup. The saved action frees its current spill word; a Source captured pointer gives an explicit Source identity contract, not proof of Native spill/OS association. Constructor cleanup effects remain intact.",
+      "Resolve the post-call boundary with the existing clock path: saved CMP[01090AB0],EDI precedes sentinel retirement, but the current clock helper can throw during context allocation/validation before its comparison. Do not extend the stats guard across that helper or claim immediate post-constructor disarm proves the Native hardware-fault window.",
+      "Admit a named ordinary Source failure-retention policy before the four known host cleanup/exit boundaries: destructor, exit_process before std::exit/atexit, application_shutdown, destroy_singleton_lifetime_manager. Existing clock _Exit behavior is a precedent, not an already-installed stats policy or original exception semantics.",
+      "Retain existing later-subsystem failure gates and scalar-destructor failure semantics. Add no cache predicate, report switch, owner fallback, repair, receiver/publication equality, new allocator or unsupported original-switch claim."
+    ],
+    "failure_state_boundaries": [
+      {
+        "event": "Allocator throws before returning",
+        "required_effect": "There is no returned receiver to free and BE2900 was not called. Do not manufacture a successful owner or retry through a new fallback. Ordinary allocator new-handler behavior remains inside the existing provider.",
+        "remaining_policy": "State must distinguish this from a constructor escape; the next Source implementation must state whether any conservative failure-retention policy also covers this case."
+      },
+      {
+        "event": "Allocator returns null",
+        "required_effect": "Preserve the retained conditional-construction skip. Do not call BE2900, register a null surrogate or mark an actual owner constructed. The current Source allocator ordinarily returns storage or throws; that does not erase the retained defensive Native branch.",
+        "remaining_policy": "Represent an explicit skipped/no-owner outcome if retained in Source. Do not invent a first-success fallback or cache an apparent successful empty owner."
+      },
+      {
+        "event": "Constructor escapes before publication",
+        "required_effect": "Its admitted Source base/guard cleanup runs as applicable. The outer caller free uses its captured allocation subject, not current publication; then propagate/retain the failure under the stated policy.",
+        "remaining_policy": "No extra destructor, unregister, rollback, publication clear or retry is authorized by the saved caller action."
+      },
+      {
+        "event": "Constructor escapes after publication or registration",
+        "required_effect": "Completed publication/registration effects persist. Outer allocation cleanup can leave stale publication or a manager slot referencing freed storage.",
+        "remaining_policy": "Mark failure before control can reach normal/fallback drain or CRT exit callbacks. A named conservative Source process-retention/exit policy is available as a design precedent, but the stats state/gates are not implemented and are not Native FH3 equivalence."
+      },
+      {
+        "event": "Constructor returns normally and reaches post-call boundary",
+        "required_effect": "Leave the genuine three-word receiver registered. Retire the caller cleanup at the explicit Source boundary; do not free it at phase/local scope exit. Preserve the saved fact that the AB0 comparison precedes Native state retirement.",
+        "remaining_policy": "Do not keep the stats allocation guard across the entire existing clock helper. That helper can allocate/validate before its own publication comparison and throw after the Native stats state would have been retired."
+      },
+      {
+        "event": "Later clock/startup work throws after stats handover",
+        "required_effect": "Do not re-enter the retired stats caller free. Successful stats ownership remains with the canonical manager/profile dispatch, subject to existing subsystem retention gates.",
+        "remaining_policy": "Preserve all existing clock/renderer/Lua/VFS/settings/input failure policies; do not infer safe partial-startup draining from the stats constructor alone."
+      },
+      {
+        "event": "Stats destruction escapes",
+        "required_effect": "BE2890/BE2930 reach flags-bit0 free only after BE27F0 normal return. Existing BD0400/BD0220 failure behavior remains unchanged.",
+        "remaining_policy": "No catch/finally free, drain retry, repaired publication or successful cleanup claim is licensed."
+      },
+      {
+        "event": "Hardware fault, original EH dispatch or OS delivery",
+        "required_effect": "Keep the saved conditional frame/action interpretation and AB0-before-retirement ordering visible.",
+        "remaining_policy": "No new evidence establishes raw second-argument/parent-node association, Native FH3/SEH delivery, original register/private-frame ABI, heap identity or successful fault cleanup."
+      }
+    ],
+    "next_bounded_implementation_surface": {
+      "candidate_Source_files": [
+        "include/bsp/game_hosts.hpp",
+        "src/game_hosts.cpp"
+      ],
+      "existing_low_level_files_should_not_need_changes": [
+        "src/native_allocation_stats_constructor.cpp",
+        "src/native_allocation_stats_lifecycle.cpp",
+        "src/singleton_lifetime.cpp",
+        "src/native_singleton_vector_registration_wrappers.cpp",
+        "src/game_native_string_process.cpp"
+      ],
+      "qualification": "A future integrator must authorize the explicit Source state/cleanup/retention design before editing. No new low-level provider, adjacent Native entry or broad startup rewrite is identified by this audit. Existing CMake registration suffices for the genuine constructor/lifecycle."
+    },
+    "epochs": {
+      "pending_host_binding": {
+        "commit": "abb468ec7290aa8e337af22c6b2f9aa770de1385",
+        "status": "Still-pending proposal at readiness start; no primary acceptance assumed.",
+        "whole_Source_files": 4206,
+        "all_frozen_files": 4227
+      },
+      "accepted_main_at_start": {
+        "commit": "5a2ba8aa30b447d1297e0d5fcf94729b8fac443d",
+        "whole_Source_files": 4206,
+        "all_frozen_files": 4225
+      },
+      "accepted_main_at_freeze": {
+        "commit": "06bb5f24d1290d8485d343e5d0c3aa4e5c2b0e4c",
+        "whole_Source_files": 4206,
+        "all_frozen_files": 4225,
+        "qualification": "Exact accepted main observed when initial Source/evidence freeze finished; immutable old accepted and pending epochs remain separate. Full file view reuses byte-identical frozen files with explicit aliases.",
+        "changed_from_initial_accepted": [
+          "include/bsp/gameplay_point_binding.hpp",
+          "src/gameplay_point_binding.cpp"
+        ],
+        "complete_receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_allocation_stats_startup_activation_readiness\\later_accepted_epoch.json",
+          "bytes": 2441238,
+          "sha256": "e70c47248e832408007fffa2922f0c5a5df73f8b19b37857de393451d542a091"
+        }
+      },
+      "qualification": "No worktree sync or pending six-file modification occurred. Every tracked src/include file is frozen in both initial epochs. The later accepted view aliases unchanged full files and retains exact two-file Git changes. No old Source993/Source1496 build is relabelled as a new readiness build."
+    }
+  },
+  "current_Root_acceptance": "79792d8f3 / Source1992",
+  "constructor_context_host_acceptance": true,
+  "no_new_Source_compiler_tests_Native_GPR_environment_or_game": true,
+  "new_startup_or_gameplay_credit": false,
+  "Root_current_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_allocation_stats_startup_activation_readiness_primary\\current_Root_Source_overlay.json",
+    "bytes": 1979410,
+    "sha256": "e0fbddffadba72f8eb75cf24dc0a82f668199dae01ad0dc3f3d5860ee5bd2342"
+  },
+  "status": "accepted_bounded_readiness_or_unmet_contract",
+  "authorized_next_Source_contract": "Only two game_hosts C++ files plus implementation doc/report; genuine conditional construction, captured free and precise handover; conservative Source stats failure retention at four existing host gates, no Native FH3/hardware equivalence."
+}

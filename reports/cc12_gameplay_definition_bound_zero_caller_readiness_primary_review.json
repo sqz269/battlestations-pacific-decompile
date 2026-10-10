@@ -1,0 +1,354 @@
+{
+  "schema": 1,
+  "packet": "cc12_gameplay_definition_bound_zero_caller_readiness_primary_review",
+  "worker_commit": "39e6e974eb1661aea7886371ab7e8a1caf8c9910",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment\\reports\\cc12_gameplay_definition_bound_zero_caller_readiness.json",
+    "bytes": 581100,
+    "sha256": "e19c52c433f9e741ee7f3d216d33691fabbe8bed6b1562fc3241b1f462afc8c5"
+  },
+  "Root_invoked_offline_replay": {
+    "command": [
+      "python",
+      "local/gameplay_definition_bound_zero_caller_verify.py"
+    ],
+    "workdir": "J:\\PROG\\battlestations-pacific-decompile-cc12_damageable_comment_fragment",
+    "exit_code": 0,
+    "returned": {
+      "status": "PASS",
+      "report_sha256": "e19c52c433f9e741ee7f3d216d33691fabbe8bed6b1562fc3241b1f462afc8c5",
+      "pin_occurrences": 3576,
+      "unique_pin_paths": 3551,
+      "Git_blobs": 1727,
+      "complete_project_inputs": 1727,
+      "external_headers": 3,
+      "complete_queries": 6,
+      "query_matches": 201,
+      "whole_backed_Source_excerpts": 22,
+      "copied_complete_provider_objects": 6,
+      "nearest_provider_code_bytes": [
+        40,
+        47
+      ],
+      "inherited_assertions_preserved": true,
+      "inherited_output_expressions_suppressed": 2,
+      "inherited_helper_and_replay_unchanged": true,
+      "inherited_result": {
+        "status": "PASS",
+        "report_sha256": "38e58787ab7f987adec78d1ff02aa7272280afa17b378d7fc6663570d3a3ab4a",
+        "pin_occurrences": 10843,
+        "unique_pin_paths": 8313,
+        "Git_blobs": 1734,
+        "complete_project_inputs": 1727,
+        "external_headers": 3,
+        "quoted_include_edges": 3835,
+        "retained_COFF": 163,
+        "full_comparison_pairs": 83,
+        "whole_archive_members_checked": 3976,
+        "actual_provider_graph_roots": 17,
+        "provider_sections": 914,
+        "indexed_edges": 2291,
+        "actual_normal_CL_records": 195,
+        "preserved_Root_positive_definitions": 313,
+        "Root_frozen_pins_verified": 1500,
+        "new_Cpp_compilers_or_builds_or_tests": 0,
+        "new_Native_or_Ghidra_operations": 0,
+        "current_Source_COFF_reparsed": true
+      },
+      "Cpp_compilers_builds_tests": 0,
+      "new_Native_Ghidra_or_instruction_decoding": 0
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_definition_bound_zero_caller_readiness_primary\\replay.stdout.json",
+      "bytes": 1293,
+      "sha256": "86124107b350fb0d71b24bbabe0bbc4d28c831701829fd12b6afdf880e81b762"
+    }
+  },
+  "complete_worker_copy_scope": "Complete frozen bundles/manifest and key immutable receipts; original referenced artifacts remain retained in worker",
+  "retained_worker_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_definition_bound_zero_caller_readiness_primary\\retained_worker_artifacts\\local\\gameplay_definition_bound_zero_caller_baseline_v2\\freeze_receipt.json",
+      "bytes": 2689898,
+      "sha256": "e5bbe383fc9b0310b34612f8595ba957afc16944cfd7bf3cfabd268ff66056f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_definition_bound_zero_caller_readiness_primary\\retained_worker_artifacts\\local\\gameplay_definition_bound_zero_caller_evidence_v2.json",
+      "bytes": 81751,
+      "sha256": "0acb5e3260753690a83b89e48463ef4d46b40304b61e2c61378087e69bca7acb"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_definition_bound_zero_caller_readiness_primary\\retained_worker_artifacts\\local\\gameplay_definition_bound_zero_caller_verify.py",
+      "bytes": 5897,
+      "sha256": "41726a14d19c9bb62d6d64d53303d626a967168861aaefe7de05c18f2d3d59a9"
+    }
+  ],
+  "reviewed_findings": {
+    "decision": {
+      "existing_raw_caller_ready": false,
+      "next_Source_packet_ready": false,
+      "nearest_concrete_existing_seam": "release_native_ref_counted_handle_0041de40; native_damageable_section.cpp:22-30",
+      "reason": "No existing raw caller receives or owns the canonical raw-context GameplayDefinitionReferences domain; terminal code alone does not establish caller ownership or service lifetime.",
+      "Root_pending_6c78_source_review_at_freeze": true,
+      "accepted_producer_terminal_prerequisite": "542028d00dfa3966dea23e6d4e3011d4f780aaf9, accepted through main f2cb33e93875a18cd26a4fbb4b5fb37ac9e23043"
+    },
+    "nearest_actual_Source_functions": [
+      {
+        "symbol": {
+          "index": 23,
+          "record_file_offset": 1484,
+          "raw_record_hex": "000000004b000000000000000a0020000200",
+          "name": "?release_native_ref_counted_handle_0041de40@bsp@@YAXPAX@Z",
+          "value": 0,
+          "section": 10,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "section": {
+          "section": 10,
+          "header_file_offset": 380,
+          "raw_header_hex": "2e74657874246d6e000000000000000028000000ae03000000000000000000000000000020105060",
+          "name": ".text$mn",
+          "bytes": 40,
+          "raw_file_offset": 942,
+          "relocation_file_offset": 0,
+          "characteristics": "60501020",
+          "executable": true,
+          "writable": false,
+          "payload_hex": "558bec568b75088b0e85c974188d410483cafff00fc11075068b018b00ffd0c706000000005e5dc3",
+          "payload_sha256": "1c397316fd13c3b0f52501fb14f2ac2fbfdca9094c63f5ce846baf67fcb2c663",
+          "relocations": []
+        }
+      },
+      {
+        "symbol": {
+          "index": 24,
+          "record_file_offset": 1502,
+          "raw_record_hex": "000000008500000000000000090020000200",
+          "name": "?destroy_native_damageable_section_00878ef0@bsp@@YAXPAXI@Z",
+          "value": 0,
+          "section": 9,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "section": {
+          "section": 9,
+          "header_file_offset": 340,
+          "raw_header_hex": "2e74657874246d6e00000000000000002f0000007f03000000000000000000000000000020105060",
+          "name": ".text$mn",
+          "bytes": 47,
+          "raw_file_offset": 895,
+          "relocation_file_offset": 0,
+          "characteristics": "60501020",
+          "executable": true,
+          "writable": false,
+          "payload_hex": "558bec8b450c568b750889068b4e2485c974198d410483cafff00fc11075068b018b00ffd0c74624000000005e5dc3",
+          "payload_sha256": "4c6ef40068358b6c96192c5573b080464833838f627022f46b3d8180348876d2",
+          "relocations": []
+        }
+      }
+    ],
+    "finite_selected_seam_contract": {
+      "status": "Conditional dependency contract only; no new API or Source edit set approved by this readiness result.",
+      "required_owner": "One explicit caller-supplied canonical raw-context domain. No process global, TLS lookup, automatic interception, arbitrary callback or substitute manager.",
+      "raw_selection": "Current find_bound exposes identity only and does not reveal typed/raw context. Raw-domain selection must be an explicit verified precondition or checked inside a separately authorized domain-owned entry before mutation; lookup success is insufficient.",
+      "identity": "Capture one raw slot value. Null retains the original no-write result. Pure find_bound on exact raw address may select only existing canonical metadata; no allocation, retain, binding, count reset or Native storage dereference during lookup.",
+      "reference_credit": "Each admitted nonnull captured handle owns one live positive actual reference. Perform exactly one atomic decrement on that same actual owner. Dispatch exactly once only for genuine1->0; nonzero has no terminal call.",
+      "zero_route": "Use dispatch_bound_definition_zero on the existing definition. It checks raw context, binding/count0/currentD0DA58/current0BD30E0; actual BD provider reloads profile; private concrete call checks fresh current4=871440, calls raw scalar flags1, then retires metadata after success only.",
+      "handle_order": "Keep original writable slot live and disjoint from freed owner through cleanup; only after successful return clear original slot regardless of callback replacement. Do not reselect, retain or release that replacement; no owner or companion access after free/retirement.",
+      "nonthrowing": "Admitted providers remain nonthrowing; exclude same-owner concurrent/reentrant terminals and retries. Unsupported profile/slot/raw-domain/count/binding and cleanup failure terminate at the new noexcept boundary; no post-failure clear/retirement/fallback is admitted.",
+      "generic_preservation": "Leave the existing generic0041DE40 function unchanged. A new selected API must define unknown/unbound rejection explicitly before raw mutation where possible, not silently fall back after a decrement. Current generic exception propagation is not equivalent to the proposed nonthrowing subset.",
+      "publication": "Every selected handle/temporary/current-node callback replacement is prebound while positive before visibility. First binding atzero and unconditional fresh-loser cleanup are forbidden.",
+      "cleanup_providers": "The same raw context current manager cells, live raw tree/current-ID entry, strings, components and deallocator remain valid. Preserve erase by current ID even if cache payload is another pointer; missingID and partial cleanup are not successful cases.",
+      "lifetime": "Domain and borrowed providers remain live through all admitted releases; companions are retired before domain destruction. Actual caller/application shutdown owner and order are not established by this packet."
+    },
+    "unknown_and_failure_matrix": [
+      {
+        "input": "null slot value",
+        "existing": "Return without writing slot.",
+        "selected": "Same result; no lookup/count/provider access needed."
+      },
+      {
+        "input": "nonnull unbound or wrong owner family",
+        "existing": "Generic body decrements then may call arbitrary actual current0.",
+        "selected": "Not admitted. Explicit selected API rejection required; no zero-time bind, silent drop, fabricated terminal or global fallback."
+      },
+      {
+        "input": "typed-context domain with existing companion",
+        "existing": "Host typed release is supported separately.",
+        "selected": "Raw dispatcher terminates. Public lookup cannot prove raw selection; must establish raw domain before the selected release contract."
+      },
+      {
+        "input": "bound positive owner; decrement result nonzero",
+        "existing": "No virtual call; clear original slot.",
+        "selected": "Same credit/clear order for admitted raw owner; do not dispatch or retire."
+      },
+      {
+        "input": "genuine bound1->0 with current supported profile/slots",
+        "existing": "Actual function-pointer current0.",
+        "selected": "Explicit finite Source route uses genuineBD30E0 then freshcurrent4/scalarflags1 and successful retirement."
+      },
+      {
+        "input": "bound owner changed to unsupported profile/slots",
+        "existing": "Generic actual current0 remains unconstrained.",
+        "selected": "New dispatcher terminates; never route by cached bind-time words or call scalar directly."
+      },
+      {
+        "input": "zero/negative count before release; stale owner; duplicate terminal",
+        "existing": "Not a valid owning positive reference contract.",
+        "selected": "Not admitted; no reset, saturating count, retry or synthetic1->0."
+      },
+      {
+        "input": "throwing cleanup or missing current ID",
+        "existing": "Generic slot clear is skipped if callback propagates.",
+        "selected": "Noexcept termination; scalar may have partially run and changed base profile. No successful retirement, original-slot clear, retry, fallback or claim of general throwing equivalence."
+      },
+      {
+        "input": "callback replacement of original slot",
+        "existing": "Clear original slot after successful captured-owner release, no replacement retain/release.",
+        "selected": "Preserve exact original-slot effect; selected owner remains the captured identity."
+      }
+    ],
+    "unmet_dependencies": [
+      {
+        "id": "D1",
+        "files": [
+          "native_damageable_section.hpp/.cpp",
+          "gameplay_point_binding.hpp/.cpp"
+        ],
+        "need": "Name a concrete Source caller that receives the existing raw domain and a stable captured slot. Current generic signature has no domain; no existing caller constructs one in the frozen closure."
+      },
+      {
+        "id": "D2",
+        "files": [
+          "gameplay_point_binding.hpp/.cpp"
+        ],
+        "need": "Choose explicit raw-domain selection contract or a separately authorized domain-owned handle entry; find_bound cannot distinguish typed/raw and an external overload cannot read the private discriminator."
+      },
+      {
+        "id": "D3",
+        "files": [
+          "gameplay_effect_acquisition.hpp/.cpp",
+          "selected raw producer/callback publisher"
+        ],
+        "need": "Prove positive prebinding and canonical identity for every admitted handle and callback replacement, current ID/weak entry validity and exact ownership credit. Duplicate-loser and fresh-ID gates remain held."
+      },
+      {
+        "id": "D4",
+        "files": [
+          "selected raw caller owner",
+          "actual application shutdown owner"
+        ],
+        "need": "Establish lifetime of the domain, original writable slot, actual table, raw manager cells/tree/string/component/free services through final release, and retire companions before domain teardown."
+      },
+      {
+        "id": "D5",
+        "files": [
+          "native_damageable_section_vector.hpp/.cpp",
+          "native_damageable_class_section_row_begin_fragment.hpp/.cpp"
+        ],
+        "need": "If scope expands beyond one selected slot, preserve separate assignment/no-clear, rowflags0, normal/catch/state14 policies and all current-owner publication coverage; generic/throwing terminals remain unsupported."
+      }
+    ],
+    "caller_matrix": [
+      {
+        "caller": "0041DE40 raw one-word handle",
+        "files": [
+          "include/bsp/native_damageable_section.hpp",
+          "src/native_damageable_section.cpp"
+        ],
+        "current_contract": "Capture current slot; null returns without write; one InterlockedDecrement owner+4; current owner/table slot0 call at zero; clear original slot only on normal return.",
+        "domain_parameter": false,
+        "caller_owns_domain": false,
+        "terminal_throws": "Generic function may propagate; failure leaves original slot uncleared; no retry, rollback or metadata retirement.",
+        "readiness": "Nearest seam, held for explicitly selected domain/lifetime contract."
+      },
+      {
+        "caller": "00878EF0 raw30h row destructor",
+        "files": [
+          "include/bsp/native_damageable_section.hpp",
+          "src/native_damageable_section.cpp"
+        ],
+        "current_contract": "Stamp actual D0DF04 row profile, then release row+24 through0041DE40. Compiler inlines same raw dispatch.",
+        "domain_parameter": false,
+        "caller_owns_domain": false,
+        "readiness": "No definition-only type proof or domain injection; held."
+      },
+      {
+        "caller": "00878790 section assignment",
+        "files": [
+          "src/native_damageable_section_vector.cpp"
+        ],
+        "current_contract": "Capture incoming/previous; if unequal, publish incoming then retain incoming before releasing captured previous. Inline release does not clear a handle.",
+        "domain_parameter": false,
+        "readiness": "Cannot replace with handle-clearing route. Requires same selected domain and all publication bindings."
+      },
+      {
+        "caller": "00878AC0 ranges; copy/fill/insertion normal and unwind",
+        "files": [
+          "include/bsp/native_damageable_section_vector.hpp",
+          "src/native_damageable_section_vector.cpp",
+          "include/bsp/native_damageable_section_fill.hpp",
+          "src/native_damageable_section_fill.cpp"
+        ],
+        "current_contract": "Row deleting-slot flags0 stays distinct from definition scalar flags1. Normal temporary release does not stamp row profile or clear+24. Copy/fill cleanup uses completed-prefix current row dispatch; a fill-cleanup exception escapes its catch. Insertion catch instead destroys temporary through00878EF0 and terminates on secondary failure; retain partial-range and no-rollback rules.",
+        "domain_parameter": false,
+        "readiness": "Unsupported generic/throwing row terminals remain held; adapting0041DE40 alone is incomplete."
+      },
+      {
+        "caller": "row-begin fragment normal/state14 unwind",
+        "files": [
+          "include/bsp/native_damageable_class_section_row_begin_fragment.hpp",
+          "src/native_damageable_class_section_row_begin_fragment.cpp"
+        ],
+        "current_contract": "Normal capture/nullness before14->13 and row stamp; zero current0 then clear. State14 destructor lowers13 before row destructor and is noexcept.",
+        "domain_parameter": false,
+        "readiness": "Access binds vector/table/CRT cells only; no canonical domain/lifetime proof."
+      },
+      {
+        "caller": "fake-effect row+0C; soldier base+10/+14; generic owner rows",
+        "files": [
+          "src/native_damageable_fake_effect_vector.cpp",
+          "src/native_soldier_class_resolution.cpp",
+          "src/native_damageable_class_construction.cpp"
+        ],
+        "current_contract": "Existing unrelated raw owners share0041DE40 or the same inline count/current0 pattern; soldier cleanup retains its own state/unwind/secondary-failure policy.",
+        "definition_identity_established": false,
+        "readiness": "Never globally route these to gameplay definitions; their retained Source bodies are evidence of generic scope, not admitted provider coverage."
+      },
+      {
+        "caller": "canonical host release and point composition",
+        "files": [
+          "src/render_command_queue.cpp",
+          "include/bsp/gameplay_point_binding.hpp",
+          "src/gameplay_point_binding.cpp"
+        ],
+        "current_contract": "Host1->0 already invokes canonical release_zero; point rows/construction borrow caller-supplied domain.",
+        "caller_owns_domain": false,
+        "readiness": "No raw handle caller is thereby composed; do not convert an already-zero host callback into another decrement."
+      },
+      {
+        "caller": "SceneContents application effect acquisition/release",
+        "files": [
+          "src/game_hosts_scene_contents.cpp"
+        ],
+        "current_contract": "acquire_effect logs unimplemented and returns null; release_effect discards argument.",
+        "caller_owns_domain": false,
+        "readiness": "No actual application domain, publisher or shutdown proof."
+      }
+    ]
+  },
+  "current_Root_acceptance": "79792d8f3 / Source1992",
+  "constructor_context_host_acceptance": null,
+  "no_new_Source_compiler_tests_Native_GPR_environment_or_game": true,
+  "new_startup_or_gameplay_credit": false,
+  "Root_current_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_definition_bound_zero_caller_readiness_primary\\current_Root_queries.json",
+    "bytes": 489077,
+    "sha256": "688c6d2490a95b07174df22b9740fa898ab98e989e95deabbdd87bad1c7b9378"
+  },
+  "status": "accepted_bounded_readiness_or_unmet_contract"
+}
