@@ -1,0 +1,228 @@
+{
+  "schema": "bsp.cc12.locale-canonical-owner-primary.v1",
+  "status": "finite_metadata_and_Source_provenance_accepted_canonical_owner_and_callback_unproved",
+  "worker_commit": "a5a4c55170609218efc4f81dd90c593c279e8e59",
+  "worker_report": {
+    "path": "local/cc12_locale_canonical_owner_primary/worker_report.json",
+    "bytes": 22168,
+    "sha256": "392664b8b11d3afc78573ec704307ec4f6f507ebd2c4cd72cc1b1b7510bb85d8"
+  },
+  "worker_document": {
+    "path": "local/cc12_locale_canonical_owner_primary/worker_document.md",
+    "bytes": 6420,
+    "sha256": "12f1485715e85183393de8708d80051aa8119e764ec9eb46d6147958b3eecfb0"
+  },
+  "copied_archive": {
+    "path": "local/cc12_locale_canonical_owner_primary/worker_evidence.zip",
+    "bytes": 23790030,
+    "sha256": "bcd6104842475fdb34df620e664e5357d84e31c936dd59f2264fefa37747c74d"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_canonical_owner_primary/Root_guarded_worker_replay.json",
+    "bytes": 1744,
+    "sha256": "7f8358bf90f1d641c1b647673cfca14f82acf77e3084e2923d1a09eb16a414ce"
+  },
+  "actual_Git_blob_occurrences": 4241,
+  "actual_Git_commit_tree_objects": 11,
+  "actual_closed_Source_paths": 4217,
+  "committed_worker_Source_matches": true,
+  "Root_Source_differences": [],
+  "Native_metadata": {
+    "response_pairs": 10,
+    "all_before_after_byte_identical": true,
+    "comparison": {
+      "path": "local/cc12_locale_canonical_pool_owner_provenance/Native_metadata_comparison.json",
+      "bytes": 1520,
+      "sha256": "5b8c37bdc0145d019d309120117b7d021f0394df36f19ce8e31875ae39d41eee"
+    },
+    "function_count": 64730,
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Every live query used bsp.py ghidra, whose client() invokes Client.verify(). Verification values are checked against frozen config/target.json; they are not separately echoed in these CLI responses.",
+    "configured_saved_project": "C:/Users/sqz269/bsp.gpr",
+    "configured_project_physical_path_directly_live_queried": false,
+    "fresh_GPR_modification_epoch": null,
+    "inherited_GPR_modification_epoch": 92,
+    "epoch_credit": "92 is inherited prior Root annotation metadata only; this CLI did not freshly read it.",
+    "query_limit": 8,
+    "xref_response_completeness": "All positive exact-address responses contain fewer than 8 rows; every returned row is frozen and replayed. No truncated head or anomalous caller response is used for absence.",
+    "xref_rows": {
+      "00E1768C": [
+        {
+          "from": "007373F1",
+          "function": "FUN_007373F0",
+          "type": "DATA"
+        },
+        {
+          "from": "0073C230",
+          "function": "BSP_LocaleMapNode_ScalarDelete",
+          "type": "DATA"
+        },
+        {
+          "from": "00A9FCDD",
+          "function": "BSP_StringMap_InsertOrGet",
+          "type": "DATA"
+        },
+        {
+          "from": "00CC8D30",
+          "function": null,
+          "type": "DATA"
+        },
+        {
+          "from": "00CD9410",
+          "function": null,
+          "type": "DATA"
+        }
+      ],
+      "00436230": [
+        {
+          "from": "00CC8D35",
+          "function": null,
+          "type": "UNCONDITIONAL_CALL"
+        }
+      ],
+      "00CC8D30": [
+        {
+          "from": "00CE2754",
+          "function": null,
+          "type": "DATA"
+        }
+      ],
+      "00CD9410": [
+        {
+          "from": "00CC8D3A",
+          "function": null,
+          "type": "DATA"
+        }
+      ],
+      "00CC8D35": [],
+      "00CC8D3A": [],
+      "00CE2754": []
+    },
+    "empty_exact_xref_response_scope": "Only the endpoint responses for these three exact addresses; not absence of indirect/range/table references or execution.",
+    "callers_00436230": "No callers found for function: null",
+    "caller_absence_inference": false,
+    "prototype_summary": {
+      "00436230": "BSP_LocaleNodePool_Initialize; metadata signature undefined BSP_LocaleNodePool_Initialize(void); stored body metadata 00436230 - 00436302",
+      "00CC8D30": "No stored function metadata returned",
+      "00CD9410": "No stored function metadata returned",
+      "interpretation": "Signature/body-span metadata only; no caller body or original ABI inferred, no prototype/listing/flow/no-return repair."
+    },
+    "fresh_Native_body_bytes": 0,
+    "instructions_read": 0,
+    "data_bytes_read": 0,
+    "GPR_mutation": false,
+    "after_captures_closed_before_Root_annotation_work": true
+  },
+  "Source_candidates": [
+    {
+      "obligation": "Actual E1768C storage and initialized locale authority",
+      "candidate": "Borrowed void* parameter only, native_locale_map_node_recycling.hpp/.cpp",
+      "readiness": "Unproved. No canonical storage owner identified; a zeroed layout, caller pointer or differently owned pool is insufficient."
+    },
+    {
+      "obligation": "Same shared E188B4 head by reference and domain",
+      "candidate": "GameNativePhysicalPoolProcess::list_head_00e188b4_ and list_, allocator_list_domain_00e188b4(); AllocatorListDomain::shared_head_ is a reference",
+      "readiness": "Established existing Source authority and reuse candidate. 23 complete accessor/storage matches; constructor binds the domain to this process field. Original fixed-address identity and new locale membership remain separately unproved."
+    },
+    {
+      "obligation": "Payload/string publication services",
+      "candidate": "GameNativeStringProcess owns retained pool_, disabled_, manager_ cells; raw_{pool_, disabled_, manager_} and raw_context() borrow same cells",
+      "readiness": "Established existing Source service authority/reuse candidate. It creates no locale pool, slab, registration or payload lifetime."
+    },
+    {
+      "obligation": "Initialization/publication",
+      "candidate": "Native metadata: E1768C referenced at CC8D30; constructor 436230 called at CC8D35; CD9410 referenced at CC8D3A; CC8D30 referenced at CE2754",
+      "readiness": "Exact sites established; initializer-array, exit-registration primitive/status/failure ordering and actual callback invocation remain provisional until bounded caller admission."
+    },
+    {
+      "obligation": "Owner and callback lifetime",
+      "candidate": "Existing physical Source process static is built before its explicit callback registration; string process is retained through termination",
+      "readiness": "Existing unrelated-owner lifetime pattern only. New locale owner storage, callback registration/order, borrower quiescence, slabs/payload retirement, failure behavior and postcallback domain lifetime are unproved."
+    }
+  ],
+  "prior_contract_pins": [
+    {
+      "path": "reports/cc12_locale_lifecycle_primary.json",
+      "bytes": 4365,
+      "sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e",
+      "worker_commit": "da51854bc0beb187030cd01141a7c9c9914bdf6b",
+      "status": "accepted_normal_flow_contract_only",
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit."
+    },
+    {
+      "path": "reports/cc12_locale_profile_primary.json",
+      "bytes": 7798,
+      "sha256": "0052ecca6ee433aeeea979583f95b0fde766f4bd469ad1f7428040c1a338474b",
+      "worker_commit": "3d9a6c29193f9ac09a8905a91c2b298eb5845b1f",
+      "status": "accepted_normal_lifecycle_trim_and_bounded_unwind_data_provisional_annotations_saved",
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit."
+    },
+    {
+      "path": "reports/cc12_locale_unwind_primary.json",
+      "bytes": 5334,
+      "sha256": "2fd16f0d54fa6248393427aa4dbdde2d1b43f344ad461021eace18cd16b28e8b",
+      "worker_commit": "4d1c7ed8884e670f47628fe3da2a6f4cc25dff5b",
+      "status": "native_action_forwarding_evidenced_owner_unwind_and_dispatch_ABI_incomplete",
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit."
+    },
+    {
+      "path": "reports/cc12_locale_table_cleanup_primary.json",
+      "bytes": 9694,
+      "sha256": "e26b5981e4cbbe59dc4880e2865af024a95d2830455279b9ed4a0aabf355c940",
+      "worker_commit": "f2e60874b51768a44136acc34c112c0b89545a84",
+      "status": "bounded_native_nullable_table_backing_free_contract_accepted_owning_unwind_and_activation_NO_GO",
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit."
+    },
+    {
+      "path": "reports/cc12_locale_section_cleanup_primary.json",
+      "bytes": 22472,
+      "sha256": "67e2e2e9df0e4413a766ea508a83d92683485ceefbb9fbe5bbf52b6cc9c3edad",
+      "worker_commit": "03734602e960e8ea3b2c6c0bad31fd3dfa470d91",
+      "status": "native_cleanup_leaf_and_existing_source_reuse_candidate_accepted_complete_owner_unwind_activation_NO_GO",
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit."
+    },
+    {
+      "path": "reports/cc12_locale_base_unlink_primary.json",
+      "bytes": 11711,
+      "sha256": "0b90ff96361174e28be1a51ce5c28a5a3ba02056ceea49623f0534e6377c155d",
+      "worker_commit": "bcef5843bfaec8a1990d6126b50b4a0e58716d46",
+      "status": "native_shared_list_unlink_and_existing_domain_provider_accepted_canonical_owner_and_FH3_unproved",
+      "credit": "Accepted prior contract and pin only. No inherited Native bytes/build artifacts receive fresh credit."
+    }
+  ],
+  "named_incomplete_prerequisites": [
+    "Actual initialized canonical E1768C storage and identity across all borrowers.",
+    "Original E188B4 fixed-address projection authenticated to the same Source head/domain and same published locale element.",
+    "Actual initializer and callback registration/status/failure ordering, callback body and retained owner lifetime.",
+    "Concrete trim/profile binding with same element and ordinary provider serialization.",
+    "Actual slabs, 1Ch slots, payload/string lifetimes and quiescence before table/slab/section/unlink teardown.",
+    "Actual FH3 setup/dispatcher EBP = S = R + 0Ch; three accepted cleanup leaves do not establish invocation."
+  ],
+  "scope": {
+    "fresh_Native_bytes": 0,
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "next_admission": {
+    "packet": "cc12_locale_initializer_prefix_and_table_cell",
+    "code_prefix_limit": 10,
+    "code_span": "00CC8D30..00CC8D39",
+    "table_cell_limit": 4,
+    "table_span": "00CE2754..00CE2757",
+    "gate": "Fresh typed ownership/instruction/span metadata before any raw bytes; stop if overlapping, changed or not an exact instruction-boundary prefix. Unowned prefix remains unowned. No CC8D3A/callback/body expansion.",
+    "original_worker_complete_hull_proposal_deferred": true
+  },
+  "limits": [
+    "Count 64730 and project/program verification are current CLI facts; epoch92 is inherited metadata.",
+    "Null caller response supports no absence claim; exact empty xrefs do not exclude indirect or range/table references.",
+    "Existing Source head/domain and publication services do not establish Original fixed-address storage or locale owner/callback lifetime.",
+    "Prior Native and particle build evidence is inherited with separate provenance; no new body or runtime credit."
+  ]
+}
