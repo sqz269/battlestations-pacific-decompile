@@ -1,4 +1,5 @@
 #include "bsp/native_game_grid.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/camera_decomposition.hpp"
 #include <array>
 #include <cstdlib>
@@ -162,8 +163,8 @@ void release_native_game_grid_cpu_arrays_00709760(void* grid,NativeGameGridCpuCa
     for(U offset=8;offset!=0x20;offset+=4)put(grid,offset,0);
 }
 
-void* NativeGameGridCpuCalls::allocate_00bf55be(U bytes){return ::operator new(bytes);}
-void NativeGameGridCpuCalls::free_00bf65ac(void* allocation){::operator delete(allocation);}
+void* NativeGameGridCpuCalls::allocate_00bf55be(U bytes){return singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes});}
+void NativeGameGridCpuCalls::free_00bf65ac(void* allocation){singleton_lifetime_free(allocation);}
 NativeGameGridOperation::~NativeGameGridOperation(){
     if(phase==Phase::running||phase==Phase::failed)std::terminate();
 }

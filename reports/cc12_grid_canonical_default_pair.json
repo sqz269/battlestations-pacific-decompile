@@ -1,0 +1,3838 @@
+{
+  "schema": "cc12.grid_canonical_default_pair.report.v1",
+  "status": "implemented_and_build_tested_bounded_defaults",
+  "base_commit": "4d0ae310d6a85a5962fa5e262b1003a43e4bbd26",
+  "owned_tracked_files": [
+    "include/bsp/native_game_grid.hpp",
+    "src/native_game_grid.cpp",
+    "docs/CC12_GRID_CANONICAL_DEFAULT_PAIR.md",
+    "reports/cc12_grid_canonical_default_pair.json"
+  ],
+  "document": {
+    "path": "frozen/36ab4b12576920075ee0879242ec639f40e8df80733b5165dac79b3dc79b059b_CC12_GRID_CANONICAL_DEFAULT_PAIR.md",
+    "bytes": 8638,
+    "sha256": "36ab4b12576920075ee0879242ec639f40e8df80733b5165dac79b3dc79b059b"
+  },
+  "inputs": {
+    "initial": {
+      "path": "frozen/0c2e857c81d709f9d171268b5bf476ba82d73e3191cfa25537df5e5f6e46def1_initial.json",
+      "bytes": 2482762,
+      "sha256": "0c2e857c81d709f9d171268b5bf476ba82d73e3191cfa25537df5e5f6e46def1"
+    },
+    "before": {
+      "path": "frozen/b000a9b189db873a841311ebedd5ec8e9d493f5096101b24694f0c5876bbc010_before.json",
+      "bytes": 2482955,
+      "sha256": "b000a9b189db873a841311ebedd5ec8e9d493f5096101b24694f0c5876bbc010"
+    },
+    "after": {
+      "path": "frozen/fe8a7e5d779574ab1701ee78a8246acae0afe0c4f07171c44722afc4b17c5261_after.json",
+      "bytes": 2482937,
+      "sha256": "fe8a7e5d779574ab1701ee78a8246acae0afe0c4f07171c44722afc4b17c5261"
+    },
+    "dependencies": {
+      "path": "frozen/96a983d6c519b2d4064105b03f9e0558d21ad2b90ee8ad03562f7d4fad02f672_dependencies.json",
+      "bytes": 1746873,
+      "sha256": "96a983d6c519b2d4064105b03f9e0558d21ad2b90ee8ad03562f7d4fad02f672"
+    },
+    "baseline_build": {
+      "path": "frozen/28b1d6e3df076b1e2ab7fed19dedc4a5345e5bf9598c3ddf5e98da9737cb8902_baseline_build.json",
+      "bytes": 558,
+      "sha256": "28b1d6e3df076b1e2ab7fed19dedc4a5345e5bf9598c3ddf5e98da9737cb8902"
+    },
+    "after_build": {
+      "path": "frozen/7162b73249640442fed32cd5e986a3949ac6c5320ce2ae6b1353742c5c6616d2_after_build.json",
+      "bytes": 552,
+      "sha256": "7162b73249640442fed32cd5e986a3949ac6c5320ce2ae6b1353742c5c6616d2"
+    },
+    "build_inputs": {
+      "path": "frozen/967e1f951a345de3c58806f875d0b01916537e78597e73499aedd5eb4c9feb17_build_inputs.json",
+      "bytes": 2772,
+      "sha256": "967e1f951a345de3c58806f875d0b01916537e78597e73499aedd5eb4c9feb17"
+    },
+    "parser": {
+      "path": "frozen/52474d6f8a7aeb65baa9b683398f104e4e3eb6dfa31d6e6e361be99263470db3_reviewed_coff_indexed_mixed.py",
+      "bytes": 8377,
+      "sha256": "52474d6f8a7aeb65baa9b683398f104e4e3eb6dfa31d6e6e361be99263470db3"
+    },
+    "new_Source_epoch": {
+      "path": "frozen/655dec933a14108eae1aee2470371e6295bc0cbfe6d29ce483b703e3cfd40754_Source3354_grid_canonical_default_pair_frozen.json",
+      "bytes": 802221,
+      "sha256": "655dec933a14108eae1aee2470371e6295bc0cbfe6d29ce483b703e3cfd40754"
+    }
+  },
+  "helpers": {
+    "capture": {
+      "path": "capture.py",
+      "bytes": 4048,
+      "sha256": "d07290c0e3b4046f29ed9cfa7315d2c1f968eba7ebbd022e82e9bf33f8516e09"
+    },
+    "run_build": {
+      "path": "run_build.py",
+      "bytes": 1113,
+      "sha256": "f6d829ed548542144be4905879b13c0888c740ba51581122a8f7aabf5dc77e5a"
+    },
+    "dependencies": {
+      "path": "dependencies.py",
+      "bytes": 5408,
+      "sha256": "7a83f22ec59bf650723a1e9e35d1191d2ccaa646def52f04836d7fae4736c662"
+    },
+    "reviewed_coff_indexed_mixed": {
+      "path": "reviewed_coff_indexed_mixed.py",
+      "bytes": 8377,
+      "sha256": "52474d6f8a7aeb65baa9b683398f104e4e3eb6dfa31d6e6e361be99263470db3"
+    },
+    "inspect_objects": {
+      "path": "inspect_objects.py",
+      "bytes": 2597,
+      "sha256": "ee55b3696c8ddde6656557986004fd1ee7a732f786b2ff186474e7744bfcf5e3"
+    },
+    "audit": {
+      "path": "audit.py",
+      "bytes": 19648,
+      "sha256": "b1f43830a5071c7a13e138e2371eb952426a5b8b67759630f8acde2095370020"
+    },
+    "run_audit": {
+      "path": "run_audit.py",
+      "bytes": 714,
+      "sha256": "c707b5e7f3c97bb85a68c6ebce35e1c83f8f72f141b71aef594c4c3b16be2c73"
+    },
+    "epoch": {
+      "path": "epoch.py",
+      "bytes": 1928,
+      "sha256": "1e29be98269c267a0278d5c99009bb3edac0b494b79f854d09a2b5feabe8b79e"
+    },
+    "build_inputs": {
+      "path": "build_inputs.py",
+      "bytes": 734,
+      "sha256": "79191452de8267455c3c0292cb48227a33db43e39ae73f9aed46a5698366e103"
+    },
+    "verify": {
+      "path": "verify.py",
+      "bytes": 8404,
+      "sha256": "4f78d3dd8e6af283d196b785c7b1216e7ecc89c2451d14b3bb9e0ce8d3f68f92"
+    },
+    "publish": {
+      "path": "publish.py",
+      "bytes": 3950,
+      "sha256": "50b59566860a04673e28fc9cdc89c4639d20e53f4bc2107ff63378776c4daef4"
+    },
+    "relocate_verify": {
+      "path": "relocate_verify.py",
+      "bytes": 1184,
+      "sha256": "f1b76dc52e2a4fbcddfc2f1ced4a40a0b948389108affed2a1cbe9d907d640b7"
+    }
+  },
+  "audit_receipt": {
+    "path": "frozen/18c5d0b8b033a4544d371f2c90c7fd0be149d2f108689467925ea3cbb86c0e86_audit_complete.json",
+    "bytes": 11152484,
+    "sha256": "18c5d0b8b033a4544d371f2c90c7fd0be149d2f108689467925ea3cbb86c0e86"
+  },
+  "audit_summary": {
+    "schema": "cc12.grid_canonical_pair.audit.v1",
+    "status": "PASS",
+    "Source": {
+      "files": 4208,
+      "initial_equals_fresh_before": true,
+      "exact_changed_files": [
+        "include/bsp/native_game_grid.hpp",
+        "src/native_game_grid.cpp"
+      ],
+      "all_other_files_exact_raw_equal": 4206,
+      "exact_source_transformation_verified": true,
+      "previous_Root3354_particle_selected_inputs_equal_before": 3354,
+      "previous_Root_epoch_after_selected_changes": [
+        "include/bsp/native_game_grid.hpp",
+        "src/native_game_grid.cpp"
+      ],
+      "old_four_artifacts_assigned_unchanged_credit": false
+    },
+    "fresh_baseline": {
+      "initial_to_before_objects": {
+        "Core": {
+          "added": [
+            "bsp_core.dir/Release/native_locale_map_node_lifetime.obj"
+          ],
+          "removed": [],
+          "changed_common": [
+            "bsp_core.dir/Release/native_particle_array_resize.obj",
+            "bsp_core.dir/Release/native_particle_model_construction.obj",
+            "bsp_core.dir/Release/native_particle_model_lifetime.obj"
+          ]
+        },
+        "App": {
+          "added": [],
+          "removed": [],
+          "changed_common": []
+        }
+      },
+      "qualification": "Initial1988 Core artifacts predate the accepted Source; compare fresh1989 Core before to after for this change."
+    },
+    "builds": {
+      "baseline": {
+        "exit_code": 0,
+        "start_utc": "2026-10-10T20:20:23.945460+00:00",
+        "finish_utc": "2026-10-10T20:20:42.110905+00:00",
+        "existing_checks": 3,
+        "new_tests": 0
+      },
+      "after": {
+        "exit_code": 0,
+        "start_utc": "2026-10-10T20:22:05.030212+00:00",
+        "finish_utc": "2026-10-10T20:22:27.056005+00:00",
+        "existing_checks": 3,
+        "new_tests": 0
+      }
+    },
+    "archive_identity": {
+      "initial": {
+        "Core_objects": 1988,
+        "all_library_object_members_equal_actual_objects": true,
+        "linker_metadata_members": 3,
+        "library_sha256": "70bf18bccdd82624244910267e59872f5c6e82cdf980880baafc47ae9f21ea59"
+      },
+      "before": {
+        "Core_objects": 1989,
+        "all_library_object_members_equal_actual_objects": true,
+        "linker_metadata_members": 3,
+        "library_sha256": "f39cdba23468d3b6669fcffad5882e90e0e315a4b1ffd42ac999e7ebd5ca8be3"
+      },
+      "after": {
+        "Core_objects": 1989,
+        "all_library_object_members_equal_actual_objects": true,
+        "linker_metadata_members": 3,
+        "library_sha256": "c0cee93170857af9a75e77fa5c28c0da7578f67f84c9d8e70ef1b6d01e47c006"
+      }
+    },
+    "object_comparisons": {
+      "Core": {
+        "actual_objects": 1989,
+        "unchanged_whole_objects": 1985,
+        "changed_whole_objects": 4,
+        "preserved_functions_in_changed_objects": 266,
+        "changed": [
+          {
+            "path": "bsp_core.dir/Release/game_native_game_runtime.obj",
+            "before_bytes": 37173,
+            "after_bytes": 37173,
+            "before_sha256": "2a923fe1dee4480affc59c4d25c4451d498c9a4049d2a7f8bff8edb1b2f18feb",
+            "after_sha256": "4847c4e2ec222f4a83c60b31a5e88c8a60c566e17a82bac7ada6e3c474272137",
+            "functions": 78,
+            "preserved_functions": 78,
+            "changed_functions": [],
+            "sections": 150,
+            "changed_sections": [],
+            "only_raw_COFF_timestamp_changed": true,
+            "COFF_timestamps": [
+              1791660369,
+              1791663731
+            ]
+          },
+          {
+            "path": "bsp_core.dir/Release/native_game_construction.obj",
+            "before_bytes": 25052,
+            "after_bytes": 25052,
+            "before_sha256": "ab6770366ff2c654775563b6a13b0a17656d8f4102403d93a040c69628cd98b1",
+            "after_sha256": "f97822369c4ab9966b594549247cf79bd84b1509de682855fd686653e9042226",
+            "functions": 51,
+            "preserved_functions": 51,
+            "changed_functions": [],
+            "sections": 90,
+            "changed_sections": [],
+            "only_raw_COFF_timestamp_changed": true,
+            "COFF_timestamps": [
+              1791622297,
+              1791663731
+            ]
+          },
+          {
+            "path": "bsp_core.dir/Release/native_game_grid.obj",
+            "before_bytes": 26739,
+            "after_bytes": 26888,
+            "before_sha256": "32bd3eefe5d9d4afff7baead3e073a9fd5eb5b0423eb618fa38ad1cea3a9185a",
+            "after_sha256": "36f334b34d48146073535a0c94015c63065fec51caa503566ef829f08409df98",
+            "functions": 57,
+            "preserved_functions": 55,
+            "changed_functions": [
+              "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+              "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z"
+            ],
+            "sections": 92,
+            "changed_sections": [
+              {
+                "section": 21,
+                "name": ".text$mn",
+                "executable": true,
+                "before_bytes": 18,
+                "after_bytes": 60,
+                "before_sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+                "after_sha256": "f90202dbaad021bf85ef6bf756e92dc0657b3c9b0023bf065dcc20f912cc8ffb",
+                "payload_equal": false,
+                "before_relocations": [
+                  {
+                    "record_file_offset": 5719,
+                    "raw_record_hex": "070000008e0000001400",
+                    "offset": 7,
+                    "type": 20,
+                    "symbol_index": 142,
+                    "symbol": "??2@YAPAXI@Z",
+                    "symbol_record": {
+                      "index": 142,
+                      "record_file_offset": 16804,
+                      "raw_record_hex": "00000000a000000000000000000020000200",
+                      "name": "??2@YAPAXI@Z",
+                      "value": 0,
+                      "section": 0,
+                      "type": 32,
+                      "storage": 2,
+                      "aux_count": 0,
+                      "aux_records_hex": ""
+                    },
+                    "operand_file_offset": 5708,
+                    "operand_hex": "00000000",
+                    "operand_u32": 0
+                  }
+                ],
+                "after_relocations": [
+                  {
+                    "record_file_offset": 5761,
+                    "raw_record_hex": "07000000350100000600",
+                    "offset": 7,
+                    "type": 6,
+                    "symbol_index": 309,
+                    "symbol": "___security_cookie",
+                    "symbol_record": {
+                      "index": 309,
+                      "record_file_offset": 19872,
+                      "raw_record_hex": "000000001f1b000000000000000000000200",
+                      "name": "___security_cookie",
+                      "value": 0,
+                      "section": 0,
+                      "type": 0,
+                      "storage": 2,
+                      "aux_count": 0,
+                      "aux_records_hex": ""
+                    },
+                    "operand_file_offset": 5708,
+                    "operand_hex": "00000000",
+                    "operand_u32": 0
+                  },
+                  {
+                    "record_file_offset": 5771,
+                    "raw_record_hex": "25000000a50000001400",
+                    "offset": 37,
+                    "type": 20,
+                    "symbol_index": 165,
+                    "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                    "symbol_record": {
+                      "index": 165,
+                      "record_file_offset": 17280,
+                      "raw_record_hex": "000000006e03000000000000000020000200",
+                      "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                      "value": 0,
+                      "section": 0,
+                      "type": 32,
+                      "storage": 2,
+                      "aux_count": 0,
+                      "aux_records_hex": ""
+                    },
+                    "operand_file_offset": 5738,
+                    "operand_hex": "00000000",
+                    "operand_u32": 0
+                  },
+                  {
+                    "record_file_offset": 5781,
+                    "raw_record_hex": "32000000da0000001400",
+                    "offset": 50,
+                    "type": 20,
+                    "symbol_index": 218,
+                    "symbol": "@__security_check_cookie@4",
+                    "symbol_record": {
+                      "index": 218,
+                      "record_file_offset": 18234,
+                      "raw_record_hex": "000000005c11000000000000000020000200",
+                      "name": "@__security_check_cookie@4",
+                      "value": 0,
+                      "section": 0,
+                      "type": 32,
+                      "storage": 2,
+                      "aux_count": 0,
+                      "aux_records_hex": ""
+                    },
+                    "operand_file_offset": 5751,
+                    "operand_hex": "00000000",
+                    "operand_u32": 0
+                  }
+                ],
+                "payload_difference": {
+                  "before_bytes": 18,
+                  "after_bytes": 60,
+                  "differing_overlap_bytes": 11,
+                  "length_delta": 42,
+                  "differing_total_bytes": 53,
+                  "ranges": [
+                    [
+                      3,
+                      7
+                    ],
+                    [
+                      11,
+                      18
+                    ]
+                  ]
+                }
+              },
+              {
+                "section": 42,
+                "name": ".text$mn",
+                "executable": true,
+                "before_bytes": 18,
+                "after_bytes": 18,
+                "before_sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+                "after_sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+                "payload_equal": true,
+                "before_relocations": [
+                  {
+                    "record_file_offset": 7757,
+                    "raw_record_hex": "070000008f0000001400",
+                    "offset": 7,
+                    "type": 20,
+                    "symbol_index": 143,
+                    "symbol": "??3@YAXPAX@Z",
+                    "symbol_record": {
+                      "index": 143,
+                      "record_file_offset": 16822,
+                      "raw_record_hex": "00000000ad00000000000000000020000200",
+                      "name": "??3@YAXPAX@Z",
+                      "value": 0,
+                      "section": 0,
+                      "type": 32,
+                      "storage": 2,
+                      "aux_count": 0,
+                      "aux_records_hex": ""
+                    },
+                    "operand_file_offset": 7746,
+                    "operand_hex": "00000000",
+                    "operand_u32": 0
+                  }
+                ],
+                "after_relocations": [
+                  {
+                    "record_file_offset": 7819,
+                    "raw_record_hex": "07000000a60000001400",
+                    "offset": 7,
+                    "type": 20,
+                    "symbol_index": 166,
+                    "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                    "symbol_record": {
+                      "index": 166,
+                      "record_file_offset": 17298,
+                      "raw_record_hex": "00000000b803000000000000000020000200",
+                      "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                      "value": 0,
+                      "section": 0,
+                      "type": 32,
+                      "storage": 2,
+                      "aux_count": 0,
+                      "aux_records_hex": ""
+                    },
+                    "operand_file_offset": 7808,
+                    "operand_hex": "00000000",
+                    "operand_u32": 0
+                  }
+                ],
+                "payload_difference": {
+                  "before_bytes": 18,
+                  "after_bytes": 18,
+                  "differing_overlap_bytes": 0,
+                  "length_delta": 0,
+                  "differing_total_bytes": 0,
+                  "ranges": []
+                }
+              },
+              {
+                "section": 92,
+                "name": ".chks64",
+                "executable": false,
+                "before_bytes": 736,
+                "after_bytes": 736,
+                "before_sha256": "02d90b400942f8c92afb2abb72e16123de540c355633e34c8c7d646d9c1017dc",
+                "after_sha256": "9d016c12d1d0a417b01fe8ec98e6e625df7f285aaad0c47fff177ec0def88a9a",
+                "payload_equal": false,
+                "before_relocations": [],
+                "after_relocations": [],
+                "payload_difference": {
+                  "before_bytes": 736,
+                  "after_bytes": 736,
+                  "differing_overlap_bytes": 8,
+                  "length_delta": 0,
+                  "differing_total_bytes": 8,
+                  "ranges": [
+                    [
+                      160,
+                      168
+                    ]
+                  ]
+                }
+              }
+            ],
+            "only_raw_COFF_timestamp_changed": false,
+            "COFF_timestamps": [
+              1791589997,
+              1791663731
+            ]
+          },
+          {
+            "path": "bsp_core.dir/Release/native_game_lifetime.obj",
+            "before_bytes": 43745,
+            "after_bytes": 43745,
+            "before_sha256": "f2652f2e8dbe5ad0e09a614d18a2a02b80b036710c6d28046532f195de6071fc",
+            "after_sha256": "4ca11ea1730b18a5f6c2f68f9c8b04057baae6f5de12546a656e5db4d307d732",
+            "functions": 82,
+            "preserved_functions": 82,
+            "changed_functions": [],
+            "sections": 139,
+            "changed_sections": [],
+            "only_raw_COFF_timestamp_changed": true,
+            "COFF_timestamps": [
+              1791660369,
+              1791663731
+            ]
+          }
+        ]
+      },
+      "App": {
+        "actual_objects": 80,
+        "unchanged_whole_objects": 78,
+        "changed_whole_objects": 2,
+        "preserved_functions_in_changed_objects": 844,
+        "changed": [
+          {
+            "path": "bsp_game.dir/Release/game_native_game_application_frame.obj",
+            "before_bytes": 20611,
+            "after_bytes": 20611,
+            "before_sha256": "fd17d88b525700f4b567d3aaee1420e2ff47e6119bed6ea4b8fe2113f1c30c6f",
+            "after_sha256": "d3a6d982fad0217bef451f47bc35ed4c7a9121cbddf52199082d511b6baca2b1",
+            "functions": 32,
+            "preserved_functions": 32,
+            "changed_functions": [],
+            "sections": 84,
+            "changed_sections": [],
+            "only_raw_COFF_timestamp_changed": true,
+            "COFF_timestamps": [
+              1791622317,
+              1791663738
+            ]
+          },
+          {
+            "path": "bsp_game.dir/Release/game_native_renderer_application.obj",
+            "before_bytes": 351736,
+            "after_bytes": 351736,
+            "before_sha256": "11a74632bc8f34c190f23067bdf3eeef1376510a7eec58f3133f5d674ad3a08b",
+            "after_sha256": "a3c7a6c50e47bf63c2b51855b13028b42829ed21387f6fe693a77cbedc0330b9",
+            "functions": 812,
+            "preserved_functions": 812,
+            "changed_functions": [],
+            "sections": 1297,
+            "changed_sections": [],
+            "only_raw_COFF_timestamp_changed": true,
+            "COFF_timestamps": [
+              1791660313,
+              1791663738
+            ]
+          }
+        ]
+      }
+    },
+    "complete_changed_function_bodies": [
+      {
+        "object": "bsp_core.dir/Release/native_game_grid.obj",
+        "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+        "before": {
+          "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+          "symbol_index": 177,
+          "symbol_record_file_offset": 17434,
+          "section": 21,
+          "section_value": 0,
+          "physical_file_offset": 5701,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "hex": "558becff7508e80000000083c4045dc20400",
+          "instruction_count": 7,
+          "relocations": [
+            {
+              "record_file_offset": 5719,
+              "raw_record_hex": "070000008e0000001400",
+              "offset": 7,
+              "type": 20,
+              "symbol_index": 142,
+              "symbol": "??2@YAPAXI@Z",
+              "symbol_record": {
+                "index": 142,
+                "record_file_offset": 16804,
+                "raw_record_hex": "00000000a000000000000000000020000200",
+                "name": "??2@YAPAXI@Z",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 5708,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 7
+            }
+          ],
+          "decoded_bytes": 18,
+          "undecoded_tail_hex": "",
+          "complete_linear_decode": true,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xb"
+            },
+            {
+              "offset": 11,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 14,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 15,
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "after": {
+          "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+          "symbol_index": 177,
+          "symbol_record_file_offset": 17496,
+          "section": 21,
+          "section_value": 0,
+          "physical_file_offset": 5701,
+          "bytes": 60,
+          "sha256": "f90202dbaad021bf85ef6bf756e92dc0657b3c9b0023bf065dcc20f912cc8ffb",
+          "hex": "558bec83ec10a10000000033c58945fc8b45088945f48945f88d45f050c745f003000000e8000000008b4dfc83c40433cde8000000008be55dc20400",
+          "instruction_count": 20,
+          "relocations": [
+            {
+              "record_file_offset": 5761,
+              "raw_record_hex": "07000000350100000600",
+              "offset": 7,
+              "type": 6,
+              "symbol_index": 309,
+              "symbol": "___security_cookie",
+              "symbol_record": {
+                "index": 309,
+                "record_file_offset": 19872,
+                "raw_record_hex": "000000001f1b000000000000000000000200",
+                "name": "___security_cookie",
+                "value": 0,
+                "section": 0,
+                "type": 0,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 5708,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 7
+            },
+            {
+              "record_file_offset": 5771,
+              "raw_record_hex": "25000000a50000001400",
+              "offset": 37,
+              "type": 20,
+              "symbol_index": 165,
+              "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+              "symbol_record": {
+                "index": 165,
+                "record_file_offset": 17280,
+                "raw_record_hex": "000000006e03000000000000000020000200",
+                "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 5738,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 37
+            },
+            {
+              "record_file_offset": 5781,
+              "raw_record_hex": "32000000da0000001400",
+              "offset": 50,
+              "type": 20,
+              "symbol_index": 218,
+              "symbol": "@__security_check_cookie@4",
+              "symbol_record": {
+                "index": 218,
+                "record_file_offset": 18234,
+                "raw_record_hex": "000000005c11000000000000000020000200",
+                "name": "@__security_check_cookie@4",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 5751,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 50
+            }
+          ],
+          "decoded_bytes": 60,
+          "undecoded_tail_hex": "",
+          "complete_linear_decode": true,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "83ec10",
+              "mnemonic": "sub",
+              "operands": "esp, 0x10"
+            },
+            {
+              "offset": 6,
+              "bytes": "a100000000",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [0]"
+            },
+            {
+              "offset": 11,
+              "bytes": "33c5",
+              "mnemonic": "xor",
+              "operands": "eax, ebp"
+            },
+            {
+              "offset": 13,
+              "bytes": "8945fc",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 4], eax"
+            },
+            {
+              "offset": 16,
+              "bytes": "8b4508",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 19,
+              "bytes": "8945f4",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 0xc], eax"
+            },
+            {
+              "offset": 22,
+              "bytes": "8945f8",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 8], eax"
+            },
+            {
+              "offset": 25,
+              "bytes": "8d45f0",
+              "mnemonic": "lea",
+              "operands": "eax, [ebp - 0x10]"
+            },
+            {
+              "offset": 28,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 29,
+              "bytes": "c745f003000000",
+              "mnemonic": "mov",
+              "operands": "dword ptr [ebp - 0x10], 3"
+            },
+            {
+              "offset": 36,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x29"
+            },
+            {
+              "offset": 41,
+              "bytes": "8b4dfc",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 4]"
+            },
+            {
+              "offset": 44,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 47,
+              "bytes": "33cd",
+              "mnemonic": "xor",
+              "operands": "ecx, ebp"
+            },
+            {
+              "offset": 49,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x36"
+            },
+            {
+              "offset": 54,
+              "bytes": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "offset": 56,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 57,
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        }
+      },
+      {
+        "object": "bsp_core.dir/Release/native_game_grid.obj",
+        "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+        "before": {
+          "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "symbol_index": 178,
+          "symbol_record_file_offset": 17452,
+          "section": 42,
+          "section_value": 0,
+          "physical_file_offset": 7739,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "hex": "558becff7508e80000000083c4045dc20400",
+          "instruction_count": 7,
+          "relocations": [
+            {
+              "record_file_offset": 7757,
+              "raw_record_hex": "070000008f0000001400",
+              "offset": 7,
+              "type": 20,
+              "symbol_index": 143,
+              "symbol": "??3@YAXPAX@Z",
+              "symbol_record": {
+                "index": 143,
+                "record_file_offset": 16822,
+                "raw_record_hex": "00000000ad00000000000000000020000200",
+                "name": "??3@YAXPAX@Z",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 7746,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 7
+            }
+          ],
+          "decoded_bytes": 18,
+          "undecoded_tail_hex": "",
+          "complete_linear_decode": true,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xb"
+            },
+            {
+              "offset": 11,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 14,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 15,
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        },
+        "after": {
+          "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+          "symbol_index": 178,
+          "symbol_record_file_offset": 17514,
+          "section": 42,
+          "section_value": 0,
+          "physical_file_offset": 7801,
+          "bytes": 18,
+          "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+          "hex": "558becff7508e80000000083c4045dc20400",
+          "instruction_count": 7,
+          "relocations": [
+            {
+              "record_file_offset": 7819,
+              "raw_record_hex": "07000000a60000001400",
+              "offset": 7,
+              "type": 20,
+              "symbol_index": 166,
+              "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "symbol_record": {
+                "index": 166,
+                "record_file_offset": 17298,
+                "raw_record_hex": "00000000b803000000000000000020000200",
+                "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 7808,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 7
+            }
+          ],
+          "decoded_bytes": 18,
+          "undecoded_tail_hex": "",
+          "complete_linear_decode": true,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "ff7508",
+              "mnemonic": "push",
+              "operands": "dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 6,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0xb"
+            },
+            {
+              "offset": 11,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 14,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 15,
+              "bytes": "c20400",
+              "mnemonic": "ret",
+              "operands": "4"
+            }
+          ]
+        }
+      }
+    ],
+    "preserved_BF6989": {
+      "before": {
+        "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+        "symbol_index": 176,
+        "symbol_record_file_offset": 17416,
+        "section": 43,
+        "section_value": 0,
+        "physical_file_offset": 7767,
+        "bytes": 19,
+        "sha256": "181fe1203bde986f85cd486f2379792be609e6bdeb52da401052fe8671baac57",
+        "hex": "558becff7508ff150000000083c4045dc20400",
+        "instruction_count": 7,
+        "relocations": [
+          {
+            "record_file_offset": 7786,
+            "raw_record_hex": "08000000910000000600",
+            "offset": 8,
+            "type": 6,
+            "symbol_index": 145,
+            "symbol": "__imp__free",
+            "symbol_record": {
+              "index": 145,
+              "record_file_offset": 16858,
+              "raw_record_hex": "00000000c800000000000000000000000200",
+              "name": "__imp__free",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 7775,
+            "operand_hex": "00000000",
+            "operand_u32": 0,
+            "function_offset": 8
+          }
+        ],
+        "decoded_bytes": 19,
+        "undecoded_tail_hex": "",
+        "complete_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "bytes": "ff1500000000",
+            "mnemonic": "call",
+            "operands": "dword ptr [0]"
+          },
+          {
+            "offset": 12,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "offset": 15,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 16,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      "after": {
+        "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+        "symbol_index": 176,
+        "symbol_record_file_offset": 17478,
+        "section": 43,
+        "section_value": 0,
+        "physical_file_offset": 7829,
+        "bytes": 19,
+        "sha256": "181fe1203bde986f85cd486f2379792be609e6bdeb52da401052fe8671baac57",
+        "hex": "558becff7508ff150000000083c4045dc20400",
+        "instruction_count": 7,
+        "relocations": [
+          {
+            "record_file_offset": 7848,
+            "raw_record_hex": "080000008f0000000600",
+            "offset": 8,
+            "type": 6,
+            "symbol_index": 143,
+            "symbol": "__imp__free",
+            "symbol_record": {
+              "index": 143,
+              "record_file_offset": 16884,
+              "raw_record_hex": "00000000ae00000000000000000000000200",
+              "name": "__imp__free",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 7837,
+            "operand_hex": "00000000",
+            "operand_u32": 0,
+            "function_offset": 8
+          }
+        ],
+        "decoded_bytes": 19,
+        "undecoded_tail_hex": "",
+        "complete_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "bytes": "ff1500000000",
+            "mnemonic": "call",
+            "operands": "dword ptr [0]"
+          },
+          {
+            "offset": 12,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "offset": 15,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 16,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      }
+    },
+    "canonical_providers": {
+      "object": "bsp_core.dir/Release/singleton_lifetime.obj",
+      "whole_object_unchanged": true,
+      "definitions": [
+        {
+          "object": "bsp_core.dir/Release/singleton_lifetime.obj",
+          "name": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "symbol_index": 184,
+          "symbol_record_file_offset": 20288,
+          "section": 76,
+          "value": 0,
+          "type": 32
+        },
+        {
+          "object": "bsp_core.dir/Release/singleton_lifetime.obj",
+          "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 185,
+          "symbol_record_file_offset": 20306,
+          "section": 77,
+          "value": 0,
+          "type": 32
+        }
+      ],
+      "complete_bodies": {
+        "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z": {
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+          "symbol_index": 184,
+          "symbol_record_file_offset": 20288,
+          "section": 76,
+          "section_value": 0,
+          "physical_file_offset": 12433,
+          "bytes": 90,
+          "sha256": "8c48c99cdb7aaec041bb01bf55197a27fdb12f727d576a95720f3b08db0e74ac",
+          "hex": "558bec83ec0c538b1d00000000568b7508ff7608ffd383c40485c07520578b3d00000000ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e80000000068000000008d45f450e800000000cc",
+          "instruction_count": 37,
+          "relocations": [
+            {
+              "record_file_offset": 12523,
+              "raw_record_hex": "09000000b60000000600",
+              "offset": 9,
+              "type": 6,
+              "symbol_index": 182,
+              "symbol": "__imp__malloc",
+              "symbol_record": {
+                "index": 182,
+                "record_file_offset": 20252,
+                "raw_record_hex": "000000004d01000000000000000000000200",
+                "name": "__imp__malloc",
+                "value": 0,
+                "section": 0,
+                "type": 0,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 12442,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 9
+            },
+            {
+              "record_file_offset": 12533,
+              "raw_record_hex": "20000000b40000000600",
+              "offset": 32,
+              "type": 6,
+              "symbol_index": 180,
+              "symbol": "__imp___callnewh",
+              "symbol_record": {
+                "index": 180,
+                "record_file_offset": 20216,
+                "raw_record_hex": "000000003001000000000000000000000200",
+                "name": "__imp___callnewh",
+                "value": 0,
+                "section": 0,
+                "type": 0,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 12465,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 32
+            },
+            {
+              "record_file_offset": 12543,
+              "raw_record_hex": "47000000df0000001400",
+              "offset": 71,
+              "type": 20,
+              "symbol_index": 223,
+              "symbol": "??0bad_alloc@std@@QAE@XZ",
+              "symbol_record": {
+                "index": 223,
+                "record_file_offset": 20990,
+                "raw_record_hex": "00000000ed080000000000000d0020000200",
+                "name": "??0bad_alloc@std@@QAE@XZ",
+                "value": 0,
+                "section": 13,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 12504,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 71
+            },
+            {
+              "record_file_offset": 12553,
+              "raw_record_hex": "4c000000590100000600",
+              "offset": 76,
+              "type": 6,
+              "symbol_index": 345,
+              "symbol": "__TI2?AVbad_alloc@std@@",
+              "symbol_record": {
+                "index": 345,
+                "record_file_offset": 23186,
+                "raw_record_hex": "00000000bf16000000000000680000000200",
+                "name": "__TI2?AVbad_alloc@std@@",
+                "value": 0,
+                "section": 104,
+                "type": 0,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 12509,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 76
+            },
+            {
+              "record_file_offset": 12563,
+              "raw_record_hex": "55000000000100001400",
+              "offset": 85,
+              "type": 20,
+              "symbol_index": 256,
+              "symbol": "__CxxThrowException@8",
+              "symbol_record": {
+                "index": 256,
+                "record_file_offset": 21584,
+                "raw_record_hex": "00000000220d000000000000000020000200",
+                "name": "__CxxThrowException@8",
+                "value": 0,
+                "section": 0,
+                "type": 32,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 12518,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 85
+            }
+          ],
+          "decoded_bytes": 90,
+          "undecoded_tail_hex": "",
+          "complete_linear_decode": true,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "55",
+              "mnemonic": "push",
+              "operands": "ebp"
+            },
+            {
+              "offset": 1,
+              "bytes": "8bec",
+              "mnemonic": "mov",
+              "operands": "ebp, esp"
+            },
+            {
+              "offset": 3,
+              "bytes": "83ec0c",
+              "mnemonic": "sub",
+              "operands": "esp, 0xc"
+            },
+            {
+              "offset": 6,
+              "bytes": "53",
+              "mnemonic": "push",
+              "operands": "ebx"
+            },
+            {
+              "offset": 7,
+              "bytes": "8b1d00000000",
+              "mnemonic": "mov",
+              "operands": "ebx, dword ptr [0]"
+            },
+            {
+              "offset": 13,
+              "bytes": "56",
+              "mnemonic": "push",
+              "operands": "esi"
+            },
+            {
+              "offset": 14,
+              "bytes": "8b7508",
+              "mnemonic": "mov",
+              "operands": "esi, dword ptr [ebp + 8]"
+            },
+            {
+              "offset": 17,
+              "bytes": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 20,
+              "bytes": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "offset": 22,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 25,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 27,
+              "bytes": "7520",
+              "mnemonic": "jne",
+              "operands": "0x3d"
+            },
+            {
+              "offset": 29,
+              "bytes": "57",
+              "mnemonic": "push",
+              "operands": "edi"
+            },
+            {
+              "offset": 30,
+              "bytes": "8b3d00000000",
+              "mnemonic": "mov",
+              "operands": "edi, dword ptr [0]"
+            },
+            {
+              "offset": 36,
+              "bytes": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 39,
+              "bytes": "ffd7",
+              "mnemonic": "call",
+              "operands": "edi"
+            },
+            {
+              "offset": 41,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 44,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 46,
+              "bytes": "7413",
+              "mnemonic": "je",
+              "operands": "0x43"
+            },
+            {
+              "offset": 48,
+              "bytes": "ff7608",
+              "mnemonic": "push",
+              "operands": "dword ptr [esi + 8]"
+            },
+            {
+              "offset": 51,
+              "bytes": "ffd3",
+              "mnemonic": "call",
+              "operands": "ebx"
+            },
+            {
+              "offset": 53,
+              "bytes": "83c404",
+              "mnemonic": "add",
+              "operands": "esp, 4"
+            },
+            {
+              "offset": 56,
+              "bytes": "85c0",
+              "mnemonic": "test",
+              "operands": "eax, eax"
+            },
+            {
+              "offset": 58,
+              "bytes": "74e8",
+              "mnemonic": "je",
+              "operands": "0x24"
+            },
+            {
+              "offset": 60,
+              "bytes": "5f",
+              "mnemonic": "pop",
+              "operands": "edi"
+            },
+            {
+              "offset": 61,
+              "bytes": "5e",
+              "mnemonic": "pop",
+              "operands": "esi"
+            },
+            {
+              "offset": 62,
+              "bytes": "5b",
+              "mnemonic": "pop",
+              "operands": "ebx"
+            },
+            {
+              "offset": 63,
+              "bytes": "8be5",
+              "mnemonic": "mov",
+              "operands": "esp, ebp"
+            },
+            {
+              "offset": 65,
+              "bytes": "5d",
+              "mnemonic": "pop",
+              "operands": "ebp"
+            },
+            {
+              "offset": 66,
+              "bytes": "c3",
+              "mnemonic": "ret",
+              "operands": ""
+            },
+            {
+              "offset": 67,
+              "bytes": "8d4df4",
+              "mnemonic": "lea",
+              "operands": "ecx, [ebp - 0xc]"
+            },
+            {
+              "offset": 70,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x4b"
+            },
+            {
+              "offset": 75,
+              "bytes": "6800000000",
+              "mnemonic": "push",
+              "operands": "0"
+            },
+            {
+              "offset": 80,
+              "bytes": "8d45f4",
+              "mnemonic": "lea",
+              "operands": "eax, [ebp - 0xc]"
+            },
+            {
+              "offset": 83,
+              "bytes": "50",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "offset": 84,
+              "bytes": "e800000000",
+              "mnemonic": "call",
+              "operands": "0x59"
+            },
+            {
+              "offset": 89,
+              "bytes": "cc",
+              "mnemonic": "int3",
+              "operands": ""
+            }
+          ]
+        },
+        "?singleton_lifetime_free@bsp@@YAXPAX@Z": {
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "symbol_index": 185,
+          "symbol_record_file_offset": 20306,
+          "section": 77,
+          "section_value": 0,
+          "physical_file_offset": 12573,
+          "bytes": 6,
+          "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+          "hex": "ff2500000000",
+          "instruction_count": 1,
+          "relocations": [
+            {
+              "record_file_offset": 12579,
+              "raw_record_hex": "02000000b50000000600",
+              "offset": 2,
+              "type": 6,
+              "symbol_index": 181,
+              "symbol": "__imp__free",
+              "symbol_record": {
+                "index": 181,
+                "record_file_offset": 20234,
+                "raw_record_hex": "000000004101000000000000000000000200",
+                "name": "__imp__free",
+                "value": 0,
+                "section": 0,
+                "type": 0,
+                "storage": 2,
+                "aux_count": 0,
+                "aux_records_hex": ""
+              },
+              "operand_file_offset": 12575,
+              "operand_hex": "00000000",
+              "operand_u32": 0,
+              "function_offset": 2
+            }
+          ],
+          "decoded_bytes": 6,
+          "undecoded_tail_hex": "",
+          "complete_linear_decode": true,
+          "instructions": [
+            {
+              "offset": 0,
+              "bytes": "ff2500000000",
+              "mnemonic": "jmp",
+              "operands": "dword ptr [0]"
+            }
+          ]
+        }
+      }
+    },
+    "actual_linked_complete_bodies": [
+      {
+        "stage": "before",
+        "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2992208,
+          "VA": 271431760,
+          "tail": "f   bsp_core:native_game_grid.obj",
+          "line": " 0001:002da850       ?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z 102db850 f   bsp_core:native_game_grid.obj"
+        },
+        "VA": 271431760,
+        "RVA": 2996304,
+        "physical_file_offset": 2993232,
+        "bytes": 18,
+        "sha256": "843c3f30f038c13c1d540370af45f74e3aa1ea6bd9ba1c1bc0ebc0a9501196e2",
+        "hex": "558becff7508e835070d0083c4045dc20400",
+        "instructions": [
+          {
+            "VA": 271431760,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431761,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 271431763,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 271431766,
+            "bytes": "e835070d00",
+            "mnemonic": "call",
+            "operands": "0x103abf90"
+          },
+          {
+            "VA": 271431771,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 271431774,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431775,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 7,
+            "type": 20,
+            "symbol": "??2@YAPAXI@Z",
+            "target_VA": 272285584,
+            "original_addend": 0,
+            "resolved_operand": 853813
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "before",
+        "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 1421648,
+          "VA": 269861200,
+          "tail": "f   bsp_core:native_game_grid.obj",
+          "line": " 0001:0015b150       ?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 1015c150 f   bsp_core:native_game_grid.obj"
+        },
+        "VA": 269861200,
+        "RVA": 1425744,
+        "physical_file_offset": 1422672,
+        "bytes": 18,
+        "sha256": "9e0b3f8f5d22920731168ff98468e95010cd0f4c76a80fdce956ed614ec52563",
+        "hex": "558becff7508e88507250083c4045dc20400",
+        "instructions": [
+          {
+            "VA": 269861200,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 269861201,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 269861203,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 269861206,
+            "bytes": "e885072500",
+            "mnemonic": "call",
+            "operands": "0x103ac8e0"
+          },
+          {
+            "VA": 269861211,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 269861214,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 269861215,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 7,
+            "type": 20,
+            "symbol": "??3@YAXPAX@Z",
+            "target_VA": 272287968,
+            "original_addend": 0,
+            "resolved_operand": 2426757
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "before",
+        "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2992240,
+          "VA": 271431792,
+          "tail": "f   bsp_core:native_game_grid.obj",
+          "line": " 0001:002da870       ?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 102db870 f   bsp_core:native_game_grid.obj"
+        },
+        "VA": 271431792,
+        "RVA": 2996336,
+        "physical_file_offset": 2993264,
+        "bytes": 19,
+        "sha256": "e6ee275340c774bf32e5f7c9725f9df803454682f0591825d2c91330f9633fd3",
+        "hex": "558becff7508ff15f4043d1083c4045dc20400",
+        "instructions": [
+          {
+            "VA": 271431792,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431793,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 271431795,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 271431798,
+            "bytes": "ff15f4043d10",
+            "mnemonic": "call",
+            "operands": "dword ptr [0x103d04f4]"
+          },
+          {
+            "VA": 271431804,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 271431807,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431808,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 8,
+            "type": 6,
+            "symbol": "__imp__free",
+            "target_VA": 272434420,
+            "original_addend": 0,
+            "resolved_operand": 272434420
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "before",
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2242336,
+          "VA": 270681888,
+          "tail": "f   bsp_core:singleton_lifetime.obj",
+          "line": " 0001:00223720       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 10224720 f   bsp_core:singleton_lifetime.obj"
+        },
+        "VA": 270681888,
+        "RVA": 2246432,
+        "physical_file_offset": 2243360,
+        "bytes": 90,
+        "sha256": "61e24d2ea065016250a8edbf4724400900cdf2240c953628370ccd54708ca294",
+        "hex": "558bec83ec0c538b1df8043d10568b7508ff7608ffd383c40485c07520578b3d00053d10ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e81567fdff68309349108d45f450e89d901800cc",
+        "instructions": [
+          {
+            "VA": 270681888,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 270681889,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 270681891,
+            "bytes": "83ec0c",
+            "mnemonic": "sub",
+            "operands": "esp, 0xc"
+          },
+          {
+            "VA": 270681894,
+            "bytes": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681895,
+            "bytes": "8b1df8043d10",
+            "mnemonic": "mov",
+            "operands": "ebx, dword ptr [0x103d04f8]"
+          },
+          {
+            "VA": 270681901,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "VA": 270681902,
+            "bytes": "8b7508",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 270681905,
+            "bytes": "ff7608",
+            "mnemonic": "push",
+            "operands": "dword ptr [esi + 8]"
+          },
+          {
+            "VA": 270681908,
+            "bytes": "ffd3",
+            "mnemonic": "call",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681910,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 270681913,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "VA": 270681915,
+            "bytes": "7520",
+            "mnemonic": "jne",
+            "operands": "0x1022475d"
+          },
+          {
+            "VA": 270681917,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "VA": 270681918,
+            "bytes": "8b3d00053d10",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [0x103d0500]"
+          },
+          {
+            "VA": 270681924,
+            "bytes": "ff7608",
+            "mnemonic": "push",
+            "operands": "dword ptr [esi + 8]"
+          },
+          {
+            "VA": 270681927,
+            "bytes": "ffd7",
+            "mnemonic": "call",
+            "operands": "edi"
+          },
+          {
+            "VA": 270681929,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 270681932,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "VA": 270681934,
+            "bytes": "7413",
+            "mnemonic": "je",
+            "operands": "0x10224763"
+          },
+          {
+            "VA": 270681936,
+            "bytes": "ff7608",
+            "mnemonic": "push",
+            "operands": "dword ptr [esi + 8]"
+          },
+          {
+            "VA": 270681939,
+            "bytes": "ffd3",
+            "mnemonic": "call",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681941,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 270681944,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "VA": 270681946,
+            "bytes": "74e8",
+            "mnemonic": "je",
+            "operands": "0x10224744"
+          },
+          {
+            "VA": 270681948,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "VA": 270681949,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "VA": 270681950,
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681951,
+            "bytes": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "VA": 270681953,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 270681954,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          },
+          {
+            "VA": 270681955,
+            "bytes": "8d4df4",
+            "mnemonic": "lea",
+            "operands": "ecx, [ebp - 0xc]"
+          },
+          {
+            "VA": 270681958,
+            "bytes": "e81567fdff",
+            "mnemonic": "call",
+            "operands": "0x101fae80"
+          },
+          {
+            "VA": 270681963,
+            "bytes": "6830934910",
+            "mnemonic": "push",
+            "operands": "0x10499330"
+          },
+          {
+            "VA": 270681968,
+            "bytes": "8d45f4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0xc]"
+          },
+          {
+            "VA": 270681971,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "VA": 270681972,
+            "bytes": "e89d901800",
+            "mnemonic": "call",
+            "operands": "0x103ad816"
+          },
+          {
+            "VA": 270681977,
+            "bytes": "cc",
+            "mnemonic": "int3",
+            "operands": ""
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 9,
+            "type": 6,
+            "symbol": "__imp__malloc",
+            "target_VA": 272434424,
+            "original_addend": 0,
+            "resolved_operand": 272434424
+          },
+          {
+            "function_offset": 32,
+            "type": 6,
+            "symbol": "__imp___callnewh",
+            "target_VA": 272434432,
+            "original_addend": 0,
+            "resolved_operand": 272434432
+          },
+          {
+            "function_offset": 71,
+            "type": 20,
+            "symbol": "??0bad_alloc@std@@QAE@XZ",
+            "target_VA": 270511744,
+            "original_addend": 0,
+            "resolved_operand": 4294797077
+          },
+          {
+            "function_offset": 76,
+            "type": 6,
+            "symbol": "__TI2?AVbad_alloc@std@@",
+            "target_VA": 273257264,
+            "original_addend": 0,
+            "resolved_operand": 273257264
+          },
+          {
+            "function_offset": 85,
+            "type": 20,
+            "symbol": "__CxxThrowException@8",
+            "target_VA": 272291862,
+            "original_addend": 0,
+            "resolved_operand": 1609885
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "before",
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2242432,
+          "VA": 270681984,
+          "tail": "f   bsp_core:singleton_lifetime.obj",
+          "line": " 0001:00223780       ?singleton_lifetime_free@bsp@@YAXPAX@Z 10224780 f   bsp_core:singleton_lifetime.obj"
+        },
+        "VA": 270681984,
+        "RVA": 2246528,
+        "physical_file_offset": 2243456,
+        "bytes": 6,
+        "sha256": "85aca4461632472a2e106df25b4de52fe09e02fe55ffd6711ecbc0b2a2fe6dd1",
+        "hex": "ff25f4043d10",
+        "instructions": [
+          {
+            "VA": 270681984,
+            "bytes": "ff25f4043d10",
+            "mnemonic": "jmp",
+            "operands": "dword ptr [0x103d04f4]"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 2,
+            "type": 6,
+            "symbol": "__imp__free",
+            "target_VA": 272434420,
+            "original_addend": 0,
+            "resolved_operand": 272434420
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "after",
+        "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2992208,
+          "VA": 271431760,
+          "tail": "f   bsp_core:native_game_grid.obj",
+          "line": " 0001:002da850       ?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z 102db850 f   bsp_core:native_game_grid.obj"
+        },
+        "VA": 271431760,
+        "RVA": 2996304,
+        "physical_file_offset": 2993232,
+        "bytes": 60,
+        "sha256": "00b88c5bc90033dd950d85e2163f8f83c13afded5674f55ad7f9b98907563d4c",
+        "hex": "558bec83ec10a180034b1033c58945fc8b45088945f48945f88d45f050c745f003000000e8a78ef4ff8b4dfc83c40433cde84a070d008be55dc20400",
+        "instructions": [
+          {
+            "VA": 271431760,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431761,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 271431763,
+            "bytes": "83ec10",
+            "mnemonic": "sub",
+            "operands": "esp, 0x10"
+          },
+          {
+            "VA": 271431766,
+            "bytes": "a180034b10",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [0x104b0380]"
+          },
+          {
+            "VA": 271431771,
+            "bytes": "33c5",
+            "mnemonic": "xor",
+            "operands": "eax, ebp"
+          },
+          {
+            "VA": 271431773,
+            "bytes": "8945fc",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], eax"
+          },
+          {
+            "VA": 271431776,
+            "bytes": "8b4508",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 271431779,
+            "bytes": "8945f4",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0xc], eax"
+          },
+          {
+            "VA": 271431782,
+            "bytes": "8945f8",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 8], eax"
+          },
+          {
+            "VA": 271431785,
+            "bytes": "8d45f0",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0x10]"
+          },
+          {
+            "VA": 271431788,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "VA": 271431789,
+            "bytes": "c745f003000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x10], 3"
+          },
+          {
+            "VA": 271431796,
+            "bytes": "e8a78ef4ff",
+            "mnemonic": "call",
+            "operands": "0x10224720"
+          },
+          {
+            "VA": 271431801,
+            "bytes": "8b4dfc",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 4]"
+          },
+          {
+            "VA": 271431804,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 271431807,
+            "bytes": "33cd",
+            "mnemonic": "xor",
+            "operands": "ecx, ebp"
+          },
+          {
+            "VA": 271431809,
+            "bytes": "e84a070d00",
+            "mnemonic": "call",
+            "operands": "0x103abfd0"
+          },
+          {
+            "VA": 271431814,
+            "bytes": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "VA": 271431816,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431817,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 7,
+            "type": 6,
+            "symbol": "___security_cookie",
+            "target_VA": 273351552,
+            "original_addend": 0,
+            "resolved_operand": 273351552
+          },
+          {
+            "function_offset": 37,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+            "target_VA": 270681888,
+            "original_addend": 0,
+            "resolved_operand": 4294217383
+          },
+          {
+            "function_offset": 50,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4",
+            "target_VA": 272285648,
+            "original_addend": 0,
+            "resolved_operand": 853834
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "after",
+        "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2992272,
+          "VA": 271431824,
+          "tail": "f   bsp_core:native_game_grid.obj",
+          "line": " 0001:002da890       ?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 102db890 f   bsp_core:native_game_grid.obj"
+        },
+        "VA": 271431824,
+        "RVA": 2996368,
+        "physical_file_offset": 2993296,
+        "bytes": 18,
+        "sha256": "d6801300ffd1c9e6bdf87d7d24d75cbb7fdba56a43800e5d3b0b4a2f8327dfb6",
+        "hex": "558becff7508e8e58ef4ff83c4045dc20400",
+        "instructions": [
+          {
+            "VA": 271431824,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431825,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 271431827,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 271431830,
+            "bytes": "e8e58ef4ff",
+            "mnemonic": "call",
+            "operands": "0x10224780"
+          },
+          {
+            "VA": 271431835,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 271431838,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431839,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 7,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "target_VA": 270681984,
+            "original_addend": 0,
+            "resolved_operand": 4294217445
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "after",
+        "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2992304,
+          "VA": 271431856,
+          "tail": "f   bsp_core:native_game_grid.obj",
+          "line": " 0001:002da8b0       ?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z 102db8b0 f   bsp_core:native_game_grid.obj"
+        },
+        "VA": 271431856,
+        "RVA": 2996400,
+        "physical_file_offset": 2993328,
+        "bytes": 19,
+        "sha256": "e6ee275340c774bf32e5f7c9725f9df803454682f0591825d2c91330f9633fd3",
+        "hex": "558becff7508ff15f4043d1083c4045dc20400",
+        "instructions": [
+          {
+            "VA": 271431856,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431857,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 271431859,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 271431862,
+            "bytes": "ff15f4043d10",
+            "mnemonic": "call",
+            "operands": "dword ptr [0x103d04f4]"
+          },
+          {
+            "VA": 271431868,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 271431871,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 271431872,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 8,
+            "type": 6,
+            "symbol": "__imp__free",
+            "target_VA": 272434420,
+            "original_addend": 0,
+            "resolved_operand": 272434420
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "after",
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2242336,
+          "VA": 270681888,
+          "tail": "f   bsp_core:singleton_lifetime.obj",
+          "line": " 0001:00223720       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 10224720 f   bsp_core:singleton_lifetime.obj"
+        },
+        "VA": 270681888,
+        "RVA": 2246432,
+        "physical_file_offset": 2243360,
+        "bytes": 90,
+        "sha256": "13920953a632555f07194de71f2ab6cf33074621c6f50e1e767f65ee454575c6",
+        "hex": "558bec83ec0c538b1df8043d10568b7508ff7608ffd383c40485c07520578b3d00053d10ff7608ffd783c40485c07413ff7608ffd383c40485c074e85f5e5b8be55dc38d4df4e81567fdff68309349108d45f450e87d901800cc",
+        "instructions": [
+          {
+            "VA": 270681888,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "VA": 270681889,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "VA": 270681891,
+            "bytes": "83ec0c",
+            "mnemonic": "sub",
+            "operands": "esp, 0xc"
+          },
+          {
+            "VA": 270681894,
+            "bytes": "53",
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681895,
+            "bytes": "8b1df8043d10",
+            "mnemonic": "mov",
+            "operands": "ebx, dword ptr [0x103d04f8]"
+          },
+          {
+            "VA": 270681901,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "VA": 270681902,
+            "bytes": "8b7508",
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp + 8]"
+          },
+          {
+            "VA": 270681905,
+            "bytes": "ff7608",
+            "mnemonic": "push",
+            "operands": "dword ptr [esi + 8]"
+          },
+          {
+            "VA": 270681908,
+            "bytes": "ffd3",
+            "mnemonic": "call",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681910,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 270681913,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "VA": 270681915,
+            "bytes": "7520",
+            "mnemonic": "jne",
+            "operands": "0x1022475d"
+          },
+          {
+            "VA": 270681917,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "VA": 270681918,
+            "bytes": "8b3d00053d10",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [0x103d0500]"
+          },
+          {
+            "VA": 270681924,
+            "bytes": "ff7608",
+            "mnemonic": "push",
+            "operands": "dword ptr [esi + 8]"
+          },
+          {
+            "VA": 270681927,
+            "bytes": "ffd7",
+            "mnemonic": "call",
+            "operands": "edi"
+          },
+          {
+            "VA": 270681929,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 270681932,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "VA": 270681934,
+            "bytes": "7413",
+            "mnemonic": "je",
+            "operands": "0x10224763"
+          },
+          {
+            "VA": 270681936,
+            "bytes": "ff7608",
+            "mnemonic": "push",
+            "operands": "dword ptr [esi + 8]"
+          },
+          {
+            "VA": 270681939,
+            "bytes": "ffd3",
+            "mnemonic": "call",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681941,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "VA": 270681944,
+            "bytes": "85c0",
+            "mnemonic": "test",
+            "operands": "eax, eax"
+          },
+          {
+            "VA": 270681946,
+            "bytes": "74e8",
+            "mnemonic": "je",
+            "operands": "0x10224744"
+          },
+          {
+            "VA": 270681948,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "VA": 270681949,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "VA": 270681950,
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "VA": 270681951,
+            "bytes": "8be5",
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "VA": 270681953,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "VA": 270681954,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          },
+          {
+            "VA": 270681955,
+            "bytes": "8d4df4",
+            "mnemonic": "lea",
+            "operands": "ecx, [ebp - 0xc]"
+          },
+          {
+            "VA": 270681958,
+            "bytes": "e81567fdff",
+            "mnemonic": "call",
+            "operands": "0x101fae80"
+          },
+          {
+            "VA": 270681963,
+            "bytes": "6830934910",
+            "mnemonic": "push",
+            "operands": "0x10499330"
+          },
+          {
+            "VA": 270681968,
+            "bytes": "8d45f4",
+            "mnemonic": "lea",
+            "operands": "eax, [ebp - 0xc]"
+          },
+          {
+            "VA": 270681971,
+            "bytes": "50",
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "VA": 270681972,
+            "bytes": "e87d901800",
+            "mnemonic": "call",
+            "operands": "0x103ad7f6"
+          },
+          {
+            "VA": 270681977,
+            "bytes": "cc",
+            "mnemonic": "int3",
+            "operands": ""
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 9,
+            "type": 6,
+            "symbol": "__imp__malloc",
+            "target_VA": 272434424,
+            "original_addend": 0,
+            "resolved_operand": 272434424
+          },
+          {
+            "function_offset": 32,
+            "type": 6,
+            "symbol": "__imp___callnewh",
+            "target_VA": 272434432,
+            "original_addend": 0,
+            "resolved_operand": 272434432
+          },
+          {
+            "function_offset": 71,
+            "type": 20,
+            "symbol": "??0bad_alloc@std@@QAE@XZ",
+            "target_VA": 270511744,
+            "original_addend": 0,
+            "resolved_operand": 4294797077
+          },
+          {
+            "function_offset": 76,
+            "type": 6,
+            "symbol": "__TI2?AVbad_alloc@std@@",
+            "target_VA": 273257264,
+            "original_addend": 0,
+            "resolved_operand": 273257264
+          },
+          {
+            "function_offset": 85,
+            "type": 20,
+            "symbol": "__CxxThrowException@8",
+            "target_VA": 272291830,
+            "original_addend": 0,
+            "resolved_operand": 1609853
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      },
+      {
+        "stage": "after",
+        "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "map_row": {
+          "section": 1,
+          "section_offset": 2242432,
+          "VA": 270681984,
+          "tail": "f   bsp_core:singleton_lifetime.obj",
+          "line": " 0001:00223780       ?singleton_lifetime_free@bsp@@YAXPAX@Z 10224780 f   bsp_core:singleton_lifetime.obj"
+        },
+        "VA": 270681984,
+        "RVA": 2246528,
+        "physical_file_offset": 2243456,
+        "bytes": 6,
+        "sha256": "85aca4461632472a2e106df25b4de52fe09e02fe55ffd6711ecbc0b2a2fe6dd1",
+        "hex": "ff25f4043d10",
+        "instructions": [
+          {
+            "VA": 270681984,
+            "bytes": "ff25f4043d10",
+            "mnemonic": "jmp",
+            "operands": "dword ptr [0x103d04f4]"
+          }
+        ],
+        "resolved_relocations": [
+          {
+            "function_offset": 2,
+            "type": 6,
+            "symbol": "__imp__free",
+            "target_VA": 272434420,
+            "original_addend": 0,
+            "resolved_operand": 272434420
+          }
+        ],
+        "all_nonrelocated_bytes_exact_and_all_relocations_resolved": true
+      }
+    ],
+    "actual_linked_CPU_service_tables": [
+      {
+        "stage": "before",
+        "map_row": {
+          "section": 2,
+          "section_offset": 413832,
+          "VA": 272846984,
+          "tail": "game_native_renderer_application.obj",
+          "line": " 0002:00065088       ??_7NativeGameGridCpuCalls@bsp@@6B@ 10435088     game_native_renderer_application.obj"
+        },
+        "physical_file_offset": 4406920,
+        "bytes": 16,
+        "hex": "1048011070b82d1050b82d1050c11510",
+        "slots": [
+          {
+            "offset": 0,
+            "VA": 268519440,
+            "symbol": "??_GNativeGameGridCpuCalls@bsp@@UAEPAXI@Z"
+          },
+          {
+            "offset": 4,
+            "VA": 271431792,
+            "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z"
+          },
+          {
+            "offset": 8,
+            "VA": 271431760,
+            "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z"
+          },
+          {
+            "offset": 12,
+            "VA": 269861200,
+            "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z"
+          }
+        ],
+        "qualification": "Existing CPU-service C++ vtable only, not a raw grid00CFD484 table."
+      },
+      {
+        "stage": "after",
+        "map_row": {
+          "section": 2,
+          "section_offset": 413832,
+          "VA": 272846984,
+          "tail": "game_native_renderer_application.obj",
+          "line": " 0002:00065088       ??_7NativeGameGridCpuCalls@bsp@@6B@ 10435088     game_native_renderer_application.obj"
+        },
+        "physical_file_offset": 4406920,
+        "bytes": 16,
+        "hex": "10480110b0b82d1050b82d1090b82d10",
+        "slots": [
+          {
+            "offset": 0,
+            "VA": 268519440,
+            "symbol": "??_GNativeGameGridCpuCalls@bsp@@UAEPAXI@Z"
+          },
+          {
+            "offset": 4,
+            "VA": 271431856,
+            "symbol": "?free_00bf6989@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z"
+          },
+          {
+            "offset": 8,
+            "VA": 271431760,
+            "symbol": "?allocate_00bf55be@NativeGameGridCpuCalls@bsp@@UAEPAXI@Z"
+          },
+          {
+            "offset": 12,
+            "VA": 271431824,
+            "symbol": "?free_00bf65ac@NativeGameGridCpuCalls@bsp@@UAEXPAX@Z"
+          }
+        ],
+        "qualification": "Existing CPU-service C++ vtable only, not a raw grid00CFD484 table."
+      }
+    ],
+    "App_executable": {
+      "before": {
+        "bytes": 5102592,
+        "sha256": "859769e33c7bba45a4c8e486994ab751349e222b944c9a96e5d943eff4e4460d",
+        "machine": 332,
+        "image_base": 268435456,
+        "timestamp_offset": 280,
+        "timestamp": 1791663634,
+        "checksum_offset": 360,
+        "checksum": 0,
+        "sections": [
+          {
+            "name": ".text",
+            "virtual_size": 3991723,
+            "rva": 4096,
+            "raw_offset": 1024,
+            "bytes": 3992064,
+            "sha256": "68147e0ab85c52ef2a2e1c62f9fc108afc67933af80e1ca23fed5f27128b6d66"
+          },
+          {
+            "name": ".rdata",
+            "virtual_size": 913886,
+            "rva": 3997696,
+            "raw_offset": 3993088,
+            "bytes": 913920,
+            "sha256": "27957f165f422cb4fd6ff38bb0810f2754454fb6555addddc7b49a27f1276922"
+          },
+          {
+            "name": ".data",
+            "virtual_size": 76160,
+            "rva": 4915200,
+            "raw_offset": 4907008,
+            "bytes": 52736,
+            "sha256": "b3e77c42b0a1f88b214de187911c820a687493804627428ea74ecbc1135ac857"
+          },
+          {
+            "name": ".rsrc",
+            "virtual_size": 480,
+            "rva": 4993024,
+            "raw_offset": 4959744,
+            "bytes": 512,
+            "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+          },
+          {
+            "name": ".reloc",
+            "virtual_size": 142120,
+            "rva": 4997120,
+            "raw_offset": 4960256,
+            "bytes": 142336,
+            "sha256": "c3acdbccaef0bb1c3fcea8680b6cca357b16c58834b42b4a9c85cb3dd0372e41"
+          }
+        ],
+        "debug_directory": [
+          {
+            "file_offset": 4694592,
+            "timestamp_offset": 4694596,
+            "timestamp": 1791663634,
+            "type": 13,
+            "payload_bytes": 884,
+            "payload_file_offset": 4759960
+          }
+        ]
+      },
+      "after": {
+        "bytes": 5102592,
+        "sha256": "957a6b433f2f23bb9556e1f3b4895300bcb8ebf2f5f7fd1cd10e30710241df5e",
+        "machine": 332,
+        "image_base": 268435456,
+        "timestamp_offset": 280,
+        "timestamp": 1791663738,
+        "checksum_offset": 360,
+        "checksum": 0,
+        "sections": [
+          {
+            "name": ".text",
+            "virtual_size": 3991691,
+            "rva": 4096,
+            "raw_offset": 1024,
+            "bytes": 3992064,
+            "sha256": "37296511c4705f83cb4ba181a02c5c08b1c4564fb1aeccc6eb700fdb968e3b26"
+          },
+          {
+            "name": ".rdata",
+            "virtual_size": 913886,
+            "rva": 3997696,
+            "raw_offset": 3993088,
+            "bytes": 913920,
+            "sha256": "b9913724ed6abfa557a860f3c6983126e0dbb85d5247a803dcc69c5fcc1838a0"
+          },
+          {
+            "name": ".data",
+            "virtual_size": 76160,
+            "rva": 4915200,
+            "raw_offset": 4907008,
+            "bytes": 52736,
+            "sha256": "b3e77c42b0a1f88b214de187911c820a687493804627428ea74ecbc1135ac857"
+          },
+          {
+            "name": ".rsrc",
+            "virtual_size": 480,
+            "rva": 4993024,
+            "raw_offset": 4959744,
+            "bytes": 512,
+            "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+          },
+          {
+            "name": ".reloc",
+            "virtual_size": 142104,
+            "rva": 4997120,
+            "raw_offset": 4960256,
+            "bytes": 142336,
+            "sha256": "50b7aa1414d55b43072169280c4d8f2c5eb24af2ce2b1d6e674b34142afaef24"
+          }
+        ],
+        "debug_directory": [
+          {
+            "file_offset": 4694592,
+            "timestamp_offset": 4694596,
+            "timestamp": 1791663738,
+            "type": 13,
+            "payload_bytes": 884,
+            "payload_file_offset": 4759960
+          }
+        ]
+      },
+      "whole_difference": {
+        "before_bytes": 5102592,
+        "after_bytes": 5102592,
+        "differing_overlap_bytes": 1026876,
+        "length_delta": 0,
+        "differing_total_bytes": 1026876
+      },
+      "section_comparisons": [
+        {
+          "name": ".text",
+          "before": {
+            "name": ".text",
+            "virtual_size": 3991723,
+            "rva": 4096,
+            "raw_offset": 1024,
+            "bytes": 3992064,
+            "sha256": "68147e0ab85c52ef2a2e1c62f9fc108afc67933af80e1ca23fed5f27128b6d66"
+          },
+          "after": {
+            "name": ".text",
+            "virtual_size": 3991691,
+            "rva": 4096,
+            "raw_offset": 1024,
+            "bytes": 3992064,
+            "sha256": "37296511c4705f83cb4ba181a02c5c08b1c4564fb1aeccc6eb700fdb968e3b26"
+          },
+          "raw_payload_equal": false,
+          "payload_delta": {
+            "before_bytes": 3992064,
+            "after_bytes": 3992064,
+            "differing_overlap_bytes": 958580,
+            "length_delta": 0,
+            "differing_total_bytes": 958580
+          }
+        },
+        {
+          "name": ".rdata",
+          "before": {
+            "name": ".rdata",
+            "virtual_size": 913886,
+            "rva": 3997696,
+            "raw_offset": 3993088,
+            "bytes": 913920,
+            "sha256": "27957f165f422cb4fd6ff38bb0810f2754454fb6555addddc7b49a27f1276922"
+          },
+          "after": {
+            "name": ".rdata",
+            "virtual_size": 913886,
+            "rva": 3997696,
+            "raw_offset": 3993088,
+            "bytes": 913920,
+            "sha256": "b9913724ed6abfa557a860f3c6983126e0dbb85d5247a803dcc69c5fcc1838a0"
+          },
+          "raw_payload_equal": false,
+          "payload_delta": {
+            "before_bytes": 913920,
+            "after_bytes": 913920,
+            "differing_overlap_bytes": 8870,
+            "length_delta": 0,
+            "differing_total_bytes": 8870
+          }
+        },
+        {
+          "name": ".data",
+          "before": {
+            "name": ".data",
+            "virtual_size": 76160,
+            "rva": 4915200,
+            "raw_offset": 4907008,
+            "bytes": 52736,
+            "sha256": "b3e77c42b0a1f88b214de187911c820a687493804627428ea74ecbc1135ac857"
+          },
+          "after": {
+            "name": ".data",
+            "virtual_size": 76160,
+            "rva": 4915200,
+            "raw_offset": 4907008,
+            "bytes": 52736,
+            "sha256": "b3e77c42b0a1f88b214de187911c820a687493804627428ea74ecbc1135ac857"
+          },
+          "raw_payload_equal": true,
+          "payload_delta": {
+            "before_bytes": 52736,
+            "after_bytes": 52736,
+            "differing_overlap_bytes": 0,
+            "length_delta": 0,
+            "differing_total_bytes": 0
+          }
+        },
+        {
+          "name": ".rsrc",
+          "before": {
+            "name": ".rsrc",
+            "virtual_size": 480,
+            "rva": 4993024,
+            "raw_offset": 4959744,
+            "bytes": 512,
+            "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+          },
+          "after": {
+            "name": ".rsrc",
+            "virtual_size": 480,
+            "rva": 4993024,
+            "raw_offset": 4959744,
+            "bytes": 512,
+            "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+          },
+          "raw_payload_equal": true,
+          "payload_delta": {
+            "before_bytes": 512,
+            "after_bytes": 512,
+            "differing_overlap_bytes": 0,
+            "length_delta": 0,
+            "differing_total_bytes": 0
+          }
+        },
+        {
+          "name": ".reloc",
+          "before": {
+            "name": ".reloc",
+            "virtual_size": 142120,
+            "rva": 4997120,
+            "raw_offset": 4960256,
+            "bytes": 142336,
+            "sha256": "c3acdbccaef0bb1c3fcea8680b6cca357b16c58834b42b4a9c85cb3dd0372e41"
+          },
+          "after": {
+            "name": ".reloc",
+            "virtual_size": 142104,
+            "rva": 4997120,
+            "raw_offset": 4960256,
+            "bytes": 142336,
+            "sha256": "50b7aa1414d55b43072169280c4d8f2c5eb24af2ce2b1d6e674b34142afaef24"
+          },
+          "raw_payload_equal": false,
+          "payload_delta": {
+            "before_bytes": 142336,
+            "after_bytes": 142336,
+            "differing_overlap_bytes": 59421,
+            "length_delta": 0,
+            "differing_total_bytes": 59421
+          }
+        }
+      ],
+      "typed_header_changes": [
+        {
+          "field": "COFF.TimeDateStamp",
+          "file_offset": 280,
+          "before": 1791663634,
+          "after": 1791663738,
+          "differing_offsets": [
+            280
+          ]
+        },
+        {
+          "field": "OptionalHeader.AddressOfEntryPoint",
+          "file_offset": 312,
+          "before": 3854240,
+          "after": 3854208,
+          "differing_offsets": [
+            312
+          ]
+        },
+        {
+          "field": "BaseRelocationDirectory.Size",
+          "file_offset": 436,
+          "before": 142120,
+          "after": 142104,
+          "differing_offsets": [
+            436
+          ]
+        },
+        {
+          "field": ".text.VirtualSize",
+          "file_offset": 528,
+          "before": 3991723,
+          "after": 3991691,
+          "differing_offsets": [
+            528
+          ]
+        },
+        {
+          "field": ".reloc.VirtualSize",
+          "file_offset": 688,
+          "before": 142120,
+          "after": 142104,
+          "differing_offsets": [
+            688
+          ]
+        }
+      ],
+      "no_differences_normalized_away": true,
+      "qualification": "Actual linked changes include relocation/layout and table operands. Only the selected complete bodies above have exact relocation-resolved Source-to-link proof; no global linked-code identity claim."
+    },
+    "scope": {
+      "fresh_Native_queries": 0,
+      "Ghidra_mutations": 0,
+      "new_tests": 0,
+      "existing_math_seed_suite_cases": 8,
+      "new_original_grid_or_game_execution": false,
+      "OS_probes": false,
+      "raw_grid_callable_table": false,
+      "game_construction_or_activation": false,
+      "Native_allocator_ABI_equivalence": false,
+      "foreign_allocator_domain_equivalence": false
+    }
+  },
+  "finite_pins": [
+    {
+      "path": "audit.py",
+      "bytes": 19648,
+      "sha256": "b1f43830a5071c7a13e138e2371eb952426a5b8b67759630f8acde2095370020"
+    },
+    {
+      "path": "build_inputs.py",
+      "bytes": 734,
+      "sha256": "79191452de8267455c3c0292cb48227a33db43e39ae73f9aed46a5698366e103"
+    },
+    {
+      "path": "capture.py",
+      "bytes": 4048,
+      "sha256": "d07290c0e3b4046f29ed9cfa7315d2c1f968eba7ebbd022e82e9bf33f8516e09"
+    },
+    {
+      "path": "dependencies.py",
+      "bytes": 5408,
+      "sha256": "7a83f22ec59bf650723a1e9e35d1191d2ccaa646def52f04836d7fae4736c662"
+    },
+    {
+      "path": "epoch.py",
+      "bytes": 1928,
+      "sha256": "1e29be98269c267a0278d5c99009bb3edac0b494b79f854d09a2b5feabe8b79e"
+    },
+    {
+      "path": "frozen/001f8f1f9986e02d3c483e7e90c2f7dc336355fb1c5c444dde1769e63185963f_Root_Source3354_particle_retained.tar.gz",
+      "bytes": 26552359,
+      "sha256": "001f8f1f9986e02d3c483e7e90c2f7dc336355fb1c5c444dde1769e63185963f"
+    },
+    {
+      "path": "frozen/0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612_Git_tools_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "frozen/0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "frozen/0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612_working_tools_ghidra_export.py",
+      "bytes": 14411,
+      "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+    },
+    {
+      "path": "frozen/064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31_Git_tests_test_coordination_transactions.py",
+      "bytes": 10219,
+      "sha256": "064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31"
+    },
+    {
+      "path": "frozen/064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31_working_tests_test_coordination_transactions.py",
+      "bytes": 10219,
+      "sha256": "064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31"
+    },
+    {
+      "path": "frozen/08d0705f98f718ff174907cfca050be741e7977501f95ca51c990021f97ea6e0_initial_bsp_game.map",
+      "bytes": 7549530,
+      "sha256": "08d0705f98f718ff174907cfca050be741e7977501f95ca51c990021f97ea6e0"
+    },
+    {
+      "path": "frozen/0b83d5ae9674f0f9c6e8fea19a699adc3a7da5178657d7fdbb3f1a951dcc75d7_accepted_364be1a35_docs_CC12_GRID_PROVIDER_DOMAIN_TABLE_READINESS.md",
+      "bytes": 13977,
+      "sha256": "0b83d5ae9674f0f9c6e8fea19a699adc3a7da5178657d7fdbb3f1a951dcc75d7"
+    },
+    {
+      "path": "frozen/0c2e857c81d709f9d171268b5bf476ba82d73e3191cfa25537df5e5f6e46def1_initial.json",
+      "bytes": 2482762,
+      "sha256": "0c2e857c81d709f9d171268b5bf476ba82d73e3191cfa25537df5e5f6e46def1"
+    },
+    {
+      "path": "frozen/0dc53ffaafd78535b69eec6db4cfb111bb6dafd6d8bbee960a4ec8bfafc8e52e_after_bsp_game.vcxproj",
+      "bytes": 70813,
+      "sha256": "0dc53ffaafd78535b69eec6db4cfb111bb6dafd6d8bbee960a4ec8bfafc8e52e"
+    },
+    {
+      "path": "frozen/0dc53ffaafd78535b69eec6db4cfb111bb6dafd6d8bbee960a4ec8bfafc8e52e_before_bsp_game.vcxproj",
+      "bytes": 70813,
+      "sha256": "0dc53ffaafd78535b69eec6db4cfb111bb6dafd6d8bbee960a4ec8bfafc8e52e"
+    },
+    {
+      "path": "frozen/0dc53ffaafd78535b69eec6db4cfb111bb6dafd6d8bbee960a4ec8bfafc8e52e_initial_bsp_game.vcxproj",
+      "bytes": 70813,
+      "sha256": "0dc53ffaafd78535b69eec6db4cfb111bb6dafd6d8bbee960a4ec8bfafc8e52e"
+    },
+    {
+      "path": "frozen/0fd8763c67fc717ba5a82c81708cfafaa4202b636f42252431c921974c2ab161_before_bsp_math_tests.exe",
+      "bytes": 841728,
+      "sha256": "0fd8763c67fc717ba5a82c81708cfafaa4202b636f42252431c921974c2ab161"
+    },
+    {
+      "path": "frozen/1064489d71c8e6315551f42c97bfcb9824002d6d930283b20d003d109ce1667b_after_Core_objects.tar.gz",
+      "bytes": 13475432,
+      "sha256": "1064489d71c8e6315551f42c97bfcb9824002d6d930283b20d003d109ce1667b"
+    },
+    {
+      "path": "frozen/11b434980be42c6144d8083595ff0aaaeeebe4d324944a0fe6c0d05e9793c346_Root_Source3354_particle_manifest.json",
+      "bytes": 1270504,
+      "sha256": "11b434980be42c6144d8083595ff0aaaeeebe4d324944a0fe6c0d05e9793c346"
+    },
+    {
+      "path": "frozen/123dc483f499545aeb757f6c56f2f1f7dfd71a06f94d46d41c98ec8acd67b0cf_initial_Source_working.tar.gz",
+      "bytes": 8622545,
+      "sha256": "123dc483f499545aeb757f6c56f2f1f7dfd71a06f94d46d41c98ec8acd67b0cf"
+    },
+    {
+      "path": "frozen/149c78a759003e94f42904658f42df94fd3bdf6f6ccab6c45fd3b521eebe89d2_accepted_295b982af_docs_CC12_PARTICLE_ADMITTED_CONSTRUCTOR_PRIMARY.md",
+      "bytes": 3120,
+      "sha256": "149c78a759003e94f42904658f42df94fd3bdf6f6ccab6c45fd3b521eebe89d2"
+    },
+    {
+      "path": "frozen/1664e26a02bdaf5cbad034ff8d7bb5cdda827750a800cc40f6c57e599acd710d_after_Source_working.tar.gz",
+      "bytes": 8622639,
+      "sha256": "1664e26a02bdaf5cbad034ff8d7bb5cdda827750a800cc40f6c57e599acd710d"
+    },
+    {
+      "path": "frozen/18c5d0b8b033a4544d371f2c90c7fd0be149d2f108689467925ea3cbb86c0e86_audit_complete.json",
+      "bytes": 11152484,
+      "sha256": "18c5d0b8b033a4544d371f2c90c7fd0be149d2f108689467925ea3cbb86c0e86"
+    },
+    {
+      "path": "frozen/1d5d8a395a8ad2da3e08b88a8744e8d9bf1fc43110cf3373b2ce9fe799492633_after_LastTest.log",
+      "bytes": 2498,
+      "sha256": "1d5d8a395a8ad2da3e08b88a8744e8d9bf1fc43110cf3373b2ce9fe799492633"
+    },
+    {
+      "path": "frozen/1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854_after_CMakeCXXCompiler.cmake",
+      "bytes": 6498,
+      "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854"
+    },
+    {
+      "path": "frozen/1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854_before_CMakeCXXCompiler.cmake",
+      "bytes": 6498,
+      "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854"
+    },
+    {
+      "path": "frozen/1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854_initial_CMakeCXXCompiler.cmake",
+      "bytes": 6498,
+      "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854"
+    },
+    {
+      "path": "frozen/1ea45ba782f7ca4db8cf9da69c6a1c67f1a5ff9a10bde7a95dc2f5cf5c673940_after_CTestTestfile.cmake",
+      "bytes": 6958,
+      "sha256": "1ea45ba782f7ca4db8cf9da69c6a1c67f1a5ff9a10bde7a95dc2f5cf5c673940"
+    },
+    {
+      "path": "frozen/1ea45ba782f7ca4db8cf9da69c6a1c67f1a5ff9a10bde7a95dc2f5cf5c673940_before_CTestTestfile.cmake",
+      "bytes": 6958,
+      "sha256": "1ea45ba782f7ca4db8cf9da69c6a1c67f1a5ff9a10bde7a95dc2f5cf5c673940"
+    },
+    {
+      "path": "frozen/1ea45ba782f7ca4db8cf9da69c6a1c67f1a5ff9a10bde7a95dc2f5cf5c673940_initial_CTestTestfile.cmake",
+      "bytes": 6958,
+      "sha256": "1ea45ba782f7ca4db8cf9da69c6a1c67f1a5ff9a10bde7a95dc2f5cf5c673940"
+    },
+    {
+      "path": "frozen/2082c3013954678bcb296513fc0ff95a941c86b4cecff596cf9e4d1042d653a7_before_Core_objects.tar.gz",
+      "bytes": 13475436,
+      "sha256": "2082c3013954678bcb296513fc0ff95a941c86b4cecff596cf9e4d1042d653a7"
+    },
+    {
+      "path": "frozen/22e43e3f9939366a0036f106008dcdca36f43ee55dd73e8237bca29d6a34c095_after_CL.command.1.tlog",
+      "bytes": 3935916,
+      "sha256": "22e43e3f9939366a0036f106008dcdca36f43ee55dd73e8237bca29d6a34c095"
+    },
+    {
+      "path": "frozen/26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c_historical_seed_seed_reference_verified.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "frozen/26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c_preexisting_verified_seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "frozen/26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c_seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "frozen/270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab_Git_tests_test_ghidra_flow_repair.py",
+      "bytes": 5211,
+      "sha256": "270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab"
+    },
+    {
+      "path": "frozen/270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab_working_tests_test_ghidra_flow_repair.py",
+      "bytes": 5211,
+      "sha256": "270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab"
+    },
+    {
+      "path": "frozen/27fe4606d51fa3c0febc1d1c9e8472cba0018a77a606c639383fff9f2ca57e3d_before_bsp_native_math_tests.exe",
+      "bytes": 18432,
+      "sha256": "27fe4606d51fa3c0febc1d1c9e8472cba0018a77a606c639383fff9f2ca57e3d"
+    },
+    {
+      "path": "frozen/28b1d6e3df076b1e2ab7fed19dedc4a5345e5bf9598c3ddf5e98da9737cb8902_baseline_build.json",
+      "bytes": 558,
+      "sha256": "28b1d6e3df076b1e2ab7fed19dedc4a5345e5bf9598c3ddf5e98da9737cb8902"
+    },
+    {
+      "path": "frozen/2c2fdea34b61b591858f50520152917b6ad9e22bcf2ffad58e9b0dea238f2a7b_initial_CL.command.1.tlog",
+      "bytes": 3933914,
+      "sha256": "2c2fdea34b61b591858f50520152917b6ad9e22bcf2ffad58e9b0dea238f2a7b"
+    },
+    {
+      "path": "frozen/2d34b317e6cf3c7175666d2b6514ab416f22ddec16ceb2b8756b55d3d0267342_initial_LastTest.log",
+      "bytes": 2498,
+      "sha256": "2d34b317e6cf3c7175666d2b6514ab416f22ddec16ceb2b8756b55d3d0267342"
+    },
+    {
+      "path": "frozen/2ea9f0548702d6f233e689d45233957eb4250a40c2f023f5484fc1eabc21ac65_after_CL.command.1.tlog",
+      "bytes": 104226,
+      "sha256": "2ea9f0548702d6f233e689d45233957eb4250a40c2f023f5484fc1eabc21ac65"
+    },
+    {
+      "path": "frozen/32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298_historical_seed_seed_byte_comparison.json",
+      "bytes": 3288,
+      "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298"
+    },
+    {
+      "path": "frozen/359694709c3110fc7e599fbebdc27a0d385e07cf1e516a93be81c1a4b49f10d1_before_CL.command.1.tlog",
+      "bytes": 3935916,
+      "sha256": "359694709c3110fc7e599fbebdc27a0d385e07cf1e516a93be81c1a4b49f10d1"
+    },
+    {
+      "path": "frozen/3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e_Git_tests_math_tests.cpp",
+      "bytes": 205179,
+      "sha256": "3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e"
+    },
+    {
+      "path": "frozen/3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e_working_tests_math_tests.cpp",
+      "bytes": 205179,
+      "sha256": "3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e"
+    },
+    {
+      "path": "frozen/36ab4b12576920075ee0879242ec639f40e8df80733b5165dac79b3dc79b059b_CC12_GRID_CANONICAL_DEFAULT_PAIR.md",
+      "bytes": 8638,
+      "sha256": "36ab4b12576920075ee0879242ec639f40e8df80733b5165dac79b3dc79b059b"
+    },
+    {
+      "path": "frozen/37c6e7c3baee5aff022a81a33a3b5e8e8130f26bf68baedc3cfb3a61d94917b9_initial_Source_Git.tar.gz",
+      "bytes": 8622545,
+      "sha256": "37c6e7c3baee5aff022a81a33a3b5e8e8130f26bf68baedc3cfb3a61d94917b9"
+    },
+    {
+      "path": "frozen/39857cf4925875649e54a7533a3ec826bcb2d6259fc514f88b038463697416ba_before_App_objects.tar.gz",
+      "bytes": 5019966,
+      "sha256": "39857cf4925875649e54a7533a3ec826bcb2d6259fc514f88b038463697416ba"
+    },
+    {
+      "path": "frozen/3dbadf13ad54f53a0b713576b595ef6fd15608869d0959f3472e0e3c6ff7b0c9_initial_bsp_game.exe",
+      "bytes": 5102592,
+      "sha256": "3dbadf13ad54f53a0b713576b595ef6fd15608869d0959f3472e0e3c6ff7b0c9"
+    },
+    {
+      "path": "frozen/43516d3d17155bcd2260d3187dc4bd85dec4ef936eceb7903292ad5d2de2e35e_after_App_objects.tar.gz",
+      "bytes": 5019966,
+      "sha256": "43516d3d17155bcd2260d3187dc4bd85dec4ef936eceb7903292ad5d2de2e35e"
+    },
+    {
+      "path": "frozen/44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330_Git_tests_test_pair_tools.py",
+      "bytes": 2399,
+      "sha256": "44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330"
+    },
+    {
+      "path": "frozen/44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330_working_tests_test_pair_tools.py",
+      "bytes": 2399,
+      "sha256": "44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330"
+    },
+    {
+      "path": "frozen/4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4_Git_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+      "bytes": 3705583,
+      "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+    },
+    {
+      "path": "frozen/4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4_working_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+      "bytes": 3705583,
+      "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+    },
+    {
+      "path": "frozen/5141e9306a1dd4aa714d5928304383c50910768e0c1f20788b3d0ef97bb1b3ee_historical_seed_receipt.json",
+      "bytes": 931,
+      "sha256": "5141e9306a1dd4aa714d5928304383c50910768e0c1f20788b3d0ef97bb1b3ee"
+    },
+    {
+      "path": "frozen/52474d6f8a7aeb65baa9b683398f104e4e3eb6dfa31d6e6e361be99263470db3_reviewed_coff_indexed_mixed.py",
+      "bytes": 8377,
+      "sha256": "52474d6f8a7aeb65baa9b683398f104e4e3eb6dfa31d6e6e361be99263470db3"
+    },
+    {
+      "path": "frozen/52e98c22d6e5cc1804dac21496b5fc6cf003eb94366f066254fba83e8532b1b0_before_bsp_game.map",
+      "bytes": 7549530,
+      "sha256": "52e98c22d6e5cc1804dac21496b5fc6cf003eb94366f066254fba83e8532b1b0"
+    },
+    {
+      "path": "frozen/53b93cecf0cb1b2c8b80da8ad4a5fb8ace0daa6381f1740f724fc42058ce400d_Source3354_grid_canonical_default_pair_3358_retained.tar.gz",
+      "bytes": 26552405,
+      "sha256": "53b93cecf0cb1b2c8b80da8ad4a5fb8ace0daa6381f1740f724fc42058ce400d"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_Git_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_working_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/586ea26b8a983fbee7a3873730cdf42de2549de780b9660b365a83453c9dc1a1_before_LastTest.log",
+      "bytes": 2498,
+      "sha256": "586ea26b8a983fbee7a3873730cdf42de2549de780b9660b365a83453c9dc1a1"
+    },
+    {
+      "path": "frozen/58e4a286271a432c2f6c8d9d2d8dc160fc3cab2200df53a61d6f49c5b5472e44_before_Source_Git.tar.gz",
+      "bytes": 8622545,
+      "sha256": "58e4a286271a432c2f6c8d9d2d8dc160fc3cab2200df53a61d6f49c5b5472e44"
+    },
+    {
+      "path": "frozen/655dec933a14108eae1aee2470371e6295bc0cbfe6d29ce483b703e3cfd40754_Source3354_grid_canonical_default_pair_frozen.json",
+      "bytes": 802221,
+      "sha256": "655dec933a14108eae1aee2470371e6295bc0cbfe6d29ce483b703e3cfd40754"
+    },
+    {
+      "path": "frozen/6e1b299665e09fc27f5e743aec13fc55f0bf5280b5a66d18c2c43263d5c6be7e_initial_bsp_math_tests.exe",
+      "bytes": 841728,
+      "sha256": "6e1b299665e09fc27f5e743aec13fc55f0bf5280b5a66d18c2c43263d5c6be7e"
+    },
+    {
+      "path": "frozen/6fa9aa4ea8393600d2eca770d8d3319b1418c60c38ec624af5e320798f3dc9f9_before_CL.command.1.tlog",
+      "bytes": 104226,
+      "sha256": "6fa9aa4ea8393600d2eca770d8d3319b1418c60c38ec624af5e320798f3dc9f9"
+    },
+    {
+      "path": "frozen/6fa9aa4ea8393600d2eca770d8d3319b1418c60c38ec624af5e320798f3dc9f9_initial_CL.command.1.tlog",
+      "bytes": 104226,
+      "sha256": "6fa9aa4ea8393600d2eca770d8d3319b1418c60c38ec624af5e320798f3dc9f9"
+    },
+    {
+      "path": "frozen/70bf18bccdd82624244910267e59872f5c6e82cdf980880baafc47ae9f21ea59_initial_bsp_core.lib",
+      "bytes": 73985860,
+      "sha256": "70bf18bccdd82624244910267e59872f5c6e82cdf980880baafc47ae9f21ea59"
+    },
+    {
+      "path": "frozen/7162b73249640442fed32cd5e986a3949ac6c5320ce2ae6b1353742c5c6616d2_after_build.json",
+      "bytes": 552,
+      "sha256": "7162b73249640442fed32cd5e986a3949ac6c5320ce2ae6b1353742c5c6616d2"
+    },
+    {
+      "path": "frozen/81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c_Git_tests_test_merge_resolve_refusals.py",
+      "bytes": 9142,
+      "sha256": "81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c"
+    },
+    {
+      "path": "frozen/81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c_working_tests_test_merge_resolve_refusals.py",
+      "bytes": 9142,
+      "sha256": "81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c"
+    },
+    {
+      "path": "frozen/859769e33c7bba45a4c8e486994ab751349e222b944c9a96e5d943eff4e4460d_before_bsp_game.exe",
+      "bytes": 5102592,
+      "sha256": "859769e33c7bba45a4c8e486994ab751349e222b944c9a96e5d943eff4e4460d"
+    },
+    {
+      "path": "frozen/8c8f888b627b93a2f56ff821538bf0e0bab05a56a452073fb3f22075381f3f55_after_bsp_math_tests.exe",
+      "bytes": 841728,
+      "sha256": "8c8f888b627b93a2f56ff821538bf0e0bab05a56a452073fb3f22075381f3f55"
+    },
+    {
+      "path": "frozen/8eec3b495f873fc79d606d870e3256ff5a8751698c00acd28d48c97ed9be2ff8_after_Source_Git.tar.gz",
+      "bytes": 8622545,
+      "sha256": "8eec3b495f873fc79d606d870e3256ff5a8751698c00acd28d48c97ed9be2ff8"
+    },
+    {
+      "path": "frozen/92d087c8c5c88a8e2ae53b20f22897513f2b3553c52f766eb42812e4ff582e56_after_bsp_native_math_tests.exe",
+      "bytes": 18432,
+      "sha256": "92d087c8c5c88a8e2ae53b20f22897513f2b3553c52f766eb42812e4ff582e56"
+    },
+    {
+      "path": "frozen/957a6b433f2f23bb9556e1f3b4895300bcb8ebf2f5f7fd1cd10e30710241df5e_after_bsp_game.exe",
+      "bytes": 5102592,
+      "sha256": "957a6b433f2f23bb9556e1f3b4895300bcb8ebf2f5f7fd1cd10e30710241df5e"
+    },
+    {
+      "path": "frozen/967e1f951a345de3c58806f875d0b01916537e78597e73499aedd5eb4c9feb17_build_inputs.json",
+      "bytes": 2772,
+      "sha256": "967e1f951a345de3c58806f875d0b01916537e78597e73499aedd5eb4c9feb17"
+    },
+    {
+      "path": "frozen/96a983d6c519b2d4064105b03f9e0558d21ad2b90ee8ad03562f7d4fad02f672_dependencies.json",
+      "bytes": 1746873,
+      "sha256": "96a983d6c519b2d4064105b03f9e0558d21ad2b90ee8ad03562f7d4fad02f672"
+    },
+    {
+      "path": "frozen/9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa_Git_tests_native_math_tests.cpp",
+      "bytes": 5560,
+      "sha256": "9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa"
+    },
+    {
+      "path": "frozen/9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa_working_tests_native_math_tests.cpp",
+      "bytes": 5560,
+      "sha256": "9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa"
+    },
+    {
+      "path": "frozen/a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b_Git_reports_cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+    },
+    {
+      "path": "frozen/a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b_working_reports_cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+    },
+    {
+      "path": "frozen/a196f459f6f34ca08cae9491ab424813ae176d8faa07eeb44dbe8ea3d73788b3_initial_bsp_native_math_tests.exe",
+      "bytes": 18432,
+      "sha256": "a196f459f6f34ca08cae9491ab424813ae176d8faa07eeb44dbe8ea3d73788b3"
+    },
+    {
+      "path": "frozen/a1c015e069b505ad7fb1452ddfdd4c2733ac2c45961b02816a8e864be1a39914_initial_bsp_core.vcxproj",
+      "bytes": 328997,
+      "sha256": "a1c015e069b505ad7fb1452ddfdd4c2733ac2c45961b02816a8e864be1a39914"
+    },
+    {
+      "path": "frozen/a6b922b53ec774cae8788f6b3d586cac774dc6f5bfac70843231e730bae8fa2d_after_build.log",
+      "bytes": 3624,
+      "sha256": "a6b922b53ec774cae8788f6b3d586cac774dc6f5bfac70843231e730bae8fa2d"
+    },
+    {
+      "path": "frozen/a8fb2436ddd1e0f79b2e29d9aaa2f40e3add136333911f071349ba1c3f2a8d22_before_Source_working.tar.gz",
+      "bytes": 8622545,
+      "sha256": "a8fb2436ddd1e0f79b2e29d9aaa2f40e3add136333911f071349ba1c3f2a8d22"
+    },
+    {
+      "path": "frozen/ab72574d8727e343ff4d93f590d7fd4ea9714f5004bc158d0f55abe3fcbf023e_accepted_4d0ae310d_docs_CC12_GRID_PROVIDER_READINESS_PRIMARY.md",
+      "bytes": 1724,
+      "sha256": "ab72574d8727e343ff4d93f590d7fd4ea9714f5004bc158d0f55abe3fcbf023e"
+    },
+    {
+      "path": "frozen/b000a9b189db873a841311ebedd5ec8e9d493f5096101b24694f0c5876bbc010_before.json",
+      "bytes": 2482955,
+      "sha256": "b000a9b189db873a841311ebedd5ec8e9d493f5096101b24694f0c5876bbc010"
+    },
+    {
+      "path": "frozen/b2e64376467af675c23a1826aa108547685469b00b69830d9b2b33205a8cf0b3_Source_Git_tree.bin",
+      "bytes": 382757,
+      "sha256": "b2e64376467af675c23a1826aa108547685469b00b69830d9b2b33205a8cf0b3"
+    },
+    {
+      "path": "frozen/b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685_Git_tests_test_exporter.py",
+      "bytes": 2455,
+      "sha256": "b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685"
+    },
+    {
+      "path": "frozen/b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685_working_tests_test_exporter.py",
+      "bytes": 2455,
+      "sha256": "b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685"
+    },
+    {
+      "path": "frozen/b643a53b9faaf63e54a0250ca7cc7f31cebfdc9abcbc412d47357841a1553cd7_baseline_build.log",
+      "bytes": 3559,
+      "sha256": "b643a53b9faaf63e54a0250ca7cc7f31cebfdc9abcbc412d47357841a1553cd7"
+    },
+    {
+      "path": "frozen/b7a7e6641a4b865cf112acc9f6e341534e2663fa143a0c814c4273ea69076f63_initial_Core_objects.tar.gz",
+      "bytes": 13474832,
+      "sha256": "b7a7e6641a4b865cf112acc9f6e341534e2663fa143a0c814c4273ea69076f63"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_Git_scripts_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_working_scripts_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/c0cee93170857af9a75e77fa5c28c0da7578f67f84c9d8e70ef1b6d01e47c006_after_bsp_core.lib",
+      "bytes": 73991506,
+      "sha256": "c0cee93170857af9a75e77fa5c28c0da7578f67f84c9d8e70ef1b6d01e47c006"
+    },
+    {
+      "path": "frozen/d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182_Git_tests_test_ghidra_typed_flow.py",
+      "bytes": 11168,
+      "sha256": "d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182"
+    },
+    {
+      "path": "frozen/d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182_working_tests_test_ghidra_typed_flow.py",
+      "bytes": 11168,
+      "sha256": "d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182"
+    },
+    {
+      "path": "frozen/dacf7aad3b9878b46f2824de6c29c2d4c6f2b5ec08ca746ada33149aea247cdb_after_bsp_core.vcxproj",
+      "bytes": 329140,
+      "sha256": "dacf7aad3b9878b46f2824de6c29c2d4c6f2b5ec08ca746ada33149aea247cdb"
+    },
+    {
+      "path": "frozen/dacf7aad3b9878b46f2824de6c29c2d4c6f2b5ec08ca746ada33149aea247cdb_before_bsp_core.vcxproj",
+      "bytes": 329140,
+      "sha256": "dacf7aad3b9878b46f2824de6c29c2d4c6f2b5ec08ca746ada33149aea247cdb"
+    },
+    {
+      "path": "frozen/dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c_Git_reports_cc12_allocator_exception_copy_leaf_readiness.json",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+    },
+    {
+      "path": "frozen/dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c_working_reports_cc12_allocator_exception_copy_leaf_readiness.json",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_Git_cmake_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_working_cmake_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/f2919656af838d0e6833d99d482e8f9270b3d4941fce46a77db8a2ddf578cbc5_accepted_4d0ae310d_reports_cc12_grid_provider_readiness_primary.json",
+      "bytes": 4421,
+      "sha256": "f2919656af838d0e6833d99d482e8f9270b3d4941fce46a77db8a2ddf578cbc5"
+    },
+    {
+      "path": "frozen/f3408cae915cce32b953042267854fee514686a2abf39b6edbbfa77e2fdfea0d_accepted_295b982af_reports_cc12_particle_admitted_constructor_primary.json",
+      "bytes": 1950943,
+      "sha256": "f3408cae915cce32b953042267854fee514686a2abf39b6edbbfa77e2fdfea0d"
+    },
+    {
+      "path": "frozen/f39cdba23468d3b6669fcffad5882e90e0e315a4b1ffd42ac999e7ebd5ca8be3_before_bsp_core.lib",
+      "bytes": 73991358,
+      "sha256": "f39cdba23468d3b6669fcffad5882e90e0e315a4b1ffd42ac999e7ebd5ca8be3"
+    },
+    {
+      "path": "frozen/f61f20ccb267fcb6d5a2dee77fb1eaf0c48c0cbc4d9d0979f3b62560dfaad8c6_after_bsp_game.map",
+      "bytes": 7549530,
+      "sha256": "f61f20ccb267fcb6d5a2dee77fb1eaf0c48c0cbc4d9d0979f3b62560dfaad8c6"
+    },
+    {
+      "path": "frozen/fc90fd72c3e8902b2d98fb3b3e1003c5b3329b9c912beede5ccb351b06b6e093_initial_App_objects.tar.gz",
+      "bytes": 5019966,
+      "sha256": "fc90fd72c3e8902b2d98fb3b3e1003c5b3329b9c912beede5ccb351b06b6e093"
+    },
+    {
+      "path": "frozen/fd291c487c410e2f60d84747047d463a60433c30c27ae63eda42c880a29ce9dc_accepted_364be1a35_reports_cc12_grid_provider_domain_table_readiness.json",
+      "bytes": 37817,
+      "sha256": "fd291c487c410e2f60d84747047d463a60433c30c27ae63eda42c880a29ce9dc"
+    },
+    {
+      "path": "frozen/fd8c42e029436eef4919348f32650027414a42082a5cc8a1501c5c7fd2f2c513_after_CMakeCache.txt",
+      "bytes": 19709,
+      "sha256": "fd8c42e029436eef4919348f32650027414a42082a5cc8a1501c5c7fd2f2c513"
+    },
+    {
+      "path": "frozen/fd8c42e029436eef4919348f32650027414a42082a5cc8a1501c5c7fd2f2c513_before_CMakeCache.txt",
+      "bytes": 19709,
+      "sha256": "fd8c42e029436eef4919348f32650027414a42082a5cc8a1501c5c7fd2f2c513"
+    },
+    {
+      "path": "frozen/fd8c42e029436eef4919348f32650027414a42082a5cc8a1501c5c7fd2f2c513_initial_CMakeCache.txt",
+      "bytes": 19709,
+      "sha256": "fd8c42e029436eef4919348f32650027414a42082a5cc8a1501c5c7fd2f2c513"
+    },
+    {
+      "path": "frozen/fe8a7e5d779574ab1701ee78a8246acae0afe0c4f07171c44722afc4b17c5261_after.json",
+      "bytes": 2482937,
+      "sha256": "fe8a7e5d779574ab1701ee78a8246acae0afe0c4f07171c44722afc4b17c5261"
+    },
+    {
+      "path": "inspect_objects.py",
+      "bytes": 2597,
+      "sha256": "ee55b3696c8ddde6656557986004fd1ee7a732f786b2ff186474e7744bfcf5e3"
+    },
+    {
+      "path": "publish.py",
+      "bytes": 3950,
+      "sha256": "50b59566860a04673e28fc9cdc89c4639d20e53f4bc2107ff63378776c4daef4"
+    },
+    {
+      "path": "relocate_verify.py",
+      "bytes": 1184,
+      "sha256": "f1b76dc52e2a4fbcddfc2f1ced4a40a0b948389108affed2a1cbe9d907d640b7"
+    },
+    {
+      "path": "reviewed_coff_indexed_mixed.py",
+      "bytes": 8377,
+      "sha256": "52474d6f8a7aeb65baa9b683398f104e4e3eb6dfa31d6e6e361be99263470db3"
+    },
+    {
+      "path": "run_audit.py",
+      "bytes": 714,
+      "sha256": "c707b5e7f3c97bb85a68c6ebce35e1c83f8f72f141b71aef594c4c3b16be2c73"
+    },
+    {
+      "path": "run_build.py",
+      "bytes": 1113,
+      "sha256": "f6d829ed548542144be4905879b13c0888c740ba51581122a8f7aabf5dc77e5a"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 8404,
+      "sha256": "4f78d3dd8e6af283d196b785c7b1216e7ecc89c2451d14b3bb9e0ce8d3f68f92"
+    }
+  ],
+  "replay": {
+    "portable": "python local/cc12_grid_canonical_default_pair/verify.py --report reports/cc12_grid_canonical_default_pair.json",
+    "actual_Git": "python local/cc12_grid_canonical_default_pair/verify.py --report reports/cc12_grid_canonical_default_pair.json --original-worktree .",
+    "physical_relocation": "python local/cc12_grid_canonical_default_pair/relocate_verify.py",
+    "receipt_policy": "Separate local execution receipts bind their report hash; they are not recursive report inputs."
+  },
+  "qualification": "Exact two canonical grid default methods plus direct include and four header contract comment lines. Two normal builds and existing checks, complete rebuilt Source COFF bodies and positive provider definitions, actual selected linked bodies and table operands verified. No Original allocator ABI/foreign-domain equivalence, raw-grid callable table, game owner/activation, new tests/probes, fresh Native queries or Ghidra/ledger writes. Existing differential suite executes eight historical math seeds."
+}
