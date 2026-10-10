@@ -1,0 +1,635 @@
+{
+  "schema": "bsp.cc12.application-targets-body-primary.v1",
+  "status": "exact_profile_and_guard_memory_operation_contracts_accepted_external_return_and_FH3_activation_unproved",
+  "worker_commit": "f67738f2d00f41a8e34f77368002e81a26e32379",
+  "worker_report": {
+    "path": "local/cc12_application_targets_body_primary/worker_report.json",
+    "bytes": 241100,
+    "sha256": "109597b0deb4dd1d94278f9efbe27dc932353a2e1f1d5c57d780dc087a81e0e0"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_targets_body_primary/worker_document.md",
+    "bytes": 9150,
+    "sha256": "645920fe38c5fa6d7e7e0ce70e8886529cfdc9869f2bb590dd1df3ced8cfea74"
+  },
+  "copied_finite_pins": 726,
+  "copied_bytes": 493546378,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_targets_body_primary/Root_guarded_replay.json",
+    "bytes": 776,
+    "sha256": "6c76ea04667e71e88097cd209fef2d606474cc692aca36fc0328ec935758c008"
+  },
+  "actual_frozen_Git_occurrences": 8492,
+  "actual_closed_Source_paths": 4210,
+  "prior_metadata_619_pins_byte_identical": true,
+  "Root_Source_differences": [
+    "include/bsp/gui_text_native_renderer.hpp",
+    "src/gui_text_native_renderer.cpp"
+  ],
+  "Root_Source_delta_qualification": {
+    "commit": "224a64d4b6f1907a12bed5d8dc4870b37ecaf5e8",
+    "files": [
+      "include/bsp/gui_text_native_renderer.hpp",
+      "src/gui_text_native_renderer.cpp"
+    ],
+    "Root_current_matches_committed_renderer_helper": true,
+    "credit": "Separately accepted two-file GUI helper delta; no extra Native/build/runtime credit from this body packet."
+  },
+  "Native": {
+    "fresh_code_bytes": 32,
+    "fresh_data_bytes": 0,
+    "GPR_worker_epoch": 95,
+    "complete_owned_ranges": [
+      {
+        "address": "00412430",
+        "end_inclusive": "00412436",
+        "bytes": 7,
+        "hex": "c7011838ce00c3",
+        "sha256": "197860f577f6cbc985b15e4605cd24b4388d933d89eb449e8ef5d9ca60d86ea1"
+      },
+      {
+        "address": "00411ee0",
+        "end_inclusive": "00411ef8",
+        "bytes": 25,
+        "hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382"
+      }
+    ],
+    "per_byte_ownership": [
+      {
+        "address": "00412430",
+        "owner": "00412430",
+        "instruction_start": "00412430",
+        "instruction_length": 6
+      },
+      {
+        "address": "00412431",
+        "owner": "00412430",
+        "instruction_start": "00412430",
+        "instruction_length": 6
+      },
+      {
+        "address": "00412432",
+        "owner": "00412430",
+        "instruction_start": "00412430",
+        "instruction_length": 6
+      },
+      {
+        "address": "00412433",
+        "owner": "00412430",
+        "instruction_start": "00412430",
+        "instruction_length": 6
+      },
+      {
+        "address": "00412434",
+        "owner": "00412430",
+        "instruction_start": "00412430",
+        "instruction_length": 6
+      },
+      {
+        "address": "00412435",
+        "owner": "00412430",
+        "instruction_start": "00412430",
+        "instruction_length": 6
+      },
+      {
+        "address": "00412436",
+        "owner": "00412430",
+        "instruction_start": "00412436",
+        "instruction_length": 1
+      },
+      {
+        "address": "00411ee0",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee0",
+        "instruction_length": 3
+      },
+      {
+        "address": "00411ee1",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee0",
+        "instruction_length": 3
+      },
+      {
+        "address": "00411ee2",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee0",
+        "instruction_length": 3
+      },
+      {
+        "address": "00411ee3",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee3",
+        "instruction_length": 2
+      },
+      {
+        "address": "00411ee4",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee3",
+        "instruction_length": 2
+      },
+      {
+        "address": "00411ee5",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee5",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ee6",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee5",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ee7",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee5",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ee8",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee5",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ee9",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee5",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411eea",
+        "owner": "00411ee0",
+        "instruction_start": "00411ee5",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411eeb",
+        "owner": "00411ee0",
+        "instruction_start": "00411eeb",
+        "instruction_length": 2
+      },
+      {
+        "address": "00411eec",
+        "owner": "00411ee0",
+        "instruction_start": "00411eeb",
+        "instruction_length": 2
+      },
+      {
+        "address": "00411eed",
+        "owner": "00411ee0",
+        "instruction_start": "00411eed",
+        "instruction_length": 4
+      },
+      {
+        "address": "00411eee",
+        "owner": "00411ee0",
+        "instruction_start": "00411eed",
+        "instruction_length": 4
+      },
+      {
+        "address": "00411eef",
+        "owner": "00411ee0",
+        "instruction_start": "00411eed",
+        "instruction_length": 4
+      },
+      {
+        "address": "00411ef0",
+        "owner": "00411ee0",
+        "instruction_start": "00411eed",
+        "instruction_length": 4
+      },
+      {
+        "address": "00411ef1",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef1",
+        "instruction_length": 1
+      },
+      {
+        "address": "00411ef2",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef2",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ef3",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef2",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ef4",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef2",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ef5",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef2",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ef6",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef2",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ef7",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef2",
+        "instruction_length": 6
+      },
+      {
+        "address": "00411ef8",
+        "owner": "00411ee0",
+        "instruction_start": "00411ef8",
+        "instruction_length": 1
+      }
+    ],
+    "typed_instruction_flows": [
+      {
+        "address": "00412430",
+        "length": 6,
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00412436"
+        }
+      },
+      {
+        "address": "00412436",
+        "length": 1,
+        "default_flow": "TERMINATOR",
+        "effective_flow": "TERMINATOR",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": null
+      },
+      {
+        "address": "00411ee0",
+        "length": 3,
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00411ee3"
+        }
+      },
+      {
+        "address": "00411ee3",
+        "length": 2,
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00411ee5"
+        }
+      },
+      {
+        "address": "00411ee5",
+        "length": 6,
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00411eeb"
+        }
+      },
+      {
+        "address": "00411eeb",
+        "length": 2,
+        "default_flow": "CONDITIONAL_JUMP",
+        "effective_flow": "CONDITIONAL_JUMP",
+        "override": "NONE",
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00411ef8"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00411ef8"
+          }
+        ],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00411eed"
+        }
+      },
+      {
+        "address": "00411eed",
+        "length": 4,
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00411ef1"
+        }
+      },
+      {
+        "address": "00411ef1",
+        "length": 1,
+        "default_flow": "FALL_THROUGH",
+        "effective_flow": "FALL_THROUGH",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00411ef2"
+        }
+      },
+      {
+        "address": "00411ef2",
+        "length": 6,
+        "default_flow": "COMPUTED_CALL",
+        "effective_flow": "COMPUTED_CALL",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [
+          {
+            "space": "EXTERNAL",
+            "offset": "00000159"
+          }
+        ],
+        "fallthrough": {
+          "space": "ram",
+          "offset": "00411ef8"
+        }
+      },
+      {
+        "address": "00411ef8",
+        "length": 1,
+        "default_flow": "TERMINATOR",
+        "effective_flow": "TERMINATOR",
+        "override": "NONE",
+        "default_targets": [],
+        "effective_targets": [],
+        "fallthrough": null
+      }
+    ],
+    "decoded": [
+      {
+        "address": "00412430",
+        "bytes": "c7011838ce00",
+        "text": "mov dword ptr [ecx], 0xce3818"
+      },
+      {
+        "address": "00412436",
+        "bytes": "c3",
+        "text": "ret"
+      },
+      {
+        "address": "00411ee0",
+        "bytes": "8b4104",
+        "text": "mov eax, dword ptr [ecx + 4]"
+      },
+      {
+        "address": "00411ee3",
+        "bytes": "85c0",
+        "text": "test eax, eax"
+      },
+      {
+        "address": "00411ee5",
+        "bytes": "c701fc37ce00",
+        "text": "mov dword ptr [ecx], 0xce37fc"
+      },
+      {
+        "address": "00411eeb",
+        "bytes": "740b",
+        "text": "je 0x411ef8"
+      },
+      {
+        "address": "00411eed",
+        "bytes": "834018ff",
+        "text": "add dword ptr [eax + 0x18], -1"
+      },
+      {
+        "address": "00411ef1",
+        "bytes": "50",
+        "text": "push eax"
+      },
+      {
+        "address": "00411ef2",
+        "bytes": "ff151022ce00",
+        "text": "call dword ptr [0xce2210]"
+      },
+      {
+        "address": "00411ef8",
+        "bytes": "c3",
+        "text": "ret"
+      }
+    ],
+    "IAT_contents_bytes_read": 0,
+    "external_target_bytes_read": 0,
+    "Native_execution": false
+  },
+  "reset_contract": {
+    "receiver_register": "ECX",
+    "write": "DWORD[ECX]=00CE3818",
+    "return_form": "C3 RET; no immediate stack argument cleanup",
+    "direct_data_register_changes": [],
+    "arithmetic_flags_changed": false,
+    "normal_ESP_delta_after_return": 4
+  },
+  "guard_contract": {
+    "record_register": "ECX",
+    "captured_register": "EAX",
+    "capture_before_profile_write": true,
+    "operations": [
+      "EAX=DWORD[ECX+4]",
+      "TEST EAX,EAX",
+      "DWORD[ECX]=00CE37FC",
+      "JZ 00411EF8",
+      "ADD DWORD[EAX+0x18],-1",
+      "PUSH EAX",
+      "CALL DWORD[00CE2210]",
+      "RET"
+    ],
+    "null_path": "Profile write completes; skip counter and import; EAX=0, ECX unchanged; RET consumes only incoming return address.",
+    "nonnull_path": "Profile write then modulo-2^32 counter decrement, push captured pointer, real indirect CALL through CE2210, and RET only if imported call returns.",
+    "flags": "TEST defines SF/ZF/PF and clears CF/OF; AF undefined. MOV preserves them for JZ. Nonnull ADD -1 updates arithmetic flags; import may change flags/registers. Source does not promise these flag/register results.",
+    "no_direct_guard_plus4_write": true,
+    "alias_and_import_indirect_effects_not_excluded": true,
+    "stored_summary_call_count": 0,
+    "actual_opcode_call_count": 1,
+    "typed_default_effective_call": "COMPUTED_CALL",
+    "saved_call_override": "NONE",
+    "typed_external_reference": {
+      "space": "EXTERNAL",
+      "offset": "00000159"
+    },
+    "actual_runtime_binding_or_API_identity_proved": false
+  },
+  "conditional_nonnull_stack": {
+    "target_entry_ESP": 0,
+    "after_PUSH": -4,
+    "external_entry_ESP": -8,
+    "external_return_address": "00411EF8",
+    "argument_at_external_ESP_plus4": "captured EAX",
+    "original_target_return_address_at_external_ESP_plus8": true,
+    "required_external_return_ESP": 0,
+    "external_must_remove_argument_bytes": 4,
+    "final_RET_ESP_delta": 4,
+    "actual_external_return_or_cleanup_proved": false
+  },
+  "source_provider_facts": {
+    "reset": {
+      "path": "src/native_render_service_base.cpp",
+      "line": 51,
+      "behavior": "One volatile uint32 profile store CE3818 through supplied actual receiver.",
+      "argument": "void* actual_receiver",
+      "noexcept": true,
+      "build_source_listed": true,
+      "lexical_query_hits": 30
+    },
+    "guard": {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "line": 33,
+      "behavior": "Capture pointer at supplied guard+4; write CE37FC at guard+0; if nonnull decrement actual section+18 then call LeaveCriticalSection. Preserve guard+4.",
+      "argument": "void* actual_8byte_guard",
+      "noexcept": false,
+      "build_source_listed": true,
+      "lexical_query_hits": 61
+    },
+    "qualification": "Existing Source implementations and build-list membership only; no fresh Native semantic match, original ABI, actual Application composition, OS behavior or runtime check."
+  },
+  "source_comparison": "Existing opaque-pointer providers match the directly observed memory-operation ordering and uint32 decrement on valid raw storage. Source API name is LeaveCriticalSection; current IAT binding, external behavior, Native registers/flags ABI and EH frame are not proved.",
+  "original_contract": {
+    "reset": "ECX is the actual receiver. MOV DWORD[ECX],CE3818; C3 RET. No direct data-register or arithmetic-flag change; successful RET consumes the incoming return address, not any stack argument.",
+    "guard": "ECX is the actual record. Load EAX from +4, TEST it, write CE37FC to +0, branch on preserved ZF. Null skips counter/import and returns. Nonnull ADD DWORD[EAX+18],-1 then PUSH EAX then FF15 CALL DWORD[CE2210], followed by C3 RET.",
+    "call": "The guard has a real indirect machine CALL, default/effective COMPUTED_CALL and override NONE. Its saved prototype-summary call_count=0 is inconsistent with the opcode and typed flow. The funclet tail JMPs remain a separate earlier observation.",
+    "stack": "With target-entry ESP=S, PUSH puts captured at S-4; CALL puts 411EF8 at S-8. A normal external return must arrive at 411EF8 with ESP=S by removing the one four-byte argument; the final RET then consumes the original target return address. Actual import cleanup or return behavior is not proved.",
+    "flags": "TEST determines the branch before the profile MOV, which preserves flags. Nonnull ADD -1 updates arithmetic flags (unlike DEC); the import can change flags and registers. C++ Source makes no equivalent register/flag promise.",
+    "alias": "Only the direct store targets guard+0; guard+4 has no direct store. Counter memory or import behavior may alias other storage, so global preservation claims require valid disjoint domain assumptions.",
+    "source": "Existing opaque-pointer helpers match direct memory-operation order and uint32 decrement under valid raw-storage requirements. Source calls LeaveCriticalSection, but neither the runtime pointer in CE2210 nor its actual API identity, behavior or return is read or proved here.",
+    "frame": "Retained funclet operands require the same conditional EBP equations as before. These target bodies consume ECX but establish no original FH3 incoming EBP, invocation or executable Application owner.",
+    "custody": "Retain receiver/guard raw storage, actual +14 member reference, authority cells, borrowed services and escaped records; keep original receiver/current publication/selected registration argument/captured section identities separate. No retry/free/unregister/destructor policy is newly activated."
+  },
+  "decision": {
+    "Cpp_GO": false,
+    "raw_owner_GO": false,
+    "frame_activation_GO": false,
+    "exceptional_cleanup_GO": false,
+    "normal_retirement_GO": false,
+    "E1AE78_separate": true,
+    "next_packet": "cc12_application_singleton_exceptional_source_composition_readiness",
+    "proposed_next_scope": {
+      "single_packet": true,
+      "Source_only": true,
+      "maximum_fresh_Native_code_bytes": 0,
+      "maximum_fresh_Native_data_bytes": 0,
+      "no_new_Ghidra_queries_or_mutations": true,
+      "no_CPP_implementation_or_build_or_tests": true,
+      "analysis": "Use only frozen current Source and the retained constructor/state map/actions/target bodies to assess an explicit C++ cleanup composition with actual raw receiver/guard identities, arming order, escape/poststate and custody requirements. Do not invoke original funclets or claim FH3/EBP, current IAT binding, external return effects, Native ABI or game equivalence.",
+      "normal_retirement_and_E1AE78_remain_separate": true
+    }
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": "Two complete two-entry typed metadata captures, old comment journal and two refreshed already-admitted body exports.",
+    "GPR_writes": "Two locked evidence-comment appends and save. Existing names retained; no analysis repairs.",
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0,
+    "Root_additional_body_admission": 0
+  },
+  "limits": [
+    "Native guard uses a real indirect CALL followed by RET; saved call_count=0 is inconsistent with opcode and typed flow.",
+    "The nonnull intended return requires external removal of one four-byte argument; no IAT pointer or external implementation was read.",
+    "Source matches memory ordering and modulo32 stored decrement on valid actual storage; its explicit C++ arguments do not recover ECX/flags ABI.",
+    "Only absence of direct guard+4 stores is established, with aliases and external effects explicitly excluded from preservation claims.",
+    "Actual FH3 EBP, invocation, callable Application owner/publication, escaped custody, retirement and startup/gameplay remain unproved.",
+    "Existing Source/build/fixture records remain unchanged; this new Application contract does not inherit broader caller/frame/runtime credit from them."
+  ],
+  "Root_annotation": {
+    "before": {
+      "path": "local/cc12_application_targets_body_primary/Root_before_metadata.json",
+      "bytes": 14610,
+      "sha256": "e49d4067ac0b245f43b691fcb01b8315d3a4f883ce2b596a0c7bffef99861382"
+    },
+    "after": {
+      "path": "local/cc12_application_targets_body_primary/Root_after_metadata.json",
+      "bytes": 14610,
+      "sha256": "087fdffa1dda9aaa241bb2f6ee969fc9aaa121da576ae0d5ce9aab0755c1a0c0"
+    },
+    "GPR_before": 95,
+    "GPR_after": 98,
+    "comments_added": 2,
+    "renames": 0,
+    "old_comments_and_name_evidence_preserved": true,
+    "complete_typed_metadata_equal_except_modification": true,
+    "body_listing_flow_prototype_Source_type_and_no_return_preserved": true,
+    "existing_Source_function_records_preserved_byte_exact": true,
+    "preserved_function_shard": {
+      "path": "local/cc12_application_targets_body_primary/preserved_function_shard_before.bin",
+      "bytes": 248407,
+      "sha256": "d508ab891bb4fa031627f5c6115b850857df4a2ca87c82b2953e9ec16d03659e"
+    },
+    "journal": {
+      "path": "local/cc12_application_targets_body_primary/Root_comment_journal.json",
+      "bytes": 7105,
+      "sha256": "77491e9140960ee974ffd658fc25dbabb92be4d9de377bea76e63692a879791d"
+    },
+    "save_result": {
+      "path": "local/cc12_application_targets_body_primary/Root_save_result.json",
+      "bytes": 107,
+      "sha256": "10080395266cbd7fbad176d6d133364cd579170aeccba8133b563c31c12dce7a"
+    },
+    "project_saved": true,
+    "exports": [
+      {
+        "path": "local/cc12_application_targets_body_primary/refreshed_exports/00412430/assembly.txt",
+        "bytes": 55,
+        "sha256": "875d29b68889787c757c0e7abf899c254b4e1edf154c808a9a2d82460a4384d6"
+      },
+      {
+        "path": "local/cc12_application_targets_body_primary/refreshed_exports/00412430/decompiled.c",
+        "bytes": 727,
+        "sha256": "7047af82bd5e79be9a4aa8b34a40b66ce95981ce778aeaed867246559a2203bb"
+      },
+      {
+        "path": "local/cc12_application_targets_body_primary/refreshed_exports/00412430/metadata.json",
+        "bytes": 228,
+        "sha256": "de61a62414e7fcc301452674e8bf97145bdd08772186b6c5e7602c272da94b48"
+      },
+      {
+        "path": "local/cc12_application_targets_body_primary/refreshed_exports/00411ee0/assembly.txt",
+        "bytes": 247,
+        "sha256": "dba7ea7b01e4d82638a2a1e4ac871575e1593ce2bb0805777e2628861076b118"
+      },
+      {
+        "path": "local/cc12_application_targets_body_primary/refreshed_exports/00411ee0/decompiled.c",
+        "bytes": 2017,
+        "sha256": "f8f3621c3aa550044df14d256620144587a76ae08d5fa2b7c310a90167e63a8a"
+      },
+      {
+        "path": "local/cc12_application_targets_body_primary/refreshed_exports/00411ee0/metadata.json",
+        "bytes": 210,
+        "sha256": "da9670b7a476408ff54cda0af4e3c9ffe5902b1003294b5cf4abb4cea87b4146"
+      }
+    ]
+  }
+}
