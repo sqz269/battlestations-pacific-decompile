@@ -177,3 +177,12 @@ or image parity is established. Render-mesh `01090444`, skined-mesh-resource
 `01090454` and matrix-resource `01090468` remain distinct from camera-resource
 `01090288`, skin-model `01090344`, compact `0109042C` and excluded skined-mesh
 `01090370`; none of those other families was used to fill a missing contract.
+
+Primary review independently froze all148 pin occurrences and verified all40
+selected baseline Git blobs and22 complete command receipts. Thirty-nine
+context files still match current Git; cmake/startup.cmake gained only the
+independently reviewed Source616 row-fragment registration. That later change
+adds no consumer evidence. The missing fallback provider and actual remaining
+forwarding/loading/deletion contracts remain held; no consumer C++ packet is
+admitted. The available mesh owner and predicates need no duplicate startup
+work. No new Native, build or execution credit is added.
