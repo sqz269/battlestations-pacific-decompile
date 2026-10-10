@@ -1,0 +1,110 @@
+{
+  "schema": "bsp.cc12.application-unwind-map-primary.v1",
+  "status": "conditional_declared_unwind_map_and_action_metadata_accepted_actual_frame_cleanup_Cpp_owner_activation_unproved",
+  "worker_commit": "dc4c56afbc47a32b23f8048229a2d769c711221a",
+  "worker_report": {
+    "path": "local/cc12_application_unwind_map_primary/worker_report.json",
+    "bytes": 129949,
+    "sha256": "afbe9318ebc2f6a5469a159fdb69fe1daaf06c491cdb0f33d7e7c0913e72d330"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_unwind_map_primary/worker_document.md",
+    "bytes": 6348,
+    "sha256": "e398162f5054fb190e0bf55d7d7480ad229cf9b7f2c1aaecf031cbb5423e8e70"
+  },
+  "copied_finite_pins": 433,
+  "copied_bytes": 397243177,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_unwind_map_primary/Root_guarded_replay.json",
+    "bytes": 584,
+    "sha256": "76f8b44b93a86a89e9ec4bde18088fbedd9fe4eca2aea7921988b2f4232556ad"
+  },
+  "actual_frozen_Git_occurrences": 8468,
+  "exact_committed_report_and_document_read_via_Git": true,
+  "actual_closed_Source_paths": 4210,
+  "prior_descriptor_355_pins_byte_identical": true,
+  "Root_Source_differences": [
+    "include/bsp/native_particle_model_lifetime.hpp",
+    "src/native_particle_model_lifetime.cpp"
+  ],
+  "Native": {
+    "fresh_data_bytes": 16,
+    "fresh_code_bytes": 0,
+    "GPR_worker_epoch": 90,
+    "raw_DWORDs": [
+      "FFFFFFFF",
+      "00CC7230",
+      "00000000",
+      "00CC7238"
+    ],
+    "data_unit_bytes": 16,
+    "action_metadata_hulls": [
+      "00CC7230..00CC7237",
+      "00CC7238..00CC723F"
+    ],
+    "action_and_suffix_and_target_bytes_read": 0,
+    "Native_execution": false
+  },
+  "qualified_layout": {
+    "frozen_definition_version": "14.51.36231",
+    "original_compiler_or_runtime_identity_established": false,
+    "conditional_declared_chain": "1 -> 0 -> -1",
+    "conditional_actions": [
+      "state0 -> -1:CC7230",
+      "state1 ->0:CC7238"
+    ],
+    "actual_invocation_or_action_effects_established": false
+  },
+  "contract": {
+    "raw": "Exactly E01CB4..E01CC3: FFFFFFFF,00CC7230,00000000,00CC7238.",
+    "conditional_map": "Under the retained MSVC14.51 classic x86 absolute entry definition and epoch88 count/pointer: entry0 toState-1 actionCC7230; entry1 toState0 actionCC7238. Declared graph1->0->-1 is not a runtime execution trace.",
+    "metadata": "Each encoded action is a complete8-byte stored function, undefined(void), NoReturn=false. First instruction length3 and entry fallthrough metadata only. No action instruction text or bytes read.",
+    "names": "Proto summaries name BSP_SingletonBase_ResetProfile and BSP_SystemSingletonGuard_Destroy and report one call each; names/counts are saved metadata hints, not verified instruction forms, register ABI or cleanup semantics.",
+    "states": "Only compare declared indices0/1 to prior epoch79 state stores BEA830/BEA861. No guard/receiver spill binding, actual handler invocation, post-unwind state or cleanup disposition is established.",
+    "custody": "Keep original receiver/current publication/registration argument/captured section separate and retained. No reset/unregister/free/retry/destructor policy or raw owner activation. E1AE78 remains separate."
+  },
+  "decision": {
+    "Cpp_GO": false,
+    "raw_owner_GO": false,
+    "frame_activation_GO": false,
+    "exceptional_cleanup_GO": false,
+    "normal_retirement_GO": false,
+    "next_packet": "cc12_application_singleton_unwind_actions_frame_readiness",
+    "proposed_next_scope": {
+      "single_packet": true,
+      "metadata_first": true,
+      "read_only": true,
+      "functions": [
+        {
+          "address": "00CC7230",
+          "expected_complete_range": "00CC7230..00CC7237",
+          "max_complete_hull_bytes": 8
+        },
+        {
+          "address": "00CC7238",
+          "expected_complete_range": "00CC7238..00CC723F",
+          "max_complete_hull_bytes": 8
+        }
+      ],
+      "maximum_total_fresh_code_bytes": 16,
+      "admission": "Read each body only after refreshed complete typed ownership and exact range lease. Missing, changed, incomplete or larger hulls hand off without guessed boundaries.",
+      "frame_analysis": "Compare decoded action operand requirements only to already pinned epoch79 constructor frame stores. Incoming action frame/EBP binding remains a hypothesis unless established; no actual FH3 invocation claim.",
+      "no_callee_target_descriptor_suffix_or_other_handler_reads": true,
+      "no_listing_flow_prototype_or_noreturn_repairs": true
+    },
+    "E1AE78_separate": true
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Root later hook adapter Source pair and fresh build remain separate from frozen worker Source map proof.",
+    "Complete8-byte action metadata and call/name summaries are not opcode, frame or cleanup evidence.",
+    "Metadata and data snapshots Native79/85/88/90 and later Root92 annotations retain separate provenance."
+  ]
+}
