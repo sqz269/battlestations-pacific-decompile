@@ -1,0 +1,13 @@
+# Particle-manager raw deletion and owner: primary review
+
+Root accepts evidence commit `a8ae03e0ca38b8ffbdcad347acd9c0d49a7d4fe0` as readiness for the exact six-file dormant owner/deletion binding. The raw-access dependency is now accepted on main at 3b0ae07e4. Its prior semantic Source epoch remains labeled 9f7365c76.
+
+The physically copied guarded replay and separate actual-Git check passed. Root checked all 476 relied working Source files against the current checkout; the only material overlays are the separately accepted particle manager cpp/hpp pair, matching the immutable Source3350 epoch. Root independently checked both finite profile DWORDs and decoded the two complete 30-byte scalar bodies: captured ECX receiver, corresponding destructor, flags bit0 test, captured-receiver free, captured receiver return and RET4.
+
+The six-file contract adds one permanent typed F8C274 authority, one stable host-owned inline optional access context and one appended deletion-context pointer admitting D5D7EC/AF0870 and D5D7F8/AF1080. The context borrows that exact authority, canonical01090AA0 and the live verified D7A24C reference. Preparing it must not allocate/fetch a manager, allocate a receiver/context heap object, publish/register an owner or cache the constant's value. No void-reference alias or mirror cell is permitted. Preserve full flags and the captured receiver for scalar destruction/free; the base independently observes the current publication for unregister.
+
+Old-host drain must finish while its context, data references and receiver graph remain alive. Binding/retargeting cannot adopt unknown surviving registered owners. Context retirement must follow drain, and normal/reentrant callbacks must remain inside that lifetime. The appended binding grows the proposed Win32 structure from192 to196, shifting later C++ host fields; source compilation and actual header-consumer review are required. No native host-layout compatibility is inferred.
+
+This review enables no startup call. Activation additionally needs the separately reviewed early caller allocation/failure schedule and explicit Source containment before any drain on a failed raw constructor graph. The existing stats/clock phase and fail-closed gates supply a concrete policy candidate; no publication repair, free-current or synthetic cleanup is implied. Register ABI, FH3, hardware faults, startup, audio and gameplay remain unverified.
+
+Exact retained evidence is in `reports/cc12_particle_manager_raw_deletion_owner_primary_review.json`. This acceptance changes no C++, invokes no compiler or executable and mutates no Ghidra state.
