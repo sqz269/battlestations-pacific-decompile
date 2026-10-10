@@ -1,0 +1,2360 @@
+{
+  "schema": "cc12-fmod-audio-endpoint-startup-recheck-v1",
+  "packet": "cc12_fmod_audio_endpoint_startup_recheck",
+  "observed_utc": "2026-10-10T10:24:42.171096+00:00",
+  "status": "Read-only endpoint/installed SDK refresh complete; normal executable startup still requires a real render endpoint; no supported config/CLI bypass found.",
+  "scope": {
+    "owned_files": [
+      "docs/CC12_FMOD_AUDIO_ENDPOINT_STARTUP_RECHECK.md",
+      "reports/cc12_fmod_audio_endpoint_startup_recheck.json"
+    ],
+    "Ghidra_addresses": [],
+    "GPR_or_Native_analysis": false,
+    "game_or_visible_prototype_execution": false,
+    "service_device_registry_configuration_or_install_changes": false,
+    "tracked_Cpp_CMake_or_tests_changed": false,
+    "new_tests": 0
+  },
+  "git": {
+    "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+    "branch": "agent/cc12_fmod_startup_failure",
+    "source_commit": "898224d3c0c206cc30b04343f4ed8e74dace3de9",
+    "primary_instruction_main": "898224d3c",
+    "working_tree_status_before_owned_receipt": "?? reports/cc12_fmod_audio_endpoint_startup_recheck.json"
+  },
+  "current_environment": {
+    "observed_utc": "2026-10-10T10:18:21.019065+00:00",
+    "mmdevice_script": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_audio_endpoint_recheck.ps1",
+      "bytes": 5389,
+      "sha256": "9fb67969c707994faaeff22a214b8bf42ad85341c575da275e7727366ce3945c",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\9fb67969c707994f_cc12_audio_endpoint_recheck.ps1"
+    },
+    "mmdevice": {
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\frozen\\9fb67969c707994f_cc12_audio_endpoint_recheck.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+      "pid": 20388,
+      "start_utc": "2026-10-10T10:18:18.859895+00:00",
+      "finish_utc": "2026-10-10T10:18:19.282632+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\mmdevice_stdout.txt",
+        "bytes": 2572,
+        "sha256": "2f3fe577228ce88575a995d242d700e08ac1500c94eddf8aecb73e14dbe3b495",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\2f3fe577228ce885_mmdevice_stdout.txt"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\mmdevice_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_mmdevice_stderr.txt"
+      },
+      "observed": {
+        "observed_utc": "2026-10-10T10:18:19.2078411Z",
+        "pid": 20388,
+        "session_id": 1,
+        "session_name": "Console",
+        "process_pointer_bytes": 8,
+        "query": "MMDeviceEnumerator: eRender DEVICE_STATE_ACTIVE enumeration/count; default eConsole/eMultimedia/eCommunications; ID/state only",
+        "read_only": true,
+        "native_result": {
+          "EnumeratorCreateHResult": "00000000",
+          "ActiveRenderEnumHResult": "00000000",
+          "ActiveRenderGetCountHResult": "00000000",
+          "ActiveRenderCount": 0,
+          "Active": [],
+          "Defaults": [
+            {
+              "Role": "console",
+              "HResult": "80070490",
+              "EndpointReturned": false,
+              "EndpointId": null,
+              "GetIdHResult": null,
+              "State": 0,
+              "GetStateHResult": null
+            },
+            {
+              "Role": "multimedia",
+              "HResult": "80070490",
+              "EndpointReturned": false,
+              "EndpointId": null,
+              "GetIdHResult": null,
+              "State": 0,
+              "GetStateHResult": null
+            },
+            {
+              "Role": "communications",
+              "HResult": "80070490",
+              "EndpointReturned": false,
+              "EndpointId": null,
+              "GetIdHResult": null,
+              "State": 0,
+              "GetStateHResult": null
+            }
+          ]
+        }
+      }
+    },
+    "environment": {
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "\n$ErrorActionPreference = 'Stop'\n$names = @('Audiosrv','AudioEndpointBuilder','MMCSS')\n$services = foreach ($n in $names) { $s=Get-CimInstance Win32_Service -Filter \"Name='$n'\"; if($null -eq $s){[ordered]@{Name=$n;Present=$false}}else{[ordered]@{Name=$s.Name;Present=$true;State=$s.State;StartMode=$s.StartMode;ProcessId=$s.ProcessId}} }\n$registry = foreach($d in Get-ChildItem -LiteralPath 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\MMDevices\\Audio\\Render') { $s=Get-ItemProperty -LiteralPath $d.PSPath; $p=Get-ItemProperty -LiteralPath (Join-Path $d.PSPath 'Properties'); [ordered]@{id=$d.PSChildName;DeviceState=$s.DeviceState;description=$p.'{a45c254e-df1c-4efd-8020-67d146a850e0},2';device=$p.'{b3f8fa53-0004-438e-9003-51a46e139bfc},6'} }\n$dlls = foreach($n in @('fmodex.dll','fmod_event.dll')) { $p=Join-Path 'I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific' $n; $f=Get-Item -LiteralPath $p; [ordered]@{path=$p;FileVersion=$f.VersionInfo.FileVersion;ProductVersion=$f.VersionInfo.ProductVersion;FileDescription=$f.VersionInfo.FileDescription} }\n$os = Get-CimInstance Win32_OperatingSystem\n[ordered]@{observed_utc=[DateTime]::UtcNow.ToString('o');pid=$PID;session_name=$env:SESSIONNAME;session_id=[System.Diagnostics.Process]::GetCurrentProcess().SessionId;process_pointer_bytes=[IntPtr]::Size;os=[ordered]@{Caption=$os.Caption;Version=$os.Version;BuildNumber=$os.BuildNumber};services=@($services);sound_devices=@(Get-CimInstance Win32_SoundDevice | Select-Object Name,Status,ConfigManagerErrorCode,PNPDeviceID);registry_render_records=@($registry);installed_dll_version_info=@($dlls)} | ConvertTo-Json -Depth 8\n"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+      "pid": 85468,
+      "start_utc": "2026-10-10T10:18:19.287585+00:00",
+      "finish_utc": "2026-10-10T10:18:21.013041+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\environment_stdout.txt",
+        "bytes": 19940,
+        "sha256": "2c14d0c1fb57d32ac4376fb582f97f6505d73238982b0020f9013982638849be",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\2c14d0c1fb57d32a_environment_stdout.txt"
+      },
+      "stderr": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\environment_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_environment_stderr.txt"
+      },
+      "observed": {
+        "observed_utc": "2026-10-10T10:18:20.9031571Z",
+        "pid": 85468,
+        "session_name": "Console",
+        "session_id": 1,
+        "process_pointer_bytes": 8,
+        "os": {
+          "Caption": "Microsoft Windows 11 Pro",
+          "Version": "10.0.26200",
+          "BuildNumber": "26200"
+        },
+        "services": [
+          {
+            "Name": "Audiosrv",
+            "Present": true,
+            "State": "Running",
+            "StartMode": "Auto",
+            "ProcessId": 4936
+          },
+          {
+            "Name": "AudioEndpointBuilder",
+            "Present": true,
+            "State": "Running",
+            "StartMode": "Auto",
+            "ProcessId": 4760
+          },
+          {
+            "Name": "MMCSS",
+            "Present": false
+          }
+        ],
+        "sound_devices": [
+          {
+            "Name": "Realtek USB Audio",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "USB\\VID_0B05&PID_1B9B&MI_00\\9&10574C6A&0&0000"
+          },
+          {
+            "Name": "AMD High Definition Audio Device",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&1A6972F4&0&0001"
+          },
+          {
+            "Name": "USB Audio Device",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "USB\\VID_0951&PID_16ED&MI_02\\A&271CE33E&0&0002"
+          },
+          {
+            "Name": "NVIDIA High Definition Audio",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AA&SUBSYS_10DE0000&REV_1001\\5&2A12AD2E&0&0001"
+          },
+          {
+            "Name": "Steam Streaming Microphone",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "ROOT\\STEAMSTREAMINGMICROPHONE\\0000"
+          },
+          {
+            "Name": "Steam Streaming Speakers",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "ROOT\\STEAMSTREAMINGSPEAKERS\\0000"
+          },
+          {
+            "Name": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "ROOT\\UNNAMED_DEVICE\\0000"
+          },
+          {
+            "Name": "USB Audio Device",
+            "Status": "OK",
+            "ConfigManagerErrorCode": 0,
+            "PNPDeviceID": "USB\\VID_0951&PID_16ED&MI_00\\A&271CE33E&0&0000"
+          }
+        ],
+        "registry_render_records": [
+          {
+            "id": "{00d4d548-0dec-406a-bb91-6f1611397462}",
+            "DeviceState": 268435457,
+            "description": "Headset Earphone",
+            "device": "HyperX Cloud Alpha S Chat"
+          },
+          {
+            "id": "{083d7e1c-badb-4e89-add2-a2386722af32}",
+            "DeviceState": 8,
+            "description": "Speakers",
+            "device": "JBL Flip 7"
+          },
+          {
+            "id": "{0b4472a6-b998-4465-b071-99f855ba9414}",
+            "DeviceState": 536870916,
+            "description": "NVIDIA Output",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{1ee8ee1f-7987-4213-a284-db7c1610f0b5}",
+            "DeviceState": 4,
+            "description": "EB321HQU C",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{24e409bc-01fe-4f61-bd7f-5a9a7513a5e6}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "High Definition Audio Device"
+          },
+          {
+            "id": "{26580bc4-677d-442c-9890-c80e5bb82c53}",
+            "DeviceState": 536870916,
+            "description": "SB241Y A",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{2b36cfb0-c0ce-4596-845b-63d882eecc7e}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "High Definition Audio Device"
+          },
+          {
+            "id": "{2efc7c3c-125b-4139-92db-83fc5a9a50b0}",
+            "DeviceState": 4,
+            "description": "X27U W3",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{2f54fe01-a0d9-4d72-b9b1-e364f690f18e}",
+            "DeviceState": 1,
+            "description": "Speakers",
+            "device": "HyperX Cloud Alpha S Game"
+          },
+          {
+            "id": "{31c7e69d-89a6-4325-ba04-58d19e1fac29}",
+            "DeviceState": 4,
+            "description": "NVIDIA Output",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{343d241b-de68-4623-9496-3804d526ea36}",
+            "DeviceState": 1,
+            "description": "Speakers",
+            "device": "Steam Streaming Speakers"
+          },
+          {
+            "id": "{3610e9e0-3b66-4ebf-a848-bba63101be67}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "High Definition Audio Device"
+          },
+          {
+            "id": "{5a516f2a-de97-4e9a-b86a-99360b82cfbc}",
+            "DeviceState": 4,
+            "description": "NVIDIA Output",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{5fa61253-cc6a-4e66-b9fa-02543901f056}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "High Definition Audio Device"
+          },
+          {
+            "id": "{606ba315-24df-4be2-9112-39e100b541ae}",
+            "DeviceState": 536870916,
+            "description": "Headphones",
+            "device": "Realtek USB2.0 Audio"
+          },
+          {
+            "id": "{63228b7c-5930-47b5-a5af-2f3baca21ea8}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "AMD High Definition Audio Device"
+          },
+          {
+            "id": "{635dbf2e-a185-4a98-9adc-e36592f02abf}",
+            "DeviceState": 8,
+            "description": "Speakers",
+            "device": "Realtek USB Audio"
+          },
+          {
+            "id": "{67e66158-ce4d-42af-927e-63e09bc67e2d}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "High Definition Audio Device"
+          },
+          {
+            "id": "{6d643569-6ef3-4293-8c36-762dd738eff7}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "High Definition Audio Device"
+          },
+          {
+            "id": "{6f7f9b52-774b-4d09-ad01-c412bc9d9d90}",
+            "DeviceState": 536870916,
+            "description": "EB321HQU C",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{74f35a88-7fc0-4038-8e7b-3e687e0f5884}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "High Definition Audio Device"
+          },
+          {
+            "id": "{76d159ae-b4e3-4b0d-ac88-8dd3138e89e0}",
+            "DeviceState": 8,
+            "description": "Headset",
+            "device": "Bose QC45 Hands-Free"
+          },
+          {
+            "id": "{7ea952a1-593b-4ec5-bfbe-dedd5b341c66}",
+            "DeviceState": 4,
+            "description": "1 - SB241Y A",
+            "device": "AMD High Definition Audio Device"
+          },
+          {
+            "id": "{83fcbb5f-7d53-4912-b989-19e5289787f1}",
+            "DeviceState": 4,
+            "description": "EB321HQU C",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{85002254-15ad-43da-b5b4-7ad314b9b321}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "AMD High Definition Audio Device"
+          },
+          {
+            "id": "{8b2b84e9-b5de-40eb-a144-fda33f309835}",
+            "DeviceState": 8,
+            "description": "Headphones",
+            "device": "Cylinder Speaker"
+          },
+          {
+            "id": "{9f9583c3-b2e7-46db-9e98-b21396b54483}",
+            "DeviceState": 1,
+            "description": "Realtek Digital Output",
+            "device": "Realtek USB Audio"
+          },
+          {
+            "id": "{abb473c9-3de1-46cb-9ba1-60da5fc319a8}",
+            "DeviceState": 4,
+            "description": "X27U W3",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{ae095f09-61f7-4226-b5d0-5087c152bf91}",
+            "DeviceState": 4,
+            "description": "Digital Output",
+            "device": "AMD High Definition Audio Device"
+          },
+          {
+            "id": "{b4314ca3-8b08-420d-95c8-43abf0288864}",
+            "DeviceState": 8,
+            "description": "Headset",
+            "device": "Cylinder Speaker Hands-Free"
+          },
+          {
+            "id": "{b7df772f-2f3f-4953-9ec1-191869b2014e}",
+            "DeviceState": 536870916,
+            "description": "Digital Output",
+            "device": "Realtek USB2.0 Audio"
+          },
+          {
+            "id": "{bf4d71b0-9352-44bb-9aaa-544b742be02d}",
+            "DeviceState": 1,
+            "description": "Speakers",
+            "device": "Steam Streaming Microphone"
+          },
+          {
+            "id": "{c11798a6-764b-45d6-a4d0-31b1b0fe792c}",
+            "DeviceState": 536870916,
+            "description": "Speakers",
+            "device": "Realtek USB2.0 Audio"
+          },
+          {
+            "id": "{c3309728-9857-4587-b269-c84202497351}",
+            "DeviceState": 4,
+            "description": "EB321HQU C",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{ccc2533b-9a80-4f4d-9075-2f4372aa62a2}",
+            "DeviceState": 8,
+            "description": "Headphones",
+            "device": "Realtek USB Audio"
+          },
+          {
+            "id": "{d13156f1-1fa5-4b26-8fa2-02ed325c3a49}",
+            "DeviceState": 4,
+            "description": "SB241Y A",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{e0133b4e-a373-4c4a-bd9c-57855b9811be}",
+            "DeviceState": 4,
+            "description": "NVIDIA Output",
+            "device": "NVIDIA High Definition Audio"
+          },
+          {
+            "id": "{ebcc0587-b882-44fb-acf3-ff707d1c794d}",
+            "DeviceState": 8,
+            "description": "Headphones",
+            "device": "Bose QC45"
+          },
+          {
+            "id": "{ee170be5-671a-47af-915a-34fdbaa0a0d8}",
+            "DeviceState": 4,
+            "description": "X27U W3",
+            "device": "NVIDIA High Definition Audio"
+          }
+        ],
+        "installed_dll_version_info": [
+          {
+            "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+            "FileVersion": "4.18.4",
+            "ProductVersion": "4.18.4",
+            "FileDescription": "FMOD Ex SoundSystem"
+          },
+          {
+            "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+            "FileVersion": "4.18.4",
+            "ProductVersion": "4.18.4",
+            "FileDescription": "FMOD Ex EventSystem"
+          }
+        ]
+      }
+    }
+  },
+  "MMCSS_provider_disambiguation": {
+    "command": [
+      "powershell.exe",
+      "-NoProfile",
+      "-NonInteractive",
+      "-Command",
+      "[ordered]@{observed_utc=[DateTime]::UtcNow.ToString('o');mmcss_driver=@(Get-CimInstance Win32_SystemDriver -Filter \"Name='MMCSS'\" | Select-Object Name,State,StartMode,ServiceType);mmcss_registry_key_present=(Test-Path -LiteralPath 'HKLM:/SYSTEM/CurrentControlSet/Services/MMCSS')} | ConvertTo-Json -Depth 4"
+    ],
+    "exit_code": 0,
+    "observed": {
+      "observed_utc": "2026-10-10T10:24:41.8001921Z",
+      "mmcss_driver": [
+        {
+          "Name": "MMCSS",
+          "State": "Running",
+          "StartMode": "Auto",
+          "ServiceType": "Kernel Driver"
+        }
+      ],
+      "mmcss_registry_key_present": true
+    },
+    "stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\mmcss_driver_stdout.json",
+      "bytes": 419,
+      "sha256": "c4830c653d1bd432ef2a75bc5a014a502040a4a12dac6fd8ce3dba176914c208",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\c4830c653d1bd432_mmcss_driver_stdout.json"
+    },
+    "stderr": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\mmcss_driver_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_mmcss_driver_stderr.txt"
+    },
+    "sc_command": [
+      "sc.exe",
+      "query",
+      "MMCSS"
+    ],
+    "sc_exit_code": 0,
+    "sc_stdout": "\r\nSERVICE_NAME: MMCSS \r\n        TYPE               : 1  KERNEL_DRIVER  \r\n        STATE              : 4  RUNNING \r\n                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)\r\n        WIN32_EXIT_CODE    : 0  (0x0)\r\n        SERVICE_EXIT_CODE  : 0  (0x0)\r\n        CHECKPOINT         : 0x0\r\n        WAIT_HINT          : 0x0\r\n",
+    "sc_stdout_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\mmcss_sc_stdout.txt",
+      "bytes": 338,
+      "sha256": "abd73e18e5f4a3616faf6d9a747e023b07fa4ff3bd93d0ba47c60c770f17e42b",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\abd73e18e5f4a361_mmcss_sc_stdout.txt"
+    },
+    "sc_stderr_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\mmcss_sc_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_mmcss_sc_stderr.txt"
+    }
+  },
+  "MMDevice_interface_header_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\mmdeviceapi.h",
+      "bytes": 55214,
+      "sha256": "3e0b02d819dd7ce0cb1b5e0721c7370eb1c42f21aa1d4b2747a97eeb22aa5ede",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\3e0b02d819dd7ce0_mmdeviceapi.h"
+    }
+  ],
+  "installed_dlls": [
+    {
+      "pin": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "bytes": 350544,
+        "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\31e7451aef6115b0_fmodex.dll"
+      },
+      "PE_machine_hex": "014c",
+      "selected_export_metadata": [
+        "?getDriverInfo@System@FMOD@@QAG?AW4FMOD_RESULT@@HPADHPAUFMOD_GUID@@@Z",
+        "FMOD_System_GetDriverCaps",
+        "FMOD_System_GetDriverInfo",
+        "FMOD_System_GetNumDrivers",
+        "FMOD_System_GetOutput",
+        "FMOD_System_GetOutputByPlugin",
+        "FMOD_System_GetOutputHandle",
+        "FMOD_System_GetVersion",
+        "FMOD_System_SetOutput",
+        "FMOD_System_SetOutputByPlugin"
+      ],
+      "export_count": 665
+    },
+    {
+      "pin": {
+        "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "bytes": 238936,
+        "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\4b6ae7ba8d3da780_fmod_event.dll"
+      },
+      "PE_machine_hex": "014c",
+      "selected_export_metadata": [
+        "_FMOD_EventSystem_Create@4",
+        "_FMOD_EventSystem_GetSystemObject@8",
+        "_FMOD_EventSystem_Init@20",
+        "_FMOD_EventSystem_Release@4"
+      ],
+      "export_count": 371
+    }
+  ],
+  "current_win32_sdk_readonly_probe": {
+    "qualification": "32-bit installed SDK read-only object creation/enumeration and release only; no init, SetOutput, SetDriver, SetSpeakerMode, bank call or game execution",
+    "reason": "Fresh MMDevice is 64-bit; DLL identity alone does not establish the current installed 32-bit SDK driver/output observation.",
+    "build_command": [
+      "cmd.exe",
+      "/d",
+      "/c",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\build_audio_probe.cmd"
+    ],
+    "build_exit_code": 0,
+    "compile_command": "cl /nologo /std:c++17 /EHsc /W4 /MD /O2 /Fe:audio_probe.exe /Fo:audio_probe.obj audio_probe.cpp /link /MANIFEST:EMBED",
+    "manifest": [
+      "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\r\n<assembly xmlns='urn:schemas-microsoft-com:asm.v1' manifestVersion='1.0'>\r\n  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">\r\n    <security>\r\n      <requestedPrivileges>\r\n        <requestedExecutionLevel level='asInvoker' uiAccess='false' />\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>\r\n"
+    ],
+    "machine_hex": "014c",
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\audio_probe.exe"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck",
+    "pid": 115560,
+    "start_utc": "2026-10-10T10:19:02.835461+00:00",
+    "finish_utc": "2026-10-10T10:19:02.896000+00:00",
+    "exit_code": 0,
+    "stdout": [
+      {
+        "step": "process",
+        "pid": 115560,
+        "pointer_bits": 32,
+        "actual_core": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "actual_event": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll"
+      },
+      {
+        "step": "EventSystem_Create",
+        "result": 0,
+        "object_returned": true
+      },
+      {
+        "step": "EventSystem_GetSystemObject",
+        "result": 0,
+        "object_returned": true
+      },
+      {
+        "step": "System_GetVersion",
+        "result": 0,
+        "output_valid": true,
+        "observed": 268292
+      },
+      {
+        "step": "System_GetOutput_without_init",
+        "result": 0,
+        "output_valid": true,
+        "observed": 0
+      },
+      {
+        "step": "System_GetNumDrivers",
+        "result": 0,
+        "output_valid": true,
+        "observed": 0
+      },
+      {
+        "step": "EventSystem_Release_owns_core_system",
+        "result": 0
+      }
+    ],
+    "pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\audio_probe.cpp",
+        "bytes": 4608,
+        "sha256": "0165edd2e351ecd6d535ed807f1758554ad7d10e581fa0784f62becf523504f5",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\0165edd2e351ecd6_audio_probe.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\build_audio_probe.cmd",
+        "bytes": 259,
+        "sha256": "abc661cdcf572b90db508e7573f3e557a09536ed8f44a65a0c182ba7e2205468",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\abc661cdcf572b90_build_audio_probe.cmd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\audio_probe.exe",
+        "bytes": 17408,
+        "sha256": "6d1c084e642742bb8cec9fb8e37a452888d690aea7be24ae1c64e68832f0c2b1",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\6d1c084e642742bb_audio_probe.exe"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\audio_probe_stdout.jsonl",
+        "bytes": 673,
+        "sha256": "1a8cc8a8d3524ddd02bea5642e171e7bdf45c8b9ab9c7b26d2d33da9b91a7316",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\1a8cc8a8d3524ddd_audio_probe_stdout.jsonl"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\audio_probe_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_audio_probe_stderr.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\build_stdout.txt",
+        "bytes": 314,
+        "sha256": "89dc47875baffa6a9d8191c567a73400871fbb8bed6e6b563f1ab6e9e226a8fa",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\89dc47875baffa6a_build_stdout.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\build_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_build_stderr.txt"
+      }
+    ],
+    "source_text": "#define WIN32_LEAN_AND_MEAN\n#define NOMINMAX\n#include <windows.h>\n#include <cstdio>\n#include <cstdint>\n#include <cstring>\n#include <string>\n#include <stdexcept>\n\nstd::string quote(const char* text) {\n    std::string value = \"\\\"\";\n    for (const unsigned char* p = reinterpret_cast<const unsigned char*>(text); *p; ++p) {\n        if (*p == '\\\\' || *p == '\"') value += '\\\\';\n        if (*p >= 32) value += static_cast<char>(*p);\n        else value += '?';\n    }\n    return value + '\"';\n}\ntemplate<class... Args>\nstd::uint32_t call(HMODULE module, const char* name, Args... args) {\n    using Function = std::uint32_t (__stdcall*)(Args...);\n    const auto address = GetProcAddress(module, name);\n    if (!address) throw std::runtime_error(std::string(\"Missing installed FMOD export: \") + name);\n    Function function;\n    std::memcpy(&function, &address, sizeof function);\n    return function(args...);\n}\nint main() {\n    static_assert(sizeof(void*) == 4);\n    const wchar_t* core_path = L\"I:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Battlestations Pacific\\\\fmodex.dll\";\n    const wchar_t* event_path = L\"I:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Battlestations Pacific\\\\fmod_event.dll\";\n    HMODULE core = LoadLibraryExW(core_path, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);\n    HMODULE events = LoadLibraryExW(event_path, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);\n    if (!core || !events) { std::printf(\"{\\\"load_error\\\":%lu}\\n\", GetLastError()); return 2; }\n    char actual_core[MAX_PATH]{}, actual_events[MAX_PATH]{};\n    GetModuleFileNameA(core, actual_core, MAX_PATH);\n    GetModuleFileNameA(events, actual_events, MAX_PATH);\n    std::printf(\"{\\\"step\\\":\\\"process\\\",\\\"pid\\\":%lu,\\\"pointer_bits\\\":32,\\\"actual_core\\\":%s,\\\"actual_event\\\":%s}\\n\",\n        GetCurrentProcessId(), quote(actual_core).c_str(), quote(actual_events).c_str());\n    void* event = nullptr;\n    void* system = nullptr;\n    auto result = call(events, \"_FMOD_EventSystem_Create@4\", &event);\n    std::printf(\"{\\\"step\\\":\\\"EventSystem_Create\\\",\\\"result\\\":%u,\\\"object_returned\\\":%s}\\n\", result, event ? \"true\" : \"false\");\n    if (result || !event) return 3;\n    result = call(events, \"_FMOD_EventSystem_GetSystemObject@8\", event, &system);\n    std::printf(\"{\\\"step\\\":\\\"EventSystem_GetSystemObject\\\",\\\"result\\\":%u,\\\"object_returned\\\":%s}\\n\", result, system ? \"true\" : \"false\");\n    if (!result && system) {\n        unsigned version = 0xffffffffu;\n        result = call(core, \"FMOD_System_GetVersion\", system, &version);\n        std::printf(\"{\\\"step\\\":\\\"System_GetVersion\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%u}\\n\", result, result ? \"false\" : \"true\", version);\n        int output = -1;\n        result = call(core, \"FMOD_System_GetOutput\", system, &output);\n        std::printf(\"{\\\"step\\\":\\\"System_GetOutput_without_init\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%d}\\n\", result, result ? \"false\" : \"true\", output);\n        int count = 0;\n        result = call(core, \"FMOD_System_GetNumDrivers\", system, &count);\n        std::printf(\"{\\\"step\\\":\\\"System_GetNumDrivers\\\",\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"observed\\\":%d}\\n\", result, result ? \"false\" : \"true\", count);\n        int minimum = 0, maximum = 0, speaker = 1;\n        if (!result && count >= 0 && count <= 256) {\n            for (int index = count - 1; index >= 0; --index) {\n                char name[1024]{};\n                GUID driver_guid{};\n                const auto name_result = call(core, \"FMOD_System_GetDriverInfo\", system, index, name, int(sizeof name), &driver_guid);\n                name[sizeof name - 1] = 0;\n                std::printf(\"{\\\"step\\\":\\\"System_GetDriverInfo_diagnostic\\\",\\\"index\\\":%d,\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"name\\\":%s}\\n\",\n                    index, name_result, name_result ? \"false\" : \"true\", name_result ? \"null\" : quote(name).c_str());\n                unsigned caps = 0;\n                result = call(core, \"FMOD_System_GetDriverCaps\", system, index, &caps, &minimum, &maximum, &speaker);\n                std::printf(\"{\\\"step\\\":\\\"System_GetDriverCaps\\\",\\\"index\\\":%d,\\\"result\\\":%u,\\\"output_valid\\\":%s,\\\"caps_observed\\\":%u,\\\"min_frequency_observed\\\":%d,\\\"max_frequency_observed\\\":%d,\\\"speaker_observed\\\":%d}\\n\",\n                    index, result, result ? \"false\" : \"true\", caps, minimum, maximum, speaker);\n            }\n\n        }\n    }\n    result = call(events, \"_FMOD_EventSystem_Release@4\", event);\n    std::printf(\"{\\\"step\\\":\\\"EventSystem_Release_owns_core_system\\\",\\\"result\\\":%u}\\n\", result);\n    FreeLibrary(events);\n    FreeLibrary(core);\n    return 0;\n}\n",
+    "build_driver_text": "@call \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86\n@if errorlevel 1 exit /b %errorlevel%\n@cl /nologo /std:c++17 /EHsc /W4 /MD /O2 /Fe:audio_probe.exe /Fo:audio_probe.obj audio_probe.cpp /link /MANIFEST:EMBED\n",
+    "provider_signature_provenance": {
+      "admitted_prior_probe_source": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_fmod_diagnostic\\fmod_probe.cpp",
+        "bytes": 5835,
+        "sha256": "3cb3c44da44e86c16eb59e2923d741bf4be1d86f25d4b8932133899a7d0be3eb"
+      },
+      "installed_4_18_GetDriverInfo": "DLL export name ?getDriverInfo@System@FMOD@@QAG?AW4FMOD_RESULT@@HPADHPAUFMOD_GUID@@@Z establishes stdcall explicitSystem*, int id, char*name, int namelen, FMOD_GUID*; only export metadata read.",
+      "local_sdk_method_declarations": {
+        "getOutput": "FMOD_RESULT F_API getOutput (FMOD_OUTPUTTYPE *output)",
+        "getDriverCaps": "FMOD_RESULT F_API getDriverCaps (int id, FMOD_CAPS *caps, int *minfrequency, int *maxfrequency, FMOD_SPEAKERMODE *controlpanelspeakermode)",
+        "getNumDrivers": "FMOD_RESULT F_API getNumDrivers (int *numdrivers)"
+      },
+      "current_call_signature_scope": "Unchanged real calls from prior admitted Win32 SDK diagnostic, with SetSpeakerMode/Init/post-init calls removed; GetDriverInfo/Caps would run only for genuine valid positive count and were not reached."
+    }
+  },
+  "local_enum_validation": {
+    "pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\fmod_ex_types.json",
+      "bytes": 56459,
+      "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\1a9166bbfe4bae22_fmod_ex_types.json"
+    },
+    "result_values": [
+      [
+        "FMOD_ERR_INVALID_PARAM",
+        37
+      ],
+      [
+        "FMOD_ERR_OUTPUT_INIT",
+        61
+      ],
+      [
+        "FMOD_ERR_UNINITIALIZED",
+        78
+      ]
+    ],
+    "output_values": [
+      [
+        "FMOD_OUTPUTTYPE_AUTODETECT",
+        0
+      ],
+      [
+        "FMOD_OUTPUTTYPE_NOSOUND",
+        2
+      ],
+      [
+        "FMOD_OUTPUTTYPE_NOSOUND_NRT",
+        4
+      ],
+      [
+        "FMOD_OUTPUTTYPE_WASAPI",
+        9
+      ]
+    ],
+    "provenance": "config/fmod_ex_types.json FMOD_RESULT is the prior established4.18 numbering, not newer4.24 numbering; OUTPUTTYPE and INITFLAGS are localSDK4.24.16 derived metadata. No Native tables re-read.",
+    "version_boundary": "Actual installed/runtime4.18.4; local SDK declarations4.24.16. Retained established4.18 FMOD_RESULT numbering is used, not an assumed newer table."
+  },
+  "current_source": {
+    "pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\CMakeLists.txt",
+        "bytes": 20149,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\568fc615535bf822_CMakeLists.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\cmake\\startup.cmake",
+        "bytes": 202281,
+        "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\7c30db5b9be8b859_startup.cmake"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\config\\fmod_ex_types.json",
+        "bytes": 56459,
+        "sha256": "1a9166bbfe4bae22ea3985fd68c83fa212b5d3948549548ae9a8d2a5816a7103",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\1a9166bbfe4bae22_fmod_ex_types.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\audio_online_startup.cpp",
+        "bytes": 17786,
+        "sha256": "e8c564464cc8ac903794b36a45bd7fe65211f65b4b497d64390eaf4d8434f5f8",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e8c564464cc8ac90_audio_online_startup.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\audio_online_startup.hpp",
+        "bytes": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\2856a03245c6a27a_audio_online_startup.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\fmod_configuration_library.cpp",
+        "bytes": 24627,
+        "sha256": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\dc7c1cd3403ab4aa_fmod_configuration_library.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\fmod_configuration_library.hpp",
+        "bytes": 10053,
+        "sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\0e08119c6a928469_fmod_configuration_library.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_main.cpp",
+        "bytes": 73768,
+        "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\b896cda79427bbc3_game_main.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_hosts.cpp",
+        "bytes": 120868,
+        "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\27afca34c33faf0c_game_hosts.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_hosts.hpp",
+        "bytes": 38481,
+        "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\a9b67bb9ce21aada_game_hosts.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\winmain_startup.cpp",
+        "bytes": 10209,
+        "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\521a73023c5d196b_winmain_startup.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_sound_runtime.cpp",
+        "bytes": 20101,
+        "sha256": "ccce5e3d933fcfb8f08655cc969601c09c467386393f441df8efbf9e58b37fba",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\ccce5e3d933fcfb8_game_sound_runtime.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_sound_runtime.hpp",
+        "bytes": 5374,
+        "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\adc71df223c83c00_game_sound_runtime.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\sound_startup.cpp",
+        "bytes": 2221,
+        "sha256": "836bbe877790db4161a3eb132ec77a24b2c2b51c429902bf0034180b8c9118cc",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\836bbe877790db41_sound_startup.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\sound_resource_asset.cpp",
+        "bytes": 11484,
+        "sha256": "0c651691506dff63690ca237c4f8f88d172c4fd6ee8a0a398e5a53f77b945782",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\0c651691506dff63_sound_resource_asset.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_game_settings_owner.cpp",
+        "bytes": 7785,
+        "sha256": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\251c0a349760dd21_native_game_settings_owner.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\native_settings_loader.cpp",
+        "bytes": 15501,
+        "sha256": "92cf2e1b496be7d88c6f3f38f548c6ee852c2468fceac0fdf8df1106f25efef0",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\92cf2e1b496be7d8_native_settings_loader.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\native_settings_loader.hpp",
+        "bytes": 5567,
+        "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\29373ba8100bd449_native_settings_loader.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_native_settings_application.cpp",
+        "bytes": 11456,
+        "sha256": "9a4bea22270c4b3898cf0be6797343769b1db8568864051d4d501438dcb68d7a",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\9a4bea22270c4b38_game_native_settings_application.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_native_settings_process.cpp",
+        "bytes": 7791,
+        "sha256": "44a2cc3b1c94c4aff9dd530d4393bc00457f3da42ef60293063c858dbae2bb4b",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\44a2cc3b1c94c4af_game_native_settings_process.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\include\\bsp\\game_settings.hpp",
+        "bytes": 18657,
+        "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\8b1d37ce0ccdcde0_game_settings.hpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\game_settings.cpp",
+        "bytes": 20468,
+        "sha256": "fc9ab534f827975f8adc51b4a5e1ea18cbe6930f7651c1a9721b9150d75599ab",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\fc9ab534f827975f_game_settings.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_text.cpp",
+        "bytes": 3623,
+        "sha256": "cc9068161d5927401f21db6670a0d4c8adc74f4f4e0f731fd24127288e928844",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\cc9068161d592740_settings_text.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_archive_reader.cpp",
+        "bytes": 4078,
+        "sha256": "cc4aadb5f286801db342bef4d2fdf197d947b0a4ed45658e9303ab8d34ee9cf5",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\cc4aadb5f286801d_settings_archive_reader.cpp"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\src\\settings_initial_state.cpp",
+        "bytes": 1560,
+        "sha256": "105ac7ca98f8a8d7a68624b9f721642dd02b892f8a73040daee4b61765f0812f",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\105ac7ca98f8a8d7_settings_initial_state.cpp"
+      }
+    ],
+    "query": {
+      "cli_parser_flags": [
+        "--affinity-core",
+        "--ai-drive",
+        "--fmod-dll",
+        "--fmod-event-dll",
+        "--frame-jitter",
+        "--frames",
+        "--game-root",
+        "--hardware-probe-commit",
+        "--helm-orders",
+        "--instance-tag",
+        "--log",
+        "--menu-select",
+        "--mission-complete-frame",
+        "--mission-frame-seconds",
+        "--mission-frames",
+        "--order",
+        "--order-frame",
+        "--order-unit",
+        "--present-interval",
+        "--press-start-frame",
+        "--qualify-vfs-failure-owner",
+        "--qualify-vfs-physical-read-owner",
+        "--screenshot",
+        "--screenshot-frame",
+        "--screenshot-mission-frame",
+        "--settings-personal-root",
+        "--trajectory-csv",
+        "--vfs-probe",
+        "--window-monitor",
+        "--window-origin",
+        "--window-resolution",
+        "--xinput-dll",
+        "--xlive-dependency",
+        "--xlive-dll"
+      ],
+      "no_audio_or_headless_cli_selector_found": true,
+      "sound_enabled_constructor_seed_true": true,
+      "soundenabled_loader_consumes_no_value": true,
+      "read_view_copies_actual_24h_flag": true,
+      "startup_passes_inverse_enable": true,
+      "genuine_disabled_sound_nosound_branch": true
+    },
+    "excerpts": [
+      {
+        "path": "src/native_game_settings_owner.cpp",
+        "lines": [
+          {
+            "line": 79,
+            "text": "    begin(p,c,op);"
+          },
+          {
+            "line": 80,
+            "text": "    try {"
+          },
+          {
+            "line": 81,
+            "text": "        word(p,0,0x00d15d58);word(p,4,0);byte(p,0x24,1);byte(p,0x38,0);word(p,0x3c,1);"
+          },
+          {
+            "line": 82,
+            "text": "        byte(p,0x49,0);byte(p,0x4a,1);byte(p,0x4b,0);byte(p,0x4c,0);word(p,0x50,2);"
+          },
+          {
+            "line": 83,
+            "text": "        byte(p,0x94,0);byte(p,0x95,0);word(p,0x98,0);word(p,0x9c,0);word(p,0xa0,0);"
+          },
+          {
+            "line": 84,
+            "text": "        op.unwind_state=0;word(p,0xa4,0);word(p,0xa8,0);word(p,0xac,0);"
+          },
+          {
+            "line": 85,
+            "text": "        op.unwind_state=1;byte(p,0xb0,0);byte(p,0xb1,0);byte(p,0xb2,1);op.native_site=0x008d77b4;"
+          },
+          {
+            "line": 86,
+            "text": "        construct_native_string_header_0041e870(at(p,0xb4),c.raw_strings,c.empty_00ce3a0c);"
+          },
+          {
+            "line": 87,
+            "text": "        const U audio=c.audio_bits_00ce3800;"
+          },
+          {
+            "line": 88,
+            "text": "        word(p,0x20,audio);word(p,0x28,audio);word(p,0x2c,audio);word(p,0x30,audio);"
+          },
+          {
+            "line": 89,
+            "text": "        const U video=c.video_bits_00ce7d20;"
+          }
+        ]
+      },
+      {
+        "path": "src/native_settings_loader.cpp",
+        "lines": [
+          {
+            "line": 70,
+            "text": "        }"
+          },
+          {
+            "line": 71,
+            "text": "        if(matched)continue;"
+          },
+          {
+            "line": 72,
+            "text": "        constexpr U match_sites[]{0x8d8470,0x8d8494,0x8d84bf,0x8d84e6,0x8d850a,0x8d8535,0x8d8562,0x8d8586,0x8d85ae,0x8d85d2,0x8d85e8};"
+          },
+          {
+            "line": 73,
+            "text": "        constexpr U value_sites[]{0x8d8482,0x8d84a6,0x8d84d4,0x8d84f8,0x8d851c,0x8d8547,0x8d8574,0x8d8598,0x8d85c0,0,0x8d85fa};"
+          },
+          {
+            "line": 74,
+            "text": "        constexpr U offsets[]{0x60,0x88,0x58,0x74,0x86,0x84,0x6c,0x68,0x54,0,0x94};"
+          },
+          {
+            "line": 75,
+            "text": "        for(U k=0;k<11;++k) {"
+          },
+          {
+            "line": 76,
+            "text": "            op.native_site=match_sites[k];if(!match_native_scene_keyword_00467cc0(scan,c.keywords[k+5],tokenizer,c.calls))continue;"
+          },
+          {
+            "line": 77,
+            "text": "            matched=true;if(k==9)break; // SoundEnabled never reads its value."
+          },
+          {
+            "line": 78,
+            "text": "            if(k==2)put(owner,0x5c,0u);"
+          },
+          {
+            "line": 79,
+            "text": "            op.native_site=value_sites[k];"
+          },
+          {
+            "line": 80,
+            "text": "            if(k==1||k==2||k==7||k==8)put(owner,offsets[k],static_cast<U>(read_native_scene_int_008d9ad0(scan,&op.ignored_value_success,c.values)));"
+          },
+          {
+            "line": 81,
+            "text": "            else {"
+          },
+          {
+            "line": 82,
+            "text": "                const auto value=static_cast<std::uint8_t>(read_native_scene_bool_008d9a80(scan,&op.ignored_value_success,c.values));"
+          },
+          {
+            "line": 83,
+            "text": "                put<std::uint8_t>(owner,offsets[k],value);if(k==5)put<std::uint8_t>(owner,0x85,value);"
+          },
+          {
+            "line": 84,
+            "text": "            }"
+          },
+          {
+            "line": 85,
+            "text": "            break;"
+          },
+          {
+            "line": 86,
+            "text": "        }"
+          }
+        ]
+      },
+      {
+        "path": "src/game_native_settings_application.cpp",
+        "lines": [
+          {
+            "line": 54,
+            "text": "    g.camera_shake_10=flag(p,0x10);g.target_indicator_4a=flag(p,0x4a);g.water_drops_7c=flag(p,0x7c);"
+          },
+          {
+            "line": 55,
+            "text": "    g.marker_alpha_80=read<float>(p,0x80);g.cockpit_mode_b2=flag(p,0xb2);g.show_safe_area_b1=flag(p,0xb1);"
+          },
+          {
+            "line": 56,
+            "text": "    g.clan_text_b4=raw_text(storage.data()+0xb4);"
+          },
+          {
+            "line": 57,
+            "text": "    a.master_20=read<float>(p,0x20);a.enabled_24=flag(p,0x24);a.music_28=read<float>(p,0x28);"
+          },
+          {
+            "line": 58,
+            "text": "    a.effects_2c=read<float>(p,0x2c);a.speech_30=read<float>(p,0x30);"
+          }
+        ]
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "lines": [
+          {
+            "line": 1999,
+            "text": "    bind_legacy_crt_math_runtime(application_math_runtime);"
+          },
+          {
+            "line": 2000,
+            "text": "    sound_ = std::make_unique<SoundServices>(*this);"
+          },
+          {
+            "line": 2001,
+            "text": "    try {"
+          },
+          {
+            "line": 2002,
+            "text": "        sound_->core.startup(!settings_view_.audio.enabled_24);"
+          },
+          {
+            "line": 2003,
+            "text": "    } catch (...) {"
+          },
+          {
+            "line": 2004,
+            "text": "        // Read the existing SDK call journal; do not issue further FMOD calls"
+          },
+          {
+            "line": 2005,
+            "text": "        // while reporting a constructor or its recovery failure."
+          },
+          {
+            "line": 2006,
+            "text": "        for (const auto& call : sound_->core.fmod().calls()) {"
+          },
+          {
+            "line": 2007,
+            "text": "            if (call.result != FmodResult::ok)"
+          },
+          {
+            "line": 2008,
+            "text": "                log_.notef(\"sound startup FMOD failure: %s result=%u\","
+          },
+          {
+            "line": 2009,
+            "text": "                    call.function, static_cast<unsigned>(call.result));"
+          },
+          {
+            "line": 2010,
+            "text": "        }"
+          },
+          {
+            "line": 2011,
+            "text": "        throw;"
+          },
+          {
+            "line": 2012,
+            "text": "    }"
+          },
+          {
+            "line": 2013,
+            "text": "    log_.implemented(\"Phase 5 sound_system_initialize\", \"0073dafd\");"
+          }
+        ]
+      },
+      {
+        "path": "src/audio_online_startup.cpp",
+        "lines": [
+          {
+            "line": 233,
+            "text": "    state.min_frequency = kSoundSystemMinFrequency;"
+          },
+          {
+            "line": 234,
+            "text": "    state.max_frequency = kSoundSystemMaxFrequency;"
+          },
+          {
+            "line": 235,
+            "text": ""
+          },
+          {
+            "line": 236,
+            "text": "    if (!state.sound_enabled) {"
+          },
+          {
+            "line": 237,
+            "text": "        // 00a88904, the disabled-sound path: FMOD_OUTPUTTYPE_NOSOUND."
+          },
+          {
+            "line": 238,
+            "text": "        state.output_forced_to_nosound = true;"
+          },
+          {
+            "line": 239,
+            "text": "        check_fmod(host, host.system_set_output(state.system, FmodOutputType::nosound), state);"
+          },
+          {
+            "line": 240,
+            "text": "    }"
+          },
+          {
+            "line": 241,
+            "text": ""
+          },
+          {
+            "line": 242,
+            "text": "    // 00a88931, handle table slot 0.  The System is fully configured first, which"
+          },
+          {
+            "line": 243,
+            "text": "    // is what makes this the EventSystem::init call."
+          },
+          {
+            "line": 244,
+            "text": "    FmodEventSystemInitArgs init_args;"
+          },
+          {
+            "line": 245,
+            "text": "    init_args.max_channels = kSoundSystemMaxChannels;"
+          },
+          {
+            "line": 246,
+            "text": "    init_args.init_flags = kSoundSystemInitFlags;"
+          },
+          {
+            "line": 247,
+            "text": "    init_args.extra_driver_data = nullptr;"
+          },
+          {
+            "line": 248,
+            "text": "    init_args.event_init_flags = 0u;"
+          },
+          {
+            "line": 249,
+            "text": "    check_fmod(host, host.event_system_init(state.event_system, init_args), state);"
+          },
+          {
+            "line": 250,
+            "text": ""
+          },
+          {
+            "line": 251,
+            "text": "    // 00a88961 and 00a88994."
+          }
+        ]
+      },
+      {
+        "path": "src/sound_startup.cpp",
+        "lines": [
+          {
+            "line": 31,
+            "text": "    owner.native_vtable_00 = 0x00d5b44c;"
+          },
+          {
+            "line": 32,
+            "text": "    owner.system.field_174 = 0;"
+          },
+          {
+            "line": 33,
+            "text": "    owner.system.sound_enabled = !sound_disabled;"
+          },
+          {
+            "line": 34,
+            "text": "    auxiliary_owner = create_sound_auxiliary_tree_owner_00a88650(lifetime);"
+          },
+          {
+            "line": 35,
+            "text": "    // Both constructors already registered their owners. This call changes the"
+          },
+          {
+            "line": 36,
+            "text": "    // destruction ordering; it does not register the sound manager a second time."
+          },
+          {
+            "line": 37,
+            "text": "    auto* auxiliary = lifetime.global_00f8bbe8; // capture before getter,00A887D0"
+          },
+          {
+            "line": 38,
+            "text": "    lifetime.domain.get_manager_00415350()->move_object_after_00bd0d70(&owner, auxiliary);"
+          },
+          {
+            "line": 39,
+            "text": "    owner.time_118 = clock.sample_time_14(); // four literal word copies"
+          },
+          {
+            "line": 40,
+            "text": "    initialize_sound_library_00a8881e_fragment(fmod_startup, owner.system);"
+          },
+          {
+            "line": 41,
+            "text": "    owner.resource_owner_54 = create_sound_resource_owner_00a858f0(resources, strings);"
+          },
+          {
+            "line": 42,
+            "text": "    initialize_sound_configuration_00a7ff80(owner.system, owner.configuration,"
+          },
+          {
+            "line": 43,
+            "text": "        owner.classes, fmod_configuration, lua, strings);"
+          },
+          {
+            "line": 44,
+            "text": "    unwind.armed = false;"
+          },
+          {
+            "line": 45,
+            "text": "    return owner;"
+          }
+        ]
+      },
+      {
+        "path": "src/settings_text.cpp",
+        "lines": [
+          {
+            "line": 67,
+            "text": "    integer(\"Shadow \", video.shadow_84);"
+          },
+          {
+            "line": 68,
+            "text": "    integer(\"Reflection \", video.reflection_6c);"
+          },
+          {
+            "line": 69,
+            "text": "    integer(\"TextureDetail \", video.texture_detail_68);"
+          },
+          {
+            "line": 70,
+            "text": "    integer(\"ObjectDetail \", video.object_detail_54);"
+          },
+          {
+            "line": 71,
+            "text": "    integer(\"SoundEnabled \", settings.audio.enabled_24);"
+          },
+          {
+            "line": 72,
+            "text": "    integer(\"Firewall \", video.firewall_94);"
+          },
+          {
+            "line": 73,
+            "text": "    integer(\"HardwareReported \", settings.presentation.hardware_reported_95);"
+          }
+        ]
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "lines": [
+          {
+            "line": 2081,
+            "text": "    window_host_->set_origin(window_origin_x_, window_origin_y_);"
+          },
+          {
+            "line": 2082,
+            "text": "    log_.note(window_monitor_note_.c_str());"
+          },
+          {
+            "line": 2083,
+            "text": "    summary_.window_created = configure_platform_window_00becee0(*window_host_, request,"
+          },
+          {
+            "line": 2084,
+            "text": "        platform_, renderer_request_);"
+          },
+          {
+            "line": 2085,
+            "text": "    if (summary_.window_created) {"
+          },
+          {
+            "line": 2086,
+            "text": "        log_.implemented(\"Phase 3 configure_platform_window\", \"00becee0\");"
+          },
+          {
+            "line": 2087,
+            "text": "        log_.notef(\"window created %dx%d at %d,%d color_depth=%d\","
+          },
+          {
+            "line": 2088,
+            "text": "            platform_.present_width, platform_.present_height, platform_.x, platform_.y,"
+          },
+          {
+            "line": 2089,
+            "text": "            platform_.color_depth);"
+          },
+          {
+            "line": 2090,
+            "text": "        // Full B2AEB0 receives all ten slots, including VSync and multisampling."
+          },
+          {
+            "line": 2091,
+            "text": "        log_.notef(\"renderer init request %dx%d fullscreen=%d vsync=%d antialias=%u\","
+          },
+          {
+            "line": 2092,
+            "text": "            renderer_request_.width, renderer_request_.height,"
+          },
+          {
+            "line": 2093,
+            "text": "            renderer_request_.fullscreen ? 1 : 0,"
+          },
+          {
+            "line": 2094,
+            "text": "            renderer_request_.color_depth_selector ? 1 : 0, renderer_request_.option);"
+          },
+          {
+            "line": 2095,
+            "text": "        const auto* native_focus = &platform_.native_window_focus();"
+          },
+          {
+            "line": 2096,
+            "text": "        log_.notef(\"platform native focus cells: hwnd_matches=%d active=%d focused=%u\","
+          }
+        ]
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "lines": [
+          {
+            "line": 2108,
+            "text": "    device_ = new GameDeviceHost(log_, *native_renderer_);"
+          },
+          {
+            "line": 2109,
+            "text": "    if (summary_.window_created && renderer_request_.requested) {"
+          },
+          {
+            "line": 2110,
+            "text": "        // Packet cc9_tooling_present_interval (harness only): --present-interval replaces the"
+          },
+          {
+            "line": 2111,
+            "text": "        // VSync word B2AEB0 turns into PresentationInterval (+1A5C). The settings value above"
+          },
+          {
+            "line": 2112,
+            "text": "        // and the window request keep what the options file says."
+          },
+          {
+            "line": 2113,
+            "text": "        if (options_.present_interval >= 0)"
+          },
+          {
+            "line": 2114,
+            "text": "            renderer_request_.color_depth_selector = options_.present_interval == 0;"
+          },
+          {
+            "line": 2115,
+            "text": "        summary_.device_created = device_->create(renderer_request_);"
+          },
+          {
+            "line": 2116,
+            "text": "        // Complete BED1E8..BED222 follows the native device call in BECEE0."
+          },
+          {
+            "line": 2117,
+            "text": "        // Its actual cache joins the same manager as the renderer and is"
+          },
+          {
+            "line": 2118,
+            "text": "        // retired by the manager's current-profile scalar-deletion dispatch."
+          },
+          {
+            "line": 2119,
+            "text": "        native_renderer_->initialize_window_render_entry_cache();"
+          }
+        ]
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "lines": [
+          {
+            "line": 1187,
+            "text": "    log_.implemented(\"PlatformLoopCallbacks::cursor_after_application_frame\", \"00bece81\");"
+          },
+          {
+            "line": 1188,
+            "text": "    // --screenshot saves the back buffer of the last frame: the frame the count"
+          },
+          {
+            "line": 1189,
+            "text": "    // names, or the frame on which the close request was observed."
+          },
+          {
+            "line": 1190,
+            "text": "    const bool last_frame = frame_limit_ >= 0"
+          },
+          {
+            "line": 1191,
+            "text": "        && frames_ + 1 >= static_cast<unsigned long long>(frame_limit_);"
+          },
+          {
+            "line": 1192,
+            "text": "    // --screenshot-frame N names a frame instead, so a run can photograph the title"
+          },
+          {
+            "line": 1193,
+            "text": "    // page before the injected press-start as well as the menu after it."
+          },
+          {
+            "line": 1194,
+            "text": "    // --screenshot-mission-frame N, milestone 2h: the application frame on which"
+          },
+          {
+            "line": 1195,
+            "text": "    // in-mission frame N ran, so the HUD can be photographed over the mission."
+          },
+          {
+            "line": 1196,
+            "text": "    // It takes precedence over --screenshot-frame when both are given."
+          },
+          {
+            "line": 1197,
+            "text": "    const bool wanted_frame = screenshot_mission_frame_ >= 0"
+          },
+          {
+            "line": 1198,
+            "text": "        ? frame_host_.mission_frames_run()"
+          },
+          {
+            "line": 1199,
+            "text": "            == static_cast<unsigned long long>(screenshot_mission_frame_)"
+          },
+          {
+            "line": 1200,
+            "text": "        : (screenshot_frame_ >= 0"
+          },
+          {
+            "line": 1201,
+            "text": "            ? frames_ == static_cast<unsigned long long>(screenshot_frame_)"
+          },
+          {
+            "line": 1202,
+            "text": "            : (last_frame || frame_host_.global_exit()));"
+          },
+          {
+            "line": 1203,
+            "text": "    if (capture_ && !capture_requested_ && wanted_frame) {"
+          },
+          {
+            "line": 1204,
+            "text": "        capture_requested_ = true;"
+          },
+          {
+            "line": 1205,
+            "text": "        device_.request_capture(capture_);"
+          },
+          {
+            "line": 1206,
+            "text": "    }"
+          },
+          {
+            "line": 1207,
+            "text": "    device_.clear_and_present();"
+          },
+          {
+            "line": 1208,
+            "text": "    ++frames_;"
+          },
+          {
+            "line": 1209,
+            "text": "    if (frame_limit_ >= 0 && frames_ >= static_cast<unsigned long long>(frame_limit_)) {"
+          },
+          {
+            "line": 1210,
+            "text": "        log_.notef(\"frame limit %ld reached, requesting loop exit\", frame_limit_);"
+          },
+          {
+            "line": 1211,
+            "text": "        frame_host_.request_loop_exit();"
+          }
+        ]
+      }
+    ],
+    "source993_freeze": {
+      "pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen.json",
+        "bytes": 378649,
+        "sha256": "c0c74a19c5de1d36f88093eff989167a11cec2439c4b0930132f417d074a2598",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\c0c74a19c5de1d36_Source993_frozen.json"
+      },
+      "selected_project_inputs": 993,
+      "retained_pin_count": 997,
+      "existing_checks_passed": 3,
+      "selected_whole_Core_objects_parent_reported": 170,
+      "selected_whole_App_objects_parent_reported": 10,
+      "normal_build_parent_reported_utc": "2026-10-10T10:06:09..10:06:30Z",
+      "primary_final_context_COFF_review": "Pending in assignment, no completed-review or activation inferred",
+      "relevant_frozen_source_replay": [
+        {
+          "path": "CMakeLists.txt",
+          "Source993_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+          "worker_current_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+          "raw_identical": true,
+          "Source993_lf_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+          "worker_current_lf_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_CMakeLists.txt.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_CMakeLists.txt.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\CMakeLists.txt",
+            "bytes": 20149,
+            "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\568fc615535bf822_CMakeLists.txt"
+          }
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "Source993_sha256": "ef27871a110b923f3b1589f057bce27c5147773669a355b70170471b357be637",
+          "worker_current_sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+          "raw_identical": false,
+          "Source993_lf_sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+          "worker_current_lf_sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+          "lf_normalized_identical": true,
+          "difference_qualification": "EOL-only CRLF/LF",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_startup.cmake.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_startup.cmake.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\cmake\\startup.cmake",
+            "bytes": 203996,
+            "sha256": "ef27871a110b923f3b1589f057bce27c5147773669a355b70170471b357be637",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\ef27871a110b923f_startup.cmake"
+          }
+        },
+        {
+          "path": "include/bsp/audio_online_startup.hpp",
+          "Source993_sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+          "worker_current_sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+          "raw_identical": true,
+          "Source993_lf_sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+          "worker_current_lf_sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_audio_online_startup.hpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_audio_online_startup.hpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\include\\bsp\\audio_online_startup.hpp",
+            "bytes": 17176,
+            "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\2856a03245c6a27a_audio_online_startup.hpp"
+          }
+        },
+        {
+          "path": "include/bsp/fmod_configuration_library.hpp",
+          "Source993_sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec",
+          "worker_current_sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec",
+          "raw_identical": true,
+          "Source993_lf_sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec",
+          "worker_current_lf_sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_fmod_configuration_library.hpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_fmod_configuration_library.hpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\include\\bsp\\fmod_configuration_library.hpp",
+            "bytes": 10053,
+            "sha256": "0e08119c6a928469ec33ad36fc192657995a7cb9193c970a03988e91428651ec",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\0e08119c6a928469_fmod_configuration_library.hpp"
+          }
+        },
+        {
+          "path": "include/bsp/game_hosts.hpp",
+          "Source993_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+          "worker_current_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+          "raw_identical": true,
+          "Source993_lf_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+          "worker_current_lf_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_game_hosts.hpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_game_hosts.hpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\include\\bsp\\game_hosts.hpp",
+            "bytes": 38481,
+            "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\a9b67bb9ce21aada_game_hosts.hpp"
+          }
+        },
+        {
+          "path": "include/bsp/game_settings.hpp",
+          "Source993_sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+          "worker_current_sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+          "raw_identical": true,
+          "Source993_lf_sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+          "worker_current_lf_sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_game_settings.hpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_game_settings.hpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\include\\bsp\\game_settings.hpp",
+            "bytes": 18657,
+            "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\8b1d37ce0ccdcde0_game_settings.hpp"
+          }
+        },
+        {
+          "path": "include/bsp/game_sound_runtime.hpp",
+          "Source993_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+          "worker_current_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+          "raw_identical": true,
+          "Source993_lf_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+          "worker_current_lf_sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_game_sound_runtime.hpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_game_sound_runtime.hpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\include\\bsp\\game_sound_runtime.hpp",
+            "bytes": 5374,
+            "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\adc71df223c83c00_game_sound_runtime.hpp"
+          }
+        },
+        {
+          "path": "include/bsp/native_settings_loader.hpp",
+          "Source993_sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+          "worker_current_sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+          "raw_identical": true,
+          "Source993_lf_sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+          "worker_current_lf_sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_native_settings_loader.hpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_native_settings_loader.hpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\include\\bsp\\native_settings_loader.hpp",
+            "bytes": 5567,
+            "sha256": "29373ba8100bd4491bab50cb1ca0088626c740c83fbb63d5c087583b138ec84b",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\29373ba8100bd449_native_settings_loader.hpp"
+          }
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "Source993_sha256": "8be6cb7ede7b4c99c313264ad25184eb492682dc0d12b5048cb167009fab8bce",
+          "worker_current_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+          "raw_identical": false,
+          "Source993_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+          "worker_current_lf_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+          "lf_normalized_identical": true,
+          "difference_qualification": "EOL-only CRLF/LF",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_game_hosts.cpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_game_hosts.cpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\src\\game_hosts.cpp",
+            "bytes": 123312,
+            "sha256": "8be6cb7ede7b4c99c313264ad25184eb492682dc0d12b5048cb167009fab8bce",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\8be6cb7ede7b4c99_game_hosts.cpp"
+          }
+        },
+        {
+          "path": "src/game_main.cpp",
+          "Source993_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+          "worker_current_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+          "raw_identical": true,
+          "Source993_lf_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+          "worker_current_lf_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+          "lf_normalized_identical": true,
+          "difference_qualification": "identical",
+          "full_normalized_unified_diff_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\Source993_vs_worker_game_main.cpp.diff",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_Source993_vs_worker_game_main.cpp.diff"
+          },
+          "full_normalized_unified_diff": "",
+          "Source993_retained_pin": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_context_borrow_Source_primary\\Source993_frozen\\src\\game_main.cpp",
+            "bytes": 73768,
+            "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+            "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\b896cda79427bbc3_game_main.cpp"
+          }
+        }
+      ]
+    }
+  },
+  "historical_evidence": {
+    "pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\CC12_FMOD_CURRENT_STARTUP_FAILURE.md",
+        "bytes": 7645,
+        "sha256": "ddef8e49ca7fac411a91a1d92b80c1c73a8c1b66ce89502d57094d1215813f3f",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\ddef8e49ca7fac41_CC12_FMOD_CURRENT_STARTUP_FAILURE.md"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_fmod_current_startup_failure.json",
+        "bytes": 40454,
+        "sha256": "706851ea77a46ffb35baf8896af39288b019d7dd888fa2f16e231c307609edce",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\706851ea77a46ffb_cc12_fmod_current_startup_failure.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\CC12_AUDIO_ENDPOINT_CURRENT_RECHECK.md",
+        "bytes": 1568,
+        "sha256": "9de67bbffb3c6815c5af859b2831460361d2fd532adf2bdc32cdedc3e6bb3722",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\9de67bbffb3c6815_CC12_AUDIO_ENDPOINT_CURRENT_RECHECK.md"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_audio_endpoint_current_recheck.json",
+        "bytes": 4619,
+        "sha256": "729596f0fc42bc6c39b51d567a6f6e47279b0b9e845850aae0fc24ea74546372",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\729596f0fc42bc6c_cc12_audio_endpoint_current_recheck.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\docs\\CC12_GROUP_DESCRIPTOR_ARMOUR_SOURCE_PRIMARY_REVIEW.md",
+        "bytes": 4067,
+        "sha256": "07e407be2598155afb2cab6fdfa8bc16a4b6cc6280b5c64cbeb55122df3636df",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\07e407be2598155a_CC12_GROUP_DESCRIPTOR_ARMOUR_SOURCE_PRIMARY_REVIEW.md"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_group_descriptor_armour_source_primary_review.json",
+        "bytes": 44644,
+        "sha256": "c331ab7d7d4a3053b245371e55380dd0fa33877a3945cf96cce55f75a9f9b7c2",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\c331ab7d7d4a3053_cc12_group_descriptor_armour_source_primary_review.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_exit.json",
+        "bytes": 1992,
+        "sha256": "41022a2e8a286644bec49df0700c168252a5a26aef8e1c82209ed61276e59f6e",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\41022a2e8a286644_initial_startup_exit.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_three_ticks.log",
+        "bytes": 11848,
+        "sha256": "e9c1bef722862f01bf0806ec87a2e87ad4e3571bf6800b4311d4ec8e54fc03cb",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e9c1bef722862f01_initial_startup_three_ticks.log"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_exit.json",
+        "bytes": 2046,
+        "sha256": "877de0d184a60ee88449676966ed668a5f3d74758149d39496b91b4495a4c964",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\877de0d184a60ee8_control_exit.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_Source539.log",
+        "bytes": 11795,
+        "sha256": "4e62700e5e59ce2749723989c84ab297ad0642b79642756ab1a61a934d86ead7",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\4e62700e5e59ce27_control_Source539.log"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\run_startup_smoke.py",
+        "bytes": 2206,
+        "sha256": "19ea1a9b7606c0c09cbb90dee7f21a99a3c80682b19e7ae4de564f1d2cc13486",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\19ea1a9b7606c0c0_run_startup_smoke.py"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_exit.json",
+        "bytes": 2040,
+        "sha256": "d562698a788ea6ef571df6b00c94fffbcf044d222cb7ecf2c589c407fc4f5cc7",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\d562698a788ea6ef_startup_exit.json"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_three_ticks.log",
+        "bytes": 12016,
+        "sha256": "e4c244d09c2ab1394e2dace307e9af5c1961345c2d263fdcc62f58c892f6bc6a",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e4c244d09c2ab139_startup_three_ticks.log"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_startup_stdout.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_startup_stderr.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\personal_windowed\\Battlestations-Pacific\\options.txt",
+        "bytes": 226,
+        "sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\1a815f6524a92e6d_options.txt"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\run_startup_smoke.py",
+        "bytes": 2166,
+        "sha256": "ce5904c51343acecca75db75dc50a4f2adeaa47cf91bf0adc4ded0c00eaf06b9",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\ce5904c51343acec_run_startup_smoke.py"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\run_control_Source539.py",
+        "bytes": 2218,
+        "sha256": "6256c92aa1b0e64685e0dfa06ebb8ec55cf4a5ba1220116ddb63348c5b63d5b3",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\6256c92aa1b0e646_run_control_Source539.py"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+        "bytes": 14303392,
+        "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\79da26ab6b2dc259_xlive.dll"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+        "bytes": 1089440,
+        "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\623cb6ca98e56635_msidcrl40.dll"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+        "bytes": 21408,
+        "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\649557d6349ea065_ppcrlconfig.dll"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll",
+        "bytes": 13643936,
+        "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4",
+        "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\a07e20c09a0c3eac_xlivefnt.dll"
+      }
+    ],
+    "Source581_and_frozen_Source539_attempts": [
+      {
+        "label": "Source581 current normal build",
+        "exit_record": {
+          "command": [
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+            "--frames",
+            "3",
+            "--log",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\startup_three_ticks.log",
+            "--game-root",
+            "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+            "--settings-personal-root",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\personal_windowed",
+            "--xlive-dll",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+            "--xlive-dependency",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+            "--xlive-dependency",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+            "--xlive-dependency",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+          "pid": 110544,
+          "start_utc": "2026-10-09T23:42:50.625024+00:00",
+          "window_hide_requested": true,
+          "visual_observation": false,
+          "exe_sha256": "2c4a6f9a4251c5a7c944722d774786fb84bf2280ffb970d0f176b73a0fba3c21",
+          "options_sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+          "purpose": "Source581 production model pool and registered Comment build, same genuine bundled SDK and ordinary isolated windowed settings. Three ticks exercise normal startup, device creation/Present and empty-layout drain; no injected input, menu or mission.",
+          "finish_utc": "2026-10-09T23:42:50.792656+00:00",
+          "exit_code": 1,
+          "exit_u32_hex": "00000001",
+          "terminal": true,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "exit_record_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_exit.json",
+          "bytes": 1992,
+          "sha256": "41022a2e8a286644bec49df0700c168252a5a26aef8e1c82209ed61276e59f6e"
+        },
+        "log_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\initial_startup_three_ticks.log",
+          "bytes": 11848,
+          "sha256": "e9c1bef722862f01bf0806ec87a2e87ad4e3571bf6800b4311d4ec8e54fc03cb"
+        },
+        "relevant_log_lines": [
+          {
+            "line": 21,
+            "text": "native model pools initialized: model_atexit=0 model_base_atexit=0 storage=process_actual38h/actual38h"
+          },
+          {
+            "line": 82,
+            "text": "sound startup FMOD failure: _FMOD_EventSystem_Init@20 result=61"
+          },
+          {
+            "line": 83,
+            "text": "sound startup FMOD failure: FMOD_System_CreateSound result=78"
+          },
+          {
+            "line": 84,
+            "text": "sound startup FMOD failure: FMOD_Sound_GetLength result=37"
+          },
+          {
+            "line": 85,
+            "text": "startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0"
+          },
+          {
+            "line": 86,
+            "text": "summary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0 frames_presented=0 presents_skipped=0 loop_finished=0 exit_code=1"
+          }
+        ]
+      },
+      {
+        "label": "Frozen Source539 executable control",
+        "exit_record": {
+          "command": [
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_atlas_mesh_Source_primary\\Source539_frozen\\build\\win32\\Release\\bsp_game.exe",
+            "--frames",
+            "3",
+            "--log",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_Source539.log",
+            "--game-root",
+            "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+            "--settings-personal-root",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\personal_windowed",
+            "--xlive-dll",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+            "--xlive-dependency",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+            "--xlive-dependency",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+            "--xlive-dependency",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+          ],
+          "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+          "pid": 73660,
+          "start_utc": "2026-10-09T23:43:42.570471+00:00",
+          "window_hide_requested": true,
+          "visual_observation": false,
+          "exe_sha256": "24641511eb4a6721ec2f2118524b1caef93244bac591dcd2e5c70e353e6c86dd",
+          "options_sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+          "purpose": "Frozen Source539 executable control for FMOD startup failure, same genuine bundled SDK and ordinary isolated windowed settings. Three ticks exercise normal startup, device creation/Present and empty-layout drain; no injected input, menu or mission.",
+          "finish_utc": "2026-10-09T23:43:42.869104+00:00",
+          "exit_code": 1,
+          "exit_u32_hex": "00000001",
+          "terminal": true,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "exit_record_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_exit.json",
+          "bytes": 2046,
+          "sha256": "877de0d184a60ee88449676966ed668a5f3d74758149d39496b91b4495a4c964"
+        },
+        "log_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_model_pools_comment_Source_primary\\control_Source539.log",
+          "bytes": 11795,
+          "sha256": "4e62700e5e59ce2749723989c84ab297ad0642b79642756ab1a61a934d86ead7"
+        },
+        "relevant_log_lines": [
+          {
+            "line": 81,
+            "text": "sound startup FMOD failure: _FMOD_EventSystem_Init@20 result=61"
+          },
+          {
+            "line": 82,
+            "text": "sound startup FMOD failure: FMOD_System_CreateSound result=78"
+          },
+          {
+            "line": 83,
+            "text": "sound startup FMOD failure: FMOD_Sound_GetLength result=37"
+          },
+          {
+            "line": 84,
+            "text": "startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0"
+          },
+          {
+            "line": 85,
+            "text": "summary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0 frames_presented=0 presents_skipped=0 loop_finished=0 exit_code=1"
+          }
+        ]
+      }
+    ],
+    "Source595": {
+      "label": "Historical Source595",
+      "exit_record": {
+        "command": [
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+          "--frames",
+          "3",
+          "--log",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_three_ticks.log",
+          "--game-root",
+          "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+          "--settings-personal-root",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\personal_windowed",
+          "--xlive-dll",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+        ],
+        "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+        "pid": 116676,
+        "start_utc": "2026-10-10T00:24:36.578591+00:00",
+        "window_hide_requested": true,
+        "visual_observation": false,
+        "exe_sha256": "0805d5df5f7d6b12bb671a56d33a7b566bff2b92b3daa925357d1900fae9a1b9",
+        "options_sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+        "purpose": "Source595 production group descriptor and registered Armour build; prior real pool startup preserved, same genuine bundled SDK and ordinary isolated windowed settings. Three ticks exercise normal startup, device creation/Present and empty-layout drain; no injected input, menu or mission.",
+        "finish_utc": "2026-10-10T00:24:36.764937+00:00",
+        "exit_code": 1,
+        "exit_u32_hex": "00000001",
+        "terminal": true,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\run_startup_smoke.py",
+          "bytes": 2206,
+          "sha256": "19ea1a9b7606c0c09cbb90dee7f21a99a3c80682b19e7ae4de564f1d2cc13486",
+          "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\19ea1a9b7606c0c0_run_startup_smoke.py"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_exit.json",
+          "bytes": 2040,
+          "sha256": "d562698a788ea6ef571df6b00c94fffbcf044d222cb7ecf2c589c407fc4f5cc7",
+          "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\d562698a788ea6ef_startup_exit.json"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_three_ticks.log",
+          "bytes": 12016,
+          "sha256": "e4c244d09c2ab1394e2dace307e9af5c1961345c2d263fdcc62f58c892f6bc6a",
+          "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e4c244d09c2ab139_startup_three_ticks.log"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_startup_stdout.txt"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\startup_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\e3b0c44298fc1c14_startup_stderr.txt"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\personal_windowed\\Battlestations-Pacific\\options.txt",
+          "bytes": 226,
+          "sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+          "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\1a815f6524a92e6d_options.txt"
+        }
+      ],
+      "relevant_log_lines": [
+        {
+          "line": 84,
+          "text": "sound startup FMOD failure: _FMOD_EventSystem_Init@20 result=61"
+        },
+        {
+          "line": 85,
+          "text": "sound startup FMOD failure: FMOD_System_CreateSound result=78"
+        },
+        {
+          "line": 86,
+          "text": "sound startup FMOD failure: FMOD_Sound_GetLength result=37"
+        },
+        {
+          "line": 87,
+          "text": "startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0"
+        }
+      ]
+    },
+    "exact_shared_options_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_group_descriptor_armour_Source_primary\\personal_windowed\\Battlestations-Pacific\\options.txt",
+      "bytes": 226,
+      "sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\1a815f6524a92e6d_options.txt"
+    },
+    "exact_shared_options_text": "Language englishauthentic\nFullscreen 0\nResolution 1707 1067\nVsync 1\nShaderModel 2\nAntialias 0\nClouds 1\nFoliage 1\nShadow 1\nReflection 1\nTextureDetail 2\nObjectDetail 2\nSoundEnabled 1\nFirewall 0\nHardwareReported 0\n",
+    "raw_error_chain": {
+      "ordered_calls": [
+        {
+          "call": "_FMOD_EventSystem_Init@20",
+          "result": 61,
+          "local_4_18_name": "FMOD_ERR_OUTPUT_INIT"
+        },
+        {
+          "call": "FMOD_System_CreateSound",
+          "result": 78,
+          "local_4_18_name": "FMOD_ERR_UNINITIALIZED"
+        },
+        {
+          "call": "FMOD_Sound_GetLength",
+          "result": 37,
+          "local_4_18_name": "FMOD_ERR_INVALID_PARAM"
+        }
+      ],
+      "bank_path": "sound/gui/error.fsb",
+      "file_bytes": 2688,
+      "mode_decimal": 2634,
+      "mode_hex": "0x0a4a",
+      "bank_returned": false,
+      "raw_length_output_consumed": false,
+      "interpretation": "Initialization is the first logged failure; CreateSound rejects an uninitialized system. The subsequent GetLength receives the null bank and fails invalid parameter. The resource guard stops before consuming its unwritten length. This evidence does not diagnose corrupted FSB bytes."
+    },
+    "historical_endpoint_observation": {
+      "observed_utc": "2026-10-10T03:36:52.3564957Z",
+      "pid": 27380,
+      "session_id": 1,
+      "session_name": "Console",
+      "process_pointer_bytes": 8,
+      "query": "MMDeviceEnumerator: eRender DEVICE_STATE_ACTIVE enumeration/count; default eConsole/eMultimedia/eCommunications; ID/state only",
+      "read_only": true,
+      "native_result": {
+        "EnumeratorCreateHResult": "00000000",
+        "ActiveRenderEnumHResult": "00000000",
+        "ActiveRenderGetCountHResult": "00000000",
+        "ActiveRenderCount": 0,
+        "Active": [],
+        "Defaults": [
+          {
+            "Role": "console",
+            "HResult": "80070490",
+            "EndpointReturned": false,
+            "EndpointId": null,
+            "GetIdHResult": null,
+            "State": 0,
+            "GetStateHResult": null
+          },
+          {
+            "Role": "multimedia",
+            "HResult": "80070490",
+            "EndpointReturned": false,
+            "EndpointId": null,
+            "GetIdHResult": null,
+            "State": 0,
+            "GetStateHResult": null
+          },
+          {
+            "Role": "communications",
+            "HResult": "80070490",
+            "EndpointReturned": false,
+            "EndpointId": null,
+            "GetIdHResult": null,
+            "State": 0,
+            "GetStateHResult": null
+          }
+        ]
+      }
+    },
+    "historical_success_boundary": {
+      "parent_reported": "Root Source534 run had2Presents around22:59UTC; it is historical, not current proof. Exact pin to be supplied by Root integration if needed.",
+      "independently_checked_earlier_smoke": {
+        "exit_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\windowed_three_exit.json",
+          "bytes": 1939,
+          "sha256": "41a4fb2743701c4c091dc392559e04e8ab32e1c20e2bef3f462e46ee2ac80720"
+        },
+        "log_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_production_startup_receiver_audit\\startup_windowed_three.log",
+          "bytes": 48782,
+          "sha256": "492eb1caa5b96ea5fc878df7c1ff241eea942b3a65bc25f705b96fb7116135a8"
+        },
+        "pid": 118072,
+        "start_utc": "2026-10-09T21:11:44.919902+00:00",
+        "exit_code": 0,
+        "frames_presented": 2,
+        "fmod_errors": 0,
+        "qualification": "A different earlier executable hash; not evidence that current Source581 or frozen539 startup succeeds now."
+      }
+    },
+    "qualification": "Commands/executable hashes/PIDs/exits are original retained attempts. No new startup and no claim that the current build path still contains an old executable. Source595 had real61/78/37 and zero graphics; historical successful Source534/earlier smoke does not prove present readiness."
+  },
+  "supported_path_analysis": {
+    "actual_provider_branch": "Disabled sound passes NOSOUND2 to real System_SetOutput then still calls real EventSystem_Init(512,16,null,0), installs file callbacks/3D settings and constructs real resources/configuration. It is no fake output or skipped-bank path.",
+    "ordinary_config_contract": "Native owner seeds actual+24h=true. Native options loader recognizes SoundEnabled but reads/stores no value, and read-view copies+24h. Serializer writes SoundEnabled; archive loader has volume keys but no+24h enable key. SoundEnabled0 or zero volumes therefore do not select a startup NOSOUND path. No setting was edited.",
+    "executable_selector": "Parser has no no-audio/nosound/headless selector; FMOD DLL overrides select real libraries and do not select output. --frames limits later loop ticks and still follows normal sound/window/device startup. Comments describing headless frame use and explicit VFS failure qualification modes are not supported graphics-free successful startup.",
+    "installed_SDK_capability": "Installed DLL exports real System_SetOutput; admitted Source enumNOSOUND2 and branch exist. This packet does not exercise NOSOUND/NOSOUND_NRT and does not claim their init or bank success. No undocumented installed config variable was assumed.",
+    "caller_lifetime_failure": "Production GameStartupHost retains SoundServices/GameSoundRuntime; one-shot startup binds genuine file callback ownership and delegates native sound construction. Current startup catches and reports the existing call journal without extra FMOD calls, then throws. Disabled-sound still retains/requires real EventSystem and resource/configuration owners. Current enum probe releases the real EventSystem that owns its core System; no stale handle was consumed."
+  },
+  "finding": {
+    "active_render_endpoint_count": 0,
+    "default_roles_returned_endpoint": false,
+    "installed_32bit_FMOD_num_drivers": 0,
+    "current_probe_output_before_init": 0,
+    "causal_limit": "No active/default render endpoint in Console session1 and real installed FMOD driver count0. This is the concrete missing normal-audio prerequisite, not proof it alone caused historical61 or that restoring it guarantees remaining startup. MMCSS driver is running; Win32_Service absence was not interpreted as driver absence.",
+    "next_executable_startup_boundary": "A Root-reviewed environment action must provide an actual active/default render endpoint visible to Console session1; then fresh MMDevice, installed32bitSDK and unchanged recorded-control/selected-build startup checks can qualify resolution. No OS action or launch is authorized/performed by this packet. A Source no-audio startup selector would be a separate Root-reviewed semantic scope and cannot be obtained by silently enabling ignored SoundEnabled parsing.",
+    "independent_reconstruction": "This startup prerequisite does not block independent Source reconstruction/build/physical evidence packets."
+  },
+  "credit": {
+    "current_readonly_MMDevice_and_environment_observation": true,
+    "current_installed_32bit_FMOD_driver_enumeration": true,
+    "fresh_FMOD_Init_or_bank_output": false,
+    "reconstructed_game_compile_or_tests_in_packet": 0,
+    "new_startup": 0,
+    "window_device_Present_gameplay": 0,
+    "Native_ABI_or_reconstruction": 0
+  },
+  "local_capture_script_and_result_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\capture_environment.py",
+      "bytes": 4135,
+      "sha256": "92d374b9003698a733622ba5ea7eba051dd74566d824531eddcd1299165e32d5",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\92d374b9003698a7_capture_environment.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\environment_capture.json",
+      "bytes": 17188,
+      "sha256": "c4cfe19e2957ea232a0b4b3c28a68708f26038642601c5e6bc6f7784facde012",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\c4cfe19e2957ea23_environment_capture.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\run_audio_probe.py",
+      "bytes": 3634,
+      "sha256": "62dc3fab53f680b841576775b234aa7aecbaa256a8159119ea28b17938be6b5e",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\62dc3fab53f680b8_run_audio_probe.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\audio_probe_result.json",
+      "bytes": 4496,
+      "sha256": "66c9bc8791b119fb320a6485e18944d43ef6c0a57d0ccd2fff5a6c0177b438c5",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\66c9bc8791b119fb_audio_probe_result.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\make_receipt.py",
+      "bytes": 16925,
+      "sha256": "0fff01e9500a3ebeb62555afee94a96ab0054b0d3bbbc3c506b1fb7f924f8ac4",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\0fff01e9500a3ebe_make_receipt.py"
+    }
+  ],
+  "offline_replay": {
+    "command": [
+      "python",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\replay_receipt.py",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_fmod_audio_endpoint_startup_recheck.json"
+    ],
+    "script_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_startup_recheck\\replay_receipt.py",
+      "bytes": 4590,
+      "sha256": "46c3946f0ec10b0b945a8c77adb6af5796b65f4e27065223ca70507ee839e73f",
+      "retained_path": "local\\cc12_audio_endpoint_startup_recheck\\frozen\\46c3946f0ec10b0b_replay_receipt.py"
+    },
+    "script_text": "\"\"\"Pure offline replay: retained bytes/Source queries/PE exports only, no SDK/COM/OS calls.\"\"\"\nimport hashlib, json, pathlib, re, sys\nimport pefile\n\nroot=pathlib.Path(__file__).resolve().parent.parent.parent\nreport_path=pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else root/'reports/cc12_fmod_audio_endpoint_startup_recheck.json'\nreport=json.loads(report_path.read_text())\npin_count=0;unique=set()\ndef walk(value):\n    global pin_count\n    if isinstance(value,dict):\n        retained=value.get('retained_path','').replace('\\\\','/')\n        if retained.startswith('local/cc12_audio_endpoint_startup_recheck/frozen/') and 'sha256' in value:\n            data=(root/retained).read_bytes()\n            assert len(data)==value['bytes'] and hashlib.sha256(data).hexdigest()==value['sha256'],value\n            pin_count+=1;unique.add(retained)\n        for item in value.values():walk(item)\n    elif isinstance(value,list):\n        for item in value:walk(item)\nwalk(report)\nsource={pathlib.Path(p['path']).relative_to(root).as_posix():(root/p['retained_path']).read_text() for p in report['current_source']['pins']}\nquery={'cli_parser_flags':sorted(set(re.findall(r'std::strcmp\\(argument, \"([^\"]+)\"',source['src/game_hosts.cpp']))),\n       'no_audio_or_headless_cli_selector_found':not any(f in source['src/game_hosts.cpp'] for f in ['\"--headless\"','\"--no-audio\"','\"--nosound\"','\"--no-sound\"']),\n       'sound_enabled_constructor_seed_true':'byte(p,0x24,1)' in source['src/native_game_settings_owner.cpp'],\n       'soundenabled_loader_consumes_no_value':'matched=true;if(k==9)break; // SoundEnabled never reads its value.' in source['src/native_settings_loader.cpp'],\n       'read_view_copies_actual_24h_flag':'a.enabled_24=flag(p,0x24)' in source['src/game_native_settings_application.cpp'],\n       'startup_passes_inverse_enable':'sound_->core.startup(!settings_view_.audio.enabled_24)' in source['src/game_hosts.cpp'],\n       'genuine_disabled_sound_nosound_branch':'host.system_set_output(state.system, FmodOutputType::nosound)' in source['src/audio_online_startup.cpp']}\nassert query==report['current_source']['query']\ntypes=json.loads(source['config/fmod_ex_types.json'])\nassert [v for v in types['enums']['FMOD_RESULT'] if v[1] in [37,61,78]]==report['local_enum_validation']['result_values']\nnormalized=0\nfor row in report['current_source']['source993_freeze']['relevant_frozen_source_replay']:\n    frozen=(root/row['Source993_retained_pin']['retained_path']).read_bytes().replace(b'\\r\\n',b'\\n')\n    current=next(p for p in report['current_source']['pins'] if pathlib.Path(p['path']).relative_to(root).as_posix()==row['path'])\n    worker=(root/current['retained_path']).read_bytes().replace(b'\\r\\n',b'\\n')\n    assert hashlib.sha256(frozen).hexdigest()==row['Source993_lf_sha256']\n    assert hashlib.sha256(worker).hexdigest()==row['worker_current_lf_sha256']\n    assert (frozen==worker)==row['lf_normalized_identical']\n    normalized+=1\nfor item in report['installed_dlls']:\n    pe=pefile.PE(str(root/item['pin']['retained_path']))\n    exports=[e.name.decode() for e in pe.DIRECTORY_ENTRY_EXPORT.symbols if e.name]\n    assert len(exports)==item['export_count'] and all(n in exports for n in item['selected_export_metadata'])\n    assert f'{pe.FILE_HEADER.Machine:04x}'==item['PE_machine_hex']\nprobe=report['current_win32_sdk_readonly_probe'];assert probe['exit_code']==0\nassert not any(n in probe['source_text'] for n in ['\"FMOD_System_Set','\"_FMOD_EventSystem_Init@','\"FMOD_System_Init\"'])\nobserved={row.get('step'):row for row in probe['stdout']}\nassert observed['System_GetNumDrivers']['result']==0 and observed['System_GetNumDrivers']['observed']==0\nassert observed['EventSystem_Release_owns_core_system']['result']==0\nassert report['current_environment']['mmdevice']['observed']['native_result']['ActiveRenderCount']==0\nfor attempt in report['historical_evidence']['Source581_and_frozen_Source539_attempts']:\n    assert attempt['exit_record']['exit_code']==1\nassert report['historical_evidence']['Source595']['exit_record']['exit_code']==1\nresult={'scope':'Pure offline hash/query/PE-export replay; no COM, SDK, environment refresh, build, startup or gameplay execution',\n        'retained_pin_occurrences_verified':pin_count,'unique_retained_files_verified':len(unique),\n        'current_source_queries_verified':True,'source993_full_file_normalized_comparisons_verified':normalized,\n        'installed_DLL_export_metadata_replayed':2,'historical_failed_runtime_attempts_preserved':3,\n        'new_FMOD_init_or_startup_credit':False,'result':'pass'}\nprint(json.dumps(result,indent=2))\n",
+    "scope": "Only retained files, text queries and PE export metadata. No live OS/MMDevice/FMOD API, compiler, GPR or game calls.",
+    "result": {
+      "scope": "Pure offline hash/query/PE-export replay; no COM, SDK, environment refresh, build, startup or gameplay execution",
+      "retained_pin_occurrences_verified": 101,
+      "unique_retained_files_verified": 85,
+      "current_source_queries_verified": true,
+      "source993_full_file_normalized_comparisons_verified": 10,
+      "installed_DLL_export_metadata_replayed": 2,
+      "historical_failed_runtime_attempts_preserved": 3,
+      "new_FMOD_init_or_startup_credit": false,
+      "result": "pass"
+    },
+    "stdout_text": "{\r\n  \"scope\": \"Pure offline hash/query/PE-export replay; no COM, SDK, environment refresh, build, startup or gameplay execution\",\r\n  \"retained_pin_occurrences_verified\": 101,\r\n  \"unique_retained_files_verified\": 85,\r\n  \"current_source_queries_verified\": true,\r\n  \"source993_full_file_normalized_comparisons_verified\": 10,\r\n  \"installed_DLL_export_metadata_replayed\": 2,\r\n  \"historical_failed_runtime_attempts_preserved\": 3,\r\n  \"new_FMOD_init_or_startup_credit\": false,\r\n  \"result\": \"pass\"\r\n}\r\n",
+    "stderr_text": "",
+    "exit_code": 0
+  }
+}
