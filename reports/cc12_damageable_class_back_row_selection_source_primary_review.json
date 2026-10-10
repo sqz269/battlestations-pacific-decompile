@@ -1,0 +1,802 @@
+{
+  "schema": "cc12-back-row-source-primary-review-v1",
+  "decision": "Accept registered ordinary exact 51-byte selection fragment with real borrowed service; application/fullreader/Native ABI/runtime held.",
+  "worker_commit": "d350021ff097ec2d9131deaab131461603f5c5f3",
+  "worker_report_pin": {
+    "path": "reports/cc12_damageable_class_back_row_selection_source.json",
+    "bytes": 424512,
+    "sha256": "4b9efc640f3faf603e7078ffa50970a6d291e153f99dd930e71c52b2b9140a6d"
+  },
+  "complete_indexed_COFF_receipt_pin": {
+    "path": "local/cc12_back_row_Source_primary/complete_artifacts.json",
+    "bytes": 534958,
+    "sha256": "6757caff5da0d4f2a3a2607190b82d05c7fdb587a624d545c7c6de6dc32322a5"
+  },
+  "document_pin": {
+    "path": "docs/CC12_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_SOURCE_PRIMARY_REVIEW.md",
+    "bytes": 4011,
+    "sha256": "232568415e412b392c0a0b48c0d55553d503ce0201750ec753a423bf49558c96"
+  },
+  "selected_project_inputs": 627,
+  "selected_Core_whole_objects": 84,
+  "selected_App_whole_objects": 3,
+  "unique_positive_Core_definitions": 225,
+  "normal_build": {
+    "command": "./scripts/build.ps1",
+    "start_utc": "2026-10-10T02:49:22.427985+00:00",
+    "end_utc": "2026-10-10T02:49:39.273653+00:00",
+    "exit_code": 0
+  },
+  "existing_checks_passed": 3,
+  "new_tests": 0,
+  "fresh_whole_object_summaries": [
+    {
+      "stem": "native_damageable_class_back_row_selection_fragment",
+      "bytes": 1482,
+      "sha256": "cb5102f7a9fd0243f608444d38c902c32969ceee37c5673490f610774892a520",
+      "sections": 5,
+      "physical_symbols": 9,
+      "functions": 1,
+      "code_bytes": 167,
+      "instructions": 64,
+      "undecoded_tails": []
+    }
+  ],
+  "prior83_Core_and3_App_unchanged": true,
+  "worker_review": {
+    "prior_Source625_frozen_pins_replayed": 629,
+    "worker_pin_occurrences_retained": 178,
+    "baseline_current_matches": [
+      {
+        "path": "reports/cc12_damageable_class_back_row_selection_readiness.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "docs/CC12_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_READINESS.md",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "src/native_invalid_parameter_noinfo_call.cpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "docs/CC12_NATIVE_INVALID_PARAMETER_NOINFO_CALL_SOURCE.md",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/cc12_native_invalid_parameter_noinfo_call_source.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/cc12_native_invalid_parameter_noinfo_call_primary_review.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "src/native_damageable_section_vector.cpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/native_damageable_section_vector.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "docs/NATIVE_DAMAGEABLE_SECTION_VECTOR_ORCH4.md",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/native_damageable_section_vector_orch4.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "src/native_damageable_class_section_row_begin_fragment.cpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/native_damageable_class_section_row_begin_fragment.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "docs/CC12_DAMAGEABLE_CLASS_SECTION_ROW_BEGIN_SOURCE.md",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/cc12_damageable_class_section_row_begin_source.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/cc12_damageable_class_section_row_begin_source_primary_review.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "src/native_damageable_class_section_iterator_setup_fragment.cpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/native_damageable_class_section_iterator_setup_fragment.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "docs/CC12_DAMAGEABLE_CLASS_SECTION_ITERATOR_SETUP_SOURCE.md",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/cc12_damageable_class_section_iterator_setup_source.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "src/native_damageable_class_damage_entry_fragment.cpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/native_damageable_class_damage_entry_fragment.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/native_damageable_class_lua_orch4.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "reports/cc12_damageable_class_section_row_begin_readiness.json",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/native_lua_objects.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "CMakeLists.txt",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "baseline_current_equal": true
+      },
+      {
+        "path": "scripts/build.ps1",
+        "baseline_current_equal": true
+      }
+    ],
+    "complete_current_Source_strings_verified": 22,
+    "actual_compiler_include_closure_pins": 106
+  },
+  "worker_pin_occurrences_retained": 178,
+  "retained_Source625_pins_replayed": 629,
+  "bounded_Native_replay": {
+    "start": "0087CE88",
+    "last_inclusive": "0087CEBA",
+    "excluded_successor": "0087CEBB",
+    "bytes": 51,
+    "instructions": 15,
+    "sha256": "0b5b7fb9484dc4c5b30ef97bcf62886907a7d10f11cc22455ecf15f0492442e0",
+    "full_parent_bytes": 3238,
+    "all_parent_starts": 858,
+    "all_exact_bytes_and_starts_equal": true,
+    "new_Native_windows_or_live_queries": 0
+  },
+  "normal_compiler_command": {
+    "exact_command": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_RESUME_INTEGRATOR\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_RESUME_INTEGRATOR\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_RESUME_INTEGRATOR\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_RESUME_INTEGRATOR\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-cc12_resume_integrator/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC12_RESUME_INTEGRATOR\\SRC\\NATIVE_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_FRAGMENT.CPP",
+    "explicit_frame_pointer": "/Oy-",
+    "worker_Release_default190B_is_separate_context": true,
+    "retained_tlog_path": "local/cc12_back_row_Source_primary/normal_CL.command.1.tlog",
+    "retained_tlog_sha256": "e678f17659a52c0eba7971bc4a3610cd8b3a2af06ab6f0749558054a6d857ef1"
+  },
+  "normal_compiled_fragment_review": {
+    "actual_complete_body": {
+      "symbol": "?select_native_damageable_class_back_row_0087ce88@bsp@@YAPAXAAUNativeDamageableClassBackRowSelectionFragmentScratch@1@@Z",
+      "symbol_index": 11,
+      "symbol_record_file_offset": 1276,
+      "section": 4,
+      "section_value": 0,
+      "physical_file_offset": 871,
+      "bytes": 167,
+      "sha256": "029def96f1423a3ecd212508ced7ef6be2d1535e889acd0a1731b51f6c0f3ab1",
+      "hex": "558bec83ec1c8b4d0856578b41088945f88b410c8945ec8b41108b78048b55f88b42088945fc8b42048945f48b45f43b45fc760aff378b4708ffd083c4048b45fc83e8308945e88b55f83b42080f97450b8b45fc8b55ec8902807d0b0075118b55f88b42048945f48b45e83b45f4730aff378b4708ffd083c4048b45fc83e8308945f08b55f88b42088945e48b45f03b45e4720dff378b4708ffd08b45f083c4045f5e8be55dc3",
+      "instruction_count": 64,
+      "relocations": [],
+      "decoded_bytes": 167,
+      "undecoded_tail_hex": "",
+      "complete_linear_decode": true,
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "offset": 1,
+          "bytes": "8bec",
+          "mnemonic": "mov",
+          "operands": "ebp, esp"
+        },
+        {
+          "offset": 3,
+          "bytes": "83ec1c",
+          "mnemonic": "sub",
+          "operands": "esp, 0x1c"
+        },
+        {
+          "offset": 6,
+          "bytes": "8b4d08",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp + 8]"
+        },
+        {
+          "offset": 9,
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "offset": 10,
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "offset": 11,
+          "bytes": "8b4108",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 8]"
+        },
+        {
+          "offset": 14,
+          "bytes": "8945f8",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 8], eax"
+        },
+        {
+          "offset": 17,
+          "bytes": "8b410c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0xc]"
+        },
+        {
+          "offset": 20,
+          "bytes": "8945ec",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x14], eax"
+        },
+        {
+          "offset": 23,
+          "bytes": "8b4110",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "offset": 26,
+          "bytes": "8b7804",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [eax + 4]"
+        },
+        {
+          "offset": 29,
+          "bytes": "8b55f8",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp - 8]"
+        },
+        {
+          "offset": 32,
+          "bytes": "8b4208",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 8]"
+        },
+        {
+          "offset": 35,
+          "bytes": "8945fc",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 4], eax"
+        },
+        {
+          "offset": 38,
+          "bytes": "8b4204",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 4]"
+        },
+        {
+          "offset": 41,
+          "bytes": "8945f4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0xc], eax"
+        },
+        {
+          "offset": 44,
+          "bytes": "8b45f4",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0xc]"
+        },
+        {
+          "offset": 47,
+          "bytes": "3b45fc",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ebp - 4]"
+        },
+        {
+          "offset": 50,
+          "bytes": "760a",
+          "mnemonic": "jbe",
+          "operands": "0x3e"
+        },
+        {
+          "offset": 52,
+          "bytes": "ff37",
+          "mnemonic": "push",
+          "operands": "dword ptr [edi]"
+        },
+        {
+          "offset": 54,
+          "bytes": "8b4708",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 8]"
+        },
+        {
+          "offset": 57,
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "offset": 59,
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "offset": 62,
+          "bytes": "8b45fc",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 4]"
+        },
+        {
+          "offset": 65,
+          "bytes": "83e830",
+          "mnemonic": "sub",
+          "operands": "eax, 0x30"
+        },
+        {
+          "offset": 68,
+          "bytes": "8945e8",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x18], eax"
+        },
+        {
+          "offset": 71,
+          "bytes": "8b55f8",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp - 8]"
+        },
+        {
+          "offset": 74,
+          "bytes": "3b4208",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [edx + 8]"
+        },
+        {
+          "offset": 77,
+          "bytes": "0f97450b",
+          "mnemonic": "seta",
+          "operands": "byte ptr [ebp + 0xb]"
+        },
+        {
+          "offset": 81,
+          "bytes": "8b45fc",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 4]"
+        },
+        {
+          "offset": 84,
+          "bytes": "8b55ec",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp - 0x14]"
+        },
+        {
+          "offset": 87,
+          "bytes": "8902",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx], eax"
+        },
+        {
+          "offset": 89,
+          "bytes": "807d0b00",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [ebp + 0xb], 0"
+        },
+        {
+          "offset": 93,
+          "bytes": "7511",
+          "mnemonic": "jne",
+          "operands": "0x70"
+        },
+        {
+          "offset": 95,
+          "bytes": "8b55f8",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp - 8]"
+        },
+        {
+          "offset": 98,
+          "bytes": "8b4204",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 4]"
+        },
+        {
+          "offset": 101,
+          "bytes": "8945f4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0xc], eax"
+        },
+        {
+          "offset": 104,
+          "bytes": "8b45e8",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x18]"
+        },
+        {
+          "offset": 107,
+          "bytes": "3b45f4",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ebp - 0xc]"
+        },
+        {
+          "offset": 110,
+          "bytes": "730a",
+          "mnemonic": "jae",
+          "operands": "0x7a"
+        },
+        {
+          "offset": 112,
+          "bytes": "ff37",
+          "mnemonic": "push",
+          "operands": "dword ptr [edi]"
+        },
+        {
+          "offset": 114,
+          "bytes": "8b4708",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 8]"
+        },
+        {
+          "offset": 117,
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "offset": 119,
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "offset": 122,
+          "bytes": "8b45fc",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 4]"
+        },
+        {
+          "offset": 125,
+          "bytes": "83e830",
+          "mnemonic": "sub",
+          "operands": "eax, 0x30"
+        },
+        {
+          "offset": 128,
+          "bytes": "8945f0",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x10], eax"
+        },
+        {
+          "offset": 131,
+          "bytes": "8b55f8",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp - 8]"
+        },
+        {
+          "offset": 134,
+          "bytes": "8b4208",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 8]"
+        },
+        {
+          "offset": 137,
+          "bytes": "8945e4",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "offset": 140,
+          "bytes": "8b45f0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x10]"
+        },
+        {
+          "offset": 143,
+          "bytes": "3b45e4",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ebp - 0x1c]"
+        },
+        {
+          "offset": 146,
+          "bytes": "720d",
+          "mnemonic": "jb",
+          "operands": "0xa1"
+        },
+        {
+          "offset": 148,
+          "bytes": "ff37",
+          "mnemonic": "push",
+          "operands": "dword ptr [edi]"
+        },
+        {
+          "offset": 150,
+          "bytes": "8b4708",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 8]"
+        },
+        {
+          "offset": 153,
+          "bytes": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "offset": 155,
+          "bytes": "8b45f0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x10]"
+        },
+        {
+          "offset": 158,
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "offset": 161,
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "offset": 162,
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "offset": 163,
+          "bytes": "8be5",
+          "mnemonic": "mov",
+          "operands": "esp, ebp"
+        },
+        {
+          "offset": 165,
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "offset": 166,
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    "all167_bytes64_ops_decoded": true,
+    "actual_5_physical_sections": 5,
+    "all_code_relocations_and_direct_project_externals": 0,
+    "genuine_stable_context_indirect_calls": [
+      57,
+      117,
+      153
+    ],
+    "current_end_comparison_saved_before_slot_publication": true,
+    "short_circuit_begin_read_retained": true,
+    "wrapping_row_derivation_after_second_callback": true,
+    "fresh_final_end_and_unsigned_row_ge_end": true,
+    "captured_row_return_preserved_after_third_callback": true,
+    "no_new_owner_state_or_EH_scope": true,
+    "raw_storage_no_typed_subobject_requirement": true,
+    "held": "CEBB fields/iteration/fullreader/application service/header/cursor binding/Native ABI/FH3/SEH/longjmp/fault/startup/gameplay"
+  },
+  "GPR": {
+    "commands": [
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "path": "local/cc12_back_row_Source_primary/live_count.txt",
+        "sha256": "0041c20bc4159611d65d9048506e7ac1582593ec2bfc3ff5f01c8e523577eb2c",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "comments",
+          "0087CA80"
+        ],
+        "path": "local/cc12_back_row_Source_primary/pre_comments.txt",
+        "sha256": "34ad243c660e270c933a649347a9fed430af8ece1541f61b0bbaa5e24f4e7b01",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ledger",
+          "add-fragment",
+          "--json",
+          "{\"address\": \"0087ce88\", \"parent\": \"0087ca80\", \"name\": \"select_native_damageable_class_back_row_0087ce88\", \"source\": \"src/native_damageable_class_back_row_selection_fragment.cpp\", \"status\": \"ordinary_unbound_actual_51_byte_row_selection_fragment_registered_build_checked_genuine_borrowed_service\", \"original_bytes\": 51, \"original_instructions\": 15, \"original_ranges\": [{\"start\": \"0087ce88\", \"end_exclusive\": \"0087cebb\", \"bytes\": 51, \"instructions\": 15}], \"original_abi\": \"Interior CE88..CEBA with actual retained EDI header, captured ESI end, S+DC cursor and live state13 iterator. Original BF6713 absolute no-arg calls versus new ordinary cdecl genuine context-service callback. Source returns captured-end-derived row in EAX; original excluded continuation uses ESI. Fullparent/Native ABI/FH3/SEH/longjmp/fault held.\", \"evidence\": \"Root replays exact 51 bytes / 15 ops and all 3238-byte / 858 parent starts against unchanged PE and frozen saved/live listings. Capture end once; current begin call1 before cursor store; wrapping candidate vs current end comparison saved before S+DC publication; above-end short-circuits begin read; genuine same borrowed invalid service call2 before second row derivation; freshly current end unsigned row>=end calls3. No retry, row dereference, state/owner changes, callback cast, no-op or UCRT-policy substitution. Normal Root build actual /Oy- is 167 bytes / 64 instructions / 5 sections, three real context indirect calls, zero relocations/project externals/EH scopes; worker separate Release-default 190-byte body retained. Source627: 627 selected project inputs,84 Core+3 App objects,225 unique selected positive Core definitions,3 existing tests; all83 priorCore+3App unchanged.178 worker pin occurrences,629 Source625 pins replayed,38 baseline/current blobs and22 complete Source snapshots checked. CEBB rowfields/loop/application header/cursor/service binding/Native ABI/EH/fault/startup/gameplay remain held. docs/CC12_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_SOURCE_PRIMARY_REVIEW.md.\"}"
+        ],
+        "path": "local/cc12_back_row_Source_primary/ledger_fragment.txt",
+        "sha256": "403c6b7698229d8bd9c34cf65f62bf750e09ff7c2f37cd268ec6d6460baeb1b0",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ledger",
+          "add-name",
+          "0087CA80",
+          "BSP_DamageableClass_ReadLuaFields",
+          "--append-evidence",
+          "--evidence",
+          "CC12 back-row refinement: exact CE88..CEBA 51 bytes / 15 ops. Actual retained header and S+DC under live13 iterator; capture end once, preserve current-end comparison before cursor publication, conditional begin read and real borrowed invalid-service calls, row subtraction after call2, current-end row>=end call3. No retry/row dereference/new state or owner/policy substitution. Source627 normal build 3 existing tests, actual /Oy- 167-byte /64-op whole object, three genuine context calls, all83 priorCore+3App unchanged. Original ABI/FH3/SEH/fault/application/fullreader/CEBB fields/loop/runtime/gameplay held. docs/CC12_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_SOURCE_PRIMARY_REVIEW.md."
+        ],
+        "path": "local/cc12_back_row_Source_primary/name_parent.txt",
+        "sha256": "70f297ec3b39abb0145712244f3ed4f0ac0cd0b59614201a8345ecaf47151f86",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/ghidra_annotate.py",
+          "--addresses",
+          "0087CA80",
+          "--apply"
+        ],
+        "path": "local/cc12_back_row_Source_primary/locked_annotation.txt",
+        "sha256": "af1befd802395c6d003386a17be635bb9828e69093e3175128ee22d5b74df24e",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "export",
+          "0087CA80",
+          "--force"
+        ],
+        "path": "local/cc12_back_row_Source_primary/refresh_parent.txt",
+        "sha256": "3841c1914f95159563d5b0fa290eb02a8898c53e5fe3f1159073c3b89f6b7bcd",
+        "exit_code": 0
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "comments",
+          "0087CA80"
+        ],
+        "path": "local/cc12_back_row_Source_primary/post_comments.txt",
+        "sha256": "5d94a6a7dd7af0e227988e56f2a4ad71e77cdda6a86a3a83ca6941b804463b53",
+        "exit_code": 0
+      }
+    ],
+    "record": {
+      "address": "0087ce88",
+      "parent": "0087ca80",
+      "name": "select_native_damageable_class_back_row_0087ce88",
+      "source": "src/native_damageable_class_back_row_selection_fragment.cpp",
+      "status": "ordinary_unbound_actual_51_byte_row_selection_fragment_registered_build_checked_genuine_borrowed_service",
+      "original_bytes": 51,
+      "original_instructions": 15,
+      "original_ranges": [
+        {
+          "start": "0087ce88",
+          "end_exclusive": "0087cebb",
+          "bytes": 51,
+          "instructions": 15
+        }
+      ],
+      "original_abi": "Interior CE88..CEBA with actual retained EDI header, captured ESI end, S+DC cursor and live state13 iterator. Original BF6713 absolute no-arg calls versus new ordinary cdecl genuine context-service callback. Source returns captured-end-derived row in EAX; original excluded continuation uses ESI. Fullparent/Native ABI/FH3/SEH/longjmp/fault held.",
+      "evidence": "Root replays exact 51 bytes / 15 ops and all 3238-byte / 858 parent starts against unchanged PE and frozen saved/live listings. Capture end once; current begin call1 before cursor store; wrapping candidate vs current end comparison saved before S+DC publication; above-end short-circuits begin read; genuine same borrowed invalid service call2 before second row derivation; freshly current end unsigned row>=end calls3. No retry, row dereference, state/owner changes, callback cast, no-op or UCRT-policy substitution. Normal Root build actual /Oy- is 167 bytes / 64 instructions / 5 sections, three real context indirect calls, zero relocations/project externals/EH scopes; worker separate Release-default 190-byte body retained. Source627: 627 selected project inputs,84 Core+3 App objects,225 unique selected positive Core definitions,3 existing tests; all83 priorCore+3App unchanged.178 worker pin occurrences,629 Source625 pins replayed,38 baseline/current blobs and22 complete Source snapshots checked. CEBB rowfields/loop/application header/cursor/service binding/Native ABI/EH/fault/startup/gameplay remain held. docs/CC12_DAMAGEABLE_CLASS_BACK_ROW_SELECTION_SOURCE_PRIMARY_REVIEW.md."
+    },
+    "preimage_exports": [
+      {
+        "path": "local/cc12_back_row_Source_primary/pre_annotation_exports/assembly.txt",
+        "bytes": 25014,
+        "sha256": "38752fdd292f3ed8b60e0bd0914f64cee38c9e7a9beb25198fb5f20ba8df8a7d"
+      },
+      {
+        "path": "local/cc12_back_row_Source_primary/pre_annotation_exports/decompiled.c",
+        "bytes": 44407,
+        "sha256": "bb51b1971600cbc3c0dd3063b3bea0cd21b46f3e49dbd6560151ac0e1ae21040"
+      },
+      {
+        "path": "local/cc12_back_row_Source_primary/pre_annotation_exports/metadata.json",
+        "bytes": 280,
+        "sha256": "f93db1b78e957f82bd27c5df5077b7a99d4c68f6bb1f748e0c70b41933645a0d"
+      }
+    ],
+    "old_comment_preserved_verbatim": true,
+    "parent_name_retained": true,
+    "body_prototype_flow_changes": false,
+    "prior_annotations_pin": {
+      "path": "local/cc12_back_row_Source_primary/ghidra-annotations-20261010T025256Z.json",
+      "sha256": "480ed8e9da6596981aaeb1d5df9dc432b932348f2ac74402c2857d96fb79684f"
+    }
+  },
+  "installation_pin": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "canonical_lf_sha256": "fe1f47d46cc8d0a82ae098b0a6e184f4b0faeac6a671097f1ffa2a301eaf7256"
+  },
+  "credit": {
+    "ordinary_fragment_registered": true,
+    "MSVC_Win32_build": true,
+    "real_borrowed_context_service": true,
+    "whole_parent": false,
+    "actual_production_header_cursor_service_binding": false,
+    "original_Native_ABI_EH_fault": false,
+    "fragment_fixture_execution": false,
+    "new_game_execution": false,
+    "complete_startup": false,
+    "Present": false,
+    "gameplay": false
+  }
+}
