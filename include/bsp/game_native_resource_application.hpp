@@ -12,6 +12,8 @@ struct NativeResourceStreamReadContext;
 struct NativeResourceHierarchyParserContext;
 class NativeMaterialParameterPool;
 class NativeVfsRuntimeBindings;
+class NativeResourceExtraItemReaderCalls;
+class NativeAdoptedSubstreamDispatch;
 }
 
 namespace bsp::game {
@@ -27,6 +29,20 @@ struct GameNativeHierarchyServices {
     NativeResourceStreamReadContext& reads;
     NativeResourceHierarchyParserContext& hierarchy;
     NativeMaterialParameterPool& hierarchy_pool_0109022c;
+};
+
+// Stable, host-owned metadata over the same hierarchy read/string/node domain.
+// Binding invokes no native reader or deletion. Actual item/handle ownership,
+// interruption retention and retirement before shared drain remain caller gates.
+struct GameNativeAnimationExtraItemServices {
+    NativeResourceExtraItemReaderCalls& readers;
+    NativeAdoptedSubstreamDispatch& references;
+
+    GameNativeAnimationExtraItemServices(NativeResourceExtraItemReaderCalls& actual_readers,
+        NativeAdoptedSubstreamDispatch& actual_references) noexcept
+        : readers(actual_readers), references(actual_references) {}
+    GameNativeAnimationExtraItemServices(const GameNativeAnimationExtraItemServices&) = delete;
+    GameNativeAnimationExtraItemServices& operator=(const GameNativeAnimationExtraItemServices&) = delete;
 };
 
 // Actual resource-manager and thirteen parser publication cells, using the
@@ -59,6 +75,8 @@ private:
     // Only the owning host may bind its own ready VFS/string domain. Mapped
     // data comes from this application's original construction, never a caller.
     const GameNativeHierarchyServices& borrow_hierarchy_services(
+        NativeVfsRuntimeBindings&, NativeStringRawPoolContext&);
+    const GameNativeAnimationExtraItemServices& borrow_animation_extra_item_services(
         NativeVfsRuntimeBindings&, NativeStringRawPoolContext&);
     struct Impl;
     std::unique_ptr<Impl> impl_;
