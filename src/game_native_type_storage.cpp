@@ -22,7 +22,8 @@ GameNativeTypeStorage::GameNativeTypeStorage() noexcept
           bone_guard_01090265_, bone_01090278_},
       model_types_{model_guard_01090030_, model_01090034_},
       model_base_types_{model_base_guard_01090031_, model_base_01090044_[0],
-          model_base_01090044_[1], model_base_01090044_[2], model_base_01090044_[3]} {}
+          model_base_01090044_[1], model_base_01090044_[2], model_base_01090044_[3]},
+      group_types_{group_guard_010902e1_, group_0109032c_} {}
 
 ModelTypeBootstrapStorage& GameNativeTypeStorage::model_types() noexcept {
     return model_types_;
@@ -30,6 +31,10 @@ ModelTypeBootstrapStorage& GameNativeTypeStorage::model_types() noexcept {
 
 ModelBaseTypeStorage& GameNativeTypeStorage::model_base_types() noexcept {
     return model_base_types_;
+}
+
+NativeGroupTypeStorage& GameNativeTypeStorage::group_types() noexcept {
+    return group_types_;
 }
 
 void GameNativeTypeStorage::require_common_bootstrap(
@@ -65,6 +70,9 @@ void GameNativeTypeStorage::initialize_resource_types(
     NativeResourceExtraTypeIds extra(existing_counter, mesh, resource_extra_types_);
     extra.initialize_animation_resource_00cd82f0();
     extra.initialize_bone_resource_00cd8340();
+    // Explicit Source order. Keep B8F590's own guard-first/partial-state behavior.
+    NativeGroupTypes group(existing_counter, common_root_bootstrap, group_types_);
+    group.initialize_00b8f590(group_types_.group_0109032c);
     mesh.initialize_mesh_resource_00cd8690();
     mesh.initialize_skined_mesh_resource_00cd86f0();
     mesh.initialize_matrix_mesh_resource_00cd87b0();

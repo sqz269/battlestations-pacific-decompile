@@ -7,6 +7,7 @@
 #include "bsp/native_resource_extra_type_ids.hpp"
 #include "bsp/model_type_bootstrap.hpp"
 #include "bsp/native_model_base_bootstrap.hpp"
+#include "bsp/native_group_owner.hpp"
 
 #include <cstdint>
 
@@ -36,10 +37,13 @@ public:
     // Borrowers must finish before this process owner is destroyed.
     ModelTypeBootstrapStorage& model_types() noexcept;
     ModelBaseTypeStorage& model_base_types() noexcept;
+    NativeGroupTypeStorage& group_types() noexcept;
 
-    // Recovered relative CRT order: CCEC00/CCF740/CCF980 selectors, then
+    // Existing recovered relative CRT order: CCEC00/CCF740/CCF980 selectors, then
     // CD7D80 camera, CD7E60 model, CD7EB0 model-base, CD82F0/CD8340 extra
     // resource types and CD8690/CD86F0/CD87B0 mesh types, before stream types.
+    // Group B8F590 is explicitly inserted between extra and mesh types; this
+    // Source composition does not establish its original CRT-table position.
     // Other native CRT entries remain separate; this does not promise their
     // execution or original absolute numeric IDs. All represented families
     // share this application's counter/root/scene and stable selector cells.
@@ -107,6 +111,12 @@ private:
     volatile std::uint32_t model_base_01090044_[4]{};
     ModelTypeBootstrapStorage model_types_;
     ModelBaseTypeStorage model_base_types_;
+
+    // Exact group guard and descriptor, separate from the 010902F4 group pool.
+    // The view borrows these same live fields without copying or initializing.
+    volatile std::uint8_t group_guard_010902e1_{};
+    volatile NativeGroupTypeDescriptor group_0109032c_{};
+    NativeGroupTypeStorage group_types_;
 };
 
 } // namespace bsp::game
