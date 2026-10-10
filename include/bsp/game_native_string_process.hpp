@@ -1,6 +1,8 @@
 #pragma once
 #include "bsp/native_string_pool_storage.hpp"
 
+namespace bsp { struct NativeParticleModelManagerStorage; }
+
 namespace bsp::game {
 
 // Original loader-zero publications outlive the application and every CRT
@@ -16,6 +18,11 @@ public:
     void* volatile& pending_registry_00f878cc() noexcept;
     // Permanent allocation-statistics publication; cell access creates no owner.
     void* volatile& allocation_stats_0109cefc() noexcept;
+    // Permanent typed F8C274 authority; this accessor creates no owner.
+    NativeParticleModelManagerStorage* volatile& particle_manager_00f8c274() noexcept;
+    // Source admission policy, not Native storage. Claim once while quiescent;
+    // never reset, including after drain or host replacement. No owner is made.
+    bool claim_particle_manager_domain() noexcept;
     NativeStringPoolStorage* volatile& pool_01090aa8() noexcept { return pool_; }
     volatile std::uint32_t& returns_disabled_01090aa4() noexcept { return disabled_; }
     NativeStringRawPoolContext& raw_context() noexcept { return raw_; }
@@ -39,6 +46,8 @@ private:
     // Append after every established authority; do not reuse another raw8 owner.
     void* volatile pending_registry_00f878cc_{};
     void* volatile allocation_stats_0109cefc_{};
+    NativeParticleModelManagerStorage* volatile particle_manager_00f8c274_{};
+    bool particle_manager_domain_claimed_{};
 };
 
 // Intentionally retained through process termination. No C++ exit destructor

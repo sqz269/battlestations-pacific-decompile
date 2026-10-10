@@ -3,9 +3,11 @@
 
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/native_allocation_stats_constructor.hpp"
+#include "bsp/native_particle_model_manager.hpp"
 #include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_resource_support.hpp"
 #include <memory>
+#include <optional>
 
 namespace bsp {
 class ActualNativeStringPoolStorage;
@@ -17,6 +19,7 @@ namespace bsp::game {
 class GameHostLog;
 class GameObserverRuntime;
 class GameNativeVfsRuntime;
+class GameNativeReadOnlyData;
 
 // One application-owned raw14h manager, raw10h effect owner and raw8h factory.
 // Private publications outlive the menu and all shutdown calls. Admitted
@@ -28,6 +31,8 @@ public:
     ~GameSingletonHost();
     GameSingletonHost(const GameSingletonHost&) = delete;
     GameSingletonHost& operator=(const GameSingletonHost&) = delete;
+    GameSingletonHost(GameSingletonHost&&) = delete;
+    GameSingletonHost& operator=(GameSingletonHost&&) = delete;
 
     // 008F840B obtains the factory; 008F8414 stores its separate alias.
     // The owner context and both cells survive the complete raw drain.
@@ -86,6 +91,16 @@ public:
     // Retain the same canonical manager and permanent process statistics cell
     // through normal and fallback drains; construction remains caller-driven.
     NativeAllocationStatsConstructorContext& allocation_stats_context() noexcept;
+    // Dormant preparation only. Caller must establish a valid, quiescent domain
+    // before ANY particle construction attempt; a null F8C274 is not proof.
+    // The first successful bind permanently claims the process Source domain,
+    // so a replacement host cannot adopt it even after publication becomes null.
+    // Same-host repeat requires the exact cells, live D7A24C reference and binding.
+    // Retain data/owners through shutdown; failed-construction containment and
+    // the actual early startup call remain separate caller responsibilities.
+    void bind_particle_manager_domain(GameNativeReadOnlyData&);
+    // Borrow only an already-bound context. No getter, allocation or activation.
+    NativeParticleModelManagerAccess& particle_manager_context();
     // Lazy diagnostic access and physical Lock contexts borrow this one cell
     // with sound_lifetime(). Its deletion binding outlives the raw drain.
     NativeDiagnosticSinkStorage* volatile& diagnostic_publication_0109cf14() noexcept {
@@ -139,5 +154,8 @@ private:
     std::unique_ptr<GameObserverRuntime> observers_;
     void* volatile& pending_registry_publication_00f878cc_; // canonical process cell
     NativeAllocationStatsConstructorContext allocation_stats_context_;
+    // Stable inline binding survives the destructor's shutdown body. Never reset
+    // while registered owners/callbacks remain; the host cannot copy or move.
+    std::optional<NativeParticleModelManagerAccess> particle_manager_context_;
 };
 } // namespace bsp::game

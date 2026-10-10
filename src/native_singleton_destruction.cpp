@@ -1,5 +1,6 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/native_allocation_stats_lifecycle.hpp"
+#include "bsp/native_particle_model_manager.hpp"
 #include "bsp/global_config.hpp"
 #include "bsp/native_game_class_cleanup.hpp"
 #include "bsp/native_profile_hints_owner.hpp"
@@ -291,6 +292,22 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.allocation_stats != nullptr) {
             delete_native_allocation_stats_00be2930(
                 owner, flags, *bindings.allocation_stats);
+            return;
+        }
+        break;
+    case 0x00d5d7ec:
+        if (bindings.particle_manager != nullptr) {
+            delete_native_particle_manager_base_00af0870(
+                static_cast<NativeParticleModelManagerStorage*>(owner), flags,
+                *bindings.particle_manager);
+            return;
+        }
+        break;
+    case 0x00d5d7f8:
+        if (bindings.particle_manager != nullptr) {
+            delete_native_particle_model_manager_00af1080(
+                static_cast<NativeParticleModelManagerStorage*>(owner), flags,
+                *bindings.particle_manager);
             return;
         }
         break;
