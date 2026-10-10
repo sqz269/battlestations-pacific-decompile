@@ -1,0 +1,787 @@
+{
+  "schema": "bsp.cc12_game_canonical_free.Primary.v1",
+  "status": "accepted_canonical_Source_free_defaults_production_binding_pending",
+  "worker_commit": "93b7653af59cd8ae4337f07527e5a05a50a153ed",
+  "worker_review": {
+    "status": "PASS",
+    "copied_worker_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\worker_tree\\reports\\cc12_game_canonical_free_defaults.json",
+      "bytes": 62860,
+      "sha256": "cb1e3adac0feaaca222f99a76b2b86e8d96e654e61dc4452389331b4eeb15063"
+    },
+    "copied_payloads": 104,
+    "copied_guarded_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\Root_copied_worker_review.json",
+      "bytes": 600,
+      "sha256": "e3ce912e5a0e0c4923a8ee84d291c999a7310541f1cac3aa0d62db2246afe3ad"
+    },
+    "actual_baseline_Git_Source": 4206,
+    "actual_closed_commit": "93b7653af59cd8ae4337f07527e5a05a50a153ed",
+    "actual_owned_commit_files": 6,
+    "Root_seed_prerequisite_queries": 8,
+    "Root_seed_prerequisite_bytes": 501,
+    "worker_packet_Native_queries": 0
+  },
+  "Root_before": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\Root_before.json",
+    "bytes": 5005520,
+    "sha256": "477539caee6dda85f16a99ff00ebf2cffb18486c7d097c02c2a559022f37d15e"
+  },
+  "Root_after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\Root_after.json",
+    "bytes": 5002078,
+    "sha256": "23d5cefdcef93feed322648a3097f4cefe3b47ff08aba0d0840162d42959b6f6"
+  },
+  "Root_verified": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\Root_verified.json",
+    "bytes": 22145,
+    "sha256": "d7f8fcb7609870591fba7f0fda3e861ed32146e37392c24a000211996d4357ec"
+  },
+  "Root_build_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\Root_build.log",
+    "bytes": 3388,
+    "sha256": "1f630c9f5740dea940be15cdace22858ed3c80a3bd0a1e525b5e7a01565e3060"
+  },
+  "Root_helpers": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\prepare_capture.py",
+      "bytes": 1092,
+      "sha256": "fc6cd3d01b80fff10ea2d5376f2e3212a56f2d72b2b9955da1c0b859ca2cbc78"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\capture.py",
+      "bytes": 4167,
+      "sha256": "75e251476a840b5b397e337daf9ed6bb8bdfaa481611abc9518e97330fe3b862"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\copy_review_worker.py",
+      "bytes": 3015,
+      "sha256": "81bfef490df17d7ba805b434625dc6cd2040d5bd5b9276d1adf2229b1bd7d39f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\verify_after.py",
+      "bytes": 7015,
+      "sha256": "2264cf29e9f0072d2e0632801f3790a164c453557583c6b95b8b27bec1c93573"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\publish.py",
+      "bytes": 4545,
+      "sha256": "37c637279a749aad9c5fd322e50c04daf3977535ba67bb1cd10dc8ff50e30fc5"
+    }
+  ],
+  "Root_build": {
+    "UTC_start": "2026-10-10T19:37:55.4099967Z",
+    "exit_code": 0,
+    "UTC_end": "2026-10-10T19:38:13.9826981Z"
+  },
+  "checks": [
+    "reconstructed_math",
+    "native_math_differential",
+    "tool_tests"
+  ],
+  "Source_epoch": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_canonical_free_primary\\Source3354_game_canonical_free_frozen.json",
+    "bytes": 1236914,
+    "sha256": "a66d0d6ebcd9d3f2ffb7a08f27605bcc6bda175d479f29eb0333052c8509d322"
+  },
+  "Source_inputs_before": 3354,
+  "Source_inputs_after": 3354,
+  "existing_Source_changes": [
+    "include/bsp/native_game_container_lifetime.hpp",
+    "include/bsp/native_game_lifetime.hpp",
+    "src/native_game_container_lifetime.cpp",
+    "src/native_game_lifetime.cpp"
+  ],
+  "unchanged_Source_inputs": 3350,
+  "full_Source_before": 4208,
+  "full_Source_after": 4208,
+  "actual_Git_Source_and_inputs_before": 4215,
+  "actual_Git_Source_and_inputs_after": 4215,
+  "all_Git_matches_LF": true,
+  "worker_Source_inputs": 3352,
+  "worker_Core_members": 1988,
+  "Root_Core_members_before": 1989,
+  "Root_Core_members_after": 1989,
+  "Root_changed_Core_whole_objects": [
+    {
+      "object": "bsp_core.dir\\Release\\native_game_lifetime.obj",
+      "function_count": 82,
+      "preserved_functions": 81,
+      "changed_functions": [
+        "?free_00bf65ac@NativeGameLifetimeCalls@bsp@@UAEXPAX@Z"
+      ],
+      "whole_before_SHA256": "d72a802dbe9f729372ce9c9ad2c550f076e5448b1aa4fa60f1b52762af16bcdd",
+      "whole_after_SHA256": "b37fe57ec46510cf0145106734c25341735bcd19b9d8d1c9aeaf94b0310f02d1",
+      "only_COFF_timestamp_changed": false
+    },
+    {
+      "object": "bsp_core.dir\\Release\\native_game_container_lifetime.obj",
+      "function_count": 25,
+      "preserved_functions": 24,
+      "changed_functions": [
+        "?free_00bf65ac@NativeGameContainerLifetimeCalls@bsp@@UAEXPAX@Z"
+      ],
+      "whole_before_SHA256": "b3aee3f48c1cd1cffba500ca98daf88bff67753f8f1e7895bc18f8f54dfb9d41",
+      "whole_after_SHA256": "7b6ca3a8f3846b6e251dde7f68ce3b75a28035fa69c2a3a0ae6131c698e51a51",
+      "only_COFF_timestamp_changed": false
+    },
+    {
+      "object": "bsp_core.dir\\Release\\game_native_game_runtime.obj",
+      "function_count": 78,
+      "preserved_functions": 78,
+      "changed_functions": [],
+      "whole_before_SHA256": "dee0556986480868f5c6a7b4e43d06f1a7e9235699576bd282d5771bf7ba852a",
+      "whole_after_SHA256": "d5c51c3ddaf925e6683d700928448a47007b450ef309e5a233f8a1198cc1e149",
+      "only_COFF_timestamp_changed": true
+    },
+    {
+      "object": "bsp_core.dir\\Release\\native_game_current_virtual_calls.obj",
+      "function_count": 5,
+      "preserved_functions": 5,
+      "changed_functions": [],
+      "whole_before_SHA256": "79b60c5c95cd4021e5eefcbd771e79a3eb651a26d5f4070e4aa7458f3ead35b1",
+      "whole_after_SHA256": "467558a84008c4c7660178ae51fd08b16119b7343a7ae6b70a5b8809c5ec2b5b",
+      "only_COFF_timestamp_changed": true
+    }
+  ],
+  "Root_unchanged_Core_whole_objects": 1985,
+  "unrelated_functions_in_changed_objects_preserved": 188,
+  "complete_adapter_bodies": [
+    {
+      "object": "bsp_core.dir\\Release\\native_game_lifetime.obj",
+      "symbol": "?free_00bf65ac@NativeGameLifetimeCalls@bsp@@UAEXPAX@Z",
+      "before": {
+        "symbol": "?free_00bf65ac@NativeGameLifetimeCalls@bsp@@UAEXPAX@Z",
+        "symbol_index": 274,
+        "symbol_record_file_offset": 24992,
+        "section": 81,
+        "section_value": 0,
+        "physical_file_offset": 13225,
+        "bytes": 18,
+        "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+        "hex": "558becff7508e80000000083c4045dc20400",
+        "instruction_count": 7,
+        "relocations": [
+          {
+            "record_file_offset": 13243,
+            "raw_record_hex": "07000000bf0000001400",
+            "offset": 7,
+            "type": 20,
+            "symbol_index": 191,
+            "symbol": "??3@YAXPAX@Z",
+            "symbol_record": {
+              "index": 191,
+              "record_file_offset": 23498,
+              "raw_record_hex": "00000000b700000000000000000020000200",
+              "name": "??3@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 13232,
+            "operand_hex": "00000000",
+            "operand_u32": 0,
+            "function_offset": 7
+          }
+        ],
+        "decoded_bytes": 18,
+        "undecoded_tail_hex": "",
+        "complete_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0xb"
+          },
+          {
+            "offset": 11,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "offset": 14,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 15,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      "after": {
+        "symbol": "?free_00bf65ac@NativeGameLifetimeCalls@bsp@@UAEXPAX@Z",
+        "symbol_index": 274,
+        "symbol_record_file_offset": 24992,
+        "section": 81,
+        "section_value": 0,
+        "physical_file_offset": 13225,
+        "bytes": 18,
+        "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+        "hex": "558becff7508e80000000083c4045dc20400",
+        "instruction_count": 7,
+        "relocations": [
+          {
+            "record_file_offset": 13243,
+            "raw_record_hex": "07000000d10000001400",
+            "offset": 7,
+            "type": 20,
+            "symbol_index": 209,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "symbol_record": {
+              "index": 209,
+              "record_file_offset": 23822,
+              "raw_record_hex": "00000000a703000000000000000020000200",
+              "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 13232,
+            "operand_hex": "00000000",
+            "operand_u32": 0,
+            "function_offset": 7
+          }
+        ],
+        "decoded_bytes": 18,
+        "undecoded_tail_hex": "",
+        "complete_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0xb"
+          },
+          {
+            "offset": 11,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "offset": 14,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 15,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      "Root_matches_worker_complete_bytes_and_relocations": true
+    },
+    {
+      "object": "bsp_core.dir\\Release\\native_game_container_lifetime.obj",
+      "symbol": "?free_00bf65ac@NativeGameContainerLifetimeCalls@bsp@@UAEXPAX@Z",
+      "before": {
+        "symbol": "?free_00bf65ac@NativeGameContainerLifetimeCalls@bsp@@UAEXPAX@Z",
+        "symbol_index": 63,
+        "symbol_record_file_offset": 5371,
+        "section": 18,
+        "section_value": 0,
+        "physical_file_offset": 3187,
+        "bytes": 18,
+        "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+        "hex": "558becff7508e80000000083c4045dc20400",
+        "instruction_count": 7,
+        "relocations": [
+          {
+            "record_file_offset": 3205,
+            "raw_record_hex": "070000003d0000001400",
+            "offset": 7,
+            "type": 20,
+            "symbol_index": 61,
+            "symbol": "??3@YAXPAX@Z",
+            "symbol_record": {
+              "index": 61,
+              "record_file_offset": 5335,
+              "raw_record_hex": "000000001f00000000000000000020000200",
+              "name": "??3@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 3194,
+            "operand_hex": "00000000",
+            "operand_u32": 0,
+            "function_offset": 7
+          }
+        ],
+        "decoded_bytes": 18,
+        "undecoded_tail_hex": "",
+        "complete_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0xb"
+          },
+          {
+            "offset": 11,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "offset": 14,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 15,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      "after": {
+        "symbol": "?free_00bf65ac@NativeGameContainerLifetimeCalls@bsp@@UAEXPAX@Z",
+        "symbol_index": 62,
+        "symbol_record_file_offset": 5353,
+        "section": 18,
+        "section_value": 0,
+        "physical_file_offset": 3187,
+        "bytes": 18,
+        "sha256": "9d87de449d3a97c02cd0a123e27f5599e5d91e0ff5f54fa8f3e155120fa076cd",
+        "hex": "558becff7508e80000000083c4045dc20400",
+        "instruction_count": 7,
+        "relocations": [
+          {
+            "record_file_offset": 3205,
+            "raw_record_hex": "07000000500000001400",
+            "offset": 7,
+            "type": 20,
+            "symbol_index": 80,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "symbol_record": {
+              "index": 80,
+              "record_file_offset": 5677,
+              "raw_record_hex": "000000009407000000000000000020000200",
+              "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_records_hex": ""
+            },
+            "operand_file_offset": 3194,
+            "operand_hex": "00000000",
+            "operand_u32": 0,
+            "function_offset": 7
+          }
+        ],
+        "decoded_bytes": 18,
+        "undecoded_tail_hex": "",
+        "complete_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bec",
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": "ff7508",
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "bytes": "e800000000",
+            "mnemonic": "call",
+            "operands": "0xb"
+          },
+          {
+            "offset": 11,
+            "bytes": "83c404",
+            "mnemonic": "add",
+            "operands": "esp, 4"
+          },
+          {
+            "offset": 14,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 15,
+            "bytes": "c20400",
+            "mnemonic": "ret",
+            "operands": "4"
+          }
+        ]
+      },
+      "Root_matches_worker_complete_bytes_and_relocations": true
+    }
+  ],
+  "canonical_provider": {
+    "whole_object_unchanged": true,
+    "complete_function": {
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "symbol_index": 185,
+      "symbol_record_file_offset": 20294,
+      "section": 77,
+      "section_value": 0,
+      "physical_file_offset": 12561,
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "hex": "ff2500000000",
+      "instruction_count": 1,
+      "relocations": [
+        {
+          "record_file_offset": 12567,
+          "raw_record_hex": "02000000b50000000600",
+          "offset": 2,
+          "type": 6,
+          "symbol_index": 181,
+          "symbol": "__imp__free",
+          "symbol_record": {
+            "index": 181,
+            "record_file_offset": 20222,
+            "raw_record_hex": "000000004101000000000000000000000200",
+            "name": "__imp__free",
+            "value": 0,
+            "section": 0,
+            "type": 0,
+            "storage": 2,
+            "aux_count": 0,
+            "aux_records_hex": ""
+          },
+          "operand_file_offset": 12563,
+          "operand_hex": "00000000",
+          "operand_u32": 0,
+          "function_offset": 2
+        }
+      ],
+      "decoded_bytes": 6,
+      "undecoded_tail_hex": "",
+      "complete_linear_decode": true,
+      "instructions": [
+        {
+          "offset": 0,
+          "bytes": "ff2500000000",
+          "mnemonic": "jmp",
+          "operands": "dword ptr [0]"
+        }
+      ]
+    },
+    "unique_positive_definition": [
+      {
+        "object": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "name": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+        "symbol_index": 185,
+        "symbol_record_file_offset": 20294,
+        "section": 77,
+        "value": 0,
+        "type": 32
+      }
+    ]
+  },
+  "actual_Root_App_before": 80,
+  "actual_Root_App_after": 80,
+  "all80_Root_App_whole_bytes_exact": true,
+  "Root_executable": {
+    "before": {
+      "bytes": 5102592,
+      "sha256": "03cb5bf0c9a0d8cd9c9a21392fe4ca045ef0964f1bc55c9f8bdf7ea9707d93bb",
+      "machine": 332,
+      "timestamp_offset": 280,
+      "timestamp": 1791660684,
+      "checksum_offset": 360,
+      "checksum": 0,
+      "sections": [
+        {
+          "name": ".text",
+          "virtual_size": 3991723,
+          "rva": 4096,
+          "raw_offset": 1024,
+          "bytes": 3992064,
+          "sha256": "de27fc794839ca8f1b5376af08dd716540229bd06b83c7171dcbb5a7f9623c7d"
+        },
+        {
+          "name": ".rdata",
+          "virtual_size": 913886,
+          "rva": 3997696,
+          "raw_offset": 3993088,
+          "bytes": 913920,
+          "sha256": "f24d848e24958d0a05daafeda7fe6cba908280060cb263ed818bbdfbfda22d04"
+        },
+        {
+          "name": ".data",
+          "virtual_size": 76160,
+          "rva": 4915200,
+          "raw_offset": 4907008,
+          "bytes": 52736,
+          "sha256": "83bfaded4c377b5e1a0a823bb56aa8a64da0469b39f2b2fd361350a118026c7d"
+        },
+        {
+          "name": ".rsrc",
+          "virtual_size": 480,
+          "rva": 4993024,
+          "raw_offset": 4959744,
+          "bytes": 512,
+          "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+        },
+        {
+          "name": ".reloc",
+          "virtual_size": 142124,
+          "rva": 4997120,
+          "raw_offset": 4960256,
+          "bytes": 142336,
+          "sha256": "da25e601adbb49075902a89e066675f8f22c02ca2a975192f53530c6f8c45133"
+        }
+      ],
+      "debug_directory": [
+        {
+          "file_offset": 4694592,
+          "timestamp_offset": 4694596,
+          "timestamp": 1791660684,
+          "type": 13,
+          "payload_bytes": 884,
+          "payload_file_offset": 4759960
+        }
+      ]
+    },
+    "after": {
+      "bytes": 5102592,
+      "sha256": "ccabdd0ca4f04839bc19c3342b422c9ed7a0872b09bd1d7bf02a8bf581070075",
+      "machine": 332,
+      "timestamp_offset": 280,
+      "timestamp": 1791661085,
+      "checksum_offset": 360,
+      "checksum": 0,
+      "sections": [
+        {
+          "name": ".text",
+          "virtual_size": 3991723,
+          "rva": 4096,
+          "raw_offset": 1024,
+          "bytes": 3992064,
+          "sha256": "de27fc794839ca8f1b5376af08dd716540229bd06b83c7171dcbb5a7f9623c7d"
+        },
+        {
+          "name": ".rdata",
+          "virtual_size": 913886,
+          "rva": 3997696,
+          "raw_offset": 3993088,
+          "bytes": 913920,
+          "sha256": "7fbab171e94b6778930dd65c667e2d0c7a917095761a6b455a390bf1d354f399"
+        },
+        {
+          "name": ".data",
+          "virtual_size": 76160,
+          "rva": 4915200,
+          "raw_offset": 4907008,
+          "bytes": 52736,
+          "sha256": "83bfaded4c377b5e1a0a823bb56aa8a64da0469b39f2b2fd361350a118026c7d"
+        },
+        {
+          "name": ".rsrc",
+          "virtual_size": 480,
+          "rva": 4993024,
+          "raw_offset": 4959744,
+          "bytes": 512,
+          "sha256": "00b2d7d78c50bc6d5e71b2bc0fc4a18c3867f598944b3b2030da3b8e805857e7"
+        },
+        {
+          "name": ".reloc",
+          "virtual_size": 142124,
+          "rva": 4997120,
+          "raw_offset": 4960256,
+          "bytes": 142336,
+          "sha256": "da25e601adbb49075902a89e066675f8f22c02ca2a975192f53530c6f8c45133"
+        }
+      ],
+      "debug_directory": [
+        {
+          "file_offset": 4694592,
+          "timestamp_offset": 4694596,
+          "timestamp": 1791661085,
+          "type": 13,
+          "payload_bytes": 884,
+          "payload_file_offset": 4759960
+        }
+      ]
+    },
+    "differing_bytes": 4,
+    "actual_differing_offsets": [
+      280,
+      281,
+      4694596,
+      4694597
+    ],
+    "allowed_exact_timestamp_fields": [
+      280,
+      4694596
+    ],
+    "all_differences_in_fields": true,
+    "all_other_bytes_equal": true
+  },
+  "zero_raw_pointer_sections": [
+    {
+      "phase": "before",
+      "object": "bsp_core.dir\\Release\\native_game_lifetime.obj",
+      "section": 5,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    },
+    {
+      "phase": "after",
+      "object": "bsp_core.dir\\Release\\native_game_lifetime.obj",
+      "section": 5,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    },
+    {
+      "phase": "before",
+      "object": "bsp_core.dir\\Release\\native_game_container_lifetime.obj",
+      "section": 3,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    },
+    {
+      "phase": "after",
+      "object": "bsp_core.dir\\Release\\native_game_container_lifetime.obj",
+      "section": 3,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    },
+    {
+      "phase": "before",
+      "object": "bsp_core.dir\\Release\\game_native_game_runtime.obj",
+      "section": 3,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    },
+    {
+      "phase": "after",
+      "object": "bsp_core.dir\\Release\\game_native_game_runtime.obj",
+      "section": 3,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    },
+    {
+      "phase": "before",
+      "object": "bsp_core.dir\\Release\\native_game_current_virtual_calls.obj",
+      "section": 3,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    },
+    {
+      "phase": "after",
+      "object": "bsp_core.dir\\Release\\native_game_current_virtual_calls.obj",
+      "section": 3,
+      "declared_bytes": 4,
+      "file_payload_bytes": 0
+    }
+  ],
+  "Root_fresh_Native_queries": 0,
+  "worker_fresh_Native_queries": 0,
+  "separate_seed_prerequisite": {
+    "Root_queries": 8,
+    "bytes": 501,
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_game_free_seed_primary\\receipt.json",
+      "bytes": 931,
+      "sha256": "5141e9306a1dd4aa714d5928304383c50910768e0c1f20788b3d0ef97bb1b3ee"
+    }
+  },
+  "new_tests": false,
+  "application_queue_binding": false,
+  "Native_free_ABI_or_foreign_domain_equivalence": false,
+  "contract": [
+    "Only the container and composed parent free_00bf65ac defaults use singleton_lifetime_free; allocations already use the same canonical Source service.",
+    "Null or same canonical Source allocation domain only. Foreign allocators require matching every reached free override.",
+    "Virtual signatures and possible throwing overrides unchanged; no new noexcept, diagnostics, lifetime order or caller switch.",
+    "Standalone array/embedded defaults, grid private operator new/delete, BF6989, physics and child domains unchanged."
+  ],
+  "remaining": [
+    "Actual game/Application owner and shared-runtime queue composition.",
+    "Production activation and native CRT/free ABI compatibility or foreign-domain proofs.",
+    "Startup/runtime/gameplay validation."
+  ]
+}
