@@ -1,0 +1,842 @@
+{
+  "schema": 1,
+  "packet": "cc12_mesh_hierarchy_application_binding_source",
+  "created_utc": "2026-10-10T05:21:42.939862+00:00",
+  "baseline_commit": "44569dc13832cee9eec3963c884f85d9aa626707",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "owned_tracked_files": [
+    "include/bsp/game_native_resource_application.hpp",
+    "src/game_native_resource_application.cpp",
+    "include/bsp/game_hosts_vfs.hpp",
+    "src/game_hosts_vfs.cpp",
+    "docs/CC12_MESH_HIERARCHY_APPLICATION_BINDING_SOURCE.md",
+    "reports/cc12_mesh_hierarchy_application_binding_source.json"
+  ],
+  "status": "implemented_and_isolated_Source_compiled_pending_Root_normal_build_and_primary_review",
+  "result": "Explicit retained hierarchy services from the host own VFS/raw strings/resource/mapped domain, with canonical process pool and empty storage and real node deletion dispatch.",
+  "new_Source_API_names_not_recovered_symbols": [
+    "GameNativeHierarchyServices",
+    "GameVfsHost::borrow_hierarchy_services",
+    "GameNativeResourceApplication::borrow_hierarchy_services (private to GameVfsHost)"
+  ],
+  "ownership": {
+    "private_resource_domain": "Only friend GameVfsHost passes its own retained raw bindings and raw-string context. Mapped data is retained from resource application construction; exact manager.strings identity is checked.",
+    "binding": "Noncopyable unique_ptr-owned host metadata retains VFS/data/profile references, NativeResourceRootDispatch, reads, hierarchy and returned service view.",
+    "reads": "Exact resource manager raw strings + retained genuine node adapter + canonical GameNativeShaderProcess stream_empty_0109DB64 byte.",
+    "hierarchy": "Exact retained reads plus volatile references to actual CE4ADC/CE4970 mapped cells.",
+    "pool": "Canonical GameNativeResourcePoolProcess hierarchy_pool_0109022c() borrow; existing completed-startup guard retained; no pool initialization here.",
+    "repeat_identity": "Same VFS/data, profile pointer, strings, node/read/hierarchy/view references, empty storage, mapped bound references and canonical pool; mismatches throw without rebinding.",
+    "lifetime": "Consumers retain all borrowed owners through shared drain; metadata destruction only deletes owned metadata, no host dereference or Native teardown.",
+    "terminal": "Existing NativeResourceRootDispatch checks BD30E0 + D68BB4 + current slot4 BE9FC0 and calls genuine node deletion; actual VFS receives forwarded stream operations."
+  },
+  "retained_data_comparisons_no_new_Native_query": [
+    {
+      "retained_report": "reports/native_resource_root_owner_bs.json",
+      "address": "00d68bb4",
+      "bytes": 8,
+      "hex": "e030bd00c09fbe00",
+      "sha256": "1028a59e72a69971e65213f34a8a7ec0829d9b8f373d6d5c5ab672b85e8ff4ce",
+      "verified_from_retained_report_only": true,
+      "capture_width_establishes_profile_extent": false
+    },
+    {
+      "retained_report": "reports/native_resource_hierarchy_parser_bv.json",
+      "address": "00ce4adc",
+      "bytes": 4,
+      "hex": "f90215d0",
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "verified_from_retained_report_only": true,
+      "capture_width_establishes_profile_extent": false
+    },
+    {
+      "retained_report": "reports/native_resource_hierarchy_parser_bv.json",
+      "address": "00ce4970",
+      "bytes": 4,
+      "hex": "f9021550",
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "verified_from_retained_report_only": true,
+      "capture_width_establishes_profile_extent": false
+    }
+  ],
+  "layout": {
+    "resource_outer_before_after_bytes": [
+      4,
+      4
+    ],
+    "resource_Impl_before_after_bytes": [
+      220,
+      228
+    ],
+    "existing_resource_Impl_fields_at_identical_offsets": 24,
+    "appended_Impl_fields": [
+      {
+        "name": "hierarchy_data",
+        "offset": 220
+      },
+      {
+        "name": "hierarchy_binding",
+        "offset": 224
+      }
+    ],
+    "host_before_after_bytes": [
+      124,
+      124
+    ],
+    "host_all_fields_and_vtable_layout_unchanged": true,
+    "retained_binding_bytes": 60
+  },
+  "compile": {
+    "architecture": "MSVC Win32 x86",
+    "compiler_reported_version": "19.51.36244.0",
+    "tools_directory_version": "14.51.36231",
+    "flags": [
+      "/nologo",
+      "/c",
+      "/W4",
+      "/WX",
+      "/diagnostics:column",
+      "/O2",
+      "/Ob2",
+      "/Oy-",
+      "/D_MBCS",
+      "/DWIN32",
+      "/D_WINDOWS",
+      "/DNDEBUG",
+      "/DCMAKE_INTDIR=\"Release\"",
+      "/EHsc",
+      "/MD",
+      "/fp:strict",
+      "/std:c++17",
+      "/TP",
+      "/analyze-",
+      "/IJ:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\include",
+      "/IJ:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\lua511-src\\src"
+    ],
+    "per_target_flags": {
+      "bsp_core": [
+        "/external:W0",
+        "/IJ:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\zlib121-src",
+        "/external:IJ:\\PROG\\battlestations-pacific-decompile\\build\\win32\\_deps\\dxsdk_d3dx-src\\build\\native\\include"
+      ],
+      "bsp_game": [
+        "/external:W4"
+      ]
+    },
+    "final_objects": 12,
+    "final_compile_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_dumpbin_commands": 60,
+    "diagnostic_repeat": "Two resource owner compilations repeated while selecting Impl versus outer/binding class layout; final command receipts are authoritative and initial layout output is separately retained.",
+    "compiler_reported_Source_and_headers_frozen": 576,
+    "root_configuration_captured_before_isolated_compilation": true
+  },
+  "whole_object_evidence": {
+    "objects": 22,
+    "sections": 9625,
+    "physical_symbol_records_including_AUX": 30577,
+    "relocations": 16009,
+    "functions": 5732,
+    "complete_linear_decodes": 5732,
+    "full_raw_code_noncode_EH_and_primary_AUX_records_retained": true,
+    "selected_current_provider_definitions": 21,
+    "inventories": [
+      {
+        "name": "game_native_readonly_data",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_readonly_data.obj",
+          "bytes": 104034,
+          "sha256": "924e4198e1239ce33b9258ba68776387f93e842b869dd45e82f9dbe0d5ce3ce3"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_readonly_data.coff_inventory.json",
+          "bytes": 3775121,
+          "sha256": "5234100d432f62eabc43f0015d6c8209b18a203c5b0280625644bf4170d668ad"
+        },
+        "sections": 461,
+        "physical_symbol_records_including_auxiliary": 1480,
+        "primary_symbol_records": 1009,
+        "relocations": 860,
+        "functions": 240,
+        "complete_linear_decodes": 240
+      },
+      {
+        "name": "native_resource_hierarchy_pool",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\native_resource_hierarchy_pool.obj",
+          "bytes": 4737,
+          "sha256": "6dee18d19d2a12ecf81d4bfcbc8410be76c5a5cbbae4d89a71221f2a09216815"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\native_resource_hierarchy_pool.coff_inventory.json",
+          "bytes": 104660,
+          "sha256": "4f9248e75c6fa70974646dbcb9b22283822b5cd396321cdf8a3cfe955e003c19"
+        },
+        "sections": 18,
+        "physical_symbol_records_including_auxiliary": 58,
+        "primary_symbol_records": 40,
+        "relocations": 17,
+        "functions": 7,
+        "complete_linear_decodes": 7
+      },
+      {
+        "name": "native_resource_root_owner",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\native_resource_root_owner.obj",
+          "bytes": 19630,
+          "sha256": "546600560e4b2d43e7983adb53863449823e4ac0f0fdaf6d921e41e6183021f2"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\native_resource_root_owner.coff_inventory.json",
+          "bytes": 620690,
+          "sha256": "45c1b9069728829284c85ee7664e036146b8f0999a7d6ce10168a9be95ee7a8e"
+        },
+        "sections": 78,
+        "physical_symbol_records_including_auxiliary": 272,
+        "primary_symbol_records": 190,
+        "relocations": 154,
+        "functions": 38,
+        "complete_linear_decodes": 38
+      },
+      {
+        "name": "native_vfs_runtime_bindings",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\native_vfs_runtime_bindings.obj",
+          "bytes": 40718,
+          "sha256": "b16600ff4d658175aaf9bc6c0fbbcc450fe0055d9f064251625b3057ef6f71d6"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\native_vfs_runtime_bindings.coff_inventory.json",
+          "bytes": 1342590,
+          "sha256": "e5a7b0cc401d8e3f8741be924f4d1d5ffe4ebda071c6dbd1731d829a99ba59bc"
+        },
+        "sections": 162,
+        "physical_symbol_records_including_auxiliary": 571,
+        "primary_symbol_records": 400,
+        "relocations": 342,
+        "functions": 68,
+        "complete_linear_decodes": 68
+      },
+      {
+        "name": "game_native_resource_pools",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_resource_pools.obj",
+          "bytes": 41914,
+          "sha256": "ca6f66e0561bb584d02475bac54d4bd6e1b014d2e728827491a50a220c24efba"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_resource_pools.coff_inventory.json",
+          "bytes": 1537980,
+          "sha256": "83ec6cbe1bf8d72857e3102219124e3e459ef58029ae4297c31b3e956a26f752"
+        },
+        "sections": 134,
+        "physical_symbol_records_including_auxiliary": 486,
+        "primary_symbol_records": 350,
+        "relocations": 410,
+        "functions": 78,
+        "complete_linear_decodes": 78
+      },
+      {
+        "name": "game_native_vfs_runtime",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_vfs_runtime.obj",
+          "bytes": 217911,
+          "sha256": "69ff5bef20ee05097c3175d04a3259998c9ddeef5c649ef0d751a510d158428f"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_vfs_runtime.coff_inventory.json",
+          "bytes": 6736038,
+          "sha256": "fe53ccae050183a1201954841fe06a08729d4e371eec7fe50b9a9bb3b22cf88b"
+        },
+        "sections": 830,
+        "physical_symbol_records_including_auxiliary": 2621,
+        "primary_symbol_records": 1774,
+        "relocations": 1447,
+        "functions": 515,
+        "complete_linear_decodes": 515
+      },
+      {
+        "name": "game_hosts_vfs",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_hosts_vfs.obj",
+          "bytes": 443173,
+          "sha256": "9fb7267911aa54b50843228a95fb6ccebe1f312787476701dde1fcc7d14cfb23"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_hosts_vfs.coff_inventory.json",
+          "bytes": 13303430,
+          "sha256": "f3b6ab4007fa5736799b34fec56b6fc869ffc6e22e2aa78bb0a77a3050eab4bd"
+        },
+        "sections": 1690,
+        "physical_symbol_records_including_auxiliary": 5266,
+        "primary_symbol_records": 3562,
+        "relocations": 2498,
+        "functions": 1081,
+        "complete_linear_decodes": 1081
+      },
+      {
+        "name": "game_native_shader_process",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_shader_process.obj",
+          "bytes": 21752,
+          "sha256": "815f996dd1de27e74e07ab7bbd8dc77c6bdf847fff473516c85f051dd3e2f1b4"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_shader_process.coff_inventory.json",
+          "bytes": 775551,
+          "sha256": "eb96818e2a08af15babcb9d3005c4058f321a4c5ca5557d9f67c53bf3e0662dc"
+        },
+        "sections": 83,
+        "physical_symbol_records_including_auxiliary": 288,
+        "primary_symbol_records": 203,
+        "relocations": 191,
+        "functions": 42,
+        "complete_linear_decodes": 42
+      },
+      {
+        "name": "game_native_vfs_application",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_vfs_application.obj",
+          "bytes": 52897,
+          "sha256": "f67f1d3d655f5481c59698f777f4c4a4bd7e817196e43154d115ed1efb276247"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_vfs_application.coff_inventory.json",
+          "bytes": 1550282,
+          "sha256": "75961f904337dbcbaaae1d2fcbe2b6ae4747858ebf88f3445fc467a30ba68f27"
+        },
+        "sections": 221,
+        "physical_symbol_records_including_auxiliary": 687,
+        "primary_symbol_records": 460,
+        "relocations": 346,
+        "functions": 113,
+        "complete_linear_decodes": 113
+      },
+      {
+        "name": "baseline_game_hosts_vfs",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\baseline_game_hosts_vfs.obj",
+          "bytes": 442379,
+          "sha256": "1f29062e95ecef2ccec336edccd55f1b2473407bc3dc7e32abacbc5c75ac0b9a"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\baseline_game_hosts_vfs.coff_inventory.json",
+          "bytes": 13270039,
+          "sha256": "957c3dcd4211c35aa0a428a6e1681e84588c41bfd39f5264fd9bff546228007d"
+        },
+        "sections": 1688,
+        "physical_symbol_records_including_auxiliary": 5258,
+        "primary_symbol_records": 3556,
+        "relocations": 2489,
+        "functions": 1080,
+        "complete_linear_decodes": 1080
+      },
+      {
+        "name": "game_native_resource_application",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_resource_application.obj",
+          "bytes": 67119,
+          "sha256": "3f82c1d9abd9367f8084add7d47aa0bfbe0e49be89322b573d7b0cd20d0ebdc4"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\game_native_resource_application.coff_inventory.json",
+          "bytes": 1891301,
+          "sha256": "909d08a7049de7f60092fcbb0ace778c8cd340e580d532d7b71fce8bfc5664ba"
+        },
+        "sections": 242,
+        "physical_symbol_records_including_auxiliary": 776,
+        "primary_symbol_records": 525,
+        "relocations": 427,
+        "functions": 130,
+        "complete_linear_decodes": 130
+      },
+      {
+        "name": "baseline_game_native_resource_application",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\baseline_game_native_resource_application.obj",
+          "bytes": 49470,
+          "sha256": "3aeba8937d03264fda29e5553eaa7e2c67dc0c698efae061b4a128e92adbe6e9"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\baseline_game_native_resource_application.coff_inventory.json",
+          "bytes": 1450246,
+          "sha256": "243fd8cd44095377b7dfe74fccce8c48fd282d5c4858d87967a5ca124d6430f1"
+        },
+        "sections": 189,
+        "physical_symbol_records_including_auxiliary": 617,
+        "primary_symbol_records": 419,
+        "relocations": 351,
+        "functions": 93,
+        "complete_linear_decodes": 93
+      },
+      {
+        "name": "captured_Root_game_native_resource_application",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\game_native_resource_application.obj",
+          "bytes": 49406,
+          "sha256": "18c8e3159009bc8b9a9d87fe181beee5e2fd86a5932488c96ab5ea7bbfac8195"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_game_native_resource_application.coff_inventory.json",
+          "bytes": 1450126,
+          "sha256": "56b67e6a4fb9e53c780fb1aed42e5b8b6a09e865ce1206da3db93687e9d26b46"
+        },
+        "sections": 189,
+        "physical_symbol_records_including_auxiliary": 617,
+        "primary_symbol_records": 419,
+        "relocations": 351,
+        "functions": 93,
+        "complete_linear_decodes": 93
+      },
+      {
+        "name": "captured_Root_game_hosts_vfs",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\game_hosts_vfs.obj",
+          "bytes": 442319,
+          "sha256": "84da980f37ae6378866eceb2bce29929f0cec6b3d2bd35926b46a499a4dc484f"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_game_hosts_vfs.coff_inventory.json",
+          "bytes": 13269931,
+          "sha256": "f8f7cf996c56c7732c080ab5bf2c752e85d9afa44529f32d31e514a1066de6ee"
+        },
+        "sections": 1688,
+        "physical_symbol_records_including_auxiliary": 5258,
+        "primary_symbol_records": 3556,
+        "relocations": 2489,
+        "functions": 1080,
+        "complete_linear_decodes": 1080
+      },
+      {
+        "name": "captured_Root_native_resource_root_owner",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\native_resource_root_owner.obj",
+          "bytes": 19578,
+          "sha256": "668a5737cf1d07936bbc6f4af845f4acd3eeaf00e80ff1afbd729774d2579af1"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_native_resource_root_owner.coff_inventory.json",
+          "bytes": 620625,
+          "sha256": "be4203e6afcda443f554805768b6de31bfc0e9367befe3575563d1805e22fc61"
+        },
+        "sections": 78,
+        "physical_symbol_records_including_auxiliary": 272,
+        "primary_symbol_records": 190,
+        "relocations": 154,
+        "functions": 38,
+        "complete_linear_decodes": 38
+      },
+      {
+        "name": "captured_Root_native_resource_hierarchy_pool",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\native_resource_hierarchy_pool.obj",
+          "bytes": 4685,
+          "sha256": "8a30d9c617d7dc6185686be1d974c5984893a676a0ca587daccc7706ce9061aa"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_native_resource_hierarchy_pool.coff_inventory.json",
+          "bytes": 104600,
+          "sha256": "b73d515221ea3e0bcf7c4c8399e0a19ff93b0899094eaf24fc53423f17910ce8"
+        },
+        "sections": 18,
+        "physical_symbol_records_including_auxiliary": 58,
+        "primary_symbol_records": 40,
+        "relocations": 17,
+        "functions": 7,
+        "complete_linear_decodes": 7
+      },
+      {
+        "name": "captured_Root_game_native_resource_pools",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\game_native_resource_pools.obj",
+          "bytes": 28095,
+          "sha256": "9ca340f7afcfb1e4aa0650ce11ab581fe007a30a005974eda98f86aac6adca96"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_game_native_resource_pools.coff_inventory.json",
+          "bytes": 1040046,
+          "sha256": "0d8d364b59ce4b291feb54552fbc8414d8003a5d8ef8ea3c8b6a59d9d1e67760"
+        },
+        "sections": 99,
+        "physical_symbol_records_including_auxiliary": 345,
+        "primary_symbol_records": 244,
+        "relocations": 280,
+        "functions": 51,
+        "complete_linear_decodes": 51
+      },
+      {
+        "name": "captured_Root_game_native_shader_process",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\game_native_shader_process.obj",
+          "bytes": 21700,
+          "sha256": "6b1dc98c9cb72d5965ed4884ad5240734c4f323b875a0edca263fdac4c7c64c7"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_game_native_shader_process.coff_inventory.json",
+          "bytes": 775489,
+          "sha256": "de90c83e7a036d9d58342a51b030d9a48e692b71dbaf58b6f3226bd86b3a7222"
+        },
+        "sections": 83,
+        "physical_symbol_records_including_auxiliary": 288,
+        "primary_symbol_records": 203,
+        "relocations": 191,
+        "functions": 42,
+        "complete_linear_decodes": 42
+      },
+      {
+        "name": "captured_Root_game_native_readonly_data",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\game_native_readonly_data.obj",
+          "bytes": 103978,
+          "sha256": "f26c051eb86f3175fe768d2b598f3417ff1341a700cd0a44f3cfe2fe60bd8d8d"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_game_native_readonly_data.coff_inventory.json",
+          "bytes": 3775053,
+          "sha256": "ecd6a93efc74ef0207eb075f5c7fa706451d170d8a7e0362426ad9f4523526f8"
+        },
+        "sections": 461,
+        "physical_symbol_records_including_auxiliary": 1480,
+        "primary_symbol_records": 1009,
+        "relocations": 860,
+        "functions": 240,
+        "complete_linear_decodes": 240
+      },
+      {
+        "name": "captured_Root_native_vfs_runtime_bindings",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\native_vfs_runtime_bindings.obj",
+          "bytes": 40666,
+          "sha256": "91a41832e8b8ac246a719b3c02413ceb6d8ac62e0550e840dd1ddc56e93ed0ac"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_native_vfs_runtime_bindings.coff_inventory.json",
+          "bytes": 1342527,
+          "sha256": "2a3c7e92fc0408baf5cedd4bcdb12158ec9a840257a9fd91b661fd403a9fad22"
+        },
+        "sections": 162,
+        "physical_symbol_records_including_auxiliary": 571,
+        "primary_symbol_records": 400,
+        "relocations": 342,
+        "functions": 68,
+        "complete_linear_decodes": 68
+      },
+      {
+        "name": "captured_Root_game_native_vfs_application",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\game_native_vfs_application.obj",
+          "bytes": 52845,
+          "sha256": "ed44cb7f735177f9e84977ca2663fbe7a35a6c679fa08dfa13472d38cbb4e7d0"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_game_native_vfs_application.coff_inventory.json",
+          "bytes": 1550222,
+          "sha256": "867e44b1f3cab9e42ce29b15de48ed4d186ef353df25539a40cf77089b033eb7"
+        },
+        "sections": 221,
+        "physical_symbol_records_including_auxiliary": 687,
+        "primary_symbol_records": 460,
+        "relocations": 346,
+        "functions": 113,
+        "complete_linear_decodes": 113
+      },
+      {
+        "name": "captured_Root_game_native_vfs_runtime",
+        "object": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\frozen\\root_objects\\game_native_vfs_runtime.obj",
+          "bytes": 217859,
+          "sha256": "95b8014877b0d94e2d4e9ad04dce9e57ab8a101148c77477d7aa3d1c615dde64"
+        },
+        "inventory": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\captured_Root_game_native_vfs_runtime.coff_inventory.json",
+          "bytes": 6735973,
+          "sha256": "a746a47b4a3ee2b42417cbf71ba6cb868705531f4f9f6a3d01da1b5e2bbf9d9e"
+        },
+        "sections": 830,
+        "physical_symbol_records_including_auxiliary": 2621,
+        "primary_symbol_records": 1774,
+        "relocations": 1447,
+        "functions": 515,
+        "complete_linear_decodes": 515
+      }
+    ]
+  },
+  "prior_owner_code_comparisons": [
+    {
+      "left": "baseline_game_native_resource_application",
+      "right": "game_native_resource_application",
+      "left_functions": 93,
+      "right_functions": 130,
+      "equal_code_and_mapped_edges": 81,
+      "anchored_lambda_pairs": 4,
+      "changed_or_missing_count": 12,
+      "new_function_count": 37
+    },
+    {
+      "left": "captured_Root_game_native_resource_application",
+      "right": "baseline_game_native_resource_application",
+      "left_functions": 93,
+      "right_functions": 93,
+      "equal_code_and_mapped_edges": 93,
+      "anchored_lambda_pairs": 4,
+      "changed_or_missing_count": 0,
+      "new_function_count": 0
+    },
+    {
+      "left": "baseline_game_hosts_vfs",
+      "right": "game_hosts_vfs",
+      "left_functions": 1080,
+      "right_functions": 1081,
+      "equal_code_and_mapped_edges": 1080,
+      "anchored_lambda_pairs": 19,
+      "changed_or_missing_count": 0,
+      "new_function_count": 1
+    },
+    {
+      "left": "captured_Root_game_hosts_vfs",
+      "right": "baseline_game_hosts_vfs",
+      "left_functions": 1080,
+      "right_functions": 1080,
+      "equal_code_and_mapped_edges": 1080,
+      "anchored_lambda_pairs": 19,
+      "changed_or_missing_count": 0,
+      "new_function_count": 0
+    }
+  ],
+  "resource_changed_prior_functions": [
+    {
+      "left_symbol": "??0GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@12@AAUNativeStringRawPoolContext@2@AAVGameNativeReadOnlyData@12@@Z",
+      "left_symbol_index": 247,
+      "right_symbol": "??0GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@12@AAUNativeStringRawPoolContext@2@AAVGameNativeReadOnlyData@12@@Z",
+      "right_symbol_index": 346,
+      "left_bytes": 132,
+      "right_bytes": 132,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": true
+    },
+    {
+      "left_symbol": "??1GameNativeResourceApplication@game@bsp@@QAE@XZ",
+      "left_symbol_index": 248,
+      "right_symbol": "??1GameNativeResourceApplication@game@bsp@@QAE@XZ",
+      "right_symbol_index": 347,
+      "left_bytes": 21,
+      "right_bytes": 44,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": false
+    },
+    {
+      "left_symbol": "??R?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@QBEXPAUImpl@GameNativeResourceApplication@game@bsp@@@Z",
+      "left_symbol_index": 258,
+      "right_symbol": "??R?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@QBEXPAUImpl@GameNativeResourceApplication@game@bsp@@@Z",
+      "right_symbol_index": 358,
+      "left_bytes": 28,
+      "right_bytes": 51,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": false
+    },
+    {
+      "left_symbol": "??1?$unique_ptr@UImpl@GameNativeResourceApplication@game@bsp@@U?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@@std@@QAE@XZ",
+      "left_symbol_index": 259,
+      "right_symbol": "??1?$unique_ptr@UImpl@GameNativeResourceApplication@game@bsp@@U?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@@std@@QAE@XZ",
+      "right_symbol_index": 359,
+      "left_bytes": 21,
+      "right_bytes": 44,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": false
+    },
+    {
+      "left_symbol": "??0Impl@GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@23@AAUNativeStringRawPoolContext@3@AAVGameNativeReadOnlyData@23@@Z",
+      "left_symbol_index": 322,
+      "right_symbol": "??0Impl@GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@23@AAUNativeStringRawPoolContext@3@AAVGameNativeReadOnlyData@23@@Z",
+      "right_symbol_index": 442,
+      "left_bytes": 692,
+      "right_bytes": 705,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": false
+    },
+    {
+      "left_symbol": "??1Impl@GameNativeResourceApplication@game@bsp@@QAE@XZ",
+      "left_symbol_index": 324,
+      "right_symbol": "??1Impl@GameNativeResourceApplication@game@bsp@@QAE@XZ",
+      "right_symbol_index": 444,
+      "left_bytes": 3,
+      "right_bytes": 22,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": false
+    },
+    {
+      "left_symbol": "??_GImpl@GameNativeResourceApplication@game@bsp@@QAEPAXI@Z",
+      "left_symbol_index": 325,
+      "right_symbol": "??_GImpl@GameNativeResourceApplication@game@bsp@@QAEPAXI@Z",
+      "right_symbol_index": 445,
+      "left_bytes": 33,
+      "right_bytes": 54,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": false
+    },
+    {
+      "left_symbol": "??$make_unique@UImpl@GameNativeResourceApplication@game@bsp@@AAVGameSingletonHost@34@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeResourceApplication@game@bsp@@U?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@@0@AAVGameSingletonHost@game@bsp@@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@@Z",
+      "left_symbol_index": 326,
+      "right_symbol": "??$make_unique@UImpl@GameNativeResourceApplication@game@bsp@@AAVGameSingletonHost@34@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeResourceApplication@game@bsp@@U?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@@0@AAVGameSingletonHost@game@bsp@@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@@Z",
+      "right_symbol_index": 447,
+      "left_bytes": 126,
+      "right_bytes": 126,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": true
+    },
+    {
+      "left_symbol": "__unwindfunclet$??0GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@12@AAUNativeStringRawPoolContext@2@AAVGameNativeReadOnlyData@12@@Z$1",
+      "left_symbol_index": 352,
+      "right_symbol": "__unwindfunclet$??0GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@12@AAUNativeStringRawPoolContext@2@AAVGameNativeReadOnlyData@12@@Z$1",
+      "right_symbol_index": 486,
+      "left_bytes": 23,
+      "right_bytes": 23,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": true
+    },
+    {
+      "left_symbol": "__ehhandler$??0Impl@GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@23@AAUNativeStringRawPoolContext@3@AAVGameNativeReadOnlyData@23@@Z",
+      "left_symbol_index": 358,
+      "right_symbol": "__ehhandler$??0Impl@GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@23@AAUNativeStringRawPoolContext@3@AAVGameNativeReadOnlyData@23@@Z",
+      "right_symbol_index": 497,
+      "left_bytes": 29,
+      "right_bytes": 29,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": true
+    },
+    {
+      "left_symbol": "__unwindfunclet$??0Impl@GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@23@AAUNativeStringRawPoolContext@3@AAVGameNativeReadOnlyData@23@@Z$3",
+      "left_symbol_index": 363,
+      "right_symbol": "__unwindfunclet$??0Impl@GameNativeResourceApplication@game@bsp@@QAE@AAVGameSingletonHost@23@AAUNativeStringRawPoolContext@3@AAVGameNativeReadOnlyData@23@@Z$3",
+      "right_symbol_index": 502,
+      "left_bytes": 16,
+      "right_bytes": 11,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": true
+    },
+    {
+      "left_symbol": "__unwindfunclet$??$make_unique@UImpl@GameNativeResourceApplication@game@bsp@@AAVGameSingletonHost@34@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeResourceApplication@game@bsp@@U?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@@0@AAVGameSingletonHost@game@bsp@@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@@Z$0",
+      "left_symbol_index": 366,
+      "right_symbol": "__unwindfunclet$??$make_unique@UImpl@GameNativeResourceApplication@game@bsp@@AAVGameSingletonHost@34@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@$0A@@std@@YA?AV?$unique_ptr@UImpl@GameNativeResourceApplication@game@bsp@@U?$default_delete@UImpl@GameNativeResourceApplication@game@bsp@@@std@@@0@AAVGameSingletonHost@game@bsp@@AAUNativeStringRawPoolContext@4@AAVGameNativeReadOnlyData@34@@Z$0",
+      "right_symbol_index": 506,
+      "left_bytes": 23,
+      "right_bytes": 23,
+      "exact_code_bytes_equal": false,
+      "relocations_equal_under_anchored_generated_name_mapping": true
+    }
+  ],
+  "captured_Root_provider_limit": {
+    "six_provider_objects_match_all_complete_code_and_edges": true,
+    "resource_pool": "Captured Root object has51 functions, current Source78; process getter and constructor differ.",
+    "vfs_application": "16 same-size code differences with equal named relocation edges; preserved explicitly.",
+    "application_composition": "Root must perform fresh normal build and review current application/provider objects; historical captures are not current composition proof."
+  },
+  "new_work_counts": {
+    "Native_data_or_code_windows": 0,
+    "Ghidra_mutations": 0,
+    "ledger_or_CMake_edits": 0,
+    "Native_resource_or_parser_getter_calls": 0,
+    "type_consumptions": 0,
+    "pool_startup_calls": 0,
+    "I_O_or_root_or_parse_or_resource_creation": 0,
+    "Native_cleanup_or_registration": 0,
+    "startup_call_insertions": 0,
+    "new_tests": 0,
+    "build_script_or_link_or_probe_or_game_runs": 0
+  },
+  "evidence_levels": {
+    "Source_implemented": true,
+    "isolated_Source_compiled": true,
+    "Root_normal_full_build": false,
+    "fixture_executed": false,
+    "original_ABI_compatible": false,
+    "runtime_or_game_validated": false
+  },
+  "not_admitted": [
+    "hierarchy parser invocation or interruption/retirement policy",
+    "cache or classifier composition",
+    "mesh loading or resource-container retirement graph",
+    "consumer safety across canonical pool exit",
+    "original ABI or gameplay parity"
+  ],
+  "unchanged_prior_context": [
+    "Source636",
+    "completed fallback resource-type owner API"
+  ],
+  "evidence": {
+    "prepared_Root_configuration_objects_and_baseline": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\prepared_evidence.json",
+      "bytes": 20970,
+      "sha256": "ae44547891beda2bb6e748281b485b9ee8807e1ae82735649042625c12a798d2"
+    },
+    "compile_receipts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\compile_receipts.json",
+      "bytes": 98670,
+      "sha256": "545fa809d0e93869594ded44288d7c7b1cb1102ad19d263906b5b77c9cbaec30"
+    },
+    "additional_Bv_tool_pins": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\additional_tool_pins.json",
+      "bytes": 2589,
+      "sha256": "35ecfc2f3e08ff4c55256e52088115f2b2ff2d3f8977674fc9d81504fa9cd667"
+    },
+    "dependencies": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\dependency_manifest.json",
+      "bytes": 449871,
+      "sha256": "aaf9a429633e58d117b048fbb12196902b50783f8be0b32fedf513cbd3853beb"
+    },
+    "source_and_context": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\source_and_context_manifest.json",
+      "bytes": 7076,
+      "sha256": "3032950e1e82b64b02d265c13ef432e892998df552a6340c7efc4b8557445f0f"
+    },
+    "selected_CO_FF": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\selected_coff_receipt.json",
+      "bytes": 468621,
+      "sha256": "b58cd6e52494068d3d4e8ebdaf6612bdc686eb1ea1ebc498143286cfc23429d1"
+    },
+    "layouts": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\owner_layout_receipt.json",
+      "bytes": 18140,
+      "sha256": "0c219d33aa4b67036f06f68b0da499b8ff185edbdec5ac69740456ee64f68d06"
+    },
+    "all_lexical_function_comparisons": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\whole_function_comparison.json",
+      "bytes": 3386347,
+      "sha256": "bd8fa12aabaf0a44667f071c9a47e21cbf280e625d10f2ed1b2deefa0f698d41"
+    },
+    "anchored_generated_name_comparisons": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\generated_name_comparison.json",
+      "bytes": 1511344,
+      "sha256": "1f27371f7b2601c555b194cd0695024623b6659f149361188107e7e738d1db88"
+    },
+    "binding_guards": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\binding_guard_receipt.json",
+      "bytes": 65841,
+      "sha256": "b82d01a34635c3586b975cedb4892203cc5ed7f71bf0a28b7cff0f674dd8c116"
+    },
+    "Source_diff": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\Source.diff",
+      "bytes": 10516,
+      "sha256": "5b5f2f1e17b272f817f1363419a2048a99634012d5cb4a6ae31dfa6c9d50a7a5"
+    },
+    "document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\docs\\CC12_MESH_HIERARCHY_APPLICATION_BINDING_SOURCE.md",
+      "bytes": 8906,
+      "sha256": "a37a97376c212f64d40f3afc2f133aa47e278c7f2a46fe88dc782f411a9d120c"
+    },
+    "artifact_bundle": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\cc12_mesh_hierarchy_application_binding_source_evidence.zip",
+    "member_manifest": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\bundle_manifest.json",
+    "complete_verification": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_mesh_hierarchy_application_binding_source\\bundle_verification.json"
+  }
+}

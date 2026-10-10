@@ -10,6 +10,7 @@ struct NativeDamageableClassSectionMshFieldFragmentScratch {
     NativeDamageableClassSectionIteratorSetupFragmentScratch& same_iterator_scratch;
     void* fresh_field_at_parent_e0;  // aligned14h bytes, no live Lua object
     void* fresh_string_at_parent_18; // aligned8h raw header: length0/data4
+    const char* actual_msh_category_key_00d0e190; // borrowed actual live key storage
 };
 
 // Retained prefix CEBB..CF34 and normal release D181..D19F only. Construct this
@@ -32,6 +33,8 @@ struct NativeDamageableClassSectionMshFieldFragmentScratch {
 // or change bindings/reenter. Actual Lua owner/index/tracking/capacity and error
 // handler below all removed slots remain the existing providers' obligations.
 // The converting getter must yield a valid nonnull NUL-terminated byte span;
+// The borrowed key must have the retained MshCategory identity and remain valid
+// throughout lookup; its original bytes are not established by this adapter.
 // copy ranges must support the wrapped DWORD count, including zero. No new
 // exact-string predicate, default, rollback or typed NativeString is supplied.
 //

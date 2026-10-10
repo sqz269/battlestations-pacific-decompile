@@ -24,9 +24,9 @@ NativeDamageableClassSectionMshFieldFragment::~NativeDamageableClassSectionMshFi
 void NativeDamageableClassSectionMshFieldFragment::open() {
     auto& value = *static_cast<NativeLuaObjectStorage*>(
         scratch_.same_iterator_scratch.fresh_value_at_parent_2c);
-    // Key identity is retained D0E190 metadata, not a new native name-byte read.
+    // Borrow actual key storage; retained D0E190 metadata is not a name-byte proof.
     auto* const field = native_lua_get_by_name_protected(
-        value, scratch_.fresh_field_at_parent_e0, "MshCategory");
+        value, scratch_.fresh_field_at_parent_e0, scratch_.actual_msh_category_key_00d0e190);
     state_ = 15; // CED3, only after successful lookup
     const char* const text = native_lua_string_protected(*field);
     auto* const header = static_cast<std::byte*>(scratch_.fresh_string_at_parent_18);

@@ -8,11 +8,26 @@ namespace bsp {
 struct NativeResourceManagerContext;
 struct NativeGameResourceParsersContext;
 struct NativeStringRawPoolContext;
+struct NativeResourceStreamReadContext;
+struct NativeResourceHierarchyParserContext;
+class NativeMaterialParameterPool;
+class NativeVfsRuntimeBindings;
 }
 
 namespace bsp::game {
 class GameSingletonHost;
 class GameNativeReadOnlyData;
+class GameVfsHost;
+
+// Stable non-owning views of one resource application's genuine hierarchy
+// services. Keep the application, VFS, mapped data and canonical process pools
+// alive through every consumer and the shared drain. Do not retarget the read
+// context. This view creates no node, record, resource or parser invocation.
+struct GameNativeHierarchyServices {
+    NativeResourceStreamReadContext& reads;
+    NativeResourceHierarchyParserContext& hierarchy;
+    NativeMaterialParameterPool& hierarchy_pool_0109022c;
+};
 
 // Actual resource-manager and thirteen parser publication cells, using the
 // application's existing raw string pool and singleton lifetime manager.
@@ -40,6 +55,11 @@ public:
     std::uint32_t failure_entry() const noexcept;
 
 private:
+    friend class GameVfsHost;
+    // Only the owning host may bind its own ready VFS/string domain. Mapped
+    // data comes from this application's original construction, never a caller.
+    const GameNativeHierarchyServices& borrow_hierarchy_services(
+        NativeVfsRuntimeBindings&, NativeStringRawPoolContext&);
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
