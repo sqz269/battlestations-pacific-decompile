@@ -7067,6 +7067,82 @@
           },
           "reader_TEXT02_independent_Source_review": null,
           "reader_selected_or_executed": false
+        },
+        "fresh_F6_prepare01_actual_unadopted_DATA_materialized": {
+          "status": "ACTUAL_UNADOPTED_F6_PREPARE_DATA_MATERIALIZATION_TERMINAL_ZERO_COMPLETE_OUTPUT_REVIEW_PENDING",
+          "Source_credit": 0,
+          "actual_materialization_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_actual_DATA_materialization_native_DATA01.json",
+            "bytes": 5320,
+            "sha256": "610844df966dca882996938cebb3f4ef7d4c144867144e2b895f5926bf4a9991"
+          },
+          "genuine_actual_transport_envelopes": 8,
+          "actual_initial_chunk_id": "91965f",
+          "actual_session_id": 9177,
+          "actual_terminal_chunk_id": "4453b5",
+          "actual_terminal_exit_code": 0,
+          "complete_actual_status": {
+            "status": "UNADOPTED_DATA_ASSEMBLED",
+            "Source_credit": 0,
+            "Root_acceptance": false,
+            "actual_execution_event": null,
+            "seal": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F6D07_adopter01\\type1011_f6_prepare01\\Root_seal.DATA.json",
+              "bytes": 7554,
+              "sha256": "a445bfa327977201d732343932c0eed01700844f4ba267baeb8ce362a95fa989"
+            }
+          },
+          "actual_unadopted_phase_seal": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_type1011F6D07_adopter01\\type1011_f6_prepare01\\Root_seal.DATA.json",
+            "bytes": 7554,
+            "sha256": "a445bfa327977201d732343932c0eed01700844f4ba267baeb8ce362a95fa989"
+          },
+          "selected_assembly_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\assembly_plan.F6_prepare01.selected.json",
+            "bytes": 1132469,
+            "sha256": "850eb6ca9a7db7dc721a0d78a0951a6838005157badb6db6380c6391c8ec1232"
+          },
+          "selected_complete_materialization_reader_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\review_F6_prepare01_complete_materialization_DATA01.selected.py",
+            "bytes": 59597,
+            "sha256": "2aea5d6670bd2dda2a6bacb35c7b37e3132817fe51704bae955264d25a74d667"
+          },
+          "independent_reader_static_advisory": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_job_peer\\local\\cc12_type1011_F6_materialization_reader_TEXT02_static_audit_native_20261010.json",
+            "bytes": 18818,
+            "sha256": "a430e3d74465b9afaaeb142dfeeec4f30fbd2ec01b5b584e499bf93daaa2b381"
+          },
+          "Root_reader_static_advisory_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_materialization_reader_static_advisory_accepted_DATA01.json",
+            "bytes": 40956,
+            "sha256": "afba92bea3445c250e7ab92a1379ca204d574ec0146d32288a3d89e5cbd71e16"
+          },
+          "declared_independent_static_checks": 100,
+          "Root_static_advisory_checks": 143,
+          "unchanged_static_input_pins": 7,
+          "reader_source_only_scope_limits": [
+            "Static Source advisory only. Neither prototype nor any selected Source was imported or executed.",
+            "No generated D07 or phase output, materialization graph, or full transitive current closure was inspected by this capture.",
+            "Future accepted-plan receipt, instruction, complete genuine materializer transport, externally selected phase seal and actual output closure remain required inputs to any selected reader execution.",
+            "Original audit internal pin arrays were not emitted; fresh capture arrays are explicitly distinguished from the original reported equality assertion.",
+            "Source pins and static predicates grant no selection, assembly, adoption, phase, runtime, Native, compiler, ABI or game qualification.",
+            "Full private environment values, if present in retained original Source evidence, remain private local DATA.",
+            "This capture writer and its future closing tool terminal are external evidence and are not claimed already observed inside this file."
+          ],
+          "reader_initial_genuine_chunk_id": "087192",
+          "reader_initial_genuine_session_id": 41659,
+          "complete_materialized_output_review": null,
+          "independent_materialized_output_review": null,
+          "actual_DATA_adoption": null,
+          "actual_fixture_execution": null,
+          "phase_authority": false,
+          "DATA_adoption_authority": false,
+          "runtime_authority": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "original_clock_started": false,
+          "original_capture_replayed": false
         }
       }
     }
