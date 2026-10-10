@@ -6899,6 +6899,174 @@
           "fixture_qualification": false,
           "ABI_qualification": false,
           "game_qualification": false
+        },
+        "fresh_F6_prepare01_complete_plan_peer_accepted_and_DATA_materialization_instruction_issued": {
+          "status": "COMPLETE_F6_PLAN_DATA_ACCEPTED_SEPARATE_UNADOPTED_DATA_MATERIALIZATION_BOUNDARY_ISSUED",
+          "Source_credit": 0,
+          "Root_complete_plan_peer_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\Root_F6_prepare01_complete_plan_profile_peer_accepted_DATA01.json",
+            "bytes": 127149816,
+            "sha256": "3def069fe6e94a8a0ba8efcda8ba227ec3404f752da269107248ef3a11007abd"
+          },
+          "Root_plan_acceptance_checks": 638634,
+          "Root_plan_acceptance_equal_current_pins": 27644,
+          "independent_component_counts": {
+            "review": {
+              "checks": 2577723,
+              "pins": 27623
+            },
+            "seal": {
+              "checks": 544622,
+              "pins": 27638
+            },
+            "verification": {
+              "checks": 517255,
+              "pins": 27640
+            },
+            "absence_and_draft": {
+              "checks": 134,
+              "pins": 4
+            },
+            "literal_ENV": {
+              "checks": 11,
+              "pins": 4
+            }
+          },
+          "complete_ordered_predicate_sha256": {
+            "review": "ab40bfcd373907a59f75a5320c4e88a080e4b67b7c80ce1fa3323ea672b3f951",
+            "seal": "b088bb6b3db8f8abf62ac5248f0df5d483a19853981bc647e1992db5865c2e4c",
+            "verification": "c746ebd522967ae72bef7db5d11be842a97ff4085762b5fc20099bf7d74deab3",
+            "absence_and_draft": "4269efffc916eff18216b2e718c72499742abfc7c5eaf149f39d8461a2f773bf",
+            "literal_ENV": "21f9bbed3f562e4566cc23db72d7cbadf73fe1b5fd94167dbbd5ce6f08134eac"
+          },
+          "independent_closed_selection": {
+            "schema": "Root_F6_prepare01_closed_independent_plan_profile_selection_v1",
+            "Source_credit": 0,
+            "family_root": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\complete_review",
+            "review": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\complete_review\\review.DATA.json",
+              "bytes": 432460672,
+              "sha256": "f59f1e0c6533df44e5d6ea839e2621fb123c946870b8cab22ef968c279ec15ee"
+            },
+            "manifest": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\complete_review\\artifact_manifest.json",
+              "bytes": 6605,
+              "sha256": "91bc9512732e0c49da35ac367848fc5fc3f4ae8d9aebf287e8b9af4e7666b4dd"
+            },
+            "seal": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\complete_review\\seal.DATA.json",
+              "bytes": 113581096,
+              "sha256": "abe80850bb5dc913cabb1f076f8799e07199cd256a98a2f72b70fee7829b3a5c"
+            },
+            "receipt": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\complete_review\\receipt.json",
+              "bytes": 1755,
+              "sha256": "c0dfb1732a3e0483cdcc483553f0eba7379abfefdd424221b1a18fa23ccbfd3d"
+            },
+            "external_transport": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\final_transport.DATA.json",
+              "bytes": 116031636,
+              "sha256": "df1708240241517f966afe17170436ad20df6440e5755fff43c77173a5eb980e"
+            },
+            "external_postseal_helper": {
+              "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\local\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\postseal_native_capture.DATA.json",
+              "bytes": 69076,
+              "sha256": "5e3df7202616c47762e177a5de985d68df9f16e919e75956df6577a8a4949a9b"
+            },
+            "actual_outer_closer_chain": [
+              {
+                "tool": "exec_command",
+                "arguments": {
+                  "cmd": "& 'C:/ProgramData/miniconda3/python.exe' -I -B -E -S 'local/cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010/complete_review/close_complete_external_native_transport_DATA01.py'",
+                  "workdir": "J:/PROG/battlestations-pacific-decompile-cc12_type1011_review_startup_sources",
+                  "max_output_tokens": 1600,
+                  "yield_time_ms": 1000
+                },
+                "result": {
+                  "chunk_id": "ad50a4",
+                  "wall_time_seconds": 10.015382,
+                  "session_id": 8479,
+                  "original_token_count": 0,
+                  "output": ""
+                }
+              },
+              {
+                "tool": "write_stdin",
+                "arguments": {
+                  "session_id": 8479,
+                  "chars": "",
+                  "max_output_tokens": 1600,
+                  "yield_time_ms": 1000
+                },
+                "result": {
+                  "chunk_id": "321d2f",
+                  "wall_time_seconds": 9.8e-06,
+                  "exit_code": 0,
+                  "original_token_count": 145,
+                  "output": "{\"status\": \"COMPLETE_F6_PLAN_PROFILE_FAMILY_AND_EXTERNAL_NATIVE_READONLY_CLOSED\", \"external\": {\"path\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-cc12_type1011_review_startup_sources\\\\local\\\\cc12_type1011_F6_prepare01_plan_profile_independent_peer_20261010\\\\final_transport.DATA.json\", \"bytes\": 116031636, \"sha256\": \"df1708240241517f966afe17170436ad20df6440e5755fff43c77173a5eb980e\"}, \"verification_checks\": 517255, \"verification_books\": 27640, \"files\": 18, \"members\": 18, \"Source_credit\": 0, \"Root_acceptance\": false, \"all_authority\": false, \"own_future_outer_terminal\": null}\r\n"
+                }
+              }
+            ],
+            "counts": {
+              "mainChecks": 2577723,
+              "mainPins": 27623,
+              "sealChecks": 544622,
+              "sealPins": 27638,
+              "finalChecks": 517255,
+              "finalPins": 27640,
+              "familyFiles": 18,
+              "familyMembers": 18
+            },
+            "retainedOwnInspectorFailures": 3,
+            "retainedPrelaunchTransportFailures": 2,
+            "Root_acceptance": false,
+            "all_authority": false
+          },
+          "all_complete_current_books_and_predicates_consumed": true,
+          "whole_native_acceptance_and_instruction_tools": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_F6_prepare01_complete_plan_acceptance_and_DATA_instruction.actual_native_DATA01.json",
+            "bytes": 4666,
+            "sha256": "7883efb8918426176a41bc759509713a5f8f8e2c73f8fb76705295c9f79ff3a3"
+          },
+          "selected_assembly_plan": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\assembly_plan.F6_prepare01.selected.json",
+            "bytes": 1132469,
+            "sha256": "850eb6ca9a7db7dc721a0d78a0951a6838005157badb6db6380c6391c8ec1232"
+          },
+          "inert_adopter_draft": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_TEXT_review01\\adoption_plan.F6_prepare01.inert_post_materialization_draft.json",
+            "bytes": 53770,
+            "sha256": "6775a458f71407f7f19587fc06aec651c1782cea57299b38635175784198b5d5"
+          },
+          "separate_DATA_materialization_instruction": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\Root_F6_prepare01_DATA_materialization_instruction_DATA01.json",
+            "bytes": 104856818,
+            "sha256": "39fa4629db09678edb8d368ea14ee62474548585c1796bbd0d810aff326660a8"
+          },
+          "DATA_instruction_checks": 544554,
+          "DATA_instruction_equal_current_pins": 27645,
+          "exact_authorized_DATA_argv": "& 'C:\\ProgramData\\miniconda3\\python.exe' -I -B -E -S 'J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\selected_assembler.py' materialize --plan 'J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F6_D07_materialization_control01\\assembly_plan.F6_prepare01.selected.json' --plan-sha256 850eb6ca9a7db7dc721a0d78a0951a6838005157badb6db6380c6391c8ec1232 --Root-authorizes-DATA-assembly",
+          "working_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution",
+          "DATA_materialization_authority": true,
+          "phase_authority": false,
+          "runtime_authority": false,
+          "DATA_adoption_authority": false,
+          "fixture_qualification": false,
+          "ABI_qualification": false,
+          "game_qualification": false,
+          "original_clock_started": false,
+          "original_capture_replayed": false,
+          "actual_materialization_terminal": null,
+          "actual_materialization_output_review": null,
+          "actual_DATA_adoption": null,
+          "actual_fixture_execution": null,
+          "Root_materialized_output_reader_TEXT02_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type5_complete_guard_materialization_TEXT\\local\\type1011F6PrepareMaterializedRootReaderTEXT02\\review_F6_prepare01_complete_materialization_DATA01.py.txt",
+            "bytes": 59597,
+            "sha256": "2aea5d6670bd2dda2a6bacb35c7b37e3132817fe51704bae955264d25a74d667"
+          },
+          "reader_TEXT02_independent_Source_review": null,
+          "reader_selected_or_executed": false
         }
       }
     }
