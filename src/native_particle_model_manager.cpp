@@ -11,6 +11,7 @@ namespace bsp {
 namespace {
 static_assert(sizeof(NativeParticleManagerPointerArray) == 0x0c);
 static_assert(sizeof(NativeParticleModelManagerStorage) == 0x34);
+static_assert(sizeof(NativeParticleModelManagerAccess) == 0x10); // C++ access only.
 static_assert(offsetof(NativeParticleModelManagerStorage, models_04) == 4);
 static_assert(offsetof(NativeParticleModelManagerStorage, entries_10) == 0x10);
 static_assert(offsetof(NativeParticleModelManagerStorage, untouched_1c) == 0x1c);
@@ -36,26 +37,16 @@ std::int32_t next_capacity(std::uint32_t current) noexcept {
     const auto doubled = signed_bits(current + current);
     return doubled > 1 ? doubled : 1;
 }
-class CapturedSection final {
-public:
-    explicit CapturedSection(SystemSingletonCriticalSection* value) : value_(value) {
-        if (value_) {
-            singleton_enter_critical_section(*value_);
-            ++value_->recursion_18;
-        }
-    }
-    ~CapturedSection() {
-        if (value_) {
-            --value_->recursion_18;
-            singleton_leave_critical_section(*value_);
-        }
-    }
-    CapturedSection(const CapturedSection&) = delete;
-    CapturedSection& operator=(const CapturedSection&) = delete;
-private:
-    SystemSingletonCriticalSection* value_;
-};
 }
+
+NativeParticleModelManagerAccess::NativeParticleModelManagerAccess(
+    NativeParticleModelManagerStorage* volatile& publication,
+    SingletonLifetimeDomain& legacy_domain, const volatile std::uint32_t& one) noexcept
+    : manager_00f8c274(publication), lifetime_01090aa0(legacy_domain), one_00d7a24c(one) {}
+NativeParticleModelManagerAccess::NativeParticleModelManagerAccess(
+    NativeParticleModelManagerStorage* volatile& publication,
+    void* volatile& actual_manager_01090aa0, const volatile std::uint32_t& one) noexcept
+    : manager_00f8c274(publication), lifetime_01090aa0(actual_manager_01090aa0), one_00d7a24c(one) {}
 
 void reserve_native_particle_manager_pointers_00af0630(NativeParticleManagerPointerArray& array,
     std::int32_t requested) {
@@ -142,9 +133,9 @@ NativeParticleModelManagerStorage* construct_native_particle_manager_base_00af06
     NativeParticleModelManagerStorage* owner, NativeParticleModelManagerAccess& access) {
     owner->native_table_00 = 0x00d5d7ecu;
     try {
-        CapturedSection lock(access.lifetime_01090aa0.get_manager_00415350()->system_owner().section_10);
+        CapturedSoundLifetimeSection lock(access.lifetime_01090aa0);
         access.manager_00f8c274 = owner;
-        auto* const manager = access.lifetime_01090aa0.get_manager_00415350();
+        auto manager = access.lifetime_01090aa0.get_manager_00415350();
         manager->register_object(access.manager_00f8c274);
     } catch (...) {
         owner->native_table_00 = 0x00ce3818u; // state0 / 00412430; publication survives.
@@ -156,8 +147,8 @@ void destroy_native_particle_manager_base_00af0740(NativeParticleModelManagerSto
     NativeParticleModelManagerAccess& access) {
     owner->native_table_00 = 0x00d5d7ecu;
     try {
-        CapturedSection lock(access.lifetime_01090aa0.get_manager_00415350()->system_owner().section_10);
-        auto* const manager = access.lifetime_01090aa0.get_manager_00415350();
+        CapturedSoundLifetimeSection lock(access.lifetime_01090aa0);
+        auto manager = access.lifetime_01090aa0.get_manager_00415350();
         manager->unregister_object(access.manager_00f8c274);
         access.manager_00f8c274 = nullptr;
     } catch (...) {

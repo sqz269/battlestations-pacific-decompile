@@ -1,5 +1,5 @@
 #pragma once
-#include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 namespace bsp {
 struct TrackedCriticalSection;
@@ -25,8 +25,15 @@ struct NativeParticleModelManagerStorage {
 };
 struct NativeParticleModelManagerAccess {
     NativeParticleModelManagerStorage* volatile& manager_00f8c274;
-    SingletonLifetimeDomain& lifetime_01090aa0;
+    SoundLifetimeAccess lifetime_01090aa0;
     const volatile std::uint32_t& one_00d7a24c;
+
+    // Borrow the existing legacy domain or the actual 01090AA0 publication
+    // cell. Construction does not fetch or publish either manager.
+    NativeParticleModelManagerAccess(NativeParticleModelManagerStorage* volatile&,
+        SingletonLifetimeDomain&, const volatile std::uint32_t&) noexcept;
+    NativeParticleModelManagerAccess(NativeParticleModelManagerStorage* volatile&,
+        void* volatile&, const volatile std::uint32_t&) noexcept;
 };
 
 // Complete AF0630..068E, AF07E0..0818, AF0900..094F, AF0A60..0AC6,
@@ -46,7 +53,8 @@ std::uint8_t unregister_native_particle_model_00af0ae0(void* actual_manager, voi
 
 // Full base AF06A0..0730 / AF0740..07D8 and derived AF0B10..0B81 /
 // AF0B90..0C40. Native ECX manager, RET, constructor EAX original pointer.
-// Added access borrows the application's SAME publication/lifetime domain.
+// Added access borrows the application's SAME publication/lifetime cells or
+// the existing legacy domain. Its C++ layout is not a native ABI contract.
 NativeParticleModelManagerStorage* construct_native_particle_manager_base_00af06a0(NativeParticleModelManagerStorage*, NativeParticleModelManagerAccess&);
 void destroy_native_particle_manager_base_00af0740(NativeParticleModelManagerStorage*, NativeParticleModelManagerAccess&);
 NativeParticleModelManagerStorage* construct_native_particle_model_manager_00af0b10(NativeParticleModelManagerStorage*, NativeParticleModelManagerAccess&);
