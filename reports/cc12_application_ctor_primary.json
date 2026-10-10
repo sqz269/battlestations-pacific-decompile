@@ -1,0 +1,82 @@
+{
+  "schema": "bsp.cc12.application-ctor-primary.v1",
+  "status": "bounded_constructor_contract_accepted_owner_and_activation_NO_GO",
+  "worker_commit": "d3f9c80f06b130129f99fdc024dcae08320395d7",
+  "worker_report": {
+    "path": "local/cc12_application_ctor_primary/worker_report.json",
+    "bytes": 52342,
+    "sha256": "ee855f44b17f88c97cde540a9aaed0af6fb57d471b2d7eae599ef38246792c50"
+  },
+  "copied_finite_pins": 184,
+  "copied_bytes": 294086671,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_ctor_primary/Root_guarded_replay.json",
+    "bytes": 350,
+    "sha256": "5fdc40d735a13c705b8e7e873543b0a9dd20cd7cdca981fab3fb120f605f539f"
+  },
+  "actual_frozen_Git_occurrences": 4217,
+  "actual_closed_Source_Git_paths": 4208,
+  "Root_comparison_HEAD": "646420dbad8395f2f14fbff18191d237dc0c330b",
+  "Root_Source_differences_from_frozen_constructor_epoch": [],
+  "prior_authority_124_pins_byte_identical": true,
+  "Native": {
+    "fresh_bytes": 64,
+    "fresh_instructions": 23,
+    "GPR_modification": 79,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "Application": {
+      "address": "00737970",
+      "range": "00737970..00737999",
+      "bytes": 42
+    },
+    "base": {
+      "address": "00BEA970",
+      "range": "00BEA970..00BEA985",
+      "bytes": 22
+    },
+    "assembly_ABI": "ECX receiver, EAX same receiver, ESI preserved, plain RET; unresolved stored undefined(void) prototypes retained",
+    "prior_caller_bytes": 57,
+    "prior_base_BEA810_bytes": 145
+  },
+  "decision": {
+    "dormant_raw_storage_owner_GO": false,
+    "Cpp_GO": false,
+    "frame_activation_GO": false,
+    "blocking_contract": "Same receiver can escape via E1AE90 before loop and Application stores complete. Base registration failure, raw receiver retention and later callable retirement are not composed.",
+    "next_packet": "cc12_application_singleton_base_failure_contract_readiness",
+    "proposed_next_Native_scope": [
+      {
+        "address": "00BEA810",
+        "metadata_first": true,
+        "complete_hull_max_bytes": 192
+      },
+      {
+        "address": "00CC7240",
+        "metadata_first": true,
+        "complete_hull_max_bytes": 64
+      }
+    ],
+    "no_further_expansion_without_bounded_proposal": true,
+    "E1AE78_remains_separate": true
+  },
+  "contract": {
+    "order": "BaseBEA810 call can publish current receiver throughE1AE90 before loop vtable/+04 and outer00/08/0C/10/14/19/1A/18 stores.",
+    "preimage": "No new whole-object zeroing;05..07 and1B unspecified.1Ch extent is inherited earlier full-stack audit, not freshly proved.",
+    "failure": "No local cleanup in either shell. Escaped receiver lifetime, registration failure and callable retirement need separate contracts; no automatic reset/unregister/destructor policy admitted.",
+    "authority": "Actual+14 must remain same cell by reference, stable through consumers, failure frames and final observations; projections or copies do not supply it.",
+    "E1AE78": "Separate process duplicate producer/storage/retirement scope."
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Root grid/record changes remain distinct from frozen Native/Source readiness epoch.",
+    "Retained normal shell evidence and replay do not prove EH/SEH, raw owner, ABI replacement or game activation."
+  ]
+}

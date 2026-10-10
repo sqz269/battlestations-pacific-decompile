@@ -1,0 +1,72 @@
+{
+  "schema": "bsp.cc12.particle-record-readiness-primary.v1",
+  "status": "accepted_Source_only_record_design_no_factory_activation",
+  "worker_commit": "b8cbd1481acdf657dff8377b98945e0e87777252",
+  "copied_inputs": [
+    {
+      "path": "local/cc12_particle_record_readiness_primary/evidence.zip",
+      "bytes": 15324931,
+      "sha256": "f6fe84e6988e83b4b30cdb5f65763e723854926902570d622717b750abb39586"
+    },
+    {
+      "path": "local/cc12_particle_record_readiness_primary/portable_replay.py",
+      "bytes": 4176,
+      "sha256": "d71e0af1f09ec1c31575b430594aeb37a02a160e10212c2fda0bc9674becfbb7"
+    },
+    {
+      "path": "local/cc12_particle_record_readiness_primary/worker_report.json",
+      "bytes": 384736,
+      "sha256": "991eb702dac2725a4861cdeaa0b4ec21410c274fa734682743d35762b460de98"
+    },
+    {
+      "path": "local/cc12_particle_record_readiness_primary/worker_document.md",
+      "bytes": 20348,
+      "sha256": "d87811910f323631bc7568479483c61087e748b1a78b11adc6fb344d7d29d770"
+    }
+  ],
+  "guarded_replay": {
+    "path": "local/cc12_particle_record_readiness_primary/Root_guarded_replay.json",
+    "bytes": 1408,
+    "sha256": "c01356d965f0e19619faf59c321ef9fbd2287ffb2f9c9acb0328cceeedde709a"
+  },
+  "actual_frozen_Git_blobs": 4233,
+  "actual_closed_Source_blobs": 4226,
+  "current_Root_Source_differences": [
+    "include/bsp/native_game_grid.hpp",
+    "src/native_game_grid.cpp"
+  ],
+  "Source_corpus": 4226,
+  "lexical_query_corpus": 4209,
+  "searches": 31,
+  "bounded_excerpts": 47,
+  "lexical_order_checks": 10,
+  "accepted_registry_epoch": "Source3354-render-prepared-entry retained separately from earlier pending-at-capture metadata",
+  "contract": {
+    "raw_frontier": "RegisteredModelEffect exposes the actual raw particle slot before AF74A0.",
+    "preconstruction": "Stable record and sole prepared NativeModelOwner, existing Generated credit, exact canonical registry token and inactive reference storage all exist before Native construction.",
+    "publication": "After Native B75030 and D5DA50 profile, admitted reference consumes Generated credit then same registry publication immediately fills its prepared entry, with no callback/yield between.",
+    "failure": "Prepublication cancellation does not destroy/free Native storage or decrement +04. Postpublication failed-profile retirement requires owner dead; existing outer caller owns raw return.",
+    "retirement": "Disposal removes metadata and marks retired using saved opaque identity. Successful Native terminal has already returned the slot. Only caller-proved callback/constructor/resolve quiescence permits record destruction.",
+    "reached_renderer": "B287C0 exposes completed creator only after B4BC00, and current instance-geometry caller omits that optional output. It does not provide a raw preconstruction identity hook."
+  },
+  "decision": {
+    "separate_particle_only_host_record_implementation_GO": true,
+    "complete_particle_factory_GO": false,
+    "complete_renderer_factory_GO": false,
+    "application_activation_GO": false
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Finite lexical Source evidence is not production call reachability, executed cleanup or Original ABI proof.",
+    "Publication crosses a noexcept hook; mutex/invariant failure is terminal, not a blanket recoverable raw-return promise.",
+    "No duplicate atomic or Native retain, successful-model rollback, weak-manager ownership or application drain is supplied.",
+    "Grid defaults are a later Root epoch and receive no artifact credit from this Source-only packet."
+  ]
+}
