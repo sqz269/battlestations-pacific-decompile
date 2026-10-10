@@ -1,0 +1,1003 @@
+{
+  "schema": "cc12-vfs-mesh-resource-type-owner-readiness-v1",
+  "packet": "cc12_vfs_mesh_resource_type_owner_readiness",
+  "created_utc": "2026-10-10T01:35:21.638455+00:00",
+  "baseline_commit": "e46ca137ff18a1f07b788ce8efefb0fda733c133",
+  "worker_worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "status": "already-composed-in-current-Source; no-mesh-type-owner-implementation-gap",
+  "owned_tracked_files": [
+    "docs/CC12_VFS_MESH_RESOURCE_TYPE_OWNER_READINESS.md",
+    "reports/cc12_vfs_mesh_resource_type_owner_readiness.json"
+  ],
+  "lease": {
+    "anchor_addresses": [
+      "00CD86F0"
+    ],
+    "Native_child_data_handler_boundaries_opened": []
+  },
+  "decision": {
+    "existing_family_Source_owner_ready": true,
+    "existing_family_already_called_from_retained_VFS_startup": true,
+    "new_implementation_required": false,
+    "minimum_new_implementation_owned_files": [],
+    "minimum_new_implementation_addresses": [],
+    "new_implementation_packet": null,
+    "reason": "Exact backing, stable borrowed view, existing complete initializers, SceneResource/root dependencies, retained counter/deletion services, startup calls and build registration are already present. Repeating them would duplicate existing Source work."
+  },
+  "canonical_backing": [
+    {
+      "family": "cSceneResource",
+      "guard": "0109020C",
+      "descriptor": "01090210",
+      "words": [
+        "own",
+        "root",
+        "name"
+      ],
+      "word_count": 3,
+      "name_word": "01090218",
+      "native_name_address": "00D631E4",
+      "initializer": [
+        "00B869C0"
+      ]
+    },
+    {
+      "family": "cRenderMeshResource",
+      "guard": "01090440",
+      "descriptor": "01090444",
+      "words": [
+        "own",
+        "scene",
+        "root",
+        "name"
+      ],
+      "word_count": 4,
+      "name_word": "01090450",
+      "native_name_address": "00D637A4",
+      "initializer": [
+        "00B93BD0",
+        "00CD8690"
+      ]
+    },
+    {
+      "family": "cSkinedMeshResource",
+      "guard": "01090441",
+      "descriptor": "01090454",
+      "words": [
+        "own",
+        "mesh",
+        "scene",
+        "root",
+        "name"
+      ],
+      "word_count": 5,
+      "name_word": "01090464",
+      "native_name_address": "00D637B8",
+      "initializer": [
+        "00CD86F0"
+      ]
+    },
+    {
+      "family": "cMatrixIndexedMeshResource",
+      "guard": "01090442",
+      "descriptor": "01090468",
+      "words": [
+        "own",
+        "mesh",
+        "scene",
+        "root",
+        "name"
+      ],
+      "word_count": 5,
+      "name_word": "01090478",
+      "native_name_address": "00D637CC",
+      "initializer": [
+        "00CD87B0"
+      ]
+    }
+  ],
+  "backing_contract": {
+    "owner": "GameNativeTypeStorage",
+    "copy_or_move_allowed": false,
+    "binding_resets_cells": false,
+    "copied_ID_snapshot": false,
+    "new_process_backing_initialized_to_zero": true,
+    "fixed_original_absolute_address_mapping_claimed": false,
+    "current_accessor": "mesh_resource_types() returns same member aggregate by reference",
+    "Source_refs": [
+      "include/bsp/game_native_type_storage.hpp:20",
+      "include/bsp/game_native_type_storage.hpp:33",
+      "include/bsp/game_native_type_storage.hpp:79",
+      "src/game_native_type_storage.cpp:16",
+      "include/bsp/native_mesh_subset_loading.hpp:163"
+    ]
+  },
+  "initializer_contract": {
+    "scene": "Process guard/name before root initialization; inherit root ID then consume shared counter.",
+    "caller_target_mesh": "Shared process guard, caller target; alternating parent loads/stores. Caller-target publication may suppress later global initialization.",
+    "CRT_base_mesh": "Shared process guard/name; SceneResource call; captures both inherited IDs before destination stores.",
+    "derived": "Own guard check; captures mesh guard before own guard/name; uses captured condition for inline base initialization; captures all three inherited IDs before stores.",
+    "counter": "Current006FAC20 owner DWORD+4 captured and incremented with unsigned wrap before captured own ID publication; zero not excluded.",
+    "partial_failure": "Guards and earlier stores survive; no rollback/reset/substitute-success/synchronization introduced.",
+    "existing_Source_interfaces_are_drop_in_Native_ABI_claim": false,
+    "Source_refs": [
+      "src/native_mesh_subset_loading.cpp:435",
+      "src/native_mesh_subset_loading.cpp:444",
+      "src/native_mesh_subset_loading.cpp:454",
+      "src/native_mesh_subset_loading.cpp:465",
+      "src/native_mesh_subset_loading.cpp:479",
+      "src/native_mesh_subset_loading.cpp:492",
+      "src/light_type_bootstrap.cpp:62"
+    ]
+  },
+  "dependency_matrix": [
+    {
+      "contract": "SceneResource B869C0",
+      "status": "available-and-already-bound",
+      "route": "NativeMeshResourceTypeIds owns borrowed scene guard/descriptor view from same GameNativeTypeStorage; same instance used by selectors and extra resource types."
+    },
+    {
+      "contract": "root BEA780",
+      "status": "available-and-already-bound",
+      "route": "common_types(owner_services.types(), type_storage.light_types()); scene initializer calls this root bootstrap."
+    },
+    {
+      "contract": "shared counter006FAC20",
+      "status": "available-and-already-bound",
+      "route": "NativeVfsOwnerServices::types_ uses retained raw manager lifetime and actual application counter publication; common_types and initialize_resource_types both receive owner_services.types()."
+    },
+    {
+      "contract": "raw lifetime manager01090AA0",
+      "status": "available-and-already-bound",
+      "route": "NativeVfsPublicationCells borrow GameSingletonHost::manager_publication_01090aa0(); owner services constructs SoundLifetimeAccess from that cell."
+    },
+    {
+      "contract": "counter destructionCFB6C4/6FAD40",
+      "status": "available-and-already-bound",
+      "route": "Application binds deletion before getters; deletion bindings point at exact retained types_; dispatch invokes existing destructor."
+    },
+    {
+      "contract": "stable application lifetime",
+      "status": "available-in-current-Source-contract",
+      "route": "GameVfsHost retains GameNativeVfsApplication; normal host singleton drain precedes delete vfs_; interrupted VFS route retains through process exit."
+    },
+    {
+      "contract": "registered build inputs",
+      "status": "present-not-newly-built",
+      "route": "Existing CMake entries include type storage, initializer source, owner services, application and root/counter source."
+    }
+  ],
+  "retained_call_chain": [
+    {
+      "step": 1,
+      "route": "GameVfsHost::native_ = unique_ptr<GameNativeVfsApplication>; phase2 invokes initialize_core()",
+      "Source_refs": [
+        "src/game_hosts_vfs.cpp:104",
+        "src/game_hosts_vfs.cpp:129",
+        "src/game_hosts_vfs.cpp:137"
+      ]
+    },
+    {
+      "step": 2,
+      "route": "Impl retains type_counter_0109DB7C, owner_services, type_storage, common_types; cells borrow host raw manager and same counter cell",
+      "Source_refs": [
+        "src/game_native_vfs_application.cpp:53",
+        "src/game_native_vfs_application.cpp:79"
+      ]
+    },
+    {
+      "step": 3,
+      "route": "NativeVfsOwnerServices binds lifetime_(manager cell), types_(lifetime_, counter cell); types() returns types_",
+      "Source_refs": [
+        "src/native_vfs_owner_services.cpp:9",
+        "src/native_vfs_owner_services.cpp:17",
+        "include/bsp/native_vfs_owner_services.hpp:49"
+      ]
+    },
+    {
+      "step": 4,
+      "route": "common_types(owner_services.types(), type_storage.light_types()); bind_deletion before type getters",
+      "Source_refs": [
+        "src/game_native_vfs_application.cpp:90",
+        "src/game_native_vfs_application.cpp:100",
+        "src/native_vfs_owner_services.cpp:26"
+      ]
+    },
+    {
+      "step": 5,
+      "route": "initialize_core -> initialize_resource_types(owner_services.types(), common_types) -> NativeMeshResourceTypeIds(existing_counter, common_root_bootstrap, mesh_resource_types_) -> CD8690/CD86F0/CD87B0",
+      "Source_refs": [
+        "src/game_native_vfs_application.cpp:109",
+        "src/game_native_type_storage.cpp:55",
+        "src/game_native_type_storage.cpp:76"
+      ]
+    },
+    {
+      "step": 6,
+      "route": "Same owner remains until after shared drain; actual counter deletion dispatch clears publication and conditionally frees without resetting descriptor guards or unregistering itself",
+      "Source_refs": [
+        "src/game_hosts.cpp:1565",
+        "src/game_hosts.cpp:1602",
+        "src/game_hosts.cpp:1504",
+        "src/native_singleton_destruction.cpp:410",
+        "src/light_type_bootstrap.cpp:46"
+      ]
+    }
+  ],
+  "identity_validation_limit": {
+    "common_storage_checked": true,
+    "private_counter_identity_runtime_checked_by_require_common_bootstrap": false,
+    "actual_route_same_counter_proof": "Same retained owner_services.types() reference is passed to bootstrap construction and later initializer calls.",
+    "external_callers_contract": "Must supply same counter and storage/lifetime domain; public helper does not infer or repair a mismatched counter."
+  },
+  "order_and_consumers": {
+    "current_Source_sequence": [
+      "CCEC00/CCF740/CCF980 selectors",
+      "CD7D80 camera object",
+      "CD7E60 model",
+      "CD7EB0 model base",
+      "CD82F0/CD8340 extra resource",
+      "B8F590 group (explicit Source insertion)",
+      "CD8690/CD86F0/CD87B0 mesh types",
+      "memory type, physical pool, physical type, retained VFS registration"
+    ],
+    "group_original_CRT_slot_established": false,
+    "historical_mesh_CRT_cells": [
+      "00CE35F0",
+      "00CE35F8",
+      "00CE3600"
+    ],
+    "full_original_application_CRT_order_established": false,
+    "absolute_original_numeric_type_IDs_established": false,
+    "earlier_exception_can_prevent_mesh_calls": true,
+    "NativeMeshResourceTypeCalls_current_Source_available": true,
+    "current_bounded_search_shows_game_side_adapter_construction": false,
+    "current_bounded_search_shows_mesh_resource_types_accessor_consumer": false,
+    "qualification": "Bounded identifier search establishes no attachment proof; it does not exclude unnamed/generic or runtime routes. Any future consumer packet requires the actual forwarding chain, profiles/selectors and same retained storage/lifetime bindings."
+  },
+  "family_exclusions": {
+    "selected": "01090454 skined-mesh resource",
+    "distinct_not_substituted": [
+      "01090370 excluded skined-mesh",
+      "01090288 camera-resource",
+      "01090344 skin-model",
+      "0109042C compact"
+    ],
+    "other_Native_family_ownership_investigated": false
+  },
+  "held_contracts": [
+    {
+      "contract": "Original full CRT execution/order and absolute IDs",
+      "blocks_this_completed_Source_owner_composition": false,
+      "needed_for": "Original startup equivalence claims",
+      "status": "unproved-by-this-packet"
+    },
+    {
+      "contract": "Production classifier/resource-graph attachment to current descriptor cells",
+      "blocks_this_completed_Source_owner_composition": false,
+      "needed_for": "Separate consumer integration/execution packet",
+      "status": "actual forwarding chain and consumer bindings not established here"
+    },
+    {
+      "contract": "Native ABI, full application runtime/shutdown, gameplay/render parity",
+      "blocks_this_completed_Source_owner_composition": false,
+      "needed_for": "Corresponding execution/equivalence claims",
+      "status": "not tested in this packet"
+    }
+  ],
+  "historical_evidence": {
+    "tracked_CP_doc": "docs/NATIVE_MESH_RESOURCE_CLASSIFICATION_CP.md",
+    "tracked_CP_report": "reports/native_mesh_resource_classification_cp.json",
+    "tracked_CP_integration_report": "reports/native_mesh_resource_classification_integration_cp.json",
+    "original_routines_already_reconstructed": 14,
+    "historical_ordinary_bytes": 690,
+    "historical_instruction_owners": 164,
+    "historical_native_leaf_oracle_bodies": 9,
+    "historical_startup_initializers_original_code_executed": false,
+    "historical_validation_rerun": false,
+    "old_branch_only_or_then_unproved_statements_not_current_state": true,
+    "historical_14_counted_as_new_credit": false,
+    "qualification": "Nine historical getter/predicate machine-code leaf oracles and Source initializer/classification fixtures are retained historical claims, not fresh validation. Current Source route was inspected independently. No CP original bytes/exports or fixture artifacts were reopened."
+  },
+  "evidence": {
+    "schema": "cc12-vfs-mesh-resource-type-owner-readiness-evidence-v1",
+    "created_utc": "2026-10-10T01:35:21.638455+00:00",
+    "baseline_commit": "e46ca137ff18a1f07b788ce8efefb0fda733c133",
+    "selected_current_Source_config_files": 21,
+    "selected_historical_context_files": 3,
+    "selected_files": [
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/native_mesh_subset_loading.hpp",
+          "bytes": 14540,
+          "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/native_mesh_subset_loading.hpp",
+          "bytes": 14540,
+          "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/native_mesh_subset_loading.cpp",
+          "bytes": 29496,
+          "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/native_mesh_subset_loading.cpp",
+          "bytes": 29496,
+          "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/game_native_vfs_application.hpp",
+          "bytes": 3022,
+          "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/game_native_vfs_application.hpp",
+          "bytes": 3022,
+          "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/native_vfs_owner_services.hpp",
+          "bytes": 3548,
+          "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/native_vfs_owner_services.hpp",
+          "bytes": 3548,
+          "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/native_vfs_owner_services.cpp",
+          "bytes": 1236,
+          "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/native_vfs_owner_services.cpp",
+          "bytes": 1236,
+          "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/light_type_bootstrap.hpp",
+          "bytes": 3214,
+          "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/light_type_bootstrap.hpp",
+          "bytes": 3214,
+          "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/light_type_bootstrap.cpp",
+          "bytes": 5880,
+          "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/light_type_bootstrap.cpp",
+          "bytes": 5880,
+          "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/sound_lifetime_access.hpp",
+          "bytes": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/sound_lifetime_access.hpp",
+          "bytes": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/native_singleton_destruction.hpp",
+          "bytes": 18086,
+          "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/native_singleton_destruction.cpp",
+          "bytes": 25482,
+          "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/game_hosts_vfs.hpp",
+          "bytes": 11990,
+          "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/game_hosts_vfs.hpp",
+          "bytes": 11990,
+          "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/game_hosts_vfs.cpp",
+          "bytes": 21158,
+          "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/game_hosts_vfs.cpp",
+          "bytes": 21158,
+          "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "src/game_native_renderer_application.cpp",
+          "bytes": 38240,
+          "sha256": "cca0567a8031dfaa267dd37ccf48396eb2ceeb91257f4f81aabdd1c0d4a40f90"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/src/game_native_renderer_application.cpp",
+          "bytes": 38240,
+          "sha256": "cca0567a8031dfaa267dd37ccf48396eb2ceeb91257f4f81aabdd1c0d4a40f90"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "cmake/startup.cmake",
+          "bytes": 200731,
+          "sha256": "b464640066cfb6009c5c421f852211819d3815a3fbb7296924ff009716ce8f8f"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/cmake/startup.cmake",
+          "bytes": 200731,
+          "sha256": "b464640066cfb6009c5c421f852211819d3815a3fbb7296924ff009716ce8f8f"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "current_Source_config",
+        "original": {
+          "path": "config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/config/target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "historical_context",
+        "original": {
+          "path": "docs/NATIVE_MESH_RESOURCE_CLASSIFICATION_CP.md",
+          "bytes": 7500,
+          "sha256": "3bf627064d17397724eb5aaf56c1242452c27ffaa899953a81de8828a6acea31"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/docs/NATIVE_MESH_RESOURCE_CLASSIFICATION_CP.md",
+          "bytes": 7500,
+          "sha256": "3bf627064d17397724eb5aaf56c1242452c27ffaa899953a81de8828a6acea31"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "historical_context",
+        "original": {
+          "path": "reports/native_mesh_resource_classification_cp.json",
+          "bytes": 42949,
+          "sha256": "81809676534349497894bdc90cae66904b75d2d222feb3b3f0ae12d5bb5ac53c"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/reports/native_mesh_resource_classification_cp.json",
+          "bytes": 42949,
+          "sha256": "81809676534349497894bdc90cae66904b75d2d222feb3b3f0ae12d5bb5ac53c"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      },
+      {
+        "kind": "historical_context",
+        "original": {
+          "path": "reports/native_mesh_resource_classification_integration_cp.json",
+          "bytes": 11478,
+          "sha256": "f05eaaba49248e37dd5be1c58eae512f3d6cdaa6e475edcad7182aad5d2c38a0"
+        },
+        "frozen": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context/reports/native_mesh_resource_classification_integration_cp.json",
+          "bytes": 11478,
+          "sha256": "f05eaaba49248e37dd5be1c58eae512f3d6cdaa6e475edcad7182aad5d2c38a0"
+        },
+        "matches_baseline_Git_blob_after_CRLF_normalization": true
+      }
+    ],
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "tools/bsp.py",
+          "lookup",
+          "00CD86F0",
+          "--limit",
+          "8"
+        ],
+        "semantic_status": "Current bounded indexed metadata: complete existing Source routine; no Native body opened.",
+        "output": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/00cd86f0_lookup.txt",
+          "bytes": 1030,
+          "sha256": "935912932ee9b42d56fae88a9552ef1ed82d2a32644cc92947da0619e279b8c5"
+        },
+        "retained_output_lines": 7,
+        "display_or_search_limit_truncated": false
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "game_native_type_storage|native_mesh_subset_loading|game_native_vfs_application|native_vfs_owner_services|light_type_bootstrap",
+          "cmake/startup.cmake",
+          "CMakeLists.txt"
+        ],
+        "semantic_status": "Five complete build registration matches; registration is not a fresh build.",
+        "output": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/build_registration.txt",
+          "bytes": 652,
+          "sha256": "f988d398982bb4e823eb71ffccb70b234f007e075cc82b579cacd2a4f9fd2e39"
+        },
+        "retained_output_lines": 5,
+        "display_or_search_limit_truncated": false
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "GameNativeVfsApplication|native_|shutdown|native_types|native_owners|initialize_core",
+          "include/bsp/game_hosts_vfs.hpp",
+          "src/game_hosts_vfs.cpp"
+        ],
+        "semantic_status": "Complete bounded owner retention and forwarding symbol search.",
+        "output": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/host_retention_route.txt",
+          "bytes": 2933,
+          "sha256": "d930ecb1334471cdd88c758bb7e385e3843ff34ab3b6c5fb91282c1851d47fe0"
+        },
+        "retained_output_lines": 33,
+        "display_or_search_limit_truncated": false
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "-C",
+          "2",
+          "-g",
+          "game_*.cpp",
+          "singletons.*shutdown|singleton_host.*shutdown|singletons_.*shutdown|GameVfsHost files",
+          "src"
+        ],
+        "semantic_status": "Complete bounded Source shutdown symbol search; selected Source bodies inspected separately.",
+        "output": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/host_shutdown_search.txt",
+          "bytes": 1340,
+          "sha256": "39cd961d73f1d1df201cd764eb440ba04144a98844693c9f016e84f061015e29"
+        },
+        "retained_output_lines": 17,
+        "display_or_search_limit_truncated": false
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "NativeMeshResourceTypeIds|NativeMeshResourceTypeCalls|mesh_resource_types\\(|initialize_mesh_resource_00cd8690|initialize_skined_mesh_resource_00cd86f0|initialize_matrix_mesh_resource_00cd87b0",
+          "include/bsp",
+          "src"
+        ],
+        "semantic_status": "Complete29-line bounded identifier result under rg default ignore rules: existing owner startup present; no game-side NativeMeshResourceTypeCalls construction or accessor consumer shown.",
+        "output": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/mesh_family_all_source_references.txt",
+          "bytes": 3351,
+          "sha256": "85bc7d138eee455a8f81833c2ac4c0d17b7b89a95fbde268a4975027cb4c69db"
+        },
+        "retained_output_lines": 29,
+        "display_or_search_limit_truncated": false
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "01090454|01090441|01090444|01090440|01090210|0109020c|0109020C",
+          "include/bsp",
+          "src"
+        ],
+        "semantic_status": "Complete39-line bounded cell-identity search.",
+        "output": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/mesh_scene_cell_references.txt",
+          "bytes": 3865,
+          "sha256": "85ad62300c195016b394adb069439dce647d301dc276c6670c8610a05ba3a135"
+        },
+        "retained_output_lines": 39,
+        "display_or_search_limit_truncated": false
+      },
+      {
+        "argv": [
+          "rg",
+          "-n",
+          "manager_publication_01090aa0|type_counter_0109db7c|type_storage|owner_services|common_types|initialize_resource_types|types_\\(|type_id_counter_lifetime|TypeIdCounterLifetime& types\\(",
+          "src/game_native_vfs_application.cpp",
+          "include/bsp/native_vfs_owner_services.hpp",
+          "src/native_vfs_owner_services.cpp",
+          "src/game_native_type_storage.cpp"
+        ],
+        "semantic_status": "Complete exact-file route search; concrete same-counter construction corroborated by selected Source body inspection.",
+        "output": {
+          "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/exact_owner_counter_route.txt",
+          "bytes": 2943,
+          "sha256": "641d7b6e4176e058771b7402d32d0b01234e18daf466f6e1c74a17700927da32"
+        },
+        "retained_output_lines": 30,
+        "display_or_search_limit_truncated": false
+      }
+    ],
+    "tracked_Source_tree": {
+      "argv": [
+        "git",
+        "ls-tree",
+        "-r",
+        "HEAD",
+        "--",
+        "include/bsp",
+        "src"
+      ],
+      "output": {
+        "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/tracked_Source_tree.txt",
+        "bytes": 379707,
+        "sha256": "c003a6e293d12bffe23ccd1feeef5d13cb86bd6ceb19b7abd856a3598715b392"
+      },
+      "rows": 4180
+    },
+    "frozen_context_manifest_pin": {
+      "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/frozen_context_manifest.json",
+      "bytes": 14082,
+      "sha256": "b4bfbad024cee1702a2b39d8f56ea64bd8e0b4c057abbb54e55644ad71f0c2dd"
+    },
+    "configured_target_pin": {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    "scope": "Current Source/configuration, one bounded indexed ledger lookup and historical tracked evidence only. No live Ghidra analysis query, new Native body/data/handler opening, PE byte review or execution.",
+    "historical_original_evidence_revalidated": false,
+    "complete_search_scope_qualification": "Each retained search output is complete within its explicit paths/patterns and rg default ignore rules. Identifier absence is bounded; no whole-program behavioral absence or hidden/runtime attachment conclusion follows."
+  },
+  "evidence_manifest_pin": {
+    "path": "local/cc12_vfs_mesh_resource_type_owner_readiness/evidence_manifest.json",
+    "bytes": 20077,
+    "sha256": "cf12c1411944f1cf49414427a38015e30a166b666f73f29d9a19170aaec8f8b4"
+  },
+  "document_pin": {
+    "path": "docs/CC12_VFS_MESH_RESOURCE_TYPE_OWNER_READINESS.md",
+    "bytes": 9467,
+    "sha256": "a3e2cf2f091647776ffb83b069a41494592879c500149a1ee0ea338dc4e0cf8d"
+  },
+  "new_work_counts": {
+    "tracked_files_changed": 2,
+    "new_Cpp_CMake_ledger_config_changes": 0,
+    "new_Native_bodies": 0,
+    "new_Native_bytes": 0,
+    "new_Native_data_or_handler_windows": 0,
+    "live_Ghidra_analysis_queries": 0,
+    "Ghidra_mutations": 0,
+    "new_reconstruction_credit": 0,
+    "new_builds_tests_probes": 0,
+    "selected_current_Source_config_files": 21,
+    "selected_historical_context_files": 3,
+    "complete_selected_query_search_receipts": 7,
+    "tracked_Source_inventory_rows": 4180
+  },
+  "evidence_levels": {
+    "current_Source_backing_and_composition_inspected": true,
+    "current_registered_build_inputs_inspected": true,
+    "new_build_tested": false,
+    "new_fixture_tested": false,
+    "new_native_execution": false,
+    "drop_in_ABI_compatible": false,
+    "current_application_runtime_or_shutdown_validated": false,
+    "full_gameplay_or_rendered_parity": false
+  },
+  "next_action": "Close this type-owner gap as already Source-composed; preserve existing bindings. No new implementation files or extra startup calls are recommended. Any separate consumer/runtime packet requires its own concrete scoped contract and authorization.",
+  "primary_review": {
+    "decision": "Accept already Source-composed retained VFS mesh type owner; no new implementation packet required.",
+    "worker_commit": "f8a7dfb4724ce3eb7aaa52197463300253941d2a",
+    "pin_occurrences_verified_and_retained": 60,
+    "selected_Git_blob_matches": [
+      {
+        "path": "include/bsp/game_native_type_storage.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+      },
+      {
+        "path": "src/game_native_type_storage.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+      },
+      {
+        "path": "include/bsp/native_mesh_subset_loading.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+      },
+      {
+        "path": "src/native_mesh_subset_loading.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+      },
+      {
+        "path": "include/bsp/game_native_vfs_application.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+      },
+      {
+        "path": "src/game_native_vfs_application.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+      },
+      {
+        "path": "include/bsp/native_vfs_owner_services.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+      },
+      {
+        "path": "src/native_vfs_owner_services.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+      },
+      {
+        "path": "include/bsp/light_type_bootstrap.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+      },
+      {
+        "path": "src/light_type_bootstrap.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "0a78bb9b30575c69ab21b8523e395489ceb85b259d068624e33ec45b46afadfb"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0"
+      },
+      {
+        "path": "include/bsp/game_hosts_vfs.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "cca0567a8031dfaa267dd37ccf48396eb2ceeb91257f4f81aabdd1c0d4a40f90"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "b464640066cfb6009c5c421f852211819d3815a3fbb7296924ff009716ce8f8f"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+      },
+      {
+        "path": "config/target.json",
+        "kind": "current_Source_config",
+        "baseline_and_current_match": true,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "docs/NATIVE_MESH_RESOURCE_CLASSIFICATION_CP.md",
+        "kind": "historical_context",
+        "baseline_and_current_match": true,
+        "sha256": "3bf627064d17397724eb5aaf56c1242452c27ffaa899953a81de8828a6acea31"
+      },
+      {
+        "path": "reports/native_mesh_resource_classification_cp.json",
+        "kind": "historical_context",
+        "baseline_and_current_match": true,
+        "sha256": "81809676534349497894bdc90cae66904b75d2d222feb3b3f0ae12d5bb5ac53c"
+      },
+      {
+        "path": "reports/native_mesh_resource_classification_integration_cp.json",
+        "kind": "historical_context",
+        "baseline_and_current_match": true,
+        "sha256": "f05eaaba49248e37dd5be1c58eae512f3d6cdaa6e475edcad7182aad5d2c38a0"
+      }
+    ],
+    "native_replay": null,
+    "proof": {
+      "path": "local/cc12_vfs_mesh_owner_readiness_primary/proof.json",
+      "bytes": 37217,
+      "sha256": "a7af5662d6c080162f72c7a6394ffc3073dbdd7bf2e4147fa0ad2fe5af0ed384"
+    },
+    "current_document_pin": {
+      "path": "docs/CC12_VFS_MESH_RESOURCE_TYPE_OWNER_READINESS.md",
+      "bytes": 10153,
+      "sha256": "607dd3173917207a70feb12acc9a859baa4608c2e8219006ae2bd8dab6d88c53"
+    },
+    "new_Cpp_build_test_fixture_runtime_or_GPR_work": false
+  }
+}
