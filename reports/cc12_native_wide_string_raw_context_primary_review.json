@@ -60,8 +60,8 @@
     },
     {
       "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_wide_string_raw_context_primary\\publish.py",
-      "bytes": 5810,
-      "sha256": "375526b97cc97f11333264f7f3dd881513ebefd923649ce1291d54ba4c1f8503"
+      "bytes": 5855,
+      "sha256": "f055aba2809563c34210ad71685afe1502e93f3e1a80f18d65918d120ed75e81"
     }
   ],
   "portable_review": "Worker ZIP-only replay copied and run under an additional Root audit guard; worker replay itself does not claim that guard. External file/process/network/dlopen/listdir access rejected under Root guard.",
@@ -1671,7 +1671,7 @@
       "kind": "function"
     }
   },
-  "original_abi_qualification": "Prior accepted00436430 native31B ECX header/plainRET behavior retained, no fresh Native/GPR query. This overload has a normalized two-argument C++ interface; no original stack/register ABI replacement.",
+  "original_abi_qualification": "Prior accepted00436430 native30B (end0043644E exclusive) ECX header/plainRET behavior retained, no fresh Native/GPR query. This overload has a normalized two-argument C++ interface; no original stack/register ABI replacement.",
   "contract": [
     "Null pointer skips length and both providers.",
     "Nonnull pointer and wrapping2*length+2 captured before raw-manager getter; live gate borrowed for return.",
@@ -1682,5 +1682,30 @@
     "Dormant node guard and selected unwind composition.",
     "Raw map pool and locale/base lifetimes.",
     "Production caller/application activation and original ABI/gameplay validation."
-  ]
+  ],
+  "documentary_native_span_correction": {
+    "prior_commit": "b7727f128",
+    "prior_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_native_wide_string_raw_context_primary_review.json",
+      "bytes": 82346,
+      "sha256": "aba76c55d03d0bb710d14f4003738685c8a776a453702f9553302a73bf8170ff"
+    },
+    "retained_native_address": "00436430",
+    "documented_end_exclusive": "0043644e",
+    "documented_terminal_instruction": "0043644d",
+    "documented_bytes": 30,
+    "support": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\docs\\NATIVE_WIDE_STRING.md",
+        "bytes": 6610,
+        "sha256": "2979bcf0645716f54bee054daddd5439ffea500c85076956de649975454f5bad"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\native_wide_string.json",
+        "bytes": 4054,
+        "sha256": "fb6175be6e523acee7cd3f16892a3ab7352505578348e692798514e126351bc5"
+      }
+    ],
+    "qualification": "Corrects prior31B wording from existing accepted documentation only. No fresh Native read/decode or change to Source57B body/build/artifacts."
+  }
 }
