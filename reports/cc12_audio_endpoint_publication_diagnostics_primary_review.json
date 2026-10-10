@@ -1,0 +1,922 @@
+{
+  "schema": 1,
+  "packet": "cc12_audio_endpoint_publication_diagnostics_primary_review",
+  "status": "accepted_finite_readonly_diagnostics_cause_unestablished",
+  "worker_commit": "65396ec8adc9636dc12f2f8c62fc7ae906bfbd76",
+  "worker_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_audio_endpoint_publication_diagnostics.json",
+    "bytes": 67704,
+    "sha256": "dc080d0acc15b2bdfa7fe1e165f9488ba7dd0b98f857f5230285ce1ec1ec8640"
+  },
+  "Root_invoked_offline_replay": {
+    "result": "pass",
+    "scope": "Pure offline retained file hashes/raw XML/typed identity and bounded query replay; no OS, service, event-log, SDK, compiler, GPR or game calls",
+    "retained_pin_occurrences_verified": 35,
+    "unique_retained_files_verified": 32,
+    "unique_informational_events_replayed": 5,
+    "exact_current_audio_identity_matches": 0,
+    "configured_service_DLL_hashes_verified": 2,
+    "unsupported_cause_or_action_not_asserted": true
+  },
+  "Root_replay_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\replay.stdout.json",
+    "bytes": 462,
+    "sha256": "eaefc6e2abd745e99759a11cb0ab5f3b5b5c7217604f19e50d5effd495b26810"
+  },
+  "Root_complete_worker_directory": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\commit_message.txt",
+      "bytes": 273,
+      "sha256": "10ef2fbe81e31d325c63863371fed7f4e6f19bc2428ec34603f51942ae119d37"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\derive_offline.py",
+      "bytes": 3876,
+      "sha256": "9c541d744e91a5ebb435c1e9aef6735601d6ee7f5ee090f0b63519b9db3c12f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\discover_logs.ps1",
+      "bytes": 1268,
+      "sha256": "7653e326da1ca41487ac3360636f084eb9f041e32fb4a55bd3398105012f5e50"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\discover_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\discover_stdout.json",
+      "bytes": 11028,
+      "sha256": "2ef626319c3daa74c5d61ed6d2f28098a0ce5d03925ab600e3686d1438859a95"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\events_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\events_stdout.json",
+      "bytes": 102733,
+      "sha256": "80f43373018690c802ed278e04109a364a3f0d1c8ddee2607f700bce587778a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\event_query_spec.json",
+      "bytes": 22326,
+      "sha256": "4dfe0f28dc68a644e6f5386e66627162480c6be4aa3b4c8a21e6a775a07ec32f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\make_receipt.py",
+      "bytes": 10521,
+      "sha256": "6fd37b3a9f2365ac80f6106314e82a9e901cb0c4c370c8dea68ee55fb616262e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\offline_replay_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\offline_replay_stdout.txt",
+      "bytes": 462,
+      "sha256": "eaefc6e2abd745e99759a11cb0ab5f3b5b5c7217604f19e50d5effd495b26810"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\query_existing_logs.ps1",
+      "bytes": 1915,
+      "sha256": "3164a5968c82b0777fe509b4531821ebd653b69c803c7ea728d91cb78ef46448"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\replay_receipt.py",
+      "bytes": 3426,
+      "sha256": "24e3d5da062ddca20ad85357bb53f3454319b05f9ed4fadfd7097b382174ed58"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\services_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\services_stdout.json",
+      "bytes": 16191,
+      "sha256": "f08dc93942d011527ce045e428c6a587b6a21aca5a09177a34eb7c8cf0874884"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\service_configuration.ps1",
+      "bytes": 3476,
+      "sha256": "8af38353c6a66e38a4e5d80564f1af1161d7ef30d366810bee0e52e54b2e3fdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\03fc3b27a7b2_03fc3b27a7b20c4a_KS_render_interfaces_stdout.txt",
+      "bytes": 37136,
+      "sha256": "03fc3b27a7b20c4ac6b05f73117bcab5b45cbb342cf7e0bbe31af7dd0064881d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\24e3d5da062d_replay_receipt.py",
+      "bytes": 3426,
+      "sha256": "24e3d5da062ddca20ad85357bb53f3454319b05f9ed4fadfd7097b382174ed58"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\2ef626319c3d_discover_stdout.json",
+      "bytes": 11028,
+      "sha256": "2ef626319c3daa74c5d61ed6d2f28098a0ce5d03925ab600e3686d1438859a95"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\3164a5968c82_query_existing_logs.ps1",
+      "bytes": 1915,
+      "sha256": "3164a5968c82b0777fe509b4531821ebd653b69c803c7ea728d91cb78ef46448"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\392ad3b08382_devguid.h",
+      "bytes": 14479,
+      "sha256": "392ad3b08382a07bf35a8f65143110b3c7046951a1e5593c6be9371557702ad6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\40e7826ce5be_40e7826ce5be475b_capture.json",
+      "bytes": 438172,
+      "sha256": "40e7826ce5be475b16095c82d643d7b1dfe14c0939eadf55bf2908830d16234b"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\487e51035a76_Audiosrv.dll",
+      "bytes": 2138112,
+      "sha256": "487e51035a76323032acd5996511c221c449cd244051d3b0e057eec70538ca97"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\4dfe0f28dc68_event_query_spec.json",
+      "bytes": 22326,
+      "sha256": "4dfe0f28dc68a644e6f5386e66627162480c6be4aa3b4c8a21e6a775a07ec32f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\5f6a75028e9d_5f6a75028e9d_second_services_stderr.txt",
+      "bytes": 712,
+      "sha256": "5f6a75028e9dcf3523db6598a7d9efa3cdbe9848b6347676f75eb76fe311c572"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\5f6a75028e9d_second_services_stderr.txt",
+      "bytes": 712,
+      "sha256": "5f6a75028e9dcf3523db6598a7d9efa3cdbe9848b6347676f75eb76fe311c572"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\68d4087e9aeb_68d4087e9aeb_second_service_configuration.ps1",
+      "bytes": 3210,
+      "sha256": "68d4087e9aeb10dd4caab25061406faf4d854088ee06ebccb1dd4501e3fa58a2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\68d4087e9aeb_second_service_configuration.ps1",
+      "bytes": 3210,
+      "sha256": "68d4087e9aeb10dd4caab25061406faf4d854088ee06ebccb1dd4501e3fa58a2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\6fd37b3a9f23_make_receipt.py",
+      "bytes": 10521,
+      "sha256": "6fd37b3a9f2365ac80f6106314e82a9e901cb0c4c370c8dea68ee55fb616262e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\7653e326da1c_discover_logs.ps1",
+      "bytes": 1268,
+      "sha256": "7653e326da1ca41487ac3360636f084eb9f041e32fb4a55bd3398105012f5e50"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\80f433730186_events_stdout.json",
+      "bytes": 102733,
+      "sha256": "80f43373018690c802ed278e04109a364a3f0d1c8ddee2607f700bce587778a6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\8a6d844a340e_8a6d844a340eb84f_KS_audio_interfaces_stdout.txt",
+      "bytes": 110092,
+      "sha256": "8a6d844a340eb84f4f1b939bceb5aafbbe576eba90f7ec71a3b748cdcd700e82"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\8af38353c6a6_service_configuration.ps1",
+      "bytes": 3476,
+      "sha256": "8af38353c6a66e38a4e5d80564f1af1161d7ef30d366810bee0e52e54b2e3fdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\9c541d744e91_derive_offline.py",
+      "bytes": 3876,
+      "sha256": "9c541d744e91a5ebb435c1e9aef6735601d6ee7f5ee090f0b63519b9db3c12f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\a76121d1d697_AudioEndpointBuilder.dll",
+      "bytes": 659456,
+      "sha256": "a76121d1d697ef255e9420580b9bf67ea7d8cd97e9ce37cfd3a5be76339f62d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\af8136986921_af8136986921_initial_services_stderr.txt",
+      "bytes": 702,
+      "sha256": "af81369869213e6df132307f71f62a8a2d71b3ee479e5ecdefd65995aad8c2f2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\af8136986921_initial_services_stderr.txt",
+      "bytes": 702,
+      "sha256": "af81369869213e6df132307f71f62a8a2d71b3ee479e5ecdefd65995aad8c2f2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\cc25ca52885f_cc12_audio_endpoint_registration_readiness.json",
+      "bytes": 167330,
+      "sha256": "cc25ca52885fa215b56063e99b95d89e3d8a7591fc6b036135868631a834a72d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\db158459d9ad_db158459d9ad_initial_service_configuration.ps1",
+      "bytes": 2570,
+      "sha256": "db158459d9add67735991dec654e90d0aca6e5bec3001e48d1ff8c6b79369175"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\db158459d9ad_initial_service_configuration.ps1",
+      "bytes": 2570,
+      "sha256": "db158459d9add67735991dec654e90d0aca6e5bec3001e48d1ff8c6b79369175"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\dba8a99867b1_dba8a99867b10013_mmdevice_all_state_stdout.txt",
+      "bytes": 2642,
+      "sha256": "dba8a99867b10013fd35daf37c8bf6e6ac86e1bb9ed83091c9eea9d03345f6b7"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_discover_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_e3b0c44298fc1c14_audio_inventory_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_e3b0c44298fc1c14_KS_audio_interfaces_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_e3b0c44298fc1c14_KS_render_interfaces_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_e3b0c44298fc1c14_mmdevice_all_state_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_e3b0c44298fc_initial_services_stdout.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_e3b0c44298fc_second_services_stdout.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_events_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_initial_services_stdout.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_second_services_stdout.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\e3b0c44298fc_services_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\f08dc93942d0_services_stdout.json",
+      "bytes": 16191,
+      "sha256": "f08dc93942d011527ce045e428c6a587b6a21aca5a09177a34eb7c8cf0874884"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\frozen\\f2675068f3a5_f2675068f3a5748c_audio_inventory_stdout.txt",
+      "bytes": 185397,
+      "sha256": "f2675068f3a5748cd22904f9d89c9c55700dfd5b7ecd0972e877fcc7ceec2782"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_endpoint_publication_primary\\retained_worker_directory\\__pycache__\\derive_offline.cpython-313.pyc",
+      "bytes": 6666,
+      "sha256": "4523c46425c20c68010160a323450e42dc26309c77747a505f95202bce529107"
+    }
+  ],
+  "observed_times": {
+    "prior_MMDevice_utc": "2026-10-10T10:51:17.8315732Z",
+    "prior_registration_inventory_utc": "2026-10-10T10:53:59.0603500Z",
+    "discovery_observed_utc": "2026-10-10T11:09:03.6415889Z",
+    "events_capture_observed_utc": "2026-10-10T11:11:57.4402469Z",
+    "services_observed_utc": "2026-10-10T11:13:22.2994194Z",
+    "event_query_start_utc": "2026-10-10T00:00:00.000000Z",
+    "event_query_end_utc": "2026-10-10T11:11:21.852696Z",
+    "window_reason": "Current UTC day containing current endpoint observations. The full boot interval beginning2026-09-28 is not queried; earlier Source startup logs remain historical.",
+    "sessions": {
+      "query_session_id": 1,
+      "query_session_name": "Console",
+      "service_process_sessions": [
+        0,
+        0
+      ]
+    },
+    "atomic_snapshot": false
+  },
+  "query_summary": [
+    {
+      "query_id": "Microsoft-Windows-Audio/PlaybackManager",
+      "log": "Microsoft-Windows-Audio/PlaybackManager",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Audio/Operational",
+      "log": "Microsoft-Windows-Audio/Operational",
+      "fetch_cap": 65,
+      "returned_count": 2,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Audio/CaptureMonitor",
+      "log": "Microsoft-Windows-Audio/CaptureMonitor",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk0",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk1",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk2",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk3",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk0",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk1",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk2",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk3",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk0",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk1",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk2",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk3",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    }
+  ],
+  "complete_service_configuration": {
+    "observed_utc": "2026-10-10T11:13:22.2994194Z",
+    "pid": 63168,
+    "session_id": 1,
+    "session_name": "Console",
+    "query_scope": "Only Audiosrv/AudioEndpointBuilder, their exact current hosting PIDs, declared dependencies, exact service keys and configured ServiceDll files; exact Media/AudioEndpoint class definitions to verify log filters. No modules or broad process scan.",
+    "audio_class_definitions": [
+      {
+        "guid": "{4d36e96c-e325-11ce-bfc1-08002be10318}",
+        "registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e96c-e325-11ce-bfc1-08002be10318}",
+        "values": {
+          "Class": "MEDIA",
+          "ClassDesc": "@c_media.inf,%ClassDesc%;Sound, video and game controllers"
+        }
+      },
+      {
+        "guid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "values": {
+          "Class": "AudioEndpoint",
+          "ClassDesc": "@audioendpoint.inf,%ClassName%;Audio inputs and outputs"
+        }
+      }
+    ],
+    "services": [
+      {
+        "name": "Audiosrv",
+        "service": {
+          "Name": "Audiosrv",
+          "State": "Running",
+          "StartMode": "Auto",
+          "ProcessId": 4936,
+          "PathName": "C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+          "StartName": "NT AUTHORITY\\LocalService",
+          "ServiceType": "Own Process",
+          "ExitCode": 0,
+          "ServiceSpecificExitCode": 0
+        },
+        "hosting_process": {
+          "ProcessId": 4936,
+          "ParentProcessId": 2264,
+          "SessionId": 0,
+          "ExecutablePath": "C:\\WINDOWS\\System32\\svchost.exe",
+          "CommandLine": "C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+          "CreationDate": "/Date(1790570117844)/"
+        },
+        "service_registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Audiosrv",
+        "config": {
+          "ImagePath": "C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+          "ObjectName": "NT AUTHORITY\\LocalService",
+          "Start": 2,
+          "Type": 16,
+          "DependOnService": [
+            "AudioEndpointBuilder",
+            "RpcSs"
+          ],
+          "DependOnGroup": null,
+          "ErrorControl": 1
+        },
+        "parameters": {
+          "ServiceDll": "C:\\WINDOWS\\System32\\Audiosrv.dll",
+          "ServiceDllUnloadOnStop": 1,
+          "ServiceMain": null
+        },
+        "dependencies": [
+          {
+            "Name": "AudioEndpointBuilder",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          },
+          {
+            "Name": "RpcSs",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          }
+        ],
+        "service_dll": {
+          "path": "C:\\WINDOWS\\System32\\Audiosrv.dll",
+          "bytes": 2138112,
+          "sha256": "487e51035a76323032acd5996511c221c449cd244051d3b0e057eec70538ca97",
+          "last_write_utc": "2026-09-09T02:26:35.2221081Z",
+          "file_version": "10.0.26100.5074 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.5074",
+          "original_filename": "audiosrv.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "sc_readonly_queries": [
+          {
+            "command": "sc.exe qc Audiosrv",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig SUCCESS\r\n\r\nSERVICE_NAME: Audiosrv\r\n        TYPE               : 10  WIN32_OWN_PROCESS \r\n        START_TYPE         : 2   AUTO_START\r\n        ERROR_CONTROL      : 1   NORMAL\r\n        BINARY_PATH_NAME   : C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p\r\n        LOAD_ORDER_GROUP   : AudioGroup\r\n        TAG                : 0\r\n        DISPLAY_NAME       : Windows Audio\r\n        DEPENDENCIES       : AudioEndpointBuilder\r\n                           : RpcSs\r\n        SERVICE_START_NAME : NT AUTHORITY\\LocalService\r\n"
+          },
+          {
+            "command": "sc.exe queryex Audiosrv",
+            "exit_code": 0,
+            "raw_text": "\r\nSERVICE_NAME: Audiosrv \r\n        TYPE               : 10  WIN32_OWN_PROCESS  \r\n        STATE              : 4  RUNNING \r\n                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)\r\n        WIN32_EXIT_CODE    : 0  (0x0)\r\n        SERVICE_EXIT_CODE  : 0  (0x0)\r\n        CHECKPOINT         : 0x0\r\n        WAIT_HINT          : 0x0\r\n        PID                : 4936\r\n        FLAGS              : \r\n"
+          },
+          {
+            "command": "sc.exe qtriggerinfo Audiosrv",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig2 SUCCESS\r\n\r\n    The service Audiosrv has not registered for any start or stop triggers.\r\n"
+          }
+        ]
+      },
+      {
+        "name": "AudioEndpointBuilder",
+        "service": {
+          "Name": "AudioEndpointBuilder",
+          "State": "Running",
+          "StartMode": "Auto",
+          "ProcessId": 4760,
+          "PathName": "C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p",
+          "StartName": "LocalSystem",
+          "ServiceType": "Share Process",
+          "ExitCode": 0,
+          "ServiceSpecificExitCode": 0
+        },
+        "hosting_process": {
+          "ProcessId": 4760,
+          "ParentProcessId": 2264,
+          "SessionId": 0,
+          "ExecutablePath": "C:\\WINDOWS\\System32\\svchost.exe",
+          "CommandLine": "C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p -s AudioEndpointBuilder",
+          "CreationDate": "/Date(1790570117808)/"
+        },
+        "service_registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\AudioEndpointBuilder",
+        "config": {
+          "ImagePath": "C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p",
+          "ObjectName": "LocalSystem",
+          "Start": 2,
+          "Type": 32,
+          "DependOnService": null,
+          "DependOnGroup": null,
+          "ErrorControl": 1
+        },
+        "parameters": {
+          "ServiceDll": "C:\\WINDOWS\\System32\\AudioEndpointBuilder.dll",
+          "ServiceDllUnloadOnStop": 1,
+          "ServiceMain": null
+        },
+        "dependencies": [],
+        "service_dll": {
+          "path": "C:\\WINDOWS\\System32\\AudioEndpointBuilder.dll",
+          "bytes": 659456,
+          "sha256": "a76121d1d697ef255e9420580b9bf67ea7d8cd97e9ce37cfd3a5be76339f62d2",
+          "last_write_utc": "2026-09-09T02:26:35.1758965Z",
+          "file_version": "10.0.26100.1 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.1",
+          "original_filename": "audioepb.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "sc_readonly_queries": [
+          {
+            "command": "sc.exe qc AudioEndpointBuilder",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig SUCCESS\r\n\r\nSERVICE_NAME: AudioEndpointBuilder\r\n        TYPE               : 20  WIN32_SHARE_PROCESS \r\n        START_TYPE         : 2   AUTO_START\r\n        ERROR_CONTROL      : 1   NORMAL\r\n        BINARY_PATH_NAME   : C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p\r\n        LOAD_ORDER_GROUP   : AudioGroup\r\n        TAG                : 0\r\n        DISPLAY_NAME       : Windows Audio Endpoint Builder\r\n        DEPENDENCIES       : \r\n        SERVICE_START_NAME : LocalSystem\r\n"
+          },
+          {
+            "command": "sc.exe queryex AudioEndpointBuilder",
+            "exit_code": 0,
+            "raw_text": "\r\nSERVICE_NAME: AudioEndpointBuilder \r\n        TYPE               : 30  WIN32  \r\n        STATE              : 4  RUNNING \r\n                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)\r\n        WIN32_EXIT_CODE    : 0  (0x0)\r\n        SERVICE_EXIT_CODE  : 0  (0x0)\r\n        CHECKPOINT         : 0x0\r\n        WAIT_HINT          : 0x0\r\n        PID                : 4760\r\n        FLAGS              : \r\n"
+          },
+          {
+            "command": "sc.exe qtriggerinfo AudioEndpointBuilder",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig2 SUCCESS\r\n\r\n    The service AudioEndpointBuilder has not registered for any start or stop triggers.\r\n"
+          }
+        ]
+      }
+    ]
+  },
+  "derived_evidence": {
+    "event_window": [
+      "2026-10-10T00:00:00.000000Z",
+      "2026-10-10T11:11:21.852696Z"
+    ],
+    "queries": 15,
+    "cap_each": 65,
+    "any_cap_reached": false,
+    "unique_event_count": 5,
+    "returned_event_occurrences_including_query_overlap": 14,
+    "events_by_log": {
+      "Microsoft-Windows-Audio/Operational": 2,
+      "Microsoft-Windows-Kernel-PnP/Configuration": 3
+    },
+    "events_by_level_name": {
+      "Information": 5
+    },
+    "events_matching_retained_current_audio_identities": 0,
+    "events": [
+      {
+        "log": "Microsoft-Windows-Audio/Operational",
+        "record_id": 55943,
+        "id": 179,
+        "time_utc": "2026-10-10T03:17:45.1850670Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Received session display notification",
+        "data": {
+          "SessionId": "1",
+          "SessionDisplayOn": "true",
+          "ChangeInSessionDisplayStatus": "true"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+        "record_id": 9157,
+        "id": 400,
+        "time_utc": "2026-10-10T03:17:45.2813246Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Device SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} was configured.\r\n\r\nDriver Name: audioendpoint.inf\r\nDriver Package ID: audioendpoint.inf_amd64_271c4d03bad18da8\r\nClass GUID: {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\r\nDriver Date: 03/31/2024\r\nDriver Version: 10.0.26100.1\r\nDriver Provider: Microsoft\r\nDriver Section: NO_DRV\r\nDriver Rank: 0xFF0000\r\nMatching Device ID: MMDEVAPI\\AudioEndpoints\r\nOutranked Drivers: c_swdevice.inf:SWD\\GenericRaw:00FF3001\r\nDevice Updated: false\r\nParent Device: HTREE\\ROOT\\0",
+        "data": {
+          "DeviceInstanceId": "SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45}",
+          "DriverName": "audioendpoint.inf",
+          "ClassGuid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+          "DriverDate": "03/31/2024",
+          "DriverVersion": "10.0.26100.1",
+          "DriverProvider": "Microsoft",
+          "DriverInbox": "true",
+          "DriverSection": "NO_DRV",
+          "DriverRank": "0xff0000",
+          "MatchingDeviceId": "MMDEVAPI\\AudioEndpoints",
+          "OutrankedDrivers": "c_swdevice.inf:SWD\\GenericRaw:00FF3001",
+          "DeviceUpdated": "false",
+          "Status": "0x0",
+          "ParentDeviceInstanceId": "HTREE\\ROOT\\0",
+          "DriverPackageId": "audioendpoint.inf_amd64_271c4d03bad18da8"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+        "record_id": 9158,
+        "id": 410,
+        "time_utc": "2026-10-10T03:17:45.2825607Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Device SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} was started.\r\n\r\nDriver Name: audioendpoint.inf\r\nClass GUID: {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\r\nService: \r\nLower Filters: \r\nUpper Filters: ",
+        "data": {
+          "DeviceInstanceId": "SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45}",
+          "DriverName": "audioendpoint.inf",
+          "ClassGuid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+          "ServiceName": "",
+          "LowerFilters": "",
+          "UpperFilters": "",
+          "Problem": "0x0",
+          "Status": "0x0"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Audio/Operational",
+        "record_id": 55944,
+        "id": 179,
+        "time_utc": "2026-10-10T03:19:34.1751122Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Received session display notification",
+        "data": {
+          "SessionId": "1",
+          "SessionDisplayOn": "false",
+          "ChangeInSessionDisplayStatus": "true"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+        "record_id": 9161,
+        "id": 420,
+        "time_utc": "2026-10-10T03:19:34.7033315Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Device SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} was deleted.\r\n\r\nClass GUID: {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "data": {
+          "DeviceInstanceId": "SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45}",
+          "ClassGuid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+          "Problem": "0x0",
+          "Status": "0x0"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      }
+    ],
+    "services": [
+      {
+        "name": "Audiosrv",
+        "state": "Running",
+        "start_mode": "Auto",
+        "pid": 4936,
+        "prior_registration_pid": 4936,
+        "pid_matches_prior": true,
+        "process_session": 0,
+        "process_created_utc": "2026-09-28T04:35:17.844000+00:00",
+        "service_exit_code": 0,
+        "specific_exit_code": 0,
+        "declared_dependency_names": [
+          "AudioEndpointBuilder",
+          "RpcSs"
+        ],
+        "dependencies": [
+          {
+            "Name": "AudioEndpointBuilder",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          },
+          {
+            "Name": "RpcSs",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          }
+        ],
+        "configured_service_dll": {
+          "path": "C:\\WINDOWS\\System32\\Audiosrv.dll",
+          "bytes": 2138112,
+          "sha256": "487e51035a76323032acd5996511c221c449cd244051d3b0e057eec70538ca97",
+          "last_write_utc": "2026-09-09T02:26:35.2221081Z",
+          "file_version": "10.0.26100.5074 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.5074",
+          "original_filename": "audiosrv.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "DLL_status_qualification": "Configured on-disk file identity, not process-module/load proof. Signature query unavailable; no corrupt/mismatched-DLL inference."
+      },
+      {
+        "name": "AudioEndpointBuilder",
+        "state": "Running",
+        "start_mode": "Auto",
+        "pid": 4760,
+        "prior_registration_pid": 4760,
+        "pid_matches_prior": true,
+        "process_session": 0,
+        "process_created_utc": "2026-09-28T04:35:17.808000+00:00",
+        "service_exit_code": 0,
+        "specific_exit_code": 0,
+        "declared_dependency_names": null,
+        "dependencies": [],
+        "configured_service_dll": {
+          "path": "C:\\WINDOWS\\System32\\AudioEndpointBuilder.dll",
+          "bytes": 659456,
+          "sha256": "a76121d1d697ef255e9420580b9bf67ea7d8cd97e9ce37cfd3a5be76339f62d2",
+          "last_write_utc": "2026-09-09T02:26:35.1758965Z",
+          "file_version": "10.0.26100.1 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.1",
+          "original_filename": "audioepb.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "DLL_status_qualification": "Configured on-disk file identity, not process-module/load proof. Signature query unavailable; no corrupt/mismatched-DLL inference."
+      }
+    ]
+  },
+  "helper_limitations": {
+    "failed_attempt_preimage_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\af8136986921_initial_services_stderr.txt",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/af8136986921_af8136986921_initial_services_stderr.txt",
+        "bytes": 702,
+        "sha256": "af81369869213e6df132307f71f62a8a2d71b3ee479e5ecdefd65995aad8c2f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\db158459d9ad_initial_service_configuration.ps1",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/db158459d9ad_db158459d9ad_initial_service_configuration.ps1",
+        "bytes": 2570,
+        "sha256": "db158459d9add67735991dec654e90d0aca6e5bec3001e48d1ff8c6b79369175"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\e3b0c44298fc_initial_services_stdout.json",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc_initial_services_stdout.json",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\5f6a75028e9d_second_services_stderr.txt",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/5f6a75028e9d_5f6a75028e9d_second_services_stderr.txt",
+        "bytes": 712,
+        "sha256": "5f6a75028e9dcf3523db6598a7d9efa3cdbe9848b6347676f75eb76fe311c572"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\68d4087e9aeb_second_service_configuration.ps1",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/68d4087e9aeb_68d4087e9aeb_second_service_configuration.ps1",
+        "bytes": 3210,
+        "sha256": "68d4087e9aeb10dd4caab25061406faf4d854088ee06ebccb1dd4501e3fa58a2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\e3b0c44298fc_second_services_stdout.json",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc_second_services_stdout.json",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "failed_attempt_order": [
+      "Initial service helper could not autoload Microsoft.PowerShell.Security for Get-AuthenticodeSignature; it ended before producing a complete inventory.",
+      "Second helper caught signature-query failure, then Get-FileHash was unavailable; it ended before producing a complete inventory.",
+      "Completed helper uses real .NET SHA256 over actual configured files and preserves signature-query error as unavailable. No PowerShell/module/config repair performed."
+    ],
+    "failed_attempt_times": "Not independently stamped inside aborted helpers; retained stdout/stderr and complete script preimages establish exact command/order. Successful capture timestamps are explicit.",
+    "not_audio_cause": "These readonly helper-command limitations are not evidence of an audio-service/DLL fault. No signature-validity or corrupt-DLL conclusion is claimed."
+  },
+  "finding": {
+    "direct_cause_identified": false,
+    "supported_mutation_proposal": null,
+    "event_reconciliation": "The only current-day matched Kernel-PnP records configure/start/delete a distinct SWD/MMDEVAPI {3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} identity, all Information with Problem0/Status0. It matches none of the retained nine non-present render/capture identities or fourteen present Media IDs. Two Audio records report session1 display on/off. Temporal proximity alone does not establish a render-publication failure or cause.",
+    "service_reconciliation": "Audiosrv and AudioEndpointBuilder are Running/Auto with exit0; declared Audiosrv dependencies AudioEndpointBuilder/RpcSs are Running/exit0, and EndpointBuilder declares no service dependency. Their exact PIDs match the prior inventory; process creation is near the2026-09-28 boot, not a current-day restart. Configured System32 DLL files are readable and pinned; configuration and metadata do not prove loaded module identity or full service behavior.",
+    "next_executable_boundary": "The retained missing contract remains a genuine published/present render endpoint. These logs/configuration do not identify an existing disabled endpoint, missing dependency, DLL failure, driver/hardware prerequisite or a supported action that would publish one.",
+    "limitations": [
+      "Finite current UTC-day and exact identity/class filters; older events, other providers and disabled diagnostic channels remain outside scope. No absence of all possible logged failures is claimed.",
+      "All queries finished below65-event cap; deduplicated overlaps preserve raw occurrences. No generic old/unmatched PnP event is promoted to a cause.",
+      "The {3.0.0.00000001} namespace remains uninterpreted; it is not substituted for a {0.0.0.00000000} render endpoint.",
+      "Different Windows component file versions do not establish a version mismatch fault. Authenticode status unavailable; hashes/version metadata are actual on-disk identities only.",
+      "No device/service cycle, driver install, hardware connection or configuration change is proposed as a proven fix. Independent Source reconstruction can continue."
+    ]
+  },
+  "prior_registration_unchanged": true,
+  "cause_unestablished": true,
+  "supported_mutation_proposal": null,
+  "no_environment_or_Native_or_GPR_mutation": true,
+  "no_SDK_init_or_game_launch_or_Source_compiler_tests": true,
+  "new_startup_or_gameplay_credit": false
+}

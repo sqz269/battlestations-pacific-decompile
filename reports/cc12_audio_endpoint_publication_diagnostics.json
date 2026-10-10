@@ -1,0 +1,1165 @@
+{
+  "schema": "cc12-audio-endpoint-publication-diagnostics-v1",
+  "packet": "cc12_audio_endpoint_publication_diagnostics",
+  "receipt_utc": "2026-10-10T11:18:03.809248+00:00",
+  "status": "No direct cause or supported environment action established by bounded existing current-day Audio/Kernel-PnP logs and current service configuration.",
+  "scope": {
+    "owned_files": [
+      "docs/CC12_AUDIO_ENDPOINT_PUBLICATION_DIAGNOSTICS.md",
+      "reports/cc12_audio_endpoint_publication_diagnostics.json"
+    ],
+    "Native_addresses": [],
+    "read_only": "Existing relevant Audio channels; exact audio identity/class filtered Kernel-PnP channels; two audio services, exact hosting PIDs, declared dependencies and configured on-disk ServiceDll identities.",
+    "prohibited_actions_performed": false,
+    "no_System_Security_Application_log_queries": true,
+    "no_modules_or_broad_process_registry_user_data_scan": true,
+    "no_ETW_or_log_enablement": true,
+    "no_OS_service_device_default_driver_config_DLL_mutation": true,
+    "no_SDK_Init_game_CPP_compiler_tests_Native_GPR": true
+  },
+  "git": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure",
+    "branch": "agent/cc12_fmod_startup_failure",
+    "source_preimage_commit": "03229b74adaf4e1614ae8b58b6ed3929e5c557f2",
+    "synced_main_commit": "cc726c6b80160e256157f76510a96c4c85fe0992",
+    "main_ref_at_receipt": "29e2a04f1d1bb814e026685374bb5e0e60ad715c",
+    "prior_registration_commit": "ddf6b1480f6424d613ce6447d288c8e784a8309f",
+    "prior_registration_receipt_unchanged": true
+  },
+  "observation_windows": {
+    "prior_MMDevice_utc": "2026-10-10T10:51:17.8315732Z",
+    "prior_registration_inventory_utc": "2026-10-10T10:53:59.0603500Z",
+    "discovery_observed_utc": "2026-10-10T11:09:03.6415889Z",
+    "events_capture_observed_utc": "2026-10-10T11:11:57.4402469Z",
+    "services_observed_utc": "2026-10-10T11:13:22.2994194Z",
+    "event_query_start_utc": "2026-10-10T00:00:00.000000Z",
+    "event_query_end_utc": "2026-10-10T11:11:21.852696Z",
+    "window_reason": "Current UTC day containing current endpoint observations. The full boot interval beginning2026-09-28 is not queried; earlier Source startup logs remain historical.",
+    "sessions": {
+      "query_session_id": 1,
+      "query_session_name": "Console",
+      "service_process_sessions": [
+        0,
+        0
+      ]
+    },
+    "atomic_snapshot": false
+  },
+  "commands_and_complete_raw_output_pins": [
+    {
+      "argv": [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\discover_logs.ps1"
+      ],
+      "script_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\discover_logs.ps1",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/7653e326da1c_discover_logs.ps1",
+        "bytes": 1268,
+        "sha256": "7653e326da1ca41487ac3360636f084eb9f041e32fb4a55bd3398105012f5e50"
+      },
+      "script_text": "$ErrorActionPreference = 'Stop'\n$issues = [System.Collections.Generic.List[object]]::new()\n$names = @('*Audio*','*Kernel-PnP*')\n$logs = foreach ($name in $names) {\n    try { Get-WinEvent -ListLog $name -ErrorAction Stop | Select-Object LogName,IsEnabled,RecordCount,LogType,LogMode,MaximumSizeInBytes,LastWriteTime,ProviderNames }\n    catch { $issues.Add([ordered]@{scope='ListLog';pattern=$name;error=$_.Exception.Message}) }\n}\n$providers = foreach ($name in @('Microsoft-Windows-Audio*','Microsoft-Windows-Kernel-PnP')) {\n    try { Get-WinEvent -ListProvider $name -ErrorAction Stop | ForEach-Object { [ordered]@{name=$_.Name;log_links=@($_.LogLinks | Select-Object LogName,DisplayName,IsImported);message_file=$_.MessageFilePath;resource_file=$_.ResourceFilePath} } }\n    catch { $issues.Add([ordered]@{scope='ListProvider';pattern=$name;error=$_.Exception.Message}) }\n}\n$os = Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber,LastBootUpTime\n[ordered]@{observed_utc=[datetime]::UtcNow.ToString('o');local_time=[datetime]::Now.ToString('o');time_zone=(Get-TimeZone).Id;session_id=(Get-Process -Id $PID).SessionId;session_name=$env:SESSIONNAME;os=$os;logs=@($logs);providers=@($providers);issues=@($issues)} | ConvertTo-Json -Depth 9\n",
+      "exit_code": 0,
+      "complete_stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\discover_stdout.json",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/2ef626319c3d_discover_stdout.json",
+        "bytes": 11028,
+        "sha256": "2ef626319c3daa74c5d61ed6d2f28098a0ce5d03925ab600e3686d1438859a95"
+      },
+      "complete_stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\discover_stderr.txt",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_discover_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\query_existing_logs.ps1"
+      ],
+      "script_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\query_existing_logs.ps1",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/3164a5968c82_query_existing_logs.ps1",
+        "bytes": 1915,
+        "sha256": "3164a5968c82b0777fe509b4531821ebd653b69c803c7ea728d91cb78ef46448"
+      },
+      "script_text": "$ErrorActionPreference = 'Stop'\n$base = $PSScriptRoot\n$spec = Get-Content -LiteralPath ($base+'\\event_query_spec.json') -Raw | ConvertFrom-Json\n$queries = foreach ($query in $spec.queries) {\n    $rows = @(); $errorText = $null; $errorId = $null\n    try { $rows = @(Get-WinEvent -LogName $query.log -FilterXPath $query.xpath -MaxEvents $spec.fetch_cap -ErrorAction Stop) }\n    catch { $errorText=$_.Exception.Message; $errorId=$_.FullyQualifiedErrorId }\n    $events = foreach ($event in $rows) {\n        $xml = $event.ToXml()\n        [xml]$parsed = $xml\n        $fields = @($parsed.Event.EventData.Data | ForEach-Object { [ordered]@{name=$_.Name;value=$_.InnerText} })\n        $message = $null; $messageError = $null\n        try { $message=$event.FormatDescription() } catch { $messageError=$_.Exception.Message }\n        [ordered]@{record_id=$event.RecordId;id=$event.Id;version=$event.Version;provider=$event.ProviderName;log=$event.LogName;time_utc=$event.TimeCreated.ToUniversalTime().ToString('o');level=$event.Level;level_name=$event.LevelDisplayName;task=$event.Task;task_name=$event.TaskDisplayName;process_id=$event.ProcessId;thread_id=$event.ThreadId;message=$message;message_error=$messageError;event_data=$fields;xml=$xml}\n    }\n    [ordered]@{query_id=$query.id;log=$query.log;xpath=$query.xpath;fetch_cap=$spec.fetch_cap;returned_count=$rows.Count;cap_reached=($rows.Count -eq $spec.fetch_cap);error_id=$errorId;error_text=$errorText;events=@($events)}\n}\n[ordered]@{observed_utc=[datetime]::UtcNow.ToString('o');pid=$PID;session_id=(Get-Process -Id $PID).SessionId;session_name=$env:SESSIONNAME;window_start_utc=$spec.window_start_utc;window_end_utc=$spec.window_end_utc;scope='Existing enabled Audio channels; Kernel-PnP channels filtered to exact retained audio instance IDs/class GUIDs. No System/Security/Application queries, no log/ETW enablement.';queries=@($queries)} | ConvertTo-Json -Depth 12\n",
+      "exit_code": 0,
+      "complete_stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\events_stdout.json",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/80f433730186_events_stdout.json",
+        "bytes": 102733,
+        "sha256": "80f43373018690c802ed278e04109a364a3f0d1c8ddee2607f700bce587778a6"
+      },
+      "complete_stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\events_stderr.txt",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_events_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\service_configuration.ps1"
+      ],
+      "script_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\service_configuration.ps1",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/8af38353c6a6_service_configuration.ps1",
+        "bytes": 3476,
+        "sha256": "8af38353c6a66e38a4e5d80564f1af1161d7ef30d366810bee0e52e54b2e3fdd"
+      },
+      "script_text": "$ErrorActionPreference = 'Stop'\n$rows = foreach ($name in @('Audiosrv','AudioEndpointBuilder')) {\n    $service = Get-CimInstance Win32_Service -Filter \"Name='$name'\" | Select-Object Name,State,StartMode,ProcessId,PathName,StartName,ServiceType,ExitCode,ServiceSpecificExitCode\n    $process = if ($service.ProcessId -gt 0) { Get-CimInstance Win32_Process -Filter \"ProcessId=$($service.ProcessId)\" | Select-Object ProcessId,ParentProcessId,SessionId,ExecutablePath,CommandLine,CreationDate }\n    $key = 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\' + $name\n    $config = Get-ItemProperty -LiteralPath $key | Select-Object ImagePath,ObjectName,Start,Type,DependOnService,DependOnGroup,ErrorControl\n    $parameters = Get-ItemProperty -LiteralPath ($key+'\\Parameters') | Select-Object ServiceDll,ServiceDllUnloadOnStop,ServiceMain\n    $path = [Environment]::ExpandEnvironmentVariables($parameters.ServiceDll)\n    $item = Get-Item -LiteralPath $path\n    $signature = $null; $signatureError = $null\n    try { $signature = Get-AuthenticodeSignature -LiteralPath $path } catch { $signatureError = $_.Exception.Message }\n    $hasher = [System.Security.Cryptography.SHA256]::Create()\n    try { $hash = -join ($hasher.ComputeHash([System.IO.File]::ReadAllBytes($path)) | ForEach-Object { $_.ToString('x2') }) } finally { $hasher.Dispose() }\n    $identity = [ordered]@{path=$item.FullName;bytes=$item.Length;sha256=$hash;last_write_utc=$item.LastWriteTimeUtc.ToString('o');file_version=$item.VersionInfo.FileVersion;product_version=$item.VersionInfo.ProductVersion;original_filename=$item.VersionInfo.OriginalFilename;company=$item.VersionInfo.CompanyName;signature_query_error=$signatureError;signature_status=$(if ($signature) { $signature.Status.ToString() } else { $null });signature_message=$signature.StatusMessage;signature_type=$(if ($signature) { $signature.SignatureType.ToString() } else { $null });signer_subject=$signature.SignerCertificate.Subject;signer_issuer=$signature.SignerCertificate.Issuer;signer_thumbprint=$signature.SignerCertificate.Thumbprint}\n    $dependencies = @(foreach ($dependency in $config.DependOnService) { Get-CimInstance Win32_Service -Filter \"Name='$dependency'\" | Select-Object Name,State,StartMode,ServiceType,ExitCode,ServiceSpecificExitCode })\n    $sc = foreach ($verb in @('qc','queryex','qtriggerinfo')) { $raw = & sc.exe $verb $name 2>&1 | Out-String; [ordered]@{command=\"sc.exe $verb $name\";exit_code=$LASTEXITCODE;raw_text=$raw} }\n    [ordered]@{name=$name;service=$service;hosting_process=$process;service_registry_path=$key;config=$config;parameters=$parameters;dependencies=$dependencies;service_dll=$identity;sc_readonly_queries=@($sc)}\n}\n$classDefinitions = foreach ($guid in @('{4d36e96c-e325-11ce-bfc1-08002be10318}','{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}')) { $path='HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\'+$guid; [ordered]@{guid=$guid;registry_path=$path;values=(Get-ItemProperty -LiteralPath $path | Select-Object Class,ClassDesc)} }\n[ordered]@{observed_utc=[datetime]::UtcNow.ToString('o');pid=$PID;session_id=(Get-Process -Id $PID).SessionId;session_name=$env:SESSIONNAME;query_scope='Only Audiosrv/AudioEndpointBuilder, their exact current hosting PIDs, declared dependencies, exact service keys and configured ServiceDll files; exact Media/AudioEndpoint class definitions to verify log filters. No modules or broad process scan.';audio_class_definitions=@($classDefinitions);services=@($rows)} | ConvertTo-Json -Depth 10\n",
+      "exit_code": 0,
+      "complete_stdout_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\services_stdout.json",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/f08dc93942d0_services_stdout.json",
+        "bytes": 16191,
+        "sha256": "f08dc93942d011527ce045e428c6a587b6a21aca5a09177a34eb7c8cf0874884"
+      },
+      "complete_stderr_pin": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\services_stderr.txt",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_services_stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "complete_frozen_raw": {
+    "channel_provider_discovery": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\discover_stdout.json",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/2ef626319c3d_discover_stdout.json",
+      "bytes": 11028,
+      "sha256": "2ef626319c3daa74c5d61ed6d2f28098a0ce5d03925ab600e3686d1438859a95"
+    },
+    "events": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\events_stdout.json",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/80f433730186_events_stdout.json",
+      "bytes": 102733,
+      "sha256": "80f43373018690c802ed278e04109a364a3f0d1c8ddee2607f700bce587778a6"
+    },
+    "service_configuration": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\services_stdout.json",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/f08dc93942d0_services_stdout.json",
+      "bytes": 16191,
+      "sha256": "f08dc93942d011527ce045e428c6a587b6a21aca5a09177a34eb7c8cf0874884"
+    },
+    "event_query_spec": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\event_query_spec.json",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/4dfe0f28dc68_event_query_spec.json",
+      "bytes": 22326,
+      "sha256": "4dfe0f28dc68a644e6f5386e66627162480c6be4aa3b4c8a21e6a775a07ec32f"
+    }
+  },
+  "channel_provider_discovery": {
+    "observed_utc": "2026-10-10T11:09:03.6415889Z",
+    "local_time": "2026-10-10T04:09:03.6435885-07:00",
+    "time_zone": "Pacific Standard Time",
+    "session_id": 1,
+    "session_name": "Console",
+    "os": {
+      "Caption": "Microsoft Windows 11 Pro",
+      "Version": "10.0.26200",
+      "BuildNumber": "26200",
+      "LastBootUpTime": "/Date(1790570091246)/"
+    },
+    "logs": [
+      {
+        "LogName": "Microsoft-Windows-Audio/PlaybackManager",
+        "IsEnabled": true,
+        "RecordCount": 2185,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 1052672,
+        "LastWriteTime": "/Date(1791527489972)/",
+        "ProviderNames": [
+          "Microsoft-Windows-Audio"
+        ]
+      },
+      {
+        "LogName": "Microsoft-Windows-Audio/Operational",
+        "IsEnabled": true,
+        "RecordCount": 1865,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 1052672,
+        "LastWriteTime": "/Date(1791602794400)/",
+        "ProviderNames": [
+          "Microsoft-Windows-Audio"
+        ]
+      },
+      {
+        "LogName": "Microsoft-Windows-Audio/Informational",
+        "IsEnabled": false,
+        "RecordCount": null,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 1052672,
+        "LastWriteTime": null,
+        "ProviderNames": [
+          "Microsoft-Windows-Audio"
+        ]
+      },
+      {
+        "LogName": "Microsoft-Windows-Audio/GlitchDetection",
+        "IsEnabled": false,
+        "RecordCount": null,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 1052672,
+        "LastWriteTime": null,
+        "ProviderNames": [
+          "Microsoft-Windows-Audio"
+        ]
+      },
+      {
+        "LogName": "Microsoft-Windows-Audio/CaptureMonitor",
+        "IsEnabled": true,
+        "RecordCount": 0,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 1052672,
+        "LastWriteTime": "/Date(1711956871456)/",
+        "ProviderNames": [
+          "Microsoft-Windows-Audio"
+        ]
+      },
+      {
+        "LogName": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+        "IsEnabled": true,
+        "RecordCount": 358,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 1052672,
+        "LastWriteTime": "/Date(1789350090589)/",
+        "ProviderNames": [
+          "Microsoft-Windows-Kernel-PnP"
+        ]
+      },
+      {
+        "LogName": "Microsoft-Windows-Kernel-PnP/Device Management",
+        "IsEnabled": true,
+        "RecordCount": 10036,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 5242880,
+        "LastWriteTime": "/Date(1791602794397)/",
+        "ProviderNames": [
+          "Microsoft-Windows-Kernel-PnP"
+        ]
+      },
+      {
+        "LogName": "Microsoft-Windows-Kernel-PnP/Configuration",
+        "IsEnabled": true,
+        "RecordCount": 1456,
+        "LogType": 1,
+        "LogMode": 0,
+        "MaximumSizeInBytes": 1052672,
+        "LastWriteTime": "/Date(1791602794396)/",
+        "ProviderNames": [
+          "Microsoft-Windows-Kernel-PnP"
+        ]
+      }
+    ],
+    "providers": [
+      {
+        "name": "Microsoft-Windows-Audio",
+        "log_links": [
+          {
+            "LogName": "Application",
+            "DisplayName": "Application",
+            "IsImported": true
+          },
+          {
+            "LogName": "Microsoft-Windows-Audio/Operational",
+            "DisplayName": null,
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Audio/CaptureMonitor",
+            "DisplayName": null,
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Audio/Performance",
+            "DisplayName": "Performance",
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Audio/PlaybackManager",
+            "DisplayName": null,
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Audio/GlitchDetection",
+            "DisplayName": null,
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Audio/Informational",
+            "DisplayName": null,
+            "IsImported": false
+          }
+        ],
+        "message_file": "%SystemRoot%\\System32\\audioses.dll",
+        "resource_file": "%SystemRoot%\\System32\\audioses.dll"
+      },
+      {
+        "name": "Microsoft-Windows-Kernel-PnP",
+        "log_links": [
+          {
+            "LogName": "System",
+            "DisplayName": "System",
+            "IsImported": true
+          },
+          {
+            "LogName": "Microsoft-Windows-Kernel-PnP/Configuration",
+            "DisplayName": "Device Configuration",
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Kernel-PnP/Boot Diagnostic",
+            "DisplayName": "Boot Diagnostic Channel",
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Kernel-PnP/Device Enumeration Diagnostic",
+            "DisplayName": "Device Enumeration Diagnostic Channel",
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Kernel-PnP/Configuration Diagnostic",
+            "DisplayName": "Configuration Diagnostic Channel",
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Kernel-PnP/Driver Diagnostic",
+            "DisplayName": "Driver Diagnostic Channel",
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+            "DisplayName": "Driver Watchdog Channel",
+            "IsImported": false
+          },
+          {
+            "LogName": "Microsoft-Windows-Kernel-PnP/Device Management",
+            "DisplayName": "Device Management",
+            "IsImported": false
+          }
+        ],
+        "message_file": "%SystemRoot%\\system32\\microsoft-windows-kernel-pnp-events.dll",
+        "resource_file": "%SystemRoot%\\system32\\microsoft-windows-kernel-pnp-events.dll"
+      }
+    ],
+    "issues": []
+  },
+  "event_query_summary": [
+    {
+      "query_id": "Microsoft-Windows-Audio/PlaybackManager",
+      "log": "Microsoft-Windows-Audio/PlaybackManager",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Audio/Operational",
+      "log": "Microsoft-Windows-Audio/Operational",
+      "fetch_cap": 65,
+      "returned_count": 2,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Audio/CaptureMonitor",
+      "log": "Microsoft-Windows-Audio/CaptureMonitor",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk0",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk1",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk2",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Driver Watchdog:audio-chunk3",
+      "log": "Microsoft-Windows-Kernel-PnP/Driver Watchdog",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk0",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk1",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk2",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Device Management:audio-chunk3",
+      "log": "Microsoft-Windows-Kernel-PnP/Device Management",
+      "fetch_cap": 65,
+      "returned_count": 0,
+      "cap_reached": false,
+      "error_id": "NoMatchingEventsFound,Microsoft.PowerShell.Commands.GetWinEventCommand",
+      "error_text": "No events were found that match the specified selection criteria."
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk0",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk1",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk2",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    },
+    {
+      "query_id": "Microsoft-Windows-Kernel-PnP/Configuration:audio-chunk3",
+      "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+      "fetch_cap": 65,
+      "returned_count": 3,
+      "cap_reached": false,
+      "error_id": null,
+      "error_text": null
+    }
+  ],
+  "query_class_GUID_provenance": {
+    "registry_values": [
+      {
+        "guid": "{4d36e96c-e325-11ce-bfc1-08002be10318}",
+        "registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e96c-e325-11ce-bfc1-08002be10318}",
+        "values": {
+          "Class": "MEDIA",
+          "ClassDesc": "@c_media.inf,%ClassDesc%;Sound, video and game controllers"
+        }
+      },
+      {
+        "guid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "values": {
+          "Class": "AudioEndpoint",
+          "ClassDesc": "@audioendpoint.inf,%ClassName%;Audio inputs and outputs"
+        }
+      }
+    ],
+    "MEDIA_header_pin": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\devguid.h",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/392ad3b08382_devguid.h",
+      "bytes": 14479,
+      "sha256": "392ad3b08382a07bf35a8f65143110b3c7046951a1e5593c6be9371557702ad6"
+    },
+    "qualification": "Both exact class keys were read to validate filters. MEDIA also agrees with local GUID_DEVCLASS_MEDIA. No unclassified endpoint namespace or registry high-bit meaning is inferred."
+  },
+  "complete_service_configuration": {
+    "observed_utc": "2026-10-10T11:13:22.2994194Z",
+    "pid": 63168,
+    "session_id": 1,
+    "session_name": "Console",
+    "query_scope": "Only Audiosrv/AudioEndpointBuilder, their exact current hosting PIDs, declared dependencies, exact service keys and configured ServiceDll files; exact Media/AudioEndpoint class definitions to verify log filters. No modules or broad process scan.",
+    "audio_class_definitions": [
+      {
+        "guid": "{4d36e96c-e325-11ce-bfc1-08002be10318}",
+        "registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e96c-e325-11ce-bfc1-08002be10318}",
+        "values": {
+          "Class": "MEDIA",
+          "ClassDesc": "@c_media.inf,%ClassDesc%;Sound, video and game controllers"
+        }
+      },
+      {
+        "guid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "values": {
+          "Class": "AudioEndpoint",
+          "ClassDesc": "@audioendpoint.inf,%ClassName%;Audio inputs and outputs"
+        }
+      }
+    ],
+    "services": [
+      {
+        "name": "Audiosrv",
+        "service": {
+          "Name": "Audiosrv",
+          "State": "Running",
+          "StartMode": "Auto",
+          "ProcessId": 4936,
+          "PathName": "C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+          "StartName": "NT AUTHORITY\\LocalService",
+          "ServiceType": "Own Process",
+          "ExitCode": 0,
+          "ServiceSpecificExitCode": 0
+        },
+        "hosting_process": {
+          "ProcessId": 4936,
+          "ParentProcessId": 2264,
+          "SessionId": 0,
+          "ExecutablePath": "C:\\WINDOWS\\System32\\svchost.exe",
+          "CommandLine": "C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+          "CreationDate": "/Date(1790570117844)/"
+        },
+        "service_registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Audiosrv",
+        "config": {
+          "ImagePath": "C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+          "ObjectName": "NT AUTHORITY\\LocalService",
+          "Start": 2,
+          "Type": 16,
+          "DependOnService": [
+            "AudioEndpointBuilder",
+            "RpcSs"
+          ],
+          "DependOnGroup": null,
+          "ErrorControl": 1
+        },
+        "parameters": {
+          "ServiceDll": "C:\\WINDOWS\\System32\\Audiosrv.dll",
+          "ServiceDllUnloadOnStop": 1,
+          "ServiceMain": null
+        },
+        "dependencies": [
+          {
+            "Name": "AudioEndpointBuilder",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          },
+          {
+            "Name": "RpcSs",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          }
+        ],
+        "service_dll": {
+          "path": "C:\\WINDOWS\\System32\\Audiosrv.dll",
+          "bytes": 2138112,
+          "sha256": "487e51035a76323032acd5996511c221c449cd244051d3b0e057eec70538ca97",
+          "last_write_utc": "2026-09-09T02:26:35.2221081Z",
+          "file_version": "10.0.26100.5074 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.5074",
+          "original_filename": "audiosrv.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "sc_readonly_queries": [
+          {
+            "command": "sc.exe qc Audiosrv",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig SUCCESS\r\n\r\nSERVICE_NAME: Audiosrv\r\n        TYPE               : 10  WIN32_OWN_PROCESS \r\n        START_TYPE         : 2   AUTO_START\r\n        ERROR_CONTROL      : 1   NORMAL\r\n        BINARY_PATH_NAME   : C:\\WINDOWS\\System32\\svchost.exe -k LocalServiceNetworkRestricted -p\r\n        LOAD_ORDER_GROUP   : AudioGroup\r\n        TAG                : 0\r\n        DISPLAY_NAME       : Windows Audio\r\n        DEPENDENCIES       : AudioEndpointBuilder\r\n                           : RpcSs\r\n        SERVICE_START_NAME : NT AUTHORITY\\LocalService\r\n"
+          },
+          {
+            "command": "sc.exe queryex Audiosrv",
+            "exit_code": 0,
+            "raw_text": "\r\nSERVICE_NAME: Audiosrv \r\n        TYPE               : 10  WIN32_OWN_PROCESS  \r\n        STATE              : 4  RUNNING \r\n                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)\r\n        WIN32_EXIT_CODE    : 0  (0x0)\r\n        SERVICE_EXIT_CODE  : 0  (0x0)\r\n        CHECKPOINT         : 0x0\r\n        WAIT_HINT          : 0x0\r\n        PID                : 4936\r\n        FLAGS              : \r\n"
+          },
+          {
+            "command": "sc.exe qtriggerinfo Audiosrv",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig2 SUCCESS\r\n\r\n    The service Audiosrv has not registered for any start or stop triggers.\r\n"
+          }
+        ]
+      },
+      {
+        "name": "AudioEndpointBuilder",
+        "service": {
+          "Name": "AudioEndpointBuilder",
+          "State": "Running",
+          "StartMode": "Auto",
+          "ProcessId": 4760,
+          "PathName": "C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p",
+          "StartName": "LocalSystem",
+          "ServiceType": "Share Process",
+          "ExitCode": 0,
+          "ServiceSpecificExitCode": 0
+        },
+        "hosting_process": {
+          "ProcessId": 4760,
+          "ParentProcessId": 2264,
+          "SessionId": 0,
+          "ExecutablePath": "C:\\WINDOWS\\System32\\svchost.exe",
+          "CommandLine": "C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p -s AudioEndpointBuilder",
+          "CreationDate": "/Date(1790570117808)/"
+        },
+        "service_registry_path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\AudioEndpointBuilder",
+        "config": {
+          "ImagePath": "C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p",
+          "ObjectName": "LocalSystem",
+          "Start": 2,
+          "Type": 32,
+          "DependOnService": null,
+          "DependOnGroup": null,
+          "ErrorControl": 1
+        },
+        "parameters": {
+          "ServiceDll": "C:\\WINDOWS\\System32\\AudioEndpointBuilder.dll",
+          "ServiceDllUnloadOnStop": 1,
+          "ServiceMain": null
+        },
+        "dependencies": [],
+        "service_dll": {
+          "path": "C:\\WINDOWS\\System32\\AudioEndpointBuilder.dll",
+          "bytes": 659456,
+          "sha256": "a76121d1d697ef255e9420580b9bf67ea7d8cd97e9ce37cfd3a5be76339f62d2",
+          "last_write_utc": "2026-09-09T02:26:35.1758965Z",
+          "file_version": "10.0.26100.1 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.1",
+          "original_filename": "audioepb.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "sc_readonly_queries": [
+          {
+            "command": "sc.exe qc AudioEndpointBuilder",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig SUCCESS\r\n\r\nSERVICE_NAME: AudioEndpointBuilder\r\n        TYPE               : 20  WIN32_SHARE_PROCESS \r\n        START_TYPE         : 2   AUTO_START\r\n        ERROR_CONTROL      : 1   NORMAL\r\n        BINARY_PATH_NAME   : C:\\WINDOWS\\System32\\svchost.exe -k LocalSystemNetworkRestricted -p\r\n        LOAD_ORDER_GROUP   : AudioGroup\r\n        TAG                : 0\r\n        DISPLAY_NAME       : Windows Audio Endpoint Builder\r\n        DEPENDENCIES       : \r\n        SERVICE_START_NAME : LocalSystem\r\n"
+          },
+          {
+            "command": "sc.exe queryex AudioEndpointBuilder",
+            "exit_code": 0,
+            "raw_text": "\r\nSERVICE_NAME: AudioEndpointBuilder \r\n        TYPE               : 30  WIN32  \r\n        STATE              : 4  RUNNING \r\n                                (STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)\r\n        WIN32_EXIT_CODE    : 0  (0x0)\r\n        SERVICE_EXIT_CODE  : 0  (0x0)\r\n        CHECKPOINT         : 0x0\r\n        WAIT_HINT          : 0x0\r\n        PID                : 4760\r\n        FLAGS              : \r\n"
+          },
+          {
+            "command": "sc.exe qtriggerinfo AudioEndpointBuilder",
+            "exit_code": 0,
+            "raw_text": "[SC] QueryServiceConfig2 SUCCESS\r\n\r\n    The service AudioEndpointBuilder has not registered for any start or stop triggers.\r\n"
+          }
+        ]
+      }
+    ]
+  },
+  "configured_service_DLL_frozen_pins": [
+    {
+      "path": "C:\\WINDOWS\\System32\\Audiosrv.dll",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/487e51035a76_Audiosrv.dll",
+      "bytes": 2138112,
+      "sha256": "487e51035a76323032acd5996511c221c449cd244051d3b0e057eec70538ca97"
+    },
+    {
+      "path": "C:\\WINDOWS\\System32\\AudioEndpointBuilder.dll",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/a76121d1d697_AudioEndpointBuilder.dll",
+      "bytes": 659456,
+      "sha256": "a76121d1d697ef255e9420580b9bf67ea7d8cd97e9ce37cfd3a5be76339f62d2"
+    }
+  ],
+  "derived_evidence": {
+    "event_window": [
+      "2026-10-10T00:00:00.000000Z",
+      "2026-10-10T11:11:21.852696Z"
+    ],
+    "queries": 15,
+    "cap_each": 65,
+    "any_cap_reached": false,
+    "unique_event_count": 5,
+    "returned_event_occurrences_including_query_overlap": 14,
+    "events_by_log": {
+      "Microsoft-Windows-Audio/Operational": 2,
+      "Microsoft-Windows-Kernel-PnP/Configuration": 3
+    },
+    "events_by_level_name": {
+      "Information": 5
+    },
+    "events_matching_retained_current_audio_identities": 0,
+    "events": [
+      {
+        "log": "Microsoft-Windows-Audio/Operational",
+        "record_id": 55943,
+        "id": 179,
+        "time_utc": "2026-10-10T03:17:45.1850670Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Received session display notification",
+        "data": {
+          "SessionId": "1",
+          "SessionDisplayOn": "true",
+          "ChangeInSessionDisplayStatus": "true"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+        "record_id": 9157,
+        "id": 400,
+        "time_utc": "2026-10-10T03:17:45.2813246Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Device SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} was configured.\r\n\r\nDriver Name: audioendpoint.inf\r\nDriver Package ID: audioendpoint.inf_amd64_271c4d03bad18da8\r\nClass GUID: {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\r\nDriver Date: 03/31/2024\r\nDriver Version: 10.0.26100.1\r\nDriver Provider: Microsoft\r\nDriver Section: NO_DRV\r\nDriver Rank: 0xFF0000\r\nMatching Device ID: MMDEVAPI\\AudioEndpoints\r\nOutranked Drivers: c_swdevice.inf:SWD\\GenericRaw:00FF3001\r\nDevice Updated: false\r\nParent Device: HTREE\\ROOT\\0",
+        "data": {
+          "DeviceInstanceId": "SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45}",
+          "DriverName": "audioendpoint.inf",
+          "ClassGuid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+          "DriverDate": "03/31/2024",
+          "DriverVersion": "10.0.26100.1",
+          "DriverProvider": "Microsoft",
+          "DriverInbox": "true",
+          "DriverSection": "NO_DRV",
+          "DriverRank": "0xff0000",
+          "MatchingDeviceId": "MMDEVAPI\\AudioEndpoints",
+          "OutrankedDrivers": "c_swdevice.inf:SWD\\GenericRaw:00FF3001",
+          "DeviceUpdated": "false",
+          "Status": "0x0",
+          "ParentDeviceInstanceId": "HTREE\\ROOT\\0",
+          "DriverPackageId": "audioendpoint.inf_amd64_271c4d03bad18da8"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+        "record_id": 9158,
+        "id": 410,
+        "time_utc": "2026-10-10T03:17:45.2825607Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Device SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} was started.\r\n\r\nDriver Name: audioendpoint.inf\r\nClass GUID: {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}\r\nService: \r\nLower Filters: \r\nUpper Filters: ",
+        "data": {
+          "DeviceInstanceId": "SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45}",
+          "DriverName": "audioendpoint.inf",
+          "ClassGuid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+          "ServiceName": "",
+          "LowerFilters": "",
+          "UpperFilters": "",
+          "Problem": "0x0",
+          "Status": "0x0"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Audio/Operational",
+        "record_id": 55944,
+        "id": 179,
+        "time_utc": "2026-10-10T03:19:34.1751122Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Received session display notification",
+        "data": {
+          "SessionId": "1",
+          "SessionDisplayOn": "false",
+          "ChangeInSessionDisplayStatus": "true"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      },
+      {
+        "log": "Microsoft-Windows-Kernel-PnP/Configuration",
+        "record_id": 9161,
+        "id": 420,
+        "time_utc": "2026-10-10T03:19:34.7033315Z",
+        "level": 4,
+        "level_name": "Information",
+        "message": "Device SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} was deleted.\r\n\r\nClass GUID: {c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+        "data": {
+          "DeviceInstanceId": "SWD\\MMDEVAPI\\{3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45}",
+          "ClassGuid": "{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}",
+          "Problem": "0x0",
+          "Status": "0x0"
+        },
+        "exact_retained_identity_match": null,
+        "match_class": null
+      }
+    ],
+    "services": [
+      {
+        "name": "Audiosrv",
+        "state": "Running",
+        "start_mode": "Auto",
+        "pid": 4936,
+        "prior_registration_pid": 4936,
+        "pid_matches_prior": true,
+        "process_session": 0,
+        "process_created_utc": "2026-09-28T04:35:17.844000+00:00",
+        "service_exit_code": 0,
+        "specific_exit_code": 0,
+        "declared_dependency_names": [
+          "AudioEndpointBuilder",
+          "RpcSs"
+        ],
+        "dependencies": [
+          {
+            "Name": "AudioEndpointBuilder",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          },
+          {
+            "Name": "RpcSs",
+            "State": "Running",
+            "StartMode": "Auto",
+            "ServiceType": "Share Process",
+            "ExitCode": 0,
+            "ServiceSpecificExitCode": 0
+          }
+        ],
+        "configured_service_dll": {
+          "path": "C:\\WINDOWS\\System32\\Audiosrv.dll",
+          "bytes": 2138112,
+          "sha256": "487e51035a76323032acd5996511c221c449cd244051d3b0e057eec70538ca97",
+          "last_write_utc": "2026-09-09T02:26:35.2221081Z",
+          "file_version": "10.0.26100.5074 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.5074",
+          "original_filename": "audiosrv.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "DLL_status_qualification": "Configured on-disk file identity, not process-module/load proof. Signature query unavailable; no corrupt/mismatched-DLL inference."
+      },
+      {
+        "name": "AudioEndpointBuilder",
+        "state": "Running",
+        "start_mode": "Auto",
+        "pid": 4760,
+        "prior_registration_pid": 4760,
+        "pid_matches_prior": true,
+        "process_session": 0,
+        "process_created_utc": "2026-09-28T04:35:17.808000+00:00",
+        "service_exit_code": 0,
+        "specific_exit_code": 0,
+        "declared_dependency_names": null,
+        "dependencies": [],
+        "configured_service_dll": {
+          "path": "C:\\WINDOWS\\System32\\AudioEndpointBuilder.dll",
+          "bytes": 659456,
+          "sha256": "a76121d1d697ef255e9420580b9bf67ea7d8cd97e9ce37cfd3a5be76339f62d2",
+          "last_write_utc": "2026-09-09T02:26:35.1758965Z",
+          "file_version": "10.0.26100.1 (WinBuild.160101.0800)",
+          "product_version": "10.0.26100.1",
+          "original_filename": "audioepb.dll.mui",
+          "company": "Microsoft Corporation",
+          "signature_query_error": "The 'Get-AuthenticodeSignature' command was found in the module 'Microsoft.PowerShell.Security', but the module could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.",
+          "signature_status": null,
+          "signature_message": null,
+          "signature_type": null,
+          "signer_subject": null,
+          "signer_issuer": null,
+          "signer_thumbprint": null
+        },
+        "DLL_status_qualification": "Configured on-disk file identity, not process-module/load proof. Signature query unavailable; no corrupt/mismatched-DLL inference."
+      }
+    ]
+  },
+  "prior_registration": {
+    "complete_receipt_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\reports\\cc12_audio_endpoint_registration_readiness.json",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/cc25ca52885f_cc12_audio_endpoint_registration_readiness.json",
+      "bytes": 167330,
+      "sha256": "cc25ca52885fa215b56063e99b95d89e3d8a7591fc6b036135868631a834a72d"
+    },
+    "complete_capture_pin": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\40e7826ce5be475b_capture.json",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/40e7826ce5be_40e7826ce5be475b_capture.json",
+      "bytes": 438172,
+      "sha256": "40e7826ce5be475b16095c82d643d7b1dfe14c0939eadf55bf2908830d16234b"
+    },
+    "complete_raw_query_pins": [
+      {
+        "label": "all_state_MMDevice",
+        "argv_or_command": [
+          "powershell.exe",
+          "-NoProfile",
+          "-NonInteractive",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\mmdevice_all_state_render.ps1"
+        ],
+        "complete_stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\dba8a99867b10013_mmdevice_all_state_stdout.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/dba8a99867b1_dba8a99867b10013_mmdevice_all_state_stdout.txt",
+          "bytes": 2642,
+          "sha256": "dba8a99867b10013fd35daf37c8bf6e6ac86e1bb9ed83091c9eea9d03345f6b7"
+        },
+        "complete_stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_mmdevice_all_state_stderr.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc1c14_mmdevice_all_state_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "narrow_audio_inventory",
+        "argv_or_command": [
+          "powershell.exe",
+          "-NoProfile",
+          "-NonInteractive",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\audio_registry_pnp_driver_inventory.ps1"
+        ],
+        "complete_stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\f2675068f3a5748c_audio_inventory_stdout.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/f2675068f3a5_f2675068f3a5748c_audio_inventory_stdout.txt",
+          "bytes": 185397,
+          "sha256": "f2675068f3a5748cd22904f9d89c9c55700dfd5b7ecd0972e877fcc7ceec2782"
+        },
+        "complete_stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_audio_inventory_stderr.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc1c14_audio_inventory_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "KS_render_interfaces",
+        "argv_or_command": [
+          "pnputil.exe",
+          "/enum-interfaces",
+          "/class",
+          "{65E8773E-8F56-11D0-A3B9-00A0C9223196}"
+        ],
+        "complete_stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\03fc3b27a7b20c4a_KS_render_interfaces_stdout.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/03fc3b27a7b2_03fc3b27a7b20c4a_KS_render_interfaces_stdout.txt",
+          "bytes": 37136,
+          "sha256": "03fc3b27a7b20c4ac6b05f73117bcab5b45cbb342cf7e0bbe31af7dd0064881d"
+        },
+        "complete_stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_KS_render_interfaces_stderr.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc1c14_KS_render_interfaces_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "label": "KS_audio_interfaces",
+        "argv_or_command": [
+          "pnputil.exe",
+          "/enum-interfaces",
+          "/class",
+          "{6994AD04-93EF-11D0-A3CC-00A0C9223196}"
+        ],
+        "complete_stdout_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\8a6d844a340eb84f_KS_audio_interfaces_stdout.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/8a6d844a340e_8a6d844a340eb84f_KS_audio_interfaces_stdout.txt",
+          "bytes": 110092,
+          "sha256": "8a6d844a340eb84f4f1b939bceb5aafbbe576eba90f7ec71a3b748cdcd700e82"
+        },
+        "complete_stderr_pin": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_registration_readiness\\frozen\\e3b0c44298fc1c14_KS_audio_interfaces_stderr.txt",
+          "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc1c14_KS_audio_interfaces_stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "all_state_render_count": 0,
+    "state_mask": 15,
+    "default_hresult": "80070490",
+    "present_AudioEndpoint_PnP": 0,
+    "present_media_PnP": 14,
+    "enabled_KS_render_interfaces": 12,
+    "qualification": "Retained earlier10:51/10:53 current-day observations, not new MMDevice/FMOD enumeration in this packet. Registry records and healthy Media/KS identities are not active/default endpoint proof."
+  },
+  "readonly_helper_limitations": {
+    "failed_attempt_preimage_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\af8136986921_initial_services_stderr.txt",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/af8136986921_af8136986921_initial_services_stderr.txt",
+        "bytes": 702,
+        "sha256": "af81369869213e6df132307f71f62a8a2d71b3ee479e5ecdefd65995aad8c2f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\db158459d9ad_initial_service_configuration.ps1",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/db158459d9ad_db158459d9ad_initial_service_configuration.ps1",
+        "bytes": 2570,
+        "sha256": "db158459d9add67735991dec654e90d0aca6e5bec3001e48d1ff8c6b79369175"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\e3b0c44298fc_initial_services_stdout.json",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc_initial_services_stdout.json",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\5f6a75028e9d_second_services_stderr.txt",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/5f6a75028e9d_5f6a75028e9d_second_services_stderr.txt",
+        "bytes": 712,
+        "sha256": "5f6a75028e9dcf3523db6598a7d9efa3cdbe9848b6347676f75eb76fe311c572"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\68d4087e9aeb_second_service_configuration.ps1",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/68d4087e9aeb_68d4087e9aeb_second_service_configuration.ps1",
+        "bytes": 3210,
+        "sha256": "68d4087e9aeb10dd4caab25061406faf4d854088ee06ebccb1dd4501e3fa58a2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\frozen\\e3b0c44298fc_second_services_stdout.json",
+        "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/e3b0c44298fc_e3b0c44298fc_second_services_stdout.json",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "failed_attempt_order": [
+      "Initial service helper could not autoload Microsoft.PowerShell.Security for Get-AuthenticodeSignature; it ended before producing a complete inventory.",
+      "Second helper caught signature-query failure, then Get-FileHash was unavailable; it ended before producing a complete inventory.",
+      "Completed helper uses real .NET SHA256 over actual configured files and preserves signature-query error as unavailable. No PowerShell/module/config repair performed."
+    ],
+    "failed_attempt_times": "Not independently stamped inside aborted helpers; retained stdout/stderr and complete script preimages establish exact command/order. Successful capture timestamps are explicit.",
+    "not_audio_cause": "These readonly helper-command limitations are not evidence of an audio-service/DLL fault. No signature-validity or corrupt-DLL conclusion is claimed."
+  },
+  "frozen_offline_script_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\derive_offline.py",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/9c541d744e91_derive_offline.py",
+      "bytes": 3876,
+      "sha256": "9c541d744e91a5ebb435c1e9aef6735601d6ee7f5ee090f0b63519b9db3c12f5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\make_receipt.py",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/6fd37b3a9f23_make_receipt.py",
+      "bytes": 10521,
+      "sha256": "6fd37b3a9f2365ac80f6106314e82a9e901cb0c4c370c8dea68ee55fb616262e"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_fmod_startup_failure\\local\\cc12_audio_endpoint_publication_diagnostics\\replay_receipt.py",
+      "retained_path": "local/cc12_audio_endpoint_publication_diagnostics/frozen/24e3d5da062d_replay_receipt.py",
+      "bytes": 3426,
+      "sha256": "24e3d5da062ddca20ad85357bb53f3454319b05f9ed4fadfd7097b382174ed58"
+    }
+  ],
+  "finding": {
+    "direct_cause_identified": false,
+    "supported_mutation_proposal": null,
+    "event_reconciliation": "The only current-day matched Kernel-PnP records configure/start/delete a distinct SWD/MMDEVAPI {3.0.0.00000001}.{6C26BA7D-F0B2-4225-B422-8168C5261E45} identity, all Information with Problem0/Status0. It matches none of the retained nine non-present render/capture identities or fourteen present Media IDs. Two Audio records report session1 display on/off. Temporal proximity alone does not establish a render-publication failure or cause.",
+    "service_reconciliation": "Audiosrv and AudioEndpointBuilder are Running/Auto with exit0; declared Audiosrv dependencies AudioEndpointBuilder/RpcSs are Running/exit0, and EndpointBuilder declares no service dependency. Their exact PIDs match the prior inventory; process creation is near the2026-09-28 boot, not a current-day restart. Configured System32 DLL files are readable and pinned; configuration and metadata do not prove loaded module identity or full service behavior.",
+    "next_executable_boundary": "The retained missing contract remains a genuine published/present render endpoint. These logs/configuration do not identify an existing disabled endpoint, missing dependency, DLL failure, driver/hardware prerequisite or a supported action that would publish one.",
+    "limitations": [
+      "Finite current UTC-day and exact identity/class filters; older events, other providers and disabled diagnostic channels remain outside scope. No absence of all possible logged failures is claimed.",
+      "All queries finished below65-event cap; deduplicated overlaps preserve raw occurrences. No generic old/unmatched PnP event is promoted to a cause.",
+      "The {3.0.0.00000001} namespace remains uninterpreted; it is not substituted for a {0.0.0.00000000} render endpoint.",
+      "Different Windows component file versions do not establish a version mismatch fault. Authenticode status unavailable; hashes/version metadata are actual on-disk identities only.",
+      "No device/service cycle, driver install, hardware connection or configuration change is proposed as a proven fix. Independent Source reconstruction can continue."
+    ]
+  },
+  "credit": {
+    "current_readonly_event_service_DLL_observation": true,
+    "pure_offline_replay_pending": false,
+    "SDK_Init_or_game_startup": 0,
+    "Cplusplus_build_tests": 0,
+    "Native_ABI_gameplay": 0,
+    "environment_action": 0,
+    "pure_offline_replay_pass": true
+  },
+  "offline_replay": {
+    "command": "python local/cc12_audio_endpoint_publication_diagnostics/replay_receipt.py reports/cc12_audio_endpoint_publication_diagnostics.json",
+    "script_pin_reference": "frozen_offline_script_pins[2]",
+    "script_text": "\"\"\"Pure offline hash, XML, query-boundary and identity replay.\"\"\"\nimport hashlib, json, pathlib, sys\nfrom derive_offline import derive\nroot = pathlib.Path(__file__).resolve().parent.parent.parent\npath = pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else root/'reports/cc12_audio_endpoint_publication_diagnostics.json'\nreceipt = json.loads(path.read_text())\ncount = 0; unique = set()\ndef walk(value):\n    global count\n    if isinstance(value, dict):\n        retained = value.get('retained_path', '').replace('\\\\', '/')\n        if retained.startswith('local/cc12_audio_endpoint_publication_diagnostics/frozen/') and 'sha256' in value:\n            data = (root/retained).read_bytes()\n            assert len(data) == value['bytes'] and hashlib.sha256(data).hexdigest() == value['sha256'], value\n            count += 1; unique.add(retained)\n        for child in value.values(): walk(child)\n    elif isinstance(value, list):\n        for child in value: walk(child)\nwalk(receipt)\ndef load(pin): return json.loads((root/pin['retained_path']).read_text(encoding='utf-8-sig'))\nevents = load(receipt['complete_frozen_raw']['events'])\nservices = load(receipt['complete_frozen_raw']['service_configuration'])\nregistration = load(receipt['prior_registration']['complete_receipt_pin'])\nspec = load(receipt['complete_frozen_raw']['event_query_spec'])\nassert derive(events, services, registration) == receipt['derived_evidence']\nassert [(q['query_id'], q['log'], q['xpath']) for q in events['queries']] == [(q['id'], q['log'], q['xpath']) for q in spec['queries']]\nassert all(q['log'].startswith(('Microsoft-Windows-Audio/', 'Microsoft-Windows-Kernel-PnP/')) for q in spec['queries'])\nassert all('EventData[' in q['xpath'] for q in spec['queries'] if 'Kernel-PnP' in q['log'])\nassert services['audio_class_definitions'][0]['values']['Class'] == 'MEDIA'\nassert services['audio_class_definitions'][1]['values']['Class'] == 'AudioEndpoint'\nassert [d['guid'] for d in services['audio_class_definitions']] == spec['audio_class_guid_values']\nassert registration['current_MMDevice_all_state']['native_result']['AllStateRenderCount'] == 0\nassert receipt['derived_evidence']['unique_event_count'] == 5\nassert receipt['derived_evidence']['events_matching_retained_current_audio_identities'] == 0\nassert receipt['derived_evidence']['events_by_level_name'] == {'Information': 5}\nassert all(d['state'] == 'Running' and d['service_exit_code'] == 0 and d['specific_exit_code'] == 0 for d in receipt['derived_evidence']['services'])\nfor row in services['services']:\n    pin = next(p for p in receipt['configured_service_DLL_frozen_pins'] if p['path'] == row['service_dll']['path'])\n    assert pin['bytes'] == row['service_dll']['bytes'] and pin['sha256'] == row['service_dll']['sha256']\nassert receipt['finding']['direct_cause_identified'] is False and receipt['finding']['supported_mutation_proposal'] is None\nassert receipt['git']['prior_registration_receipt_unchanged']\nprint(json.dumps({'result': 'pass', 'scope': 'Pure offline retained file hashes/raw XML/typed identity and bounded query replay; no OS, service, event-log, SDK, compiler, GPR or game calls',\n    'retained_pin_occurrences_verified': count, 'unique_retained_files_verified': len(unique),\n    'unique_informational_events_replayed': 5, 'exact_current_audio_identity_matches': 0,\n    'configured_service_DLL_hashes_verified': 2, 'unsupported_cause_or_action_not_asserted': True}, indent=2))\n",
+    "scope": "Pure offline retained hash/XML/query-boundary/identity replay; no current Windows/event/service/SDK/compiler/GPR/game calls.",
+    "exit_code": 0,
+    "result": {
+      "result": "pass",
+      "scope": "Pure offline retained file hashes/raw XML/typed identity and bounded query replay; no OS, service, event-log, SDK, compiler, GPR or game calls",
+      "retained_pin_occurrences_verified": 35,
+      "unique_retained_files_verified": 32,
+      "unique_informational_events_replayed": 5,
+      "exact_current_audio_identity_matches": 0,
+      "configured_service_DLL_hashes_verified": 2,
+      "unsupported_cause_or_action_not_asserted": true
+    },
+    "stdout_text": "{\n  \"result\": \"pass\",\n  \"scope\": \"Pure offline retained file hashes/raw XML/typed identity and bounded query replay; no OS, service, event-log, SDK, compiler, GPR or game calls\",\n  \"retained_pin_occurrences_verified\": 35,\n  \"unique_retained_files_verified\": 32,\n  \"unique_informational_events_replayed\": 5,\n  \"exact_current_audio_identity_matches\": 0,\n  \"configured_service_DLL_hashes_verified\": 2,\n  \"unsupported_cause_or_action_not_asserted\": true\n}\n",
+    "stderr_text": ""
+  }
+}
