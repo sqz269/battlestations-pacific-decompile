@@ -90,6 +90,8 @@ class TypedFlowContractTest(unittest.TestCase):
         self.assertEqual(flow.validate_response(specimen(True), CONFIG, '00401005', 'ram', 4096), 17)
         self.assertFalse(call['direct_call_targets'][0]['function_at_target']['no_return'])
         self.assertTrue(call['direct_call_targets'][0]['function_at_target']['direct_thunk_target']['no_return'])
+        call['program']['project']['location'] = '/C:/Users/sqz269/'
+        self.assertEqual(flow.validate_response(call, CONFIG, '00401000', 'ram', 4096), 17)
 
     def test_rejects_incomplete_wrong_identity_and_inconsistent_records(self):
         invalid = []
@@ -99,6 +101,10 @@ class TypedFlowContractTest(unittest.TestCase):
         gap = specimen(True); del gap['listing']['instruction_at']; invalid.append(gap)
         gap = specimen(True); gap['instruction_flow'] = specimen()['instruction_flow']; invalid.append(gap)
         project = specimen(); project['program']['project']['marker_file'] = 'C:/other/bsp.gpr'; invalid.append(project)
+        project = specimen(); project['program']['project']['marker_file'] = '/C:/Users/sqz269/bsp.gpr'; invalid.append(project)
+        for location in ('/D:/Users/sqz269/', '/C:/other/', '/Users/sqz269/',
+                         'C:Users/sqz269/', 'file:///C:/Users/sqz269/'):
+            project = specimen(); project['program']['project']['location'] = location; invalid.append(project)
         modified = specimen(); modified['modification_number_after'] = '18'; invalid.append(modified)
         schema = specimen(); schema['schema'] = 2; invalid.append(schema)
         query = specimen(); query['query_address'] = addr(0x401001); invalid.append(query)

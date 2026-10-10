@@ -1,0 +1,248 @@
+{
+  "schema": 1,
+  "status": "corrected_and_offline_validated_pending_Root_review",
+  "utc": "2026-10-10T01:23:52.802266+00:00",
+  "synced_main_commit": "a3b6dd854a7cd5d73f34716d37b36aba9a1d6d42",
+  "worker_base_commit": "65487534711b16779c4ba15b7ce312d841ab00f5",
+  "capture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_typed_flow_rollout_primary\\first_typed_capture.json",
+    "bytes": 24647,
+    "sha256": "6b746e0a885d171b6331ffd58ac97bf3e5690aafe41a1a61bb83103dca9e084e"
+  },
+  "capture_validation_unmodified": {
+    "accepted": false,
+    "state": "rejected",
+    "errors": [
+      "InvalidMetadata: Expected absolute Windows project path"
+    ]
+  },
+  "config": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json",
+    "bytes": 455,
+    "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+  },
+  "client_before": {
+    "git_commit": "65487534711b16779c4ba15b7ce312d841ab00f5",
+    "git_path": "tools/ghidra_typed_flow.py",
+    "bytes": 19757,
+    "sha256": "9fbb388a41bba11eeb6cf7d58a8bea39bf91847fe0f8afbe8112ce2d57cf5a2f",
+    "historical_worktree_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_typed_flow.py",
+    "preimage_verified_against_git_blob": true
+  },
+  "tests_before": {
+    "git_commit": "65487534711b16779c4ba15b7ce312d841ab00f5",
+    "git_path": "tests/test_ghidra_typed_flow.py",
+    "bytes": 10615,
+    "sha256": "469d827ce4deea75d313f8173d1692ae44c2cd9e5d37c1b248c27c8f62ad3240",
+    "historical_worktree_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tests\\test_ghidra_typed_flow.py",
+    "preimage_verified_against_git_blob": true
+  },
+  "SDK_evidence": {
+    "archive": {
+      "path": "J:\\tools\\ghidra_12.0.4_PUBLIC\\Ghidra\\Framework\\Project\\lib\\Project-src.zip",
+      "bytes": 819530,
+      "sha256": "a788da26331c5f77b1fd22a74f39fe426c7706f9546cc3521094e325892cd0ac"
+    },
+    "entry": "ghidra/framework/model/ProjectLocator.java",
+    "entry_bytes": 7845,
+    "entry_sha256": "b1f953450063b9b540684c21898ff4e9ecc188a0309e3f1d8d5850ec5d8f656e",
+    "constructor_normalization": [
+      {
+        "line": 77,
+        "text": "this.location = checkAbsolutePath(path);"
+      }
+    ],
+    "excerpts": [
+      {
+        "start": 98,
+        "end": 136,
+        "lines": [
+          "\t/**",
+          "\t * Ensure that absolute path is specified and normalize its format.",
+          "\t * An absolute path may start with a windows drive letter (e.g., c:/a/b, /c:/a/b)",
+          "\t * or without (e.g., /a/b).  Although for Windows the lack of a drive letter is",
+          "\t * not absolute, for consistency with Linux we permit this form which on",
+          "\t * Windows will use the default drive for the process. The resulting path",
+          "\t * may be transormed to always end with a \"/\" and if started with a drive letter",
+          "\t * (e.g., \"c:/\") it will have a \"/\" prepended (e.g., \"/c:/\", both forms",
+          "\t * are treated the same by the {@link File} class under Windows).",
+          "\t * @param path path to be checked and possibly modified.",
+          "\t * @return path to be used",
+          "\t * @throws IllegalArgumentException if an invalid path is specified",
+          "\t */",
+          "\tprivate static String checkAbsolutePath(String path) {",
+          "\t\tint scanIndex = 0;",
+          "\t\tpath = path.replace('\\\\', '/');",
+          "\t\tint len = path.length();",
+          "\t\tif (!path.startsWith(\"/\")) {",
+          "\t\t\t// Allow paths to start with windows drive letter (e.g., c:/a/b)",
+          "\t\t\tif (len >= 3 && hasAbsoluteDriveLetter(path, 0)) {",
+          "\t\t\t\tpath = \"/\" + path;",
+          "\t\t\t}",
+          "\t\t\telse {",
+          "\t\t\t\tthrow new IllegalArgumentException(\"absolute path required\");",
+          "\t\t\t}",
+          "\t\t\tscanIndex = 3;",
+          "\t\t}",
+          "\t\telse if (len >= 3 && hasDriveLetter(path, 1)) {",
+          "\t\t\tif (len < 4 || path.charAt(3) != '/') {",
+          "\t\t\t\t// path such as \"/c:\" not permitted",
+          "\t\t\t\tthrow new IllegalArgumentException(\"absolute path required\");",
+          "\t\t\t}",
+          "\t\t\tscanIndex = 4;",
+          "\t\t}",
+          "\t\tcheckInvalidChar(\"path\", path, scanIndex);",
+          "\t\tif (!path.endsWith(\"/\")) {",
+          "\t\t\tpath += \"/\";",
+          "\t\t}",
+          "\t\treturn path;"
+        ]
+      },
+      {
+        "start": 173,
+        "end": 180,
+        "lines": [
+          "\t * Get the location of the project which will contain marker file",
+          "\t * ({@link #getMarkerFile()}) and project directory ({@link #getProjectDir()}). ",
+          "\t * <p>",
+          "\t * Note: directory may or may not exist.",
+          "\t * @return project location directory",
+          "\t */",
+          "\tpublic String getLocation() {",
+          "\t\treturn location;"
+        ]
+      }
+    ]
+  },
+  "offline_replay": {
+    "identity_before_and_after_match_config": true,
+    "default_address_space": "ram",
+    "response_count": 4,
+    "rows": [
+      {
+        "query": "00AEEAD0",
+        "raw_sha256": "ec1099f5ee33b700623c55007e96830e9d04bdf89bfc3bc9db1eb078b337c976",
+        "http_status": 200,
+        "schema": 1,
+        "complete": true,
+        "project_locator": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        },
+        "before_error": "InvalidMetadata: Expected absolute Windows project path",
+        "after_validation": "accepted_by_pure_validator",
+        "modification_number": "3"
+      },
+      {
+        "query": "00AEEAE0",
+        "raw_sha256": "dbcc453e696f1c537cacabb8339054248d4ebbb11eadf5e0997d74dfc8f456a5",
+        "http_status": 200,
+        "schema": 1,
+        "complete": true,
+        "project_locator": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        },
+        "before_error": "InvalidMetadata: Expected absolute Windows project path",
+        "after_validation": "accepted_by_pure_validator",
+        "modification_number": "3"
+      },
+      {
+        "query": "00AEEAE5",
+        "raw_sha256": "e39ecf2f0ca62102f34d7d73b4ba3926a96284fc99edc8d43fb156be1e536655",
+        "http_status": 200,
+        "schema": 1,
+        "complete": true,
+        "project_locator": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        },
+        "before_error": "InvalidMetadata: Expected absolute Windows project path",
+        "after_validation": "accepted_by_pure_validator",
+        "modification_number": "3"
+      },
+      {
+        "query": "00BF65AC",
+        "raw_sha256": "d51344d40e71427aad2d601397d5f84ead316e90cf4544e02532c2bbac058f47",
+        "http_status": 200,
+        "schema": 1,
+        "complete": true,
+        "project_locator": {
+          "name": "bsp",
+          "location": "/C:/Users/sqz269/",
+          "marker_file": "C:\\Users\\sqz269\\bsp.gpr"
+        },
+        "before_error": "InvalidMetadata: Expected absolute Windows project path",
+        "after_validation": "accepted_by_pure_validator",
+        "modification_number": "3"
+      }
+    ],
+    "before_rejected_count": 4,
+    "after_validator_accepted_count": 4,
+    "cross_batch_modification_unchanged": true,
+    "modification_number": "3",
+    "network_and_Client_calls_blocked": true,
+    "receipt_unchanged": true,
+    "metadata_admitted": false
+  },
+  "holds": {
+    "new_live_queries": false,
+    "mandatory_brief_existing_health_probes": true,
+    "plugin_jar_change": false,
+    "restart": false,
+    "GPR_mutation": false,
+    "Native_opening": false,
+    "metadata_admission": false,
+    "loaded_CodeSource_attested": false
+  },
+  "focused_tests": {
+    "command": "python -m unittest discover -s tests -p test_ghidra_typed_flow.py -v",
+    "runner": "Equivalent unittest discover/TextTestRunner in this offline receipt process",
+    "tests_run": 5,
+    "failures": 0,
+    "errors": 0,
+    "success": true,
+    "output": "test_changed_cross_batch_modification_is_rejected (test_ghidra_typed_flow.TypedFlowContractTest.test_changed_cross_batch_modification_is_rejected) ... ok\ntest_discontiguous_body_gap_and_independent_flow_thunk_flags (test_ghidra_typed_flow.TypedFlowContractTest.test_discontiguous_body_gap_and_independent_flow_thunk_flags) ... ok\ntest_raw_response_is_persisted_before_validation_and_failure_is_retained (test_ghidra_typed_flow.TypedFlowContractTest.test_raw_response_is_persisted_before_validation_and_failure_is_retained) ... ok\ntest_rejects_incomplete_wrong_identity_and_inconsistent_records (test_ghidra_typed_flow.TypedFlowContractTest.test_rejects_incomplete_wrong_identity_and_inconsistent_records) ... ok\ntest_transport_and_bsp_dispatch_have_no_script_or_autostart_path (test_ghidra_typed_flow.TypedFlowContractTest.test_transport_and_bsp_dispatch_have_no_script_or_autostart_path) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.054s\n\nOK\n",
+    "output_sha256": "d64c9de49693d3e1b5d97015482c1153d1c7c5fda706c0b280ca9f8ed8f6b177"
+  },
+  "client_after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_typed_flow.py",
+    "bytes": 20048,
+    "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+  },
+  "tests_after": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tests\\test_ghidra_typed_flow.py",
+    "bytes": 11168,
+    "sha256": "d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182"
+  },
+  "validated_utc": "2026-10-10T01:24:19.440210+00:00",
+  "correction": {
+    "scope": "Only project.location interpretation",
+    "accepted_documented_prefix": "Exactly one leading forward slash before an ASCII Windows drive and forward slash: ^/[A-Za-z]:/",
+    "normalization": "Remove that leading slash, then apply unchanged Windows path normalization and exact expected-parent comparison",
+    "unchanged_guards": [
+      "Actual marker_file path validation",
+      "Required config project identity",
+      "Before/after Client.verify identity",
+      "All program/query/schema/body/flow/null/modification checks"
+    ],
+    "new_regressions": [
+      "Observed /C:/Users/sqz269/ location accepted",
+      "Wrong drive and wrong parent remain rejected",
+      "Arbitrary rooted, drive-relative and file URL forms remain rejected",
+      "Marker-file /C:/ prefix remains rejected"
+    ]
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_GHIDRA_TYPED_FLOW_LOCATION_FIX.md",
+    "bytes": 3002,
+    "sha256": "8be76447e4d1bbaae057833d5114c0c43d7a3eabaa7ba43cfe00b8cc66b49cab"
+  },
+  "diff_check": {
+    "command": "git diff --check",
+    "passed": true
+  }
+}
