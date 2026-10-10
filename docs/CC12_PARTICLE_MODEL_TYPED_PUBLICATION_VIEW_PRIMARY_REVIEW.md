@@ -1,0 +1,15 @@
+# Particle model typed publication views: primary review
+
+Root accepts worker `d0ff29d9328da79564751e72c4877175b857cec2` as readiness for a later two-header view adaptation. No C++ implementation or model activation is accepted in this packet.
+
+Root physically retained and replayed the complete 37-payload ZIP with its file/side-effect guard, separately verified 4,225 actual baseline Git blobs/current files, and matched 4,214 Root Source/test files plus eleven complete supporting files after line-ending normalization. This is the pre-activation Source3352 baseline. Later startup changes require a fresh accepted epoch. The current worker report matches its committed Git blob after CRLF/LF normalization; raw current and Git bytes are not claimed identical.
+
+Root independently matched the two retained Source objects to complete members of the frozen Source3352 Core archive and decoded the complete 1,868-byte construction and 600-byte lifetime sections (755 instructions total). The only construction read uses Access offset `34h` at the final registration call. The lifetime read uses offset `04h` after prior releases and captures the pointee before the live-count decrement and unregister call.
+
+Both views can borrow `NativeParticleModelManagerStorage* const volatile&` directly from the authoritative retained cell. The construction header needs the forward declaration; the lifetime header already includes it. Existing C++ reads already perform ordinary pointee-value conversion to the helpers' `void*` parameters. No reference cast, mirror, cached publication, new context or .cpp edit is needed. The Access object, observed manager, pool and other dependencies require their own valid lifetimes; a permanent cell does not retain a destroyed manager or model.
+
+No Access aggregate owner/initializer or concrete construction-callee implementation is present in the captured corpus. Those remain production activation dependencies, alongside actual particle pool, prepared model/node owners, weak-array drain order, profile/type/live-count/random state, variants/emitters, renderer/resource/shadow and mesh/material services. This review invents no adapters or shutdown policy.
+
+A later authorized header patch must begin at the latest accepted startup epoch, claim fresh leases, derive actual compiler consumers, retain whole before/after objects and affected Core members, and run the normal Win32 build/existing checks. Complete publication-load/call/count-store ordering must remain unchanged. Source expected total sizes are not measured compiler type records; any exact layout claim requires compiler evidence. No new fixture is needed.
+
+The [primary report](../reports/cc12_particle_model_typed_publication_view_primary_review.json) pins replay and independent object inspection. The [worker readiness document](CC12_PARTICLE_MODEL_TYPED_PUBLICATION_VIEW_READINESS.md) records the full lifetime and later-validation requirements. No C++ edits, build, tests, Native body query, Ghidra write or runtime execution occurred.
