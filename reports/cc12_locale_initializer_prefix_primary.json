@@ -1,0 +1,231 @@
+{
+  "schema": "bsp.cc12.locale-initializer-prefix-primary.v1",
+  "status": "exact_canonical_receiver_call_prefix_and_table_cell_accepted_completion_and_callback_unproved",
+  "worker_commit": "a8d9078e40d81d4be55d48e64d8f8fa94b5f4b74",
+  "worker_report": {
+    "path": "local/cc12_locale_initializer_prefix_primary/worker_report.json",
+    "bytes": 25430,
+    "sha256": "04da51973201083fd0fc763249fb80190479ff220cd1fd2f26f8dd019f36473d"
+  },
+  "worker_document": {
+    "path": "local/cc12_locale_initializer_prefix_primary/worker_document.md",
+    "bytes": 6209,
+    "sha256": "dd61677d0cf9cbaa7a4bfb8b26a2dc50ab2966731103faff0b720ce14dcb314c"
+  },
+  "copied_archive": {
+    "path": "local/cc12_locale_initializer_prefix_primary/worker_evidence.zip",
+    "bytes": 46713562,
+    "sha256": "6df90fe269bcee5a56b32ab1ebf685524e7e714da91b7fbdda3507c1c757ba85"
+  },
+  "Root_guarded_replay": {
+    "path": "local/cc12_locale_initializer_prefix_primary/Root_guarded_worker_replay.json",
+    "bytes": 2514,
+    "sha256": "faa4fe9980f83eada0fc72849efc49f7a79002ad9e4c20e5be186f5798981171"
+  },
+  "actual_Git_blob_occurrences": 4248,
+  "actual_Git_commit_tree_objects": 11,
+  "actual_closed_Source_paths": 4217,
+  "committed_worker_Source_matches": true,
+  "Root_Source_differences": [],
+  "fresh_Native_evidence": {
+    "Native_byte_identical_pairs": [
+      "count.txt",
+      "instructions.json",
+      "code_bytes.txt",
+      "data_bytes.txt"
+    ],
+    "all_Native_captures_closed": true,
+    "code_hex": "b9 8c 76 e1 00 e8 f6 d4 76 ff",
+    "code_span_inclusive": [
+      "00CC8D30",
+      "00CC8D39"
+    ],
+    "comparison": {
+      "bytes": 330,
+      "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_comparison.json",
+      "sha256": "79dc77476f8138dfc46d49b6b47210088f19f19373ce979257f0e07a2ef573f7"
+    },
+    "data_hex": "30 8d cc 00",
+    "data_span_inclusive": [
+      "00CE2754",
+      "00CE2757"
+    ],
+    "evidence_files": [
+      {
+        "bytes": 53,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/code_bytes.txt",
+        "sha256": "f1544f2169c06ac18663f23148b83f057441014b2bc3198f952d34db44022fe6"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 29,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/data_bytes.txt",
+        "sha256": "76d01007e52f94c38ed515a0621e081cb015db877bb46ca62ee5b75b05cfe1c9"
+      },
+      {
+        "bytes": 320,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/instructions.json",
+        "sha256": "844848e636631d7af584447273d6319a50690d04301f15d4ae91448838b8ae3b"
+      },
+      {
+        "bytes": 44246,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_before/typed_gate.json",
+        "sha256": "df9f91e3f390e0278712c1dea2aa2c20c51c49723e74aaf53a18972b759326bf"
+      },
+      {
+        "bytes": 53,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/code_bytes.txt",
+        "sha256": "f1544f2169c06ac18663f23148b83f057441014b2bc3198f952d34db44022fe6"
+      },
+      {
+        "bytes": 49,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/count.txt",
+        "sha256": "d7f5987b55db9c6ba3e554beb3898849f61688856567410f5a565032f48c7813"
+      },
+      {
+        "bytes": 29,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/data_bytes.txt",
+        "sha256": "76d01007e52f94c38ed515a0621e081cb015db877bb46ca62ee5b75b05cfe1c9"
+      },
+      {
+        "bytes": 320,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/instructions.json",
+        "sha256": "844848e636631d7af584447273d6319a50690d04301f15d4ae91448838b8ae3b"
+      },
+      {
+        "bytes": 44246,
+        "path": "local/cc12_locale_initializer_prefix_and_table_cell/Native_after/typed_gate.json",
+        "sha256": "2bb3b9ee77d8e7dfa3143dc21a028cf8f8bc7a63bfaaa41c05186ac995e1268a"
+      }
+    ],
+    "fresh_modification_number_before_after": 92,
+    "fresh_unique_code_bytes": 10,
+    "fresh_unique_data_bytes": 4,
+    "function_count_before_after": 64730,
+    "gating_before_bytes": "Fourteen typed responses cover every admitted byte. Two exact 5-byte InstructionDB units and one exact defined 4-byte DataDB, no contradictory containing/exact unit or function owner.",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "program": "/battlestationspacific.exe",
+    "project": "bsp",
+    "project_marker_verified": "C:/Users/sqz269/bsp.gpr",
+    "provenance_limit": "Exact saved Ghidra memory/listing evidence. No fresh original PE comparison or Native execution; table pointer is not proof of actual startup dispatch.",
+    "typed_capture_outer_utc_differs": true,
+    "typed_response_pairs_byte_identical": 14,
+    "verified_identity_before_after_equal": true
+  },
+  "exact_contract": {
+    "call_00CC8D35": {
+      "callee_ABI_credit": "Prior accepted body contract only; no callee body or stack/register execution is revalidated in this packet.",
+      "default_and_effective_fallthrough": "00CC8D3A",
+      "default_and_effective_flow": "UNCONDITIONAL_CALL",
+      "default_and_effective_target": "00436230",
+      "direct_instruction_effect": "With prefix-entry ESP=S, CALL supplies ECX=E1768C, sets callee-entry ESP=S-4 and writes return address CC8D3A at [S-4]. The prefix pushes no argument and does not adjust flags.",
+      "encoded_signed_displacement": -8989450,
+      "failure_boundary": "The prefix has no conditional guard, status test or failure branch. The target non-return flag is false; that is not proof every call returns. Exception, allocation failure and partial construction cleanup are inherited unresolved contracts; no successful continuation or callback lifetime is inferred.",
+      "fallthrough_override": false,
+      "flow_override": "NONE",
+      "inherited_callee_ABI": "Accepted lifecycle report: receiver in ECX, no stacked arguments, plain RET, EAX=original receiver on normal return, EBX/ESI/EDI preserved and EBP untouched. Thus this call would yield ESP=S and EAX=E1768C on that normal-return contract. ECX/EDX/flags after the call are unspecified here.",
+      "instruction": "CALL rel32 0x00436230",
+      "length": 5,
+      "normal_return_condition": "Only if accepted 436230 returns normally to its saved return address does execution resume at CC8D3A. No bytes at that continuation were read.",
+      "operand_arithmetic": "(00CC8D3A + (-8989450)) modulo 2^32 = 00436230",
+      "owner": null,
+      "target_metadata": {
+        "direct_thunk_target": null,
+        "is_thunk": false,
+        "name": "BSP_LocaleNodePool_Initialize",
+        "no_return": false
+      }
+    },
+    "entry_00CC8D30": {
+      "default_and_effective_fallthrough": "00CC8D35",
+      "default_and_effective_flow": "FALL_THROUGH",
+      "effects": "ECX becomes 00E1768C. Other general registers, ESP and flags are unchanged by this instruction.",
+      "fallthrough_override": false,
+      "flow_override": "NONE",
+      "instruction": "MOV ECX,0x00E1768C",
+      "length": 5,
+      "owner": null
+    },
+    "table_cell_00CE2754": {
+      "decoded_little_endian_uint32": "00CC8D30",
+      "defined": true,
+      "exact_length": 4,
+      "function_owner": null,
+      "instruction_at_or_containing": null,
+      "interpretation": "The exact mapped saved data cell contains the address of the admitted unowned prefix. Table role, execution order, loader processing, neighboring cells and actual invocation are not established.",
+      "listing_class": "ghidra.program.database.code.DataDB"
+    }
+  },
+  "prior_metadata_archive_byte_identical_to_Root_accepted_copy": true,
+  "prior_metadata_evidence": {
+    "accepted_Main_commit": "22e67a54181d183e3c7958ce236289298fb192bd",
+    "accepted_worker_commit": "a5a4c55170609218efc4f81dd90c593c279e8e59",
+    "archive_bytes": 23790030,
+    "archive_sha256": "bcd6104842475fdb34df620e664e5357d84e31c936dd59f2264fefa37747c74d",
+    "copied_and_guarded_replayed": true,
+    "credit": "Prior metadata and Source proof only. Its ten metadata pairs and 4217-path Source cohort are distinct from fresh captures. Null caller response gives no caller absence inference.",
+    "nested_archive_entry": "Prior/canonical_metadata_evidence.zip",
+    "primary_report": {
+      "bytes": 11403,
+      "path": "reports/cc12_locale_canonical_owner_primary.json",
+      "sha256": "245b884ca92554b5b806048905e2feb69c5cc9412eef719ba79e4c4a1dcc7791"
+    },
+    "worker_report": {
+      "bytes": 22168,
+      "path": "reports/cc12_locale_canonical_pool_owner_provenance.json",
+      "sha256": "392664b8b11d3afc78573ec704307ec4f6f507ebd2c4cd72cc1b1b7510bb85d8"
+    }
+  },
+  "named_incomplete_prerequisites": [
+    "Actual initialized canonical E1768C storage and identity across all borrowers.",
+    "Original E188B4 fixed-address projection authenticated to the same Source head/domain and same published locale element.",
+    "Actual initializer and callback registration/status/failure ordering, callback body and retained owner lifetime.",
+    "Concrete trim/profile binding with same element and ordinary provider serialization.",
+    "Actual slabs, 1Ch slots, payload/string lifetimes and quiescence before table/slab/section/unlink teardown.",
+    "Actual FH3 setup/dispatcher EBP = S = R + 0Ch; three accepted cleanup leaves do not establish invocation.",
+    "Full initializer entry continuation, actual registration operand/target, returned status and failure ordering.",
+    "Exact CE2754 table membership/dispatch, startup phase and actual invocation."
+  ],
+  "smallest_separately_gated_continuation": {
+    "candidate": "00CC8D3A",
+    "excluded": "No CD9410 callback body, registration callee, OS/free, handler/FH3/EH data, installed CRT, neighboring table cells or Native execution.",
+    "first_scope": "Metadata only at exact CC8D3A: refresh project/program, exact/containing owners, unit boundary/length and flow. No raw bytes are authorized by this proposal.",
+    "fresh_basis": "The exact saved default and effective fallthrough of the admitted CC8D35 call is CC8D3A, with no override.",
+    "possible_later_scope": "Only after that separate gate and Root admission, read exactly one complete instruction described by fresh typed metadata, with per-byte span ownership checks. Derive any subsequent instruction/call/terminal scope from its measured metadata; never an arbitrary initializer hull."
+  },
+  "scope": {
+    "Root_Native_queries": 0,
+    "GPR_mutations": 0,
+    "Cpp_changes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "The unowned prefix remains unowned; no function creation or analysis repair.",
+    "ECX=E1768C at the call is exact; normal-return EAX/ESP composition borrows prior callee evidence without revalidation.",
+    "The table cell contents do not prove startup dispatch, order or table role.",
+    "Native epoch92 precedes separate Root epoch95 EH comments; neither establishes actual FH3 frame or execution.",
+    "Initializer completion, exit registration, callback lifetime, canonical Source storage and borrower quiescence remain unproved."
+  ],
+  "Root_committed_output_delivery": {
+    "copied_archive": {
+      "path": "local/cc12_locale_initializer_prefix_primary/delivery_git.zip",
+      "bytes": 285600,
+      "sha256": "0431884897a4bac6d1acef0293b5b3c72aaace8dac29b570455534f4f34741a3"
+    },
+    "guarded_replay": {
+      "path": "local/cc12_locale_initializer_prefix_primary/Root_guarded_delivery_replay.json",
+      "bytes": 2343,
+      "sha256": "138a80ecf5cdbccbf6589e3c04f4e1244e2ced53ea2b362c261b371b394a70b3"
+    },
+    "actual_Git_commit_tree_objects": 4,
+    "actual_output_blobs": 2,
+    "outputs_byte_identical_to_reviewed_worker_files": true
+  }
+}
