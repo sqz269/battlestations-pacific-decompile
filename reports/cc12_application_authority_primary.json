@@ -1,0 +1,63 @@
+{
+  "schema": "bsp.cc12.application-authority-primary.v1",
+  "status": "accepted_Source_contract_current_composition_no_GO",
+  "worker_commit": "08df5eedc36b6012e1a8696bb397dfb2baa5dab3",
+  "worker_report": {
+    "path": "local/cc12_application_authority_primary/worker_report.json",
+    "bytes": 96192,
+    "sha256": "11acc0a87ec2593ed19a8392c0e7ce6c42515f7f64d57fac31026949a90d0e59"
+  },
+  "worker_document": {
+    "path": "local/cc12_application_authority_primary/worker_document.md",
+    "bytes": 14656,
+    "sha256": "991e41fe4d215374b4f54803295a66b7e53b154f547694235bfc0b257a18f5ca"
+  },
+  "copied_finite_pins": 124,
+  "copied_payload_bytes": 273624142,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_authority_primary/Root_guarded_replay.json",
+    "bytes": 506,
+    "sha256": "c4e258c1e3e52dec7134a51d2881addd4994ffa4efefc85d13e4f81b2b89294f"
+  },
+  "actual_Git_blob_occurrences": 12644,
+  "actual_closed_Source_blobs": 4208,
+  "current_Root_Git_Source_exact": 4208,
+  "current_Root_working_Source_LF_equal": 4208,
+  "distinct_prior_Source_corpora": 2,
+  "distinct_historical_selected_build_epochs": 7,
+  "accepted_dependency_Git_blobs": 10,
+  "retained_Root_frame_records": 2,
+  "lexical_searches": 18,
+  "bounded_excerpts": 58,
+  "Source_witness_groups": 26,
+  "positive_existing": {
+    "application_vector": "Actual 0Ch signed count/capacity/data vector at Application+08 exists in native_shader_preload.hpp; whole 1Ch owner remains absent.",
+    "current_game": "Borrow retained settings game_00e188a8 cell.",
+    "strings": "Borrow same 01090AA0 manager /01090AA8 pool /01090AA4 return flag."
+  },
+  "unready": {
+    "raw_application": "GameStartupHost uses frame/game projections and publishes its C++ this into platform request.application; that does not establish the raw 1Ch object or +14 authority.",
+    "shutdown": "ApplicationShutdownState.game is a by-value projection. Copying it creates a second publication authority; it is not current host wiring.",
+    "name": "No E1AE78 producer/storage/retirement. Canonical standalone duplicate, pooled frame temporary and game+7164 copy have distinct lifetimes.",
+    "input": "Current run_win_main ignores WinMain arguments and supplies cachedload. No OS command-line or c_str substitution is inferred."
+  },
+  "decision": {
+    "Source_owner_implementation_GO": false,
+    "current_frame_construction_GO": false,
+    "application_activation_GO": false,
+    "next_bounded_packet": "cc12_application_raw_storage_constructor_readiness at737970 plus gated baseBEA970"
+  },
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "limits": [
+    "Finite current Source/Git facts are not Original storage layout/constructor/failed-startup proof.",
+    "Raw00/04/padding preimage, constructor failure and process duplicate publication/retirement remain separate admissions.",
+    "Historical artifacts and old selected epochs remain complete but receive no new build/runtime credit."
+  ]
+}
