@@ -29,6 +29,10 @@ struct NativeGameGridContext;
 class NativeShadowDepthTargetContext;
 class GuiTextNativeLayoutServices;
 class NativeD3dx9Float16Import;
+struct NativeMeshBufferReadContext;
+struct NativeMeshMetadataReadContext;
+struct NativeMeshTextureFieldContext;
+struct NativeMeshLightingConstants;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -40,6 +44,23 @@ class GameVfsHost;
 class GameNativeReadOnlyData;
 class GameNativeLuaServices;
 class GameHostLog;
+// Stable metadata over the original VFS reader and this renderer's existing
+// geometry/cache domains. Borrowing invokes no native field reader. Retain the
+// application through every consumer; entered operations require their own
+// persistent failure frames and native payload retirement before shared drain.
+struct GameNativeMeshFieldServices {
+    NativeMeshBufferReadContext& buffers;
+    NativeMeshMetadataReadContext& metadata;
+    NativeMeshTextureFieldContext& textures;
+    const NativeMeshLightingConstants& lighting;
+
+    GameNativeMeshFieldServices(NativeMeshBufferReadContext& actual_buffers,
+        NativeMeshMetadataReadContext& actual_metadata, NativeMeshTextureFieldContext& actual_textures,
+        const NativeMeshLightingConstants& actual_lighting) noexcept
+        : buffers(actual_buffers), metadata(actual_metadata), textures(actual_textures), lighting(actual_lighting) {}
+    GameNativeMeshFieldServices(const GameNativeMeshFieldServices&) = delete;
+    GameNativeMeshFieldServices& operator=(const GameNativeMeshFieldServices&) = delete;
+};
 // Retain this source graph before native construction and through the actual
 // singleton drain. Native failures/constructor-only owners require process
 // retention; B32920 requires a completed device/default-surface lifetime.
@@ -89,6 +110,10 @@ public:
     // retained service and interrupted acquisition must not be replaced/replayed.
     GuiTextNativeLayoutServices& section_layout_services();
     const NativeD3dx9Float16Import& vertex_half_import() const;
+    // Explicit ready-only metadata borrow, revalidating the original VFS and
+    // renderer identities each time. Do not retarget its reader or contexts.
+    // No mesh/subset/item parser, native acquisition or cleanup is activated.
+    const GameNativeMeshFieldServices& borrow_mesh_field_services();
     //73BF80's cache bracket over canonical process cells and this SAME VFS.
     // Keep it alive through material compilation, release before singleton drain.
     // Full preload loop remains separate; these entrypoints perform real I/O.

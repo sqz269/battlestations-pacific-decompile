@@ -71,6 +71,10 @@
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_material_effect_runtime.hpp"
 #include "bsp/game_native_resource_pools.hpp"
+#include "bsp/game_native_resource_application.hpp"
+#include "bsp/native_mesh_buffer_fields.hpp"
+#include "bsp/native_mesh_remaining_fields.hpp"
+#include "bsp/native_mesh_texture_field.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
@@ -243,6 +247,75 @@ bool logonui_running() noexcept {
     TerminateProcess(GetCurrentProcess(),4);
     for(;;) {}
 }
+struct MeshFieldMappedData {
+    const volatile U* renderer;
+    const volatile U* vertex;
+    const volatile U* index;
+    const volatile U* lighting_first;
+    const volatile U* lighting_last;
+};
+
+MeshFieldMappedData mesh_field_mapped_data(GameNativeReadOnlyData& data) {
+    const MeshFieldMappedData mapped{
+        static_cast<const volatile U*>(data.data_at(0x00d5f0a8,0x68)),
+        static_cast<const volatile U*>(data.data_at(0x00d61d6c,0x28)),
+        static_cast<const volatile U*>(data.data_at(0x00d61de0,0x30)),
+        static_cast<const volatile U*>(data.data_at(0x00d7a24c,4)),
+        static_cast<const volatile U*>(data.data_at(0x00ce38b8,4))};
+    // Only the retained reached slots/extents are qualified. Numeric words are
+    // selectors for existing Source providers, never callable host addresses.
+    check(mapped.renderer[0x38/4]==0x00b317e0 && mapped.renderer[0x5c/4]==0x00b287c0 &&
+        mapped.renderer[0x60/4]==0x00b288b0 && mapped.renderer[0x64/4]==0x00b319b0 &&
+        mapped.vertex[0x10/4]==0x00b49980 && mapped.vertex[0x14/4]==0x00b49a80 &&
+        mapped.vertex[0x24/4]==0x00b48ce0 && mapped.index[0x0c/4]==0x00b49b60 &&
+        mapped.index[0x10/4]==0x00b49c70 && mapped.index[0x2c/4]==0x00b49b30 &&
+        *mapped.lighting_first==0x3f800000 && *mapped.lighting_last==0x41200000,
+        "mesh field mapped profiles differ from supported slots/constants");
+    return mapped;
+}
+
+struct MeshFieldBinding {
+    const GameNativeHierarchyServices& hierarchy;
+    GameNativeReadOnlyData& data;
+    NativeAdoptedSubstreamDispatch& streams;
+    void* const empty;
+    const MeshFieldMappedData mapped;
+    NativeMeshBufferReadContext buffers;
+    NativeMeshMetadataReadContext metadata;
+    NativeMeshTextureFieldContext textures;
+    NativeMeshLightingConstants lighting;
+    GameNativeMeshFieldServices services;
+
+    MeshFieldBinding(const GameNativeHierarchyServices& actual_hierarchy,GameNativeReadOnlyData& actual_data,
+        MeshFieldMappedData actual_mapped,GuiTextNativeRendererServices& graphics,
+        NativeTextureCacheContext& cache,NativeRenderActualOwners& owners) noexcept
+        :hierarchy(actual_hierarchy),data(actual_data),streams(hierarchy.reads.streams),
+         empty(hierarchy.reads.actual_empty_string_storage_0109db64),mapped(actual_mapped),
+         buffers{hierarchy.reads,graphics},metadata{hierarchy.reads,mapped.vertex},
+         textures{hierarchy.reads,cache,owners,mapped.renderer},
+         lighting{*mapped.lighting_first,*mapped.lighting_last},services(buffers,metadata,textures,lighting) {}
+    MeshFieldBinding(const MeshFieldBinding&)=delete;
+    MeshFieldBinding& operator=(const MeshFieldBinding&)=delete;
+
+    void require_same_domain(const GameNativeHierarchyServices& actual_hierarchy,
+        GameNativeReadOnlyData& actual_data,MeshFieldMappedData actual_mapped,
+        GuiTextNativeRendererServices& graphics,NativeTextureCacheContext& cache,
+        NativeRenderActualOwners& owners) const {
+        check(&hierarchy==&actual_hierarchy && &data==&actual_data &&
+            &hierarchy.reads.streams==&streams && hierarchy.reads.actual_empty_string_storage_0109db64==empty &&
+            mapped.renderer==actual_mapped.renderer && mapped.vertex==actual_mapped.vertex &&
+            mapped.index==actual_mapped.index && mapped.lighting_first==actual_mapped.lighting_first &&
+            mapped.lighting_last==actual_mapped.lighting_last &&
+            &buffers.reads==&hierarchy.reads && &buffers.graphics==&graphics &&
+            &metadata.reads==&hierarchy.reads && metadata.logical_profile_00d61d6c==mapped.vertex &&
+            &textures.reads==&hierarchy.reads && &textures.textures==&cache && &textures.owners==&owners &&
+            textures.renderer_profile_00d5f0a8==mapped.renderer &&
+            &lighting.first_four_00d7a24c==mapped.lighting_first && &lighting.last_00ce38b8==mapped.lighting_last &&
+            &services.buffers==&buffers && &services.metadata==&metadata &&
+            &services.textures==&textures && &services.lighting==&lighting,
+            "mesh field metadata cannot be rebound to another domain");
+    }
+};
 } // namespace
 
 struct GameNativeRendererApplication::Impl {
@@ -302,6 +375,10 @@ struct GameNativeRendererApplication::Impl {
     IDirect3DDevice9* retained_device{};
     unsigned long device_generation{};  // packet cc9_d3d_recreate_holders
     HANDLE observed_worker{};
+    // Appended metadata preserves earlier field offsets. Reverse destruction
+    // drops the binding before its providers; it performs no native cleanup.
+    GameVfsHost& mesh_field_vfs;
+    std::unique_ptr<MeshFieldBinding> mesh_fields;
 
     Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
         GameNativeLuaServices& services,GameNativeReadOnlyData& data,
@@ -343,7 +420,7 @@ struct GameNativeRendererApplication::Impl {
               renderer,system_publication,devices.d3dx,texture_loading.cache),
           effect_owners(compiler_owners,texture_loading,profiles,vfs.strings,renderer),
           resources(graph,devices,cameras,texture_loading,host,raw,vfs,owners),
-          shadow(graph,resources,host,renderer) {
+          shadow(graph,resources,host,renderer),mesh_field_vfs(files) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
         check(!deletion.render_entry_cache,"render-entry cache lifetime already bound");
@@ -481,6 +558,60 @@ const NativeD3dx9Float16Import& GameNativeRendererApplication::vertex_half_impor
     check(impl_->phase==Impl::Phase::ready && !impl_->section_layout_acquisition_pending(),
         "native vertex half import requires ready renderer and completed layout acquisition");
     return impl_->vertex_half;
+}
+const GameNativeMeshFieldServices& GameNativeRendererApplication::borrow_mesh_field_services() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && !requires_process_retention(),
+        "mesh field services require a ready renderer with completed acquisitions");
+    // Revalidate original core/interruption and hierarchy identities on EVERY
+    // borrow. These calls can prepare existing C++ metadata, not native work.
+    const auto& hierarchy=p.mesh_field_vfs.borrow_hierarchy_services();
+    const auto current=p.mesh_field_vfs.borrow_raw_services();
+    auto& original_owners=p.mesh_field_vfs.native_owners();
+    check(&p.mesh_field_vfs.raw_strings()==&p.raw && &hierarchy.reads.strings==&p.raw &&
+        &p.raw.actual_published_01090aa8==&original_owners.string_pool_publication_01090aa8() &&
+        &p.raw.actual_small_returns_disabled_01090aa4==&original_owners.string_returns_disabled_01090aa4() &&
+        &p.raw.actual_manager_publication_01090aa0==&p.singletons.manager_publication_01090aa0() &&
+        &current.actual_vfs_publication_0109ceec==&p.vfs.actual_vfs_publication_0109ceec &&
+        &current.actual_vfs_publication_0109ceec==&original_owners.vfs_publication_0109ceec() &&
+        &current.bindings==&p.vfs.bindings && &current.name_resolution==&p.vfs.name_resolution &&
+        &current.dates==&p.vfs.dates && &current.opens==&p.vfs.opens && &current.conversion==&p.vfs.conversion &&
+        &current.strings==&p.vfs.strings && &current.strings==&original_owners.strings() &&
+        &current.retained_memory==&p.vfs.retained_memory && &current.enumeration==&p.vfs.enumeration &&
+        &current.invalid_parameters==&p.vfs.invalid_parameters,
+        "mesh fields require the renderer's original VFS and string domains");
+    auto& graphics=p.game_grids.graphics;
+    auto& streams=graphics.streams;
+    auto& loading=p.texture_loading.loading;
+    auto& cache=p.texture_loading.cache;
+    require_gui_text_native_renderer_domain(graphics,p.renderer,p.vfs.strings,p.owners);
+    check(&streams.geometry==&p.texture_loading.geometry &&
+        &p.texture_loading.geometry.actual_owners()==&p.owners &&
+        streams.vertices.actual_physical.actual_lifetime_01090aa0.borrows_same_domain(
+            streams.mapping.actual_physical_lock.actual_lifetime_01090aa0) &&
+        &cache.strings==&p.vfs.strings && &cache.textures==&loading && loading.cache==&cache &&
+        &cache.dates==&p.vfs.dates && &loading.strings==&p.vfs.strings &&
+        &loading.owners==&p.texture_loading.owners &&
+        &p.texture_loading.owners.texture_context()==&p.graph.texture &&
+        &loading.streams==&p.vfs.bindings && &loading.opens==&p.vfs.opens &&
+        &loading.conversion==&p.vfs.conversion &&
+        &loading.current_vfs_0109ceec==&p.vfs.actual_vfs_publication_0109ceec &&
+        static_cast<const volatile void*>(&loading.current_renderer_00f8d394)==
+            static_cast<const volatile void*>(&p.renderer) &&
+        &loading.synchronization_0108d6dc==&streams.vertices.actual_synchronization_0108d6dc &&
+        &cache.synchronization_0108d6dc==&loading.synchronization_0108d6dc,
+        "mesh fields require the renderer's existing geometry, cache and synchronization domain");
+    const auto mapped=mesh_field_mapped_data(p.profiles.data);
+    check(mapped.renderer==streams.vertices.actual_renderer_profile_00d5f0a8 &&
+        mapped.vertex==streams.vertices.actual_logical_profile_00d61d6c &&
+        mapped.index==streams.indices.actual_logical_profile_00d61de0,
+        "mesh field mapped profiles are not the renderer's original profiles");
+    if(!p.mesh_fields)
+        p.mesh_fields=std::make_unique<MeshFieldBinding>(
+            hierarchy,p.profiles.data,mapped,graphics,cache,p.owners);
+    else
+        p.mesh_fields->require_same_domain(hierarchy,p.profiles.data,mapped,graphics,cache,p.owners);
+    return p.mesh_fields->services;
 }
 void GameNativeRendererApplication::construct() {
     auto& p=*impl_;check(p.phase==Impl::Phase::prepared,"renderer constructor is once-only");
