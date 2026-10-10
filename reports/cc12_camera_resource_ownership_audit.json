@@ -1,0 +1,1973 @@
+{
+  "schema": 1,
+  "packet": "cc12_camera_resource_ownership_audit",
+  "created_utc": "2026-10-10T01:45:45.118681+00:00",
+  "baseline_commit": "b6fc9f628fd92c74cbbd60bcb883d7dff0a6dff9",
+  "worker_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing",
+  "status": "bounded_local_sequence_and_selected_pointer_verified_function_ownership_contracts_held",
+  "owned_tracked_files": [
+    "docs/CC12_CAMERA_RESOURCE_OWNERSHIP_AUDIT.md",
+    "reports/cc12_camera_resource_ownership_audit.json"
+  ],
+  "scope": {
+    "initial_seed_addresses": [
+      "01090288",
+      "00CD83BF",
+      "00CD83C4",
+      "00CD83D8",
+      "00CD8380"
+    ],
+    "initial_physical_window": {
+      "first": "00CD8380",
+      "last_inclusive": "00CD83EF",
+      "length": 112
+    },
+    "Root_approved_extension": {
+      "first": "00CE35BC",
+      "last_inclusive": "00CE35BF",
+      "length": 4,
+      "reason": "Verify the one returned incoming DATA pointer only",
+      "lease_refreshed_before_extension_opening": true,
+      "metadata_candidate_query": "00CD8390"
+    },
+    "total_selected_original_and_Ghidra_bytes": 116,
+    "not_admitted_as_function_extent": true,
+    "out_of_window_function_body_openings": [],
+    "other_data_openings": [],
+    "POST_requests": false,
+    "dry_run_requests": false,
+    "scripts": false,
+    "GPR_mutations": false,
+    "config_changes": false,
+    "restart": false,
+    "CPP_CMake_ledger_changes": false
+  },
+  "source_and_tool_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_CAMERA_RESOURCE_WRITER_DISCOVERY.md",
+      "bytes": 7145,
+      "sha256": "16477111260a22179153ac87152114daed2ce0a502593486a498ec37e14ef8b6"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\reports\\cc12_camera_resource_writer_discovery.json",
+      "bytes": 31976,
+      "sha256": "51e17cd4d258a84cb506cc2ac786c05b04ef29d475735718c8474a9137751a47"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_GHIDRA_TYPED_FLOW_RUNTIME_REVIEW.md",
+      "bytes": 3144,
+      "sha256": "2c94c55865b419c737a6e6b65d6556696cdfed1176c15763ae10e888204c5cdd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\bsp.py",
+      "bytes": 73311,
+      "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\tools\\ghidra_typed_flow.py",
+      "bytes": 20048,
+      "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\config\\target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    }
+  ],
+  "configured_target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "physical_window": {
+    "first": "00CD8380",
+    "last_inclusive": "00CD83EF",
+    "length": 112,
+    "file_offset": 9274240,
+    "sha256": "12a741915ff4588bae13cebe404304ff217f88151fc05947dcac4e9678be283e",
+    "hex": "48048d5101895004890d78020901c3cc803d66020901007545b910020901c6056602090101c705940209017c32d600e80ce6eaffa1100209018b0d14020901a38c020901890d90020901e85128a2ff8b48048d5101895004890d88020901c3cc68e00ece00e80becf1ff59c3cccccccc",
+    "original_live_byte_equality": true
+  },
+  "incoming_pointer": {
+    "range": {
+      "first": "00CE35BC",
+      "last_inclusive": "00CE35BF",
+      "length": 4
+    },
+    "file_offset": 9319868,
+    "hex": "9083cd00",
+    "sha256": "de87dc4f708dc813162d4510183fd488bff07e08a841e3555e09615bee2ab85d",
+    "original_live_byte_equality": true,
+    "little_endian_value": "00CD8390",
+    "qualification": "Selected incoming pointer value only. No surrounding table, CRT role, function-owner admission or callee/handler/data-body expansion."
+  },
+  "typed_live_verification": {
+    "captures": [
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_ownership_audit\\typed_final_control_points.json",
+          "bytes": 23263,
+          "sha256": "2d7c96359f4b3f9947926f46625b76bc9ed26df924b457846c669845359d8931"
+        },
+        "utc": "2026-10-10T01:40:24.660886+00:00",
+        "response_count": 4,
+        "raw_responses": [
+          {
+            "query": "00CD8390",
+            "raw_sha256": "27e374fb169148431c304c66185d22329ce639487b35659db85631cd4be71a4b",
+            "modification_number": "3"
+          },
+          {
+            "query": "00CD83AF",
+            "raw_sha256": "0478c3477a0ebe129c9b558895ff5c9d290e696acd328e0c1e4c0c0bf72d5653",
+            "modification_number": "3"
+          },
+          {
+            "query": "00CD83CA",
+            "raw_sha256": "a670a7627345c871618288c5bde1d5e23d489dc330e38e8a169fe27e14edc162",
+            "modification_number": "3"
+          },
+          {
+            "query": "00CD83DE",
+            "raw_sha256": "99077f0395a38de89f822f711ffa126b8553ed041c54ccf0a1f0784ea39e94d5",
+            "modification_number": "3"
+          }
+        ],
+        "accepted": true
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_ownership_audit\\typed_first_complete_boundary.json",
+          "bytes": 8796,
+          "sha256": "1cc74d42e7b1a4c7bfd544ecc088a3d9f1aeeec87c1d7a525619f9e497770911"
+        },
+        "utc": "2026-10-10T01:36:54.645140+00:00",
+        "response_count": 1,
+        "raw_responses": [
+          {
+            "query": "00CD8382",
+            "raw_sha256": "9f38682b7c007f330689f3a1c9ce4216f7f23716a1214467971cbc3ecc0ad89e",
+            "modification_number": "3"
+          }
+        ],
+        "accepted": true
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_ownership_audit\\typed_initial.json",
+          "bytes": 20716,
+          "sha256": "88a279c0818ef24607c0abc9a54c6951ea438a5fe1bcc62cbe2099b92550320f"
+        },
+        "utc": "2026-10-10T01:36:03.755409+00:00",
+        "response_count": 4,
+        "raw_responses": [
+          {
+            "query": "00CD8380",
+            "raw_sha256": "ca9d27d809bf1244174d9971e783a9ed785d6328314d7a934412d4d1ee559e18",
+            "modification_number": "3"
+          },
+          {
+            "query": "00CD83BF",
+            "raw_sha256": "a41a850811ea0558376efa1d542028217550cfd12df93d9741d4ff090e634de2",
+            "modification_number": "3"
+          },
+          {
+            "query": "00CD83C4",
+            "raw_sha256": "fbc9cc6f897af17af21e7aa722c47ccc2855672016b3404bbd9c6b6acd8e9e79",
+            "modification_number": "3"
+          },
+          {
+            "query": "00CD83D8",
+            "raw_sha256": "6e1b0d0f51d52682322ea614ba56ac0f4cea712bf845e9ca4bc08fbfd5757d57",
+            "modification_number": "3"
+          }
+        ],
+        "accepted": true
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_ownership_audit\\typed_pointer_extension_candidate.json",
+          "bytes": 7734,
+          "sha256": "8331ddcd4e344eed3fad3b53208b4d5f99bc62d249d2edbc4b7e27da114931cd"
+        },
+        "utc": "2026-10-10T01:42:19.145789+00:00",
+        "response_count": 1,
+        "raw_responses": [
+          {
+            "query": "00CD8390",
+            "raw_sha256": "27e374fb169148431c304c66185d22329ce639487b35659db85631cd4be71a4b",
+            "modification_number": "3"
+          }
+        ],
+        "accepted": true
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_ownership_audit\\typed_scope_close.json",
+          "bytes": 12173,
+          "sha256": "63118bc05e6ed32c5dfcbf4da813d0626925a08ab5fb238583bee4f8d5411a49"
+        },
+        "utc": "2026-10-10T01:43:36.255542+00:00",
+        "response_count": 2,
+        "raw_responses": [
+          {
+            "query": "00CD8390",
+            "raw_sha256": "27e374fb169148431c304c66185d22329ce639487b35659db85631cd4be71a4b",
+            "modification_number": "3"
+          },
+          {
+            "query": "00CD83DE",
+            "raw_sha256": "99077f0395a38de89f822f711ffa126b8553ed041c54ccf0a1f0784ea39e94d5",
+            "modification_number": "3"
+          }
+        ],
+        "accepted": true
+      },
+      {
+        "receipt": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_ownership_audit\\typed_window_starts.json",
+          "bytes": 136289,
+          "sha256": "e1dc4c75d2fe2495574920e734d5c64463f653f53753f9a700b5c180a6583faf"
+        },
+        "utc": "2026-10-10T01:38:22.166277+00:00",
+        "response_count": 30,
+        "raw_responses": [
+          {
+            "query": "00cd8382",
+            "raw_sha256": "9f38682b7c007f330689f3a1c9ce4216f7f23716a1214467971cbc3ecc0ad89e",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd8385",
+            "raw_sha256": "bc02db88a304114a75b45762192d314813f8c998fc48fea2d79ff201b822433d",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd8388",
+            "raw_sha256": "3706c53c8d82736d7403f0fa0b8087ab3a74f9a5efa93dc11fde3ffa80e0c152",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd838e",
+            "raw_sha256": "7e2534a88e3171ab8c7cc8180d71a82fefc95614441b1ad259f453f88437c4d7",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd838f",
+            "raw_sha256": "8feb442b9a4b90dfe2beef9da9849dbbb67767fd2e5d78edc369536d3715661c",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd8390",
+            "raw_sha256": "27e374fb169148431c304c66185d22329ce639487b35659db85631cd4be71a4b",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd8397",
+            "raw_sha256": "31eb2dbbdbce8dd6bb0804b214d39eba44e6c4f362737fdc94e6ae71bd5e4313",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd8399",
+            "raw_sha256": "8fcfe6d2dcd59127f334dd7d211f6a41253b8773c9e6c58a34e822976ce79527",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd839e",
+            "raw_sha256": "1d078bc368a7e910d29e16251c248589edc1c5fb60508ce36bc0280f093ce792",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83a5",
+            "raw_sha256": "6a853de07337dea29c95a5f936c03ff59a20b248fb65cc8ca0ab76b5e081b5ab",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83af",
+            "raw_sha256": "0478c3477a0ebe129c9b558895ff5c9d290e696acd328e0c1e4c0c0bf72d5653",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83b4",
+            "raw_sha256": "81f2fbddd40881174d219ae9e80c732868df997b17fe056033f817d4b58ba3d0",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83b9",
+            "raw_sha256": "fdd3d1362d69c3482bfa6f1116bc1232795ad2abc467330e0d619b6a4c9cf991",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83bf",
+            "raw_sha256": "a41a850811ea0558376efa1d542028217550cfd12df93d9741d4ff090e634de2",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83c4",
+            "raw_sha256": "fbc9cc6f897af17af21e7aa722c47ccc2855672016b3404bbd9c6b6acd8e9e79",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83ca",
+            "raw_sha256": "a670a7627345c871618288c5bde1d5e23d489dc330e38e8a169fe27e14edc162",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83cf",
+            "raw_sha256": "2f754d75047524191166c7132ca4db28fa1ec9e20ccf9ed471bfb92fd2250058",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83d2",
+            "raw_sha256": "a6eecc4ca40f2f17409508508169ed0a38997d9dbb5783c0dda1f101a678e9f4",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83d5",
+            "raw_sha256": "68e8c9ace0cf95ea20f5c201262d54f6ff74edefc0e5923c1e67ecbb7df37626",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83d8",
+            "raw_sha256": "6e1b0d0f51d52682322ea614ba56ac0f4cea712bf845e9ca4bc08fbfd5757d57",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83de",
+            "raw_sha256": "99077f0395a38de89f822f711ffa126b8553ed041c54ccf0a1f0784ea39e94d5",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83df",
+            "raw_sha256": "6cc6bfcfa865f2bd3c2cfb0585d6ec9b423c319685f35164ed9120dd4be13de0",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83e0",
+            "raw_sha256": "155f6f3271f38beb779e7d850cc1808b7f8b01da14b539c7796e83d257f716e6",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83e5",
+            "raw_sha256": "0dd23e1aad576ccfb88741651ff450b9e28e8dcb8333a6667bdb38f3d1579fdb",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83ea",
+            "raw_sha256": "0a2bc95e3a7c35adfaaf2bb0f5f498bf07610b8fbfab49281219add5c8faba04",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83eb",
+            "raw_sha256": "ded99727ce171a506d37e2a66b84714a7e19e41958a43a5aade4aa52be83439e",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83ec",
+            "raw_sha256": "e5ffb98b94175434c22cc26b3cfd0e612c73c796dad9620b787883377ca1a2e0",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83ed",
+            "raw_sha256": "30b33cfbfc14c42c1f97f618b32dd0391d66c6c051b264391bf74dfb018f1575",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83ee",
+            "raw_sha256": "bf03e40b9ef73d771e30a7dd9b5b2543bd1b20bbbeba81a22bde4cab45a77f39",
+            "modification_number": "3"
+          },
+          {
+            "query": "00cd83ef",
+            "raw_sha256": "98652e2dc887371c2bbf076fe3a08e20c3389ca6e6e7e29fae66b50cd65864c2",
+            "modification_number": "3"
+          }
+        ],
+        "accepted": true
+      }
+    ],
+    "total_responses": 42,
+    "all_modification_numbers": [
+      3
+    ],
+    "actual_GPR_marker": "C:/Users/sqz269/bsp.gpr",
+    "full_AddressSet_null_query_identity_guards_passed": true,
+    "offline_raw_hash_and_validator_replay_passed": true,
+    "loaded_JVM_CodeSource_attested": false
+  },
+  "listing_summary": {
+    "first_two_window_bytes": "Suffix only of instruction at00CD837F; outside opcode not opened",
+    "first_complete_start": "00CD8382",
+    "decoded_original_bytes": 110,
+    "disk_instruction_starts": 30,
+    "matching_existing_instruction_starts": 24,
+    "undefined_CC_byte_addresses": [
+      "00CD838F",
+      "00CD83DF",
+      "00CD83EC",
+      "00CD83ED",
+      "00CD83EE",
+      "00CD83EF"
+    ],
+    "interior_camera_instruction_gaps": [],
+    "flow_overrides_on_observed_instructions": [],
+    "fallthrough_overrides_on_observed_instructions": [],
+    "Ghidra_assembly_text_fetched": false,
+    "comparison_basis": "Exact typed listing starts/lengths and identical original/Ghidra bytes"
+  },
+  "queried_00CD8380": {
+    "listing": {
+      "instruction_at": null,
+      "instruction_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00cd837f"
+        },
+        "length": 3,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      },
+      "code_unit_at": null,
+      "code_unit_containing": {
+        "address": {
+          "space": "ram",
+          "offset": "00cd837f"
+        },
+        "length": 3,
+        "java_class": "ghidra.program.database.code.InstructionDB",
+        "kind": "instruction",
+        "defined": null
+      }
+    },
+    "function_at_query": null,
+    "function_containing_query": {
+      "space": "ram",
+      "offset": "00cd8340"
+    },
+    "complete_recorded_functions": [
+      {
+        "entry": {
+          "space": "ram",
+          "offset": "00cd8340"
+        },
+        "name": "BSP_BoneResourceType_InitializeStatic",
+        "no_return": false,
+        "is_thunk": false,
+        "thunk_target_recursive": false,
+        "direct_thunk_target": null,
+        "body": {
+          "range_count": 1,
+          "returned_range_count": 1,
+          "address_count": "79",
+          "complete": true,
+          "ranges": [
+            {
+              "start": {
+                "space": "ram",
+                "offset": "00cd8340"
+              },
+              "end_inclusive": {
+                "space": "ram",
+                "offset": "00cd838e"
+              },
+              "length": "79"
+            }
+          ]
+        }
+      }
+    ],
+    "entry_rejected": true
+  },
+  "camera_sequence": {
+    "first": "00CD8390",
+    "last_inclusive": "00CD83DE",
+    "bytes": 79,
+    "instruction_count": 16,
+    "all_exact_instruction_starts_decoded": true,
+    "all_function_at_query_null": true,
+    "all_function_containing_query_null": true,
+    "complete_function_admitted": false,
+    "original_ABI_admitted": false,
+    "genuine_CRT_or_production_caller_admitted": false,
+    "local_branch": {
+      "source": "00CD8397",
+      "kind": "JNE",
+      "target": "00CD83DE",
+      "fallthrough": "00CD8399"
+    },
+    "ordinary_return": {
+      "address": "00CD83DE",
+      "opcode": "c3",
+      "immediate_cleanup": null
+    }
+  },
+  "register_origins": [
+    {
+      "store": "00CD83BF",
+      "target": "0109028C",
+      "register": "EAX",
+      "origin": "MOV EAX,[01090210] at00CD83B4; intervening MOV ECX preserves EAX"
+    },
+    {
+      "store": "00CD83C4",
+      "target": "01090290",
+      "register": "ECX",
+      "origin": "MOV ECX,[01090214] at00CD83B9; intervening store preserves ECX"
+    },
+    {
+      "store": "00CD83D8",
+      "target": "01090288",
+      "register": "ECX",
+      "origin": "MOV ECX,[EAX+4] at00CD83CF after call006FAC20; LEA EDX,[ECX+1] and MOV [EAX+4],EDX preserve old ECX",
+      "EAX_qualification": "Post-call EAX only. The child body and its production/preservation of EAX are uninspected."
+    }
+  ],
+  "guard_and_store_order": [
+    "Compare byte[01090266] with0; nonzero jumps toRET00CD83DE",
+    "Set ECX=01090210, then byte[01090266]=1",
+    "Store literal00D6327C to[01090294] before call00B869C0",
+    "After call return, copy[01090210] to[0109028C] and[01090214] to[01090290]",
+    "Call006FAC20; after return load ECX=[post-call EAX+4]",
+    "Store ECX+1 modulo2^32 at[post-call EAX+4], then oldECX to[01090288]",
+    "RET; no local rollback edge shown, while child/exception/handler outcomes remain uninspected"
+  ],
+  "callsite_flags": [
+    {
+      "callsite": "00CD83AF",
+      "target_flags": {
+        "address": {
+          "space": "ram",
+          "offset": "00b869c0"
+        },
+        "default_target": true,
+        "effective_target": true,
+        "function_at_target": {
+          "entry": {
+            "space": "ram",
+            "offset": "00b869c0"
+          },
+          "name": "BSP_InitializeSceneResource_00b869c0",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null
+        }
+      },
+      "flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83b4"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83b4"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00b869c0"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00b869c0"
+          }
+        ]
+      },
+      "callee_body_opened": false,
+      "callee_ABI_admitted": false
+    },
+    {
+      "callsite": "00CD83CA",
+      "target_flags": {
+        "address": {
+          "space": "ram",
+          "offset": "006fac20"
+        },
+        "default_target": true,
+        "effective_target": true,
+        "function_at_target": {
+          "entry": {
+            "space": "ram",
+            "offset": "006fac20"
+          },
+          "name": "BSP_TypeId_GetCounterSingleton",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null
+        }
+      },
+      "flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83cf"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83cf"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "006fac20"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "006fac20"
+          }
+        ]
+      },
+      "callee_body_opened": false,
+      "callee_ABI_admitted": false
+    },
+    {
+      "callsite": "00CD83E5",
+      "target_flags": {
+        "address": {
+          "space": "ram",
+          "offset": "00bf6ff5"
+        },
+        "default_target": true,
+        "effective_target": true,
+        "function_at_target": {
+          "entry": {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          },
+          "name": "_atexit",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null
+        }
+      },
+      "flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83ea"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83ea"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          }
+        ]
+      },
+      "callee_body_opened": false,
+      "callee_ABI_admitted": false
+    }
+  ],
+  "incoming_reference": {
+    "query": "00CD8390",
+    "limit": 40,
+    "returned_count": 1,
+    "returned": [
+      {
+        "source": "00CE35BC",
+        "type": "DATA"
+      }
+    ],
+    "selected_pointer_bytes_verified": true,
+    "all_dynamic_or_unresolved_references_proven_complete": false,
+    "table_or_CRT_role_admitted": false
+  },
+  "following_sequence": {
+    "first": "00CD83E0",
+    "last_inclusive": "00CD83EB",
+    "bytes": 12,
+    "operations": [
+      "PUSH00CE0EE0",
+      "CALL00BF6FF5",
+      "POP ECX",
+      "RET"
+    ],
+    "function_owner": null,
+    "callback_body_opened": false,
+    "camera_callback_ownership_admitted": false
+  },
+  "instruction_evidence": [
+    {
+      "address": "00CD8382",
+      "size": 3,
+      "bytes": "8d5101",
+      "mnemonic": "lea",
+      "operands": "edx, [ecx + 1]",
+      "exact_instruction_length": 3,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00cd8340"
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8385"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8385"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD8385",
+      "size": 3,
+      "bytes": "895004",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 4], edx",
+      "exact_instruction_length": 3,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00cd8340"
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8388"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8388"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD8388",
+      "size": 6,
+      "bytes": "890d78020901",
+      "mnemonic": "mov",
+      "operands": "dword ptr [0x1090278], ecx",
+      "exact_instruction_length": 6,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00cd8340"
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd838e"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd838e"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD838E",
+      "size": 1,
+      "bytes": "c3",
+      "mnemonic": "ret",
+      "operands": "",
+      "exact_instruction_length": 1,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": {
+        "space": "ram",
+        "offset": "00cd8340"
+      },
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "effective_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD838F",
+      "size": 1,
+      "bytes": "cc",
+      "mnemonic": "int3",
+      "operands": "",
+      "exact_instruction_length": null,
+      "instruction_at_null": true,
+      "code_unit_kind": "data",
+      "code_unit_defined": false,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": null
+    },
+    {
+      "address": "00CD8390",
+      "size": 7,
+      "bytes": "803d6602090100",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [0x1090266], 0",
+      "exact_instruction_length": 7,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8397"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8397"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD8397",
+      "size": 2,
+      "bytes": "7545",
+      "mnemonic": "jne",
+      "operands": "0xcd83de",
+      "exact_instruction_length": 2,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "CONDITIONAL_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": true,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "CONDITIONAL_JUMP",
+          "is_call": false,
+          "is_jump": true,
+          "is_conditional": true,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8399"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd8399"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00cd83de"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00cd83de"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00CD8399",
+      "size": 5,
+      "bytes": "b910020901",
+      "mnemonic": "mov",
+      "operands": "ecx, 0x1090210",
+      "exact_instruction_length": 5,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd839e"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd839e"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD839E",
+      "size": 7,
+      "bytes": "c6056602090101",
+      "mnemonic": "mov",
+      "operands": "byte ptr [0x1090266], 1",
+      "exact_instruction_length": 7,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83a5"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83a5"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83A5",
+      "size": 10,
+      "bytes": "c705940209017c32d600",
+      "mnemonic": "mov",
+      "operands": "dword ptr [0x1090294], 0xd6327c",
+      "exact_instruction_length": 10,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83af"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83af"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83AF",
+      "size": 5,
+      "bytes": "e80ce6eaff",
+      "mnemonic": "call",
+      "operands": "0xb869c0",
+      "exact_instruction_length": 5,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83b4"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83b4"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00b869c0"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00b869c0"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00CD83B4",
+      "size": 5,
+      "bytes": "a110020901",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [0x1090210]",
+      "exact_instruction_length": 5,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83b9"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83b9"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83B9",
+      "size": 6,
+      "bytes": "8b0d14020901",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [0x1090214]",
+      "exact_instruction_length": 6,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83bf"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83bf"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83BF",
+      "size": 5,
+      "bytes": "a38c020901",
+      "mnemonic": "mov",
+      "operands": "dword ptr [0x109028c], eax",
+      "exact_instruction_length": 5,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83c4"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83c4"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83C4",
+      "size": 6,
+      "bytes": "890d90020901",
+      "mnemonic": "mov",
+      "operands": "dword ptr [0x1090290], ecx",
+      "exact_instruction_length": 6,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83ca"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83ca"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83CA",
+      "size": 5,
+      "bytes": "e85128a2ff",
+      "mnemonic": "call",
+      "operands": "0x6fac20",
+      "exact_instruction_length": 5,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83cf"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83cf"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "006fac20"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "006fac20"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00CD83CF",
+      "size": 3,
+      "bytes": "8b4804",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [eax + 4]",
+      "exact_instruction_length": 3,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83d2"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83d2"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83D2",
+      "size": 3,
+      "bytes": "8d5101",
+      "mnemonic": "lea",
+      "operands": "edx, [ecx + 1]",
+      "exact_instruction_length": 3,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83d5"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83d5"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83D5",
+      "size": 3,
+      "bytes": "895004",
+      "mnemonic": "mov",
+      "operands": "dword ptr [eax + 4], edx",
+      "exact_instruction_length": 3,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83d8"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83d8"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83D8",
+      "size": 6,
+      "bytes": "890d88020901",
+      "mnemonic": "mov",
+      "operands": "dword ptr [0x1090288], ecx",
+      "exact_instruction_length": 6,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83de"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83de"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83DE",
+      "size": 1,
+      "bytes": "c3",
+      "mnemonic": "ret",
+      "operands": "",
+      "exact_instruction_length": 1,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "effective_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83DF",
+      "size": 1,
+      "bytes": "cc",
+      "mnemonic": "int3",
+      "operands": "",
+      "exact_instruction_length": null,
+      "instruction_at_null": true,
+      "code_unit_kind": "data",
+      "code_unit_defined": false,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": null
+    },
+    {
+      "address": "00CD83E0",
+      "size": 5,
+      "bytes": "68e00ece00",
+      "mnemonic": "push",
+      "operands": "0xce0ee0",
+      "exact_instruction_length": 5,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83e5"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83e5"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83E5",
+      "size": 5,
+      "bytes": "e80becf1ff",
+      "mnemonic": "call",
+      "operands": "0xbf6ff5",
+      "exact_instruction_length": 5,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "UNCONDITIONAL_CALL",
+          "is_call": true,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83ea"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83ea"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          }
+        ],
+        "effective_targets": [
+          {
+            "space": "ram",
+            "offset": "00bf6ff5"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00CD83EA",
+      "size": 1,
+      "bytes": "59",
+      "mnemonic": "pop",
+      "operands": "ecx",
+      "exact_instruction_length": 1,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "effective_flow": {
+          "name": "FALL_THROUGH",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": false
+        },
+        "default_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83eb"
+        },
+        "effective_fallthrough": {
+          "space": "ram",
+          "offset": "00cd83eb"
+        },
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83EB",
+      "size": 1,
+      "bytes": "c3",
+      "mnemonic": "ret",
+      "operands": "",
+      "exact_instruction_length": 1,
+      "instruction_at_null": false,
+      "code_unit_kind": "instruction",
+      "code_unit_defined": null,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": {
+        "flow_override": "NONE",
+        "default_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "effective_flow": {
+          "name": "TERMINATOR",
+          "is_call": false,
+          "is_jump": false,
+          "is_conditional": false,
+          "is_computed": false,
+          "is_terminal": true
+        },
+        "default_fallthrough": null,
+        "effective_fallthrough": null,
+        "fallthrough_overridden": false,
+        "default_targets": [],
+        "effective_targets": []
+      }
+    },
+    {
+      "address": "00CD83EC",
+      "size": 1,
+      "bytes": "cc",
+      "mnemonic": "int3",
+      "operands": "",
+      "exact_instruction_length": null,
+      "instruction_at_null": true,
+      "code_unit_kind": "data",
+      "code_unit_defined": false,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": null
+    },
+    {
+      "address": "00CD83ED",
+      "size": 1,
+      "bytes": "cc",
+      "mnemonic": "int3",
+      "operands": "",
+      "exact_instruction_length": null,
+      "instruction_at_null": true,
+      "code_unit_kind": "data",
+      "code_unit_defined": false,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": null
+    },
+    {
+      "address": "00CD83EE",
+      "size": 1,
+      "bytes": "cc",
+      "mnemonic": "int3",
+      "operands": "",
+      "exact_instruction_length": null,
+      "instruction_at_null": true,
+      "code_unit_kind": "data",
+      "code_unit_defined": false,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": null
+    },
+    {
+      "address": "00CD83EF",
+      "size": 1,
+      "bytes": "cc",
+      "mnemonic": "int3",
+      "operands": "",
+      "exact_instruction_length": null,
+      "instruction_at_null": true,
+      "code_unit_kind": "data",
+      "code_unit_defined": false,
+      "function_at_query": null,
+      "function_containing_query": null,
+      "instruction_flow": null
+    }
+  ],
+  "known_held_contracts": {
+    "known": [
+      "Selected original/Ghidra byte equality",
+      "Exact existing instruction boundaries within window",
+      "Bone stored AddressSet excludes camera stores",
+      "Camera starts have explicit null recorded function owners",
+      "Local guard branch and ordered stores",
+      "Distinct ECX load origins",
+      "No current callsite flow/fallthrough overrides and direct callee NoReturn=false/non-thunk flags",
+      "Selected DATA pointer equals00CD8390"
+    ],
+    "held": [
+      "Genuine owning function entry/fullbody admission",
+      "Original callable ABI and return-value contract",
+      "Parent00B869C0 body and ECX calling contract",
+      "Counter006FAC20 body and post-call EAX contract",
+      "Complete descriptor layout and literal00D6327C contents/meaning",
+      "Guard storage value and initialization provenance",
+      "CRT/table bounds, actual pointer consumer and initialization order",
+      "Handler00CE0EE0 body/ownership and exception/partial-failure contracts",
+      "Production Source backing and game/runtime behavior"
+    ]
+  },
+  "next_proposed_scope_not_executed": [
+    {
+      "kind": "metadata_only",
+      "address": "00CE35BC",
+      "operation": "get_xrefs_to",
+      "reason": "Seek an actual consumer of the verified pointer without inspecting adjacent table bytes"
+    },
+    {
+      "kind": "metadata_only",
+      "addresses": [
+        "00B869C0",
+        "006FAC20"
+      ],
+      "operation": "typed-flow body ranges",
+      "reason": "Obtain exact child AddressSets before proposing separately approved physical body windows"
+    }
+  ],
+  "new_physical_window_selected_from_adjacency": null,
+  "validation_qualification": "Evidence/format/hash replay only. No new C++ build, test harness, ABI proof or game validation.",
+  "evidence_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_camera_resource_ownership_audit\\evidence_manifest.json",
+    "bytes": 4492,
+    "sha256": "8483875b1477b0666982973bae4b6c21f12d5215d855959d6678486e2d38fef7"
+  },
+  "document_pin": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\docs\\CC12_CAMERA_RESOURCE_OWNERSHIP_AUDIT.md",
+    "bytes": 8686,
+    "sha256": "8d5ec48fe1883011a0094392608766b03ca16a44a67f097ac5db22b68f01d37d"
+  }
+}
