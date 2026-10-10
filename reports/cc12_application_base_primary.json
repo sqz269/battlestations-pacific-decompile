@@ -1,0 +1,101 @@
+{
+  "schema": "bsp.cc12.application-base-primary.v1",
+  "status": "normal_base_contract_evidenced_handler_missing_owner_and_activation_NO_GO",
+  "worker_commit": "1695495825e70d0be4275b1bc2b7d57b1dd948ce",
+  "worker_report": {
+    "path": "local/cc12_application_base_primary/worker_report.json",
+    "bytes": 69044,
+    "sha256": "e48775233e1fcfa41431858fa91eb92f64b211e23f0ea0c186f1d1682ebc872d"
+  },
+  "copied_finite_pins": 230,
+  "copied_bytes": 314508401,
+  "Root_guarded_replay": {
+    "path": "local/cc12_application_base_primary/Root_guarded_replay.json",
+    "bytes": 420,
+    "sha256": "de3afecb2050f7b721ef56e42bc07898f4691243de8f81a0c9c08b8d5363fa62"
+  },
+  "actual_frozen_Git_occurrences": 8439,
+  "actual_closed_Source_paths": 4208,
+  "prior_constructor_184_pins_byte_identical": true,
+  "prior_nested_authority_124_pins_preserved": true,
+  "Root_Source_differences_from_worker": [
+    "include/bsp/native_particle_model_lifetime.hpp",
+    "src/native_particle_model_lifetime.cpp"
+  ],
+  "Root_later_Source_paths": [
+    "include/bsp/native_locale_map_node_recycling.hpp",
+    "src/native_locale_map_node_recycling.cpp"
+  ],
+  "epoch_qualification": "Worker8cf already contains grid Source; later Root record pair and locale helpers/CMake are separate. Readonly Native epoch79 and historical artifact proofs remain distinct.",
+  "Native": {
+    "address": "00BEA810",
+    "complete_range": "00BEA810..00BEA8A0",
+    "fresh_bytes": 145,
+    "instructions": 40,
+    "GPR_epoch": 79,
+    "handler": "00CC7240 function_at and containing absent; instruction start5-byte known, body not admitted"
+  },
+  "contract": {
+    "ABI": "ECX receiver capturedEDI; preservesEDI/ESI, EAX originalreceiver, plainRET no explicitstackargs. Storedundefined(void) unchanged.",
+    "sequence": "InitialD68BC4 table; firstmanager/raw+10capturedsection; optionalEnter/+18increment; state1; publishoriginalreceiverE1AE90; secondmanager and CURRENTpublicationreload passedtoBD0C30; decrement/Leave capturedsection; return originalreceiver.",
+    "failure": "Reached prefixes distinguish originalreceiver, capturedsection, currentpublication and selectedregistrationargument. No cleanup/reset/unregister/free/retry inferred from state0/1 or absent direct operations.",
+    "missing": "ActualApplicationowner/publication andD68BC4/D68BC8/CFEAB0 callabledeletionprofiles are absent from Source. Existingmanagergetter/guarddestroy/registerproviders are real dependencies, not composition.",
+    "E1AE78": "Separate processduplicate scope."
+  },
+  "verdict": {
+    "raw_owner_Cpp_GO": false,
+    "frame_activation_GO": false,
+    "complete_failure_retirement_GO": false
+  },
+  "next_gate": "CC7240 metadata first, then explicitly admitted read-only instruction walking at most8starts/64bytes; stopterminal/listinggap. No creation/repair or newtable/cleanup/destructor scope.",
+  "scope": {
+    "Cpp_changes": 0,
+    "Root_Native_queries": 0,
+    "GPR_writes": "One locked evidence-comment write and project save; no renames or analysis repairs.",
+    "builds": 0,
+    "tests": 0,
+    "game_runs": 0
+  },
+  "Root_annotation": {
+    "before": {
+      "path": "local/cc12_application_base_primary/Root_before_typed.json",
+      "bytes": 8877,
+      "sha256": "3b7c9429c420f16d968d1003f765173471bf622534bbc966df0c0fcab3d726eb"
+    },
+    "after": {
+      "path": "local/cc12_application_base_primary/Root_after_typed.json",
+      "bytes": 8877,
+      "sha256": "7c83fd47188e4db4c02efdb918939e3f3fb76eb857fb8bbf8d88536f69b33c70"
+    },
+    "GPR_before": 83,
+    "GPR_after": 85,
+    "comments_added": 1,
+    "renames": 0,
+    "existing_name_and_original_comments_preserved": true,
+    "complete_metadata_equal_except_modification_numbers": true,
+    "Native_body_listing_flow_no_return_prototype_unchanged": true,
+    "journal": {
+      "path": "local/cc12_application_base_primary/Root_comment_journal.json",
+      "bytes": 2812,
+      "sha256": "36a23a11cbc187518d44841efb9d40277cc5c86d4f39603cda46a8dfaa4c66ec"
+    },
+    "project_saved": true,
+    "exports": [
+      {
+        "path": "local/cc12_application_base_primary/refreshed_exports/assembly.txt",
+        "bytes": 1201,
+        "sha256": "3956b4aca186eaf7bd83752401330caea119beaf0065173c0a4ee02db3826fce"
+      },
+      {
+        "path": "local/cc12_application_base_primary/refreshed_exports/decompiled.c",
+        "bytes": 1085,
+        "sha256": "639e8364d70a2994d00395f1169a44005090029d5d33f7be0e69ee69f87e52bf"
+      },
+      {
+        "path": "local/cc12_application_base_primary/refreshed_exports/metadata.json",
+        "bytes": 210,
+        "sha256": "df1932396eb31a08d06666a46ce76ab494ff7f18dc025207c980b61be7796978"
+      }
+    ]
+  }
+}
