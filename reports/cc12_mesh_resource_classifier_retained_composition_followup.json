@@ -1,0 +1,3905 @@
+{
+  "schema": "cc12-mesh-classifier-retained-composition-followup-v1",
+  "packet": "cc12_mesh_classifier_retained_composition_followup",
+  "created_utc": "2026-10-10T03:50:22.116582+00:00",
+  "baseline_commit": "f49eea54c5f7071d9eafee27d32e743fcbfd106b",
+  "worker_worktree": "J:/PROG/battlestations-pacific-decompile-cc12_global_config_effect_payload",
+  "owned_tracked_files": [
+    "docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+    "reports/cc12_mesh_resource_classifier_retained_composition_followup.json"
+  ],
+  "lease_scope": "file-only; zero addresses and ranges",
+  "status": "fallback-retained-owner-API-ready; startup-and-full-resource-attachment-held",
+  "decision": {
+    "new_complete_fallback_initializer_changes_readiness": true,
+    "explicit_retained_owner_API_implementation_ready": true,
+    "startup_call_insertion_ready": false,
+    "full_production_root_classifier_load_attachment_ready": false,
+    "existing_mesh_owner_or_startup_duplication_needed": false,
+    "SkinModel_fragment_establishes_owner_guard_descriptor_or_startup": false,
+    "prior_review_148_pins_preserved_without_edit": true
+  },
+  "next_packet": {
+    "suggested_id": "cc12_fallback_resource_type_retained_owner_api",
+    "implementation_files": [
+      "include/bsp/game_native_type_storage.hpp",
+      "src/game_native_type_storage.cpp"
+    ],
+    "storage": {
+      "guard_role": "0109020D",
+      "descriptor_word_roles": [
+        "0109021C own",
+        "01090220 Scene",
+        "01090224 root",
+        "01090228 name"
+      ],
+      "word_count": 4
+    },
+    "view": "Stable borrowed view of actual retained owner cells; no ID snapshots or temporary context ownership.",
+    "initializer": "Existing initialize_native_fallback_resource_type_00b86a00 with exact00D631F4 token and genuine NativeMeshResourceTypeIds on canonical owner Scene.",
+    "counter_root_identity": "Use existing root/node/light/directional guard and descriptor identity check. Same counter as LightTypeBootstrap remains an explicit direct-caller precondition; private counter relation is not proven by a storage check.",
+    "actual_VFS_identity_evidence": [
+      "src/game_native_vfs_application.cpp:90 common_types_(owner_services_.types(), type_storage_.light_types())",
+      "src/native_vfs_owner_services.cpp:17 types_(lifetime_, cells.type_counter_0109db7c)",
+      "src/game_native_vfs_application.cpp:109 initializes with that same owner counter and common bootstrap"
+    ],
+    "ordered_effects": [
+      "nonzero guard fast return",
+      "guard=1",
+      "receiver[3]=00D631F4",
+      "canonical Scene initializer",
+      "load Scene[0], store receiver[1]",
+      "load Scene[1], store receiver[2]",
+      "same counter.get_006fac20()",
+      "load counter next_id_04",
+      "increment counter next_id_04",
+      "publish captured old ID to receiver[0]"
+    ],
+    "exceptions": "Retain sticky guard and all completed stores. No reset, rollback or repair on retry.",
+    "prohibited": [
+      "eager counter getter or domain probe before guard/name",
+      "invented counter accessor/assertion proof",
+      "duplicate Scene or private counter",
+      "copied IDs or adjacent family substitution",
+      "call inserted into initialize_resource_types or VFS startup",
+      "claimed original CRT placement or absolute ID sequence",
+      "uninitialized cells wired into active classifier"
+    ],
+    "lifetime": "Noncopyable retained owner and its same counter/root domain survive every consumer and shared drain. Initializer context may be local only for the synchronous provider call; borrowed view targets owner storage."
+  },
+  "concrete_movement_since_prior_review": [
+    "B86A00 complete Source now proves guard0D, four-word descriptor, name token and effect schedule; actual owner API is implementable.",
+    "Hierarchy pool0109022C is canonical process-owned storage and game_main already invokes CD82D0; it is not an absent allocator or initializer.",
+    "BoneB8AF30, AnimationChannelsB8AD80 and AnimationChannelB8AAD0 readers have genuine Source implementations; retained same-stream/string composition remains.",
+    "Animation groupB78D00/channelB8AD60 deletion has finite current-profile Source binding; actual profile/string retention remains.",
+    "VFS constructor proves actual common counter/root/storage relation; arbitrary direct callers retain same-counter precondition.",
+    "Allocation-stats current raw publication/table remains distinct despite complete BE2700 constant metric leaf."
+  ],
+  "remaining_minimal_boundaries": [
+    {
+      "id": "fallback_startup",
+      "requires": "Explicit application call/placement after owner API, without inventing original CRT or numeric ordering."
+    },
+    {
+      "id": "camera_group_resource_types",
+      "requires": "Actual current01090288 and010902E4 backing/initialization, distinct from0108FFA0 and0109032C."
+    },
+    {
+      "id": "actual_reader_and_forwarding_graph",
+      "requires": "Retained common stream-read context, actual empty string, strings, current mapped profiles, actual reached parser/renderer/append targets, acyclic genuine reference chain."
+    },
+    {
+      "id": "mesh_loading_context",
+      "requires": "Actual canonical geometry/mesh, material/effect/texture, reader/metadata, lighting/generator and renderer services plus persistent acquired frames."
+    },
+    {
+      "id": "allocation_stats_owner",
+      "requires": "Actual0109CEFC publication, readable current table and current slot4 target; semantic AllocationStatsState with null vtable is insufficient."
+    },
+    {
+      "id": "retirement_composition",
+      "requires": "Actual resource manager, hierarchy pool, strings, geometry and table/callback lifetimes through retirement and shared drain; preserve failed process-retained frames."
+    }
+  ],
+  "preserved_semantics": [
+    "Base append happens before null return; no item retain for classification arrays; first aux64/convex54/geom44 match only.",
+    "Use actual current table entries and prescribed reloads; mesh comparisons read current descriptor IDs excluding names.",
+    "Root end hook only on normal completion; active-child and constructing-fallback cleanup only, with no completed-item rollback.",
+    "Load cache publishes factory before lookup; cache hit retains current resource and keeps factory; miss preserves exact metric/factory/VFS/current resource sequence.",
+    "Persistent acquired load/mesh/nested VFS frames retain failure progress; no replay or synthetic cleanup.",
+    "Game arrays borrow items; base primary-array destruction decrements even unguarded null entries according to existing Source, then current zero-reference dispatch.",
+    "Animation group/channel deletion uses actual current profile slots and scalar flags1; no invented group reference decrement."
+  ],
+  "SkinModel_fragment_boundary": {
+    "Source": "src/native_skin_model_type_id_publication_fragment.cpp",
+    "effect": "Genuine same counter getter, old ID load, counter increment, actual01090344 old-ID store; aliasing of those cells is permitted by the Source contract.",
+    "not_established": [
+      "guard",
+      "descriptor layout",
+      "initializer owner",
+      "production backing",
+      "caller or CRT placement"
+    ]
+  },
+  "context_only_counts": {
+    "Source": 632,
+    "ordinary_inputs": 632,
+    "Core_sources": 87,
+    "App_sources": 3,
+    "definitions": 227,
+    "checks": 3,
+    "new_credit": 0
+  },
+  "new_work_counts": {
+    "tracked_documents_reports": 2,
+    "Cpp_CMake_ledger_provider_changes": 0,
+    "Native_bodies_bytes_handlers_data_tables": 0,
+    "live_Ghidra_analysis_queries": 0,
+    "Ghidra_mutations": 0,
+    "builds_tests_probes": 0,
+    "new_reconstruction_ordinary_input_build_runtime_gameplay_credit": 0,
+    "current_whole_Source_files": 61,
+    "accepted_prior_context_files": 2,
+    "baseline_Git_blobs_verified": 63,
+    "complete_command_receipts": 79,
+    "non_authoritative_failed_path_search_receipts": 4,
+    "frozen_bundle_files": 366
+  },
+  "evidence_levels": {
+    "Source_owner_API_ready": true,
+    "production_backing_added": false,
+    "startup_bound": false,
+    "complete_consumer_graph": false,
+    "new_build_fixture_execution": false,
+    "original_ABI_SEH_FH3": false,
+    "original_CRT_or_absolute_ID_order": false,
+    "runtime_gameplay": false
+  },
+  "evidence": {
+    "whole_file_pins": [
+      {
+        "kind": "accepted_prior_review_context",
+        "working": {
+          "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_CONSUMER_READINESS.md",
+          "bytes": 13299,
+          "sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/docs/CC12_MESH_RESOURCE_CLASSIFIER_CONSUMER_READINESS.md",
+          "bytes": 13299,
+          "sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda"
+        },
+        "baseline_git_blob": "2d89a943d124a4addb1deac6d1aa84e4acf8cc6d",
+        "baseline_git_sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/docs/CC12_MESH_RESOURCE_CLASSIFIER_CONSUMER_READINESS.md",
+          "bytes": 13299,
+          "sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "baseline_git_blob": "a777902d1207251888b81ce1ef9442864d88957f",
+        "baseline_git_sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/game_hosts.hpp",
+          "bytes": 38481,
+          "sha256": "a9b67bb9ce21aada6247a3614f1ac18359e42bee96d9fee7d52e026569d99e8c"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_hosts_vfs.hpp",
+          "bytes": 11990,
+          "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/game_hosts_vfs.hpp",
+          "bytes": 11990,
+          "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+        },
+        "baseline_git_blob": "43db9809ba77d43c7a3f809708d89a11035bed44",
+        "baseline_git_sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/game_hosts_vfs.hpp",
+          "bytes": 11990,
+          "sha256": "692da5e2ae2c668e21dcb7c955196f3218bdc03361af35953b79b7ac42d27dee"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/host_h_owner.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_resource_application.hpp",
+          "bytes": 1678,
+          "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/game_native_resource_application.hpp",
+          "bytes": 1678,
+          "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391"
+        },
+        "baseline_git_blob": "53bbb6d0fd75a5b46494690f3f389cb9c28aa32d",
+        "baseline_git_sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/game_native_resource_application.hpp",
+          "bytes": 1678,
+          "sha256": "1ab614534cdf2fba892ac51f675f4663beb1a6267e630ceae8c2b642ec705391"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/resource_app_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_resource_pools.hpp",
+          "bytes": 4717,
+          "sha256": "789564d051c7037f3dbcc8a9a64da9f15b2d32f9a26c6f862789d8b9c639940a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/game_native_resource_pools.hpp",
+          "bytes": 4717,
+          "sha256": "789564d051c7037f3dbcc8a9a64da9f15b2d32f9a26c6f862789d8b9c639940a"
+        },
+        "baseline_git_blob": "377e3f0a160f2a2c65f0c5290960b4542e9467be",
+        "baseline_git_sha256": "789564d051c7037f3dbcc8a9a64da9f15b2d32f9a26c6f862789d8b9c639940a",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/game_native_resource_pools.hpp",
+          "bytes": 4717,
+          "sha256": "789564d051c7037f3dbcc8a9a64da9f15b2d32f9a26c6f862789d8b9c639940a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "baseline_git_blob": "292782400c1244b84ee4475956838fbbc0811076",
+        "baseline_git_sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/game_native_type_storage.hpp",
+          "bytes": 6399,
+          "sha256": "59622bbc861ce3f7d1883d38237359472342c929e5e55deed8fc5ffad02127e8"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h2.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_vfs_application.hpp",
+          "bytes": 3022,
+          "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/game_native_vfs_application.hpp",
+          "bytes": 3022,
+          "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+        },
+        "baseline_git_blob": "a9d2ecefb12f656e5b43a56026234abefd34c670",
+        "baseline_git_sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/game_native_vfs_application.hpp",
+          "bytes": 3022,
+          "sha256": "76f4e3fb2d782b80c0d8892fccf7a9558d87dca1ae3a0a4cef2f6f86f102798f"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/game_native_vfs_runtime.hpp",
+          "bytes": 9565,
+          "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/game_native_vfs_runtime.hpp",
+          "bytes": 9565,
+          "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad"
+        },
+        "baseline_git_blob": "21a0950349db25c464e2c7eaa058bcd90d0ea114",
+        "baseline_git_sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/game_native_vfs_runtime.hpp",
+          "bytes": 9565,
+          "sha256": "aaef98c9ed59cb836e534e7d31619b45a36c574ee7827a8b7833d6e16422d8ad"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/raw_services_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/light_type_bootstrap.hpp",
+          "bytes": 3214,
+          "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/light_type_bootstrap.hpp",
+          "bytes": 3214,
+          "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+        },
+        "baseline_git_blob": "c97724bb24247b8a9d4543050d2caf45f15ec197",
+        "baseline_git_sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/light_type_bootstrap.hpp",
+          "bytes": 3214,
+          "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_animation_channel_body_reader.hpp",
+          "bytes": 2383,
+          "sha256": "4d04466770894369a9f42fc18ec693e6a73cc7f8f6344ae9c9a51099d0b1844a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_animation_channel_body_reader.hpp",
+          "bytes": 2383,
+          "sha256": "4d04466770894369a9f42fc18ec693e6a73cc7f8f6344ae9c9a51099d0b1844a"
+        },
+        "baseline_git_blob": "354e9ed427a2c53206e77df5ad85433d1135b569",
+        "baseline_git_sha256": "4d04466770894369a9f42fc18ec693e6a73cc7f8f6344ae9c9a51099d0b1844a",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_animation_channel_body_reader.hpp",
+          "bytes": 2383,
+          "sha256": "4d04466770894369a9f42fc18ec693e6a73cc7f8f6344ae9c9a51099d0b1844a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_animation_channels_resource_reader.hpp",
+          "bytes": 3119,
+          "sha256": "23c796834880d75788e248d94f799ef59e61736ecae52872ae75f18da5a41f77"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_animation_channels_resource_reader.hpp",
+          "bytes": 3119,
+          "sha256": "23c796834880d75788e248d94f799ef59e61736ecae52872ae75f18da5a41f77"
+        },
+        "baseline_git_blob": "2a743bb862510f5d50c81298f0919196b5bdd07c",
+        "baseline_git_sha256": "23c796834880d75788e248d94f799ef59e61736ecae52872ae75f18da5a41f77",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_animation_channels_resource_reader.hpp",
+          "bytes": 3119,
+          "sha256": "23c796834880d75788e248d94f799ef59e61736ecae52872ae75f18da5a41f77"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/channel_reader_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_animation_group_lifetime.hpp",
+          "bytes": 2844,
+          "sha256": "cd63f1aaee13299386cef666a8e1471e6c6c106676ba7d7c729de5df21e7e89a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_animation_group_lifetime.hpp",
+          "bytes": 2844,
+          "sha256": "cd63f1aaee13299386cef666a8e1471e6c6c106676ba7d7c729de5df21e7e89a"
+        },
+        "baseline_git_blob": "2409b8e5c0dbeed357cebe62c6056e116ea17dda",
+        "baseline_git_sha256": "cd63f1aaee13299386cef666a8e1471e6c6c106676ba7d7c729de5df21e7e89a",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_animation_group_lifetime.hpp",
+          "bytes": 2844,
+          "sha256": "cd63f1aaee13299386cef666a8e1471e6c6c106676ba7d7c729de5df21e7e89a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_bone_resource_item_reader.hpp",
+          "bytes": 1645,
+          "sha256": "108a27c252aca4bcc86b9bce53cd4b46ac01e60459e68f6e2ff56dd54c8ffcbc"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_bone_resource_item_reader.hpp",
+          "bytes": 1645,
+          "sha256": "108a27c252aca4bcc86b9bce53cd4b46ac01e60459e68f6e2ff56dd54c8ffcbc"
+        },
+        "baseline_git_blob": "3843316ef1142fd4c2f169a2e56c631be60ac88c",
+        "baseline_git_sha256": "108a27c252aca4bcc86b9bce53cd4b46ac01e60459e68f6e2ff56dd54c8ffcbc",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_bone_resource_item_reader.hpp",
+          "bytes": 1645,
+          "sha256": "108a27c252aca4bcc86b9bce53cd4b46ac01e60459e68f6e2ff56dd54c8ffcbc"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_camera_group_resource.hpp",
+          "bytes": 4837,
+          "sha256": "dc708c539a2664c0e0bd5c4f802f210f4d208df6532823ab822ab111701c70fc"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_camera_group_resource.hpp",
+          "bytes": 4837,
+          "sha256": "dc708c539a2664c0e0bd5c4f802f210f4d208df6532823ab822ab111701c70fc"
+        },
+        "baseline_git_blob": "8093028ea7a45b16212ba123e75ec4f8913d1be7",
+        "baseline_git_sha256": "dc708c539a2664c0e0bd5c4f802f210f4d208df6532823ab822ab111701c70fc",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_camera_group_resource.hpp",
+          "bytes": 4837,
+          "sha256": "dc708c539a2664c0e0bd5c4f802f210f4d208df6532823ab822ab111701c70fc"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/camera_group_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_fallback_resource_type_initializer.hpp",
+          "bytes": 1944,
+          "sha256": "fd458b91e2fd8930312409bd5fd19c40de95186f50f23b86561d22af564938d5"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_fallback_resource_type_initializer.hpp",
+          "bytes": 1944,
+          "sha256": "fd458b91e2fd8930312409bd5fd19c40de95186f50f23b86561d22af564938d5"
+        },
+        "baseline_git_blob": "e14acbf928c6ac3818d065f1be2b7fdbec4c669a",
+        "baseline_git_sha256": "fd458b91e2fd8930312409bd5fd19c40de95186f50f23b86561d22af564938d5",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_fallback_resource_type_initializer.hpp",
+          "bytes": 1944,
+          "sha256": "fd458b91e2fd8930312409bd5fd19c40de95186f50f23b86561d22af564938d5"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_game_resource_classification.hpp",
+          "bytes": 2460,
+          "sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_game_resource_classification.hpp",
+          "bytes": 2460,
+          "sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74"
+        },
+        "baseline_git_blob": "150675e460e1d8aa2633e5ef0394a4e9c5cd87e1",
+        "baseline_git_sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_game_resource_classification.hpp",
+          "bytes": 2460,
+          "sha256": "71cf9c55f8d014f62cbdc21ec29e22d6e35117dcdf3718dca2ee41b697fe4e74"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_mesh_subset_loading.hpp",
+          "bytes": 14540,
+          "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_mesh_subset_loading.hpp",
+          "bytes": 14540,
+          "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+        },
+        "baseline_git_blob": "5fff9ae5c04fafa0bfe1a6a50947f35a37d4301f",
+        "baseline_git_sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_mesh_subset_loading.hpp",
+          "bytes": 14540,
+          "sha256": "283167a5d8a1d09a50d46c08df40c9c6127d0cb94e8a47b8f581f7846401cde7"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h2.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_owner_boundary.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_container_lifetime.hpp",
+          "bytes": 3633,
+          "sha256": "a32473971d6d9aca58713e3e964533b7b8a9d50c81d40c5f3baa28a98d2fbc36"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_container_lifetime.hpp",
+          "bytes": 3633,
+          "sha256": "a32473971d6d9aca58713e3e964533b7b8a9d50c81d40c5f3baa28a98d2fbc36"
+        },
+        "baseline_git_blob": "b9ac28213076835f1af129be958813c8e232dba6",
+        "baseline_git_sha256": "a32473971d6d9aca58713e3e964533b7b8a9d50c81d40c5f3baa28a98d2fbc36",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_container_lifetime.hpp",
+          "bytes": 3633,
+          "sha256": "a32473971d6d9aca58713e3e964533b7b8a9d50c81d40c5f3baa28a98d2fbc36"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/container_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_extra_item_lifetime.hpp",
+          "bytes": 3805,
+          "sha256": "4fe14172b7ac65db27de7402f89ee42e4ecc79782a322f875f9194f5cbfe33ad"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_extra_item_lifetime.hpp",
+          "bytes": 3805,
+          "sha256": "4fe14172b7ac65db27de7402f89ee42e4ecc79782a322f875f9194f5cbfe33ad"
+        },
+        "baseline_git_blob": "b63a1f70f34bdfec5a044199814b1db43ecf232e",
+        "baseline_git_sha256": "4fe14172b7ac65db27de7402f89ee42e4ecc79782a322f875f9194f5cbfe33ad",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_extra_item_lifetime.hpp",
+          "bytes": 3805,
+          "sha256": "4fe14172b7ac65db27de7402f89ee42e4ecc79782a322f875f9194f5cbfe33ad"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/extra_lifetime_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_extra_item_parsers.hpp",
+          "bytes": 3129,
+          "sha256": "09bae9801e62d09c0af73a9413f34982b89cd32587ed4f30a0e7639cf9472554"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_extra_item_parsers.hpp",
+          "bytes": 3129,
+          "sha256": "09bae9801e62d09c0af73a9413f34982b89cd32587ed4f30a0e7639cf9472554"
+        },
+        "baseline_git_blob": "c593a7d4ea118fece34b20d8d505359c6d22fc54",
+        "baseline_git_sha256": "09bae9801e62d09c0af73a9413f34982b89cd32587ed4f30a0e7639cf9472554",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_extra_item_parsers.hpp",
+          "bytes": 3129,
+          "sha256": "09bae9801e62d09c0af73a9413f34982b89cd32587ed4f30a0e7639cf9472554"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/extra_item_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_fallback_item.hpp",
+          "bytes": 1564,
+          "sha256": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_fallback_item.hpp",
+          "bytes": 1564,
+          "sha256": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178"
+        },
+        "baseline_git_blob": "36c80fa249d6fe5531f070d4274efdd05700fd72",
+        "baseline_git_sha256": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_fallback_item.hpp",
+          "bytes": 1564,
+          "sha256": "dafdd268d5d82fdcf6bb31a124a77ea5eb427b740fe44b723ec4007a6a8c0178"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_hierarchy_parser.hpp",
+          "bytes": 2466,
+          "sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_hierarchy_parser.hpp",
+          "bytes": 2466,
+          "sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c"
+        },
+        "baseline_git_blob": "a4d8db3c547666f73a80d778424f5df935820ea1",
+        "baseline_git_sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_hierarchy_parser.hpp",
+          "bytes": 2466,
+          "sha256": "1615cf8c2310fe1984cfb853f706b85fff5d585a3f71a91e0ca17bd81a29268c"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/hierarchy_parser_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "baseline_git_blob": "52b6275cd53b1efeeeb9848d18c0960239df6450",
+        "baseline_git_sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_load_cache.hpp",
+          "bytes": 4654,
+          "sha256": "242951cfc3e6833c0f99d8e9bbd09644ad6a1e7179c98ca04672131a3793da27"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/load_cache_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_root_dispatch.hpp",
+          "bytes": 3835,
+          "sha256": "12f08dc3a62d0bfd7755f748b3f265000f3b1bbc99d707f65da11604113f6080"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_root_dispatch.hpp",
+          "bytes": 3835,
+          "sha256": "12f08dc3a62d0bfd7755f748b3f265000f3b1bbc99d707f65da11604113f6080"
+        },
+        "baseline_git_blob": "9fd480b682e4bed845a1958c41e4c627692923f1",
+        "baseline_git_sha256": "12f08dc3a62d0bfd7755f748b3f265000f3b1bbc99d707f65da11604113f6080",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_root_dispatch.hpp",
+          "bytes": 3835,
+          "sha256": "12f08dc3a62d0bfd7755f748b3f265000f3b1bbc99d707f65da11604113f6080"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_h.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_interface_detail.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_resource_stream_reads.hpp",
+          "bytes": 2462,
+          "sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_resource_stream_reads.hpp",
+          "bytes": 2462,
+          "sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d"
+        },
+        "baseline_git_blob": "e07f623b33671cc02635804f5f0a0bd1fcac9359",
+        "baseline_git_sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_resource_stream_reads.hpp",
+          "bytes": 2462,
+          "sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/stream_reads_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_skin_model_type_id_publication_fragment.hpp",
+          "bytes": 1302,
+          "sha256": "f3e2ecc285c23e80bdda83049c89f44e6dba9efbf4fff2e6c5fd4ad3df3f7fee"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_skin_model_type_id_publication_fragment.hpp",
+          "bytes": 1302,
+          "sha256": "f3e2ecc285c23e80bdda83049c89f44e6dba9efbf4fff2e6c5fd4ad3df3f7fee"
+        },
+        "baseline_git_blob": "4200a37d7673e4be6fa1819fb7bb8c16b1d6a3a5",
+        "baseline_git_sha256": "f3e2ecc285c23e80bdda83049c89f44e6dba9efbf4fff2e6c5fd4ad3df3f7fee",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_skin_model_type_id_publication_fragment.hpp",
+          "bytes": 1302,
+          "sha256": "f3e2ecc285c23e80bdda83049c89f44e6dba9efbf4fff2e6c5fd4ad3df3f7fee"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_skinned_animation_dispatch.hpp",
+          "bytes": 2369,
+          "sha256": "19ddd954c99bd8ed86203f540fd865fdb8beca0d1f6653da7ac2192e507216b5"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_skinned_animation_dispatch.hpp",
+          "bytes": 2369,
+          "sha256": "19ddd954c99bd8ed86203f540fd865fdb8beca0d1f6653da7ac2192e507216b5"
+        },
+        "baseline_git_blob": "4254c7be1a0715eb6651d4509934ace8df8ffd40",
+        "baseline_git_sha256": "19ddd954c99bd8ed86203f540fd865fdb8beca0d1f6653da7ac2192e507216b5",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_skinned_animation_dispatch.hpp",
+          "bytes": 2369,
+          "sha256": "19ddd954c99bd8ed86203f540fd865fdb8beca0d1f6653da7ac2192e507216b5"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_skinned_animation_item.hpp",
+          "bytes": 2434,
+          "sha256": "0f2581911d7bc51a7482c285296fe205d44187c0b0f27f66dd3154f87703f989"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_skinned_animation_item.hpp",
+          "bytes": 2434,
+          "sha256": "0f2581911d7bc51a7482c285296fe205d44187c0b0f27f66dd3154f87703f989"
+        },
+        "baseline_git_blob": "9d2a91aba3ffb3d3f567ff9885642a1c715a1da0",
+        "baseline_git_sha256": "0f2581911d7bc51a7482c285296fe205d44187c0b0f27f66dd3154f87703f989",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_skinned_animation_item.hpp",
+          "bytes": 2434,
+          "sha256": "0f2581911d7bc51a7482c285296fe205d44187c0b0f27f66dd3154f87703f989"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/skin_item_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_vfs_owner_services.hpp",
+          "bytes": 3548,
+          "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_vfs_owner_services.hpp",
+          "bytes": 3548,
+          "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+        },
+        "baseline_git_blob": "4c8bdae5e23b4af895d0b3ab2eb6b45c0f393333",
+        "baseline_git_sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_vfs_owner_services.hpp",
+          "bytes": 3548,
+          "sha256": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+          "bytes": 6024,
+          "sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/native_vfs_runtime_bindings.hpp",
+          "bytes": 6024,
+          "sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7"
+        },
+        "baseline_git_blob": "4813123521d1860bdb08235c5de4f281124237e7",
+        "baseline_git_sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/native_vfs_runtime_bindings.hpp",
+          "bytes": 6024,
+          "sha256": "05e6f26c575e02312cf15596c30c4a98b21c6040591b431c7c77c7ba11530fe7"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/vfs_raw_binding_h.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "include/bsp/platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/include/bsp/platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "baseline_git_blob": "b4f5b75d1f0aad73e1dd372c809f02afa08565f0",
+        "baseline_git_sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/include/bsp/platform_window.hpp",
+          "bytes": 13824,
+          "sha256": "86ff92603f4fe79a8e829fab6655cf4d0e35ebfadc192bd7dcc9fd4e0115c205"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_h.command.json"
+        ]
+      },
+      {
+        "kind": "accepted_prior_review_context",
+        "working": {
+          "path": "reports/cc12_mesh_resource_classifier_consumer_readiness.json",
+          "bytes": 83382,
+          "sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/reports/cc12_mesh_resource_classifier_consumer_readiness.json",
+          "bytes": 83382,
+          "sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce"
+        },
+        "baseline_git_blob": "8218596bd3813ecd270467d3bf916ffe164a13e0",
+        "baseline_git_sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/reports/cc12_mesh_resource_classifier_consumer_readiness.json",
+          "bytes": 83382,
+          "sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "baseline_git_blob": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+        "baseline_git_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_hosts.cpp",
+          "bytes": 120868,
+          "sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/startup_retained_shutdown.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_hosts_vfs.cpp",
+          "bytes": 21158,
+          "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_hosts_vfs.cpp",
+          "bytes": 21158,
+          "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+        },
+        "baseline_git_blob": "b9c96bb2b56562d8397023ca745d611676b26bdd",
+        "baseline_git_sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_hosts_vfs.cpp",
+          "bytes": 21158,
+          "sha256": "cd0767c38ac6eaaedfcf6bd1881cba4dc468c4f8324280da24acaadc16b2cc24"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/host_c_owner.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+        },
+        "baseline_git_blob": "68e5acd59f57e8ee5ef7751992fa0571e0f45127",
+        "baseline_git_sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_main.cpp",
+          "bytes": 73768,
+          "sha256": "b896cda79427bbc3cbe26cafbfeae195679cc008efe6e3775ae0b4f29f916433"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/game_main_pool_bootstrap.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "baseline_git_blob": "43df1dd3c4fc4bd9a2b1112f626c320adf5ad4af",
+        "baseline_git_sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_native_resource_application.cpp",
+          "bytes": 6579,
+          "sha256": "10c9dfec7780da2133141b9bd41fea7a3548077e560e88070d1d969ea00ef606"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c2.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_resource_pools.cpp",
+          "bytes": 9410,
+          "sha256": "7130ac9b6f96b6b0d4a90bfc01f876da9a4d4fd2ad7d2b2d7a343d6458c8c713"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_native_resource_pools.cpp",
+          "bytes": 9410,
+          "sha256": "7130ac9b6f96b6b0d4a90bfc01f876da9a4d4fd2ad7d2b2d7a343d6458c8c713"
+        },
+        "baseline_git_blob": "079c24c5499dc4c6cce0ecb038ec37f825e385f1",
+        "baseline_git_sha256": "7130ac9b6f96b6b0d4a90bfc01f876da9a4d4fd2ad7d2b2d7a343d6458c8c713",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_native_resource_pools.cpp",
+          "bytes": 9410,
+          "sha256": "7130ac9b6f96b6b0d4a90bfc01f876da9a4d4fd2ad7d2b2d7a343d6458c8c713"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "baseline_git_blob": "ec4a8466c7628fdc84d7a070ed7103bc3cd828b3",
+        "baseline_git_sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_native_type_storage.cpp",
+          "bytes": 4725,
+          "sha256": "d8785f6b6d0aacd3eb5f90e100ec8edf33e0530cdffd799ed8bd550382459b92"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/type_storage_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "baseline_git_blob": "32a441a593a381b649ccd89b71a6e4277e91401d",
+        "baseline_git_sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_native_vfs_application.cpp",
+          "bytes": 8470,
+          "sha256": "c3f571d7ba07e75028822ed50adf80a1a2fb070ba6294ec8b120018b963e1148"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c2.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c3.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/game_native_vfs_runtime.cpp",
+          "bytes": 35513,
+          "sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/game_native_vfs_runtime.cpp",
+          "bytes": 35513,
+          "sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28"
+        },
+        "baseline_git_blob": "b9afed61eb31f8188b6ffc2268ac327b9f98c6c0",
+        "baseline_git_sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/game_native_vfs_runtime.cpp",
+          "bytes": 35513,
+          "sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/light_type_bootstrap.cpp",
+          "bytes": 5880,
+          "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/light_type_bootstrap.cpp",
+          "bytes": 5880,
+          "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+        },
+        "baseline_git_blob": "0c1fdc4e2aa3f27f2c56bb518b99ccf2597db2d9",
+        "baseline_git_sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/light_type_bootstrap.cpp",
+          "bytes": 5880,
+          "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_animation_channel_body_reader.cpp",
+          "bytes": 7779,
+          "sha256": "a6fa952ab8022c00bf7ce824b7895b4e46646513596275c6c27fc6adde15359a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_animation_channel_body_reader.cpp",
+          "bytes": 7779,
+          "sha256": "a6fa952ab8022c00bf7ce824b7895b4e46646513596275c6c27fc6adde15359a"
+        },
+        "baseline_git_blob": "1c6fb4166b8a5a7d04c96521c0bc36803a5e7deb",
+        "baseline_git_sha256": "a6fa952ab8022c00bf7ce824b7895b4e46646513596275c6c27fc6adde15359a",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_animation_channel_body_reader.cpp",
+          "bytes": 7779,
+          "sha256": "a6fa952ab8022c00bf7ce824b7895b4e46646513596275c6c27fc6adde15359a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c2.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c3.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_animation_channels_resource_reader.cpp",
+          "bytes": 7300,
+          "sha256": "252f08552e34ca25c1a4715ae5c9e548a292e6e6d233b7cffd19a1aefe5648c4"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_animation_channels_resource_reader.cpp",
+          "bytes": 7300,
+          "sha256": "252f08552e34ca25c1a4715ae5c9e548a292e6e6d233b7cffd19a1aefe5648c4"
+        },
+        "baseline_git_blob": "2dc372473ae7eb8b7e1a2bdb9ced93a233552e19",
+        "baseline_git_sha256": "252f08552e34ca25c1a4715ae5c9e548a292e6e6d233b7cffd19a1aefe5648c4",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_animation_channels_resource_reader.cpp",
+          "bytes": 7300,
+          "sha256": "252f08552e34ca25c1a4715ae5c9e548a292e6e6d233b7cffd19a1aefe5648c4"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_animation_group_lifetime.cpp",
+          "bytes": 6367,
+          "sha256": "eba10d118f5aa363b26177f28f28db03afaf38bf9121dd367946431b3449640d"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_animation_group_lifetime.cpp",
+          "bytes": 6367,
+          "sha256": "eba10d118f5aa363b26177f28f28db03afaf38bf9121dd367946431b3449640d"
+        },
+        "baseline_git_blob": "26a789c36cd0759e8df0e0887d24c9f7cd2fafe8",
+        "baseline_git_sha256": "eba10d118f5aa363b26177f28f28db03afaf38bf9121dd367946431b3449640d",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_animation_group_lifetime.cpp",
+          "bytes": 6367,
+          "sha256": "eba10d118f5aa363b26177f28f28db03afaf38bf9121dd367946431b3449640d"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_bindings.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_bone_resource_item_reader.cpp",
+          "bytes": 4217,
+          "sha256": "0c66e54098f05738f53ea849957fc01737f5e9df4b23032120a1dfa99597d294"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_bone_resource_item_reader.cpp",
+          "bytes": 4217,
+          "sha256": "0c66e54098f05738f53ea849957fc01737f5e9df4b23032120a1dfa99597d294"
+        },
+        "baseline_git_blob": "44bc656994d3193247a6f17ac733052ddc6fcc0f",
+        "baseline_git_sha256": "0c66e54098f05738f53ea849957fc01737f5e9df4b23032120a1dfa99597d294",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_bone_resource_item_reader.cpp",
+          "bytes": 4217,
+          "sha256": "0c66e54098f05738f53ea849957fc01737f5e9df4b23032120a1dfa99597d294"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_camera_group_resource.cpp",
+          "bytes": 10972,
+          "sha256": "b0cecc2623179dd82dcb9c3a80b438a0e86bd874c4d3b689ec73a9d8b66dd607"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_camera_group_resource.cpp",
+          "bytes": 10972,
+          "sha256": "b0cecc2623179dd82dcb9c3a80b438a0e86bd874c4d3b689ec73a9d8b66dd607"
+        },
+        "baseline_git_blob": "391ca3960c2ec907fb996e076a8fd30153a120a5",
+        "baseline_git_sha256": "b0cecc2623179dd82dcb9c3a80b438a0e86bd874c4d3b689ec73a9d8b66dd607",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_camera_group_resource.cpp",
+          "bytes": 10972,
+          "sha256": "b0cecc2623179dd82dcb9c3a80b438a0e86bd874c4d3b689ec73a9d8b66dd607"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/camera_group_forwarding.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_fallback_resource_type_initializer.cpp",
+          "bytes": 1067,
+          "sha256": "39d76404789baacc2fb083c8af375aa01f5bf5960c75ad5c27648ebc3d1517db"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_fallback_resource_type_initializer.cpp",
+          "bytes": 1067,
+          "sha256": "39d76404789baacc2fb083c8af375aa01f5bf5960c75ad5c27648ebc3d1517db"
+        },
+        "baseline_git_blob": "34dbd1e0d144cf0a4e82dc717e880f54d4a06df5",
+        "baseline_git_sha256": "39d76404789baacc2fb083c8af375aa01f5bf5960c75ad5c27648ebc3d1517db",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_fallback_resource_type_initializer.cpp",
+          "bytes": 1067,
+          "sha256": "39d76404789baacc2fb083c8af375aa01f5bf5960c75ad5c27648ebc3d1517db"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_game_resource_classification.cpp",
+          "bytes": 2861,
+          "sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_game_resource_classification.cpp",
+          "bytes": 2861,
+          "sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65"
+        },
+        "baseline_git_blob": "1cc054e133ee4162c44d8106b601671fb6062b5e",
+        "baseline_git_sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_game_resource_classification.cpp",
+          "bytes": 2861,
+          "sha256": "f46fcd64bdb833a1a10a2e297506146090458c5431dda04437c7707146481e65"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/classification_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_mesh_subset_loading.cpp",
+          "bytes": 29496,
+          "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_mesh_subset_loading.cpp",
+          "bytes": 29496,
+          "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+        },
+        "baseline_git_blob": "de31ac8798d8c1041004a3a0adcd447435255cf9",
+        "baseline_git_sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_mesh_subset_loading.cpp",
+          "bytes": 29496,
+          "sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_c_adapter.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/mesh_predicate_fixed.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_container_lifetime.cpp",
+          "bytes": 8540,
+          "sha256": "6c4f7a17d269df717a18e5732dfcc0d2f159ab8f0b9395147364484db06e7b8b"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_container_lifetime.cpp",
+          "bytes": 8540,
+          "sha256": "6c4f7a17d269df717a18e5732dfcc0d2f159ab8f0b9395147364484db06e7b8b"
+        },
+        "baseline_git_blob": "122f5a2e78dae0a58649f0a1d375d6c50adf33c8",
+        "baseline_git_sha256": "6c4f7a17d269df717a18e5732dfcc0d2f159ab8f0b9395147364484db06e7b8b",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_container_lifetime.cpp",
+          "bytes": 8540,
+          "sha256": "6c4f7a17d269df717a18e5732dfcc0d2f159ab8f0b9395147364484db06e7b8b"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/container_c1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/container_c2.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_extra_item_lifetime.cpp",
+          "bytes": 7013,
+          "sha256": "f78fd8b4045fc50aad404769dff7b5883e1e24fdc4e30f3655429bf3f5895ebb"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_extra_item_lifetime.cpp",
+          "bytes": 7013,
+          "sha256": "f78fd8b4045fc50aad404769dff7b5883e1e24fdc4e30f3655429bf3f5895ebb"
+        },
+        "baseline_git_blob": "a36dc72c5cac110dcf878c2a44b7de7f38baf7b3",
+        "baseline_git_sha256": "f78fd8b4045fc50aad404769dff7b5883e1e24fdc4e30f3655429bf3f5895ebb",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_extra_item_lifetime.cpp",
+          "bytes": 7013,
+          "sha256": "f78fd8b4045fc50aad404769dff7b5883e1e24fdc4e30f3655429bf3f5895ebb"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_extra_item_parsers.cpp",
+          "bytes": 3254,
+          "sha256": "cd961ac4d6ff0abed92afa872451799062e8d547e38eaca879f64279141b02c0"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_extra_item_parsers.cpp",
+          "bytes": 3254,
+          "sha256": "cd961ac4d6ff0abed92afa872451799062e8d547e38eaca879f64279141b02c0"
+        },
+        "baseline_git_blob": "4fce8732b387e3e0e11e0d0a875466763dc6b095",
+        "baseline_git_sha256": "cd961ac4d6ff0abed92afa872451799062e8d547e38eaca879f64279141b02c0",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_extra_item_parsers.cpp",
+          "bytes": 3254,
+          "sha256": "cd961ac4d6ff0abed92afa872451799062e8d547e38eaca879f64279141b02c0"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/extra_item_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_fallback_item.cpp",
+          "bytes": 1101,
+          "sha256": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_fallback_item.cpp",
+          "bytes": 1101,
+          "sha256": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136"
+        },
+        "baseline_git_blob": "ccf3fc14ddd2e805a050ed7edb62a4eebde5d7a6",
+        "baseline_git_sha256": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_fallback_item.cpp",
+          "bytes": 1101,
+          "sha256": "406cdb0fa91f1ca04e36e7eaa881c7d12d7dc17782664f1e109f2cd95296f136"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_hierarchy_parser.cpp",
+          "bytes": 9894,
+          "sha256": "f0a87a37bac3dd443c48c65414da06a03e2c529583c7538c3c75f3205d695559"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_hierarchy_parser.cpp",
+          "bytes": 9894,
+          "sha256": "f0a87a37bac3dd443c48c65414da06a03e2c529583c7538c3c75f3205d695559"
+        },
+        "baseline_git_blob": "4e76bad254c1b08b27b1451fd1b52c9267517a23",
+        "baseline_git_sha256": "f0a87a37bac3dd443c48c65414da06a03e2c529583c7538c3c75f3205d695559",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_hierarchy_parser.cpp",
+          "bytes": 9894,
+          "sha256": "f0a87a37bac3dd443c48c65414da06a03e2c529583c7538c3c75f3205d695559"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "baseline_git_blob": "d6fc8abc02f911a6a3cc18be7dca751f76471088",
+        "baseline_git_sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_load_cache.cpp",
+          "bytes": 11802,
+          "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/load_cache_binding_tail.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c2.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c3.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_root_dispatch.cpp",
+          "bytes": 7536,
+          "sha256": "232b5898dea83edc435f7be8d04123eb5d78136811a21e9bb1a9d4dfbaa3f274"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_root_dispatch.cpp",
+          "bytes": 7536,
+          "sha256": "232b5898dea83edc435f7be8d04123eb5d78136811a21e9bb1a9d4dfbaa3f274"
+        },
+        "baseline_git_blob": "fad15750644f744272b059e70bd99b78fba1efdb",
+        "baseline_git_sha256": "232b5898dea83edc435f7be8d04123eb5d78136811a21e9bb1a9d4dfbaa3f274",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_root_dispatch.cpp",
+          "bytes": 7536,
+          "sha256": "232b5898dea83edc435f7be8d04123eb5d78136811a21e9bb1a9d4dfbaa3f274"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c1.command.json",
+          "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c2.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_resource_stream_reads.cpp",
+          "bytes": 5073,
+          "sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_resource_stream_reads.cpp",
+          "bytes": 5073,
+          "sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493"
+        },
+        "baseline_git_blob": "3c95f291f1fa40c0e43c5cb9d18492ffea601990",
+        "baseline_git_sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_resource_stream_reads.cpp",
+          "bytes": 5073,
+          "sha256": "8947eba748ca262ca9e03360b8ae52aca7b6658b2651f8857b51a54cd82df493"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_skin_model_type_id_publication_fragment.cpp",
+          "bytes": 552,
+          "sha256": "f5ca40a823e07641c7acf7b6e2fdb4860effd79016dc53f70a474a5c0052176a"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_skin_model_type_id_publication_fragment.cpp",
+          "bytes": 552,
+          "sha256": "f5ca40a823e07641c7acf7b6e2fdb4860effd79016dc53f70a474a5c0052176a"
+        },
+        "baseline_git_blob": "b8a13e6890c712ebc11ed67f38f8b0b7e8893dc7",
+        "baseline_git_sha256": "f5ca40a823e07641c7acf7b6e2fdb4860effd79016dc53f70a474a5c0052176a",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_skin_model_type_id_publication_fragment.cpp",
+          "bytes": 552,
+          "sha256": "f5ca40a823e07641c7acf7b6e2fdb4860effd79016dc53f70a474a5c0052176a"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_skinned_animation_dispatch.cpp",
+          "bytes": 2576,
+          "sha256": "e1c66ef7cbdb6e0efcf554c26c582c961cb7d24f0464f3c0742ad1a6b569646b"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_skinned_animation_dispatch.cpp",
+          "bytes": 2576,
+          "sha256": "e1c66ef7cbdb6e0efcf554c26c582c961cb7d24f0464f3c0742ad1a6b569646b"
+        },
+        "baseline_git_blob": "ee166ac25a3a97561e2e2dd1f60c73884b56f2d3",
+        "baseline_git_sha256": "e1c66ef7cbdb6e0efcf554c26c582c961cb7d24f0464f3c0742ad1a6b569646b",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_skinned_animation_dispatch.cpp",
+          "bytes": 2576,
+          "sha256": "e1c66ef7cbdb6e0efcf554c26c582c961cb7d24f0464f3c0742ad1a6b569646b"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/skinned_dispatch_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_skinned_animation_item.cpp",
+          "bytes": 11316,
+          "sha256": "a86de6ea7792ac7d603edaf76236d3950ddce4951e01722450086c4bc272eeee"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_skinned_animation_item.cpp",
+          "bytes": 11316,
+          "sha256": "a86de6ea7792ac7d603edaf76236d3950ddce4951e01722450086c4bc272eeee"
+        },
+        "baseline_git_blob": "9b04140005779a38d82c6403c8acfcd8c8754c5b",
+        "baseline_git_sha256": "a86de6ea7792ac7d603edaf76236d3950ddce4951e01722450086c4bc272eeee",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_skinned_animation_item.cpp",
+          "bytes": 11316,
+          "sha256": "a86de6ea7792ac7d603edaf76236d3950ddce4951e01722450086c4bc272eeee"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_vfs_owner_services.cpp",
+          "bytes": 1236,
+          "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_vfs_owner_services.cpp",
+          "bytes": 1236,
+          "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+        },
+        "baseline_git_blob": "62fe8b31d3d38ae8f352549b091282e839807415",
+        "baseline_git_sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_vfs_owner_services.cpp",
+          "bytes": 1236,
+          "sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_c.command.json"
+        ]
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/native_vfs_runtime_bindings.cpp",
+          "bytes": 14818,
+          "sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/native_vfs_runtime_bindings.cpp",
+          "bytes": 14818,
+          "sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9"
+        },
+        "baseline_git_blob": "2285ff2795cbe5242af23c6669fcb050629c863c",
+        "baseline_git_sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/native_vfs_runtime_bindings.cpp",
+          "bytes": 14818,
+          "sha256": "e69777aaf6eba33658f9cb2d38aa0dba4995df07165cbf215bcd8e54becfd7a9"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": []
+      },
+      {
+        "kind": "current_Source",
+        "working": {
+          "path": "src/platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "frozen_working": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/working/src/platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "baseline_git_blob": "ec6f7b179fba488e6f0bf77e8cf85465c0be6d7b",
+        "baseline_git_sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03",
+        "frozen_git": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/git/src/platform_window.cpp",
+          "bytes": 11783,
+          "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+        },
+        "working_matches_baseline_with_line_endings_normalized": true,
+        "bounded_semantic_read_receipts": [
+          "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_c.command.json"
+        ]
+      }
+    ],
+    "bounded_command_receipts": [
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/actual_game_composition.command.json",
+          "bytes": 1725,
+          "sha256": "e561d1bad26da064248523bd092c446989c1af7f71845954631ceca177e044f0"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/actual_game_composition.stdout.txt",
+          "bytes": 389,
+          "sha256": "f662f7fcc41640e236f4e66e178b3002bfb4c1b79047f5c6872c3516cedaa542"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/actual_game_composition.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-g",
+            "game*.hpp",
+            "-g",
+            "game*.cpp",
+            "NativeGameResourceClassificationContext|NativeResourceRootDispatchContext|NativeResourceLoadCacheContext|NativeMeshLoadingContext|NativeResourceContainerReferences|NativeMeshResourceReferences|NativeDefaultResourceLoadCacheCalls|fallback_resource_type|guard_0109020d|0109021c",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/adapter_implementors.command.json",
+          "bytes": 1323,
+          "sha256": "c99c558e5f3a8b54be74aeaf5dd79bd5181ee888e2e076f474b3f5eb1f483558"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/adapter_implementors.stdout.txt",
+          "bytes": 3349,
+          "sha256": "3b084555ad09c7adfea5f901e521c4992d48a2d60bb5060e40b4aa375a74fe85"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/adapter_implementors.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "public NativeResourceDispatchCalls|public NativeResourceItemTypeCalls|public NativeResourceLoadCacheCalls|public NativeRefCountedDeleteCalls",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_bindings.command.json",
+          "bytes": 1157,
+          "sha256": "6404b06b3d5ccd929a9310fa203b01d6f73e11c86632df2e90323a59be0ea8fa"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_bindings.stdout.txt",
+          "bytes": 1480,
+          "sha256": "b88dfa456898020ac5b40bdccdc8730e74aa9b510b87dd16d4669e1612c5a05a"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_bindings.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_animation_group_lifetime.cpp",
+          "start_line": 150,
+          "requested_lines": 60,
+          "returned_lines": 36,
+          "total_lines": 185
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_h.command.json",
+          "bytes": 1147,
+          "sha256": "f8fb5b8f417e0212149581caaf04618cd2934b1d40c864d079d38982b3123041"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_h.stdout.txt",
+          "bytes": 3071,
+          "sha256": "e04c742fd33940f265c24e8a76343fdb827991e1526f2cc2d59d3c413eff7fbf"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/animation_group_lifetime_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_animation_group_lifetime.hpp",
+          "start_line": 1,
+          "requested_lines": 95,
+          "returned_lines": 59,
+          "total_lines": 59
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_c.command.json",
+          "bytes": 1098,
+          "sha256": "2c02a592d9daeee26393bffcc6fd3bb2865545d4419f2b2c10ff960b9475537d"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_c.stdout.txt",
+          "bytes": 4739,
+          "sha256": "70e4292e277542b429f5323cf54d809a821d0d5ba72a54d080a36acd009e81cf"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_bone_resource_item_reader.cpp",
+          "start_line": 1,
+          "requested_lines": 133,
+          "returned_lines": 126,
+          "total_lines": 126
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_h.command.json",
+          "bytes": 1110,
+          "sha256": "101d835c5c08744beb1fb2174803267e52b55490bce75c4a13e7d37ef959dbe8"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_h.stdout.txt",
+          "bytes": 1780,
+          "sha256": "63f118e966ffdc773614bf98bd3f5b9ed3430acfc8c69091ee431cdd47f4e03a"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/bone_reader_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_bone_resource_item_reader.hpp",
+          "start_line": 1,
+          "requested_lines": 42,
+          "returned_lines": 36,
+          "total_lines": 36
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/camera_group_forwarding.command.json",
+          "bytes": 1121,
+          "sha256": "69cab38eb5c51aaa64f46d75c5d3c4a1e684e595e6a6adee8a3590b73303b3dc"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/camera_group_forwarding.stdout.txt",
+          "bytes": 3348,
+          "sha256": "549d6773458f8727ee3948219763c9bdbd0fb153c0c92c6593d2799849888611"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/camera_group_forwarding.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_camera_group_resource.cpp",
+          "start_line": 166,
+          "requested_lines": 58,
+          "returned_lines": 44,
+          "total_lines": 209
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/camera_group_h.command.json",
+          "bytes": 1105,
+          "sha256": "62cc15a56a262cb190d9bf4cc3b0e10b62b0e21d7bc98b73a6f23e093cacde6b"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/camera_group_h.stdout.txt",
+          "bytes": 5144,
+          "sha256": "040d5efa922dfa2f95f93d96e4782d252b01b014f1dc38c96b4c3c119e72af05"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/camera_group_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_camera_group_resource.hpp",
+          "start_line": 1,
+          "requested_lines": 87,
+          "returned_lines": 79,
+          "total_lines": 79
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c1.command.json",
+          "bytes": 1130,
+          "sha256": "671a0667a659cd34a8e9d2a34e8b4f87e4080a0de1f9c0e806f9c892ccb3cc8a"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c1.stdout.txt",
+          "bytes": 3038,
+          "sha256": "2c8dbb745fe461dc58a3985db3f4e3197c05ad2ffba0277931b69d4ba94868f5"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_animation_channel_body_reader.cpp",
+          "start_line": 1,
+          "requested_lines": 80,
+          "returned_lines": 80,
+          "total_lines": 196
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c2.command.json",
+          "bytes": 1132,
+          "sha256": "aaf028ba76ea3934c9dadf9301dd3d187c150a00775ee85738db3b4bf3c772e7"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c2.stdout.txt",
+          "bytes": 2969,
+          "sha256": "601ab292f139686c978f13c2c5750bac508636ac32cf298965f28b6475871616"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_animation_channel_body_reader.cpp",
+          "start_line": 81,
+          "requested_lines": 70,
+          "returned_lines": 70,
+          "total_lines": 196
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c3.command.json",
+          "bytes": 1134,
+          "sha256": "4a3c34ee93f1b8de7fa3f4dac592da22fe3d2031293962daa2d9ec16f53b7a5a"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c3.stdout.txt",
+          "bytes": 2644,
+          "sha256": "dec0707ee9af0dc917f7cf1bcbb18f4a6a7d3b1ad4cf33693f56ee6defbc6ece"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_c3.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_animation_channel_body_reader.cpp",
+          "start_line": 151,
+          "requested_lines": 65,
+          "returned_lines": 46,
+          "total_lines": 196
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_h.command.json",
+          "bytes": 1142,
+          "sha256": "673469ea48db2f4fba72cdf42a0ab8ff7f2c47cf6ec105be8db0d3845fbfb075"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_h.stdout.txt",
+          "bytes": 2570,
+          "sha256": "0a02f8fc919a62151ff47b4b6bc6ac406f161830d068d5e3192d0faf81c10395"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_body_reader_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_animation_channel_body_reader.hpp",
+          "start_line": 1,
+          "requested_lines": 90,
+          "returned_lines": 49,
+          "total_lines": 49
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_pool_targets.command.json",
+          "bytes": 1287,
+          "sha256": "b50905cc774fd0d1d67e1f2f816196d35e123a37118bf1d3880998d90a0c6904"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_pool_targets.stdout.txt",
+          "bytes": 1529,
+          "sha256": "9b3d0e31d74597b7be2add009244d96f7b9463e7ed2ce67ba4fc5e5d11559d35"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_pool_targets.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "public NativeAnimationChannelBodyCalls|read_channel_00b8aad0|initialize_hierarchy_once_00cd82d0|hierarchy_pool_0109022c\\(",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_reader_h.command.json",
+          "bytes": 1137,
+          "sha256": "06264bcdc5104e8138bf00d05213191a61de1892883be6400ad9fe278395d4af"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_reader_h.stdout.txt",
+          "bytes": 3370,
+          "sha256": "71b57c80375309d82279dc8ddae364e275bd93170ead8a65c219ca1cf3e33a34"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/channel_reader_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_animation_channels_resource_reader.hpp",
+          "start_line": 1,
+          "requested_lines": 67,
+          "returned_lines": 65,
+          "total_lines": 65
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/classification_c.command.json",
+          "bytes": 1109,
+          "sha256": "1e3091c0086b5af6d33a59eb5760bf6a3fa8732839c4df177c660cc1199f248b"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/classification_c.stdout.txt",
+          "bytes": 3060,
+          "sha256": "fca7a797d6f61f2744b82807862c72345df0bdf641c3e8c90d23ac37044557e9"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/classification_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_game_resource_classification.cpp",
+          "start_line": 1,
+          "requested_lines": 58,
+          "returned_lines": 52,
+          "total_lines": 52
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_c1.command.json",
+          "bytes": 1096,
+          "sha256": "8efeb7d8c627783cd3a008870961c2f7a2b3b1ad64e3564c320f2e1c362e5731"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_c1.stdout.txt",
+          "bytes": 3976,
+          "sha256": "fcbeb82370fb6b9ab783c6b8df4bccf433cbd92d8767eb9932ae4c2ce475994c"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_c1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_container_lifetime.cpp",
+          "start_line": 1,
+          "requested_lines": 79,
+          "returned_lines": 79,
+          "total_lines": 158
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_c2.command.json",
+          "bytes": 1098,
+          "sha256": "e8c8707e7bf6192485c113f2b74c44c87fb5b86dffe3d3f5877275d1685a8a35"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_c2.stdout.txt",
+          "bytes": 5246,
+          "sha256": "903acf9dd02893cd9b18d5bc7ccf722db736536f821d5613059f88f7970bc6b5"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_c2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_container_lifetime.cpp",
+          "start_line": 80,
+          "requested_lines": 83,
+          "returned_lines": 79,
+          "total_lines": 158
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_h.command.json",
+          "bytes": 1108,
+          "sha256": "7d2d150a61811210d54d5ed9a92887771dc6009ca44b6ed00586a766d809f537"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_h.stdout.txt",
+          "bytes": 3864,
+          "sha256": "c65aa4f7ed373a4dd59345ca08143b3b10a8e739d48002674f5ee51e61b831e1"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/container_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_container_lifetime.hpp",
+          "start_line": 1,
+          "requested_lines": 65,
+          "returned_lines": 60,
+          "total_lines": 60
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_item_c.command.json",
+          "bytes": 1097,
+          "sha256": "8dd27a204b6a368dff04256117f2748e767d1ac13cc8f2d70bab4faa9038f3f6"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_item_c.stdout.txt",
+          "bytes": 3633,
+          "sha256": "f2470151f6e50b7f33d6f798f093a0503c5f9fc3cf33192844cc95a28c9ac171"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_item_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_extra_item_parsers.cpp",
+          "start_line": 1,
+          "requested_lines": 103,
+          "returned_lines": 97,
+          "total_lines": 97
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_item_h.command.json",
+          "bytes": 1111,
+          "sha256": "454cd528708fa5d4aa0d198bc2809b2752b0e17208040c3e9b89f23f16956110"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_item_h.stdout.txt",
+          "bytes": 3416,
+          "sha256": "aa8777d5a82b7c510596a89781d23feb0c08ee76c28af1a036561479a53e1216"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_item_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_extra_item_parsers.hpp",
+          "start_line": 1,
+          "requested_lines": 76,
+          "returned_lines": 74,
+          "total_lines": 74
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_lifetime_h.command.json",
+          "bytes": 1125,
+          "sha256": "c7f17c90a3dee3e28c5891083f4e3cbc795a19d77868fb04af9c127594605c0e"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_lifetime_h.stdout.txt",
+          "bytes": 4104,
+          "sha256": "7538f7c5d0fca4524fc65513d19af5cd80e26bdf2d0ce62844c2dea90456fa04"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_lifetime_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_extra_item_lifetime.hpp",
+          "start_line": 1,
+          "requested_lines": 84,
+          "returned_lines": 77,
+          "total_lines": 77
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_reader_boundaries.command.json",
+          "bytes": 1174,
+          "sha256": "b1d789227a7167f3f0aa3bb3b4362e0d8b334f77d6510f82b657e36e15da42d6"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_reader_boundaries.stdout.txt",
+          "bytes": 3569,
+          "sha256": "3c935196610830015904425faf12e112c6d50af83b17a369d0fdb7bd279fab73"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/extra_reader_boundaries.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "NativeResourceExtraItemReaderCalls|00b8ad80|00b8af30|0109022c",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_c.command.json",
+          "bytes": 1141,
+          "sha256": "0bd632161e27cf0fa55b35c2a524852b73b4a16902daad8a026cf26c86b3521b"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_c.stdout.txt",
+          "bytes": 1182,
+          "sha256": "97d8e1c0229336e1627997427b9b7287647aa2d7a95a8e6356f2aa1a6171b280"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_fallback_resource_type_initializer.cpp",
+          "start_line": 1,
+          "requested_lines": 100,
+          "returned_lines": 31,
+          "total_lines": 31
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_h.command.json",
+          "bytes": 1155,
+          "sha256": "b663c9dba712e3526571a3ed376732ee36dcc7575c0c476688603936bd2dfcbb"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_h.stdout.txt",
+          "bytes": 2107,
+          "sha256": "5100fdadb0674eb2c78aac426ae0e662cf511ad5e22174c6cdf8a89bf418f41e"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/fallback_initializer_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_fallback_resource_type_initializer.hpp",
+          "start_line": 1,
+          "requested_lines": 85,
+          "returned_lines": 43,
+          "total_lines": 43
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/forwarder_source_map.command.json",
+          "bytes": 1563,
+          "sha256": "0ce72a7bf39a28ab66c28fe67b9fe7ca58cfee32b53d0e9fc2837f1f4124f7c4"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/forwarder_source_map.stdout.txt",
+          "bytes": 2711,
+          "sha256": "2ab14229b44f9e3f1c10ff21f4af00784cc408ef30b7af6ac76f287f8bab798a"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/forwarder_source_map.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "NativeCameraGroupResourceCalls::|NativeCameraGroupResourceReferences::|NativeResourceExtraItemParserCalls::|NativeSkinnedAnimationResourceCalls::",
+            "src/native_camera_group_resource.cpp",
+            "src/native_resource_extra_item_parsers.cpp",
+            "src/native_skinned_animation_dispatch.cpp"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/game_main_pool_bootstrap.command.json",
+          "bytes": 1089,
+          "sha256": "d262de33baa575a5218ef5958b3648c57590788c47b1089068f72aa25c48bdf7"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/game_main_pool_bootstrap.stdout.txt",
+          "bytes": 3373,
+          "sha256": "ba3487f48fdf32a106baf17862b2265d173dbc0ba4416b83bc0e96cc018fa14c"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/game_main_pool_bootstrap.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_main.cpp",
+          "start_line": 1090,
+          "requested_lines": 40,
+          "returned_lines": 40,
+          "total_lines": 1251
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/group_delete_targets.command.json",
+          "bytes": 1252,
+          "sha256": "be725281455d3a0edcd22f7070349b14ba6d9e714cb7fe29fdfee41165113ebe"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/group_delete_targets.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/group_delete_targets.stderr.txt",
+          "bytes": 222,
+          "sha256": "d7e9f11ecc02e924cf84b5e092c81ea3f4a4c0e8f08acffb6a77c26fbb5a3bd4"
+        },
+        "exit_code": 2,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "00b78d00|group_deletes|NativeAnimationGroup.*Delete|class Native.*Group.*",
+            "include/bsp/native*",
+            "src/native_animation_group*"
+          ]
+        },
+        "authoritative": false
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/group_delete_targets_fixed.command.json",
+          "bytes": 1318,
+          "sha256": "f2f7d05735625e22bffafdd93fc2a6046241dc27df2e43c76772e56135f6e698"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/group_delete_targets_fixed.stdout.txt",
+          "bytes": 559,
+          "sha256": "8bf9361f7f7cfb24ed125f94d9c00627a2f7f12dc46d891b45cb2fd24a17c857"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/group_delete_targets_fixed.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-g",
+            "native*.hpp",
+            "-g",
+            "native*.cpp",
+            "00b78d00|class NativeAnimationGroup|class Native.*Group.*Delete",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/hierarchy_parser_h.command.json",
+          "bytes": 1127,
+          "sha256": "3284a9f295a37d73647befe56eea4e9e9e4c06b64d39b3643f5dc45a518c8b7d"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/hierarchy_parser_h.stdout.txt",
+          "bytes": 2613,
+          "sha256": "7466f594fc629b9e537735dbc026c57c3f04bf6154159eef4c90c47710492087"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/hierarchy_parser_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_hierarchy_parser.hpp",
+          "start_line": 1,
+          "requested_lines": 100,
+          "returned_lines": 39,
+          "total_lines": 39
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_api_map.command.json",
+          "bytes": 1251,
+          "sha256": "1db2e8e54b648b1eea76e7d333c5e6f391551804be2eab17291363382bc29521"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_api_map.stdout.txt",
+          "bytes": 6700,
+          "sha256": "63180e06142e7a38ef97d8f0439f7b89e004041ead7552516d5204a2b6409576"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_api_map.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "GameVfsHost::|raw_resource|native_types|resources_|native_|ResourceApplication",
+            "include/bsp/game_hosts_vfs.hpp",
+            "src/game_hosts_vfs.cpp"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_c_owner.command.json",
+          "bytes": 1060,
+          "sha256": "cb0668e7c2b4fc73c829d09eaab10876eff79858e035d82536dec37c9bd14ea1"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_c_owner.stdout.txt",
+          "bytes": 4522,
+          "sha256": "c8a1ac73fa5d00cf495e8f227bc81bb3ca224caad26d943739a68047d816464e"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_c_owner.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_hosts_vfs.cpp",
+          "start_line": 100,
+          "requested_lines": 80,
+          "returned_lines": 80,
+          "total_lines": 457
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_h_owner.command.json",
+          "bytes": 1076,
+          "sha256": "e08152fee7eb1858432d9b549e274ed0e27ef38bd80040d140de95ed2a3713dd"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_h_owner.stdout.txt",
+          "bytes": 4058,
+          "sha256": "84b17e860ba18118eb74e1ffaa663fdf209f02eb851aa5db641017ff54c33197"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_h_owner.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_hosts_vfs.hpp",
+          "start_line": 100,
+          "requested_lines": 65,
+          "returned_lines": 65,
+          "total_lines": 246
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_shutdown_contract.command.json",
+          "bytes": 1463,
+          "sha256": "883dd0d473a49d54207d98c6f606a66c972054ab3e8c7b7cebb7cd229d6a09d7"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_shutdown_contract.stdout.txt",
+          "bytes": 4609,
+          "sha256": "d2e0097da0cc468c859ca9fb5ce243a47ab71640aebe2f23097c67f41fc734e2"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/host_shutdown_contract.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "shutdown|drain|bind_deletion|~Game",
+            "include/bsp/game_hosts.hpp",
+            "src/game_hosts.cpp",
+            "include/bsp/game_native_vfs_application.hpp",
+            "include/bsp/game_native_resource_application.hpp",
+            "src/game_hosts_vfs.cpp"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/initializer_paths.command.json",
+          "bytes": 1237,
+          "sha256": "7478246fc53f60f2cc5629aa93d26be84ef94ac2ec1944111226b70bc7637bf3"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/initializer_paths.stdout.txt",
+          "bytes": 382,
+          "sha256": "2c3d6c0bcf6080363c2abadb106e4272846f0e92ebba57bdb98b81312da0de07"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/initializer_paths.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "--files",
+            "include/bsp",
+            "src",
+            "-g",
+            "*fallback*",
+            "-g",
+            "*skin*type*",
+            "-g",
+            "*mesh_resource_type*"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/light_domain_contract.command.json",
+          "bytes": 1290,
+          "sha256": "9395430d91961de8e88a16ef5020472f1cfb518ba3c7aab22c4975d3cbb39f0e"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/light_domain_contract.stdout.txt",
+          "bytes": 3169,
+          "sha256": "c87cc77cdedf46f64d32a83c4d4e593bb12da9db5dbc05dcb0e6b1862c05b5cb"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/light_domain_contract.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "LightTypeBootstrap\\(|storage\\(\\)|counter_|TypeIdCounterLifetime|guard",
+            "include/bsp/light_type_bootstrap.hpp",
+            "src/light_type_bootstrap.cpp"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_binding_tail.command.json",
+          "bytes": 1117,
+          "sha256": "4d71774f787c5e78f389a417a187dc7548712156caf93778be80f4cdfe82e1e8"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_binding_tail.stdout.txt",
+          "bytes": 2891,
+          "sha256": "1c68e1e1994bbf932d1d76e13d7ff200c6d5cdebe2ae757dd8aff6f964517964"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_binding_tail.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_load_cache.cpp",
+          "start_line": 166,
+          "requested_lines": 51,
+          "returned_lines": 51,
+          "total_lines": 216
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c1.command.json",
+          "bytes": 1083,
+          "sha256": "4f7f23b6cef91220082cf71b2dd43482b7fbfa1936fea20eee6267451a2e52f9"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c1.stdout.txt",
+          "bytes": 3528,
+          "sha256": "7107e3f475706e4d95bea12156684b5d59b066b5ee4ee78b41b549293ac8c24f"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_load_cache.cpp",
+          "start_line": 1,
+          "requested_lines": 70,
+          "returned_lines": 70,
+          "total_lines": 216
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c2.command.json",
+          "bytes": 1085,
+          "sha256": "fab712ff1c53ea2907e0514c9cfa1a5c5c0f0c82c732611a6b9dff013d39d2e3"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c2.stdout.txt",
+          "bytes": 4794,
+          "sha256": "4a49f598a4f9599e2c583630d0728552d202050b90107a67981acd921d4ab739"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_load_cache.cpp",
+          "start_line": 71,
+          "requested_lines": 70,
+          "returned_lines": 70,
+          "total_lines": 216
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c3.command.json",
+          "bytes": 1087,
+          "sha256": "ac2e2b98ec1109686ba25f5b52847d3a50884a15b283c927fde2e05e76c68883"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c3.stdout.txt",
+          "bytes": 4452,
+          "sha256": "3ccdc6db9a5b573d3b4d8b9334234b4643996cda496d255ad40b9406b4e7d266"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_c3.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_load_cache.cpp",
+          "start_line": 141,
+          "requested_lines": 80,
+          "returned_lines": 76,
+          "total_lines": 216
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_h.command.json",
+          "bytes": 1095,
+          "sha256": "714346bcfa02c75a1d52cb8b41e90fe3450f38c091182173b318912a57ebdaa9"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_h.stdout.txt",
+          "bytes": 5005,
+          "sha256": "828360c41a23197044865a15e169fcdbe201a085cc02daf3c06d8707d63279e5"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/load_cache_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_load_cache.hpp",
+          "start_line": 1,
+          "requested_lines": 95,
+          "returned_lines": 90,
+          "total_lines": 90
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_c_adapter.command.json",
+          "bytes": 1114,
+          "sha256": "701c7baaaaecf3aacb43a325346db669b9a8fffea3ac6bca97212334aaee0b62"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_c_adapter.stdout.txt",
+          "bytes": 5707,
+          "sha256": "5620dc677dc8c56dff5d53d4808ec6670879e519fe9d96e47c6b6820e71d3c05"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_c_adapter.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_mesh_subset_loading.cpp",
+          "start_line": 350,
+          "requested_lines": 85,
+          "returned_lines": 85,
+          "total_lines": 551
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h1.command.json",
+          "bytes": 1105,
+          "sha256": "bae6863b870da9f726a2bff9c90bad2b9a6253846a4ded6db7e3da513dd70fe2"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h1.stdout.txt",
+          "bytes": 4660,
+          "sha256": "5ce3d8f7e2d86a25550a449409a5771a19cd541f8a1438ff2239466f7f7a1a5b"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_mesh_subset_loading.hpp",
+          "start_line": 1,
+          "requested_lines": 85,
+          "returned_lines": 85,
+          "total_lines": 254
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h2.command.json",
+          "bytes": 1107,
+          "sha256": "a920e58ba7a625d0632f1920f89a3f67b26116e4cad6c8b98b4b58bec57c5cdc"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h2.stdout.txt",
+          "bytes": 5518,
+          "sha256": "4a503355f8f35f77de1f6d2356e729476537fc5b14c3ac1a536386ceead0f25c"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_h2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_mesh_subset_loading.hpp",
+          "start_line": 86,
+          "requested_lines": 80,
+          "returned_lines": 80,
+          "total_lines": 254
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_owner_boundary.command.json",
+          "bytes": 1145,
+          "sha256": "c39ccdaefd4716f307d0ff7e9e8b6a6965203b90cd19756687ecd29bf3f8d2b2"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_owner_boundary.stdout.txt",
+          "bytes": 5415,
+          "sha256": "c72a2a59ba6c91ce3deeece97e530ff87f6cf19304ea6e46020df1be5c392fd3"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_loading_owner_boundary.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_mesh_subset_loading.hpp",
+          "start_line": 167,
+          "requested_lines": 87,
+          "returned_lines": 87,
+          "total_lines": 254
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_predicate_fixed.command.json",
+          "bytes": 1108,
+          "sha256": "d8fa3ec93ec450988f06f2753b24743f9485e3a7d63e07916358d4079bfed278"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_predicate_fixed.stdout.txt",
+          "bytes": 2325,
+          "sha256": "df925f35f7405011002b468dde07dfac60b9d1a12da7019fee911b2d654d3571"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/mesh_predicate_fixed.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_mesh_subset_loading.cpp",
+          "start_line": 496,
+          "requested_lines": 34,
+          "returned_lines": 34,
+          "total_lines": 551
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/minimal_service_boundaries.command.json",
+          "bytes": 1191,
+          "sha256": "06126bbc869e71bf09b2d2d57925c660c0997f51d43574d90fdefcf59f35107e"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/minimal_service_boundaries.stdout.txt",
+          "bytes": 3354,
+          "sha256": "4260e5c1e5c100a54bc2839d72c6ea4b99f4b1cd02f92b5c4fa9fec6231a5695"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/minimal_service_boundaries.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "0109cefc|NativeResourceLoadCacheCalls|NativeResourceItemTypeCalls",
+            "include/bsp",
+            "src"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_c.command.json",
+          "bytes": 1077,
+          "sha256": "d094e280ea2c0f60002a67a4a48d83f7cf4d5c12e7dba0db5c4171b62040cef0"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_c.stdout.txt",
+          "bytes": 2304,
+          "sha256": "d1ca75b8f89f217fb06c207e7c010e90283f78c6492bc5b7ca8334919bb5d512"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/platform_window.cpp",
+          "start_line": 238,
+          "requested_lines": 56,
+          "returned_lines": 56,
+          "total_lines": 295
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_h.command.json",
+          "bytes": 1093,
+          "sha256": "eb5e09b5a95b8a109c8c8088d9c45d724842310e3e61d9b7c08fe7d614594795"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_h.stdout.txt",
+          "bytes": 3050,
+          "sha256": "8350185ff5ba96af631675ae2e34cdd9fa1681fdfadf367945c9c258f576155b"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/platform_metric_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/platform_window.hpp",
+          "start_line": 216,
+          "requested_lines": 60,
+          "returned_lines": 53,
+          "total_lines": 268
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_c.command.json",
+          "bytes": 1083,
+          "sha256": "6ef96c3574226375391abf1d46130a24c878f3527e43a3a19cc15177563d7d31"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_c.stdout.txt",
+          "bytes": 6473,
+          "sha256": "16bb864a97796d33780afc196f8c1c051e813f98d5a82a64a59a00c1d26f3847"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_resource_pools.cpp",
+          "start_line": 1,
+          "requested_lines": 130,
+          "returned_lines": 130,
+          "total_lines": 204
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_h.command.json",
+          "bytes": 1096,
+          "sha256": "9a4c62240c2e88a62d62409156cb53902e2d9f198f68f9be5a5cff9af76c1fd5"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_h.stdout.txt",
+          "bytes": 4771,
+          "sha256": "807992306ba0a5479ac0719581dc6179ab7f201ba882ebdcc55644240074edb1"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/pool_owner_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_native_resource_pools.hpp",
+          "start_line": 1,
+          "requested_lines": 94,
+          "returned_lines": 94,
+          "total_lines": 101
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_service_boundary.command.json",
+          "bytes": 1334,
+          "sha256": "ad801863a07c27d13ae20ead1308627d323403488df124e0aa58949eff8f0bb8"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_service_boundary.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_service_boundary.stderr.txt",
+          "bytes": 233,
+          "sha256": "988cfb94f596967278fe5129b4b033f3ee3bee2d11ee7b136e64779db266349e"
+        },
+        "exit_code": 2,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "class NativeVfsRawServices|struct NativeVfsRawServices|class NativeResource.*Calls|NativeVfsRawServices",
+            "include/bsp/native*raw*.hpp",
+            "include/bsp/native*stream*.hpp"
+          ]
+        },
+        "authoritative": false
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_service_boundary_fixed.command.json",
+          "bytes": 1452,
+          "sha256": "250b2255ed59b093ad6cc1100d6b0e08d874d050245fb3180fae21dd2a29cf1f"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_service_boundary_fixed.stdout.txt",
+          "bytes": 575,
+          "sha256": "1061f22e61828add8f90eb978f466cd1bcac3fb145592635018b0a26f6940769"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_service_boundary_fixed.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "-g",
+            "*raw*.hpp",
+            "-g",
+            "*stream*.hpp",
+            "class NativeVfsRawServices|struct NativeVfsRawServices|class NativeVfsRuntimeBindings|class NativeAdoptedSubstreamDispatch|class Native.*Adopted",
+            "include/bsp"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_services_h.command.json",
+          "bytes": 1098,
+          "sha256": "6779b01064a0f3b28c5f02d92eec2ff930e482f2ac8f550a5e7ef4a5b0e50e7e"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_services_h.stdout.txt",
+          "bytes": 3992,
+          "sha256": "4641933d9f35ff40c1d2c75d31ef2c65d1fcbf3856aece172cb1acb115d2fec5"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/raw_services_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_native_vfs_runtime.hpp",
+          "start_line": 30,
+          "requested_lines": 68,
+          "returned_lines": 68,
+          "total_lines": 174
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c1.command.json",
+          "bytes": 1101,
+          "sha256": "e49f48a8693200f2a6d910e3ce05048644cda2cab07bfe6272f41db3035e3f40"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c1.stdout.txt",
+          "bytes": 3522,
+          "sha256": "af801fba4b9cc1e7244181da49dd23369f6236e276bd50c1f1fc9a777d4d12fd"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_resource_application.cpp",
+          "start_line": 1,
+          "requested_lines": 69,
+          "returned_lines": 69,
+          "total_lines": 139
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c2.command.json",
+          "bytes": 1103,
+          "sha256": "3ec31b7acb208811abbafbd2a5ba9f1637fe0cc99eaad9564baca1aa55912642"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c2.stdout.txt",
+          "bytes": 3644,
+          "sha256": "f535887a7d74d35d2593f6b2e7f1c645f29e4736848e54add1a655639fa2792d"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_c2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_resource_application.cpp",
+          "start_line": 70,
+          "requested_lines": 70,
+          "returned_lines": 70,
+          "total_lines": 139
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_h.command.json",
+          "bytes": 1113,
+          "sha256": "03a47e16e58bf4c859f5f5dbfeb2dc5248118fb84bc7c8c67dc9acb4a1fdb327"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_h.stdout.txt",
+          "bytes": 1853,
+          "sha256": "525ba5b213bc0e4d619b93ee12d4ac8de98eb7090b1533829f74df9a347579a5"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/resource_app_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_native_resource_application.hpp",
+          "start_line": 1,
+          "requested_lines": 55,
+          "returned_lines": 46,
+          "total_lines": 46
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c1.command.json",
+          "bytes": 1098,
+          "sha256": "16c97cccd5793f271da5bca04b880083d2ebba1327c530824a12ef94a8cf554c"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c1.stdout.txt",
+          "bytes": 3741,
+          "sha256": "2f96934c87269f796292fa7eccfb83de36288bdc7e2ac3e7eb6b6ba0bd119e2a"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_root_dispatch.cpp",
+          "start_line": 1,
+          "requested_lines": 79,
+          "returned_lines": 79,
+          "total_lines": 168
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c2.command.json",
+          "bytes": 1100,
+          "sha256": "0a173ae2f7642e9c4551b589bb9bbefba6b33fe2830c2182b082998e3a276165"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c2.stdout.txt",
+          "bytes": 4527,
+          "sha256": "94a385a682d577f78364d8a89b8ac45840cabc4febebe98545cc28cc166e33cf"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_c2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_resource_root_dispatch.cpp",
+          "start_line": 80,
+          "requested_lines": 89,
+          "returned_lines": 89,
+          "total_lines": 168
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_h.command.json",
+          "bytes": 1110,
+          "sha256": "1a4fcc8d2c81ff86848736ac7f9c39459e5927ec6e718bceacca20ced64a49f0"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_h.stdout.txt",
+          "bytes": 4118,
+          "sha256": "a8f93f62eee3025cfd9fbb57c9d8e71ebcce59a0ad61d3591d4bfcb89a99e406"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_root_dispatch.hpp",
+          "start_line": 1,
+          "requested_lines": 80,
+          "returned_lines": 73,
+          "total_lines": 73
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_interface_detail.command.json",
+          "bytes": 1155,
+          "sha256": "8f1434d77f244d1a1b77d3eee6615db99b9d8401ffd234d398405f8b68015c36"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_interface_detail.stdout.txt",
+          "bytes": 4118,
+          "sha256": "a8f93f62eee3025cfd9fbb57c9d8e71ebcce59a0ad61d3591d4bfcb89a99e406"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/root_dispatch_interface_detail.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_root_dispatch.hpp",
+          "start_line": 1,
+          "requested_lines": 73,
+          "returned_lines": 73,
+          "total_lines": 73
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_c.command.json",
+          "bytes": 1129,
+          "sha256": "144d1f8dbfd12f37deda86215efd2606b78178a25187477b9873e7b6f25a83b7"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_c.stdout.txt",
+          "bytes": 611,
+          "sha256": "0b5816200901c42eab659489eeb389ab1355668aa9e6353f1d0869167c468cfa"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_skin_model_type_id_publication_fragment.cpp",
+          "start_line": 1,
+          "requested_lines": 100,
+          "returned_lines": 17,
+          "total_lines": 17
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_h.command.json",
+          "bytes": 1144,
+          "sha256": "662b212f38fb9f74c2db7d1c07195f2f3cf8ade230fce58644e359993ac1bace"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_h.stdout.txt",
+          "bytes": 1401,
+          "sha256": "b7c0f4377aeb04ceed6ab4f21c8cfaaeb5471359fc6d72d4d70342fbfd7c82a5"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_fragment_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_skin_model_type_id_publication_fragment.hpp",
+          "start_line": 1,
+          "requested_lines": 85,
+          "returned_lines": 27,
+          "total_lines": 27
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_item_h.command.json",
+          "bytes": 1098,
+          "sha256": "2cec3640c255e79c6a35a98ac6f8579a48b484e5dd19756d189ba339f043574a"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_item_h.stdout.txt",
+          "bytes": 2581,
+          "sha256": "482a5c274b482cfbf4671bee7489f79d4ac8f1cf5b8c5c5b41c5e51766dc3530"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skin_item_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_skinned_animation_item.hpp",
+          "start_line": 1,
+          "requested_lines": 95,
+          "returned_lines": 39,
+          "total_lines": 39
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skinned_dispatch_c.command.json",
+          "bytes": 1111,
+          "sha256": "832296b9f0f4fb5b25ed2f3c32445d4c664758a499acc07c245592a13fcb30df"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skinned_dispatch_c.stdout.txt",
+          "bytes": 2775,
+          "sha256": "54f4bec359fff3295b57285784656a52103848c7e7544e3bc974fc4889a7c0c1"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/skinned_dispatch_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_skinned_animation_dispatch.cpp",
+          "start_line": 1,
+          "requested_lines": 74,
+          "returned_lines": 52,
+          "total_lines": 52
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/startup_retained_shutdown.command.json",
+          "bytes": 1094,
+          "sha256": "0b8a02f8f5fbc0e8d8731ea8f79de20ea20ff58dc311f6e9f9671afc7662e222"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/startup_retained_shutdown.stdout.txt",
+          "bytes": 3664,
+          "sha256": "d8e081a084feeb194a810ec2ba09391db35ca80a795ea9b6614b131eea4ba0ef"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/startup_retained_shutdown.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_hosts.cpp",
+          "start_line": 1540,
+          "requested_lines": 70,
+          "returned_lines": 70,
+          "total_lines": 2444
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/stream_boundary_defs.command.json",
+          "bytes": 1782,
+          "sha256": "fd0e91dd76b53a2b36893a6e74445a67dbc17e02d948121bbae94dd4cd2b3969"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/stream_boundary_defs.stdout.txt",
+          "bytes": 191,
+          "sha256": "f15675c2542eb8fba5a635499e4791af0f416e3a37a067392e44bd0974a514d3"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/stream_boundary_defs.stderr.txt",
+          "bytes": 194,
+          "sha256": "7e6676b8de9d0d9ec54e232c007433286bfe09b403631123fcfee4ddc02ec691"
+        },
+        "exit_code": 2,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "struct NativeResourceStreamReadContext|class NativeResourceStreamReadCalls|class NativeResourceStream|class NativeVfsRawServices|raw_strings\\(|stream_reads",
+            "include/bsp/native_resource_stream_reads.hpp",
+            "include/bsp/native_vfs_raw_services.hpp",
+            "src/native_vfs_raw_services.cpp",
+            "include/bsp/game_native_vfs_application.hpp",
+            "src/game_native_resource_application.cpp"
+          ]
+        },
+        "authoritative": false
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/stream_reads_h.command.json",
+          "bytes": 1105,
+          "sha256": "df9920248d8425207f9d84fb433a7f1c4c0a7ce22d17cb3fc8dc0838e8b270ab"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/stream_reads_h.stdout.txt",
+          "bytes": 2629,
+          "sha256": "44029d3c5915da4674972bccdb8cae9698ff2eda6c0cd401de2e54049e70a2d2"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/stream_reads_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_resource_stream_reads.hpp",
+          "start_line": 1,
+          "requested_lines": 90,
+          "returned_lines": 44,
+          "total_lines": 44
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_c.command.json",
+          "bytes": 1081,
+          "sha256": "8c9de1495cdc0704c7c59af8fcf4b0813873cf345a3c52444687027e44635c4e"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_c.stdout.txt",
+          "bytes": 5096,
+          "sha256": "7c9c2a806ddec08afc3ee0ebbb37ee5d2eb9258e6ec1726b119463c555ec3394"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_type_storage.cpp",
+          "start_line": 1,
+          "requested_lines": 95,
+          "returned_lines": 95,
+          "total_lines": 95
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h1.command.json",
+          "bytes": 1101,
+          "sha256": "a720145587d9c0a905437e1a2974fe5861122f560002069b50bd1fca9b26d655"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h1.stdout.txt",
+          "bytes": 3745,
+          "sha256": "a839b3dd877c27a16479b83910e4b15232ded28cf82a1c3b9718a0a6502e9e1d"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "start_line": 1,
+          "requested_lines": 65,
+          "returned_lines": 65,
+          "total_lines": 122
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h2.command.json",
+          "bytes": 1103,
+          "sha256": "8a1a553f4d93063a15774be1215d302fe13aee54c6276cf15664da73e248729b"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h2.stdout.txt",
+          "bytes": 3156,
+          "sha256": "22f7978a7f47eca220f67e0896dd3417a4bac0549f6429ba4bb57885a9d04191"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_storage_h2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_native_type_storage.hpp",
+          "start_line": 66,
+          "requested_lines": 65,
+          "returned_lines": 57,
+          "total_lines": 122
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_support_paths.command.json",
+          "bytes": 1512,
+          "sha256": "9b5aeecdf7921ca61a523b7114be0082f37ebe00b2c1102932d9eb797c3d3b23"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_support_paths.stdout.txt",
+          "bytes": 482,
+          "sha256": "05017230be1f2a7588170cab507d2817c703e8d33bc9de70fe1161aac0ccba04"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/type_support_paths.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "--files",
+            "include/bsp",
+            "src",
+            "-g",
+            "*light_type_bootstrap*",
+            "-g",
+            "*type_storage*",
+            "-g",
+            "*group_resource*",
+            "-g",
+            "*skinned_animation*",
+            "-g",
+            "*resource_fallback*",
+            "-g",
+            "*resource_item_types*"
+          ]
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c1.command.json",
+          "bytes": 1076,
+          "sha256": "aba026494d20b2350b86e455ffd62ffdc6a1c0cbeded2e1bc3f3fba281875f74"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c1.stdout.txt",
+          "bytes": 3462,
+          "sha256": "ed3ae1b0cf3be987405915c5f05a42015cb781050a2baaf307e15d4ef7a56f08"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c1.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_vfs_application.cpp",
+          "start_line": 1,
+          "requested_lines": 78,
+          "returned_lines": 78,
+          "total_lines": 189
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c2.command.json",
+          "bytes": 1078,
+          "sha256": "1309b17961449062215f03cacdd3102c683184a6b9fa02b53b88866c034a82f7"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c2.stdout.txt",
+          "bytes": 3916,
+          "sha256": "c0bfe5317a9ea61f03a2023bfd70f84e80004e61e7f0b8fccea26f9579ba2ed2"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c2.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_vfs_application.cpp",
+          "start_line": 79,
+          "requested_lines": 64,
+          "returned_lines": 64,
+          "total_lines": 189
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c3.command.json",
+          "bytes": 1080,
+          "sha256": "18d1ffd82c7fb1a076668f50c3224c12903e6abcf23c21f71c14876414ed941c"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c3.stdout.txt",
+          "bytes": 1929,
+          "sha256": "695c7aeeb0aa763d70939c28a16e7a84b5c4df913a72ba4cc99ec8348239e1fc"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_c3.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/game_native_vfs_application.cpp",
+          "start_line": 143,
+          "requested_lines": 55,
+          "returned_lines": 47,
+          "total_lines": 189
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_h.command.json",
+          "bytes": 1088,
+          "sha256": "0dd2258b0c1c17642b78f0f8cd704f420f166b2531c2da1854d9fa277630d997"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_h.stdout.txt",
+          "bytes": 3273,
+          "sha256": "63ad0629046b63700a9fe64607c52a62da42a3912261c0ef70196108baf4c192"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_app_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/game_native_vfs_application.hpp",
+          "start_line": 1,
+          "requested_lines": 70,
+          "returned_lines": 65,
+          "total_lines": 65
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_c.command.json",
+          "bytes": 1101,
+          "sha256": "d51d62e8afd1b42076c16dab6e914e37ad47ec064e531ba708a58b61b8b00dd1"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_c.stdout.txt",
+          "bytes": 1343,
+          "sha256": "2671bcb787c5fdc0a0dd10b7b95d4341ad6f50eee6eadffbdd24e4df2e867879"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_c.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "src/native_vfs_owner_services.cpp",
+          "start_line": 1,
+          "requested_lines": 50,
+          "returned_lines": 29,
+          "total_lines": 29
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_h.command.json",
+          "bytes": 1117,
+          "sha256": "deb9ca71b481af6547653bcff9e6e94aeb944024bb9040dc1960ab25d3c5ad93"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_h.stdout.txt",
+          "bytes": 3855,
+          "sha256": "5e269ed393089396689e6a96875aa2baf67f6938277553497439c8d0fffd13fa"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_owner_services_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_vfs_owner_services.hpp",
+          "start_line": 1,
+          "requested_lines": 85,
+          "returned_lines": 79,
+          "total_lines": 79
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_raw_binding_h.command.json",
+          "bytes": 1112,
+          "sha256": "1535d103440c60f092f6ed04440c7ff89559b2e08b62adf6c93dcadb3b65eb5d"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_raw_binding_h.stdout.txt",
+          "bytes": 5514,
+          "sha256": "5fae68f817f78bef0fc15573ab35fb232b36245afe8cfb1c010ca97b8d168b15"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_raw_binding_h.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "exit_code": 0,
+        "request": {
+          "mode": "bounded Source read",
+          "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+          "start_line": 1,
+          "requested_lines": 80,
+          "returned_lines": 80,
+          "total_lines": 99
+        },
+        "authoritative": true
+      },
+      {
+        "command": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_raw_exact.command.json",
+          "bytes": 1317,
+          "sha256": "a64f64faaa2fbfec061081a017ecf23c49c61068a65dd3189847f9195be1dd44"
+        },
+        "stdout": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_raw_exact.stdout.txt",
+          "bytes": 4462,
+          "sha256": "489dbeaac66c2253261b196830f92602cd7ef59e0e7e2128ba676a069ee042e7"
+        },
+        "stderr": {
+          "path": "local/cc12_mesh_classifier_retained_composition_followup/vfs_raw_exact.stderr.txt",
+          "bytes": 89,
+          "sha256": "8b62534845b64863542647200c6790bdc9a6a51c2b175295306bca292aa360a5"
+        },
+        "exit_code": 2,
+        "request": {
+          "mode": "bounded explicit Source search",
+          "argv": [
+            "rg",
+            "-n",
+            "NativeVfsRawServices|class NativeVfsRuntimeBindings|class Native.*Substream.*Dispatch|public NativeAdoptedSubstreamDispatch",
+            "include/bsp",
+            "src/native_vfs_bindings.cpp"
+          ]
+        },
+        "authoritative": false
+      }
+    ],
+    "semantic_scope": "Whole files pinned; only receipt-identified portions and explicit searches semantically inspected. No claim that every possible game virtual target is implemented.",
+    "search_errors": "Non-authoritative failed path/glob searches are retained with complete stderr. Corrected exact paths and -g searches supplied findings. One attempted read of nonexistent native_mesh_resource_loading.cpp failed before the helper could create a receipt; corrected native_mesh_subset_loading.cpp read is retained.",
+    "prior_review": {
+      "report_pin": {
+        "path": "reports/cc12_mesh_resource_classifier_consumer_readiness.json",
+        "bytes": 83382,
+        "sha256": "f8f560dd6dc47fb62e9150c8cdd3796554139dc19a7f932697686b9cb16155ce"
+      },
+      "document_pin": {
+        "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_CONSUMER_READINESS.md",
+        "bytes": 13299,
+        "sha256": "77382a2f5e2d41fa13895081aa2c734e26854558eda362418ca012dd2726edda"
+      },
+      "retained_pin_count": 148,
+      "current_prior_primary_review": {
+        "worker_commit": "28ae12f2298ea464a29e36266977ffc6a1c123d0",
+        "pin_occurrences_verified_and_retained": 148,
+        "note": "Full unchanged primary review retained in frozen context report; nested historical local paths are not re-rooted into this worktree."
+      }
+    },
+    "frozen_document": {
+      "path": "local/cc12_mesh_classifier_retained_composition_followup/frozen/packet/docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+      "bytes": 14138,
+      "sha256": "7e7e5af57ef16a5ae1307bbbf1e998e3522d04bdb2c9ce8b5dc0d17d25d0ccfa"
+    },
+    "bundle_manifest": {
+      "path": "local/cc12_mesh_classifier_retained_composition_followup/evidence_bundle_manifest.json",
+      "bytes": 85973,
+      "sha256": "937fb3a963309a28af23e89434a7800761d7d819bed734695f904188da6f98bc"
+    },
+    "document_pin": {
+      "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+      "bytes": 14138,
+      "sha256": "7e7e5af57ef16a5ae1307bbbf1e998e3522d04bdb2c9ce8b5dc0d17d25d0ccfa"
+    }
+  },
+  "static_evidence_verification": {
+    "unique_report_pin_paths_verified": 429,
+    "report_pin_occurrences_verified": 431,
+    "frozen_bundle_files_verified": 366,
+    "baseline_Git_blobs_verified": 63,
+    "complete_bounded_receipts_verified": 79,
+    "only_exact_two_owned_tracked_files_changed": true,
+    "prior_review_148_pin_record_preserved": true,
+    "Cpp_Native_build_tests_probes_added": 0
+  }
+}
