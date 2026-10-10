@@ -1,0 +1,900 @@
+{
+  "schema": "cc12.grid_provider_domain_table_readiness.v1",
+  "status": "Source_readiness_complete_two_default_methods_ready_table_unready",
+  "owned_tracked_files": [
+    "docs/CC12_GRID_PROVIDER_DOMAIN_TABLE_READINESS.md",
+    "reports/cc12_grid_provider_domain_table_readiness.json"
+  ],
+  "bundle": "local/cc12_grid_provider_domain_table_readiness",
+  "base_commit": "317d42c18c2675ec59c63a431a1a0bd6f339ed6a",
+  "main_at_capture": "f31b71746c038e3fde22d50474f46d7d10012136",
+  "inputs": {
+    "source_corpus": {
+      "path": "Source_corpus.json",
+      "bytes": 1650195,
+      "sha256": "c7bb1e754c53812708ce6b0e04bcedd7334faf4f80bb546591f0ea68a299342b"
+    },
+    "dependencies": {
+      "path": "dependencies.json",
+      "bytes": 5040913,
+      "sha256": "1870cbb4003229c985a2fb9b100db0b3b075cd90d709689448bff64fee9631cd"
+    },
+    "queries": {
+      "path": "queries.json",
+      "bytes": 370133,
+      "sha256": "83beec01eef6090d1b2e14aec2a49326bd027abd8bc1f72577e6ce7d1447ed5a"
+    },
+    "excerpts": {
+      "path": "excerpts.json",
+      "bytes": 61690,
+      "sha256": "8f311a3e57e907e293befba1106c3a2f3de4a8ddaa49fa76089afa6dccdcf2cf"
+    }
+  },
+  "helpers": {
+    "freeze_source": {
+      "path": "freeze_source.py",
+      "bytes": 3209,
+      "sha256": "502c42240c798dd1aef9b40f83d9f749d0fdd9d7962fd4cf2ca601dc6c3a87dd"
+    },
+    "prepare": {
+      "path": "prepare.py",
+      "bytes": 9352,
+      "sha256": "b7edfd5f75351c6427de617efa8a967f685738b0a83a65704bffd106f36a866b"
+    },
+    "audit": {
+      "path": "audit.py",
+      "bytes": 9820,
+      "sha256": "c22f25ed9115e6e5af635e32e5c1cfbd7b163fbe4a8d0186539e0d53df43c69e"
+    },
+    "verify": {
+      "path": "verify.py",
+      "bytes": 5409,
+      "sha256": "a75fc9f51a553bba64f54aafa50be33269407300ebc7f84d3a07accc3cd4750c"
+    },
+    "publish": {
+      "path": "publish.py",
+      "bytes": 4733,
+      "sha256": "5d4b3faa3f9e0659b4ca8d2a3077439637872acf1f895639afc184d07009a80a"
+    },
+    "relocate_verify": {
+      "path": "relocate_verify.py",
+      "bytes": 1203,
+      "sha256": "c8135989c8f46503eb1d31b7882e4e05ec98c6261f044ff5971a3d81f46450b0"
+    }
+  },
+  "document": {
+    "path": "frozen/0b83d5ae9674f0f9c6e8fea19a699adc3a7da5178657d7fdbb3f1a951dcc75d7_grid_readiness_document.md",
+    "bytes": 13977,
+    "sha256": "0b83d5ae9674f0f9c6e8fea19a699adc3a7da5178657d7fdbb3f1a951dcc75d7"
+  },
+  "audit_receipt": {
+    "path": "audit_receipt.json",
+    "bytes": 12453,
+    "sha256": "0897fd6c5c65fbc1493550dfb34a1aaf568fcbfddf15693183eb77f4727bd0f7"
+  },
+  "audit_result": {
+    "status": "PASS",
+    "Source_only": true,
+    "base_commit": "317d42c18c2675ec59c63a431a1a0bd6f339ed6a",
+    "Source_files": 4208,
+    "Git_blob_integrity_checked": 4208,
+    "working_files_checked": 4208,
+    "search_support_files": 8,
+    "search_files": 4216,
+    "accepted_dependency_Git_blobs": 24,
+    "current_selected_support_Git_blobs": 7,
+    "Source_epochs": [
+      {
+        "label": "Source3352-wide",
+        "selected_inputs": 3352,
+        "historical_artifacts": 4,
+        "normalized_selected_differences_from_current": [
+          "cmake/startup.cmake",
+          "include/bsp/native_game_container_lifetime.hpp",
+          "include/bsp/native_game_lifetime.hpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "src/native_game_container_lifetime.cpp",
+          "src/native_game_lifetime.cpp",
+          "src/native_particle_model_lifetime.cpp"
+        ]
+      },
+      {
+        "label": "Source3352-worker-free",
+        "selected_inputs": 3352,
+        "historical_artifacts": 4,
+        "normalized_selected_differences_from_current": [
+          "cmake/startup.cmake",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "src/native_particle_model_lifetime.cpp"
+        ]
+      },
+      {
+        "label": "Source3354-node",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences_from_current": [
+          "include/bsp/native_game_container_lifetime.hpp",
+          "include/bsp/native_game_lifetime.hpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "src/native_game_container_lifetime.cpp",
+          "src/native_game_lifetime.cpp",
+          "src/native_particle_model_lifetime.cpp"
+        ]
+      },
+      {
+        "label": "Source3354-primary-free",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences_from_current": [
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "src/native_particle_model_lifetime.cpp"
+        ]
+      },
+      {
+        "label": "Source3354-particle-primary",
+        "selected_inputs": 3354,
+        "historical_artifacts": 4,
+        "normalized_selected_differences_from_current": []
+      }
+    ],
+    "query_count": 18,
+    "query_hit_counts": {
+      "grid_cpu_type": 9,
+      "grid_context": 24,
+      "grid_graph_owner": 6,
+      "grid_constructor_call": 5,
+      "grid_construct": 3,
+      "grid_initialize": 2,
+      "grid_arrays_release": 3,
+      "grid_destroy": 3,
+      "grid_delete": 2,
+      "grid_numeric_table": 2,
+      "grid_table_words": 3,
+      "allocate55_all_classes": 48,
+      "free65_all_classes": 128,
+      "free69_all_classes": 63,
+      "outer_allocate_all_classes": 50,
+      "current_scalar": 10,
+      "grid_publications": 15,
+      "canonical_services": 1531
+    },
+    "excerpts_checked": 20,
+    "complete_reviewed_core_files": 5,
+    "exact_Source_witnesses": [
+      {
+        "label": "current_default_services",
+        "path": "src/native_game_grid.cpp",
+        "Source_sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d",
+        "witnesses": [
+          {
+            "text": "void NativeGameGridCpuCalls::free_00bf6989(void* allocation){std::free(allocation);}",
+            "line": 98
+          },
+          {
+            "text": "void* NativeGameGridCpuCalls::allocate_00bf55be(U bytes){return ::operator new(bytes);}",
+            "line": 165
+          },
+          {
+            "text": "void NativeGameGridCpuCalls::free_00bf65ac(void* allocation){::operator delete(allocation);}",
+            "line": 166
+          }
+        ],
+        "ordering_asserted": false
+      },
+      {
+        "label": "six_current_allocations_and_store",
+        "path": "src/native_game_grid.cpp",
+        "Source_sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d",
+        "witnesses": [
+          {
+            "text": "put(grid,4,word(descriptor,4)*word(descriptor));",
+            "line": 382
+          },
+          {
+            "text": "constexpr U sites[]={0x70b377,0x70b393,0x70b3af,0x70b3cb,0x70b3e7,0x70b403};",
+            "line": 383
+          },
+          {
+            "text": "for(U i=0;i<6;++i){",
+            "line": 384
+          },
+          {
+            "text": "static_cast<std::uint64_t>(word(grid,4))*12u",
+            "line": 385
+          },
+          {
+            "text": "c.cpu.allocate_00bf55be(bytes>0xffffffffu?0xffffffffu:static_cast<U>(bytes))",
+            "line": 386
+          },
+          {
+            "text": "put(grid,8+i*4,bits(array));",
+            "line": 387
+          }
+        ],
+        "ordering_asserted": true
+      },
+      {
+        "label": "release_reloads_and_late_clear",
+        "path": "src/native_game_grid.cpp",
+        "Source_sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d",
+        "witnesses": [
+          {
+            "text": "for(U offset=8;offset!=0x20;offset+=4) {",
+            "line": 158
+          },
+          {
+            "text": "void* const allocation=pointer(grid,offset);",
+            "line": 159
+          },
+          {
+            "text": "if(allocation)calls.free_00bf6989(allocation);",
+            "line": 160
+          },
+          {
+            "text": "for(U offset=8;offset!=0x20;offset+=4)put(grid,offset,0);",
+            "line": 162
+          }
+        ],
+        "ordering_asserted": true
+      },
+      {
+        "label": "destruction_and_scalar_schedule",
+        "path": "src/native_game_grid.cpp",
+        "Source_sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d",
+        "witnesses": [
+          {
+            "text": "void destroy_native_game_grid_0070b220",
+            "line": 495
+          },
+          {
+            "text": "put(grid,0,0x00cfd484);release_native_game_grid_cpu_arrays_00709760(grid,c.cpu);",
+            "line": 496
+          },
+          {
+            "text": "release_field(grid,0x78,c);release_field(grid,0x7c,c);",
+            "line": 497
+          },
+          {
+            "text": "destroy_native_game_grid_0070b220(grid,c);if((flags&1u)!=0)c.cpu.free_00bf65ac(grid);return grid;",
+            "line": 500
+          }
+        ],
+        "ordering_asserted": true
+      },
+      {
+        "label": "one_shot_failure_contract",
+        "path": "src/native_game_grid.cpp",
+        "Source_sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d",
+        "witnesses": [
+          {
+            "text": "if(phase==Phase::running||phase==Phase::failed)std::terminate();",
+            "line": 168
+          },
+          {
+            "text": "if(phase==Phase::failed)phase=Phase::diagnostic_retired;",
+            "line": 171
+          },
+          {
+            "text": "op.phase==GridOp::Phase::fresh",
+            "line": 178
+          },
+          {
+            "text": "op.phase=GridOp::Phase::failed;",
+            "line": 199
+          },
+          {
+            "text": "catch(...){grid_failed(c,op);throw;}",
+            "line": 478
+          }
+        ],
+        "ordering_asserted": true
+      },
+      {
+        "label": "canonical_services",
+        "path": "src/singleton_lifetime.cpp",
+        "Source_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "witnesses": [
+          {
+            "text": "std::malloc(request.host_bytes)",
+            "line": 56
+          },
+          {
+            "text": "_callnewh(request.host_bytes) == 0",
+            "line": 59
+          },
+          {
+            "text": "throw std::bad_alloc();",
+            "line": 44
+          },
+          {
+            "text": "void singleton_lifetime_free(void* pointer) noexcept {",
+            "line": 65
+          },
+          {
+            "text": "std::free(pointer);",
+            "line": 66
+          }
+        ],
+        "ordering_asserted": false
+      },
+      {
+        "label": "outer_allocation_default",
+        "path": "src/native_game_array_elements.cpp",
+        "Source_sha256": "95747768f853969303dc9a03c2b4e733328307cb0253583d3c00871f7d4033f9",
+        "witnesses": [
+          {
+            "text": "void* NativeGameArrayCalls::allocate_00bf681b(Word n){return singleton_lifetime_allocate({SingletonAllocationKind::object,n,n});}",
+            "line": 52
+          }
+        ],
+        "ordering_asserted": false
+      },
+      {
+        "label": "three_outer_sites",
+        "path": "src/native_game_construction.cpp",
+        "Source_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+        "witnesses": [
+          {
+            "text": "a.native_site=0x004ddfd3;a.current_allocation=calls.allocate_00bf681b(0x84);",
+            "line": 182
+          },
+          {
+            "text": "a.native_site=0x004de008;a.current_allocation=calls.allocate_00bf681b(0x84);",
+            "line": 186
+          },
+          {
+            "text": "a.native_site=0x004de041;a.current_allocation=calls.allocate_00bf681b(0x84);",
+            "line": 190
+          }
+        ],
+        "ordering_asserted": true
+      },
+      {
+        "label": "grid_context_required_on_reach",
+        "path": "src/native_game_construction.cpp",
+        "Source_sha256": "1de96cc66c92f5e0f93e70794bcb0cd755a8496c2653a483332e0d9bfdd6051e",
+        "witnesses": [
+          {
+            "text": "if(!c)throw std::logic_error(\"Native game requires its actual grid renderer context\");",
+            "line": 79
+          },
+          {
+            "text": "return construct_native_game_grid_0070bd70(p,argument,preimage,*c,op);",
+            "line": 80
+          }
+        ],
+        "ordering_asserted": true
+      },
+      {
+        "label": "default_cpu_owner",
+        "path": "src/game_native_renderer_grid.inc",
+        "Source_sha256": "d5d84bdca33ec50491228d0ae5cccc03c05c02ce2d18d1a69586d423681afcbb",
+        "witnesses": [
+          {
+            "text": "NativeGameGridCpuCalls cpu;",
+            "line": 9
+          },
+          {
+            "text": "context{graphics,strings,cpu,",
+            "line": 18
+          }
+        ],
+        "ordering_asserted": false
+      },
+      {
+        "label": "current_scalar_dispatch",
+        "path": "src/native_game_physics_lifetime.cpp",
+        "Source_sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+        "witnesses": [
+          {
+            "text": "void NativeGamePhysicsLifetimeCalls::physics_virtual_scalar(void* p,U slot,U flags){",
+            "line": 49
+          },
+          {
+            "text": "using Method=void*(__thiscall*)(void*,U);auto method=reinterpret_cast<Method>(word(ptr(p),slot));(void)method(p,flags);",
+            "line": 50
+          }
+        ],
+        "ordering_asserted": false
+      },
+      {
+        "label": "current_adapter_owns_no_table",
+        "path": "include/bsp/native_game_current_virtual_calls.hpp",
+        "Source_sha256": "dbef0b32a1bee0d2dd0e19881c3caf6955f86a04e4c7b05422dc1281a68b3c46",
+        "witnesses": [
+          {
+            "text": "The service owns no receiver, table, allocation or context.",
+            "line": 14
+          },
+          {
+            "text": "Numeric Original-PE profile",
+            "line": 17
+          },
+          {
+            "text": "Calls are not noexcept: target exceptions propagate unchanged.",
+            "line": 25
+          }
+        ],
+        "ordering_asserted": false
+      },
+      {
+        "label": "parent_grid_current_slot_zero",
+        "path": "src/native_game_lifetime.cpp",
+        "Source_sha256": "4535650c8dcd06db58f4fed96260c0b1c1eac410255fb14603bedfecdce59c90",
+        "witnesses": [
+          {
+            "text": "c.virtual_scalar(first_grid,0,1);x.grid_00e19b0c=nullptr;",
+            "line": 72
+          },
+          {
+            "text": "scalar(x.grid_00e19b08,0,0x4dd167);scalar(x.grid_00e19b04,0,0x4dd17f);",
+            "line": 73
+          }
+        ],
+        "ordering_asserted": false
+      }
+    ],
+    "proposed_correction": {
+      "ready_for_separate_implementation": true,
+      "changed_default_methods": [
+        "NativeGameGridCpuCalls::allocate_00bf55be",
+        "NativeGameGridCpuCalls::free_00bf65ac"
+      ],
+      "allocate_body": "return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});",
+      "free_body": "singleton_lifetime_free(allocation);",
+      "preserved_method": "NativeGameGridCpuCalls::free_00bf6989 -> std::free(allocation)",
+      "direct_include": "bsp/singleton_lifetime.hpp",
+      "header_changes": "Contract comments only; unchanged virtual signatures and exception specifications.",
+      "zero_bytes": "Forward unchanged into canonical malloc/_callnewh policy; no zero normalization or skip.",
+      "foreign_domains": "Pair internal allocation with reached BF6989; pair outer allocation with reached CPU BF65AC. Current virtual overrides remain in control.",
+      "callable_grid_table_ready": false,
+      "construction_or_activation_admitted": false
+    },
+    "fresh_Native_queries": 0,
+    "Ghidra_writes": 0,
+    "builds": 0,
+    "tests": 0,
+    "original_execution": false,
+    "OS_probes": false,
+    "runtime_ABI_claim": false
+  },
+  "finite_pins": [
+    {
+      "path": "Source_corpus.json",
+      "bytes": 1650195,
+      "sha256": "c7bb1e754c53812708ce6b0e04bcedd7334faf4f80bb546591f0ea68a299342b"
+    },
+    {
+      "path": "audit.py",
+      "bytes": 9820,
+      "sha256": "c22f25ed9115e6e5af635e32e5c1cfbd7b163fbe4a8d0186539e0d53df43c69e"
+    },
+    {
+      "path": "audit_receipt.json",
+      "bytes": 12453,
+      "sha256": "0897fd6c5c65fbc1493550dfb34a1aaf568fcbfddf15693183eb77f4727bd0f7"
+    },
+    {
+      "path": "dependencies.json",
+      "bytes": 5040913,
+      "sha256": "1870cbb4003229c985a2fb9b100db0b3b075cd90d709689448bff64fee9631cd"
+    },
+    {
+      "path": "excerpts.json",
+      "bytes": 61690,
+      "sha256": "8f311a3e57e907e293befba1106c3a2f3de4a8ddaa49fa76089afa6dccdcf2cf"
+    },
+    {
+      "path": "freeze_source.py",
+      "bytes": 3209,
+      "sha256": "502c42240c798dd1aef9b40f83d9f749d0fdd9d7962fd4cf2ca601dc6c3a87dd"
+    },
+    {
+      "path": "frozen/001f8f1f9986e02d3c483e7e90c2f7dc336355fb1c5c444dde1769e63185963f_Source3354-particle-primary_retained.tar.gz",
+      "bytes": 26552359,
+      "sha256": "001f8f1f9986e02d3c483e7e90c2f7dc336355fb1c5c444dde1769e63185963f"
+    },
+    {
+      "path": "frozen/00fbc7b70da1d081fad0991188ff2f0eb17bb0c2fbde0f3dea5a6af684acc3bb_Source_working.tar.gz",
+      "bytes": 8622545,
+      "sha256": "00fbc7b70da1d081fad0991188ff2f0eb17bb0c2fbde0f3dea5a6af684acc3bb"
+    },
+    {
+      "path": "frozen/064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31_search_tests_test_coordination_transactions.py",
+      "bytes": 10219,
+      "sha256": "064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31"
+    },
+    {
+      "path": "frozen/064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31_search_working_tests_test_coordination_transactions.py",
+      "bytes": 10219,
+      "sha256": "064599a9f949139b2c9f2f6d1d4ca853312ae1fdb86cbcae1eed12d7fc865f31"
+    },
+    {
+      "path": "frozen/0b83d5ae9674f0f9c6e8fea19a699adc3a7da5178657d7fdbb3f1a951dcc75d7_grid_readiness_document.md",
+      "bytes": 13977,
+      "sha256": "0b83d5ae9674f0f9c6e8fea19a699adc3a7da5178657d7fdbb3f1a951dcc75d7"
+    },
+    {
+      "path": "frozen/0f02fd0f90c563fa699fa51c14449a35eeb80b09aded0340a015731375672d4f_Source3352-worker-free_manifest.json",
+      "bytes": 801876,
+      "sha256": "0f02fd0f90c563fa699fa51c14449a35eeb80b09aded0340a015731375672d4f"
+    },
+    {
+      "path": "frozen/11b434980be42c6144d8083595ff0aaaeeebe4d324944a0fe6c0d05e9793c346_Source3354-particle-primary_manifest.json",
+      "bytes": 1270504,
+      "sha256": "11b434980be42c6144d8083595ff0aaaeeebe4d324944a0fe6c0d05e9793c346"
+    },
+    {
+      "path": "frozen/13cf95c7628fe6bcea00e394a70497085c817d6cedabf624cdcd6d610dc70e48_Source3354-primary-free_retained.tar.gz",
+      "bytes": 26552095,
+      "sha256": "13cf95c7628fe6bcea00e394a70497085c817d6cedabf624cdcd6d610dc70e48"
+    },
+    {
+      "path": "frozen/149c78a759003e94f42904658f42df94fd3bdf6f6ccab6c45fd3b521eebe89d2_particle_primary_docs_CC12_PARTICLE_ADMITTED_CONSTRUCTOR_PRIMARY.md",
+      "bytes": 3120,
+      "sha256": "149c78a759003e94f42904658f42df94fd3bdf6f6ccab6c45fd3b521eebe89d2"
+    },
+    {
+      "path": "frozen/1cbcd16c22f0ac6619240efcf1f94a84dab82f3e2445ed9f7abd33048b89873c_application_worker_reports_cc12_game_state_queue_application_owner_readiness.json",
+      "bytes": 2740571,
+      "sha256": "1cbcd16c22f0ac6619240efcf1f94a84dab82f3e2445ed9f7abd33048b89873c"
+    },
+    {
+      "path": "frozen/1d1a121745385ec8c18911da12fa029efdac28bd28204d1647668d39c9d849bd_Source3352-wide_retained.tar.gz",
+      "bytes": 26551334,
+      "sha256": "1d1a121745385ec8c18911da12fa029efdac28bd28204d1647668d39c9d849bd"
+    },
+    {
+      "path": "frozen/2659900ee2dfd61b3f0464ececbf5e3b70b649eceaa89782b2241432fcc685f0_application_worker_docs_CC12_GAME_STATE_QUEUE_APPLICATION_OWNER_READINESS.md",
+      "bytes": 13934,
+      "sha256": "2659900ee2dfd61b3f0464ececbf5e3b70b649eceaa89782b2241432fcc685f0"
+    },
+    {
+      "path": "frozen/270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab_search_tests_test_ghidra_flow_repair.py",
+      "bytes": 5211,
+      "sha256": "270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab"
+    },
+    {
+      "path": "frozen/270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab_search_working_tests_test_ghidra_flow_repair.py",
+      "bytes": 5211,
+      "sha256": "270b943ab8c1b1208ea297a7b675d34b02631a6f93bb1c832f5fd9b67b8b1aab"
+    },
+    {
+      "path": "frozen/2b71a0ab9f6ac6c56a7cb91d46b7a68e48a7c6ab2907a85ec3a7b86d3bebadac_domain_primary_reports_cc12_game_free_adapter_domain_primary_review.json",
+      "bytes": 80672,
+      "sha256": "2b71a0ab9f6ac6c56a7cb91d46b7a68e48a7c6ab2907a85ec3a7b86d3bebadac"
+    },
+    {
+      "path": "frozen/2e09908bde856652b01ef4e121d72f294d77d56779a0605b54cad6beb8ea456d_node_worker_docs_CC12_LOCALE_MAP_RAW_NODE_PAYLOAD_HELPER.md",
+      "bytes": 8734,
+      "sha256": "2e09908bde856652b01ef4e121d72f294d77d56779a0605b54cad6beb8ea456d"
+    },
+    {
+      "path": "frozen/3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e_current_selected_tests_math_tests.cpp",
+      "bytes": 205179,
+      "sha256": "3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e"
+    },
+    {
+      "path": "frozen/3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e_search_tests_math_tests.cpp",
+      "bytes": 205179,
+      "sha256": "3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e"
+    },
+    {
+      "path": "frozen/3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e_search_working_tests_math_tests.cpp",
+      "bytes": 205179,
+      "sha256": "3623ca0ac1a698c21a55996b68f83c8eb3f6b676a77ada603cfb4452529ed09e"
+    },
+    {
+      "path": "frozen/44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330_search_tests_test_pair_tools.py",
+      "bytes": 2399,
+      "sha256": "44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330"
+    },
+    {
+      "path": "frozen/44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330_search_working_tests_test_pair_tools.py",
+      "bytes": 2399,
+      "sha256": "44886470ab78ec21ab09925434bc723c5d73ecf7a96c2ec171f9c48c24218330"
+    },
+    {
+      "path": "frozen/4ca00c3cf3e505304dc9fc00225efa9ea1a174581bf94dc7537aa2b3317b00cb_application_primary_docs_CC12_GAME_STATE_QUEUE_APPLICATION_OWNER_PRIMARY_REVIEW.md",
+      "bytes": 1926,
+      "sha256": "4ca00c3cf3e505304dc9fc00225efa9ea1a174581bf94dc7537aa2b3317b00cb"
+    },
+    {
+      "path": "frozen/4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4_current_selected_reports_cc12_allocation_stats_raw_constructor_source_primary_review.json",
+      "bytes": 3705583,
+      "sha256": "4d9e6f61d919a17ab38bd9e6f9e3482b6e47919ca649f152fc08f1a9f0242fd4"
+    },
+    {
+      "path": "frozen/541e0f13cf5a235989f18724e714076cbe5b37eadf5cfb8ea2fb9f4a661c5ad3_Source3352-wide_manifest.json",
+      "bytes": 1273066,
+      "sha256": "541e0f13cf5a235989f18724e714076cbe5b37eadf5cfb8ea2fb9f4a661c5ad3"
+    },
+    {
+      "path": "frozen/548cd1fcb1ea89dc7d4f120aa2dae827861dead372167b19bc0e9f354430f27f_frame_owner_worker_reports_cc12_game_native_frame_owner_composition.json",
+      "bytes": 26104,
+      "sha256": "548cd1fcb1ea89dc7d4f120aa2dae827861dead372167b19bc0e9f354430f27f"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_Git_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_current_selected_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d_working_CMakeLists.txt",
+      "bytes": 20149,
+      "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+    },
+    {
+      "path": "frozen/5da8b6199aa294d5a2ebe76282e42f58d5f9ca63b2c61e51b4d847af62897f9e_Source3354-node_manifest.json",
+      "bytes": 1250346,
+      "sha256": "5da8b6199aa294d5a2ebe76282e42f58d5f9ca63b2c61e51b4d847af62897f9e"
+    },
+    {
+      "path": "frozen/5f11726e43ede661a979d25289d2c6daa78e8697c69ae26a4b7525e7cfade9d4_domain_worker_docs_CC12_GAME_FREE_ADAPTER_DOMAIN_READINESS.md",
+      "bytes": 12298,
+      "sha256": "5f11726e43ede661a979d25289d2c6daa78e8697c69ae26a4b7525e7cfade9d4"
+    },
+    {
+      "path": "frozen/60a3f7b9ce18fda6d8e2cb37894c0c5d2a3e5c155288c007b6f7c16685201726_particle_worker_reports_cc12_particle_profile_admitted_constructor.json",
+      "bytes": 123002,
+      "sha256": "60a3f7b9ce18fda6d8e2cb37894c0c5d2a3e5c155288c007b6f7c16685201726"
+    },
+    {
+      "path": "frozen/68049ea13d6bc44208cc4a0649e6280f727d6a413a2c587ece24353c2585173e_node_primary_reports_cc12_locale_map_node_payload_primary.json",
+      "bytes": 35030,
+      "sha256": "68049ea13d6bc44208cc4a0649e6280f727d6a413a2c587ece24353c2585173e"
+    },
+    {
+      "path": "frozen/72780716e5a8707a9ba3120b283d2da6c289cc33eeebce7ddb5901a9b96b0022_free_worker_docs_CC12_GAME_CANONICAL_FREE_DEFAULTS.md",
+      "bytes": 6246,
+      "sha256": "72780716e5a8707a9ba3120b283d2da6c289cc33eeebce7ddb5901a9b96b0022"
+    },
+    {
+      "path": "frozen/819a51bb20787d50c15384f2623b1b9700204866c2d5d6a158da00a8617eb723_free_primary_qualified_docs_CC12_GAME_CANONICAL_FREE_PRIMARY.md",
+      "bytes": 3498,
+      "sha256": "819a51bb20787d50c15384f2623b1b9700204866c2d5d6a158da00a8617eb723"
+    },
+    {
+      "path": "frozen/81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c_search_tests_test_merge_resolve_refusals.py",
+      "bytes": 9142,
+      "sha256": "81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c"
+    },
+    {
+      "path": "frozen/81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c_search_working_tests_test_merge_resolve_refusals.py",
+      "bytes": 9142,
+      "sha256": "81fba25dfa7c92fabc3e9798bc0e267d43ba180a3853d3845b0dbbeff86dd96c"
+    },
+    {
+      "path": "frozen/8de7354e5b18ded150d04627d61ddadb1ffd4e3f5f520b936d32d9f8c2a5efc1_Source3352-worker-free_retained.tar.gz",
+      "bytes": 26551628,
+      "sha256": "8de7354e5b18ded150d04627d61ddadb1ffd4e3f5f520b936d32d9f8c2a5efc1"
+    },
+    {
+      "path": "frozen/8eb0665e7d720893be4a0121cf9d9a21be55dad94cee01f7752658c4017a8744_free_primary_qualified_reports_cc12_game_canonical_free_primary.json",
+      "bytes": 27459,
+      "sha256": "8eb0665e7d720893be4a0121cf9d9a21be55dad94cee01f7752658c4017a8744"
+    },
+    {
+      "path": "frozen/9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa_search_tests_native_math_tests.cpp",
+      "bytes": 5560,
+      "sha256": "9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa"
+    },
+    {
+      "path": "frozen/9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa_search_working_tests_native_math_tests.cpp",
+      "bytes": 5560,
+      "sha256": "9b5575acc7f2e391ef35950ece0acab04c9d368039e6da1ad6743cbf89f1faaa"
+    },
+    {
+      "path": "frozen/a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b_current_selected_reports_cc12_pending_registry_tick_registration_constructor_readiness.json",
+      "bytes": 17789,
+      "sha256": "a00e2b1c90da56100e1ed0680a7db9aae7f44197b3364ab9c8588f03355e953b"
+    },
+    {
+      "path": "frozen/a66d0d6ebcd9d3f2ffb7a08f27605bcc6bda175d479f29eb0333052c8509d322_Source3354-primary-free_manifest.json",
+      "bytes": 1236914,
+      "sha256": "a66d0d6ebcd9d3f2ffb7a08f27605bcc6bda175d479f29eb0333052c8509d322"
+    },
+    {
+      "path": "frozen/a8dd31aa671d825c53d04a7ad076406cf7b7f79399d9b72e49a213b05befae23_node_primary_docs_CC12_LOCALE_MAP_NODE_PAYLOAD_PRIMARY.md",
+      "bytes": 2921,
+      "sha256": "a8dd31aa671d825c53d04a7ad076406cf7b7f79399d9b72e49a213b05befae23"
+    },
+    {
+      "path": "frozen/ad7c65defa1a99bd26c7f4a791a1157c387e71791a5a4070750f8de77bfa79a9_domain_worker_reports_cc12_game_free_adapter_domain_readiness.json",
+      "bytes": 1323880,
+      "sha256": "ad7c65defa1a99bd26c7f4a791a1157c387e71791a5a4070750f8de77bfa79a9"
+    },
+    {
+      "path": "frozen/ae47ca82bffff9aadfdf237f41772d30100d0ca75dd0e680d7848e158932534d_free_primary_original_docs_CC12_GAME_CANONICAL_FREE_PRIMARY.md",
+      "bytes": 2854,
+      "sha256": "ae47ca82bffff9aadfdf237f41772d30100d0ca75dd0e680d7848e158932534d"
+    },
+    {
+      "path": "frozen/b2e64376467af675c23a1826aa108547685469b00b69830d9b2b33205a8cf0b3_Source_Git_tree.bin",
+      "bytes": 382757,
+      "sha256": "b2e64376467af675c23a1826aa108547685469b00b69830d9b2b33205a8cf0b3"
+    },
+    {
+      "path": "frozen/b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685_search_tests_test_exporter.py",
+      "bytes": 2455,
+      "sha256": "b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685"
+    },
+    {
+      "path": "frozen/b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685_search_working_tests_test_exporter.py",
+      "bytes": 2455,
+      "sha256": "b61d41c77737da2547019214afc0d0ebd8fe6339920f1536568716ec1f8ef685"
+    },
+    {
+      "path": "frozen/b9c810cd83d1e051ec676fac49e25b9b96c68cf37a5a661277f11b3fedba8541_node_worker_reports_cc12_locale_map_raw_node_payload_helper.json",
+      "bytes": 53623,
+      "sha256": "b9c810cd83d1e051ec676fac49e25b9b96c68cf37a5a661277f11b3fedba8541"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_Git_scripts_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_current_selected_scripts_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62_working_scripts_build.ps1",
+      "bytes": 1820,
+      "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+    },
+    {
+      "path": "frozen/cb1e3adac0feaaca222f99a76b2b86e8d96e654e61dc4452389331b4eeb15063_free_worker_reports_cc12_game_canonical_free_defaults.json",
+      "bytes": 62860,
+      "sha256": "cb1e3adac0feaaca222f99a76b2b86e8d96e654e61dc4452389331b4eeb15063"
+    },
+    {
+      "path": "frozen/d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182_search_tests_test_ghidra_typed_flow.py",
+      "bytes": 11168,
+      "sha256": "d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182"
+    },
+    {
+      "path": "frozen/d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182_search_working_tests_test_ghidra_typed_flow.py",
+      "bytes": 11168,
+      "sha256": "d627581f667471bfbeab4991ddd4df6667e390d89328d3158fea53ea6e6c2182"
+    },
+    {
+      "path": "frozen/db2f8c63a85ec524d5934032c2cb6e4c1a4281fbaf76864665741b17c0eddad7_Source3354-node_retained.tar.gz",
+      "bytes": 26552024,
+      "sha256": "db2f8c63a85ec524d5934032c2cb6e4c1a4281fbaf76864665741b17c0eddad7"
+    },
+    {
+      "path": "frozen/dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c_current_selected_reports_cc12_allocator_exception_copy_leaf_readiness.json",
+      "bytes": 51122,
+      "sha256": "dcf82c8a4b5e38e9328ae203bcaa5f993c252cf80bb3a5385bab396df55e9c9c"
+    },
+    {
+      "path": "frozen/de62c97e88ceb71ee777dec003dcf595e46bf94a4f2d9c1344cb3ce2d50a2af9_free_primary_original_reports_cc12_game_canonical_free_primary.json",
+      "bytes": 25704,
+      "sha256": "de62c97e88ceb71ee777dec003dcf595e46bf94a4f2d9c1344cb3ce2d50a2af9"
+    },
+    {
+      "path": "frozen/df7d691b95868ec6c3b5952224fa788d7fef4c38c6d3864e91d773989a8887e5_frame_owner_worker_docs_CC12_GAME_NATIVE_FRAME_OWNER_COMPOSITION.md",
+      "bytes": 14206,
+      "sha256": "df7d691b95868ec6c3b5952224fa788d7fef4c38c6d3864e91d773989a8887e5"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_Git_cmake_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_current_selected_cmake_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20_working_cmake_startup.cmake",
+      "bytes": 202412,
+      "sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20"
+    },
+    {
+      "path": "frozen/e1760f141f4b7c6750eb9e7d5a79b8dbef9c171e36ee5ba6f328ac6664f88f62_particle_worker_docs_CC12_PARTICLE_PROFILE_ADMITTED_CONSTRUCTOR.md",
+      "bytes": 11755,
+      "sha256": "e1760f141f4b7c6750eb9e7d5a79b8dbef9c171e36ee5ba6f328ac6664f88f62"
+    },
+    {
+      "path": "frozen/ee9700733b5743f2077caaecd38db357821a1cf6df21dac4f046ad35ab6497a9_domain_primary_docs_CC12_GAME_FREE_ADAPTER_DOMAIN_PRIMARY_REVIEW.md",
+      "bytes": 1518,
+      "sha256": "ee9700733b5743f2077caaecd38db357821a1cf6df21dac4f046ad35ab6497a9"
+    },
+    {
+      "path": "frozen/f12985d994603495f00556f7dc8178cb0a5a3742756cbe445686a1e8626b1b55_closed_frame_preservation.json",
+      "bytes": 13472,
+      "sha256": "f12985d994603495f00556f7dc8178cb0a5a3742756cbe445686a1e8626b1b55"
+    },
+    {
+      "path": "frozen/f3408cae915cce32b953042267854fee514686a2abf39b6edbbfa77e2fdfea0d_particle_primary_reports_cc12_particle_admitted_constructor_primary.json",
+      "bytes": 1950943,
+      "sha256": "f3408cae915cce32b953042267854fee514686a2abf39b6edbbfa77e2fdfea0d"
+    },
+    {
+      "path": "frozen/f9a0a17cf579ccccc9c3e4105374a6fbf4a604359b15e65be9cd9e37bfd63e21_Source_Git.tar.gz",
+      "bytes": 8622545,
+      "sha256": "f9a0a17cf579ccccc9c3e4105374a6fbf4a604359b15e65be9cd9e37bfd63e21"
+    },
+    {
+      "path": "frozen/ff4308bb7f7bb793d4dcec6ba4cee5974da4d9ff66d348afaf7c98c2b4dc7b70_application_primary_reports_cc12_game_state_queue_application_owner_primary_review.json",
+      "bytes": 186114,
+      "sha256": "ff4308bb7f7bb793d4dcec6ba4cee5974da4d9ff66d348afaf7c98c2b4dc7b70"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 9352,
+      "sha256": "b7edfd5f75351c6427de617efa8a967f685738b0a83a65704bffd106f36a866b"
+    },
+    {
+      "path": "publish.py",
+      "bytes": 4733,
+      "sha256": "5d4b3faa3f9e0659b4ca8d2a3077439637872acf1f895639afc184d07009a80a"
+    },
+    {
+      "path": "queries.json",
+      "bytes": 370133,
+      "sha256": "83beec01eef6090d1b2e14aec2a49326bd027abd8bc1f72577e6ce7d1447ed5a"
+    },
+    {
+      "path": "relocate_verify.py",
+      "bytes": 1203,
+      "sha256": "c8135989c8f46503eb1d31b7882e4e05ec98c6261f044ff5971a3d81f46450b0"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 5409,
+      "sha256": "a75fc9f51a553bba64f54aafa50be33269407300ebc7f84d3a07accc3cd4750c"
+    }
+  ],
+  "decision": {
+    "ready_for_separate_implementation": true,
+    "changed_default_methods": [
+      "NativeGameGridCpuCalls::allocate_00bf55be",
+      "NativeGameGridCpuCalls::free_00bf65ac"
+    ],
+    "allocate_body": "return singleton_lifetime_allocate({SingletonAllocationKind::object, bytes, bytes});",
+    "free_body": "singleton_lifetime_free(allocation);",
+    "preserved_method": "NativeGameGridCpuCalls::free_00bf6989 -> std::free(allocation)",
+    "direct_include": "bsp/singleton_lifetime.hpp",
+    "header_changes": "Contract comments only; unchanged virtual signatures and exception specifications.",
+    "zero_bytes": "Forward unchanged into canonical malloc/_callnewh policy; no zero normalization or skip.",
+    "foreign_domains": "Pair internal allocation with reached BF6989; pair outer allocation with reached CPU BF65AC. Current virtual overrides remain in control.",
+    "callable_grid_table_ready": false,
+    "construction_or_activation_admitted": false
+  },
+  "callable_table_obligations": [
+    "Actual readable current primary table with genuine Win32 __thiscall slot0(void*,uint32_t)->void*.",
+    "Table/code lifetime and actual grid-to-retained-NativeGameGridContext ownership; CPU service vptr and numeric00CFD484 do not satisfy this.",
+    "Explicit scalar adapter forwards receiver and flags to real context-bound helper; direct three-argument helper pointer has the wrong call shape.",
+    "Evidence-backed installation and destruction-state schedule accounts for constructor/destructor numeric stamps, interrupted cleanup and flag-zero destruction.",
+    "No receiver read after flag-one deletion; context/table/services and callback state survive until retirement finishes; no fabricated table, registry, publication or activation."
+  ],
+  "scope": {
+    "new_Cpp_files": 0,
+    "CMake_edits": 0,
+    "ledger_edits": 0,
+    "new_Native_queries": 0,
+    "Ghidra_writes": 0,
+    "builds": 0,
+    "executed_tests": 0,
+    "OS_probes": 0,
+    "original_runs": 0,
+    "runtime_or_ABI_proof": false,
+    "Source_epochs": "Four previous cohorts plus accepted primary particle cohort remain separate, each with four historical build artifacts. No new build or artifact-equality credit."
+  },
+  "replay": {
+    "portable": "python local/cc12_grid_provider_domain_table_readiness/verify.py --report reports/cc12_grid_provider_domain_table_readiness.json",
+    "actual_Git": "Append --original-worktree <original named worktree>. Checks actual Git/working source, read-only search-support files and all56 prior closed frame proof pins unchanged.",
+    "relocation": "python local/cc12_grid_provider_domain_table_readiness/relocate_verify.py copies only finite pins and exact report to a fresh root then runs guarded replay."
+  },
+  "qualification": "Static Source witnesses and complete lexical searches are not dynamic reachability, Native allocator equivalence, original execution or a callable-table implementation."
+}
