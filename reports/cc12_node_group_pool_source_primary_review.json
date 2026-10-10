@@ -1,0 +1,403 @@
+{
+  "schema": "cc12-node-group-pool-source-primary-review-v1",
+  "decision": "Accept actual retained plain-node/group production Source startup and lifetime composition; original CRT order, complete Native startup, ABI and gameplay held.",
+  "accepted_worker_commit": "23239fa31",
+  "worker_report_pin": {
+    "path": "reports/cc12_node_group_pool_startup_source.json",
+    "bytes": 36058,
+    "sha256": "a491505110c24496168134cd74aab4b86e3015af6831c36ac4638541ace7876e",
+    "canonical_lf_sha256": "a491505110c24496168134cd74aab4b86e3015af6831c36ac4638541ace7876e"
+  },
+  "complete_indexed_COFF_receipt_pin": {
+    "path": "local/cc12_node_group_pool_Source_primary/complete_artifacts.json",
+    "bytes": 29791969,
+    "sha256": "78f5d5f0f40e35ee78face2a7d157bb9c293b8460516afd5fa5674411b04bf3f",
+    "canonical_lf_sha256": "78f5d5f0f40e35ee78face2a7d157bb9c293b8460516afd5fa5674411b04bf3f"
+  },
+  "document_pin": {
+    "path": "docs/CC12_NODE_GROUP_POOL_SOURCE_PRIMARY_REVIEW.md",
+    "bytes": 2912,
+    "sha256": "31e1441e12629d7bf0bbad356ada616dc5b8e81d1b57a430ce405c7388685f1a",
+    "canonical_lf_sha256": "31e1441e12629d7bf0bbad356ada616dc5b8e81d1b57a430ce405c7388685f1a"
+  },
+  "selected_project_inputs": 585,
+  "selected_Core_whole_objects": 66,
+  "selected_App_whole_objects": 3,
+  "unique_positive_Core_definitions": 126,
+  "normal_build": {
+    "command": "./scripts/build.ps1",
+    "start_utc": "2026-10-10T00:02:05.524496+00:00",
+    "end_utc": "2026-10-10T00:02:28.571106+00:00",
+    "exit_code": 0
+  },
+  "existing_checks_passed": 3,
+  "new_tests": 0,
+  "fresh_whole_object_summaries": [
+    {
+      "stem": "game_main",
+      "bytes": 529327,
+      "sha256": "cc598cf37b62ac7dc3f7bf1773b7506c41e8348979fff07c71b983ba5ed93212",
+      "sections": 1838,
+      "physical_symbols": 4132,
+      "functions": 1192,
+      "code_bytes": 84770,
+      "instructions": 28564,
+      "undecoded_tails": []
+    },
+    {
+      "stem": "game_native_resource_pools",
+      "bytes": 41882,
+      "sha256": "21d791022cbacb3054c08881a4a3e4b631267e8c9ae86e56e47ff2690952bd19",
+      "sections": 134,
+      "physical_symbols": 350,
+      "functions": 78,
+      "code_bytes": 5625,
+      "instructions": 1811,
+      "undecoded_tails": []
+    },
+    {
+      "stem": "native_group_pool",
+      "bytes": 18643,
+      "sha256": "b32c0450cf2465ce57f67c64cf7c9d386b7d364301c3740a05224c85be72a0ea",
+      "sections": 82,
+      "physical_symbols": 184,
+      "functions": 38,
+      "code_bytes": 2932,
+      "instructions": 1019,
+      "undecoded_tails": []
+    },
+    {
+      "stem": "native_node_pool_owner",
+      "bytes": 6427,
+      "sha256": "07c6ada7051d703bfead7753156cb14b42b4fb5733ef05af3d53c48f70ed407a",
+      "sections": 24,
+      "physical_symbols": 61,
+      "functions": 15,
+      "code_bytes": 1123,
+      "instructions": 412,
+      "undecoded_tails": []
+    }
+  ],
+  "prior_unchanged_Core_objects": 64,
+  "changed_prior_Core_objects": [
+    "game_native_resource_pools"
+  ],
+  "actual_game_main_startup_REL32_chain": [
+    {
+      "family": "plain_node",
+      "section": 1358,
+      "call_offset": 3908,
+      "relocation": {
+        "record_file_offset": 194666,
+        "raw_record_hex": "450f00005e0d00001400",
+        "offset": 3909,
+        "type": 20,
+        "symbol_index": 3422,
+        "symbol": "?initialize_plain_node_once_00cd7d10@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3422,
+          "record_file_offset": 298843,
+          "raw_record_hex": "00000000d6d3000000000000000020000200",
+          "name": "?initialize_plain_node_once_00cd7d10@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190307,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    },
+    {
+      "family": "camera",
+      "section": 1358,
+      "call_offset": 3936,
+      "relocation": {
+        "record_file_offset": 194696,
+        "raw_record_hex": "610f0000580d00001400",
+        "offset": 3937,
+        "type": 20,
+        "symbol_index": 3416,
+        "symbol": "?initialize_camera_once_00cd7dd0@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3416,
+          "record_file_offset": 298735,
+          "raw_record_hex": "00000000f1d1000000000000000020000200",
+          "name": "?initialize_camera_once_00cd7dd0@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190335,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    },
+    {
+      "family": "mesh",
+      "section": 1358,
+      "call_offset": 3964,
+      "relocation": {
+        "record_file_offset": 194726,
+        "raw_record_hex": "7d0f0000590d00001400",
+        "offset": 3965,
+        "type": 20,
+        "symbol_index": 3417,
+        "symbol": "?initialize_mesh_once_00cd7e40@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3417,
+          "record_file_offset": 298753,
+          "raw_record_hex": "0000000041d2000000000000000020000200",
+          "name": "?initialize_mesh_once_00cd7e40@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190363,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    },
+    {
+      "family": "model",
+      "section": 1358,
+      "call_offset": 3977,
+      "relocation": {
+        "record_file_offset": 194736,
+        "raw_record_hex": "8a0f00005c0d00001400",
+        "offset": 3978,
+        "type": 20,
+        "symbol_index": 3420,
+        "symbol": "?initialize_model_once_00cd7f00@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3420,
+          "record_file_offset": 298807,
+          "raw_record_hex": "0000000033d3000000000000000020000200",
+          "name": "?initialize_model_once_00cd7f00@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190376,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    },
+    {
+      "family": "model_base",
+      "section": 1358,
+      "call_offset": 3990,
+      "relocation": {
+        "record_file_offset": 194746,
+        "raw_record_hex": "970f00005d0d00001400",
+        "offset": 3991,
+        "type": 20,
+        "symbol_index": 3421,
+        "symbol": "?initialize_model_base_once_00cd7f20@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3421,
+          "record_file_offset": 298825,
+          "raw_record_hex": "0000000082d3000000000000000020000200",
+          "name": "?initialize_model_base_once_00cd7f20@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190389,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    },
+    {
+      "family": "section",
+      "section": 1358,
+      "call_offset": 4024,
+      "relocation": {
+        "record_file_offset": 194776,
+        "raw_record_hex": "b90f00005a0d00001400",
+        "offset": 4025,
+        "type": 20,
+        "symbol_index": 3418,
+        "symbol": "?initialize_section_once_00cd8250@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3418,
+          "record_file_offset": 298771,
+          "raw_record_hex": "000000008fd2000000000000000020000200",
+          "name": "?initialize_section_once_00cd8250@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190423,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    },
+    {
+      "family": "hierarchy",
+      "section": 1358,
+      "call_offset": 4058,
+      "relocation": {
+        "record_file_offset": 194806,
+        "raw_record_hex": "db0f00005b0d00001400",
+        "offset": 4059,
+        "type": 20,
+        "symbol_index": 3419,
+        "symbol": "?initialize_hierarchy_once_00cd82d0@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3419,
+          "record_file_offset": 298789,
+          "raw_record_hex": "00000000e0d2000000000000000020000200",
+          "name": "?initialize_hierarchy_once_00cd82d0@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190457,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    },
+    {
+      "family": "group",
+      "section": 1358,
+      "call_offset": 4086,
+      "relocation": {
+        "record_file_offset": 194836,
+        "raw_record_hex": "f70f00005f0d00001400",
+        "offset": 4087,
+        "type": 20,
+        "symbol_index": 3423,
+        "symbol": "?initialize_group_once_00cd8460@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+        "symbol_record": {
+          "index": 3423,
+          "record_file_offset": 298861,
+          "raw_record_hex": "000000002ad4000000000000000020000200",
+          "name": "?initialize_group_once_00cd8460@GameNativeResourcePoolProcess@game@bsp@@QAEHXZ",
+          "value": 0,
+          "section": 0,
+          "type": 32,
+          "storage": 2,
+          "aux_count": 0,
+          "aux_records_hex": ""
+        },
+        "operand_file_offset": 190485,
+        "operand_hex": "00000000",
+        "operand_u32": 0
+      }
+    }
+  ],
+  "worker_pin_occurrences_verified_and_frozen": 74,
+  "retained_Source583_pins_verified": 587,
+  "runtime": {
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "3",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_node_group_pool_Source_primary\\startup_three_ticks.log",
+      "--game-root",
+      "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+      "--settings-personal-root",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_node_group_pool_Source_primary\\personal_windowed",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\msidcrl40.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\ppcrlconfig.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_fresh_xlive_runtime\\xlivefnt.dll"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator",
+    "pid": 47788,
+    "start_utc": "2026-10-10T00:03:27.737209+00:00",
+    "window_hide_requested": true,
+    "visual_observation": false,
+    "exe_sha256": "7e93a9a3b309f8f47736b936fb04dcea4c30a13f026df0811d80d5a89b34c331",
+    "options_sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+    "purpose": "Source585 production plain-node/group pools and prior admitted sources, same genuine bundled SDK and ordinary isolated windowed settings. Three ticks exercise normal startup, device creation/Present and empty-layout drain; no injected input, menu or mission.",
+    "finish_utc": "2026-10-10T00:03:27.902498+00:00",
+    "exit_code": 1,
+    "exit_u32_hex": "00000001",
+    "terminal": true,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "runtime_pins": [
+    {
+      "path": "local/cc12_node_group_pool_Source_primary/run_startup_smoke.py",
+      "bytes": 2176,
+      "sha256": "1c5513f3ea47fed3820b264a509e733433fb694a2563df723abcdce77382e7a0",
+      "canonical_lf_sha256": "1c5513f3ea47fed3820b264a509e733433fb694a2563df723abcdce77382e7a0"
+    },
+    {
+      "path": "local/cc12_node_group_pool_Source_primary/startup_exit.json",
+      "bytes": 1993,
+      "sha256": "a9158162d5958aa81a6f1a0bffd177a3afc826904c9402c3bd1cfe9e7a0f66c3",
+      "canonical_lf_sha256": "20327931235e078d3f708895ab550c365f1237371c79da3a1dc632c0ca75562b"
+    },
+    {
+      "path": "local/cc12_node_group_pool_Source_primary/startup_three_ticks.log",
+      "bytes": 11992,
+      "sha256": "215a084126ef3bc2a7d8abb7507611eaa05a1992dee3d87a2c3d48ceb1d42570",
+      "canonical_lf_sha256": "5e76bf4641a69a5841b71b6155d166b60b38caed4e3b64e3a4fca504670f870c"
+    },
+    {
+      "path": "local/cc12_node_group_pool_Source_primary/startup_stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical_lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/cc12_node_group_pool_Source_primary/startup_stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical_lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/cc12_node_group_pool_Source_primary/personal_windowed/Battlestations-Pacific/options.txt",
+      "bytes": 226,
+      "sha256": "1a815f6524a92e6db601870b75a5cec0e9ab9f52242663566d9bafe9b746b549",
+      "canonical_lf_sha256": "5d00d76793c22cfac48064b6f5a5f46750cacfcc519cc116ec81c886ed7711cf"
+    }
+  ],
+  "installation_pin": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "canonical_lf_sha256": "fe1f47d46cc8d0a82ae098b0a6e184f4b0faeac6a671097f1ffa2a301eaf7256"
+  },
+  "credit": {
+    "production_pool_Source": true,
+    "MSVC_Win32_build": true,
+    "focused_Source_CRT_probe": true,
+    "new_pool_initializers_executed": true,
+    "Native_CRT_table_order": false,
+    "Native_ABI": false,
+    "complete_startup": false,
+    "Present": false,
+    "gameplay": false
+  }
+}

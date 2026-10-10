@@ -1093,6 +1093,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native Lua globals initialized: region_atexit=%d storage=process_actual0ch",
             lua_region_atexit);
         auto& resource_pools = bsp::game::game_native_resource_pool_process();
+        // The plain-node/group positions are explicit Source composition;
+        // they do not establish the original CRT-table order.
+        const int plain_node_atexit = resource_pools.initialize_plain_node_once_00cd7d10();
+        log.notef("native plain-node pool initialized: atexit=%d storage=process_actual38h",
+            plain_node_atexit);
         const int camera_atexit = resource_pools.initialize_camera_once_00cd7dd0();
         log.notef("native camera pool CRT CD7DD0: atexit=%d", camera_atexit);
         const int mesh_atexit = resource_pools.initialize_mesh_once_00cd7e40();
@@ -1108,6 +1113,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int hierarchy_atexit = resource_pools.initialize_hierarchy_once_00cd82d0();
         log.notef("native resource hierarchy pool initialized: atexit=%d storage=process_actual38h "
             "slots=actual88h", hierarchy_atexit);
+        const int group_atexit = resource_pools.initialize_group_once_00cd8460();
+        log.notef("native group pool initialized: atexit=%d storage=process_actual38h "
+            "slots=actual18ch", group_atexit);
         // CD8A60 is at CE363C in the original initializer table, after CD82D0
         // and before CD9010's physical provider pool (started by VFS).
         auto& weak_pool = bsp::game::game_native_weak_pool_process();
