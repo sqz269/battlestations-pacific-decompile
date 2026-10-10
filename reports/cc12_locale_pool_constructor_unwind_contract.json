@@ -1,0 +1,812 @@
+{
+  "schema": 1,
+  "status": "bounded_action_dispatch_contract_evidenced_cleanup_targets_and_FH3_frame_setup_incomplete",
+  "source_capture_head": "503e3e09dd741c3bd21cd9c54eb9f5057df09490",
+  "base_main": "646420dba",
+  "helper_candidate": "9bf12e5b8ceecd354680bdea771d3b11eabc2998",
+  "owned_files": [
+    "docs/CC12_LOCALE_POOL_CONSTRUCTOR_UNWIND_CONTRACT.md",
+    "reports/cc12_locale_pool_constructor_unwind_contract.json"
+  ],
+  "Native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "architecture": "x86:LE:32:default",
+    "image_base": "00400000",
+    "GPR_modification": "79",
+    "typed_before_after_equal": true,
+    "stored_prototypes_unchanged": true,
+    "body_gate": {
+      "required": [
+        "Complete function ownership and prototypes before assembly",
+        "Each complete stored body and hull <=64 bytes",
+        "Lease exact ranges before body reads"
+      ],
+      "passed": true,
+      "missing_functions": false,
+      "incomplete_bodies": false,
+      "out_of_hull_continuations": false,
+      "range_source": "Typed metadata, not distances between adjacent action addresses"
+    },
+    "actions": [
+      {
+        "address": "00C5EEA0",
+        "stored_name": "Unwind@00c5eea0",
+        "stored_prototype": "undefined Unwind@00c5eea0(void)",
+        "owned_body_bytes": 8,
+        "hull_bytes": 8,
+        "range": [
+          "00C5EEA0",
+          "00C5EEA7"
+        ],
+        "native": {
+          "entry": "Native/00C5EEA0.bin",
+          "bytes": 8,
+          "sha256": "65106a49c11a5eb5fe0ace998536e4a6a3e6e02eca2bf227f51bd6e4ca8eb8b7"
+        },
+        "original_PE_raw_offset": 8777376,
+        "original_PE_equal": true,
+        "decode": [
+          {
+            "address": "00C5EEA0",
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00C5EEA3",
+            "bytes": "e9c84a7aff",
+            "mnemonic": "jmp",
+            "operands": "0x403970"
+          }
+        ],
+        "frame_input": "ECX = DWORD[EBP-0x10]",
+        "resource_offset": 0,
+        "tail_target": "00403970",
+        "target_metadata": {
+          "entry": {
+            "space": "ram",
+            "offset": "00403970"
+          },
+          "name": "BSP_AllocatorListElement_UnlinkBase",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null
+        },
+        "terminal_metadata": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00403970"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00403970"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C5EEA8",
+        "stored_name": "Unwind@00c5eea8",
+        "stored_prototype": "undefined Unwind@00c5eea8(void)",
+        "owned_body_bytes": 11,
+        "hull_bytes": 11,
+        "range": [
+          "00C5EEA8",
+          "00C5EEB2"
+        ],
+        "native": {
+          "entry": "Native/00C5EEA8.bin",
+          "bytes": 11,
+          "sha256": "fc5752c2436afce40c0d3094b3784ad36f8fc912ff6dc35b93f61401c86ef5b5"
+        },
+        "original_PE_raw_offset": 8777384,
+        "original_PE_equal": true,
+        "decode": [
+          {
+            "address": "00C5EEA8",
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00C5EEAB",
+            "bytes": "83c10c",
+            "mnemonic": "add",
+            "operands": "ecx, 0xc"
+          },
+          {
+            "address": "00C5EEAE",
+            "bytes": "e9bd407aff",
+            "mnemonic": "jmp",
+            "operands": "0x402f70"
+          }
+        ],
+        "frame_input": "ECX = DWORD[EBP-0x10]",
+        "resource_offset": 12,
+        "tail_target": "00402F70",
+        "target_metadata": {
+          "entry": {
+            "space": "ram",
+            "offset": "00402f70"
+          },
+          "name": "BSP_RecursiveCriticalSection_Destroy",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null
+        },
+        "terminal_metadata": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00402f70"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00402f70"
+            }
+          ]
+        }
+      },
+      {
+        "address": "00C5EEB3",
+        "stored_name": "Unwind@00c5eeb3",
+        "stored_prototype": "undefined Unwind@00c5eeb3(void)",
+        "owned_body_bytes": 11,
+        "hull_bytes": 11,
+        "range": [
+          "00C5EEB3",
+          "00C5EEBD"
+        ],
+        "native": {
+          "entry": "Native/00C5EEB3.bin",
+          "bytes": 11,
+          "sha256": "5404dfc728b91335acfc7078ab80c069706272848355edfdffccf10362c3b4f8"
+        },
+        "original_PE_raw_offset": 8777395,
+        "original_PE_equal": true,
+        "decode": [
+          {
+            "address": "00C5EEB3",
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00C5EEB6",
+            "bytes": "83c128",
+            "mnemonic": "add",
+            "operands": "ecx, 0x28"
+          },
+          {
+            "address": "00C5EEB9",
+            "bytes": "e9a2667dff",
+            "mnemonic": "jmp",
+            "operands": "0x435560"
+          }
+        ],
+        "frame_input": "ECX = DWORD[EBP-0x10]",
+        "resource_offset": 40,
+        "tail_target": "00435560",
+        "target_metadata": {
+          "entry": {
+            "space": "ram",
+            "offset": "00435560"
+          },
+          "name": "FUN_00435560",
+          "no_return": false,
+          "is_thunk": false,
+          "thunk_target_recursive": false,
+          "direct_thunk_target": null
+        },
+        "terminal_metadata": {
+          "flow_override": "CALL_RETURN",
+          "default_flow": {
+            "name": "UNCONDITIONAL_JUMP",
+            "is_call": false,
+            "is_jump": true,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": false
+          },
+          "effective_flow": {
+            "name": "CALL_TERMINATOR",
+            "is_call": true,
+            "is_jump": false,
+            "is_conditional": false,
+            "is_computed": false,
+            "is_terminal": true
+          },
+          "default_fallthrough": null,
+          "effective_fallthrough": null,
+          "fallthrough_overridden": false,
+          "default_targets": [
+            {
+              "space": "ram",
+              "offset": "00435560"
+            }
+          ],
+          "effective_targets": [
+            {
+              "space": "ram",
+              "offset": "00435560"
+            }
+          ]
+        }
+      }
+    ],
+    "fresh_native_bytes": 30,
+    "prior_native_bytes": 1335,
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_PE_reread": false,
+    "retained_client_query_outputs": 10,
+    "preliminary_unretained_detailed_proto_queries": 1
+  },
+  "ABI": {
+    "stored_void_prototypes_are_complete": false,
+    "actual_inputs": [
+      "EBP with readable DWORD at EBP-10h",
+      "Existing funclet stack context; no local stack adjustment"
+    ],
+    "selected_register": "ECX",
+    "same_saved_pointer_reloaded_per_action": true,
+    "action_only_untouched_registers": [
+      "EAX",
+      "EDX",
+      "EBX",
+      "ESI",
+      "EDI",
+      "EBP",
+      "ESP"
+    ],
+    "flags": "MOV/JMP unchanged; two ADD instructions update arithmetic flags",
+    "tail_opcodes": "E9 rel32; no PUSH/CALL/RET in the actions",
+    "target_clobber_return_and_exception_behavior_verified": false,
+    "required_frame_relation": "funclet EBP = constructor entry ESP S = constructor FS registration R + 0x0C",
+    "actual_dispatcher_supplies_required_frame_relation_verified": false,
+    "normalized_cpp_interface_is_original_ABI": false
+  },
+  "constructor": {
+    "address": "00436230",
+    "retained_hull_bytes": 211,
+    "retained_instruction_count": 68,
+    "source_epoch": "prior lifecycle/profile evidence, not a new native query",
+    "entry_ESP_symbol": "S",
+    "FS_registration": "R = S - 0x0C",
+    "state_slot": "S - 4 = R + 8",
+    "saved_pool_slot": "S - 0x10 = R - 4",
+    "saved_pool_write": {
+      "address": "00436265",
+      "instruction": "MOV [ESP+0Ch], ESI",
+      "ESI": "incoming ECX"
+    },
+    "constructor_uses_or_establishes_EBP": false,
+    "normal_state_stores": [
+      {
+        "address": "00436230",
+        "state": -1,
+        "width": 32
+      },
+      {
+        "address": "00436278",
+        "state": 0,
+        "width": 32
+      },
+      {
+        "address": "004362A3",
+        "state": 2,
+        "width": 8
+      }
+    ],
+    "state2_qualification": "Byte write after DWORD state0; uses prior normal stdcall section initialization return; no normal state1 store",
+    "allocation_failure_cleanup_behavior_verified": false
+  },
+  "unwind": {
+    "FuncInfo_address": "00D85688",
+    "FuncInfo_bytes": 36,
+    "maxState": 3,
+    "map_address": "00D85670",
+    "map_bytes": 24,
+    "rows": [
+      {
+        "state": 0,
+        "toState": -1,
+        "action": "00C5EEA0",
+        "selected_member_offset": 0,
+        "target": "00403970"
+      },
+      {
+        "state": 1,
+        "toState": 0,
+        "action": "00C5EEA8",
+        "selected_member_offset": 12,
+        "target": "00402F70"
+      },
+      {
+        "state": 2,
+        "toState": 1,
+        "action": "00C5EEB3",
+        "selected_member_offset": 40,
+        "target": "00435560"
+      }
+    ],
+    "declared_chain": "2 -> 1 -> 0 -> -1",
+    "state1_is_declared_intermediate_not_normal_store": true,
+    "actions_write_state": false,
+    "actual_dispatch_order_and_exception_runtime_verified": false,
+    "member28_passed_by_address_not_loaded_table_pointer": true
+  },
+  "handler": {
+    "address": "00C5EEBE",
+    "stored_function_absent": true,
+    "retained_window_bytes": 32,
+    "decoded_prefix_bytes": 10,
+    "undecoded_remainder_bytes": 22,
+    "prefix": [
+      "MOV EAX,00D85688",
+      "JMP 00BF6B43"
+    ],
+    "new_function_extent_inferred": false
+  },
+  "preserved_prior_contracts": {
+    "constructor": "00436230",
+    "destructor": "00435A50",
+    "profile": "00CE4120 -> 004360E0",
+    "normal_external_calls_assumed_return": true,
+    "prior_CALL_RETURN_effective_CALL_TERMINATOR_defects_retained": true,
+    "action_terminal_CALL_RETURN_overrides_retained": true,
+    "body_listing_signature_no_return_repairs": 0
+  },
+  "Source": {
+    "epoch": "new worker merge HEAD; historical artifact credits remain separate",
+    "actual_Git_blobs": 4217,
+    "tracked_include_src": 4210,
+    "physical_exact_blobs": 4217,
+    "commit_and_tree_path_membership_verified": true,
+    "retained_tree_objects": 12,
+    "actual_dependency_blobs": 8,
+    "actual_tool_blobs": 4,
+    "prior_profile_head": "f414ed0709d190f7ec09d7ee2390aae4749a6286",
+    "prior_source_blobs": 4215,
+    "source_deltas_from_prior": [
+      {
+        "path": "cmake/startup.cmake",
+        "change": "changed",
+        "prior_sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20",
+        "current_sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+      },
+      {
+        "path": "include/bsp/native_game_grid.hpp",
+        "change": "changed",
+        "prior_sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726",
+        "current_sha256": "22389375b044ac8a3e75fc43d18db5b70ee37983e92cb1947d8e599246bda13a"
+      },
+      {
+        "path": "include/bsp/native_locale_map_node_recycling.hpp",
+        "change": "added",
+        "prior_sha256": null,
+        "current_sha256": "a6871ac6e15ad4bd1652dc52375c413942e7562c311ca0fb06ed28a5ba07a0c1"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "change": "changed",
+        "prior_sha256": "7a0c41c648e0de9294c75ffc3c632845ff2b49becd9de9651f7cf3f4f969740d",
+        "current_sha256": "0a717cd4e5f15432ba2f4ad41f59cb15da3e2fc95972a9df7b75d4541ec2d806"
+      },
+      {
+        "path": "src/native_game_grid.cpp",
+        "change": "changed",
+        "prior_sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d",
+        "current_sha256": "27c9d4e2844de811d8b62e6660d08f39dbcec89eabd2df30c93138409c1eede3"
+      },
+      {
+        "path": "src/native_locale_map_node_recycling.cpp",
+        "change": "added",
+        "prior_sha256": null,
+        "current_sha256": "94546ed000b7f35699ea63f05ae2409604d20381586f5b1501d9cf761269fb12"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "change": "changed",
+        "prior_sha256": "bd83b4dd9798950cc0f46ce3002cbe72182c961f418702e11ca2e0c7abd55be3",
+        "current_sha256": "da4b48b339a72c3bfe9323510907b1220cb9c371e15122799441d3ef9691699b"
+      }
+    ],
+    "new_Source_edits": false,
+    "helper_artifact_credit": false
+  },
+  "dependencies": [
+    {
+      "path": "docs/CC12_LOCALE_POOL_PROFILE_UNWIND_READINESS.md",
+      "mode": "100644",
+      "blob": "7edd1d41c8020e166cca25cf22d8cf9bba9f0eab",
+      "pin": {
+        "entry": "Dependencies/docs/CC12_LOCALE_POOL_PROFILE_UNWIND_READINESS.md",
+        "bytes": 10617,
+        "sha256": "990b44ed7a435cd0e88f0347867775d0bf679ed8f8d21fd2d0c2611fe0b85d7e"
+      },
+      "physical_exact": true,
+      "physical_sha256": "990b44ed7a435cd0e88f0347867775d0bf679ed8f8d21fd2d0c2611fe0b85d7e"
+    },
+    {
+      "path": "reports/cc12_locale_pool_profile_unwind_readiness.json",
+      "mode": "100644",
+      "blob": "1071905f43318456552866dc0d4e56deb67304c9",
+      "pin": {
+        "entry": "Dependencies/reports/cc12_locale_pool_profile_unwind_readiness.json",
+        "bytes": 68212,
+        "sha256": "1dc32daf72626c0e78b7e464ed6219d3dc146347968b7e35f49b6bc6b5909c49"
+      },
+      "physical_exact": true,
+      "physical_sha256": "1dc32daf72626c0e78b7e464ed6219d3dc146347968b7e35f49b6bc6b5909c49"
+    },
+    {
+      "path": "docs/CC12_LOCALE_PROFILE_PRIMARY.md",
+      "mode": "100644",
+      "blob": "a55381d8b696c5107f78a0c062f6c46eb2f61078",
+      "pin": {
+        "entry": "Dependencies/docs/CC12_LOCALE_PROFILE_PRIMARY.md",
+        "bytes": 2381,
+        "sha256": "5c6972c9429f548879f02f5d42a4783dbcbf630852cf0920c577f7c19881e761"
+      },
+      "physical_exact": true,
+      "physical_sha256": "5c6972c9429f548879f02f5d42a4783dbcbf630852cf0920c577f7c19881e761"
+    },
+    {
+      "path": "reports/cc12_locale_profile_primary.json",
+      "mode": "100644",
+      "blob": "3f8de9bc2d05f5b614dbef124074d1106ab8ebeb",
+      "pin": {
+        "entry": "Dependencies/reports/cc12_locale_profile_primary.json",
+        "bytes": 7798,
+        "sha256": "0052ecca6ee433aeeea979583f95b0fde766f4bd469ad1f7428040c1a338474b"
+      },
+      "physical_exact": true,
+      "physical_sha256": "0052ecca6ee433aeeea979583f95b0fde766f4bd469ad1f7428040c1a338474b"
+    },
+    {
+      "path": "docs/CC12_LOCALE_LIFECYCLE_PRIMARY.md",
+      "mode": "100644",
+      "blob": "398eb90ccdfbc5dcb5249290ff78d8a37352f3dd",
+      "pin": {
+        "entry": "Dependencies/docs/CC12_LOCALE_LIFECYCLE_PRIMARY.md",
+        "bytes": 1867,
+        "sha256": "a07fef4112d641d0b1c6dcfed3dc9a5de33a7025c024473ae0af3bb735cba53e"
+      },
+      "physical_exact": true,
+      "physical_sha256": "a07fef4112d641d0b1c6dcfed3dc9a5de33a7025c024473ae0af3bb735cba53e"
+    },
+    {
+      "path": "reports/cc12_locale_lifecycle_primary.json",
+      "mode": "100644",
+      "blob": "b55389981a417743660e30fde49f6985309457cf",
+      "pin": {
+        "entry": "Dependencies/reports/cc12_locale_lifecycle_primary.json",
+        "bytes": 4365,
+        "sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e"
+      },
+      "physical_exact": true,
+      "physical_sha256": "dbcaf2ab80dafbf9ab44fe44575a1883c9869d160df6be2809172c955b9d078e"
+    },
+    {
+      "path": "docs/CC12_LOCALE_BORROWED_NODE_RECYCLING_HELPER.md",
+      "mode": "100644",
+      "blob": "a80a2794b97119df51fd83f53450117f0ca69a0e",
+      "pin": {
+        "entry": "Dependencies/docs/CC12_LOCALE_BORROWED_NODE_RECYCLING_HELPER.md",
+        "bytes": 9148,
+        "sha256": "3c211c48f6e1dca44e56cce4fd2b9db84bf2cbf70a999de1ec52a022c4fcfac2"
+      },
+      "physical_exact": true,
+      "physical_sha256": "3c211c48f6e1dca44e56cce4fd2b9db84bf2cbf70a999de1ec52a022c4fcfac2"
+    },
+    {
+      "path": "reports/cc12_locale_borrowed_node_recycling_helper.json",
+      "mode": "100644",
+      "blob": "c7f61b05f07e576ff37e003f160f73a897dc73c7",
+      "pin": {
+        "entry": "Dependencies/reports/cc12_locale_borrowed_node_recycling_helper.json",
+        "bytes": 114660,
+        "sha256": "f479b519c6456b8c448c2e923185a687aee3978b43d613399b941dab5dd5ba96"
+      },
+      "physical_exact": true,
+      "physical_sha256": "f479b519c6456b8c448c2e923185a687aee3978b43d613399b941dab5dd5ba96"
+    }
+  ],
+  "incomplete_dependencies": [
+    {
+      "address": "00435560",
+      "stored_name": "FUN_00435560",
+      "selected_resource": "address of saved pool member +28h",
+      "body_read": false,
+      "cleanup_effects_established": false
+    },
+    {
+      "address": "00402F70",
+      "stored_name": "BSP_RecursiveCriticalSection_Destroy",
+      "selected_resource": "address of saved pool member +0Ch",
+      "body_read": false,
+      "cleanup_effects_established": false
+    },
+    {
+      "address": "00403970",
+      "stored_name": "BSP_AllocatorListElement_UnlinkBase",
+      "selected_resource": "saved pool/list base",
+      "body_read": false,
+      "cleanup_effects_established": false
+    },
+    {
+      "address": "00BF6B43",
+      "stored_name": null,
+      "selected_resource": "handler prefix target; runtime dispatcher frame setup unproved",
+      "body_read": false,
+      "cleanup_effects_established": false
+    }
+  ],
+  "next_gate": {
+    "proposal": "Root metadata/prototype/typed-flow review of00435560; reconcile named00403970/00402F70 cleanup dependencies; propose any target body separately",
+    "addresses": [
+      "00435560",
+      "00403970",
+      "00402F70"
+    ],
+    "body_admission": "New Root-approved exact leases and explicit body/hull size limit; metadata first; no inference from adjacent addresses",
+    "FH3_frame_setup": "Separate runtime-dispatcher proposal; not authorized by this packet",
+    "source_implementation_ready": false,
+    "owner_activation_GO": false
+  },
+  "proof": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract",
+    "bundle": {
+      "entry": "evidence.zip",
+      "bytes": 34694289,
+      "sha256": "fcae4292adc84d276553b3640e8d40a6a89bb6ad90b0a5dbb9888207bd05f50b",
+      "payload_files": 4263,
+      "payload_bytes": 64862148
+    },
+    "physical_copy": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\physical_copy\\evidence.zip",
+      "bytes": 34694289,
+      "sha256": "fcae4292adc84d276553b3640e8d40a6a89bb6ad90b0a5dbb9888207bd05f50b"
+    },
+    "guarded_replay": {
+      "status": "PASS",
+      "guard": {
+        "ZIP_only": true,
+        "read_only": true,
+        "external_read_denied": true,
+        "process_network_dynamic_loading_directory_access_denied": true
+      },
+      "review": {
+        "status": "PASS",
+        "head": "503e3e09dd741c3bd21cd9c54eb9f5057df09490",
+        "payload_files": 4263,
+        "actual_current_Git_Source_blobs": 4217,
+        "Git_commit_and_path_tree_membership_verified": true,
+        "actual_dependency_blobs": 8,
+        "actual_tool_blobs": 4,
+        "prior_profile_replay": {
+          "status": "PASS",
+          "head": "f414ed0709d190f7ec09d7ee2390aae4749a6286",
+          "payload_files": 4289,
+          "actual_Git_Source_blobs": 4215,
+          "dependency_blobs": 12,
+          "prior_lifecycle_Source_exact": 4215,
+          "Root_particle_selected_exact": 3348,
+          "Root_particle_selected_LF_equal": 3354,
+          "Root_particle_Git_exact": 4215,
+          "fresh_Native_bytes": 256,
+          "prior_Native_bytes": 1079,
+          "profile_first_cell": "00CE4120 -> 004360E0",
+          "virtual0_stored_body_bytes": 95,
+          "virtual0_hull_bytes": 160,
+          "virtual0_decoded_instructions": 57,
+          "virtual0_normal_reachable_instructions": 54,
+          "virtual0_normal_CFG_edges": 60,
+          "virtual0_reachable_unowned_continuation_bytes": 54,
+          "virtual0_unreached_padding_bytes": 11,
+          "CALL_RETURN_overrides_retained": 1,
+          "free_thunk_no_return": false,
+          "handler_stored_function_absent": true,
+          "handler_fixed_window_bytes": 32,
+          "handler_prefix_decoded_bytes": 10,
+          "handler_remainder_undecoded_bytes": 22,
+          "FuncInfo_bytes": 36,
+          "UnwindMap_bytes": 24,
+          "unwind_actions_unread": [
+            "00C5EEA0",
+            "00C5EEA8",
+            "00C5EEB3"
+          ],
+          "compiler_definition_version": "14.51.36231",
+          "typed_modification": "72",
+          "source_address_matches": [],
+          "new_build": false,
+          "new_tests": false,
+          "Native_execution": false,
+          "GPR_mutations": false,
+          "Source_changes": false,
+          "owner_activation_GO": false,
+          "raw_map_composition_GO": false
+        },
+        "source_deltas_from_prior": [
+          {
+            "path": "cmake/startup.cmake",
+            "change": "changed",
+            "prior_sha256": "e15f583677fbf461dca1b6c65f630ab0db1f22fb014e888245a3d8cf08e0bb20",
+            "current_sha256": "3c660febdce64ea8bb54ea331d17eed7e184f0caa25829933021ce15f84c0392"
+          },
+          {
+            "path": "include/bsp/native_game_grid.hpp",
+            "change": "changed",
+            "prior_sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726",
+            "current_sha256": "22389375b044ac8a3e75fc43d18db5b70ee37983e92cb1947d8e599246bda13a"
+          },
+          {
+            "path": "include/bsp/native_locale_map_node_recycling.hpp",
+            "change": "added",
+            "prior_sha256": null,
+            "current_sha256": "a6871ac6e15ad4bd1652dc52375c413942e7562c311ca0fb06ed28a5ba07a0c1"
+          },
+          {
+            "path": "include/bsp/native_render_context.hpp",
+            "change": "changed",
+            "prior_sha256": "7a0c41c648e0de9294c75ffc3c632845ff2b49becd9de9651f7cf3f4f969740d",
+            "current_sha256": "0a717cd4e5f15432ba2f4ad41f59cb15da3e2fc95972a9df7b75d4541ec2d806"
+          },
+          {
+            "path": "src/native_game_grid.cpp",
+            "change": "changed",
+            "prior_sha256": "82fef0f3df4c145546c550c8f17d0421dd7b62dfaff18ddbd295968cdc46e84d",
+            "current_sha256": "27c9d4e2844de811d8b62e6660d08f39dbcec89eabd2df30c93138409c1eede3"
+          },
+          {
+            "path": "src/native_locale_map_node_recycling.cpp",
+            "change": "added",
+            "prior_sha256": null,
+            "current_sha256": "94546ed000b7f35699ea63f05ae2409604d20381586f5b1501d9cf761269fb12"
+          },
+          {
+            "path": "src/native_render_context.cpp",
+            "change": "changed",
+            "prior_sha256": "bd83b4dd9798950cc0f46ce3002cbe72182c961f418702e11ca2e0c7abd55be3",
+            "current_sha256": "da4b48b339a72c3bfe9323510907b1220cb9c371e15122799441d3ef9691699b"
+          }
+        ],
+        "fresh_native_bytes": 30,
+        "prior_native_bytes": 1335,
+        "funclet_instructions": 8,
+        "complete_body_hulls": [
+          8,
+          11,
+          11
+        ],
+        "GPR_modification": "79",
+        "typed_before_after_equal": true,
+        "declared_unwind_chain": "2 -> 1 -> 0 -> -1",
+        "frame_requirement": "EBP = constructor entry ESP = FS registration + 0x0C",
+        "FH3_frame_dispatch_verified": false,
+        "cleanup_target_body_reads": false,
+        "helper_artifact_credit": false,
+        "build": false,
+        "tests": false,
+        "GPR_mutations": false,
+        "Source_activation": false
+      }
+    },
+    "physical_copy_result_equal": true,
+    "files": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\payload\\capture.json",
+        "bytes": 2007636,
+        "sha256": "33a1a1b5e686a2a0bd08150163503b53d9f12fb513c311612f14d2e853e2d446"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\collect.py",
+        "bytes": 8062,
+        "sha256": "16d86d35f62952a000d28bd98b0416e64257f7cc14f7737b96af82bd3174d1c7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\replay.py",
+        "bytes": 10057,
+        "sha256": "3db783bf7d55074ab0189fd7851d141dac110a10a281f4860336fb7af4c8689a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\guarded_replay.py",
+        "bytes": 1307,
+        "sha256": "999d6ac8b4580909d74efe9f03535ebf13f14c8d64de783bcc36eb12100ef2c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\package.py",
+        "bytes": 1341,
+        "sha256": "0e31d50a06e127884a9f22aaed014cb44327de7b89507b1ae26e637ddf3da2af"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\review.json",
+        "bytes": 4652,
+        "sha256": "3f988075091427d7a86f0689a610a046bd848dedbe1f10676bd9d6113306aa8d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_locale_pool_unwind\\local\\cc12_locale_pool_constructor_unwind_contract\\physical_copy\\review.json",
+        "bytes": 4652,
+        "sha256": "3f988075091427d7a86f0689a610a046bd848dedbe1f10676bd9d6113306aa8d"
+      }
+    ],
+    "prior_nested": {
+      "entry": "prior/evidence.zip",
+      "sha256": "ea19aa762cd4de2c8dff8d0a2d09b989d7c4b9d1eec9c08f1ebb8aea3e1c4570",
+      "replay": "PASS"
+    }
+  },
+  "restrictions": {
+    "CPP_changes": false,
+    "CMake_changes": false,
+    "GPR_mutations": false,
+    "ledger_changes": false,
+    "build": false,
+    "tests": false,
+    "probes": false,
+    "game_execution": false,
+    "OS_changes": false,
+    "cleanup_target_body_reads": false,
+    "handler_remainder_decoded": false,
+    "FH3_frame_dispatch_verified": false,
+    "Source_or_application_activation": false
+  },
+  "limits": [
+    "Actual dispatcher EBP setup and Original ABI replacement unproved",
+    "Target names do not independently establish cleanup effects",
+    "Allocation/null-table behavior, exception identity, SEH and double-failure unproved",
+    "Handler remains function-absent; 22 retained trailing bytes remain undecoded",
+    "Canonical storage, slab producer and complete owning lifetime absent",
+    "Historical Source and helper artifacts remain separate epochs",
+    "Payload-before-pool teardown and application/game activation unproved"
+  ]
+}
