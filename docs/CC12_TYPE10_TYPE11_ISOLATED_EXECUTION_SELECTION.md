@@ -269,3 +269,12 @@ Root accepted and staged the 24,010-byte nested-pin inspector TEXT02 after consu
 The actual inspector has not run. The complete actual runtime Root report, its actual counts and the separate independent inspection gate remain unissued. This checkpoint adds Source compatibility acceptance only and preserves every preceding qualification limit.
 
 Root separately bound type1011p6, type1011select07, type1011observe07 and Root_type1011F6D07_adopter01 as prospective literals for inert successor Source authoring. All four roots were observed absent. They are uncreated and unreserved; no fresh implementation acceptance, plan, profile, materialization, adoption or actual phase selection is issued. The existing assembler worker is reused for this common stream.
+
+
+## 2026-10-10 complete reader04 Source acceptance and actual DATA failure
+
+Complete static Root review passed 146,669 predicates with 1,243 equal current books and consumed all independent Source review, native/cap supplement, closure and final readonly verification rows. The 72,289-byte Reader04 was staged exactly and invoked through the pinned Miniconda interpreter with -I -B -E -S. The complete original clause map, eight unchanged helpers and 133 selected Closing obligations remain preserved. Static cap estimates remain conditional and are not actual output counts.
+
+The genuine isolated DATA-reader invocation returned exit 1 on original session 24194, terminal f63493. Its recursive generic collector encountered a historical prior-postseal descriptor for the same external transport path as a different current descriptor. The complete native failure and the earlier Root map-order diagnostic/correction are retained. No success report, expected candidate selection, complete peer inputs or independent inspection gate was created. The original four successful native terminals and their original clock remain preserved; no reset or replay occurred.
+
+An additive, separately reviewed Source correction is required before another DATA-reader attempt. Static Source acceptance remains distinct from actual runtime DATA acceptance. Source credit, fixture advancement and Native/ABI/game qualification remain zero.

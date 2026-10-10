@@ -5413,6 +5413,496 @@
           "phase_authority": false,
           "fixture_advance": false,
           "qualification": false
+        },
+        "review_phase_reader04_complete_static_Source_acceptance_and_actual_DATA_failure": {
+          "status": "STATIC_SOURCE_ACCEPTED_EXACT_STAGED_ACTUAL_DATA_READER_HELD_HISTORICAL_PIN_COLLISION",
+          "Source_credit": 0,
+          "complete_Root_static_Source_acceptance": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader04_complete_Source_peer_accepted_DATA01.json",
+            "bytes": 50361608,
+            "sha256": "f7c432a0b45e6942752d7d5d43b22b9f869a9aed80167968f5892f491ede96f0"
+          },
+          "Root_positive_static_Source_predicates": 146669,
+          "Root_equal_current_Source_books": 1243,
+          "complete_exact_Source_staging": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\Root_F5_review01_reader04_exact_additive_Source_staging_DATA01.json",
+            "bytes": 2088,
+            "sha256": "9f3e7155168bfa6278f3526201773dbb2fef5bbc1377d8da43330e23869e886c"
+          },
+          "staged_reader_Source": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\review_F5_review01_complete_actual_runtime_DATA04.py",
+            "bytes": 72289,
+            "sha256": "c7bfd9377c981c35e58b1070a210d81ca3f9b41a2c5f1859c4c1b6cea7e6184c"
+          },
+          "selected_pinned_DATA_interpreter": {
+            "path": "C:\\ProgramData\\miniconda3\\python.exe",
+            "bytes": 104264,
+            "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d"
+          },
+          "exact_DATA_reader_argv": [
+            "C:\\ProgramData\\miniconda3\\python.exe",
+            "-I",
+            "-B",
+            "-E",
+            "-S",
+            "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_TEXT_review01\\review_F5_review01_complete_actual_runtime_DATA04.py"
+          ],
+          "complete_static_acceptance_native_diagnostics": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader04_complete_static_Source_acceptance_failed01_shape_corrected02.actual_tools.DATA.json",
+            "bytes": 8233,
+            "sha256": "c1cea61d556fae80305ae18a0227beb898267b56113d84dc5be395ec62a79a12"
+          },
+          "whole_independent_Source_predicate_counts": [
+            6793,
+            35610,
+            20416,
+            19573
+          ],
+          "original_need_clauses_preserved": 119,
+          "current_need_call_sites": 181,
+          "unchanged_original_helpers": 8,
+          "selected_Closing_obligations_preserved": 133,
+          "conditional_cap_estimates_are_not_actual_counts": true,
+          "complete_conditional_cap_contract": {
+            "inspector_limits": {
+              "JSON_bytes": 2200000000,
+              "checks": 2000000,
+              "pins": 100000,
+              "members": 100000
+            },
+            "consumed_prior_Root_check_counts": {
+              "adopted_joint": 695210,
+              "startup": 712054,
+              "total": 1407264
+            },
+            "prior_checks_are_inspected_not_serialized_into_own_checks": true,
+            "actual_selected_tables": {
+              "files": 15127,
+              "scopes": 70,
+              "memberships": 36046
+            },
+            "actual_identity_snapshots": 501,
+            "actual_retained_process_rows": 1001,
+            "actual_natural_polls": 1,
+            "runtime_JSON_files": 1091,
+            "serialized_runtime_JSON_bytes": 11823123,
+            "loop_bounds": [
+              {
+                "line": 101,
+                "iter_Source": "folder.rglob('*')",
+                "conservative_iterations": 2582,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 100,
+                "iter_Source": "(F5, OBS)",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 108,
+                "iter_Source": "('review01_complete_original_genuine_native_orchestration_DATA01.json', 'review01_Dispatch.actual_native_tool.DATA.json', 'review01_execution_recorder.actual_native_tool.DATA.json', 'review01_Closing.actual_native_tool.DATA.json', 'review01_closing_recorder.actual_native_tool.DATA.json', 'review01_fourth_genuine_terminal_original_QPC_upper_bound.DATA.json', 'review01_authorizer03.actual_native_tool.DATA.json', 'review01_authorizer03_pre_T0_physical.actual_native_tool.DATA.json', 'AUX_EXECUTION_EVENT.actual_native_tool.DATA.json', 'AUX_CLOSING_EVENT.actual_native_tool.DATA.json', 'AUX_FOURTH_TERMINAL_OBSERVER.actual_native_tool.DATA.json')",
+                "conservative_iterations": 11,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 122,
+                "iter_Source": "[('helper', 'proposed_helper'), ('authorizer', 'proposed_authorizer')]",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 5
+              },
+              {
+                "line": 130,
+                "iter_Source": "contract['fixture_before_files'] + contract['external_before_files'] + preflight['OBS']['files']",
+                "conservative_iterations": 2591,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 144,
+                "iter_Source": "utilities['selected_utilities'].items()",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 5
+              },
+              {
+                "line": 147,
+                "iter_Source": "('write_F5_review01_genuine_Root_event01.py', 'observe_F5_review01_fourth_terminal_original_QPC_DATA01.py')",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 154,
+                "iter_Source": "seal['files'] + S['additional_current_pins'] + s['selected_code']",
+                "conservative_iterations": 1726,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 155,
+                "iter_Source": "('private_environment', 'private_external_environment', 'external_driver', 'external_bootstrap', 'external_job_supervisor', 'external_job_policy', 'external_job_image_policy', 'external_powershell_host')",
+                "conservative_iterations": 8,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 158,
+                "iter_Source": "family['files']",
+                "conservative_iterations": 13744,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 156,
+                "iter_Source": "S['immutable_families']",
+                "conservative_iterations": 13,
+                "weighted_need_sites_per_iteration": 27489
+              },
+              {
+                "line": 163,
+                "iter_Source": "S['immutable_families']",
+                "conservative_iterations": 13,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 188,
+                "iter_Source": "range(count)",
+                "conservative_iterations": 4,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 184,
+                "iter_Source": "native['slices']",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 6
+              },
+              {
+                "line": 207,
+                "iter_Source": "(read(EXT / (label + '.preflight.json')), guard['post_bookend'])",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 212,
+                "iter_Source": "('started', 'closed', 'supervisor_disposed', 'descendants_closed', 'successful_outer_result')",
+                "conservative_iterations": 5,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 214,
+                "iter_Source": "('failure', 'post_failure', 'job_failure')",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 219,
+                "iter_Source": "('job_created', 'root_child_created', 'assigned_before_resume', 'resumed', 'root_child_exited', 'natural_zero_before_cleanup', 'termination_requested_on_exit_path', 'job_handle_closed', 'descendants_closed', 'successful_supervised_result')",
+                "conservative_iterations": 10,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 221,
+                "iter_Source": "('failure', 'post_failure')",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 223,
+                "iter_Source": "('cleanup_failures', 'identity_snapshot_errors', 'identity_required_failures')",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 273,
+                "iter_Source": "rows",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 19
+              },
+              {
+                "line": 257,
+                "iter_Source": "enumerate(job['identity_snapshot_pins'], 1)",
+                "conservative_iterations": 501,
+                "weighted_need_sites_per_iteration": 48
+              },
+              {
+                "line": 329,
+                "iter_Source": "('first', 'last')",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 6
+              },
+              {
+                "line": 316,
+                "iter_Source": "range(1, polls + 1)",
+                "conservative_iterations": 1,
+                "weighted_need_sites_per_iteration": 29
+              },
+              {
+                "line": 341,
+                "iter_Source": "prepare_contract['prepare_copy_map']",
+                "conservative_iterations": 22,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 347,
+                "iter_Source": "dependencies",
+                "conservative_iterations": 1453,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 352,
+                "iter_Source": "copies.items()",
+                "conservative_iterations": 1475,
+                "weighted_need_sites_per_iteration": 5
+              },
+              {
+                "line": 369,
+                "iter_Source": "frozen",
+                "conservative_iterations": 1453,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 377,
+                "iter_Source": "tuple(sys.modules.items())",
+                "conservative_iterations": 5000,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 383,
+                "iter_Source": "read(F5 / 'Source_external.json')",
+                "conservative_iterations": 14,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 387,
+                "iter_Source": "toolchain[category]",
+                "conservative_iterations": 5124,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 386,
+                "iter_Source": "('executables', 'headers', 'libraries')",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 5124
+              },
+              {
+                "line": 391,
+                "iter_Source": "contract['must_remain_empty_roots']",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 406,
+                "iter_Source": "enumerate(authority_turns)",
+                "conservative_iterations": 8,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 428,
+                "iter_Source": "('stdout_record', 'stderr_record')",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 5
+              },
+              {
+                "line": 415,
+                "iter_Source": "(('Dispatch', 'parent_guard', 592), ('Closing', 'parent_closing', 600))",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 27
+              },
+              {
+                "line": 448,
+                "iter_Source": "inventory['Root_files']",
+                "conservative_iterations": 8,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 483,
+                "iter_Source": "enumerate(t['turns'][1:], 1)",
+                "conservative_iterations": 84,
+                "weighted_need_sites_per_iteration": 2
+              },
+              {
+                "line": 489,
+                "iter_Source": "t['turns']",
+                "conservative_iterations": 84,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 471,
+                "iter_Source": "enumerate(raws)",
+                "conservative_iterations": 4,
+                "weighted_need_sites_per_iteration": 259
+              },
+              {
+                "line": 497,
+                "iter_Source": "[('execution_event_writer', 'AUX_EXECUTION_EVENT'), ('closing_event_writer', 'AUX_CLOSING_EVENT'), ('fourth_terminal_observer', 'AUX_FOURTH_TERMINAL_OBSERVER')]",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 4
+              },
+              {
+                "line": 513,
+                "iter_Source": "enumerate(transport['actual_tool_turns'])",
+                "conservative_iterations": 84,
+                "weighted_need_sites_per_iteration": 3
+              },
+              {
+                "line": 517,
+                "iter_Source": "(('execution', execution_event, 'execution_tool_terminal', 0, 594), ('closing', closing_event, 'verifier_tool_terminal', 2, 600))",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 11
+              },
+              {
+                "line": 551,
+                "iter_Source": "(s['external_driver'], s['external_bootstrap'])",
+                "conservative_iterations": 2,
+                "weighted_need_sites_per_iteration": 3
+              },
+              {
+                "line": 565,
+                "iter_Source": "range(1, polls + 1)",
+                "conservative_iterations": 1,
+                "weighted_need_sites_per_iteration": 1
+              },
+              {
+                "line": 573,
+                "iter_Source": "fields",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 572,
+                "iter_Source": "[('parent_guard', ['wait_completed_qpc_ticks', 'drain_completed_qpc_ticks', 'dispose_completed_qpc_ticks'], 592), ('parent_guard_completion', ['result.closed_qpc_ticks', 'result.pin_completed_qpc_ticks'], 592), ('execution_witness', ['same_machine_upper_bound_qpc_ticks'], 594), ('execution_witness_completion', ['result.closed_qpc_ticks', 'result.pin_completed_qpc_ticks'], 594), ('closing_verification', ['verification_completed_before_write_qpc_ticks'], 600), ('closing_verification_completion', ['result.closed_qpc_ticks', 'result.pin_completed_qpc_ticks'], 600), ('parent_closing', ['wait_completed_qpc_ticks', 'drain_completed_qpc_ticks', 'dispose_completed_qpc_ticks'], 600), ('parent_closing_completion', ['result.closed_qpc_ticks', 'result.pin_completed_qpc_ticks'], 600), ('closing_witness', ['same_machine_upper_bound_qpc_ticks'], 600), ('closing_witness_completion', ['result.closed_qpc_ticks', 'result.pin_completed_qpc_ticks'], 600)]",
+                "conservative_iterations": 10,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 602,
+                "iter_Source": "{'execution_event': 'execution_raw_API_event', 'execution_witness': 'execution_tool_terminal', 'execution_witness_completion': 'execution_tool_terminal_completion', 'parent_guard': 'parent_guard_result', 'parent_guard_completion': 'parent_guard_completion', 'parent_closing': 'parent_closing_result', 'parent_closing_completion': 'parent_closing_completion', 'closing_verification': 'closing_verification', 'closing_verification_completion': 'closing_verification_completion', 'closing_event': 'closing_raw_API_event', 'closing_witness': 'verifier_tool_terminal', 'closing_witness_completion': 'verifier_tool_terminal_completion'}.items()",
+                "conservative_iterations": 12,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 604,
+                "iter_Source": "zip(('Dispatch', 'recordexecution', 'Closing', 'recordclosing'), raw_names)",
+                "conservative_iterations": 4,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 606,
+                "iter_Source": "[('execution_event_writer', 'AUX_EXECUTION_EVENT'), ('closing_event_writer', 'AUX_CLOSING_EVENT'), ('fourth_terminal_observer', 'AUX_FOURTH_TERMINAL_OBSERVER')]",
+                "conservative_iterations": 3,
+                "weighted_need_sites_per_iteration": 0
+              },
+              {
+                "line": 609,
+                "iter_Source": "[('fixture', F5), ('external', EXT), ('Root_output', OUT), ('whole_OBS', OBS)]",
+                "conservative_iterations": 4,
+                "weighted_need_sites_per_iteration": 0
+              }
+            ],
+            "conservative_serialized_need_upper_bound": 422388,
+            "conservative_output_JSON_byte_upper_bound": 1062296870,
+            "upper_bound_basis": {
+              "record_bytes_per_need": 2048,
+              "two_bookends_at_max100000pins": 153600000,
+              "other_pinned_fields_and_transports_reserve_bytes": 20000000,
+              "runtime_complete_JSON_records_factor": 2,
+              "loaded_module_file_checks_upper": 5000,
+              "actual_current_standard_DATA_interpreter_modules": 77,
+              "actual_PE_sections": 4
+            },
+            "actual_future_Root_predicate_count": null,
+            "actual_future_Root_pin_count": null,
+            "actual_future_Root_output_bytes": null,
+            "remaining_actual_gate_requirements": [
+              "The issued Root report actual check/pin counts and bytes must be bounded and current.",
+              "Gate must preserve these six dottedSTRING selectors and current full expected candidate file.",
+              "Any post-opening input addition or intermediate natural poll without a physical descriptor holds.",
+              "The static byte estimate uses declared per-row, book and loaded-module bounds; actual exported report bytes/pins remain a mandatory independent gate check."
+            ],
+            "Source_credit": 0,
+            "Root_acceptance": false,
+            "all_authority": false,
+            "candidate_or_reader_execution": false,
+            "selected_Source_execution": false,
+            "runtime_authority": false,
+            "phase_authority": false,
+            "clock_started": false,
+            "fixture_advance": false,
+            "qualification": false
+          },
+          "complete_Source_findings": [
+            [
+              "strict_source_credit_scope",
+              "native_constructor, ABI and game claims remain false in all result limits"
+            ],
+            [
+              "review_phase_and_current_prior_state",
+              "Current phase/label/cwdF5,1482 prior fixture files and546 prior external files are derived through adopted review+original prepare contracts; no empty-review rename."
+            ],
+            [
+              "strict_old_to_new_clock",
+              "Recorded review T0 must be later than preserved prepare T0 with the same F; no clock API query."
+            ],
+            [
+              "job_identity_and_natural_domain",
+              "Complete suspended assignment, PID creation/role bindings,501 physical identity snapshots, exact nested natural descriptors, actual1 poll, zero before cleanup and strict540/560/580/586/588 bounds remain."
+            ],
+            [
+              "physical_parent_and_witness",
+              "Dispatch/Closing parent result descriptors, origin/attempt witness completions, exact intended child argv and empty stderr remain bound; physical completion cannot self-certify future APIs."
+            ],
+            [
+              "genuine_four_plus_three_chains",
+              "Complete exact literal native argv, session polls, original84-turn subsequence, seven zero terminals, event and fourth-past-terminal links remain; no invented IDs."
+            ],
+            [
+              "full_prior_acceptances",
+              "Current adopted joint and startup own Root checks and peer checks, Source03 acceptance/staging and authorizer/pre-T0 chains are fully inspected through exact current pins."
+            ],
+            [
+              "independent_candidate_derivation",
+              "Recipe literals and launch full AST, copied manifests/staged/dependencies/toolchain and derived ENV13/compile/link plans are expected; runtime interpreter sys.version/sys.path/flags come from this separately pinned isolated reader, never candidate as expected."
+            ],
+            [
+              "complete_current_inventories",
+              "Complete prior F5/external/OBS plus sole candidate and17 Root slots, thirteen immutable families, all original tables and empty reserved roots/cache+RootSQLite absence remain."
+            ],
+            [
+              "whole_source_footprint",
+              "Loaded reader Python files must be selected originals except own __main__; AST builtin origins and no driver/bootstrap sys.path mutation are required."
+            ],
+            [
+              "output_shape_and_future_gate",
+              "Root output name/check/pass/book fields match inspector dottedSTRING grammar; exact actual outputs and gate remain unissued until real Root execution."
+            ]
+          ],
+          "complete_Source_limits": [
+            "Static Source/AST evidence only; no candidate or reader executed.",
+            "No future Root runtime report/gate/predicate count/pin count is issued by this Source review.",
+            "Actual DATA execution must still close its full current union and obey inspector caps.",
+            "Full file-backed original425b5d external-closer envelope is unavailable; author separate zero handoff is retained candidly.",
+            "Complete sharedDomain parser/cleanup and native transport Source evidence is not ABI, mapped-image, provider, before-main or game qualification.",
+            "Original425b5d external handoff remains separately reported, not a file-backed full original envelope.",
+            "This current DATA/AST Source supplement does not execute Source04 or issue a runtime report/gate.",
+            "All future report/predicate/pin/byte counts remain unissued and must satisfy the actual independent gate."
+          ],
+          "author_outer425b5d_original_envelope_unavailable": true,
+          "actual_DATA_reader_executed": true,
+          "complete_actual_failed_DATA_reader_native": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_type1011_fixture_execution\\local\\Root_F5_review01_materialization_control01\\Root_reader04_actual_isolated_DATA_execution_terminal_failure01.actual_tools.DATA.json",
+            "bytes": 5434,
+            "sha256": "535aff3b6fe1bed2a98a5ccfc7cf684f90dcf2f254092181ca0e37224132cc9d"
+          },
+          "actual_reader_session": 24194,
+          "actual_reader_terminal_chunk": "f63493",
+          "actual_reader_terminal_exit_code": 1,
+          "failure_scope": "HISTORICAL_DESCRIPTOR_COLLISION_IN_RECURSIVE_CURRENT_PIN_COLLECTION",
+          "diagnosis": "Recursive generic pin retention treats an explicitly historical prior-postseal descriptor as current and conflicts with the current same-path descriptor. A separate bounded Source correction and independent review are required.",
+          "original_four_genuine_terminals_and_clock_preserved": true,
+          "original_clock_restarted_or_replayed": false,
+          "actual_complete_Root_runtime_report": null,
+          "actual_independently_derived_candidate_selection": null,
+          "actual_independent_inspection_gate": null,
+          "actual_complete_Root_runtime_counts_pins_or_bytes": null,
+          "runtime_authority": false,
+          "phase_authority": false,
+          "fixture_advance": false,
+          "qualification": false
         }
       }
     }
