@@ -1,0 +1,9 @@
+# Raw locale node helper: primary decision
+
+Root accepted worker `9d97f3f0e28eb16b61e9c0674025f5e010440f91`. A separately leased dormant normalized C++ helper may compose the raw-wide call under an armed narrow-header guard, disarm, then perform the normal raw-narrow call. Both cleanup routes retain the original node and same supplied context, and reload current narrow fields. No production caller is authorized by this decision.
+
+This is conditional on valid readable headers/context, controlled lifetime and ordinary propagating getter exceptions. Existing helpers own their pointer reads: wide reads after arm and narrow reads after disarm, while native does those pointer reads before the corresponding state changes. There is no covered callback/C++ throw between these transitions and reads; native faults/asynchronous exceptions remain a separate domain. A guard throwing while wide unwind is active terminates under C++ rules; native double-exception parity is unproved. The inherited pool-return provider is noexcept.
+
+Root copied3423 pinned payloads/3424 ZIP entries, ran the copied strict read-only audit replay, verified3374 actual Git objects, all3352 current worker inputs and their Root LF matches, and the separate5858-byte guard-pattern Source. That pattern is outside the selected3352 epoch and supplies no compiled/runtime credit. Whole prior node/unwind and later wide acceptance/correction remain separate frozen dependencies.
+
+No duplicate speculative reads, copied headers, early narrow snapshots, catch-handler cleanup, cached pool, private domain, deduplication, header writes, node recycling or map/app activation belongs in this bounded helper. This readiness acceptance adds no C++, Native/Ghidra query or mutation, build/test/runtime, Original ABI or game validation. Evidence: `reports/cc12_locale_map_raw_node_helper_primary_review.json`; proof: `local/cc12_locale_map_raw_node_helper_primary/`.
