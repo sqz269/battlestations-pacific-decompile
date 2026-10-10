@@ -1,0 +1,341 @@
+{
+  "schema": 1,
+  "packet": "cc12_instance_generator_context_borrow_source",
+  "status": "Source_implemented_normal_build_tested_metadata_only_pending_Root_primary_review",
+  "baseline_commit": "d9d076fa0617d61979e8189bd5083d4d59366f36",
+  "Source749_reference_commit": "e9396b4883232059bdad28753bc95403536403bf",
+  "Root_primary_acceptance": {
+    "received_utc": "2026-10-10T09:04:16.435460+00:00",
+    "Root_acceptance_commit": "7f7898bdb8ae414ac4be489ed9d435555ff0d245",
+    "Source_edits_and_compilation_authorized": true,
+    "preserve_frozen_baseline": true,
+    "Root_deliverables": [
+      {
+        "relative": "docs/CC12_CONTEXT_LIFETIME_STARTUP_HANDOVER_PRIMARY_REVIEW.md",
+        "Git_blob": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\frozen\\Root_primary_acceptance\\Git_blob\\docs\\CC12_CONTEXT_LIFETIME_STARTUP_HANDOVER_PRIMARY_REVIEW.md",
+          "bytes": 3351,
+          "sha256": "e894114639720c908828755f312e7dda1ee6c548f9c15a00b50254aceaa675d9"
+        },
+        "Root_raw": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\frozen\\Root_primary_acceptance\\Root_raw\\docs\\CC12_CONTEXT_LIFETIME_STARTUP_HANDOVER_PRIMARY_REVIEW.md",
+          "bytes": 3351,
+          "sha256": "e894114639720c908828755f312e7dda1ee6c548f9c15a00b50254aceaa675d9"
+        }
+      },
+      {
+        "relative": "reports/cc12_context_lifetime_startup_handover_primary_review.json",
+        "Git_blob": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\frozen\\Root_primary_acceptance\\Git_blob\\reports\\cc12_context_lifetime_startup_handover_primary_review.json",
+          "bytes": 3413598,
+          "sha256": "06a21cb025a7aa5aaccf3d34306fca121663016e767cdecbdb7b9d650ec08e8f"
+        },
+        "Root_raw": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\frozen\\Root_primary_acceptance\\Root_raw\\reports\\cc12_context_lifetime_startup_handover_primary_review.json",
+          "bytes": 3482371,
+          "sha256": "ebe13bbef2d877124c28a9c00c8fbd3e439f7c9198da7da2ea66f803d3549f61"
+        }
+      }
+    ],
+    "authority": "Parent /root explicit MESSAGE: Source edits/compiler for your leased context-only accessor packet are now authorized.",
+    "scope": "Exact leased context-only metadata accessor; no Owners exposure/activation, no new tests/Native/GPR; ordinary Source/compiler and complete provider/link review authorized.",
+    "line_ending_qualification": "Root report SHA is raw CRLF; exact Git blob retained separately with LF. Normalized whole contents equal."
+  },
+  "later_Root_context": {
+    "received_utc": "2026-10-10T09:25:48.643295+00:00",
+    "reported_by": "parent /root explicit MESSAGE",
+    "main_commit_prefix": "7e33f2025",
+    "Root_Source819_receipt": {
+      "original_path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_gameplay_effect_raw_id_Source_primary\\Source819_frozen.json",
+      "immutable_snapshot": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\frozen\\Root_current_context\\Source819_frozen.json",
+        "bytes": 319275,
+        "sha256": "66e32913ce2ec422f5006d7ef3fc77336eb0bafb7179f203f6c976cbec5506ac"
+      }
+    },
+    "reported_counts": {
+      "inputs": 819,
+      "Core": 137,
+      "App": 5,
+      "definitions": 307,
+      "pins": 823
+    },
+    "reported_Source_changes": "Four unrelated raw-ID files; five application objects reported whole-byte identical to Source749.",
+    "comparison_boundary": "This receipt is frozen as separate later Root context only. Its 823 referenced artifacts are not claimed included by this packet. Worker baseline, Source749 pins, provider objects and candidate remain unchanged; no equality assertion against all current Root Source.",
+    "reported_GPR_context": "Append-only raw-ID comments at modification count 40; no body/flow/prototype/Native changes."
+  },
+  "owned_files": [
+    "include/bsp/game_native_renderer_application.hpp",
+    "src/game_native_renderer_application.cpp",
+    "docs/CC12_INSTANCE_GENERATOR_CONTEXT_BORROW_SOURCE.md",
+    "reports/cc12_instance_generator_context_borrow_source.json"
+  ],
+  "Native_boundary_addresses": [
+    "0x00B451D0",
+    "0x00B85610",
+    "0x00B55B20",
+    "0x00B44FD0",
+    "0x00B450D0",
+    "0x00B55BE0",
+    "0x00B55CB0",
+    "0x00B450A0",
+    "0x00B451A0",
+    "0x00B41710",
+    "0x00B417C0",
+    "0x00B41780",
+    "0x00B417E0"
+  ],
+  "ABI": "New ordinary C++ const-reference accessor, not a recovered Native ABI or a drop-in replacement. No Native address body, calling convention or entrypoint is modified.",
+  "contract": {
+    "signature": "const NativeInstanceGeneratorContext& GameNativeRendererApplication::borrow_instance_generator_context()",
+    "return": "Stable cached plain context; no NativeInstanceGeneratorOwners is constructed or exposed.",
+    "entry": "Application ready, existing requires_process_retention false, serialized metadata use only.",
+    "lifetime": "Retain application and original graphics/layout/process/mapped-data providers; end ALL borrowed views and copies before frame entry, reset/recreation, shared drain or provider destruction; reborrow afterward. Const is shallow and copyable.",
+    "prohibited": "Native construction, owner/factory/finalizer, registration, setters, releases, service mutation or activation through this borrow. It supplies no acquisition tracking or retention enforcement.",
+    "bindings": [
+      "same p.game_grids.graphics and its original declaration/stream/geometry/vertex providers",
+      "same preexisting p.section_layouts object",
+      "same process-owned instance_generator_binding_serial_0108fd30 reference",
+      "original mapped four profile pointers at D62190/D61BFC/D61C1C/D619F8",
+      "original mapped generic declaration D61C08, 18 bytes",
+      "original mapped building declaration D61C28, 42 bytes"
+    ],
+    "every_borrow": "Recheck ready/acquisition guard and existing same-domain metadata; validate all four two-word selector profiles, all six top-level cached fields, all four profile pointer identities and both names. No rebuild, retarget, Native callback or serial value read/write."
+  },
+  "implementation": {
+    "cache": "One appended unique_ptr<NativeInstanceGeneratorContext>; allocate 36 bytes on first permitted borrow, publish only after allocation, retain stable reference thereafter.",
+    "old_Impl_size": 9932,
+    "new_Impl_size": 9936,
+    "all_old_member_rows_preserved": 54,
+    "appended_member_offset": 9932,
+    "context_field_offsets": {
+      "graphics": 0,
+      "layouts": 4,
+      "profiles": 8,
+      "binding_serial_0108fd30": 24,
+      "generic_declaration": 28,
+      "building_declaration": 32
+    },
+    "cleanup": "Plain metadata delete precedes old mesh/provider destruction. Generated standard-library reset/release/delete helpers concern only the ordinary unique_ptr. The accessor contains a guarded sized delete on move assignment; destination is null under the serialized first-borrow precondition, and cached borrows skip the entire block."
+  },
+  "Source_evidence": {
+    "whole_baseline_Git_files": 713,
+    "roots": 50,
+    "quoted_closure_files": 709,
+    "baseline_quote_edges": 1464,
+    "candidate_quote_edges": 1465,
+    "unresolved_quote_edges": 0,
+    "full_Root_Source749_pins": 753,
+    "selected_Root_Source749_Source_inputs": 749,
+    "changed_Source_files": [
+      "include/bsp/game_native_renderer_application.hpp",
+      "src/game_native_renderer_application.cpp"
+    ],
+    "tracked_Source_census": 4205,
+    "compiler_reported_whole_dependencies": 1059,
+    "compiler_dependency_bytes": 16937701
+  },
+  "ordinary_compiler_and_object_evidence": {
+    "target": "MSVC Win32 Release, /W4 /WX /O2 /Ob2 /Oy- /EHsc /MD /fp:strict /std:c++17; frozen compiler tools and exact commands.",
+    "normal_and_diagnostic": "Four standalone objects: baseline/candidate with normal flags and /d1reportAllClassLayout. All twenty dumpbin receipts retained. Normal and diagnostic function code/edges match completely.",
+    "Root_to_baseline": "All 792 application functions preserve exact code and mapped edges.",
+    "candidate_to_normal_build": "All 812 application functions preserve exact code and mapped edges.",
+    "complete_provider_objects": 50,
+    "Root_provider_functions": 8986,
+    "candidate_provider_functions": 9006,
+    "unchanged_other_provider_objects": 49,
+    "unchanged_other_provider_functions": 8194,
+    "unchanged_application_functions": 781,
+    "changed_old_application_functions": 11,
+    "added_application_functions": 20,
+    "all_old_application_code_symbols_reviewed": 940,
+    "generated_local_labels_renamed": [
+      "$LN177 -> $LN184",
+      "$LN144 -> $LN151"
+    ],
+    "only_added_undefined_external": [
+      [
+        "?instance_generator_binding_serial_0108fd30@GameNativeRendererScalarProcess@game@bsp@@QAEACIXZ",
+        32,
+        2,
+        0
+      ]
+    ],
+    "generated_names": "Explicit bijections anchored by exact whole-function code and full relocation signatures; complete ambiguity candidates and exclusion of previously paired definitions retained. No instruction bytes masked. First incomplete comparison retained as attempt01.",
+    "noncode": "All 55 object-pair noncode comparisons retained. Unchanged providers differ only in compiler debug/checksum metadata or explicitly decoded RTTI generated-name spelling. Application adds four diagnostic strings, seven compiler metadata sections, one FH3 unwind state; all 48 SafeSEH handler names/order remain unchanged.",
+    "changed_function_accounting": [
+      "Eight wrappers change only Impl allocation/sized-delete operand 9932 -> 9936.",
+      "Impl constructor adds one null cache-pointer store and advances/repositions EH state 13 -> 14; every old instruction/edge mapped.",
+      "Impl destructor adds a guarded 36-byte metadata delete; every old instruction/branch/call mapped.",
+      "Existing mesh unwind funclet keeps its 14-byte body and edge; five INT3 tail padding bytes follow the new context unwind funclet."
+    ],
+    "added_function_accounting": [
+      "One 612-byte accessor, 172 fully decoded instructions.",
+      "Eighteen ordinary unique_ptr/aggregate helpers.",
+      "One appended context-only constructor EH funclet."
+    ],
+    "replay_totals": {
+      "status": "PASS",
+      "command": "python local/cc12_instance_generator_context_borrow_source/review_evidence.py --preflight",
+      "observed_utc": "2026-10-10T09:25:50.467482+00:00",
+      "whole_reindexed_objects": 104,
+      "functions": 21200,
+      "physical_symbol_records": 109858,
+      "relocations": 60802,
+      "whole_function_comparisons": 55,
+      "replayed_layout_noncode_semantic_reports": 58,
+      "complete_Source_Git_files": 713,
+      "baseline_candidate_quoted_edges": [
+        1464,
+        1465
+      ],
+      "Root_Source749_pins": 753,
+      "compiler_dependency_whole_files": 1059,
+      "link_inputs": 95,
+      "core_members": 1990,
+      "existing_worker_checks": 2,
+      "no_compiler_Native_or_child_process_calls": true,
+      "scope": "Observed successful pre-package replay stdout. ZIP/manifest replay is required separately after packaging."
+    }
+  },
+  "normal_build": {
+    "receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\candidate_normal_build_01.json",
+      "bytes": 677,
+      "sha256": "af6d73d777e5fa84a68a5c2acdcfe065d9d66aac570b3a0c5033efa0313a6a25"
+    },
+    "log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\candidate_normal_build_01.log",
+      "bytes": 3489,
+      "sha256": "d0446cf25b6a072603cfedd08055ead4bad90de329bab2d9f7c77e61644288b1"
+    },
+    "command": "./scripts/build.ps1",
+    "exit_code": 0,
+    "existing_checks": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "existing_checks_passed": 2,
+    "tests_added": 0,
+    "all_explicit_link_inputs_frozen": 95,
+    "Core_archive_members": 1990,
+    "new_borrow_definition": "One application OBJ definition, no Core member definition; full explicit OBJ inputs and all Core members searched. System-library export search is not claimed."
+  },
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\root_primary_acceptance.json",
+      "bytes": 2531,
+      "sha256": "3a864845f8be16b85bd9af01d2060bd4dda805261a08c94f9e346d132fd9986f"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\Root_current_context_notice.json",
+      "bytes": 1349,
+      "sha256": "f73ec86e0453066e722136b203daf54943731946d89e2384338d8780692b9a77"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\prepared_evidence.json",
+      "bytes": 1494246,
+      "sha256": "efc66abc2893f441737480ae14997e7dafd1f9ce5fc0bfc811d90d81b6b95751"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\full_Source_closure.json",
+      "bytes": 1078735,
+      "sha256": "4925335aab587829194020be4ff610caa7a1ffe7fd985efa90e36106a75e2349"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\final_Source_identity.json",
+      "bytes": 2847156,
+      "sha256": "9d7e05fe30efbabc1e115d352261b198df9f16cf49f271ac119783a0d2412cd1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\compile_receipts.json",
+      "bytes": 41065,
+      "sha256": "66be4b91f9dd1135cb8df23f87462590b90cc30df9c8bf651ad3c0eeb0fceb90"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\dependency_manifest.json",
+      "bytes": 799820,
+      "sha256": "8e485c10903b3e239f4931150056ac961911df0b3b9a0e45635feef45ac6012c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\complete_baseline_provider_inventory.json",
+      "bytes": 44411,
+      "sha256": "0c0bce71951e767c4c192949a8e2f56eb5811afb8e950c226198484bf89efa4d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\complete_compiled_inventory.json",
+      "bytes": 3592,
+      "sha256": "b09268482e2b8e5bf0f05559acf806bb91599d06d5e187161e1bdee537956af9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\worker_normal_build_freeze.json",
+      "bytes": 69059,
+      "sha256": "659b8d4168a4cbe3603b1954a92ae0e696f666894042f0ab91057c20112bd7a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\complete_function_comparison.json",
+      "bytes": 2234257,
+      "sha256": "51d3d908ceefa619673a426f46ae3baee95320642c2b1e22e89233e768a79a86"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\complete_provider_function_comparison.json",
+      "bytes": 5295144,
+      "sha256": "67768e8fb51021c8fb9b314244b18e94ce2f5cf640b86cdf09a048d0a4d753b9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\member_layout_review.json",
+      "bytes": 17139,
+      "sha256": "d12d23719325df335d3bf83a23b49824c0d4a6cb82f2ab1ac436a69dde76be8c"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\noncode_EH_summary.json",
+      "bytes": 33765,
+      "sha256": "c51dbf1985ec746d6a8d22bdef6b71d1eda58ad09dcf54beced9fea0e78ba8e8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\complete_semantic_review.json",
+      "bytes": 2731144,
+      "sha256": "41d7510e6a4d518ca184e83c1a8d951ea210401396ac0cdc6627e4075e6625a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\candidate_normal_build_01.json",
+      "bytes": 677,
+      "sha256": "af6d73d777e5fa84a68a5c2acdcfe065d9d66aac570b3a0c5033efa0313a6a25"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\candidate_normal_build_01.log",
+      "bytes": 3489,
+      "sha256": "d0446cf25b6a072603cfedd08055ead4bad90de329bab2d9f7c77e61644288b1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\complete_link_context.json",
+      "bytes": 68559,
+      "sha256": "4b8321b54500c204254152e83aea5be403b69b47b2cb61c97f2ab8625bc1e5d4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\prepackage_replay_receipt.json",
+      "bytes": 808,
+      "sha256": "ce8dba4fe35f77a768e6ff25d89ee7e283e956ae53d211d0f40f5a50439ba9b0"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source\\review_evidence.py",
+      "bytes": 9356,
+      "sha256": "918e5f0686f0d51e5b82128e36032312fb4df5d4eecb3821986e4b64051df535"
+    }
+  ],
+  "bundle": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_context_borrow_source",
+    "archive_relative": "cc12_instance_generator_context_borrow_source.zip",
+    "manifest_relative": "immutable_manifest.json",
+    "detached_receipt_relative": "bundle_receipt.json",
+    "readonly_replay": "python local/cc12_instance_generator_context_borrow_source/review_evidence.py",
+    "final_replay_receipt_relative": "readonly_replay_receipt.json"
+  },
+  "holds": [
+    "Root independent review/replay and seeded three-test integration build remain separate.",
+    "This accessor has no consumer; Native owner activation and startup/render/mesh/parser/gameplay execution remain unestablished.",
+    "Runtime compliance with serialized borrow lifetime and no-activation preconditions is not mechanically enforced.",
+    "Native pre-first-use/dynamic-writer limits from prior serial-owner and lifetime readiness evidence remain.",
+    "No new Native ABI, game validation or startup equivalence is claimed."
+  ]
+}
