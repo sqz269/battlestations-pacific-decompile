@@ -1,0 +1,2910 @@
+{
+  "schema": "bsp.cc12.particle_manager_raw_deletion_owner_readiness.v1",
+  "packet": "cc12_particle_manager_raw_deletion_owner_readiness",
+  "utc": "2026-10-10T14:54:02.353866+00:00",
+  "accepted_Source_commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+  "receipt_HEAD": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+  "decision": "Evidence-only owner/deletion proposal ready for integrator review after the separately owned raw lifetime-access dependency; no C++ or startup activation GO.",
+  "scope": {
+    "owned_outputs": [
+      "docs/CC12_PARTICLE_MANAGER_RAW_DELETION_OWNER_READINESS.md",
+      "reports/cc12_particle_manager_raw_deletion_owner_readiness.json"
+    ],
+    "allowed_fresh_Native": [
+      "00D5D7EC..00D5D7EF first profile DWORD",
+      "00D5D7F8..00D5D7FB first profile DWORD",
+      "typed data/project metadata for those addresses"
+    ],
+    "reused_only": [
+      "00AF0870 and 00AF1080 complete saved exports and 30-byte body hashes",
+      "whole prior native_particle_model_manager report",
+      "whole accepted post-sound continuation and primary reviews",
+      "prior packet frozen PE image"
+    ],
+    "untouched_independent_ownership": [
+      "00AF06A0",
+      "00AF0740",
+      "src/native_particle_model_manager.cpp",
+      "include/bsp/native_particle_model_manager.hpp",
+      "early Native caller schedule and failure continuation"
+    ],
+    "no_changes_or_execution": [
+      "C++ Source",
+      "CMake",
+      "startup",
+      "SDK",
+      "OS configuration",
+      "Ghidra project/listing/flow/prototype/annotation",
+      "build",
+      "tests",
+      "new fixture",
+      "Original code",
+      "Lua",
+      "live game"
+    ]
+  },
+  "Native_contract": {
+    "current_profiles": [
+      {
+        "address": "00D5D7EC",
+        "bytes_hex": "7008af00",
+        "slot_zero": "00AF0870"
+      },
+      {
+        "address": "00D5D7F8",
+        "bytes_hex": "8010af00",
+        "slot_zero": "00AF1080"
+      }
+    ],
+    "saved_scalars": [
+      {
+        "address": "00AF0870",
+        "body_bytes": 30,
+        "instructions": 11,
+        "destructor": "00AF0740",
+        "body_sha256": "773dc337e08222af3ce3c023fe55fbabfa7812a35b0966a7f10c10e299a86422"
+      },
+      {
+        "address": "00AF1080",
+        "body_bytes": 30,
+        "instructions": 11,
+        "destructor": "00AF0B90",
+        "body_sha256": "1af2ccdfa748592f0fd8e90c7c50a4581e1e78ed3444d34ec27781150773473a"
+      }
+    ],
+    "scalar_ABI": "ECX captured in ESI; one stack flags argument; destructor first; test low bit; BF65AC frees captured ESI only when set; EAX returns captured ESI; RET4.",
+    "flags": "Pass full uint32 flags from deletion map without normalization; current drain supplies1.",
+    "current_publication_vs_receiver": "Captured receiver is destroyed/freed/returned. Existing base destructor separately unregisters the CURRENT F8C274 publication through distinct manager observations, then clears it after unregister success.",
+    "derived_cleanup": "Stamp derived profile; capture section+30 locally for release; clean weak entries array+10 then models array+04 then base. Preserve stale +30/backing pointer/capacity behavior; no pointee deletion.",
+    "image": "Full inert prior packet PE retained, SHA equals earlier manager report. Only two fresh4-byte profiles and two retained30-byte scalar bodies mapped in this replay.",
+    "saved_Ghidra": "bsp.gpr, /battlestationspacific.exe; typed data queries, modification49 unchanged; no fresh scalar/body/decompile query or saved analysis mutation.",
+    "no_binary_replacement_claim": true
+  },
+  "current_Source_findings": {
+    "canonical_process": "GameNativeStringProcess is intentionally retained through process termination, already owns canonical01090AA0 and other actual publications. It does not currently own a typedF8C274 cell.",
+    "current_access": "NativeParticleModelManagerAccess currently has typedF8C274 reference, semantic SingletonLifetimeDomain reference and const volatile D7A24C reference. Actual manager overload is an independent prerequisite.",
+    "map": "No D5D7EC/D5D7F8 case and no particle context in the six canonical process/host/map files at this epoch. Claim is scoped to those complete files, not allSource.",
+    "readonly_data": "Current GameMain requests D5/D7 spans and establishes verified canonical data before startup host. Intentionally retained canonical data owner outlives host and CRT teardown.",
+    "constant": "Current derived constructor observes access.one_00d7a24c after base/derived-profile/array writes, before scalar_bits_2c store and section construction. Preparation must retain reference, not snapshot value.",
+    "allocator": "singleton_lifetime_allocate uses Source std::malloc(request.host_bytes), _callnewh retry, bad_alloc; scalar singleton_lifetime_free uses Source std::free.",
+    "drain": "Raw manager drain pops receiver before current profile load, calls deleting route with flags1, recounts. Unknown profile or missing binding throws logic_error.",
+    "drain_failure": "Existing destroy_native_singleton_manager catches after body failure, clears manager storage through BD0220, rethrows. No guarantee popped owner was freed or publication cleared.",
+    "host_stability": "Copy construction/assignment explicitly deleted. User-declared destructor suppresses implicit moves; no explicit move exists. Preserve stable optional address.",
+    "host_destruction": "~GameSingletonHost calls shutdown in destructor body before members are destroyed. Normal shutdown drains captured manager, then retires services, frees manager and clears cell.",
+    "startup_destruction": "Current startup teardown drains before input/sound reset and delete singletons_. Canonical process and data owners remain retained.",
+    "other_consumers": "Model lifetime/construction contexts currently request void* const volatile&. Safe later adaptation to same typed authority is separate; no reinterpret-reference alias or mirror is admitted.",
+    "schedule": "Current Phase8 marker follows locale/fonts; retained prior Native caller evidence places raw34h allocation/conditionalAF0B10 before locale/fonts. This owner packet does not activate or move that call."
+  },
+  "proposed_six_file_change": [
+    {
+      "files": [
+        "include/bsp/game_native_string_process.hpp",
+        "src/game_native_string_process.cpp"
+      ],
+      "change": "Append NativeParticleModelManagerStorage* volatile particle_manager_00f8c274_{} plus nonallocating typed reference accessor. Forward-declare storage type; permanent process cell, no new semantic owner."
+    },
+    {
+      "files": [
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts_singletons.cpp"
+      ],
+      "change": "Retain inline optional<NativeParticleModelManagerAccess>; proposed bind_particle_manager_domain(GameNativeReadOnlyData&) validates and emplaces references; proposed particle_manager_context() returns only established context. API names provisional, no implementation.",
+      "references": [
+        "exact typed processF8C274 cell",
+        "canonical actual01090AA0 manager cell through accepted raw SoundLifetimeAccess",
+        "const volatile uint32 reference to verified data_at(D7A24C,4)"
+      ],
+      "preparation": "Validate required span availability and first profile DWORD identity, then borrow/emplace; no manager getter/raw allocation/publication/registration/heap context allocation/live constant value observation.",
+      "idempotence": "Same typed cell identity, uses_actual_storage plus borrows_same_domain canonical manager cell, same one-word reference and exact installed context pointer; otherwise reject.",
+      "initial_precondition": "Before ANY constructor attempt/registration; no unknown existing publication or registry owner. Null publication alone is insufficient to establish empty registry/history.",
+      "retirement": "No reset/rebind while raw owners or callbacks remain; preserve existing noncopyable/nonmovable host lifetime."
+    },
+    {
+      "files": [
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp"
+      ],
+      "change": "Append NativeParticleModelManagerAccess* at table tail; admit D5D7EC toAF0870 andD5D7F8 toAF1080 using popped receiver/full flags and exact borrowed context; missing context uses existing fail-closed throw.",
+      "Win32_layout_proposal": "Existing table sizeof192 and allocation_stats offset188. Proposed appended pointer offset192,sizeof196 requires implementation assertions/build; not measured here. Embedded table growth shifts later host fields."
+    }
+  ],
+  "required_lifetimes_and_failure_boundary": [
+    "Prepare deletion binding before any registration. Inline context pointer remains stable throughout actual manager lifetime, all ordinary drains and callbacks.",
+    "Raw34h receiver must come from same Source CRT domain consumed by singleton_lifetime_free; no stack/semantic/new-delete/OriginalCRT allocation substitution.",
+    "Old host destruction/replacement while its registry contains particle owner must drain using the old context while canonical cells, verifiedD7A24C, raw receiver, arrays, section and allocation domain remain alive.",
+    "Do not reset old optional context first; process lifetime of publication alone does not let a new host adopt unknown surviving registry graph.",
+    "Reentrant registration/callback completion must occur before context retirement; no conflicting concurrent mutation or late callback. Preserve distinct observed manager/publication values even if they differ; this does not prove arbitrary mutated graphs safe.",
+    "Normal shutdown may complete only for a valid owner graph. Existing failure clears manager storage and rethrows; exception escaping implicitnoexcept host destructor terminates. No successful free/clear/handoff is inferred.",
+    "Partial-profile/constructor-failure/caller-free/unwind behavior and any phase/failure-containment API remain separate activation prerequisites. No repair/skip/retry/adoption/_exit policy is invented here.",
+    "Actual early caller schedule is separate; filling or moving current latePhase8 marker alone grants no startup equivalence."
+  ],
+  "rejected_substitutions": [
+    "void*& or volatile-reference reinterpret alias",
+    "mirror F8C274 cell",
+    "semantic FoliageGroupManager",
+    "semantic manager domain for actual01090AA0",
+    "snapshot/normalizedD7A24C",
+    "current publication substituted for poppedreceiver",
+    "conditional skip/null suppression in map",
+    "ordinary new/delete allocation",
+    "context reset before drain",
+    "caller activation inferred from profile support"
+  ],
+  "freeze": {
+    "schema": "bsp.cc12.particle_manager_owner.freeze.v1",
+    "utc": "2026-10-10T14:45:51.020771+00:00",
+    "accepted_source_commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+    "capture_HEAD": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+    "source_corpus": {
+      "scope": "Only the complete relied-upon Source roots and recursively resolved tracked project/Lua includes; no all-Source content corpus or global negative search claim.",
+      "roots": [
+        "include/bsp/native_particle_model_construction.hpp",
+        "include/bsp/native_particle_model_lifetime.hpp",
+        "include/bsp/world_effects_startup.hpp",
+        "src/game_hosts.cpp",
+        "src/game_hosts_singletons.cpp",
+        "src/game_main.cpp",
+        "src/game_native_mutable_crt_data.cpp",
+        "src/game_native_readonly_data.cpp",
+        "src/game_native_string_process.cpp",
+        "src/native_particle_model_manager.cpp",
+        "src/native_singleton_destruction.cpp",
+        "src/singleton_lifetime.cpp",
+        "src/sound_lifetime_access.cpp"
+      ],
+      "files": 476,
+      "discovery_tree_file_count": 4206,
+      "discovery_tree": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/8ff97655035e8c04_source_path_blob_index_z.bin",
+        "bytes": 382563,
+        "sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f"
+      },
+      "git_archive": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/d60ccd66057c2d54_selected_Source_git.tar.gz",
+        "bytes": 680231,
+        "sha256": "d60ccd66057c2d5474a60c0e4bf25cf4bd43b0ae0f353e5b65ccf68a166211e1"
+      },
+      "working_archive": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/d60ccd66057c2d54_selected_Source_working.tar.gz",
+        "bytes": 680231,
+        "sha256": "d60ccd66057c2d5474a60c0e4bf25cf4bd43b0ae0f353e5b65ccf68a166211e1"
+      },
+      "manifest": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/33f29bd6dc65013c_selected_Source_manifest.json",
+        "bytes": 185062,
+        "sha256": "33f29bd6dc65013cb1ad8e1ec44f8970e37ddc2738443c5f8b6983660fb42a61"
+      }
+    },
+    "additional_Source_Git": [
+      {
+        "source_path": "CMakeLists.txt",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "3b1b4e58a5d92f630fb0f0bd177fcf2777a6c6fa",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/568fc615535bf822_git_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/568fc615535bf822_working_CMakeLists.txt",
+          "bytes": 20149,
+          "sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/startup.cmake",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "6fa7a29dda1b965bcfa5ffc7f589c7ef3391a017",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/7c30db5b9be8b859_git_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/7c30db5b9be8b859_working_cmake_startup.cmake",
+          "bytes": 202281,
+          "sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "cmake/lua.cmake",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "c92cd290b5050de1b075928ad2aa04631e6a4da4",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/0c432ec1026aa692_git_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/0c432ec1026aa692_working_cmake_lua.cmake",
+          "bytes": 2242,
+          "sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/bsp.py",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "ba90f058569106f62c72dc9f9d72de205772fc7c",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/09de2b8916a4af98_git_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/09de2b8916a4af98_working_tools_bsp.py",
+          "bytes": 73311,
+          "sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/workspace.py",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "ba99df2b6e5bd7cd8bd910934b83340fcf857604",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/611a2f0613f21724_git_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/611a2f0613f21724_working_tools_workspace.py",
+          "bytes": 1371,
+          "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "tools/ghidra_typed_flow.py",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "4f73269e25719493aefe1d7f0111b8bbb6b62619",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/97272278577d3d32_git_tools_ghidra_typed_flow.py",
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/97272278577d3d32_working_tools_ghidra_typed_flow.py",
+          "bytes": 20048,
+          "sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "config/target.json",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/366e5a64ac945473_git_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/366e5a64ac945473_working_config_target.json",
+          "bytes": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/NATIVE_PARTICLE_MODEL_MANAGER.md",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "127b34b93119f4f649d8d5f662338e34adabd52c",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/7bc63421ef2f9901_git_docs_NATIVE_PARTICLE_MODEL_MANAGER.md",
+          "bytes": 4857,
+          "sha256": "7bc63421ef2f9901e67cef3bae362c600ae130087729e8e044187a1d53d53144"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/7bc63421ef2f9901_working_docs_NATIVE_PARTICLE_MODEL_MANAGER.md",
+          "bytes": 4857,
+          "sha256": "7bc63421ef2f9901e67cef3bae362c600ae130087729e8e044187a1d53d53144"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/native_particle_model_manager.json",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "d0753ab7932eef4686965c3ad29f67f5107edb97",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/ef889ba4e1f25a09_git_reports_native_particle_model_manager.json",
+          "bytes": 63136,
+          "sha256": "ef889ba4e1f25a09afdcac24241287ae75815a032b71619044bcc3440108b835"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/ef889ba4e1f25a09_working_reports_native_particle_model_manager.json",
+          "bytes": 63136,
+          "sha256": "ef889ba4e1f25a09afdcac24241287ae75815a032b71619044bcc3440108b835"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_POST_SOUND_STARTUP_CONTINUATION_REVIEW.md",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "d72656ab2ea21c725aedced04baeec14f5fbb51d",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/668c310b55e530bd_git_docs_CC12_POST_SOUND_STARTUP_CONTINUATION_REVIEW.md",
+          "bytes": 6040,
+          "sha256": "668c310b55e530bd24587e4ff909164e83b77aa1bffddc86fef66a1d936b121e"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/668c310b55e530bd_working_docs_CC12_POST_SOUND_STARTUP_CONTINUATION_REVIEW.md",
+          "bytes": 6040,
+          "sha256": "668c310b55e530bd24587e4ff909164e83b77aa1bffddc86fef66a1d936b121e"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_post_sound_startup_continuation_review.json",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "8ef108d35d5d4961517208e87e7360c0e3cf6dd6",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/83a7607dea248f4d_git_reports_cc12_post_sound_startup_continuation_review.json",
+          "bytes": 7075586,
+          "sha256": "83a7607dea248f4d8a4ff9624fec85ba88551b9234bd6cca53ed88043e2e9b70"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/83a7607dea248f4d_working_reports_cc12_post_sound_startup_continuation_review.json",
+          "bytes": 7075586,
+          "sha256": "83a7607dea248f4d8a4ff9624fec85ba88551b9234bd6cca53ed88043e2e9b70"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "docs/CC12_POST_SOUND_STARTUP_CONTINUATION_PRIMARY_REVIEW.md",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "a8b2d67116906ba25ee5e73c917f5fe4a0c18aab",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/9cabe1e1a0983a26_git_docs_CC12_POST_SOUND_STARTUP_CONTINUATION_PRIMARY_REVIEW.md",
+          "bytes": 2377,
+          "sha256": "9cabe1e1a0983a26a154722ae90641386b518f24a90e4e6e0b6a719feb570379"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/9cabe1e1a0983a26_working_docs_CC12_POST_SOUND_STARTUP_CONTINUATION_PRIMARY_REVIEW.md",
+          "bytes": 2377,
+          "sha256": "9cabe1e1a0983a26a154722ae90641386b518f24a90e4e6e0b6a719feb570379"
+        },
+        "LF_equal": true
+      },
+      {
+        "source_path": "reports/cc12_post_sound_startup_continuation_primary_review.json",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "git_blob": "28c359cc56eaa4c1faf723ad61a59b3e176e5c11",
+        "git": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/f451466a1b292f26_git_reports_cc12_post_sound_startup_continuation_primary_review.json",
+          "bytes": 6266331,
+          "sha256": "f451466a1b292f26a9cd08f7aa068310d35e225366b716e50f88f5c8e1f62b11"
+        },
+        "working": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/f451466a1b292f26_working_reports_cc12_post_sound_startup_continuation_primary_review.json",
+          "bytes": 6266331,
+          "sha256": "f451466a1b292f26a9cd08f7aa068310d35e225366b716e50f88f5c8e1f62b11"
+        },
+        "LF_equal": true
+      }
+    ],
+    "include_closure": {
+      "closure": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/bc2d36e9479b07c5_include_closure.json",
+        "bytes": 303715,
+        "sha256": "bc2d36e9479b07c505432723fb22599115f22c64aca9f1b725cf54033167333f"
+      },
+      "configured_lua_archive": {
+        "pin": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/c5daeed0a75d8e4d_configured_lua_5_1_1.tar.gz",
+          "bytes": 207810,
+          "sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+        },
+        "configured_sha256": "c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
+      },
+      "reviewed_roots": 13,
+      "project_files": 476,
+      "lua_headers": 0
+    },
+    "source_queries": [
+      {
+        "label": "particle_authority_and_profiles",
+        "regex": "(?i)f8c274|d5d7ec|d5d7f8",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "include/bsp/native_particle_model_construction.hpp",
+            "line": 110,
+            "text": "    void* const volatile& manager_00f8c274;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 43,
+            "text": "    void* const volatile& manager_00f8c274;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 14,
+            "text": "// The SAME 34h manager published at F8C274 by AF06A0, historically named"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 27,
+            "text": "    NativeParticleModelManagerStorage* volatile& manager_00f8c274;"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 143,
+            "text": "    owner->native_table_00 = 0x00d5d7ecu;"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 146,
+            "text": "        access.manager_00f8c274 = owner;"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 148,
+            "text": "        manager->register_object(access.manager_00f8c274);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 157,
+            "text": "    owner->native_table_00 = 0x00d5d7ecu;"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 161,
+            "text": "        manager->unregister_object(access.manager_00f8c274);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 162,
+            "text": "        access.manager_00f8c274 = nullptr;"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 172,
+            "text": "    owner->native_table_00 = 0x00d5d7f8u;"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 197,
+            "text": "    owner->native_table_00 = 0x00d5d7f8u;"
+          }
+        ]
+      },
+      {
+        "label": "existing_particle_access",
+        "regex": "NativeParticleModelManagerAccess|delete_native_particle.*00af(?:0870|1080)",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 26,
+            "text": "struct NativeParticleModelManagerAccess {"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 50,
+            "text": "NativeParticleModelManagerStorage* construct_native_particle_manager_base_00af06a0(NativeParticleModelManagerStorage*, NativeParticleModelManagerAccess&);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 51,
+            "text": "void destroy_native_particle_manager_base_00af0740(NativeParticleModelManagerStorage*, NativeParticleModelManagerAccess&);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 52,
+            "text": "NativeParticleModelManagerStorage* construct_native_particle_model_manager_00af0b10(NativeParticleModelManagerStorage*, NativeParticleModelManagerAccess&);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 53,
+            "text": "void destroy_native_particle_model_manager_00af0b90(NativeParticleModelManagerStorage*, NativeParticleModelManagerAccess&);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 56,
+            "text": "NativeParticleModelManagerStorage* delete_native_particle_manager_base_00af0870(NativeParticleModelManagerStorage*, std::uint32_t, NativeParticleModelManagerAccess&);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 57,
+            "text": "NativeParticleModelManagerStorage* delete_native_particle_model_manager_00af1080(NativeParticleModelManagerStorage*, std::uint32_t, NativeParticleModelManagerAccess&);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 142,
+            "text": "    NativeParticleModelManagerStorage* owner, NativeParticleModelManagerAccess& access) {"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 156,
+            "text": "    NativeParticleModelManagerAccess& access) {"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 170,
+            "text": "    NativeParticleModelManagerStorage* owner, NativeParticleModelManagerAccess& access) {"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 196,
+            "text": "    NativeParticleModelManagerAccess& access) {"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 206,
+            "text": "NativeParticleModelManagerStorage* delete_native_particle_manager_base_00af0870("
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 207,
+            "text": "    NativeParticleModelManagerStorage* owner, std::uint32_t flags, NativeParticleModelManagerAccess& access) {"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 212,
+            "text": "NativeParticleModelManagerStorage* delete_native_particle_model_manager_00af1080("
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 213,
+            "text": "    NativeParticleModelManagerStorage* owner, std::uint32_t flags, NativeParticleModelManagerAccess& access) {"
+          }
+        ]
+      },
+      {
+        "label": "host_binding_and_drain",
+        "regex": "deletion_bindings_|allocation_stats_context_|shutdown\\(|delete singletons_|singletons_->shutdown|host\\.reset\\(",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 57,
+            "text": "        return deletion_bindings_;"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 114,
+            "text": "    void shutdown();"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 136,
+            "text": "    NativeSingletonDeletionBindings deletion_bindings_;"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 141,
+            "text": "    NativeAllocationStatsConstructorContext allocation_stats_context_;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1584,
+            "text": "        else singletons_->shutdown();"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1601,
+            "text": "    delete singletons_;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1715,
+            "text": "void GameStartupHost::random_threads_shutdown() {"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2365,
+            "text": "void GameStartupHost::application_shutdown() {"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2474,
+            "text": "    else singletons_->shutdown();"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 20,
+            "text": "      deletion_bindings_{&effect_publication_00f87664_, nullptr},"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 23,
+            "text": "      allocation_stats_context_{manager_publication_01090aa0_,"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 26,
+            "text": "    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 27,
+            "text": "    deletion_bindings_.resource_support = &resource_support_context_;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 28,
+            "text": "    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 29,
+            "text": "    deletion_bindings_.actual_pending_registry_publication_00f878cc ="
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 31,
+            "text": "    deletion_bindings_.allocation_stats = &allocation_stats_context_;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 37,
+            "text": "    shutdown();"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 44,
+            "text": "    return allocation_stats_context_;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 51,
+            "text": "        deletion_bindings_.weak_owner_domain = weak_owners_.get();"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 60,
+            "text": "            deletion_bindings_.resource_registry != resource_registry_bindings_.get())"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 64,
+            "text": "    if (resource_registry_publication_00f8d41c_ || deletion_bindings_.resource_registry)"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 68,
+            "text": "    deletion_bindings_.resource_registry = resource_registry_bindings_.get();"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 72,
+            "text": "        deletion_bindings_.resource_registry != resource_registry_bindings_.get())"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 80,
+            "text": "    deletion_bindings_.sound_runtime = runtime;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 91,
+            "text": "    deletion_bindings_.xlive_owner = owner;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 94,
+            "text": "    deletion_bindings_.input_backend = context;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 97,
+            "text": "    deletion_bindings_.input_actions = context;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 101,
+            "text": "    deletion_bindings_.input_settings = context;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 104,
+            "text": "    deletion_bindings_.observer_lifetime = lifetime;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 109,
+            "text": "    deletion_bindings_.actual_observer_dispatch_owner_00e198dc = publication;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 125,
+            "text": "void GameSingletonHost::shutdown() {"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 132,
+            "text": "    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);"
+          },
+          {
+            "path": "src/game_main.cpp",
+            "line": 512,
+            "text": "        host->shutdown();"
+          },
+          {
+            "path": "src/game_main.cpp",
+            "line": 528,
+            "text": "        host.reset();"
+          },
+          {
+            "path": "src/game_main.cpp",
+            "line": 804,
+            "text": "        host->shutdown();"
+          },
+          {
+            "path": "src/game_main.cpp",
+            "line": 819,
+            "text": "        host.reset();"
+          },
+          {
+            "path": "src/game_main.cpp",
+            "line": 1248,
+            "text": "    host.reset(); // The canonical RO/RW owner remains mapped through process teardown."
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 319,
+            "text": "    shutdown();"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 336,
+            "text": "void SingletonLifetimeDomain::shutdown() {"
+          }
+        ]
+      },
+      {
+        "label": "host_copy_move_declarations",
+        "regex": "GameSingletonHost\\(|operator=|~GameSingletonHost",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 27,
+            "text": "    explicit GameSingletonHost(GameHostLog&);"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 28,
+            "text": "    ~GameSingletonHost();"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 29,
+            "text": "    GameSingletonHost(const GameSingletonHost&) = delete;"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 30,
+            "text": "    GameSingletonHost& operator=(const GameSingletonHost&) = delete;"
+          },
+          {
+            "path": "include/bsp/game_native_string_process.hpp",
+            "line": 12,
+            "text": "    GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_lifetime.hpp",
+            "line": 86,
+            "text": "    NativeParticleModelReference& operator=(const NativeParticleModelReference&) = delete;"
+          },
+          {
+            "path": "include/bsp/sound_lifetime_access.hpp",
+            "line": 61,
+            "text": "    CapturedSoundLifetimeSection& operator=(const CapturedSoundLifetimeSection&) = delete;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 17,
+            "text": "GameSingletonHost::GameSingletonHost(GameHostLog& log)"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 34,
+            "text": "GameSingletonHost::~GameSingletonHost() {"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 54,
+            "text": "    CapturedSection& operator=(const CapturedSection&) = delete;"
+          }
+        ]
+      },
+      {
+        "label": "actual_manager_authority",
+        "regex": "manager_publication_01090aa0_|manager_01090aa0\\(|get_manager_00415350|borrows_same_domain|uses_actual_storage",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 80,
+            "text": "        return manager_publication_01090aa0_;"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 119,
+            "text": "    void* volatile& manager_publication_01090aa0_; // canonical process cell"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 126,
+            "text": "        manager_publication_01090aa0_, game_resource_factory_publication_00e19b90_};"
+          },
+          {
+            "path": "include/bsp/game_hosts_singletons.hpp",
+            "line": 129,
+            "text": "        manager_publication_01090aa0_, resource_support_publication_0108fedc_};"
+          },
+          {
+            "path": "include/bsp/game_native_string_process.hpp",
+            "line": 13,
+            "text": "    void* volatile& manager_01090aa0() noexcept { return manager_; }"
+          },
+          {
+            "path": "include/bsp/sound_lifetime_access.hpp",
+            "line": 37,
+            "text": "    SoundLifetimeManagerView get_manager_00415350() const;"
+          },
+          {
+            "path": "include/bsp/sound_lifetime_access.hpp",
+            "line": 38,
+            "text": "    bool uses_actual_storage() const noexcept { return actual_ != nullptr; }"
+          },
+          {
+            "path": "include/bsp/sound_lifetime_access.hpp",
+            "line": 41,
+            "text": "    bool borrows_same_domain(const SingletonLifetimeDomain& domain) const noexcept {"
+          },
+          {
+            "path": "include/bsp/sound_lifetime_access.hpp",
+            "line": 44,
+            "text": "    bool borrows_same_domain(void* volatile& publication) const noexcept {"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 18,
+            "text": "    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 23,
+            "text": "      allocation_stats_context_{manager_publication_01090aa0_,"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 41,
+            "text": "    return SoundLifetimeAccess(manager_publication_01090aa0_);"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 121,
+            "text": "        manager_publication_01090aa0_, effect_publication_00f87664_);"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 126,
+            "text": "    void* const manager = manager_publication_01090aa0_;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 136,
+            "text": "    manager_publication_01090aa0_ = nullptr;"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 141,
+            "text": "        manager_publication_01090aa0_ == nullptr ? \"null\" : \"non-null\","
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 145,
+            "text": "        CapturedSection lock(access.lifetime_01090aa0.get_manager_00415350()->system_owner().section_10);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 147,
+            "text": "        auto* const manager = access.lifetime_01090aa0.get_manager_00415350();"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 159,
+            "text": "        CapturedSection lock(access.lifetime_01090aa0.get_manager_00415350()->system_owner().section_10);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 160,
+            "text": "        auto* const manager = access.lifetime_01090aa0.get_manager_00415350();"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 321,
+            "text": "ConcreteSingletonLifetimeManager* SingletonLifetimeDomain::get_manager_00415350() {"
+          },
+          {
+            "path": "src/sound_lifetime_access.cpp",
+            "line": 12,
+            "text": "SoundLifetimeManagerView SoundLifetimeAccess::get_manager_00415350() const {"
+          },
+          {
+            "path": "src/sound_lifetime_access.cpp",
+            "line": 14,
+            "text": "    return {semantic_->get_manager_00415350(), nullptr};"
+          },
+          {
+            "path": "src/sound_lifetime_access.cpp",
+            "line": 38,
+            "text": "    const auto manager = access.get_manager_00415350();"
+          }
+        ]
+      },
+      {
+        "label": "current_CRT_allocator",
+        "regex": "std::malloc|std::free|_callnewh|singleton_lifetime_free\\(",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 724,
+            "text": "            std::free(text);"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 737,
+            "text": "            std::free(text);"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1278,
+            "text": "            singleton_lifetime_free(captured);"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1864,
+            "text": "        if (captured_stats) singleton_lifetime_free(captured_stats);"
+          },
+          {
+            "path": "src/game_hosts_singletons.cpp",
+            "line": 135,
+            "text": "    singleton_lifetime_free(manager);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 76,
+            "text": "    singleton_lifetime_free(array.data_00);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 126,
+            "text": "    singleton_lifetime_free(array.data_00);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 209,
+            "text": "    if (flags & 1u) singleton_lifetime_free(owner);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 215,
+            "text": "    if (flags & 1u) singleton_lifetime_free(owner);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 56,
+            "text": "        if (void* result = std::malloc(request.host_bytes)) {"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 59,
+            "text": "        if (_callnewh(request.host_bytes) == 0) {"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 65,
+            "text": "void singleton_lifetime_free(void* pointer) noexcept {"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 66,
+            "text": "    std::free(pointer);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 99,
+            "text": "        singleton_lifetime_free(owned_section_);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 101,
+            "text": "        singleton_lifetime_free(slots_.begin);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 181,
+            "text": "        singleton_lifetime_free(slots_.begin);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 293,
+            "text": "    singleton_lifetime_free(slots_.begin);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 307,
+            "text": "    singleton_lifetime_free(owned_section_);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 330,
+            "text": "            singleton_lifetime_free(storage);"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "line": 339,
+            "text": "        singleton_lifetime_free(manager);"
+          }
+        ]
+      },
+      {
+        "label": "one_observation",
+        "regex": "one_00d7a24c|scalar_bits_2c",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "include/bsp/native_particle_model_construction.hpp",
+            "line": 112,
+            "text": "    const volatile std::uint32_t& one_00d7a24c;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_construction.hpp",
+            "line": 127,
+            "text": "    void*, NativeNodeStorage&, std::int32_t count, const volatile std::uint32_t& one_00d7a24c);"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 23,
+            "text": "    volatile std::uint32_t scalar_bits_2c;"
+          },
+          {
+            "path": "include/bsp/native_particle_model_manager.hpp",
+            "line": 29,
+            "text": "    const volatile std::uint32_t& one_00d7a24c;"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1356,
+            "text": "    const volatile std::uint32_t one_00d7a24c{0x3f800000};"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1370,
+            "text": "          dialog({alternate_00f8bbcc, format_counts_00e12ef0, one_00d7a24c,"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1407,
+            "text": "    volatile float one_00d7a24c{1.0f}, negative_zero_00d7a208{-0.0f};"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1432,
+            "text": "              {one_00d7a24c, negative_zero_00d7a208, mouse_scale_00e12fb0,"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1435,
+            "text": "              {one_00d7a24c, one_00d7a210, trigger_threshold_00ce3800,"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 1446,
+            "text": "              app.sound_->one_00d7a24c, app.input_listener_calls_,"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 17,
+            "text": "static_assert(offsetof(NativeParticleModelManagerStorage, scalar_bits_2c) == 0x2c);"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 179,
+            "text": "    const auto one = access.one_00d7a24c;"
+          },
+          {
+            "path": "src/native_particle_model_manager.cpp",
+            "line": 182,
+            "text": "    owner->scalar_bits_2c = one;"
+          }
+        ]
+      },
+      {
+        "label": "late_Phase8_boundary",
+        "regex": "Phase 8|world_effects_startup",
+        "scope": [
+          "include/bsp/game_native_string_process.hpp",
+          "src/game_native_string_process.cpp",
+          "include/bsp/game_hosts_singletons.hpp",
+          "src/game_hosts_singletons.cpp",
+          "include/bsp/native_singleton_destruction.hpp",
+          "src/native_singleton_destruction.cpp",
+          "include/bsp/native_particle_model_manager.hpp",
+          "src/native_particle_model_manager.cpp",
+          "include/bsp/sound_lifetime_access.hpp",
+          "src/sound_lifetime_access.cpp",
+          "src/singleton_lifetime.cpp",
+          "src/game_hosts.cpp",
+          "src/game_main.cpp",
+          "include/bsp/native_particle_model_lifetime.hpp",
+          "include/bsp/native_particle_model_construction.hpp"
+        ],
+        "hits": [
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2242,
+            "text": "    // Phase 8, 00af0b10 at 0073e02b. The foliage group manager is reconstructed in"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2243,
+            "text": "    // src/world_effects_startup.cpp; its critical section and its publication are not"
+          },
+          {
+            "path": "src/game_hosts.cpp",
+            "line": 2245,
+            "text": "    log_.unimplemented(\"Phase 8 world_effects_startup\", \"00af0b10\");"
+          }
+        ]
+      }
+    ],
+    "exact_excerpts": [
+      {
+        "label": "process_cell_lifetime",
+        "source_path": "include/bsp/game_native_string_process.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 5,
+        "last_line": 18,
+        "text": "\n// Original loader-zero publications outlive the application and every CRT\n// callback, including a late 00419CC0 that recreates the manager/string pool.\n// This owns cells and source bindings only; getters create the native owners.\nclass GameNativeStringProcess final {\npublic:\n    GameNativeStringProcess(const GameNativeStringProcess&) = delete;\n    GameNativeStringProcess& operator=(const GameNativeStringProcess&) = delete;\n    void* volatile& manager_01090aa0() noexcept { return manager_; }\n    // Actual pending-registry publication shares this retained process lifetime.\n    // Accessing the cell does not construct or register a registry owner.\n    void* volatile& pending_registry_00f878cc() noexcept;\n    // Permanent allocation-statistics publication; cell access creates no owner.\n    void* volatile& allocation_stats_0109cefc() noexcept;\n",
+        "utf8_sha256": "7edf772acde6a945d9442e953e442a03b99f6d52d26cf8099e098cf88ffac83a"
+      },
+      {
+        "label": "process_current_cells",
+        "source_path": "include/bsp/game_native_string_process.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 29,
+        "last_line": 47,
+        "text": "    friend GameNativeStringProcess& game_native_string_process();\n    GameNativeStringProcess() noexcept = default;\n    void* volatile manager_{};\n    NativeStringPoolStorage* volatile pool_{};\n    volatile std::uint32_t disabled_{};\n    NativeStringRawPoolContext raw_{pool_, disabled_, manager_};\n    ActualNativeStringPoolStorage strings_{pool_, disabled_, manager_};\n    // Append after every established publication/context/storage field.\n    const char property_empty_00e177e4_{};\n    const char query_empty_00e17654_{};\n    // Append after every established authority; do not reuse another raw8 owner.\n    void* volatile pending_registry_00f878cc_{};\n    void* volatile allocation_stats_0109cefc_{};\n};\n\n// Intentionally retained through process termination. No C++ exit destructor\n// may invalidate the cells/bindings before another native CRT callback.\nGameNativeStringProcess& game_native_string_process();\n} // namespace bsp::game\n",
+        "utf8_sha256": "2882de9e4120b4d3864bb8a521439a429b740fa284c63ba1548661c3e24f1422"
+      },
+      {
+        "label": "process_no_destructor_owner",
+        "source_path": "src/game_native_string_process.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 20,
+        "last_line": 23,
+        "text": "GameNativeStringProcess& game_native_string_process() {\n    static auto* const process = new GameNativeStringProcess;\n    return *process;\n}\n",
+        "utf8_sha256": "2291b113269fe10c2ace5b31030fd15d0e677e863ae396f4eb57b791d6f86dc3"
+      },
+      {
+        "label": "host_copy_and_move_policy",
+        "source_path": "include/bsp/game_hosts_singletons.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 25,
+        "last_line": 31,
+        "text": "class GameSingletonHost final {\npublic:\n    explicit GameSingletonHost(GameHostLog&);\n    ~GameSingletonHost();\n    GameSingletonHost(const GameSingletonHost&) = delete;\n    GameSingletonHost& operator=(const GameSingletonHost&) = delete;\n\n",
+        "utf8_sha256": "94e4e9afa1a9de1e358b6e3e1100ab6103b46107eccfcdb1ed666c9319e83b2e"
+      },
+      {
+        "label": "host_manager_and_binding_surface",
+        "source_path": "include/bsp/game_hosts_singletons.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 53,
+        "last_line": 63,
+        "text": "    void bind_sound_runtime(GameSoundRuntime*) noexcept;\n    // Borrow the same application dispatch table when composing raw VFS\n    // services. Bind their contexts before any corresponding owner registers.\n    NativeSingletonDeletionBindings& native_deletion_bindings() noexcept {\n        return deletion_bindings_;\n    }\n    // The surface/texture graph borrows this same raw lifetime and publication;\n    // the context remains alive through shutdown's registered-owner drain.\n    NativeResourceSupportRawContext& resource_support_context() noexcept {\n        return resource_support_context_;\n    }\n",
+        "utf8_sha256": "6526ced162aa5d86550a24caae6993c049176e1b340e8b8d64584bd1835e978b"
+      },
+      {
+        "label": "host_context_member_tail",
+        "source_path": "include/bsp/game_hosts_singletons.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 118,
+        "last_line": 143,
+        "text": "    GameHostLog& log_;\n    void* volatile& manager_publication_01090aa0_; // canonical process cell\n    void* volatile& input_settings_publication_00e198e8_; // canonical process cell\n    void* volatile effect_publication_00f87664_{nullptr};\n    void* volatile game_resource_factory_publication_00e19b90_{nullptr};\n    // Native owner deletion clears E19B90, leaving this WinMain alias intact.\n    void* volatile game_resource_factory_alias_00f8d31c_{nullptr};\n    NativeGameResourceFactoryContext game_resource_factory_context_{\n        manager_publication_01090aa0_, game_resource_factory_publication_00e19b90_};\n    NativeResourceSupportStorage* volatile resource_support_publication_0108fedc_{};\n    NativeResourceSupportRawContext resource_support_context_{\n        manager_publication_01090aa0_, resource_support_publication_0108fedc_};\n    NativeDiagnosticSinkStorage* volatile diagnostic_publication_0109cf14_{};\n    void* volatile resource_registry_publication_00f8d41c_{};\n    std::unique_ptr<NativeResourceRegistryDeleteBindings> resource_registry_bindings_;\n    // The renderer retains its SAME records/canonical-owner/IAT domain through\n    // this host's normal and fallback drains; this cell remains host-owned.\n    void* volatile particle_clock_publication_00f8d420_{};\n    NativeSingletonDeletionBindings deletion_bindings_;\n    std::unique_ptr<NativeWeakOwnerDomain> weak_owners_;\n    GameNativeVfsRuntime* vfs_runtime_{};\n    std::unique_ptr<GameObserverRuntime> observers_;\n    void* volatile& pending_registry_publication_00f878cc_; // canonical process cell\n    NativeAllocationStatsConstructorContext allocation_stats_context_;\n};\n} // namespace bsp::game\n",
+        "utf8_sha256": "58a8457a06e3501fd7fe4cb21010a5bd91f47fcdd1eac4ef9122c400d8f41b00"
+      },
+      {
+        "label": "host_constructor_bindings",
+        "source_path": "src/game_hosts_singletons.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 17,
+        "last_line": 32,
+        "text": "GameSingletonHost::GameSingletonHost(GameHostLog& log)\n    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),\n      input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),\n      deletion_bindings_{&effect_publication_00f87664_, nullptr},\n      observers_(std::make_unique<GameObserverRuntime>(*this, log)),\n      pending_registry_publication_00f878cc_(game_native_string_process().pending_registry_00f878cc()),\n      allocation_stats_context_{manager_publication_01090aa0_,\n          game_native_string_process().allocation_stats_0109cefc()} {\n    // Admit factory+4 before startup can register that exact subobject.\n    deletion_bindings_.game_resource_factory = &game_resource_factory_context_;\n    deletion_bindings_.resource_support = &resource_support_context_;\n    deletion_bindings_.actual_diagnostic_publication_0109cf14 = &diagnostic_publication_0109cf14_;\n    deletion_bindings_.actual_pending_registry_publication_00f878cc =\n        &pending_registry_publication_00f878cc_;\n    deletion_bindings_.allocation_stats = &allocation_stats_context_;\n}\n",
+        "utf8_sha256": "e0ba47dc4051eb32eeec0e3791bca9387ed703ad63630c7aa8c63a1ea59d2a77"
+      },
+      {
+        "label": "host_destructor",
+        "source_path": "src/game_hosts_singletons.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 34,
+        "last_line": 38,
+        "text": "GameSingletonHost::~GameSingletonHost() {\n    // Normal WinMain shutdown has already drained this owner. All publication\n    // cells and source bindings remain valid through this fallback call.\n    shutdown();\n}\n",
+        "utf8_sha256": "96a16b287c54d9e1defdb03e7faf4acca186713239de304ca44ce67c7443bfca"
+      },
+      {
+        "label": "existing_domain_bind_pattern",
+        "source_path": "src/game_hosts_singletons.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 54,
+        "last_line": 76,
+        "text": "}\nvoid GameSingletonHost::bind_resource_registry_domain(\n    ActualNativeStringPoolStorage& strings, const SingletonLifetimeCallbacks& validation) {\n    if (resource_registry_bindings_) {\n        if (&resource_registry_bindings_->strings != &strings ||\n            &resource_registry_bindings_->invalid_parameters != &validation ||\n            deletion_bindings_.resource_registry != resource_registry_bindings_.get())\n            throw std::logic_error(\"resource registry is already bound to another application domain\");\n        return;\n    }\n    if (resource_registry_publication_00f8d41c_ || deletion_bindings_.resource_registry)\n        throw std::logic_error(\"resource registry deletion must bind before publication or registration\");\n    resource_registry_bindings_ = std::make_unique<NativeResourceRegistryDeleteBindings>(\n        NativeResourceRegistryDeleteBindings{resource_registry_publication_00f8d41c_, strings, validation});\n    deletion_bindings_.resource_registry = resource_registry_bindings_.get();\n}\nvoid* volatile& GameSingletonHost::resource_registry_publication_00f8d41c() {\n    if (!resource_registry_bindings_ ||\n        deletion_bindings_.resource_registry != resource_registry_bindings_.get())\n        throw std::logic_error(\"resource registry publication requires its retained deletion domain\");\n    return resource_registry_publication_00f8d41c_;\n}\nvoid* volatile& GameSingletonHost::particle_clock_publication_00f8d420() noexcept {\n",
+        "utf8_sha256": "48955161209c8992839c9e48e523b3ee18734758b15ebd90236565f59c438840"
+      },
+      {
+        "label": "host_shutdown_body",
+        "source_path": "src/game_hosts_singletons.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 125,
+        "last_line": 145,
+        "text": "void GameSingletonHost::shutdown() {\n    void* const manager = manager_publication_01090aa0_;\n    if (manager == nullptr) {\n        retire_vfs_after_drain();\n        return;\n    }\n    const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);\n    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);\n    retire_vfs_after_drain();\n    observers_->record_after_singleton_drain();\n    singleton_lifetime_free(manager);\n    manager_publication_01090aa0_ = nullptr;\n    log_.notef(\"singleton lifetime drained: registered_slots=%u effect_publication=%s \"\n        \"manager_publication=%s factory_publication=%s factory_alias=%p \"\n        \"storage=raw14h/raw10h/raw8h\", registered,\n        effect_publication_00f87664_ == nullptr ? \"null\" : \"non-null\",\n        manager_publication_01090aa0_ == nullptr ? \"null\" : \"non-null\",\n        game_resource_factory_publication_00e19b90_ == nullptr ? \"null\" : \"non-null\",\n        game_resource_factory_alias_00f8d31c_);\n}\n} // namespace bsp::game\n",
+        "utf8_sha256": "d2791be5714ab58d746e6485057b1e8cc661215753b82c4208c6ef9cd8f8f537"
+      },
+      {
+        "label": "raw_manager_layout",
+        "source_path": "include/bsp/native_particle_model_manager.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 7,
+        "last_line": 25,
+        "text": "// Actual 0Ch headers. Entries are weak raw pointers, without reference changes.\n// No initialization hides preimages or the stale backing pointer after cleanup.\nstruct NativeParticleManagerPointerArray {\n    void** volatile data_00;\n    volatile std::uint32_t count_04;\n    volatile std::uint32_t capacity_08;\n};\n// The SAME 34h manager published at F8C274 by AF06A0, historically named\n// FoliageGroupManager. AF0B10 preserves +1C/+20 and writes +30 only on success.\nstruct NativeParticleModelManagerStorage {\n    volatile std::uint32_t native_table_00;\n    NativeParticleManagerPointerArray models_04;\n    NativeParticleManagerPointerArray entries_10;\n    std::byte untouched_1c[8];\n    volatile std::uint32_t word_24;\n    volatile std::uint32_t word_28;\n    volatile std::uint32_t scalar_bits_2c;\n    TrackedCriticalSection* section_30;\n};\n",
+        "utf8_sha256": "8750e3eec8902b0dddc63450053b7eb0bc0d2e69b4002f99f78dba46fb6d8546"
+      },
+      {
+        "label": "current_legacy_access",
+        "source_path": "include/bsp/native_particle_model_manager.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 26,
+        "last_line": 30,
+        "text": "struct NativeParticleModelManagerAccess {\n    NativeParticleModelManagerStorage* volatile& manager_00f8c274;\n    SingletonLifetimeDomain& lifetime_01090aa0;\n    const volatile std::uint32_t& one_00d7a24c;\n};\n",
+        "utf8_sha256": "1b07f5d788e5c18d73477d50fb948b94cbaa3ed476328580d467020a97ed1425"
+      },
+      {
+        "label": "scalar_API_contract",
+        "source_path": "include/bsp/native_particle_model_manager.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 54,
+        "last_line": 59,
+        "text": "// Full scalar destructors AF0870..088D / AF1080..109D: ECX manager,\n// stack flags, RET4/EAX original; free iff flags bit0 after destruction.\nNativeParticleModelManagerStorage* delete_native_particle_manager_base_00af0870(NativeParticleModelManagerStorage*, std::uint32_t, NativeParticleModelManagerAccess&);\nNativeParticleModelManagerStorage* delete_native_particle_model_manager_00af1080(NativeParticleModelManagerStorage*, std::uint32_t, NativeParticleModelManagerAccess&);\n// New C++ interfaces; original ABI, FH3/SEH and gameplay are not established.\n} // namespace bsp\n",
+        "utf8_sha256": "71b627be1b55984c7c1d81075c7bfb4d30db06bf24da4c23778b391e408fa14d"
+      },
+      {
+        "label": "derived_constructor_and_one_observation",
+        "source_path": "src/native_particle_model_manager.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 169,
+        "last_line": 194,
+        "text": "NativeParticleModelManagerStorage* construct_native_particle_model_manager_00af0b10(\n    NativeParticleModelManagerStorage* owner, NativeParticleModelManagerAccess& access) {\n    construct_native_particle_manager_base_00af06a0(owner, access);\n    owner->native_table_00 = 0x00d5d7f8u;\n    owner->models_04.data_00 = nullptr;\n    owner->models_04.count_04 = 0;\n    owner->models_04.capacity_08 = 0;\n    owner->entries_10.data_00 = nullptr;\n    owner->entries_10.count_04 = 0;\n    owner->entries_10.capacity_08 = 0;\n    const auto one = access.one_00d7a24c;\n    owner->word_24 = 0;\n    owner->word_28 = 0;\n    owner->scalar_bits_2c = one;\n    try {\n        owner->section_30 = create_native_tracked_critical_section_00bd1860();\n    } catch (...) {\n        try {\n            destroy_native_particle_manager_pointers_00af0af0(owner->entries_10);\n            destroy_native_particle_manager_pointers_00af0af0(owner->models_04);\n            destroy_native_particle_manager_base_00af0740(owner, access);\n        } catch (...) { std::terminate(); }\n        throw;\n    }\n    return owner;\n}\n",
+        "utf8_sha256": "7e790f2beb45932f22ca35be48dc098800153222ebebf96d3bdf4c3f85c1d6ec"
+      },
+      {
+        "label": "derived_cleanup_and_scalar_bodies",
+        "source_path": "src/native_particle_model_manager.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 195,
+        "last_line": 218,
+        "text": "void destroy_native_particle_model_manager_00af0b90(NativeParticleModelManagerStorage* owner,\n    NativeParticleModelManagerAccess& access) {\n    owner->native_table_00 = 0x00d5d7f8u;\n    // The canonical release helper clears ITS passed slot. AF0B90 leaves the\n    // published +30 word stale, so pass only the captured local section slot.\n    auto* captured_section = owner->section_30;\n    release_native_tracked_critical_section_0041cc80(&captured_section);\n    destroy_native_particle_manager_pointers_00af0af0(owner->entries_10);\n    destroy_native_particle_manager_pointers_00af0af0(owner->models_04);\n    destroy_native_particle_manager_base_00af0740(owner, access);\n}\nNativeParticleModelManagerStorage* delete_native_particle_manager_base_00af0870(\n    NativeParticleModelManagerStorage* owner, std::uint32_t flags, NativeParticleModelManagerAccess& access) {\n    destroy_native_particle_manager_base_00af0740(owner, access);\n    if (flags & 1u) singleton_lifetime_free(owner);\n    return owner;\n}\nNativeParticleModelManagerStorage* delete_native_particle_model_manager_00af1080(\n    NativeParticleModelManagerStorage* owner, std::uint32_t flags, NativeParticleModelManagerAccess& access) {\n    destroy_native_particle_model_manager_00af0b90(owner, access);\n    if (flags & 1u) singleton_lifetime_free(owner);\n    return owner;\n}\n} // namespace bsp\n",
+        "utf8_sha256": "d824c302b4f33839b3a4988a75d58e884268120b1868926a3c495d6ba35c6672"
+      },
+      {
+        "label": "existing_base_Source_contract",
+        "source_path": "src/native_particle_model_manager.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 141,
+        "last_line": 168,
+        "text": "NativeParticleModelManagerStorage* construct_native_particle_manager_base_00af06a0(\n    NativeParticleModelManagerStorage* owner, NativeParticleModelManagerAccess& access) {\n    owner->native_table_00 = 0x00d5d7ecu;\n    try {\n        CapturedSection lock(access.lifetime_01090aa0.get_manager_00415350()->system_owner().section_10);\n        access.manager_00f8c274 = owner;\n        auto* const manager = access.lifetime_01090aa0.get_manager_00415350();\n        manager->register_object(access.manager_00f8c274);\n    } catch (...) {\n        owner->native_table_00 = 0x00ce3818u; // state0 / 00412430; publication survives.\n        throw;\n    }\n    return owner;\n}\nvoid destroy_native_particle_manager_base_00af0740(NativeParticleModelManagerStorage* owner,\n    NativeParticleModelManagerAccess& access) {\n    owner->native_table_00 = 0x00d5d7ecu;\n    try {\n        CapturedSection lock(access.lifetime_01090aa0.get_manager_00415350()->system_owner().section_10);\n        auto* const manager = access.lifetime_01090aa0.get_manager_00415350();\n        manager->unregister_object(access.manager_00f8c274);\n        access.manager_00f8c274 = nullptr;\n    } catch (...) {\n        owner->native_table_00 = 0x00ce3818u;\n        throw;\n    }\n    owner->native_table_00 = 0x00ce3818u;\n}\n",
+        "utf8_sha256": "65ada303c0fb3ef7d2622944af0a88bf28b8e87acfbf6a1efa0482ef6f23c8f5"
+      },
+      {
+        "label": "raw_bridge_identity",
+        "source_path": "include/bsp/sound_lifetime_access.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 33,
+        "last_line": 52,
+        "text": "class SoundLifetimeAccess final {\npublic:\n    SoundLifetimeAccess(SingletonLifetimeDomain& domain) noexcept : semantic_(&domain) {}\n    SoundLifetimeAccess(void* volatile& actual_publication) noexcept : actual_(&actual_publication) {}\n    SoundLifetimeManagerView get_manager_00415350() const;\n    bool uses_actual_storage() const noexcept { return actual_ != nullptr; }\n    // Compare the borrowed semantic object or raw publication CELL identity.\n    // Current pointer values are irrelevant, so distinct null raw cells differ.\n    bool borrows_same_domain(const SingletonLifetimeDomain& domain) const noexcept {\n        return semantic_ == &domain;\n    }\n    bool borrows_same_domain(void* volatile& publication) const noexcept {\n        return actual_ == &publication;\n    }\nprivate:\n    SingletonLifetimeDomain* semantic_{};\n    void* volatile* actual_{};\n};\n\n// Capture the first manager's section, enter/increment once, then leave that\n",
+        "utf8_sha256": "ee147f5536f1a3ba2b0ea174f58b61c9be8ce347053b0a0beedeec2c038cfd4b"
+      },
+      {
+        "label": "raw_bridge_get_and_registration",
+        "source_path": "src/sound_lifetime_access.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 12,
+        "last_line": 35,
+        "text": "SoundLifetimeManagerView SoundLifetimeAccess::get_manager_00415350() const {\n    if (actual_) return {nullptr, get_native_singleton_manager_00415350(*actual_)};\n    return {semantic_->get_manager_00415350(), nullptr};\n}\nvoid* SoundLifetimeManagerView::native_system_section_10() const noexcept {\n    if (semantic_) {\n        auto* const projection = semantic_->system_owner().section_10;\n        return projection ? projection->native_section : nullptr;\n    }\n    void* section;\n    std::memcpy(&section, static_cast<const std::byte*>(actual_) + 0x10, sizeof section);\n    return section;\n}\nvoid SoundLifetimeManagerView::register_object(void* object) {\n    if (semantic_) semantic_->register_object(object);\n    else register_native_singleton_object_00bd0c30(actual_, nullptr, object);\n}\nvoid SoundLifetimeManagerView::unregister_object(void* object) {\n    if (semantic_) semantic_->unregister_object(object);\n    else unregister_native_singleton_object_00bcfca0(actual_, nullptr, object);\n}\nvoid SoundLifetimeManagerView::move_object_after_00bd0d70(void* object, void* anchor) {\n    if (semantic_) semantic_->move_object_after_00bd0d70(object, anchor);\n    else move_native_singleton_object_after_00bd0d70(actual_, nullptr, object, anchor);\n",
+        "utf8_sha256": "d1385d875528479f64953f5f4f8b3b5284ee2cb4232dbc6616ef8b0385c981ea"
+      },
+      {
+        "label": "current_CRT_free_domain",
+        "source_path": "src/singleton_lifetime.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 51,
+        "last_line": 67,
+        "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {\n    // 00BF681B: malloc, call the CRT new handler with the allocation size on\n    // failure, retry if it returns nonzero, otherwise throw bad_alloc. Host\n    // layout requires host_bytes; native_bytes retains the explicit ABI boundary.\n    for (;;) {\n        if (void* result = std::malloc(request.host_bytes)) {\n            return result;\n        }\n        if (_callnewh(request.host_bytes) == 0) {\n            throw std::bad_alloc();\n        }\n    }\n}\n\nvoid singleton_lifetime_free(void* pointer) noexcept {\n    std::free(pointer);\n}\n",
+        "utf8_sha256": "af9333833943da8372ff429810f8f4509c0b0ea1a3b9dd3421a443c0c4d4270f"
+      },
+      {
+        "label": "deletion_binding_tail_layout",
+        "source_path": "include/bsp/native_singleton_destruction.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 228,
+        "last_line": 263,
+        "text": "    GlobalConfigContext* global_configuration{};\n    // D0DEA0 retires the passed raw8 registry through 875850. Borrow the same\n    // canonical process F878CC cell used for publication; it must outlive drain.\n    void* volatile* actual_pending_registry_publication_00f878cc{};\n    // D685E0/D685F4 require the same retained manager/statistics cells as their\n    // constructors. Dispatch the popped receiver and full flags independently\n    // of the current publication; a missing context fails closed.\n    NativeAllocationStatsConstructorContext* allocation_stats{};\n};\nstatic_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, shadow_job) == 96);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, resource_extra_parsers) == 100);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, resource_support) == 104);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, frame_clock) == 108);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, actual_diagnostic_publication_0109cf14) == 112);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, renderer_record_guard) == 116);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, render_jobs) == 120);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, renderer_lua_owner) == 124);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, renderer_owner) == 128);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, render_entry_cache) == 132);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, render_queue) == 136);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, weak_owner_domain) == 140);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, render_resources) == 144);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, native_online) == 148);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, game_resource_parsers) == 152);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, game_classes) == 156);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, native_profile_hints) == 160);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, native_media) == 164);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, native_gui) == 168);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, shadow_depth_target) == 172);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, particle_clock) == 176);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, global_configuration) == 180);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, actual_pending_registry_publication_00f878cc) == 184);\nstatic_assert(offsetof(NativeSingletonDeletionBindings, allocation_stats) == 188);\nstatic_assert(sizeof(NativeSingletonDeletionBindings) == 192);\n",
+        "utf8_sha256": "fa0ccd9e21c2ca8b1708de8cfb0f1da9b3ff2d417c41de5f72ad6b7a3484b991"
+      },
+      {
+        "label": "deletion_map_existing_stats_analogy",
+        "source_path": "src/native_singleton_destruction.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 283,
+        "last_line": 297,
+        "text": "    case 0x00d685e0:\n        if (bindings.allocation_stats != nullptr) {\n            delete_native_allocation_stats_base_00be2890(\n                owner, flags, *bindings.allocation_stats);\n            return;\n        }\n        break;\n    case 0x00d685f4:\n        if (bindings.allocation_stats != nullptr) {\n            delete_native_allocation_stats_00be2930(\n                owner, flags, *bindings.allocation_stats);\n            return;\n        }\n        break;\n    case 0x00ce3818:\n",
+        "utf8_sha256": "73600f1acecd3f4991cb3beec1c4860aa44ddb8e8c6ba9c28353ee7589d57c49"
+      },
+      {
+        "label": "deletion_map_fail_closed",
+        "source_path": "src/native_singleton_destruction.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 544,
+        "last_line": 551,
+        "text": "        break;\n    case 0x00ce44dc:\n        delete_native_device_registry_00441840(\n            static_cast<NativeDeviceRegistryStorage*>(owner), flags,\n            process_native_device_registry_00e17bf4());\n        return;\n    }\n    throw std::logic_error(\"raw singleton deletion requires a recovered profile and its actual bindings\");\n",
+        "utf8_sha256": "5a1947cfc06331e5856613d40c1b07855c737c0c664d3011c1cee883be070e3c"
+      },
+      {
+        "label": "drain_pop_profile_flags",
+        "source_path": "src/native_singleton_destruction.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 585,
+        "last_line": 616,
+        "text": "        add edi, -4\n        cmp edi, dword ptr [esi + 8]\n        jb slot_valid\n        call current_crt_invalid_parameter\n    slot_valid:\n        mov eax, dword ptr [esi + 4]\n        cmp eax, ebx\n        mov ecx, dword ptr [edi]\n        je popped\n        mov edx, dword ptr [esi + 8]\n        mov edi, edx\n        sub edi, eax\n        sar edi, 2\n        je popped\n        add edx, -4\n        mov dword ptr [esi + 8], edx\n    popped:\n        cmp ecx, ebx\n        je recount\n        mov eax, dword ptr [ecx]\n        push 1\n        push eax\n        // +8 binding spill +4 savedEDI +8 source arguments = +14h.\n        mov edx, dword ptr [esp + 14h]\n        call delete_current_profile\n    recount:\n        mov ecx, esi\n        call count_native_singleton_slots_00bcf910\n        test eax, eax\n        jne next_owner\n        pop edi\n    drained:\n",
+        "utf8_sha256": "60bc4ed434801f177ff212ad917e3277c9c1ca8a8c80c0ef1d589ceb48e13517"
+      },
+      {
+        "label": "drain_exception_boundary",
+        "source_path": "src/native_singleton_destruction.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 637,
+        "last_line": 646,
+        "text": "__declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(\n    void* owner, const NativeSingletonDeletionBindings& bindings) {\n    try {\n        destroy_manager_body(owner, bindings);\n    } catch (...) {\n        // Native FuncInfoDFF490: state0 -> -1, CC5450 -> BD0220.\n        clear_native_singleton_storage_00bd0220(owner, nullptr);\n        throw;\n    }\n}\n",
+        "utf8_sha256": "bccd69c213b89792d889111d5bd917ffe1d98d0ffa40be84fcbf2912b5e1c3c6"
+      },
+      {
+        "label": "startup_singletons_local_owner",
+        "source_path": "src/game_hosts.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 1480,
+        "last_line": 1489,
+        "text": "    auto singletons = std::make_unique<GameSingletonHost>(log_);\n    // Represented CRT table order: CE2BAC -> CCD6A0 precedes CE3054 -> CD2D80.\n    // Keep context/publication cells alive if later source construction fails.\n    singletons->observers().initialize_dispatch_00ccd6a0();\n    if(!native_data_)throw std::runtime_error(\"Native settings require retained verified data\");\n    try {\n        settings_process_=&game_native_settings_process(*native_data_);\n        const auto registration=settings_process_->initialize_once();\n        copy_native_game_settings_read_view(settings_process_->settings(),{},settings_view_);\n        log_.notef(\"native settings CRT owners initialized: storage=rawBCh/raw0Ch atexit=%d/%d/%d/%d online=process_cell input=process_cell\",\n",
+        "utf8_sha256": "5d6e4d0fab0c177c1b8fc8a9d5ed2cecd0945833097c509dd531d14174e76502"
+      },
+      {
+        "label": "startup_normal_and_fallback_drain",
+        "source_path": "src/game_hosts.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 1580,
+        "last_line": 1604,
+        "text": "    // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells\n    // through the actual raw singleton drain, including exceptional startup.\n    if (singletons_) {\n        if (native_renderer_) native_renderer_->drain_singletons();\n        else singletons_->shutdown();\n        if(scripts_)scripts_->input().after_singleton_drain();\n        if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;\n    }\n    if (input_) {\n        try { input_->core.release_sdk_after_native_drain(); }\n        catch (const std::exception& error) {\n            // Native registration failure can leave an unpublished-to-manager\n            // allocation (or a freed backend publication). Do not dereference\n            // or repair that cell, and do not terminate exceptional startup\n            // merely because the explicit SDK-release precondition fails.\n            log_.notef(\"input SDK final release incomplete: %s\", error.what());\n        }\n    }\n    input_runtime_ = nullptr;\n    input_.reset();\n    sound_.reset();\n    delete singletons_;\n    singletons_ = nullptr;\n    clock_services_.reset(); // after GameSingletonHost's fallback destructor/drain\n    delete profiler_;\n",
+        "utf8_sha256": "94aea9301f48a8fc55a5f20a95503bfb63786e61123496b2d379c821ba362be6"
+      },
+      {
+        "label": "late_Phase8_marker",
+        "source_path": "src/game_hosts.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 2242,
+        "last_line": 2245,
+        "text": "    // Phase 8, 00af0b10 at 0073e02b. The foliage group manager is reconstructed in\n    // src/world_effects_startup.cpp; its critical section and its publication are not\n    // bound here, so the phase itself is still a record.\n    log_.unimplemented(\"Phase 8 world_effects_startup\", \"00af0b10\");\n",
+        "utf8_sha256": "f3c7418063875619dead3dd239e70addea7c650ed7dc6a730453ec4cfb1afdbb"
+      },
+      {
+        "label": "retained_data_spans",
+        "source_path": "src/game_main.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 86,
+        "last_line": 90,
+        "text": "constexpr std::array<bsp::game::GameNativeDataSpan, 7> native_data_spans{{\n    {0x00ce2000u, 1}, {0x00cf0000u, 1}, {0x00d00000u, 1},\n    {0x00d10000u, 1}, {0x00d50000u, 1}, {0x00d60000u, 1},\n    {0x00d70000u, 1}\n}};\n",
+        "utf8_sha256": "261e33057e4ed040f5e77ee6ee90a6bee7b6dfd9801ce49838121da159f615ca"
+      },
+      {
+        "label": "retained_data_precedes_host",
+        "source_path": "src/game_main.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 1027,
+        "last_line": 1038,
+        "text": "    bsp::game::GameNativeReadOnlyData* native_data = nullptr;\n    volatile std::uint32_t* native_crt_feature = nullptr;\n    try {\n        auto reservation = bsp::game::accept_native_data_handoff(\n            native_data_spans.data(), native_data_spans.size(),\n            bsp::game::GameNativeDataPlan::CanonicalCrtV2);\n        const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize(original_image,\n            native_data_spans.data(), native_data_spans.size(), std::move(reservation));\n        native_data = &owner.read_only_data();\n        native_crt_feature = &owner.mutable_crt_data().feature_word();\n        log.notef(\"native-data handoff mapped verified original image %s\",\n            original_image.string().c_str());\n",
+        "utf8_sha256": "8dd8c5c54016c13c8da6093476cbec10aaa8d2d43d232152c4dabaa885a45942"
+      },
+      {
+        "label": "retained_data_outlives_host",
+        "source_path": "src/game_main.cpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 1246,
+        "last_line": 1250,
+        "text": "    }\n    report_summary(log, summary);\n    host.reset(); // The canonical RO/RW owner remains mapped through process teardown.\n    log.close();\n    return summary.exit_code;\n",
+        "utf8_sha256": "3163f41c2cf73d6ec22a6378515f4b1d15074cc228f6e346a86979a0335df6d9"
+      },
+      {
+        "label": "readonly_data_span_API",
+        "source_path": "include/bsp/game_native_readonly_data.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 34,
+        "last_line": 39,
+        "text": "    GameNativeReadOnlyData& operator=(GameNativeReadOnlyData&&) = delete;\n\n    // Check section bounds and mapping of a nonempty table/literal span.\n    // This returns data at its recorded address; numeric entries are not code.\n    const void* data_at(std::uintptr_t address, std::size_t bytes) const;\n    static constexpr std::uintptr_t begin_address = 0x00ce2000;\n",
+        "utf8_sha256": "f27c49f3cb7728296eb08a1e697a5e590f62ef35859b897857bc1bc64c87e3c7"
+      },
+      {
+        "label": "canonical_data_lifetime",
+        "source_path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 51,
+        "last_line": 67,
+        "text": "\n// Unique, intentionally non-destructed process owner. initialize() consumes a\n// v2 inherited capability once and publishes only after checked parent ACK.\n// Borrowed references remain valid through CRT/atexit/thread teardown; the OS\n// reclaims both the RO D6 pair and the three writable pages at process exit.\nclass GameNativeCanonicalDataOwner final {\npublic:\n    static const GameNativeCanonicalDataOwner& initialize(\n        const std::filesystem::path& original_executable,\n        const GameNativeDataSpan* readonly_spans, std::size_t span_count,\n        GameNativeDataReservation&& reservation);\n    GameNativeCanonicalDataOwner(const GameNativeCanonicalDataOwner&) = delete;\n    GameNativeCanonicalDataOwner& operator=(const GameNativeCanonicalDataOwner&) = delete;\n    GameNativeReadOnlyData& read_only_data() const noexcept { return *readonly_; }\n    GameNativeMutableCrtData& mutable_crt_data() const noexcept { return *mutable_; }\n    const NativeCrtExceptionPair& exception_pair() const;\nprivate:\n",
+        "utf8_sha256": "d150ad9f231d264b6b43bd992620513feac2bcdc19100ed78cb3a41ee1dd7996"
+      },
+      {
+        "label": "model_lifetime_void_reference",
+        "source_path": "include/bsp/native_particle_model_lifetime.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 40,
+        "last_line": 47,
+        "text": "struct NativeParticleModelLifetimeAccess {\n    // SAME initialized F8D2D0 owner used for allocation; never model pool01090054.\n    void* actual_pool_00f8d2d0;\n    void* const volatile& manager_00f8c274;\n    volatile std::uint32_t& live_count_00f8d2c8;\n    // Borrow current complete23-DWORD D5DA50 profile and canonical type words.\n    const volatile std::uint32_t* vtable_00d5da50;\n    const volatile NativeParticleModelTypeDescriptor& types_00f8d308;\n",
+        "utf8_sha256": "0ab3a718f748b07681e7c3985e28154288ba976ca73fdde103c10a7eee67a45e"
+      },
+      {
+        "label": "model_construction_void_reference",
+        "source_path": "include/bsp/native_particle_model_construction.hpp",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 105,
+        "last_line": 113,
+        "text": "    RandomThreads& random;\n    NativeParticleModelConstructionCallees& callees;\n    void* const volatile& resources_00f8c280;\n    void* const volatile& shadow_00f8d39c;\n    void* const volatile& renderer_00f8d394;\n    void* const volatile& manager_00f8c274;\n    volatile std::uint32_t& live_count_00f8d2c8;\n    const volatile std::uint32_t& one_00d7a24c;\n    const volatile std::uint32_t& random_max_00ce3d64;\n",
+        "utf8_sha256": "cf4b7d31de50ee6fb4fe0709ee5270ef548a8f54c20bf53985fb6f603220cd1f"
+      },
+      {
+        "label": "prior_Native_scalar_and_order",
+        "source_path": "docs/NATIVE_PARTICLE_MODEL_MANAGER.md",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 22,
+        "last_line": 47,
+        "text": "| AF0AE0 | AF0AE0..AF0AF0 | Remove model from manager04; return AL |\n| AF06A0 | AF06A0..AF0731 | Base table, captured lifetime section, publish/register |\n| AF0740 | AF0740..AF07D9 | Current-global unregister, unconditional clear, base table |\n| AF0870 | AF0870..AF088E | Base destroy/free iff flags bit0 |\n| AF0B10 | AF0B10..AF0B82 | Derived field initialization and real section creation |\n| AF0B90 | AF0B90..AF0C41 | Section drain/free, second array, first array, base |\n| AF1080 | AF1080..AF109E | Derived destroy/free iff flags bit0 |\n\nAll original functions use ECX for actual owner/header. Array operations and\nscalar deletion take one stack DWORD and RET4; constructors/destructors and\nmember cleanup RET. Constructors/scalar deletion return the original pointer.\nThe new C++ interfaces add explicit application lifetime/publication access.\n\nBase construction and destruction capture the first 415350 result's section,\nenter its real OS lock and increment its physical counter, then call415350\nagain before loading the current F8C274 for BD0C30/BCFCA0. Unlock uses the\ncaptured section even if publication changed. FH3 base unwind writes CE3818;\nregistration failure retains publication. Derived constructor unwind destroys\nthe second array, first array and base, following DF269C's three states.\n\nAF0B90 captures30, drains positive signed recursion depth, deletes the real\nsection and frees it. The existing 41CC80 implementation clears its argument\nslot, so the adapter passes a local captured slot: AF0B90 itself leaves the\npublished30 pointer stale. It also preserves freed array pointers/capacities.\nThe two array members own backing only; model references are never adjusted.\n\n",
+        "utf8_sha256": "5a27d7b8dd829639e3207640a85692df175280a8e183ec308bf5c712fa8922e0"
+      },
+      {
+        "label": "accepted_raw_access_dependency",
+        "source_path": "docs/CC12_POST_SOUND_STARTUP_CONTINUATION_PRIMARY_REVIEW.md",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 3,
+        "last_line": 13,
+        "text": "Root accepts worker commit `01e9b3434e7a9bc6cb9fac37e8a0c54748ef1385` as evidence that the two-file `cc12_particle_manager_raw_lifetime_access` packet is ready. This review changes no C++, invokes no executable and enables no startup path.\n\nThe unchanged copied portable replay passed. Root independently checked all 3,352 accepted Source3348/artifact pins against the current checkout, frozen baseline and archive, and verified all 4,229 retained Git blob identities plus current working files with explicit CRLF/LF qualification. Root also verified the complete retained particle-manager Core member and both candidate Source files.\n\nRoot decoded all 145 bytes of AF06A0 and 153 bytes of AF0740 from the retained original executable and checked the distinct manager getters and register/unregister targets. The ten retained startup call slots also match the executable. The independent token search covers 4,205 tracked src/include C++ and header files plus the two math-test files; the separate 4,206-file src/include corpus also contains the assembly file excluded from that search.\n\nThe proposed access overload borrows the actual 01090AA0 publication cell while preserving the legacy domain overload. Each base entry must capture the first manager's section, obtain a distinct second manager view, and then read the current F8C274 publication for registration or removal. Preserve failure ordering, all raw 34h storage offsets, weak-array behavior and derived/scalar Source bodies. Existing shared lifetime/provider helpers need no changes.\n\nThe access context's C++ size may change from 12 to 16 bytes; it is not an original binary interface. Raw storage admission does not establish register ABI, FH3 or hardware-fault compatibility. There is no production particle-manager activation: canonical publication/context ownership, deletion dispatch and the original early startup allocation/failure schedule remain separate prerequisites. The late Phase8 marker does not establish the original placement before locale and font initialization.\n\nValidation and all exact retained evidence are in `reports/cc12_post_sound_startup_continuation_primary_review.json`. The current Source executable still stops at FMOD, with no window, device, frames or gameplay validation. The continuing reconstruction goal remains open.\n",
+        "utf8_sha256": "ae1491802447926f66a277139157ef14b46e970f1044dd6fafc1fe22b28c021f"
+      },
+      {
+        "label": "prior_early_caller_position",
+        "source_path": "docs/CC12_POST_SOUND_STARTUP_CONTINUATION_REVIEW.md",
+        "commit": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+        "first_line": 24,
+        "last_line": 31,
+        "text": "\nThe Source phase labels are not the Native schedule. Existing application listing\nand retained original-image bytes place the `0x34` manager allocation at\n`0073E005/0073E00E`, null branch at `0073E027`, receiver move at `0073E029`, and\n`00AF0B10` call at `0073E02B`, **before** locale construction `0073E059` and\nfonts/GUI `0073E13C`. The Source's later `Phase 8 world_effects_startup` marker is\ntherefore not an approved activation location.\n\n",
+        "utf8_sha256": "f950f10dd99628b8faf4546dfe8cadcd228e1ee4f71cea5bd052cd629e767fcb"
+      }
+    ],
+    "Native_evidence": {
+      "image": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/b682a82c52f81f95_retained_original_image.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "image_provenance": "Prior GC packet frozen image; hash equals retained native_particle_model_manager report. No installed image reread.",
+      "image_base": 4194304,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "virtual_bytes": 9306422,
+          "raw_bytes": 9310208,
+          "raw_offset": 4096
+        },
+        {
+          "name": ".rdata",
+          "rva": 9314304,
+          "virtual_bytes": 1202980,
+          "raw_bytes": 1204224,
+          "raw_offset": 9314304
+        },
+        {
+          "name": ".data",
+          "rva": 10518528,
+          "virtual_bytes": 2719452,
+          "raw_bytes": 65536,
+          "raw_offset": 10518528
+        },
+        {
+          "name": ".rsrc",
+          "rva": 13238272,
+          "virtual_bytes": 1630400,
+          "raw_bytes": 1634304,
+          "raw_offset": 10584064
+        }
+      ],
+      "spans": [
+        {
+          "address": "00D5D7EC",
+          "bytes": 4,
+          "label": "base_profile_slot0",
+          "section": ".rdata",
+          "file_offset": 9820140,
+          "hex": "7008af00",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/6004561494315afe_base_profile_slot0.bin",
+            "bytes": 4,
+            "sha256": "6004561494315afe270d1a992f170307d5ff93324109274bdb72d7d26a92066c"
+          },
+          "slot0": "00AF0870"
+        },
+        {
+          "address": "00D5D7F8",
+          "bytes": 4,
+          "label": "derived_profile_slot0",
+          "section": ".rdata",
+          "file_offset": 9820152,
+          "hex": "8010af00",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/3a1ff0cb26ed7695_derived_profile_slot0.bin",
+            "bytes": 4,
+            "sha256": "3a1ff0cb26ed769525bd1393113c764eeecdcdc1486ab396e4a721938139a95e"
+          },
+          "slot0": "00AF1080"
+        },
+        {
+          "address": "00AF0870",
+          "bytes": 30,
+          "label": "retained_base_scalar",
+          "section": ".text",
+          "file_offset": 7276656,
+          "hex": "568bf1e8c8fefffff644240801740956e8275d100083c4048bc65ec20400",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/773dc337e08222af_retained_base_scalar.bin",
+            "bytes": 30,
+            "sha256": "773dc337e08222af3ce3c023fe55fbabfa7812a35b0966a7f10c10e299a86422"
+          },
+          "prior_function_record": {
+            "name": "base_delete",
+            "address": "00af0870",
+            "end_inclusive": "00af088d",
+            "end_exclusive": "00af088e",
+            "length": 30,
+            "sha256": "773dc337e08222af3ce3c023fe55fbabfa7812a35b0966a7f10c10e299a86422",
+            "live_disk_equal": true,
+            "last_instruction": {
+              "address": "00af088b",
+              "length": 3,
+              "bytes": "c20400",
+              "text": "ret 4"
+            },
+            "calls": [
+              {
+                "address": "00af0873",
+                "target": "0xaf0740",
+                "bytes": "e8c8feffff"
+              },
+              {
+                "address": "00af0880",
+                "target": "0xbf65ac",
+                "bytes": "e8275d1000"
+              }
+            ],
+            "cpp_symbol": "delete_native_particle_manager_base_00af0870",
+            "ghidra_name": "BSP_FoliageGroupManager_BaseScalarDelete",
+            "source": "src/native_particle_model_manager.cpp",
+            "header": "include/bsp/native_particle_model_manager.hpp",
+            "coverage": "complete_cpp",
+            "native_calling_convention": "__thiscall",
+            "native_prototype": "void * __thiscall BSP_FoliageGroupManager_BaseScalarDelete(uint flags)",
+            "original_abi": "ECX actual owner/header; uint flags; RET4; void * return",
+            "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; uint flags; RET4; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+          }
+        },
+        {
+          "address": "00AF1080",
+          "bytes": 30,
+          "label": "retained_derived_scalar",
+          "section": ".text",
+          "file_offset": 7278720,
+          "hex": "568bf1e808fbfffff644240801740956e81755100083c4048bc65ec20400",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/1af2ccdfa748592f_retained_derived_scalar.bin",
+            "bytes": 30,
+            "sha256": "1af2ccdfa748592f0fd8e90c7c50a4581e1e78ed3444d34ec27781150773473a"
+          },
+          "prior_function_record": {
+            "name": "delete",
+            "address": "00af1080",
+            "end_inclusive": "00af109d",
+            "end_exclusive": "00af109e",
+            "length": 30,
+            "sha256": "1af2ccdfa748592f0fd8e90c7c50a4581e1e78ed3444d34ec27781150773473a",
+            "live_disk_equal": true,
+            "last_instruction": {
+              "address": "00af109b",
+              "length": 3,
+              "bytes": "c20400",
+              "text": "ret 4"
+            },
+            "calls": [
+              {
+                "address": "00af1083",
+                "target": "0xaf0b90",
+                "bytes": "e808fbffff"
+              },
+              {
+                "address": "00af1090",
+                "target": "0xbf65ac",
+                "bytes": "e817551000"
+              }
+            ],
+            "cpp_symbol": "delete_native_particle_model_manager_00af1080",
+            "ghidra_name": "BSP_FoliageGroupManager_ScalarDelete",
+            "source": "src/native_particle_model_manager.cpp",
+            "header": "include/bsp/native_particle_model_manager.hpp",
+            "coverage": "complete_cpp",
+            "native_calling_convention": "__thiscall",
+            "native_prototype": "void * __thiscall BSP_FoliageGroupManager_ScalarDelete(uint flags)",
+            "original_abi": "ECX actual owner/header; uint flags; RET4; void * return",
+            "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; uint flags; RET4; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+          }
+        }
+      ],
+      "saved_scalar_exports": [
+        {
+          "address": "00af0870",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00af0870\\assembly.txt",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/5d3a2d2e953e0c57_saved_00af0870_assembly.txt",
+            "bytes": 267,
+            "sha256": "5d3a2d2e953e0c57b5009a7f2e66b995f203beb3117b6e20a4b4cc5512aa8774"
+          }
+        },
+        {
+          "address": "00af0870",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00af0870\\decompiled.c",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/4cce970f7db76825_saved_00af0870_decompiled.c",
+            "bytes": 914,
+            "sha256": "4cce970f7db768256a1b32cd6eaec03edf46df98d6fca6cb2c19d10a19fcf483"
+          }
+        },
+        {
+          "address": "00af0870",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00af0870\\metadata.json",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/d8a129dd531a7b6b_saved_00af0870_metadata.json",
+            "bytes": 230,
+            "sha256": "d8a129dd531a7b6b0c6946367dc4b0faecd208ec4266cd5f899b7a5436e062c1"
+          }
+        },
+        {
+          "address": "00af1080",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00af1080\\assembly.txt",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/a14aeb0243b01097_saved_00af1080_assembly.txt",
+            "bytes": 267,
+            "sha256": "a14aeb0243b01097c5ecfcb5e032def977979986488422c440c3836cfa0e68ec"
+          }
+        },
+        {
+          "address": "00af1080",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00af1080\\decompiled.c",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/57c79a478ebea2b7_saved_00af1080_decompiled.c",
+            "bytes": 906,
+            "sha256": "57c79a478ebea2b723e8216fd0e9a0a1c2ab97304a91005aff0c475b1fb5ad34"
+          }
+        },
+        {
+          "address": "00af1080",
+          "provenance": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00af1080\\metadata.json",
+          "pin": {
+            "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/3cfed7cee4edc098_saved_00af1080_metadata.json",
+            "bytes": 230,
+            "sha256": "3cfed7cee4edc09877929cc8e5bcbd904a68be18f620c0e14928ffa42774ed53"
+          }
+        }
+      ],
+      "fresh_scope": "Only first DWORDsD5D7EC,D5D7F8 and typed data/project metadata. Both scalar30-byte bodies/exports are retained evidence; no fresh scalar or AF06A0/AF0740 Native query.",
+      "prior_profile_span": {
+        "name": "tables",
+        "address": "00d5d7ec",
+        "end_inclusive": "00d5d80b",
+        "end_exclusive": "00d5d80c",
+        "length": 32,
+        "sha256": "facbca8cc402c4900a0770999fd95f9cf36c478d73ed27baee9bffbc7574130c",
+        "live_disk_equal": true
+      },
+      "prior_one_span": {
+        "name": "one",
+        "address": "00d7a24c",
+        "end_inclusive": "00d7a24f",
+        "end_exclusive": "00d7a250",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_disk_equal": true
+      },
+      "prior_base_derived_steps": [
+        {
+          "address": "00af06ce",
+          "native": "00415350",
+          "function": "00af06a0"
+        },
+        {
+          "address": "00af06e7",
+          "native": "dword ptr [0xce2218]",
+          "function": "00af06a0"
+        },
+        {
+          "address": "00af06fc",
+          "native": "00415350",
+          "function": "00af06a0"
+        },
+        {
+          "address": "00af070a",
+          "native": "00bd0c30",
+          "function": "00af06a0"
+        },
+        {
+          "address": "00af0718",
+          "native": "dword ptr [0xce2210]",
+          "function": "00af06a0"
+        },
+        {
+          "address": "00af076e",
+          "native": "00415350",
+          "function": "00af0740"
+        },
+        {
+          "address": "00af0787",
+          "native": "dword ptr [0xce2218]",
+          "function": "00af0740"
+        },
+        {
+          "address": "00af0796",
+          "native": "00415350",
+          "function": "00af0740"
+        },
+        {
+          "address": "00af07a4",
+          "native": "00bcfca0",
+          "function": "00af0740"
+        },
+        {
+          "address": "00af07bc",
+          "native": "dword ptr [0xce2210]",
+          "function": "00af0740"
+        },
+        {
+          "address": "00af0873",
+          "native": "00af0740",
+          "function": "00af0870"
+        },
+        {
+          "address": "00af0880",
+          "native": "00bf65ac",
+          "function": "00af0870"
+        },
+        {
+          "address": "00af0b2d",
+          "native": "00af06a0",
+          "function": "00af0b10"
+        },
+        {
+          "address": "00af0b68",
+          "native": "00bd1860",
+          "function": "00af0b10"
+        },
+        {
+          "address": "00af0bd5",
+          "native": "ebx",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af0bdf",
+          "native": "dword ptr [0xce2214]",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af0be6",
+          "native": "00bf65ac",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af0bf5",
+          "native": "00af0900",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af0bfd",
+          "native": "00bf6989",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af0c11",
+          "native": "00af0900",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af0c19",
+          "native": "00bf6989",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af0c2b",
+          "native": "00af0740",
+          "function": "00af0b90"
+        },
+        {
+          "address": "00af1083",
+          "native": "00af0b90",
+          "function": "00af1080"
+        },
+        {
+          "address": "00af1090",
+          "native": "00bf65ac",
+          "function": "00af1080"
+        }
+      ]
+    },
+    "captures": [
+      {
+        "name": "capture.py",
+        "pin": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/a3a7e2f3944d42cb_capture.py",
+          "bytes": 1303,
+          "sha256": "a3a7e2f3944d42cb4d538b02310c6679907bd8e97351cc2d178231441c02b7bf"
+        }
+      },
+      {
+        "name": "profiles.json",
+        "pin": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/b8efcf221c3aef82_profiles.json",
+          "bytes": 466,
+          "sha256": "b8efcf221c3aef821f20a0ab73a9fbf3809f678e15576376ab867e816c5be5ce"
+        }
+      },
+      {
+        "name": "profiles_capture.json",
+        "pin": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/8c1add2af0f7c238_profiles_capture.json",
+          "bytes": 2941,
+          "sha256": "8c1add2af0f7c238ccdd5c7073e247177acaa6220bce5de1f9fbe0a1ae55148d"
+        }
+      },
+      {
+        "name": "profile_typed.json",
+        "pin": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/22502704fef94218_profile_typed.json",
+          "bytes": 8376,
+          "sha256": "22502704fef942187af4f78988c157a02e37b3acd57cb6319466ea68e1d7ce7c"
+        }
+      },
+      {
+        "name": "scalars_retained.json",
+        "pin": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/9b2e208236ff648a_scalars_retained.json",
+          "bytes": 457,
+          "sha256": "9b2e208236ff648a0d7bf4520824e0d94f89778596cf98082078a84ae76d71b9"
+        }
+      },
+      {
+        "name": "scalars_retained_capture.json",
+        "pin": {
+          "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/b9e3f7ae119da7a4_scalars_retained_capture.json",
+          "bytes": 4872,
+          "sha256": "b9e3f7ae119da7a4b57029b9967711737760a3738c07903f71afd48452981ca7"
+        }
+      }
+    ],
+    "capture_script": {
+      "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/333264c0da5c01ac_freeze.py",
+      "bytes": 15002,
+      "sha256": "333264c0da5c01ac79e60c870327997ee63f1cdcf6d917518be8b31cd7076cc4"
+    },
+    "git_capture_commands": [
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "2b6f33b70e1df0449b77e3a84900acbe00c34e3c833604ae04ea198681f4a597",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "ls-tree",
+          "-rz",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+          "--",
+          "src",
+          "include"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 382563,
+        "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "cat-file",
+          "--batch"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 2406421,
+        "stdout_sha256": "c81f008ced23a41a685d8c03c34147fce9337ecd1ce39cca5e63caa34fd30d16",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 20149,
+        "stdout_sha256": "568fc615535bf8220b34f585d880a8e1edbb9fb1814edffb112d3b75b5676c0d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:CMakeLists.txt"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 202281,
+        "stdout_sha256": "7c30db5b9be8b859969379d6855ff0a2b23339dae751f262c43d71416bc31600",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:cmake/startup.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:cmake/lua.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 2242,
+        "stdout_sha256": "0c432ec1026aa6921d876098d29359d34f9463cd894d7adafcb67b954eb7a006",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:cmake/lua.cmake"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 73311,
+        "stdout_sha256": "09de2b8916a4af9844ab579167b725c94e829cf9b8241e922d107dd03e8f86f1",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/bsp.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 1371,
+        "stdout_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/workspace.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/ghidra_typed_flow.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 20048,
+        "stdout_sha256": "97272278577d3d327dc48f89e2f800315055ecac91795b49a522408e3d7e7e1d",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/ghidra_typed_flow.py"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "55557d668225635a9c30ed01fe6f80b2de7b9f84ac07078e946a7cdb5ed994d9",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:config/target.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 455,
+        "stdout_sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:config/target.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "ddc99652ba1067b6ee7e4ff6d47306676f350942425c7cb3c395e9139b53f772",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/NATIVE_PARTICLE_MODEL_MANAGER.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 4857,
+        "stdout_sha256": "7bc63421ef2f9901e67cef3bae362c600ae130087729e8e044187a1d53d53144",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/NATIVE_PARTICLE_MODEL_MANAGER.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "5b470b34a6d8c24538690d31538af6e1e2f523e8839dac68db14c21f2ddeb04a",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/native_particle_model_manager.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 63136,
+        "stdout_sha256": "ef889ba4e1f25a09afdcac24241287ae75815a032b71619044bcc3440108b835",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/native_particle_model_manager.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "375e8319820963ab8bd8dbb5b161e72ae432563bef95e66cbd666a70cfeff8fa",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/CC12_POST_SOUND_STARTUP_CONTINUATION_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 6040,
+        "stdout_sha256": "668c310b55e530bd24587e4ff909164e83b77aa1bffddc86fef66a1d936b121e",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/CC12_POST_SOUND_STARTUP_CONTINUATION_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "cdcb715f13bef6db8d465076f670bba29e67c1b80df79aadf101b801afc746c9",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/cc12_post_sound_startup_continuation_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 7075586,
+        "stdout_sha256": "83a7607dea248f4d8a4ff9624fec85ba88551b9234bd6cca53ed88043e2e9b70",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/cc12_post_sound_startup_continuation_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "d62093201c9a5c353c586292c15559048a01a9a6dbadf87a9054adb89084a0f0",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/CC12_POST_SOUND_STARTUP_CONTINUATION_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 2377,
+        "stdout_sha256": "9cabe1e1a0983a26a154722ae90641386b518f24a90e4e6e0b6a719feb570379",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/CC12_POST_SOUND_STARTUP_CONTINUATION_PRIMARY_REVIEW.md"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "94a56a3b720972159e1a821590184d5d32df14b64c2d593c554037eef2d210b0",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "show",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/cc12_post_sound_startup_continuation_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 6266331,
+        "stdout_sha256": "f451466a1b292f26a9cd08f7aa068310d35e225366b716e50f88f5c8e1f62b11",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/cc12_post_sound_startup_continuation_primary_review.json"
+        ],
+        "exit_code": 0,
+        "stdout_bytes": 41,
+        "stdout_sha256": "1d00ed3f035d62ad1bb64a7e95ba6a5277410841be789778ee8cb5a2f584f4d7",
+        "stderr": ""
+      }
+    ],
+    "scope": "Source/owner readiness only. No C++/CMake/startup/build/test/fixture/SDK/OS change, Original/Lua/game execution or Ghidra mutation. Atlas-owned base entries are read only through retained Source/prior reports."
+  },
+  "checks": {
+    "artifact_only": {
+      "schema": "bsp.cc12.particle_manager_owner.artifact_replay.v1",
+      "status": "pass",
+      "baseline": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+      "mode": "artifact-only, selected Source scope",
+      "selected_complete_Source_files": 476,
+      "additional_Source_Git_files": 13,
+      "source_queries": [
+        {
+          "label": "particle_authority_and_profiles",
+          "hits": 12,
+          "scope_files": 15
+        },
+        {
+          "label": "existing_particle_access",
+          "hits": 15,
+          "scope_files": 15
+        },
+        {
+          "label": "host_binding_and_drain",
+          "hits": 39,
+          "scope_files": 15
+        },
+        {
+          "label": "host_copy_move_declarations",
+          "hits": 10,
+          "scope_files": 15
+        },
+        {
+          "label": "actual_manager_authority",
+          "hits": 24,
+          "scope_files": 15
+        },
+        {
+          "label": "current_CRT_allocator",
+          "hits": 20,
+          "scope_files": 15
+        },
+        {
+          "label": "one_observation",
+          "hits": 13,
+          "scope_files": 15
+        },
+        {
+          "label": "late_Phase8_boundary",
+          "hits": 3,
+          "scope_files": 15
+        }
+      ],
+      "exact_excerpts": 37,
+      "source_anchors": [
+        {
+          "excerpt": "process_cell_lifetime",
+          "term": "void* volatile& manager_01090aa0()"
+        },
+        {
+          "excerpt": "process_cell_lifetime",
+          "term": "void* volatile& allocation_stats_0109cefc()"
+        },
+        {
+          "excerpt": "process_current_cells",
+          "term": "Intentionally retained through process termination"
+        },
+        {
+          "excerpt": "process_current_cells",
+          "term": "void* volatile allocation_stats_0109cefc_{}"
+        },
+        {
+          "excerpt": "host_copy_and_move_policy",
+          "term": "~GameSingletonHost();"
+        },
+        {
+          "excerpt": "host_copy_and_move_policy",
+          "term": "GameSingletonHost(const GameSingletonHost&) = delete;"
+        },
+        {
+          "excerpt": "host_copy_and_move_policy",
+          "term": "operator=(const GameSingletonHost&) = delete;"
+        },
+        {
+          "excerpt": "host_destructor",
+          "term": "shutdown();"
+        },
+        {
+          "excerpt": "host_shutdown_body",
+          "ordered": [
+            "manager_publication_01090aa0_",
+            "destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_)",
+            "retire_vfs_after_drain();",
+            "singleton_lifetime_free(manager);",
+            "manager_publication_01090aa0_ = nullptr;"
+          ]
+        },
+        {
+          "excerpt": "raw_bridge_identity",
+          "term": "SoundLifetimeAccess(void* volatile& actual_publication)"
+        },
+        {
+          "excerpt": "raw_bridge_identity",
+          "term": "uses_actual_storage()"
+        },
+        {
+          "excerpt": "raw_bridge_identity",
+          "term": "borrows_same_domain(void* volatile& publication)"
+        },
+        {
+          "excerpt": "raw_bridge_identity",
+          "term": "actual_ == &publication"
+        },
+        {
+          "excerpt": "current_CRT_free_domain",
+          "term": "std::malloc(request.host_bytes)"
+        },
+        {
+          "excerpt": "current_CRT_free_domain",
+          "term": "_callnewh(request.host_bytes)"
+        },
+        {
+          "excerpt": "current_CRT_free_domain",
+          "term": "std::free(pointer)"
+        },
+        {
+          "excerpt": "current_legacy_access",
+          "term": "NativeParticleModelManagerStorage* volatile& manager_00f8c274"
+        },
+        {
+          "excerpt": "current_legacy_access",
+          "term": "SingletonLifetimeDomain& lifetime_01090aa0"
+        },
+        {
+          "excerpt": "current_legacy_access",
+          "term": "const volatile std::uint32_t& one_00d7a24c"
+        },
+        {
+          "excerpt": "derived_constructor_and_one_observation",
+          "ordered": [
+            "construct_native_particle_manager_base_00af06a0(owner, access)",
+            "0x00d5d7f8u",
+            "const auto one = access.one_00d7a24c",
+            "owner->scalar_bits_2c = one",
+            "owner->section_30 = create_native_tracked_critical_section_00bd1860()"
+          ]
+        },
+        {
+          "excerpt": "derived_cleanup_and_scalar_bodies",
+          "ordered": [
+            "auto* captured_section = owner->section_30",
+            "release_native_tracked_critical_section_0041cc80(&captured_section)",
+            "destroy_native_particle_manager_pointers_00af0af0(owner->entries_10)",
+            "destroy_native_particle_manager_pointers_00af0af0(owner->models_04)",
+            "destroy_native_particle_manager_base_00af0740(owner, access)"
+          ]
+        },
+        {
+          "excerpt": "derived_cleanup_and_scalar_bodies",
+          "term": "if (flags & 1u) singleton_lifetime_free(owner);"
+        },
+        {
+          "excerpt": "derived_cleanup_and_scalar_bodies",
+          "term": "return owner;"
+        },
+        {
+          "excerpt": "existing_base_Source_contract",
+          "ordered": [
+            "manager->unregister_object(access.manager_00f8c274)",
+            "access.manager_00f8c274 = nullptr"
+          ]
+        },
+        {
+          "excerpt": "deletion_binding_tail_layout",
+          "term": "offsetof(NativeSingletonDeletionBindings, allocation_stats) == 188"
+        },
+        {
+          "excerpt": "deletion_binding_tail_layout",
+          "term": "sizeof(NativeSingletonDeletionBindings) == 192"
+        },
+        {
+          "excerpt": "deletion_map_fail_closed",
+          "term": "throw std::logic_error(\"raw singleton deletion requires a recovered profile and its actual bindings\")"
+        },
+        {
+          "excerpt": "drain_pop_profile_flags",
+          "ordered": [
+            "mov dword ptr [esi + 8], edx",
+            "mov eax, dword ptr [ecx]",
+            "push 1",
+            "call delete_current_profile",
+            "call count_native_singleton_slots_00bcf910"
+          ]
+        },
+        {
+          "excerpt": "drain_exception_boundary",
+          "ordered": [
+            "destroy_manager_body(owner, bindings)",
+            "clear_native_singleton_storage_00bd0220(owner, nullptr)",
+            "throw;"
+          ]
+        },
+        {
+          "excerpt": "startup_normal_and_fallback_drain",
+          "ordered": [
+            "else singletons_->shutdown();",
+            "input_.reset();",
+            "sound_.reset();",
+            "delete singletons_;",
+            "clock_services_.reset();"
+          ]
+        },
+        {
+          "excerpt": "canonical_data_lifetime",
+          "term": "intentionally non-destructed process owner"
+        },
+        {
+          "excerpt": "canonical_data_lifetime",
+          "term": "Borrowed references remain valid through CRT/atexit/thread teardown"
+        },
+        {
+          "excerpt": "model_lifetime_void_reference",
+          "term": "void* const volatile&"
+        },
+        {
+          "excerpt": "model_construction_void_reference",
+          "term": "void* const volatile&"
+        },
+        {
+          "excerpt": "late_Phase8_marker",
+          "term": "Phase 8"
+        }
+      ],
+      "include_roots": 13,
+      "project_include_files": 476,
+      "include_edges": 885,
+      "Lua_API_headers": 0,
+      "excluded_system_SDK_edges": 838,
+      "fresh_Native_profile_bytes": 8,
+      "retained_scalar_bodies": [
+        {
+          "address": "00AF0870",
+          "bytes": 30,
+          "instructions": 11,
+          "destructor": "00AF0740",
+          "flags": "full stack argument admitted; only low bit tested",
+          "free_target": "00BF65AC",
+          "returned_receiver": "captured ECX",
+          "stack_cleanup": 4
+        },
+        {
+          "address": "00AF1080",
+          "bytes": 30,
+          "instructions": 11,
+          "destructor": "00AF0B90",
+          "flags": "full stack argument admitted; only low bit tested",
+          "free_target": "00BF65AC",
+          "returned_receiver": "captured ECX",
+          "stack_cleanup": 4
+        }
+      ],
+      "typed_Ghidra_modification": "49 unchanged",
+      "capture_commands": 7,
+      "pin_occurrences": 50,
+      "unique_pins": 50,
+      "allowed_reads": "Only retained files below the replay script directory, after interpreter imports. No checkout, Git, installed image, Ghidra, compiler, SDK, network, subprocess or write.",
+      "excluded_claims": [
+        "C++ implementation",
+        "build",
+        "fixture",
+        "Original/Lua/game execution",
+        "binary ABI compatibility",
+        "startup caller schedule activation"
+      ]
+    },
+    "portable_relocation_identical": true,
+    "separate_Git": {
+      "schema": "bsp.cc12.particle_manager_owner.git_replay.v1",
+      "status": "pass",
+      "mode": "separate Git-object check with optional explicit working reads",
+      "repo": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
+      "baseline": "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+      "blob_checks": 489,
+      "working_files_checked": 489,
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "2b6f33b70e1df0449b77e3a84900acbe00c34e3c833604ae04ea198681f4a597",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "ls-tree",
+            "-rz",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04",
+            "--",
+            "src",
+            "include"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 382563,
+          "stdout_sha256": "8ff97655035e8c0469d0f20248229750f28786651b2b6c75dfb69d56d2e8057f",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:CMakeLists.txt"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "8399d7fd18a0049e4fcab8989fef3d2423b06b81dca873020c026d409b44c96d",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:cmake/startup.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "04c563b569005b8bd3395916f4e3842b348cd60a7a0850e60193a0b7b455d4f4",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:cmake/lua.cmake"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "6c7ff66cc492c8ed42b6fe15ebbee575cbff3b0a0b2541c048fe674465882ae1",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/bsp.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "caf6829f3745e5937ffe9698ed5e86fe619842ee6c7d67ac69b635d4f79ab61b",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/workspace.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "b6522463902d93e38fe3b5b974d6d698cfc01061218bccfc9a4acff0f4fa46e3",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:tools/ghidra_typed_flow.py"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "55557d668225635a9c30ed01fe6f80b2de7b9f84ac07078e946a7cdb5ed994d9",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:config/target.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "ddc99652ba1067b6ee7e4ff6d47306676f350942425c7cb3c395e9139b53f772",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/NATIVE_PARTICLE_MODEL_MANAGER.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "5b470b34a6d8c24538690d31538af6e1e2f523e8839dac68db14c21f2ddeb04a",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/native_particle_model_manager.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "375e8319820963ab8bd8dbb5b161e72ae432563bef95e66cbd666a70cfeff8fa",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/CC12_POST_SOUND_STARTUP_CONTINUATION_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "cdcb715f13bef6db8d465076f670bba29e67c1b80df79aadf101b801afc746c9",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/cc12_post_sound_startup_continuation_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "d62093201c9a5c353c586292c15559048a01a9a6dbadf87a9054adb89084a0f0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:docs/CC12_POST_SOUND_STARTUP_CONTINUATION_PRIMARY_REVIEW.md"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "94a56a3b720972159e1a821590184d5d32df14b64c2d593c554037eef2d210b0",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "9f7365c7641b22ec31e5bec16f0495a1c4cf0d04:reports/cc12_post_sound_startup_continuation_primary_review.json"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 41,
+          "stdout_sha256": "1d00ed3f035d62ad1bb64a7e95ba6a5277410841be789778ee8cb5a2f584f4d7",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "cat-file",
+            "--batch"
+          ],
+          "exit_code": 0,
+          "stdout_bytes": 16145292,
+          "stdout_sha256": "fe1f64b1a27776743726500750949a9b1e1c236310431a675924a4652fb7f46a",
+          "stderr": ""
+        }
+      ],
+      "qualifications": "Read-only Git/Source check; not portable artifact-only mode. No installation, SDK, compiler, Native or game execution."
+    },
+    "git_diff_check": "Passed on exact two-file staged change; repeated after receipt regeneration before commit.",
+    "no_Cpp_build_test": "Evidence-only two-file packet; no C++/CMake change, compiler/build/test/runtime or new fixture execution."
+  },
+  "replay_commands": [
+    "python local/cc12_particle_manager_raw_deletion_owner_readiness/replay.py",
+    "python local/cc12_particle_manager_raw_deletion_owner_readiness/portable_replay/replay.py",
+    "python local/cc12_particle_manager_raw_deletion_owner_readiness/verify_git.py --check-working"
+  ],
+  "interpretation": "Static Native/Source evidence and portable artifact/Git verification only. No implementation, production binding, live startup, runtime success, ABI compatibility or game validation is claimed.",
+  "packet_artifacts": [
+    {
+      "name": "freeze_capture.json",
+      "pin": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/88f555eb6a8d3568_freeze_capture.json",
+        "bytes": 115862,
+        "sha256": "88f555eb6a8d356897db9d9ed6b952a6c17f5d5da606d424dba9450233d249c6"
+      }
+    },
+    {
+      "name": "replay.py",
+      "pin": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/49ce3089f5f1d8fb_replay.py",
+        "bytes": 14932,
+        "sha256": "49ce3089f5f1d8fb5f3f68cbe3e12739ebe09fe9604336d05bdf87cae6367f63"
+      }
+    },
+    {
+      "name": "replay_result.json",
+      "pin": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/c8a94f1a25ba2b4d_replay_result.json",
+        "bytes": 7962,
+        "sha256": "c8a94f1a25ba2b4d5ea001876a3a48135c264ee90b6fb451a5a18065ef363655"
+      }
+    },
+    {
+      "name": "verify_git.py",
+      "pin": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/bd11e1b2a7c05840_verify_git.py",
+        "bytes": 3449,
+        "sha256": "bd11e1b2a7c058400b147ea31b6fbb526f3c0f67f704af4535f83a2c3cf5dd0a"
+      }
+    },
+    {
+      "name": "git_replay_result.json",
+      "pin": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/5437a66c19de5db5_git_replay_result.json",
+        "bytes": 5719,
+        "sha256": "5437a66c19de5db5fcf19a5184bb288115074a5b1f65f10c4b48193e4b808c4f"
+      }
+    },
+    {
+      "name": "portable_relocation_result.json",
+      "pin": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/c8a94f1a25ba2b4d_portable_relocation_result.json",
+        "bytes": 7962,
+        "sha256": "c8a94f1a25ba2b4d5ea001876a3a48135c264ee90b6fb451a5a18065ef363655"
+      }
+    },
+    {
+      "name": "make_receipt.py",
+      "pin": {
+        "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/f90743cb415a5926_make_receipt.py",
+        "bytes": 12661,
+        "sha256": "f90743cb415a5926504981bb35dd5ab3c8dfee7d6bafab21ec3663394c219867"
+      }
+    }
+  ],
+  "review_document": {
+    "path": "local/cc12_particle_manager_raw_deletion_owner_readiness/frozen/6d482748209819af_CC12_PARTICLE_MANAGER_RAW_DELETION_OWNER_READINESS.md",
+    "bytes": 10702,
+    "sha256": "6d482748209819afc06edc5bbb77e7bf92ee0b5d8e1e84d6b3ce770b2e7d6f7f"
+  }
+}
