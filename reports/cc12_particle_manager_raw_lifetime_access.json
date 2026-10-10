@@ -190,6 +190,9 @@
     "whole_before_section": {
       "index": 11,
       "name": ".text$mn",
+      "declared_size": 230,
+      "raw_pointer": 2616,
+      "payload_bytes": 230,
       "bytes": 230,
       "sha256": "a8f6c19e3cd0eeaaeb160d8f7dc6c7e9e217dec669e98354d969ef526b1d91a0",
       "relocations": [
@@ -671,6 +674,9 @@
     "whole_after_section": {
       "index": 14,
       "name": ".text$mn",
+      "declared_size": 230,
+      "raw_pointer": 2656,
+      "payload_bytes": 230,
       "bytes": 230,
       "sha256": "6920fbc74b7ffb17d14feab9b0ea138da248cfb6a0d72fbc4f5d9a63d48a87cd",
       "relocations": [
@@ -1165,6 +1171,28 @@
       "before_sha256": "251cbddacec68e3a3a14587cb191582c58c9c8a856d10918c92dbbaca6bc3aca",
       "after_bytes": 47742,
       "after_sha256": "e22edaf3fb4bf7372303bb6dea0a0cdcbd2b92aef0d9c99970b180c838f61565",
+      "zero_raw_pointer_sections": {
+        "before": [
+          {
+            "index": 3,
+            "name": ".bss",
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0,
+            "flags": 3224375424
+          }
+        ],
+        "after": [
+          {
+            "index": 3,
+            "name": ".bss",
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0,
+            "flags": 3224375424
+          }
+        ]
+      },
       "before_code_sections": {
         "??$?0H$0A@@?$atomic@H@std@@QAE@XZ": {
           "sha256": "65a95f4244df0c3f9f8bf0a04a96dbf10a295add1146664e683651fed30fe12b",
@@ -4499,6 +4527,28 @@
       "before_sha256": "7112bb91376ab7676152dee196710cd2f2a898055fdad43fde7998918a816b3e",
       "after_bytes": 43869,
       "after_sha256": "7c388cd6d9dd2628abcd48a05bd76f4ac00cf10542373cd6a3da06c773086e00",
+      "zero_raw_pointer_sections": {
+        "before": [
+          {
+            "index": 5,
+            "name": ".bss",
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0,
+            "flags": 3224375424
+          }
+        ],
+        "after": [
+          {
+            "index": 5,
+            "name": ".bss",
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0,
+            "flags": 3224375424
+          }
+        ]
+      },
       "before_code_sections": {
         "??$_Atomic_address_as@HU?$_Atomic_padded@H@std@@@std@@YAPDHABU?$_Atomic_padded@H@0@@Z": {
           "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
@@ -7607,6 +7657,28 @@
       "before_sha256": "1eda59a78247281680c44cb40329fe23f78abd8ee8896179f4c30b7a986ffe36",
       "after_bytes": 14202,
       "after_sha256": "144a44c22e7dc30e3a66d242c4ad7e3f34d9aaf4fbe623cf763a417db741eb3e",
+      "zero_raw_pointer_sections": {
+        "before": [
+          {
+            "index": 3,
+            "name": ".bss",
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0,
+            "flags": 3224375424
+          }
+        ],
+        "after": [
+          {
+            "index": 3,
+            "name": ".bss",
+            "declared_size": 4,
+            "raw_pointer": 0,
+            "payload_bytes": 0,
+            "flags": 3224375424
+          }
+        ]
+      },
       "before_code_sections": {
         "??0CapturedSection@?A0xafa14b28@bsp@@QAE@PAUSystemSingletonCriticalSection@2@@Z": {
           "sha256": "b69391d358123ac6e9321619baa94da4e76d5a6454fdc6ba4ade096f8c9fdc5a",
@@ -8563,9 +8635,69 @@
       "capstone_version": "5.0.7",
       "command": "python portable_replay.py evidence.zip",
       "side_effect_boundary": "The verifier reads only the named ZIP and uses Capstone to decode retained bytes; it does not read Git/live checkout, launch a compiler/executable, call Ghidra or write files. The invoking shell retained stdout/stderr.",
-      "payload_count": 8642,
-      "payload_bytes": 419854238
+      "payload_count": 8645,
+      "payload_bytes": 419876581
     }
+  },
+  "evidence_parser_correction": {
+    "utc": "2026-10-10T14:46:03.078701+00:00",
+    "reason": "Root independent mixed COFF replay identified raw-pointer-zero .bss as incorrectly mapped to file-header bytes in the former generic parser.",
+    "old_verifier": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_particle_manager_raw_lifetime_access\\portable_replay.pre_bss_correction.py",
+      "bytes": 17426,
+      "sha256": "c432bc3e6c845fedd1305e51ed5a0ccd857107004f1fab3f00453ebcb29e0cef"
+    },
+    "corrected_verifier": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_particle_manager_raw_lifetime_access\\portable_replay.py",
+      "bytes": 18371,
+      "sha256": "fbec8a4621ba2b06ec73dfc75b2d96c22c02fa9cb6b88ab54b30e3df7499d6ec"
+    },
+    "old_bundle": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_particle_manager_raw_lifetime_access\\evidence.pre_bss_correction.zip",
+      "bytes": 74824298,
+      "sha256": "ed3b1c826ab226732df72239b03716be21b030c6a6d7a6912c6e0bcdf2aa39ef"
+    },
+    "old_replay_stdout": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_particle_manager_raw_lifetime_access\\portable_replay.pre_bss_correction.stdout.json",
+      "bytes": 344243,
+      "sha256": "aff2e859571c2fdead82a1c2a7eaf52aa0e3a54bc88ff9a89c9c77d86e75d552"
+    },
+    "correction": "Use empty raw payload for raw_pointer==0, retain declared_size separately, and assert backed payload length only when raw_pointer!=0. Explicitly replay all six four-byte uninitialized .bss sections as zero file bytes.",
+    "unchanged_source_and_artifact_check_count": 4221,
+    "selected_unchanged_pins": [
+      {
+        "entry": "retained/after/include/bsp/native_particle_model_manager.hpp",
+        "bytes": 4229,
+        "sha256": "16d0cfbce786acba1ded9055c37a3cd2d5d62922b40cfca3acfd2b15b313c37e",
+        "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\include\\bsp\\native_particle_model_manager.hpp",
+        "git_blob": "72c38e0e4de93805fc723ed99b8e6a893683fabb",
+        "worktree_git_blob": "1ff984e0146843d582745e09d07b47ecdb3c5476",
+        "indexed_entry": "retained/after/index/include/bsp/native_particle_model_manager.hpp"
+      },
+      {
+        "entry": "retained/after/src/native_particle_model_manager.cpp",
+        "bytes": 9991,
+        "sha256": "8b624b1dc12e1acd147f041f85cf72686ef87940b9b9b4154d38c77f50395d02",
+        "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\src\\native_particle_model_manager.cpp",
+        "git_blob": "b035a833b2b541a8e70d224017cc1c3a54165c16",
+        "worktree_git_blob": "a98b6a994251cd98d39122fb152e965b47f8724a",
+        "indexed_entry": "retained/after/index/src/native_particle_model_manager.cpp"
+      },
+      {
+        "entry": "retained/after/build/win32/Release/bsp_core.lib",
+        "bytes": 73966664,
+        "sha256": "1f833d5cbf1011dbb0cdd15307fde0026dafa5964e4d4d91b0fe02d4587f15b2",
+        "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_core.lib"
+      },
+      {
+        "entry": "retained/after/build/win32/Release/bsp_game.exe",
+        "bytes": 5099520,
+        "sha256": "51c0544fe76b0e9774f727103118852e68b2df04c96158c13af705388681b3e2",
+        "provenance": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\build\\win32\\Release\\bsp_game.exe"
+      }
+    ],
+    "no_new_build": true,
+    "no_Cpp_changes": true
   },
   "accepted_Native_evidence": {
     "provenance": "Complete spans, exports and metadata copied from the previously accepted post-sound review ZIP. No new original executable read or Ghidra analysis/export query was made.",
@@ -9088,6 +9220,9 @@
     "??0NativeParticleModelManagerAccess@bsp@@QAE@ACRAUNativeParticleModelManagerStorage@1@AAVSingletonLifetimeDomain@1@ADI@Z": {
       "index": 4,
       "name": ".text$mn",
+      "declared_size": 33,
+      "raw_pointer": 2127,
+      "payload_bytes": 33,
       "bytes": 33,
       "sha256": "52a99701027ac5a5db7f6d551429d0dbd135c972509f46ff99b5c96cbf697f8a",
       "relocations": [],
@@ -9169,6 +9304,9 @@
     "??0NativeParticleModelManagerAccess@bsp@@QAE@ACRAUNativeParticleModelManagerStorage@1@ACRAXADI@Z": {
       "index": 5,
       "name": ".text$mn",
+      "declared_size": 33,
+      "raw_pointer": 2160,
+      "payload_bytes": 33,
       "bytes": 33,
       "sha256": "647b1897a92b0c74faac0248d2a00849957a8a93a5589bd0d9b75235e2b3f99b",
       "relocations": [],
@@ -9250,6 +9388,9 @@
     "construct_native_particle_manager_base_00af06a0": {
       "index": 12,
       "name": ".text$mn",
+      "declared_size": 156,
+      "raw_pointer": 2348,
+      "payload_bytes": 156,
       "bytes": 156,
       "sha256": "2bc94775ff89e2a4d19156f1d94bcc697b5409dac0d966c849cb4c8232588b13",
       "relocations": [
@@ -9619,6 +9760,9 @@
     "destroy_native_particle_manager_base_00af0740": {
       "index": 18,
       "name": ".text$mn",
+      "declared_size": 164,
+      "raw_pointer": 3221,
+      "payload_bytes": 164,
       "bytes": 164,
       "sha256": "92ee6fe95a17f59a6c574f126a223d4b43b0ee810360622e632e267c2dcdcf90",
       "relocations": [
@@ -10016,10 +10160,10 @@
   "complete_retained_evidence": {
     "bundle": {
       "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_particle_manager_raw_lifetime_access\\evidence.zip",
-      "bytes": 74824298,
-      "sha256": "ed3b1c826ab226732df72239b03716be21b030c6a6d7a6912c6e0bcdf2aa39ef",
-      "payload_count": 8642,
-      "payload_bytes": 419854238
+      "bytes": 74832053,
+      "sha256": "964aa9e4b896be83f5388a87509bf6ceb3a830f017fff2dcd326c223acdcbed5",
+      "payload_count": 8645,
+      "payload_bytes": 419876581
     },
     "manifest": {
       "schema": "cc12_particle_manager_raw_lifetime_access_portable_v1",
@@ -53193,8 +53337,23 @@
         },
         {
           "entry": "portable_replay.py",
+          "bytes": 18371,
+          "sha256": "fbec8a4621ba2b06ec73dfc75b2d96c22c02fa9cb6b88ab54b30e3df7499d6ec"
+        },
+        {
+          "entry": "portable_replay.pre_bss_correction.py",
           "bytes": 17426,
           "sha256": "c432bc3e6c845fedd1305e51ed5a0ccd857107004f1fab3f00453ebcb29e0cef"
+        },
+        {
+          "entry": "bundle_receipt.pre_bss_correction.json",
+          "bytes": 310,
+          "sha256": "c0cdd80efd47a2c6fd0c409c09df2b98327b1f1c6cc5aba45c206a76d51962b7"
+        },
+        {
+          "entry": "bss_correction_provenance.json",
+          "bytes": 3548,
+          "sha256": "9580acf6af429df62ce0f8e93710f522345c5a8a3a3b8a25ba5b3f5e4c06e5e8"
         },
         {
           "entry": "check_git.py",
@@ -53203,8 +53362,8 @@
         },
         {
           "entry": "package.py",
-          "bytes": 1582,
-          "sha256": "4b43d1575d6c596c9ffd3c94d4e3721af53152c4a97a3e81ab7b87e0c5c8d685"
+          "bytes": 1696,
+          "sha256": "12bf3a4d71a6b6d064bff19beb9677942e838c9337d0f9ba909eab853ea0a904"
         },
         {
           "entry": "build.log",
@@ -53244,8 +53403,8 @@
     ],
     "portable_replay_stdout": {
       "entry": "local/cc12_particle_manager_raw_lifetime_access/portable_replay.stdout.json",
-      "bytes": 344243,
-      "sha256": "aff2e859571c2fdead82a1c2a7eaf52aa0e3a54bc88ff9a89c9c77d86e75d552"
+      "bytes": 346351,
+      "sha256": "c810f9d8adf8091528138ee1c68bce2a6d9109c534d9e63c2af424f4efc50a9a"
     },
     "helper_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_atlas_item_listing\\local\\cc12_particle_manager_raw_lifetime_access"
   },

@@ -53,13 +53,22 @@ fixtures were added. The build emitted the duplicate `spawn_request_id_matches`
 LNK4006 warning; those Source files are unchanged by this packet.
 
 The separate live Git check passed for all 4,214 complete indexed blobs and
-current Source/build inputs. ZIP-only replay passed for 8,642 complete payloads,
+current Source/build inputs. Corrected ZIP-only replay passed for 8,645 complete payloads,
 both compiler cohorts, complete archive members/objects, all eleven preserved
 Source function bodies, complete Native bases of 145/153 bytes, both compiled
 access constructors and the full compiled base sections. The verifier reads
 only the ZIP and decodes bytes using Capstone; it performs no Git/live-checkout
 reads, compiler/executable launches, Ghidra calls or file writes. The invoking
 shell retains its stdout/stderr separately.
+
+Root's independent review found that the original generic COFF parser selected
+file-header bytes for `.bss` when its raw-file pointer was zero. The corrected
+parser retains the declared size separately and records an empty raw payload.
+All six before/after consumer objects have a four-byte `.bss` declaration with
+zero file-backed bytes; each now replays explicitly. The original verifier and
+ZIP are preserved with separate hashes. This evidence-only correction changed
+no C++ source or build artifact and required no build repeat. The report records
+the corrected helper hash and both bundle provenances.
 
 Copy `portable_replay.py` and `evidence.zip` from
 `local/cc12_particle_manager_raw_lifetime_access/`, then run
