@@ -1,0 +1,126 @@
+{
+  "address": "004425c0",
+  "old_complete_ledger_record": {
+    "address": "004425c0",
+    "name": "BSP_LuaReader_Construct",
+    "evidence": "Hypothesis, not a recovered symbol. __thiscall(this, LuaObject root_by_value), RET 14h, returns this. Writes the vtable 00CE44FC, zeroes the three pointers of the std::vector<LuaObject> at this+4h and push_backs the by-value root with 00442220, then destroys the argument with 00B67700. The object is 14h bytes: vtable, secure-SCL proxy word, _Myfirst, _Mylast, _Myend. Called from 00AC67E3 with the globals table. See docs/GUI_LUA_READER.md. | Current cc10 raw provider src/native_lua_reader.cpp: exact 14h physical reader successful-domain constructor, unwritten +4 proxy, 12-byte release vector at +8; FH3 and original register ABI remain excluded."
+  },
+  "old_live_annotation": [
+    {
+      "address": "004425c0",
+      "annotation": {
+        "address": "004425c0",
+        "function_name": "BSP_LuaReader_Construct",
+        "comment": "[BSP reconstruction 004425c0]\nHypothesis, not a recovered symbol. __thiscall(this, LuaObject root_by_value), RET 14h, returns this. Writes the vtable 00CE44FC, zeroes the three pointers of the std::vector<LuaObject> at this+4h and push_backs the by-value root with 00442220, then destroys the argument with 00B67700. The object is 14h bytes: vtable, secure-SCL proxy word, _Myfirst, _Mylast, _Myend. Called from 00AC67E3 with the globals table. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 004425c0] update\nHypothesis, not a recovered symbol. __thiscall(this, LuaObject root_by_value), RET 14h, returns this. Writes the vtable 00CE44FC, zeroes the three pointers of the std::vector<LuaObject> at this+4h and push_backs the by-value root with 00442220, then destroys the argument with 00B67700. The object is 14h bytes: vtable, secure-SCL proxy word, _Myfirst, _Mylast, _Myend. Called from 00AC67E3 with the globals table. See docs/GUI_LUA_READER.md. | Current cc10 raw provider src/native_lua_reader.cpp: exact 14h physical reader successful-domain constructor, unwritten +4 proxy, 12-byte release vector at +8; FH3 and original register ABI remain excluded."
+      }
+    }
+  ],
+  "new_live_annotation": [
+    {
+      "address": "004425c0",
+      "annotation": {
+        "address": "004425c0",
+        "function_name": "BSP_LuaReader_Construct",
+        "comment": "[BSP reconstruction 004425c0]\nHypothesis, not a recovered symbol. __thiscall(this, LuaObject root_by_value), RET 14h, returns this. Writes the vtable 00CE44FC, zeroes the three pointers of the std::vector<LuaObject> at this+4h and push_backs the by-value root with 00442220, then destroys the argument with 00B67700. The object is 14h bytes: vtable, secure-SCL proxy word, _Myfirst, _Mylast, _Myend. Called from 00AC67E3 with the globals table. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 004425c0] update\nHypothesis, not a recovered symbol. __thiscall(this, LuaObject root_by_value), RET 14h, returns this. Writes the vtable 00CE44FC, zeroes the three pointers of the std::vector<LuaObject> at this+4h and push_backs the by-value root with 00442220, then destroys the argument with 00B67700. The object is 14h bytes: vtable, secure-SCL proxy word, _Myfirst, _Mylast, _Myend. Called from 00AC67E3 with the globals table. See docs/GUI_LUA_READER.md. | Current cc10 raw provider src/native_lua_reader.cpp: exact 14h physical reader successful-domain constructor, unwritten +4 proxy, 12-byte release vector at +8; FH3 and original register ABI remain excluded.\n\n[BSP reconstruction 004425c0] update\nDescriptive hypothesis, not a recovered symbol. Bounded installed-PE correction: ECX is the 14h reader receiver; 004425E6 installs00CE44FC, and this constructor explicitly zeroes receiver+08h,+0Ch,+10h. Receiver+04h is not locally initialized here;00442220 is delegated with ECX=receiver+04h. The earlier wording about zeroed vector pointers at this+04h is superseded: the three pointer fields begin at+08h. The by-value14h LuaObject argument is passed to00442220 then destroyed through00B67700; EAX returns this and00442626 usesRET14h. Delegated initialization/alias/exception effects remain unproved by this finite body. Root independently mapped105 constructor bytes, checked the actual caller stack identity and retained the installed table; see docs/CC12_NATIVE_ARCHIVE_AUDIO_PROVIDER_BINDING_PRIMARY_REVIEW.md and reports/cc12_native_archive_audio_provider_binding_primary_review.json. Existing bounded raw Source provider remains separate; no prototype, body, listing, flow, Native register/FH3 or gameplay equivalence change."
+      }
+    }
+  ],
+  "exact_replacement_evidence": "Descriptive hypothesis, not a recovered symbol. Bounded installed-PE correction: ECX is the 14h reader receiver; 004425E6 installs00CE44FC, and this constructor explicitly zeroes receiver+08h,+0Ch,+10h. Receiver+04h is not locally initialized here;00442220 is delegated with ECX=receiver+04h. The earlier wording about zeroed vector pointers at this+04h is superseded: the three pointer fields begin at+08h. The by-value14h LuaObject argument is passed to00442220 then destroyed through00B67700; EAX returns this and00442626 usesRET14h. Delegated initialization/alias/exception effects remain unproved by this finite body. Root independently mapped105 constructor bytes, checked the actual caller stack identity and retained the installed table; see docs/CC12_NATIVE_ARCHIVE_AUDIO_PROVIDER_BINDING_PRIMARY_REVIEW.md and reports/cc12_native_archive_audio_provider_binding_primary_review.json. Existing bounded raw Source provider remains separate; no prototype, body, listing, flow, Native register/FH3 or gameplay equivalence change.",
+  "prior_values_and_saved_mutation_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\ghidra-annotations-20261010T132433Z.json",
+    "bytes": 2497,
+    "sha256": "50eee16f5b640e5b5bd2e448ce5113becfb1458a42c7425a997cc7a3cbf09da8"
+  },
+  "retained_function_name": "BSP_LuaReader_Construct",
+  "old_comments_preserved": true,
+  "project_saved": true,
+  "lock": "tools/ghidra_annotate.py takes coordination.ghidra_lock and Client.verify before each write; old values persisted before mutation.",
+  "configured_project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "independently_accepted_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\reports\\cc12_native_archive_audio_provider_binding_primary_review.json",
+    "bytes": 3396288,
+    "sha256": "f58bfee283f210cad3a1edef8ac0013887fcc04ce99a6eedbc79153190ab49d3"
+  },
+  "refreshed_complete_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004425c0\\assembly.txt",
+      "bytes": 888,
+      "sha256": "63feb27772d949a806310e531e19fe7824a3a1e97c52c7cd02f190410a78df34"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004425c0\\decompiled.c",
+      "bytes": 1706,
+      "sha256": "7adea3ef0e7fb5dd8084d9e405498f2cfb0addfa78429abdc57e543b6f0cd665"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004425c0\\metadata.json",
+      "bytes": 270,
+      "sha256": "86a1580ae4b549c55f675345fe09d4d44a0f5453e2d694a7d4ca20eec9c1ac44"
+    }
+  ],
+  "command_receipts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\apply.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\apply.stdout.txt",
+      "bytes": 194,
+      "sha256": "3b2eb8662f54c75f8901fa9c6687fb6b6434dcaaafe7be46233e9fbab67bba43"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\ledger_correction.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\ledger_correction.stdout.txt",
+      "bytes": 813,
+      "sha256": "f8294c938cf7fb6381cc663fe86444286b76768d84b265f3173b6e7d69a0e291"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\new_live_annotation.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\new_live_annotation.stdout.txt",
+      "bytes": 2398,
+      "sha256": "639a5bfc2c14a1485f04860ee6dab34681be22101fc4ac0a9524b2c0d4531b24"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\old_ledger_record.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\old_ledger_record.stdout.txt",
+      "bytes": 726,
+      "sha256": "b52dfdf96c8f862e62991e90a6f9b1edabf537ce15576f52ac7675df4dedf5d3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\old_live_annotation.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\old_live_annotation.stdout.txt",
+      "bytes": 1323,
+      "sha256": "9585f5c5f1f0173c619237ab658a139d6061fb12856c02cb06e3ab5712c60370"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\refresh.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_native_sound_indirect_primary\\reader_constructor_annotation\\refresh.stdout.txt",
+      "bytes": 104,
+      "sha256": "240bd7e99c1bd92c82070ff04d8618ed1114c420b21f22e6dfeabcaa74382292"
+    }
+  ],
+  "function_name_prototype_listing_body_and_flow_unchanged": true,
+  "no_Source_build_or_runtime_credit": true
+}
