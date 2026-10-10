@@ -1,0 +1,293 @@
+{
+  "worker_commit": "47e8d47ec7f83b583264a63fedbb6e357258c8e1",
+  "utc": "2026-10-10T04:41:50.499047+00:00",
+  "decision": "HELD actual raw owner API; lifecycle/profile deletion/constructor exception cleanup evidence required",
+  "pin_occurrences": 625,
+  "unique_original_paths": 341,
+  "bundle_files": 286,
+  "baseline_and_current_Source_context": [
+    {
+      "path": "docs/APP_INIT_PLATFORM.md",
+      "kind": "accepted_prior_context",
+      "git_blob": "d1800e138743d55e2be164ab23aad91e989284c9",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE.md",
+      "kind": "accepted_prior_context",
+      "git_blob": "e28ab2d72b5b123ecee3ba5a9549a1e0317391df",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/CC12_FALLBACK_RESOURCE_TYPE_RETAINED_OWNER_API_SOURCE_PRIMARY_REVIEW.md",
+      "kind": "accepted_prior_context",
+      "git_blob": "b26d4e9f7ff00bec4864b153bedf1b35627b9cba",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/CC12_MESH_RESOURCE_CLASSIFIER_RETAINED_COMPOSITION_FOLLOWUP.md",
+      "kind": "accepted_prior_context",
+      "git_blob": "800167ed59b26dbbb9cc379c4c0a5132b597308c",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md",
+      "kind": "accepted_prior_context",
+      "git_blob": "8ce87e40f4ada284b7c8a9b989ea15bc13352388",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/entity_think_dispatch.hpp",
+      "kind": "current_Source",
+      "git_blob": "aa2a0a4f600e69bca99660ceeb7a88b56951cfcf",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "kind": "current_Source",
+      "git_blob": "a777902d1207251888b81ce1ef9442864d88957f",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_hosts_script_orders.hpp",
+      "kind": "current_Source",
+      "git_blob": "9aaf1f403282626b2f0fca838bee0462560adddb",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_hosts_singletons.hpp",
+      "kind": "current_Source",
+      "git_blob": "70ea3a09363bd920b2eb0f49528331be07173bae",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "kind": "current_Source",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_resource_application.hpp",
+      "kind": "current_Source",
+      "git_blob": "53bbb6d0fd75a5b46494690f3f389cb9c28aa32d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "kind": "current_Source",
+      "git_blob": "52d2a009f0404a611feba2abcc41dab751204af6",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_resource_load_cache.hpp",
+      "kind": "current_Source",
+      "git_blob": "52b6275cd53b1efeeeb9848d18c0960239df6450",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "kind": "current_Source",
+      "git_blob": "edd0fede810a16cf00ca74c0f8c7497a6fb4b3dd",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "kind": "current_Source",
+      "git_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_removal_reorder.hpp",
+      "kind": "current_Source",
+      "git_blob": "f2a02b1b56d640d2fa144e22c01e95c623d7c3eb",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "kind": "current_Source",
+      "git_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/platform_window.hpp",
+      "kind": "current_Source",
+      "git_blob": "b4f5b75d1f0aad73e1dd372c809f02afa08565f0",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "kind": "current_Source",
+      "git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "kind": "current_Source",
+      "git_blob": "733525b1563c1641db659681fd812485aa71c7ed",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/cc12_fallback_resource_type_retained_owner_api_source.json",
+      "kind": "accepted_prior_context",
+      "git_blob": "54bd2902d54d56ad6c61627e705c5ed772e343ae",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/cc12_fallback_resource_type_retained_owner_api_source_primary_review.json",
+      "kind": "accepted_prior_context",
+      "git_blob": "beba24f44c76139ee2d6f85e6c11ce153ab905e3",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/cc12_mesh_resource_classifier_retained_composition_followup.json",
+      "kind": "accepted_prior_context",
+      "git_blob": "3d87ea3b7a25b56dc3b98eceee5b449b7cc67f57",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "reports/native_resource_load_cache_by.json",
+      "kind": "accepted_prior_context",
+      "git_blob": "ab3c44102d7d13fbf7f30009d387bc0782935cec",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/entity_think_dispatch.cpp",
+      "kind": "current_Source",
+      "git_blob": "39dc4953256854f54c0929ae9db0dc62cf02170e",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "kind": "current_Source",
+      "git_blob": "e3b4fa6b517938fe0490f129dfb8765c49e08a48",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_hosts_ready.cpp",
+      "kind": "current_Source",
+      "git_blob": "9867f9465dad336a057c46879c0ced77ec1c2d91",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_hosts_script_orders.cpp",
+      "kind": "current_Source",
+      "git_blob": "9c32ef7e15a984a2f068470c615912ef77f3edce",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_hosts_singletons.cpp",
+      "kind": "current_Source",
+      "git_blob": "f97735b5be44bd1f937f79aa206c729f53c138d4",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_main.cpp",
+      "kind": "current_Source",
+      "git_blob": "68e5acd59f57e8ee5ef7751992fa0571e0f45127",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "kind": "current_Source",
+      "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_resource_application.cpp",
+      "kind": "current_Source",
+      "git_blob": "43df1dd3c4fc4bd9a2b1112f626c320adf5ad4af",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "kind": "current_Source",
+      "git_blob": "106fa3ce980394494b62512c35e6d46c3167c78d",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_resource_load_cache.cpp",
+      "kind": "current_Source",
+      "git_blob": "d6fc8abc02f911a6a3cc18be7dca751f76471088",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "kind": "current_Source",
+      "git_blob": "f5a7340591c09a63f687f2636f0e1678b5459c0b",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "kind": "current_Source",
+      "git_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_singleton_removal_reorder.cpp",
+      "kind": "current_Source",
+      "git_blob": "1b5f0f7f5cae8159456bc0cab19cf5b5d102afd5",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "kind": "current_Source",
+      "git_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/platform_window.cpp",
+      "kind": "current_Source",
+      "git_blob": "ec6f7b179fba488e6f0bf77e8cf85465c0be6d7b",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "kind": "current_Source",
+      "git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "current_canonical_equal": true
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "kind": "current_Source",
+      "git_blob": "3215502c513d22bb0d5c0201dfb110283803b0da",
+      "current_canonical_equal": true
+    }
+  ],
+  "baseline_Git_blobs": 41,
+  "complete_command_receipts": 63,
+  "bounded_Source_reads_exactly_replayed_from_frozen_files": 32,
+  "retained_export_files": 12,
+  "retained_20B_derived_capture_sha256": "4bf0902e7c6f450631022f5e37365b99efd2cb2fc47cef88a3f9072135ac9db5",
+  "fifth_contiguous_word_not_admitted_as_stats_slot10": true,
+  "current_Source636_compilation_counts_not_recredited": true,
+  "existing_metric_body_already_genuine": true,
+  "current_fallback_guard4W_owner_API_already_completed": true,
+  "actual_null_table_stack_semantic_stats_not_raw_owner": true,
+  "base_profile_slot0_not_inferred_from_neighbor_candidate": true,
+  "required_deletion_binding_retained_before_registration_through_same_manager_drain": true,
+  "new_Native_queries_windows_data_handler_reads": 0,
+  "Cpp_CMake_ledger_GPR_mutations": 0,
+  "builds_tests_probes_game_execution": 0,
+  "artifact_pins": [
+    {
+      "path": "local/cc12_allocation_stats_retained_readiness_primary/worker_pins.json",
+      "bytes": 277507,
+      "sha256": "247ba0ac01bb1823f85aec9f60473af521e571191513479f0cd996afa81f69f9"
+    },
+    {
+      "path": "local/cc12_allocation_stats_retained_readiness_primary/worker_report_frozen.json",
+      "bytes": 137087,
+      "sha256": "29a1c549a58f6de47f89f7f45a821f9c92928795c0e2623cd1a87699bb0286de"
+    },
+    {
+      "path": "local/cc12_allocation_stats_retained_readiness_primary/bounded_receipts_replay.json",
+      "bytes": 36805,
+      "sha256": "f92d8551706f770cf9f115ce74e98d898465b7731541660a9dc43473fe6c2435"
+    },
+    {
+      "path": "local/cc12_allocation_stats_retained_readiness_primary/proof.json",
+      "bytes": 9646,
+      "sha256": "69a96a8a1eabd73ed3d972849cb5d137ee1f1d6fb548a459eaa82c49582fc210"
+    }
+  ]
+}
