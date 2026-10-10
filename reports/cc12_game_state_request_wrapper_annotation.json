@@ -1,0 +1,58 @@
+{
+  "schema": "bsp.cc12_queue_wrapper.annotation.v1",
+  "status": "applied_saved_export_refreshed",
+  "configured_project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "address": "004d7920",
+  "function_name_preserved": "BSP_Game_RequestState",
+  "Root_write_command": [
+    "python",
+    "tools/ghidra_annotate.py",
+    "--addresses",
+    "004D7920",
+    "--apply"
+  ],
+  "prior_and_applied_annotations": {
+    "address": "004d7920",
+    "before": {
+      "address": "004d7920",
+      "function_name": "BSP_Game_RequestState",
+      "comment": "[BSP reconstruction 004d7920]\nHypothesis, not a recovered symbol. Packet game_frontend_states, read-only analysis. __thiscall(int state), ECX = the game object, RET 4. Whole body is BSP_Game_EnqueueStateRequest(game+5D8h, &state). 28 call sites, which is the transition table out of the front end and the menus; the two that push 4 are 0068d8bc and 0068d90e in the title-screen exit routines, both guarded by 'no requests already queued' and both followed by game+5ECh = 0."
+    },
+    "after": {
+      "address": "004d7920",
+      "name": "BSP_Game_RequestState",
+      "evidence": "Hypothesis, not a recovered symbol. Packet game_frontend_states, read-only analysis. __thiscall(int state), ECX = the game object, RET 4. Whole body is BSP_Game_EnqueueStateRequest(game+5D8h, &state). 28 call sites, which is the transition table out of the front end and the menus; the two that push 4 are 0068d8bc and 0068d90e in the title-screen exit routines, both guarded by 'no requests already queued' and both followed by game+5ECh = 0. | 2026-10-10 CC12 independently accepted wrapper evidence: complete Original body 004D7920..004D7932 is 19 bytes and five instructions. Entry ECX is the incoming game. LEA EAX,[entry ESP+4] obtains the address of the caller DWORD slot without reading its value; PUSH EAX; ADD ECX,5D8h; CALL 004D3ED0; RET 4. No local publication reload, branch or explicit data-memory load/store; implicit stack effects remain. Wrapper RET4 is proved. Enqueue value-read timing, pointer retention or writes, raw queue effects, allocation and pointer-argument cleanup remain a separately reviewed callee frontier; normal stack balance is an external assumption here. Fresh typed metadata has28 call xrefs and15 caller rows, three xrefs without containing-function label; historical16-row lookup is not adopted. Original ABI return semantics remain unspecified. Root copied439 artifacts, guarded portable replay and separate4220 actual Git checks, independently decoded complete body against original PE. See docs/CC12_GAME_STATE_REQUEST_WRAPPER_OWNER_PRIMARY_REVIEW.md and reports/cc12_game_state_request_wrapper_owner_primary_review.json. Name remains a descriptive hypothesis; no C++ activation, gameplay or drop-in ABI credit."
+    },
+    "status": "applied"
+  },
+  "annotation_log": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_wrapper_annotation\\ghidra-annotations-20261010T164820Z.json",
+    "bytes": 2423,
+    "sha256": "da7f82be83db86f3c59d1b6ea1d408825926420f02fd51d6d758f7602378da8a"
+  },
+  "post_annotation_comments": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_wrapper_annotation\\post_annotation_comments.json",
+    "bytes": 2434,
+    "sha256": "818adfaf5cdb0b4c692aafe8c814de0464426e838a97337382e2b44358e27450"
+  },
+  "refreshed_exports": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_wrapper_annotation\\assembly.txt",
+      "bytes": 122,
+      "sha256": "2e65720cb6b3b12385dfec6acc93e9e742518540ed1a9a3194465f2e77bfd69d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_wrapper_annotation\\decompiled.c",
+      "bytes": 2353,
+      "sha256": "8470e61e5de620cf953094e1a5924ca259b0a68ddf1a6fe85811ac0bfee402b3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_resume_integrator\\local\\cc12_queue_wrapper_annotation\\metadata.json",
+      "bytes": 268,
+      "sha256": "bf4b56a4c3574117803c3e385f9403596c498eb27bd2f5968abcf461550b6556"
+    }
+  ],
+  "lease": "cc12_queue_wrapper_annotation",
+  "qualification": "Append evidence, retain descriptive function name and all previous comments. Annotation tool verifies project/program and serializes mutations under Ghidra write lock, then saves. No prototype, listing, body or flow repair; no new native execution or C++ activation."
+}
