@@ -1,7 +1,7 @@
 {
-  "schema": "bsp.cc12.options_sound_copy_abi_review.v1",
+  "schema": "bsp.cc12.options_sound_copy_abi_review.v2",
   "packet": "cc12_options_sound_copy_abi_review",
-  "receipt_utc": "2026-10-10T12:07:35.577884+00:00",
+  "receipt_utc": "2026-10-10T12:12:48.694518+00:00",
   "status": "Established an indirect persistent-byte writer: 005F65C0 passes screen+D8 as source and F88980 as destination to005F52C0, whose5315 store writes F889A4 from screen+FC. No zero provenance or pre-startup route established.",
   "scope": {
     "worktree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi",
@@ -32,7 +32,7 @@
     "working_tree": "J:\\PROG\\battlestations-pacific-decompile-cc12_options_sound_copy_abi"
   },
   "complete_evidence_freeze": {
-    "schema": "bsp.cc12.options_sound_copy_abi.freeze.v1",
+    "schema": "bsp.cc12.options_sound_copy_abi.freeze.v2",
     "utc": "2026-10-10T12:04:06.125491+00:00",
     "git": {
       "HEAD": "1a53da3572c0e52c907de321e4f854034dfbb42b",
@@ -382,7 +382,6 @@
       }
     ],
     "original_PE": {
-      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
       "bytes": 12223752,
       "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
       "machine": 332,
@@ -471,13 +470,112 @@
           },
           "hex": "53568bf1578b7c24108b47048946040fb64f08884e080fb657098856098b470c89460c0fb64f10884e108b57148956148b47188946180fb64f1c884e1c0fb6571d88561d0fb6471e88461ed94720d95e200fb64f24884e24d94728d95e28d9472cd95e2cd94730d95e30d94734d95e340fb657388856388b473c89463c0fb64f40884e400fb657418856410fb647428846420fb64f43884e430fb657448856440fb647458846450fb64f46884e460fb657478856470fb647488846480fb64f49884e490fb6574a88564a0fb6474b88464b0fb64f4c884e4c8b57508956508b47548946548b4f58894e588b575c89565c0fb64760884660d94764d95e648b4f68894e680fb6576c88566c8b47708946700fb64f74884e748b57788956780fb6477c88467cd98780000000d99e800000000fb68f84000000888e840000000fb697850000008896850000000fb687860000008886860000008b8f88000000898e880000000fb6978c00000088968c0000000fb6878d00000088868d0000008b8f90000000898e900000000fb697940000008896940000000fb687950000008d8f98000000518d8e98000000888695000000e8dbe9f4ff8d97a4000000528d8ea4000000e8c9e9f4ff0fb687b00000008886b00000000fb68fb1000000888eb10000000fb697b20000008d9fb40000008dbeb40000003bfb8896b200000074248b036a01508bcfe87688e2ff833b0074138b0f8b53048b4704515250e8a121600083c40c5f8bc65e5bc20400"
         }
-      ]
+      ],
+      "capture_provenance_original_absolute_path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "retained_image_pin": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/b682a82c52f81f95_original_battlestationspacific.exe.bin",
+        "bytes": 12223752,
+        "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+      },
+      "retention": "Complete content-addressed readonly evidence file; copied without executing the Native image."
+    },
+    "offline_correction": {
+      "utc": "2026-10-10T12:11:41.732488+00:00",
+      "reason": "The original generic pin walker also recognized original_PE.path/bytes/sha256 and read the installed executable. The previous pure-offline qualification was incorrect.",
+      "original_capture_preserved_unchanged": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+        "bytes": 19985,
+        "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+      },
+      "other_preimages": {
+        "local/cc12_options_sound_copy_abi_review/freeze_capture.json": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+          "bytes": 19985,
+          "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+        },
+        "local/cc12_options_sound_copy_abi_review/replay.py": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/a5b64df4d2866c22_before_offline_correction_replay.py",
+          "bytes": 4981,
+          "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+        },
+        "local/cc12_options_sound_copy_abi_review/make_receipt.py": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/d35c73dca31fbd60_before_offline_correction_make_receipt.py",
+          "bytes": 9481,
+          "sha256": "d35c73dca31fbd6035b00f117b2101070f571f07a204c6fe3780efd810a4a07e"
+        },
+        "docs/CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/59076d4d9aa15f0f_before_offline_correction_CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+          "bytes": 6799,
+          "sha256": "59076d4d9aa15f0f29dc675bbd96ad64c5920b84ba27edc4c890932953971fda"
+        },
+        "reports/cc12_options_sound_copy_abi_review.json": {
+          "path": "local/cc12_options_sound_copy_abi_review/frozen/ca03986ae9105a50_before_offline_correction_cc12_options_sound_copy_abi_review.json",
+          "bytes": 109624,
+          "sha256": "ca03986ae9105a501d4155a6fa0745aa1e194be65341e3a75077ab82dc073014"
+        }
+      },
+      "capture_command": [
+        "python",
+        "local/cc12_options_sound_copy_abi_review/retain_original_pe.py"
+      ],
+      "capture_script_pin": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/d226c07465ccf8dd_retain_original_pe.py",
+        "bytes": 2641,
+        "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+      },
+      "replay_contract": "Only retained artifacts may be opened. Verify the complete retained PE and each finite original slice against retained PE file offsets. The original installation path is provenance text only."
     }
   },
   "freeze_capture_pin": {
-    "path": "local/cc12_options_sound_copy_abi_review/freeze_capture.json",
-    "bytes": 19985,
-    "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    "path": "local/cc12_options_sound_copy_abi_review/freeze_capture_v2.json",
+    "bytes": 23188,
+    "sha256": "47af111396981bb3acdc5b94a6af89a8c6ecb5fd3e0dca688108407b916d6ddd"
+  },
+  "offline_capture_correction": {
+    "utc": "2026-10-10T12:11:41.732488+00:00",
+    "reason": "The original generic pin walker also recognized original_PE.path/bytes/sha256 and read the installed executable. The previous pure-offline qualification was incorrect.",
+    "original_capture_preserved_unchanged": {
+      "path": "local/cc12_options_sound_copy_abi_review/frozen/91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+      "bytes": 19985,
+      "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+    },
+    "other_preimages": {
+      "local/cc12_options_sound_copy_abi_review/freeze_capture.json": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/91ae1cef3e39efed_before_offline_correction_freeze_capture.json",
+        "bytes": 19985,
+        "sha256": "91ae1cef3e39efeda8c31ed89c77802692d2efdb5804677f50c0af66a068ec4e"
+      },
+      "local/cc12_options_sound_copy_abi_review/replay.py": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/a5b64df4d2866c22_before_offline_correction_replay.py",
+        "bytes": 4981,
+        "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+      },
+      "local/cc12_options_sound_copy_abi_review/make_receipt.py": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/d35c73dca31fbd60_before_offline_correction_make_receipt.py",
+        "bytes": 9481,
+        "sha256": "d35c73dca31fbd6035b00f117b2101070f571f07a204c6fe3780efd810a4a07e"
+      },
+      "docs/CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/59076d4d9aa15f0f_before_offline_correction_CC12_OPTIONS_SOUND_COPY_ABI_REVIEW.md",
+        "bytes": 6799,
+        "sha256": "59076d4d9aa15f0f29dc675bbd96ad64c5920b84ba27edc4c890932953971fda"
+      },
+      "reports/cc12_options_sound_copy_abi_review.json": {
+        "path": "local/cc12_options_sound_copy_abi_review/frozen/ca03986ae9105a50_before_offline_correction_cc12_options_sound_copy_abi_review.json",
+        "bytes": 109624,
+        "sha256": "ca03986ae9105a501d4155a6fa0745aa1e194be65341e3a75077ab82dc073014"
+      }
+    },
+    "capture_command": [
+      "python",
+      "local/cc12_options_sound_copy_abi_review/retain_original_pe.py"
+    ],
+    "capture_script_pin": {
+      "path": "local/cc12_options_sound_copy_abi_review/frozen/d226c07465ccf8dd_retain_original_pe.py",
+      "bytes": 2641,
+      "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+    },
+    "replay_contract": "Only retained artifacts may be opened. Verify the complete retained PE and each finite original slice against retained PE file offsets. The original installation path is provenance text only."
   },
   "command_capture_records": {
     "live_initial_capture.json": [
@@ -1429,6 +1527,10 @@
     ],
     [
       "python",
+      "local/cc12_options_sound_copy_abi_review/retain_original_pe.py"
+    ],
+    [
+      "python",
       "local/cc12_options_sound_copy_abi_review/replay.py"
     ],
     [
@@ -1448,14 +1550,19 @@
       "sha256": "6a89bd44d0f894106c42454e71e18be334569829687e34d5e9b90746650f4b72"
     },
     {
+      "path": "local/cc12_options_sound_copy_abi_review/retain_original_pe.py",
+      "bytes": 2641,
+      "sha256": "d226c07465ccf8dd300afbdb80c3701ccaa48d74ff1a06354ef1c88b9b3131d9"
+    },
+    {
       "path": "local/cc12_options_sound_copy_abi_review/replay.py",
-      "bytes": 4981,
-      "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+      "bytes": 7341,
+      "sha256": "a2ebcbe7fd1b75a0fa3c02891d3ebbb6fa272f52133e284c3515901a8f74c8b8"
     },
     {
       "path": "local/cc12_options_sound_copy_abi_review/make_receipt.py",
-      "bytes": 9481,
-      "sha256": "d35c73dca31fbd6035b00f117b2101070f571f07a204c6fe3780efd810a4a07e"
+      "bytes": 9647,
+      "sha256": "86d2ad24c3c9372b1931be1ef00ccdaf0c130f75601624523e76b6c0a41205a1"
     }
   ],
   "offline_replay": {
@@ -1465,21 +1572,31 @@
     ],
     "script_pin": {
       "path": "local/cc12_options_sound_copy_abi_review/replay.py",
-      "bytes": 4981,
-      "sha256": "a5b64df4d2866c22142c536831538640b8978751c2f387d5976b91cc3cfa9b2f"
+      "bytes": 7341,
+      "sha256": "a2ebcbe7fd1b75a0fa3c02891d3ebbb6fa272f52133e284c3515901a8f74c8b8"
     },
-    "script_text": "\"\"\"Pure offline evidence replay: no Native execution, live bridge, or original PE access.\"\"\"\nimport hashlib, json, pathlib, re, struct\nROOT=pathlib.Path(__file__).resolve().parents[2]\nOUT=pathlib.Path(__file__).resolve().parent\nfreeze=json.loads((OUT/'freeze_capture.json').read_text(encoding='utf-8'))\ndef sha(data): return hashlib.sha256(data).hexdigest()\npins=[]\ndef walk(obj):\n    if isinstance(obj,dict):\n        if {'path','bytes','sha256'}<=set(obj):\n            data=(ROOT/obj['path']).read_bytes()\n            assert len(data)==obj['bytes'] and sha(data)==obj['sha256'],obj['path']\n            pins.append(obj['path'])\n        for value in obj.values(): walk(value)\n    elif isinstance(obj,list):\n        for value in obj: walk(value)\nwalk(freeze)\ncaptures={}\nfor row in freeze['command_captures_and_specs']:\n    if row['file'].endswith('_capture.json'):\n        for cmd in json.loads((ROOT/row['pin']['path']).read_text(encoding='utf-8')):\n            assert cmd['exit_code']==0\n            assert sha(cmd['stdout'].encode())==cmd['stdout_sha256']\n            assert sha(cmd['stderr'].encode())==cmd['stderr_sha256']\n            captures[cmd['label']]=cmd\nwindows={w['label']:w for w in freeze['original_PE']['windows']}\nraw={k:(ROOT/v['bytes_pin']['path']).read_bytes() for k,v in windows.items()}\ndef live_bytes(label):\n    rows=[]\n    for line in captures[label]['stdout'].splitlines():\n        m=re.match(r'^([0-9a-f]{8})  ((?:[0-9a-f]{2} ?)+)  ',line)\n        if m: rows.append((int(m[1],16),bytes.fromhex(m[2])))\n    assert rows\n    for (a,b),(c,d) in zip(rows,rows[1:]): assert a+len(b)==c\n    return rows[0][0],b''.join(b for a,b in rows)\nfor label in ['constructor','commit_head','commit_tail']:\n    a,b=live_bytes(label+'_bytes')\n    assert a==int(windows[label]['start_va'],16) and b==raw[label]\nparts=[live_bytes('copy_helper_bytes_'+str(i)) for i in range(3)]\nfor (a,b),(c,d) in zip(parts,parts[1:]): assert a+len(b)==c\nassert b''.join(b for a,b in parts)==raw['copy_helper']\ndef at(label,address,length):\n    off=address-int(windows[label]['start_va'],16)\n    assert off>=0 and off+length<=len(raw[label])\n    return raw[label][off:off+length]\nchecks=[]\ndef expect(label,address,hexbytes):\n    expected=bytes.fromhex(hexbytes)\n    assert at(label,address,len(expected))==expected,f'{address:08X}'\n    checks.append(f'{address:08X}')\ndef call(label,address,target):\n    b=at(label,address,5)\n    assert b[0]==0xe8 and address+5+struct.unpack('<i',b[1:])[0]==target\n    checks.append(f'{address:08X}->{target:08X}')\nexpect('constructor',0x5f6048,'8bf1')\nexpect('constructor',0x5f6093,'8d8ed8000000')\nexpect('constructor',0x5f60a3,'8d8e94010000')\ncall('constructor',0x5f609e,0x8d7710)\ncall('constructor',0x5f60ae,0x8d7710)\nexpect('commit_head',0x5f65e2,'8be9')\nexpect('commit_head',0x5f65e5,'8db5d8000000')\nexpect('commit_head',0x5f6623,'56b98089f800')\ncall('commit_head',0x5f6629,0x5f52c0)\nexpect('copy_helper',0x5f52c0,'53568bf1578b7c2410')\nexpect('copy_helper',0x5f5311,'0fb64f24884e24')\nexpect('copy_helper',0x5f54e2,'5f8bc65e5bc20400')\ndef listing(label):\n    return {int(m[1],16):' '.join(m[2].split()) for line in captures[label]['stdout'].splitlines()\n        if (m:=re.match(r'^([0-9a-f]{8}):\\s*(.+)',line))}\ncomparisons=[]\nfor saved,live,window in [\n ('saved_constructor_listing','constructor_listing','constructor'),\n ('saved_commit_listing_head','commit_head_listing','commit_head'),\n ('saved_commit_listing_tail','commit_tail_listing','commit_tail')]:\n    a,b=listing(saved),listing(live)\n    start=int(windows[window]['start_va'],16); end=start+windows[window]['length']\n    aa={x:y for x,y in a.items() if start<=x<end}\n    bb={x:y for x,y in b.items() if start<=x<end}\n    assert aa and aa==bb,(saved,live)\n    comparisons.append({'window':window,'matching_instruction_rows':len(aa)})\nstores={}\nfor label in ['copy_helper_head_listing','copy_helper_middle_listing','copy_helper_tail_listing']:\n    for addr,insn in listing(label).items():\n        m=re.match(r'(MOV (byte|dword) ptr|FSTP (float) ptr) \\[ESI \\+ (0x[0-9a-f]+)\\],?(.*)',insn)\n        if m: stores[f'{int(m[4],16):02X}']={'instruction':f'{addr:08X}','width':1 if m[2]=='byte' else 4,'opcode':'FSTP' if m[3] else 'MOV'}\nassert stores['24']=={'instruction':'005F5315','width':1,'opcode':'MOV'}\nassert 0xd8+0x24==0xfc and 0x194+0x24==0x1b8 and 0xf88980+0x24==0xf889a4\nresult={'passed':True,'pin_occurrences':len(pins),'unique_frozen_files':len(set(pins)),\n 'whole_Source_Git_files':len(freeze['sources']),'captured_commands':len(captures),\n 'PE_live_identical_windows':4,'PE_bytes_total':sum(len(x) for x in raw.values()),\n 'saved_live_listing_comparisons':comparisons,'exact_instruction_or_call_assertions':checks,\n 'fixed_scalar_stores':stores,\n 'qualification':'Frozen bytes, hashes, exact instruction facts and address arithmetic only. No Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit.'}\nprint(json.dumps(result,indent=2))\n",
+    "script_text": "\"\"\"Pure offline evidence replay: no Native execution, live bridge, or original PE access.\"\"\"\nimport hashlib, json, os, pathlib, re, struct, sys\nROOT=pathlib.Path(__file__).resolve().parents[2]\nOUT=pathlib.Path(__file__).resolve().parent\nopened_paths=[]\ndef audit_read_guard(event,args):\n    if event!='open': return\n    path,mode,flags=args\n    if not isinstance(path,(str,bytes)): raise RuntimeError('Offline replay forbids opening file descriptors')\n    resolved=pathlib.Path(path).resolve()\n    if not resolved.is_relative_to(OUT): raise RuntimeError('Offline replay attempted outside evidence directory: '+str(resolved))\n    if mode is not None and any(c in mode for c in 'wax+'): raise RuntimeError('Offline replay forbids writes')\n    if flags & (os.O_WRONLY|os.O_RDWR|os.O_APPEND|os.O_CREAT|os.O_TRUNC): raise RuntimeError('Offline replay forbids write flags')\n    opened_paths.append(resolved.relative_to(OUT).as_posix())\nsys.addaudithook(audit_read_guard)\nfreeze=json.loads((OUT/'freeze_capture_v2.json').read_text(encoding='utf-8'))\ndef sha(data): return hashlib.sha256(data).hexdigest()\npins=[]\ndef walk(obj):\n    if isinstance(obj,dict):\n        if {'path','bytes','sha256'}<=set(obj):\n            assert not pathlib.Path(obj['path']).is_absolute(),obj['path']\n            data=(ROOT/obj['path']).read_bytes()\n            assert len(data)==obj['bytes'] and sha(data)==obj['sha256'],obj['path']\n            pins.append(obj['path'])\n        for value in obj.values(): walk(value)\n    elif isinstance(obj,list):\n        for value in obj: walk(value)\nwalk(freeze)\ncaptures={}\nfor row in freeze['command_captures_and_specs']:\n    if row['file'].endswith('_capture.json'):\n        for cmd in json.loads((ROOT/row['pin']['path']).read_text(encoding='utf-8')):\n            assert cmd['exit_code']==0\n            assert sha(cmd['stdout'].encode())==cmd['stdout_sha256']\n            assert sha(cmd['stderr'].encode())==cmd['stderr_sha256']\n            captures[cmd['label']]=cmd\nwindows={w['label']:w for w in freeze['original_PE']['windows']}\nraw={k:(ROOT/v['bytes_pin']['path']).read_bytes() for k,v in windows.items()}\npe=freeze['original_PE']\nassert 'path' not in pe\nimage=(ROOT/pe['retained_image_pin']['path']).read_bytes()\nassert len(image)==pe['bytes'] and sha(image)==pe['sha256']\npeoff=struct.unpack_from('<I',image,0x3c)[0]\nassert image[peoff:peoff+4]==b'PE\\0\\0'\nmachine,nsections=struct.unpack_from('<HH',image,peoff+4)\noptlen=struct.unpack_from('<H',image,peoff+20)[0]\nopt=peoff+24\nassert machine==pe['machine']==0x14c\nassert struct.unpack_from('<H',image,opt)[0]==0x10b\nimagebase=struct.unpack_from('<I',image,opt+28)[0]\nassert imagebase==int(pe['image_base'],16)\nfor label,w in windows.items():\n    rva=int(w['start_va'],16)-imagebase\n    matches=[]\n    for i in range(nsections):\n        section=opt+optlen+i*40\n        _,srva,rawsize,rawoff=struct.unpack_from('<IIII',image,section+8)\n        if srva<=rva and rva+w['length']<=srva+rawsize:\n            matches.append(rawoff+rva-srva)\n    assert matches==[w['file_offset']]\n    assert image[w['file_offset']:w['file_offset']+w['length']]==raw[label]\ndef live_bytes(label):\n    rows=[]\n    for line in captures[label]['stdout'].splitlines():\n        m=re.match(r'^([0-9a-f]{8})  ((?:[0-9a-f]{2} ?)+)  ',line)\n        if m: rows.append((int(m[1],16),bytes.fromhex(m[2])))\n    assert rows\n    for (a,b),(c,d) in zip(rows,rows[1:]): assert a+len(b)==c\n    return rows[0][0],b''.join(b for a,b in rows)\nfor label in ['constructor','commit_head','commit_tail']:\n    a,b=live_bytes(label+'_bytes')\n    assert a==int(windows[label]['start_va'],16) and b==raw[label]\nparts=[live_bytes('copy_helper_bytes_'+str(i)) for i in range(3)]\nfor (a,b),(c,d) in zip(parts,parts[1:]): assert a+len(b)==c\nassert b''.join(b for a,b in parts)==raw['copy_helper']\ndef at(label,address,length):\n    off=address-int(windows[label]['start_va'],16)\n    assert off>=0 and off+length<=len(raw[label])\n    return raw[label][off:off+length]\nchecks=[]\ndef expect(label,address,hexbytes):\n    expected=bytes.fromhex(hexbytes)\n    assert at(label,address,len(expected))==expected,f'{address:08X}'\n    checks.append(f'{address:08X}')\ndef call(label,address,target):\n    b=at(label,address,5)\n    assert b[0]==0xe8 and address+5+struct.unpack('<i',b[1:])[0]==target\n    checks.append(f'{address:08X}->{target:08X}')\nexpect('constructor',0x5f6048,'8bf1')\nexpect('constructor',0x5f6093,'8d8ed8000000')\nexpect('constructor',0x5f60a3,'8d8e94010000')\ncall('constructor',0x5f609e,0x8d7710)\ncall('constructor',0x5f60ae,0x8d7710)\nexpect('commit_head',0x5f65e2,'8be9')\nexpect('commit_head',0x5f65e5,'8db5d8000000')\nexpect('commit_head',0x5f6623,'56b98089f800')\ncall('commit_head',0x5f6629,0x5f52c0)\nexpect('copy_helper',0x5f52c0,'53568bf1578b7c2410')\nexpect('copy_helper',0x5f5311,'0fb64f24884e24')\nexpect('copy_helper',0x5f54e2,'5f8bc65e5bc20400')\ndef listing(label):\n    return {int(m[1],16):' '.join(m[2].split()) for line in captures[label]['stdout'].splitlines()\n        if (m:=re.match(r'^([0-9a-f]{8}):\\s*(.+)',line))}\ncomparisons=[]\nfor saved,live,window in [\n ('saved_constructor_listing','constructor_listing','constructor'),\n ('saved_commit_listing_head','commit_head_listing','commit_head'),\n ('saved_commit_listing_tail','commit_tail_listing','commit_tail')]:\n    a,b=listing(saved),listing(live)\n    start=int(windows[window]['start_va'],16); end=start+windows[window]['length']\n    aa={x:y for x,y in a.items() if start<=x<end}\n    bb={x:y for x,y in b.items() if start<=x<end}\n    assert aa and aa==bb,(saved,live)\n    comparisons.append({'window':window,'matching_instruction_rows':len(aa)})\nstores={}\nfor label in ['copy_helper_head_listing','copy_helper_middle_listing','copy_helper_tail_listing']:\n    for addr,insn in listing(label).items():\n        m=re.match(r'(MOV (byte|dword) ptr|FSTP (float) ptr) \\[ESI \\+ (0x[0-9a-f]+)\\],?(.*)',insn)\n        if m: stores[f'{int(m[4],16):02X}']={'instruction':f'{addr:08X}','width':1 if m[2]=='byte' else 4,'opcode':'FSTP' if m[3] else 'MOV'}\nassert stores['24']=={'instruction':'005F5315','width':1,'opcode':'MOV'}\nassert 0xd8+0x24==0xfc and 0x194+0x24==0x1b8 and 0xf88980+0x24==0xf889a4\nresult={'passed':True,'pin_occurrences':len(pins),'unique_frozen_files':len(set(pins)),\n 'whole_Source_Git_files':len(freeze['sources']),'captured_commands':len(captures),\n 'PE_live_identical_windows':4,'PE_bytes_total':sum(len(x) for x in raw.values()),\n 'retained_complete_PE_bytes':len(image),'retained_complete_PE_sha256':sha(image),\n 'slice_windows_match_retained_PE':len(windows),\n 'read_guard':{'enabled':True,'boundary':'Evidence directory only; filesystem open attempts outside it abort before OS access. Writes forbidden.','successful_open_count':len(opened_paths),'unique_opened_files':len(set(opened_paths)),'installation_open_count':0},\n 'saved_live_listing_comparisons':comparisons,'exact_instruction_or_call_assertions':checks,\n 'fixed_scalar_stores':stores,\n 'qualification':'Reads confined by a Python audit hook to the retained evidence directory, including the complete frozen PE. Original installation path is provenance only. Frozen bytes, hashes, exact instruction facts and address arithmetic only; no Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit.'}\nprint(json.dumps(result,indent=2))\n",
     "exit_code": 0,
-    "stdout_text": "{\r\n  \"passed\": true,\r\n  \"pin_occurrences\": 49,\r\n  \"unique_frozen_files\": 49,\r\n  \"whole_Source_Git_files\": 17,\r\n  \"captured_commands\": 21,\r\n  \"PE_live_identical_windows\": 4,\r\n  \"PE_bytes_total\": 1039,\r\n  \"saved_live_listing_comparisons\": [\r\n    {\r\n      \"window\": \"constructor\",\r\n      \"matching_instruction_rows\": 42\r\n    },\r\n    {\r\n      \"window\": \"commit_head\",\r\n      \"matching_instruction_rows\": 32\r\n    },\r\n    {\r\n      \"window\": \"commit_tail\",\r\n      \"matching_instruction_rows\": 48\r\n    }\r\n  ],\r\n  \"exact_instruction_or_call_assertions\": [\r\n    \"005F6048\",\r\n    \"005F6093\",\r\n    \"005F60A3\",\r\n    \"005F609E->008D7710\",\r\n    \"005F60AE->008D7710\",\r\n    \"005F65E2\",\r\n    \"005F65E5\",\r\n    \"005F6623\",\r\n    \"005F6629->005F52C0\",\r\n    \"005F52C0\",\r\n    \"005F5311\",\r\n    \"005F54E2\"\r\n  ],\r\n  \"fixed_scalar_stores\": {\r\n    \"04\": {\r\n      \"instruction\": \"005F52CC\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"08\": {\r\n      \"instruction\": \"005F52D3\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"09\": {\r\n      \"instruction\": \"005F52DA\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"0C\": {\r\n      \"instruction\": \"005F52E0\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"10\": {\r\n      \"instruction\": \"005F52E7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"14\": {\r\n      \"instruction\": \"005F52ED\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"18\": {\r\n      \"instruction\": \"005F52F3\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1C\": {\r\n      \"instruction\": \"005F52FA\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1D\": {\r\n      \"instruction\": \"005F5301\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1E\": {\r\n      \"instruction\": \"005F5308\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"20\": {\r\n      \"instruction\": \"005F530E\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"24\": {\r\n      \"instruction\": \"005F5315\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"28\": {\r\n      \"instruction\": \"005F531B\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"2C\": {\r\n      \"instruction\": \"005F5321\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"30\": {\r\n      \"instruction\": \"005F5327\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"34\": {\r\n      \"instruction\": \"005F532D\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"38\": {\r\n      \"instruction\": \"005F5334\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"3C\": {\r\n      \"instruction\": \"005F533A\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"40\": {\r\n      \"instruction\": \"005F5341\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"41\": {\r\n      \"instruction\": \"005F5348\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"42\": {\r\n      \"instruction\": \"005F534F\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"43\": {\r\n      \"instruction\": \"005F5356\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"44\": {\r\n      \"instruction\": \"005F535D\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"45\": {\r\n      \"instruction\": \"005F5364\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"46\": {\r\n      \"instruction\": \"005F536B\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"47\": {\r\n      \"instruction\": \"005F5372\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"48\": {\r\n      \"instruction\": \"005F5379\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"49\": {\r\n      \"instruction\": \"005F5380\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4A\": {\r\n      \"instruction\": \"005F5387\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4B\": {\r\n      \"instruction\": \"005F538E\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4C\": {\r\n      \"instruction\": \"005F5395\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"50\": {\r\n      \"instruction\": \"005F539B\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"54\": {\r\n      \"instruction\": \"005F53A1\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"58\": {\r\n      \"instruction\": \"005F53A7\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"5C\": {\r\n      \"instruction\": \"005F53AD\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"60\": {\r\n      \"instruction\": \"005F53B4\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"64\": {\r\n      \"instruction\": \"005F53BA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"68\": {\r\n      \"instruction\": \"005F53C0\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"6C\": {\r\n      \"instruction\": \"005F53C7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"70\": {\r\n      \"instruction\": \"005F53CD\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"74\": {\r\n      \"instruction\": \"005F53D4\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"78\": {\r\n      \"instruction\": \"005F53DA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"7C\": {\r\n      \"instruction\": \"005F53E1\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"80\": {\r\n      \"instruction\": \"005F53EA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"84\": {\r\n      \"instruction\": \"005F53F7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"85\": {\r\n      \"instruction\": \"005F5404\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"86\": {\r\n      \"instruction\": \"005F5411\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"88\": {\r\n      \"instruction\": \"005F541D\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"8C\": {\r\n      \"instruction\": \"005F542A\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"8D\": {\r\n      \"instruction\": \"005F5437\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"90\": {\r\n      \"instruction\": \"005F5443\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"94\": {\r\n      \"instruction\": \"005F5450\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"95\": {\r\n      \"instruction\": \"005F546A\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B0\": {\r\n      \"instruction\": \"005F548E\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B1\": {\r\n      \"instruction\": \"005F549B\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B2\": {\r\n      \"instruction\": \"005F54B6\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    }\r\n  },\r\n  \"qualification\": \"Frozen bytes, hashes, exact instruction facts and address arithmetic only. No Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit.\"\r\n}\r\n",
+    "stdout_text": "{\r\n  \"passed\": true,\r\n  \"pin_occurrences\": 56,\r\n  \"unique_frozen_files\": 55,\r\n  \"whole_Source_Git_files\": 17,\r\n  \"captured_commands\": 21,\r\n  \"PE_live_identical_windows\": 4,\r\n  \"PE_bytes_total\": 1039,\r\n  \"retained_complete_PE_bytes\": 12223752,\r\n  \"retained_complete_PE_sha256\": \"b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6\",\r\n  \"slice_windows_match_retained_PE\": 4,\r\n  \"read_guard\": {\r\n    \"enabled\": true,\r\n    \"boundary\": \"Evidence directory only; filesystem open attempts outside it abort before OS access. Writes forbidden.\",\r\n    \"successful_open_count\": 66,\r\n    \"unique_opened_files\": 56,\r\n    \"installation_open_count\": 0\r\n  },\r\n  \"saved_live_listing_comparisons\": [\r\n    {\r\n      \"window\": \"constructor\",\r\n      \"matching_instruction_rows\": 42\r\n    },\r\n    {\r\n      \"window\": \"commit_head\",\r\n      \"matching_instruction_rows\": 32\r\n    },\r\n    {\r\n      \"window\": \"commit_tail\",\r\n      \"matching_instruction_rows\": 48\r\n    }\r\n  ],\r\n  \"exact_instruction_or_call_assertions\": [\r\n    \"005F6048\",\r\n    \"005F6093\",\r\n    \"005F60A3\",\r\n    \"005F609E->008D7710\",\r\n    \"005F60AE->008D7710\",\r\n    \"005F65E2\",\r\n    \"005F65E5\",\r\n    \"005F6623\",\r\n    \"005F6629->005F52C0\",\r\n    \"005F52C0\",\r\n    \"005F5311\",\r\n    \"005F54E2\"\r\n  ],\r\n  \"fixed_scalar_stores\": {\r\n    \"04\": {\r\n      \"instruction\": \"005F52CC\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"08\": {\r\n      \"instruction\": \"005F52D3\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"09\": {\r\n      \"instruction\": \"005F52DA\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"0C\": {\r\n      \"instruction\": \"005F52E0\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"10\": {\r\n      \"instruction\": \"005F52E7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"14\": {\r\n      \"instruction\": \"005F52ED\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"18\": {\r\n      \"instruction\": \"005F52F3\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1C\": {\r\n      \"instruction\": \"005F52FA\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1D\": {\r\n      \"instruction\": \"005F5301\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"1E\": {\r\n      \"instruction\": \"005F5308\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"20\": {\r\n      \"instruction\": \"005F530E\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"24\": {\r\n      \"instruction\": \"005F5315\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"28\": {\r\n      \"instruction\": \"005F531B\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"2C\": {\r\n      \"instruction\": \"005F5321\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"30\": {\r\n      \"instruction\": \"005F5327\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"34\": {\r\n      \"instruction\": \"005F532D\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"38\": {\r\n      \"instruction\": \"005F5334\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"3C\": {\r\n      \"instruction\": \"005F533A\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"40\": {\r\n      \"instruction\": \"005F5341\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"41\": {\r\n      \"instruction\": \"005F5348\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"42\": {\r\n      \"instruction\": \"005F534F\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"43\": {\r\n      \"instruction\": \"005F5356\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"44\": {\r\n      \"instruction\": \"005F535D\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"45\": {\r\n      \"instruction\": \"005F5364\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"46\": {\r\n      \"instruction\": \"005F536B\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"47\": {\r\n      \"instruction\": \"005F5372\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"48\": {\r\n      \"instruction\": \"005F5379\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"49\": {\r\n      \"instruction\": \"005F5380\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4A\": {\r\n      \"instruction\": \"005F5387\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4B\": {\r\n      \"instruction\": \"005F538E\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"4C\": {\r\n      \"instruction\": \"005F5395\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"50\": {\r\n      \"instruction\": \"005F539B\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"54\": {\r\n      \"instruction\": \"005F53A1\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"58\": {\r\n      \"instruction\": \"005F53A7\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"5C\": {\r\n      \"instruction\": \"005F53AD\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"60\": {\r\n      \"instruction\": \"005F53B4\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"64\": {\r\n      \"instruction\": \"005F53BA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"68\": {\r\n      \"instruction\": \"005F53C0\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"6C\": {\r\n      \"instruction\": \"005F53C7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"70\": {\r\n      \"instruction\": \"005F53CD\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"74\": {\r\n      \"instruction\": \"005F53D4\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"78\": {\r\n      \"instruction\": \"005F53DA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"7C\": {\r\n      \"instruction\": \"005F53E1\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"80\": {\r\n      \"instruction\": \"005F53EA\",\r\n      \"width\": 4,\r\n      \"opcode\": \"FSTP\"\r\n    },\r\n    \"84\": {\r\n      \"instruction\": \"005F53F7\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"85\": {\r\n      \"instruction\": \"005F5404\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"86\": {\r\n      \"instruction\": \"005F5411\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"88\": {\r\n      \"instruction\": \"005F541D\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"8C\": {\r\n      \"instruction\": \"005F542A\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"8D\": {\r\n      \"instruction\": \"005F5437\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"90\": {\r\n      \"instruction\": \"005F5443\",\r\n      \"width\": 4,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"94\": {\r\n      \"instruction\": \"005F5450\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"95\": {\r\n      \"instruction\": \"005F546A\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B0\": {\r\n      \"instruction\": \"005F548E\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B1\": {\r\n      \"instruction\": \"005F549B\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    },\r\n    \"B2\": {\r\n      \"instruction\": \"005F54B6\",\r\n      \"width\": 1,\r\n      \"opcode\": \"MOV\"\r\n    }\r\n  },\r\n  \"qualification\": \"Reads confined by a Python audit hook to the retained evidence directory, including the complete frozen PE. Original installation path is provenance only. Frozen bytes, hashes, exact instruction facts and address arithmetic only; no Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit.\"\r\n}\r\n",
     "stderr_text": "",
     "result": {
       "passed": true,
-      "pin_occurrences": 49,
-      "unique_frozen_files": 49,
+      "pin_occurrences": 56,
+      "unique_frozen_files": 55,
       "whole_Source_Git_files": 17,
       "captured_commands": 21,
       "PE_live_identical_windows": 4,
       "PE_bytes_total": 1039,
+      "retained_complete_PE_bytes": 12223752,
+      "retained_complete_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "slice_windows_match_retained_PE": 4,
+      "read_guard": {
+        "enabled": true,
+        "boundary": "Evidence directory only; filesystem open attempts outside it abort before OS access. Writes forbidden.",
+        "successful_open_count": 66,
+        "unique_opened_files": 56,
+        "installation_open_count": 0
+      },
       "saved_live_listing_comparisons": [
         {
           "window": "constructor",
@@ -1790,7 +1907,7 @@
           "opcode": "MOV"
         }
       },
-      "qualification": "Frozen bytes, hashes, exact instruction facts and address arithmetic only. No Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit."
+      "qualification": "Reads confined by a Python audit hook to the retained evidence directory, including the complete frozen PE. Original installation path is provenance only. Frozen bytes, hashes, exact instruction facts and address arithmetic only; no Native execution, x87 emulation, call-chain timing proof, supported selector, or startup/gameplay credit."
     }
   },
   "credit": {

@@ -85,7 +85,8 @@ obligations. Neither universal absence nor post-startup-only timing is claimed.
 
 The [JSON receipt](../reports/cc12_options_sound_copy_abi_review.json) freezes
 17 complete current Source/Git inputs, exact typed commands and outputs,
-finite saved Native views, four original PE byte slices, and offline replay.
+finite saved Native views, a complete retained original PE, four PE byte slices,
+and offline replay.
 All 17 current inputs match their accepted Git preimages after EOL normalization.
 The original PE SHA-256 remains
 `b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6`.
@@ -104,6 +105,17 @@ Autostart was disabled. The retained artifact directory is
 ```powershell
 python local/cc12_options_sound_copy_abi_review/replay.py
 ```
+
+The first receipt's replay incorrectly followed the absolute installed-PE
+provenance path through its generic pin walker. Its pure-offline qualification
+was therefore incorrect. The unchanged original capture and the previous
+scripts/doc/report are retained as hashed preimages. The revised capture keeps
+the installation path as provenance text and retains a complete 12,223,752-byte
+PE under a content-addressed readonly evidence filename. Replay validates that
+copy's recorded hash and independently maps all four slices through its PE
+section table. A Python audit hook rejects filesystem opens outside the evidence
+directory and rejects writes before OS access. The revised replay passed with
+zero installation opens; the previous claim is superseded.
 
 No C++ change, compiler/test invocation, Native execution, SDK call, game/OS
 change, or Ghidra mutation occurred. Offline receipt replay establishes static
