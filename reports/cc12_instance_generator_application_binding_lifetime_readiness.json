@@ -1,0 +1,461 @@
+{
+  "schema": 1,
+  "packet": "cc12_instance_generator_application_binding_lifetime_readiness",
+  "status": "Source_only_lifetime_followup_metadata_context_proposed_activation_HELD",
+  "Source_commit": "e9396b4883232059bdad28753bc95403536403bf",
+  "Root_checkpoint": "Source749",
+  "worker_baseline": "daab70335fd9f92d14557b00b151eb1aabc4d94b",
+  "prior_readiness_commit": "d921584d2da4cadcf36d0e72fd033eb77140b051",
+  "decision": {
+    "proposed_API": "const NativeInstanceGeneratorContext& borrow_instance_generator_context();",
+    "implemented": false,
+    "application_Owners_borrow": "HELD",
+    "ordinary_metadata_construction_allowed": true,
+    "ordinary_Owners_constructor_is_not_a_Native_generator_constructor": true,
+    "const_is_shallow_not_capability_enforcement": true,
+    "existing_application_consumers": 0,
+    "existing_subset_requires_mutable_Owners": true
+  },
+  "metadata_contract": [
+    "Retain original application/singleton/VFS/Lua/mapped/process providers through each borrow.",
+    "Ready and !requires_process_retention at every borrow; revalidate provider identities.",
+    "Finish all views/copies before frame/reset/recreation/drain/destruction; serialize use and reborrow afterward.",
+    "Identity/metadata inspection only; no Native entry, owner registration, setter, release, service mutation, serial write or activation through a mutable copy.",
+    "No generator acquisition/companion is created; this metadata binding adds no retention obligation under that explicit contract."
+  ],
+  "mutable_escape_contract": [
+    "Before Owners& escapes, a future implementation would need a monotonic obligation; there is no such current application API.",
+    "Never clear obligations based on registry-empty, hypothetical Owners-empty, phase complete or consumed creator pointers.",
+    "Existing drain predicate alone is insufficient: frame/retry/recreation paths bypass it.",
+    "Retain every actual frame/companion/provider through no-cleanup process exit unless separately recovered retirement proves completion.",
+    "std::_Exit is an existing terminal fallback before graph/frame unwinding and CRT cleanup; it is not a continuation or implemented activation gateway."
+  ],
+  "current_use_search": {
+    "corpus_files": 4205,
+    "frozen_corpus": "complete_search_corpus.json",
+    "results": "current_use_search.json",
+    "generator_hits": 50,
+    "generator_files": [
+      "include/bsp/native_instance_generator_owner.hpp",
+      "include/bsp/native_mesh_subset_loading.hpp",
+      "src/native_instance_generator_owner.cpp",
+      "src/native_mesh_subset_loading.cpp"
+    ],
+    "presentation_mode_definition_and_declaration_only": true
+  },
+  "Source_evidence": {
+    "roots": 50,
+    "quoted_include_closure_files": 709,
+    "context_files": 4,
+    "complete_Source_and_Git_files": 713,
+    "include_edges": 1464,
+    "unresolved_includes": 0,
+    "Source749_retained_pins": 753,
+    "previous_1952_payloads_unchanged": true,
+    "previous_readiness_ZIP": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_readiness\\cc12_instance_generator_application_binding_readiness.zip",
+      "bytes": 71415018,
+      "sha256": "fd58f9e41886146414c36177dc6cbd09718444c1dff5f7da5bcde71c8757b048"
+    }
+  },
+  "branch_and_API_anchors": [
+    {
+      "id": "application_public_contract",
+      "file": "include/bsp/game_native_renderer_application.hpp",
+      "start_line": 63,
+      "end_line": 116,
+      "interpretation": "Existing services are borrowed through retained providers and serialized lifecycle use; proposed generator method is absent.",
+      "complete_Source_sha256": "ee7e5a12fae9004627011a93048259005c6ccb4f6f39a535f9af865bc3b50175",
+      "excerpt_sha256": "f4795686edfdddd71db64caa5d995f7be3afc58d023055d5b3f7fbb739c65e62"
+    },
+    {
+      "id": "application_member_lifetime",
+      "file": "src/game_native_renderer_application.cpp",
+      "start_line": 320,
+      "end_line": 438,
+      "interpretation": "Providers are retained as Impl members; binding metadata must append after old fields and must not dereference singleton host during destruction.",
+      "complete_Source_sha256": "fcfcd28f97c40ddd297f22f40d903f2a6a2721c855f93458085f8fe155b5fc7b",
+      "excerpt_sha256": "6f7107e75e7c6ac64c68ab28a4287edbc14485212c25ba58039a89e3393fed1a"
+    },
+    {
+      "id": "application_destructor",
+      "file": "src/game_native_renderer_application.cpp",
+      "start_line": 440,
+      "end_line": 464,
+      "interpretation": "Prepared/drained phase check precedes retained COM release and member teardown; no generator state observation.",
+      "complete_Source_sha256": "fcfcd28f97c40ddd297f22f40d903f2a6a2721c855f93458085f8fe155b5fc7b",
+      "excerpt_sha256": "ba9ba331c16a098a1dc2f4b34f7125eeb984613c48f6e6686a6298462efbc99a"
+    },
+    {
+      "id": "construction_and_startup",
+      "file": "src/game_native_renderer_application.cpp",
+      "start_line": 617,
+      "end_line": 684,
+      "interpretation": "Construction and create_device are once-only; failing entries mark phase failed; ready-only metadata cannot precede them.",
+      "complete_Source_sha256": "fcfcd28f97c40ddd297f22f40d903f2a6a2721c855f93458085f8fe155b5fc7b",
+      "excerpt_sha256": "887aba252479e372b53e882c9b4ba486446e55e6e0840ea06915ee7e494eac06"
+    },
+    {
+      "id": "frame_entry",
+      "file": "src/game_native_renderer_application.cpp",
+      "start_line": 696,
+      "end_line": 734,
+      "interpretation": "begin_frame requires ready but does not consult retention; Native begin may replace device before retained COM reference follows.",
+      "complete_Source_sha256": "fcfcd28f97c40ddd297f22f40d903f2a6a2721c855f93458085f8fe155b5fc7b",
+      "excerpt_sha256": "704dc7a0173319a0f4b3aa17f3f55f670576e8bb861dfc48abcb4db8aa3fd65f"
+    },
+    {
+      "id": "retention_and_drain",
+      "file": "src/game_native_renderer_application.cpp",
+      "start_line": 746,
+      "end_line": 774,
+      "interpretation": "Retention observes only phase/shader/shadow/layout. Drain and post-drain checks have no generator frame/Entries query.",
+      "complete_Source_sha256": "fcfcd28f97c40ddd297f22f40d903f2a6a2721c855f93458085f8fe155b5fc7b",
+      "excerpt_sha256": "7037149073c5f99fb45a7f42119ec4c0611c148f8fb834b80749d7c13e86ec2a"
+    },
+    {
+      "id": "host_exit_and_destructor",
+      "file": "src/game_hosts.cpp",
+      "start_line": 1531,
+      "end_line": 1601,
+      "interpretation": "Host exits via _Exit when current renderer retention is true; otherwise destructor drains and retires providers in the shown order.",
+      "complete_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "d33d7c8d768bed1b67b411162c27d80fb0ecc25f7f282901d1259e0e177f450b"
+    },
+    {
+      "id": "host_crt_exit",
+      "file": "src/game_hosts.cpp",
+      "start_line": 1663,
+      "end_line": 1672,
+      "interpretation": "exit_process checks existing predicates then calls std::exit, which runs CRT callbacks.",
+      "complete_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "9df40926bc4476da830bc454f0382a7ff9807ec9b942932aa39946d453ff79e0"
+    },
+    {
+      "id": "host_application_shutdown",
+      "file": "src/game_hosts.cpp",
+      "start_line": 2319,
+      "end_line": 2329,
+      "interpretation": "application_shutdown checks existing retention before closing host consumers.",
+      "complete_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "99f8552d9a501ebce870fa75e7bff099abb6113a9bbcf546e161083c52c642c4"
+    },
+    {
+      "id": "host_manager_drain",
+      "file": "src/game_hosts.cpp",
+      "start_line": 2400,
+      "end_line": 2432,
+      "interpretation": "Device release is before singleton destruction; manager drain consults existing renderer predicate then calls renderer drain.",
+      "complete_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "63d32653de148574fa119817710877970321a68156d6e9c4aba4ad148a36a939"
+    },
+    {
+      "id": "host_device_borrow",
+      "file": "src/game_hosts.cpp",
+      "start_line": 963,
+      "end_line": 1037,
+      "interpretation": "DeviceHost release clears callbacks and a borrowed pointer; begin_frame can replace device and retire its overlay.",
+      "complete_Source_sha256": "27afca34c33faf0c27a6bf8ecfcdb0aa4e4f3d00757fd93079a17ec11e0b9a47",
+      "excerpt_sha256": "241f056f74bdd6ecf7bd348d0e7db52232f57b1f7e4d3087395ffd38ba7d25c7"
+    },
+    {
+      "id": "raw_singleton_shutdown",
+      "file": "src/game_hosts_singletons.cpp",
+      "start_line": 119,
+      "end_line": 139,
+      "interpretation": "Raw manager drain has no renderer gate; manager-null still retires VFS.",
+      "complete_Source_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "excerpt_sha256": "d2791be5714ab58d746e6485057b1e8cc661215753b82c4208c6ef9cd8f8f537"
+    },
+    {
+      "id": "raw_singleton_fallback",
+      "file": "src/game_hosts_singletons.cpp",
+      "start_line": 31,
+      "end_line": 35,
+      "interpretation": "SingletonHost destructor invokes raw shutdown.",
+      "complete_Source_sha256": "f8fa8cc6dfd1caf9607b696c50e1e99c7fd41bf16e319426366f471e48dd12e3",
+      "excerpt_sha256": "96a16b287c54d9e1defdb03e7faf4acca186713239de304ca44ce67c7443bfca"
+    },
+    {
+      "id": "native_renderer_terminal",
+      "file": "src/native_singleton_destruction.cpp",
+      "start_line": 150,
+      "end_line": 156,
+      "interpretation": "D5F0A4 dispatch calls the actual secondary renderer deleting terminal when its context is bound.",
+      "complete_Source_sha256": "7255ffd604f4b930ccd211592ad7bd0a3df841139d778abdeb8ae27d2b2f89e0",
+      "excerpt_sha256": "e246478c11f091a60f7a7336a862f4e08deacdb26952e24105d3580a6537fa70"
+    },
+    {
+      "id": "native_renderer_teardown",
+      "file": "src/native_renderer_destructor.cpp",
+      "start_line": 267,
+      "end_line": 447,
+      "interpretation": "B32920 retires worker, bindings, declarations, effects, textures, COM and base; scalar terminals optionally free raw owner.",
+      "complete_Source_sha256": "7e1d31c63d952b93a99429b1680e7a2798d8369f98a7f245876393f86546a5bb",
+      "excerpt_sha256": "735deb327c090d939bb3be2df0de06b621e32dd8b862f2e19ae9acc00da9d6ed"
+    },
+    {
+      "id": "native_begin_reset",
+      "file": "src/native_renderer_begin_frame.cpp",
+      "start_line": 168,
+      "end_line": 178,
+      "interpretation": "Native begin enters B2ABD0 on inactive-frame path.",
+      "complete_Source_sha256": "941cac2c7156a8e4a88455b35be66d8f872f7a9e9a30b134a93787ebd799e41e",
+      "excerpt_sha256": "4ddfcf4d47e7ab7451b8a48e0de4d4e13af457e423f6d538dcd129c59c406212"
+    },
+    {
+      "id": "native_device_startup_reset",
+      "file": "src/native_renderer_device_startup_actual.cpp",
+      "start_line": 264,
+      "end_line": 269,
+      "interpretation": "Once-only device startup can enter B2ABD0 before a valid ready-only borrow.",
+      "complete_Source_sha256": "d40202b0dabeeae324f3cdd84fcd5c9c6966f2472966f4a05669eb858747a8e7",
+      "excerpt_sha256": "c6e6178144cb7688d3a3b27d3e4de53063aeb440c5a4a3bf202edd58e8ff0d15"
+    },
+    {
+      "id": "native_reset_branches",
+      "file": "src/native_renderer_reset_process.cpp",
+      "start_line": 141,
+      "end_line": 219,
+      "interpretation": "Reset handles no-op/unfocused/hold, in-place COM Reset, lost/failure fallback recreation; all lack generator observation.",
+      "complete_Source_sha256": "7a09b6053f0296bfde5a129be98d6da523aa3f7045ddac851a325d61d6cb686d",
+      "excerpt_sha256": "782634aebd00af42687796b68fad79ec34139c37cc856b09e250c80905e6e699"
+    },
+    {
+      "id": "native_reset_thread_gate",
+      "file": "src/native_renderer_reset_process.cpp",
+      "start_line": 233,
+      "end_line": 250,
+      "interpretation": "Current render-thread and optional Native guard control reset, not generator acquisition ownership.",
+      "complete_Source_sha256": "7a09b6053f0296bfde5a129be98d6da523aa3f7045ddac851a325d61d6cb686d",
+      "excerpt_sha256": "66abb71e56abe893f054d14cebec37ca428547213e0b1b1c2d9f4933cd84d7d5"
+    },
+    {
+      "id": "presentation_mode",
+      "file": "src/native_renderer_presentation_mode.cpp",
+      "start_line": 116,
+      "end_line": 168,
+      "interpretation": "Windowed change calls B29670; otherwise pending reset; no current application caller in complete search.",
+      "complete_Source_sha256": "2628f60cfda70f1674cc19b48a22804d39c30de407492d3ca41b015a81ab320f",
+      "excerpt_sha256": "7d45373f8a458c069cdfae9e31c264bff80ce99eafcc4ee863e9a24b4e293618"
+    },
+    {
+      "id": "native_recreation",
+      "file": "src/native_renderer_device_recreation_actual.cpp",
+      "start_line": 225,
+      "end_line": 324,
+      "interpretation": "B29670 releases and restores device-backed layouts/buffers/shaders/textures and swaps device; C++ provider identities can survive while Native resources change.",
+      "complete_Source_sha256": "83830b9520186fc9b7d864d1025d41d410493242a75798107970b199da2ee750",
+      "excerpt_sha256": "5ef7b642f8e33306d3210c7eff5f6ee81f921d5ae7e36f1420fecf4904e101d8"
+    },
+    {
+      "id": "logical_retry_adapter",
+      "file": "src/game_native_renderer_lifetime.inc",
+      "start_line": 1,
+      "end_line": 8,
+      "interpretation": "ActualRecreation only checks a bound context before B29670.",
+      "complete_Source_sha256": "52c78a5e8ae42a0e5934549487475752ad4714af76c95123c638681c86ec9507",
+      "excerpt_sha256": "8ff8d502b4bbb8dcaeee951b578032d319b41c32e651c209cb82387533d67eff"
+    },
+    {
+      "id": "logical_vertex_retry",
+      "file": "src/native_logical_vertex_owner.cpp",
+      "start_line": 301,
+      "end_line": 314,
+      "interpretation": "Eligible private vertex-buffer failure invokes adapter before retry.",
+      "complete_Source_sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+      "excerpt_sha256": "ab5eb2ed97e7e75c8edcc68ceaf36c28fdedf34d899540a08e677ae439e5def1"
+    },
+    {
+      "id": "logical_index_retry",
+      "file": "src/native_logical_index_owner.cpp",
+      "start_line": 181,
+      "end_line": 193,
+      "interpretation": "Eligible private index-buffer failure invokes adapter before retry.",
+      "complete_Source_sha256": "d2de40f465f482dc1ad6511ed2a848e587718279bc47958c07b9763bc788a2a8",
+      "excerpt_sha256": "1ff98b7bbfc4d6c01bc7d7e5576a87afb1c5fb506a7751a08534579b81ae2a9f"
+    },
+    {
+      "id": "texture_retry_adapter",
+      "file": "src/game_native_renderer_textures.inc",
+      "start_line": 22,
+      "end_line": 25,
+      "interpretation": "Texture retry directly enters B29670.",
+      "complete_Source_sha256": "e178152527c7b2b39a63608346c6cc555a0306cb05c53af83f2cc654146e824e",
+      "excerpt_sha256": "c8fb66a9b12560499f2af8679e52b91373f6b5fc71730b159df65f76d7c01686"
+    },
+    {
+      "id": "cube_volume_load_retry",
+      "file": "src/native_texture_loading_cache.cpp",
+      "start_line": 521,
+      "end_line": 532,
+      "interpretation": "Eligible load failure calls retry callback with current renderer.",
+      "complete_Source_sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "excerpt_sha256": "47695dce7f377c5ae3746705d3243355526bebbd2212d90fffa2c984ed4e37e8"
+    },
+    {
+      "id": "texture_2d_load_retry",
+      "file": "src/native_texture_loading_cache.cpp",
+      "start_line": 633,
+      "end_line": 644,
+      "interpretation": "Eligible load failure calls retry callback and preserves SAME captured device on retry.",
+      "complete_Source_sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "excerpt_sha256": "09c97b968174d674867bcbf68801db67fc409ade13f86e4af8e1521a3d523f0f"
+    },
+    {
+      "id": "surface_retry",
+      "file": "src/native_render_resources_surfaces.cpp",
+      "start_line": 62,
+      "end_line": 71,
+      "interpretation": "Surface retry checks its native failure condition and retained recreation context.",
+      "complete_Source_sha256": "24aee52fa0cd5d1fccf6143d5a04ece86d7eafb49442bcdc657cf33d10997761",
+      "excerpt_sha256": "5bb6a4308347fbdbc64174a9397cc7d1af24dd32ad0bb5124c0b50a5b5a04b31"
+    },
+    {
+      "id": "runtime_texture_retry",
+      "file": "src/native_runtime_texture_creation.cpp",
+      "start_line": 263,
+      "end_line": 274,
+      "interpretation": "Eligible 2D creation failure directly recreates device and rereads it.",
+      "complete_Source_sha256": "df1037d5f1f3d75e68976fc998ef59d6e559dd9731588f1bc00f36bd8622183a",
+      "excerpt_sha256": "4fa043fe731658815401fc7fb3a19afc65aabd9ec7ad2510ba04ec5adb4a5822"
+    },
+    {
+      "id": "runtime_volume_retry",
+      "file": "src/native_runtime_volume_texture_creation.cpp",
+      "start_line": 143,
+      "end_line": 160,
+      "interpretation": "Eligible volume creation failure directly recreates and retries.",
+      "complete_Source_sha256": "b443edfd48f30178b7aa60de16ed98d9df41eccdae2cf7cc0d2e3e6c3192505a",
+      "excerpt_sha256": "2b62f1575303cb0daa79ea076bbfad9e8946a21ef3f6bdf6886a27cfdcbc88c5"
+    },
+    {
+      "id": "device_graph_retirement",
+      "file": "src/game_native_renderer_device.inc",
+      "start_line": 56,
+      "end_line": 63,
+      "interpretation": "DeviceGraph unbinds recreation and unloads D3DX at destruction.",
+      "complete_Source_sha256": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db",
+      "excerpt_sha256": "16058c03cd97e18099a69f9655af0ea0b66cb4957a451cc885e279be0cc9fe0c"
+    },
+    {
+      "id": "generator_public_api",
+      "file": "include/bsp/native_instance_generator_owner.hpp",
+      "start_line": 13,
+      "end_line": 105,
+      "interpretation": "Context is shallow const/copyable; Owners requires mutable context and exposes no live/empty/quiescent query; Acquired has no cleanup destructor.",
+      "complete_Source_sha256": "754068874234261e9badf38820bea9f1de9cc5d9393762f12c57740200fb4978",
+      "excerpt_sha256": "aa55644301823fcfaa24263cc33dba734e6f201c0ea7fdfaffd78d9adb10efaf"
+    },
+    {
+      "id": "generator_pre_registration",
+      "file": "src/native_instance_generator_owner.cpp",
+      "start_line": 50,
+      "end_line": 109,
+      "interpretation": "Name/declaration/layout state can precede generator Entry insertion; constructor unwind is not general resource rollback.",
+      "complete_Source_sha256": "b6684217779eb3943d1d95f96a961864a590d58ad7bee288f92f9f7ed58c8b29",
+      "excerpt_sha256": "2d7e237e18114acac925ee9dc187e778495038ccb56f840eec8812c7b40fb126"
+    },
+    {
+      "id": "generator_companion_registration",
+      "file": "src/native_instance_generator_owner.cpp",
+      "start_line": 146,
+      "end_line": 199,
+      "interpretation": "Entry is inserted before canonical bind; unbound Entry may survive failure; real metadata ctor creates empty Impl/list; destructor terminates if nonempty.",
+      "complete_Source_sha256": "b6684217779eb3943d1d95f96a961864a590d58ad7bee288f92f9f7ed58c8b29",
+      "excerpt_sha256": "16fafe59b12639e973e37302df31f25b39fb94274ac5a4d70dde6fddcd68599d"
+    },
+    {
+      "id": "generator_attachment_complete",
+      "file": "src/native_instance_generator_owner.cpp",
+      "start_line": 201,
+      "end_line": 252,
+      "interpretation": "Complete attachment can leave section+5C binding and generator alive after creator references are consumed.",
+      "complete_Source_sha256": "b6684217779eb3943d1d95f96a961864a590d58ad7bee288f92f9f7ed58c8b29",
+      "excerpt_sha256": "6ab8cdf49a4ba50747d601faa19ad1101f03f803f65c5c269acef4d5c18d2232"
+    },
+    {
+      "id": "subset_finalizer_use",
+      "file": "src/native_mesh_subset_loading.cpp",
+      "start_line": 155,
+      "end_line": 168,
+      "interpretation": "Existing subset code invokes finalizer through caller-supplied Owners; no application consumer has been added.",
+      "complete_Source_sha256": "54d25cf5f9abcda9ce3f49dd0ebaff1d3d4594f9d26c2853ffa26d26feb8892d",
+      "excerpt_sha256": "50167b1b49c6d04f73dbc122a23d1018f831c58e52d6e22d63265cab69207284"
+    },
+    {
+      "id": "canonical_registry_queries",
+      "file": "include/bsp/native_render_context.hpp",
+      "start_line": 48,
+      "end_line": 65,
+      "interpretation": "Actual registry has size/empty but does not observe unbound Entry or pre-registration acquisition.",
+      "complete_Source_sha256": "7a0c41c648e0de9294c75ffc3c632845ff2b49becd9de9651f7cf3f4f969740d",
+      "excerpt_sha256": "0540ba8d68bb1b78710e8a8720ba929873f6af6ebbb7e8fc70ca6c2b8252f4a2"
+    },
+    {
+      "id": "geometry_destructor",
+      "file": "src/gui_native_geometry.cpp",
+      "start_line": 82,
+      "end_line": 86,
+      "interpretation": "Geometry metadata destructor terminates with live companion lists; it does not perform generator retirement.",
+      "complete_Source_sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+      "excerpt_sha256": "fe743348b52b6768140a74b30d51599f8495902a882f5ace47dedf60f9de6688"
+    },
+    {
+      "id": "layout_destructor_and_query",
+      "file": "src/gui_text_native_layout.cpp",
+      "start_line": 116,
+      "end_line": 126,
+      "interpretation": "Layout pending/live observations exist and can incidentally retain some generator work, but cannot cover every earlier failure.",
+      "complete_Source_sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d",
+      "excerpt_sha256": "dd1115dee43bf57f036541e4a20623e07001f241ba9d46a9c3a9dff39ccf9227"
+    },
+    {
+      "id": "mapped_data_destruction",
+      "file": "src/game_native_readonly_data.cpp",
+      "start_line": 133,
+      "end_line": 148,
+      "interpretation": "Mapped-data destruction releases reservations; data_at validates spans without retaining their owner.",
+      "complete_Source_sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "excerpt_sha256": "929be531faeeb842354b21643c95ead971faeff8f5833994d4d130bae924d8f0"
+    },
+    {
+      "id": "vfs_retirement",
+      "file": "src/game_native_vfs_runtime.cpp",
+      "start_line": 377,
+      "end_line": 402,
+      "interpretation": "VFS retirement clears bindings/publication and marks retired; metadata destructor later resets stream provider/lock.",
+      "complete_Source_sha256": "6ef792777a53881057f41d3638eca6a7931db3eb5304d7e68754a6e10f332d28",
+      "excerpt_sha256": "da8d0b0d80ad53dbbdfe8d757dd2ec7a2dd7c6d68c347607c8262d0353a4e536"
+    },
+    {
+      "id": "serial_process_owner",
+      "file": "src/game_native_renderer_scalars.cpp",
+      "start_line": 91,
+      "end_line": 96,
+      "interpretation": "Serial accessor returns ordinary process-owned storage; its longevity cannot extend other providers and proves no original Native cell value.",
+      "complete_Source_sha256": "e00ae71093004a70d4b2ea046d580e51a2121ad7ce69b8a4cce37aa07a2ef8da",
+      "excerpt_sha256": "83d2195a7125b60bb8f47504a1d7bba3e16de4503560cd9f2743eb63edc16c5b"
+    }
+  ],
+  "evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_lifetime_readiness",
+  "evidence_archive": "J:\\PROG\\battlestations-pacific-decompile-cc12_global_config_effect_payload\\local\\cc12_instance_generator_application_binding_lifetime_readiness\\cc12_instance_generator_application_binding_lifetime_readiness.zip",
+  "read_only_replay": "python local/cc12_instance_generator_application_binding_lifetime_readiness/review_evidence.py",
+  "preparation_correction": "First capture stopped before writing an absolute Root artifact path because its target already existed. Corrected to confined indexed artifact paths, verified all 753 pins and kept initial script; no external artifact was modified.",
+  "credit": {
+    "Source_lifetime_readiness_only": true,
+    "implementation": false,
+    "compiler_or_build": false,
+    "tests": false,
+    "new_Native_or_PE_bytes": false,
+    "Ghidra": false,
+    "runtime_or_ABI_or_gameplay": false,
+    "activation": false
+  },
+  "holds": [
+    "No automated enforcement of no-activation or borrowed reference lifetime in current types.",
+    "No generator-aware retention, escaped-reference latch, failure-frame observation, public Owners quiescence or recovered retirement protocol.",
+    "No safety claim for resuming interrupted generator work across resource/device mutations.",
+    "Original numeric 0108FD30 metadata/Native value remains held; ordinary process accessor is only Source provider."
+  ]
+}
